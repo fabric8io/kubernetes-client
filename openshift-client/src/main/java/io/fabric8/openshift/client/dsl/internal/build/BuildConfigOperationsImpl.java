@@ -27,7 +27,6 @@ import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.OperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.OperationSupport;
-import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
 import io.fabric8.kubernetes.client.utils.URLUtils;
@@ -260,16 +259,12 @@ public class BuildConfigOperationsImpl
 
   protected Build submitToApiServer(InputStream inputStream, long contentLength) {
     try {
-      HttpClient newClient = this.httpClient.newBuilder()
-          .tag(getOperationContext().getRequestConfig())
-          .readTimeout(getOperationContext().getTimeout(), getOperationContext().getTimeoutUnit())
-          .writeTimeout(getOperationContext().getTimeout(), getOperationContext().getTimeoutUnit())
-          .build();
       HttpRequest.Builder requestBuilder = this.httpClient.newHttpRequestBuilder()
           .post("application/octet-stream", inputStream, contentLength)
           .expectContinue()
+          .readTimeout(getOperationContext().getTimeout(), getOperationContext().getTimeoutUnit())
           .uri(getQueryParameters());
-      return waitForResult(handleResponse(newClient, requestBuilder, new TypeReference<Build>() {
+      return waitForResult(handleResponse(this.httpClient, requestBuilder, new TypeReference<Build>() {
         @Override
         public Type getType() {
           return Build.class;

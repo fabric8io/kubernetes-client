@@ -80,8 +80,7 @@ public abstract class AbstractSimultaneousConnectionsTest {
     httpServer.setExecutor(httpExecutor);
     httpServer.start();
     clientBuilder = getHttpClientFactory().newBuilder()
-        .connectTimeout(60, TimeUnit.SECONDS)
-        .readTimeout(60, TimeUnit.SECONDS);
+        .connectTimeout(60, TimeUnit.SECONDS);
   }
 
   @AfterEach
@@ -246,6 +245,7 @@ public abstract class AbstractSimultaneousConnectionsTest {
       return connections.stream().filter(Socket::isConnected).filter(s -> !s.isClosed()).count();
     }
 
+    @Override
     public final void close() {
       for (Socket socket : connections) {
         try {

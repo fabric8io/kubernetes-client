@@ -18,6 +18,6 @@ package io.fabric8.kubernetes.client.dsl;
 public interface ScalableResource<T> extends Resource<T>,
     Loggable,
     Containerable<String, Loggable>,
-    TimestampBytesLimitTerminateTimeTailPrettyLoggable {
+    TimestampBytesLimitTerminateTimeTailPrettyLoggable, TimeoutableScalable<T> {
 
 }

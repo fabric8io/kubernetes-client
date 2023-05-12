@@ -29,7 +29,6 @@ import static io.fabric8.kubernetes.client.Config.DEFAULT_REQUEST_RETRY_BACKOFFL
 import static io.fabric8.kubernetes.client.Config.DEFAULT_REQUEST_TIMEOUT;
 import static io.fabric8.kubernetes.client.Config.DEFAULT_SCALE_TIMEOUT;
 import static io.fabric8.kubernetes.client.Config.DEFAULT_UPLOAD_REQUEST_TIMEOUT;
-import static io.fabric8.kubernetes.client.Config.DEFAULT_WEBSOCKET_TIMEOUT;
 
 public class RequestConfig {
 
@@ -46,20 +45,18 @@ public class RequestConfig {
   private int requestTimeout = DEFAULT_REQUEST_TIMEOUT;
   private long scaleTimeout = DEFAULT_SCALE_TIMEOUT;
   private int loggingInterval = DEFAULT_LOGGING_INTERVAL;
-  private long websocketTimeout = DEFAULT_WEBSOCKET_TIMEOUT;
 
   RequestConfig() {
   }
 
   @Buildable(builderPackage = "io.fabric8.kubernetes.api.builder", editableEnabled = false)
   public RequestConfig(int watchReconnectLimit, int watchReconnectInterval, int requestTimeout,
-      long scaleTimeout, int loggingInterval, long websocketTimeout, int requestRetryBackoffLimit,
+      long scaleTimeout, int loggingInterval, int requestRetryBackoffLimit,
       int requestRetryBackoffInterval, int uploadRequestTimeout) {
     this.watchReconnectLimit = watchReconnectLimit;
     this.watchReconnectInterval = watchReconnectInterval;
     this.requestTimeout = requestTimeout;
     this.scaleTimeout = scaleTimeout;
-    this.websocketTimeout = websocketTimeout;
     this.loggingInterval = loggingInterval;
     this.requestRetryBackoffLimit = requestRetryBackoffLimit;
     this.requestRetryBackoffInterval = requestRetryBackoffInterval;
@@ -128,14 +125,6 @@ public class RequestConfig {
 
   public void setLoggingInterval(int loggingInterval) {
     this.loggingInterval = loggingInterval;
-  }
-
-  public long getWebsocketTimeout() {
-    return websocketTimeout;
-  }
-
-  public void setWebsocketTimeout(long websocketTimeout) {
-    this.websocketTimeout = websocketTimeout;
   }
 
   public void setImpersonateUsername(String impersonateUsername) {

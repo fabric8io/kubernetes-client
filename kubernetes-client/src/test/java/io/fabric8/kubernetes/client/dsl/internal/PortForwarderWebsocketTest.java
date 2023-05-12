@@ -34,7 +34,7 @@ class PortForwarderWebsocketTest {
 
   @BeforeEach
   void initPortForwarderWebsocket() {
-    this.portForwarderWebsocket = new PortForwarderWebsocket(mockHttpClient, CommonThreadPool.get());
+    this.portForwarderWebsocket = new PortForwarderWebsocket(mockHttpClient, CommonThreadPool.get(), 0);
   }
 
   @Test

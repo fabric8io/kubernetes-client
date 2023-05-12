@@ -35,7 +35,9 @@ public interface Scalable<T> {
    * @param wait if true, wait for the number of instances to exist - no guarantee is made
    *        as to readiness
    * @return the resource
+   * @deprecated use {@link TimeoutableScalable} instead
    */
+  @Deprecated
   T scale(int count, boolean wait);
 
   default Scale scale() {

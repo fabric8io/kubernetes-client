@@ -11,6 +11,9 @@
 #### New Features
 
 #### _**Note**_: Breaking changes
+* Fix #4911: Config/RequestConfig.scaleTimeout has been deprectated along with Scalable.scale(count, wait) and DeployableScalableResource.deployLatest(wait). withTimeout may be called before the operation to control the timeout.
+* Fix #4911: Config/RequestConfig.websocketTimeout has been removed. Config/RequestConfig.requestTimeout will be used for websocket connection timeouts.
+* Fix #4911: HttpClient api/building changes - writeTimeout has been removed, readTimeout has moved to the HttpRequest
 
 ### 6.6.2 (2023-05-15)
 
@@ -20,7 +23,7 @@ Fix #5121: RequestConfig is propagated to derived HttpClient instances
 ### 6.6.1 (2023-05-11)
 
 #### Bugs
-* Fix #5095: moving the enforcement to requestTimeout
+* Fix #5095: moving the enforcement of requestTimeout
 * Fix #5100: lessened the level of the non-conflicting httpclient implementation warning
 * Fix #5102: wait on scale to 0 was not completing
 * Fix #5112: Expose put method with InputStream argument in HttpRequest class

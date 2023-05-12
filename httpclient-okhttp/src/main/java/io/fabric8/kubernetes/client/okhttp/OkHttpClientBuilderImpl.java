@@ -91,17 +91,8 @@ class OkHttpClientBuilderImpl
   }
 
   private OkHttpClientImpl derivedBuild(okhttp3.OkHttpClient.Builder builder) {
-    if (readTimeout != null) {
-      builder.readTimeout(this.readTimeout);
-    }
-    if (writeTimeout != null) {
-      builder.writeTimeout(this.writeTimeout);
-    }
     if (authenticatorNone) {
       builder.authenticator(Authenticator.NONE);
-    }
-    if (forStreaming) {
-      builder.cache(null);
     }
     OkHttpClient client = builder.build();
 

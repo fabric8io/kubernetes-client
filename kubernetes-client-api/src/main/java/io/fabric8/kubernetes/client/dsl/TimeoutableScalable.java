@@ -13,16 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.openshift.client.dsl;
+package io.fabric8.kubernetes.client.dsl;
 
-import io.fabric8.kubernetes.client.dsl.ScalableResource;
+import java.util.concurrent.TimeUnit;
 
-public interface DeployableScalableResource<T> extends ScalableResource<T>, TimeoutDeployable<T> {
+public interface TimeoutableScalable<T> extends Deletable {
 
   /**
-   * @deprecated use {@link TimeoutDeployable} instead to indicate the timeout
+   * Scale the resource to given count
+   *
+   * @param count the desired instance count
+   * @return the resource
    */
-  @Deprecated
-  T deployLatest(boolean wait);
+  T scale(int count);
+
+  @Override
+  TimeoutableScalable<T> withTimeout(long timeout, TimeUnit unit);
+
+  @Override
+  TimeoutableScalable<T> withTimeoutInMillis(long timeoutInMillis);
 
 }

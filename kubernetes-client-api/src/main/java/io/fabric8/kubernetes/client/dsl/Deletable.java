@@ -18,8 +18,9 @@ package io.fabric8.kubernetes.client.dsl;
 import io.fabric8.kubernetes.api.model.StatusDetails;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
-public interface Deletable {
+public interface Deletable extends Timeoutable {
 
   /**
    * Deletes the resources at this context and returns the {@link StatusDetails} of resources marked for deletion
@@ -31,5 +32,17 @@ public interface Deletable {
    * @throws io.fabric8.kubernetes.client.KubernetesClientException if an error occurs.
    */
   List<StatusDetails> delete();
+
+  /**
+   * Perform the delete operation as blocking, waiting for finalizers, for up to the given timeout
+   */
+  @Override
+  Deletable withTimeout(long timeout, TimeUnit unit);
+
+  /**
+   * Perform the delete operation as blocking, waiting for finalizers, for up to the given timeout
+   */
+  @Override
+  Deletable withTimeoutInMillis(long timeoutInMillis);
 
 }

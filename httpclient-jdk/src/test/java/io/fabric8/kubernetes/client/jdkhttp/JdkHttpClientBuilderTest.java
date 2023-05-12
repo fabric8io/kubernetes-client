@@ -30,10 +30,7 @@ class JdkHttpClientBuilderTest {
     JdkHttpClientBuilderImpl builder = factory.newBuilder();
 
     // should build and be usable without an issue
-    try (HttpClient client = builder.readTimeout(0, TimeUnit.MILLISECONDS).connectTimeout(0, TimeUnit.MILLISECONDS)
-        .writeTimeout(0,
-            TimeUnit.MILLISECONDS)
-        .build();) {
+    try (HttpClient client = builder.connectTimeout(0, TimeUnit.MILLISECONDS).build();) {
       assertNotNull(client.newHttpRequestBuilder().uri("http://localhost").build());
     }
   }

@@ -18,7 +18,6 @@ package io.fabric8.kubernetes.client.jetty;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.http.AsyncBody;
 import io.fabric8.kubernetes.client.http.AsyncBody.Consumer;
-import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.HttpResponse;
 import io.fabric8.kubernetes.client.http.StandardHttpClient;
 import io.fabric8.kubernetes.client.http.StandardHttpClientBuilder;
@@ -100,7 +99,9 @@ public class JettyHttpClient extends StandardHttpClient<JettyHttpClient, JettyHt
     final var request = requestBuilder.build();
 
     var jettyRequest = jetty.newRequest(request.uri()).method(request.method());
-    jettyRequest.timeout(builder.getReadTimeout().toMillis() + builder.getWriteTimeout().toMillis(), TimeUnit.MILLISECONDS);
+    if (originalRequest.getReadTimeout() != null) {
+      jettyRequest.timeout(originalRequest.getReadTimeout().toMillis(), TimeUnit.MILLISECONDS);
+    }
     jettyRequest.headers(m -> request.headers().forEach((k, l) -> l.forEach(v -> m.add(k, v))));
 
     final var contentType = Optional.ofNullable(request.getContentType());
@@ -136,14 +137,14 @@ public class JettyHttpClient extends StandardHttpClient<JettyHttpClient, JettyHt
       Listener listener) {
     try {
       jettyWs.start();
-      final HttpRequest request = standardWebSocketBuilder.asHttpRequest();
+      StandardHttpRequest request = standardWebSocketBuilder.asHttpRequest();
       final ClientUpgradeRequest cur = new ClientUpgradeRequest();
       if (Utils.isNotNullOrEmpty(standardWebSocketBuilder.getSubprotocol())) {
         cur.setSubProtocols(standardWebSocketBuilder.getSubprotocol());
       }
       cur.setHeaders(request.headers());
-      if (builder.getReadTimeout() != null) {
-        cur.setTimeout(builder.getReadTimeout().toMillis(), TimeUnit.MILLISECONDS);
+      if (request.getReadTimeout() != null) {
+        cur.setTimeout(request.getReadTimeout().toMillis(), TimeUnit.MILLISECONDS);
       }
       // Extra-future required because we can't Map the UpgradeException to a WebSocketHandshakeException easily
       final CompletableFuture<WebSocketResponse> future = new CompletableFuture<>();

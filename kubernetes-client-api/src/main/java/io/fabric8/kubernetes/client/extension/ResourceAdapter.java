@@ -27,7 +27,6 @@ import io.fabric8.kubernetes.client.ResourceNotFoundException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.Deletable;
-import io.fabric8.kubernetes.client.dsl.DeletableWithOptions;
 import io.fabric8.kubernetes.client.dsl.Gettable;
 import io.fabric8.kubernetes.client.dsl.Informable;
 import io.fabric8.kubernetes.client.dsl.NonDeletingOperation;
@@ -332,12 +331,12 @@ public class ResourceAdapter<T> implements Resource<T> {
   }
 
   @Override
-  public DeletableWithOptions withTimeout(long timeout, TimeUnit unit) {
+  public Deletable withTimeout(long timeout, TimeUnit unit) {
     return resource.withTimeout(timeout, unit);
   }
 
   @Override
-  public DeletableWithOptions withTimeoutInMillis(long timeoutInMillis) {
+  public Deletable withTimeoutInMillis(long timeoutInMillis) {
     return withTimeout(timeoutInMillis, TimeUnit.MILLISECONDS);
   }
 

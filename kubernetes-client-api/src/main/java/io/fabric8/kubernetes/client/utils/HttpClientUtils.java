@@ -181,10 +181,6 @@ public class HttpClientUtils {
       builder.connectTimeout(config.getConnectionTimeout(), TimeUnit.MILLISECONDS);
     }
 
-    if (config.getRequestTimeout() > 0) {
-      builder.readTimeout(config.getRequestTimeout(), TimeUnit.MILLISECONDS);
-    }
-
     if (config.isHttp2Disable()) {
       builder.preferHttp11();
     }

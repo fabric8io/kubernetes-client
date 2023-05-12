@@ -18,9 +18,10 @@ package io.fabric8.kubernetes.client.extension;
 
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.client.Client;
+import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.Nameable;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.kubernetes.client.dsl.WritableOperation;
+import io.fabric8.kubernetes.client.dsl.TimeoutableScalable;
 
 import java.util.List;
 import java.util.Map;
@@ -31,7 +32,7 @@ import java.util.function.Function;
  * Provides an interface that is usable by the {@link ExtensibleResourceAdapter} that returns
  * a non-specialized value
  */
-public interface ExtensibleResource<T> extends Resource<T> {
+public interface ExtensibleResource<T> extends Resource<T>, TimeoutableScalable<T> {
 
   @Override
   ExtensibleResource<T> lockResourceVersion(String resourceVersion);
@@ -90,8 +91,13 @@ public interface ExtensibleResource<T> extends Resource<T> {
   ExtensibleResource<T> withTimeout(long timeout, TimeUnit unit);
 
   @Override
-  default WritableOperation<T> withTimeoutInMillis(long timeoutInMillis) {
+  default ExtensibleResource<T> withTimeoutInMillis(long timeoutInMillis) {
     return withTimeout(timeoutInMillis, TimeUnit.MILLISECONDS);
+  }
+
+  @Override
+  default T scale(int count) {
+    throw new KubernetesClientException("not implemented");
   }
 
 }

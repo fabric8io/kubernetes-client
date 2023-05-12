@@ -26,6 +26,7 @@ import io.fabric8.kubernetes.client.RequestConfig;
 import io.fabric8.kubernetes.client.VersionInfo;
 import io.fabric8.kubernetes.client.WithRequestCallable;
 import io.fabric8.kubernetes.client.dsl.CreateOrDeleteable;
+import io.fabric8.kubernetes.client.dsl.Deletable;
 import io.fabric8.kubernetes.client.dsl.FunctionCallable;
 import io.fabric8.kubernetes.client.dsl.Gettable;
 import io.fabric8.kubernetes.client.dsl.InOutCreateable;
@@ -173,6 +174,7 @@ import java.net.URL;
 import java.text.ParseException;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
 /**
@@ -181,6 +183,42 @@ import java.util.function.Supplier;
  */
 public class OpenShiftClientImpl extends KubernetesClientImpl
     implements NamespacedOpenShiftClient {
+
+  private static final class NameableCreateOrDeleteableImpl implements NameableCreateOrDeleteable {
+    private final HasMetadataOperation<ImageSignature, ?, Resource<ImageSignature>> nameable;
+    private final Resource<ImageSignature> operation;
+
+    private NameableCreateOrDeleteableImpl(HasMetadataOperation<ImageSignature, ?, Resource<ImageSignature>> nameable,
+        Resource<ImageSignature> operation) {
+      this.nameable = nameable;
+      this.operation = operation;
+    }
+
+    @Override
+    public List<StatusDetails> delete() {
+      return operation.delete();
+    }
+
+    @Override
+    public ImageSignature create(ImageSignature item) {
+      return operation.create(item);
+    }
+
+    @Override
+    public CreateOrDeleteable<ImageSignature> withName(String name) {
+      return new NameableCreateOrDeleteableImpl(nameable, nameable.withName(name));
+    }
+
+    @Override
+    public Deletable withTimeout(long timeout, TimeUnit unit) {
+      return operation.withTimeout(timeout, unit);
+    }
+
+    @Override
+    public Deletable withTimeoutInMillis(long timeoutInMillis) {
+      return operation.withTimeoutInMillis(timeoutInMillis);
+    }
+  }
 
   public static final String OPENSHIFT_VERSION_ENDPOINT = "version/openshift";
 
@@ -331,35 +369,7 @@ public class OpenShiftClientImpl extends KubernetesClientImpl
   public NameableCreateOrDeleteable imageSignatures() {
     HasMetadataOperation<ImageSignature, ?, Resource<ImageSignature>> operation = getHandlers()
         .getNonListingOperation(ImageSignature.class, this);
-    return new NameableCreateOrDeleteable() {
-
-      @Override
-      public List<StatusDetails> delete() {
-        return operation.delete();
-      }
-
-      @Override
-      public ImageSignature create(ImageSignature item) {
-        return operation.create(item);
-      }
-
-      @Override
-      public CreateOrDeleteable<ImageSignature> withName(String name) {
-        return new CreateOrDeleteable<ImageSignature>() {
-
-          @Override
-          public ImageSignature create(ImageSignature item) {
-            return operation.withName(name).create(item);
-          }
-
-          @Override
-          public List<StatusDetails> delete() {
-            return operation.withName(name).delete();
-          }
-
-        };
-      }
-    };
+    return new NameableCreateOrDeleteableImpl(operation, operation);
   }
 
   @Override
@@ -702,7 +712,6 @@ public class OpenShiftClientImpl extends KubernetesClientImpl
     HttpClient.DerivedClientBuilder builder = httpClient.newBuilder();
     this.httpClient = builder
         .authenticatorNone()
-        .tag(config.getRequestConfig())
         .addOrReplaceInterceptor(TokenRefreshInterceptor.NAME,
             new OpenShiftOAuthInterceptor(httpClient, wrapped))
         .build();

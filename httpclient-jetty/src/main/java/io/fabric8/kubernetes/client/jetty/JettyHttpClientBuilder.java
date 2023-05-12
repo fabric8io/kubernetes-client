@@ -112,16 +112,6 @@ public class JettyHttpClientBuilder
   }
 
   @Override
-  public Duration getReadTimeout() {
-    return Optional.ofNullable(readTimeout).orElse(Duration.ZERO);
-  }
-
-  @Override
-  public Duration getWriteTimeout() {
-    return Optional.ofNullable(writeTimeout).orElse(Duration.ZERO);
-  }
-
-  @Override
   public Duration getConnectTimeout() {
     return Optional.ofNullable(connectTimeout).orElse(Duration.ZERO);
   }
