@@ -29,6 +29,7 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.ByteBuffer;
+import java.time.Duration;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
@@ -43,6 +44,7 @@ import java.util.function.Supplier;
 public abstract class StandardHttpClient<C extends HttpClient, F extends HttpClient.Factory, T extends StandardHttpClientBuilder<C, F, ?>>
     implements HttpClient, RequestTags {
 
+  // pads the fail-safe timeout to ensure we don't inadvertently timeout a request
   private static final long ADDITIONAL_REQEUST_TIMEOUT = TimeUnit.SECONDS.toMillis(5);
 
   private static final Logger LOG = LoggerFactory.getLogger(StandardHttpClient.class);
@@ -80,15 +82,16 @@ public abstract class StandardHttpClient<C extends HttpClient, F extends HttpCli
   @Override
   public CompletableFuture<HttpResponse<AsyncBody>> consumeBytes(HttpRequest request, Consumer<List<ByteBuffer>> consumer) {
     CompletableFuture<HttpResponse<AsyncBody>> result = new CompletableFuture<>();
+    StandardHttpRequest standardHttpRequest = (StandardHttpRequest) request;
 
-    retryWithExponentialBackoff(result, () -> consumeBytesOnce(request, consumer), request.uri(), HttpResponse::code,
-        r -> r.body().cancel());
+    retryWithExponentialBackoff(result, () -> consumeBytesOnce(standardHttpRequest, consumer), request.uri(),
+        HttpResponse::code,
+        r -> r.body().cancel(), standardHttpRequest.getReadTimeout());
     return result;
   }
 
-  private CompletableFuture<HttpResponse<AsyncBody>> consumeBytesOnce(HttpRequest request,
+  private CompletableFuture<HttpResponse<AsyncBody>> consumeBytesOnce(StandardHttpRequest standardHttpRequest,
       Consumer<List<ByteBuffer>> consumer) {
-    StandardHttpRequest standardHttpRequest = (StandardHttpRequest) request;
     StandardHttpRequest.Builder copy = standardHttpRequest.newBuilder();
     for (Interceptor interceptor : builder.getInterceptors().values()) {
       interceptor.before(copy, standardHttpRequest, this);
@@ -140,11 +143,12 @@ public abstract class StandardHttpClient<C extends HttpClient, F extends HttpCli
     };
   }
 
-  public <V> CompletableFuture<V> orTimeout(CompletableFuture<V> future, RequestConfig requestConfig) {
-    int timeout = Optional.ofNullable(requestConfig).map(RequestConfig::getRequestTimeout).orElse(0);
-    if (timeout > 0) {
+  public <V> CompletableFuture<V> orTimeout(CompletableFuture<V> future, Duration timeout) {
+    if (timeout != null && !timeout.isNegative() && !timeout.isZero()) {
+      long millis = timeout.toMillis();
+      millis += (Math.min(millis, ADDITIONAL_REQEUST_TIMEOUT));
       Future<?> scheduled = Utils.schedule(Runnable::run, () -> future.completeExceptionally(new TimeoutException()),
-          timeout + ADDITIONAL_REQEUST_TIMEOUT, TimeUnit.MILLISECONDS);
+          millis, TimeUnit.MILLISECONDS);
       future.whenComplete((v, t) -> scheduled.cancel(true));
     }
     return future;
@@ -156,9 +160,9 @@ public abstract class StandardHttpClient<C extends HttpClient, F extends HttpCli
   protected <V> void retryWithExponentialBackoff(CompletableFuture<V> result,
       Supplier<CompletableFuture<V>> action, URI uri, Function<V, Integer> codeExtractor,
       java.util.function.Consumer<V> cancel, ExponentialBackoffIntervalCalculator retryIntervalCalculator,
-      RequestConfig requestConfig) {
+      Duration timeout) {
 
-    orTimeout(action.get(), requestConfig)
+    orTimeout(action.get(), timeout)
         .whenComplete((response, throwable) -> {
           if (retryIntervalCalculator.shouldRetry() && !result.isDone()) {
             long retryInterval = retryIntervalCalculator.nextReconnectInterval();
@@ -184,7 +188,7 @@ public abstract class StandardHttpClient<C extends HttpClient, F extends HttpCli
             if (retry) {
               Utils.schedule(Runnable::run,
                   () -> retryWithExponentialBackoff(result, action, uri, codeExtractor, cancel, retryIntervalCalculator,
-                      requestConfig),
+                      timeout),
                   retryInterval,
                   TimeUnit.MILLISECONDS);
               return;
@@ -196,10 +200,10 @@ public abstract class StandardHttpClient<C extends HttpClient, F extends HttpCli
 
   protected <V> void retryWithExponentialBackoff(CompletableFuture<V> result,
       Supplier<CompletableFuture<V>> action, URI uri, Function<V, Integer> codeExtractor,
-      java.util.function.Consumer<V> cancel) {
+      java.util.function.Consumer<V> cancel, Duration timeout) {
     RequestConfig requestConfig = getTag(RequestConfig.class);
     retryWithExponentialBackoff(result, action, uri, codeExtractor, cancel,
-        ExponentialBackoffIntervalCalculator.from(requestConfig), requestConfig);
+        ExponentialBackoffIntervalCalculator.from(requestConfig), timeout);
   }
 
   @Override
@@ -217,11 +221,12 @@ public abstract class StandardHttpClient<C extends HttpClient, F extends HttpCli
       Listener listener) {
 
     CompletableFuture<WebSocketResponse> intermediate = new CompletableFuture<>();
+    StandardHttpRequest request = standardWebSocketBuilder.asHttpRequest();
 
     retryWithExponentialBackoff(intermediate, () -> buildWebSocketOnce(standardWebSocketBuilder, listener),
-        standardWebSocketBuilder.asHttpRequest().uri(),
+        request.uri(),
         r -> Optional.of(r.webSocketUpgradeResponse).map(HttpResponse::code).orElse(null),
-        r -> Optional.ofNullable(r.webSocket).ifPresent(w -> w.sendClose(1000, null)));
+        r -> Optional.ofNullable(r.webSocket).ifPresent(w -> w.sendClose(1000, null)), request.getReadTimeout());
 
     CompletableFuture<WebSocket> result = new CompletableFuture<>();
 

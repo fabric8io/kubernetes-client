@@ -45,7 +45,6 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Supplier;
 
 import static java.net.HttpURLConnection.HTTP_GONE;
 
@@ -115,7 +114,7 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
 
   AbstractWatchManager(
       Watcher<T> watcher, BaseOperation<T, ?, ?> baseOperation, ListOptions listOptions, int reconnectLimit,
-      int reconnectInterval, Supplier<HttpClient> clientSupplier) throws MalformedURLException {
+      int reconnectInterval, HttpClient client) throws MalformedURLException {
     // prevent the callbacks from happening in the httpclient thread
     this.watcher = new SerialWatcher<>(watcher, new SerialExecutor(baseOperation.getOperationContext().getExecutor()));
     this.reconnectLimit = reconnectLimit;
@@ -130,7 +129,7 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
     this.baseOperation = baseOperation;
     this.requestUrl = baseOperation.getNamespacedUrl();
     this.listOptions = listOptions;
-    this.client = clientSupplier.get();
+    this.client = client;
 
     startWatch();
   }

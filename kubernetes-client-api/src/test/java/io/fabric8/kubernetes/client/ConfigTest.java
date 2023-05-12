@@ -594,7 +594,6 @@ public class ConfigTest {
     assertEquals(10000, emptyConfig.getRequestTimeout());
     assertEquals(600000, emptyConfig.getScaleTimeout());
     assertEquals(20000, emptyConfig.getLoggingInterval());
-    assertEquals(5000, emptyConfig.getWebsocketTimeout());
     assertEquals(30000, emptyConfig.getWebsocketPingInterval());
     assertEquals(120000, emptyConfig.getUploadRequestTimeout());
     assertTrue(emptyConfig.getImpersonateExtras().isEmpty());

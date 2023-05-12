@@ -25,6 +25,7 @@ import io.fabric8.kubernetes.api.model.autoscaling.v1.Scale;
 import io.fabric8.kubernetes.api.model.autoscaling.v1.ScaleBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.dsl.Scalable;
 import io.fabric8.kubernetes.client.dsl.base.PatchContext;
 import io.fabric8.kubernetes.client.dsl.base.PatchType;
 import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
@@ -284,21 +285,25 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
 
   @Override
   public T scale(int count) {
-    return scale(count, false);
-  }
-
-  @Override
-  public T scale(int count, boolean wait) {
     // TODO: this could be a simple patch, rather than an edit
     // we're also not giving the user the option here of doing this as a locked operation
     // kubectl does support specifying the resourceVersion
     scale(new ScaleBuilder(scale()).editOrNewMetadata().withResourceVersion(null).endMetadata().editOrNewSpec()
         .withReplicas(count)
         .endSpec().build());
-    if (wait) {
+    if (context.getTimeout() > 0) {
       waitUntilScaled(count);
     }
     return get();
+  }
+
+  @Override
+  public T scale(int count, boolean wait) {
+    Scalable<T> scalable = this;
+    if (wait) {
+      scalable = this.withTimeoutInMillis(getRequestConfig().getScaleTimeout());
+    }
+    return scalable.scale(count);
   }
 
   @Override
@@ -323,7 +328,7 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
         int specReplicas = Optional.ofNullable(scale.getSpec().getReplicas()).orElse(0);
         if (count == statusReplicas && count == specReplicas) {
           completion.complete(null);
-        } else {
+        } else if (LOGGER.isDebugEnabled()) {
           LOGGER.debug("Only {}/{} replicas scheduled for {}: {} in namespace: {} seconds so waiting...",
               specReplicas, count, getKind(), getName(), namespace);
         }
@@ -332,12 +337,12 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
       }
     }, 0, () -> 1, TimeUnit.SECONDS);
 
-    if (!Utils.waitUntilReady(completion, getRequestConfig().getScaleTimeout(), TimeUnit.MILLISECONDS)) {
+    if (!Utils.waitUntilReady(completion, this.context.getTimeout(), this.context.getTimeoutUnit())) {
       completion.complete(null);
       throw new KubernetesClientException(
           String.format("%s/%s pod(s) ready for %s: %s in namespace: %s  after waiting for %s seconds so giving up",
               replicasRef.get(), count, getType().getSimpleName(), name, namespace,
-              TimeUnit.MILLISECONDS.toSeconds(getRequestConfig().getScaleTimeout())));
+              this.context.getTimeoutUnit().toSeconds(this.context.getTimeout())));
     }
   }
 

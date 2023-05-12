@@ -68,14 +68,12 @@ class JettyHttpClientTest {
     final var originalBuilder = new JettyHttpClientBuilder(null);
     originalBuilder
         .connectTimeout(1337, TimeUnit.SECONDS)
-        .readTimeout(1337, TimeUnit.SECONDS)
         .tlsVersions(TlsVersion.SSL_3_0)
         .followAllRedirects();
     try (var firstClient = new JettyHttpClient(
         originalBuilder, httpClient, webSocketClient)) {
       // When
-      final var result = firstClient.newBuilder()
-          .readTimeout(313373, TimeUnit.SECONDS);
+      final var result = firstClient.newBuilder();
       // Then
       assertThat(result)
           .isNotNull()
@@ -90,11 +88,11 @@ class JettyHttpClientTest {
             .isEqualTo(method.invoke(originalBuilder))
             .isEqualTo(entry.getValue());
       }
-      var readTimeout = StandardHttpClientBuilder.class.getDeclaredField("readTimeout");
-      readTimeout.setAccessible(true);
-      assertThat(readTimeout.get(result)).isEqualTo(Duration.ofSeconds(313373));
-      assertThat(readTimeout.get(originalBuilder)).isEqualTo(Duration.ofSeconds(1337));
-      readTimeout.setAccessible(false);
+      var connectTimeout = StandardHttpClientBuilder.class.getDeclaredField("connectTimeout");
+      connectTimeout.setAccessible(true);
+      assertThat(connectTimeout.get(result)).isEqualTo(Duration.ofSeconds(1337));
+      assertThat(connectTimeout.get(originalBuilder)).isEqualTo(Duration.ofSeconds(1337));
+      connectTimeout.setAccessible(false);
     }
   }
 

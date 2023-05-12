@@ -401,7 +401,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   public CompletableFuture<L> submitList(ListOptions listOptions) {
     try {
       URL fetchListUrl = fetchListUrl(getNamespacedUrl(), defaultListOptions(listOptions, null));
-      HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder().url(fetchListUrl);
+      HttpRequest.Builder requestBuilder = withReadTimeout(httpClient.newHttpRequestBuilder()).url(fetchListUrl);
       Type refinedType = listType.equals(DefaultKubernetesResourceList.class)
           ? Serialization.jsonMapper().getTypeFactory().constructParametricType(listType, type)
           : listType;
@@ -629,7 +629,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
           watcherToggle,
           getRequestConfig().getWatchReconnectInterval(),
           getRequestConfig().getWatchReconnectLimit(),
-          getRequestConfig().getWebsocketTimeout());
+          getRequestConfig().getRequestTimeout());
     } catch (MalformedURLException e) {
       throw KubernetesClientException.launderThrowable(forOperationType(WATCH), e);
     }

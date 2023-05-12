@@ -61,10 +61,6 @@ public class VertxHttpClientBuilder<F extends HttpClient.Factory>
       options.setConnectTimeout((int) this.connectTimeout.toMillis());
     }
 
-    if (this.writeTimeout != null) {
-      options.setWriteIdleTimeout((int) this.writeTimeout.getSeconds());
-    }
-
     if (this.followRedirects) {
       options.setFollowRedirects(followRedirects);
     }

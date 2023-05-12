@@ -59,6 +59,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
 public class OperationSupport {
 
@@ -488,6 +489,10 @@ public class OperationSupport {
     return handleRaw(type, resourceUrl.toString(), "GET", null);
   }
 
+  HttpRequest.Builder withReadTimeout(HttpRequest.Builder builder) {
+    return builder.readTimeout(getRequestConfig().getRequestTimeout(), TimeUnit.MILLISECONDS);
+  }
+
   /**
    * Waits for the provided {@link CompletableFuture} to complete and returns the result in case of success.
    *
@@ -531,7 +536,7 @@ public class OperationSupport {
    * @throws IOException IOException
    */
   protected <T> T handleResponse(HttpRequest.Builder requestBuilder, Class<T> type) throws IOException {
-    return waitForResult(handleResponse(httpClient, requestBuilder, new TypeReference<T>() {
+    return waitForResult(handleResponse(httpClient, withReadTimeout(requestBuilder), new TypeReference<T>() {
       @Override
       public Type getType() {
         return type;

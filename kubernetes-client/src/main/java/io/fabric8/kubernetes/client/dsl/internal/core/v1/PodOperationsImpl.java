@@ -28,7 +28,6 @@ import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.LocalPortForward;
 import io.fabric8.kubernetes.client.PortForward;
-import io.fabric8.kubernetes.client.RequestConfigBuilder;
 import io.fabric8.kubernetes.client.dsl.BytesLimitTerminateTimeTailPrettyLoggable;
 import io.fabric8.kubernetes.client.dsl.CopyOrReadable;
 import io.fabric8.kubernetes.client.dsl.EphemeralContainersResource;
@@ -55,7 +54,6 @@ import io.fabric8.kubernetes.client.dsl.internal.PodOperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.PodOperationContext.StreamContext;
 import io.fabric8.kubernetes.client.dsl.internal.PortForwarderWebsocket;
 import io.fabric8.kubernetes.client.dsl.internal.uploadable.PodUpload;
-import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.WebSocket;
 import io.fabric8.kubernetes.client.lib.FilenameUtils;
@@ -202,7 +200,8 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
   @Override
   public PortForward portForward(int port, ReadableByteChannel in, WritableByteChannel out) {
     try {
-      return new PortForwarderWebsocket(httpClient, this.context.getExecutor()).forward(getResourceUrl(), port, in, out);
+      return new PortForwarderWebsocket(httpClient, this.context.getExecutor(), getRequestConfig().getRequestTimeout())
+          .forward(getResourceUrl(), port, in, out);
     } catch (Exception e) {
       throw KubernetesClientException.launderThrowable(e);
     }
@@ -210,27 +209,19 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
 
   @Override
   public LocalPortForward portForward(int port) {
-    try {
-      return new PortForwarderWebsocket(httpClient, this.context.getExecutor()).forward(getResourceUrl(), port);
-    } catch (Exception e) {
-      throw KubernetesClientException.launderThrowable(e);
-    }
+    return portForward(port, 0);
   }
 
   @Override
   public LocalPortForward portForward(int port, int localPort) {
-    try {
-      return new PortForwarderWebsocket(httpClient, this.context.getExecutor()).forward(getResourceUrl(), port, localPort);
-    } catch (Exception e) {
-      throw KubernetesClientException.launderThrowable(e);
-    }
+    return portForward(port, null, localPort);
   }
 
   @Override
   public LocalPortForward portForward(int port, InetAddress localInetAddress, int localPort) {
     try {
-      return new PortForwarderWebsocket(httpClient, this.context.getExecutor()).forward(getResourceUrl(), port,
-          localInetAddress, localPort);
+      return new PortForwarderWebsocket(httpClient, this.context.getExecutor(), getRequestConfig().getRequestTimeout())
+          .forward(getResourceUrl(), port, localInetAddress, localPort);
     } catch (MalformedURLException ex) {
       throw KubernetesClientException.launderThrowable(ex);
     }
@@ -376,21 +367,18 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
   }
 
   private ExecWebSocketListener setupConnectionToPod(URI uri) {
-    HttpClient clone = httpClient.newBuilder()
-        .tag(new RequestConfigBuilder(getRequestConfig()).withRequestTimeout(0).build())
-        .readTimeout(0, TimeUnit.MILLISECONDS)
-        .build();
     ExecWebSocketListener execWebSocketListener = new ExecWebSocketListener(getContext(), this.context.getExecutor());
-    CompletableFuture<WebSocket> startedFuture = clone.newWebSocketBuilder()
+    CompletableFuture<WebSocket> startedFuture = httpClient.newWebSocketBuilder()
         .subprotocol("v4.channel.k8s.io")
         .uri(uri)
+        .connectTimeout(getRequestConfig().getRequestTimeout(), TimeUnit.MILLISECONDS)
         .buildAsync(execWebSocketListener);
     startedFuture.whenComplete((w, t) -> {
       if (t != null) {
         execWebSocketListener.onError(w, t, true);
       }
     });
-    Utils.waitUntilReadyOrFail(startedFuture, getRequestConfig().getWebsocketTimeout(), TimeUnit.MILLISECONDS);
+    Utils.waitUntilReadyOrFail(startedFuture, getRequestConfig().getRequestTimeout(), TimeUnit.MILLISECONDS);
     return execWebSocketListener;
   }
 

@@ -215,12 +215,8 @@ class StandardHttpClientTest {
 
   @Test
   void testRequestTimeout() throws Exception {
-    client = client.newBuilder().tag(new RequestConfigBuilder()
-        .withRequestTimeout(1).build())
-        .build();
-
     CompletableFuture<HttpResponse<AsyncBody>> consumeFuture = client.consumeBytes(
-        client.newHttpRequestBuilder().uri("http://localhost").build(),
+        client.newHttpRequestBuilder().uri("http://localhost").readTimeout(1, TimeUnit.MILLISECONDS).build(),
         (value, asyncBody) -> {
         });
 

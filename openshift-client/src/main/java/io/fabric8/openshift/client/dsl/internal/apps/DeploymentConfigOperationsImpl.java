@@ -43,6 +43,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import static io.fabric8.openshift.client.OpenShiftAPIGroups.APPS;
 
@@ -70,19 +71,23 @@ public class DeploymentConfigOperationsImpl
   }
 
   @Override
-  public DeploymentConfig deployLatest() {
-    return deployLatest(false);
+  public DeploymentConfig deployLatest(boolean wait) {
+    DeploymentConfigOperationsImpl deployable = this;
+    if (wait) {
+      deployable = this.withTimeoutInMillis(getRequestConfig().getScaleTimeout());
+    }
+    return deployable.deployLatest();
   }
 
   @Override
-  public DeploymentConfig deployLatest(boolean wait) {
+  public DeploymentConfig deployLatest() {
     Long currentVersion = getItemOrRequireFromServer().getStatus().getLatestVersion();
     if (currentVersion == null) {
       currentVersion = 1L;
     }
     final Long latestVersion = currentVersion + 1;
     DeploymentConfig deployment = accept(d -> d.getStatus().setLatestVersion(latestVersion));
-    if (wait) {
+    if (context.getTimeout() > 0) {
       waitUntilScaled(deployment.getSpec().getReplicas());
       deployment = getItemOrRequireFromServer();
     }
@@ -229,4 +234,15 @@ public class DeploymentConfigOperationsImpl
   public BytesLimitTerminateTimeTailPrettyLoggable usingTimestamps() {
     return new DeploymentConfigOperationsImpl(rollingOperationContext.withTimestamps(true), context);
   }
+
+  @Override
+  public DeploymentConfigOperationsImpl withTimeout(long timeout, TimeUnit unit) {
+    return new DeploymentConfigOperationsImpl(rollingOperationContext, context.withTimeout(timeout, unit));
+  }
+
+  @Override
+  public DeploymentConfigOperationsImpl withTimeoutInMillis(long timeoutInMillis) {
+    return withTimeout(timeoutInMillis, TimeUnit.MILLISECONDS);
+  }
+
 }

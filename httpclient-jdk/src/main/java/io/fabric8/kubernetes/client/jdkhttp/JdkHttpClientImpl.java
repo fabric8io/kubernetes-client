@@ -60,7 +60,6 @@ import static io.fabric8.kubernetes.client.http.StandardHttpHeaders.CONTENT_TYPE
 /**
  * TODO:
  * - Mapping to a Reader is always UTF-8
- * - determine if write timeout should be implemented
  */
 public class JdkHttpClientImpl extends StandardHttpClient<JdkHttpClientImpl, JdkHttpClientFactory, JdkHttpClientBuilderImpl> {
 
@@ -259,7 +258,7 @@ public class JdkHttpClientImpl extends StandardHttpClient<JdkHttpClientImpl, Jdk
   java.net.http.HttpRequest.Builder requestBuilder(StandardHttpRequest request) {
     java.net.http.HttpRequest.Builder requestBuilder = java.net.http.HttpRequest.newBuilder();
 
-    Duration readTimeout = this.builder.getReadTimeout();
+    Duration readTimeout = request.getReadTimeout();
     if (readTimeout != null && !java.time.Duration.ZERO.equals(readTimeout)) {
       requestBuilder.timeout(readTimeout);
     }
@@ -306,15 +305,13 @@ public class JdkHttpClientImpl extends StandardHttpClient<JdkHttpClientImpl, Jdk
   @Override
   public CompletableFuture<WebSocketResponse> buildWebSocketDirect(
       StandardWebSocketBuilder standardWebSocketBuilder, Listener listener) {
-    final StandardHttpRequest request = standardWebSocketBuilder.asHttpRequest();
+    StandardHttpRequest request = standardWebSocketBuilder.asHttpRequest();
     java.net.http.WebSocket.Builder newBuilder = this.getHttpClient().newWebSocketBuilder();
     request.headers().forEach((k, v) -> v.forEach(s -> newBuilder.header(k, s)));
     if (standardWebSocketBuilder.getSubprotocol() != null) {
       newBuilder.subprotocols(standardWebSocketBuilder.getSubprotocol());
     }
-    // the Watch logic sets a websocketTimeout as the readTimeout
-    // TODO: this should probably be made clearer in the docs
-    Duration readTimeout = this.builder.getReadTimeout();
+    Duration readTimeout = request.getReadTimeout();
     if (readTimeout != null && !java.time.Duration.ZERO.equals(readTimeout)) {
       newBuilder.connectTimeout(readTimeout);
     }

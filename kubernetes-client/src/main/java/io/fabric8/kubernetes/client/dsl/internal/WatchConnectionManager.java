@@ -20,7 +20,6 @@ import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.ListOptions;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.RequestConfigBuilder;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.HttpResponse;
@@ -47,10 +46,9 @@ import static java.net.HttpURLConnection.HTTP_UNAVAILABLE;
 public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesResourceList<T>>
     extends AbstractWatchManager<T> {
 
-  public static final int BACKOFF_MAX_EXPONENT = 5;
-
   private static final Logger logger = LoggerFactory.getLogger(WatchConnectionManager.class);
 
+  private final long connectTimeoutMillis;
   protected WatcherWebSocketListener<T> listener;
   private volatile CompletableFuture<WebSocket> websocketFuture;
 
@@ -72,10 +70,8 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
   public WatchConnectionManager(final HttpClient client, final BaseOperation<T, L, ?> baseOperation,
       final ListOptions listOptions, final Watcher<T> watcher, final int reconnectInterval, final int reconnectLimit,
       long websocketTimeout) throws MalformedURLException {
-    super(watcher, baseOperation, listOptions, reconnectLimit, reconnectInterval, () -> client.newBuilder()
-        .tag(new RequestConfigBuilder(baseOperation.getRequestConfig()).withRequestTimeout(0).build())
-        .readTimeout(websocketTimeout, TimeUnit.MILLISECONDS)
-        .build());
+    super(watcher, baseOperation, listOptions, reconnectLimit, reconnectInterval, client);
+    this.connectTimeoutMillis = websocketTimeout;
   }
 
   @Override
@@ -99,7 +95,7 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
     this.listener = new WatcherWebSocketListener<>(this, state);
     Builder builder = client.newWebSocketBuilder();
     headers.forEach(builder::header);
-    builder.uri(URI.create(url.toString()));
+    builder.uri(URI.create(url.toString())).connectTimeout(connectTimeoutMillis, TimeUnit.MILLISECONDS);
 
     this.websocketFuture = builder.buildAsync(this.listener).handle((w, t) -> {
       if (t != null) {

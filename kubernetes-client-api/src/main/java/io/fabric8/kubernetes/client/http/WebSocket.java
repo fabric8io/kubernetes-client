@@ -19,6 +19,7 @@ package io.fabric8.kubernetes.client.http;
 import java.net.URI;
 import java.nio.ByteBuffer;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 
 public interface WebSocket {
 
@@ -100,6 +101,8 @@ public interface WebSocket {
 
     @Override
     Builder uri(URI uri);
+
+    Builder connectTimeout(long timeout, TimeUnit timeUnit);
 
   }
 

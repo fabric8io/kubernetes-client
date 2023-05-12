@@ -251,8 +251,7 @@ class AbstractWatchManagerTest {
 
     public WatchManager(Watcher<T> watcher, ListOptions listOptions, int reconnectLimit, int reconnectInterval)
         throws MalformedURLException {
-      super(watcher, mockOperation(), listOptions, reconnectLimit, reconnectInterval,
-          () -> null);
+      super(watcher, mockOperation(), listOptions, reconnectLimit, reconnectInterval, null);
     }
 
     @Override

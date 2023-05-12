@@ -24,6 +24,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 public interface HttpRequest extends HttpHeaders {
@@ -97,6 +98,18 @@ public interface HttpRequest extends HttpHeaders {
 
     Builder expectContinue();
 
+    /**
+     * Sets the read timeout for normal http requests.
+     */
+    Builder readTimeout(long readTimeout, TimeUnit unit);
+
+    /**
+     * Sets the request to be used for streaming.
+     *
+     * @return this Builder instance.
+     */
+    Builder forStreaming();
+
   }
 
   static String formURLEncode(String value) {
@@ -109,7 +122,7 @@ public interface HttpRequest extends HttpHeaders {
 
   /**
    * The unique id for this HTTP request, used for logging and debugging
-   * 
+   *
    * @return a UUID.
    */
   UUID id();
