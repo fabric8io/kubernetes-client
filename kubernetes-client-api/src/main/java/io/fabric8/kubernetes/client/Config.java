@@ -215,7 +215,7 @@ public class Config {
   private String proxyPassword;
   private String[] noProxy;
   private String userAgent = "fabric8-kubernetes-client/" + Version.clientVersion();
-  private TlsVersion[] tlsVersions = new TlsVersion[] { TlsVersion.TLS_1_2 };
+  private TlsVersion[] tlsVersions = new TlsVersion[] { TlsVersion.TLS_1_3, TlsVersion.TLS_1_2 };
 
   private Map<Integer, String> errorMessages = new HashMap<>();
 

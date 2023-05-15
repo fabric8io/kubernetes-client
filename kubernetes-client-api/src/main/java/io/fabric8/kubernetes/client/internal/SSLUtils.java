@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.client.internal;
 
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.http.TlsVersion;
 import io.fabric8.kubernetes.client.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -83,11 +84,30 @@ public final class SSLUtils {
   }
 
   public static SSLContext sslContext(KeyManager[] keyManagers, TrustManager[] trustManagers) {
+    SSLContext sslContext = null;
+    NoSuchAlgorithmException noSuch = null;
+    // v1.3 is not supported on all vms, and of course there may be later versions added.
+    // so try to find one starting with the latest
+    for (TlsVersion version : TlsVersion.values()) {
+      try {
+        sslContext = SSLContext.getInstance(version.javaName());
+        break;
+      } catch (NoSuchAlgorithmException e) {
+        if (noSuch == null) {
+          noSuch = e;
+        }
+        continue;
+      }
+    }
+
+    if (sslContext == null) {
+      throw KubernetesClientException.launderThrowable(noSuch);
+    }
+
     try {
-      SSLContext sslContext = SSLContext.getInstance("TLSv1.2");
       sslContext.init(keyManagers, trustManagers, new SecureRandom());
       return sslContext;
-    } catch (KeyManagementException | NoSuchAlgorithmException e) {
+    } catch (KeyManagementException e) {
       throw KubernetesClientException.launderThrowable(e);
     }
   }

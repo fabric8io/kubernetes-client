@@ -29,6 +29,8 @@ import io.vertx.core.net.ProxyType;
 import io.vertx.core.spi.tls.SslContextFactory;
 import io.vertx.ext.web.client.WebClientOptions;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
@@ -73,8 +75,12 @@ public class VertxHttpClientBuilder<F extends HttpClient.Factory>
       options.setProxyOptions(proxyOptions);
     }
 
+    final String[] protocols;
     if (tlsVersions != null && tlsVersions.length > 0) {
-      Stream.of(tlsVersions).map(TlsVersion::javaName).forEach(options::addEnabledSecureTransportProtocol);
+      protocols = Stream.of(tlsVersions).map(TlsVersion::javaName).toArray(String[]::new);
+      options.setEnabledSecureTransportProtocols(new HashSet<>(Arrays.asList(protocols)));
+    } else {
+      protocols = null;
     }
 
     if (this.preferHttp11) {
@@ -98,7 +104,7 @@ public class VertxHttpClientBuilder<F extends HttpClient.Factory>
               IdentityCipherSuiteFilter.INSTANCE,
               ApplicationProtocolConfig.DISABLED,
               io.netty.handler.ssl.ClientAuth.NONE,
-              null,
+              protocols,
               false);
         }
       });
