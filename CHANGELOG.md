@@ -4,6 +4,7 @@
 
 #### Bugs
 * Fix #5125: TLS 1.3 only should be supported
+* Fix #5126: fallback to changeit only if null/empty does not work
 * Fix #5145: [java-generator] handle `additionalProperties: true` emitting a field of type `AnyType`
 * Fix #5164: [java-generator] handle more special characters in field names
 
@@ -2006,4 +2007,3 @@ like the delete of a custom resource.
    * Fixed issue of SecurityContextConstraints not working - https://github.com/fabric8io/kubernetes-client/pull/982
      Note :- This got fixed by fixing model - https://github.com/fabric8io/kubernetes-model/pull/274
      Dependencies Upgrade
-
