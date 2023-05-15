@@ -599,7 +599,7 @@ public class ConfigTest {
     assertTrue(emptyConfig.getImpersonateExtras().isEmpty());
     assertEquals(0, emptyConfig.getImpersonateGroups().length);
     assertFalse(emptyConfig.isHttp2Disable());
-    assertEquals(1, emptyConfig.getTlsVersions().length);
+    assertEquals(2, emptyConfig.getTlsVersions().length);
     assertTrue(emptyConfig.getErrorMessages().isEmpty());
     assertNotNull(emptyConfig.getUserAgent());
   }

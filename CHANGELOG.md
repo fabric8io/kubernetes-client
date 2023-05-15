@@ -3,7 +3,8 @@
 ### 6.7-SNAPSHOT
 
 #### Bugs
-Fix #5145: [java-generator] handle `additionalProperties: true` emitting a field of type `AnyType`
+* Fix #5125: TLS 1.3 only should be supported
+* Fix #5145: [java-generator] handle `additionalProperties: true` emitting a field of type `AnyType`
 
 #### Improvements
 
@@ -20,6 +21,8 @@ Fix #5145: [java-generator] handle `additionalProperties: true` emitting a field
 * Fix #4662: removed deprecated classes/methods:  ReflectUtils, ReplaceValueStream, ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable, ResourceCompare, and Serialization methods taking parameters
 * Fix #4662: deprecated serialization static logic:  several IOHelpers methods, Serialization methods, such as access to the static jsonMapper.  Please use KubernetesSerialization methods instead.
 * Fix #4662: deprecated Helper.getAnnotationValue, use HasMetadata methods instead.
+* Fix #5125: support for TLSv1.3 is now enabled by default
+* Fix #5125: usage of TlsVersion.TLS_1_1, TLS_1_0, and SSL_3_0 have been deprecated
 
 ### 6.6.2 (2023-05-15)
 
