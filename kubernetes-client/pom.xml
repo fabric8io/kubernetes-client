@@ -25,7 +25,7 @@
 
   <artifactId>kubernetes-client</artifactId>
   <packaging>jar</packaging>
-  <version>5.12.1-teamcity-patched</version>
+  <version>5.12-SNAPSHOT</version>
   <name>Fabric8 :: Kubernetes :: Java Client</name>
 
   <properties>
@@ -51,6 +51,7 @@
     <useIncrementalCompilation>false</useIncrementalCompilation>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
+    <kubernetes-client.version>5.12.4</kubernetes-client.version>
     <!-- Core versions -->
     <sundrio.version>0.50.3</sundrio.version>
     <okhttp.version>3.12.12</okhttp.version>
@@ -85,7 +86,7 @@
     <slf4j.version>1.7.33</slf4j.version>
     <mockito.version>4.2.0</mockito.version>
     <lombok.version>1.18.22</lombok.version>
-    <snakeyaml.version>1.28</snakeyaml.version>
+    <snakeyaml.version>1.33</snakeyaml.version>
     <bouncycastle.version>1.70</bouncycastle.version>
     <commons-compress.version>1.21</commons-compress.version>
     <scr.annotations.version>1.12.0</scr.annotations.version>
@@ -152,97 +153,97 @@
     <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>kubernetes-model-core</artifactId>
-      <version>5.12.1</version>
+      <version>${kubernetes-client.version}</version>
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>kubernetes-model-rbac</artifactId>
-      <version>5.12.1</version>
+      <version>${kubernetes-client.version}</version>
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>kubernetes-model-admissionregistration</artifactId>
-      <version>5.12.1</version>
+      <version>${kubernetes-client.version}</version>
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>kubernetes-model-apps</artifactId>
-      <version>5.12.1</version>
+      <version>${kubernetes-client.version}</version>
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>kubernetes-model-autoscaling</artifactId>
-      <version>5.12.1</version>
+      <version>${kubernetes-client.version}</version>
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>kubernetes-model-apiextensions</artifactId>
-      <version>5.12.1</version>
+      <version>${kubernetes-client.version}</version>
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>kubernetes-model-batch</artifactId>
-      <version>5.12.1</version>
+      <version>${kubernetes-client.version}</version>
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>kubernetes-model-certificates</artifactId>
-      <version>5.12.1</version>
+      <version>${kubernetes-client.version}</version>
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>kubernetes-model-coordination</artifactId>
-      <version>5.12.1</version>
+      <version>${kubernetes-client.version}</version>
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>kubernetes-model-discovery</artifactId>
-      <version>5.12.1</version>
+      <version>${kubernetes-client.version}</version>
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>kubernetes-model-events</artifactId>
-      <version>5.12.1</version>
+      <version>${kubernetes-client.version}</version>
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>kubernetes-model-extensions</artifactId>
-      <version>5.12.1</version>
+      <version>${kubernetes-client.version}</version>
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>kubernetes-model-flowcontrol</artifactId>
-      <version>5.12.1</version>
+      <version>${kubernetes-client.version}</version>
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>kubernetes-model-networking</artifactId>
-      <version>5.12.1</version>
+      <version>${kubernetes-client.version}</version>
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>kubernetes-model-metrics</artifactId>
-      <version>5.12.1</version>
+      <version>${kubernetes-client.version}</version>
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>kubernetes-model-policy</artifactId>
-      <version>5.12.1</version>
+      <version>${kubernetes-client.version}</version>
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>kubernetes-model-scheduling</artifactId>
-      <version>5.12.1</version>
+      <version>${kubernetes-client.version}</version>
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>kubernetes-model-storageclass</artifactId>
-      <version>5.12.1</version>
+      <version>${kubernetes-client.version}</version>
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>kubernetes-model-node</artifactId>
-      <version>5.12.1</version>
+      <version>${kubernetes-client.version}</version>
     </dependency>
     <dependency>
       <groupId>com.squareup.okhttp3</groupId>
