@@ -79,7 +79,7 @@ public class StandardWebSocketBuilder implements WebSocket.Builder {
 
   @Override
   public Builder connectTimeout(long timeout, TimeUnit timeUnit) {
-    this.builder.readTimeout(timeout, timeUnit);
+    this.builder.timeout(timeout, timeUnit);
     return this;
   }
 

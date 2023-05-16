@@ -69,8 +69,8 @@ public class VertxHttpClient<F extends io.fabric8.kubernetes.client.http.HttpCli
 
     final StandardHttpRequest request = standardWebSocketBuilder.asHttpRequest();
 
-    if (request.getReadTimeout() != null) {
-      options.setTimeout(request.getReadTimeout().toMillis());
+    if (request.getTimeout() != null) {
+      options.setTimeout(request.getTimeout().toMillis());
     }
 
     request.headers().entrySet().stream()
@@ -107,8 +107,8 @@ public class VertxHttpClient<F extends io.fabric8.kubernetes.client.http.HttpCli
     options.setAbsoluteURI(request.uri().toString());
     options.setMethod(HttpMethod.valueOf(request.method()));
 
-    if (request.getReadTimeout() != null) {
-      options.setTimeout(request.getReadTimeout().toMillis());
+    if (request.getTimeout() != null) {
+      options.setTimeout(request.getTimeout().toMillis());
     }
 
     // Proxy authorization is handled manually since the proxyAuthorization value is the actual header

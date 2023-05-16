@@ -86,7 +86,7 @@ public abstract class StandardHttpClient<C extends HttpClient, F extends HttpCli
 
     retryWithExponentialBackoff(result, () -> consumeBytesOnce(standardHttpRequest, consumer), request.uri(),
         HttpResponse::code,
-        r -> r.body().cancel(), standardHttpRequest.getReadTimeout());
+        r -> r.body().cancel(), standardHttpRequest.getTimeout());
     return result;
   }
 
@@ -226,7 +226,7 @@ public abstract class StandardHttpClient<C extends HttpClient, F extends HttpCli
     retryWithExponentialBackoff(intermediate, () -> buildWebSocketOnce(standardWebSocketBuilder, listener),
         request.uri(),
         r -> Optional.of(r.webSocketUpgradeResponse).map(HttpResponse::code).orElse(null),
-        r -> Optional.ofNullable(r.webSocket).ifPresent(w -> w.sendClose(1000, null)), request.getReadTimeout());
+        r -> Optional.ofNullable(r.webSocket).ifPresent(w -> w.sendClose(1000, null)), request.getTimeout());
 
     CompletableFuture<WebSocket> result = new CompletableFuture<>();
 

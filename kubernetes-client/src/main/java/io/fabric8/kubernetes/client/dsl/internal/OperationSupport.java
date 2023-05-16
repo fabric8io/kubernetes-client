@@ -489,8 +489,8 @@ public class OperationSupport {
     return handleRaw(type, resourceUrl.toString(), "GET", null);
   }
 
-  HttpRequest.Builder withReadTimeout(HttpRequest.Builder builder) {
-    return builder.readTimeout(getRequestConfig().getRequestTimeout(), TimeUnit.MILLISECONDS);
+  HttpRequest.Builder withRequestTimeout(HttpRequest.Builder builder) {
+    return builder.timeout(getRequestConfig().getRequestTimeout(), TimeUnit.MILLISECONDS);
   }
 
   /**
@@ -536,7 +536,7 @@ public class OperationSupport {
    * @throws IOException IOException
    */
   protected <T> T handleResponse(HttpRequest.Builder requestBuilder, Class<T> type) throws IOException {
-    return waitForResult(handleResponse(httpClient, withReadTimeout(requestBuilder), new TypeReference<T>() {
+    return waitForResult(handleResponse(httpClient, withRequestTimeout(requestBuilder), new TypeReference<T>() {
       @Override
       public Type getType() {
         return type;
@@ -765,7 +765,7 @@ public class OperationSupport {
       } else if (payload != null) {
         body = Serialization.asJson(payload);
       }
-      HttpRequest request = httpClient.newHttpRequestBuilder().uri(uri).method(method, JSON, body).build();
+      HttpRequest request = withRequestTimeout(httpClient.newHttpRequestBuilder().uri(uri).method(method, JSON, body)).build();
       HttpResponse<R1> response = waitForResult(httpClient.sendAsync(request, result));
       assertResponseCode(request, response);
       return response.body();
