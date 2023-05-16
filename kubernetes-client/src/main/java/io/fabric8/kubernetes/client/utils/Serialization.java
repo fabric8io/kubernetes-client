@@ -210,7 +210,9 @@ public class Serialization {
 
       final T result;
       if (intch != '{') {
-        final Yaml yaml = new Yaml(new SafeConstructor(new LoaderOptions()), new Representer(), new DumperOptions(), new CustomYamlTagResolver());
+        DumperOptions dumperOptions = new DumperOptions();
+        LoaderOptions loaderOptions = new LoaderOptions();
+        final Yaml yaml = new Yaml(new SafeConstructor(loaderOptions), new Representer(dumperOptions), dumperOptions, loaderOptions, new CustomYamlTagResolver());
         final Map<String, Object> obj = yaml.load(bis);
         result = mapper.convertValue(obj, type);
       } else {
