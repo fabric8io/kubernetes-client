@@ -258,9 +258,9 @@ public class JdkHttpClientImpl extends StandardHttpClient<JdkHttpClientImpl, Jdk
   java.net.http.HttpRequest.Builder requestBuilder(StandardHttpRequest request) {
     java.net.http.HttpRequest.Builder requestBuilder = java.net.http.HttpRequest.newBuilder();
 
-    Duration readTimeout = request.getReadTimeout();
-    if (readTimeout != null && !java.time.Duration.ZERO.equals(readTimeout)) {
-      requestBuilder.timeout(readTimeout);
+    Duration timeout = request.getTimeout();
+    if (timeout != null && !java.time.Duration.ZERO.equals(timeout)) {
+      requestBuilder.timeout(timeout);
     }
 
     request.headers().entrySet().stream()
@@ -311,9 +311,9 @@ public class JdkHttpClientImpl extends StandardHttpClient<JdkHttpClientImpl, Jdk
     if (standardWebSocketBuilder.getSubprotocol() != null) {
       newBuilder.subprotocols(standardWebSocketBuilder.getSubprotocol());
     }
-    Duration readTimeout = request.getReadTimeout();
-    if (readTimeout != null && !java.time.Duration.ZERO.equals(readTimeout)) {
-      newBuilder.connectTimeout(readTimeout);
+    Duration timeout = request.getTimeout();
+    if (timeout != null && !java.time.Duration.ZERO.equals(timeout)) {
+      newBuilder.connectTimeout(timeout);
     }
 
     AtomicLong queueSize = new AtomicLong();

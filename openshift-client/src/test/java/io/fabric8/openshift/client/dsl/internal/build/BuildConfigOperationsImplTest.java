@@ -59,7 +59,7 @@ class BuildConfigOperationsImplTest {
     when(httpClient.newHttpRequestBuilder()
         .post(any(), any(), anyLong())
         .header(any(), any())
-        .readTimeout(anyLong(), any())
+        .timeout(anyLong(), any())
         .uri(any(String.class))
         .build()).thenReturn(response);
 
@@ -71,7 +71,7 @@ class BuildConfigOperationsImplTest {
 
   @Test
   void requestTimeoutDefaultsToZero() {
-    assertThat(new BuildConfigOperationsImpl(client).getOperationContext().getRequestConfig().getRequestTimeout())
+    assertThat(new BuildConfigOperationsImpl(client).getOperationContext().getTimeout())
         .isZero();
   }
 
@@ -79,7 +79,7 @@ class BuildConfigOperationsImplTest {
   void withTimeoutOverridesRequestTimeout() {
     final BuildConfigOperationsImpl buildConfigOperations = new BuildConfigOperationsImpl(client)
         .withTimeout(1337, TimeUnit.MILLISECONDS);
-    assertThat(buildConfigOperations.getOperationContext().getRequestConfig().getRequestTimeout())
+    assertThat(buildConfigOperations.getOperationContext().getTimeout())
         .isEqualTo(1337);
   }
 
@@ -87,7 +87,7 @@ class BuildConfigOperationsImplTest {
   void withTimeoutInMillisOverridesRequestTimeout() {
     final BuildConfigOperationsImpl buildConfigOperations = new BuildConfigOperationsImpl(client)
         .withTimeoutInMillis(1337);
-    assertThat(buildConfigOperations.getOperationContext().getRequestConfig().getRequestTimeout())
+    assertThat(buildConfigOperations.getOperationContext().getTimeout())
         .isEqualTo(1337);
   }
 

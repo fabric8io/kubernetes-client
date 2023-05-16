@@ -99,9 +99,11 @@ public interface HttpRequest extends HttpHeaders {
     Builder expectContinue();
 
     /**
-     * Sets the read timeout for normal http requests.
+     * Sets the full request cycle timeout.
+     * <br>
+     * Defaults to 0, meaning no timeout
      */
-    Builder readTimeout(long readTimeout, TimeUnit unit);
+    Builder timeout(long timeout, TimeUnit unit);
 
     /**
      * Sets the request to be used for streaming.

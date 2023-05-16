@@ -20,7 +20,6 @@ import io.fabric8.kubernetes.api.model.Event;
 import io.fabric8.kubernetes.api.model.EventList;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.RequestConfigBuilder;
 import io.fabric8.kubernetes.client.dsl.Triggerable;
 import io.fabric8.kubernetes.client.dsl.Typeable;
 import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperation;
@@ -80,8 +79,7 @@ public class BuildConfigOperationsImpl
   private final String asFile;
 
   public BuildConfigOperationsImpl(Client client) {
-    this(new BuildConfigOperationContext(), HasMetadataOperationsImpl.defaultContext(client).withRequestConfig(
-        new RequestConfigBuilder(client.getConfiguration().getRequestConfig()).withRequestTimeout(0).build()));
+    this(new BuildConfigOperationContext(), HasMetadataOperationsImpl.defaultContext(client));
   }
 
   public BuildConfigOperationsImpl(BuildConfigOperationContext context, OperationContext superContext) {
@@ -241,10 +239,7 @@ public class BuildConfigOperationsImpl
   @Override
   public BuildConfigOperationsImpl withTimeout(long timeout, TimeUnit unit) {
     return new BuildConfigOperationsImpl(getContext(), context
-        .withTimeout(timeout, unit)
-        .withRequestConfig(new RequestConfigBuilder(context.getRequestConfig())
-            .withRequestTimeout((int) unit.toMillis(timeout))
-            .build()));
+        .withTimeout(timeout, unit));
   }
 
   @Override
@@ -262,7 +257,7 @@ public class BuildConfigOperationsImpl
       HttpRequest.Builder requestBuilder = this.httpClient.newHttpRequestBuilder()
           .post("application/octet-stream", inputStream, contentLength)
           .expectContinue()
-          .readTimeout(getOperationContext().getTimeout(), getOperationContext().getTimeoutUnit())
+          .timeout(getOperationContext().getTimeout(), getOperationContext().getTimeoutUnit())
           .uri(getQueryParameters());
       return waitForResult(handleResponse(this.httpClient, requestBuilder, new TypeReference<Build>() {
         @Override

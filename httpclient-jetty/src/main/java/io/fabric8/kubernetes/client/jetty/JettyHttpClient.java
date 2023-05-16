@@ -99,8 +99,8 @@ public class JettyHttpClient extends StandardHttpClient<JettyHttpClient, JettyHt
     final var request = requestBuilder.build();
 
     var jettyRequest = jetty.newRequest(request.uri()).method(request.method());
-    if (originalRequest.getReadTimeout() != null) {
-      jettyRequest.timeout(originalRequest.getReadTimeout().toMillis(), TimeUnit.MILLISECONDS);
+    if (originalRequest.getTimeout() != null) {
+      jettyRequest.timeout(originalRequest.getTimeout().toMillis(), TimeUnit.MILLISECONDS);
     }
     jettyRequest.headers(m -> request.headers().forEach((k, l) -> l.forEach(v -> m.add(k, v))));
 
@@ -143,8 +143,8 @@ public class JettyHttpClient extends StandardHttpClient<JettyHttpClient, JettyHt
         cur.setSubProtocols(standardWebSocketBuilder.getSubprotocol());
       }
       cur.setHeaders(request.headers());
-      if (request.getReadTimeout() != null) {
-        cur.setTimeout(request.getReadTimeout().toMillis(), TimeUnit.MILLISECONDS);
+      if (request.getTimeout() != null) {
+        cur.setTimeout(request.getTimeout().toMillis(), TimeUnit.MILLISECONDS);
       }
       // Extra-future required because we can't Map the UpgradeException to a WebSocketHandshakeException easily
       final CompletableFuture<WebSocketResponse> future = new CompletableFuture<>();

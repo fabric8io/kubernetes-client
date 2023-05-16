@@ -296,9 +296,9 @@ public class OkHttpClientImpl extends StandardHttpClient<OkHttpClientImpl, OkHtt
     CompletableFuture<HttpResponse<AsyncBody>> future = new CompletableFuture<>();
 
     okhttp3.OkHttpClient.Builder clientBuilder = null;
-    if (request.getReadTimeout() != null) {
+    if (request.getTimeout() != null) {
       clientBuilder = httpClient.newBuilder();
-      clientBuilder.readTimeout(request.getReadTimeout());
+      clientBuilder.callTimeout(request.getTimeout());
     }
     if (request.isForStreaming()) {
       if (clientBuilder == null) {

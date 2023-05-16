@@ -401,7 +401,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   public CompletableFuture<L> submitList(ListOptions listOptions) {
     try {
       URL fetchListUrl = fetchListUrl(getNamespacedUrl(), defaultListOptions(listOptions, null));
-      HttpRequest.Builder requestBuilder = withReadTimeout(httpClient.newHttpRequestBuilder()).url(fetchListUrl);
+      HttpRequest.Builder requestBuilder = withRequestTimeout(httpClient.newHttpRequestBuilder()).url(fetchListUrl);
       Type refinedType = listType.equals(DefaultKubernetesResourceList.class)
           ? Serialization.jsonMapper().getTypeFactory().constructParametricType(listType, type)
           : listType;

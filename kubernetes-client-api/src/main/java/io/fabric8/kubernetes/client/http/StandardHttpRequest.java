@@ -95,7 +95,7 @@ public class StandardHttpRequest extends StandardHttpHeaders implements HttpRequ
   private final String bodyString;
   private final BodyContent body;
   private final boolean expectContinue;
-  private final Duration readTimeout;
+  private final Duration timeout;
   private final boolean forStreaming;
 
   /**
@@ -111,7 +111,7 @@ public class StandardHttpRequest extends StandardHttpHeaders implements HttpRequ
   }
 
   StandardHttpRequest(Map<String, List<String>> headers, URI uri, String method, String bodyString,
-      BodyContent body, boolean expectContinue, String contentType, Duration readTimeout, boolean forStreaming) {
+      BodyContent body, boolean expectContinue, String contentType, Duration timeout, boolean forStreaming) {
     super(headers);
     this.id = UUID.randomUUID();
     this.uri = uri;
@@ -120,7 +120,7 @@ public class StandardHttpRequest extends StandardHttpHeaders implements HttpRequ
     this.body = body;
     this.expectContinue = expectContinue;
     this.contentType = contentType;
-    this.readTimeout = readTimeout;
+    this.timeout = timeout;
     this.forStreaming = forStreaming;
   }
 
@@ -167,8 +167,8 @@ public class StandardHttpRequest extends StandardHttpHeaders implements HttpRequ
     return forStreaming;
   }
 
-  public Duration getReadTimeout() {
-    return readTimeout;
+  public Duration getTimeout() {
+    return timeout;
   }
 
   public static final class Builder extends AbstractBasicBuilder<Builder> implements HttpRequest.Builder {
@@ -178,7 +178,7 @@ public class StandardHttpRequest extends StandardHttpHeaders implements HttpRequ
     private String bodyAsString;
     private boolean expectContinue;
     private String contentType;
-    protected Duration readTimeout;
+    protected Duration timeout;
     protected boolean forStreaming;
 
     public Builder() {
@@ -192,19 +192,19 @@ public class StandardHttpRequest extends StandardHttpHeaders implements HttpRequ
       body = original.body;
       expectContinue = original.expectContinue;
       contentType = original.contentType;
-      readTimeout = original.readTimeout;
+      timeout = original.timeout;
       forStreaming = original.forStreaming;
     }
 
     @Override
     public StandardHttpRequest build() {
       return new StandardHttpRequest(getHeaders(), Objects.requireNonNull(getUri()), method, bodyAsString, body, expectContinue,
-          contentType, readTimeout, forStreaming);
+          contentType, timeout, forStreaming);
     }
 
     @Override
-    public HttpRequest.Builder readTimeout(long readTimeout, TimeUnit unit) {
-      this.readTimeout = Duration.ofNanos(unit.toNanos(readTimeout));
+    public HttpRequest.Builder timeout(long timeout, TimeUnit unit) {
+      this.timeout = Duration.ofNanos(unit.toNanos(timeout));
       return this;
     }
 
