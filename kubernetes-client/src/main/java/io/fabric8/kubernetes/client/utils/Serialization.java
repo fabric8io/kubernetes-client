@@ -42,6 +42,7 @@ import java.util.stream.Collectors;
 
 import io.fabric8.kubernetes.client.utils.serialization.UnmatchedFieldTypeModule;
 import org.yaml.snakeyaml.DumperOptions;
+import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.SafeConstructor;
 import org.yaml.snakeyaml.nodes.Tag;
@@ -209,7 +210,7 @@ public class Serialization {
 
       final T result;
       if (intch != '{') {
-        final Yaml yaml = new Yaml(new SafeConstructor(), new Representer(), new DumperOptions(), new CustomYamlTagResolver());
+        final Yaml yaml = new Yaml(new SafeConstructor(new LoaderOptions()), new Representer(), new DumperOptions(), new CustomYamlTagResolver());
         final Map<String, Object> obj = yaml.load(bis);
         result = mapper.convertValue(obj, type);
       } else {
