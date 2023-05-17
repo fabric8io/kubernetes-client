@@ -76,14 +76,14 @@ public class BufferUtil {
 
   /**
    * Very rudimentary method to check if the provided ByteBuffer contains text.
-   * 
+   *
    * @return true if the buffer contains text, false otherwise.
    */
   public static boolean isPlainText(ByteBuffer originalBuffer) {
     if (originalBuffer == null) {
       return false;
     }
-    final ByteBuffer buffer = copy(originalBuffer);
+    final ByteBuffer buffer = originalBuffer.asReadOnlyBuffer();
     final CharsetDecoder decoder = StandardCharsets.UTF_8.newDecoder();
     try {
       decoder.decode(buffer);
