@@ -3,6 +3,7 @@
 ### 6.7-SNAPSHOT
 
 #### Bugs
+* Fix #5117: corrected the trace httpclient logging of large response bodies
 * Fix #5125: TLS 1.3 only should be supported
 * Fix #5126: fallback to changeit only if null/empty does not work
 * Fix #5145: [java-generator] handle `additionalProperties: true` emitting a field of type `AnyType`

@@ -74,38 +74,33 @@ public class HttpLoggingInterceptor implements Interceptor {
     private final HttpLogger httpLogger;
     private final HttpRequest originalRequest;
     private final AsyncBody.Consumer<List<ByteBuffer>> originalConsumer;
-    private final AtomicBoolean logResponseBody;
     private final AtomicLong responseBodySize;
     private final Queue<ByteBuffer> responseBody;
+    private final AtomicBoolean bodyTruncated = new AtomicBoolean();
 
     public DeferredLoggingConsumer(HttpLogger httpLogger, HttpRequest originalRequest,
         AsyncBody.Consumer<List<ByteBuffer>> originalConsumer) {
       this.httpLogger = httpLogger;
       this.originalRequest = originalRequest;
       this.originalConsumer = originalConsumer;
-      logResponseBody = new AtomicBoolean(true);
       responseBodySize = new AtomicLong(0);
       responseBody = new ConcurrentLinkedQueue<>();
     }
 
     @Override
     public void consume(List<ByteBuffer> value, AsyncBody asyncBody) throws Exception {
-      if (!logResponseBody.get() || responseBodySize.get() > MAX_BODY_SIZE) {
-        return;
+      try {
+        value.stream().forEach(bb -> {
+          if (responseBodySize.addAndGet(bb.remaining()) < MAX_BODY_SIZE && !bodyTruncated.get()
+              && BufferUtil.isPlainText(bb)) {
+            responseBody.add(bb);
+          } else {
+            bodyTruncated.set(true);
+          }
+        });
+      } finally {
+        originalConsumer.consume(value, asyncBody);
       }
-      if (!value.isEmpty()) {
-        if (BufferUtil.isPlainText(value.iterator().next())) {
-          value.stream().map(BufferUtil::copy).forEach(bb -> {
-            if (responseBodySize.addAndGet(bb.remaining()) < MAX_BODY_SIZE) {
-              responseBody.add(bb);
-            }
-
-          });
-        } else {
-          logResponseBody.set(false);
-        }
-      }
-      originalConsumer.consume(value, asyncBody);
     }
 
     @Override
@@ -125,7 +120,7 @@ public class HttpLoggingInterceptor implements Interceptor {
         // TODO: we also have access to the response.request, which may be different than originalRequest
         httpLogger.logRequest(originalRequest);
         httpLogger.logResponse(response);
-        httpLogger.logResponseBody(responseBody);
+        httpLogger.logResponseBody(responseBody, responseBodySize.get(), bodyTruncated.get());
         httpLogger.logEnd();
         responseBody.clear();
       });
@@ -156,15 +151,21 @@ public class HttpLoggingInterceptor implements Interceptor {
       }
     }
 
-    void logResponseBody(Queue<ByteBuffer> responseBody) {
-      if (logger.isTraceEnabled() && responseBody != null && !responseBody.isEmpty()) {
+    void logResponseBody(Queue<ByteBuffer> responseBody, long bytesReceived, boolean truncated) {
+      if (logger.isTraceEnabled()) {
         final StringBuilder bodyString = new StringBuilder();
-        while (!responseBody.isEmpty()) {
-          bodyString.append(StandardCharsets.UTF_8.decode(responseBody.poll()));
+        if (responseBody != null && !responseBody.isEmpty()) {
+          while (!responseBody.isEmpty()) {
+            bodyString.append(StandardCharsets.UTF_8.decode(responseBody.poll()));
+          }
         }
-        if (bodyString.length() > 0) {
-          logger.trace(bodyString.toString());
+
+        // we'll typically have bytes == content length,
+        // but it can be less if binary, truncated, or an error happened
+        if (truncated) {
+          bodyString.append("... body bytes ").append(bytesReceived);
         }
+        logger.trace(bodyString.toString());
       }
     }
 
