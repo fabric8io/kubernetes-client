@@ -252,29 +252,6 @@
 
   <profiles>
     <profile>
-      <id>site</id>
-      <modules>
-        <module>website</module>
-      </modules>
-    </profile>
-    <profile>
-      <id>distro</id>
-      <modules>
-      </modules>
-    </profile>
-    <profile>
-      <id>itest</id>
-      <activation>
-        <property>
-          <name>itest</name>
-          <value>true</value>
-        </property>
-      </activation>
-      <modules>
-        <module>model-generator-app</module>
-      </modules>
-    </profile>
-    <profile>
       <id>doclint-java8-disable</id>
       <activation>
         <jdk>[1.8,)</jdk>
