@@ -17,6 +17,11 @@
 * Fix #4911: Config/RequestConfig.websocketTimeout has been removed. Config/RequestConfig.requestTimeout will be used for websocket connection timeouts.
 * Fix #4911: HttpClient api/building changes - writeTimeout has been removed, readTimeout has moved to the HttpRequest
 
+### Unreleased
+
+#### Bugs
+Fix #5145: [java-generator] handle `additionalProperties: true` emitting a field of type `AnyType`
+
 ### 6.6.2 (2023-05-15)
 
 #### Bugs
