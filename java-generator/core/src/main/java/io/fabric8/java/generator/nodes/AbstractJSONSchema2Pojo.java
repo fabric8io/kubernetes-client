@@ -197,9 +197,11 @@ public abstract class AbstractJSONSchema2Pojo {
         case STRING_CRD_TYPE:
           return fromJsonSchema.apply(JPrimitiveNameAndType.STRING);
         case OBJECT_CRD_TYPE:
-          if (prop.getAdditionalProperties() != null
-              && prop.getAdditionalProperties().getSchema() != null) {
+          if (prop.getAdditionalProperties() != null && prop.getAdditionalProperties().getSchema() != null) {
             return fromJsonSchema.apply(new JMapNameAndType(key));
+          } else if (prop.getAdditionalProperties() != null
+              && Boolean.TRUE.equals(prop.getAdditionalProperties().getAllows())) {
+            return fromJsonSchema.apply(JPrimitiveNameAndType.ANY_TYPE);
           } else {
             return fromJsonSchema.apply(new JObjectNameAndType(key));
           }

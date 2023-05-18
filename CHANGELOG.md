@@ -12,6 +12,11 @@
 
 #### _**Note**_: Breaking changes
 
+### Unreleased
+
+#### Bugs
+Fix #5145: [java-generator] handle `additionalProperties: true` emitting a field of type `AnyType`
+
 ### 6.6.2 (2023-05-15)
 
 #### Bugs
