@@ -15,21 +15,32 @@
  */
 package io.fabric8.kubernetes.client.http;
 
-import lombok.Getter;
+import java.util.concurrent.CompletableFuture;
 
-import java.util.concurrent.ConcurrentLinkedQueue;
+public class TestAsyncBody implements AsyncBody {
 
-public class TestStandardHttpClientFactory implements HttpClient.Factory {
+  private final CompletableFuture<Void> done;
 
-  @Getter
-  private final ConcurrentLinkedQueue<TestStandardHttpClient> instances = new ConcurrentLinkedQueue<>();
-
-  @Override
-  public TestStandardHttpClientBuilder newBuilder() {
-    return new TestStandardHttpClientBuilder(this, instances);
+  public TestAsyncBody() {
+    this(CompletableFuture.completedFuture(null));
   }
 
-  public final TestStandardHttpClient getInstance(int index) {
-    return instances.toArray(new TestStandardHttpClient[0])[index];
+  public TestAsyncBody(CompletableFuture<Void> done) {
+    this.done = done;
+  }
+
+  @Override
+  public void consume() {
+
+  }
+
+  @Override
+  public CompletableFuture<Void> done() {
+    return done;
+  }
+
+  @Override
+  public void cancel() {
+
   }
 }
