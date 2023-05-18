@@ -43,6 +43,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.Executor;
@@ -70,6 +71,8 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
   static final String REASON_NON_ZERO_EXIT_CODE = "NonZeroExitCode";
   static final String STATUS_SUCCESS = "Success";
 
+  // taken from the okhttp implementation, but generally protects memory
+  // and the other implementations as well which may impose frame limits
   private static final long MAX_QUEUE_SIZE = 16 * 1024 * 1024L;
 
   private final class SimpleResponse implements Response {
@@ -145,6 +148,7 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
   private final AtomicBoolean closed = new AtomicBoolean(false);
   private final CompletableFuture<Integer> exitCode = new CompletableFuture<>();
   private ObjectMapper objectMapper = new ObjectMapper();
+  private int bufferSize;
 
   public static String toString(ByteBuffer buffer) {
     return StandardCharsets.UTF_8.decode(buffer).toString();
@@ -157,7 +161,7 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
   public ExecWebSocketListener(PodOperationContext context, Executor executor) {
     this.listener = context.getExecListener();
 
-    Integer bufferSize = context.getBufferSize();
+    bufferSize = Optional.ofNullable(context.getBufferSize()).orElse(8192);
     if (context.isRedirectingIn()) {
       this.input = InputStreamPumper.writableOutputStream(this::sendWithErrorChecking, bufferSize);
       this.in = null;
@@ -260,7 +264,7 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
       if (in != null && !executorService.isShutdown()) {
         // the task will be cancelled via shutdownNow
         // TODO: this does not work if the inputstream does not support available
-        InputStreamPumper.pump(InputStreamPumper.asInterruptible(in), this::send, executorService);
+        InputStreamPumper.pump(InputStreamPumper.asInterruptible(in), this::sendWithErrorChecking, executorService);
       }
     } finally {
       if (listener != null) {
@@ -420,6 +424,10 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
     return errorChannel.inputStream;
   }
 
+  public boolean willWriteBlock(int bytes) {
+    return MAX_QUEUE_SIZE - this.webSocketRef.get().queueSize() < bytes + bytes / bufferSize + 1;
+  }
+
   @Override
   public void resize(int cols, int rows) {
     if (cols < 0 || rows < 0) {
@@ -449,13 +457,9 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
     }
   }
 
-  private void send(byte[] bytes, int offset, int length) {
-    send(bytes, offset, length, (byte) 0);
-  }
-
   void sendWithErrorChecking(byte[] bytes, int offset, int length) {
     checkError();
-    send(bytes, offset, length);
+    send(bytes, offset, length, (byte) 0);
     checkError();
   }
 

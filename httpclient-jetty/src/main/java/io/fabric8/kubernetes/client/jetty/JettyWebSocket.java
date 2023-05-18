@@ -26,6 +26,8 @@ import org.eclipse.jetty.websocket.api.UpgradeResponse;
 import org.eclipse.jetty.websocket.api.WebSocketListener;
 import org.eclipse.jetty.websocket.api.WriteCallback;
 import org.eclipse.jetty.websocket.api.exceptions.UpgradeException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -38,6 +40,9 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class JettyWebSocket implements WebSocket, WebSocketListener {
+
+  private static final Logger LOG = LoggerFactory.getLogger(JettyWebSocket.class);
+
   private final WebSocket.Listener listener;
   private final AtomicLong sendQueue;
   private final Lock lock;
@@ -66,6 +71,7 @@ public class JettyWebSocket implements WebSocket, WebSocketListener {
     webSocketSession.getRemote().sendBytes(buffer, new WriteCallback() {
       @Override
       public void writeFailed(Throwable x) {
+        LOG.debug("Queued write did not succeed", x);
         sendQueue.addAndGet(-size);
       }
 
