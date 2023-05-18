@@ -15,21 +15,29 @@
  */
 package io.fabric8.kubernetes.client.http;
 
+import java.util.concurrent.ConcurrentLinkedQueue;
+
 public class TestStandardHttpClientBuilder
     extends StandardHttpClientBuilder<TestStandardHttpClient, TestStandardHttpClientFactory, TestStandardHttpClientBuilder> {
 
-  protected TestStandardHttpClientBuilder(TestStandardHttpClientFactory clientFactory) {
+  private final ConcurrentLinkedQueue<TestStandardHttpClient> instances;
+
+  protected TestStandardHttpClientBuilder(TestStandardHttpClientFactory clientFactory,
+      ConcurrentLinkedQueue<TestStandardHttpClient> instances) {
     super(clientFactory);
+    this.instances = instances;
   }
 
   @Override
   public TestStandardHttpClient build() {
-    return new TestStandardHttpClient(this);
+    final TestStandardHttpClient instance = new TestStandardHttpClient(this);
+    instances.add(instance);
+    return instance;
   }
 
   @Override
   protected TestStandardHttpClientBuilder newInstance(TestStandardHttpClientFactory clientFactory) {
-    return new TestStandardHttpClientBuilder(clientFactory);
+    return new TestStandardHttpClientBuilder(clientFactory, instances);
   }
 
   @Override
