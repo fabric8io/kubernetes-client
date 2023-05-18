@@ -16,6 +16,8 @@
 
 package io.fabric8.kubernetes.client;
 
+import io.fabric8.kubernetes.client.utils.Utils;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -107,7 +109,7 @@ public class VersionInfo {
     }
 
     public Builder withBuildDate(String buildDate) throws ParseException {
-      if (buildDate != null) {
+      if (Utils.isNotBlank(buildDate)) {
         this.versionInfo.buildDate = new SimpleDateFormat(VersionKeys.BUILD_DATE_FORMAT).parse(buildDate);
       }
       return this;

@@ -237,7 +237,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   @Override
   public ExtensibleResource<T> lockResourceVersion(String resourceVersion) {
-    if (resourceVersion == null) {
+    if (Utils.isBlank(resourceVersion)) {
       throw new KubernetesClientException("resourceVersion cannot be null");
     }
     return newInstance(context.withResourceVersion(resourceVersion));
@@ -245,7 +245,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   @Override
   public BaseOperation<T, L, R> inNamespace(String namespace) {
-    if (namespace == null) {
+    if (Utils.isBlank(namespace)) {
       throw new KubernetesClientException("namespace cannot be null");
     }
     return newInstance(context.withNamespace(namespace));
@@ -847,7 +847,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
    */
   protected void updateApiVersion(HasMetadata hasMetadata) {
     String version = apiVersion;
-    if (hasMetadata != null && version != null && version.length() > 0) {
+    if (hasMetadata != null && Utils.isNotBlank(version)) {
       String current = hasMetadata.getApiVersion();
       // lets overwrite the api version if its currently missing, the resource uses an API Group with '/'
       // or we have the default of 'v1' when using an API group version like 'build.openshift.io/v1'

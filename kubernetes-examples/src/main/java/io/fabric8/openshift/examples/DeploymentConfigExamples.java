@@ -20,6 +20,7 @@ import io.fabric8.kubernetes.api.model.ServiceAccount;
 import io.fabric8.kubernetes.api.model.ServiceAccountBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientBuilder;
+import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.openshift.api.model.DeploymentConfigBuilder;
 import io.fabric8.openshift.api.model.ProjectRequestBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
@@ -38,7 +39,7 @@ public class DeploymentConfigExamples {
       final OpenShiftClient client = kubernetesClient.adapt(OpenShiftClient.class);
 
       final String project;
-      if (client.getNamespace() != null) {
+      if (Utils.isNotBlank(client.getNamespace())) {
         project = client.getNamespace();
         logger.info("Using configured project: {}", project);
       } else {

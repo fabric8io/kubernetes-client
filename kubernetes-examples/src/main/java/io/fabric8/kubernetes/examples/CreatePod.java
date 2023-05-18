@@ -24,6 +24,7 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.PodResource;
+import io.fabric8.kubernetes.client.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -58,7 +59,7 @@ public class CreatePod {
     }
     Config config = builder.build();
     try (final KubernetesClient client = new KubernetesClientBuilder().withConfig(config).build()) {
-      if (namespace == null) {
+      if (Utils.isBlank(namespace)) {
         namespace = client.getNamespace();
       }
 

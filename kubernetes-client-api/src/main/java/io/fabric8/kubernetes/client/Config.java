@@ -432,30 +432,30 @@ public class Config {
 
     String configuredImpersonateGroups = Utils.getSystemPropertyOrEnvVar(KUBERNETES_IMPERSONATE_GROUP, Arrays
         .stream(Optional.ofNullable(config.getImpersonateGroups()).orElse(new String[0])).collect(Collectors.joining(",")));
-    if (configuredImpersonateGroups != null) {
+    if (Utils.isNotBlank(configuredImpersonateGroups)) {
       config.setImpersonateGroups(configuredImpersonateGroups.split(","));
     }
 
     String configuredWatchReconnectInterval = Utils
         .getSystemPropertyOrEnvVar(KUBERNETES_WATCH_RECONNECT_INTERVAL_SYSTEM_PROPERTY);
-    if (configuredWatchReconnectInterval != null) {
+    if (Utils.isNotBlank(configuredWatchReconnectInterval)) {
       config.setWatchReconnectInterval(Integer.parseInt(configuredWatchReconnectInterval));
     }
 
     String configuredWatchReconnectLimit = Utils.getSystemPropertyOrEnvVar(KUBERNETES_WATCH_RECONNECT_LIMIT_SYSTEM_PROPERTY);
-    if (configuredWatchReconnectLimit != null) {
+    if (Utils.isNotBlank(configuredWatchReconnectLimit)) {
       config.setWatchReconnectLimit(Integer.parseInt(configuredWatchReconnectLimit));
     }
 
     String configuredScaleTimeout = Utils.getSystemPropertyOrEnvVar(KUBERNETES_SCALE_TIMEOUT_SYSTEM_PROPERTY,
         String.valueOf(DEFAULT_SCALE_TIMEOUT));
-    if (configuredScaleTimeout != null) {
+    if (Utils.isNotBlank(configuredScaleTimeout)) {
       config.setScaleTimeout(Long.parseLong(configuredScaleTimeout));
     }
 
     String configuredLoggingInterval = Utils.getSystemPropertyOrEnvVar(KUBERNETES_LOGGING_INTERVAL_SYSTEM_PROPERTY,
         String.valueOf(DEFAULT_LOGGING_INTERVAL));
-    if (configuredLoggingInterval != null) {
+    if (Utils.isNotBlank(configuredLoggingInterval)) {
       config.setLoggingInterval(Integer.parseInt(configuredLoggingInterval));
     }
 
@@ -472,19 +472,19 @@ public class Config {
 
     String configuredWebsocketPingInterval = Utils.getSystemPropertyOrEnvVar(KUBERNETES_WEBSOCKET_PING_INTERVAL_SYSTEM_PROPERTY,
         String.valueOf(config.getWebsocketPingInterval()));
-    if (configuredWebsocketPingInterval != null) {
+    if (Utils.isNotBlank(configuredWebsocketPingInterval)) {
       config.setWebsocketPingInterval(Long.parseLong(configuredWebsocketPingInterval));
     }
 
     String configuredMaxConcurrentRequests = Utils.getSystemPropertyOrEnvVar(KUBERNETES_MAX_CONCURRENT_REQUESTS,
         String.valueOf(config.getMaxConcurrentRequests()));
-    if (configuredMaxConcurrentRequests != null) {
+    if (Utils.isNotBlank(configuredMaxConcurrentRequests)) {
       config.setMaxConcurrentRequests(Integer.parseInt(configuredMaxConcurrentRequests));
     }
 
     String configuredMaxConcurrentReqeustsPerHost = Utils.getSystemPropertyOrEnvVar(KUBERNETES_MAX_CONCURRENT_REQUESTS_PER_HOST,
         String.valueOf(config.getMaxConcurrentRequestsPerHost()));
-    if (configuredMaxConcurrentReqeustsPerHost != null) {
+    if (Utils.isNotBlank(configuredMaxConcurrentReqeustsPerHost)) {
       config.setMaxConcurrentRequestsPerHost(Integer.parseInt(configuredMaxConcurrentReqeustsPerHost));
     }
 
@@ -500,12 +500,12 @@ public class Config {
     config.setProxyPassword(Utils.getSystemPropertyOrEnvVar(KUBERNETES_PROXY_PASSWORD, config.getProxyPassword()));
 
     String noProxyVar = Utils.getSystemPropertyOrEnvVar(KUBERNETES_NO_PROXY);
-    if (noProxyVar != null) {
+    if (Utils.isNotBlank(noProxyVar)) {
       config.setNoProxy(noProxyVar.split(","));
     }
 
     String tlsVersionsVar = Utils.getSystemPropertyOrEnvVar(KUBERNETES_TLS_VERSIONS);
-    if (tlsVersionsVar != null && !tlsVersionsVar.isEmpty()) {
+    if (Utils.isNotBlank(tlsVersionsVar)) {
       String[] tlsVersionsSplit = tlsVersionsVar.split(",");
       TlsVersion[] tlsVersions = new TlsVersion[tlsVersionsSplit.length];
       for (int i = 0; i < tlsVersionsSplit.length; i++) {
@@ -522,7 +522,7 @@ public class Config {
     String caCertPath = Utils.getSystemPropertyOrEnvVar(KUBERNETES_CA_CERTIFICATE_FILE_SYSTEM_PROPERTY,
         KUBERNETES_SERVICE_ACCOUNT_CA_CRT_PATH);
 
-    if (masterHost != null && masterPort != null) {
+    if (Utils.isNotBlank(masterHost) && Utils.isNotBlank(masterPort)) {
       String hostPort = joinHostPort(masterHost, masterPort);
       LOGGER.debug("Found service account host and port: {}", hostPort);
       config.setMasterUrl("https://" + hostPort);

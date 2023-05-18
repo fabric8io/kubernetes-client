@@ -31,6 +31,7 @@ import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperation;
 import io.fabric8.kubernetes.client.utils.ApiVersionUtil;
 import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
 import io.fabric8.kubernetes.client.utils.Serialization;
+import io.fabric8.kubernetes.client.utils.Utils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -99,11 +100,11 @@ public final class Handlers {
       // if a client has been supplied, we can try to look this up from the server
       String kind = meta.getKind();
       String apiVersion = meta.getApiVersion();
-      if (kind == null || apiVersion == null) {
+      if (Utils.isBlank(kind) || Utils.isBlank(apiVersion)) {
         return null;
       }
       String api = ApiVersionUtil.trimGroupOrNull(apiVersion);
-      if (api == null) {
+      if (Utils.isBlank(api)) {
         return null;
       }
       String version = ApiVersionUtil.trimVersion(apiVersion);

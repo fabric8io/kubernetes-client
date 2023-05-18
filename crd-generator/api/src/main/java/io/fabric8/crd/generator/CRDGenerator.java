@@ -25,6 +25,7 @@ import io.fabric8.crd.generator.v1.CustomResourceHandler;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.client.utils.ApiVersionUtil;
+import io.fabric8.kubernetes.client.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -82,7 +83,7 @@ public class CRDGenerator {
   public CRDGenerator forCRDVersions(String... versions) {
     if (versions != null) {
       for (String version : versions) {
-        if (version != null) {
+        if (Utils.isNotBlank(version)) {
           switch (version) {
             case CustomResourceHandler.VERSION:
               handlers.computeIfAbsent(CustomResourceHandler.VERSION,

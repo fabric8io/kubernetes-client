@@ -282,7 +282,7 @@ public class KubernetesClientImpl extends BaseClient implements NamespacedKubern
   }
 
   protected OperationContext createInNamespaceContext(String name, boolean any) {
-    if (!any && name == null) {
+    if (!any && Utils.isBlank(name)) {
       throw new KubernetesClientException("namespace cannot be null");
     }
     return HasMetadataOperationsImpl.defaultContext(this).withNamespace(name);

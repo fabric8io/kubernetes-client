@@ -31,6 +31,7 @@ import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
+import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.kubernetes.examples.crds.Dummy;
 import io.fabric8.kubernetes.examples.crds.DummyList;
 import io.fabric8.kubernetes.examples.crds.DummySpec;
@@ -65,10 +66,10 @@ public class CRDExample {
     }
     try (final KubernetesClient client = new KubernetesClientBuilder().build()) {
       if (resourceNamespaced) {
-        if (namespace == null) {
+        if (Utils.isBlank(namespace)) {
           namespace = client.getNamespace();
         }
-        if (namespace == null) {
+        if (Utils.isBlank(namespace)) {
           System.err.println("No namespace specified and no default defined!");
           return;
         }
