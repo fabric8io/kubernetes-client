@@ -18,6 +18,8 @@ package io.fabric8.kubernetes.client.jdkhttp;
 
 import io.fabric8.kubernetes.client.http.BufferUtil;
 import io.fabric8.kubernetes.client.http.WebSocket;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -92,6 +94,7 @@ class JdkWebSocketImpl implements WebSocket {
     }
   }
 
+  private static final Logger LOG = LoggerFactory.getLogger(JdkWebSocketImpl.class);
   private java.net.http.WebSocket webSocket;
   private AtomicLong queueSize;
 
@@ -106,7 +109,12 @@ class JdkWebSocketImpl implements WebSocket {
     final int size = buffer.remaining();
     queueSize.addAndGet(size);
     CompletableFuture<java.net.http.WebSocket> cf = webSocket.sendBinary(buffer, true);
-    cf.whenComplete((b, t) -> queueSize.addAndGet(-size));
+    cf.whenComplete((b, t) -> {
+      if (t != null) {
+        LOG.debug("Queued write did not succeed", t);
+      }
+      queueSize.addAndGet(-size);
+    });
     return asBoolean(cf);
   }
 

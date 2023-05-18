@@ -21,11 +21,15 @@ import io.netty.buffer.Unpooled;
 import io.vertx.core.Future;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpClosedException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.nio.ByteBuffer;
 import java.util.concurrent.atomic.AtomicInteger;
 
 class VertxWebSocket implements WebSocket {
+
+  private static final Logger LOG = LoggerFactory.getLogger(VertxWebSocket.class);
 
   private final io.vertx.core.http.WebSocket ws;
   private final AtomicInteger pending = new AtomicInteger();
@@ -72,7 +76,12 @@ class VertxWebSocket implements WebSocket {
     int len = vertxBuffer.length();
     pending.addAndGet(len);
     Future<Void> res = ws.writeBinaryMessage(vertxBuffer);
-    res.onComplete(ignore -> pending.addAndGet(-len));
+    res.onComplete(result -> {
+      if (result.cause() != null) {
+        LOG.debug("Queued write did not succeed", result.cause());
+      }
+      pending.addAndGet(-len);
+    });
     return true;
   }
 

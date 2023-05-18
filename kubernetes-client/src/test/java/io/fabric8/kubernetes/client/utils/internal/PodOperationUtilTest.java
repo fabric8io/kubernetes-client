@@ -19,6 +19,7 @@ import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.api.model.PodListBuilder;
+import io.fabric8.kubernetes.client.StreamConsumer;
 import io.fabric8.kubernetes.client.dsl.FilterWatchListDeletable;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
 import io.fabric8.kubernetes.client.dsl.PodResource;
@@ -31,7 +32,6 @@ import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
-import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.Reader;
 import java.util.ArrayList;
@@ -117,14 +117,13 @@ class PodOperationUtilTest {
   void testWatchLogSinglePod() {
     // Given
     PodResource podResource = mock(PodResource.class, Mockito.RETURNS_DEEP_STUBS);
-    ByteArrayOutputStream byteArrayOutputStream = mock(ByteArrayOutputStream.class, Mockito.RETURNS_DEEP_STUBS);
-
+    StreamConsumer consumer = Mockito.mock(StreamConsumer.class);
     // When
-    LogWatch logWatch = PodOperationUtil.watchLog(createMockPodResourceList(podResource), byteArrayOutputStream);
+    LogWatch logWatch = PodOperationUtil.watchLog(createMockPodResourceList(podResource), consumer, true);
 
     // Then
     assertThat(logWatch).isNotNull();
-    verify(podResource, times(1)).watchLog(byteArrayOutputStream);
+    verify(podResource, times(1)).watchLog(consumer, true);
   }
 
   @Test
@@ -132,20 +131,21 @@ class PodOperationUtilTest {
     // Given
     PodResource p1 = mock(PodResource.class, Mockito.RETURNS_DEEP_STUBS);
     PodResource p2 = mock(PodResource.class, Mockito.RETURNS_DEEP_STUBS);
-    ByteArrayOutputStream byteArrayOutputStream = mock(ByteArrayOutputStream.class, Mockito.RETURNS_DEEP_STUBS);
+    StreamConsumer consumer = Mockito.mock(StreamConsumer.class);
 
     // When
-    LogWatch logWatch = PodOperationUtil.watchLog(createMockPodResourceList(p1, p2), byteArrayOutputStream);
+    LogWatch logWatch = PodOperationUtil.watchLog(createMockPodResourceList(p1, p2),
+        consumer, false);
 
     // Then
     assertThat(logWatch).isNotNull();
-    verify(p1, times(1)).watchLog(byteArrayOutputStream);
-    verify(p2, times(0)).watchLog(byteArrayOutputStream);
+    verify(p1, times(1)).watchLog(consumer, false);
+    verify(p2, times(0)).watchLog(consumer, false);
   }
 
   @Test
   void testWatchLogEmptyPodResourceList() {
-    assertThat(PodOperationUtil.watchLog(Collections.emptyList(), null)).isNull();
+    assertThat(PodOperationUtil.watchLog(Collections.emptyList(), null, false)).isNull();
   }
 
   @Test

@@ -23,7 +23,6 @@ import io.fabric8.kubernetes.api.model.extensions.ReplicaSetList;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.BytesLimitTerminateTimeTailPrettyLoggable;
-import io.fabric8.kubernetes.client.dsl.LogWatch;
 import io.fabric8.kubernetes.client.dsl.Loggable;
 import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.kubernetes.client.dsl.PrettyLoggable;
@@ -37,9 +36,6 @@ import io.fabric8.kubernetes.client.dsl.internal.PodOperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.apps.v1.RollingUpdater;
 import io.fabric8.kubernetes.client.utils.internal.PodOperationUtil;
 
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.Reader;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -82,46 +78,11 @@ public class ReplicaSetOperationsImpl
   }
 
   @Override
-  public String getLog(boolean isPretty) {
-    StringBuilder stringBuilder = new StringBuilder();
-    List<PodResource> podOperationList = new ReplicaSetOperationsImpl(rollingOperationContext.withPrettyOutput(isPretty),
-        context).doGetLog();
-    for (PodResource podOperation : podOperationList) {
-      stringBuilder.append(podOperation.getLog(isPretty));
-    }
-    return stringBuilder.toString();
-  }
-
-  private List<PodResource> doGetLog() {
+  protected List<PodResource> doGetLog() {
     ReplicaSet replicaSet = requireFromServer();
     return PodOperationUtil.getPodOperationsForController(context,
         rollingOperationContext, replicaSet.getMetadata().getUid(),
         getReplicaSetSelectorLabels(replicaSet));
-  }
-
-  /**
-   * Returns an unclosed Reader. It's the caller responsibility to close it.
-   *
-   * @return Reader
-   */
-  @Override
-  public Reader getLogReader() {
-    return PodOperationUtil.getLogReader(doGetLog());
-  }
-
-  /**
-   * Returns an unclosed InputStream. It's the caller responsibility to close it.
-   *
-   * @return InputStream
-   */
-  @Override
-  public InputStream getLogInputStream() {
-    return PodOperationUtil.getLogInputStream(doGetLog());
-  }
-
-  @Override
-  public LogWatch watchLog(OutputStream out) {
-    return PodOperationUtil.watchLog(doGetLog(), out);
   }
 
   static Map<String, String> getReplicaSetSelectorLabels(ReplicaSet replicaSet) {

@@ -25,23 +25,35 @@ public interface ExecWatch extends Closeable {
   /**
    * Gets the {@link OutputStream} for stdIn if {@link ContainerResource#redirectingInput()} has been called.
    * <p>
-   * Closing this stream does not immediately force sending. You will typically call {@link #close()} after
-   * you are finished writing - the close message will not be sent until all pending messages have been sent.
-   * 
+   * This is a standard blocking {@link OutputStream} with the exception that close/flush do not immediately force sending.
+   * Instead these operations force any pending data into the write queue.
+   * <p>
+   * Until Kubernetes supports half-closing a stream https://github.com/kubernetes/kubernetes/issues/89899 you will typically
+   * call {@link #close()} after closing this stream - that close message will not be sent until all pending messages have been
+   * sent.
+   * <p>
+   * If you want non-blocking like behavior, your logic may poll the {@link #willWriteBlock(int)} method
+   * prior to calling a write method on the stream.
+   *
    * @return the stdIn stream
    */
   OutputStream getInput();
 
   /**
+   * @return true if writing the given number of bytes will block on the write queue
+   */
+  boolean willWriteBlock(int bytes);
+
+  /**
    * Gets the {@link InputStream} for stdOut if {@link TtyExecOutputErrorable#redirectingOutput()} has been called.
-   * 
+   *
    * @return the stdOut stream
    */
   InputStream getOutput();
 
   /**
    * Gets the {@link InputStream} for stdErr if {@link TtyExecErrorable#redirectingError()} has been called.
-   * 
+   *
    * @return the stdErr stream
    */
   InputStream getError();
@@ -52,7 +64,7 @@ public interface ExecWatch extends Closeable {
    * could indicate abnormal termination.
    * <p>
    * See also {@link #exitCode()}
-   * 
+   *
    * @return the channel 3 stream
    */
   InputStream getErrorChannel();
@@ -63,6 +75,9 @@ public interface ExecWatch extends Closeable {
   @Override
   void close();
 
+  /**
+   * This operation may block if the write queue is nearly full
+   */
   void resize(int cols, int rows);
 
   /**

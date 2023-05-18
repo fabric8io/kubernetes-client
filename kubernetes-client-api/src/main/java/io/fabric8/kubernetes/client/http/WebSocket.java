@@ -42,6 +42,8 @@ public interface WebSocket {
     /**
      * Called once the full binary message has been built. {@link WebSocket#request()} must
      * be called to receive more messages.
+     *
+     * @param bytes which will not further used nor modified by the {@link HttpClient}
      */
     default void onMessage(WebSocket webSocket, ByteBuffer bytes) {
       webSocket.request();

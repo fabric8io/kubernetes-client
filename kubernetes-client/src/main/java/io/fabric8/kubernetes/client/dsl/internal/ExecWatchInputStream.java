@@ -77,10 +77,17 @@ public class ExecWatchInputStream extends InputStream {
       assert !complete || failed == null;
       buffers.addAll(value);
       buffers.notifyAll();
-      if ((currentBuffer != null ? currentBuffer.remaining() : 0)
-          + buffers.stream().mapToInt(ByteBuffer::remaining).sum() < bufferSize) {
+      if (available() < bufferSize) {
         request.run();
       }
+    }
+  }
+
+  @Override
+  public int available() {
+    synchronized (buffers) {
+      return (currentBuffer != null ? currentBuffer.remaining() : 0)
+          + buffers.stream().mapToInt(ByteBuffer::remaining).sum();
     }
   }
 

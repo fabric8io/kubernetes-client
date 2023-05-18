@@ -29,6 +29,7 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.LocalPortForward;
 import io.fabric8.kubernetes.client.PortForward;
 import io.fabric8.kubernetes.client.RequestConfigBuilder;
+import io.fabric8.kubernetes.client.StreamConsumer;
 import io.fabric8.kubernetes.client.dsl.BytesLimitTerminateTimeTailPrettyLoggable;
 import io.fabric8.kubernetes.client.dsl.CopyOrReadable;
 import io.fabric8.kubernetes.client.dsl.EphemeralContainersResource;
@@ -72,8 +73,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
 import java.io.Reader;
 import java.net.InetAddress;
 import java.net.MalformedURLException;
@@ -168,21 +167,14 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
     return watchLog(null);
   }
 
-  private void checkForPiped(Object object) {
-    if (object instanceof PipedOutputStream || object instanceof PipedInputStream) {
-      throw new KubernetesClientException("Piped streams should not be used");
-    }
-  }
-
   @Override
-  public LogWatch watchLog(OutputStream out) {
-    checkForPiped(out);
+  public LogWatch watchLog(StreamConsumer consumer, boolean blocking) {
     try {
       PodOperationUtil.waitUntilReadyOrSucceded(this,
           getContext().getReadyWaitTimeout() != null ? getContext().getReadyWaitTimeout() : DEFAULT_POD_READY_WAIT_TIMEOUT);
       // Issue Pod Logs HTTP request
       URL url = new URL(URLUtils.join(getResourceUrl().toString(), getContext().getLogParameters() + "&follow=true"));
-      final LogWatchCallback callback = new LogWatchCallback(out, context);
+      final LogWatchCallback callback = new LogWatchCallback(consumer, blocking, context);
       return callback.callAndWait(httpClient, url);
     } catch (IOException ioException) {
       throw KubernetesClientException.launderThrowable(forOperationType("watchLog"), ioException);
@@ -551,7 +543,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
 
   @Override
   public TtyExecOutputErrorable readingInput(InputStream in) {
-    checkForPiped(in);
+    StreamConsumer.checkForPiped(in);
     return new PodOperationsImpl(getContext().withIn(in), context);
   }
 
@@ -566,9 +558,8 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
   }
 
   @Override
-  public TtyExecErrorable writingOutput(OutputStream out) {
-    checkForPiped(out);
-    return new PodOperationsImpl(getContext().toBuilder().output(new StreamContext(out)).build(), context);
+  public TtyExecErrorable writingOutput(StreamConsumer consumer, boolean blocking) {
+    return new PodOperationsImpl(getContext().toBuilder().output(new StreamContext(consumer, blocking)).build(), context);
   }
 
   @Override
@@ -577,9 +568,8 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
   }
 
   @Override
-  public TtyExecErrorChannelable writingError(OutputStream err) {
-    checkForPiped(err);
-    return new PodOperationsImpl(getContext().toBuilder().error(new StreamContext(err)).build(), context);
+  public TtyExecErrorChannelable writingError(StreamConsumer consumer, boolean blocking) {
+    return new PodOperationsImpl(getContext().toBuilder().error(new StreamContext(consumer, blocking)).build(), context);
   }
 
   @Override
@@ -589,8 +579,8 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
 
   @Override
   public TtyExecable writingErrorChannel(OutputStream errChannel) {
-    checkForPiped(errChannel);
-    return new PodOperationsImpl(getContext().toBuilder().errorChannel(new StreamContext(errChannel)).build(), context);
+    return new PodOperationsImpl(getContext().toBuilder()
+        .errorChannel(new StreamContext(StreamConsumer.newStreamConsumer(errChannel), true)).build(), context);
   }
 
   @Override

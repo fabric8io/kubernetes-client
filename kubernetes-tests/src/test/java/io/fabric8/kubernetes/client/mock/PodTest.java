@@ -416,6 +416,9 @@ class PodTest {
         .usingListener(createCountDownLatchListener(execLatch))
         .exec("ls");
 
+    assertTrue(watch.willWriteBlock(1 << 25));
+    assertFalse(watch.willWriteBlock((1 << 24) - 8000));
+
     execLatch.await(10, TimeUnit.MINUTES);
     assertNotNull(watch);
     assertEquals(expectedOutput, baos.toString());

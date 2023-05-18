@@ -16,6 +16,8 @@
 
 package io.fabric8.kubernetes.client.dsl;
 
+import io.fabric8.kubernetes.client.StreamConsumer;
+
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PipedOutputStream;
@@ -70,7 +72,11 @@ public interface Loggable {
    * @param out {@link OutputStream} for storing logs
    * @return returns a Closeable interface for log watch
    */
-  LogWatch watchLog(OutputStream out);
+  default LogWatch watchLog(OutputStream out) {
+    return watchLog(StreamConsumer.newStreamConsumer(out), true);
+  }
+
+  LogWatch watchLog(StreamConsumer consumer, boolean blocking);
 
   /**
    * While waiting for Pod logs, how long shall we wait until a Pod

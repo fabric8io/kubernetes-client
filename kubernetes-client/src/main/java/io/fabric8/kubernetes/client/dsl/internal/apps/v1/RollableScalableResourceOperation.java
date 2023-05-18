@@ -19,6 +19,7 @@ import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.StreamConsumer;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
 import io.fabric8.kubernetes.client.dsl.Loggable;
 import io.fabric8.kubernetes.client.dsl.Resource;
@@ -28,7 +29,10 @@ import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.internal.OperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.PodOperationContext;
 import io.fabric8.kubernetes.client.utils.Serialization;
+import io.fabric8.kubernetes.client.utils.internal.PodOperationUtil;
 
+import java.io.InputStream;
+import java.io.Reader;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -174,6 +178,28 @@ public abstract class RollableScalableResourceOperation<T extends HasMetadata, L
   @Override
   public T undo() {
     throw new KubernetesClientException(context.getPlural() + " undo is not supported");
+  }
+
+  protected abstract List<? extends Loggable> doGetLog();
+
+  @Override
+  public String getLog(boolean isPretty) {
+    return PodOperationUtil.getLog(doGetLog(), isPretty);
+  }
+
+  @Override
+  public Reader getLogReader() {
+    return PodOperationUtil.getLogReader(doGetLog());
+  }
+
+  @Override
+  public InputStream getLogInputStream() {
+    return PodOperationUtil.getLogInputStream(doGetLog());
+  }
+
+  @Override
+  public LogWatch watchLog(StreamConsumer consumer, boolean blocking) {
+    return PodOperationUtil.watchLog(doGetLog(), consumer, blocking);
   }
 
 }

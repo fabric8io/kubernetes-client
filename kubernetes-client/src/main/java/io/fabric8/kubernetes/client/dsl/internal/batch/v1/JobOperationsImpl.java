@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.client.dsl.internal.batch.v1;
 import io.fabric8.kubernetes.api.model.batch.v1.Job;
 import io.fabric8.kubernetes.api.model.batch.v1.JobList;
 import io.fabric8.kubernetes.client.Client;
+import io.fabric8.kubernetes.client.StreamConsumer;
 import io.fabric8.kubernetes.client.dsl.BytesLimitTerminateTimeTailPrettyLoggable;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
 import io.fabric8.kubernetes.client.dsl.Loggable;
@@ -35,7 +36,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.Reader;
 import java.util.HashMap;
 import java.util.List;
@@ -152,8 +152,8 @@ public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, Scalab
   }
 
   @Override
-  public LogWatch watchLog(OutputStream out) {
-    return PodOperationUtil.watchLog(doGetLog(), out);
+  public LogWatch watchLog(StreamConsumer consumer, boolean blocking) {
+    return PodOperationUtil.watchLog(doGetLog(), consumer, blocking);
   }
 
   @Override
