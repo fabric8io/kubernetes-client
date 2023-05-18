@@ -46,8 +46,9 @@ class UberJarTest {
   private static final String JAR_SUFFIX = ".jar";
   private static final String ARTIFACT_ID = "kubernetes-openshift-uberjar";
 
-  @Rule
-  public TemporaryFolder folder = new TemporaryFolder();
+@TempDir
+public File folder;
+
 
   @Test
   @DisplayName("UberJar should be generated and should contain necessary files")
