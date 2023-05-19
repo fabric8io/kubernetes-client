@@ -37,9 +37,6 @@ import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
-import static java.net.HttpURLConnection.HTTP_OK;
-import static java.net.HttpURLConnection.HTTP_UNAVAILABLE;
-
 /**
  * Manages a WebSocket and listener per request
  */
@@ -76,14 +73,11 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
 
   @Override
   protected void closeCurrentRequest() {
-    Optional.ofNullable(this.websocketFuture).ifPresent(theFuture -> {
-      this.websocketFuture = null;
-      theFuture.whenComplete((w, t) -> {
-        if (w != null) {
-          closeWebSocket(w);
-        }
-      });
-    });
+    Optional.ofNullable(this.websocketFuture).ifPresent(theFuture -> theFuture.whenComplete((w, t) -> {
+      if (w != null) {
+        closeWebSocket(w);
+      }
+    }));
   }
 
   public CompletableFuture<WebSocket> getWebsocketFuture() {
@@ -99,31 +93,27 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
 
     this.websocketFuture = builder.buildAsync(this.listener).handle((w, t) -> {
       if (t != null) {
-        if (t instanceof WebSocketHandshakeException) {
-          WebSocketHandshakeException wshe = (WebSocketHandshakeException) t;
-          HttpResponse<?> response = wshe.getResponse();
-          final int code = response.code();
-          // We do not expect a 200 in response to the websocket connection. If it occurs, we throw
-          // an exception and try the watch via a persistent HTTP Get.
-          // Newer Kubernetes might also return 503 Service Unavailable in case WebSockets are not supported
-          Status status = OperationSupport.createStatus(response);
-          if (HTTP_OK == code || HTTP_UNAVAILABLE == code) {
-            throw OperationSupport.requestFailure(client.newHttpRequestBuilder().url(url).build(), status,
-                "Received " + code + " on websocket");
+        try {
+          if (t instanceof WebSocketHandshakeException) {
+            WebSocketHandshakeException wshe = (WebSocketHandshakeException) t;
+            HttpResponse<?> response = wshe.getResponse();
+            final int code = response.code();
+            // We do not expect a 200 in response to the websocket connection. If it occurs, we throw
+            // an exception and try the watch via a persistent HTTP Get.
+            // Newer Kubernetes might also return 503 Service Unavailable in case WebSockets are not supported
+            Status status = OperationSupport.createStatus(response);
+            t = OperationSupport.requestFailure(client.newHttpRequestBuilder().url(url).build(),
+                status, "Received " + code + " on websocket");
           }
-          logger.warn("Exec Failure: HTTP {}, Status: {} - {}", code, status.getCode(), status.getMessage());
-          t = OperationSupport.requestFailure(client.newHttpRequestBuilder().url(url).build(), status);
+          throw KubernetesClientException.launderThrowable(t);
+        } finally {
+          if (ready) {
+            // if we're ready, then invoke the reconnect logic
+            watchEnded(t, state);
+          }
         }
-        if (ready) {
-          // if we're not ready yet, that means we're waiting on the future and there's
-          // no need to invoke the reconnect logic
-          listener.onError(w, t, true);
-        }
-        throw KubernetesClientException.launderThrowable(t);
       }
-      if (w != null) {
-        this.ready = true;
-      }
+      this.ready = true;
       return w;
     });
   }

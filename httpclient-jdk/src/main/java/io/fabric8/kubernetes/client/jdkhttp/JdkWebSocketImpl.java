@@ -82,7 +82,7 @@ class JdkWebSocketImpl implements WebSocket {
 
     @Override
     public void onError(java.net.http.WebSocket webSocket, Throwable error) {
-      listener.onError(new JdkWebSocketImpl(queueSize, webSocket), error, false);
+      listener.onError(new JdkWebSocketImpl(queueSize, webSocket), error);
     }
 
     @Override

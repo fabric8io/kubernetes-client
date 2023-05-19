@@ -18,10 +18,13 @@ package io.fabric8.kubernetes.client.vertx;
 
 import io.fabric8.kubernetes.client.http.WebSocket;
 import io.netty.buffer.Unpooled;
+import io.netty.handler.codec.http.websocketx.CorruptedWebSocketFrameException;
 import io.vertx.core.Future;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpClosedException;
 
+import java.io.IOException;
+import java.net.ProtocolException;
 import java.nio.ByteBuffer;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -55,7 +58,12 @@ class VertxWebSocket implements WebSocket {
     ws.endHandler(v -> listener.onClose(this, ws.closeStatusCode(), ws.closeReason()));
     ws.exceptionHandler(err -> {
       try {
-        listener.onError(this, err, err instanceof HttpClosedException);
+        if (err instanceof CorruptedWebSocketFrameException) {
+          err = new ProtocolException().initCause(err);
+        } else if (err instanceof HttpClosedException) {
+          err = new IOException(err);
+        }
+        listener.onError(this, err);
       } finally {
         // onError should be terminal
         if (!ws.isClosed()) {

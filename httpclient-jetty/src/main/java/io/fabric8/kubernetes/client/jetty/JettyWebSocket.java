@@ -25,9 +25,10 @@ import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.UpgradeResponse;
 import org.eclipse.jetty.websocket.api.WebSocketListener;
 import org.eclipse.jetty.websocket.api.WriteCallback;
+import org.eclipse.jetty.websocket.api.exceptions.CloseException;
 import org.eclipse.jetty.websocket.api.exceptions.UpgradeException;
 
-import java.io.IOException;
+import java.net.ProtocolException;
 import java.nio.ByteBuffer;
 import java.nio.channels.ClosedChannelException;
 import java.util.concurrent.TimeUnit;
@@ -140,7 +141,10 @@ public class JettyWebSocket implements WebSocket, WebSocketListener {
       // - Jetty throws a ClosedChannelException
       return;
     }
-    listener.onError(this, cause, cause instanceof IOException);
+    if (cause instanceof CloseException) {
+      cause = new ProtocolException().initCause(cause);
+    }
+    listener.onError(this, cause);
   }
 
   private void backPressure() {

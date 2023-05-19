@@ -150,6 +150,7 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
       log.warn("{} failed for {}, will retry", operation, Reflector.this, t);
       reconnect();
     } else {
+      log.error("{} failed for {}, will stop", operation, Reflector.this, t);
       startFuture.completeExceptionally(t);
       stopFuture.completeExceptionally(t);
     }

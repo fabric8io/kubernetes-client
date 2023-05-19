@@ -3,6 +3,7 @@
 ### 6.7-SNAPSHOT
 
 #### Bugs
+* Fix #5152: preventing JDK WebSocket errors from terminating watches and improving watch termination and its logging
 
 #### Improvements
 
