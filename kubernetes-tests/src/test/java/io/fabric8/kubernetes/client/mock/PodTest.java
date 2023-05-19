@@ -274,11 +274,11 @@ class PodTest {
         .andReturn(200, new PodBuilder().build())
         .once();
     server.expect()
-        .withPath("/api/v1/namespaces/ns1/pods/pod3/eviction")
+        .withPath("/api/v1/namespaces/ns1/pods/pod-429/eviction")
         .andReturn(PodOperationsImpl.HTTP_TOO_MANY_REQUESTS, new PodBuilder().build())
         .once();
     server.expect()
-        .withPath("/api/v1/namespaces/ns1/pods/pod3/eviction")
+        .withPath("/api/v1/namespaces/ns1/pods/pod-429/eviction")
         .andReturn(200, new PodBuilder().build())
         .once();
     server.expect()
@@ -296,11 +296,8 @@ class PodTest {
     deleted = client.pods().inNamespace("ns1").withName("pod2").evict();
     assertTrue(deleted);
 
-    // too many requests
-    deleted = client.pods().inNamespace("ns1").withName("pod3").evict();
-    assertFalse(deleted);
-
-    deleted = client.pods().inNamespace("ns1").withName("pod3").evict();
+    // too many requests - automatically retries
+    deleted = client.pods().inNamespace("ns1").withName("pod-429").evict();
     assertTrue(deleted);
 
     // unhandled error

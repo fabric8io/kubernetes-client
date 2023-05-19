@@ -31,14 +31,17 @@ import java.io.IOException;
 import java.net.URI;
 import java.nio.ByteBuffer;
 import java.time.Duration;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.TimeUnit;
 import java.util.function.BiConsumer;
+import java.util.function.Function;
 import java.util.function.Supplier;
-import java.util.function.ToIntFunction;
 
 public abstract class StandardHttpClient<C extends HttpClient, F extends HttpClient.Factory, T extends StandardHttpClientBuilder<C, F, ?>>
     implements HttpClient, RequestTags {
@@ -85,7 +88,7 @@ public abstract class StandardHttpClient<C extends HttpClient, F extends HttpCli
         standardHttpRequest,
         () -> consumeBytesOnce(standardHttpRequest, consumer),
         r -> r.body().cancel(),
-        HttpResponse::code);
+        r -> r);
   }
 
   private CompletableFuture<HttpResponse<AsyncBody>> consumeBytesOnce(StandardHttpRequest standardHttpRequest,
@@ -146,7 +149,7 @@ public abstract class StandardHttpClient<C extends HttpClient, F extends HttpCli
    */
   private <V> CompletableFuture<V> retryWithExponentialBackoff(
       StandardHttpRequest request, Supplier<CompletableFuture<V>> action, java.util.function.Consumer<V> onCancel,
-      ToIntFunction<V> codeExtractor) {
+      Function<V, HttpResponse<?>> responseExtractor) {
     final URI uri = request.uri();
     final RequestConfig requestConfig = getTag(RequestConfig.class);
     final ExponentialBackoffIntervalCalculator retryIntervalCalculator = ExponentialBackoffIntervalCalculator
@@ -160,18 +163,23 @@ public abstract class StandardHttpClient<C extends HttpClient, F extends HttpCli
     return AsyncUtils.retryWithExponentialBackoff(action, onCancel, timeout, retryIntervalCalculator,
         (response, throwable, retryInterval) -> {
           if (response != null) {
-            final int code = codeExtractor.applyAsInt(response);
-            if (code >= 500) {
-              LOG.debug(
-                  "HTTP operation on url: {} should be retried as the response code was {}, retrying after {} millis",
-                  uri, code, retryInterval);
-              return true;
+            HttpResponse<?> httpResponse = responseExtractor.apply(response);
+            if (httpResponse != null) {
+              final int code = httpResponse.code();
+              if (code == 429 || code >= 500) {
+                retryInterval = Math.max(retryAfterMillis(httpResponse), retryInterval);
+                LOG.debug(
+                    "HTTP operation on url: {} should be retried as the response code was {}, retrying after {} millis",
+                    uri, code, retryInterval);
+                return true;
+              }
             }
           } else {
             if (throwable instanceof CompletionException) {
               throwable = throwable.getCause();
             }
             if (throwable instanceof IOException) {
+              // TODO: may not be specific enough - incorrect ssl settings for example will get caught here
               LOG.debug(
                   String.format("HTTP operation on url: %s should be retried after %d millis because of IOException",
                       uri, retryInterval),
@@ -181,6 +189,25 @@ public abstract class StandardHttpClient<C extends HttpClient, F extends HttpCli
           }
           return false;
         });
+  }
+
+  private long retryAfterMillis(HttpResponse<?> httpResponse) {
+    String retryAfter = httpResponse.header("Retry-After");
+    if (retryAfter != null) {
+      try {
+        return Integer.parseInt(retryAfter) * 1000L;
+      } catch (NumberFormatException e) {
+        // not a simple number
+      }
+      // Kubernetes does not seem to currently use this, but just in case
+      try {
+        ZonedDateTime after = ZonedDateTime.parse(retryAfter, DateTimeFormatter.RFC_1123_DATE_TIME);
+        return after.toEpochSecond() * 1000 - System.currentTimeMillis();
+      } catch (DateTimeParseException e1) {
+        // not a recognized http date
+      }
+    }
+    return 0; // we'll just use the default
   }
 
   @Override
@@ -201,7 +228,7 @@ public abstract class StandardHttpClient<C extends HttpClient, F extends HttpCli
         standardWebSocketBuilder.asHttpRequest(),
         () -> buildWebSocketOnce(standardWebSocketBuilder, listener),
         r -> Optional.ofNullable(r.webSocket).ifPresent(w -> w.sendClose(1000, null)),
-        r -> Optional.of(r.webSocketUpgradeResponse).map(HttpResponse::code).orElse(null));
+        r -> r.webSocketUpgradeResponse);
 
     CompletableFuture<WebSocket> result = new CompletableFuture<>();
 
