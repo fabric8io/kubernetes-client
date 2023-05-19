@@ -5,8 +5,6 @@
 #### Bugs
 
 #### Improvements
-* Fix #5100: lessened the level of the non-conflicting httpclient implementation warning
-* Fix #5112: Expose put method with InputStream argument in HttpRequest class
 
 #### Dependency Upgrade
 * Fix #4989: Upgrade Tekton Model to v0.47.0
@@ -14,7 +12,7 @@
 #### New Features
 
 #### _**Note**_: Breaking changes
-* Fix #4911: Config/RequestConfig.scaleTimeout has been deprectated along with Scalable.scale(count, wait) and DeployableScalableResource.deployLatest(wait). withTimeout may be called before the operation to control the timeout.
+* Fix #4911: Config/RequestConfig.scaleTimeout has been deprecated along with Scalable.scale(count, wait) and DeployableScalableResource.deployLatest(wait). withTimeout may be called before the operation to control the timeout.
 * Fix #4911: Config/RequestConfig.websocketTimeout has been removed. Config/RequestConfig.requestTimeout will be used for websocket connection timeouts.
 * Fix #4911: HttpClient api/building changes - writeTimeout has been removed, readTimeout has moved to the HttpRequest
 
