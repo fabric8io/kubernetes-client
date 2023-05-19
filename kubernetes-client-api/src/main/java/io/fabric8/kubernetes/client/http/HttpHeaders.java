@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.client.http;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public interface HttpHeaders {
 
@@ -35,5 +36,21 @@ public interface HttpHeaders {
    * @return the Map of Headers and their list of values.
    */
   Map<String, List<String>> headers();
+
+  /**
+   * Return the header as a single string value
+   *
+   * @return will be null if the header is unset
+   */
+  default String header(String key) {
+    List<String> headers = headers(key);
+    if (headers.size() == 1) {
+      return headers.get(0);
+    }
+    if (headers.isEmpty()) {
+      return null;
+    }
+    return headers.stream().collect(Collectors.joining(","));
+  }
 
 }

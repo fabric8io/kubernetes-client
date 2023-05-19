@@ -121,7 +121,7 @@ class StandardHttpClientTest {
         .build();
 
     IntStream.range(0, 3).forEach(i -> client.expect(".*", new IOException("Unreachable!")));
-    client.expect(".*", new TestHttpResponse<AsyncBody>().withCode(500));
+    client.expect(".*", new TestHttpResponse<AsyncBody>().withCode(403));
 
     CompletableFuture<HttpResponse<AsyncBody>> consumeFuture = client.consumeBytes(
         client.newHttpRequestBuilder().uri("http://localhost").build(),
@@ -132,7 +132,7 @@ class StandardHttpClientTest {
     long start = System.currentTimeMillis();
 
     // should ultimately error with the final 500
-    assertEquals(500, consumeFuture.get().code());
+    assertEquals(403, consumeFuture.get().code());
     long stop = System.currentTimeMillis();
 
     // should take longer than the delay
@@ -172,7 +172,7 @@ class StandardHttpClientTest {
         .withRequestRetryBackoffLimit(3)
         .withRequestRetryBackoffInterval(50).build())
         .build();
-    final WebSocketResponse error = new WebSocketResponse(new WebSocketUpgradeResponse(null, 500, null), new IOException());
+    final WebSocketResponse error = new WebSocketResponse(new WebSocketUpgradeResponse(null, 500), new IOException());
     IntStream.range(0, 2).forEach(i -> client.wsExpect(".*", error));
     client.wsExpect(".*", new WebSocketResponse(new WebSocketUpgradeResponse(null), mock(WebSocket.class)));
 
