@@ -22,7 +22,6 @@ import io.fabric8.kubernetes.api.model.ListOptions;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.http.AsyncBody;
 import io.fabric8.kubernetes.client.http.HttpClient;
-import io.fabric8.kubernetes.client.http.HttpClient.DerivedClientBuilder;
 import io.fabric8.kubernetes.client.http.HttpResponse;
 import io.fabric8.kubernetes.client.http.TestHttpResponse;
 import org.junit.jupiter.api.Test;
@@ -81,9 +80,6 @@ class WatchHttpManagerTest {
   private void setupHttpWatch(CompletableFuture<HttpResponse<AsyncBody>> future, CountDownLatch reconnect)
       throws MalformedURLException {
     HttpClient client = Mockito.mock(HttpClient.class, Mockito.RETURNS_DEEP_STUBS);
-    DerivedClientBuilder builder = Mockito.mock(HttpClient.DerivedClientBuilder.class, Mockito.RETURNS_SELF);
-    Mockito.when(client.newBuilder()).thenReturn(builder);
-    Mockito.when(builder.build()).thenReturn(client);
     BaseOperation baseOperation = AbstractWatchManagerTest.mockOperation();
     Mockito.when(baseOperation.getNamespacedUrl()).thenReturn(new URL("http://localhost"));
     Mockito.when(client.consumeBytes(Mockito.any(), Mockito.any())).thenReturn(future);

@@ -44,6 +44,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
@@ -95,6 +96,7 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
 
     final AtomicBoolean reconnected = new AtomicBoolean();
     final AtomicBoolean closed = new AtomicBoolean();
+    final CompletableFuture<Void> ended = new CompletableFuture<>();
 
   }
 
@@ -119,6 +121,8 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
   volatile WatchRequestState latestRequestState;
   private final Map<Class<?>, Integer> endErrors = new ConcurrentHashMap<>();
   private AtomicInteger retryAfterSeconds = new AtomicInteger();
+
+  private int watchEndCheckMs = 120000;
 
   AbstractWatchManager(
       Watcher<T> watcher, BaseOperation<T, ?, ?> baseOperation, ListOptions listOptions, int reconnectLimit,
@@ -151,9 +155,25 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
    * attempt to reconnect
    */
   public synchronized void closeRequest() {
-    if (Optional.ofNullable(latestRequestState).map(state -> state.closed.compareAndSet(false, true)).orElse(false)) {
+    WatchRequestState state = latestRequestState;
+    if (state != null && state.closed.compareAndSet(false, true)) {
       closeCurrentRequest();
+      CompletableFuture<Void> future = Utils.schedule(Runnable::run, () -> failSafeReconnect(state), watchEndCheckMs,
+          TimeUnit.MILLISECONDS);
+      state.ended.whenComplete((v, t) -> future.cancel(true));
     }
+  }
+
+  private synchronized void failSafeReconnect(WatchRequestState state) {
+    if (state == latestRequestState && !forceClosed.get() && (reconnectAttempt == null || reconnectAttempt.isDone())) {
+      logger.error("The last watch has yet to terminate as expected, will force start another watch. "
+          + "Please report this to the Fabric8 Kubernetes Client development team.");
+      reconnect();
+    }
+  }
+
+  public void setWatchEndCheckMs(int watchEndCheckMs) {
+    this.watchEndCheckMs = watchEndCheckMs;
   }
 
   protected abstract void closeCurrentRequest();
@@ -380,6 +400,7 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
   }
 
   void watchEnded(Throwable t, WatchRequestState state) {
+    state.ended.complete(null);
     if (state != latestRequestState) {
       // should not happen, but there is already some mitigation logic in the jetty client,
       // so we'll guard against an erroneous error after the logical close which would cause

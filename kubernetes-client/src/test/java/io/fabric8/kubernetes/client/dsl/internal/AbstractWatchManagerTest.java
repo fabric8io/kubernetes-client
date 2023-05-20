@@ -21,7 +21,6 @@ import io.fabric8.kubernetes.api.model.StatusBuilder;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.WatcherException;
 import io.fabric8.kubernetes.client.dsl.internal.AbstractWatchManager.WatchRequestState;
-import io.fabric8.kubernetes.client.http.WebSocket;
 import io.fabric8.kubernetes.client.utils.CommonThreadPool;
 import io.fabric8.kubernetes.client.utils.Utils;
 import org.junit.jupiter.api.DisplayName;
@@ -96,17 +95,6 @@ class AbstractWatchManagerTest {
     }
     // Then
     assertThat(watcher.closeCount.get()).isEqualTo(1);
-  }
-
-  @Test
-  @DisplayName("closeWebSocket, closes web socket with 1000 code (Normal Closure)")
-  void closeWebSocket() {
-    // Given
-    final WebSocket webSocket = mock(WebSocket.class);
-    // When
-    WatchConnectionManager.closeWebSocket(webSocket);
-    // Then
-    verify(webSocket, times(1)).sendClose(1000, null);
   }
 
   @Test
@@ -230,10 +218,11 @@ class AbstractWatchManagerTest {
     final WatcherAdapter<HasMetadata> watcher = new WatcherAdapter<>();
     final WatchManager<HasMetadata> awm = withDefaultWatchManager(watcher);
     // When
-    awm.latestRequestState = new WatchRequestState();
-    awm.watchEnded(null, awm.latestRequestState);
+    WatchRequestState state = new WatchRequestState();
+    awm.latestRequestState = state;
+    awm.watchEnded(null, state);
     // Then
-    assertThat(awm.latestRequestState.reconnected).isTrue();
+    assertThat(state.reconnected).isTrue();
   }
 
   @Test

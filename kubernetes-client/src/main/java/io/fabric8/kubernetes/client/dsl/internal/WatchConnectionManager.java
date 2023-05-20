@@ -26,8 +26,6 @@ import io.fabric8.kubernetes.client.http.HttpResponse;
 import io.fabric8.kubernetes.client.http.WebSocket;
 import io.fabric8.kubernetes.client.http.WebSocket.Builder;
 import io.fabric8.kubernetes.client.http.WebSocketHandshakeException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -43,26 +41,11 @@ import java.util.concurrent.TimeUnit;
 public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesResourceList<T>>
     extends AbstractWatchManager<T> {
 
-  private static final Logger logger = LoggerFactory.getLogger(WatchConnectionManager.class);
-
   private final long connectTimeoutMillis;
   protected WatcherWebSocketListener<T> listener;
   private volatile CompletableFuture<WebSocket> websocketFuture;
 
-  private volatile boolean ready;
-
-  static void closeWebSocket(WebSocket webSocket) {
-    if (webSocket != null) {
-      logger.debug("Closing websocket {}", webSocket);
-      try {
-        if (!webSocket.sendClose(1000, null)) {
-          logger.debug("Websocket already closed {}", webSocket);
-        }
-      } catch (IllegalStateException e) {
-        logger.error("invalid code for websocket: {} {}", e.getClass(), e.getMessage());
-      }
-    }
-  }
+  volatile boolean ready;
 
   public WatchConnectionManager(final HttpClient client, final BaseOperation<T, L, ?> baseOperation,
       final ListOptions listOptions, final Watcher<T> watcher, final int reconnectInterval, final int reconnectLimit,
@@ -73,11 +56,9 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
 
   @Override
   protected void closeCurrentRequest() {
-    Optional.ofNullable(this.websocketFuture).ifPresent(theFuture -> theFuture.whenComplete((w, t) -> {
-      if (w != null) {
-        closeWebSocket(w);
-      }
-    }));
+    Optional.ofNullable(this.websocketFuture).ifPresent(
+        theFuture -> theFuture.whenComplete(
+            (w, t) -> Optional.ofNullable(w).ifPresent(ws -> ws.sendClose(1000, null))));
   }
 
   public CompletableFuture<WebSocket> getWebsocketFuture() {

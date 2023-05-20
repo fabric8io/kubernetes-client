@@ -19,9 +19,11 @@ import io.fabric8.kubernetes.client.http.WebSocket;
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.eclipse.jetty.util.BufferUtil;
 import org.eclipse.jetty.websocket.api.Session;
+import org.eclipse.jetty.websocket.api.exceptions.MessageTooLargeException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.net.ProtocolException;
 import java.nio.ByteBuffer;
 import java.nio.channels.ClosedChannelException;
 import java.util.LinkedHashMap;
@@ -42,6 +44,20 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class JettyWebSocketTest {
+
+  @Test
+  void webSocketExceptionConversion() {
+    // Given
+    final var listener = new Listener();
+    // When
+    new JettyWebSocket(listener).onWebSocketError(new MessageTooLargeException("too big"));
+    // Then
+    assertThat(listener.events)
+        .containsOnlyKeys("onError")
+        .extracting("onError", InstanceOfAssertFactories.type(Object[].class))
+        .extracting(o -> o[0], InstanceOfAssertFactories.type(ProtocolException.class))
+        .extracting(ProtocolException::getCause).isInstanceOf(MessageTooLargeException.class);
+  }
 
   @Test
   @DisplayName("Remote WebSocket binary message, notifies first onMessage with no back pressure")
