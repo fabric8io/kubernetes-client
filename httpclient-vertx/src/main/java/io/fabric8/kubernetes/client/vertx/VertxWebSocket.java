@@ -48,12 +48,6 @@ class VertxWebSocket implements WebSocket {
       ws.pause();
       listener.onMessage(this, msg);
     });
-    // if the server sends a ping, we're in trouble with our fetch strategy as there is
-    // no ping handler to increase the demand - this should not be an immediate issue as
-    // the api server does not seem to be sending pings
-
-    // if for whatever reason we send a ping, pong counts against the demand, so we need more
-    ws.pongHandler(b -> ws.fetch(1));
     // use end, not close, because close is processed immediately vs. end is in frame order
     ws.endHandler(v -> listener.onClose(this, ws.closeStatusCode(), ws.closeReason()));
     ws.exceptionHandler(err -> {
