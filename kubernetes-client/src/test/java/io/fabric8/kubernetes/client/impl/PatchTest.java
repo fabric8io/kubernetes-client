@@ -32,6 +32,7 @@ import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.HttpRequest.Builder;
 import io.fabric8.kubernetes.client.http.StandardHttpRequest;
 import io.fabric8.kubernetes.client.http.TestHttpResponse;
+import io.fabric8.kubernetes.client.utils.KubernetesSerialization;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -66,7 +67,8 @@ class PatchTest {
     when(mockClient.sendAsync(any(), Mockito.eq(byte[].class)))
         .thenReturn(CompletableFuture.completedFuture(TestHttpResponse.from(200, "{}")));
     Config config = new ConfigBuilder().withMasterUrl("https://localhost:8443/").build();
-    kubernetesClient = new KubernetesClientImpl(mockClient, config);
+    kubernetesClient = new KubernetesClientImpl(mockClient, config, () -> Runnable::run,
+        new KubernetesSerialization());
     when(mockClient.newHttpRequestBuilder()).thenAnswer(answer -> {
       HttpRequest.Builder result = Mockito.mock(HttpRequest.Builder.class, Mockito.RETURNS_SELF);
       when(result.build()).thenReturn(new StandardHttpRequest.Builder().uri("https://localhost:8443/").build());

@@ -84,13 +84,13 @@ class LoadAsTemplateTest {
   @Test
   void shouldProcessLocallyDoubleBracedParameters() {
     // Given
-    final Map<String, String> nonStringParamsToBeAbleToLoad = Collections.singletonMap("CONTAINER_PORT", "8080");
     final Map<String, String> localRequiredParameters = new HashMap<>();
     localRequiredParameters.put("USERNAME", "notTheOneInYaml");
     localRequiredParameters.put("REQUIRED", "requiredValue");
     localRequiredParameters.put("REQUIRED_BOOLEAN", "true");
+    localRequiredParameters.put("CONTAINER_PORT", "8080");
     // When
-    final KubernetesList result = client.templates().withParameters(nonStringParamsToBeAbleToLoad)
+    final KubernetesList result = client.templates()
         .load(getClass().getResourceAsStream("/template-with-json-params.yml"))
         .processLocally(localRequiredParameters);
     // Then

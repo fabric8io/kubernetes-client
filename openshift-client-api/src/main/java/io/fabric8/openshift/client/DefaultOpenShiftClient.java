@@ -22,9 +22,6 @@ import io.fabric8.kubernetes.client.http.HttpClient.Builder;
 import io.fabric8.kubernetes.client.http.HttpClient.Factory;
 import io.fabric8.kubernetes.client.http.StandardHttpClientBuilder;
 import io.fabric8.kubernetes.client.utils.HttpClientUtils;
-import io.fabric8.kubernetes.client.utils.Serialization;
-
-import java.io.InputStream;
 
 /**
  * Class for Default Openshift Client implementing KubernetesClient interface.
@@ -36,14 +33,6 @@ import java.io.InputStream;
 public class DefaultOpenShiftClient extends NamespacedOpenShiftClientAdapter {
 
   public static final String OPENSHIFT_VERSION_ENDPOINT = "version/openshift";
-
-  public static DefaultOpenShiftClient fromConfig(String config) {
-    return new DefaultOpenShiftClient(Serialization.unmarshal(config, OpenShiftConfig.class));
-  }
-
-  public static DefaultOpenShiftClient fromConfig(InputStream is) {
-    return new DefaultOpenShiftClient(Serialization.unmarshal(is, OpenShiftConfig.class));
-  }
 
   public DefaultOpenShiftClient() {
     this(new OpenShiftConfigBuilder().build());

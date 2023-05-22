@@ -20,6 +20,7 @@ import io.fabric8.kubernetes.api.model.ReplicationController;
 import io.fabric8.kubernetes.api.model.ReplicationControllerBuilder;
 import io.fabric8.kubernetes.client.dsl.internal.PatchUtils;
 import io.fabric8.kubernetes.client.dsl.internal.PatchUtils.Format;
+import io.fabric8.kubernetes.client.utils.KubernetesSerialization;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -36,10 +37,11 @@ class PatchUtilsTest {
         + "metadata:\n"
         + "  name: \"x\"\n"
         + "status:\n"
-        + "  fullyLabeledReplicas: 1\n", PatchUtils.withoutRuntimeState(rc, Format.YAML, false));
+        + "  fullyLabeledReplicas: 1\n",
+        PatchUtils.withoutRuntimeState(rc, Format.YAML, false, new KubernetesSerialization()));
 
     assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"ReplicationController\",\"metadata\":{\"name\":\"x\"}}",
-        PatchUtils.withoutRuntimeState(rc, Format.JSON, true));
+        PatchUtils.withoutRuntimeState(rc, Format.JSON, true, new KubernetesSerialization()));
   }
 
   @Test
@@ -52,7 +54,7 @@ class PatchUtilsTest {
 
     assertEquals(
         "[{\"op\":\"add\",\"path\":\"/metadata/labels\",\"value\":{\"my\":\"label\"}},{\"op\":\"add\",\"path\":\"/status/availableReplicas\",\"value\":2}]",
-        PatchUtils.jsonDiff(rc1, rc2, false));
+        PatchUtils.jsonDiff(rc1, rc2, false, new KubernetesSerialization()));
   }
 
 }

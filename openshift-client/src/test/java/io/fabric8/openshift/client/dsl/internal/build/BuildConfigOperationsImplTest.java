@@ -15,12 +15,12 @@
  */
 package io.fabric8.openshift.client.dsl.internal.build;
 
-import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.HttpResponse;
 import io.fabric8.kubernetes.client.impl.BaseClient;
+import io.fabric8.kubernetes.client.utils.KubernetesSerialization;
 import io.fabric8.openshift.client.OpenShiftConfigBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -43,7 +43,7 @@ import static org.mockito.Mockito.when;
 
 class BuildConfigOperationsImplTest {
 
-  private Client client;
+  private BaseClient client;
   private HttpClient httpClient;
 
   @BeforeEach
@@ -64,6 +64,7 @@ class BuildConfigOperationsImplTest {
         .build()).thenReturn(response);
 
     client = mock(BaseClient.class, Mockito.RETURNS_SELF);
+    Mockito.when(client.getKubernetesSerialization()).thenReturn(new KubernetesSerialization());
     Mockito.when(client.getHttpClient()).thenReturn(httpClient);
     Mockito.when(client.getConfiguration())
         .thenReturn(new OpenShiftConfigBuilder().withMasterUrl("https://localhost:8443/").build());

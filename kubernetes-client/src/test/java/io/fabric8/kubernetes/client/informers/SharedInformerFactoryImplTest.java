@@ -19,7 +19,8 @@ import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.apps.Deployment;
 import io.fabric8.kubernetes.client.CustomResource;
-import io.fabric8.kubernetes.client.impl.KubernetesClientImpl;
+import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.kubernetes.client.informers.impl.SharedInformerFactoryImpl;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Kind;
@@ -33,7 +34,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class SharedInformerFactoryImplTest {
   public static final long RESYNC_PERIOD = 10 * 1000L;
-  private KubernetesClientImpl mockBaseClient;
+  private KubernetesClient mockBaseClient;
 
   private static class TestCustomResourceSpec {
   }
@@ -95,7 +96,7 @@ class SharedInformerFactoryImplTest {
 
   @BeforeEach
   void init() {
-    this.mockBaseClient = new KubernetesClientImpl();
+    this.mockBaseClient = new KubernetesClientBuilder().build();
   }
 
   @Test

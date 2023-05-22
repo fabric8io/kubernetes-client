@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.client.osgi;
 
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
 import io.fabric8.kubernetes.client.NamespacedKubernetesClientAdapter;
 import io.fabric8.kubernetes.client.OAuthTokenProvider;
@@ -162,7 +163,7 @@ public class ManagedKubernetesClient extends NamespacedKubernetesClientAdapter<K
       builder.withOauthTokenProvider(provider);
     }
 
-    this.init(new KubernetesClientImpl(builder.build()));
+    this.init(new KubernetesClientBuilder().withConfig(builder.build()).build());
   }
 
   @Deactivate

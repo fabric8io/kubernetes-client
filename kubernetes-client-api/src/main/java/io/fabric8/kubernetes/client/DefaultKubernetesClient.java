@@ -21,9 +21,6 @@ import io.fabric8.kubernetes.client.http.HttpClient.Builder;
 import io.fabric8.kubernetes.client.http.HttpClient.Factory;
 import io.fabric8.kubernetes.client.http.StandardHttpClientBuilder;
 import io.fabric8.kubernetes.client.utils.HttpClientUtils;
-import io.fabric8.kubernetes.client.utils.Serialization;
-
-import java.io.InputStream;
 
 /**
  * Class for Default Kubernetes Client implementing KubernetesClient interface.
@@ -35,14 +32,6 @@ import java.io.InputStream;
 public class DefaultKubernetesClient extends NamespacedKubernetesClientAdapter<NamespacedKubernetesClient> {
 
   public static final String KUBERNETES_VERSION_ENDPOINT = "version";
-
-  public static DefaultKubernetesClient fromConfig(String config) {
-    return new DefaultKubernetesClient(Serialization.unmarshal(config, Config.class));
-  }
-
-  public static DefaultKubernetesClient fromConfig(InputStream is) {
-    return new DefaultKubernetesClient(Serialization.unmarshal(is, Config.class));
-  }
 
   public DefaultKubernetesClient() {
     this(new ConfigBuilder().build());

@@ -74,6 +74,10 @@ public class GenericKubernetesResource implements HasMetadata {
     this.additionalProperties.put(name, value);
   }
 
+  /**
+   * @deprecated use KubernetesSerialization to convert the additionalProperties
+   */
+  @Deprecated
   @JsonIgnore
   public JsonNode getAdditionalPropertiesNode() {
     return MAPPER.convertValue(getAdditionalProperties(), JsonNode.class);

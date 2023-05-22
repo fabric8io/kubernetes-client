@@ -28,6 +28,7 @@ import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.HttpRequest.Builder;
 import io.fabric8.kubernetes.client.http.TestHttpResponse;
+import io.fabric8.kubernetes.client.utils.KubernetesSerialization;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -61,7 +62,8 @@ class DryRunTest {
     when(mockClient.sendAsync(any(), Mockito.eq(byte[].class)))
         .thenReturn(CompletableFuture.completedFuture(TestHttpResponse.from(200,
             "{\"kind\":\"Pod\", \"apiVersion\":\"v1\"}")));
-    kubernetesClient = new KubernetesClientImpl(mockClient, config);
+    kubernetesClient = new KubernetesClientImpl(mockClient, config, () -> Runnable::run,
+        new KubernetesSerialization());
     Mockito.when(mockClient.newHttpRequestBuilder()).thenAnswer(answer -> {
       HttpRequest.Builder result = Mockito.mock(HttpRequest.Builder.class, Mockito.RETURNS_SELF);
       builders.add(result);
