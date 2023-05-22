@@ -3,6 +3,7 @@
 ### 6.7-SNAPSHOT
 
 #### Bugs
+Fix #5145: [java-generator] handle `additionalProperties: true` emitting a field of type `AnyType`
 
 #### Improvements
 
@@ -16,11 +17,6 @@
 * Fix #4911: Config/RequestConfig.scaleTimeout has been deprecated along with Scalable.scale(count, wait) and DeployableScalableResource.deployLatest(wait). withTimeout may be called before the operation to control the timeout.
 * Fix #4911: Config/RequestConfig.websocketTimeout has been removed. Config/RequestConfig.requestTimeout will be used for websocket connection timeouts.
 * Fix #4911: HttpClient api/building changes - writeTimeout has been removed, readTimeout has moved to the HttpRequest
-
-### Unreleased
-
-#### Bugs
-Fix #5145: [java-generator] handle `additionalProperties: true` emitting a field of type `AnyType`
 
 ### 6.6.2 (2023-05-15)
 
@@ -45,13 +41,13 @@ Fix #5121: RequestConfig is propagated to derived HttpClient instances
 * Fix #4988: Ensuring that previous requests are closed before retry
 * Fix #4993: Quantity class should have @JsonIgnore on the additionalProperties parameter
 * Fix #5000: Remove clashing `v1alpha` apigroup packages in `istio-model-v1beta1`
-* fix #5002: Jetty response completion accounts for header processing
+* Fix #5002: Jetty response completion accounts for header processing
 * Fix #5009: addressing issue with serialization of wrapped polymorphic types
 * Fix #5015: executing resync as a locking operation to ensure resync event ordering
 * Fix #5020: updating the resourceVersion on a delete with finalizers
 * Fix #5033: port forwarding for clients other than okhttp needs to specify the subprotocol
 * Fix #5035: allowed client.authentication.k8s.io/v1 to work for the ExecConfig
-* fix #5036: Better websocket error handling for protocol / client enforced errors, also update frame/message limits
+* Fix #5036: Better websocket error handling for protocol / client enforced errors, also update frame/message limits
 * Fix #5044: disable Vert.x instance file caching
 * Fix #5059: Vert.x InputStreamReader uses an empty Buffer sentinel to avoid NPE
 * Fix #5085: Vert.x HTTP Client InputStreamReadStream works in Native mode
