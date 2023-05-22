@@ -47,8 +47,4 @@ public class StandardHttpHeaders implements HttpHeaders {
   public Map<String, List<String>> headers() {
     return Collections.unmodifiableMap(headers);
   }
-
-  public Map<String, List<String>> getHeaders() {
-    return headers;
-  }
 }

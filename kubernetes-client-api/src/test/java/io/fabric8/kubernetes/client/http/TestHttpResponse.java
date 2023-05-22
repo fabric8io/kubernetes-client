@@ -16,6 +16,8 @@
 package io.fabric8.kubernetes.client.http;
 
 import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -29,6 +31,14 @@ public class TestHttpResponse<T> extends StandardHttpHeaders implements HttpResp
   private T body;
   private HttpRequest request;
   private HttpResponse<T> previousResponse;
+
+  public TestHttpResponse() {
+    super();
+  }
+
+  public TestHttpResponse(Map<String, List<String>> headers) {
+    super(headers);
+  }
 
   @Override
   public int code() {

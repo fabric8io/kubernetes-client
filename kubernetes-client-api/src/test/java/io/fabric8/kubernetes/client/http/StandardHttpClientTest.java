@@ -20,6 +20,9 @@ import io.fabric8.kubernetes.client.http.WebSocket.Listener;
 import org.awaitility.Awaitility;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mockito;
 
 import java.io.IOException;
@@ -28,11 +31,14 @@ import java.net.URI;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -231,29 +237,32 @@ class StandardHttpClientTest {
 
   @Test
   void testMultiValueHeader() {
-    TestHttpResponse<Void> response = new TestHttpResponse<Void>();
-    response.getHeaders().put("header", Arrays.asList("a", "b"));
-
+    TestHttpResponse<Void> response = new TestHttpResponse<>(Collections.singletonMap("header", Arrays.asList("a", "b")));
     assertEquals("a,b", response.header("header"));
   }
 
   @Test
-  void testRetryAfterParsing() {
-    TestHttpResponse<Void> response = new TestHttpResponse<Void>();
+  void retryAfterWithNoHeaderDefaultsToZero() {
+    assertEquals(0, StandardHttpClient.retryAfterMillis(new TestHttpResponse<>()));
 
-    //default to 0
-    assertEquals(0, StandardHttpClient.retryAfterMillis(response));
+  }
 
-    response.getHeaders().put(StandardHttpHeaders.RETRY_AFTER, Arrays.asList("2"));
-    assertEquals(2000, StandardHttpClient.retryAfterMillis(response));
+  @ParameterizedTest(name = "{index}: retryAfter={0} has a retry interval between {1} and {2} milliseconds")
+  @MethodSource("testRetryAfterParsingData")
+  void testRetryAfterParsing(List<String> retryAfter, int lowerBound, int upperBound) {
+    assertThat(StandardHttpClient.retryAfterMillis(new TestHttpResponse<>(Collections.singletonMap("Retry-After", retryAfter))))
+        .isGreaterThanOrEqualTo(lowerBound)
+        .isLessThanOrEqualTo(upperBound);
+  }
 
-    response.getHeaders().put(StandardHttpHeaders.RETRY_AFTER, Arrays.asList("invalid"));
-    assertEquals(0, StandardHttpClient.retryAfterMillis(response));
-
-    response.getHeaders().put(StandardHttpHeaders.RETRY_AFTER,
-        Arrays.asList(ZonedDateTime.now().plusSeconds(10).format(DateTimeFormatter.RFC_1123_DATE_TIME)));
-    long after = StandardHttpClient.retryAfterMillis(response);
-    assertTrue(after > 1000 && after <= 10000);
+  public static Stream<Arguments> testRetryAfterParsingData() {
+    return Stream.of(
+        Arguments.of(Collections.emptyList(), 0, 0),
+        Arguments.of(Collections.singletonList("2"), 2000, 2000),
+        Arguments.of(Collections.singletonList("invalid"), 0, 0),
+        Arguments.of(
+            Collections.singletonList(ZonedDateTime.now().plusSeconds(10).format(DateTimeFormatter.RFC_1123_DATE_TIME)), 1001,
+            10000));
   }
 
 }
