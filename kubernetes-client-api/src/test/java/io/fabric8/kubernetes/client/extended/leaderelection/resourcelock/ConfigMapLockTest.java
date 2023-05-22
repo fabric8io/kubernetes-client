@@ -19,6 +19,7 @@ import io.fabric8.kubernetes.api.model.ConfigMap;
 import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.base.PatchContext;
+import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
@@ -28,8 +29,8 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Collections;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.RETURNS_DEEP_STUBS;
@@ -76,16 +77,18 @@ class ConfigMapLockTest {
     cm.setMetadata(new ObjectMetaBuilder()
         .withAnnotations(
             Collections.singletonMap("control-plane.alpha.kubernetes.io/leader",
-                "{\"holderIdentity\":\"1337\",\"leaseDuration\":15,\"acquireTime\":1445401740,\"renewTime\":1445412480}"))
+                "{\"holderIdentity\":\"1337\",\"leaseDuration\":15,\"acquireTime\":\"2015-10-21T04:29:00.000000Z\",\"renewTime\":\"2015-10-21T07:28:00.000000Z\"}"))
         .withResourceVersion("313373").build());
     final ConfigMapLock lock = new ConfigMapLock("namespace", "name", "1337");
     // When
     final LeaderElectionRecord result = lock.toRecord(cm);
     // Then
-    assertNotNull(result);
-    assertEquals("1337", result.getHolderIdentity());
-    assertEquals(15, result.getLeaseDuration().getSeconds());
-    assertEquals(ZonedDateTime.of(2015, 10, 21, 4, 29, 0, 0, ZoneId.of("UTC")), result.getAcquireTime());
+    assertThat(result)
+        .hasFieldOrPropertyWithValue("holderIdentity", "1337")
+        .returns(15L, ler -> ler.getLeaseDuration().getSeconds())
+        .extracting(LeaderElectionRecord::getAcquireTime)
+        .asInstanceOf(InstanceOfAssertFactories.ZONED_DATE_TIME)
+        .isEqualTo(ZonedDateTime.of(2015, 10, 21, 4, 29, 0, 0, ZoneId.of("UTC")));
   }
 
   @Test
