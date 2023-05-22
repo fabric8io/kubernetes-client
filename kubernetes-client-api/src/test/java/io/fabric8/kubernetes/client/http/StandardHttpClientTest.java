@@ -25,6 +25,9 @@ import org.mockito.Mockito;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -224,6 +227,33 @@ class StandardHttpClientTest {
     Awaitility.await().atMost(10, TimeUnit.SECONDS).until(consumeFuture::isDone);
     assertThatThrownBy(consumeFuture::get)
         .isInstanceOf(ExecutionException.class).hasCauseInstanceOf(TimeoutException.class);
+  }
+
+  @Test
+  void testMultiValueHeader() {
+    TestHttpResponse<Void> response = new TestHttpResponse<Void>();
+    response.getHeaders().put("header", Arrays.asList("a", "b"));
+
+    assertEquals("a,b", response.header("header"));
+  }
+
+  @Test
+  void testRetryAfterParsing() {
+    TestHttpResponse<Void> response = new TestHttpResponse<Void>();
+
+    //default to 0
+    assertEquals(0, StandardHttpClient.retryAfterMillis(response));
+
+    response.getHeaders().put(StandardHttpHeaders.RETRY_AFTER, Arrays.asList("2"));
+    assertEquals(2000, StandardHttpClient.retryAfterMillis(response));
+
+    response.getHeaders().put(StandardHttpHeaders.RETRY_AFTER, Arrays.asList("invalid"));
+    assertEquals(0, StandardHttpClient.retryAfterMillis(response));
+
+    response.getHeaders().put(StandardHttpHeaders.RETRY_AFTER,
+        Arrays.asList(ZonedDateTime.now().plusSeconds(10).format(DateTimeFormatter.RFC_1123_DATE_TIME)));
+    long after = StandardHttpClient.retryAfterMillis(response);
+    assertTrue(after > 1000 && after <= 10000);
   }
 
 }
