@@ -191,8 +191,8 @@ public abstract class StandardHttpClient<C extends HttpClient, F extends HttpCli
         });
   }
 
-  private long retryAfterMillis(HttpResponse<?> httpResponse) {
-    String retryAfter = httpResponse.header("Retry-After");
+  static long retryAfterMillis(HttpResponse<?> httpResponse) {
+    String retryAfter = httpResponse.header(StandardHttpHeaders.RETRY_AFTER);
     if (retryAfter != null) {
       try {
         return Integer.parseInt(retryAfter) * 1000L;
