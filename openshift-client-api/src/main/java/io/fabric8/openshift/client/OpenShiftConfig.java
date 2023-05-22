@@ -102,7 +102,7 @@ public class OpenShiftConfig extends Config {
     this.setBuildTimeout(buildTimeout);
     this.setDisableApiGroupCheck(disableApiGroupCheck);
 
-    if (openShiftUrl == null || openShiftUrl.isEmpty()) {
+    if (Utils.isBlank(openShiftUrl)) {
       openShiftUrl = URLUtils.join(getMasterUrl(), "oapi", oapiVersion);
     }
     if (!openShiftUrl.endsWith("/")) {
@@ -151,7 +151,7 @@ public class OpenShiftConfig extends Config {
 
   private static String getDefaultOpenShiftUrl(Config config) {
     String openshiftUrl = Utils.getSystemPropertyOrEnvVar(OPENSHIFT_URL_SYSTEM_PROPERTY);
-    if (openshiftUrl != null) {
+    if (Utils.isNotBlank(openshiftUrl)) {
       // The OPENSHIFT_URL environment variable may be set to the root url (i.e. without the '/oapi/version' path) in some configurations
       if (isRootURL(openshiftUrl)) {
         openshiftUrl = URLUtils.join(openshiftUrl, "oapi", getDefaultOapiVersion(config));

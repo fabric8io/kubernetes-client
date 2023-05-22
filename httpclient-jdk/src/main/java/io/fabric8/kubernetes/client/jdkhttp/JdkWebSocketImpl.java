@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.client.jdkhttp;
 
 import io.fabric8.kubernetes.client.http.BufferUtil;
 import io.fabric8.kubernetes.client.http.WebSocket;
+import io.fabric8.kubernetes.client.utils.Utils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -125,7 +126,7 @@ class JdkWebSocketImpl implements WebSocket {
 
   @Override
   public boolean sendClose(int code, String reason) {
-    CompletableFuture<java.net.http.WebSocket> cf = webSocket.sendClose(code, reason == null ? "Closing" : reason);
+    CompletableFuture<java.net.http.WebSocket> cf = webSocket.sendClose(code, Utils.isBlank(reason) ? "Closing" : reason);
     // matches the behavior of the okhttp implementation and will ensure input closure after 1 minute
     cf.thenRunAsync(() -> webSocket.abort(), CompletableFuture.delayedExecutor(1, TimeUnit.MINUTES));
     return asBoolean(cf);

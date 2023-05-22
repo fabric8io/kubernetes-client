@@ -161,7 +161,7 @@ public class URLUtils {
   public static String pathJoin(String... strings) {
     StringBuilder buffer = new StringBuilder();
     for (String string : strings) {
-      if (string == null) {
+      if (Utils.isBlank(string)) {
         continue;
       }
       if (buffer.length() > 0) {

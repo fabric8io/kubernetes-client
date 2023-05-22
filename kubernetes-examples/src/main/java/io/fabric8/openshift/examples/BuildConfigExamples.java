@@ -22,6 +22,7 @@ import io.fabric8.kubernetes.api.model.Quantity;
 import io.fabric8.kubernetes.api.model.ServiceAccountBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientBuilder;
+import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.openshift.api.model.Build;
 import io.fabric8.openshift.api.model.BuildConfig;
 import io.fabric8.openshift.api.model.BuildConfigBuilder;
@@ -44,7 +45,7 @@ public class BuildConfigExamples {
     try (KubernetesClient kubernetesClient = new KubernetesClientBuilder().build()) {
       final OpenShiftClient client = kubernetesClient.adapt(OpenShiftClient.class);
       final String namespace;
-      if (client.getNamespace() != null) {
+      if (Utils.isNotBlank(client.getNamespace())) {
         namespace = client.getNamespace();
         logger.info("Using configured namespace: {}", namespace);
       } else {

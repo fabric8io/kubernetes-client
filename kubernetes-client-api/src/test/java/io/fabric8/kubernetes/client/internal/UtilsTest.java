@@ -302,6 +302,39 @@ class UtilsTest {
   }
 
   @Test
+  @DisplayName("isBlank, null, should return true")
+  void isBlankNullData() {
+    final boolean result1 = Utils.isBlank((String) null);
+    final boolean result2 = Utils.isBlank("");
+
+    assertTrue(result1);
+    assertTrue(result2);
+  }
+
+  @Test
+  @DisplayName("isBlank, non null, should return false")
+  void isBlankNonNullData() {
+    final boolean result1 = Utils.isBlank("non null");
+    assertFalse(result1);
+  }
+
+  @Test
+  @DisplayName("isNotBlank, non null, should return true")
+  void isNotBlankNonNullData() {
+    final boolean result1 = Utils.isNotBlank("non null");
+    assertTrue(result1);
+  }
+
+  @Test
+  @DisplayName("isNotBlank, null, should return false")
+  void isNotBlankNullData() {
+    final boolean result1 = Utils.isNotBlank("");
+    final boolean result2 = Utils.isNotBlank((String) null);
+    assertFalse(result1);
+    assertFalse(result2);
+  }
+
+  @Test
   @DisplayName("isNotNull, null, should return false")
   void isNotNull() {
     // Given

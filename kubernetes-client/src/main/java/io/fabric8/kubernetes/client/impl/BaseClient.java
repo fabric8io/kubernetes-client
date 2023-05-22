@@ -115,7 +115,7 @@ public abstract class BaseClient implements Client {
   protected void setDerivedFields() {
     this.namespace = config.getNamespace();
     this.apiVersion = config.getApiVersion();
-    if (config.getMasterUrl() == null) {
+    if (Utils.isBlank(config.getMasterUrl())) {
       throw new KubernetesClientException("Unknown Kubernetes master URL - " +
           "please set with the builder, or set with either system property \"" + Config.KUBERNETES_MASTER_SYSTEM_PROPERTY
           + "\"" +

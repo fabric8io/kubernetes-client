@@ -22,6 +22,7 @@ import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,10 +42,10 @@ public class ConfigMapExample {
       if (args.length > 0) {
         namespace = args[0];
       }
-      if (namespace == null) {
+      if (Utils.isBlank(namespace)) {
         namespace = client.getNamespace();
       }
-      if (namespace == null) {
+      if (Utils.isBlank(namespace)) {
         namespace = "default";
       }
 

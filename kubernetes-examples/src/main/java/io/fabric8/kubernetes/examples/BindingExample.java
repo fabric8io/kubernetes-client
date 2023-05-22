@@ -22,6 +22,7 @@ import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodSpecBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientBuilder;
+import io.fabric8.kubernetes.client.utils.Utils;
 
 import java.util.UUID;
 
@@ -35,9 +36,9 @@ public class BindingExample {
     final String podName = "binding-example-" + UUID.randomUUID();
     try (final KubernetesClient client = new KubernetesClientBuilder().build()) {
       final String namespace;
-      if (client.getConfiguration().getNamespace() != null) {
+      if (Utils.isNotBlank(client.getConfiguration().getNamespace())) {
         namespace = client.getConfiguration().getNamespace();
-      } else if (client.getNamespace() != null) {
+      } else if (Utils.isNotBlank(client.getNamespace())) {
         namespace = client.getNamespace();
       } else {
         namespace = client.namespaces().list().getItems().stream().findFirst()

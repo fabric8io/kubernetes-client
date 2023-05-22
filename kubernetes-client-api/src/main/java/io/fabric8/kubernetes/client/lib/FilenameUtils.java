@@ -17,6 +17,8 @@
  */
 package io.fabric8.kubernetes.client.lib;
 
+import io.fabric8.kubernetes.client.utils.Utils;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -245,7 +247,7 @@ public class FilenameUtils {
    * @return the normalized fileName. Null bytes inside string will be removed.
    */
   private static String doNormalize(final String fileName, final char separator, final boolean keepSeparator) {
-    if (fileName == null) {
+    if (Utils.isBlank(fileName)) {
       return null;
     }
 
@@ -346,7 +348,7 @@ public class FilenameUtils {
    * @return the updated path
    */
   public static String separatorsToUnix(final String path) {
-    if (path == null || path.indexOf(WINDOWS_SEPARATOR) == NOT_FOUND) {
+    if (Utils.isBlank(path) || path.indexOf(WINDOWS_SEPARATOR) == NOT_FOUND) {
       return path;
     }
     return path.replace(WINDOWS_SEPARATOR, UNIX_SEPARATOR);
@@ -359,7 +361,7 @@ public class FilenameUtils {
    * @return the updated path
    */
   public static String separatorsToWindows(final String path) {
-    if (path == null || path.indexOf(UNIX_SEPARATOR) == NOT_FOUND) {
+    if (Utils.isBlank(path) || path.indexOf(UNIX_SEPARATOR) == NOT_FOUND) {
       return path;
     }
     return path.replace(UNIX_SEPARATOR, WINDOWS_SEPARATOR);

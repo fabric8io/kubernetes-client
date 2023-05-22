@@ -22,6 +22,7 @@ import io.fabric8.crd.generator.utils.Types;
 import io.fabric8.kubernetes.api.model.Duration;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.Quantity;
+import io.fabric8.kubernetes.client.utils.Utils;
 import io.sundr.builder.internal.functions.TypeAs;
 import io.sundr.model.*;
 import io.sundr.utils.Strings;
@@ -115,7 +116,7 @@ public abstract class AbstractJsonSchema<T, B> {
 
   public static String getSchemaTypeFor(TypeRef typeRef) {
     String type = COMMON_MAPPINGS.get(typeRef);
-    if (type == null && typeRef instanceof ClassRef) { // Handle complex types
+    if (Utils.isBlank(type) && typeRef instanceof ClassRef) { // Handle complex types
       ClassRef classRef = (ClassRef) typeRef;
       TypeDef def = Types.typeDefFrom(classRef);
       type = def.isEnum() ? STRING_MARKER : "object";
@@ -286,7 +287,7 @@ public abstract class AbstractJsonSchema<T, B> {
       // if we got a description from the field or an accessor, use it
       final String description = facade.description;
       final T possiblyUpdatedSchema;
-      if (description == null) {
+      if (Utils.isBlank(description)) {
         possiblyUpdatedSchema = schema;
       } else {
         possiblyUpdatedSchema = addDescription(schema, description);
@@ -495,7 +496,7 @@ public abstract class AbstractJsonSchema<T, B> {
         p.process();
         final String contributorName = p.toString();
         if (p.contributeName()) {
-          if (renamedTo == null) {
+          if (Utils.isBlank(renamedTo)) {
             renamedTo = p.getRenamedTo();
             this.nameContributedBy = contributorName;
           } else {
@@ -504,7 +505,7 @@ public abstract class AbstractJsonSchema<T, B> {
         }
 
         if (p.contributeDescription()) {
-          if (description == null) {
+          if (Utils.isBlank(description)) {
             description = p.getDescription();
             descriptionContributedBy = contributorName;
           } else {

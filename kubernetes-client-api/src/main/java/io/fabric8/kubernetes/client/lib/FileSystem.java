@@ -18,6 +18,8 @@
 
 package io.fabric8.kubernetes.client.lib;
 
+import io.fabric8.kubernetes.client.utils.Utils;
+
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.Objects;
@@ -184,7 +186,7 @@ public enum FileSystem {
    * @return true if matches, or false if not or can't determine
    */
   private static boolean isOsNameMatch(final String osName, final String osNamePrefix) {
-    if (osName == null) {
+    if (Utils.isBlank(osName)) {
       return false;
     }
     return osName.toUpperCase(Locale.ROOT).startsWith(osNamePrefix.toUpperCase(Locale.ROOT));

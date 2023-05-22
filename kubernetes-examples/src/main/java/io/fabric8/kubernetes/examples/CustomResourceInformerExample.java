@@ -22,6 +22,7 @@ import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
 import io.fabric8.kubernetes.client.informers.SharedIndexInformer;
 import io.fabric8.kubernetes.client.informers.SharedInformerFactory;
+import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.kubernetes.examples.crds.Dummy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -80,9 +81,9 @@ public class CustomResourceInformerExample {
 
       final Dummy toCreate = new Dummy();
       toCreate.getMetadata().setName("dummy");
-      if (client.getConfiguration().getNamespace() != null) {
+      if (Utils.isNotBlank(client.getConfiguration().getNamespace())) {
         toCreate.getMetadata().setNamespace(client.getConfiguration().getNamespace());
-      } else if (client.getNamespace() != null) {
+      } else if (Utils.isNotBlank(client.getNamespace())) {
         toCreate.getMetadata().setNamespace(client.getNamespace());
       } else {
         toCreate.getMetadata().setNamespace(client.namespaces().list().getItems().stream().findFirst()

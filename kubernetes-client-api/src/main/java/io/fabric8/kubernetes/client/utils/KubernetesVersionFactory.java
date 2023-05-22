@@ -53,7 +53,7 @@ public class KubernetesVersionFactory {
 
       @Override
       public KubernetesVersion create(String version) {
-        if (version == null) {
+        if (Utils.isBlank(version)) {
           return null;
         }
         Matcher matcher = versionPattern.matcher(version);
@@ -67,7 +67,7 @@ public class KubernetesVersionFactory {
       }
 
       private Integer getInt(String value) {
-        if (value == null) {
+        if (Utils.isBlank(value)) {
           return null;
         }
         try {

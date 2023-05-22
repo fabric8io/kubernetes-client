@@ -253,7 +253,7 @@ public class Utils {
    * @return returns processed string
    */
   public static String replaceAllWithoutRegex(String text, String from, String to) {
-    if (text == null) {
+    if (Utils.isBlank(text)) {
       return null;
     }
     int idx = 0;
@@ -273,6 +273,14 @@ public class Utils {
 
   public static boolean isNullOrEmpty(String str) {
     return str == null || str.isEmpty();
+  }
+
+  public static boolean isBlank(String str) {
+    return str == null || str.trim().isEmpty();
+  }
+
+  public static boolean isNotBlank(String str) {
+    return !isBlank(str);
   }
 
   public static boolean isNotNullOrEmpty(Map map) {

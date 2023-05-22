@@ -174,7 +174,7 @@ public class OpenShiftOAuthInterceptor implements Interceptor {
 
       List<String> location = responseOrPrevious.headers(LOCATION);
       String token = !location.isEmpty() ? location.get(0) : null;
-      if (token == null || token.isEmpty()) {
+      if (Utils.isBlank(token)) {
         throw new KubernetesClientException("Unexpected response (" + responseOrPrevious.code() + " "
             + responseOrPrevious.message() + "), to the authorization request. Missing header:[" + LOCATION
             + "].  More than likely the username / password are not correct.");

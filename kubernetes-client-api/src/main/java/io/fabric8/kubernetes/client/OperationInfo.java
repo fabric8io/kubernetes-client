@@ -16,6 +16,7 @@
 package io.fabric8.kubernetes.client;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.client.utils.Utils;
 
 public interface OperationInfo {
 
@@ -44,7 +45,7 @@ public interface OperationInfo {
   default String getFullResourceName() {
     final String plural = getPlural();
     final String group = getGroup();
-    if (plural != null && group != null) {
+    if (Utils.isNotBlank(plural) && Utils.isNotBlank(group)) {
       return HasMetadata.getFullResourceName(plural, group);
     }
     return null;
