@@ -17,11 +17,11 @@ package io.fabric8.kubernetes.client.informers.cache;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
-import io.fabric8.kubernetes.client.utils.ReflectUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * It basically saves and indexes all the entries.
@@ -41,27 +41,16 @@ public interface Cache<T> extends Indexer<T> {
    * @param obj specific object
    * @return the key
    */
-  public static String metaNamespaceKeyFunc(Object obj) {
-    try {
-      if (obj == null) {
-        return "";
-      }
-      ObjectMeta metadata;
-      if (obj instanceof String) {
-        return (String) obj;
-      } else if (obj instanceof ObjectMeta) {
-        metadata = (ObjectMeta) obj;
-      } else {
-        metadata = ReflectUtils.objectMetadata(obj);
-        if (metadata == null) {
-          throw new RuntimeException("Object is bad :" + obj);
-        }
-      }
-
-      return namespaceKeyFunc(metadata.getNamespace(), metadata.getName());
-    } catch (ReflectiveOperationException e) {
-      throw new RuntimeException(e);
+  public static String metaNamespaceKeyFunc(HasMetadata obj) {
+    if (obj == null) {
+      return "";
     }
+    ObjectMeta metadata = obj.getMetadata();
+    if (metadata == null) {
+      throw new RuntimeException("Object is bad :" + obj);
+    }
+
+    return namespaceKeyFunc(metadata.getNamespace(), metadata.getName());
   }
 
   public static String metaUidKeyFunc(HasMetadata obj) {
@@ -90,12 +79,8 @@ public interface Cache<T> extends Indexer<T> {
    * @param obj the specific object
    * @return the indexed value
    */
-  public static List<String> metaNamespaceIndexFunc(Object obj) {
-    try {
-      ObjectMeta metadata = ReflectUtils.objectMetadata(obj);
-      return metadata == null ? Collections.emptyList() : Collections.singletonList(metadata.getNamespace());
-    } catch (ReflectiveOperationException e) {
-      throw new RuntimeException(e);
-    }
+  public static List<String> metaNamespaceIndexFunc(HasMetadata obj) {
+    return Optional.ofNullable(obj).map(HasMetadata::getMetadata)
+        .map(metadata -> Collections.singletonList(metadata.getNamespace())).orElse(Collections.emptyList());
   }
 }

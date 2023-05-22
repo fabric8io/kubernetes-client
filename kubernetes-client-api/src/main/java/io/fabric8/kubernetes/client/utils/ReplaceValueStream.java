@@ -26,7 +26,10 @@ import static io.fabric8.kubernetes.client.utils.Utils.interpolateString;
 /**
  * Replaces template parameter values in the stream to avoid
  * parsing issues of templates with numeric expressions
+ *
+ * @deprecated to be removed in future versions
  */
+@Deprecated
 public class ReplaceValueStream {
   private final Map<String, String> valuesMap;
 

@@ -24,6 +24,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 
+/**
+ * @deprecated use {@link HasMetadata} methods instead
+ */
+@Deprecated
 public class ReflectUtils {
   private ReflectUtils() {
     throw new IllegalStateException("Utility class");
