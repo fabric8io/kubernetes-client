@@ -34,6 +34,7 @@ class KubernetesDeserializerTest {
   @BeforeEach
   public void beforeEach() {
     this.mapping = new KubernetesDeserializer.Mapping();
+    this.mapping.registerClassesFromClassLoaders();
   }
 
   @Test

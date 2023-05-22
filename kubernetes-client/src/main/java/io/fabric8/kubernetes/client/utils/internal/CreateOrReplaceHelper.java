@@ -18,7 +18,7 @@ package io.fabric8.kubernetes.client.utils.internal;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
-import io.fabric8.kubernetes.client.utils.Serialization;
+import io.fabric8.kubernetes.client.utils.KubernetesSerialization;
 
 import java.net.HttpURLConnection;
 import java.util.concurrent.CompletableFuture;
@@ -30,20 +30,22 @@ public class CreateOrReplaceHelper<T extends HasMetadata> {
   private final UnaryOperator<T> replaceTask;
   private final UnaryOperator<T> waitTask;
   private final UnaryOperator<T> reloadTask;
+  private final KubernetesSerialization serialization;
 
   public CreateOrReplaceHelper(UnaryOperator<T> createTask, UnaryOperator<T> replaceTask, UnaryOperator<T> waitTask,
-      UnaryOperator<T> reloadTask) {
+      UnaryOperator<T> reloadTask, KubernetesSerialization serialization) {
     this.createTask = createTask;
     this.replaceTask = replaceTask;
     this.waitTask = waitTask;
     this.reloadTask = reloadTask;
+    this.serialization = serialization;
   }
 
   public T createOrReplace(T item) {
     String resourceVersion = KubernetesResourceUtil.getResourceVersion(item);
     final CompletableFuture<T> future = new CompletableFuture<>();
     int nTries = 0;
-    item = Serialization.clone(item);
+    item = serialization.clone(item);
     while (!future.isDone() && nTries < CREATE_OR_REPLACE_RETRIES) {
       try {
         // Create

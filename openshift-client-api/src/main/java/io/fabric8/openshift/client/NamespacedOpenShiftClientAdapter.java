@@ -18,7 +18,6 @@ package io.fabric8.openshift.client;
 
 import io.fabric8.kubernetes.api.model.ComponentStatus;
 import io.fabric8.kubernetes.api.model.ComponentStatusList;
-import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.client.NamespacedKubernetesClientAdapter;
 import io.fabric8.kubernetes.client.RequestConfig;
 import io.fabric8.kubernetes.client.VersionInfo;
@@ -348,7 +347,7 @@ public class NamespacedOpenShiftClientAdapter extends NamespacedKubernetesClient
   }
 
   @Override
-  public ParameterMixedOperation<Template, TemplateList, TemplateResource<Template, KubernetesList>> templates() {
+  public ParameterMixedOperation<Template, TemplateList, TemplateResource> templates() {
     return getClient().templates();
   }
 

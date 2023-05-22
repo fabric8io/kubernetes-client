@@ -38,7 +38,6 @@ import io.fabric8.kubernetes.client.dsl.base.PatchType;
 import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.OperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.PodOperationContext;
-import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.internal.PodOperationUtil;
 
 import java.io.InputStream;
@@ -150,7 +149,8 @@ public class StatefulSetOperationsImpl
     });
     ControllerRevision previousControllerRevision = controllerRevisions.get(1);
 
-    return patch(PatchContext.of(PatchType.STRATEGIC_MERGE), Serialization.asJson(previousControllerRevision.getData()));
+    return patch(PatchContext.of(PatchType.STRATEGIC_MERGE),
+        getKubernetesSerialization().asJson(previousControllerRevision.getData()));
   }
 
   private ControllerRevisionList getControllerRevisionListForStatefulSet(StatefulSet statefulSet) {

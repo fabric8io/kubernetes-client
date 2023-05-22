@@ -16,7 +16,6 @@
 
 package io.fabric8.kubernetes.client.dsl.internal;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.StatusCause;
 import io.fabric8.kubernetes.client.KubernetesClientException;
@@ -28,7 +27,7 @@ import io.fabric8.kubernetes.client.http.HttpResponse;
 import io.fabric8.kubernetes.client.http.WebSocket;
 import io.fabric8.kubernetes.client.http.WebSocketHandshakeException;
 import io.fabric8.kubernetes.client.utils.InputStreamPumper;
-import io.fabric8.kubernetes.client.utils.Serialization;
+import io.fabric8.kubernetes.client.utils.KubernetesSerialization;
 import io.fabric8.kubernetes.client.utils.internal.SerialExecutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -144,17 +143,14 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
   private final SerialExecutor serialExecutor;
   private final AtomicBoolean closed = new AtomicBoolean(false);
   private final CompletableFuture<Integer> exitCode = new CompletableFuture<>();
-  private ObjectMapper objectMapper = new ObjectMapper();
+  private KubernetesSerialization serialization;
 
   public static String toString(ByteBuffer buffer) {
     return StandardCharsets.UTF_8.decode(buffer).toString();
   }
 
-  public ExecWebSocketListener(PodOperationContext context) {
-    this(context, Runnable::run);
-  }
-
-  public ExecWebSocketListener(PodOperationContext context, Executor executor) {
+  public ExecWebSocketListener(PodOperationContext context, Executor executor, KubernetesSerialization serialization) {
+    this.serialization = serialization;
     this.listener = context.getExecListener();
 
     Integer bufferSize = context.getBufferSize();
@@ -269,7 +265,7 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
       if (t instanceof WebSocketHandshakeException) {
         response = ((WebSocketHandshakeException) t).getResponse();
         if (response != null) {
-          Status status = OperationSupport.createStatus(response);
+          Status status = OperationSupport.createStatus(response, serialization);
           status.setMessage(t.getMessage());
           t = new KubernetesClientException(status).initCause(t);
         }
@@ -351,7 +347,7 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
     int code = -1;
     try {
       String stringValue = toString(bytes);
-      status = Serialization.unmarshal(stringValue, Status.class);
+      status = serialization.unmarshal(stringValue, Status.class);
       if (status != null) {
         code = parseExitCode(status);
       }
@@ -419,7 +415,7 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
       Map<String, Integer> map = new HashMap<>(4);
       map.put(HEIGHT, rows);
       map.put(WIDTH, cols);
-      byte[] bytes = objectMapper.writeValueAsBytes(map);
+      byte[] bytes = serialization.asJson(map).getBytes(StandardCharsets.UTF_8);
       send(bytes, 0, bytes.length, (byte) 4);
     } catch (Exception e) {
       throw KubernetesClientException.launderThrowable(e);

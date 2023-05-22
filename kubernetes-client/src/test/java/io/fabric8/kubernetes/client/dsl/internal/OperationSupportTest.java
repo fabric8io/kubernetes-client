@@ -17,7 +17,6 @@ package io.fabric8.kubernetes.client.dsl.internal;
 
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
-import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
@@ -26,12 +25,15 @@ import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.HttpResponse;
 import io.fabric8.kubernetes.client.http.StandardHttpRequest;
 import io.fabric8.kubernetes.client.http.TestHttpResponse;
+import io.fabric8.kubernetes.client.impl.BaseClient;
+import io.fabric8.kubernetes.client.utils.KubernetesSerialization;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.Mockito;
 
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -41,7 +43,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
-import static org.mockito.Mockito.RETURNS_DEEP_STUBS;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -51,7 +52,10 @@ class OperationSupportTest {
 
   @BeforeEach
   void setUp() {
-    final OperationContext context = new OperationContext().withClient(mock(Client.class, RETURNS_DEEP_STUBS));
+    BaseClient mock = mock(BaseClient.class, Mockito.RETURNS_SELF);
+    Mockito.when(mock.adapt(BaseClient.class).getKubernetesSerialization())
+        .thenReturn(new KubernetesSerialization());
+    final OperationContext context = new OperationContext().withClient(mock);
     final Config globalConfig = new ConfigBuilder(Config.empty())
         .withRequestTimeout(313373)
         .build();

@@ -20,6 +20,7 @@ import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.kubernetes.client.utils.Serialization;
+import io.fabric8.openshift.client.OpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftConfig;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -80,7 +81,7 @@ class OpenShiftConfigTest {
 
   @Test
   void shouldInstantiateClientUsingSerializeDeserialize() {
-    OpenShiftClientImpl original = new OpenShiftClientImpl();
+    OpenShiftClient original = new KubernetesClientBuilder().build().adapt(OpenShiftClient.class);
     String json = Serialization.asJson(original.getConfiguration());
     KubernetesClient copy = new KubernetesClientBuilder().withConfig(json).build();
 

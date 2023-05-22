@@ -24,6 +24,7 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.RequestConfig;
 import io.fabric8.kubernetes.client.dsl.internal.OperationSupport;
 import io.fabric8.kubernetes.client.http.HttpClient;
+import io.fabric8.kubernetes.client.utils.KubernetesSerialization;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -45,7 +46,7 @@ class BaseClientTest {
   @BeforeEach
   void setUp() {
     httpClient = mock(HttpClient.class, RETURNS_DEEP_STUBS);
-    baseClient = new BaseClient(httpClient, Config.empty(), () -> Runnable::run) {
+    baseClient = new BaseClient(httpClient, Config.empty(), () -> Runnable::run, new KubernetesSerialization()) {
 
       @Override
       BaseClient copy() {

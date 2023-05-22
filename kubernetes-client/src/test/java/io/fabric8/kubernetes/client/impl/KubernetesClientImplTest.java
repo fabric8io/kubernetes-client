@@ -24,7 +24,7 @@ import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.dsl.ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable;
+import io.fabric8.kubernetes.client.dsl.NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable;
 import io.fabric8.kubernetes.client.http.BasicBuilder;
 import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.utils.HttpClientUtils;
@@ -62,11 +62,11 @@ class KubernetesClientImplTest {
   private static final String TEST_CONFIG_YML_FILE = Utils
       .filePath(KubernetesClientImplTest.class.getResource("/test-config.yml"));
 
-  private KubernetesClientImpl defaultKubernetesClient;
+  private KubernetesClient defaultKubernetesClient;
 
   @BeforeEach
   public void setUp() {
-    defaultKubernetesClient = new KubernetesClientImpl();
+    defaultKubernetesClient = new KubernetesClientBuilder().build();
   }
 
   @AfterEach
@@ -107,7 +107,7 @@ class KubernetesClientImplTest {
         new File(KubernetesClientImplTest.class.getResource("/test-list.yml").getFile()).toPath(), StandardCharsets.UTF_8);
     final String crlfFile = String.join(" \r\n", fileLines);
     // When
-    final List<HasMetadata> result = new KubernetesClientImpl()
+    final List<HasMetadata> result = new KubernetesClientBuilder().build()
         .load(new ByteArrayInputStream(crlfFile.getBytes(StandardCharsets.UTF_8))).items();
     // Then
     assertThat(result)
@@ -127,7 +127,7 @@ class KubernetesClientImplTest {
 
   @Test
   void shouldInstantiateClientUsingSerializeDeserialize() {
-    KubernetesClientImpl original = new KubernetesClientImpl();
+    KubernetesClient original = new KubernetesClientBuilder().build();
     String json = Serialization.asJson(original.getConfiguration());
     KubernetesClient copy = new KubernetesClientBuilder().withConfig(json).build();
 
@@ -150,7 +150,7 @@ class KubernetesClientImplTest {
         .withImpersonateExtras(extras)
         .build();
 
-    final KubernetesClientImpl client = new KubernetesClientImpl(config);
+    final KubernetesClient client = new KubernetesClientBuilder().withConfig(config).build();
     final Config currentConfig = client.getConfiguration();
 
     assertEquals("a", currentConfig.getImpersonateUsername());
@@ -161,14 +161,14 @@ class KubernetesClientImplTest {
   @Test
   @DisplayName("resource(String).item with HasMetadata should deserialize")
   void resourceFromStringWithHasMetadata() {
-    assertThat(new KubernetesClientImpl().resource("apiVersion: v1\nkind: Pod").item())
+    assertThat(new KubernetesClientBuilder().build().resource("apiVersion: v1\nkind: Pod").item())
         .isInstanceOf(Pod.class);
   }
 
   @Test
   @DisplayName("resource(String) with no HasMetadata should throwException")
   void resourceFromStringWithInvalid() {
-    final KubernetesClient kc = new KubernetesClientImpl();
+    final KubernetesClient kc = new KubernetesClientBuilder().build();
     assertThatExceptionOfType(KubernetesClientException.class)
         .isThrownBy(() -> kc.resource("NotAPod"))
         .withMessageStartingWith("Unable to create a valid resource from the provided object");
@@ -179,7 +179,7 @@ class KubernetesClientImplTest {
   void resourceFromInputStreamWithHasMetadata() throws IOException {
     final String podYaml = "apiVersion: v1\nkind: Pod";
     try (InputStream is = new ByteArrayInputStream(podYaml.getBytes(StandardCharsets.UTF_8))) {
-      assertThat(new KubernetesClientImpl().resource(is).item())
+      assertThat(new KubernetesClientBuilder().build().resource(is).item())
           .isInstanceOf(Pod.class);
     }
   }
@@ -187,7 +187,7 @@ class KubernetesClientImplTest {
   @Test
   @DisplayName("resource(InputStream) with no HasMetadata should throwException")
   void resourceFromInputStreamWithInvalid() throws IOException {
-    final KubernetesClient kc = new KubernetesClientImpl();
+    final KubernetesClient kc = new KubernetesClientBuilder().build();
     final String podYaml = "NotAPod";
     try (InputStream is = new ByteArrayInputStream(podYaml.getBytes(StandardCharsets.UTF_8))) {
       assertThatExceptionOfType(KubernetesClientException.class)
@@ -201,7 +201,7 @@ class KubernetesClientImplTest {
   void loadFromInputStreamWithHasMetadata() throws IOException {
     final String podYaml = "apiVersion: v1\nkind: Pod";
     try (InputStream is = new ByteArrayInputStream(podYaml.getBytes(StandardCharsets.UTF_8))) {
-      assertThat(new KubernetesClientImpl().load(is).items())
+      assertThat(new KubernetesClientBuilder().build().load(is).items())
           .containsExactly(new Pod());
     }
   }
@@ -211,7 +211,8 @@ class KubernetesClientImplTest {
   void loadFromInputStreamWithInvalid() throws IOException {
     final String podYaml = "NotAPod";
     try (InputStream is = new ByteArrayInputStream(podYaml.getBytes(StandardCharsets.UTF_8))) {
-      final ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> load = new KubernetesClientImpl()
+      final NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> load = new KubernetesClientBuilder()
+          .build()
           .load(is);
       assertThatIllegalArgumentException()
           .isThrownBy(load::get)

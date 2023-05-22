@@ -255,7 +255,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
 
       URL requestUrl = new URL(URLUtils.join(getResourceUrl().toString(), "eviction"));
       HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder()
-          .post(JSON, JSON_MAPPER.writeValueAsString(eviction)).url(requestUrl);
+          .post(JSON, getKubernetesSerialization().asJson(eviction)).url(requestUrl);
       handleResponse(requestBuilder, null);
       return true;
     } catch (KubernetesClientException e) {
@@ -367,7 +367,8 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
   }
 
   private ExecWebSocketListener setupConnectionToPod(URI uri) {
-    ExecWebSocketListener execWebSocketListener = new ExecWebSocketListener(getContext(), this.context.getExecutor());
+    ExecWebSocketListener execWebSocketListener = new ExecWebSocketListener(getContext(), this.context.getExecutor(),
+        this.getKubernetesSerialization());
     CompletableFuture<WebSocket> startedFuture = httpClient.newWebSocketBuilder()
         .subprotocol("v4.channel.k8s.io")
         .uri(uri)

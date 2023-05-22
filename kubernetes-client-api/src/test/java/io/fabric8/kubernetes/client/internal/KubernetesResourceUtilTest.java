@@ -16,7 +16,6 @@
 
 package io.fabric8.kubernetes.client.internal;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import io.fabric8.kubernetes.api.model.ConfigMap;
 import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
 import io.fabric8.kubernetes.api.model.ConfigMapList;
@@ -229,7 +228,7 @@ class KubernetesResourceUtilTest {
   }
 
   @Test
-  void testCreateDefaultDockerRegistrySecret() throws JsonProcessingException {
+  void testCreateDefaultDockerRegistrySecret() throws Exception {
     Secret secret = KubernetesResourceUtil.createDockerRegistrySecret("http://harbor.inner.com", "SecretAdmin",
         "TestingSecret");
 
@@ -242,7 +241,7 @@ class KubernetesResourceUtilTest {
   }
 
   @Test
-  void testCreateDockerRegistrySecret() throws JsonProcessingException {
+  void testCreateDockerRegistrySecret() throws Exception {
     Secret secret = KubernetesResourceUtil.createDockerRegistrySecret("http://harbor.inner.com", "SecretAdmin",
         "TestingSecret", "TestSecretName");
 

@@ -25,9 +25,6 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.runtime.RawExtension;
-import io.fabric8.kubernetes.model.annotation.Group;
-import io.fabric8.kubernetes.model.annotation.Version;
-import io.fabric8.kubernetes.model.util.Helper;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -75,7 +72,25 @@ public class KubernetesDeserializer extends JsonDeserializer<KubernetesResource>
   private static final String KIND = "kind";
   private static final String API_VERSION = "apiVersion";
 
-  private static final Mapping mapping = new Mapping();
+  private final Mapping mapping = new Mapping();
+
+  private static Mapping DEFAULT_MAPPING;
+
+  public KubernetesDeserializer() {
+    this(true);
+  }
+
+  public KubernetesDeserializer(boolean scanClassloaders) {
+    if (scanClassloaders) {
+      synchronized (KubernetesDeserializer.class) {
+        if (DEFAULT_MAPPING == null) {
+          DEFAULT_MAPPING = new Mapping();
+          DEFAULT_MAPPING.registerClassesFromClassLoaders();
+        }
+      }
+      mapping.mappings.putAll(DEFAULT_MAPPING.mappings);
+    }
+  }
 
   @Override
   public KubernetesResource deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException {
@@ -110,8 +125,8 @@ public class KubernetesDeserializer extends JsonDeserializer<KubernetesResource>
     return new KubernetesListBuilder().withItems(list).build();
   }
 
-  private static KubernetesResource fromObjectNode(JsonParser jp, JsonNode node) throws IOException {
-    TypeKey key = getKey(node);
+  private KubernetesResource fromObjectNode(JsonParser jp, JsonNode node) throws IOException {
+    TypeKey key = createKey(node);
     Class<? extends KubernetesResource> resourceType = mapping.getForKey(key);
     if (resourceType == null) {
       if (key == null) {
@@ -129,10 +144,7 @@ public class KubernetesDeserializer extends JsonDeserializer<KubernetesResource>
         resourceType.getName()));
   }
 
-  /**
-   * Return a string representation of the key of the type: <version>#<kind>.
-   */
-  private static TypeKey getKey(JsonNode node) {
+  private TypeKey createKey(JsonNode node) {
     JsonNode apiVersion = node.get(API_VERSION);
     JsonNode kind = node.get(KIND);
 
@@ -144,25 +156,20 @@ public class KubernetesDeserializer extends JsonDeserializer<KubernetesResource>
   /**
    * Registers a Custom Resource Definition Kind
    */
-  public static void registerCustomKind(String kind, Class<? extends KubernetesResource> clazz) {
+  public void registerCustomKind(String kind, Class<? extends KubernetesResource> clazz) {
     registerCustomKind(null, kind, clazz);
   }
 
   /**
    * Registers a Custom Resource Definition Kind
    */
-  public static void registerCustomKind(String apiVersion, String kind, Class<? extends KubernetesResource> clazz) {
+  public void registerCustomKind(String apiVersion, String kind, Class<? extends KubernetesResource> clazz) {
     mapping.registerKind(apiVersion, kind, clazz);
   }
 
   static class Mapping {
 
-    private Map<TypeKey, Class<? extends KubernetesResource>> mappings = new ConcurrentHashMap<>();
-
-    Mapping() {
-      registerClasses(Thread.currentThread().getContextClassLoader());
-      registerClasses(KubernetesDeserializer.class.getClassLoader());
-    }
+    private final Map<TypeKey, Class<? extends KubernetesResource>> mappings = new ConcurrentHashMap<>();
 
     public Class<? extends KubernetesResource> getForKey(TypeKey key) {
       if (key == null) {
@@ -189,6 +196,11 @@ public class KubernetesDeserializer extends JsonDeserializer<KubernetesResource>
       return new TypeKey(kind, versionParts[0], versionParts[1]);
     }
 
+    void registerClassesFromClassLoaders() {
+      registerClasses(Thread.currentThread().getContextClassLoader());
+      registerClasses(KubernetesDeserializer.class.getClassLoader());
+    }
+
     private void registerClasses(ClassLoader classLoader) {
       Iterable<KubernetesResource> resources = () -> ServiceLoader
           .load(KubernetesResource.class, classLoader)
@@ -199,8 +211,8 @@ public class KubernetesDeserializer extends JsonDeserializer<KubernetesResource>
     }
 
     TypeKey getKeyFromClass(Class<? extends KubernetesResource> clazz) {
-      String apiGroup = Helper.getAnnotationValue(clazz, Group.class);
-      String apiVersion = Helper.getAnnotationValue(clazz, Version.class);
+      String apiGroup = HasMetadata.getGroup(clazz);
+      String apiVersion = HasMetadata.getVersion(clazz);
       String kind = HasMetadata.getKind(clazz);
       if (apiGroup != null && !apiGroup.isEmpty() && apiVersion != null && !apiVersion.isEmpty()) {
         return new TypeKey(kind, apiGroup, apiVersion);
@@ -222,5 +234,9 @@ public class KubernetesDeserializer extends JsonDeserializer<KubernetesResource>
         mappings.putIfAbsent(new TypeKey(keyFromClass.kind, null, keyFromClass.version), clazz);
       }
     }
+  }
+
+  public Class<? extends KubernetesResource> getRegisteredKind(String apiVersion, String kind) {
+    return mapping.getForKey(mapping.createKey(apiVersion, kind));
   }
 }

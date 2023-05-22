@@ -15,7 +15,6 @@
  */
 package io.fabric8.kubernetes.client.utils;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import io.fabric8.kubernetes.api.model.AuthInfo;
 import io.fabric8.kubernetes.api.model.NamedAuthInfo;
 import io.fabric8.kubernetes.api.model.NamedContext;
@@ -143,7 +142,7 @@ public class OpenIDConnectionUtils {
           // Deserialize response body into a Map and return
           try {
             return convertJsonStringToMap(body);
-          } catch (JsonProcessingException e) {
+          } catch (Exception e) {
             LOGGER.warn("Failure in fetching refresh token: ", e);
           }
         } else {
@@ -175,7 +174,7 @@ public class OpenIDConnectionUtils {
           String responseBody = response.body();
           LOGGER.warn("oidc: failed to query metadata endpoint: {} {}", response.code(), responseBody);
         }
-      } catch (IOException e) {
+      } catch (Exception e) {
         LOGGER.warn("Could not refresh OIDC token, failure in getting refresh URL", e);
       }
       return Collections.emptyMap();
@@ -262,8 +261,8 @@ public class OpenIDConnectionUtils {
     return true;
   }
 
-  private static Map<String, Object> convertJsonStringToMap(String jsonString) throws JsonProcessingException {
-    return Serialization.jsonMapper().readValue(jsonString, Map.class);
+  private static Map<String, Object> convertJsonStringToMap(String jsonString) {
+    return Serialization.unmarshal(jsonString, Map.class);
   }
 
   private static HttpClient getDefaultHttpClientWithPemCert(String idpCert, HttpClient.Builder clientBuilder) {

@@ -30,7 +30,7 @@ import io.fabric8.kubernetes.client.Watcher.Action;
 import io.fabric8.kubernetes.client.WatcherException;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.utils.ExponentialBackoffIntervalCalculator;
-import io.fabric8.kubernetes.client.utils.Serialization;
+import io.fabric8.kubernetes.client.utils.KubernetesSerialization;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.kubernetes.client.utils.internal.SerialExecutor;
 import org.slf4j.Logger;
@@ -247,7 +247,7 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
     // the WatchEvent deserialization is not specifically typed
     // modify the type here if needed
     if (resource != null && !baseOperation.getType().isAssignableFrom(resource.getClass())) {
-      resource = Serialization.jsonMapper().convertValue(resource, baseOperation.getType());
+      resource = this.baseOperation.getKubernetesSerialization().convertValue(resource, baseOperation.getType());
     }
     @SuppressWarnings("unchecked")
     final T t = (T) resource;
@@ -296,17 +296,20 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
 
   private WatchEvent contextAwareWatchEventDeserializer(String messageSource)
       throws JsonProcessingException {
+    KubernetesSerialization kubernetesSerialization = this.baseOperation.getKubernetesSerialization();
     try {
-      return Serialization.unmarshal(messageSource, WatchEvent.class);
+      return kubernetesSerialization.unmarshal(messageSource, WatchEvent.class);
     } catch (Exception ex1) {
-      JsonNode json = Serialization.jsonMapper().readTree(messageSource);
+      // TODO: this is not necessarily correct - it will force the object to be the expected type
+      // even though it is not (for example Status could be converted to the typed result)
+      JsonNode json = kubernetesSerialization.unmarshal(messageSource, JsonNode.class);
       JsonNode objectJson = null;
       if (json instanceof ObjectNode && json.has("object")) {
         objectJson = ((ObjectNode) json).remove("object");
       }
 
-      WatchEvent watchEvent = Serialization.jsonMapper().treeToValue(json, WatchEvent.class);
-      KubernetesResource object = Serialization.jsonMapper().treeToValue(objectJson, baseOperation.getType());
+      WatchEvent watchEvent = kubernetesSerialization.convertValue(json, WatchEvent.class);
+      KubernetesResource object = kubernetesSerialization.convertValue(objectJson, baseOperation.getType());
 
       watchEvent.setObject(object);
       return watchEvent;

@@ -16,6 +16,7 @@
 package io.fabric8.openshift.client.impl;
 
 import io.fabric8.kubernetes.api.model.ObjectMeta;
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.openshift.api.model.User;
 import io.fabric8.openshift.client.OpenShiftClient;
 import org.junit.jupiter.api.Test;
@@ -27,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 class ViewCurrentUser {
   @Test
   void testShowCurrentUser() throws Exception {
-    OpenShiftClient client = new OpenShiftClientImpl();
+    OpenShiftClient client = new KubernetesClientBuilder().build().adapt(OpenShiftClient.class);
     User user = client.currentUser();
 
     System.out.println("Current user is: " + user);

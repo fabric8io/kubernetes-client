@@ -18,7 +18,7 @@ package io.fabric8.kubernetes.client.informers.cache;
 
 import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.HasMetadata;
-import io.fabric8.kubernetes.client.utils.Serialization;
+import io.fabric8.kubernetes.client.utils.KubernetesSerialization;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,6 +42,7 @@ public class ReducedStateItemStore<V extends HasMetadata> implements ItemStore<V
   private final List<String[]> fields = new ArrayList<>();
   private final Class<V> typeClass;
   private final KeyState keyState;
+  private KubernetesSerialization serialization;
 
   public static class KeyState {
 
@@ -101,7 +102,8 @@ public class ReducedStateItemStore<V extends HasMetadata> implements ItemStore<V
    * @param typeClass the expected type
    * @param valueFields the additional fields to save
    */
-  public ReducedStateItemStore(KeyState keyState, Class<V> typeClass, String... valueFields) {
+  public ReducedStateItemStore(KeyState keyState, Class<V> typeClass, KubernetesSerialization serialization,
+      String... valueFields) {
     this.keyState = keyState;
     fields.add(new String[] { METADATA, "resourceVersion" });
     if (valueFields != null) {
@@ -110,13 +112,14 @@ public class ReducedStateItemStore<V extends HasMetadata> implements ItemStore<V
       }
     }
     this.typeClass = typeClass;
+    this.serialization = serialization;
   }
 
   Object[] store(V value) {
     if (value == null) {
       return null;
     }
-    Map<String, Object> raw = Serialization.jsonMapper().convertValue(value, Map.class);
+    Map<String, Object> raw = serialization.convertValue(value, Map.class);
     return fields.stream().map(f -> GenericKubernetesResource.get(raw, (Object[]) f)).toArray();
   }
 
@@ -129,7 +132,7 @@ public class ReducedStateItemStore<V extends HasMetadata> implements ItemStore<V
     String[] keyParts = this.keyState.keyFieldFunction.apply(key);
     applyFields(keyParts, raw, this.keyState.keyFields);
 
-    return Serialization.jsonMapper().convertValue(raw, typeClass);
+    return serialization.convertValue(raw, typeClass);
   }
 
   private static void applyFields(Object[] values, Map<String, Object> raw, List<String[]> fields) {
