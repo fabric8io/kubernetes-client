@@ -27,10 +27,13 @@ import org.eclipse.jetty.websocket.api.WebSocketListener;
 import org.eclipse.jetty.websocket.api.WriteCallback;
 import org.eclipse.jetty.websocket.api.exceptions.CloseException;
 import org.eclipse.jetty.websocket.api.exceptions.UpgradeException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.ProtocolException;
 import java.nio.ByteBuffer;
 import java.nio.channels.ClosedChannelException;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
@@ -39,6 +42,9 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class JettyWebSocket implements WebSocket, WebSocketListener {
+
+  private static final Logger LOG = LoggerFactory.getLogger(JettyWebSocket.class);
+
   private final WebSocket.Listener listener;
   private final AtomicLong sendQueue;
   private final Lock lock;
@@ -68,6 +74,10 @@ public class JettyWebSocket implements WebSocket, WebSocketListener {
       @Override
       public void writeFailed(Throwable x) {
         sendQueue.addAndGet(-size);
+        if (webSocketSession.isOpen()) {
+          LOG.warn("Queued write did not succeed", x);
+        }
+        webSocketSession.disconnect(); // prevent further writes
       }
 
       @Override
@@ -79,12 +89,23 @@ public class JettyWebSocket implements WebSocket, WebSocketListener {
   }
 
   @Override
-  public boolean sendClose(int code, String reason) {
-    if (webSocketSession.isOpen() && !closed.getAndSet(true)) {
-      webSocketSession.close(code, reason);
-      return true;
+  public synchronized boolean sendClose(int code, String reason) {
+    if (!webSocketSession.isOpen()) {
+      return false;
     }
-    return false;
+    webSocketSession.close(code, reason, new WriteCallback() {
+      @Override
+      public void writeFailed(Throwable x) {
+        LOG.warn("Queued close did not succeed", x);
+        webSocketSession.disconnect(); // immediately terminate
+      }
+
+      @Override
+      public void writeSuccess() {
+        CompletableFuture.delayedExecutor(1, TimeUnit.MINUTES).execute(webSocketSession::disconnect);
+      }
+    });
+    return true;
   }
 
   @Override

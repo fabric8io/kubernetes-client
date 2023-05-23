@@ -22,6 +22,8 @@ import io.netty.handler.codec.http.websocketx.CorruptedWebSocketFrameException;
 import io.vertx.core.Future;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpClosedException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.ProtocolException;
@@ -29,6 +31,8 @@ import java.nio.ByteBuffer;
 import java.util.concurrent.atomic.AtomicInteger;
 
 class VertxWebSocket implements WebSocket {
+
+  private static final Logger LOG = LoggerFactory.getLogger(VertxWebSocket.class);
 
   private final io.vertx.core.http.WebSocket ws;
   private final AtomicInteger pending = new AtomicInteger();
@@ -74,13 +78,31 @@ class VertxWebSocket implements WebSocket {
     int len = vertxBuffer.length();
     pending.addAndGet(len);
     Future<Void> res = ws.writeBinaryMessage(vertxBuffer);
-    res.onComplete(ignore -> pending.addAndGet(-len));
+    if (res.isComplete()) {
+      pending.addAndGet(-len);
+      return res.succeeded();
+    }
+    res.onComplete(result -> {
+      if (result.cause() != null) {
+        LOG.error("Queued write did not succeed", result.cause());
+      }
+      pending.addAndGet(-len);
+    });
     return true;
   }
 
   @Override
-  public boolean sendClose(int code, String reason) {
-    ws.close((short) code, reason);
+  public synchronized boolean sendClose(int code, String reason) {
+    if (ws.isClosed()) {
+      return false;
+    }
+    Future<Void> res = ws.close((short) code, reason);
+    res.onComplete(result -> {
+      ws.fetch(1);
+      if (result.cause() != null) {
+        LOG.error("Queued close did not succeed", result.cause());
+      }
+    });
     return true;
   }
 
