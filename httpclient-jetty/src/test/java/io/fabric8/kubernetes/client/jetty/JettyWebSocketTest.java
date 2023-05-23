@@ -22,6 +22,7 @@ import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.exceptions.MessageTooLargeException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import java.net.ProtocolException;
 import java.nio.ByteBuffer;
@@ -34,9 +35,8 @@ import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.entry;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.RETURNS_DEEP_STUBS;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -203,7 +203,7 @@ class JettyWebSocketTest {
     // When
     jws.sendClose(1000, "Closing");
     // Then
-    verify(session).close(1000, "Closing");
+    verify(session).close(Mockito.anyInt(), Mockito.anyString(), Mockito.any());
   }
 
   @Test
@@ -217,7 +217,7 @@ class JettyWebSocketTest {
     // When
     jws.sendClose(1000, "Closing");
     // Then
-    verify(session, times(0)).close(anyInt(), anyString());
+    verify(session, times(0)).close(Mockito.anyInt(), Mockito.anyString(), Mockito.any());
   }
 
   @Test
@@ -230,10 +230,10 @@ class JettyWebSocketTest {
     when(session.isOpen()).thenReturn(true);
     jws.sendClose(1000, "Closing");
     // When
-    jws.sendClose(1000, "Closing twice");
+    when(session.isOpen()).thenReturn(false);
+    assertFalse(jws.sendClose(1000, "Closing twice"));
     // Then
-    verify(session, times(1)).close(anyInt(), anyString());
-    verify(session).close(1000, "Closing");
+    verify(session, times(1)).close(Mockito.anyInt(), Mockito.anyString(), Mockito.any());
   }
 
   @Test

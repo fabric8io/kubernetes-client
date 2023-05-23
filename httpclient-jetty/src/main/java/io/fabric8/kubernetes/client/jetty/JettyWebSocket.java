@@ -21,6 +21,7 @@ import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.WebSocket;
 import io.fabric8.kubernetes.client.http.WebSocketResponse;
 import io.fabric8.kubernetes.client.http.WebSocketUpgradeResponse;
+import io.fabric8.kubernetes.client.utils.Utils;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.UpgradeResponse;
 import org.eclipse.jetty.websocket.api.WebSocketListener;
@@ -35,7 +36,6 @@ import java.nio.ByteBuffer;
 import java.nio.channels.ClosedChannelException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
@@ -49,7 +49,7 @@ public class JettyWebSocket implements WebSocket, WebSocketListener {
   private final AtomicLong sendQueue;
   private final Lock lock;
   private final Condition backPressure;
-  private final AtomicBoolean closed;
+  private final CompletableFuture<Void> terminated = new CompletableFuture<>();
   private boolean moreMessages;
   private volatile Session webSocketSession;
 
@@ -58,13 +58,12 @@ public class JettyWebSocket implements WebSocket, WebSocketListener {
     sendQueue = new AtomicLong();
     lock = new ReentrantLock();
     backPressure = lock.newCondition();
-    closed = new AtomicBoolean();
     moreMessages = true;
   }
 
   @Override
   public boolean send(ByteBuffer buffer) {
-    if (closed.get() || !webSocketSession.isOpen()) {
+    if (terminated.isDone() || !webSocketSession.isOpen()) {
       return false;
     }
     buffer = BufferUtil.copy(buffer);
@@ -102,7 +101,8 @@ public class JettyWebSocket implements WebSocket, WebSocketListener {
 
       @Override
       public void writeSuccess() {
-        CompletableFuture.delayedExecutor(1, TimeUnit.MINUTES).execute(webSocketSession::disconnect);
+        CompletableFuture<Void> future = Utils.schedule(Runnable::run, webSocketSession::disconnect, 1, TimeUnit.MINUTES);
+        terminated.whenComplete((v, ignored) -> future.cancel(true));
       }
     });
     return true;
@@ -140,7 +140,7 @@ public class JettyWebSocket implements WebSocket, WebSocketListener {
 
   @Override
   public void onWebSocketClose(int statusCode, String reason) {
-    closed.set(true);
+    terminated.complete(null);
     listener.onClose(this, statusCode, reason);
   }
 
@@ -152,7 +152,8 @@ public class JettyWebSocket implements WebSocket, WebSocketListener {
 
   @Override
   public void onWebSocketError(Throwable cause) {
-    if (cause instanceof ClosedChannelException && closed.get()) {
+    boolean completed = terminated.complete(null);
+    if (cause instanceof ClosedChannelException && !completed) {
       // TODO: Check better
       //  It appears to be a race condition in Jetty:
       // - The server sends a close frame (but we haven't received it)

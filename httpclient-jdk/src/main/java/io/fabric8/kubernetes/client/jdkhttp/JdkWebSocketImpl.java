@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.client.jdkhttp;
 
 import io.fabric8.kubernetes.client.http.BufferUtil;
 import io.fabric8.kubernetes.client.http.WebSocket;
+import io.fabric8.kubernetes.client.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,7 +30,6 @@ import java.nio.channels.WritableByteChannel;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
 class JdkWebSocketImpl implements WebSocket, java.net.http.WebSocket.Listener {
@@ -42,7 +42,7 @@ class JdkWebSocketImpl implements WebSocket, java.net.http.WebSocket.Listener {
   private final StringBuilder stringBuilder = new StringBuilder();
   private final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
   private final WritableByteChannel byteChannel = Channels.newChannel(byteArrayOutputStream);
-  private final AtomicBoolean terminated = new AtomicBoolean();
+  private final CompletableFuture<Void> terminated = new CompletableFuture<>();
 
   public JdkWebSocketImpl(Listener listener) {
     this.listener = listener;
@@ -80,17 +80,15 @@ class JdkWebSocketImpl implements WebSocket, java.net.http.WebSocket.Listener {
 
   @Override
   public CompletionStage<?> onClose(java.net.http.WebSocket webSocket, int statusCode, String reason) {
-    if (terminated.compareAndSet(false, true)) {
-      listener.onClose(this, statusCode, reason);
-    }
+    terminated.complete(null);
+    listener.onClose(this, statusCode, reason);
     return null; // should immediately initiate an implicit sendClose
   }
 
   @Override
   public void onError(java.net.http.WebSocket webSocket, Throwable error) {
-    if (terminated.compareAndSet(false, true)) {
-      listener.onError(this, error);
-    }
+    terminated.complete(null);
+    listener.onError(this, error);
   }
 
   @Override
@@ -131,7 +129,8 @@ class JdkWebSocketImpl implements WebSocket, java.net.http.WebSocket.Listener {
         abort();
       } else if (w != null) {
         webSocket.request(1); // there may not be demand, so request more
-        CompletableFuture.delayedExecutor(2, TimeUnit.MINUTES).execute(this::abort);
+        CompletableFuture<Void> future = Utils.schedule(Runnable::run, this::abort, 1, TimeUnit.MINUTES);
+        terminated.whenComplete((v, ignored) -> future.cancel(true));
       }
     });
     return !cf.isCompletedExceptionally();
@@ -141,7 +140,7 @@ class JdkWebSocketImpl implements WebSocket, java.net.http.WebSocket.Listener {
     if (!webSocket.isOutputClosed() || !webSocket.isInputClosed()) {
       LOG.warn("Aborting WebSocket due to a write error or failure with sendClose");
       webSocket.abort();
-      if (terminated.compareAndSet(false, true)) {
+      if (terminated.complete(null)) {
         listener.onClose(this, 1006, "Aborted the WebSocket");
       }
     }

@@ -157,6 +157,7 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
   public synchronized void closeRequest() {
     WatchRequestState state = latestRequestState;
     if (state != null && state.closed.compareAndSet(false, true)) {
+      logger.debug("Closing the current watch");
       closeCurrentRequest();
       CompletableFuture<Void> future = Utils.schedule(Runnable::run, () -> failSafeReconnect(state), watchEndCheckMs,
           TimeUnit.MILLISECONDS);
@@ -318,7 +319,7 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
 
   @Override
   public void close() {
-    logger.debug("Force closing the watch {}", this);
+    logger.debug("Force closing the watch");
     closeEvent();
     closeRequest();
     cancelReconnect();
