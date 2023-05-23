@@ -47,6 +47,7 @@ class TestEscapeCharacters {
     assertEquals("2", spec.getTwo_space());
     assertEquals("3", spec.getThree_quote());
     assertEquals("4", spec.getFour_doublequote());
+    assertEquals("5", spec.getFive_slash());
   }
 
   @Test
@@ -61,6 +62,7 @@ class TestEscapeCharacters {
     spec.setTwo_space("2");
     spec.setThree_quote("3");
     spec.setFour_doublequote("4");
+    spec.setFive_slash("5");
     sample.setSpec(spec);
     ObjectMeta om = new ObjectMeta();
     om.setName("sample");

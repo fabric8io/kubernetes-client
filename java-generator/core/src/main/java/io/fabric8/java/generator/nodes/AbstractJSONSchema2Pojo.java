@@ -131,10 +131,12 @@ public abstract class AbstractJSONSchema2Pojo {
       index = sanitized.indexOf('-');
     }
 
-    sanitized = sanitized.replace('.', '_');
-    sanitized = sanitized.replace(' ', '_');
-    sanitized = sanitized.replace('\'', '_');
-    sanitized = sanitized.replace('\"', '_');
+    StringBuilder sanitizedSb = new StringBuilder(sanitized.length());
+    for (char originalChar : sanitized.toCharArray()) {
+      char sanitizedChar = Character.isJavaIdentifierPart(originalChar) ? originalChar : '_';
+      sanitizedSb.append(sanitizedChar);
+    }
+    sanitized = sanitizedSb.toString();
 
     return sanitized;
   }

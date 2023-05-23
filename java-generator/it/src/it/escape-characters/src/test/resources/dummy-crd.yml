@@ -41,6 +41,8 @@ spec:
                   type: string
                 four"doublequote:
                   type: string
+                five/slash:
+                  type: string
   scope: Namespaced
   names:
     plural: dummies
