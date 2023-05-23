@@ -27,7 +27,6 @@ import io.fabric8.kubernetes.client.dsl.TimeoutImageEditReplacePatchable;
 import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.internal.OperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.PodOperationContext;
-import io.fabric8.kubernetes.client.utils.Serialization;
 
 import java.util.Collections;
 import java.util.List;
@@ -58,7 +57,7 @@ public abstract class RollableScalableResourceOperation<T extends HasMetadata, L
       return super.edit(function);
     }
     T oldObj = getItemOrRequireFromServer();
-    T newObj = function.apply(Serialization.clone(oldObj));
+    T newObj = function.apply(getKubernetesSerialization().clone(oldObj));
     return rollingUpdater.rollUpdate(oldObj, newObj);
   }
 
@@ -125,7 +124,7 @@ public abstract class RollableScalableResourceOperation<T extends HasMetadata, L
       throw new KubernetesClientException("Resource doesn't exist");
     }
 
-    T base = Serialization.clone(value);
+    T base = getKubernetesSerialization().clone(value);
 
     List<Container> containers = getContainers(value);
 

@@ -77,7 +77,6 @@ import io.fabric8.kubernetes.client.dsl.NamespaceListVisitFromServerGetDeleteRec
 import io.fabric8.kubernetes.client.dsl.NamespaceableResource;
 import io.fabric8.kubernetes.client.dsl.NetworkAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
-import io.fabric8.kubernetes.client.dsl.ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable;
 import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.kubernetes.client.dsl.PolicyAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.RbacAPIGroupDSL;
@@ -91,6 +90,7 @@ import io.fabric8.kubernetes.client.dsl.base.ResourceDefinitionContext;
 import io.fabric8.kubernetes.client.extended.leaderelection.LeaderElectorBuilder;
 import io.fabric8.kubernetes.client.extended.run.RunOperations;
 import io.fabric8.kubernetes.client.informers.SharedInformerFactory;
+import io.fabric8.kubernetes.client.utils.KubernetesSerialization;
 
 import java.io.InputStream;
 import java.util.Collection;
@@ -300,7 +300,7 @@ public interface KubernetesClient extends Client {
    * @param is the input stream containing JSON/YAML content
    * @return an operation instance to work on the list of Kubernetes Resource objects
    */
-  ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> load(InputStream is);
+  NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> load(InputStream is);
 
   /**
    * Load a Kubernetes list object
@@ -308,7 +308,7 @@ public interface KubernetesClient extends Client {
    * @param s kubernetes list as string
    * @return an operation instance to work on the deserialized KubernetesList objects
    */
-  ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> resourceList(String s);
+  NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> resourceList(String s);
 
   /**
    * KubernetesResourceList operations
@@ -543,4 +543,9 @@ public interface KubernetesClient extends Client {
    * @param visitor
    */
   void visitResources(ApiVisitor visitor);
+
+  /**
+   * @return the {@link KubernetesSerialization} used by this client
+   */
+  KubernetesSerialization getKubernetesSerialization();
 }

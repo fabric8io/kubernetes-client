@@ -26,6 +26,7 @@ public class StandardHttpHeaders implements HttpHeaders {
   public static final String CONTENT_LENGTH = "Content-Length";
   public static final String EXPECT = "Expect";
   public static final String EXPECT_CONTINUE = "100-continue";
+  public static final String RETRY_AFTER = "Retry-After";
 
   private final Map<String, List<String>> headers;
 

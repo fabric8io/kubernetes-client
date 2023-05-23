@@ -28,6 +28,7 @@ import com.github.javaparser.ast.expr.SingleMemberAnnotationExpr;
 import io.fabric8.java.generator.exceptions.JavaGeneratorException;
 import io.fabric8.java.generator.nodes.*;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps;
+import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaPropsOrBool;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import org.junit.jupiter.api.Test;
 
@@ -695,6 +696,34 @@ class GeneratorTest {
 
     Optional<ClassOrInterfaceDeclaration> clzO1 = res.getTopLevelClasses().get(0).getClassByName("O1");
     assertTrue(clzO1.isPresent());
+  }
+
+  @Test
+  void testObjectWithAdditionalPropertiesTrue() {
+    // Arrange
+    Map<String, JSONSchemaProps> props = new HashMap<>();
+    JSONSchemaProps obj = new JSONSchemaProps();
+    obj.setType("object");
+    obj.setAdditionalProperties(new JSONSchemaPropsOrBool(true, null));
+    props.put("o1", obj);
+
+    JObject jobj = new JObject(null, "t", props, null, false, defaultConfig, null, Boolean.FALSE, null);
+
+    // Act
+    GeneratorResult res = jobj.generateJava();
+
+    // Assert
+    assertEquals(1, res.getTopLevelClasses().size());
+    assertEquals("T", res.getTopLevelClasses().get(0).getName());
+
+    Optional<ClassOrInterfaceDeclaration> clzT = res.getTopLevelClasses().get(0).getClassByName("T");
+    assertTrue(clzT.isPresent());
+    assertEquals(1, clzT.get().getFields().size());
+    Optional<FieldDeclaration> o1Field = clzT.get().getFieldByName("o1");
+    assertTrue(o1Field.isPresent());
+    FieldDeclaration actualO1Field = o1Field.get();
+    assertEquals("io.fabric8.kubernetes.api.model.AnyType",
+        actualO1Field.getElementType().asString());
   }
 
   @Test

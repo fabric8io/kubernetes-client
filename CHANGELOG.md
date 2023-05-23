@@ -4,11 +4,13 @@
 
 #### Bugs
 * Fix #5152: preventing JDK WebSocket errors from terminating watches and improving watch termination and its logging
+* Fix #5145: [java-generator] handle `additionalProperties: true` emitting a field of type `AnyType`
 
 #### Improvements
 
 #### Dependency Upgrade
 * Fix #4989: Upgrade Tekton Model to v0.47.0
+* Fix #5107: The Camel-k extension has been deprecated in favor of the official release of the generated one
 
 #### New Features
 
@@ -16,6 +18,9 @@
 * Fix #4911: Config/RequestConfig.scaleTimeout has been deprecated along with Scalable.scale(count, wait) and DeployableScalableResource.deployLatest(wait). withTimeout may be called before the operation to control the timeout.
 * Fix #4911: Config/RequestConfig.websocketTimeout has been removed. Config/RequestConfig.requestTimeout will be used for websocket connection timeouts.
 * Fix #4911: HttpClient api/building changes - writeTimeout has been removed, readTimeout has moved to the HttpRequest
+* Fix #4662: removed deprecated classes/methods:  ReflectUtils, ReplaceValueStream, ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable, ResourceCompare, and Serialization methods taking parameters
+* Fix #4662: deprecated serialization static logic:  several IOHelpers methods, Serialization methods, such as access to the static jsonMapper.  Please use KubernetesSerialization methods instead.
+* Fix #4662: deprecated Helper.getAnnotationValue, use HasMetadata methods instead.
 
 ### 6.6.2 (2023-05-15)
 
@@ -40,13 +45,13 @@ Fix #5121: RequestConfig is propagated to derived HttpClient instances
 * Fix #4988: Ensuring that previous requests are closed before retry
 * Fix #4993: Quantity class should have @JsonIgnore on the additionalProperties parameter
 * Fix #5000: Remove clashing `v1alpha` apigroup packages in `istio-model-v1beta1`
-* fix #5002: Jetty response completion accounts for header processing
+* Fix #5002: Jetty response completion accounts for header processing
 * Fix #5009: addressing issue with serialization of wrapped polymorphic types
 * Fix #5015: executing resync as a locking operation to ensure resync event ordering
 * Fix #5020: updating the resourceVersion on a delete with finalizers
 * Fix #5033: port forwarding for clients other than okhttp needs to specify the subprotocol
 * Fix #5035: allowed client.authentication.k8s.io/v1 to work for the ExecConfig
-* fix #5036: Better websocket error handling for protocol / client enforced errors, also update frame/message limits
+* Fix #5036: Better websocket error handling for protocol / client enforced errors, also update frame/message limits
 * Fix #5044: disable Vert.x instance file caching
 * Fix #5059: Vert.x InputStreamReader uses an empty Buffer sentinel to avoid NPE
 * Fix #5085: Vert.x HTTP Client InputStreamReadStream works in Native mode

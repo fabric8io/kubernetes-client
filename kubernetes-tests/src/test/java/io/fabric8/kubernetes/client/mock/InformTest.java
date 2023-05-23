@@ -34,6 +34,7 @@ import io.fabric8.kubernetes.client.informers.cache.Cache;
 import io.fabric8.kubernetes.client.informers.cache.ReducedStateItemStore;
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
+import io.fabric8.kubernetes.client.utils.KubernetesSerialization;
 import org.junit.jupiter.api.Test;
 
 import java.net.HttpURLConnection;
@@ -484,7 +485,8 @@ class InformTest {
     SharedIndexInformer<Pod> informer = client.pods()
         .runnableInformer(0)
         .itemStore(
-            new ReducedStateItemStore<>(ReducedStateItemStore.NAME_KEY_STATE, Pod.class, "metadata.ownerReferences"))
+            new ReducedStateItemStore<>(ReducedStateItemStore.NAME_KEY_STATE, Pod.class,
+                new KubernetesSerialization(), "metadata.ownerReferences"))
         .removeNamespaceIndex()
         .addEventHandler(handler)
         .run();

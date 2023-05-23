@@ -20,15 +20,25 @@ import io.fabric8.kubernetes.client.http.WebSocket.Listener;
 import org.awaitility.Awaitility;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mockito;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -120,7 +130,7 @@ class StandardHttpClientTest {
         .build();
 
     IntStream.range(0, 3).forEach(i -> client.expect(".*", new IOException("Unreachable!")));
-    client.expect(".*", new TestHttpResponse<AsyncBody>().withCode(500));
+    client.expect(".*", new TestHttpResponse<AsyncBody>().withCode(403));
 
     CompletableFuture<HttpResponse<AsyncBody>> consumeFuture = client.consumeBytes(
         client.newHttpRequestBuilder().uri("http://localhost").build(),
@@ -131,7 +141,7 @@ class StandardHttpClientTest {
     long start = System.currentTimeMillis();
 
     // should ultimately error with the final 500
-    assertEquals(500, consumeFuture.get().code());
+    assertEquals(403, consumeFuture.get().code());
     long stop = System.currentTimeMillis();
 
     // should take longer than the delay
@@ -171,7 +181,7 @@ class StandardHttpClientTest {
         .withRequestRetryBackoffLimit(3)
         .withRequestRetryBackoffInterval(50).build())
         .build();
-    final WebSocketResponse error = new WebSocketResponse(new WebSocketUpgradeResponse(null, 500, null), new IOException());
+    final WebSocketResponse error = new WebSocketResponse(new WebSocketUpgradeResponse(null, 500), new IOException());
     IntStream.range(0, 2).forEach(i -> client.wsExpect(".*", error));
     client.wsExpect(".*", new WebSocketResponse(new WebSocketUpgradeResponse(null), mock(WebSocket.class)));
 
@@ -221,6 +231,38 @@ class StandardHttpClientTest {
         });
 
     Awaitility.await().atMost(10, TimeUnit.SECONDS).until(consumeFuture::isDone);
+    assertThatThrownBy(consumeFuture::get)
+        .isInstanceOf(ExecutionException.class).hasCauseInstanceOf(TimeoutException.class);
+  }
+
+  @Test
+  void testMultiValueHeader() {
+    TestHttpResponse<Void> response = new TestHttpResponse<>(Collections.singletonMap("header", Arrays.asList("a", "b")));
+    assertEquals("a,b", response.header("header"));
+  }
+
+  @Test
+  void retryAfterWithNoHeaderDefaultsToZero() {
+    assertEquals(0, StandardHttpClient.retryAfterMillis(new TestHttpResponse<>()));
+
+  }
+
+  @ParameterizedTest(name = "{index}: retryAfter={0} has a retry interval between {1} and {2} milliseconds")
+  @MethodSource("testRetryAfterParsingData")
+  void testRetryAfterParsing(List<String> retryAfter, int lowerBound, int upperBound) {
+    assertThat(StandardHttpClient.retryAfterMillis(new TestHttpResponse<>(Collections.singletonMap("Retry-After", retryAfter))))
+        .isGreaterThanOrEqualTo(lowerBound)
+        .isLessThanOrEqualTo(upperBound);
+  }
+
+  public static Stream<Arguments> testRetryAfterParsingData() {
+    return Stream.of(
+        Arguments.of(Collections.emptyList(), 0, 0),
+        Arguments.of(Collections.singletonList("2"), 2000, 2000),
+        Arguments.of(Collections.singletonList("invalid"), 0, 0),
+        Arguments.of(
+            Collections.singletonList(ZonedDateTime.now().plusSeconds(10).format(DateTimeFormatter.RFC_1123_DATE_TIME)), 1001,
+            10000));
   }
 
 }

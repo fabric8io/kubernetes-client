@@ -29,7 +29,6 @@ import io.fabric8.kubernetes.client.dsl.Scalable;
 import io.fabric8.kubernetes.client.dsl.base.PatchContext;
 import io.fabric8.kubernetes.client.dsl.base.PatchType;
 import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
-import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,8 +41,6 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
-
-import static io.fabric8.kubernetes.client.utils.IOHelpers.convertToJson;
 
 public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesResourceList<T>, R extends Resource<T>>
     extends BaseOperation<T, L, R> {
@@ -70,7 +67,7 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
   }
 
   private T clone(T item) {
-    return Serialization.clone(item);
+    return this.getKubernetesSerialization().clone(item);
   }
 
   @Override
@@ -269,7 +266,7 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
   public T patch(PatchContext patchContext, String patch) {
     try {
       final T got = getItemOrRequireFromServer();
-      return handlePatch(patchContext, got, convertToJson(patch), getType());
+      return handlePatch(patchContext, got, getKubernetesSerialization().convertToJson(patch), getType());
     } catch (InterruptedException interruptedException) {
       Thread.currentThread().interrupt();
       throw KubernetesClientException.launderThrowable(forOperationType(PATCH_OPERATION), interruptedException);

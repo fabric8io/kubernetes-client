@@ -15,12 +15,10 @@
  */
 package io.fabric8.openshift.client.impl;
 
-import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.RootPaths;
 import io.fabric8.kubernetes.api.model.StatusDetails;
 import io.fabric8.kubernetes.client.Client;
-import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.RequestConfig;
 import io.fabric8.kubernetes.client.VersionInfo;
@@ -42,7 +40,6 @@ import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.impl.BaseClient;
 import io.fabric8.kubernetes.client.impl.ExtensionsAPIGroupClient;
 import io.fabric8.kubernetes.client.impl.KubernetesClientImpl;
-import io.fabric8.kubernetes.client.utils.HttpClientUtils;
 import io.fabric8.kubernetes.client.utils.TokenRefreshInterceptor;
 import io.fabric8.openshift.api.model.BrokerTemplateInstance;
 import io.fabric8.openshift.api.model.BrokerTemplateInstanceList;
@@ -139,7 +136,6 @@ import io.fabric8.openshift.api.model.miscellaneous.network.operator.v1.Operator
 import io.fabric8.openshift.api.model.miscellaneous.network.operator.v1.OperatorPKIList;
 import io.fabric8.openshift.client.NamespacedOpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftConfig;
-import io.fabric8.openshift.client.OpenShiftConfigBuilder;
 import io.fabric8.openshift.client.dsl.BuildConfigResource;
 import io.fabric8.openshift.client.dsl.BuildResource;
 import io.fabric8.openshift.client.dsl.DeployableScalableResource;
@@ -223,26 +219,6 @@ public class OpenShiftClientImpl extends KubernetesClientImpl
   public static final String OPENSHIFT_VERSION_ENDPOINT = "version/openshift";
 
   private URL openShiftUrl;
-
-  public OpenShiftClientImpl() {
-    this(new OpenShiftConfigBuilder().build());
-  }
-
-  public OpenShiftClientImpl(String masterUrl) {
-    this(new OpenShiftConfigBuilder().withMasterUrl(masterUrl).build());
-  }
-
-  public OpenShiftClientImpl(final Config config) {
-    this(new OpenShiftConfig(config));
-  }
-
-  public OpenShiftClientImpl(final OpenShiftConfig config) {
-    this(HttpClientUtils.createHttpClient(config), config);
-  }
-
-  public OpenShiftClientImpl(HttpClient httpClient, OpenShiftConfig config) {
-    super(httpClient, config);
-  }
 
   OpenShiftClientImpl(Client client) {
     super(client.adapt(BaseClient.class));
@@ -474,7 +450,7 @@ public class OpenShiftClientImpl extends KubernetesClientImpl
   }
 
   @Override
-  public ParameterMixedOperation<Template, TemplateList, TemplateResource<Template, KubernetesList>> templates() {
+  public ParameterMixedOperation<Template, TemplateList, TemplateResource> templates() {
     return new TemplateOperationsImpl(this);
   }
 

@@ -24,7 +24,6 @@ import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.internal.OperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.PodOperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.apps.v1.RollableScalableResourceOperation;
-import io.fabric8.kubernetes.client.utils.Serialization;
 
 import java.util.Map;
 import java.util.Optional;
@@ -44,7 +43,9 @@ abstract class LegacyRollableScalableResourceOperation<T extends HasMetadata, L 
     // the sticking point is mostly the conversion of the selector from a map to a single string
     GenericKubernetesResource scale = handleScale(
         Optional.ofNullable(scaleParam)
-            .map(s -> Serialization.unmarshal(Serialization.asYaml(s), GenericKubernetesResource.class)).map(g -> {
+            .map(s -> getKubernetesSerialization().unmarshal(getKubernetesSerialization().asYaml(s),
+                GenericKubernetesResource.class))
+            .map(g -> {
               g.getAdditionalProperties().put("status", null);
               return g;
             }).orElse(null),
@@ -55,7 +56,7 @@ abstract class LegacyRollableScalableResourceOperation<T extends HasMetadata, L 
               .ifPresent(selector -> status.put("selector",
                   selector.entrySet().stream().map(e -> e.getKey() + "=" + e.getValue()).collect(Collectors.joining(";")))));
       return s;
-    }).map(s -> Serialization.unmarshal(Serialization.asYaml(s), Scale.class)).orElse(null);
+    }).map(s -> getKubernetesSerialization().unmarshal(getKubernetesSerialization().asYaml(s), Scale.class)).orElse(null);
   }
 
 }

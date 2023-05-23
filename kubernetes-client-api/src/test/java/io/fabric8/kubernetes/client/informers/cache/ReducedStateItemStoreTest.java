@@ -15,8 +15,10 @@
  */
 package io.fabric8.kubernetes.client.informers.cache;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
+import io.fabric8.kubernetes.client.utils.KubernetesSerialization;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.Assert.assertNotNull;
@@ -27,8 +29,8 @@ class ReducedStateItemStoreTest {
 
   @Test
   void testStoreRestore() {
-    ReducedStateItemStore<Pod> store = new ReducedStateItemStore<>(ReducedStateItemStore.UID_KEY_STATE, Pod.class,
-        "metadata.labels", "foo.bar");
+    ReducedStateItemStore<Pod> store = new ReducedStateItemStore<>(ReducedStateItemStore.UID_KEY_STATE,
+        Pod.class, new KubernetesSerialization(new ObjectMapper()), "metadata.labels", "foo.bar");
 
     Pod pod = new PodBuilder().withNewSpec().endSpec().withNewMetadata().withUid("x").withName("y").addToLabels("one", "1")
         .addToLabels("two", "2").withResourceVersion("2").endMetadata().withNewStatus().endStatus().build();

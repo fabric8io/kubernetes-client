@@ -42,6 +42,7 @@ import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.WatcherException;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.base.ResourceDefinitionContext;
+import io.fabric8.kubernetes.client.impl.BaseClient;
 import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
 import io.fabric8.kubernetes.client.informers.SharedIndexInformer;
 import io.fabric8.kubernetes.client.informers.SharedInformerFactory;
@@ -58,7 +59,6 @@ import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.URLUtils.URLBuilder;
 import io.fabric8.kubernetes.client.utils.Utils;
-import io.fabric8.kubernetes.internal.KubernetesDeserializer;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -1166,7 +1166,8 @@ class DefaultSharedIndexInformerTest {
         r -> new WatchEvent(getAnimal("red-panda", "Carnivora", r), "ADDED"), null, null);
 
     // When
-    KubernetesDeserializer.registerCustomKind("jungle.example.com/v1", "Animal", CronTab.class);
+    client.adapt(BaseClient.class).getKubernetesSerialization().registerCustomKind("jungle.example.com/v1", "Animal",
+        CronTab.class);
     SharedIndexInformer<GenericKubernetesResource> animalSharedIndexInformer = client
         .genericKubernetesResources(animalContext)
         .inNamespace("ns1")

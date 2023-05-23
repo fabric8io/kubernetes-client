@@ -72,7 +72,6 @@ import io.fabric8.kubernetes.client.ApiVisitor;
 import io.fabric8.kubernetes.client.ApiVisitor.ApiVisitResult;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientBuilder.ExecutorSupplier;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
@@ -114,7 +113,6 @@ import io.fabric8.kubernetes.client.dsl.NamespaceListVisitFromServerGetDeleteRec
 import io.fabric8.kubernetes.client.dsl.NamespaceableResource;
 import io.fabric8.kubernetes.client.dsl.NetworkAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
-import io.fabric8.kubernetes.client.dsl.ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable;
 import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.kubernetes.client.dsl.PolicyAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.RbacAPIGroupDSL;
@@ -160,8 +158,7 @@ import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.informers.SharedInformerFactory;
 import io.fabric8.kubernetes.client.informers.impl.SharedInformerFactoryImpl;
 import io.fabric8.kubernetes.client.utils.ApiVersionUtil;
-import io.fabric8.kubernetes.client.utils.HttpClientUtils;
-import io.fabric8.kubernetes.client.utils.Serialization;
+import io.fabric8.kubernetes.client.utils.KubernetesSerialization;
 import io.fabric8.kubernetes.client.utils.Utils;
 
 import java.io.InputStream;
@@ -178,24 +175,16 @@ public class KubernetesClientImpl extends BaseClient implements NamespacedKubern
 
   public static final String KUBERNETES_VERSION_ENDPOINT = "version";
 
-  public KubernetesClientImpl() {
-    this(new ConfigBuilder().build());
-  }
-
-  public KubernetesClientImpl(String masterUrl) {
-    this(new ConfigBuilder().withMasterUrl(masterUrl).build());
-  }
-
-  public KubernetesClientImpl(Config config) {
-    this(HttpClientUtils.createHttpClient(config), config);
-  }
-
+  /**
+   * Used by test logic
+   */
   public KubernetesClientImpl(HttpClient httpClient, Config config) {
-    this(httpClient, config, null);
+    this(httpClient, config, () -> Runnable::run, new KubernetesSerialization());
   }
 
-  public KubernetesClientImpl(HttpClient httpClient, Config config, ExecutorSupplier executorSupplier) {
-    super(httpClient, config, executorSupplier);
+  public KubernetesClientImpl(HttpClient httpClient, Config config, ExecutorSupplier executorSupplier,
+      KubernetesSerialization kubernetesSerialization) {
+    super(httpClient, config, executorSupplier, kubernetesSerialization);
 
     this.getAdapters().registerClient(AppsAPIGroupDSL.class, new AppsAPIGroupClient());
     this.getAdapters().registerClient(AdmissionRegistrationAPIGroupDSL.class, new AdmissionRegistrationAPIGroupClient());
@@ -310,8 +299,8 @@ public class KubernetesClientImpl extends BaseClient implements NamespacedKubern
    * {@inheritDoc}
    */
   @Override
-  public ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> load(InputStream is) {
-    return resourceListFor(Serialization.unmarshal(is));
+  public NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> load(InputStream is) {
+    return resourceListFor(kubernetesSerialization.unmarshal(is));
   }
 
   /**
@@ -347,8 +336,8 @@ public class KubernetesClientImpl extends BaseClient implements NamespacedKubern
    * {@inheritDoc}
    */
   @Override
-  public ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> resourceList(String s) {
-    return resourceListFor(Serialization.unmarshal(s));
+  public NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> resourceList(String s) {
+    return resourceListFor(kubernetesSerialization.unmarshal(s));
   }
 
   @Override
@@ -372,7 +361,7 @@ public class KubernetesClientImpl extends BaseClient implements NamespacedKubern
    */
   @Override
   public NamespaceableResource<HasMetadata> resource(String s) {
-    return resource(Serialization.<Object> unmarshal(s));
+    return resource(kubernetesSerialization.<Object> unmarshal(s));
   }
 
   /**
@@ -380,7 +369,7 @@ public class KubernetesClientImpl extends BaseClient implements NamespacedKubern
    */
   @Override
   public NamespaceableResource<HasMetadata> resource(InputStream is) {
-    return resource(Serialization.<Object> unmarshal(is));
+    return resource(kubernetesSerialization.<Object> unmarshal(is));
   }
 
   /**

@@ -16,13 +16,13 @@
 package io.fabric8.kubernetes.client.dsl.internal;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import io.fabric8.kubernetes.client.utils.ResourceCompare;
-import io.fabric8.kubernetes.client.utils.Serialization;
+import io.fabric8.kubernetes.client.utils.KubernetesSerialization;
 import io.fabric8.zjsonpatch.JsonDiff;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -36,26 +36,18 @@ public class PatchUtils {
   private PatchUtils() {
   }
 
-  private static class SingletonHolder {
-    public static final ObjectMapper patchMapper;
-
-    static {
-      patchMapper = Serialization.jsonMapper().copy();
-      // if this isn't set the patches are still correct, but not as compact for some reason - array values are added individually
-      patchMapper.setConfig(patchMapper.getSerializationConfig().without(SerializationFeature.WRITE_EMPTY_JSON_ARRAYS));
-    }
+  public static String withoutRuntimeState(Object object, Format format, boolean omitStatus,
+      KubernetesSerialization serialization) {
+    Function<Object, String> mapper = format == Format.JSON ? serialization::asJson : serialization::asYaml;
+    return mapper.apply(withoutRuntimeState(object, omitStatus, serialization));
   }
 
-  public static String withoutRuntimeState(Object object, Format format, boolean omitStatus) {
-    Function<Object, String> mapper = format == Format.JSON ? Serialization::asJson : Serialization::asYaml;
-    return mapper.apply(withoutRuntimeState(object, omitStatus));
-  }
+  static JsonNode withoutRuntimeState(Object object, boolean omitStatus, KubernetesSerialization serialization) {
+    ObjectNode raw = serialization.convertValue(object, ObjectNode.class);
 
-  /**
-   * See also {@link ResourceCompare#withoutRuntimeState}
-   */
-  static JsonNode withoutRuntimeState(Object object, boolean omitStatus) {
-    ObjectNode raw = SingletonHolder.patchMapper.convertValue(object, ObjectNode.class);
+    // it makes the diffs more compact to not have empty arrays
+    removeEmptyArrays(raw);
+
     Optional.ofNullable(raw.get("metadata")).filter(ObjectNode.class::isInstance).map(ObjectNode.class::cast).ifPresent(m -> {
       m.remove("creationTimestamp");
       m.remove("deletionTimestamp");
@@ -69,9 +61,25 @@ public class PatchUtils {
     return raw;
   }
 
-  public static String jsonDiff(Object current, Object updated, boolean omitStatus) {
-    return Serialization
-        .asJson(JsonDiff.asJson(withoutRuntimeState(current, omitStatus), withoutRuntimeState(updated, omitStatus)));
+  private static void removeEmptyArrays(ObjectNode raw) {
+    List<String> toRemove = new ArrayList<>();
+    for (Iterator<String> names = raw.fieldNames(); names.hasNext();) {
+      String name = names.next();
+      JsonNode node = raw.get(name);
+      if (node.isArray() && node.size() == 0) {
+        toRemove.add(name);
+      }
+      if (node.isObject()) {
+        removeEmptyArrays((ObjectNode) node);
+      }
+    }
+    raw.remove(toRemove);
+  }
+
+  public static String jsonDiff(Object current, Object updated, boolean omitStatus, KubernetesSerialization serialization) {
+    return serialization
+        .asJson(JsonDiff.asJson(withoutRuntimeState(current, omitStatus, serialization),
+            withoutRuntimeState(updated, omitStatus, serialization)));
   }
 
 }
