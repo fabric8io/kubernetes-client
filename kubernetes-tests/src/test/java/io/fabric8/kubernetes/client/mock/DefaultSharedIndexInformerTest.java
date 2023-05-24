@@ -42,7 +42,6 @@ import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.WatcherException;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.base.ResourceDefinitionContext;
-import io.fabric8.kubernetes.client.impl.BaseClient;
 import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
 import io.fabric8.kubernetes.client.informers.SharedIndexInformer;
 import io.fabric8.kubernetes.client.informers.SharedInformerFactory;
@@ -1166,7 +1165,7 @@ class DefaultSharedIndexInformerTest {
         r -> new WatchEvent(getAnimal("red-panda", "Carnivora", r), "ADDED"), null, null);
 
     // When
-    client.adapt(BaseClient.class).getKubernetesSerialization().registerCustomKind("jungle.example.com/v1", "Animal",
+    client.getKubernetesSerialization().registerKubernetesResource("jungle.example.com/v1", "Animal",
         CronTab.class);
     SharedIndexInformer<GenericKubernetesResource> animalSharedIndexInformer = client
         .genericKubernetesResources(animalContext)

@@ -32,6 +32,7 @@ import com.fasterxml.jackson.databind.introspect.Annotated;
 import com.fasterxml.jackson.databind.jsontype.TypeIdResolver;
 import com.fasterxml.jackson.databind.jsontype.TypeResolverBuilder;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.runtime.RawExtension;
@@ -58,23 +59,35 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.ServiceLoader;
 
 public class KubernetesSerialization {
 
   private final ObjectMapper mapper;
   private final UnmatchedFieldTypeModule unmatchedFieldTypeModule = new UnmatchedFieldTypeModule();
   private KubernetesDeserializer kubernetesDeserializer;
+  private final boolean searchClassloaders;
 
+  /**
+   * Creates a new instance with a fresh ObjectMapper
+   */
   public KubernetesSerialization() {
-    this(new ObjectMapper());
+    this(new ObjectMapper(), true);
   }
 
-  public KubernetesSerialization(ObjectMapper mapper) {
+  /**
+   * Creates a new instance with the given ObjectMapper, which will be configured for use for
+   * kubernetes resource serialization / deserialization.
+   *
+   * @param searchClassloaders if {@link KubernetesResource} should be automatically discovered via {@link ServiceLoader}
+   */
+  public KubernetesSerialization(ObjectMapper mapper, boolean searchClassloaders) {
     this.mapper = mapper;
+    this.searchClassloaders = searchClassloaders;
     configureMapper(mapper);
   }
 
-  private void configureMapper(ObjectMapper mapper) {
+  protected void configureMapper(ObjectMapper mapper) {
     mapper.registerModules(new JavaTimeModule(), unmatchedFieldTypeModule);
     mapper.disable(DeserializationFeature.FAIL_ON_INVALID_SUBTYPE);
     HandlerInstantiator instanciator = mapper.getDeserializationConfig().getHandlerInstantiator();
@@ -131,8 +144,7 @@ public class KubernetesSerialization {
   private synchronized KubernetesDeserializer getKubernetesDeserializer() {
     // created lazily to avoid holding all model classes in memory by default
     if (this.kubernetesDeserializer == null) {
-      // TODO: expose control over KubernetesDeserializer class registration
-      this.kubernetesDeserializer = new KubernetesDeserializer(true);
+      this.kubernetesDeserializer = new KubernetesDeserializer(searchClassloaders);
     }
     return kubernetesDeserializer;
   }
@@ -242,17 +254,6 @@ public class KubernetesSerialization {
     } catch (IOException e) {
       throw KubernetesClientException.launderThrowable(e);
     }
-  }
-
-  private boolean isLikelyYaml(BufferedInputStream bis) throws IOException {
-    bis.mark(-1);
-    int intch;
-    do {
-      intch = bis.read();
-    } while (intch > -1 && Character.isWhitespace(intch));
-    bis.reset();
-
-    return intch != '{' && intch != '[';
   }
 
   /**
@@ -368,7 +369,7 @@ public class KubernetesSerialization {
     return mapper.getTypeFactory().constructParametricType(parameterizedClass, parameterType);
   }
 
-  public Class<? extends KubernetesResource> getRegisteredKind(String apiVersion, String kind) {
+  public Class<? extends KubernetesResource> getRegisteredKubernetesResource(String apiVersion, String kind) {
     return this.getKubernetesDeserializer().getRegisteredKind(apiVersion, kind);
   }
 
@@ -381,16 +382,16 @@ public class KubernetesSerialization {
   }
 
   /**
-   * Registers a Custom Resource Definition Kind
+   * Registers a new resource, which can then be recognized for deserialization
    */
-  public void registerCustomKind(String kind, Class<? extends KubernetesResource> clazz) {
-    registerCustomKind(null, kind, clazz);
+  public void registerKubernetesResource(Class<? extends KubernetesResource> clazz) {
+    registerKubernetesResource(null, HasMetadata.getKind(clazz), clazz);
   }
 
   /**
-   * Registers a Custom Resource Definition Kind
+   * Registers a new resource, which can then be recognized for deserialization
    */
-  public void registerCustomKind(String apiVersion, String kind, Class<? extends KubernetesResource> clazz) {
+  public void registerKubernetesResource(String apiVersion, String kind, Class<? extends KubernetesResource> clazz) {
     getKubernetesDeserializer().registerCustomKind(apiVersion, kind, clazz);
   }
 
@@ -399,7 +400,7 @@ public class KubernetesSerialization {
       mapper.readTree(input);
       return input; // valid json
     } catch (JsonProcessingException e) {
-      return Serialization.asJson(Serialization.unmarshal(input, JsonNode.class));
+      return asJson(unmarshal(input, JsonNode.class));
     }
   }
 

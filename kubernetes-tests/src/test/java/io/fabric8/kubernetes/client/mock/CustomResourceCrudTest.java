@@ -22,7 +22,6 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.kubernetes.client.impl.BaseClient;
 import io.fabric8.kubernetes.client.mock.crd.CronTab;
 import io.fabric8.kubernetes.client.mock.crd.CronTabSpec;
 import io.fabric8.kubernetes.client.mock.crd.CronTabStatus;
@@ -48,7 +47,7 @@ class CustomResourceCrudTest {
 
   @BeforeEach
   void setUp() {
-    client.adapt(BaseClient.class).getKubernetesSerialization().registerCustomKind("stable.example.com/v1", "CronTab",
+    client.getKubernetesSerialization().registerKubernetesResource("stable.example.com/v1", "CronTab",
         CronTab.class);
     cronTabCrd = client
         .apiextensions()
