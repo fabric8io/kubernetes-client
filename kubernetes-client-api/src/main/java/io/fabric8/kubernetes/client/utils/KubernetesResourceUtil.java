@@ -492,20 +492,6 @@ public class KubernetesResourceUtil {
     return configMapBuilder.build();
   }
 
-  /**
-   * Create new ConfigMap with specified entry in its data field
-   *
-   * @param key key in ConfigMap's data map
-   * @param value path to a file or a directory whose contents would be read as value
-   * @return a ConfigMap whose data contains provided key and value
-   * @throws IOException in case of failure while reading file or directory
-   */
-  public static ConfigMap createNewConfigMapWithEntry(final String key, final Path value) throws IOException {
-    ConfigMapBuilder configMapBuilder = new ConfigMapBuilder();
-    addEntriesFromDirOrFileToConfigMap(configMapBuilder, key, value);
-    return configMapBuilder.build();
-  }
-
   private static Map.Entry<String, String> createConfigMapEntry(final String key, final Path file) throws IOException {
     final byte[] bytes = Files.readAllBytes(file);
     if (isFileWithBinaryContent(file)) {

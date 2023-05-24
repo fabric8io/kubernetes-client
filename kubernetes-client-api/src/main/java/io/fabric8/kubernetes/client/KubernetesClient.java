@@ -65,7 +65,6 @@ import io.fabric8.kubernetes.client.dsl.AuthorizationAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.AutoscalingAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.BatchAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.CertificatesAPIGroupDSL;
-import io.fabric8.kubernetes.client.dsl.ConfigMapResource;
 import io.fabric8.kubernetes.client.dsl.DiscoveryAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.DynamicResourceAllocationAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.EventingAPIGroupDSL;
@@ -460,7 +459,7 @@ public interface KubernetesClient extends Client {
    *
    * @return MixedOperation object for ConfigMap related operations.
    */
-  MixedOperation<ConfigMap, ConfigMapList, ConfigMapResource> configMaps();
+  MixedOperation<ConfigMap, ConfigMapList, Resource<ConfigMap>> configMaps();
 
   /**
    * API entrypoint for LimitRange related operations. LimitRange (core/v1)

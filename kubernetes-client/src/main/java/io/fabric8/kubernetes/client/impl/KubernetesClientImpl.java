@@ -101,7 +101,6 @@ import io.fabric8.kubernetes.client.dsl.AuthorizationAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.AutoscalingAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.BatchAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.CertificatesAPIGroupDSL;
-import io.fabric8.kubernetes.client.dsl.ConfigMapResource;
 import io.fabric8.kubernetes.client.dsl.DiscoveryAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.DynamicResourceAllocationAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.EventingAPIGroupDSL;
@@ -151,7 +150,6 @@ import io.fabric8.kubernetes.client.dsl.internal.apps.v1.ReplicaSetOperationsImp
 import io.fabric8.kubernetes.client.dsl.internal.apps.v1.StatefulSetOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.batch.v1.JobOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.certificates.v1.CertificateSigningRequestOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.internal.core.v1.ConfigMapOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.core.v1.PodOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.core.v1.ReplicationControllerOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.core.v1.ServiceOperationsImpl;
@@ -260,7 +258,6 @@ public class KubernetesClientImpl extends BaseClient implements NamespacedKubern
     this.getHandlers().register(Pod.class, PodOperationsImpl::new);
     this.getHandlers().register(Job.class, JobOperationsImpl::new);
     this.getHandlers().register(Service.class, ServiceOperationsImpl::new);
-    this.getHandlers().register(ConfigMap.class, ConfigMapOperationsImpl::new);
     this.getHandlers().register(Deployment.class, DeploymentOperationsImpl::new);
     this.getHandlers().register(io.fabric8.kubernetes.api.model.extensions.Deployment.class,
         io.fabric8.kubernetes.client.dsl.internal.extensions.v1beta1.DeploymentOperationsImpl::new);
@@ -495,9 +492,12 @@ public class KubernetesClientImpl extends BaseClient implements NamespacedKubern
     return resources(APIService.class, APIServiceList.class);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
-  public MixedOperation<ConfigMap, ConfigMapList, ConfigMapResource> configMaps() {
-    return new ConfigMapOperationsImpl(this);
+  public MixedOperation<ConfigMap, ConfigMapList, Resource<ConfigMap>> configMaps() {
+    return resources(ConfigMap.class, ConfigMapList.class);
   }
 
   /**
