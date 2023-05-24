@@ -24,3 +24,4 @@ spec:
   two space: "2"
   three'quote: "3"
   four"doublequote: "4"
+  five/slash: "5"
