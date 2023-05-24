@@ -38,7 +38,7 @@ class CustomResourceCrudWithCRDContextTest {
   @Test
   void testCreateAndGet() {
     // Given
-    client.adapt(BaseClient.class).getKubernetesSerialization().registerCustomKind("demo.fabric8.io/v1alpha1",
+    client.getKubernetesSerialization().registerKubernetesResource("demo.fabric8.io/v1alpha1",
         "EntandoBundleRelease", EntandoBundleRelease.class);
     MixedOperation<EntandoBundleRelease, EntandoBundleReleaseList, Resource<EntandoBundleRelease>> ebrClient = client
         .resources(EntandoBundleRelease.class, EntandoBundleReleaseList.class);
@@ -55,7 +55,7 @@ class CustomResourceCrudWithCRDContextTest {
   @Test
   void testCreateAndGetWithInferredContext() {
     // Given
-    client.adapt(BaseClient.class).getKubernetesSerialization().registerCustomKind("demo.fabric8.io/v1alpha1",
+    client.adapt(BaseClient.class).getKubernetesSerialization().registerKubernetesResource("demo.fabric8.io/v1alpha1",
         "EntandoBundleRelease", EntandoBundleRelease.class);
     MixedOperation<EntandoBundleRelease, KubernetesResourceList<EntandoBundleRelease>, Resource<EntandoBundleRelease>> ebrClient = client
         .resources(EntandoBundleRelease.class);

@@ -204,7 +204,10 @@ public class Serialization {
    * @param type The {@link TypeReference}.
    * @param <T> Template argument denoting type
    * @return returns de-serialized object
+   *
+   * @deprecated use {@link KubernetesSerialization#unmarshal(InputStream, TypeReference)}
    */
+  @Deprecated
   public static <T> T unmarshal(InputStream is, TypeReference<T> type) {
     return kubernetesSerialization.unmarshal(is, type);
   }

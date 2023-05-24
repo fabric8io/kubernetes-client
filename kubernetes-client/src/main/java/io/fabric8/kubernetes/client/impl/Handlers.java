@@ -84,7 +84,7 @@ public final class Handlers {
       Client client) {
     // check if it's built-in
     Class<? extends KubernetesResource> clazz = client.adapt(BaseClient.class).getKubernetesSerialization()
-        .getRegisteredKind(apiVersion, kind);
+        .getRegisteredKubernetesResource(apiVersion, kind);
 
     ResourceDefinitionContext rdc = null;
     if (clazz != null) {
