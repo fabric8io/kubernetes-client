@@ -15,17 +15,16 @@
  */
 package io.fabric8.openshift.client.impl;
 
-import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.RootPaths;
 import io.fabric8.kubernetes.api.model.StatusDetails;
 import io.fabric8.kubernetes.client.Client;
-import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.RequestConfig;
 import io.fabric8.kubernetes.client.VersionInfo;
 import io.fabric8.kubernetes.client.WithRequestCallable;
 import io.fabric8.kubernetes.client.dsl.CreateOrDeleteable;
+import io.fabric8.kubernetes.client.dsl.Deletable;
 import io.fabric8.kubernetes.client.dsl.FunctionCallable;
 import io.fabric8.kubernetes.client.dsl.Gettable;
 import io.fabric8.kubernetes.client.dsl.InOutCreateable;
@@ -41,7 +40,6 @@ import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.impl.BaseClient;
 import io.fabric8.kubernetes.client.impl.ExtensionsAPIGroupClient;
 import io.fabric8.kubernetes.client.impl.KubernetesClientImpl;
-import io.fabric8.kubernetes.client.utils.HttpClientUtils;
 import io.fabric8.kubernetes.client.utils.TokenRefreshInterceptor;
 import io.fabric8.openshift.api.model.BrokerTemplateInstance;
 import io.fabric8.openshift.api.model.BrokerTemplateInstanceList;
@@ -138,7 +136,6 @@ import io.fabric8.openshift.api.model.miscellaneous.network.operator.v1.Operator
 import io.fabric8.openshift.api.model.miscellaneous.network.operator.v1.OperatorPKIList;
 import io.fabric8.openshift.client.NamespacedOpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftConfig;
-import io.fabric8.openshift.client.OpenShiftConfigBuilder;
 import io.fabric8.openshift.client.dsl.BuildConfigResource;
 import io.fabric8.openshift.client.dsl.BuildResource;
 import io.fabric8.openshift.client.dsl.DeployableScalableResource;
@@ -173,6 +170,7 @@ import java.net.URL;
 import java.text.ParseException;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
 /**
@@ -182,29 +180,45 @@ import java.util.function.Supplier;
 public class OpenShiftClientImpl extends KubernetesClientImpl
     implements NamespacedOpenShiftClient {
 
+  private static final class NameableCreateOrDeleteableImpl implements NameableCreateOrDeleteable {
+    private final HasMetadataOperation<ImageSignature, ?, Resource<ImageSignature>> nameable;
+    private final Resource<ImageSignature> operation;
+
+    private NameableCreateOrDeleteableImpl(HasMetadataOperation<ImageSignature, ?, Resource<ImageSignature>> nameable,
+        Resource<ImageSignature> operation) {
+      this.nameable = nameable;
+      this.operation = operation;
+    }
+
+    @Override
+    public List<StatusDetails> delete() {
+      return operation.delete();
+    }
+
+    @Override
+    public ImageSignature create(ImageSignature item) {
+      return operation.create(item);
+    }
+
+    @Override
+    public CreateOrDeleteable<ImageSignature> withName(String name) {
+      return new NameableCreateOrDeleteableImpl(nameable, nameable.withName(name));
+    }
+
+    @Override
+    public Deletable withTimeout(long timeout, TimeUnit unit) {
+      return operation.withTimeout(timeout, unit);
+    }
+
+    @Override
+    public Deletable withTimeoutInMillis(long timeoutInMillis) {
+      return operation.withTimeoutInMillis(timeoutInMillis);
+    }
+  }
+
   public static final String OPENSHIFT_VERSION_ENDPOINT = "version/openshift";
 
   private URL openShiftUrl;
-
-  public OpenShiftClientImpl() {
-    this(new OpenShiftConfigBuilder().build());
-  }
-
-  public OpenShiftClientImpl(String masterUrl) {
-    this(new OpenShiftConfigBuilder().withMasterUrl(masterUrl).build());
-  }
-
-  public OpenShiftClientImpl(final Config config) {
-    this(new OpenShiftConfig(config));
-  }
-
-  public OpenShiftClientImpl(final OpenShiftConfig config) {
-    this(HttpClientUtils.createHttpClient(config), config);
-  }
-
-  public OpenShiftClientImpl(HttpClient httpClient, OpenShiftConfig config) {
-    super(httpClient, config);
-  }
 
   OpenShiftClientImpl(Client client) {
     super(client.adapt(BaseClient.class));
@@ -331,35 +345,7 @@ public class OpenShiftClientImpl extends KubernetesClientImpl
   public NameableCreateOrDeleteable imageSignatures() {
     HasMetadataOperation<ImageSignature, ?, Resource<ImageSignature>> operation = getHandlers()
         .getNonListingOperation(ImageSignature.class, this);
-    return new NameableCreateOrDeleteable() {
-
-      @Override
-      public List<StatusDetails> delete() {
-        return operation.delete();
-      }
-
-      @Override
-      public ImageSignature create(ImageSignature item) {
-        return operation.create(item);
-      }
-
-      @Override
-      public CreateOrDeleteable<ImageSignature> withName(String name) {
-        return new CreateOrDeleteable<ImageSignature>() {
-
-          @Override
-          public ImageSignature create(ImageSignature item) {
-            return operation.withName(name).create(item);
-          }
-
-          @Override
-          public List<StatusDetails> delete() {
-            return operation.withName(name).delete();
-          }
-
-        };
-      }
-    };
+    return new NameableCreateOrDeleteableImpl(operation, operation);
   }
 
   @Override
@@ -464,7 +450,7 @@ public class OpenShiftClientImpl extends KubernetesClientImpl
   }
 
   @Override
-  public ParameterMixedOperation<Template, TemplateList, TemplateResource<Template, KubernetesList>> templates() {
+  public ParameterMixedOperation<Template, TemplateList, TemplateResource> templates() {
     return new TemplateOperationsImpl(this);
   }
 
@@ -699,8 +685,9 @@ public class OpenShiftClientImpl extends KubernetesClientImpl
   protected void setDerivedFields() {
     OpenShiftConfig wrapped = OpenShiftConfig.wrap(config);
     this.config = wrapped;
-    HttpClient.DerivedClientBuilder builder = httpClient.newBuilder().authenticatorNone();
+    HttpClient.DerivedClientBuilder builder = httpClient.newBuilder();
     this.httpClient = builder
+        .authenticatorNone()
         .addOrReplaceInterceptor(TokenRefreshInterceptor.NAME,
             new OpenShiftOAuthInterceptor(httpClient, wrapped))
         .build();

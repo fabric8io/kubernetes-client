@@ -30,10 +30,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 class InputStreamReadStream implements ReadStream<Buffer> {
 
-  private static final Buffer END_SENTINEL = Buffer.buffer();
   private static final int CHUNK_SIZE = 2048;
   private static final int MAX_DEPTH = 8;
 
+  private final Buffer endSentinel;
   private final VertxHttpRequest vertxHttpRequest;
   private final InputStream is;
   private final HttpClientRequest request;
@@ -46,6 +46,7 @@ class InputStreamReadStream implements ReadStream<Buffer> {
     this.vertxHttpRequest = vertxHttpRequest;
     this.is = is;
     this.request = request;
+    endSentinel = Buffer.buffer();
   }
 
   @Override
@@ -72,7 +73,7 @@ class InputStreamReadStream implements ReadStream<Buffer> {
     }
     if (handler != null) {
       inboundBuffer.handler(buff -> {
-        if (buff == END_SENTINEL) {
+        if (buff == endSentinel) {
           if (endHandler != null) {
             endHandler.handle(null);
           }
@@ -133,7 +134,7 @@ class InputStreamReadStream implements ReadStream<Buffer> {
             // Full
           }
         } else {
-          inboundBuffer.write(END_SENTINEL);
+          inboundBuffer.write(endSentinel);
         }
       } else {
         if (exceptionHandler != null) {

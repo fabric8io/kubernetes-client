@@ -19,17 +19,24 @@ package io.fabric8.kubernetes.client.http;
 import java.util.Objects;
 
 /*
- * TODO: this may not be the best way to do this - in general
- * instead we create a response to hold them both
- * manusa: We can remove this class and replace with separate WebSocketUpgradeResponse|WebSocketHandshakeException handled by the future
+ * manusa: We may be able to remove this class and replace with separate WebSocketUpgradeResponse|WebSocketHandshakeException handled by the future
+ * but we can't yet as there isn't a composable form of handle
  */
 public class WebSocketResponse {
   final WebSocketUpgradeResponse webSocketUpgradeResponse;
-  final WebSocketHandshakeException wshse;
+  final Throwable throwable;
+  final WebSocket webSocket;
 
-  public WebSocketResponse(WebSocketUpgradeResponse webSocketUpgradeResponse, WebSocketHandshakeException wshse) {
+  public WebSocketResponse(WebSocketUpgradeResponse webSocketUpgradeResponse, Throwable throwable) {
     this.webSocketUpgradeResponse = Objects.requireNonNull(webSocketUpgradeResponse);
-    this.wshse = wshse;
+    this.throwable = Objects.requireNonNull(throwable);
+    this.webSocket = null;
+  }
+
+  public WebSocketResponse(WebSocketUpgradeResponse webSocketUpgradeResponse, WebSocket webSocket) {
+    this.webSocketUpgradeResponse = Objects.requireNonNull(webSocketUpgradeResponse);
+    this.webSocket = Objects.requireNonNull(webSocket);
+    this.throwable = null;
   }
 
 }

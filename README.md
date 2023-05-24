@@ -112,7 +112,7 @@ System properties are preferred over environment variables. The following system
 | `kubernetes.max.concurrent.requests.per.host` / `KUBERNETES_MAX_CONCURRENT_REQUESTS_PER_HOST`                   |                                                                                                                                          | `5`                                                   |
 | `kubernetes.impersonate.username` / `KUBERNETES_IMPERSONATE_USERNAME`                                           | `Impersonate-User` HTTP header value                                                                                                     |                                                       |
 | `kubernetes.impersonate.group` / `KUBERNETES_IMPERSONATE_GROUP`                                                 | `Impersonate-Group` HTTP header value                                                                                                    |                                                       |
-| `kubernetes.tls.versions` / `KUBERNETES_TLS_VERSIONS`                                                           | TLS versions separated by `,`                                                                                                            | `TLSv1.2`                                             |
+| `kubernetes.tls.versions` / `KUBERNETES_TLS_VERSIONS`                                                           | TLS versions separated by `,`                                                                                                            | `TLSv1.2,TLSv1.3`                                             |
 | `kubernetes.truststore.file` / `KUBERNETES_TRUSTSTORE_FILE`                                                     |                                                                                                                                          |                                                       |
 | `kubernetes.truststore.passphrase` / `KUBERNETES_TRUSTSTORE_PASSPHRASE`                                         |                                                                                                                                          |                                                       |
 | `kubernetes.keystore.file` / `KUBERNETES_KEYSTORE_FILE`                                                         |                                                                                                                                          |                                                       |
@@ -410,6 +410,9 @@ class ExampleTest {
 |                          | K8s 1.26.0 | K8s 1.25.3 | K8s 1.24.7 | K8s 1.23.13 | K8s 1.22.1 | K8s 1.21.1 | K8s 1.20.2 | K8s 1.19.1 | K8s 1.18.0 | K8s 1.17.0 | K8s 1.16.0 | K8s 1.15.3 | K8s 1.14.2 | K8s 1.12.0 | K8s 1.11.0 | K8s 1.10.0 | K8s 1.9.0 |
 |--------------------------|------------|------------|------------|-------------|------------|------------|------------|------------|------------|------------|------------|------------|------------|------------|------------|------------|-----------|
 | HEAD                     | ✓          | ✓          | ✓          | ✓           | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | -         |
+| kubernetes-client 6.6.2  |            | ✓          | ✓          | ✓           | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | -         |
+| kubernetes-client 6.6.1  |            | ✓          | ✓          | ✓           | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | -         |
+| kubernetes-client 6.6.0  |            | ✓          | ✓          | ✓           | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | -         |
 | kubernetes-client 6.5.1  |            | ✓          | ✓          | ✓           | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | -         |
 | kubernetes-client 6.5.0  |            | ✓          | ✓          | ✓           | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | -         |
 | kubernetes-client 6.4.1  |            | ✓          | ✓          | ✓           | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | -         |
@@ -507,6 +510,9 @@ class ExampleTest {
 |                         | OCP 4.9.8 | OCP 4.5.14 | OCP 4.2.0 | OCP 4.1.0 | OCP 3.11.0 | OCP 3.10.0 | OCP 3.9.0 | OCP 3.7.0 | OCP 3.6.0 |
 |-------------------------|-----------|------------|-----------|-----------|------------|------------|-----------|-----------|-----------|
 | HEAD                    | ✓         | ✓          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
+| openshift-client 6.6.2  | ✓         | ✓          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
+| openshift-client 6.6.1  | ✓         | ✓          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
+| openshift-client 6.6.0  | ✓         | ✓          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
 | openshift-client 6.5.1  | ✓         | ✓          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
 | openshift-client 6.5.0  | ✓         | ✓          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
 | openshift-client 6.4.1  | ✓         | ✓          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
@@ -615,6 +621,7 @@ All the resource objects used here will be according to OpenShift 3.9.0  and Kub
   - [Volcano](https://github.com/fabric8io/kubernetes-client/tree/master/extensions/volcano)
   - [Istio](https://github.com/fabric8io/kubernetes-client/tree/master/extensions/istio)
   - [Open Cluster Management](https://github.com/fabric8io/kubernetes-client/tree/master/extensions/open-cluster-management)
+  - ~~[Camel-k](https://github.com/fabric8io/kubernetes-client/tree/master/extensions/camel-k)~~ deprecated in favor of the [official extension](https://github.com/apache/camel-k/blob/main/docs/modules/ROOT/pages/apis/java.adoc)
 
   Frameworks/Libraries/Tools:
   - [Arquillian Cube](http://arquillian.org/arquillian-cube/)

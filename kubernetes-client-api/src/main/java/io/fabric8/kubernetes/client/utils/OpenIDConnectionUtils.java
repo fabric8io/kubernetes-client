@@ -35,6 +35,8 @@ import java.security.NoSuchAlgorithmException;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 import java.security.spec.InvalidKeySpecException;
+import java.time.Instant;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -66,6 +68,9 @@ public class OpenIDConnectionUtils {
   public static final String TOKEN_ENDPOINT_PARAM = "token_endpoint";
   public static final String WELL_KNOWN_OPENID_CONFIGURATION = ".well-known/openid-configuration";
   public static final String GRANT_TYPE_REFRESH_TOKEN = "refresh_token";
+  private static final String JWT_TOKEN_EXPIRY_TIMESTAMP_KEY = "exp";
+  public static final String JWT_PARTS_DELIMITER_REGEX = "\\.";
+  private static final int TOKEN_EXPIRY_DELTA = 10;
 
   private OpenIDConnectionUtils() {
   }
@@ -143,7 +148,7 @@ public class OpenIDConnectionUtils {
           // Deserialize response body into a Map and return
           try {
             return convertJsonStringToMap(body);
-          } catch (JsonProcessingException e) {
+          } catch (Exception e) {
             LOGGER.warn("Failure in fetching refresh token: ", e);
           }
         } else {
@@ -175,7 +180,7 @@ public class OpenIDConnectionUtils {
           String responseBody = response.body();
           LOGGER.warn("oidc: failed to query metadata endpoint: {} {}", response.code(), responseBody);
         }
-      } catch (IOException e) {
+      } catch (Exception e) {
         LOGGER.warn("Could not refresh OIDC token, failure in getting refresh URL", e);
       }
       return Collections.emptyMap();
@@ -262,8 +267,8 @@ public class OpenIDConnectionUtils {
     return true;
   }
 
-  private static Map<String, Object> convertJsonStringToMap(String jsonString) throws JsonProcessingException {
-    return Serialization.jsonMapper().readValue(jsonString, Map.class);
+  private static Map<String, Object> convertJsonStringToMap(String jsonString) {
+    return Serialization.unmarshal(jsonString, Map.class);
   }
 
   private static HttpClient getDefaultHttpClientWithPemCert(String idpCert, HttpClient.Builder clientBuilder) {
@@ -319,4 +324,33 @@ public class OpenIDConnectionUtils {
     return result;
   }
 
+  public static boolean idTokenExpired(Config config) {
+    if (config.getAuthProvider() != null && config.getAuthProvider().getConfig() != null) {
+      Map<String, String> authProviderConfig = config.getAuthProvider().getConfig();
+      String accessToken = authProviderConfig.get(ID_TOKEN_KUBECONFIG);
+      if (isValidJwt(accessToken)) {
+        try {
+          String[] jwtParts = accessToken.split(JWT_PARTS_DELIMITER_REGEX);
+          String jwtPayload = jwtParts[1];
+          String jwtPayloadDecoded = new String(Base64.getDecoder().decode(jwtPayload));
+          Map<String, Object> jwtPayloadMap = Serialization.jsonMapper().readValue(jwtPayloadDecoded, Map.class);
+          int expiryTimestampInSeconds = (Integer) jwtPayloadMap.get(JWT_TOKEN_EXPIRY_TIMESTAMP_KEY);
+          return Instant.ofEpochSecond(expiryTimestampInSeconds)
+              .minusSeconds(TOKEN_EXPIRY_DELTA)
+              .isBefore(Instant.now());
+        } catch (JsonProcessingException e) {
+          return true;
+        }
+      }
+    }
+    return true;
+  }
+
+  private static boolean isValidJwt(String token) {
+    if (token != null && !token.isEmpty()) {
+      String[] jwtParts = token.split(JWT_PARTS_DELIMITER_REGEX);
+      return jwtParts.length == 3;
+    }
+    return false;
+  }
 }

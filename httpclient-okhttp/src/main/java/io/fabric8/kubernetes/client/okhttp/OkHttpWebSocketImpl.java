@@ -19,7 +19,6 @@ package io.fabric8.kubernetes.client.okhttp;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.http.StandardHttpRequest;
 import io.fabric8.kubernetes.client.http.WebSocket;
-import io.fabric8.kubernetes.client.http.WebSocketHandshakeException;
 import io.fabric8.kubernetes.client.http.WebSocketResponse;
 import io.fabric8.kubernetes.client.http.WebSocketUpgradeResponse;
 import okhttp3.OkHttpClient;
@@ -85,9 +84,8 @@ class OkHttpWebSocketImpl implements WebSocket {
             // Ensure response body is always closed (leak)
             Optional.ofNullable(response.body()).ifPresent(ResponseBody::close);
             final WebSocketUpgradeResponse upgradeResponse = new WebSocketUpgradeResponse(
-                fabric8Request, response.code(), response.headers().toMultimap(), null);
-            future.complete(new WebSocketResponse(upgradeResponse,
-                new WebSocketHandshakeException(upgradeResponse).initCause(t)));
+                fabric8Request, response.code(), response.headers().toMultimap());
+            future.complete(new WebSocketResponse(upgradeResponse, t));
           } else {
             future.completeExceptionally(t);
           }
@@ -99,14 +97,11 @@ class OkHttpWebSocketImpl implements WebSocket {
       @Override
       public void onOpen(okhttp3.WebSocket webSocket, Response response) {
         opened = true;
-        if (response != null) {
-          response.close();
-        }
+        response.close();
         OkHttpWebSocketImpl fabric8WebSocket = new OkHttpWebSocketImpl(webSocket, this::request);
         listener.onOpen(fabric8WebSocket);
         future.complete(new WebSocketResponse(
-            new WebSocketUpgradeResponse(fabric8Request, response.code(), response.headers().toMultimap(), fabric8WebSocket),
-            null));
+            new WebSocketUpgradeResponse(fabric8Request, response.code(), response.headers().toMultimap()), fabric8WebSocket));
       }
 
       @Override

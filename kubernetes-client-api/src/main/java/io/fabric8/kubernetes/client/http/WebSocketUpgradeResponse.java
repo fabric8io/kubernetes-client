@@ -24,21 +24,19 @@ public class WebSocketUpgradeResponse extends StandardHttpHeaders implements Htt
 
   private final HttpRequest httpRequest;
   private final int code;
-  private final WebSocket webSocket;
 
-  public WebSocketUpgradeResponse(HttpRequest httpRequest, WebSocket webSocket) {
-    this(httpRequest, 101, new LinkedHashMap<>(), webSocket);
+  public WebSocketUpgradeResponse(HttpRequest httpRequest) {
+    this(httpRequest, 101, new LinkedHashMap<>());
   }
 
-  public WebSocketUpgradeResponse(HttpRequest httpRequest, int code, WebSocket webSocket) {
-    this(httpRequest, code, new LinkedHashMap<>(), webSocket);
+  public WebSocketUpgradeResponse(HttpRequest httpRequest, int code) {
+    this(httpRequest, code, new LinkedHashMap<>());
   }
 
-  public WebSocketUpgradeResponse(HttpRequest httpRequest, int code, Map<String, List<String>> headers, WebSocket webSocket) {
+  public WebSocketUpgradeResponse(HttpRequest httpRequest, int code, Map<String, List<String>> headers) {
     super(headers);
     this.httpRequest = httpRequest;
     this.code = code;
-    this.webSocket = webSocket;
   }
 
   @Override
@@ -61,7 +59,4 @@ public class WebSocketUpgradeResponse extends StandardHttpHeaders implements Htt
     return Optional.empty();
   }
 
-  public WebSocket getWebSocket() {
-    return webSocket;
-  }
 }

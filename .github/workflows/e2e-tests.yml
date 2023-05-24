@@ -22,6 +22,10 @@ on:
     branches:
       - master
   pull_request:
+    paths-ignore:
+      - 'doc/**'
+      - 'ide-config/**'
+      - '**.md'
   schedule:
     - cron: '0 1 * * *' # Every day at 1
 

@@ -57,7 +57,6 @@ import io.fabric8.kubernetes.client.informers.impl.ListerWatcher;
 import io.fabric8.kubernetes.client.readiness.Readiness;
 import io.fabric8.kubernetes.client.utils.ApiVersionUtil;
 import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
-import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.URLUtils.URLBuilder;
 import io.fabric8.kubernetes.client.utils.Utils;
@@ -164,7 +163,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
    */
   public T getItemOrRequireFromServer() {
     if (item != null) {
-      return Serialization.clone(item);
+      return getKubernetesSerialization().clone(item);
     }
     return requireFromServer();
   }
@@ -184,9 +183,6 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     try {
       URL requestUrl = getCompleteResourceUrl();
       return handleGet(requestUrl);
-    } catch (InterruptedException ie) {
-      Thread.currentThread().interrupt();
-      throw KubernetesClientException.launderThrowable(forOperationType("get"), ie);
     } catch (IOException e) {
       throw KubernetesClientException.launderThrowable(forOperationType("get"), e);
     }
@@ -258,7 +254,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   @Override
   public R load(InputStream is) {
-    T unmarshal = unmarshal(is, type);
+    T unmarshal = this.getKubernetesSerialization().unmarshal(is, type);
     // if you do something like client.foo().v2().load(v1 resource)
     // it will parse as v2, but have a v1 apiVersion, so we need to
     // force the apiVersion
@@ -305,7 +301,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
         resource::create,
         resource::replace,
         m -> resource.waitUntilCondition(Objects::nonNull, 1, TimeUnit.SECONDS),
-        m -> resource.fromServer().get());
+        m -> resource.fromServer().get(), this.getKubernetesSerialization());
 
     return createOrReplaceHelper.createOrReplace(item);
   }
@@ -401,9 +397,9 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   public CompletableFuture<L> submitList(ListOptions listOptions) {
     try {
       URL fetchListUrl = fetchListUrl(getNamespacedUrl(), defaultListOptions(listOptions, null));
-      HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder().url(fetchListUrl);
+      HttpRequest.Builder requestBuilder = withRequestTimeout(httpClient.newHttpRequestBuilder()).url(fetchListUrl);
       Type refinedType = listType.equals(DefaultKubernetesResourceList.class)
-          ? Serialization.jsonMapper().getTypeFactory().constructParametricType(listType, type)
+          ? this.getKubernetesSerialization().constructParametricType(listType, type)
           : listType;
       TypeReference<L> listTypeReference = new TypeReference<L>() {
         @Override
@@ -629,7 +625,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
           watcherToggle,
           getRequestConfig().getWatchReconnectInterval(),
           getRequestConfig().getWatchReconnectLimit(),
-          getRequestConfig().getWebsocketTimeout());
+          getRequestConfig().getRequestTimeout());
     } catch (MalformedURLException e) {
       throw KubernetesClientException.launderThrowable(forOperationType(WATCH), e);
     }
@@ -741,7 +737,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   }
 
-  protected T handleGet(URL resourceUrl) throws InterruptedException, IOException {
+  protected T handleGet(URL resourceUrl) throws IOException {
     T answer = handleGet(resourceUrl, getType());
     updateApiVersion(answer);
     return answer;

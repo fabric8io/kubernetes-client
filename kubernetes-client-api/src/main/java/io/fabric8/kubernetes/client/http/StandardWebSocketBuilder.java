@@ -16,11 +16,13 @@
 
 package io.fabric8.kubernetes.client.http;
 
+import io.fabric8.kubernetes.client.http.WebSocket.Builder;
 import io.fabric8.kubernetes.client.http.WebSocket.Listener;
 import lombok.Getter;
 
 import java.net.URI;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 
 @Getter
 public class StandardWebSocketBuilder implements WebSocket.Builder {
@@ -73,6 +75,12 @@ public class StandardWebSocketBuilder implements WebSocket.Builder {
 
   public StandardHttpRequest asHttpRequest() {
     return this.builder.build();
+  }
+
+  @Override
+  public Builder connectTimeout(long timeout, TimeUnit timeUnit) {
+    this.builder.timeout(timeout, timeUnit);
+    return this;
   }
 
 }

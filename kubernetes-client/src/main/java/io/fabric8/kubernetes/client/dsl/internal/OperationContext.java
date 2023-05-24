@@ -508,7 +508,11 @@ public class OperationContext {
     // operationcontext
     OperationContext newContext = HasMetadataOperationsImpl.defaultContext(client).withDryRun(getDryRun())
         .withGracePeriodSeconds(getGracePeriodSeconds()).withPropagationPolicy(getPropagationPolicy())
-        .withFieldValidation(this.fieldValidation);
+        .withFieldValidation(this.fieldValidation).withFieldManager(this.fieldManager);
+
+    if (Boolean.TRUE.equals(this.forceConflicts)) {
+      newContext = newContext.withForceConflicts();
+    }
 
     // check before setting to prevent flipping the default flag
     if (!Objects.equals(getNamespace(), newContext.getNamespace())

@@ -41,7 +41,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
@@ -69,13 +68,8 @@ public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, Scalab
 
   @Override
   public Job scale(int count) {
-    return scale(count, false);
-  }
-
-  @Override
-  public Job scale(int count, boolean wait) {
     Job res = accept(b -> b.getSpec().setParallelism(count));
-    if (wait) {
+    if (context.getTimeout() > 0) {
       waitUntilJobIsScaled();
       res = getItemOrRequireFromServer();
     }
@@ -97,10 +91,10 @@ public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, Scalab
       if (Objects.equals(job.getSpec().getParallelism(), activeJobs)) {
         return true;
       }
-      LOG.debug("Only {}/{} pods scheduled for Job: {} in namespace: {} seconds so waiting...",
+      LOG.debug("Only {}/{} pods scheduled for Job: {} in namespace: {} so waiting...",
           job.getStatus().getActive(), job.getSpec().getParallelism(), job.getMetadata().getName(), namespace);
       return false;
-    }, getRequestConfig().getScaleTimeout(), TimeUnit.MILLISECONDS);
+    }, context.getTimeout(), context.getTimeoutUnit());
   }
 
   @Override

@@ -16,7 +16,6 @@
 
 package io.fabric8.kubernetes.client.utils;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import io.fabric8.kubernetes.api.builder.VisitableBuilder;
 import io.fabric8.kubernetes.api.model.ConfigMap;
 import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
@@ -445,10 +444,9 @@ public class KubernetesResourceUtil {
    *        secret's default name : "container-image-registry-secret" is the default name for secret
    * @return an object of Secret
    */
-  public static Secret createDockerRegistrySecret(String dockerServer, String username, String password)
-      throws JsonProcessingException {
+  public static Secret createDockerRegistrySecret(String dockerServer, String username, String password) {
     Map<String, Object> dockerConfigMap = createDockerRegistryConfigMap(dockerServer, username, password);
-    String dockerConfigAsStr = Serialization.jsonMapper().writeValueAsString(dockerConfigMap);
+    String dockerConfigAsStr = Serialization.asJson(dockerConfigMap);
 
     return createDockerSecret(DEFAULT_CONTAINER_IMAGE_REGISTRY_SECRET_NAME, dockerConfigAsStr);
   }
@@ -462,10 +460,9 @@ public class KubernetesResourceUtil {
    * @param secretName secretName that needs to be used during secret creation
    * @return an object of Secret
    */
-  public static Secret createDockerRegistrySecret(String dockerServer, String username, String password, String secretName)
-      throws JsonProcessingException {
+  public static Secret createDockerRegistrySecret(String dockerServer, String username, String password, String secretName) {
     Map<String, Object> dockerConfigMap = createDockerRegistryConfigMap(dockerServer, username, password);
-    String dockerConfigAsStr = Serialization.jsonMapper().writeValueAsString(dockerConfigMap);
+    String dockerConfigAsStr = Serialization.asJson(dockerConfigMap);
 
     return createDockerSecret(secretName, dockerConfigAsStr);
   }

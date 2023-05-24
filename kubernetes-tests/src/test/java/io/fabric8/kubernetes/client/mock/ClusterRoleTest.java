@@ -19,7 +19,7 @@ package io.fabric8.kubernetes.client.mock;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.rbac.ClusterRole;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.dsl.ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable;
+import io.fabric8.kubernetes.client.dsl.NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable;
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import org.junit.jupiter.api.Test;
 
@@ -44,7 +44,7 @@ class ClusterRoleTest {
   @Test
   void testHandlersLoadFromFile() {
 
-    ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> load = client
+    NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> load = client
         .load(getClass().getResourceAsStream("/test-clusterrole.yml"));
 
     assertNotNull(load);

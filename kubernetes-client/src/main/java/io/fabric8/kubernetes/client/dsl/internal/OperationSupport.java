@@ -16,7 +16,6 @@
 package io.fabric8.kubernetes.client.dsl.internal;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.kubernetes.api.model.DeleteOptions;
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.HasMetadata;
@@ -37,15 +36,16 @@ import io.fabric8.kubernetes.client.dsl.base.PatchType;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.HttpResponse;
+import io.fabric8.kubernetes.client.impl.BaseClient;
 import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
-import io.fabric8.kubernetes.client.utils.Serialization;
+import io.fabric8.kubernetes.client.utils.KubernetesSerialization;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InterruptedIOException;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
@@ -54,23 +54,19 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 public class OperationSupport {
 
-  private static final long ADDITIONAL_REQEUST_TIMEOUT = TimeUnit.SECONDS.toMillis(5);
   private static final String FIELD_MANAGER_PARAM = "?fieldManager=";
   public static final String JSON = "application/json";
   public static final String JSON_PATCH = "application/json-patch+json";
   public static final String STRATEGIC_MERGE_JSON_PATCH = "application/strategic-merge-patch+json";
   public static final String JSON_MERGE_PATCH = "application/merge-patch+json";
 
-  protected static final ObjectMapper JSON_MAPPER = Serialization.jsonMapper();
   private static final Logger LOG = LoggerFactory.getLogger(OperationSupport.class);
   private static final String CLIENT_STATUS_FLAG = "CLIENT_STATUS_FLAG";
 
@@ -254,7 +250,7 @@ public class OperationSupport {
     String itemNs = KubernetesResourceUtil.getNamespace((HasMetadata) item);
 
     if (Utils.isNotNullOrEmpty(namespace) && Utils.isNotNullOrEmpty(itemNs) && !namespace.equals(itemNs)) {
-      item = Serialization.clone(item);
+      item = getKubernetesSerialization().clone(item);
       KubernetesResourceUtil.setNamespace((HasMetadata) item, namespace);
     }
     return item;
@@ -319,7 +315,7 @@ public class OperationSupport {
     }
 
     HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder()
-        .delete(JSON, JSON_MAPPER.writeValueAsString(deleteOptions)).url(requestUrl);
+        .delete(JSON, getKubernetesSerialization().asJson(deleteOptions)).url(requestUrl);
 
     return handleResponse(requestBuilder, KubernetesResource.class);
   }
@@ -339,7 +335,7 @@ public class OperationSupport {
   protected <T, I> T handleCreate(I resource, Class<T> outputType) throws InterruptedException, IOException {
     resource = correctNamespace(resource);
     HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder()
-        .post(JSON, JSON_MAPPER.writeValueAsString(resource))
+        .post(JSON, getKubernetesSerialization().asJson(resource))
         .url(getResourceURLForWriteOperation(getResourceUrl(checkNamespace(resource), null)));
     return handleResponse(requestBuilder, outputType);
   }
@@ -357,7 +353,7 @@ public class OperationSupport {
   protected <T> T handleUpdate(T updated, Class<T> type) throws IOException {
     updated = correctNamespace(updated);
     HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder()
-        .put(JSON, JSON_MAPPER.writeValueAsString(updated))
+        .put(JSON, getKubernetesSerialization().asJson(updated))
         .url(getResourceURLForWriteOperation(getResourceUrl(checkNamespace(updated), checkName(updated))));
     return handleResponse(requestBuilder, type);
   }
@@ -390,7 +386,7 @@ public class OperationSupport {
         }
       }
       // we can't omit status unless this is not a status operation and we know this has a status subresource
-      patchForUpdate = PatchUtils.jsonDiff(current, updated, false);
+      patchForUpdate = PatchUtils.jsonDiff(current, updated, false, getKubernetesSerialization());
       if (patchContext == null) {
         patchContext = new PatchContext.Builder().withPatchType(PatchType.JSON).build();
       }
@@ -406,7 +402,7 @@ public class OperationSupport {
           }
         }
       }
-      patchForUpdate = Serialization.asJson(updated);
+      patchForUpdate = getKubernetesSerialization().asJson(updated);
       current = updated; // use the updated to determine the path
     }
     return handlePatch(patchContext, current, patchForUpdate, type);
@@ -446,7 +442,7 @@ public class OperationSupport {
   protected <T> T handleScale(String resourceUrl, T scale, Class<T> scaleType) throws InterruptedException, IOException {
     HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder().uri(resourceUrl + "/scale");
     if (scale != null) {
-      requestBuilder.put(JSON, JSON_MAPPER.writeValueAsString(scale));
+      requestBuilder.put(JSON, getKubernetesSerialization().asJson(scale));
     }
     return handleResponse(requestBuilder, scaleType);
   }
@@ -463,7 +459,7 @@ public class OperationSupport {
   protected Status handleDeploymentRollback(String resourceUrl, DeploymentRollback deploymentRollback)
       throws InterruptedException, IOException {
     HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder().uri(resourceUrl + "/rollback").post(JSON,
-        JSON_MAPPER.writeValueAsString(deploymentRollback));
+        getKubernetesSerialization().asJson(deploymentRollback));
     return handleResponse(requestBuilder, Status.class);
   }
 
@@ -475,10 +471,9 @@ public class OperationSupport {
    * @param <T> template argument provided
    *
    * @return returns a deserialized object as api server response of provided type.
-   * @throws InterruptedException Interrupted Exception
    * @throws IOException IOException
    */
-  protected <T> T handleGet(URL resourceUrl, Class<T> type) throws InterruptedException, IOException {
+  protected <T> T handleGet(URL resourceUrl, Class<T> type) throws IOException {
     HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder().url(resourceUrl);
     return handleResponse(requestBuilder, type);
   }
@@ -488,6 +483,10 @@ public class OperationSupport {
    */
   protected <T> T handleRawGet(URL resourceUrl, Class<T> type) throws IOException {
     return handleRaw(type, resourceUrl.toString(), "GET", null);
+  }
+
+  HttpRequest.Builder withRequestTimeout(HttpRequest.Builder builder) {
+    return builder.timeout(getRequestConfig().getRequestTimeout(), TimeUnit.MILLISECONDS);
   }
 
   /**
@@ -500,11 +499,6 @@ public class OperationSupport {
    */
   protected <T> T waitForResult(CompletableFuture<T> future) throws IOException {
     try {
-      // since readTimeout may not be enforced in a timely manner at the httpclient, we'll
-      // enforce a higher level timeout with a small amount of padding to account for possible queuing
-      if (getRequestConfig().getRequestTimeout() > 0) {
-        return future.get(getRequestConfig().getRequestTimeout() + ADDITIONAL_REQEUST_TIMEOUT, TimeUnit.MILLISECONDS);
-      }
       return future.get();
     } catch (InterruptedException e) {
       Thread.currentThread().interrupt();
@@ -524,9 +518,6 @@ public class OperationSupport {
         throw ((KubernetesClientException) t).copyAsCause();
       }
       throw new KubernetesClientException(t.getMessage(), t);
-    } catch (TimeoutException e) {
-      future.cancel(true);
-      throw KubernetesClientException.launderThrowable(e);
     }
   }
 
@@ -541,7 +532,7 @@ public class OperationSupport {
    * @throws IOException IOException
    */
   protected <T> T handleResponse(HttpRequest.Builder requestBuilder, Class<T> type) throws IOException {
-    return waitForResult(handleResponse(httpClient, requestBuilder, new TypeReference<T>() {
+    return waitForResult(handleResponse(httpClient, withRequestTimeout(requestBuilder), new TypeReference<T>() {
       @Override
       public Type getType() {
         return type;
@@ -564,11 +555,11 @@ public class OperationSupport {
     VersionUsageUtils.log(this.resourceT, this.apiGroupVersion);
     HttpRequest request = requestBuilder.build();
 
-    return client.sendAsync(request, InputStream.class).thenApply(response -> {
+    return client.sendAsync(request, byte[].class).thenApply(response -> {
       try {
         assertResponseCode(request, response);
         if (type != null && type.getType() != null) {
-          return Serialization.unmarshal(response.body(), type);
+          return getKubernetesSerialization().unmarshal(new ByteArrayInputStream(response.body()), type);
         } else {
           return null;
         }
@@ -603,9 +594,10 @@ public class OperationSupport {
     String customMessage = config.getErrorMessages().get(statusCode);
 
     if (customMessage != null) {
-      throw requestFailure(request, createStatus(statusCode, combineMessages(customMessage, createStatus(response))));
+      throw requestFailure(request,
+          createStatus(statusCode, combineMessages(customMessage, createStatus(response, getKubernetesSerialization()))));
     } else {
-      throw requestFailure(request, createStatus(response));
+      throw requestFailure(request, createStatus(response, getKubernetesSerialization()));
     }
   }
 
@@ -619,7 +611,7 @@ public class OperationSupport {
     return customMessage;
   }
 
-  public static Status createStatus(HttpResponse<?> response) {
+  public static Status createStatus(HttpResponse<?> response, KubernetesSerialization kubernetesSerialization) {
     String statusMessage = "";
     int statusCode = response != null ? response.code() : 0;
     if (response == null) {
@@ -628,7 +620,7 @@ public class OperationSupport {
       try {
         String bodyString = response.bodyString();
         if (Utils.isNotNullOrEmpty(bodyString)) {
-          Status status = JSON_MAPPER.readValue(bodyString, Status.class);
+          Status status = kubernetesSerialization.unmarshal(bodyString, Status.class);
           if (status != null) {
             if (status.getCode() == null) {
               status = new StatusBuilder(status).withCode(statusCode).build();
@@ -636,7 +628,7 @@ public class OperationSupport {
             return status;
           }
         }
-      } catch (IOException e) {
+      } catch (IOException | KubernetesClientException | IllegalArgumentException e) {
         // ignored
       }
       if (response.message() != null) {
@@ -696,23 +688,6 @@ public class OperationSupport {
     return requestException(request, e, null);
   }
 
-  protected static <T> T unmarshal(InputStream is) {
-    return Serialization.unmarshal(is);
-  }
-
-  protected static <T> T unmarshal(InputStream is, final Class<T> type) {
-    return Serialization.unmarshal(is, type);
-  }
-
-  protected static <T> T unmarshal(InputStream is, TypeReference<T> type) {
-    return Serialization.unmarshal(is, type);
-  }
-
-  protected static <T> Map<String, Object> getObjectValueAsMap(T object) {
-    return JSON_MAPPER.convertValue(object, new TypeReference<Map<String, Object>>() {
-    });
-  }
-
   public Config getConfig() {
     return config;
   }
@@ -768,15 +743,19 @@ public class OperationSupport {
       if (payload instanceof String) {
         body = (String) payload;
       } else if (payload != null) {
-        body = Serialization.asJson(payload);
+        body = getKubernetesSerialization().asJson(payload);
       }
-      HttpRequest request = httpClient.newHttpRequestBuilder().uri(uri).method(method, JSON, body).build();
+      HttpRequest request = withRequestTimeout(httpClient.newHttpRequestBuilder().uri(uri).method(method, JSON, body)).build();
       HttpResponse<R1> response = waitForResult(httpClient.sendAsync(request, result));
       assertResponseCode(request, response);
       return response.body();
     } catch (IOException e) {
       throw KubernetesClientException.launderThrowable(e);
     }
+  }
+
+  public KubernetesSerialization getKubernetesSerialization() {
+    return context.getClient().adapt(BaseClient.class).getKubernetesSerialization();
   }
 
 }

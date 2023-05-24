@@ -1,4 +1,4 @@
-# Java generation from CRD (preview)
+# Java generation from CRD
 
 This document shows how to generate java sources from CRD manifests.
 

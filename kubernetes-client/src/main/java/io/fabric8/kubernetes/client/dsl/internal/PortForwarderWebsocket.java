@@ -40,35 +40,27 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * A port-forwarder using the websocket protocol.
  * It requires Kubernetes 1.6+ (previous versions support the SPDY protocol only).
  */
-public class PortForwarderWebsocket implements PortForwarder {
+public class PortForwarderWebsocket {
 
   private static final Logger LOG = LoggerFactory.getLogger(PortForwarderWebsocket.class);
 
   private final HttpClient client;
   private final Executor executor;
+  private final long connectTimeoutMills;
 
-  public PortForwarderWebsocket(HttpClient client, Executor executor) {
+  public PortForwarderWebsocket(HttpClient client, Executor executor, long connectTimeoutMillis) {
     this.client = client;
     this.executor = executor;
+    this.connectTimeoutMills = connectTimeoutMillis;
   }
 
-  @Override
-  public LocalPortForward forward(URL resourceBaseUrl, int port) {
-    return forward(resourceBaseUrl, port, 0);
-  }
-
-  @Override
-  public LocalPortForward forward(URL resourceBaseUrl, int port, int localPort) {
-    return forward(resourceBaseUrl, port, null, localPort);
-  }
-
-  @Override
   public LocalPortForward forward(final URL resourceBaseUrl, final int port, final InetAddress localHost, final int localPort) {
     try {
       InetSocketAddress inetSocketAddress = createNewInetSocketAddress(localHost, localPort);
@@ -167,12 +159,12 @@ public class PortForwarderWebsocket implements PortForwarder {
     }
   }
 
-  @Override
   public PortForward forward(URL resourceBaseUrl, int port, final ReadableByteChannel in, final WritableByteChannel out) {
     final PortForwarderWebsocketListener listener = new PortForwarderWebsocketListener(in, out, executor);
     CompletableFuture<WebSocket> socket = client
         .newWebSocketBuilder()
         .uri(URI.create(URLUtils.join(resourceBaseUrl.toString(), "portforward?ports=" + port)))
+        .connectTimeout(connectTimeoutMills, TimeUnit.MILLISECONDS)
         .subprotocol("v4.channel.k8s.io")
         .buildAsync(listener);
 

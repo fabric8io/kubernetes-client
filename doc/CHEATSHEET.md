@@ -2330,13 +2330,13 @@ client.pods().inNamespace("test").withName("foo").usingTimestamps().getLog();
 ```
 
 #### Serializing to yaml
-Resources can be exported to a yaml String via the `SerializationUtils` class:
+Resources can be exported to a YAML String via the `Serialization` class:
 ```
 Pod myPod;
 
-String myPodAsYaml = SerializationUtils.dumpAsYaml(myPod);
+String myPodAsYaml = Serialization.asYaml(myPod);
 // Your pod might have some state that you don't really care about, to remove it:
-String myPodAsYamlWithoutRuntimeState = SerializationUtils.dumpWithoutRuntimeStateAsYaml(myPod);
+String myPodAsYamlWithoutRuntimeState = PatchUtils.withoutRuntimeState(myPod, YAML, false);
 ```
 
 #### Running a Pod

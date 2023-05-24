@@ -38,6 +38,10 @@ public class Helper {
     }
   }
 
+  /**
+   * @deprecated
+   */
+  @Deprecated
   public static String getAnnotationValue(Class kubernetesResourceType, Class annotationClass) {
     Annotation annotation = getAnnotation(kubernetesResourceType, annotationClass);
     if (annotation instanceof Group) {

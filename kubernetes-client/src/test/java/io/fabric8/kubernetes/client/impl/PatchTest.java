@@ -15,7 +15,10 @@
  */
 package io.fabric8.kubernetes.client.impl;
 
+import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
+import io.fabric8.kubernetes.api.model.Service;
+import io.fabric8.kubernetes.api.model.ServiceBuilder;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
@@ -29,13 +32,14 @@ import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.HttpRequest.Builder;
 import io.fabric8.kubernetes.client.http.StandardHttpRequest;
 import io.fabric8.kubernetes.client.http.TestHttpResponse;
+import io.fabric8.kubernetes.client.utils.KubernetesSerialization;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -60,16 +64,23 @@ class PatchTest {
     // TODO: fully mocking makes this logic more difficult and basically copied in other tests, we may want to rely on an actual implementation instead
     builders = new ArrayList<>();
     this.mockClient = Mockito.mock(HttpClient.class, Mockito.RETURNS_DEEP_STUBS);
-    when(mockClient.sendAsync(any(), Mockito.eq(InputStream.class)))
+    when(mockClient.sendAsync(any(), Mockito.eq(byte[].class)))
         .thenReturn(CompletableFuture.completedFuture(TestHttpResponse.from(200, "{}")));
     Config config = new ConfigBuilder().withMasterUrl("https://localhost:8443/").build();
-    kubernetesClient = new KubernetesClientImpl(mockClient, config);
+    kubernetesClient = new KubernetesClientImpl(mockClient, config, () -> Runnable::run,
+        new KubernetesSerialization());
     when(mockClient.newHttpRequestBuilder()).thenAnswer(answer -> {
       HttpRequest.Builder result = Mockito.mock(HttpRequest.Builder.class, Mockito.RETURNS_SELF);
       when(result.build()).thenReturn(new StandardHttpRequest.Builder().uri("https://localhost:8443/").build());
       builders.add(result);
       return result;
     });
+  }
+
+  @AfterEach
+  public void tearDown() {
+    kubernetesClient.close();
+    kubernetesClient = null;
   }
 
   @Test
@@ -119,8 +130,8 @@ class PatchTest {
   @Test
   void testPatchThrowExceptionWhenResourceNotFound() {
     // Given
-    when(mockClient.sendAsync(any(), Mockito.eq(InputStream.class)))
-        .thenReturn(CompletableFuture.completedFuture(new TestHttpResponse<InputStream>().withCode(404)));
+    when(mockClient.sendAsync(any(), Mockito.eq(byte[].class)))
+        .thenReturn(CompletableFuture.completedFuture(new TestHttpResponse<byte[]>().withCode(404)));
 
     // When
     PodResource podResource = kubernetesClient.pods()
@@ -181,6 +192,23 @@ class PatchTest {
     // Then
     verify(mockClient, times(1)).sendAsync(any(), any());
     assertRequest(0, "PATCH", "/api/v1/namespaces/ns1/pods/pod1", "fieldManager=x&force=true",
+        PatchType.SERVER_SIDE_APPLY.getContentType());
+  }
+
+  @Test
+  void testResourceListServerSideApply() {
+    // Given
+    Pod pod = new PodBuilder().withNewMetadata().withName("pod1").withNamespace("default").endMetadata().build();
+    Service svc = new ServiceBuilder().withNewMetadata().withName("svc1").endMetadata().build();
+    // When
+    kubernetesClient.resourceList(pod, svc).inNamespace("ns1").fieldManager("x")
+        .forceConflicts().serverSideApply();
+
+    // Then
+    verify(mockClient, times(2)).sendAsync(any(), any());
+    assertRequest(0, "PATCH", "/api/v1/namespaces/ns1/pods/pod1", "fieldManager=x&force=true",
+        PatchType.SERVER_SIDE_APPLY.getContentType());
+    assertRequest(1, "PATCH", "/api/v1/namespaces/ns1/services/svc1", "fieldManager=x&force=true",
         PatchType.SERVER_SIDE_APPLY.getContentType());
   }
 

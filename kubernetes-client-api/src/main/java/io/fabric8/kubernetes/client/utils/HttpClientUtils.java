@@ -30,14 +30,15 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Base64;
-import java.util.HashSet;
+import java.util.Collections;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.ServiceLoader;
-import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -145,59 +146,30 @@ public class HttpClientUtils {
             "No httpclient implementations found on the context classloader, please ensure your classpath includes an implementation jar");
       }
     }
-    LOGGER.info("Using httpclient {} factory", factory.getClass().getName());
+    LOGGER.debug("Using httpclient {} factory", factory.getClass().getName());
     return factory;
   }
 
   private static HttpClient.Factory getFactory(ServiceLoader<HttpClient.Factory> loader) {
-    HttpClient.Factory selected = null;
-    Set<String> detectedFactories = new HashSet<>();
-    int currentlySelectedPriority = 0;
-    int selectedPriorityCardinality = 0;
-    Set<String> samePriority = new HashSet<>();
-    for (HttpClient.Factory candidate : loader) {
-      final String candidateClassName = candidate.getClass().getName();
-      detectedFactories.add(candidateClassName);
-      LOGGER.debug("Considering {} httpclient factory", candidateClassName);
-
-      if (selected == null) {
-        selected = candidate;
-        currentlySelectedPriority = selected.priority();
-        LOGGER.debug("Temporarily selected {} as first candidate httpclient factory", candidateClassName);
-        continue;
-      } else if (isNonDefaultWhenSelectedDefault(selected, candidate) || isHigherPriority(selected, candidate)) {
-        currentlySelectedPriority = selected.priority();
-        selected = candidate;
-        selectedPriorityCardinality = 0;
-        samePriority.clear();
-        LOGGER.debug("Temporarily selected {} as httpclient factory, replacing a default factory or one with lower priority",
-            candidateClassName);
-      } else {
-        LOGGER.debug("Ignoring {} httpclient factory as it doesn't supersede currently selected one", candidateClassName);
-      }
-
-      if (currentlySelectedPriority == candidate.priority()) {
-        selectedPriorityCardinality++;
-        samePriority.add(candidateClassName);
-      }
-
+    List<HttpClient.Factory> factories = new ArrayList<>();
+    loader.forEach(factories::add);
+    if (factories.isEmpty()) {
+      return null;
     }
-
-    if (detectedFactories.size() > 1 && selectedPriorityCardinality > 0) {
-      LOGGER.warn("The following httpclient factories were detected on your classpath: {}, "
-          + "{} of which had the same priority ({}) so one was chosen randomly. "
-          + "You should exclude dependencies that aren't needed or use an explicit association of the HttpClient.Factory.",
-          detectedFactories, samePriority.size(), samePriority);
+    Collections.sort(factories, (f1, f2) -> Integer.compare(f2.priority(), f1.priority()));
+    HttpClient.Factory factory = factories.get(0);
+    if (factories.size() > 1) {
+      if (factories.get(1).priority() == factory.priority()) {
+        LOGGER.warn("The following httpclient factories were detected on your classpath: {}, "
+            + "multiple of which had the same priority ({}) so one was chosen randomly. "
+            + "You should exclude dependencies that aren't needed or use an explicit association of the HttpClient.Factory.",
+            factories.stream().map(f -> f.getClass().getName()).toArray(), factory.priority());
+      } else if (LOGGER.isDebugEnabled()) {
+        LOGGER.debug("The following httpclient factories were detected on your classpath: {}",
+            factories.stream().map(f -> f.getClass().getName()).toArray());
+      }
     }
-    return selected;
-  }
-
-  private static boolean isNonDefaultWhenSelectedDefault(HttpClient.Factory selected, HttpClient.Factory candidate) {
-    return selected.isDefault() && !candidate.isDefault();
-  }
-
-  private static boolean isHigherPriority(HttpClient.Factory selected, HttpClient.Factory candidate) {
-    return !selected.isDefault() && selected.priority() < candidate.priority();
+    return factory;
   }
 
   public static void applyCommonConfiguration(Config config, HttpClient.Builder builder, HttpClient.Factory factory) {
@@ -207,10 +179,6 @@ public class HttpClientUtils {
 
     if (config.getConnectionTimeout() > 0) {
       builder.connectTimeout(config.getConnectionTimeout(), TimeUnit.MILLISECONDS);
-    }
-
-    if (config.getRequestTimeout() > 0) {
-      builder.readTimeout(config.getRequestTimeout(), TimeUnit.MILLISECONDS);
     }
 
     if (config.isHttp2Disable()) {

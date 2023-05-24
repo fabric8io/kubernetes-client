@@ -16,10 +16,12 @@
 
 package io.fabric8.kubernetes.client;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
 import io.fabric8.kubernetes.client.utils.HttpClientUtils;
-import io.fabric8.kubernetes.client.utils.Serialization;
+import io.fabric8.kubernetes.client.utils.KubernetesSerialization;
+import io.fabric8.kubernetes.client.utils.Utils;
 
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
@@ -47,6 +49,7 @@ public class KubernetesClientBuilder {
   private Class<KubernetesClient> clazz;
   private ExecutorSupplier executorSupplier;
   private Consumer<HttpClient.Builder> builderConsumer;
+  private KubernetesSerialization kubernetesSerialization = new KubernetesSerialization(new ObjectMapper());
 
   public KubernetesClientBuilder() {
     // basically the same logic as in KubernetesResourceUtil for finding list types
@@ -75,8 +78,9 @@ public class KubernetesClientBuilder {
         this.factory = HttpClientUtils.getHttpClientFactory();
       }
       HttpClient client = getHttpClient();
-      return clazz.getConstructor(HttpClient.class, Config.class, ExecutorSupplier.class).newInstance(client, config,
-          executorSupplier);
+      return clazz.getConstructor(HttpClient.class, Config.class, ExecutorSupplier.class, KubernetesSerialization.class)
+          .newInstance(client, config,
+              executorSupplier, kubernetesSerialization);
     } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
         | NoSuchMethodException | SecurityException e) {
       throw KubernetesClientException.launderThrowable(e);
@@ -96,13 +100,18 @@ public class KubernetesClientBuilder {
     return this;
   }
 
+  public KubernetesClientBuilder withKubernetesSerialization(KubernetesSerialization kubernetesSerialization) {
+    this.kubernetesSerialization = Utils.checkNotNull(kubernetesSerialization, "kubernetesSerialization must not be null");
+    return this;
+  }
+
   public KubernetesClientBuilder withConfig(String config) {
-    this.config = Serialization.unmarshal(config, Config.class);
+    this.config = kubernetesSerialization.unmarshal(config, Config.class);
     return this;
   }
 
   public KubernetesClientBuilder withConfig(InputStream config) {
-    this.config = Serialization.unmarshal(config, Config.class);
+    this.config = kubernetesSerialization.unmarshal(config, Config.class);
     return this;
   }
 

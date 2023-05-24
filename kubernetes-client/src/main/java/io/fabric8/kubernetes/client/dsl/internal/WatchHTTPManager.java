@@ -33,7 +33,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.TimeUnit;
 
 public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourceList<T>> extends AbstractWatchManager<T> {
   private static final Logger logger = LoggerFactory.getLogger(WatchHTTPManager.class);
@@ -45,17 +44,12 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
       final ListOptions listOptions, final Watcher<T> watcher, final int reconnectInterval,
       final int reconnectLimit)
       throws MalformedURLException {
-    super(
-        watcher, baseOperation, listOptions, reconnectLimit, reconnectInterval,
-        () -> client.newBuilder()
-            .readTimeout(0, TimeUnit.MILLISECONDS)
-            .forStreaming()
-            .build());
+    super(watcher, baseOperation, listOptions, reconnectLimit, reconnectInterval, client);
   }
 
   @Override
   protected synchronized void start(URL url, Map<String, String> headers, WatchRequestState state) {
-    HttpRequest.Builder builder = client.newHttpRequestBuilder().url(url);
+    HttpRequest.Builder builder = client.newHttpRequestBuilder().url(url).forStreaming();
     headers.forEach(builder::header);
     StringBuffer buffer = new StringBuffer();
     call = client.consumeBytes(builder.build(), (b, a) -> {

@@ -46,10 +46,9 @@ import static java.net.HttpURLConnection.HTTP_UNAVAILABLE;
 public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesResourceList<T>>
     extends AbstractWatchManager<T> {
 
-  public static final int BACKOFF_MAX_EXPONENT = 5;
-
   private static final Logger logger = LoggerFactory.getLogger(WatchConnectionManager.class);
 
+  private final long connectTimeoutMillis;
   protected WatcherWebSocketListener<T> listener;
   private volatile CompletableFuture<WebSocket> websocketFuture;
 
@@ -71,9 +70,8 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
   public WatchConnectionManager(final HttpClient client, final BaseOperation<T, L, ?> baseOperation,
       final ListOptions listOptions, final Watcher<T> watcher, final int reconnectInterval, final int reconnectLimit,
       long websocketTimeout) throws MalformedURLException {
-    super(watcher, baseOperation, listOptions, reconnectLimit, reconnectInterval, () -> client.newBuilder()
-        .readTimeout(websocketTimeout, TimeUnit.MILLISECONDS)
-        .build());
+    super(watcher, baseOperation, listOptions, reconnectLimit, reconnectInterval, client);
+    this.connectTimeoutMillis = websocketTimeout;
   }
 
   @Override
@@ -97,7 +95,7 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
     this.listener = new WatcherWebSocketListener<>(this, state);
     Builder builder = client.newWebSocketBuilder();
     headers.forEach(builder::header);
-    builder.uri(URI.create(url.toString()));
+    builder.uri(URI.create(url.toString())).connectTimeout(connectTimeoutMillis, TimeUnit.MILLISECONDS);
 
     this.websocketFuture = builder.buildAsync(this.listener).handle((w, t) -> {
       if (t != null) {
@@ -108,7 +106,7 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
           // We do not expect a 200 in response to the websocket connection. If it occurs, we throw
           // an exception and try the watch via a persistent HTTP Get.
           // Newer Kubernetes might also return 503 Service Unavailable in case WebSockets are not supported
-          Status status = OperationSupport.createStatus(response);
+          Status status = OperationSupport.createStatus(response, this.baseOperation.getKubernetesSerialization());
           if (HTTP_OK == code || HTTP_UNAVAILABLE == code) {
             throw OperationSupport.requestFailure(client.newHttpRequestBuilder().url(url).build(), status,
                 "Received " + code + " on websocket");

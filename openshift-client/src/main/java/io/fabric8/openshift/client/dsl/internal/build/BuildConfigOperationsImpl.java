@@ -20,14 +20,11 @@ import io.fabric8.kubernetes.api.model.Event;
 import io.fabric8.kubernetes.api.model.EventList;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.RequestConfigBuilder;
 import io.fabric8.kubernetes.client.dsl.Triggerable;
 import io.fabric8.kubernetes.client.dsl.Typeable;
 import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.OperationContext;
-import io.fabric8.kubernetes.client.dsl.internal.OperationSupport;
-import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
 import io.fabric8.kubernetes.client.utils.URLUtils;
@@ -81,8 +78,7 @@ public class BuildConfigOperationsImpl
   private final String asFile;
 
   public BuildConfigOperationsImpl(Client client) {
-    this(new BuildConfigOperationContext(), HasMetadataOperationsImpl.defaultContext(client).withRequestConfig(
-        new RequestConfigBuilder(client.getConfiguration().getRequestConfig()).withRequestTimeout(0).build()));
+    this(new BuildConfigOperationContext(), HasMetadataOperationsImpl.defaultContext(client));
   }
 
   public BuildConfigOperationsImpl(BuildConfigOperationContext context, OperationContext superContext) {
@@ -115,7 +111,7 @@ public class BuildConfigOperationsImpl
       updateApiVersion(request);
       URL instantiationUrl = new URL(URLUtils.join(getResourceUrl().toString(), "instantiate"));
       HttpRequest.Builder requestBuilder = this.httpClient.newHttpRequestBuilder()
-          .post(JSON, OperationSupport.JSON_MAPPER.writer().writeValueAsString(request)).url(instantiationUrl);
+          .post(JSON, getKubernetesSerialization().asJson(request)).url(instantiationUrl);
       return handleResponse(requestBuilder, Build.class);
     } catch (Exception e) {
       throw KubernetesClientException.launderThrowable(e);
@@ -133,7 +129,7 @@ public class BuildConfigOperationsImpl
       //TODO: This needs some attention.
       String triggerUrl = URLUtils.join(getResourceUrl().toString(), "webhooks", secret, triggerType);
       HttpRequest.Builder requestBuilder = this.httpClient.newHttpRequestBuilder()
-          .post(JSON, OperationSupport.JSON_MAPPER.writer().writeValueAsBytes(trigger))
+          .post(JSON, getKubernetesSerialization().asJson(trigger))
           .uri(triggerUrl)
           .header("X-Github-Event", "push");
       handleResponse(requestBuilder, null);
@@ -242,10 +238,7 @@ public class BuildConfigOperationsImpl
   @Override
   public BuildConfigOperationsImpl withTimeout(long timeout, TimeUnit unit) {
     return new BuildConfigOperationsImpl(getContext(), context
-        .withTimeout(timeout, unit)
-        .withRequestConfig(new RequestConfigBuilder(context.getRequestConfig())
-            .withRequestTimeout((int) unit.toMillis(timeout))
-            .build()));
+        .withTimeout(timeout, unit));
   }
 
   @Override
@@ -260,15 +253,12 @@ public class BuildConfigOperationsImpl
 
   protected Build submitToApiServer(InputStream inputStream, long contentLength) {
     try {
-      HttpClient newClient = this.httpClient.newBuilder()
-          .readTimeout(getOperationContext().getTimeout(), getOperationContext().getTimeoutUnit())
-          .writeTimeout(getOperationContext().getTimeout(), getOperationContext().getTimeoutUnit())
-          .build();
       HttpRequest.Builder requestBuilder = this.httpClient.newHttpRequestBuilder()
           .post("application/octet-stream", inputStream, contentLength)
           .expectContinue()
+          .timeout(getOperationContext().getTimeout(), getOperationContext().getTimeoutUnit())
           .uri(getQueryParameters());
-      return waitForResult(handleResponse(newClient, requestBuilder, new TypeReference<Build>() {
+      return waitForResult(handleResponse(this.httpClient, requestBuilder, new TypeReference<Build>() {
         @Override
         public Type getType() {
           return Build.class;

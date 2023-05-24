@@ -40,6 +40,7 @@ import lombok.experimental.Accessors;
     "kind",
     "metadata",
     "description",
+    "displayName",
     "params",
     "resources",
     "results",
@@ -79,6 +80,8 @@ public class EmbeddedTask implements KubernetesResource
     private java.lang.String apiVersion;
     @JsonProperty("description")
     private java.lang.String description;
+    @JsonProperty("displayName")
+    private java.lang.String displayName;
     @JsonProperty("kind")
     private java.lang.String kind;
     @JsonProperty("metadata")
@@ -122,6 +125,7 @@ public class EmbeddedTask implements KubernetesResource
      * 
      * @param sidecars
      * @param metadata
+     * @param displayName
      * @param kind
      * @param volumes
      * @param description
@@ -134,10 +138,11 @@ public class EmbeddedTask implements KubernetesResource
      * @param workspaces
      * @param results
      */
-    public EmbeddedTask(java.lang.String apiVersion, java.lang.String description, java.lang.String kind, PipelineTaskMetadata metadata, List<ParamSpec> params, TaskResources resources, List<TaskResult> results, List<Sidecar> sidecars, Map<String, Object> spec, StepTemplate stepTemplate, List<Step> steps, List<io.fabric8.kubernetes.api.model.Volume> volumes, List<WorkspaceDeclaration> workspaces) {
+    public EmbeddedTask(java.lang.String apiVersion, java.lang.String description, java.lang.String displayName, java.lang.String kind, PipelineTaskMetadata metadata, List<ParamSpec> params, TaskResources resources, List<TaskResult> results, List<Sidecar> sidecars, Map<String, Object> spec, StepTemplate stepTemplate, List<Step> steps, List<io.fabric8.kubernetes.api.model.Volume> volumes, List<WorkspaceDeclaration> workspaces) {
         super();
         this.apiVersion = apiVersion;
         this.description = description;
+        this.displayName = displayName;
         this.kind = kind;
         this.metadata = metadata;
         this.params = params;
@@ -169,6 +174,16 @@ public class EmbeddedTask implements KubernetesResource
     @JsonProperty("description")
     public void setDescription(java.lang.String description) {
         this.description = description;
+    }
+
+    @JsonProperty("displayName")
+    public java.lang.String getDisplayName() {
+        return displayName;
+    }
+
+    @JsonProperty("displayName")
+    public void setDisplayName(java.lang.String displayName) {
+        this.displayName = displayName;
     }
 
     @JsonProperty("kind")

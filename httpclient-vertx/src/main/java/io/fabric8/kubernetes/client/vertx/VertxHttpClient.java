@@ -63,15 +63,15 @@ public class VertxHttpClient<F extends io.fabric8.kubernetes.client.http.HttpCli
       WebSocket.Listener listener) {
     WebSocketConnectOptions options = new WebSocketConnectOptions();
 
-    if (builder.getReadTimeout() != null) {
-      options.setTimeout(builder.getReadTimeout().toMillis());
-    }
-
     if (standardWebSocketBuilder.getSubprotocol() != null) {
       options.setSubProtocols(Collections.singletonList(standardWebSocketBuilder.getSubprotocol()));
     }
 
     final StandardHttpRequest request = standardWebSocketBuilder.asHttpRequest();
+
+    if (request.getTimeout() != null) {
+      options.setTimeout(request.getTimeout().toMillis());
+    }
 
     request.headers().entrySet().stream()
         .forEach(e -> e.getValue().stream().forEach(v -> options.addHeader(e.getKey(), v)));
@@ -84,14 +84,13 @@ public class VertxHttpClient<F extends io.fabric8.kubernetes.client.http.HttpCli
         .onSuccess(ws -> {
           VertxWebSocket ret = new VertxWebSocket(ws, listener);
           ret.init();
-          response.complete(new WebSocketResponse(new WebSocketUpgradeResponse(request, ret), null));
+          response.complete(new WebSocketResponse(new WebSocketUpgradeResponse(request), ret));
         }).onFailure(t -> {
           if (t instanceof UpgradeRejectedException) {
             UpgradeRejectedException handshake = (UpgradeRejectedException) t;
             final WebSocketUpgradeResponse upgradeResponse = new WebSocketUpgradeResponse(
-                request, handshake.getStatus(), toHeadersMap(handshake.getHeaders()), null);
-            response.complete(new WebSocketResponse(upgradeResponse,
-                new io.fabric8.kubernetes.client.http.WebSocketHandshakeException(upgradeResponse)));
+                request, handshake.getStatus(), toHeadersMap(handshake.getHeaders()));
+            response.complete(new WebSocketResponse(upgradeResponse, handshake));
           }
           response.completeExceptionally(t);
         });
@@ -107,6 +106,10 @@ public class VertxHttpClient<F extends io.fabric8.kubernetes.client.http.HttpCli
     request.headers().forEach((k, l) -> l.forEach(v -> options.addHeader(k, v)));
     options.setAbsoluteURI(request.uri().toString());
     options.setMethod(HttpMethod.valueOf(request.method()));
+
+    if (request.getTimeout() != null) {
+      options.setTimeout(request.getTimeout().toMillis());
+    }
 
     // Proxy authorization is handled manually since the proxyAuthorization value is the actual header
     if (proxyAuthorization != null) {

@@ -134,7 +134,7 @@ public class BuildOperationsImpl extends HasMetadataOperation<Build, BuildList, 
       // In case of Build we directly get logs at Build Url, but we need to wait for Pods
       waitUntilBuildPodBecomesReady(get());
       URL url = new URL(URLUtils.join(getResourceUrl().toString(), getLogParameters() + "&follow=true"));
-      final LogWatchCallback callback = new LogWatchCallback(out, this.context.getExecutor());
+      final LogWatchCallback callback = new LogWatchCallback(out, context);
       return callback.callAndWait(this.httpClient, url);
     } catch (IOException t) {
       throw KubernetesClientException.launderThrowable(forOperationType("watchLog"), t);

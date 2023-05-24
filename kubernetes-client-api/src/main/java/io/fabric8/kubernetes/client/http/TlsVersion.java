@@ -18,15 +18,19 @@ package io.fabric8.kubernetes.client.http;
 
 /**
  * TODO: determine if java names should be used here as well or instead
- * 
+ *
  * Replacement for okhttp3.TlsVersion
  */
 public enum TlsVersion {
 
+  // these need to be kept in preference order
   TLS_1_3("TLSv1.3"),
   TLS_1_2("TLSv1.2"),
+  @Deprecated
   TLS_1_1("TLSv1.1"),
+  @Deprecated
   TLS_1_0("TLSv1"),
+  @Deprecated
   SSL_3_0("SSLv3"),
   ;
 

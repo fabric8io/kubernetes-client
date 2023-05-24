@@ -28,7 +28,6 @@ import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.OperationContext;
 import io.fabric8.kubernetes.client.http.HttpRequest;
-import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.openshift.api.model.Parameter;
 import io.fabric8.openshift.api.model.Template;
@@ -55,9 +54,9 @@ import java.util.Objects;
 import static io.fabric8.openshift.client.OpenShiftAPIGroups.TEMPLATE;
 
 public class TemplateOperationsImpl
-    extends HasMetadataOperation<Template, TemplateList, TemplateResource<Template, KubernetesList>>
-    implements TemplateResource<Template, KubernetesList>,
-    ParameterMixedOperation<Template, TemplateList, TemplateResource<Template, KubernetesList>> {
+    extends HasMetadataOperation<Template, TemplateList, TemplateResource>
+    implements TemplateResource,
+    ParameterMixedOperation<Template, TemplateList, TemplateResource> {
 
   private static final Logger logger = LoggerFactory.getLogger(TemplateOperationsImpl.class);
   private static final String EXPRESSION = "expression";
@@ -96,7 +95,7 @@ public class TemplateOperationsImpl
 
   @Override
   public KubernetesList process(InputStream is) {
-    return process(unmarshal(is, MAPS_REFERENCE));
+    return process(getKubernetesSerialization().unmarshal(is, MAPS_REFERENCE));
   }
 
   @Override
@@ -114,7 +113,8 @@ public class TemplateOperationsImpl
         }
       }
 
-      HttpRequest.Builder requestBuilder = this.httpClient.newHttpRequestBuilder().post(JSON, JSON_MAPPER.writeValueAsString(t))
+      HttpRequest.Builder requestBuilder = this.httpClient.newHttpRequestBuilder()
+          .post(JSON, getKubernetesSerialization().asJson(t))
           .url(getProcessUrl());
       t = handleResponse(requestBuilder);
       KubernetesList l = new KubernetesList();
@@ -145,7 +145,7 @@ public class TemplateOperationsImpl
 
   @Override
   public KubernetesList processLocally(InputStream is) {
-    return processLocally(unmarshal(is, MAPS_REFERENCE));
+    return processLocally(getKubernetesSerialization().unmarshal(is, MAPS_REFERENCE));
   }
 
   @Override
@@ -171,7 +171,7 @@ public class TemplateOperationsImpl
         .withItems(t.getObjects())
         .build();
 
-    String json = Serialization.asJson(list);
+    String json = getKubernetesSerialization().asJson(list);
     String last = null;
 
     if (parameters != null && !parameters.isEmpty()) {
@@ -201,7 +201,7 @@ public class TemplateOperationsImpl
       }
     }
 
-    return Serialization.unmarshal(json, KubernetesList.class);
+    return getKubernetesSerialization().unmarshal(json, KubernetesList.class);
   }
 
   private URL getProcessUrl() throws MalformedURLException {
@@ -215,13 +215,14 @@ public class TemplateOperationsImpl
 
   private Template processParameters(Template t) {
     if (this.parameters != null && !this.parameters.isEmpty()) {
-      return Serialization.unmarshal(Utils.interpolateString(Serialization.asJson(t), this.parameters), Template.class);
+      return getKubernetesSerialization()
+          .unmarshal(Utils.interpolateString(getKubernetesSerialization().asJson(t), this.parameters), Template.class);
     }
     return t;
   }
 
   @Override
-  public TemplateResource<Template, KubernetesList> load(InputStream is) {
+  public TemplateResource load(InputStream is) {
     Template template = null;
     List<HasMetadata> items = this.context.getClient().adapt(KubernetesClient.class).load(is).items();
     Object item = items;

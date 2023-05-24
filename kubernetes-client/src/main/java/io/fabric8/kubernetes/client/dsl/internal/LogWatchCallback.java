@@ -32,15 +32,13 @@ import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 import java.nio.channels.WritableByteChannel;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executor;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class LogWatchCallback implements LogWatch, AutoCloseable {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(LogWatchCallback.class);
 
-  private OutputStream out;
+  private final OutputStream out;
   private WritableByteChannel outChannel;
   private volatile InputStream output;
 
@@ -48,12 +46,12 @@ public class LogWatchCallback implements LogWatch, AutoCloseable {
   private final CompletableFuture<AsyncBody> asyncBody = new CompletableFuture<>();
   private final SerialExecutor serialExecutor;
 
-  public LogWatchCallback(OutputStream out, Executor executor) {
+  public LogWatchCallback(OutputStream out, OperationContext context) {
     this.out = out;
     if (out != null) {
       outChannel = Channels.newChannel(out);
     }
-    this.serialExecutor = new SerialExecutor(executor);
+    this.serialExecutor = new SerialExecutor(context.getExecutor());
   }
 
   @Override
@@ -71,11 +69,10 @@ public class LogWatchCallback implements LogWatch, AutoCloseable {
 
   public LogWatchCallback callAndWait(HttpClient client, URL url) {
     HttpRequest request = client.newHttpRequestBuilder().url(url).build();
-    HttpClient clone = client.newBuilder().readTimeout(0, TimeUnit.MILLISECONDS).build();
 
     if (out == null) {
       // we can pass the input stream directly to the consumer
-      clone.sendAsync(request, InputStream.class).whenComplete((r, e) -> {
+      client.sendAsync(request, InputStream.class).whenComplete((r, e) -> {
         if (e != null) {
           onFailure(e);
         }
@@ -86,7 +83,7 @@ public class LogWatchCallback implements LogWatch, AutoCloseable {
     } else {
       // we need to write the bytes to the given output
       // we don't know if the write will be blocking, so hand it off to another thread
-      clone.consumeBytes(request, (buffers, a) -> CompletableFuture.runAsync(() -> {
+      client.consumeBytes(request, (buffers, a) -> CompletableFuture.runAsync(() -> {
         for (ByteBuffer byteBuffer : buffers) {
           try {
             outChannel.write(byteBuffer);

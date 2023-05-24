@@ -15,9 +15,21 @@
  */
 package io.fabric8.kubernetes.client.http;
 
+import lombok.Getter;
+
+import java.util.concurrent.ConcurrentLinkedQueue;
+
 public class TestStandardHttpClientFactory implements HttpClient.Factory {
+
+  @Getter
+  private final ConcurrentLinkedQueue<TestStandardHttpClient> instances = new ConcurrentLinkedQueue<>();
+
   @Override
   public TestStandardHttpClientBuilder newBuilder() {
-    return new TestStandardHttpClientBuilder(this);
+    return new TestStandardHttpClientBuilder(this, instances);
+  }
+
+  public final TestStandardHttpClient getInstance(int index) {
+    return instances.toArray(new TestStandardHttpClient[0])[index];
   }
 }

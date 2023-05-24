@@ -28,6 +28,7 @@ import io.fabric8.kubernetes.client.readiness.Readiness;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -78,6 +79,9 @@ class DeploymentIT {
     assertEquals(5, deployment1.getStatus().getReplicas());
     deployment1 = client.apps().deployments().withName("deployment-standard").scale(1, true);
     assertEquals(1, deployment1.getStatus().getReplicas());
+    // ensure scale to 0 as some replica fields can flip to null
+    deployment1 = client.apps().deployments().withName("deployment-standard").scale(0, true);
+    assertEquals(0, Optional.ofNullable(deployment1.getStatus().getReplicas()).orElse(0));
 
     // will only work on clusters older than 1.16
     if (client.supports(io.fabric8.kubernetes.api.model.extensions.Deployment.class)) {

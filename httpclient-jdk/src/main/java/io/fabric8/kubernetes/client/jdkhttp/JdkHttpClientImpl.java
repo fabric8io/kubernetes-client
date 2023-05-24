@@ -60,7 +60,6 @@ import static io.fabric8.kubernetes.client.http.StandardHttpHeaders.CONTENT_TYPE
 /**
  * TODO:
  * - Mapping to a Reader is always UTF-8
- * - determine if write timeout should be implemented
  */
 public class JdkHttpClientImpl extends StandardHttpClient<JdkHttpClientImpl, JdkHttpClientFactory, JdkHttpClientBuilderImpl> {
 
@@ -259,9 +258,9 @@ public class JdkHttpClientImpl extends StandardHttpClient<JdkHttpClientImpl, Jdk
   java.net.http.HttpRequest.Builder requestBuilder(StandardHttpRequest request) {
     java.net.http.HttpRequest.Builder requestBuilder = java.net.http.HttpRequest.newBuilder();
 
-    Duration readTimeout = this.builder.getReadTimeout();
-    if (readTimeout != null && !java.time.Duration.ZERO.equals(readTimeout)) {
-      requestBuilder.timeout(readTimeout);
+    Duration timeout = request.getTimeout();
+    if (timeout != null && !java.time.Duration.ZERO.equals(timeout)) {
+      requestBuilder.timeout(timeout);
     }
 
     request.headers().entrySet().stream()
@@ -306,17 +305,15 @@ public class JdkHttpClientImpl extends StandardHttpClient<JdkHttpClientImpl, Jdk
   @Override
   public CompletableFuture<WebSocketResponse> buildWebSocketDirect(
       StandardWebSocketBuilder standardWebSocketBuilder, Listener listener) {
-    final StandardHttpRequest request = standardWebSocketBuilder.asHttpRequest();
+    StandardHttpRequest request = standardWebSocketBuilder.asHttpRequest();
     java.net.http.WebSocket.Builder newBuilder = this.getHttpClient().newWebSocketBuilder();
     request.headers().forEach((k, v) -> v.forEach(s -> newBuilder.header(k, s)));
     if (standardWebSocketBuilder.getSubprotocol() != null) {
       newBuilder.subprotocols(standardWebSocketBuilder.getSubprotocol());
     }
-    // the Watch logic sets a websocketTimeout as the readTimeout
-    // TODO: this should probably be made clearer in the docs
-    Duration readTimeout = this.builder.getReadTimeout();
-    if (readTimeout != null && !java.time.Duration.ZERO.equals(readTimeout)) {
-      newBuilder.connectTimeout(readTimeout);
+    Duration timeout = request.getTimeout();
+    if (timeout != null && !java.time.Duration.ZERO.equals(timeout)) {
+      newBuilder.connectTimeout(timeout);
     }
 
     AtomicLong queueSize = new AtomicLong();
@@ -333,13 +330,12 @@ public class JdkHttpClientImpl extends StandardHttpClient<JdkHttpClientImpl, Jdk
       if (t instanceof java.net.http.WebSocketHandshakeException) {
         final java.net.http.HttpResponse<?> jdkResponse = ((java.net.http.WebSocketHandshakeException) t).getResponse();
         final WebSocketUpgradeResponse upgradeResponse = new WebSocketUpgradeResponse(
-            request, jdkResponse.statusCode(), jdkResponse.headers().map(), fabric8WebSocket);
-        response.complete(new WebSocketResponse(upgradeResponse,
-            new io.fabric8.kubernetes.client.http.WebSocketHandshakeException(upgradeResponse).initCause(t)));
+            request, jdkResponse.statusCode(), jdkResponse.headers().map());
+        response.complete(new WebSocketResponse(upgradeResponse, t));
       } else if (t != null) {
         response.completeExceptionally(t);
       } else {
-        response.complete(new WebSocketResponse(new WebSocketUpgradeResponse(request, fabric8WebSocket), null));
+        response.complete(new WebSocketResponse(new WebSocketUpgradeResponse(request), fabric8WebSocket));
       }
     });
 

@@ -8,13 +8,13 @@ We're aware of this [issue](https://github.com/fabric8io/kubernetes-client/issue
 ### What artifact(s) should my project depend on?
 Fabric8 version 6 introduces more options with regards to dependencies.
 
-1. Have compile dependencies on kubenetes-client or openshift-client - this is no different than what was done with version 5 and before.  If you have done custom development involving effectively internal classes, you'll need to still use this option.
+1. Have compile dependencies on kubernetes-client or openshift-client - this is no different than what was done with version 5 and before.  If you have done custom development involving effectively internal classes, you'll need to still use this option.
 
-2. Have compile dependencies on kubenetes-client-api or openshift-client-api, and a runtime dependency on kubenetes-client or openshift-client.  This option will provide your application with a cleaner compile time classpath.
+2. Have compile dependencies on kubernetes-client-api or openshift-client-api, and a runtime dependency on kubernetes-client or openshift-client.  This option will provide your application with a cleaner compile time classpath.
 
 Furthermore you will also have choices in the HttpClient that is utilized.  
 
-By default kubenetes-client has a runtime dependency on OkHttp (kubernetes-httpclient-okhttp).  If you need to directly manipulate OkHttp, you add a compile dependency to kubernetes-httpclient-okhttp.  
+By default kubernetes-client has a runtime dependency on OkHttp (kubernetes-httpclient-okhttp).  If you need to directly manipulate OkHttp, you add a compile dependency to kubernetes-httpclient-okhttp.  
 
 If you wish to use another HttpClient implementation typically you will exclude kubernetes-httpclient-okhttp and include the other runtime or compile dependency instead.
 

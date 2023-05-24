@@ -17,10 +17,12 @@ package io.fabric8.openshift.client.dsl;
 
 import io.fabric8.kubernetes.client.dsl.ScalableResource;
 
-public interface DeployableScalableResource<T> extends ScalableResource<T> {
+public interface DeployableScalableResource<T> extends ScalableResource<T>, TimeoutDeployable<T> {
 
-  T deployLatest();
-
+  /**
+   * @deprecated use {@link TimeoutDeployable} instead to indicate the timeout
+   */
+  @Deprecated
   T deployLatest(boolean wait);
 
 }

@@ -63,9 +63,8 @@ public abstract class AbstractWebSocketSendTest {
           .always();
       final BlockingQueue<String> receivedText = new ArrayBlockingQueue<>(1);
       final WebSocket ws = client
-          // ensure that both a derived builder and a 0, or no, timeout works
-          // as that is a common logic path in the client
-          .newBuilder().readTimeout(0, TimeUnit.SECONDS).build().newWebSocketBuilder()
+          // ensure that a derived builder works
+          .newBuilder().build().newWebSocketBuilder()
           // TODO: JDK HttpClient implementation doesn't work with ws URIs
           // - Currently we are using an HttpRequest.Builder which is then
           //   mapped to a WebSocket.Builder. We should probably user the WebSocket.Builder

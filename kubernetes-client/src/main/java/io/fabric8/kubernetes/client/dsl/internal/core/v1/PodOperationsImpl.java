@@ -54,7 +54,6 @@ import io.fabric8.kubernetes.client.dsl.internal.PodOperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.PodOperationContext.StreamContext;
 import io.fabric8.kubernetes.client.dsl.internal.PortForwarderWebsocket;
 import io.fabric8.kubernetes.client.dsl.internal.uploadable.PodUpload;
-import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.WebSocket;
 import io.fabric8.kubernetes.client.lib.FilenameUtils;
@@ -97,7 +96,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
   private static final String[] EMPTY_COMMAND = { "/bin/sh", "-i" };
   public static final String DEFAULT_CONTAINER_ANNOTATION_NAME = "kubectl.kubernetes.io/default-container";
 
-  static final transient Logger LOG = LoggerFactory.getLogger(PodOperationsImpl.class);
+  static final Logger LOG = LoggerFactory.getLogger(PodOperationsImpl.class);
 
   private final PodOperationContext podOperationContext;
 
@@ -181,7 +180,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
           getContext().getReadyWaitTimeout() != null ? getContext().getReadyWaitTimeout() : DEFAULT_POD_READY_WAIT_TIMEOUT);
       // Issue Pod Logs HTTP request
       URL url = new URL(URLUtils.join(getResourceUrl().toString(), getContext().getLogParameters() + "&follow=true"));
-      final LogWatchCallback callback = new LogWatchCallback(out, this.context.getExecutor());
+      final LogWatchCallback callback = new LogWatchCallback(out, context);
       return callback.callAndWait(httpClient, url);
     } catch (IOException ioException) {
       throw KubernetesClientException.launderThrowable(forOperationType("watchLog"), ioException);
@@ -201,7 +200,8 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
   @Override
   public PortForward portForward(int port, ReadableByteChannel in, WritableByteChannel out) {
     try {
-      return new PortForwarderWebsocket(httpClient, this.context.getExecutor()).forward(getResourceUrl(), port, in, out);
+      return new PortForwarderWebsocket(httpClient, this.context.getExecutor(), getRequestConfig().getRequestTimeout())
+          .forward(getResourceUrl(), port, in, out);
     } catch (Exception e) {
       throw KubernetesClientException.launderThrowable(e);
     }
@@ -209,27 +209,19 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
 
   @Override
   public LocalPortForward portForward(int port) {
-    try {
-      return new PortForwarderWebsocket(httpClient, this.context.getExecutor()).forward(getResourceUrl(), port);
-    } catch (Exception e) {
-      throw KubernetesClientException.launderThrowable(e);
-    }
+    return portForward(port, 0);
   }
 
   @Override
   public LocalPortForward portForward(int port, int localPort) {
-    try {
-      return new PortForwarderWebsocket(httpClient, this.context.getExecutor()).forward(getResourceUrl(), port, localPort);
-    } catch (Exception e) {
-      throw KubernetesClientException.launderThrowable(e);
-    }
+    return portForward(port, null, localPort);
   }
 
   @Override
   public LocalPortForward portForward(int port, InetAddress localInetAddress, int localPort) {
     try {
-      return new PortForwarderWebsocket(httpClient, this.context.getExecutor()).forward(getResourceUrl(), port,
-          localInetAddress, localPort);
+      return new PortForwarderWebsocket(httpClient, this.context.getExecutor(), getRequestConfig().getRequestTimeout())
+          .forward(getResourceUrl(), port, localInetAddress, localPort);
     } catch (MalformedURLException ex) {
       throw KubernetesClientException.launderThrowable(ex);
     }
@@ -263,7 +255,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
 
       URL requestUrl = new URL(URLUtils.join(getResourceUrl().toString(), "eviction"));
       HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder()
-          .post(JSON, JSON_MAPPER.writeValueAsString(eviction)).url(requestUrl);
+          .post(JSON, getKubernetesSerialization().asJson(eviction)).url(requestUrl);
       handleResponse(requestBuilder, null);
       return true;
     } catch (KubernetesClientException e) {
@@ -375,18 +367,19 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
   }
 
   private ExecWebSocketListener setupConnectionToPod(URI uri) {
-    HttpClient clone = httpClient.newBuilder().readTimeout(0, TimeUnit.MILLISECONDS).build();
-    ExecWebSocketListener execWebSocketListener = new ExecWebSocketListener(getContext(), this.context.getExecutor());
-    CompletableFuture<WebSocket> startedFuture = clone.newWebSocketBuilder()
+    ExecWebSocketListener execWebSocketListener = new ExecWebSocketListener(getContext(), this.context.getExecutor(),
+        this.getKubernetesSerialization());
+    CompletableFuture<WebSocket> startedFuture = httpClient.newWebSocketBuilder()
         .subprotocol("v4.channel.k8s.io")
         .uri(uri)
+        .connectTimeout(getRequestConfig().getRequestTimeout(), TimeUnit.MILLISECONDS)
         .buildAsync(execWebSocketListener);
     startedFuture.whenComplete((w, t) -> {
       if (t != null) {
         execWebSocketListener.onError(w, t, true);
       }
     });
-    Utils.waitUntilReadyOrFail(startedFuture, getRequestConfig().getWebsocketTimeout(), TimeUnit.MILLISECONDS);
+    Utils.waitUntilReadyOrFail(startedFuture, getRequestConfig().getRequestTimeout(), TimeUnit.MILLISECONDS);
     return execWebSocketListener;
   }
 

@@ -21,10 +21,12 @@ import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Standard representation of a request. HttpClient implementations need to handle the special fields,
@@ -33,6 +35,7 @@ import java.util.UUID;
 public class StandardHttpRequest extends StandardHttpHeaders implements HttpRequest {
 
   public static final String METHOD_POST = "POST";
+  public static final String METHOD_PUT = "PUT";
 
   public interface BodyContent {
 
@@ -92,6 +95,8 @@ public class StandardHttpRequest extends StandardHttpHeaders implements HttpRequ
   private final String bodyString;
   private final BodyContent body;
   private final boolean expectContinue;
+  private final Duration timeout;
+  private final boolean forStreaming;
 
   /**
    * Constructor that provides the public information
@@ -102,11 +107,11 @@ public class StandardHttpRequest extends StandardHttpHeaders implements HttpRequ
    * @param bodyString
    */
   public StandardHttpRequest(Map<String, List<String>> headers, URI uri, String method, String bodyString) {
-    this(headers, uri, method, bodyString, null, false, null);
+    this(headers, uri, method, bodyString, null, false, null, null, false);
   }
 
   StandardHttpRequest(Map<String, List<String>> headers, URI uri, String method, String bodyString,
-      BodyContent body, boolean expectContinue, String contentType) {
+      BodyContent body, boolean expectContinue, String contentType, Duration timeout, boolean forStreaming) {
     super(headers);
     this.id = UUID.randomUUID();
     this.uri = uri;
@@ -115,6 +120,8 @@ public class StandardHttpRequest extends StandardHttpHeaders implements HttpRequ
     this.body = body;
     this.expectContinue = expectContinue;
     this.contentType = contentType;
+    this.timeout = timeout;
+    this.forStreaming = forStreaming;
   }
 
   @Override
@@ -156,6 +163,14 @@ public class StandardHttpRequest extends StandardHttpHeaders implements HttpRequ
     return new Builder(this);
   }
 
+  public boolean isForStreaming() {
+    return forStreaming;
+  }
+
+  public Duration getTimeout() {
+    return timeout;
+  }
+
   public static final class Builder extends AbstractBasicBuilder<Builder> implements HttpRequest.Builder {
 
     private String method = "GET";
@@ -163,6 +178,8 @@ public class StandardHttpRequest extends StandardHttpHeaders implements HttpRequ
     private String bodyAsString;
     private boolean expectContinue;
     private String contentType;
+    protected Duration timeout;
+    protected boolean forStreaming;
 
     public Builder() {
     }
@@ -175,12 +192,26 @@ public class StandardHttpRequest extends StandardHttpHeaders implements HttpRequ
       body = original.body;
       expectContinue = original.expectContinue;
       contentType = original.contentType;
+      timeout = original.timeout;
+      forStreaming = original.forStreaming;
     }
 
     @Override
     public StandardHttpRequest build() {
-      return new StandardHttpRequest(
-          getHeaders(), Objects.requireNonNull(getUri()), method, bodyAsString, body, expectContinue, contentType);
+      return new StandardHttpRequest(getHeaders(), Objects.requireNonNull(getUri()), method, bodyAsString, body, expectContinue,
+          contentType, timeout, forStreaming);
+    }
+
+    @Override
+    public HttpRequest.Builder timeout(long timeout, TimeUnit unit) {
+      this.timeout = Duration.ofNanos(unit.toNanos(timeout));
+      return this;
+    }
+
+    @Override
+    public HttpRequest.Builder forStreaming() {
+      this.forStreaming = true;
+      return this;
     }
 
     @Override
@@ -206,14 +237,6 @@ public class StandardHttpRequest extends StandardHttpHeaders implements HttpRequ
     }
 
     @Override
-    public HttpRequest.Builder post(String contentType, InputStream stream, long length) {
-      method = METHOD_POST;
-      this.contentType = contentType;
-      body = new InputStreamBodyContent(stream, length);
-      return this;
-    }
-
-    @Override
     public HttpRequest.Builder method(String method, String contentType, String body) {
       this.method = method;
       this.contentType = contentType;
@@ -221,6 +244,14 @@ public class StandardHttpRequest extends StandardHttpHeaders implements HttpRequ
       if (body != null) {
         this.body = new StringBodyContent(body);
       }
+      return this;
+    }
+
+    @Override
+    public HttpRequest.Builder method(String method, String contentType, InputStream stream, long length) {
+      this.method = method;
+      this.contentType = contentType;
+      this.body = new InputStreamBodyContent(stream, length);
       return this;
     }
 

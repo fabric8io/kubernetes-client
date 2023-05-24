@@ -34,7 +34,8 @@ import io.fabric8.kubernetes.client.dsl.base.PatchType;
 import io.fabric8.kubernetes.client.dsl.internal.PatchUtils;
 import io.fabric8.kubernetes.client.dsl.internal.PatchUtils.Format;
 import io.fabric8.kubernetes.client.dsl.internal.core.v1.PodOperationsImpl;
-import io.fabric8.kubernetes.client.utils.Serialization;
+import io.fabric8.kubernetes.client.impl.BaseClient;
+import io.fabric8.kubernetes.client.utils.KubernetesSerialization;
 import io.fabric8.kubernetes.client.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -168,20 +169,20 @@ public abstract class RollingUpdater<T extends HasMetadata, L> {
     }
   }
 
-  private static <T> T applyPatch(Resource<T> resource, Map<String, Object> map) {
-    return resource.patch(PatchContext.of(PatchType.STRATEGIC_MERGE), Serialization.asJson(map));
+  private static <T> T applyPatch(Resource<T> resource, Map<String, Object> map, KubernetesSerialization serialization) {
+    return resource.patch(PatchContext.of(PatchType.STRATEGIC_MERGE), serialization.asJson(map));
   }
 
-  public static <T> T resume(Resource<T> resource) {
-    return applyPatch(resource, RollingUpdater.requestPayLoadForRolloutResume());
+  public static <T extends HasMetadata> T resume(RollableScalableResourceOperation<T, ?, ?> resource) {
+    return applyPatch(resource, RollingUpdater.requestPayLoadForRolloutResume(), resource.getKubernetesSerialization());
   }
 
-  public static <T> T pause(Resource<T> resource) {
-    return applyPatch(resource, RollingUpdater.requestPayLoadForRolloutPause());
+  public static <T extends HasMetadata> T pause(RollableScalableResourceOperation<T, ?, ?> resource) {
+    return applyPatch(resource, RollingUpdater.requestPayLoadForRolloutPause(), resource.getKubernetesSerialization());
   }
 
-  public static <T> T restart(Resource<T> resource) {
-    return applyPatch(resource, RollingUpdater.requestPayLoadForRolloutRestart());
+  public static <T extends HasMetadata> T restart(RollableScalableResourceOperation<T, ?, ?> resource) {
+    return applyPatch(resource, RollingUpdater.requestPayLoadForRolloutRestart(), resource.getKubernetesSerialization());
   }
 
   public static Map<String, Object> requestPayLoadForRolloutPause() {
@@ -269,7 +270,8 @@ public abstract class RollingUpdater<T extends HasMetadata, L> {
   }
 
   private String md5sum(HasMetadata obj) throws NoSuchAlgorithmException, JsonProcessingException {
-    byte[] digest = MessageDigest.getInstance("MD5").digest(PatchUtils.withoutRuntimeState(obj, Format.YAML, true).getBytes());
+    byte[] digest = MessageDigest.getInstance("MD5").digest(PatchUtils
+        .withoutRuntimeState(obj, Format.YAML, true, client.adapt(BaseClient.class).getKubernetesSerialization()).getBytes());
     BigInteger i = new BigInteger(1, digest);
     return String.format("%1$032x", i);
   }

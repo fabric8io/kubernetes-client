@@ -25,24 +25,22 @@ import io.fabric8.kubernetes.api.model.autoscaling.v1.Scale;
 import io.fabric8.kubernetes.api.model.autoscaling.v1.ScaleBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.dsl.Scalable;
 import io.fabric8.kubernetes.client.dsl.base.PatchContext;
 import io.fabric8.kubernetes.client.dsl.base.PatchType;
 import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
-import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
-
-import static io.fabric8.kubernetes.client.utils.IOHelpers.convertToJson;
 
 public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesResourceList<T>, R extends Resource<T>>
     extends BaseOperation<T, L, R> {
@@ -69,7 +67,7 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
   }
 
   private T clone(T item) {
-    return Serialization.clone(item);
+    return this.getKubernetesSerialization().clone(item);
   }
 
   @Override
@@ -268,7 +266,7 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
   public T patch(PatchContext patchContext, String patch) {
     try {
       final T got = getItemOrRequireFromServer();
-      return handlePatch(patchContext, got, convertToJson(patch), getType());
+      return handlePatch(patchContext, got, getKubernetesSerialization().convertToJson(patch), getType());
     } catch (InterruptedException interruptedException) {
       Thread.currentThread().interrupt();
       throw KubernetesClientException.launderThrowable(forOperationType(PATCH_OPERATION), interruptedException);
@@ -284,21 +282,25 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
 
   @Override
   public T scale(int count) {
-    return scale(count, false);
-  }
-
-  @Override
-  public T scale(int count, boolean wait) {
     // TODO: this could be a simple patch, rather than an edit
     // we're also not giving the user the option here of doing this as a locked operation
     // kubectl does support specifying the resourceVersion
     scale(new ScaleBuilder(scale()).editOrNewMetadata().withResourceVersion(null).endMetadata().editOrNewSpec()
         .withReplicas(count)
         .endSpec().build());
-    if (wait) {
+    if (context.getTimeout() > 0) {
       waitUntilScaled(count);
     }
     return get();
+  }
+
+  @Override
+  public T scale(int count, boolean wait) {
+    Scalable<T> scalable = this;
+    if (wait) {
+      scalable = this.withTimeoutInMillis(getRequestConfig().getScaleTimeout());
+    }
+    return scalable.scale(count);
   }
 
   @Override
@@ -309,7 +311,7 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
   /**
    * Let's wait until there are enough Ready pods.
    */
-  protected void waitUntilScaled(final Integer count) {
+  protected void waitUntilScaled(final int count) {
     final AtomicReference<Integer> replicasRef = new AtomicReference<>(0);
 
     final String name = checkName(getItem());
@@ -319,23 +321,25 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
     Utils.scheduleWithVariableRate(completion, getOperationContext().getExecutor(), () -> {
       try {
         Scale scale = scale();
-        if (Objects.equals(count, scale.getStatus().getReplicas()) && Objects.equals(count, scale.getSpec().getReplicas())) {
+        int statusReplicas = Optional.ofNullable(scale.getStatus().getReplicas()).orElse(0);
+        int specReplicas = Optional.ofNullable(scale.getSpec().getReplicas()).orElse(0);
+        if (count == statusReplicas && count == specReplicas) {
           completion.complete(null);
-        } else {
+        } else if (LOGGER.isDebugEnabled()) {
           LOGGER.debug("Only {}/{} replicas scheduled for {}: {} in namespace: {} seconds so waiting...",
-              scale.getSpec().getReplicas(), count, getKind(), getName(), namespace);
+              specReplicas, count, getKind(), getName(), namespace);
         }
       } catch (KubernetesClientException e) {
         completion.completeExceptionally(e);
       }
     }, 0, () -> 1, TimeUnit.SECONDS);
 
-    if (!Utils.waitUntilReady(completion, getRequestConfig().getScaleTimeout(), TimeUnit.MILLISECONDS)) {
+    if (!Utils.waitUntilReady(completion, this.context.getTimeout(), this.context.getTimeoutUnit())) {
       completion.complete(null);
       throw new KubernetesClientException(
           String.format("%s/%s pod(s) ready for %s: %s in namespace: %s  after waiting for %s seconds so giving up",
               replicasRef.get(), count, getType().getSimpleName(), name, namespace,
-              TimeUnit.MILLISECONDS.toSeconds(getRequestConfig().getScaleTimeout())));
+              this.context.getTimeoutUnit().toSeconds(this.context.getTimeout())));
     }
   }
 

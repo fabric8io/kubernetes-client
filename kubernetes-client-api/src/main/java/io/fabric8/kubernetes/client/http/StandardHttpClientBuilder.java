@@ -37,15 +37,12 @@ public abstract class StandardHttpClientBuilder<C extends HttpClient, F extends 
 
   protected LinkedHashMap<String, Interceptor> interceptors = new LinkedHashMap<>();
   protected Duration connectTimeout;
-  protected Duration readTimeout;
-  protected Duration writeTimeout;
   protected SSLContext sslContext;
   protected String proxyAuthorization;
   protected InetSocketAddress proxyAddress;
   protected boolean followRedirects;
   protected boolean preferHttp11;
   protected TlsVersion[] tlsVersions;
-  protected boolean forStreaming;
   protected boolean authenticatorNone;
   protected C client;
   protected F clientFactory;
@@ -62,26 +59,8 @@ public abstract class StandardHttpClientBuilder<C extends HttpClient, F extends 
   }
 
   @Override
-  public T readTimeout(long readTimeout, TimeUnit unit) {
-    this.readTimeout = Duration.ofNanos(unit.toNanos(readTimeout));
-    return (T) this;
-  }
-
-  @Override
-  public T writeTimeout(long writeTimeout, TimeUnit unit) {
-    this.writeTimeout = Duration.ofNanos(unit.toNanos(writeTimeout));
-    return (T) this;
-  }
-
-  @Override
   public T connectTimeout(long connectTimeout, TimeUnit unit) {
     this.connectTimeout = Duration.ofNanos(unit.toNanos(connectTimeout));
-    return (T) this;
-  }
-
-  @Override
-  public T forStreaming() {
-    this.forStreaming = true;
     return (T) this;
   }
 
@@ -157,7 +136,6 @@ public abstract class StandardHttpClientBuilder<C extends HttpClient, F extends 
   public T copy(C client) {
     T copy = newInstance(clientFactory);
     copy.connectTimeout = this.connectTimeout;
-    copy.readTimeout = this.readTimeout;
     copy.sslContext = this.sslContext;
     copy.trustManagers = this.trustManagers;
     copy.keyManagers = this.keyManagers;
@@ -168,7 +146,6 @@ public abstract class StandardHttpClientBuilder<C extends HttpClient, F extends 
     copy.preferHttp11 = this.preferHttp11;
     copy.followRedirects = this.followRedirects;
     copy.authenticatorNone = this.authenticatorNone;
-    copy.writeTimeout = this.writeTimeout;
     copy.client = client;
     copy.tags = new LinkedHashMap<>(this.tags);
     return copy;

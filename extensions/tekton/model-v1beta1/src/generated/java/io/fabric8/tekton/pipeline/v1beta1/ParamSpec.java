@@ -70,7 +70,7 @@ public class ParamSpec implements KubernetesResource
 {
 
     @JsonProperty("default")
-    private ArrayOrString _default;
+    private ParamValue _default;
     @JsonProperty("description")
     private java.lang.String description;
     @JsonProperty("name")
@@ -98,7 +98,7 @@ public class ParamSpec implements KubernetesResource
      * @param type
      * @param properties
      */
-    public ParamSpec(ArrayOrString _default, java.lang.String description, java.lang.String name, Map<String, PropertySpec> properties, java.lang.String type) {
+    public ParamSpec(ParamValue _default, java.lang.String description, java.lang.String name, Map<String, PropertySpec> properties, java.lang.String type) {
         super();
         this._default = _default;
         this.description = description;
@@ -108,12 +108,12 @@ public class ParamSpec implements KubernetesResource
     }
 
     @JsonProperty("default")
-    public ArrayOrString getDefault() {
+    public ParamValue getDefault() {
         return _default;
     }
 
     @JsonProperty("default")
-    public void setDefault(ArrayOrString _default) {
+    public void setDefault(ParamValue _default) {
         this._default = _default;
     }
 

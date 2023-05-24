@@ -291,10 +291,24 @@ public class OkHttpClientImpl extends StandardHttpClient<OkHttpClientImpl, OkHtt
     }
   }
 
-  private CompletableFuture<HttpResponse<AsyncBody>> sendAsync(HttpRequest request,
+  private CompletableFuture<HttpResponse<AsyncBody>> sendAsync(StandardHttpRequest request,
       Function<BufferedSource, AsyncBody> handler) {
     CompletableFuture<HttpResponse<AsyncBody>> future = new CompletableFuture<>();
-    Call call = httpClient.newCall(requestBuilder((StandardHttpRequest) request).build());
+
+    okhttp3.OkHttpClient.Builder clientBuilder = null;
+    if (request.getTimeout() != null) {
+      clientBuilder = httpClient.newBuilder();
+      clientBuilder.callTimeout(request.getTimeout());
+    }
+    if (request.isForStreaming()) {
+      if (clientBuilder == null) {
+        clientBuilder = httpClient.newBuilder();
+      }
+      clientBuilder.cache(null);
+    }
+
+    Call call = Optional.ofNullable(clientBuilder).map(okhttp3.OkHttpClient.Builder::build).orElse(httpClient)
+        .newCall(requestBuilder(request).build());
     try {
       call.enqueue(new Callback() {
 

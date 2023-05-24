@@ -20,26 +20,16 @@ import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.extension.ClientAdapter;
 import io.fabric8.tekton.client.dsl.V1alpha1APIGroupDSL;
-import io.fabric8.tekton.pipeline.v1alpha1.ClusterTask;
-import io.fabric8.tekton.pipeline.v1alpha1.ClusterTaskList;
-import io.fabric8.tekton.pipeline.v1alpha1.Condition;
-import io.fabric8.tekton.pipeline.v1alpha1.ConditionList;
-import io.fabric8.tekton.pipeline.v1alpha1.Pipeline;
-import io.fabric8.tekton.pipeline.v1alpha1.PipelineList;
-import io.fabric8.tekton.pipeline.v1alpha1.PipelineRun;
-import io.fabric8.tekton.pipeline.v1alpha1.PipelineRunList;
-import io.fabric8.tekton.pipeline.v1alpha1.Task;
-import io.fabric8.tekton.pipeline.v1alpha1.TaskList;
-import io.fabric8.tekton.pipeline.v1alpha1.TaskRun;
-import io.fabric8.tekton.pipeline.v1alpha1.TaskRunList;
-import io.fabric8.tekton.resource.v1alpha1.PipelineResource;
-import io.fabric8.tekton.resource.v1alpha1.PipelineResourceList;
+import io.fabric8.tekton.resolution.v1alpha1.ResolutionRequest;
+import io.fabric8.tekton.resolution.v1alpha1.ResolutionRequestList;
 import io.fabric8.tekton.triggers.v1alpha1.ClusterInterceptor;
 import io.fabric8.tekton.triggers.v1alpha1.ClusterInterceptorList;
 import io.fabric8.tekton.triggers.v1alpha1.ClusterTriggerBinding;
 import io.fabric8.tekton.triggers.v1alpha1.ClusterTriggerBindingList;
 import io.fabric8.tekton.triggers.v1alpha1.EventListener;
 import io.fabric8.tekton.triggers.v1alpha1.EventListenerList;
+import io.fabric8.tekton.triggers.v1alpha1.Interceptor;
+import io.fabric8.tekton.triggers.v1alpha1.InterceptorList;
 import io.fabric8.tekton.triggers.v1alpha1.Trigger;
 import io.fabric8.tekton.triggers.v1alpha1.TriggerBinding;
 import io.fabric8.tekton.triggers.v1alpha1.TriggerBindingList;
@@ -52,36 +42,6 @@ public class V1alpha1APIGroupClient extends ClientAdapter<V1alpha1APIGroupClient
   @Override
   public V1alpha1APIGroupClient newInstance() {
     return new V1alpha1APIGroupClient();
-  }
-
-  @Override
-  public MixedOperation<Pipeline, PipelineList, Resource<Pipeline>> pipelines() {
-    return resources(Pipeline.class, PipelineList.class);
-  }
-
-  @Override
-  public MixedOperation<PipelineRun, PipelineRunList, Resource<PipelineRun>> pipelineRuns() {
-    return resources(PipelineRun.class, PipelineRunList.class);
-  }
-
-  @Override
-  public MixedOperation<PipelineResource, PipelineResourceList, Resource<PipelineResource>> pipelineResources() {
-    return resources(PipelineResource.class, PipelineResourceList.class);
-  }
-
-  @Override
-  public MixedOperation<Task, TaskList, Resource<Task>> tasks() {
-    return resources(Task.class, TaskList.class);
-  }
-
-  @Override
-  public MixedOperation<TaskRun, TaskRunList, Resource<TaskRun>> taskRuns() {
-    return resources(TaskRun.class, TaskRunList.class);
-  }
-
-  @Override
-  public MixedOperation<Condition, ConditionList, Resource<Condition>> conditions() {
-    return resources(Condition.class, ConditionList.class);
   }
 
   @Override
@@ -105,11 +65,6 @@ public class V1alpha1APIGroupClient extends ClientAdapter<V1alpha1APIGroupClient
   }
 
   @Override
-  public NonNamespaceOperation<ClusterTask, ClusterTaskList, Resource<ClusterTask>> clusterTasks() {
-    return resources(ClusterTask.class, ClusterTaskList.class);
-  }
-
-  @Override
   public NonNamespaceOperation<ClusterTriggerBinding, ClusterTriggerBindingList, Resource<ClusterTriggerBinding>> clusterTriggerBindings() {
     return resources(ClusterTriggerBinding.class, ClusterTriggerBindingList.class);
   }
@@ -117,5 +72,15 @@ public class V1alpha1APIGroupClient extends ClientAdapter<V1alpha1APIGroupClient
   @Override
   public NonNamespaceOperation<ClusterInterceptor, ClusterInterceptorList, Resource<ClusterInterceptor>> clusterInterceptors() {
     return resources(ClusterInterceptor.class, ClusterInterceptorList.class);
+  }
+
+  @Override
+  public MixedOperation<Interceptor, InterceptorList, Resource<Interceptor>> interceptors() {
+    return resources(Interceptor.class, InterceptorList.class);
+  }
+
+  @Override
+  public MixedOperation<ResolutionRequest, ResolutionRequestList, Resource<ResolutionRequest>> resolutionRequests() {
+    return resources(ResolutionRequest.class, ResolutionRequestList.class);
   }
 }

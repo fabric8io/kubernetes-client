@@ -15,56 +15,154 @@
  */
 package io.fabric8.kubernetes.client.http;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.opentest4j.AssertionFailedError;
 
+import java.net.URI;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class TestStandardHttpClient
     extends StandardHttpClient<TestStandardHttpClient, TestStandardHttpClientFactory, TestStandardHttpClientBuilder> {
 
+  private final Map<String, Expectation> expectations;
   @Getter
-  private final List<CompletableFuture<WebSocketResponse>> wsFutures;
-  private int wsIndex;
+  private final List<RecordedBuildWebSocketDirect> recordedBuildWebSocketDirects;
   @Getter
-  private final List<CompletableFuture<HttpResponse<AsyncBody>>> respFutures;
-  private int respIndex;
+  private final List<RecordedConsumeBytesDirect> recordedConsumeBytesDirects;
 
   protected TestStandardHttpClient(TestStandardHttpClientBuilder builder) {
     super(builder);
-    wsFutures = new ArrayList<>();
-    respFutures = new ArrayList<>();
+    expectations = new HashMap<>();
+    recordedBuildWebSocketDirects = new ArrayList<>();
+    recordedConsumeBytesDirects = new ArrayList<>();
   }
 
   @Override
   public void close() {
-    wsFutures.clear();
-    respFutures.clear();
+    recordedConsumeBytesDirects.clear();
+    recordedBuildWebSocketDirects.clear();
+    expectations.values().forEach(e -> {
+      e.futures.clear();
+      e.wsFutures.clear();
+    });
+    expectations.clear();
   }
 
   @Override
   public synchronized CompletableFuture<WebSocketResponse> buildWebSocketDirect(
       StandardWebSocketBuilder standardWebSocketBuilder,
       WebSocket.Listener listener) {
-    if (wsFutures.size() <= wsIndex) {
-      wsFutures.add(new CompletableFuture<>());
+    final CompletableFuture<WebSocketResponse> future;
+    try {
+      future = find(standardWebSocketBuilder.asHttpRequest().uri()).wsFutures.poll()
+          .get(standardWebSocketBuilder, listener);
+    } catch (Exception e) {
+      throw new AssertionFailedError("Unexpected exception", e);
     }
-    return wsFutures.get(wsIndex++);
+    recordedBuildWebSocketDirects.add(new RecordedBuildWebSocketDirect(standardWebSocketBuilder, listener, future));
+    return future;
   }
 
   @Override
   public synchronized CompletableFuture<HttpResponse<AsyncBody>> consumeBytesDirect(StandardHttpRequest request,
       AsyncBody.Consumer<List<ByteBuffer>> consumer) {
-    if (respFutures.size() <= respIndex) {
-      respFutures.add(new CompletableFuture<>());
+    final CompletableFuture<HttpResponse<AsyncBody>> future;
+    try {
+      future = find(request.uri()).futures.poll().get(request, consumer);
+    } catch (Exception e) {
+      throw new AssertionFailedError("Unexpected exception", e);
     }
-    return respFutures.get(respIndex++);
+    recordedConsumeBytesDirects.add(new RecordedConsumeBytesDirect(request, consumer, future));
+    return future;
   }
 
   @Override
   public TestStandardHttpClientBuilder newBuilder() {
     return (TestStandardHttpClientBuilder) super.newBuilder();
+  }
+
+  private Expectation find(URI uri) {
+    final String path = uri.getPath();
+    for (Map.Entry<String, Expectation> e : expectations.entrySet()) {
+      if (path.matches(e.getKey())) {
+        return e.getValue();
+      }
+    }
+    throw new AssertionFailedError("Missing expectation for path: " + path);
+  }
+
+  public final TestStandardHttpClient expect(String pathRegex, Throwable exception) {
+    final CompletableFuture<HttpResponse<AsyncBody>> future = new CompletableFuture<>();
+    future.completeExceptionally(exception);
+    return expect(pathRegex, future);
+  }
+
+  public final TestStandardHttpClient wsExpect(String pathRegex, WebSocketResponse webSocketResponse) {
+    return wsExpect(pathRegex, CompletableFuture.completedFuture(webSocketResponse));
+  }
+
+  public final TestStandardHttpClient expect(String pathRegex, HttpResponse<AsyncBody> response) {
+    return expect(pathRegex, CompletableFuture.completedFuture(response));
+  }
+
+  public final TestStandardHttpClient wsExpect(String pathRegex, CompletableFuture<WebSocketResponse> future) {
+    return wsExpect(pathRegex, (s, l) -> future);
+  }
+
+  public final TestStandardHttpClient expect(String pathRegex, CompletableFuture<HttpResponse<AsyncBody>> future) {
+    return expect(pathRegex, (r, c) -> future);
+  }
+
+  public final TestStandardHttpClient wsExpect(String pathRegex, WsFutureProvider wsFuture) {
+    final Expectation expectation = expectations.compute(pathRegex, (k, v) -> v == null ? new Expectation() : v);
+    expectation.wsFutures.add(wsFuture);
+    return this;
+  }
+
+  public final TestStandardHttpClient expect(String pathRegex, FutureProvider future) {
+    final Expectation expectation = expectations.compute(pathRegex, (k, v) -> v == null ? new Expectation() : v);
+    expectation.futures.add(future);
+    return this;
+  }
+
+  @FunctionalInterface
+  public interface WsFutureProvider {
+    CompletableFuture<WebSocketResponse> get(
+        StandardWebSocketBuilder standardWebSocketBuilder, WebSocket.Listener listener) throws Exception;
+  }
+
+  @FunctionalInterface
+  public interface FutureProvider {
+    CompletableFuture<HttpResponse<AsyncBody>> get(
+        StandardHttpRequest request, AsyncBody.Consumer<List<ByteBuffer>> consumer) throws Exception;
+  }
+
+  public static final class Expectation {
+    private final ConcurrentLinkedQueue<WsFutureProvider> wsFutures = new ConcurrentLinkedQueue<>();
+    private final ConcurrentLinkedQueue<FutureProvider> futures = new ConcurrentLinkedQueue<>();
+
+  }
+
+  @AllArgsConstructor
+  @Getter
+  public static final class RecordedBuildWebSocketDirect {
+    private final StandardWebSocketBuilder standardWebSocketBuilder;
+    private final WebSocket.Listener listener;
+    private final CompletableFuture<WebSocketResponse> future;
+  }
+
+  @AllArgsConstructor
+  @Getter
+  public static final class RecordedConsumeBytesDirect {
+    private final StandardHttpRequest request;
+    private final AsyncBody.Consumer<List<ByteBuffer>> consumer;
+    private final CompletableFuture<HttpResponse<AsyncBody>> future;
   }
 }

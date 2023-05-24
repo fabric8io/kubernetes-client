@@ -74,7 +74,7 @@ public class PipelineResult implements KubernetesResource
     @JsonProperty("type")
     private String type;
     @JsonProperty("value")
-    private ArrayOrString value;
+    private ParamValue value;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -92,7 +92,7 @@ public class PipelineResult implements KubernetesResource
      * @param type
      * @param value
      */
-    public PipelineResult(String description, String name, String type, ArrayOrString value) {
+    public PipelineResult(String description, String name, String type, ParamValue value) {
         super();
         this.description = description;
         this.name = name;
@@ -131,12 +131,12 @@ public class PipelineResult implements KubernetesResource
     }
 
     @JsonProperty("value")
-    public ArrayOrString getValue() {
+    public ParamValue getValue() {
         return value;
     }
 
     @JsonProperty("value")
-    public void setValue(ArrayOrString value) {
+    public void setValue(ParamValue value) {
         this.value = value;
     }
 

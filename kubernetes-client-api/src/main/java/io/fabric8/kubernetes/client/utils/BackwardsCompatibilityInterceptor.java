@@ -15,7 +15,8 @@
  */
 package io.fabric8.kubernetes.client.utils;
 
-import io.fabric8.kubernetes.api.model.HasMetadata;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.fabric8.kubernetes.client.http.BasicBuilder;
 import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.HttpRequest.Builder;
@@ -165,19 +166,18 @@ public class BackwardsCompatibilityInterceptor implements Interceptor {
 
     HttpRequest request = response.request();
     if (request.bodyString() != null && !request.method().equalsIgnoreCase(PATCH)) {
-      Object object = Serialization.unmarshal(request.bodyString());
-      if (object instanceof HasMetadata) {
-        HasMetadata h = (HasMetadata) object;
-        h.setApiVersion(target.group + "/" + target.version);
+      JsonNode object = Serialization.unmarshal(request.bodyString(), JsonNode.class);
+      if (object.get("apiVersion") != null) {
+        ((ObjectNode) object).put("apiVersion", target.group + "/" + target.version);
         switch (request.method()) {
           case "POST":
-            builder.post(JSON, Serialization.asJson(h));
+            builder.post(JSON, Serialization.asJson(object));
             break;
           case "PUT":
-            builder.put(JSON, Serialization.asJson(h));
+            builder.put(JSON, Serialization.asJson(object));
             break;
           case "DELETE":
-            builder.delete(JSON, Serialization.asJson(h));
+            builder.delete(JSON, Serialization.asJson(object));
             break;
           default:
             return CompletableFuture.completedFuture(false);

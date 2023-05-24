@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.client.osgi;
 
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
 import io.fabric8.kubernetes.client.NamespacedKubernetesClientAdapter;
 import io.fabric8.kubernetes.client.OAuthTokenProvider;
@@ -60,7 +61,6 @@ import static io.fabric8.kubernetes.client.Config.KUBERNETES_TRUSTSTORE_PASSPHRA
 import static io.fabric8.kubernetes.client.Config.KUBERNETES_WATCH_RECONNECT_INTERVAL_SYSTEM_PROPERTY;
 import static io.fabric8.kubernetes.client.Config.KUBERNETES_WATCH_RECONNECT_LIMIT_SYSTEM_PROPERTY;
 import static io.fabric8.kubernetes.client.Config.KUBERNETES_WEBSOCKET_PING_INTERVAL_SYSTEM_PROPERTY;
-import static io.fabric8.kubernetes.client.Config.KUBERNETES_WEBSOCKET_TIMEOUT_SYSTEM_PROPERTY;
 
 @Component(configurationPid = "io.fabric8.kubernetes.client", policy = ConfigurationPolicy.REQUIRE)
 @Service({ KubernetesClient.class, NamespacedKubernetesClient.class })
@@ -143,9 +143,6 @@ public class ManagedKubernetesClient extends NamespacedKubernetesClientAdapter<K
       String noProxyProperty = (String) properties.get(KUBERNETES_NO_PROXY);
       builder.withNoProxy(noProxyProperty.split(","));
     }
-    if (properties.containsKey(KUBERNETES_WEBSOCKET_TIMEOUT_SYSTEM_PROPERTY)) {
-      builder.withWebsocketTimeout(Long.parseLong((String) properties.get(KUBERNETES_WEBSOCKET_TIMEOUT_SYSTEM_PROPERTY)));
-    }
     if (properties.containsKey(KUBERNETES_WEBSOCKET_PING_INTERVAL_SYSTEM_PROPERTY)) {
       builder.withWebsocketPingInterval(
           Long.parseLong((String) properties.get(KUBERNETES_WEBSOCKET_PING_INTERVAL_SYSTEM_PROPERTY)));
@@ -166,7 +163,7 @@ public class ManagedKubernetesClient extends NamespacedKubernetesClientAdapter<K
       builder.withOauthTokenProvider(provider);
     }
 
-    this.init(new KubernetesClientImpl(builder.build()));
+    this.init(new KubernetesClientBuilder().withConfig(builder.build()).build());
   }
 
   @Deactivate

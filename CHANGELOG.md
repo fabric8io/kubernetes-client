@@ -1,27 +1,69 @@
 ## CHANGELOG
 
-### 6.6-SNAPSHOT
+### 6.7-SNAPSHOT
+
+#### Bugs
+* Fix #5125: TLS 1.3 only should be supported
+* Fix #5145: [java-generator] handle `additionalProperties: true` emitting a field of type `AnyType`
+* Fix #5164: [java-generator] handle more special characters in field names
+
+#### Improvements
+
+#### Dependency Upgrade
+* Fix #4989: Upgrade Tekton Model to v0.47.0
+* Fix #5107: The Camel-k extension has been deprecated in favor of the official release of the generated one
+
+#### New Features
+* Fix #4184: Add utility methods for creating ConfigMap from files/directories in KubernetesResourceUtil
+
+#### _**Note**_: Breaking changes
+* Fix #4911: Config/RequestConfig.scaleTimeout has been deprecated along with Scalable.scale(count, wait) and DeployableScalableResource.deployLatest(wait). withTimeout may be called before the operation to control the timeout.
+* Fix #4911: Config/RequestConfig.websocketTimeout has been removed. Config/RequestConfig.requestTimeout will be used for websocket connection timeouts.
+* Fix #4911: HttpClient api/building changes - writeTimeout has been removed, readTimeout has moved to the HttpRequest
+* Fix #4662: removed deprecated classes/methods:  ReflectUtils, ReplaceValueStream, ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable, ResourceCompare, and Serialization methods taking parameters
+* Fix #4662: deprecated serialization static logic:  several IOHelpers methods, Serialization methods, such as access to the static jsonMapper.  Please use KubernetesSerialization methods instead.
+* Fix #4662: deprecated Helper.getAnnotationValue, use HasMetadata methods instead.
+* Fix #5125: support for TLSv1.3 is now enabled by default
+* Fix #5125: usage of TlsVersion.TLS_1_1, TLS_1_0, and SSL_3_0 have been deprecated
+
+### 6.6.2 (2023-05-15)
+
+#### Bugs
+Fix #5121: RequestConfig is propagated to derived HttpClient instances
+
+### 6.6.1 (2023-05-11)
+
+#### Bugs
+* Fix #5095: moving the enforcement of requestTimeout
+* Fix #5100: lessened the level of the non-conflicting httpclient implementation warning
+* Fix #5102: wait on scale to 0 was not completing
+* Fix #5112: Expose put method with InputStream argument in HttpRequest class
+
+### 6.6.0 (2023-05-03)
 
 #### Bugs
 * Fix #4793: (java-generator) Fix broken POJO generation when two schema properties collide into a single field name
+* Fix #4802: config.refresh() erases token specified when building initial config
 * Fix #4910: Pod file upload will now detect if it's not completely sent to the api server
 * Fix #4963: Openshift Client return 403 when use websocket
 * Fix #4985: triggering the immediate cleanup of the okhttp idle task
 * Fix #4988: Ensuring that previous requests are closed before retry
 * Fix #4993: Quantity class should have @JsonIgnore on the additionalProperties parameter
 * Fix #5000: Remove clashing `v1alpha` apigroup packages in `istio-model-v1beta1`
-* fix #5002: Jetty response completion accounts for header processing
+* Fix #5002: Jetty response completion accounts for header processing
 * Fix #5009: addressing issue with serialization of wrapped polymorphic types
 * Fix #5015: executing resync as a locking operation to ensure resync event ordering
 * Fix #5020: updating the resourceVersion on a delete with finalizers
 * Fix #5033: port forwarding for clients other than okhttp needs to specify the subprotocol
-* fix #5036: Better websocket error handling for protocol / client enforced errors, also update frame/message limits
+* Fix #5035: allowed client.authentication.k8s.io/v1 to work for the ExecConfig
+* Fix #5036: Better websocket error handling for protocol / client enforced errors, also update frame/message limits
 * Fix #5044: disable Vert.x instance file caching
 * Fix #5059: Vert.x InputStreamReader uses an empty Buffer sentinel to avoid NPE
+* Fix #5085: Vert.x HTTP Client InputStreamReadStream works in Native mode
 
 #### Improvements
 * Fix #4434: Update CronJobIT to use `batch/v1` CronJob instead
-* Fix #4477 exposing LeaderElector.release to force an elector to give up the lease
+* Fix #4477: exposing LeaderElector.release to force an elector to give up the lease
 * Fix #4935: improve HTTP client implementation selection messages
 * Fix #4975: exposing scale operations for all Resources
 * Fix #4992: Optimize Quantity parsing to avoid regex overhead
@@ -29,6 +71,7 @@
 * Fix #5005: status operations use the context `subresource` setting
 * Fix #5022: adding additional buffering to ExecWatchInputStream
 * Fix #5052: add Quantity.fromNumericalAmount, the inverse of getNumericalAmount
+* Fix #5073: `NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl` extends `ServerSideApplicable`
 * Fix #5080: minimizing debug logs related to the backoff interval 
 
 #### Dependency Upgrade
@@ -38,11 +81,10 @@
 #### New Features
 * Fix #5037: OkHttp-specific logging interceptor replacement. Introducing a generic HTTP interceptor to log HTTP and WS requests.
 * Fix #5041: exposed Client.raw methods for arbitrary calls
-* Fix #4184: Add DSL support for creating ConfigMap from file
 
 #### _**Note**_: Breaking changes
 * Fix #4875: Removed unused options from the java-generator
-* Fix #4910: all Pod file uploads not require commons-compress
+* Fix #4910: **all** Pod file uploads require commons-compress
 * Fix #4998: Serialization.yamlMapper and Serialization.clearYamlMapper have been deprecated
 
 ### 6.5.1 (2023-03-20)
@@ -1965,3 +2007,4 @@ like the delete of a custom resource.
    * Fixed issue of SecurityContextConstraints not working - https://github.com/fabric8io/kubernetes-client/pull/982
      Note :- This got fixed by fixing model - https://github.com/fabric8io/kubernetes-model/pull/274
      Dependencies Upgrade
+

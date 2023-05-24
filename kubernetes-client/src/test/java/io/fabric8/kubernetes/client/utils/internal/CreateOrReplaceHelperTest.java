@@ -19,6 +19,7 @@ import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.StatusBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.utils.KubernetesSerialization;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -47,7 +48,7 @@ class CreateOrReplaceHelperTest {
         createPodTask,
         p -> getPod(),
         p -> getPod(),
-        p -> getPod());
+        p -> getPod(), new KubernetesSerialization());
 
     Pod p = getPod();
     p.getMetadata().setResourceVersion("1");
@@ -77,7 +78,7 @@ class CreateOrReplaceHelperTest {
         createPodTask,
         replacePodTask,
         p -> getPod(),
-        p -> getPod());
+        p -> getPod(), new KubernetesSerialization());
 
     // When
     Pod podCreated = podCreateOrReplaceHelper.createOrReplace(getPod());
@@ -106,7 +107,7 @@ class CreateOrReplaceHelperTest {
         createPodTask,
         p -> getPod(),
         waitTask,
-        reloadTask);
+        reloadTask, new KubernetesSerialization());
 
     // When
     Pod podCreated = podCreateOrReplaceHelper.createOrReplace(getPod());
@@ -125,7 +126,7 @@ class CreateOrReplaceHelperTest {
           HttpURLConnection.HTTP_BAD_REQUEST, new StatusBuilder().withCode(HttpURLConnection.HTTP_BAD_REQUEST).build());
     };
     CreateOrReplaceHelper<Pod> podCreateOrReplaceHelper = new CreateOrReplaceHelper<>(createPodTask,
-        p -> getPod(), p -> getPod(), p -> getPod());
+        p -> getPod(), p -> getPod(), p -> getPod(), new KubernetesSerialization());
     Pod podToCreate = getPod();
 
     // When
