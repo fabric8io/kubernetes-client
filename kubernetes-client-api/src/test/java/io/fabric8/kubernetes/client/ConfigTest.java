@@ -39,6 +39,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
@@ -49,7 +50,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.condition.OS.WINDOWS;
 
-public class ConfigTest {
+class ConfigTest {
 
   private static final String TEST_KUBECONFIG_FILE = Utils.filePath(ConfigTest.class.getResource("/test-kubeconfig"));
   private static final String TEST_EC_KUBECONFIG_FILE = Utils.filePath(ConfigTest.class.getResource("/test-ec-kubeconfig"));
@@ -161,10 +162,10 @@ public class ConfigTest {
     System.setProperty(Config.KUBERNETES_UPLOAD_REQUEST_TIMEOUT_SYSTEM_PROPERTY, "600000");
 
     Config config = new Config();
-    assertConfig(config);
+    assertConfig(config, true);
 
     config = new ConfigBuilder().build();
-    assertConfig(config);
+    assertConfig(config, true);
   }
 
   @Test
@@ -200,7 +201,7 @@ public class ConfigTest {
         .withKeyStorePassphrase("keystorePassphrase")
         .build();
 
-    assertConfig(config);
+    assertConfig(config, false);
   }
 
   @Test
@@ -243,7 +244,7 @@ public class ConfigTest {
         .withNamespace("testns")
         .build();
 
-    assertConfig(config);
+    assertConfig(config, true);
   }
 
   @Test
@@ -291,7 +292,7 @@ public class ConfigTest {
 
     assertEquals("https://172.28.128.4:8443/", config.getMasterUrl());
     assertEquals("testns", config.getNamespace());
-    assertEquals("token", config.getOauthToken());
+    assertEquals("token", config.getAutoOAuthToken());
     assertTrue(config.getCaCertFile().endsWith("testns/ca.pem".replace("/", File.separator)));
     assertTrue(new File(config.getCaCertFile()).isAbsolute());
     assertEquals(new File(TEST_KUBECONFIG_FILE), config.getFile());
@@ -305,7 +306,7 @@ public class ConfigTest {
 
     assertEquals("https://172.28.128.4:8443/", config.getMasterUrl());
     assertEquals("production", config.getNamespace());
-    assertEquals("supertoken", config.getOauthToken());
+    assertEquals("supertoken", config.getAutoOAuthToken());
     assertTrue(config.getCaCertFile().endsWith("testns/ca.pem".replace("/", File.separator)));
     assertTrue(new File(config.getCaCertFile()).isAbsolute());
   }
@@ -319,7 +320,7 @@ public class ConfigTest {
 
     assertEquals("https://172.28.128.4:8443/", config.getMasterUrl());
     assertEquals("production", config.getNamespace());
-    assertEquals("supertoken", config.getOauthToken());
+    assertEquals("supertoken", config.getAutoOAuthToken());
     assertTrue(config.getCaCertFile().endsWith("testns/ca.pem".replace("/", File.separator)));
     assertTrue(new File(config.getCaCertFile()).isAbsolute());
   }
@@ -333,7 +334,7 @@ public class ConfigTest {
     assertNotNull(config);
     assertEquals("http://somehost:80/", config.getMasterUrl());
     assertEquals("testns", config.getNamespace());
-    assertEquals("token", config.getOauthToken());
+    assertEquals("token", config.getAutoOAuthToken());
     assertEquals(new File(TEST_KUBECONFIG_FILE), config.getFile());
   }
 
@@ -348,7 +349,7 @@ public class ConfigTest {
 
     assertNotNull(config);
     assertEquals("http://somehost:80/", config.getMasterUrl());
-    assertEquals("token", config.getOauthToken());
+    assertEquals("token", config.getAutoOAuthToken());
     assertEquals("testns2", config.getNamespace());
   }
 
@@ -482,7 +483,7 @@ public class ConfigTest {
 
     Config config = Config.autoConfigure(null);
     assertNotNull(config);
-    assertEquals("HELLO WORLD", config.getOauthToken());
+    assertEquals("HELLO WORLD", config.getAutoOAuthToken());
   }
 
   @Test
@@ -497,7 +498,7 @@ public class ConfigTest {
 
       Config config = Config.autoConfigure(null);
       assertNotNull(config);
-      assertEquals("HELLO", config.getOauthToken());
+      assertEquals("HELLO", config.getAutoOAuthToken());
     } finally {
       System.clearProperty(Config.KUBERNETES_KUBECONFIG_FILE);
     }
@@ -516,7 +517,7 @@ public class ConfigTest {
 
       Config config = Config.autoConfigure(null);
       assertNotNull(config);
-      assertEquals("HELLO W O R L D", config.getOauthToken());
+      assertEquals("HELLO W O R L D", config.getAutoOAuthToken());
     } finally {
       System.clearProperty(Config.KUBERNETES_KUBECONFIG_FILE);
     }
@@ -535,7 +536,7 @@ public class ConfigTest {
 
       Config config = Config.autoConfigure(null);
       assertNotNull(config);
-      assertEquals("HELLO WORLD", config.getOauthToken());
+      assertEquals("HELLO WORLD", config.getAutoOAuthToken());
     } finally {
       System.clearProperty(Config.KUBERNETES_KUBECONFIG_FILE);
     }
@@ -548,7 +549,9 @@ public class ConfigTest {
         .withOauthTokenProvider(() -> "PROVIDER_TOKEN")
         .build();
 
-    assertEquals("PROVIDER_TOKEN", config.getOauthToken());
+    // this is mostly a configuration error, and
+    // the provider does not modify the oauthtoken field
+    assertEquals("oauthToken", config.getOauthToken());
   }
 
   @Test
@@ -566,7 +569,7 @@ public class ConfigTest {
     assertEquals("https://172.28.128.4:8443/", config.getMasterUrl());
     assertEquals(
         "eyJraWQiOiJDTj1vaWRjaWRwLnRyZW1vbG8ubGFuLCBPVT1EZW1vLCBPPVRybWVvbG8gU2VjdXJpdHksIEw9QXJsaW5ndG9uLCBTVD1WaXJnaW5pYSwgQz1VUy1DTj1rdWJlLWNhLTEyMDIxNDc5MjEwMzYwNzMyMTUyIiwiYWxnIjoiUlMyNTYifQ.eyJpc3MiOiJodHRwczovL29pZGNpZHAudHJlbW9sby5sYW46ODQ0My9hdXRoL2lkcC9PaWRjSWRQIiwiYXVkIjoia3ViZXJuZXRlcyIsImV4cCI6MTQ4MzU0OTUxMSwianRpIjoiMm96US15TXdFcHV4WDlHZUhQdy1hZyIsImlhdCI6MTQ4MzU0OTQ1MSwibmJmIjoxNDgzNTQ5MzMxLCJzdWIiOiI0YWViMzdiYS1iNjQ1LTQ4ZmQtYWIzMC0xYTAxZWU0MWUyMTgifQ.w6p4J_6qQ1HzTG9nrEOrubxIMb9K5hzcMPxc9IxPx2K4xO9l-oFiUw93daH3m5pluP6K7eOE6txBuRVfEcpJSwlelsOsW8gb8VJcnzMS9EnZpeA0tW_p-mnkFc3VcfyXuhe5R3G7aa5d8uHv70yJ9Y3-UhjiN9EhpMdfPAoEB9fYKKkJRzF7utTTIPGrSaSU6d2pcpfYKaxIwePzEkT4DfcQthoZdy9ucNvvLoi1DIC-UocFD8HLs8LYKEqSxQvOcvnThbObJ9af71EwmuE21fO5KzMW20KtAeget1gnldOosPtz1G5EwvaQ401-RPQzPGMVBld0_zMCAwZttJ4knw",
-        config.getOauthToken());
+        config.getAutoOAuthToken());
   }
 
   @Test
@@ -578,39 +581,43 @@ public class ConfigTest {
     emptyConfig = Config.empty();
 
     // Then
-    assertNotNull(emptyConfig);
-    assertEquals("https://kubernetes.default.svc", emptyConfig.getMasterUrl());
-    assertTrue(emptyConfig.getContexts().isEmpty());
-    assertNull(emptyConfig.getCurrentContext());
-    assertEquals(64, emptyConfig.getMaxConcurrentRequests());
-    assertEquals(5, emptyConfig.getMaxConcurrentRequestsPerHost());
-    assertFalse(emptyConfig.isTrustCerts());
-    assertFalse(emptyConfig.isDisableHostnameVerification());
-    assertEquals("RSA", emptyConfig.getClientKeyAlgo());
-    assertEquals("changeit", emptyConfig.getClientKeyPassphrase());
-    assertEquals(1000, emptyConfig.getWatchReconnectInterval());
-    assertEquals(-1, emptyConfig.getWatchReconnectLimit());
-    assertEquals(10000, emptyConfig.getConnectionTimeout());
-    assertEquals(10000, emptyConfig.getRequestTimeout());
-    assertEquals(600000, emptyConfig.getScaleTimeout());
-    assertEquals(20000, emptyConfig.getLoggingInterval());
-    assertEquals(30000, emptyConfig.getWebsocketPingInterval());
-    assertEquals(120000, emptyConfig.getUploadRequestTimeout());
-    assertTrue(emptyConfig.getImpersonateExtras().isEmpty());
-    assertEquals(0, emptyConfig.getImpersonateGroups().length);
-    assertFalse(emptyConfig.isHttp2Disable());
-    assertEquals(1, emptyConfig.getTlsVersions().length);
-    assertTrue(emptyConfig.getErrorMessages().isEmpty());
-    assertNotNull(emptyConfig.getUserAgent());
+    assertThat(emptyConfig)
+        .hasFieldOrPropertyWithValue("masterUrl", "https://kubernetes.default.svc")
+        .hasFieldOrPropertyWithValue("contexts", Collections.emptyList())
+        .hasFieldOrPropertyWithValue("maxConcurrentRequests", 64)
+        .hasFieldOrPropertyWithValue("maxConcurrentRequestsPerHost", 5)
+        .hasFieldOrPropertyWithValue("trustCerts", false)
+        .hasFieldOrPropertyWithValue("disableHostnameVerification", false)
+        .hasFieldOrPropertyWithValue("clientKeyAlgo", "RSA")
+        .hasFieldOrPropertyWithValue("clientKeyPassphrase", "changeit")
+        .hasFieldOrPropertyWithValue("watchReconnectInterval", 1000)
+        .hasFieldOrPropertyWithValue("watchReconnectLimit", -1)
+        .hasFieldOrPropertyWithValue("connectionTimeout", 10000)
+        .hasFieldOrPropertyWithValue("requestTimeout", 10000)
+        .hasFieldOrPropertyWithValue("scaleTimeout", 600000L)
+        .hasFieldOrPropertyWithValue("loggingInterval", 20000)
+        .hasFieldOrPropertyWithValue("websocketPingInterval", 30000L)
+        .hasFieldOrPropertyWithValue("uploadRequestTimeout", 120000)
+        .hasFieldOrPropertyWithValue("impersonateExtras", Collections.emptyMap())
+        .hasFieldOrPropertyWithValue("http2Disable", false)
+        .hasFieldOrPropertyWithValue("tlsVersions", new TlsVersion[] { TlsVersion.TLS_1_3, TlsVersion.TLS_1_2 })
+        .hasFieldOrPropertyWithValue("errorMessages", Collections.emptyMap())
+        .satisfies(e -> assertThat(e.getCurrentContext()).isNull())
+        .satisfies(e -> assertThat(e.getImpersonateGroups()).isEmpty())
+        .satisfies(e -> assertThat(e.getUserAgent()).isNotNull());
   }
 
-  private void assertConfig(Config config) {
+  private void assertConfig(Config config, boolean autoToken) {
     assertNotNull(config);
     assertTrue(config.isTrustCerts());
     assertTrue(config.isDisableHostnameVerification());
     assertEquals("http://somehost:80/", config.getMasterUrl());
     assertEquals("testns", config.getNamespace());
-    assertEquals("token", config.getOauthToken());
+    if (autoToken) {
+      assertEquals("token", config.getAutoOAuthToken());
+    } else {
+      assertEquals("token", config.getOauthToken());
+    }
     assertEquals("user", config.getUsername());
     assertEquals("pass", config.getPassword());
     assertEquals("/path/to/cert", config.getCaCertFile());
@@ -800,5 +807,21 @@ public class ConfigTest {
     } finally {
       System.setProperty("user.home", userHomePropToRestore);
     }
+  }
+
+  @Test
+  void refresh_whenOAuthTokenSourceSetToUser_thenConfigUnchanged() {
+    // Given
+    Config config = new ConfigBuilder()
+        .withOauthToken("token-from-user")
+        .build();
+
+    // When
+    Config updatedConfig = config.refresh();
+
+    // Then
+    assertThat(updatedConfig)
+        .isSameAs(config)
+        .hasFieldOrPropertyWithValue("oauthToken", "token-from-user");
   }
 }

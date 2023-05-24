@@ -5,6 +5,8 @@
 #### Bugs
 * Fix #5152: preventing JDK WebSocket errors from terminating watches and improving watch termination and its logging
 * Fix #5145: [java-generator] handle `additionalProperties: true` emitting a field of type `AnyType`
+* Fix #5164: [java-generator] handle more special characters in field names
+* Fix #5125: TLS 1.3 only should be supported
 
 #### Improvements
 
@@ -21,6 +23,8 @@
 * Fix #4662: removed deprecated classes/methods:  ReflectUtils, ReplaceValueStream, ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable, ResourceCompare, and Serialization methods taking parameters
 * Fix #4662: deprecated serialization static logic:  several IOHelpers methods, Serialization methods, such as access to the static jsonMapper.  Please use KubernetesSerialization methods instead.
 * Fix #4662: deprecated Helper.getAnnotationValue, use HasMetadata methods instead.
+* Fix #5125: support for TLSv1.3 is now enabled by default
+* Fix #5125: usage of TlsVersion.TLS_1_1, TLS_1_0, and SSL_3_0 have been deprecated
 
 ### 6.6.2 (2023-05-15)
 
@@ -39,6 +43,7 @@ Fix #5121: RequestConfig is propagated to derived HttpClient instances
 
 #### Bugs
 * Fix #4793: (java-generator) Fix broken POJO generation when two schema properties collide into a single field name
+* Fix #4802: config.refresh() erases token specified when building initial config
 * Fix #4910: Pod file upload will now detect if it's not completely sent to the api server
 * Fix #4963: Openshift Client return 403 when use websocket
 * Fix #4985: triggering the immediate cleanup of the okhttp idle task
@@ -2002,3 +2007,4 @@ like the delete of a custom resource.
    * Fixed issue of SecurityContextConstraints not working - https://github.com/fabric8io/kubernetes-client/pull/982
      Note :- This got fixed by fixing model - https://github.com/fabric8io/kubernetes-model/pull/274
      Dependencies Upgrade
+
