@@ -22,13 +22,8 @@ import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
 import io.fabric8.kubernetes.api.model.ConfigMapList;
 import io.fabric8.kubernetes.api.model.StatusDetails;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -70,72 +65,6 @@ class ConfigMapIT {
 
     assertNotNull(configMap);
     assertEquals("Microsoft Database", configMap.getData().get("MSSQL"));
-  }
-
-  @Test
-  void fromFile() throws IOException {
-    // Given
-    Path path = new File(getClass().getResource("/configmap-sources/buffalo.properties").getFile()).toPath();
-
-    // When
-    ConfigMap configMap = client.configMaps()
-        .withName("buffalo-from-file")
-        .fromFile("buffaloes", path)
-        .create();
-
-    // Then
-    assertThat(configMap)
-        .hasFieldOrPropertyWithValue("metadata.name", "buffalo-from-file")
-        .extracting(ConfigMap::getData)
-        .asInstanceOf(InstanceOfAssertFactories.MAP)
-        .containsEntry("buffaloes", new String(Files.readAllBytes(path)));
-    client.configMaps().withName("buffalo-from-file").delete();
-  }
-
-  @Test
-  void fromDir() throws IOException {
-    // Given
-    Path path = new File(getClass().getResource("/configmap-sources").getFile()).toPath();
-
-    // When
-    ConfigMap configMap = client.configMaps()
-        .withName("cattle")
-        .fromFile(path)
-        .create();
-
-    // Then
-    assertThat(configMap)
-        .hasFieldOrPropertyWithValue("metadata.name", "cattle")
-        .extracting(ConfigMap::getData)
-        .asInstanceOf(InstanceOfAssertFactories.MAP)
-        .containsEntry("buffalo.properties",
-            new String(Files.readAllBytes(path.resolve("buffalo.properties"))))
-        .containsEntry("cow.properties",
-            new String(Files.readAllBytes(path.resolve("cow.properties"))));
-    client.configMaps().withName("cattle").delete();
-  }
-
-  @Test
-  void fromMultipleFiles() throws IOException {
-    // Given
-    Path p1 = new File(getClass().getResource("/configmap-sources/buffalo.properties").getFile()).toPath();
-    Path p2 = new File(getClass().getResource("/configmap-sources/cow.properties").getFile()).toPath();
-
-    // When
-    ConfigMap configMap = client.configMaps()
-        .withName("farm")
-        .fromFile("buffalo-from-file", p1)
-        .fromFile("cow-from-file", p2)
-        .create();
-
-    // Then
-    assertThat(configMap)
-        .hasFieldOrPropertyWithValue("metadata.name", "farm")
-        .extracting(ConfigMap::getData)
-        .asInstanceOf(InstanceOfAssertFactories.MAP)
-        .containsEntry("buffalo-from-file", new String(Files.readAllBytes(p1)))
-        .containsEntry("cow-from-file", new String(Files.readAllBytes(p2)));
-    client.configMaps().withName("farm").delete();
   }
 
   @Test

@@ -282,8 +282,8 @@ class KubernetesResourceUtilTest {
   void createNewConfigMapFromDirOrFiles_whenInvalidFileProvided_shouldThrowException() {
     assertThatIllegalArgumentException()
         .isThrownBy(() -> KubernetesResourceUtil.addEntriesFromDirOrFileToConfigMap(new ConfigMapBuilder(), "test-configmap",
-            Paths.get("")))
-        .withMessage("invalid file path provided ");
+            Paths.get("does-not-exist")))
+        .withMessage("invalid file path provided does-not-exist");
   }
 
   @Test
@@ -292,8 +292,7 @@ class KubernetesResourceUtilTest {
     Path path = new File(getClass().getResource("/configmap-from-file/game-config/game.properties").getFile()).toPath();
 
     // When
-    ConfigMap configMap = KubernetesResourceUtil.addEntriesFromDirOrFileToConfigMap(new ConfigMapBuilder(), "test-configmap",
-        path).build();
+    ConfigMap configMap = KubernetesResourceUtil.createConfigMapFromDirOrFiles("test-configmap", path);
 
     // Then
     assertConfigMapContainsData(configMap, createExpectedEntry("game.properties", path));
@@ -336,8 +335,7 @@ class KubernetesResourceUtilTest {
     Path path = new File(getClass().getResource("/test.bin").getFile()).toPath();
 
     // When
-    ConfigMap configMap = KubernetesResourceUtil
-        .addEntriesFromDirOrFileToConfigMap(new ConfigMapBuilder(), "test-configmap", path).build();
+    ConfigMap configMap = KubernetesResourceUtil.createConfigMapFromDirOrFiles("test-configmap", path);
 
     // Then
     assertThat(configMap)

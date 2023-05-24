@@ -481,9 +481,6 @@ public class KubernetesResourceUtil {
     configMapBuilder.withNewMetadata().withName(name).endMetadata();
     for (Path dirOrFilePath : dirOrFilePaths) {
       final File file = dirOrFilePath.toFile();
-      if (!file.exists()) {
-        throw new IllegalArgumentException("invalid file path provided " + dirOrFilePath);
-      }
       addEntriesFromDirOrFileToConfigMap(configMapBuilder, file.getName(), dirOrFilePath);
     }
     return configMapBuilder.build();
@@ -544,6 +541,9 @@ public class KubernetesResourceUtil {
 
   public static ConfigMapBuilder addEntriesFromDirOrFileToConfigMap(ConfigMapBuilder configMapBuilder, final String key,
       final Path dirOrFilePath) throws IOException {
+    if (!Files.exists(dirOrFilePath)) {
+      throw new IllegalArgumentException("invalid file path provided " + dirOrFilePath);
+    }
     if (Files.isDirectory(dirOrFilePath, LinkOption.NOFOLLOW_LINKS)) {
       addEntriesFromDirectoryToConfigMap(configMapBuilder, dirOrFilePath);
     } else {
