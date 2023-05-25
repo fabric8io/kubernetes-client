@@ -237,10 +237,13 @@ public class Utils {
   }
 
   public static String filePath(URL path) {
+    if (path == null) {
+      throw new KubernetesClientException("Path is required");
+    }
     try {
       return Paths.get(path.toURI()).toString();
     } catch (URISyntaxException e) {
-      throw new RuntimeException(e);
+      throw KubernetesClientException.launderThrowable(e);
     }
   }
 
