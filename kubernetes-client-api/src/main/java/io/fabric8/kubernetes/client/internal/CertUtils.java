@@ -61,6 +61,7 @@ public class CertUtils {
   private static final String TRUST_STORE_TYPE_SYSTEM_PROPERTY = "javax.net.ssl.trustStoreType";
   private static final String KEY_STORE_SYSTEM_PROPERTY = "javax.net.ssl.keyStore";
   private static final String KEY_STORE_PASSWORD_SYSTEM_PROPERTY = "javax.net.ssl.keyStorePassword";
+  private static final String KEY_STORE_DEFAULT_PASSWORD = "changeit";
 
   public static ByteArrayInputStream getInputStreamFromDataOrFile(String data, String file) throws IOException {
     if (data != null) {
@@ -223,6 +224,7 @@ public class CertUtils {
     keyStore.load(null);
   }
 
+  @SuppressWarnings("java:S6437")
   private static boolean loadDefaultStoreFile(KeyStore keyStore, File fileToLoad, char[] passphrase) {
     if (!fileToLoad.exists() || !fileToLoad.isFile() || fileToLoad.length() == 0) {
       return false;
@@ -237,7 +239,7 @@ public class CertUtils {
     // last chance, try changeit
     if ((passphrase == null || passphrase.length == 0) && ex.getCause() instanceof UnrecoverableKeyException) {
       try (FileInputStream fis1 = new FileInputStream(fileToLoad)) {
-        keyStore.load(fis1, passphrase);
+        keyStore.load(fis1, KEY_STORE_DEFAULT_PASSWORD.toCharArray());
         return true;
       } catch (Exception e1) {
         // still no good
