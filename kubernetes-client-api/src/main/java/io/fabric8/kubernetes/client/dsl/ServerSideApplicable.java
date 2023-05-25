@@ -17,6 +17,15 @@ package io.fabric8.kubernetes.client.dsl;
 
 public interface ServerSideApplicable<T> {
 
+  /**
+   * Perform a Kubernetes server-side apply operation.
+   *
+   * Under the hood it's an HTTP PATCH operation using the <code>application/apply-patch+yaml</code> Content-Type.
+   *
+   * @see <a href="https://kubernetes.io/docs/reference/using-api/server-side-apply/">Kubernetes User Guide: Server-Side
+   *      Apply</a>
+   * @return the patched item from the API server.
+   */
   T serverSideApply();
 
   /**
