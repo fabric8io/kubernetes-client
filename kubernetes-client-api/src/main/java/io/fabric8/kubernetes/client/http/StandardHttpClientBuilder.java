@@ -151,4 +151,17 @@ public abstract class StandardHttpClientBuilder<C extends HttpClient, F extends 
     return copy;
   }
 
+  protected void addProxyAuthInterceptor() {
+    if (proxyAuthorization != null) {
+      this.interceptors.put("PROXY-AUTH", new Interceptor() {
+
+        @Override
+        public void before(BasicBuilder builder, HttpRequest httpRequest, RequestTags tags) {
+          builder.setHeader(StandardHttpHeaders.PROXY_AUTHORIZATION, proxyAuthorization);
+        }
+
+      });
+    }
+  }
+
 }

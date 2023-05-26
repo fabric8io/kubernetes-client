@@ -20,7 +20,12 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import okhttp3.Dispatcher;
 import okhttp3.OkHttpClient;
+import okhttp3.OkHttpClient.Builder;
 import org.junit.jupiter.api.Test;
+
+import java.net.InetSocketAddress;
+import java.net.Proxy;
+import java.net.Proxy.Type;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -87,6 +92,21 @@ class OkHttpClientFactoryTest {
         .build();
     assertThat(client.getOkHttpClient().dispatcher())
         .hasFieldOrPropertyWithValue("maxRequests", 1337);
+  }
+
+  @Test
+  void proxyOverride() {
+    OkHttpClientFactory factory = new OkHttpClientFactory() {
+      @Override
+      protected void additionalConfig(Builder builder) {
+        builder.proxy(new Proxy(Type.SOCKS, InetSocketAddress.createUnresolved("foo", 1000)));
+      }
+
+    };
+
+    OkHttpClientImpl client = factory.newBuilder(Config.empty()).build();
+
+    assertEquals(Type.SOCKS, client.getOkHttpClient().proxy().type());
   }
 
 }

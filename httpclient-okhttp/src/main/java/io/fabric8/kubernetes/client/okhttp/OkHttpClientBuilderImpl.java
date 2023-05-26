@@ -17,6 +17,7 @@
 package io.fabric8.kubernetes.client.okhttp;
 
 import io.fabric8.kubernetes.client.http.StandardHttpClientBuilder;
+import io.fabric8.kubernetes.client.http.StandardHttpHeaders;
 import okhttp3.Authenticator;
 import okhttp3.ConnectionSpec;
 import okhttp3.OkHttpClient;
@@ -47,7 +48,7 @@ class OkHttpClientBuilderImpl
   @Override
   public OkHttpClientImpl build() {
     if (client != null) {
-      return derivedBuild(this.client.getOkHttpClient().newBuilder());
+      return completeBuild(this.client.getOkHttpClient().newBuilder(), true);
     }
     return initialBuild(builder);
   }
@@ -71,10 +72,11 @@ class OkHttpClientBuilderImpl
       builder.proxy(Proxy.NO_PROXY);
     } else {
       builder.proxy(new Proxy(Proxy.Type.HTTP, proxyAddress));
-    }
-    if (proxyAuthorization != null) {
-      builder.proxyAuthenticator(
-          (route, response) -> response.request().newBuilder().header("Proxy-Authorization", proxyAuthorization).build());
+      if (proxyAuthorization != null) {
+        builder.proxyAuthenticator(
+            (route, response) -> response.request().newBuilder()
+                .header(StandardHttpHeaders.PROXY_AUTHORIZATION, proxyAuthorization).build());
+      }
     }
     if (tlsVersions != null) {
       ConnectionSpec spec = new ConnectionSpec.Builder(ConnectionSpec.MODERN_TLS)
@@ -87,13 +89,18 @@ class OkHttpClientBuilderImpl
     if (preferHttp11) {
       builder.protocols(Collections.singletonList(Protocol.HTTP_1_1));
     }
-    return derivedBuild(builder);
+    return completeBuild(builder, false);
   }
 
-  private OkHttpClientImpl derivedBuild(okhttp3.OkHttpClient.Builder builder) {
+  private OkHttpClientImpl completeBuild(okhttp3.OkHttpClient.Builder builder, boolean derived) {
     if (authenticatorNone) {
       builder.authenticator(Authenticator.NONE);
     }
+
+    if (!derived) {
+      clientFactory.additionalConfig(builder);
+    }
+
     OkHttpClient client = builder.build();
 
     return new OkHttpClientImpl(client, this);

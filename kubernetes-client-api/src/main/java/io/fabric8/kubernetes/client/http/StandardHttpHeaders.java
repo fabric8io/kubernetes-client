@@ -27,6 +27,7 @@ public class StandardHttpHeaders implements HttpHeaders {
   public static final String EXPECT = "Expect";
   public static final String EXPECT_CONTINUE = "100-continue";
   public static final String RETRY_AFTER = "Retry-After";
+  public static final String PROXY_AUTHORIZATION = "Proxy-Authorization";
 
   private final Map<String, List<String>> headers;
 

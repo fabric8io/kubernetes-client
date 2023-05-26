@@ -73,6 +73,7 @@ public class VertxHttpClientBuilder<F extends HttpClient.Factory>
           .setPort(this.proxyAddress.getPort())
           .setType(ProxyType.HTTP);
       options.setProxyOptions(proxyOptions);
+      addProxyAuthInterceptor();
     }
 
     final String[] protocols;
@@ -111,7 +112,7 @@ public class VertxHttpClientBuilder<F extends HttpClient.Factory>
     }
 
     // track derived clients to clean up properly
-    VertxHttpClient<F> result = new VertxHttpClient<>(this, options, proxyAddress != null ? proxyAuthorization : null);
+    VertxHttpClient<F> result = new VertxHttpClient<>(this, options);
     if (this.client != null) {
       this.client.addDerivedClient(result);
     }

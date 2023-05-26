@@ -21,7 +21,6 @@ import org.eclipse.jetty.client.HttpClient;
 import org.eclipse.jetty.client.HttpClientTransport;
 import org.eclipse.jetty.client.HttpProxy;
 import org.eclipse.jetty.client.Origin;
-import org.eclipse.jetty.client.api.Request;
 import org.eclipse.jetty.client.dynamic.HttpClientTransportDynamic;
 import org.eclipse.jetty.client.http.HttpClientConnectionFactory;
 import org.eclipse.jetty.client.http.HttpClientTransportOverHTTP;
@@ -79,17 +78,11 @@ public class JettyHttpClientBuilder
     sharedHttpClient.setMaxConnectionsPerDestination(MAX_CONNECTIONS);
     sharedWebSocketClient.getHttpClient().setMaxConnectionsPerDestination(MAX_CONNECTIONS);
     if (proxyAddress != null) {
-      sharedHttpClient.getProxyConfiguration().getProxies()
-          .add(new HttpProxy(new Origin.Address(proxyAddress.getHostString(), proxyAddress.getPort()), false));
+      sharedHttpClient.getProxyConfiguration()
+          .addProxy(new HttpProxy(new Origin.Address(proxyAddress.getHostString(), proxyAddress.getPort()), false));
+      addProxyAuthInterceptor();
     }
-    if (proxyAddress != null && proxyAuthorization != null) {
-      sharedHttpClient.getRequestListeners().add(new Request.Listener.Adapter() {
-        @Override
-        public void onBegin(Request request) {
-          request.headers(h -> h.put("Proxy-Authorization", proxyAuthorization));
-        }
-      });
-    }
+    clientFactory.additionalConfig(sharedHttpClient, sharedWebSocketClient);
     return new JettyHttpClient(this, sharedHttpClient, sharedWebSocketClient);
   }
 

@@ -16,10 +16,7 @@
 
 package io.fabric8.kubernetes.client.jdkhttp;
 
-import io.fabric8.kubernetes.client.http.BasicBuilder;
 import io.fabric8.kubernetes.client.http.HttpClient;
-import io.fabric8.kubernetes.client.http.HttpRequest;
-import io.fabric8.kubernetes.client.http.Interceptor;
 import io.fabric8.kubernetes.client.http.StandardHttpClientBuilder;
 import io.fabric8.kubernetes.client.http.TlsVersion;
 
@@ -64,18 +61,9 @@ class JdkHttpClientBuilderImpl
     }
     if (proxyAddress != null) {
       builder.proxy(ProxySelector.of(proxyAddress));
+      addProxyAuthInterceptor();
     } else {
       builder.proxy(java.net.http.HttpClient.Builder.NO_PROXY);
-    }
-    if (proxyAuthorization != null) {
-      this.interceptors.put("PROXY-AUTH", new Interceptor() {
-
-        @Override
-        public void before(BasicBuilder builder, HttpRequest httpRequest, RequestTags tags) {
-          builder.setHeader("Proxy-Authorization", proxyAuthorization);
-        }
-
-      });
     }
     if (preferHttp11) {
       builder.version(Version.HTTP_1_1);

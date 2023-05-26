@@ -15,12 +15,21 @@
  */
 package io.fabric8.kubernetes.client.jetty;
 
+import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.http.HttpClient;
+import org.eclipse.jetty.websocket.client.WebSocketClient;
 
 public class JettyHttpClientFactory implements HttpClient.Factory {
 
   @Override
   public JettyHttpClientBuilder newBuilder() {
     return new JettyHttpClientBuilder(this);
+  }
+
+  /**
+   * Additional configuration to be applied to the clients after the {@link Config} has been processed.
+   */
+  protected void additionalConfig(org.eclipse.jetty.client.HttpClient httpClient, WebSocketClient webSocketClient) {
+    // no default implementation
   }
 }
