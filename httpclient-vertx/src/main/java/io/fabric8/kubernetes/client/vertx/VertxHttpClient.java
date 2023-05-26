@@ -25,7 +25,6 @@ import io.fabric8.kubernetes.client.http.WebSocketResponse;
 import io.fabric8.kubernetes.client.http.WebSocketUpgradeResponse;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpClient;
-import io.vertx.core.http.HttpHeaders;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.RequestOptions;
 import io.vertx.core.http.UpgradeRejectedException;
@@ -47,15 +46,12 @@ public class VertxHttpClient<F extends io.fabric8.kubernetes.client.http.HttpCli
   private final List<VertxHttpClient<F>> derivedClients;
   private final Vertx vertx;
   private final HttpClient client;
-  private final String proxyAuthorization;
 
-  VertxHttpClient(VertxHttpClientBuilder<F> vertxHttpClientBuilder, WebClientOptions options,
-      String proxyAuthorization) {
+  VertxHttpClient(VertxHttpClientBuilder<F> vertxHttpClientBuilder, WebClientOptions options) {
     super(vertxHttpClientBuilder);
     derivedClients = Collections.synchronizedList(new ArrayList<>());
     this.vertx = vertxHttpClientBuilder.vertx;
     this.client = vertx.createHttpClient(options);
-    this.proxyAuthorization = proxyAuthorization;
   }
 
   @Override
@@ -109,11 +105,6 @@ public class VertxHttpClient<F extends io.fabric8.kubernetes.client.http.HttpCli
 
     if (request.getTimeout() != null) {
       options.setTimeout(request.getTimeout().toMillis());
-    }
-
-    // Proxy authorization is handled manually since the proxyAuthorization value is the actual header
-    if (proxyAuthorization != null) {
-      options.putHeader(HttpHeaders.PROXY_AUTHORIZATION, proxyAuthorization);
     }
 
     Optional.ofNullable(request.getContentType())

@@ -80,8 +80,6 @@ public class OkHttpClientFactory implements HttpClient.Factory {
         builderWrapper.preferHttp11();
       }
 
-      additionalConfig(httpClientBuilder);
-
       return builderWrapper;
     } catch (Exception e) {
       throw KubernetesClientException.launderThrowable(e);
