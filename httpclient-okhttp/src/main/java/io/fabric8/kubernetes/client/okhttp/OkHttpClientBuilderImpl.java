@@ -16,6 +16,8 @@
 
 package io.fabric8.kubernetes.client.okhttp;
 
+import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.http.HttpClient.ProxyType;
 import io.fabric8.kubernetes.client.http.StandardHttpClientBuilder;
 import io.fabric8.kubernetes.client.http.StandardHttpHeaders;
 import okhttp3.Authenticator;
@@ -68,10 +70,10 @@ class OkHttpClientBuilderImpl
     if (followRedirects) {
       builder.followRedirects(true).followSslRedirects(true);
     }
-    if (proxyAddress == null) {
+    if (proxyType == ProxyType.DIRECT) {
       builder.proxy(Proxy.NO_PROXY);
-    } else {
-      builder.proxy(new Proxy(Proxy.Type.HTTP, proxyAddress));
+    } else if (proxyAddress != null) {
+      builder.proxy(new Proxy(convertProxyType(), proxyAddress));
       if (proxyAuthorization != null) {
         builder.proxyAuthenticator(
             (route, response) -> response.request().newBuilder()
@@ -90,6 +92,20 @@ class OkHttpClientBuilderImpl
       builder.protocols(Collections.singletonList(Protocol.HTTP_1_1));
     }
     return completeBuild(builder, false);
+  }
+
+  private Proxy.Type convertProxyType() {
+    switch (proxyType) {
+      case DIRECT:
+        return Proxy.Type.DIRECT;
+      case HTTP:
+        return Proxy.Type.HTTP;
+      case SOCKS4:
+      case SOCKS5:
+        return Proxy.Type.SOCKS;
+      default:
+        throw new KubernetesClientException("Unsupported proxy type");
+    }
   }
 
   private OkHttpClientImpl completeBuild(okhttp3.OkHttpClient.Builder builder, boolean derived) {

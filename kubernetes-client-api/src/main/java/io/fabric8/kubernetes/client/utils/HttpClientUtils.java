@@ -27,6 +27,8 @@ import org.slf4j.LoggerFactory;
 
 import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
@@ -35,7 +37,6 @@ import java.util.Base64;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.ServiceLoader;
@@ -79,18 +80,13 @@ public class HttpClientUtils {
   private HttpClientUtils() {
   }
 
-  public static URL getProxyUrl(Config config) throws MalformedURLException {
-    URL master = new URL(config.getMasterUrl());
-    String host = master.getHost();
-    if (isHostMatchedByNoProxy(host, config.getNoProxy())) {
-      return null;
-    }
+  static URI getProxyUri(URL master, Config config) throws URISyntaxException {
     String proxy = config.getHttpsProxy();
     if (master.getProtocol().equals("http")) {
       proxy = config.getHttpProxy();
     }
     if (proxy != null) {
-      URL proxyUrl = new URL(proxy);
+      URI proxyUrl = new URI(proxy);
       if (proxyUrl.getPort() < 0) {
         throw new IllegalArgumentException("Failure in creating proxy URL. Proxy port is required!");
       }
@@ -186,42 +182,68 @@ public class HttpClientUtils {
     }
 
     try {
-
-      // Only check proxy if it's a full URL with protocol
-      if (config.getMasterUrl().toLowerCase(Locale.ROOT).startsWith(Config.HTTP_PROTOCOL_PREFIX)
-          || config.getMasterUrl().startsWith(Config.HTTPS_PROTOCOL_PREFIX)) {
-        try {
-          URL proxyUrl = HttpClientUtils.getProxyUrl(config);
-          if (proxyUrl != null) {
-            builder.proxyAddress(new InetSocketAddress(proxyUrl.getHost(), proxyUrl.getPort()));
-
-            if (config.getProxyUsername() != null) {
-              builder.proxyAuthorization(basicCredentials(config.getProxyUsername(), config.getProxyPassword()));
-            }
-          } else {
-            builder.proxyAddress(null);
-          }
-        } catch (MalformedURLException e) {
-          throw new KubernetesClientException("Invalid proxy server configuration", e);
-        }
-      }
+      configureProxy(config, builder);
 
       TrustManager[] trustManagers = SSLUtils.trustManagers(config);
       KeyManager[] keyManagers = SSLUtils.keyManagers(config);
-
       builder.sslContext(keyManagers, trustManagers);
-
-      if (config.getTlsVersions() != null && config.getTlsVersions().length > 0) {
-        builder.tlsVersions(config.getTlsVersions());
-      }
-
     } catch (Exception e) {
       throw KubernetesClientException.launderThrowable(e);
     }
+
+    if (config.getTlsVersions() != null && config.getTlsVersions().length > 0) {
+      builder.tlsVersions(config.getTlsVersions());
+    }
+
     HttpClientUtils.createApplicableInterceptors(config, factory).forEach(builder::addOrReplaceInterceptor);
   }
 
-  private static boolean isHostMatchedByNoProxy(String host, String[] noProxies) throws MalformedURLException {
+  static void configureProxy(Config config, HttpClient.Builder builder)
+      throws URISyntaxException, MalformedURLException {
+    URL master;
+    try {
+      master = new URL(config.getMasterUrl());
+    } catch (MalformedURLException e) {
+      // Only check proxy if it's a full URL with protocol
+      return;
+    }
+    URI proxyUri = HttpClientUtils.getProxyUri(master, config);
+    if (proxyUri == null) {
+      // not configured for a proxy
+      return;
+    }
+    String host = master.getHost();
+    if (isHostMatchedByNoProxy(host, config.getNoProxy())) {
+      builder.proxyType(HttpClient.ProxyType.DIRECT);
+    } else {
+      builder.proxyAddress(new InetSocketAddress(proxyUri.getHost(), proxyUri.getPort()));
+
+      if (config.getProxyUsername() != null) {
+        builder.proxyAuthorization(basicCredentials(config.getProxyUsername(), config.getProxyPassword()));
+      }
+
+      builder.proxyType(toProxyType(proxyUri.getScheme()));
+    }
+  }
+
+  static HttpClient.ProxyType toProxyType(String scheme) throws MalformedURLException {
+    if (scheme == null) {
+      throw new MalformedURLException("No protocol specified on proxy URL");
+    }
+    scheme = scheme.toLowerCase();
+    if (scheme.startsWith("http")) {
+      return HttpClient.ProxyType.HTTP;
+    }
+    if (scheme.equals("socks4")) {
+      return HttpClient.ProxyType.SOCKS4;
+    }
+    if (scheme.equals("socks5")) {
+      return HttpClient.ProxyType.SOCKS5;
+    }
+    throw new MalformedURLException("Unsupported protocol specified on proxy URL");
+  }
+
+  static boolean isHostMatchedByNoProxy(String host, String[] noProxies) throws MalformedURLException {
     for (String noProxy : noProxies == null ? new String[0] : noProxies) {
       if (INVALID_HOST_PATTERN.matcher(noProxy).find()) {
         throw new MalformedURLException("NO_PROXY URL contains invalid entry: '" + noProxy + "'");

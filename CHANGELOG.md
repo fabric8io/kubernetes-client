@@ -11,6 +11,7 @@
 * Fix #5164: [java-generator] handle more special characters in field names
 
 #### Improvements
+* Fix #1335: HttpClient Factory additionalConfig consistently applied for all client types
 
 #### Dependency Upgrade
 * Fix #4989: Upgrade Tekton Model to v0.47.0
@@ -19,6 +20,7 @@
 #### New Features
 * Fix #4184: Add utility methods for creating ConfigMap from files/directories in KubernetesResourceUtil
 * Fix #4829: Gradle Plugin for Java Generation from CRD
+* Fix #5086: Allow for supporting socks proxies via proxy urls with the socks4 or socks5 protocol.  Note that the JDK client does not support socks, and the Jetty client does not support socks5
 
 #### _**Note**_: Breaking changes
 * Fix #4911: Config/RequestConfig.scaleTimeout has been deprecated along with Scalable.scale(count, wait) and DeployableScalableResource.deployLatest(wait). withTimeout may be called before the operation to control the timeout.
@@ -29,6 +31,7 @@
 * Fix #4662: deprecated Helper.getAnnotationValue, use HasMetadata methods instead.
 * Fix #5125: support for TLSv1.3 is now enabled by default
 * Fix #5125: usage of TlsVersion.TLS_1_1, TLS_1_0, and SSL_3_0 have been deprecated
+* Fix #1335: The JDK and OkHttp clients will default to using the VM's standard configuration for proxies if an applicable proxy configuration is not found in the Kubernetes client Config
 
 ### 6.6.2 (2023-05-15)
 

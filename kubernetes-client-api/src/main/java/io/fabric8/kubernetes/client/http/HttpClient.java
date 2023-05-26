@@ -30,6 +30,13 @@ import javax.net.ssl.TrustManager;
 
 public interface HttpClient extends AutoCloseable {
 
+  enum ProxyType {
+    HTTP,
+    SOCKS4,
+    SOCKS5,
+    DIRECT
+  }
+
   interface Factory {
 
     /**
@@ -114,6 +121,8 @@ public interface HttpClient extends AutoCloseable {
     Builder tlsVersions(TlsVersion... tlsVersions);
 
     Builder preferHttp11();
+
+    Builder proxyType(ProxyType type);
   }
 
   @Override

@@ -15,12 +15,15 @@
  */
 package io.fabric8.kubernetes.client.jetty;
 
+import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.http.HttpClient.ProxyType;
 import io.fabric8.kubernetes.client.http.StandardHttpClientBuilder;
 import io.fabric8.kubernetes.client.http.TlsVersion;
 import org.eclipse.jetty.client.HttpClient;
 import org.eclipse.jetty.client.HttpClientTransport;
 import org.eclipse.jetty.client.HttpProxy;
 import org.eclipse.jetty.client.Origin;
+import org.eclipse.jetty.client.Socks4Proxy;
 import org.eclipse.jetty.client.dynamic.HttpClientTransportDynamic;
 import org.eclipse.jetty.client.http.HttpClientConnectionFactory;
 import org.eclipse.jetty.client.http.HttpClientTransportOverHTTP;
@@ -77,9 +80,21 @@ public class JettyHttpClientBuilder
     // the work that can be done
     sharedHttpClient.setMaxConnectionsPerDestination(MAX_CONNECTIONS);
     sharedWebSocketClient.getHttpClient().setMaxConnectionsPerDestination(MAX_CONNECTIONS);
-    if (proxyAddress != null) {
-      sharedHttpClient.getProxyConfiguration()
-          .addProxy(new HttpProxy(new Origin.Address(proxyAddress.getHostString(), proxyAddress.getPort()), false));
+    if (proxyType != ProxyType.DIRECT && proxyAddress != null) {
+      Origin.Address address = new Origin.Address(proxyAddress.getHostString(), proxyAddress.getPort());
+      // Jetty allows for the differentiation of proxy being secure separately from the destination,
+      // but we'll always set that flag to false
+      switch (proxyType) {
+        case HTTP:
+          sharedHttpClient.getProxyConfiguration().addProxy(new HttpProxy(address, false));
+          break;
+        case SOCKS4:
+          sharedHttpClient.getProxyConfiguration().addProxy(new Socks4Proxy(address, false));
+          break;
+        default:
+          throw new KubernetesClientException("Unsupported proxy type");
+      }
+      sharedHttpClient.getProxyConfiguration().addProxy(new HttpProxy(address, false));
       addProxyAuthInterceptor();
     }
     clientFactory.additionalConfig(sharedHttpClient, sharedWebSocketClient);
