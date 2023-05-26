@@ -19,6 +19,7 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.http.HttpClient;
+import io.fabric8.kubernetes.client.http.HttpClient.Builder;
 import io.fabric8.kubernetes.client.http.Interceptor;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,7 +34,10 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
+import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -45,7 +49,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 import static org.mockito.ArgumentMatchers.any;
@@ -55,6 +61,32 @@ import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.when;
 
 class HttpClientUtilsTest {
+
+  @Test
+  void toProxyTypeTestUnknown() throws MalformedURLException {
+    assertThrows(MalformedURLException.class, () -> HttpClientUtils.toProxyType("unknown"));
+  }
+
+  @Test
+  void toProxyTypeTestNull() throws MalformedURLException {
+    assertThrows(MalformedURLException.class, () -> HttpClientUtils.toProxyType(null));
+  }
+
+  @Test
+  void toProxyTypeTestHttps() throws MalformedURLException {
+    assertEquals(HttpClient.ProxyType.HTTP, HttpClientUtils.toProxyType("https"));
+  }
+
+  @Test
+  void testConfigureSocksProxy() throws Exception {
+    Config config = new ConfigBuilder().withMasterUrl("http://localhost").withHttpProxy("socks5://192.168.0.1:8080").build();
+    Builder builder = Mockito.mock(HttpClient.Builder.class, Mockito.RETURNS_SELF);
+
+    HttpClientUtils.configureProxy(config, builder);
+
+    Mockito.verify(builder).proxyType(HttpClient.ProxyType.SOCKS5);
+    Mockito.verify(builder).proxyAddress(new InetSocketAddress("192.168.0.1", 8080));
+  }
 
   @Test
   void testCreateApplicableInterceptors() {
@@ -106,22 +138,17 @@ class HttpClientUtilsTest {
       configBuilder = new ConfigBuilder();
     }
 
-    @DisplayName("With httpProxy and noProxy matching master url, should return null")
-    @ParameterizedTest(name = "{index}: Master URL ''{0}'' matched by No Proxy ''{1}'' ")
-    @MethodSource("masterUrlMatchesNoProxyInput")
-    void masterUrlMatchesNoProxy(String masterUrl, String[] noProxy) throws MalformedURLException {
-      // Given
-      Config config = configBuilder.withHttpProxy("http://proxy.url:8080")
-          .withMasterUrl(masterUrl).withNoProxy(noProxy).build();
-      // When
-      URL url = HttpClientUtils.getProxyUrl(config);
-      // Then
-      assertThat(url).isNull();
+    @DisplayName("noProxy matching master hostname")
+    @ParameterizedTest(name = "{index}: Master hostname ''{0}'' matched by No Proxy ''{1}'' ")
+    @MethodSource("masterHostnameDoesMatchNoProxyInput")
+    void masterHostnameDoesMatchNoProxy(String masterHostname, String[] noProxy)
+        throws MalformedURLException, URISyntaxException {
+      assertTrue(HttpClientUtils.isHostMatchedByNoProxy(masterHostname, noProxy));
     }
 
-    Stream<Arguments> masterUrlMatchesNoProxyInput() {
+    Stream<Arguments> masterHostnameDoesMatchNoProxyInput() {
       return Stream.of(
-          arguments("http://192.168.1.100:6443", new String[] { "192.168.1.0/24" }),
+          arguments("192.168.1.100", new String[] { "192.168.1.0/24" }),
           arguments("master.example.com", new String[] { "master.example.com" }),
           arguments("master.example.com", new String[] { ".example.com" }),
           arguments("master.example.com",
@@ -135,22 +162,17 @@ class HttpClientUtilsTest {
           arguments("192.168.1.110", new String[] { "http://192.0.0.0/8" }));
     }
 
-    @DisplayName("With httpProxy and noProxy not matching master url, should return proxy url")
-    @ParameterizedTest(name = "{index}: Master URL ''{0}'' not matched by No Proxy ''{1}'' ")
-    @MethodSource("masterUrlDoesNotMatchNoProxyInput")
-    void masterUrlDoesNotMatchNoProxy(String masterUrl, String[] noProxy) throws MalformedURLException {
-      // Given
-      Config config = configBuilder.withHttpProxy("http://proxy.url:8080")
-          .withMasterUrl(masterUrl).withNoProxy(noProxy).build();
-      // When
-      URL url = HttpClientUtils.getProxyUrl(config);
-      // Then
-      assertThat(url).isEqualToWithSortedQueryParameters(new URL("http://proxy.url:8080"));
+    @DisplayName("noProxy not matching master hostname")
+    @ParameterizedTest(name = "{index}: Master hostname ''{0}'' not matched by No Proxy ''{1}'' ")
+    @MethodSource("masterHostnameDoesNotMatchNoProxyInput")
+    void masterHostnameDoesNotMatchNoProxy(String masterHostname, String[] noProxy)
+        throws MalformedURLException, URISyntaxException {
+      assertFalse(HttpClientUtils.isHostMatchedByNoProxy(masterHostname, noProxy));
     }
 
-    Stream<Arguments> masterUrlDoesNotMatchNoProxyInput() {
+    Stream<Arguments> masterHostnameDoesNotMatchNoProxyInput() {
       return Stream.of(
-          arguments("http://192.168.2.100:6443", new String[] { "192.168.1.0/24" }),
+          arguments("192.168.2.100", new String[] { "192.168.1.0/24" }),
           arguments("master.example.com", null),
           arguments("master.example.com", new String[0]),
           arguments("master.example.com", new String[] { "master1.example.com" }),
@@ -171,11 +193,8 @@ class HttpClientUtilsTest {
         "*.my.domain.com", "!!!.com", "()-?¿?", "http://proxy url"
     })
     void invalidNoProxyUrlThrowsException(String noProxy) {
-      // Given
-      Config config = configBuilder.withHttpProxy("http://proxy.url:8080")
-          .withMasterUrl("master.url").withNoProxy(noProxy).build();
       // When + Then
-      assertThatThrownBy(() -> HttpClientUtils.getProxyUrl(config))
+      assertThatThrownBy(() -> HttpClientUtils.isHostMatchedByNoProxy("http://localhost", new String[] { noProxy }))
           .isInstanceOf(MalformedURLException.class)
           .hasMessage("NO_PROXY URL contains invalid entry: '" + noProxy + "'");
     }
@@ -186,16 +205,16 @@ class HttpClientUtilsTest {
       Config config = configBuilder.withMasterUrl("http://localhost").withHttpProxy("http://192.168.0.1").build();
       // When + Then
       assertThatIllegalArgumentException()
-          .isThrownBy(() -> HttpClientUtils.getProxyUrl(config))
+          .isThrownBy(() -> HttpClientUtils.getProxyUri(new URL("http://localhost"), config))
           .withMessage("Failure in creating proxy URL. Proxy port is required!");
     }
 
     @Test
-    void withNoHttpProxyProvidedReturnsNull() throws MalformedURLException {
+    void withNoHttpProxyProvidedReturnsNull() throws MalformedURLException, URISyntaxException {
       // Given
-      Config config = configBuilder.withMasterUrl("master.url").withNoProxy("other.url").build();
+      Config config = configBuilder.withNoProxy("other.url").build();
       // When
-      URL url = HttpClientUtils.getProxyUrl(config);
+      URI url = HttpClientUtils.getProxyUri(new URL("http://localhost"), config);
       // Then
       assertThat(url).isNull();
     }

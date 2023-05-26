@@ -16,6 +16,7 @@
 
 package io.fabric8.kubernetes.client.jdkhttp;
 
+import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.StandardHttpClientBuilder;
 import io.fabric8.kubernetes.client.http.TlsVersion;
@@ -59,11 +60,15 @@ class JdkHttpClientBuilderImpl
     if (followRedirects) {
       builder.followRedirects(Redirect.ALWAYS);
     }
-    if (proxyAddress != null) {
+    if (proxyType == HttpClient.ProxyType.DIRECT) {
+      builder.proxy(java.net.http.HttpClient.Builder.NO_PROXY);
+    } else if (proxyAddress != null) {
+      if (proxyType != HttpClient.ProxyType.HTTP) {
+        // https://bugs.openjdk.org/browse/JDK-8214516
+        throw new KubernetesClientException("JDK HttpClient only support HTTP proxies");
+      }
       builder.proxy(ProxySelector.of(proxyAddress));
       addProxyAuthInterceptor();
-    } else {
-      builder.proxy(java.net.http.HttpClient.Builder.NO_PROXY);
     }
     if (preferHttp11) {
       builder.version(Version.HTTP_1_1);

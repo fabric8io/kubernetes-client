@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.client.vertx;
 
+import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.StandardHttpClientBuilder;
 import io.fabric8.kubernetes.client.http.TlsVersion;
@@ -67,11 +68,11 @@ public class VertxHttpClientBuilder<F extends HttpClient.Factory>
       options.setFollowRedirects(followRedirects);
     }
 
-    if (this.proxyAddress != null) {
+    if (this.proxyType != HttpClient.ProxyType.DIRECT && this.proxyAddress != null) {
       ProxyOptions proxyOptions = new ProxyOptions()
           .setHost(this.proxyAddress.getHostName())
           .setPort(this.proxyAddress.getPort())
-          .setType(ProxyType.HTTP);
+          .setType(convertProxyType());
       options.setProxyOptions(proxyOptions);
       addProxyAuthInterceptor();
     }
@@ -122,6 +123,19 @@ public class VertxHttpClientBuilder<F extends HttpClient.Factory>
   @Override
   protected VertxHttpClientBuilder<F> newInstance(F clientFactory) {
     return new VertxHttpClientBuilder<>(clientFactory, vertx);
+  }
+
+  private ProxyType convertProxyType() {
+    switch (proxyType) {
+      case HTTP:
+        return ProxyType.HTTP;
+      case SOCKS4:
+        return ProxyType.SOCKS4;
+      case SOCKS5:
+        return ProxyType.SOCKS5;
+      default:
+        throw new KubernetesClientException("Unsupported proxy type");
+    }
   }
 
 }

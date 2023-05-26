@@ -17,6 +17,7 @@
 package io.fabric8.kubernetes.client.http;
 
 import io.fabric8.kubernetes.client.http.HttpClient.DerivedClientBuilder;
+import io.fabric8.kubernetes.client.http.HttpClient.ProxyType;
 import io.fabric8.kubernetes.client.internal.SSLUtils;
 import lombok.Getter;
 import org.slf4j.LoggerFactory;
@@ -49,6 +50,7 @@ public abstract class StandardHttpClientBuilder<C extends HttpClient, F extends 
   protected TrustManager[] trustManagers;
   protected KeyManager[] keyManagers;
   protected LinkedHashMap<Class<?>, Object> tags = new LinkedHashMap<>();
+  protected ProxyType proxyType = ProxyType.HTTP; // for backwards compatibility if the builder is manually configured
 
   protected StandardHttpClientBuilder(F clientFactory) {
     this.clientFactory = clientFactory;
@@ -107,6 +109,12 @@ public abstract class StandardHttpClientBuilder<C extends HttpClient, F extends 
   }
 
   @Override
+  public T proxyType(ProxyType type) {
+    this.proxyType = type;
+    return (T) this;
+  }
+
+  @Override
   public T tlsVersions(TlsVersion... tlsVersions) {
     this.tlsVersions = tlsVersions;
     return (T) this;
@@ -148,6 +156,7 @@ public abstract class StandardHttpClientBuilder<C extends HttpClient, F extends 
     copy.authenticatorNone = this.authenticatorNone;
     copy.client = client;
     copy.tags = new LinkedHashMap<>(this.tags);
+    copy.proxyType = this.proxyType;
     return copy;
   }
 
