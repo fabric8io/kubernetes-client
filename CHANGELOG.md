@@ -9,7 +9,6 @@
 * Fix #5145: [java-generator] handle `additionalProperties: true` emitting a field of type `AnyType`
 * Fix #5152: preventing JDK WebSocket errors from terminating watches and improving watch termination and its logging
 * Fix #5164: [java-generator] handle more special characters in field names
-* Fix #5125: TLS 1.3 only should be supported
 
 #### Improvements
 
