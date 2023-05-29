@@ -30,6 +30,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InOrder;
 import org.mockito.Mockito;
 import org.slf4j.Logger;
@@ -42,6 +43,7 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.TimeUnit;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.argThat;
@@ -180,6 +182,24 @@ public abstract class AbstractHttpLoggingInterceptorTest {
   }
 
   @Test
+  @DisplayName("HTTP large response body is logged")
+  public void httpLargeResponseBodyLogged() throws Exception {
+    server.expect().withPath("/response-body-large")
+        .andReturn(200, Collections.nCopies(100000, "This is the large response body"))
+        .always();
+    httpClient.sendAsync(httpClient.newHttpRequestBuilder()
+        .uri(server.url("/response-body-large"))
+        .build(), String.class).get(10, TimeUnit.SECONDS);
+    verify(logger, timeout(1000L)).trace("-HTTP END-");
+    inOrder.verify(logger).trace("-HTTP START-");
+    inOrder.verify(logger).trace(eq("< {} {}"), anyInt(), anyString());
+    ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
+    inOrder.verify(logger).trace(captor.capture());
+    assertTrue(captor.getValue().endsWith("... body bytes 3400001"));
+    inOrder.verify(logger).trace("-HTTP END-");
+  }
+
+  @Test
   @DisplayName("HTTP binary response body is skipped")
   public void httpResponseBodySkipped() throws Exception {
     final MockResponse binaryResponse = new MockResponse()
@@ -203,6 +223,7 @@ public abstract class AbstractHttpLoggingInterceptorTest {
     verify(logger, timeout(1000L)).trace("-HTTP END-");
     inOrder.verify(logger).trace("-HTTP START-");
     inOrder.verify(logger).trace(eq("< {} {}"), anyInt(), anyString());
+    inOrder.verify(logger).trace("... body bytes 5");
     inOrder.verify(logger, times(1)).trace(anyString()); // only -HTTP END- was logged
     inOrder.verifyNoMoreInteractions();
   }

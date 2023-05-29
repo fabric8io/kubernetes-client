@@ -43,6 +43,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -957,8 +958,8 @@ public class Config {
 
     // Detect algorithm
     try {
-      InputStream keyInputStream = CertUtils.getInputStreamFromDataOrFile(clientKeyData, clientKeyFile);
-      if (keyInputStream != null) {
+      if (clientKeyData != null || clientKeyFile != null) {
+        ByteArrayInputStream keyInputStream = CertUtils.getInputStreamFromDataOrFile(clientKeyData, clientKeyFile);
         return getKeyAlgorithm(keyInputStream);
       }
     } catch (IOException exception) {
