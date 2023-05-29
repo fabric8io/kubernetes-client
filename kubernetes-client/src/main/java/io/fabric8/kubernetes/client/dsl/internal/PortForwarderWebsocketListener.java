@@ -159,7 +159,7 @@ public class PortForwarderWebsocketListener implements WebSocket.Listener {
   }
 
   @Override
-  public void onError(WebSocket webSocket, Throwable t, boolean connectionError) {
+  public void onError(WebSocket webSocket, Throwable t) {
     logger.debug("{}: Throwable received from websocket", LOG_PREFIX, t);
     if (alive.get()) {
       serverThrowables.add(t);

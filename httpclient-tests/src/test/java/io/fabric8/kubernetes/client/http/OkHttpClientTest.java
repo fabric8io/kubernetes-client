@@ -36,6 +36,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -74,6 +75,30 @@ class OkHttpClientTest {
   void testMultipleClosure() {
     client.getHttpClient().close();
     client.getHttpClient().close(); // additional close should be no-op
+  }
+
+  @Test
+  void testWebsocketClientClose() throws InterruptedException, ExecutionException, TimeoutException {
+    server.expect().withPath("/wsclose")
+        .andUpgradeToWebSocket()
+        .open()
+        .expect("never sent").andEmit("response").always().done().always();
+
+    CompletableFuture<String> closeReason = new CompletableFuture<>();
+
+    CompletableFuture<WebSocket> startedFuture = client.getHttpClient().newWebSocketBuilder()
+        .uri(URI.create(client.getConfiguration().getMasterUrl() + "wsclose"))
+        .buildAsync(new Listener() {
+
+          @Override
+          public void onClose(WebSocket webSocket, int code, String reason) {
+            closeReason.complete(reason);
+          }
+        });
+
+    startedFuture.thenAccept(w -> w.sendClose(1000, "I'm done"));
+
+    assertEquals("I'm done", closeReason.get(10, TimeUnit.SECONDS));
   }
 
   @Test

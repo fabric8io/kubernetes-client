@@ -22,34 +22,68 @@ import io.fabric8.kubernetes.api.model.ListOptions;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.http.AsyncBody;
 import io.fabric8.kubernetes.client.http.HttpClient;
-import io.fabric8.kubernetes.client.http.HttpClient.DerivedClientBuilder;
 import io.fabric8.kubernetes.client.http.HttpResponse;
+import io.fabric8.kubernetes.client.http.TestHttpResponse;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class WatchHttpManagerTest {
 
   @Test
   void testReconnectOnException() throws MalformedURLException, InterruptedException {
+    CompletableFuture<HttpResponse<AsyncBody>> future = new CompletableFuture<>();
+    CountDownLatch reconnect = new CountDownLatch(1);
+
+    setupHttpWatch(future, reconnect);
+
+    future.completeExceptionally(new IOException());
+    assertTrue(reconnect.await(1, TimeUnit.SECONDS));
+  }
+
+  @Test
+  void testReconnectOnFailedResponse() throws MalformedURLException, InterruptedException {
+    CompletableFuture<HttpResponse<AsyncBody>> future = new CompletableFuture<>();
+    CountDownLatch reconnect = new CountDownLatch(1);
+
+    setupHttpWatch(future, reconnect);
+
+    AsyncBody mockBody = Mockito.mock(AsyncBody.class);
+    future.complete(new TestHttpResponse<AsyncBody>().withCode(429).withBody(mockBody));
+    Mockito.verify(mockBody).cancel();
+    assertTrue(reconnect.await(1, TimeUnit.SECONDS));
+  }
+
+  @Test
+  void testNoReconnectOnHttpGone() throws MalformedURLException, InterruptedException {
+    CompletableFuture<HttpResponse<AsyncBody>> future = new CompletableFuture<>();
+    CountDownLatch reconnect = new CountDownLatch(1);
+
+    setupHttpWatch(future, reconnect);
+
+    AsyncBody mockBody = Mockito.mock(AsyncBody.class);
+    future.complete(new TestHttpResponse<AsyncBody>().withCode(HttpURLConnection.HTTP_GONE).withBody(mockBody));
+    Mockito.verify(mockBody).cancel();
+    assertFalse(reconnect.await(1, TimeUnit.SECONDS));
+  }
+
+  private void setupHttpWatch(CompletableFuture<HttpResponse<AsyncBody>> future, CountDownLatch reconnect)
+      throws MalformedURLException {
     HttpClient client = Mockito.mock(HttpClient.class, Mockito.RETURNS_DEEP_STUBS);
-    DerivedClientBuilder builder = Mockito.mock(HttpClient.DerivedClientBuilder.class, Mockito.RETURNS_SELF);
-    Mockito.when(client.newBuilder()).thenReturn(builder);
-    Mockito.when(builder.build()).thenReturn(client);
     BaseOperation baseOperation = AbstractWatchManagerTest.mockOperation();
     Mockito.when(baseOperation.getNamespacedUrl()).thenReturn(new URL("http://localhost"));
-    CompletableFuture<HttpResponse<AsyncBody>> future = new CompletableFuture<>();
     Mockito.when(client.consumeBytes(Mockito.any(), Mockito.any())).thenReturn(future);
 
-    CountDownLatch reconnect = new CountDownLatch(1);
     WatchHTTPManager<HasMetadata, KubernetesResourceList<HasMetadata>> watch = new WatchHTTPManager(client,
         baseOperation, Mockito.mock(ListOptions.class), Mockito.mock(Watcher.class), 1, 0) {
 
@@ -58,9 +92,6 @@ class WatchHttpManagerTest {
         reconnect.countDown();
       }
     };
-
-    future.completeExceptionally(new IOException());
-    assertTrue(reconnect.await(1, TimeUnit.SECONDS));
   }
 
 }

@@ -16,6 +16,8 @@
 
 package io.fabric8.kubernetes.client.http;
 
+import java.io.IOException;
+import java.net.ProtocolException;
 import java.net.URI;
 import java.nio.ByteBuffer;
 import java.util.concurrent.CompletableFuture;
@@ -25,7 +27,7 @@ public interface WebSocket {
 
   /**
    * Callback methods for websocket events. The methods are
-   * guaranteed to be called serially - except for {@link Listener#onError(WebSocket, Throwable, boolean)}
+   * guaranteed to be called serially - except for {@link Listener#onError(WebSocket, Throwable)}
    */
   interface Listener {
 
@@ -59,8 +61,13 @@ public interface WebSocket {
     /**
      * Called when an error has occurred. It's a terminal event, calls to {@link WebSocket#request()}
      * do nothing after this.
+     * <p>
+     * protocol errors should be instances of {@link ProtocolException}
+     * <br>
+     * other connection errors should be instances of {@link IOException}
+     *
      */
-    default void onError(WebSocket webSocket, Throwable error, boolean connectionError) {
+    default void onError(WebSocket webSocket, Throwable error) {
     }
 
   }

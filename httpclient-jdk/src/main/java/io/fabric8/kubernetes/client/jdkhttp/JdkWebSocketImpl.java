@@ -18,6 +18,9 @@ package io.fabric8.kubernetes.client.jdkhttp;
 
 import io.fabric8.kubernetes.client.http.BufferUtil;
 import io.fabric8.kubernetes.client.http.WebSocket;
+import io.fabric8.kubernetes.client.utils.Utils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -29,75 +32,70 @@ import java.util.concurrent.CompletionStage;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
-class JdkWebSocketImpl implements WebSocket {
+class JdkWebSocketImpl implements WebSocket, java.net.http.WebSocket.Listener {
 
-  static final class ListenerAdapter implements java.net.http.WebSocket.Listener {
+  private static final Logger LOG = LoggerFactory.getLogger(JdkWebSocketImpl.class);
 
-    private final Listener listener;
-    private final AtomicLong queueSize;
-    private final StringBuilder stringBuilder = new StringBuilder();
-    private final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-    private final WritableByteChannel byteChannel = Channels.newChannel(byteArrayOutputStream);
+  private volatile java.net.http.WebSocket webSocket;
+  private final AtomicLong queueSize = new AtomicLong();
+  private final Listener listener;
+  private final StringBuilder stringBuilder = new StringBuilder();
+  private final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+  private final WritableByteChannel byteChannel = Channels.newChannel(byteArrayOutputStream);
+  private final CompletableFuture<Void> terminated = new CompletableFuture<>();
 
-    ListenerAdapter(Listener listener, AtomicLong queueSize) {
-      this.listener = listener;
-      this.queueSize = queueSize;
-    }
-
-    @Override
-    public CompletionStage<?> onBinary(java.net.http.WebSocket webSocket, ByteBuffer data, boolean last) {
-      try {
-        byteChannel.write(data);
-      } catch (IOException e) {
-        throw new RuntimeException(e);
-      }
-      if (last) {
-        ByteBuffer value = ByteBuffer.wrap(byteArrayOutputStream.toByteArray());
-        byteArrayOutputStream.reset();
-        listener.onMessage(new JdkWebSocketImpl(queueSize, webSocket), value);
-      } else {
-        webSocket.request(1);
-      }
-      return null;
-    }
-
-    @Override
-    public CompletionStage<?> onText(java.net.http.WebSocket webSocket, CharSequence data, boolean last) {
-      stringBuilder.append(data);
-      if (last) {
-        String value = stringBuilder.toString();
-        stringBuilder.setLength(0);
-        listener.onMessage(new JdkWebSocketImpl(queueSize, webSocket), value);
-      } else {
-        webSocket.request(1);
-      }
-      return null;
-    }
-
-    @Override
-    public CompletionStage<?> onClose(java.net.http.WebSocket webSocket, int statusCode, String reason) {
-      listener.onClose(new JdkWebSocketImpl(queueSize, webSocket), statusCode, reason);
-      return null;
-    }
-
-    @Override
-    public void onError(java.net.http.WebSocket webSocket, Throwable error) {
-      listener.onError(new JdkWebSocketImpl(queueSize, webSocket), error, false);
-    }
-
-    @Override
-    public void onOpen(java.net.http.WebSocket webSocket) {
-      webSocket.request(1);
-      listener.onOpen(new JdkWebSocketImpl(queueSize, webSocket));
-    }
+  public JdkWebSocketImpl(Listener listener) {
+    this.listener = listener;
   }
 
-  private java.net.http.WebSocket webSocket;
-  private AtomicLong queueSize;
+  @Override
+  public CompletionStage<?> onBinary(java.net.http.WebSocket webSocket, ByteBuffer data, boolean last) {
+    try {
+      byteChannel.write(data);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+    if (last) {
+      ByteBuffer value = ByteBuffer.wrap(byteArrayOutputStream.toByteArray());
+      byteArrayOutputStream.reset();
+      listener.onMessage(this, value);
+    } else {
+      webSocket.request(1);
+    }
+    return null;
+  }
 
-  public JdkWebSocketImpl(AtomicLong queueSize, java.net.http.WebSocket webSocket) {
-    this.queueSize = queueSize;
+  @Override
+  public CompletionStage<?> onText(java.net.http.WebSocket webSocket, CharSequence data, boolean last) {
+    stringBuilder.append(data);
+    if (last) {
+      String value = stringBuilder.toString();
+      stringBuilder.setLength(0);
+      listener.onMessage(this, value);
+    } else {
+      webSocket.request(1);
+    }
+    return null;
+  }
+
+  @Override
+  public CompletionStage<?> onClose(java.net.http.WebSocket webSocket, int statusCode, String reason) {
+    terminated.complete(null);
+    listener.onClose(this, statusCode, reason);
+    return null; // should immediately initiate an implicit sendClose
+  }
+
+  @Override
+  public void onError(java.net.http.WebSocket webSocket, Throwable error) {
+    terminated.complete(null);
+    listener.onError(this, error);
+  }
+
+  @Override
+  public void onOpen(java.net.http.WebSocket webSocket) {
     this.webSocket = webSocket;
+    webSocket.request(1);
+    listener.onOpen(this);
   }
 
   @Override
@@ -106,29 +104,46 @@ class JdkWebSocketImpl implements WebSocket {
     final int size = buffer.remaining();
     queueSize.addAndGet(size);
     CompletableFuture<java.net.http.WebSocket> cf = webSocket.sendBinary(buffer, true);
-    cf.whenComplete((b, t) -> queueSize.addAndGet(-size));
-    return asBoolean(cf);
-  }
-
-  /**
-   * If there is an illegalstateexception or other immediate failure, return
-   * false, otherwise it should have been enqueued
-   */
-  private boolean asBoolean(CompletableFuture<java.net.http.WebSocket> cf) {
-    try {
-      cf.getNow(null);
-      return true;
-    } catch (Exception e) {
-      return false;
+    if (cf.isDone()) {
+      queueSize.addAndGet(-size);
+      return !cf.isCompletedExceptionally();
     }
+    cf.whenComplete((b, t) -> {
+      if (t != null) {
+        LOG.warn("Queued write did not succeed", t);
+        abort();
+      }
+      queueSize.addAndGet(-size);
+    });
+    return true;
   }
 
   @Override
-  public boolean sendClose(int code, String reason) {
+  public synchronized boolean sendClose(int code, String reason) {
+    if (webSocket.isOutputClosed()) {
+      return false;
+    }
     CompletableFuture<java.net.http.WebSocket> cf = webSocket.sendClose(code, reason == null ? "Closing" : reason);
-    // matches the behavior of the okhttp implementation and will ensure input closure after 1 minute
-    cf.thenRunAsync(() -> webSocket.abort(), CompletableFuture.delayedExecutor(1, TimeUnit.MINUTES));
-    return asBoolean(cf);
+    cf = cf.whenComplete((w, t) -> {
+      if (t != null) {
+        abort();
+      } else if (w != null) {
+        webSocket.request(1); // there may not be demand, so request more
+        CompletableFuture<Void> future = Utils.schedule(Runnable::run, this::abort, 1, TimeUnit.MINUTES);
+        terminated.whenComplete((v, ignored) -> future.cancel(true));
+      }
+    });
+    return !cf.isCompletedExceptionally();
+  }
+
+  private void abort() {
+    if (!webSocket.isOutputClosed() || !webSocket.isInputClosed()) {
+      LOG.warn("Aborting WebSocket due to a write error or failure with sendClose");
+      webSocket.abort();
+      if (terminated.complete(null)) {
+        listener.onClose(this, 1006, "Aborted the WebSocket");
+      }
+    }
   }
 
   @Override

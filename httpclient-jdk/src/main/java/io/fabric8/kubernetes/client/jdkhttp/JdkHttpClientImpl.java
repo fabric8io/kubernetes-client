@@ -52,7 +52,6 @@ import java.util.concurrent.CompletionStage;
 import java.util.concurrent.Flow;
 import java.util.concurrent.Flow.Subscriber;
 import java.util.concurrent.Flow.Subscription;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 import static io.fabric8.kubernetes.client.http.StandardHttpHeaders.CONTENT_TYPE;
@@ -316,17 +315,15 @@ public class JdkHttpClientImpl extends StandardHttpClient<JdkHttpClientImpl, Jdk
       newBuilder.connectTimeout(timeout);
     }
 
-    AtomicLong queueSize = new AtomicLong();
-
     // use a responseholder to convey both the exception and the websocket
     CompletableFuture<WebSocketResponse> response = new CompletableFuture<>();
 
     URI uri = WebSocket.toWebSocketUri(request.uri());
-    newBuilder.buildAsync(uri, new JdkWebSocketImpl.ListenerAdapter(listener, queueSize)).whenComplete((jdkWebSocket, t) -> {
+    final JdkWebSocketImpl fabric8WebSocket = new JdkWebSocketImpl(listener);
+    newBuilder.buildAsync(uri, fabric8WebSocket).whenComplete((jdkWebSocket, t) -> {
       if (t instanceof CompletionException && t.getCause() != null) {
         t = t.getCause();
       }
-      final JdkWebSocketImpl fabric8WebSocket = new JdkWebSocketImpl(queueSize, jdkWebSocket);
       if (t instanceof java.net.http.WebSocketHandshakeException) {
         final java.net.http.HttpResponse<?> jdkResponse = ((java.net.http.WebSocketHandshakeException) t).getResponse();
         final WebSocketUpgradeResponse upgradeResponse = new WebSocketUpgradeResponse(

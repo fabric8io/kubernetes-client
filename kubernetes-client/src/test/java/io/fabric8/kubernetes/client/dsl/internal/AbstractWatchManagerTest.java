@@ -17,10 +17,10 @@ package io.fabric8.kubernetes.client.dsl.internal;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.ListOptions;
+import io.fabric8.kubernetes.api.model.StatusBuilder;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.WatcherException;
 import io.fabric8.kubernetes.client.dsl.internal.AbstractWatchManager.WatchRequestState;
-import io.fabric8.kubernetes.client.http.WebSocket;
 import io.fabric8.kubernetes.client.utils.CommonThreadPool;
 import io.fabric8.kubernetes.client.utils.Utils;
 import org.junit.jupiter.api.DisplayName;
@@ -29,6 +29,7 @@ import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
 import java.net.MalformedURLException;
+import java.net.ProtocolException;
 import java.net.URL;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -97,17 +98,6 @@ class AbstractWatchManagerTest {
   }
 
   @Test
-  @DisplayName("closeWebSocket, closes web socket with 1000 code (Normal Closure)")
-  void closeWebSocket() {
-    // Given
-    final WebSocket webSocket = mock(WebSocket.class);
-    // When
-    WatchConnectionManager.closeWebSocket(webSocket);
-    // Then
-    verify(webSocket, times(1)).sendClose(1000, null);
-  }
-
-  @Test
   @DisplayName("nextReconnectInterval, returns exponential interval values up to the provided limit")
   void nextReconnectInterval() throws MalformedURLException {
     // Given
@@ -120,6 +110,12 @@ class AbstractWatchManagerTest {
     assertThat(awm.nextReconnectInterval()).isEqualTo(80);
     assertThat(awm.nextReconnectInterval()).isEqualTo(160);
     assertThat(awm.nextReconnectInterval()).isEqualTo(320);
+    assertThat(awm.nextReconnectInterval()).isEqualTo(320);
+
+    // should pick up the interval from the status
+    awm.onStatus(new StatusBuilder().withNewDetails().withRetryAfterSeconds(7).endDetails().build(), new WatchRequestState());
+    assertThat(awm.nextReconnectInterval()).isEqualTo(7000L);
+    // should go back to the base interval after that
     assertThat(awm.nextReconnectInterval()).isEqualTo(320);
   }
 
@@ -210,9 +206,56 @@ class AbstractWatchManagerTest {
     final WatcherAdapter<HasMetadata> watcher = new WatcherAdapter<>();
     final WatchManager<HasMetadata> awm = withDefaultWatchManager(watcher);
     // When
+    awm.startWatch();
     awm.close();
     // Then
     assertThat(awm.closeCount.get()).isEqualTo(1);
+  }
+
+  @Test
+  void testWebSocketCloseReconnectHandling() throws Exception {
+    // Given
+    final WatcherAdapter<HasMetadata> watcher = new WatcherAdapter<>();
+    final WatchManager<HasMetadata> awm = withDefaultWatchManager(watcher);
+    // When
+    WatchRequestState state = new WatchRequestState();
+    awm.latestRequestState = state;
+    awm.watchEnded(null, state);
+    // Then
+    assertThat(state.reconnected).isTrue();
+  }
+
+  @Test
+  void testWebSocketExceptionHandling() throws Exception {
+    // Given
+    final WatcherAdapter<HasMetadata> watcher = new WatcherAdapter<>();
+    final WatchManager<HasMetadata> awm = withDefaultWatchManager(watcher);
+    // When
+    awm.latestRequestState = new WatchRequestState();
+    // unknown exception
+    awm.watchEnded(new Throwable(), awm.latestRequestState);
+    // Then
+    assertThat(awm.latestRequestState.reconnected).isTrue();
+    assertThat(awm.isForceClosed()).isFalse();
+
+    // should only terminate on a protocol exception
+    awm.watchEnded(new ProtocolException(), awm.latestRequestState);
+    // Then
+    assertThat(awm.isForceClosed()).isTrue();
+  }
+
+  @Test
+  void testWebSocketExceptionHandlingStaleState() throws Exception {
+    // Given
+    final WatcherAdapter<HasMetadata> watcher = new WatcherAdapter<>();
+    final WatchManager<HasMetadata> awm = withDefaultWatchManager(watcher);
+    // When
+    WatchRequestState state = new WatchRequestState();
+
+    // won't terminate on a protocol exception that is stale
+    awm.watchEnded(new ProtocolException(), state);
+    // Then
+    assertThat(awm.isForceClosed()).isFalse();
   }
 
   private static <T extends HasMetadata> WatchManager<T> withDefaultWatchManager(Watcher<T> watcher)
@@ -266,6 +309,7 @@ class AbstractWatchManagerTest {
 
     @Override
     protected void startWatch() {
+      this.latestRequestState = new WatchRequestState();
     }
   }
 }

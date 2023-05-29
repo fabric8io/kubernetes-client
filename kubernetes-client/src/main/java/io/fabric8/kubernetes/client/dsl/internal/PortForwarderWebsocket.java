@@ -170,7 +170,7 @@ public class PortForwarderWebsocket {
 
     socket.whenComplete((w, t) -> {
       if (t != null) {
-        listener.onError(w, t, true);
+        listener.onError(w, t);
       }
     });
 

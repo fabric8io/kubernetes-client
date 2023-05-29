@@ -498,4 +498,49 @@ class WatchTest {
     // ensure that the exception does not inhibit further message processing
     assertTrue(latch.await(10, TimeUnit.SECONDS));
   }
+
+  @Test
+  void testErrorAfterReady() throws InterruptedException {
+    // Given
+
+    // make ready
+    server.expect()
+        .withPath("/api/v1/namespaces/test/pods?allowWatchBookmarks=true&watch=true")
+        .andUpgradeToWebSocket()
+        .open()
+        .done()
+        .once();
+
+    // retry, but get 503
+    server.expect()
+        .withPath("/api/v1/namespaces/test/pods?allowWatchBookmarks=true&watch=true")
+        .andReturn(503, "")
+        .once();
+
+    server.expect()
+        .withPath("/api/v1/namespaces/test/pods?allowWatchBookmarks=true&watch=true")
+        .andUpgradeToWebSocket()
+        .open()
+        .waitFor(EVENT_WAIT_PERIOD_MS)
+        .andEmit(new WatchEvent(pod1, "MODIFIED"))
+        .done()
+        .once();
+
+    CountDownLatch latch = new CountDownLatch(1);
+
+    client.pods().watch(new Watcher<Pod>() {
+
+      @Override
+      public void eventReceived(Action action, Pod resource) {
+        latch.countDown();
+      }
+
+      @Override
+      public void onClose(WatcherException cause) {
+      }
+    });
+
+    // ensure that the exception does not inhibit further message processing
+    assertTrue(latch.await(10, TimeUnit.SECONDS));
+  }
 }

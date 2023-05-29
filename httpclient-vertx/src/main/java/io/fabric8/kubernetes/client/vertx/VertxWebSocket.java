@@ -18,14 +18,21 @@ package io.fabric8.kubernetes.client.vertx;
 
 import io.fabric8.kubernetes.client.http.WebSocket;
 import io.netty.buffer.Unpooled;
+import io.netty.handler.codec.http.websocketx.CorruptedWebSocketFrameException;
 import io.vertx.core.Future;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpClosedException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+import java.net.ProtocolException;
 import java.nio.ByteBuffer;
 import java.util.concurrent.atomic.AtomicInteger;
 
 class VertxWebSocket implements WebSocket {
+
+  private static final Logger LOG = LoggerFactory.getLogger(VertxWebSocket.class);
 
   private final io.vertx.core.http.WebSocket ws;
   private final AtomicInteger pending = new AtomicInteger();
@@ -45,17 +52,16 @@ class VertxWebSocket implements WebSocket {
       ws.pause();
       listener.onMessage(this, msg);
     });
-    // if the server sends a ping, we're in trouble with our fetch strategy as there is
-    // no ping handler to increase the demand - this should not be an immediate issue as
-    // the api server does not seem to be sending pings
-
-    // if for whatever reason we send a ping, pong counts against the demand, so we need more
-    ws.pongHandler(b -> ws.fetch(1));
     // use end, not close, because close is processed immediately vs. end is in frame order
     ws.endHandler(v -> listener.onClose(this, ws.closeStatusCode(), ws.closeReason()));
     ws.exceptionHandler(err -> {
       try {
-        listener.onError(this, err, err instanceof HttpClosedException);
+        if (err instanceof CorruptedWebSocketFrameException) {
+          err = new ProtocolException().initCause(err);
+        } else if (err instanceof HttpClosedException) {
+          err = new IOException(err);
+        }
+        listener.onError(this, err);
       } finally {
         // onError should be terminal
         if (!ws.isClosed()) {
@@ -72,13 +78,31 @@ class VertxWebSocket implements WebSocket {
     int len = vertxBuffer.length();
     pending.addAndGet(len);
     Future<Void> res = ws.writeBinaryMessage(vertxBuffer);
-    res.onComplete(ignore -> pending.addAndGet(-len));
+    if (res.isComplete()) {
+      pending.addAndGet(-len);
+      return res.succeeded();
+    }
+    res.onComplete(result -> {
+      if (result.cause() != null) {
+        LOG.error("Queued write did not succeed", result.cause());
+      }
+      pending.addAndGet(-len);
+    });
     return true;
   }
 
   @Override
-  public boolean sendClose(int code, String reason) {
-    ws.close((short) code, reason);
+  public synchronized boolean sendClose(int code, String reason) {
+    if (ws.isClosed()) {
+      return false;
+    }
+    Future<Void> res = ws.close((short) code, reason);
+    res.onComplete(result -> {
+      ws.fetch(1);
+      if (result.cause() != null) {
+        LOG.error("Queued close did not succeed", result.cause());
+      }
+    });
     return true;
   }
 
