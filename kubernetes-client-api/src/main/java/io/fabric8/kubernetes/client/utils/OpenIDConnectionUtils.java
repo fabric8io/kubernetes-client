@@ -15,7 +15,6 @@
  */
 package io.fabric8.kubernetes.client.utils;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import io.fabric8.kubernetes.api.model.AuthInfo;
 import io.fabric8.kubernetes.api.model.NamedAuthInfo;
 import io.fabric8.kubernetes.api.model.NamedContext;
@@ -333,12 +332,12 @@ public class OpenIDConnectionUtils {
           String[] jwtParts = accessToken.split(JWT_PARTS_DELIMITER_REGEX);
           String jwtPayload = jwtParts[1];
           String jwtPayloadDecoded = new String(Base64.getDecoder().decode(jwtPayload));
-          Map<String, Object> jwtPayloadMap = Serialization.jsonMapper().readValue(jwtPayloadDecoded, Map.class);
+          Map<String, Object> jwtPayloadMap = Serialization.unmarshal(jwtPayloadDecoded, Map.class);
           int expiryTimestampInSeconds = (Integer) jwtPayloadMap.get(JWT_TOKEN_EXPIRY_TIMESTAMP_KEY);
           return Instant.ofEpochSecond(expiryTimestampInSeconds)
               .minusSeconds(TOKEN_EXPIRY_DELTA)
               .isBefore(Instant.now());
-        } catch (JsonProcessingException e) {
+        } catch (Exception e) {
           return true;
         }
       }

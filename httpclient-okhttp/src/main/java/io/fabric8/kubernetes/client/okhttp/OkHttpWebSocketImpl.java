@@ -90,7 +90,7 @@ class OkHttpWebSocketImpl implements WebSocket {
             future.completeExceptionally(t);
           }
         } else {
-          listener.onError(new OkHttpWebSocketImpl(webSocket, this::request), t, true);
+          listener.onError(new OkHttpWebSocketImpl(webSocket, this::request), t);
         }
       }
 

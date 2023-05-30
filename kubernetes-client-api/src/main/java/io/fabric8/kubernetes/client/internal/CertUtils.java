@@ -38,6 +38,7 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.Security;
+import java.security.UnrecoverableKeyException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
@@ -60,29 +61,20 @@ public class CertUtils {
   private static final String TRUST_STORE_TYPE_SYSTEM_PROPERTY = "javax.net.ssl.trustStoreType";
   private static final String KEY_STORE_SYSTEM_PROPERTY = "javax.net.ssl.keyStore";
   private static final String KEY_STORE_PASSWORD_SYSTEM_PROPERTY = "javax.net.ssl.keyStorePassword";
+  private static final String KEY_STORE_DEFAULT_PASSWORD = "changeit";
 
   public static ByteArrayInputStream getInputStreamFromDataOrFile(String data, String file) throws IOException {
     if (data != null) {
       return createInputStreamFromBase64EncodedString(data);
     }
-    if (file != null) {
-      return new ByteArrayInputStream(new String(Files.readAllBytes(Paths.get(file))).trim().getBytes());
-    }
-    return null;
+    return new ByteArrayInputStream(new String(Files.readAllBytes(Paths.get(file))).trim().getBytes());
   }
 
   public static KeyStore createTrustStore(String caCertData, String caCertFile, String trustStoreFile,
       String trustStorePassphrase) throws IOException, CertificateException, KeyStoreException, NoSuchAlgorithmException {
-    try (ByteArrayInputStream pemInputStream = getInputStreamFromDataOrFile(caCertData, caCertFile)) {
-      return createTrustStore(pemInputStream, trustStoreFile, getTrustStorePassphrase(trustStorePassphrase));
-    }
-  }
-
-  private static char[] getTrustStorePassphrase(String trustStorePassphrase) {
-    if (Utils.isNullOrEmpty(trustStorePassphrase)) {
-      return System.getProperty(TRUST_STORE_PASSWORD_SYSTEM_PROPERTY, "changeit").toCharArray();
-    }
-    return trustStorePassphrase.toCharArray();
+    ByteArrayInputStream pemInputStream = getInputStreamFromDataOrFile(caCertData, caCertFile);
+    return createTrustStore(pemInputStream, trustStoreFile,
+        getPassphrase(TRUST_STORE_PASSWORD_SYSTEM_PROPERTY, trustStorePassphrase));
   }
 
   private static KeyStore createTrustStore(ByteArrayInputStream pemInputStream, String trustStoreFile,
@@ -232,22 +224,29 @@ public class CertUtils {
     keyStore.load(null);
   }
 
+  @SuppressWarnings("java:S6437")
   private static boolean loadDefaultStoreFile(KeyStore keyStore, File fileToLoad, char[] passphrase) {
-
-    String notLoadedMessage = "There is a problem with reading default keystore/truststore file %s with the passphrase %s "
-        + "- the file won't be loaded. The reason is: %s";
-
-    if (fileToLoad.exists() && fileToLoad.isFile() && fileToLoad.length() > 0) {
-      try {
-        try (FileInputStream fis = new FileInputStream(fileToLoad)) {
-          keyStore.load(fis, passphrase);
-        }
+    if (!fileToLoad.exists() || !fileToLoad.isFile() || fileToLoad.length() == 0) {
+      return false;
+    }
+    Exception ex = null;
+    try (FileInputStream fis = new FileInputStream(fileToLoad)) {
+      keyStore.load(fis, passphrase);
+      return true;
+    } catch (Exception e) {
+      ex = e;
+    }
+    // last chance, try changeit
+    if ((passphrase == null || passphrase.length == 0) && ex.getCause() instanceof UnrecoverableKeyException) {
+      try (FileInputStream fis1 = new FileInputStream(fileToLoad)) {
+        keyStore.load(fis1, KEY_STORE_DEFAULT_PASSWORD.toCharArray());
         return true;
-      } catch (Exception e) {
-        String passphraseToPrint = passphrase != null ? String.valueOf(passphrase) : null;
-        LOG.info(String.format(notLoadedMessage, fileToLoad, passphraseToPrint, e.getMessage()));
+      } catch (Exception e1) {
+        // still no good
       }
     }
+    LOG.info("There is a problem with reading default keystore/truststore file {} "
+        + "- the file won't be loaded. The reason is: {}", fileToLoad, ex.getMessage());
     return false;
   }
 
@@ -255,18 +254,20 @@ public class CertUtils {
       String clientKeyFile, String clientKeyAlgo, String clientKeyPassphrase, String keyStoreFile,
       String keyStorePassphrase)
       throws IOException, CertificateException, NoSuchAlgorithmException, InvalidKeySpecException, KeyStoreException {
-    try (InputStream certInputStream = getInputStreamFromDataOrFile(clientCertData, clientCertFile);
-        InputStream keyInputStream = getInputStreamFromDataOrFile(clientKeyData, clientKeyFile)) {
-      return createKeyStore(certInputStream, keyInputStream, clientKeyAlgo, clientKeyPassphrase.toCharArray(),
-          keyStoreFile, getKeyStorePassphrase(keyStorePassphrase));
-    }
+    ByteArrayInputStream certInputStream = getInputStreamFromDataOrFile(clientCertData, clientCertFile);
+    ByteArrayInputStream keyInputStream = getInputStreamFromDataOrFile(clientKeyData, clientKeyFile);
+    return createKeyStore(certInputStream, keyInputStream, clientKeyAlgo, clientKeyPassphrase.toCharArray(),
+        keyStoreFile, getPassphrase(KEY_STORE_PASSWORD_SYSTEM_PROPERTY, keyStorePassphrase));
   }
 
-  private static char[] getKeyStorePassphrase(String keyStorePassphrase) {
-    if (Utils.isNullOrEmpty(keyStorePassphrase)) {
-      return System.getProperty(KEY_STORE_PASSWORD_SYSTEM_PROPERTY, "changeit").toCharArray();
+  private static char[] getPassphrase(String property, String passphrase) {
+    if (Utils.isNullOrEmpty(passphrase)) {
+      passphrase = System.getProperty(property, passphrase);
     }
-    return keyStorePassphrase.toCharArray();
+    if (passphrase != null) {
+      return passphrase.toCharArray();
+    }
+    return null;
   }
 
   // This method is inspired and partly taken over from

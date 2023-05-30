@@ -3,8 +3,11 @@
 ### 6.7-SNAPSHOT
 
 #### Bugs
+* Fix #5117: corrected the trace httpclient logging of large response bodies
 * Fix #5125: TLS 1.3 only should be supported
+* Fix #5126: fallback to changeit only if null/empty does not work
 * Fix #5145: [java-generator] handle `additionalProperties: true` emitting a field of type `AnyType`
+* Fix #5152: preventing JDK WebSocket errors from terminating watches and improving watch termination and its logging
 * Fix #5164: [java-generator] handle more special characters in field names
 
 #### Improvements
@@ -15,6 +18,7 @@
 
 #### New Features
 * Fix #4184: Add utility methods for creating ConfigMap from files/directories in KubernetesResourceUtil
+* Fix #4829: Gradle Plugin for Java Generation from CRD
 
 #### _**Note**_: Breaking changes
 * Fix #4911: Config/RequestConfig.scaleTimeout has been deprecated along with Scalable.scale(count, wait) and DeployableScalableResource.deployLatest(wait). withTimeout may be called before the operation to control the timeout.
@@ -2007,4 +2011,3 @@ like the delete of a custom resource.
    * Fixed issue of SecurityContextConstraints not working - https://github.com/fabric8io/kubernetes-client/pull/982
      Note :- This got fixed by fixing model - https://github.com/fabric8io/kubernetes-model/pull/274
      Dependencies Upgrade
-

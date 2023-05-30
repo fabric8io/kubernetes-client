@@ -26,8 +26,6 @@ import io.fabric8.kubernetes.client.http.HttpResponse;
 import io.fabric8.kubernetes.client.http.WebSocket;
 import io.fabric8.kubernetes.client.http.WebSocket.Builder;
 import io.fabric8.kubernetes.client.http.WebSocketHandshakeException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -37,35 +35,17 @@ import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
-import static java.net.HttpURLConnection.HTTP_OK;
-import static java.net.HttpURLConnection.HTTP_UNAVAILABLE;
-
 /**
  * Manages a WebSocket and listener per request
  */
 public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesResourceList<T>>
     extends AbstractWatchManager<T> {
 
-  private static final Logger logger = LoggerFactory.getLogger(WatchConnectionManager.class);
-
   private final long connectTimeoutMillis;
   protected WatcherWebSocketListener<T> listener;
   private volatile CompletableFuture<WebSocket> websocketFuture;
 
-  private volatile boolean ready;
-
-  static void closeWebSocket(WebSocket webSocket) {
-    if (webSocket != null) {
-      logger.debug("Closing websocket {}", webSocket);
-      try {
-        if (!webSocket.sendClose(1000, null)) {
-          logger.debug("Websocket already closed {}", webSocket);
-        }
-      } catch (IllegalStateException e) {
-        logger.error("invalid code for websocket: {} {}", e.getClass(), e.getMessage());
-      }
-    }
-  }
+  volatile boolean ready;
 
   public WatchConnectionManager(final HttpClient client, final BaseOperation<T, L, ?> baseOperation,
       final ListOptions listOptions, final Watcher<T> watcher, final int reconnectInterval, final int reconnectLimit,
@@ -76,14 +56,9 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
 
   @Override
   protected void closeCurrentRequest() {
-    Optional.ofNullable(this.websocketFuture).ifPresent(theFuture -> {
-      this.websocketFuture = null;
-      theFuture.whenComplete((w, t) -> {
-        if (w != null) {
-          closeWebSocket(w);
-        }
-      });
-    });
+    Optional.ofNullable(this.websocketFuture).ifPresent(
+        theFuture -> theFuture.whenComplete(
+            (w, t) -> Optional.ofNullable(w).ifPresent(ws -> ws.sendClose(1000, null))));
   }
 
   public CompletableFuture<WebSocket> getWebsocketFuture() {
@@ -99,31 +74,27 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
 
     this.websocketFuture = builder.buildAsync(this.listener).handle((w, t) -> {
       if (t != null) {
-        if (t instanceof WebSocketHandshakeException) {
-          WebSocketHandshakeException wshe = (WebSocketHandshakeException) t;
-          HttpResponse<?> response = wshe.getResponse();
-          final int code = response.code();
-          // We do not expect a 200 in response to the websocket connection. If it occurs, we throw
-          // an exception and try the watch via a persistent HTTP Get.
-          // Newer Kubernetes might also return 503 Service Unavailable in case WebSockets are not supported
-          Status status = OperationSupport.createStatus(response, this.baseOperation.getKubernetesSerialization());
-          if (HTTP_OK == code || HTTP_UNAVAILABLE == code) {
-            throw OperationSupport.requestFailure(client.newHttpRequestBuilder().url(url).build(), status,
-                "Received " + code + " on websocket");
+        try {
+          if (t instanceof WebSocketHandshakeException) {
+            WebSocketHandshakeException wshe = (WebSocketHandshakeException) t;
+            HttpResponse<?> response = wshe.getResponse();
+            final int code = response.code();
+            // We do not expect a 200 in response to the websocket connection. If it occurs, we throw
+            // an exception and try the watch via a persistent HTTP Get.
+            // Newer Kubernetes might also return 503 Service Unavailable in case WebSockets are not supported
+            Status status = OperationSupport.createStatus(response, this.baseOperation.getKubernetesSerialization());
+            t = OperationSupport.requestFailure(client.newHttpRequestBuilder().url(url).build(),
+                status, "Received " + code + " on websocket");
           }
-          logger.warn("Exec Failure: HTTP {}, Status: {} - {}", code, status.getCode(), status.getMessage());
-          t = OperationSupport.requestFailure(client.newHttpRequestBuilder().url(url).build(), status);
+          throw KubernetesClientException.launderThrowable(t);
+        } finally {
+          if (ready) {
+            // if we're ready, then invoke the reconnect logic
+            watchEnded(t, state);
+          }
         }
-        if (ready) {
-          // if we're not ready yet, that means we're waiting on the future and there's
-          // no need to invoke the reconnect logic
-          listener.onError(w, t, true);
-        }
-        throw KubernetesClientException.launderThrowable(t);
       }
-      if (w != null) {
-        this.ready = true;
-      }
+      this.ready = true;
       return w;
     });
   }

@@ -16,7 +16,6 @@
 
 package io.fabric8.kubernetes.client;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
 import io.fabric8.kubernetes.client.utils.HttpClientUtils;
@@ -49,7 +48,7 @@ public class KubernetesClientBuilder {
   private Class<KubernetesClient> clazz;
   private ExecutorSupplier executorSupplier;
   private Consumer<HttpClient.Builder> builderConsumer;
-  private KubernetesSerialization kubernetesSerialization = new KubernetesSerialization(new ObjectMapper());
+  private KubernetesSerialization kubernetesSerialization = new KubernetesSerialization();
 
   public KubernetesClientBuilder() {
     // basically the same logic as in KubernetesResourceUtil for finding list types

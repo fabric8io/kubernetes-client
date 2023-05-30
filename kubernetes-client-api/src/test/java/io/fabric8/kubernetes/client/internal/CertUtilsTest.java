@@ -24,18 +24,18 @@ import org.junit.jupiter.api.Test;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
-import java.security.spec.InvalidKeySpecException;
 import java.util.Base64;
+import java.util.Collections;
 import java.util.Objects;
 import java.util.Properties;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -69,16 +69,18 @@ class CertUtilsTest {
   }
 
   @Test
-  void testLoadingMultipleCertsFromSameFile()
-      throws CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException {
+  void loadingMultipleCertsFromSameFile() throws Exception {
     KeyStore ts = CertUtils.createTrustStore(
         null, "src/test/resources/ssl/multiple-certs.pem", null, "changeit");
-    assertTrue(ts.size() >= 2);
+
+    assertThat(Collections.list(ts.aliases()))
+        .hasSizeGreaterThanOrEqualTo(2)
+        .satisfiesOnlyOnce(alias -> assertThat(alias).contains("openshift-signer"))
+        .satisfiesOnlyOnce(alias -> assertThat(alias).contains("openshift-service-serving-signer"));
   }
 
   @Test
-  void testLoadingMultipleCertsWithSameSubjectFromSameFile()
-      throws CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException {
+  void loadingMultipleCertsWithSameSubjectFromSameFile() throws Exception {
     KeyStore ts = CertUtils.createTrustStore(
         null, "src/test/resources/ssl/nonunique-subject.pem", null, "changeit");
 
@@ -86,20 +88,20 @@ class CertUtilsTest {
   }
 
   @Test
-  void testLoadTrustStoreFromFileUsingConfigProperties()
-      throws CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException {
-
+  void loadTrustStoreFromFileUsingConfigProperties() throws Exception {
     KeyStore trustStore = CertUtils.createTrustStore(
         null, "src/test/resources/ssl/multiple-certs.pem", FABRIC8_STORE_PATH, FABRIC8_STORE_PASSPHRASE);
 
-    assertEquals(3, trustStore.size());
+    assertThat(Collections.list(trustStore.aliases()))
+        .hasSizeGreaterThanOrEqualTo(3)
+        .satisfiesOnlyOnce(alias -> assertThat(alias).contains("openshift-signer"))
+        .satisfiesOnlyOnce(alias -> assertThat(alias).contains("openshift-service-serving-signer"))
+        .satisfiesOnlyOnce(alias -> assertThat(alias).contains("fabric8-in-store"));
     verifyFabric8InStore(trustStore);
   }
 
   @Test
-  void testLoadTrustStoreFromFileUsingSystemProperties()
-      throws CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException {
-
+  void loadTrustStoreFromFileUsingSystemProperties() throws Exception {
     System.setProperty("javax.net.ssl.trustStore", FABRIC8_STORE_PATH);
     System.setProperty("javax.net.ssl.trustStorePassword", FABRIC8_STORE_PASSPHRASE);
 
@@ -111,9 +113,7 @@ class CertUtilsTest {
   }
 
   @Test
-  void testLoadKeyStoreFromFileUsingConfigProperties()
-      throws InvalidKeySpecException, CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException {
-
+  void loadKeyStoreFromFileUsingConfigProperties() throws Exception {
     KeyStore trustStore = CertUtils.createKeyStore(
         null, "src/test/resources/ssl/multiple-certs.pem",
         null, "src/test/resources/ssl/fabric8", "RSA", "changeit",
@@ -124,10 +124,7 @@ class CertUtilsTest {
   }
 
   @Test
-  void testLoadKeyStoreFromFileUsingSystemProperties()
-      throws InvalidKeySpecException, CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException,
-      URISyntaxException {
-
+  void loadKeyStoreFromFileUsingSystemProperties() throws Exception {
     System.setProperty("javax.net.ssl.keyStore", FABRIC8_STORE_PATH);
     System.setProperty("javax.net.ssl.keyStorePassword", String.valueOf(FABRIC8_STORE_PASSPHRASE));
 
@@ -142,7 +139,7 @@ class CertUtilsTest {
   }
 
   @Test
-  void testGetInputStreamFromDataOrFileShouldNotDecodedPEMAgain() throws IOException {
+  void getInputStreamFromDataOrFileShouldNotDecodedPEMAgain() throws IOException {
     // Given
     File certFile = new File(
         Objects.requireNonNull(getClass().getResource("/ssl/valid-non-base64-encoded-cert.pem")).getFile());
@@ -157,7 +154,7 @@ class CertUtilsTest {
   }
 
   @Test
-  void testGetInputStreamFromDataOrFileShouldDecodeBase64EncodedString() throws IOException {
+  void getInputStreamFromDataOrFileShouldDecodeBase64EncodedString() throws IOException {
     // Given
     String inputStr = "this is a test";
     String base64EncodedStr = Base64.getEncoder().encodeToString(inputStr.getBytes());
@@ -168,6 +165,18 @@ class CertUtilsTest {
 
     // Then
     assertEquals(inputStr, certDataReadFromInputStream);
+  }
+
+  @Test
+  void storeKeyFallbacksToDefault() throws Exception {
+    // When
+    final KeyStore result = CertUtils.createTrustStore(
+        null, "src/test/resources/ssl/multiple-certs.pem", null, "");
+    // Then
+    assertThat(Collections.list(result.aliases()))
+        .hasSizeGreaterThanOrEqualTo(2)
+        .satisfiesOnlyOnce(alias -> assertThat(alias).contains("openshift-signer"))
+        .satisfiesOnlyOnce(alias -> assertThat(alias).contains("openshift-service-serving-signer"));
   }
 
   private void verifyFabric8InStore(KeyStore trustStore)
