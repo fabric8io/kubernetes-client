@@ -37,7 +37,7 @@ class ImageSignatureTest {
     server.expect().post().withPath("/apis/image.openshift.io/v1/imagesignatures")
         .andReturn(HttpURLConnection.HTTP_CREATED, createImageSignatureBuilder(
             "sha256:e8250ef60f2936e631da0c1c0f1f6b6e3dc118f6bfc46e605148e52edb24d158@sha256:e8250ef60f2936e631da0c1c0f1f6b6e3dc118f6bfc46e605148e52edb24d158")
-                .build())
+            .build())
         .once();
 
     // When

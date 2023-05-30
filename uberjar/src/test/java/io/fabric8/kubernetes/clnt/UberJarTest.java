@@ -144,10 +144,10 @@ class UberJarTest {
         .exists());
     assertTrue(getFileInDirectory(jarExtractedDir,
         "META-INF/services/io.fabric8.kubernetes.clnt.v" + majorVersion + "_" + minorVersion + ".extension.ExtensionAdapter")
-            .exists());
+        .exists());
     assertTrue(getFileInDirectory(jarExtractedDir,
         "META-INF/services/io.fabric8.kubernetes.clnt.v" + majorVersion + "_" + minorVersion + ".ServiceToURLProvider")
-            .exists());
+        .exists());
   }
 
   private String getMajorVersion(String projectVersion) {

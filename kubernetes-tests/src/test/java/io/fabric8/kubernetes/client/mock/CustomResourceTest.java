@@ -344,7 +344,7 @@ class CustomResourceTest {
   void testDeleteWithNonExistentResource() throws IOException {
     assertThat(client.genericKubernetesResources(customResourceDefinitionContext).inNamespace("ns2").withName("example-hello")
         .delete().size() == 1)
-            .isFalse();
+        .isFalse();
   }
 
   @Test

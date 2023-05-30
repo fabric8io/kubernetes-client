@@ -188,7 +188,7 @@ class OperationSupportTest {
   void getRequestConfigReturnsFromContextIfPresent() {
     assertThat(operationSupport.getOperationContext()
         .withRequestConfig(new RequestConfigBuilder().withRequestTimeout(1337).build()).getRequestConfig())
-            .hasFieldOrPropertyWithValue("requestTimeout", 1337);
+        .hasFieldOrPropertyWithValue("requestTimeout", 1337);
   }
 
 }
