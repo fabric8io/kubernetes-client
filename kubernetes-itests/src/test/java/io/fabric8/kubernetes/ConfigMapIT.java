@@ -20,10 +20,14 @@ import io.fabric8.junit.jupiter.api.LoadKubernetesManifests;
 import io.fabric8.kubernetes.api.model.ConfigMap;
 import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
 import io.fabric8.kubernetes.api.model.ConfigMapList;
+import io.fabric8.kubernetes.api.model.StatusDetails;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -65,6 +69,13 @@ class ConfigMapIT {
 
   @Test
   void delete() {
-    assertTrue(client.configMaps().withName("configmap-delete").delete().size() == 1);
+    // Given
+    String configMapName = "configmap-delete";
+
+    // When
+    List<StatusDetails> deleteStatus = client.configMaps().withName(configMapName).delete();
+
+    // Then
+    assertThat(deleteStatus).hasSize(1);
   }
 }

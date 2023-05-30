@@ -17,6 +17,7 @@
 * Fix #5107: The Camel-k extension has been deprecated in favor of the official release of the generated one
 
 #### New Features
+* Fix #4184: Add utility methods for creating ConfigMap from files/directories in KubernetesResourceUtil
 * Fix #4829: Gradle Plugin for Java Generation from CRD
 
 #### _**Note**_: Breaking changes

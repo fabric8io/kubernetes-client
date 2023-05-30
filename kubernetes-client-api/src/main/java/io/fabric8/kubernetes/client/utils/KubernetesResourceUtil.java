@@ -17,6 +17,8 @@
 package io.fabric8.kubernetes.client.utils;
 
 import io.fabric8.kubernetes.api.builder.VisitableBuilder;
+import io.fabric8.kubernetes.api.model.ConfigMap;
+import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
 import io.fabric8.kubernetes.api.model.DefaultKubernetesResourceList;
 import io.fabric8.kubernetes.api.model.EnvVar;
 import io.fabric8.kubernetes.api.model.EnvVarBuilder;
@@ -30,9 +32,18 @@ import io.fabric8.kubernetes.api.model.Secret;
 import io.fabric8.kubernetes.api.model.SecretBuilder;
 import io.fabric8.kubernetes.client.readiness.Readiness;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.charset.CharacterCodingException;
+import java.nio.charset.CodingErrorAction;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.LinkOption;
+import java.nio.file.Path;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Collections;
@@ -41,7 +52,9 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 public class KubernetesResourceUtil {
   private KubernetesResourceUtil() {
@@ -452,6 +465,91 @@ public class KubernetesResourceUtil {
     String dockerConfigAsStr = Serialization.asJson(dockerConfigMap);
 
     return createDockerSecret(secretName, dockerConfigAsStr);
+  }
+
+  /**
+   * Create new ConfigMap from files/directories
+   *
+   * @param name name of Configmap to create
+   * @param dirOrFilePaths a var-arg for directory of file paths.
+   * @return ConfigMap with data as key-value pair of file names and their contents
+   * @throws IOException in case of failure while reading file
+   */
+  public static ConfigMap createConfigMapFromDirOrFiles(final String name, final Path... dirOrFilePaths)
+      throws IOException {
+    ConfigMapBuilder configMapBuilder = new ConfigMapBuilder();
+    configMapBuilder.withNewMetadata().withName(name).endMetadata();
+    for (Path dirOrFilePath : dirOrFilePaths) {
+      final File file = dirOrFilePath.toFile();
+      addEntriesFromDirOrFileToConfigMap(configMapBuilder, file.getName(), dirOrFilePath);
+    }
+    return configMapBuilder.build();
+  }
+
+  private static Map.Entry<String, String> createConfigMapEntry(final String key, final Path file) throws IOException {
+    final byte[] bytes = Files.readAllBytes(file);
+    if (isFileWithBinaryContent(file)) {
+      final String value = Base64.getEncoder().encodeToString(bytes);
+      return new AbstractMap.SimpleEntry<>(key, value);
+    } else {
+      return new AbstractMap.SimpleEntry<>(key, new String(bytes));
+    }
+  }
+
+  private static boolean isFileWithBinaryContent(final Path file) throws IOException {
+    final byte[] bytes = Files.readAllBytes(file);
+    try {
+      StandardCharsets.UTF_8.newDecoder()
+          .onMalformedInput(CodingErrorAction.REPORT)
+          .onUnmappableCharacter(CodingErrorAction.REPORT)
+          .decode(ByteBuffer.wrap(bytes));
+      return false;
+    } catch (CharacterCodingException e) {
+      return true;
+    }
+  }
+
+  private static void addEntriesFromDirectoryToConfigMap(ConfigMapBuilder configMapBuilder, final Path path)
+      throws IOException {
+    try (Stream<Path> files = Files.list(path)) {
+      files.filter(p -> !Files.isDirectory(p, LinkOption.NOFOLLOW_LINKS)).forEach(file -> {
+        try {
+          addEntryToConfigMap(configMapBuilder, createConfigMapEntry(file.getFileName().toString(), file), file);
+        } catch (IOException e) {
+          throw new IllegalArgumentException(e);
+        }
+      });
+    }
+  }
+
+  private static void addEntryFromFileToConfigMap(ConfigMapBuilder configMapBuilder, final String key,
+      final Path file) throws IOException {
+    String entryKey = Optional.ofNullable(key).orElse(file.toFile().getName());
+    Map.Entry<String, String> configMapEntry = createConfigMapEntry(entryKey, file);
+    addEntryToConfigMap(configMapBuilder, configMapEntry, file);
+  }
+
+  private static void addEntryToConfigMap(ConfigMapBuilder configMapBuilder, Map.Entry<String, String> entry,
+      final Path file)
+      throws IOException {
+    if (isFileWithBinaryContent(file)) {
+      configMapBuilder.addToBinaryData(entry.getKey(), entry.getValue());
+    } else {
+      configMapBuilder.addToData(entry.getKey(), entry.getValue());
+    }
+  }
+
+  public static ConfigMapBuilder addEntriesFromDirOrFileToConfigMap(ConfigMapBuilder configMapBuilder, final String key,
+      final Path dirOrFilePath) throws IOException {
+    if (!Files.exists(dirOrFilePath)) {
+      throw new IllegalArgumentException("invalid file path provided " + dirOrFilePath);
+    }
+    if (Files.isDirectory(dirOrFilePath, LinkOption.NOFOLLOW_LINKS)) {
+      addEntriesFromDirectoryToConfigMap(configMapBuilder, dirOrFilePath);
+    } else {
+      addEntryFromFileToConfigMap(configMapBuilder, key, dirOrFilePath);
+    }
+    return configMapBuilder;
   }
 
   private static Map<String, Object> createDockerRegistryConfigMap(String dockerServer, String username, String password) {
