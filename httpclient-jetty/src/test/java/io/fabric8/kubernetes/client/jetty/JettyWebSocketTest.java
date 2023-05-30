@@ -160,6 +160,21 @@ class JettyWebSocketTest {
   }
 
   @Test
+  @DisplayName("Remote WebSocket error, notifies onClose if connection is already closed and is NOT ClosedChannelException")
+  void webSocketErrorIgnoredWhenOutputClosed() {
+    // Given
+    final var listener = new Listener();
+    final var jws = new JettyWebSocket(listener);
+    jws.onWebSocketConnect(Mockito.mock(Session.class));
+    listener.events.clear();
+    jws.sendClose(1000, "Closing");
+    // When
+    jws.onWebSocketError(new ClosedChannelException());
+    // Then
+    assertThat(listener.events).isEmpty(); // onClose would normally be called later by jetty
+  }
+
+  @Test
   @DisplayName("backPressure, onWebSocketText processes first frame and waits for request() call")
   void backPressure() throws Exception {
     final var executor = Executors.newSingleThreadExecutor();
