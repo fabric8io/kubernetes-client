@@ -360,10 +360,10 @@ class KubernetesCrudDispatcherPatchTest {
       // When + Then
       assertThatThrownBy(() -> resourceOperation.patch(json,
           "[{\"op\": \"replace\", \"path\":\"/metadata/resourceVersion\", \"value\":\"diff\"}]"))
-              .asInstanceOf(InstanceOfAssertFactories.type(KubernetesClientException.class))
-              .hasFieldOrPropertyWithValue("code", 409)
-              .extracting(KubernetesClientException::getMessage).asString()
-              .contains("the object has been modified;");
+          .asInstanceOf(InstanceOfAssertFactories.type(KubernetesClientException.class))
+          .hasFieldOrPropertyWithValue("code", 409)
+          .extracting(KubernetesClientException::getMessage).asString()
+          .contains("the object has been modified;");
     }
 
     @Test

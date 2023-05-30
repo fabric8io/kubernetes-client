@@ -48,8 +48,8 @@ class JSONSchemaPropsOrArrayTest {
   void itSerializesAdditionalPropertiesTrue() throws JsonProcessingException {
     String expectedJson = new BufferedReader(
         new InputStreamReader(getClass().getResourceAsStream("/items_array.json"), StandardCharsets.UTF_8))
-            .lines()
-            .collect(Collectors.joining("\n"));
+        .lines()
+        .collect(Collectors.joining("\n"));
 
     String outputJson = new ObjectMapper().writeValueAsString(new JSONSchemaPropsBuilder()
         .withType("object")
@@ -79,8 +79,8 @@ class JSONSchemaPropsOrArrayTest {
   void itSerializesAdditionalPropertiesTyped() throws JsonProcessingException {
     String expectedJson = new BufferedReader(
         new InputStreamReader(getClass().getResourceAsStream("/items_typed.json"), StandardCharsets.UTF_8))
-            .lines()
-            .collect(Collectors.joining("\n"));
+        .lines()
+        .collect(Collectors.joining("\n"));
 
     String outputJson = new ObjectMapper().writeValueAsString(new JSONSchemaPropsBuilder()
         .withType("object")
