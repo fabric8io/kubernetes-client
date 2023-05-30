@@ -36,6 +36,7 @@ import java.nio.ByteBuffer;
 import java.nio.channels.ClosedChannelException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
@@ -50,6 +51,7 @@ public class JettyWebSocket implements WebSocket, WebSocketListener {
   private final Lock lock;
   private final Condition backPressure;
   private final CompletableFuture<Void> terminated = new CompletableFuture<>();
+  private final AtomicBoolean outputClosed = new AtomicBoolean();
   private boolean moreMessages;
   private volatile Session webSocketSession;
 
@@ -63,7 +65,7 @@ public class JettyWebSocket implements WebSocket, WebSocketListener {
 
   @Override
   public boolean send(ByteBuffer buffer) {
-    if (terminated.isDone() || !webSocketSession.isOpen()) {
+    if (outputClosed.get() || terminated.isDone() || !webSocketSession.isOpen()) {
       return false;
     }
     buffer = BufferUtil.copy(buffer);
@@ -88,8 +90,8 @@ public class JettyWebSocket implements WebSocket, WebSocketListener {
   }
 
   @Override
-  public synchronized boolean sendClose(int code, String reason) {
-    if (!webSocketSession.isOpen()) {
+  public boolean sendClose(int code, String reason) {
+    if (!outputClosed.compareAndSet(false, true) || !webSocketSession.isOpen()) {
       return false;
     }
     webSocketSession.close(code, reason, new WriteCallback() {
@@ -140,8 +142,9 @@ public class JettyWebSocket implements WebSocket, WebSocketListener {
 
   @Override
   public void onWebSocketClose(int statusCode, String reason) {
-    terminated.complete(null);
-    listener.onClose(this, statusCode, reason);
+    if (terminated.complete(null)) {
+      listener.onClose(this, statusCode, reason);
+    }
   }
 
   @Override
@@ -150,10 +153,15 @@ public class JettyWebSocket implements WebSocket, WebSocketListener {
     listener.onOpen(this);
   }
 
+  /**
+   * The semantics here are different than jdk/okhttp - onClose will be
+   * invoked after this, if it has not already been called. So we need to skip
+   * erroneously notifying
+   */
   @Override
   public void onWebSocketError(Throwable cause) {
     boolean completed = terminated.complete(null);
-    if (cause instanceof ClosedChannelException && !completed) {
+    if (cause instanceof ClosedChannelException && (!completed || outputClosed.get())) {
       // TODO: Check better
       //  It appears to be a race condition in Jetty:
       // - The server sends a close frame (but we haven't received it)
