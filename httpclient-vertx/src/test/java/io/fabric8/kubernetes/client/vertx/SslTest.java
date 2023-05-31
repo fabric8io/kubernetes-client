@@ -25,16 +25,16 @@ import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerOptions;
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.net.SelfSignedCertificate;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SslTest {
 
@@ -44,7 +44,7 @@ public class SslTest {
   private HttpClient.Factory clientFactory = new VertxHttpClientFactory();
   private TrustManager[] trustManagers;
 
-  @Before
+  @BeforeEach
   public void before() throws Exception {
     SelfSignedCertificate cert = SelfSignedCertificate.create();
     vertx = Vertx.vertx();
@@ -64,7 +64,7 @@ public class SslTest {
     trustManagers = tmf.getTrustManagers();
   }
 
-  @After
+  @AfterEach
   public void after() throws Exception {
     vertx.close().toCompletionStage().toCompletableFuture().get(20, TimeUnit.SECONDS);
   }

@@ -40,7 +40,6 @@ import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import okhttp3.mockwebserver.RecordedRequest;
-import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -288,7 +287,7 @@ class ResourceTest {
 
       }
     });
-    Assert.assertTrue(latch.await(5000, MILLISECONDS));
+    assertTrue(latch.await(5000, MILLISECONDS));
     watch.close();
   }
 
@@ -318,7 +317,7 @@ class ResourceTest {
         .always();
 
     Pod p = client.resource(noReady).waitUntilReady(10, SECONDS);
-    Assert.assertTrue(Readiness.isPodReady(p));
+    assertTrue(Readiness.isPodReady(p));
   }
 
   /**
@@ -371,7 +370,7 @@ class ResourceTest {
         .always();
 
     Pod p = client.pods().withName("pod1").waitUntilReady(10, SECONDS);
-    Assert.assertTrue(Readiness.isPodReady(p));
+    assertTrue(Readiness.isPodReady(p));
   }
 
   @Test
@@ -490,7 +489,7 @@ class ResourceTest {
         .once();
 
     Pod p = client.resource(noReady).waitUntilReady(10, SECONDS);
-    Assert.assertTrue(Readiness.isPodReady(p));
+    assertTrue(Readiness.isPodReady(p));
   }
 
   @Test
@@ -535,7 +534,7 @@ class ResourceTest {
         .once();
 
     Pod p = client.resource(noReady).waitUntilReady(10, SECONDS);
-    Assert.assertTrue(Readiness.isPodReady(p));
+    assertTrue(Readiness.isPodReady(p));
   }
 
   @Test
@@ -554,7 +553,7 @@ class ResourceTest {
     list(ready);
 
     Pod p = client.resource(noReady).waitUntilReady(10, SECONDS);
-    Assert.assertTrue(Readiness.isPodReady(p));
+    assertTrue(Readiness.isPodReady(p));
   }
 
   @Test
@@ -653,7 +652,7 @@ class ResourceTest {
     NamespaceableResource<Pod> resource = client.resource(noReady);
     resource.create();
     Pod p = resource.waitUntilReady(10, SECONDS);
-    Assert.assertTrue(Readiness.isPodReady(p));
+    assertTrue(Readiness.isPodReady(p));
   }
 
   @Test

@@ -24,9 +24,9 @@ import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.http.StreamResetException;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,8 +34,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class HttpBodyStreamTest {
 
@@ -44,7 +44,7 @@ public class HttpBodyStreamTest {
   private volatile Handler<HttpServerRequest> requestHandler;
   private HttpClient.Factory clientFactory = new VertxHttpClientFactory();
 
-  @Before
+  @BeforeEach
   public void before() throws Exception {
     vertx = Vertx.vertx();
     server = vertx.createHttpServer().requestHandler(req -> {
@@ -58,7 +58,7 @@ public class HttpBodyStreamTest {
     server.listen(8080).toCompletionStage().toCompletableFuture().get(20, TimeUnit.SECONDS);
   }
 
-  @After
+  @AfterEach
   public void after() throws Exception {
     vertx.close().toCompletionStage().toCompletableFuture().get(20, TimeUnit.SECONDS);
   }

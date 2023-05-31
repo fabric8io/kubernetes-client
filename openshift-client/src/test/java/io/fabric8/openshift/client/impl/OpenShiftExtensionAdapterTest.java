@@ -18,7 +18,7 @@ package io.fabric8.openshift.client.impl;
 
 import io.fabric8.openshift.client.OpenShiftConfig;
 import io.fabric8.openshift.client.OpenShiftConfigBuilder;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class OpenShiftExtensionAdapterTest {
@@ -29,14 +29,14 @@ class OpenShiftExtensionAdapterTest {
         .withMasterUrl("http://host1:80")
         .build();
 
-    Assert.assertFalse(OpenShiftClientImpl.hasCustomOpenShiftUrl(config));
+    Assertions.assertFalse(OpenShiftClientImpl.hasCustomOpenShiftUrl(config));
 
     config = new OpenShiftConfigBuilder()
         .withMasterUrl("http://host1:80")
         .withOpenShiftUrl("http://host2:80/oapi/v1")
         .build();
 
-    Assert.assertTrue(OpenShiftClientImpl.hasCustomOpenShiftUrl(config));
+    Assertions.assertTrue(OpenShiftClientImpl.hasCustomOpenShiftUrl(config));
   }
 
 }
