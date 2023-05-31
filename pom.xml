@@ -1186,78 +1186,6 @@
         </configuration>
       </plugin>
       <plugin>
-        <groupId>io.sundr</groupId>
-        <artifactId>sundr-maven-plugin</artifactId>
-        <version>${sundrio.version}</version>
-        <!--dependencies>
-          <dependency>
-            <groupId>io.sundr</groupId>
-            <artifactId>sundr-codegen</artifactId>
-            <version>${sundrio.version}</version>
-            <exclusions>
-              <exclusion>
-                <groupId>com.sun</groupId>
-                <artifactId>tools</artifactId>
-              </exclusion>
-            </exclusions>
-          </dependency>
-        </dependencies-->
-        <configuration>
-          <boms>
-            <bom>
-              <artifactId>kubernetes-client-bom</artifactId>
-              <name>Fabric8 :: Kubernetes :: Bom</name>
-              <properties>
-                <skipStagingRepositoryClose>true</skipStagingRepositoryClose>
-                <sonar.skip>true</sonar.skip>
-              </properties>
-            </bom>
-            <bom>
-              <artifactId>kubernetes-client-bom-with-deps</artifactId>
-              <name>Fabric8 :: Kubernetes :: Bom with Dependencies</name>
-              <dependencies>
-                <includes>
-                  <include>com.squareup*:*</include>
-                  <include>com.fasterxml.jackson*:*</include>
-                  <include>io.fabric8:kubernetes-model-core*</include>
-                  <include>io.fabric8:kubernetes-model-rbac*</include>
-                  <include>io.fabric8:kubernetes-model-admissionregistration*</include>
-                  <include>io.fabric8:kubernetes-model-apiextensions*</include>
-                  <include>io.fabric8:kubernetes-model-apps*</include>
-                  <include>io.fabric8:kubernetes-model-autoscaling*</include>
-                  <include>io.fabric8:kubernetes-model-batch*</include>
-                  <include>io.fabric8:kubernetes-model-certificates*</include>
-                  <include>io.fabric8:kubernetes-model-coordination*</include>
-                  <include>io.fabric8:kubernetes-model-discovery*</include>
-                  <include>io.fabric8:kubernetes-model-events*</include>
-                  <include>io.fabric8:kubernetes-model-extensions*</include>
-                  <include>io.fabric8:kubernetes-model-gatewayapi*</include>
-                  <include>io.fabric8:kubernetes-model-networking*</include>
-                  <include>io.fabric8:kubernetes-model-node*</include>
-                  <include>io.fabric8:kubernetes-model-metrics*</include>
-                  <include>io.fabric8:kubernetes-model-policy*</include>
-                  <include>io.fabric8:kubernetes-model-scheduling*</include>
-                  <include>io.fabric8:kubernetes-model-storageclass*</include>
-                  <include>io.fabric8:kubernetes-model-resource*</include>
-                  <include>io.fabric8:openshift-model*</include>
-                </includes>
-              </dependencies>
-              <properties>
-                <skipStagingRepositoryClose>true</skipStagingRepositoryClose>
-                <sonar.skip>true</sonar.skip>
-              </properties>
-            </bom>
-          </boms>
-        </configuration>
-        <executions>
-          <execution>
-            <goals>
-              <goal>generate-bom</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
         <version>${maven.buildhelper.plugin.version}</version>
@@ -1477,6 +1405,69 @@
         <module>httpclient-jetty</module>
         <module>httpclient-tests</module>
       </modules>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>io.sundr</groupId>
+            <artifactId>sundr-maven-plugin</artifactId>
+            <version>${sundrio.version}</version>
+            <configuration>
+              <boms>
+                <bom>
+                  <artifactId>kubernetes-client-bom</artifactId>
+                  <name>Fabric8 :: Kubernetes :: Bom</name>
+                  <properties>
+                    <skipStagingRepositoryClose>true</skipStagingRepositoryClose>
+                    <sonar.skip>true</sonar.skip>
+                  </properties>
+                </bom>
+                <bom>
+                  <artifactId>kubernetes-client-bom-with-deps</artifactId>
+                  <name>Fabric8 :: Kubernetes :: Bom with Dependencies</name>
+                  <dependencies>
+                    <includes>
+                      <include>com.squareup*:*</include>
+                      <include>com.fasterxml.jackson*:*</include>
+                      <include>io.fabric8:kubernetes-model-core*</include>
+                      <include>io.fabric8:kubernetes-model-rbac*</include>
+                      <include>io.fabric8:kubernetes-model-admissionregistration*</include>
+                      <include>io.fabric8:kubernetes-model-apiextensions*</include>
+                      <include>io.fabric8:kubernetes-model-apps*</include>
+                      <include>io.fabric8:kubernetes-model-autoscaling*</include>
+                      <include>io.fabric8:kubernetes-model-batch*</include>
+                      <include>io.fabric8:kubernetes-model-certificates*</include>
+                      <include>io.fabric8:kubernetes-model-coordination*</include>
+                      <include>io.fabric8:kubernetes-model-discovery*</include>
+                      <include>io.fabric8:kubernetes-model-events*</include>
+                      <include>io.fabric8:kubernetes-model-extensions*</include>
+                      <include>io.fabric8:kubernetes-model-gatewayapi*</include>
+                      <include>io.fabric8:kubernetes-model-networking*</include>
+                      <include>io.fabric8:kubernetes-model-node*</include>
+                      <include>io.fabric8:kubernetes-model-metrics*</include>
+                      <include>io.fabric8:kubernetes-model-policy*</include>
+                      <include>io.fabric8:kubernetes-model-scheduling*</include>
+                      <include>io.fabric8:kubernetes-model-storageclass*</include>
+                      <include>io.fabric8:kubernetes-model-resource*</include>
+                      <include>io.fabric8:openshift-model*</include>
+                    </includes>
+                  </dependencies>
+                  <properties>
+                    <skipStagingRepositoryClose>true</skipStagingRepositoryClose>
+                    <sonar.skip>true</sonar.skip>
+                  </properties>
+                </bom>
+              </boms>
+            </configuration>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>generate-bom</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
     </profile>
     <profile>
       <id>javadoc-test</id>
