@@ -29,8 +29,6 @@ import io.fabric8.mockwebserver.crud.AttributeSet;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,7 +37,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@EnableKubernetesMockClient(crud = true)
 public class KubernetesAttributesExtractorTest {
+
+  KubernetesClient client;
 
   @Test
   void shouldHandleNamespacedPathWithResource() {
@@ -383,23 +384,20 @@ public class KubernetesAttributesExtractorTest {
 
   @Test
   void getDeploymentsWithLabels() {
-    KubernetesServer kubernetesServer = new KubernetesServer(false, true);
-    kubernetesServer.before();
-    KubernetesClient kubernetesClient = kubernetesServer.getClient();
     Map<String, String> labels = new HashMap<>();
     labels.put("app", "core");
     labels.put("apiVersion", "1.7.1");
     labels.put("keepUntil", "12000");
     Deployment deployment1 = new DeploymentBuilder().withNewMetadata().withName("withKeepUntil").addToLabels(labels)
         .endMetadata().withNewStatus().withReadyReplicas(2).endStatus().build();
-    kubernetesClient.apps().deployments().create(deployment1);
+    client.apps().deployments().create(deployment1);
 
     labels.remove("keepUntil");
     Deployment deployment2 = new DeploymentBuilder().withNewMetadata().withName("withoutKeepUntil")
         .addToLabels(labels).endMetadata().withNewStatus().withReadyReplicas(2).endStatus().build();
-    kubernetesClient.apps().deployments().create(deployment2);
+    client.apps().deployments().create(deployment2);
 
-    List<Deployment> deployments = kubernetesClient.apps().deployments().withLabel("app", "core").list().getItems();
+    List<Deployment> deployments = client.apps().deployments().withLabel("app", "core").list().getItems();
     assertTrue(deployments.stream().filter(d -> d.getMetadata().getName().equals("withKeepUntil")).findFirst()
         .isPresent());
     assertTrue(deployments.stream().filter(d -> d.getMetadata().getName().equals("withoutKeepUntil")).findFirst()
@@ -408,23 +406,20 @@ public class KubernetesAttributesExtractorTest {
 
   @Test
   void getDeploymentsWithoutLabels() {
-    KubernetesServer kubernetesServer = new KubernetesServer(false, true);
-    kubernetesServer.before();
-    KubernetesClient kubernetesClient = kubernetesServer.getClient();
     Map<String, String> labels = new HashMap<>();
     labels.put("app", "core");
     labels.put("apiVersion", "1.7.1");
     labels.put("keepUntil", "12000");
     Deployment deployment1 = new DeploymentBuilder().withNewMetadata().withName("withKeepUntil").addToLabels(labels)
         .endMetadata().withNewStatus().withReadyReplicas(2).endStatus().build();
-    kubernetesClient.apps().deployments().create(deployment1);
+    client.apps().deployments().create(deployment1);
 
     labels.remove("keepUntil");
     Deployment deployment2 = new DeploymentBuilder().withNewMetadata().withName("withoutKeepUntil")
         .addToLabels(labels).endMetadata().withNewStatus().withReadyReplicas(2).endStatus().build();
-    kubernetesClient.apps().deployments().create(deployment2);
+    client.apps().deployments().create(deployment2);
 
-    List<Deployment> deployments = kubernetesClient.apps().deployments().withoutLabel("keepUntil", "12000").list()
+    List<Deployment> deployments = client.apps().deployments().withoutLabel("keepUntil", "12000").list()
         .getItems();
     assertFalse(deployments.stream().filter(d -> d.getMetadata().getName().equals("withKeepUntil")).findFirst()
         .isPresent());
@@ -434,23 +429,20 @@ public class KubernetesAttributesExtractorTest {
 
   @Test
   void getDeploymentsWithAndWithoutLabels() {
-    KubernetesServer kubernetesServer = new KubernetesServer(false, true);
-    kubernetesServer.before();
-    KubernetesClient kubernetesClient = kubernetesServer.getClient();
     Map<String, String> labels = new HashMap<>();
     labels.put("app", "core");
     labels.put("apiVersion", "1.7.1");
     labels.put("keepUntil", "12000");
     Deployment deployment1 = new DeploymentBuilder().withNewMetadata().withName("withKeepUntil").addToLabels(labels)
         .endMetadata().withNewStatus().withReadyReplicas(2).endStatus().build();
-    kubernetesClient.apps().deployments().create(deployment1);
+    client.apps().deployments().create(deployment1);
 
     labels.remove("keepUntil");
     Deployment deployment2 = new DeploymentBuilder().withNewMetadata().withName("withoutKeepUntil")
         .addToLabels(labels).endMetadata().withNewStatus().withReadyReplicas(2).endStatus().build();
-    kubernetesClient.apps().deployments().create(deployment2);
+    client.apps().deployments().create(deployment2);
 
-    List<Deployment> deployments = kubernetesClient.apps().deployments().withLabel("app", "core")
+    List<Deployment> deployments = client.apps().deployments().withLabel("app", "core")
         .withoutLabel("keepUntil", "12000").list().getItems();
     assertFalse(deployments.stream().filter(d -> d.getMetadata().getName().equals("withKeepUntil")).findFirst()
         .isPresent());
@@ -460,46 +452,40 @@ public class KubernetesAttributesExtractorTest {
 
   @Test
   void shouldFilterBasedOnLabelExists() {
-    KubernetesServer kubernetesServer = new KubernetesServer(false, true);
-    kubernetesServer.before();
-    KubernetesClient kubernetesClient = kubernetesServer.getClient();
     Map<String, String> labels = new HashMap<>();
     labels.put("app", "core");
     labels.put("apiVersion", "1.7.1");
     labels.put("keepUntil", "12000");
     Deployment deployment1 = new DeploymentBuilder().withNewMetadata().withName("withKeepUntil").addToLabels(labels)
         .endMetadata().withNewStatus().withReadyReplicas(2).endStatus().build();
-    kubernetesClient.apps().deployments().create(deployment1);
+    client.apps().deployments().create(deployment1);
 
     labels.remove("keepUntil");
     Deployment deployment2 = new DeploymentBuilder().withNewMetadata().withName("withoutKeepUntil")
         .addToLabels(labels).endMetadata().withNewStatus().withReadyReplicas(2).endStatus().build();
-    kubernetesClient.apps().deployments().create(deployment2);
+    client.apps().deployments().create(deployment2);
 
-    List<Deployment> deployments = kubernetesClient.apps().deployments().withLabel("keepUntil").list().getItems();
+    List<Deployment> deployments = client.apps().deployments().withLabel("keepUntil").list().getItems();
     assertTrue(deployments.stream().anyMatch(d -> d.getMetadata().getName().equals("withKeepUntil")));
     assertTrue(deployments.stream().noneMatch(d -> d.getMetadata().getName().equals("withoutKeepUntil")));
   }
 
   @Test
   void shouldFilterBasedOnLabelNotExists() {
-    KubernetesServer kubernetesServer = new KubernetesServer(false, true);
-    kubernetesServer.before();
-    KubernetesClient kubernetesClient = kubernetesServer.getClient();
     Map<String, String> labels = new HashMap<>();
     labels.put("app", "core");
     labels.put("apiVersion", "1.7.1");
     labels.put("keepUntil", "12000");
     Deployment deployment1 = new DeploymentBuilder().withNewMetadata().withName("withKeepUntil").addToLabels(labels)
         .endMetadata().withNewStatus().withReadyReplicas(2).endStatus().build();
-    kubernetesClient.apps().deployments().create(deployment1);
+    client.apps().deployments().create(deployment1);
 
     labels.remove("keepUntil");
     Deployment deployment2 = new DeploymentBuilder().withNewMetadata().withName("withoutKeepUntil")
         .addToLabels(labels).endMetadata().withNewStatus().withReadyReplicas(2).endStatus().build();
-    kubernetesClient.apps().deployments().create(deployment2);
+    client.apps().deployments().create(deployment2);
 
-    List<Deployment> deployments = kubernetesClient.apps().deployments().withoutLabel("keepUntil").list().getItems();
+    List<Deployment> deployments = client.apps().deployments().withoutLabel("keepUntil").list().getItems();
     assertEquals(1, deployments.size());
     assertEquals("withoutKeepUntil", deployments.get(0).getMetadata().getName());
   }
@@ -557,22 +543,17 @@ public class KubernetesAttributesExtractorTest {
         .withKind("CustomDatabase")
         .build();
 
-    KubernetesServer kubernetesServer = new KubernetesServer(false, true,
-        registered ? Arrays.asList(crdContextV1, crdContextV1Alpha1) : Collections.emptyList());
-    kubernetesServer.before();
-    KubernetesClient kubernetesClient = kubernetesServer.getClient();
-
     GenericKubernetesResource gkr = new GenericKubernetesResource();
     gkr.setMetadata(new ObjectMetaBuilder().withName("v1").build());
     gkr.setKind("CustomDatabase");
     gkr.setApiVersion("demo.fabric8.io/v1");
 
-    kubernetesClient.genericKubernetesResources(crdContextV1).create(gkr);
+    client.genericKubernetesResources(crdContextV1).create(gkr);
 
     gkr.setApiVersion("demo.fabric8.io/v1alpha1");
-    kubernetesClient.genericKubernetesResources(crdContextV1Alpha1).create(gkr);
+    client.genericKubernetesResources(crdContextV1Alpha1).create(gkr);
 
-    assertEquals(1, kubernetesClient.genericKubernetesResources(crdContextV1).list().getItems().size());
-    assertEquals(1, kubernetesClient.genericKubernetesResources(crdContextV1Alpha1).list().getItems().size());
+    assertEquals(1, client.genericKubernetesResources(crdContextV1).list().getItems().size());
+    assertEquals(1, client.genericKubernetesResources(crdContextV1Alpha1).list().getItems().size());
   }
 }

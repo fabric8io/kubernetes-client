@@ -15,9 +15,9 @@
  */
 package io.fabric8.kubernetes.clnt;
 
-import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import org.w3c.dom.Document;
 
 import java.io.BufferedOutputStream;
