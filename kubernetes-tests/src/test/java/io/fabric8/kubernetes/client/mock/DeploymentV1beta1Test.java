@@ -33,9 +33,9 @@ import org.junit.jupiter.api.Test;
 import java.net.HttpURLConnection;
 import java.util.Collections;
 
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 @EnableKubernetesMockClient
 class DeploymentV1beta1Test {
