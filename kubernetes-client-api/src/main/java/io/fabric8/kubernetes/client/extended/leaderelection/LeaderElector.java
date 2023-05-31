@@ -155,15 +155,21 @@ public class LeaderElector {
 
   private CompletableFuture<Void> acquire() {
     final String lockDescription = leaderElectionConfig.getLock().describe();
-    LOGGER.debug("Attempting to acquire leader lease '{}'...", lockDescription);
+    if (LOGGER.isDebugEnabled()) {
+      LOGGER.debug("Attempting to acquire leader lease '{}'...", lockDescription);
+    }
     return loop(completion -> {
       try {
         if (tryAcquireOrRenew()) {
           completion.complete(null);
+          if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Acquired lease '{}'", lockDescription);
+          }
+        } else if (LOGGER.isDebugEnabled()) {
+          LOGGER.debug("Failed to acquire lease '{}' retrying...", lockDescription);
         }
-        LOGGER.debug("Failed to acquire lease '{}' retrying...", lockDescription);
       } catch (KubernetesClientException exception) {
-        LOGGER.error("Exception occurred while acquiring lock '{}'", lockDescription, exception);
+        LOGGER.error("Exception occurred while acquiring lock '{} retrying...'", lockDescription, exception);
       }
     }, () -> jitter(leaderElectionConfig.getRetryPeriod(), JITTER_FACTOR).toMillis(), executor);
   }
