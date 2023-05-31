@@ -141,6 +141,7 @@ public class PodUpload {
     boolean uploaded = upload(operation, fileName, os -> {
       try (final TarArchiveOutputStream tar = new TarArchiveOutputStream(os)) {
         tar.setLongFileMode(TarArchiveOutputStream.LONGFILE_POSIX);
+        tar.setBigNumberMode(TarArchiveOutputStream.BIGNUMBER_POSIX);
         processor.process(tar);
       }
     });
