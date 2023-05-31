@@ -19,8 +19,8 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import org.junit.jupiter.api.Test;
 
 import static io.fabric8.kubernetes.client.utils.internal.OptionalDependencyWrapper.wrapRunWithOptionalDependency;
-import static org.hamcrest.core.IsEqual.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class OptionalDependencyWrapperTest {
