@@ -142,9 +142,8 @@ public class JettyWebSocket implements WebSocket, WebSocketListener {
 
   @Override
   public void onWebSocketClose(int statusCode, String reason) {
-    if (terminated.complete(null)) {
-      listener.onClose(this, statusCode, reason);
-    }
+    terminated.complete(null);
+    listener.onClose(this, statusCode, reason);
   }
 
   @Override
@@ -160,8 +159,7 @@ public class JettyWebSocket implements WebSocket, WebSocketListener {
    */
   @Override
   public void onWebSocketError(Throwable cause) {
-    boolean completed = terminated.complete(null);
-    if (cause instanceof ClosedChannelException && (!completed || outputClosed.get())) {
+    if (cause instanceof ClosedChannelException && (outputClosed.get() || !terminated.complete(null))) {
       // TODO: Check better
       //  It appears to be a race condition in Jetty:
       // - The server sends a close frame (but we haven't received it)
