@@ -46,7 +46,6 @@ import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.mockwebserver.internal.WebSocketMessage;
 import okio.ByteString;
 import org.awaitility.Awaitility;
-import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -718,7 +717,7 @@ class PodTest {
         .always();
 
     Pod result = client.pods().withName("pod1").waitUntilReady(10, TimeUnit.SECONDS);
-    Assert.assertEquals("2", result.getMetadata().getResourceVersion());
+    assertEquals("2", result.getMetadata().getResourceVersion());
   }
 
   @Test
