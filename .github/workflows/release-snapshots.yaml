@@ -29,6 +29,7 @@ on:
 env:
   MAVEN_ARGS: -B -C -V -ntp -Dhttp.keepAlive=false -e ${{ github.event.inputs.additional_args }}
   RELEASE_MAVEN_ARGS: -Prelease -Denforcer.skip=true
+  ALT_DEPLOYMENT_REPOSITORY: -DaltDeploymentRepository=ossrh::default::https://oss.sonatype.org/content/repositories/snapshots/
   OSSRHUSERNAME: ${{ secrets.OSSRHUSERNAME }}
   OSSRHPASSWORD: ${{ secrets.OSSRHPASSWORD }}
   SIGNINGPASSWORD: ${{ secrets.SIGNINGPASSWORD }}
@@ -90,3 +91,8 @@ jobs:
           gpg-passphrase: SIGNINGPASSWORD
       - name: Build and release Java 11 modules
         run: ./mvnw ${MAVEN_ARGS} ${RELEASE_MAVEN_ARGS} -pl "httpclient-jdk" -pl "httpclient-jetty" clean deploy
+      - name: Build and release BOM
+        run: |
+          ./mvnw ${MAVEN_ARGS} ${RELEASE_MAVEN_ARGS} clean sundr:generate-bom                                     &&
+          ./mvnw -f "target/classes/kubernetes-client-bom/pom.xml" clean deploy ${ALT_DEPLOYMENT_REPOSITORY}      &&
+          ./mvnw -f "target/classes/kubernetes-client-bom-with-deps/pom.xml" clean deploy ${ALT_DEPLOYMENT_REPOSITORY}
