@@ -171,7 +171,11 @@ class JettyWebSocketTest {
     // When
     jws.onWebSocketError(new ClosedChannelException());
     // Then
-    assertThat(listener.events).isEmpty(); // onClose would normally be called later by jetty
+    assertThat(listener.events).isEmpty();
+
+    jws.onWebSocketClose(1000, "Closed");
+    assertThat(listener.events)
+        .containsOnlyKeys("onClose");
   }
 
   @Test
