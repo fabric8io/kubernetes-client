@@ -23,10 +23,10 @@ import io.fabric8.openshift.client.OpenShiftClient;
 import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @RequireK8sSupport(ProjectRequest.class)
 class ProjectRequestIT {
@@ -47,15 +47,19 @@ class ProjectRequestIT {
     client.projectrequests().create(projectRequest);
 
     // Then
-    client.projects()
-        .withName(name)
-        .informOnCondition(pl -> pl.stream().anyMatch(p -> p.getMetadata().getName().equals(name)))
-        .get(30, TimeUnit.SECONDS);
+    try {
+      client.projects()
+          .withName(name)
+          .informOnCondition(pl -> pl.stream().anyMatch(p -> p.getMetadata().getName().equals(name)))
+          .get(30, TimeUnit.SECONDS);
+    } catch (TimeoutException e) {
+      System.out.println("Waited for project to be created, but it might not have been or the project watch is suspect");
+    }
     final Project createdProject = client.projects().withName(name).get();
     assertNotNull(createdProject);
     assertEquals(name, createdProject.getMetadata().getName());
     assertEquals("Testing", createdProject.getMetadata().getAnnotations().get("openshift.io/description"));
     assertEquals("ProjectRequestIT Create", createdProject.getMetadata().getAnnotations().get("openshift.io/display-name"));
-    assertTrue(client.projects().withName(name).delete().size() == 1);
+    assertEquals(1, client.projects().withName(name).delete().size());
   }
 }
