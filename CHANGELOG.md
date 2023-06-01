@@ -1,6 +1,6 @@
 ## CHANGELOG
 
-### 6.7-SNAPSHOT
+### 6.7.0 (2023-06-01)
 
 #### Bugs
 * Fix #5117: corrected the trace httpclient logging of large response bodies
