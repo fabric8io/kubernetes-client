@@ -29,7 +29,6 @@ on:
 env:
   MAVEN_ARGS: -B -C -V -ntp -Dhttp.keepAlive=false -e ${{ github.event.inputs.additional_args }}
   RELEASE_MAVEN_ARGS: -Prelease -Denforcer.skip=true
-  ALT_DEPLOYMENT_REPOSITORY: -DaltDeploymentRepository=ossrh::default::https://oss.sonatype.org/content/repositories/snapshots/
   OSSRHUSERNAME: ${{ secrets.OSSRHUSERNAME }}
   OSSRHPASSWORD: ${{ secrets.OSSRHPASSWORD }}
   SIGNINGPASSWORD: ${{ secrets.SIGNINGPASSWORD }}
@@ -93,6 +92,6 @@ jobs:
         run: ./mvnw ${MAVEN_ARGS} ${RELEASE_MAVEN_ARGS} -pl "httpclient-jdk" -pl "httpclient-jetty" clean deploy
       - name: Build and release BOM
         run: |
-          ./mvnw ${MAVEN_ARGS} ${RELEASE_MAVEN_ARGS} clean sundr:generate-bom                                     &&
-          ./mvnw -f "target/classes/kubernetes-client-bom/pom.xml" clean deploy ${ALT_DEPLOYMENT_REPOSITORY}      &&
-          ./mvnw -f "target/classes/kubernetes-client-bom-with-deps/pom.xml" clean deploy ${ALT_DEPLOYMENT_REPOSITORY}
+          ./mvnw ${MAVEN_ARGS} ${RELEASE_MAVEN_ARGS} clean sundr:generate-bom                                                                                                                                                                                                                                                                         &&
+          ./mvnw ${MAVEN_ARGS} ${RELEASE_MAVEN_ARGS} gpg:sign-and-deploy-file -Prelease -Dgpg.passphrase=${{ secrets.SIGNINGPASSWORD }} -DrepositoryId=ossrh -Durl=https://oss.sonatype.org/content/repositories/snapshots/ -DpomFile="target/classes/kubernetes-client-bom/pom.xml" -Dfile="target/classes/kubernetes-client-bom/pom.xml"            &&
+          ./mvnw ${MAVEN_ARGS} ${RELEASE_MAVEN_ARGS} gpg:sign-and-deploy-file -Prelease -Dgpg.passphrase=${{ secrets.SIGNINGPASSWORD }} -DrepositoryId=ossrh -Durl=https://oss.sonatype.org/content/repositories/snapshots/ -DpomFile="target/classes/kubernetes-client-bom-with-deps/pom.xml" -Dfile="target/classes/kubernetes-client-bom-with-deps/pom.xml"
