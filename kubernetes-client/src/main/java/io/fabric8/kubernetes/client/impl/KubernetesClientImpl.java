@@ -17,7 +17,9 @@ package io.fabric8.kubernetes.client.impl;
 
 import io.fabric8.kubernetes.api.model.APIGroup;
 import io.fabric8.kubernetes.api.model.APIGroupBuilder;
+import io.fabric8.kubernetes.api.model.APIGroupList;
 import io.fabric8.kubernetes.api.model.APIResource;
+import io.fabric8.kubernetes.api.model.APIResourceList;
 import io.fabric8.kubernetes.api.model.APIService;
 import io.fabric8.kubernetes.api.model.APIServiceList;
 import io.fabric8.kubernetes.api.model.Binding;
@@ -160,6 +162,8 @@ import io.fabric8.kubernetes.client.informers.impl.SharedInformerFactoryImpl;
 import io.fabric8.kubernetes.client.utils.ApiVersionUtil;
 import io.fabric8.kubernetes.client.utils.KubernetesSerialization;
 import io.fabric8.kubernetes.client.utils.Utils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -172,6 +176,8 @@ import java.util.List;
  * It is thread safe.
  */
 public class KubernetesClientImpl extends BaseClient implements NamespacedKubernetesClient {
+
+  public static final Logger logger = LoggerFactory.getLogger(KubernetesClientImpl.class);
 
   public static final String KUBERNETES_VERSION_ENDPOINT = "version";
 
@@ -730,7 +736,10 @@ public class KubernetesClientImpl extends BaseClient implements NamespacedKubern
         .withVersions(new GroupVersionForDiscoveryBuilder().withGroupVersion("v1").build()).build()))) {
       return; // user terminated
     }
-    visitGroups(visitor, getApiGroups().getGroups());
+    APIGroupList apiGroups = getApiGroups();
+    if (apiGroups != null) {
+      visitGroups(visitor, apiGroups.getGroups());
+    }
   }
 
   private boolean visitGroups(ApiVisitor visitor, List<APIGroup> groups) {
@@ -752,7 +761,14 @@ public class KubernetesClientImpl extends BaseClient implements NamespacedKubern
               case SKIP:
                 continue;
               case CONTINUE:
-                for (APIResource resource : this.getApiResources(groupVersion).getResources()) {
+                APIResourceList apiResources = this.getApiResources(groupVersion);
+                if (apiResources == null) {
+                  if (logger.isDebugEnabled()) {
+                    logger.debug("{} is discoverable, but is not yet populating an APIResource list", groupVersion);
+                  }
+                  continue;
+                }
+                for (APIResource resource : apiResources.getResources()) {
                   if (resource.getName().contains("/")) { // skip subresources
                     continue;
                   }
