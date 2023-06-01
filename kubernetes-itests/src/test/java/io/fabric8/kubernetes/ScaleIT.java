@@ -41,17 +41,18 @@ class ScaleIT {
 
   @BeforeEach
   void setUp() {
-    client.apiextensions().v1().customResourceDefinitions().withName("crontabs.stable.example.com")
-        .waitUntilCondition(crd -> crd != null && crd.getStatus() != null && crd.getStatus().getConditions() != null &&
-            crd.getStatus().getConditions().stream()
-                .filter(c -> c.getType() != null)
-                .filter(c -> c.getStatus() != null)
-                .anyMatch(c -> c.getType().equals("Established") && c.getStatus().equals("True")),
-            10, TimeUnit.SECONDS);
+    Awaitility.await().atMost(30, TimeUnit.SECONDS).until(() -> {
+      try {
+        client.genericKubernetesResources("stable.example.com/v1", "CronTab");
+        return true;
+      } catch (KubernetesClientException e) {
+        return false;
+      }
+    });
   }
 
   @Test
-  void scale() {
+  void scaleGeneric() {
     GenericKubernetesResource cronTab = Serialization.unmarshal("apiVersion: \"stable.example.com/v1\"\n"
         + "kind: CronTab\n"
         + "metadata:\n"
@@ -61,8 +62,7 @@ class ScaleIT {
         + "  image: my-awesome-cron-image\n"
         + "  replicas: 3", GenericKubernetesResource.class);
 
-    Resource<GenericKubernetesResource> resource = client.genericKubernetesResources("stable.example.com/v1", "CronTab")
-        .resource(cronTab);
+    Resource<GenericKubernetesResource> resource = client.resource(cronTab);
 
     Awaitility.await().atMost(30, TimeUnit.SECONDS).until(() -> {
       try {
