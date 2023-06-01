@@ -7,6 +7,7 @@
 * Fix #5224: Ensuring jetty sets the User-Agent header
 
 #### Improvements
+* Fix #5166: Remove opinionated messages from Config's `errorMessages` and deprecate it
 
 #### Dependency Upgrade
 

@@ -138,6 +138,22 @@ class OperationSupportTest {
   }
 
   @Test
+  @DisplayName("assertResponse, with client error, should throw exception with server response body")
+  void assertResponseCodeClientErrorAndStatus() throws Exception {
+    // Given
+    final HttpRequest request = new StandardHttpRequest.Builder().method("GET", null, null).uri(new URI("https://example.com"))
+        .build();
+    final HttpResponse<String> response = new TestHttpResponse<String>().withCode(400)
+        .withBody("{\"kind\":\"Status\",\"apiVersion\":\"v1\",\"status\":\"Failure\",\"code\":400,\"message\":\"Invalid\"}");
+    // When
+    final KubernetesClientException result = assertThrows(KubernetesClientException.class,
+        () -> operationSupport.assertResponseCode(request, response));
+    // Then
+    assertThat(result)
+        .hasMessageContaining("Failure executing: GET at: https://example.com. Message: Invalid. Received status: Status(");
+  }
+
+  @Test
   void getResourceURL() throws MalformedURLException {
     assertThat(operationSupport.getResourceUrl()).hasToString("https://kubernetes.default.svc/api/v1");
 

@@ -645,6 +645,7 @@ class ConfigTest {
 
     assertEquals(120, config.getMaxConcurrentRequests());
     assertEquals(20, config.getMaxConcurrentRequestsPerHost());
+    assertThat(config.getErrorMessages()).isEmpty();
   }
 
   @Test

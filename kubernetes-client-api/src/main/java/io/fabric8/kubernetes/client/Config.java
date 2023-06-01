@@ -220,6 +220,10 @@ public class Config {
   private String userAgent = "fabric8-kubernetes-client/" + Version.clientVersion();
   private TlsVersion[] tlsVersions = new TlsVersion[] { TlsVersion.TLS_1_3, TlsVersion.TLS_1_2 };
 
+  /**
+   * @deprecated Use Kubernetes Status directly for extracting error messages.
+   */
+  @Deprecated
   private Map<Integer, String> errorMessages = new HashMap<>();
 
   /**
@@ -551,9 +555,6 @@ public class Config {
           String serviceTokenCandidate = new String(Files.readAllBytes(saTokenPathFile.toPath()));
           LOGGER.debug("Found service account token at: [{}].", saTokenPathLocation);
           config.setAutoOAuthToken(serviceTokenCandidate);
-          String txt = "Configured service account doesn't have access. Service account may have been revoked.";
-          config.getErrorMessages().put(401, "Unauthorized! " + txt);
-          config.getErrorMessages().put(403, "Forbidden!" + txt);
           return true;
         } catch (IOException e) {
           // No service account token available...
@@ -758,10 +759,6 @@ public class Config {
               }
             }
           }
-
-          config.getErrorMessages().put(401, "Unauthorized! Token may have expired! Please log-in again.");
-          config.getErrorMessages().put(403,
-              "Forbidden! User " + (currentContext != null ? currentContext.getUser() : "") + " doesn't have permission.");
         }
         return true;
       }
@@ -1150,6 +1147,11 @@ public class Config {
     this.requestConfig.setWatchReconnectLimit(watchReconnectLimit);
   }
 
+  /**
+   * @deprecated Use Kubernetes status messages directly
+   * @return map of error codes to message mappings
+   */
+  @Deprecated
   @JsonProperty("errorMessages")
   public Map<Integer, String> getErrorMessages() {
     return errorMessages;
