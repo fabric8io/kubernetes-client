@@ -31,7 +31,7 @@ import static io.fabric8.kubernetes.client.utils.PodMockUtils.containerStatus;
 import static io.fabric8.kubernetes.client.utils.PodMockUtils.pod;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class PodStatusUtilTest {
+class PodStatusUtilTest {
 
   private ContainerStatus runningReady = containerStatus(
       true,
@@ -41,7 +41,7 @@ public class PodStatusUtilTest {
           containerStateRunning()));
 
   @Test
-  public void isRunning_should_return_true_if_pod_is_in_phase_running() {
+  void isRunning_should_return_true_if_pod_is_in_phase_running() {
     // given
     Pod pod = pod("starwars")
         .status("Running", "<Darth Vader has lost its sabre>")
@@ -53,7 +53,7 @@ public class PodStatusUtilTest {
   }
 
   @Test
-  public void isRunning_should_return_true_if_pod_has_reason_running() {
+  void isRunning_should_return_true_if_pod_has_reason_running() {
     // given
     Pod pod = pod("anakin")
         .status("<transition to the dark side>", "Running")
@@ -65,7 +65,7 @@ public class PodStatusUtilTest {
   }
 
   @Test
-  public void isRunning_should_return_false_if_pod_has_deletion_Timestamp() {
+  void isRunning_should_return_false_if_pod_has_deletion_Timestamp() {
     // given
     Pod pod = pod("some pod")
         .status("", "")
@@ -78,7 +78,7 @@ public class PodStatusUtilTest {
   }
 
   @Test
-  public void isRunning_should_return_false_if_pod_is_initializing() {
+  void isRunning_should_return_false_if_pod_is_initializing() {
     // given
     Pod pod = pod("some pod")
         .setInitializing()
@@ -90,7 +90,7 @@ public class PodStatusUtilTest {
   }
 
   @Test
-  public void isInitializing_should_return_false_if_pod_has_no_initContainerStatus() {
+  void isInitializing_should_return_false_if_pod_has_no_initContainerStatus() {
     // given
     Pod pod = pod("some pod")
         .statusBuilder()
@@ -103,7 +103,7 @@ public class PodStatusUtilTest {
   }
 
   @Test
-  public void isInitializing_should_return_true_if_pod_has_initContainerStatus_without_state() {
+  void isInitializing_should_return_true_if_pod_has_initContainerStatus_without_state() {
     // given
     Pod pod = pod("some pod")
         .initContainerStatus()
@@ -115,7 +115,7 @@ public class PodStatusUtilTest {
   }
 
   @Test
-  public void isInitializing_should_return_true_if_pod_has_initContainerStatus_without_terminated_value_nor_waiting_value() {
+  void isInitializing_should_return_true_if_pod_has_initContainerStatus_without_terminated_value_nor_waiting_value() {
     // given
     Pod pod = pod("some pod")
         .statusBuilder()
@@ -130,7 +130,7 @@ public class PodStatusUtilTest {
   }
 
   @Test
-  public void isInitializing_should_return_true_if_pod_has_initContainerStatus_without_terminated_value_but_waiting_value() {
+  void isInitializing_should_return_true_if_pod_has_initContainerStatus_without_terminated_value_but_waiting_value() {
     // given
     Pod pod = pod("some pod")
         .statusBuilder()
@@ -150,7 +150,7 @@ public class PodStatusUtilTest {
   }
 
   @Test
-  public void isInitializing_should_return_false_if_pod_has_initContainerStatus_without_terminated_value_but_waiting_value_PodInitializing() {
+  void isInitializing_should_return_false_if_pod_has_initContainerStatus_without_terminated_value_but_waiting_value_PodInitializing() {
     // given
     Pod pod = pod("some pod")
         .statusBuilder()
@@ -170,7 +170,7 @@ public class PodStatusUtilTest {
   }
 
   @Test
-  public void isInitializing_should_return_false_if_pod_has_initContainerStatus_with_state_with_exit_code_0() {
+  void isInitializing_should_return_false_if_pod_has_initContainerStatus_with_state_with_exit_code_0() {
     // given
     Pod pod = pod("some pod")
         .statusBuilder()
@@ -190,7 +190,7 @@ public class PodStatusUtilTest {
   }
 
   @Test
-  public void isRunning_should_return_true_if_pod_has_containerStatus_ready_and_running() {
+  void isRunning_should_return_true_if_pod_has_containerStatus_ready_and_running() {
     // given
     Pod pod = pod("some pod")
         .statusBuilder()
@@ -204,7 +204,7 @@ public class PodStatusUtilTest {
   }
 
   @Test
-  public void isRunning_should_return_false_if_pod_has_containerStatus_ready_but_not_running() {
+  void isRunning_should_return_false_if_pod_has_containerStatus_ready_but_not_running() {
     // given
     Pod pod = pod("some pod")
         .statusBuilder()
@@ -221,7 +221,7 @@ public class PodStatusUtilTest {
   }
 
   @Test
-  public void isRunning_should_return_true_if_pod_has_running_container_and_another_that_is_completed_and_ready_condition_is_true() {
+  void isRunning_should_return_true_if_pod_has_running_container_and_another_that_is_completed_and_ready_condition_is_true() {
     // given
     Pod pod = pod("some pod")
         .statusBuilder()
@@ -246,7 +246,7 @@ public class PodStatusUtilTest {
   }
 
   @Test
-  public void isRunning_should_return_false_if_pod_has_running_container_and_another_that_is_completed_and_ready_condition_is_false() {
+  void isRunning_should_return_false_if_pod_has_running_container_and_another_that_is_completed_and_ready_condition_is_false() {
     // given
     Pod pod = pod("some pod")
         .statusBuilder()
@@ -269,7 +269,7 @@ public class PodStatusUtilTest {
   }
 
   @Test
-  public void isRunning_should_return_true_if_pod_has_running_container_and_another_that_is_terminated_for_other_reason_than_completed() {
+  void isRunning_should_return_true_if_pod_has_running_container_and_another_that_is_terminated_for_other_reason_than_completed() {
     // given
     Pod pod = pod("some pod")
         .statusBuilder()
@@ -292,7 +292,7 @@ public class PodStatusUtilTest {
   }
 
   @Test
-  public void getContainersStatuses_should_return_all_containers() {
+  void getContainersStatuses_should_return_all_containers() {
     // given
     ContainerStatus waitingReady = containerStatus(
         true,
@@ -324,7 +324,7 @@ public class PodStatusUtilTest {
   }
 
   @Test
-  public void getContainersStatuses_should_return_emptyList_if_pod_has_no_status() {
+  void getContainersStatuses_should_return_emptyList_if_pod_has_no_status() {
     // given
     Pod pod = pod("some pod")
         .build();

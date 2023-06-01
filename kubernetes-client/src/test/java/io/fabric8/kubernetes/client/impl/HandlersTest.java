@@ -22,11 +22,10 @@ import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.OperationContext;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class HandlersTest {
 
@@ -50,10 +49,10 @@ public class HandlersTest {
     BaseClient mock = Mockito.mock(BaseClient.class, Mockito.RETURNS_SELF);
     Mockito.when(mock.adapt(BaseClient.class).getHandlers()).thenReturn(handlers);
 
-    assertThat(handlers.get(new MyPod(), null).operation(mock, null), Matchers.instanceOf(MyPodOperationsImpl.class));
+    assertThat(handlers.get(new MyPod(), null).operation(mock, null)).isInstanceOf(MyPodOperationsImpl.class);
 
     handlers.unregister(MyPod.class);
 
-    assertThat(handlers.get(new MyPod(), null).operation(mock, null), Matchers.instanceOf(HasMetadataOperationsImpl.class));
+    assertThat(handlers.get(new MyPod(), null).operation(mock, null)).isInstanceOf(HasMetadataOperationsImpl.class);
   }
 }

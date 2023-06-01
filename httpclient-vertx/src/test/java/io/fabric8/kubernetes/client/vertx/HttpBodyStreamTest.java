@@ -37,7 +37,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
-public class HttpBodyStreamTest {
+class HttpBodyStreamTest {
 
   private Vertx vertx;
   private HttpServer server;
@@ -64,7 +64,7 @@ public class HttpBodyStreamTest {
   }
 
   @Test
-  public void testStreamFlowControl() throws Exception {
+  void testStreamFlowControl() throws Exception {
 
     AtomicInteger bytesSent = new AtomicInteger();
     AtomicInteger data = new AtomicInteger('A');
@@ -106,7 +106,7 @@ public class HttpBodyStreamTest {
   }
 
   @Test
-  public void testStreamError() throws Exception {
+  void testStreamError() throws Exception {
 
     requestHandler = req -> {
     };
@@ -135,7 +135,7 @@ public class HttpBodyStreamTest {
   }
 
   @Test
-  public void testStackOverflow() throws Exception {
+  void testStackOverflow() throws Exception {
 
     requestHandler = req -> {
       AtomicInteger size = new AtomicInteger();
