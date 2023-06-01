@@ -5,6 +5,7 @@
 #### Bugs
 
 #### Improvements
+* Fix #5166: Remove opinionated messages from Config's `errorMessages` and deprecate it
 
 #### Dependency Upgrade
 

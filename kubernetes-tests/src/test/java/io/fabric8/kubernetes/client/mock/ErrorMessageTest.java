@@ -15,67 +15,71 @@
  */
 package io.fabric8.kubernetes.client.mock;
 
+import io.fabric8.kubernetes.api.model.Event;
 import io.fabric8.kubernetes.api.model.EventBuilder;
+import io.fabric8.kubernetes.api.model.EventList;
+import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.StatusBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
+import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static org.hamcrest.CoreMatchers.not;
+import static java.net.HttpURLConnection.HTTP_BAD_REQUEST;
+import static java.net.HttpURLConnection.HTTP_FORBIDDEN;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
 
 @EnableKubernetesMockClient
-public class ErrorMessageTest {
+class ErrorMessageTest {
 
   KubernetesMockServer server;
   KubernetesClient client;
 
   @Test
-  public void testCustomMessage() {
-
-    client.getConfiguration().getErrorMessages().put(403, "MSG");
-    server.expect().withPath("/api/v1/namespaces/test/events")
-        .andReturn(200, new io.fabric8.kubernetes.api.model.EventListBuilder()
-            .addNewItem()
-            .withNewMetadata()
-            .withName("event1")
-            .endMetadata()
-            .endItem().build())
+  void whenCustomErrorMessageInConfig_thenErrorMessageShouldNotContainCustomMessage() {
+    // Given
+    String customMessage = "INVALID";
+    client.getConfiguration().getErrorMessages().put(403, customMessage);
+    server.expect().delete()
+        .withPath("/api/v1/namespaces/test/events")
+        .andReturn(HTTP_FORBIDDEN, new StatusBuilder()
+            .withCode(HTTP_FORBIDDEN)
+            .withMessage("forbidden")
+            .build())
         .once();
-    server.expect().withPath("/api/v1/namespaces/test/events/event1").andReturn(403, Boolean.FALSE).once();
+    NonNamespaceOperation<Event, EventList, Resource<Event>> eventResource = client.v1().events().inNamespace("test");
 
-    try {
-      client.v1().events().inNamespace("test").delete();
-      fail();
-    } catch (Exception e) {
-      System.out.println("exception: " + e);
-      Assertions.assertThat(e.getMessage().startsWith("Failure executing: DELETE"));
-      Assertions.assertThat(e.getMessage().contains("Message: MSG"));
-      Assertions.assertThat(not(e.getMessage().contains("Received status")));
-    }
-  }
-
-  private void fail() {
+    // When + Then
+    assertThatExceptionOfType(KubernetesClientException.class)
+        .isThrownBy(eventResource::delete)
+        .withMessageContaining(customMessage)
+        .hasFieldOrPropertyWithValue("code", HTTP_FORBIDDEN);
   }
 
   @Test
-  public void testServerErrorWithStatus() {
+  void whenResponseBodyContainsKubernetesStatus_thenErrorMessageShouldContainStatusMessage() {
+    // Given
+    Status badRequestStatus = new StatusBuilder()
+        .withMessage("This operation invalid for some reason")
+        .withReason("Invalid")
+        .withCode(HTTP_BAD_REQUEST)
+        .build();
+    server.expect().post()
+        .withPath("/api/v1/namespaces/test/events")
+        .andReturn(HTTP_BAD_REQUEST, badRequestStatus)
+        .always();
+    Resource<Event> eventResource = client.v1().events().inNamespace("test")
+        .resource(new EventBuilder().withNewMetadata().withName("event1").endMetadata().build());
 
-    server.expect().withPath("/api/v1/namespaces/test/events").andReturn(500, new StatusBuilder()
-        .withMessage("This operation is not allowed for some reason")
-        .withReason("Some reason")
-        .withCode(500)
-        .build()).once();
-
-    try {
-      client.v1().events().inNamespace("test")
-          .create(new EventBuilder().withNewMetadata().withName("event1").endMetadata().build());
-      fail();
-    } catch (Exception e) {
-      Assertions.assertThat(e.getMessage().startsWith("Failure executing: POST"));
-      Assertions.assertThat(e.getMessage().contains("Received status"));
-      Assertions.assertThat(not(e.getMessage().contains("Message: This operation")));
-    }
+    // When + Then
+    assertThatExceptionOfType(KubernetesClientException.class)
+        .isThrownBy(eventResource::create)
+        .withMessageContaining("Message: This operation invalid for some reason.")
+        .hasFieldOrPropertyWithValue("code", HTTP_BAD_REQUEST)
+        .extracting(KubernetesClientException::getStatus)
+        .isEqualTo(badRequestStatus);
   }
 }
