@@ -36,7 +36,7 @@ import javax.net.ssl.TrustManagerFactory;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class SslTest {
+class SslTest {
 
   private Vertx vertx;
   private HttpServer server;
@@ -70,7 +70,7 @@ public class SslTest {
   }
 
   @Test
-  public void testGet() throws Exception {
+  void testGet() throws Exception {
     requestHandler = req -> {
       req.response().end("OK");
     };

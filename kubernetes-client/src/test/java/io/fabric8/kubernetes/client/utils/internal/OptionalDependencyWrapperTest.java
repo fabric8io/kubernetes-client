@@ -19,8 +19,7 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import org.junit.jupiter.api.Test;
 
 import static io.fabric8.kubernetes.client.utils.internal.OptionalDependencyWrapper.wrapRunWithOptionalDependency;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.IsEqual.equalTo;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class OptionalDependencyWrapperTest {
@@ -30,7 +29,7 @@ class OptionalDependencyWrapperTest {
     final boolean result = wrapRunWithOptionalDependency(() -> true,
         "I have no optional dependencies");
 
-    assertThat(result, equalTo(true));
+    assertThat(result).isEqualTo(true);
   }
 
   @Test
@@ -40,7 +39,7 @@ class OptionalDependencyWrapperTest {
           throw new NoClassDefFoundError("com.1337.invalid.IDontExist");
         }, "IDontExist class is provided by some optional package"));
 
-    assertThat(exception.getMessage(), equalTo(
-        "IDontExist class is provided by some optional package, an optional dependency. To use this functionality you must explicitly add this dependency to the classpath."));
+    assertThat(exception.getMessage()).isEqualTo(
+        "IDontExist class is provided by some optional package, an optional dependency. To use this functionality you must explicitly add this dependency to the classpath.");
   }
 }
