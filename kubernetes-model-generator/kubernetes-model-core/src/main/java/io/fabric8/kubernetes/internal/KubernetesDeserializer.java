@@ -35,6 +35,8 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.ServiceLoader;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 public class KubernetesDeserializer extends JsonDeserializer<KubernetesResource> {
 
@@ -167,6 +169,19 @@ public class KubernetesDeserializer extends JsonDeserializer<KubernetesResource>
     mapping.registerKind(apiVersion, kind, clazz);
   }
 
+  /**
+   * Registers a KubernetesResource implementation class. The group, version, and kind are derived from the class
+   * annotations.
+   * <p>
+   * This method is especially interesting when registering classes that are discovered using SPI and multiple class
+   * loaders.
+   *
+   * @param clazz the class to register.
+   */
+  public void registerKubernetesResource(Class<? extends KubernetesResource> clazz) {
+    mapping.addMapping(clazz);
+  }
+
   static class Mapping {
 
     private final Map<TypeKey, Class<? extends KubernetesResource>> mappings = new ConcurrentHashMap<>();
@@ -197,17 +212,14 @@ public class KubernetesDeserializer extends JsonDeserializer<KubernetesResource>
     }
 
     void registerClassesFromClassLoaders() {
-      registerClasses(Thread.currentThread().getContextClassLoader());
-      registerClasses(KubernetesDeserializer.class.getClassLoader());
-    }
-
-    private void registerClasses(ClassLoader classLoader) {
-      Iterable<KubernetesResource> resources = () -> ServiceLoader
-          .load(KubernetesResource.class, classLoader)
-          .iterator();
-      for (KubernetesResource resource : resources) {
-        addMapping(resource.getClass());
-      }
+      Stream.of(Thread.currentThread().getContextClassLoader(), KubernetesDeserializer.class.getClassLoader())
+          .filter(Objects::nonNull)
+          .map(cl -> ServiceLoader.load(KubernetesResource.class, cl))
+          .map(ServiceLoader::iterator)
+          .map(i -> (Iterable<KubernetesResource>) () -> i)
+          .flatMap(i -> StreamSupport.stream(i.spliterator(), false))
+          .map(KubernetesResource::getClass)
+          .forEach(this::addMapping);
     }
 
     TypeKey getKeyFromClass(Class<? extends KubernetesResource> clazz) {

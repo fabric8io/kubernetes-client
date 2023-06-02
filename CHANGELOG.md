@@ -3,6 +3,7 @@
 ### 6.8-SNAPSHOT
 
 #### Bugs
+* Fix #5200: KubernetesSerialization.registerKubernetesResource(Class) reuses KuberentesDeseralizer.Mapping.addMapping which is better supported when manually registering KubernetesResource classes
 
 #### Improvements
 
