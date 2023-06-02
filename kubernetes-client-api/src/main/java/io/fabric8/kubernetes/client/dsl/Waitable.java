@@ -20,6 +20,13 @@ import java.util.function.Predicate;
 
 public interface Waitable<T, P> {
 
+  /**
+   * For resources other than Node, Deployment, ReplicaSet, StatefulSet, Pod, ReplicationController, and DeploymentConfig
+   * readiness is simply an existence check.
+   * <br>
+   * Consider using the more general {@link #waitUntilCondition(Predicate, long, TimeUnit)} when dealing with
+   * more complex situations or other types.
+   */
   T waitUntilReady(long amount, TimeUnit timeUnit);
 
   /**

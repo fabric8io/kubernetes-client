@@ -12,6 +12,7 @@
 * Fix #5133: Support for using TokenRequest for existing ServiceAccount
 
 #### _**Note**_: Breaking changes
+* Fix #2718: KubernetesResourceUtil.isResourceReady was deprecated.  Use 
 
 ### 6.7.2 (2023-06-15)
 

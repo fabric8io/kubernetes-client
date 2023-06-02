@@ -398,7 +398,10 @@ public class KubernetesResourceUtil {
    *
    * @param item item which needs to be checked
    * @return boolean value indicating it's status
+   *
+   * @deprecated use client.resource(item).isReady() or Readiness.getInstance().isReady(item) instead
    */
+  @Deprecated
   public static boolean isResourceReady(HasMetadata item) {
     return Readiness.getInstance().isReady(item);
   }

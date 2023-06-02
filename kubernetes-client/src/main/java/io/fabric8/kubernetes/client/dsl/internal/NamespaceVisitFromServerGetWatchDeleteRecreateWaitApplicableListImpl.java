@@ -33,7 +33,6 @@ import io.fabric8.kubernetes.client.dsl.NamespaceListVisitFromServerGetDeleteRec
 import io.fabric8.kubernetes.client.dsl.NamespaceableResource;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.Waitable;
-import io.fabric8.kubernetes.client.readiness.Readiness;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -72,7 +71,8 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImp
 
   @Override
   public List<HasMetadata> waitUntilReady(final long amount, final TimeUnit timeUnit) {
-    return waitUntilCondition(resource -> Objects.nonNull(resource) && getReadiness().isReady(resource), amount, timeUnit);
+    return waitUntilCondition(resource -> Objects.nonNull(resource) && context.getConfig().getReadiness().isReady(resource),
+        amount, timeUnit);
   }
 
   List<HasMetadata> getItems() {
@@ -228,10 +228,6 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImp
   public ListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> withPropagationPolicy(
       DeletionPropagation propagationPolicy) {
     return newInstance(context.withPropagationPolicy(propagationPolicy));
-  }
-
-  protected Readiness getReadiness() {
-    return Readiness.getInstance();
   }
 
   protected List<HasMetadata> asHasMetadata(Object item) {
