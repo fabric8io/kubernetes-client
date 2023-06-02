@@ -53,6 +53,12 @@ public interface Resource<T> extends
 
   /**
    * Check if the resource is ready. If no readiness check exists, this is just an existence check.
+   * <p>
+   * Note: for resources other than Node, Deployment, ReplicaSet, StatefulSet, Pod, ReplicationController, and DeploymentConfig
+   * readiness is simply an existence check.
+   * <p>
+   * Also note this obtains the latest version of the resource from the server even if the context item
+   * is present.
    *
    * @return true if the resource exists and is ready.
    */

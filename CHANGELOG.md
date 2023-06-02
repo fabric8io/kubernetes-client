@@ -11,6 +11,7 @@
 #### New Features
 
 #### _**Note**_: Breaking changes
+* Fix #2718: KubernetesResourceUtil.isResourceReady was deprecated.  Use 
 
 ### 6.7.0 (2023-06-01)
 
