@@ -32,7 +32,6 @@ import com.fasterxml.jackson.databind.introspect.Annotated;
 import com.fasterxml.jackson.databind.jsontype.TypeIdResolver;
 import com.fasterxml.jackson.databind.jsontype.TypeResolverBuilder;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.runtime.RawExtension;
@@ -385,7 +384,7 @@ public class KubernetesSerialization {
    * Registers a new resource, which can then be recognized for deserialization
    */
   public void registerKubernetesResource(Class<? extends KubernetesResource> clazz) {
-    registerKubernetesResource(null, HasMetadata.getKind(clazz), clazz);
+    getKubernetesDeserializer().registerKubernetesResource(clazz);
   }
 
   /**
