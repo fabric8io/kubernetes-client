@@ -388,7 +388,11 @@ public class KubernetesSerialization {
   }
 
   /**
-   * Registers a new resource, which can then be recognized for deserialization
+   * Registers a new resource, which can then be recognized for deserialization.
+   * <p>
+   * This is for advanced usage scenarios where you have a class that lacks annotations, or you can have the same class
+   * represent multiple versions or groups. However the DSL won't work with those classes - the resource(Class) method and other
+   * DSL logic only consults annotations via static HasMetadata methods.
    */
   public void registerKubernetesResource(String apiVersion, String kind, Class<? extends KubernetesResource> clazz) {
     getKubernetesDeserializer().registerCustomKind(apiVersion, kind, clazz);
