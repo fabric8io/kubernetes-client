@@ -25,7 +25,7 @@ spec:
   containers:
     - name: busybox
       image: busybox
-      command: ["sh", "-c", "touch /tmp/healthy; sleep 60m"]
+      command: ["sh", "-c", "touch /tmp/healthy; x=1; while [ $x -le 720 ]; do echo $x; x=$((x + 1)); sleep 5s; done"]
       readinessProbe:
         exec:
           command:

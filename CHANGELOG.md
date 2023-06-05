@@ -3,7 +3,6 @@
 ### 6.8-SNAPSHOT
 
 #### Bugs
-* Fix #5200: KubernetesSerialization.registerKubernetesResource(Class) reuses KuberentesDeseralizer.Mapping.addMapping which is better supported when manually registering KubernetesResource classes
 
 #### Improvements
 
@@ -12,6 +11,12 @@
 #### New Features
 
 #### _**Note**_: Breaking changes
+
+### 6.7.1(2023-06-06)
+
+#### Bugs
+* Fix #5200: KubernetesSerialization.registerKubernetesResource(Class) reuses KuberentesDeseralizer.Mapping.addMapping which is better supported when manually registering KubernetesResource classes
+* Fix #5202: OkHttp needs to default to unlimited read timeout so that log watches and http watches do not time out
 
 ### 6.7.0 (2023-06-01)
 

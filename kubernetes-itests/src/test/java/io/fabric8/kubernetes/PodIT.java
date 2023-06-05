@@ -25,13 +25,16 @@ import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.LocalPortForward;
+import io.fabric8.kubernetes.client.dsl.ContainerResource;
 import io.fabric8.kubernetes.client.dsl.ExecListener;
 import io.fabric8.kubernetes.client.dsl.ExecWatch;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
 import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.kubernetes.client.utils.IOHelpers;
 import io.fabric8.kubernetes.client.utils.InputStreamPumper;
+import io.fabric8.kubernetes.client.utils.Utils;
 import org.awaitility.Awaitility;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -58,7 +61,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.BooleanSupplier;
@@ -79,12 +84,20 @@ class PodIT {
 
   private static final Logger logger = LoggerFactory.getLogger(PodIT.class);
 
+  private ExecutorService executorService = Executors.newSingleThreadExecutor(Utils.daemonThreadFactory(this));
+
   @TempDir
   Path tempDir;
 
   KubernetesClient client;
 
   Namespace namespace;
+
+  @AfterEach
+  void afterEach() {
+    executorService.shutdownNow();
+    executorService = Executors.newSingleThreadExecutor(Utils.daemonThreadFactory(this));
+  }
 
   @Test
   void load() {
@@ -126,6 +139,34 @@ class PodIT {
   void log() {
     String log = client.pods().withName("pod-standard").withReadyWaitTimeout(POD_READY_WAIT_IN_MILLIS).getLog();
     assertNotNull(log);
+  }
+
+  @Test
+  void logWatch() throws IOException, InterruptedException {
+    LogWatch watch = client.pods().withName("pod-standard").withReadyWaitTimeout(POD_READY_WAIT_IN_MILLIS).watchLog();
+
+    InputStream is = watch.getOutput();
+
+    Awaitility.await().atMost(10, TimeUnit.SECONDS).until(() -> is.read() != -1);
+  }
+
+  @Test
+  void logWatchWithoutLogs() throws IOException, InterruptedException {
+    ContainerResource container = client.pods().withName("nginx").withReadyWaitTimeout(POD_READY_WAIT_IN_MILLIS);
+    String log = container.getLog();
+    LogWatch watch = container.watchLog();
+
+    InputStream is = watch.getOutput();
+
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    Future<?> pumping = InputStreamPumper.pump(is, baos::write, executorService);
+
+    Thread.sleep(15000); // wait longer than okhttp's default read timeout
+
+    assertTrue(!pumping.isDone());
+    // should be nothing new
+    assertEquals(log.length(), new String(baos.toByteArray(), StandardCharsets.UTF_8).length());
+    pumping.cancel(true);
   }
 
   @Test
@@ -195,7 +236,7 @@ class PodIT {
         .withReadyWaitTimeout(POD_READY_WAIT_IN_MILLIS)
         .exec("sh", "-i");
 
-    InputStreamPumper.pump(watch.getOutput(), baos::write, Executors.newSingleThreadExecutor());
+    InputStreamPumper.pump(watch.getOutput(), baos::write, executorService);
 
     watch.getInput().write("whoami\n".getBytes(StandardCharsets.UTF_8));
     watch.getInput().flush();
@@ -240,7 +281,7 @@ class PodIT {
     watch.getInput().write("whoami\n".getBytes(StandardCharsets.UTF_8));
     watch.getInput().flush();
 
-    InputStreamPumper.pump(watch.getOutput(), stdout::write, Executors.newSingleThreadExecutor());
+    InputStreamPumper.pump(watch.getOutput(), stdout::write, executorService);
 
     Awaitility.await().atMost(30, TimeUnit.SECONDS)
         .until(() -> stdout.toString().contains("root"));
