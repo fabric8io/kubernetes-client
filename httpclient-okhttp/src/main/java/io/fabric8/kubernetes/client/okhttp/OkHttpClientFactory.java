@@ -23,6 +23,7 @@ import io.fabric8.kubernetes.client.utils.HttpClientUtils;
 import okhttp3.Dispatcher;
 import okhttp3.OkHttpClient;
 
+import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
 public class OkHttpClientFactory implements HttpClient.Factory {
@@ -65,6 +66,10 @@ public class OkHttpClientFactory implements HttpClient.Factory {
     try {
       OkHttpClientBuilderImpl builderWrapper = newBuilder();
       OkHttpClient.Builder httpClientBuilder = builderWrapper.getBuilder();
+
+      // after #4911 the httpclients should default to unlimited read/write timeouts
+      // with the value set on the request as needed
+      httpClientBuilder.readTimeout(Duration.ZERO).writeTimeout(Duration.ZERO);
 
       if (config.isTrustCerts() || config.isDisableHostnameVerification()) {
         httpClientBuilder.hostnameVerifier((s, sslSession) -> true);
