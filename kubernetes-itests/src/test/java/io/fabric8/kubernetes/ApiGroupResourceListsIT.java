@@ -28,8 +28,10 @@ import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import org.junit.jupiter.api.Test;
 
+import java.util.TreeSet;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -74,13 +76,13 @@ class ApiGroupResourceListsIT {
   void testApiVisiting() {
     APIGroupList list = client.getApiGroups();
 
-    AtomicInteger groupCount = new AtomicInteger();
+    TreeSet<String> groups = new TreeSet<String>();
 
     client.visitResources(new ApiVisitor() {
 
       @Override
       public ApiVisitResult visitApiGroup(String group) {
-        groupCount.incrementAndGet();
+        groups.add(group);
         return ApiVisitResult.CONTINUE;
       }
 
@@ -93,7 +95,8 @@ class ApiGroupResourceListsIT {
     });
 
     // visit all groups + the core group
-    assertEquals(list.getGroups().size() + 1, groupCount.get());
+    assertEquals(Stream.concat(Stream.of(""), list.getGroups().stream().map(APIGroup::getName)).collect(Collectors.toSet()),
+        groups);
 
     // visit again to make sure we terminate as expected
     CompletableFuture<Boolean> done = new CompletableFuture<>();
