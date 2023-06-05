@@ -158,13 +158,6 @@ public class KubernetesDeserializer extends JsonDeserializer<KubernetesResource>
   /**
    * Registers a Custom Resource Definition Kind
    */
-  public void registerCustomKind(String kind, Class<? extends KubernetesResource> clazz) {
-    registerCustomKind(null, kind, clazz);
-  }
-
-  /**
-   * Registers a Custom Resource Definition Kind
-   */
   public void registerCustomKind(String apiVersion, String kind, Class<? extends KubernetesResource> clazz) {
     mapping.registerKind(apiVersion, kind, clazz);
   }
