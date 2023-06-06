@@ -33,9 +33,9 @@ import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.kubernetes.client.utils.IOHelpers;
 import io.fabric8.kubernetes.client.utils.InputStreamPumper;
 import io.fabric8.kubernetes.client.utils.Utils;
-import org.awaitility.Awaitility;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -53,9 +53,11 @@ import java.net.HttpURLConnection;
 import java.net.SocketException;
 import java.net.URL;
 import java.nio.channels.SocketChannel;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -63,13 +65,13 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.BooleanSupplier;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -81,10 +83,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class PodIT {
 
   private static final int POD_READY_WAIT_IN_MILLIS = 60000;
-
   private static final Logger logger = LoggerFactory.getLogger(PodIT.class);
 
-  private ExecutorService executorService = Executors.newSingleThreadExecutor(Utils.daemonThreadFactory(this));
+  private ExecutorService executorService;
 
   @TempDir
   Path tempDir;
@@ -93,10 +94,14 @@ class PodIT {
 
   Namespace namespace;
 
-  @AfterEach
-  void afterEach() {
-    executorService.shutdownNow();
+  @BeforeEach
+  void prepare() {
     executorService = Executors.newSingleThreadExecutor(Utils.daemonThreadFactory(this));
+  }
+
+  @AfterEach
+  void tearDown() {
+    executorService.shutdownNow();
   }
 
   @Test
@@ -142,31 +147,45 @@ class PodIT {
   }
 
   @Test
-  void logWatch() throws IOException, InterruptedException {
-    LogWatch watch = client.pods().withName("pod-standard").withReadyWaitTimeout(POD_READY_WAIT_IN_MILLIS).watchLog();
-
-    InputStream is = watch.getOutput();
-
-    Awaitility.await().atMost(10, TimeUnit.SECONDS).until(() -> is.read() != -1);
+  void logWatch() throws IOException {
+    try (
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        LogWatch ignore = client.pods().withName("pod-standard").withReadyWaitTimeout(POD_READY_WAIT_IN_MILLIS)
+            .watchLog(baos)) {
+      await()
+          .atMost(15, TimeUnit.SECONDS)
+          .until(() -> baos.toString(Charset.defaultCharset().name()).startsWith("1\n"));
+    }
   }
 
   @Test
-  void logWatchWithoutLogs() throws IOException, InterruptedException {
-    ContainerResource container = client.pods().withName("nginx").withReadyWaitTimeout(POD_READY_WAIT_IN_MILLIS);
-    String log = container.getLog();
-    LogWatch watch = container.watchLog();
+  void logWatchLongerThanDefaultTimeout() throws IOException {
+    final long startTime = System.currentTimeMillis();
+    try (
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        LogWatch ignore = client.pods().withName("pod-standard").withReadyWaitTimeout(POD_READY_WAIT_IN_MILLIS)
+            .watchLog(baos)) {
+      await()
+          .atMost(60, TimeUnit.SECONDS)
+          .until(() -> baos.toString(Charset.defaultCharset().name()).startsWith("1\n2\n3\n"));
+      assertThat(System.currentTimeMillis() - startTime).isGreaterThanOrEqualTo(10000);
+    }
+  }
 
-    InputStream is = watch.getOutput();
-
-    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    Future<?> pumping = InputStreamPumper.pump(is, baos::write, executorService);
-
-    Thread.sleep(15000); // wait longer than okhttp's default read timeout
-
-    assertTrue(!pumping.isDone());
-    // should be nothing new
-    assertEquals(log.length(), new String(baos.toByteArray(), StandardCharsets.UTF_8).length());
-    pumping.cancel(true);
+  @Test
+  void logWatchWithoutNewLogsLongerThanDefaultTimeout() throws IOException {
+    final long startTime = System.currentTimeMillis();
+    final ContainerResource container = client.pods().withName("nginx").withReadyWaitTimeout(POD_READY_WAIT_IN_MILLIS);
+    try (
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        LogWatch ignore = container.watchLog(baos)) {
+      final String initialLog = container.getLog();
+      await()
+          .pollDelay(Duration.ofSeconds(15))
+          .atMost(Duration.ofSeconds(30))
+          .until(() -> initialLog.equals(baos.toString(StandardCharsets.UTF_8.name())));
+      assertThat(System.currentTimeMillis() - startTime).isGreaterThanOrEqualTo(10000);
+    }
   }
 
   @Test
@@ -241,7 +260,7 @@ class PodIT {
     watch.getInput().write("whoami\n".getBytes(StandardCharsets.UTF_8));
     watch.getInput().flush();
 
-    Awaitility.await().atMost(30, TimeUnit.SECONDS)
+    await().atMost(30, TimeUnit.SECONDS)
         .until(() -> new String(baos.toByteArray(), StandardCharsets.UTF_8).contains("root"));
 
     watch.close();
@@ -283,7 +302,7 @@ class PodIT {
 
     InputStreamPumper.pump(watch.getOutput(), stdout::write, executorService);
 
-    Awaitility.await().atMost(30, TimeUnit.SECONDS)
+    await().atMost(30, TimeUnit.SECONDS)
         .until(() -> stdout.toString().contains("root"));
 
     watch.close();
@@ -295,7 +314,7 @@ class PodIT {
     // make sure we can get log output before the pod terminates
     ByteArrayOutputStream result = new ByteArrayOutputStream();
     LogWatch log = client.pods().withName("pod-interactive").tailingLines(10).watchLog(result);
-    Awaitility.await().atMost(30, TimeUnit.SECONDS).until(() -> result.size() > 0);
+    await().atMost(30, TimeUnit.SECONDS).until(() -> result.size() > 0);
     log.close();
   }
 
@@ -348,7 +367,7 @@ class PodIT {
   }
 
   void retryUpload(BooleanSupplier operation) {
-    Awaitility.await().atMost(60, TimeUnit.SECONDS).until(operation::getAsBoolean);
+    await().atMost(60, TimeUnit.SECONDS).until(operation::getAsBoolean);
   }
 
   @Test
@@ -492,7 +511,7 @@ class PodIT {
   }
 
   @Test
-  void portForward() throws IOException, InterruptedException {
+  void portForward() throws IOException {
     client.pods().withName("nginx").waitUntilReady(POD_READY_WAIT_IN_MILLIS, TimeUnit.SECONDS);
     LocalPortForward portForward = client.pods().withName("nginx").portForward(80);
     boolean failed = false;
