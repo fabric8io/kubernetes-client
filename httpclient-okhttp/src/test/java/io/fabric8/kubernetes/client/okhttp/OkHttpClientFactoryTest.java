@@ -109,4 +109,15 @@ class OkHttpClientFactoryTest {
     assertEquals(Type.SOCKS, client.getOkHttpClient().proxy().type());
   }
 
+  @Test
+  void httpClientsHaveZeroReadTimeout() {
+    OkHttpClientImpl client = new OkHttpClientFactory().newBuilder(Config.empty()).build();
+    assertEquals(0, client.getOkHttpClient().readTimeoutMillis());
+  }
+
+  @Test
+  void httpClientsHaveZeroWriteTimeout() {
+    OkHttpClientImpl client = new OkHttpClientFactory().newBuilder(Config.empty()).build();
+    assertEquals(0, client.getOkHttpClient().writeTimeoutMillis());
+  }
 }
