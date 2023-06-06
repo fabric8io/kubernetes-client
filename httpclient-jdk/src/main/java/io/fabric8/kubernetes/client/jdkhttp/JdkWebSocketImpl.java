@@ -126,6 +126,7 @@ class JdkWebSocketImpl implements WebSocket, java.net.http.WebSocket.Listener {
     CompletableFuture<java.net.http.WebSocket> cf = webSocket.sendClose(code, reason == null ? "Closing" : reason);
     cf = cf.whenComplete((w, t) -> {
       if (t != null) {
+        LOG.warn("Queued close did not succeed", t);
         abort();
       } else if (w != null) {
         webSocket.request(1); // there may not be demand, so request more
