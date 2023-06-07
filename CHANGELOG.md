@@ -3,6 +3,7 @@
 ### 6.8-SNAPSHOT
 
 #### Bugs
+* Fix #5218: No export for `io.fabric8.tekton.triggers.internal.knative.pkg.apis.duck.v1beta1` in tekton v1beta1 triggers model
 
 #### Improvements
 
