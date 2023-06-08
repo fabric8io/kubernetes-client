@@ -57,4 +57,16 @@ class PatchUtilsTest {
         PatchUtils.jsonDiff(rc1, rc2, false, new KubernetesSerialization()));
   }
 
+  @Test
+  void testDiffRemove() {
+    ReplicationController rc1 = new ReplicationControllerBuilder().withNewStatus().withFullyLabeledReplicas(1).endStatus()
+        .withNewMetadata().withName("x").endMetadata().build();
+
+    ReplicationController rc2 = new ReplicationControllerBuilder(rc1).withStatus(null).build();
+
+    assertEquals(
+        "[{\"op\":\"remove\",\"path\":\"/status\"}]",
+        PatchUtils.jsonDiff(rc1, rc2, false, new KubernetesSerialization()));
+  }
+
 }
