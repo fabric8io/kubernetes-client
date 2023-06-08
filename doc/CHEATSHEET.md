@@ -1859,6 +1859,10 @@ import io.fabric8.kubernetes.model.annotation.Version;
 public class CronTab extends CustomResource<CronTabSpec, CronTabStatus> implements Namespaced {
 }
 ```
+
+**Note:** Null values in your custom resource will be omitted by default by the client or when directly using KubernetesSerialization, or the static Serialization methods.  If you have a situation where a null value
+must be present in the serialized form, then mark the field with @JsonInclude(value = Include.ALWAYS).
+
 You can find other helper classes related to `CronTab` in our [tests](https://github.com/fabric8io/kubernetes-client/tree/master/kubernetes-tests/src/test/java/io/fabric8/kubernetes/client/mock/crd). For now, we can proceed with it's common usage examples:
 
 - Get Instance of client for our `CustomResource`:

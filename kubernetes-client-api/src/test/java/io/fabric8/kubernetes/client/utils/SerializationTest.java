@@ -16,6 +16,7 @@
 package io.fabric8.kubernetes.client.utils;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
@@ -76,6 +77,27 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class SerializationTest {
+
+  static class WithNull {
+    @JsonInclude(value = Include.ALWAYS)
+    public Integer field;
+  }
+
+  static class WithoutNull {
+    public Integer field;
+  }
+
+  @Test
+  void testNullSerialization() throws Exception {
+    assertEquals("---\nfield: null\n", Serialization.asYaml(new WithNull()));
+    assertEquals("{\"field\":null}", Serialization.asJson(new WithNull()));
+    assertEquals("--- {}\n", Serialization.asYaml(new WithoutNull()));
+    assertEquals("{}", Serialization.asJson(new WithoutNull()));
+    // map null values should be preserved
+    Map<String, String> map = new HashMap<>();
+    map.put("key", null);
+    assertEquals("{\"key\":null}", Serialization.asJson(map));
+  }
 
   @Test
   void unmarshalCRDWithSchema() throws Exception {

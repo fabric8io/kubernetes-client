@@ -16,6 +16,8 @@
 
 package io.fabric8.kubernetes.client.utils;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationConfig;
@@ -89,6 +91,8 @@ public class KubernetesSerialization {
   protected void configureMapper(ObjectMapper mapper) {
     mapper.registerModules(new JavaTimeModule(), unmatchedFieldTypeModule);
     mapper.disable(DeserializationFeature.FAIL_ON_INVALID_SUBTYPE);
+    // omit null fields, but keep null map values
+    mapper.setDefaultPropertyInclusion(JsonInclude.Value.construct(Include.NON_NULL, Include.ALWAYS));
     HandlerInstantiator instanciator = mapper.getDeserializationConfig().getHandlerInstantiator();
     mapper.setConfig(mapper.getDeserializationConfig().with(new HandlerInstantiator() {
 
