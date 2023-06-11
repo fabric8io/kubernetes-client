@@ -32,6 +32,10 @@ public interface Replaceable<T> {
    * @return returns deserialized version of api server response
    *
    * @deprecated use {@link #update()} instead
+   *
+   * @see <a href=
+   *      "https://github.com/fabric8io/kubernetes-client/blob/master/doc/FAQ.md#alternatives-to-createOrReplace-and-replace"
+   *      >Migration FAQ</a>
    */
   @Deprecated
   T replace();
@@ -42,6 +46,10 @@ public interface Replaceable<T> {
    * @return returns deserialized version of api server response
    *
    * @deprecated use {@link #updateStatus()} instead
+   *
+   * @see <a href=
+   *      "https://github.com/fabric8io/kubernetes-client/blob/master/doc/FAQ.md#alternatives-to-createOrReplace-and-replace"
+   *      >Migration FAQ</a>
    */
   @Deprecated
   T replaceStatus();
