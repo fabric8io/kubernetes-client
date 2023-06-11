@@ -4,6 +4,7 @@
 
 #### Bugs
 * Fix #5218: No export for `io.fabric8.tekton.triggers.internal.knative.pkg.apis.duck.v1beta1` in tekton v1beta1 triggers model
+* Fix #5224: Ensuring jetty sets the User-Agent header
 
 #### Improvements
 
