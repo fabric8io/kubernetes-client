@@ -391,17 +391,6 @@ public class OperationSupport {
         patchContext = new PatchContext.Builder().withPatchType(PatchType.JSON).build();
       }
     } else {
-      if (patchContext != null
-          && patchContext.getPatchType() == PatchType.SERVER_SIDE_APPLY) {
-        // TODO: it would probably be better to do this with a mixin
-        if (updated instanceof HasMetadata) {
-          ObjectMeta meta = ((HasMetadata) updated).getMetadata();
-          if (meta != null && meta.getManagedFields() != null && !meta.getManagedFields().isEmpty()) {
-            // the item should have already been cloned
-            meta.setManagedFields(null);
-          }
-        }
-      }
       patchForUpdate = getKubernetesSerialization().asJson(updated);
       current = updated; // use the updated to determine the path
     }

@@ -53,20 +53,20 @@ class ServerSideApplyIT {
     resource.delete();
 
     // 1st apply - create must be a server side apply - otherwise the later operations will need to force
-    service = resource.patch(PatchContext.of(PatchType.SERVER_SIDE_APPLY), service);
-    assertNotNull(service);
-    assertEquals(1, service.getSpec().getPorts().size());
+    Service fromServer = resource.patch(PatchContext.of(PatchType.SERVER_SIDE_APPLY), service);
+    assertNotNull(fromServer);
+    assertEquals(1, fromServer.getSpec().getPorts().size());
     // make sure a cluster ip was assigned
-    String clusterIp = service.getSpec().getClusterIP();
+    String clusterIp = fromServer.getSpec().getClusterIP();
     assertNotNull(clusterIp);
 
     // Modify resource
     service.getSpec().setSelector(Collections.singletonMap("app", "other"));
 
     // 2nd server side apply
-    service = client.resource(service).serverSideApply();
-    assertEquals("other", service.getSpec().getSelector().get("app"));
-    assertEquals(clusterIp, service.getSpec().getClusterIP());
+    fromServer = client.resource(service).serverSideApply();
+    assertEquals("other", fromServer.getSpec().getSelector().get("app"));
+    assertEquals(clusterIp, fromServer.getSpec().getClusterIP());
   }
 
 }

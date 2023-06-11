@@ -119,3 +119,46 @@ we should provide it like this:
 ```java
 NO_PROXY: localhost,127.0.0.1,.google.com,.github.com
 ```
+
+### Optimistic Locking Behavior
+
+Unfortunately it's a little complicated as it depends on what operation you are doing - we'll work towards ensuring the Javadocs are as informative as possible.  Here is quick overview:
+
+- Basic mutative operations such as update and all variations of patch (patch, edit, accept, serverSideApply) that operate on a given item - are all locked to the resourceVersion on that item.  If you don't want this behavior then set the resourceVersion to null:
+
+```
+resource.accept(x -> {
+  resource.getMetadata().setResourceVersion(null);
+  resource... // some other modifications    
+});
+```
+
+When the resourceVersion is null for an update the client obtains the latest resourceVersion prior to attempting the PUT operation - in a rare circumstance this may still fail due to a concurrent modification.
+
+When the resourceVersion is null for a patch the server will always attempt to perform the patch - but of course there may be conflicts to deal with if there has been an intervening modification.
+
+**Note:** that when using informers - do not make modifications to the resources obtained from the cache - especially to the resourceVersion.
+
+**Note:** it is not recommended to use serverSideApply directly against modified existing resources - the intent is to apply only the desired state owned by the applier.  See the next topic for more.
+
+- Delete is not locked by default, you may use the applicable lockResourceVersion method if you want the delete to apply only to a specific resourceVersion
+
+- Specialized mutative operations are generally unlocked - this includes scale, rolling operations (resume, pause, restart), and others.  The rationale is that you want the narrow operation to succeed even if there has been an intervening change.  If you encounter a situation where you require these operations be locked, please raise an issue so that we can see about making the locking function applicable.
+
+- A handful of additional operations, such as undo, updateImage, and others are currently locked by default.  This may not be intentional - under the covers this is apply a json patch; older versions of json patching that created the resource diff were unlocked by default.  If you encounter an exception due to a concurrent modification performing an operation that seems like it should ignore that possibility by default please raise an issue.
+
+- Legacy operations such as creatOrReplace or replace were effectively unlocked - they would repeatedly retry the operation with the freshest resourceVersion until it succeeded.  These methods have been deprecated because of the complexity of their implementation and the broad unlocking behavior by default could be considered unsafe.
+
+### Alternatives to createOrReplace and replace
+
+createOrReplace was introduced as an alternative to the kubectl apply operation.  Over the years there were quite a few issues highlighting where the behavior was different, and there were only limited workarounds and improvements offered.  Given the additional complexity of matching the kubectl client side apply behavior, that was never offered as an option.  Now that there is first class support for serverSideApply it can be use, but it comes with a couple of caveats:
+
+- you will want to use forceConficts - resource.forceConflicts().serverSideApply() - this is especially true when acting as a controller updating a resource that [manages](https://kubernetes.io/docs/reference/using-api/server-side-apply/#using-server-side-apply-in-a-controller)
+
+- for some resource types serverSideApply may cause vacuous revisions - see https://github.com/kubernetes/kubernetes/issues/118519 - if you are being informed of modifications on those resources you must either filter those out, don't perform the serverSideApply, or use the [java-operator-sdk](https://github.com/java-operator-sdk/java-operator-sdk) that should handle that possibility already.
+
+- a common pattern for createOrReplace was obtaining the current resource from the api server (possibly via an informer cache), making modifications, then calling createOrReplace.  Doing something similar with serverSideApply will fail as the managedFields will be populated.  While you may be tempted to simply clear the managedFields and the resourceVersion, this is generally not what you should be doing unless you want your logic to assume ownership of every field on the resource.  Instead you should re-organize your code to apply only the desired state that you wish to apply.  If you have a more involved situation please read the [upstream server side apply documentation](https://kubernetes.io/docs/reference/using-api/server-side-apply/) to understand topics like transferring ownership and partial patches.
+
+The alternative to replace is either serverSideApply - with the same caveats as above - or to use update, but with resourceVersion set to null.
+
+**Note:** that when using informers - do not make modifications to the resources obtained from the cache - especially to the resourceVersion.
