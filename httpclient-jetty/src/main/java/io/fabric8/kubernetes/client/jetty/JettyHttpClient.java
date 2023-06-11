@@ -102,7 +102,7 @@ public class JettyHttpClient extends StandardHttpClient<JettyHttpClient, JettyHt
     if (originalRequest.getTimeout() != null) {
       jettyRequest.timeout(originalRequest.getTimeout().toMillis(), TimeUnit.MILLISECONDS);
     }
-    jettyRequest.headers(m -> request.headers().forEach((k, l) -> l.forEach(v -> m.add(k, v))));
+    jettyRequest.headers(m -> request.headers().forEach(m::put));
 
     final var contentType = Optional.ofNullable(request.getContentType());
 
