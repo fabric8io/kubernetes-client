@@ -44,7 +44,7 @@
     <gradle-api.version>6.1.1</gradle-api.version>
     <groovy-api.version>2.4.21</groovy-api.version>
     <javax.inject.version>1</javax.inject.version>
-    <commons-io.version>2.12.0</commons-io.version>
+    <commons-io.version>2.13.0</commons-io.version>
     <guava.version>32.0.1-jre</guava.version>
   </properties>
 
