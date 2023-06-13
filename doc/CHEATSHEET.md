@@ -2012,7 +2012,7 @@ public class SparkOperatorResource extends GenericKubernetesResource implements 
 
 Usage with Resource Typed API by `SparkOperatorResource`
 ```
-kubernetesClient.resources(SparkOperatorResource.class).inNamespace("myNamespace)...
+kubernetesClient.resources(SparkOperatorResource.class).inNamespace("myNamespace")...
 ```
 
 Resource Typeless API:
@@ -2030,7 +2030,7 @@ public static ResourceDefinitionContext getResourceDefinitionContext() {
 
 Usage with Resource Typeless API:
 ```
-kubernetesClient.genericKubernetesResources(getResourceDefinitionContext()).inNamespace("myNamespace)...
+kubernetesClient.genericKubernetesResources(getResourceDefinitionContext()).inNamespace("myNamespace")...
 ```
 
 ### CertificateSigningRequest
