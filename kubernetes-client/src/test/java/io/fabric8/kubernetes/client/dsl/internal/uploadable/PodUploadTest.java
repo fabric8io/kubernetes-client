@@ -90,7 +90,7 @@ class PodUploadTest {
   void upload_withDirectoryAndLongFileNames_shouldUploadDirectory() throws Exception {
     final Path toUpload = new File(PodUpload.class.getResource("/upload_long").getFile())
         .toPath();
-    uploadDirectoryAndVerify(() -> PodUpload.upload(operation, toUpload), 4096);
+    uploadDirectoryAndVerify(() -> PodUpload.upload(operation, toUpload), 5120);
   }
 
   @Test
