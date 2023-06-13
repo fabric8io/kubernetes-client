@@ -2017,15 +2017,15 @@ kubernetesClient.resources(SparkOperatorResource.class).inNamespace("myNamespace
 
 Resource Typeless API:
 ```
-    public static ResourceDefinitionContext getResourceDefinitionContext() {
-        return new ResourceDefinitionContext.Builder()
-                .withGroup("sparkoperator.k8s.io")
-                .withPlural("sparkapps")
-                .withVersion("v1beta2")
-                .withKind("SparkApplication")
-                .withNamespaced(true)
-                .build();
-    }
+public static ResourceDefinitionContext getResourceDefinitionContext() {
+    return new ResourceDefinitionContext.Builder()
+            .withGroup("sparkoperator.k8s.io")
+            .withPlural("sparkapps")
+            .withVersion("v1beta2")
+            .withKind("SparkApplication")
+            .withNamespaced(true)
+            .build();
+}
 ```
 
 Usage with Resource Typeless API:
