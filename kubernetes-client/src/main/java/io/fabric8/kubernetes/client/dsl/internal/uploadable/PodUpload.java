@@ -175,13 +175,13 @@ public class PodUpload {
 
   private static void addFileToTar(String rootTarPath, String fileName, File file, TarArchiveOutputStream tar)
       throws IOException {
-    tar.putArchiveEntry(new TarArchiveEntry(file, fileName));
+    String dirRootPath = Optional.ofNullable(rootTarPath).orElse("") + TAR_PATH_DELIMITER + fileName;
+    tar.putArchiveEntry(new TarArchiveEntry(file, dirRootPath));
     if (file.isFile()) {
       Files.copy(file.toPath(), tar);
       tar.closeArchiveEntry();
     } else if (file.isDirectory()) {
       tar.closeArchiveEntry();
-      String dirRootPath = Optional.ofNullable(rootTarPath).orElse("") + TAR_PATH_DELIMITER + fileName;
       for (File fileInDirectory : file.listFiles()) {
         addFileToTar(dirRootPath, fileInDirectory.getName(), fileInDirectory, tar);
       }

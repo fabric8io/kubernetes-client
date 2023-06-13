@@ -9,6 +9,7 @@
 * Fix #4225: Enum fields written in generated crd yaml
 * Fix #5236: using scale v1beta1 compatible logic for DeploymentConfig
 * Fix #5235: Vert.x doesn't need to track derived HttpClients - prevents leakage
+* Fix #5238: Preserve folder structure again in PodUpload.upload()
 
 #### Improvements
 
