@@ -1909,6 +1909,41 @@ cronTabClient.inNamespace("default").watch(new Watcher<CronTab>() {
    }
 });
 ```
+### Resource Typed API vs. Resource Typeless API
+Following examples demonstrate how to define the same context for custom resources in two different ways by example of the spark operator.
+
+Resource Typed API:
+```
+@Group("sparkoperator.k8s.io")
+@Plural("sparkapps")
+@Version("v1beta2")
+@Kind("SparkApplication")
+public class SparkOperatorResource extends GenericKubernetesResource implements Namespaced { ... }
+```
+
+Usage with Resource Typed API by `SparkOperatorResource`
+```
+kubernetesClient.resources(SparkOperatorResource.class).inNamespace("myNamespace)...
+```
+
+Resource Typeless API:
+```
+    public static ResourceDefinitionContext getResourceDefinitionContext() {
+        return new ResourceDefinitionContext.Builder()
+                .withGroup("sparkoperator.k8s.io")
+                .withPlural("sparkapps")
+                .withVersion("v1beta2")
+                .withKind("SparkApplication")
+                .withNamespaced(true)
+                .build();
+    }
+```
+
+Usage with Resource Typeless API:
+```
+kubernetesClient.genericKubernetesResources(getResourceDefinitionContext()).inNamespace("myNamespace)...
+```
+
 
 ### Resource Typeless API
 If you don't need or want to use a strongly typed client, the Kubernetes Client also provides a typeless/raw API to handle your resources in form of GenericKubernetesResource.  GenericKubernetesResource implements HasMetadata and provides the rest of its fields via a map. In most circumstances the client can infer the necessary details about your type from the api server, this includes:
