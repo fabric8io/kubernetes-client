@@ -713,7 +713,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     return handlePatch(context, current, updated, getType());
   }
 
-  protected <S> S handleScale(S scaleParam, Class<S> scaleType) {
+  public <S> S handleScale(S scaleParam, Class<S> scaleType) {
     try {
       return handleScale(getCompleteResourceUrl().toString(), scaleParam, scaleType);
     } catch (InterruptedException ie) {

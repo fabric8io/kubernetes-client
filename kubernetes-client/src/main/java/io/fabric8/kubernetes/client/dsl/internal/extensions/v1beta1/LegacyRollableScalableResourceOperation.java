@@ -21,6 +21,7 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.autoscaling.v1.Scale;
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.internal.OperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.PodOperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.apps.v1.RollableScalableResourceOperation;
@@ -29,7 +30,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-abstract class LegacyRollableScalableResourceOperation<T extends HasMetadata, L extends KubernetesResourceList<T>, R extends Resource<T>>
+public abstract class LegacyRollableScalableResourceOperation<T extends HasMetadata, L extends KubernetesResourceList<T>, R extends Resource<T>>
     extends RollableScalableResourceOperation<T, L, R> {
 
   protected LegacyRollableScalableResourceOperation(PodOperationContext context, OperationContext superContext, Class<T> type,
@@ -39,14 +40,19 @@ abstract class LegacyRollableScalableResourceOperation<T extends HasMetadata, L 
 
   @Override
   public Scale scale(Scale scaleParam) {
+    return scale(scaleParam, this);
+  }
+
+  public static Scale scale(Scale scaleParam, HasMetadataOperation<?, ?, ?> operation) {
     // handles the conversion back in forth between v1beta1.scale and v1.scale
     // the sticking point is mostly the conversion of the selector from a map to a single string
-    GenericKubernetesResource scale = handleScale(
+    GenericKubernetesResource scale = operation.handleScale(
         Optional.ofNullable(scaleParam)
-            .map(s -> getKubernetesSerialization().unmarshal(getKubernetesSerialization().asYaml(s),
+            .map(s -> operation.getKubernetesSerialization().unmarshal(operation.getKubernetesSerialization().asYaml(s),
                 GenericKubernetesResource.class))
             .map(g -> {
               g.getAdditionalProperties().put("status", null);
+              // could explicitly set the apiVersion, but that doesn't seem to be required
               return g;
             }).orElse(null),
         GenericKubernetesResource.class);
@@ -56,7 +62,8 @@ abstract class LegacyRollableScalableResourceOperation<T extends HasMetadata, L 
               .ifPresent(selector -> status.put("selector",
                   selector.entrySet().stream().map(e -> e.getKey() + "=" + e.getValue()).collect(Collectors.joining(";")))));
       return s;
-    }).map(s -> getKubernetesSerialization().unmarshal(getKubernetesSerialization().asYaml(s), Scale.class)).orElse(null);
+    }).map(s -> operation.getKubernetesSerialization().unmarshal(operation.getKubernetesSerialization().asYaml(s), Scale.class))
+        .orElse(null);
   }
 
 }

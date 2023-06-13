@@ -15,6 +15,7 @@
  */
 package io.fabric8.openshift.client.dsl.internal.apps;
 
+import io.fabric8.kubernetes.api.model.autoscaling.v1.Scale;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.BytesLimitTerminateTimeTailPrettyLoggable;
@@ -29,6 +30,7 @@ import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.LogWatchCallback;
 import io.fabric8.kubernetes.client.dsl.internal.OperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.PodOperationContext;
+import io.fabric8.kubernetes.client.dsl.internal.extensions.v1beta1.LegacyRollableScalableResourceOperation;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.internal.PodOperationUtil;
 import io.fabric8.openshift.api.model.DeploymentConfig;
@@ -68,6 +70,11 @@ public class DeploymentConfigOperationsImpl
   @Override
   public DeploymentConfigOperationsImpl newInstance(OperationContext context) {
     return new DeploymentConfigOperationsImpl(rollingOperationContext, context);
+  }
+
+  @Override
+  public Scale scale(Scale scaleParam) {
+    return LegacyRollableScalableResourceOperation.scale(scaleParam, this);
   }
 
   @Override
