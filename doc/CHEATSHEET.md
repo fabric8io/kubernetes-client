@@ -39,6 +39,7 @@ This document contains common usages of different resources using Fabric8 Kubern
   * [CustomResourceDefinition](#customresourcedefinition)
   * [Resource Typed API](#resource-typed-api)
   * [Resource Typeless API](#resource-typeless-api)
+  * [Resource Typed API vs. Resource Typeless API](#resource-typed-api-vs-resource-typeless-api)
   * [CertificateSigningRequest](#certificatesigningrequest)
   * [SharedInformers](#sharedinformers)
   * [List Options](#list-options)
