@@ -33,7 +33,6 @@ import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
@@ -54,11 +53,11 @@ public class PodUpload {
 
     if (Utils.isNotNullOrEmpty(operation.getContext().getFile()) && pathToUpload.toFile().isFile()) {
       return uploadTar(operation, getDirectoryFromFile(operation),
-          tar -> addFileToTar(null, new File(operation.getContext().getFile()).getName(), pathToUpload.toFile(), tar));
+          tar -> addFileToTar(new File(operation.getContext().getFile()).getName(), pathToUpload.toFile(), tar));
     } else if (Utils.isNotNullOrEmpty(operation.getContext().getDir()) && pathToUpload.toFile().isDirectory()) {
       return uploadTar(operation, operation.getContext().getDir(), tar -> {
         for (File file : pathToUpload.toFile().listFiles()) {
-          addFileToTar(null, file.getName(), file, tar);
+          addFileToTar(file.getName(), file, tar);
         }
       });
     }
@@ -173,17 +172,16 @@ public class PodUpload {
     return String.format("mkdir -p %1$s; tar -C %1$s -xmf %2$s; e=$?; rm %2$s; exit $e", shellQuote(directory), tar);
   }
 
-  private static void addFileToTar(String rootTarPath, String fileName, File file, TarArchiveOutputStream tar)
+  private static void addFileToTar(String fileName, File file, TarArchiveOutputStream tar)
       throws IOException {
-    String dirRootPath = Optional.ofNullable(rootTarPath).orElse("") + TAR_PATH_DELIMITER + fileName;
-    tar.putArchiveEntry(new TarArchiveEntry(file, dirRootPath));
+    tar.putArchiveEntry(new TarArchiveEntry(file, fileName));
     if (file.isFile()) {
       Files.copy(file.toPath(), tar);
       tar.closeArchiveEntry();
     } else if (file.isDirectory()) {
       tar.closeArchiveEntry();
       for (File fileInDirectory : file.listFiles()) {
-        addFileToTar(dirRootPath, fileInDirectory.getName(), fileInDirectory, tar);
+        addFileToTar(fileName + TAR_PATH_DELIMITER + fileInDirectory.getName(), fileInDirectory, tar);
       }
     }
   }
