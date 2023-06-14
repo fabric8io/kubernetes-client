@@ -51,6 +51,10 @@ public class VertxHttpClientBuilder<F extends HttpClient.Factory>
 
   @Override
   public VertxHttpClient<F> build() {
+    if (this.client != null) {
+      return new VertxHttpClient<>(this, this.client.getClient());
+    }
+
     WebClientOptions options = new WebClientOptions();
 
     options.setMaxPoolSize(MAX_CONNECTIONS);
@@ -111,7 +115,7 @@ public class VertxHttpClientBuilder<F extends HttpClient.Factory>
         }
       });
     }
-    return new VertxHttpClient<>(this, options);
+    return new VertxHttpClient<>(this, vertx.createHttpClient(options));
   }
 
   @Override

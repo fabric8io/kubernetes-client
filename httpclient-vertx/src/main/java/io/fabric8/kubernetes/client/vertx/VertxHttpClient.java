@@ -29,7 +29,6 @@ import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.RequestOptions;
 import io.vertx.core.http.UpgradeRejectedException;
 import io.vertx.core.http.WebSocketConnectOptions;
-import io.vertx.ext.web.client.WebClientOptions;
 
 import java.nio.ByteBuffer;
 import java.util.Collections;
@@ -44,10 +43,14 @@ public class VertxHttpClient<F extends io.fabric8.kubernetes.client.http.HttpCli
   private final Vertx vertx;
   private final HttpClient client;
 
-  VertxHttpClient(VertxHttpClientBuilder<F> vertxHttpClientBuilder, WebClientOptions options) {
+  VertxHttpClient(VertxHttpClientBuilder<F> vertxHttpClientBuilder, HttpClient client) {
     super(vertxHttpClientBuilder);
     this.vertx = vertxHttpClientBuilder.vertx;
-    this.client = vertx.createHttpClient(options);
+    this.client = client;
+  }
+
+  HttpClient getClient() {
+    return client;
   }
 
   @Override
