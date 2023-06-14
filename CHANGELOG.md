@@ -9,6 +9,7 @@
 #### Dependency Upgrade
 
 #### New Features
+* Fix #5133: Support for using TokenRequest for existing ServiceAccount
 
 #### _**Note**_: Breaking changes
 

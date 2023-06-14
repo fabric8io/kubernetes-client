@@ -83,6 +83,7 @@ import io.fabric8.kubernetes.client.dsl.RbacAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
 import io.fabric8.kubernetes.client.dsl.SchedulingAPIGroupDSL;
+import io.fabric8.kubernetes.client.dsl.ServiceAccountResource;
 import io.fabric8.kubernetes.client.dsl.ServiceResource;
 import io.fabric8.kubernetes.client.dsl.StorageAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.V1APIGroupDSL;
@@ -445,7 +446,7 @@ public interface KubernetesClient extends Client {
    *
    * @return MixedOperation object for ServiceAccount related operations.
    */
-  MixedOperation<ServiceAccount, ServiceAccountList, Resource<ServiceAccount>> serviceAccounts();
+  MixedOperation<ServiceAccount, ServiceAccountList, ServiceAccountResource> serviceAccounts();
 
   /**
    * API entrypoint for APIService related operations. APIService (apiregistration.k8s.io/v1)
