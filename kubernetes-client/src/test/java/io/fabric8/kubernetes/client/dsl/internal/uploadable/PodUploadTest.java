@@ -24,7 +24,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
-import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
 import java.io.ByteArrayInputStream;
@@ -144,13 +143,10 @@ class PodUploadTest {
       verifyTar(fileUploadMethodToTest, size, "/mock");
       return;
     }
-    Mockito.when(this.operation.writingOutput(Mockito.any())).then(new Answer<TtyExecErrorable>() {
-      @Override
-      public TtyExecErrorable answer(InvocationOnMock invocation) throws Throwable {
-        OutputStream out = (OutputStream) invocation.getArgument(0);
-        out.write((size + "\n").getBytes(StandardCharsets.UTF_8));
-        return operation;
-      }
+    Mockito.when(this.operation.writingOutput(Mockito.any())).then((Answer<TtyExecErrorable>) invocation -> {
+      OutputStream out = invocation.getArgument(0);
+      out.write((size + "\n").getBytes(StandardCharsets.UTF_8));
+      return operation;
     });
     boolean result = fileUploadMethodToTest.apply();
     assertThat(result).isTrue();
@@ -172,13 +168,10 @@ class PodUploadTest {
 
   private void verifyTar(PodUploadTester<Boolean> directoryUpload, long size, String dir)
       throws IOException, InterruptedException {
-    Mockito.when(this.operation.writingOutput(Mockito.any())).then(new Answer<TtyExecErrorable>() {
-      @Override
-      public TtyExecErrorable answer(InvocationOnMock invocation) throws Throwable {
-        OutputStream out = (OutputStream) invocation.getArgument(0);
-        out.write((size + "\n").getBytes(StandardCharsets.UTF_8));
-        return operation;
-      }
+    Mockito.when(this.operation.writingOutput(Mockito.any())).then((Answer<TtyExecErrorable>) invocation -> {
+      OutputStream out = invocation.getArgument(0);
+      out.write((size + "\n").getBytes(StandardCharsets.UTF_8));
+      return operation;
     });
     boolean result = directoryUpload.apply();
     assertThat(result).isTrue();
