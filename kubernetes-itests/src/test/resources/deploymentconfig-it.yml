@@ -114,6 +114,38 @@ spec:
 kind: "DeploymentConfig"
 apiVersion: "v1"
 metadata:
+  name: dc-scale
+spec:
+  template:
+    metadata:
+      labels:
+        name: "scale"
+    spec:
+      containers:
+        - name: "helloworld"
+          image: "openshift/origin-ruby-sample"
+          ports:
+            - containerPort: 8080
+              protocol: "TCP"
+  replicas: 0
+  selector:
+    name: "scale"
+  triggers:
+    - type: "ConfigChange"
+    - type: "ImageChange"
+      imageChangeParams:
+        automatic: true
+        containerNames:
+          - "helloworld"
+        from:
+          kind: "ImageStreamTag"
+          name: "origin-ruby-sample:latest"
+  strategy:
+    type: "Rolling"
+---
+kind: "DeploymentConfig"
+apiVersion: "v1"
+metadata:
   name: dc-delete
 spec:
   template:
