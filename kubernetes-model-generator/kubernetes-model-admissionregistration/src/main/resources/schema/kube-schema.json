@@ -2027,6 +2027,102 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "kubernetes_authentication_BoundObjectReference": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "uid": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.authentication.BoundObjectReference",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_authentication_TokenRequest": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "authentication.k8s.io/v1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "TokenRequest",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/kubernetes_authentication_TokenRequestSpec",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.authentication.TokenRequestSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/kubernetes_authentication_TokenRequestStatus",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.authentication.TokenRequestStatus"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.authentication.TokenRequest",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
+      ]
+    },
+    "kubernetes_authentication_TokenRequestSpec": {
+      "type": "object",
+      "properties": {
+        "audiences": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "boundObjectRef": {
+          "$ref": "#/definitions/kubernetes_authentication_BoundObjectReference",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.authentication.BoundObjectReference"
+        },
+        "expirationSeconds": {
+          "type": "integer",
+          "existingJavaType": "Long"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.authentication.TokenRequestSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_authentication_TokenRequestStatus": {
+      "type": "object",
+      "properties": {
+        "expirationTimestamp": {
+          "$ref": "#/definitions/kubernetes_apimachinery_Time",
+          "existingJavaType": "String"
+        },
+        "token": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.authentication.TokenRequestStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "kubernetes_authentication_TokenReview": {
       "type": "object",
       "properties": {
@@ -3003,6 +3099,10 @@
     "Time": {
       "$ref": "#/definitions/kubernetes_apimachinery_Time",
       "existingJavaType": "String"
+    },
+    "TokenRequest": {
+      "$ref": "#/definitions/kubernetes_authentication_TokenRequest",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.authentication.TokenRequest"
     },
     "TokenReview": {
       "$ref": "#/definitions/kubernetes_authentication_TokenReview",

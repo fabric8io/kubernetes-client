@@ -2027,6 +2027,102 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "kubernetes_authentication_BoundObjectReference": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "uid": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.authentication.BoundObjectReference",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_authentication_TokenRequest": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "authentication.k8s.io/v1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "TokenRequest",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/kubernetes_authentication_TokenRequestSpec",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.authentication.TokenRequestSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/kubernetes_authentication_TokenRequestStatus",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.authentication.TokenRequestStatus"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.authentication.TokenRequest",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
+      ]
+    },
+    "kubernetes_authentication_TokenRequestSpec": {
+      "type": "object",
+      "properties": {
+        "audiences": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "boundObjectRef": {
+          "$ref": "#/definitions/kubernetes_authentication_BoundObjectReference",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.authentication.BoundObjectReference"
+        },
+        "expirationSeconds": {
+          "type": "integer",
+          "existingJavaType": "Long"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.authentication.TokenRequestSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_authentication_TokenRequestStatus": {
+      "type": "object",
+      "properties": {
+        "expirationTimestamp": {
+          "$ref": "#/definitions/kubernetes_apimachinery_Time",
+          "existingJavaType": "String"
+        },
+        "token": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.authentication.TokenRequestStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "kubernetes_authentication_TokenReview": {
       "type": "object",
       "properties": {
@@ -3004,6 +3100,10 @@
       "$ref": "#/definitions/kubernetes_apimachinery_Time",
       "existingJavaType": "String"
     },
+    "TokenRequest": {
+      "$ref": "#/definitions/kubernetes_authentication_TokenRequest",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.authentication.TokenRequest"
+    },
     "TokenReview": {
       "$ref": "#/definitions/kubernetes_authentication_TokenReview",
       "existingJavaType": "io.fabric8.kubernetes.api.model.authentication.TokenReview"
@@ -3294,6 +3394,23 @@
           "type": "string",
           "default": "APIGroupList",
           "required": true
+        }
+      },
+      "additionalProperties": true
+    },
+    "boundobjectreference": {
+      "properties": {
+        "apiVersion": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "uid": {
+          "type": "string"
         }
       },
       "additionalProperties": true
@@ -3671,14 +3788,13 @@
       "properties": {
         "admissionReviewVersions": {
           "type": "array",
-          "javaOmitEmpty": true,
           "items": {
             "type": "string"
           }
         },
         "clientConfig": {
-          "$ref": "#/definitions/kubernetes_admissionregistration_v1beta1_WebhookClientConfig",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.WebhookClientConfig"
+          "$ref": "#/definitions/kubernetes_admissionregistration_v1_WebhookClientConfig",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1.WebhookClientConfig"
         },
         "failurePolicy": {
           "type": "string"
@@ -3721,7 +3837,7 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "admissionregistration.k8s.io/v1",
+          "default": "admissionregistration.k8s.io/v1beta1",
           "required": true
         },
         "kind": {
@@ -3737,8 +3853,8 @@
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/kubernetes_admissionregistration_v1_MutatingWebhook",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1.MutatingWebhook"
+            "$ref": "#/definitions/kubernetes_admissionregistration_v1beta1_MutatingWebhook",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.MutatingWebhook"
           }
         }
       },
@@ -3748,14 +3864,14 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "admissionregistration.k8s.io/v1beta1",
+          "default": "admissionregistration.k8s.io/v1",
           "required": true
         },
         "items": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/kubernetes_admissionregistration_v1beta1_MutatingWebhookConfiguration",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.MutatingWebhookConfiguration"
+            "$ref": "#/definitions/kubernetes_admissionregistration_v1_MutatingWebhookConfiguration",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1.MutatingWebhookConfiguration"
           }
         },
         "kind": {
@@ -4159,7 +4275,7 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "authorization.k8s.io/v1",
+          "default": "authorization.k8s.io/v1beta1",
           "required": true
         },
         "kind": {
@@ -4172,12 +4288,12 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
-          "$ref": "#/definitions/kubernetes_authorization_v1_SelfSubjectAccessReviewSpec",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.authorization.v1.SelfSubjectAccessReviewSpec"
+          "$ref": "#/definitions/kubernetes_authorization_v1beta1_SelfSubjectAccessReviewSpec",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.authorization.v1beta1.SelfSubjectAccessReviewSpec"
         },
         "status": {
-          "$ref": "#/definitions/kubernetes_authorization_v1_SubjectAccessReviewStatus",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.authorization.v1.SubjectAccessReviewStatus"
+          "$ref": "#/definitions/kubernetes_authorization_v1beta1_SubjectAccessReviewStatus",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.authorization.v1beta1.SubjectAccessReviewStatus"
         }
       },
       "additionalProperties": true
@@ -4185,12 +4301,12 @@
     "selfsubjectaccessreviewspec": {
       "properties": {
         "nonResourceAttributes": {
-          "$ref": "#/definitions/kubernetes_authorization_v1_NonResourceAttributes",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.authorization.v1.NonResourceAttributes"
+          "$ref": "#/definitions/kubernetes_authorization_v1beta1_NonResourceAttributes",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.authorization.v1beta1.NonResourceAttributes"
         },
         "resourceAttributes": {
-          "$ref": "#/definitions/kubernetes_authorization_v1_ResourceAttributes",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.authorization.v1.ResourceAttributes"
+          "$ref": "#/definitions/kubernetes_authorization_v1beta1_ResourceAttributes",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.authorization.v1beta1.ResourceAttributes"
         }
       },
       "additionalProperties": true
@@ -4371,7 +4487,7 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "authorization.k8s.io/v1beta1",
+          "default": "authorization.k8s.io/v1",
           "required": true
         },
         "kind": {
@@ -4384,12 +4500,12 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
-          "$ref": "#/definitions/kubernetes_authorization_v1beta1_SubjectAccessReviewSpec",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.authorization.v1beta1.SubjectAccessReviewSpec"
+          "$ref": "#/definitions/kubernetes_authorization_v1_SubjectAccessReviewSpec",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.authorization.v1.SubjectAccessReviewSpec"
         },
         "status": {
-          "$ref": "#/definitions/kubernetes_authorization_v1beta1_SubjectAccessReviewStatus",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.authorization.v1beta1.SubjectAccessReviewStatus"
+          "$ref": "#/definitions/kubernetes_authorization_v1_SubjectAccessReviewStatus",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.authorization.v1.SubjectAccessReviewStatus"
         }
       },
       "additionalProperties": true
@@ -4406,7 +4522,7 @@
           },
           "existingJavaType": "java.util.Map\u003cString, java.util.ArrayList\u003cString\u003e\u003e"
         },
-        "groups": {
+        "group": {
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
@@ -4414,12 +4530,12 @@
           }
         },
         "nonResourceAttributes": {
-          "$ref": "#/definitions/kubernetes_authorization_v1_NonResourceAttributes",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.authorization.v1.NonResourceAttributes"
+          "$ref": "#/definitions/kubernetes_authorization_v1beta1_NonResourceAttributes",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.authorization.v1beta1.NonResourceAttributes"
         },
         "resourceAttributes": {
-          "$ref": "#/definitions/kubernetes_authorization_v1_ResourceAttributes",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.authorization.v1.ResourceAttributes"
+          "$ref": "#/definitions/kubernetes_authorization_v1beta1_ResourceAttributes",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.authorization.v1beta1.ResourceAttributes"
         },
         "uid": {
           "type": "string"
@@ -4458,15 +4574,15 @@
         "nonResourceRules": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/kubernetes_authorization_v1beta1_NonResourceRule",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.authorization.v1beta1.NonResourceRule"
+            "$ref": "#/definitions/kubernetes_authorization_v1_NonResourceRule",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.authorization.v1.NonResourceRule"
           }
         },
         "resourceRules": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/kubernetes_authorization_v1beta1_ResourceRule",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.authorization.v1beta1.ResourceRule"
+            "$ref": "#/definitions/kubernetes_authorization_v1_ResourceRule",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.authorization.v1.ResourceRule"
           }
         }
       },
@@ -4475,6 +4591,64 @@
     "time": {
       "properties": {
         "Time": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "tokenrequest": {
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "authentication.k8s.io/v1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "TokenRequest",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/kubernetes_authentication_TokenRequestSpec",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.authentication.TokenRequestSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/kubernetes_authentication_TokenRequestStatus",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.authentication.TokenRequestStatus"
+        }
+      },
+      "additionalProperties": true
+    },
+    "tokenrequestspec": {
+      "properties": {
+        "audiences": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "boundObjectRef": {
+          "$ref": "#/definitions/kubernetes_authentication_BoundObjectReference",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.authentication.BoundObjectReference"
+        },
+        "expirationSeconds": {
+          "type": "integer",
+          "existingJavaType": "Long"
+        }
+      },
+      "additionalProperties": true
+    },
+    "tokenrequeststatus": {
+      "properties": {
+        "expirationTimestamp": {
+          "$ref": "#/definitions/kubernetes_apimachinery_Time",
+          "existingJavaType": "String"
+        },
+        "token": {
           "type": "string"
         }
       },
@@ -4800,7 +4974,7 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "admissionregistration.k8s.io/v1",
+          "default": "admissionregistration.k8s.io/v1beta1",
           "required": true
         },
         "kind": {
@@ -4816,8 +4990,8 @@
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/kubernetes_admissionregistration_v1_ValidatingWebhook",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1.ValidatingWebhook"
+            "$ref": "#/definitions/kubernetes_admissionregistration_v1beta1_ValidatingWebhook",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.ValidatingWebhook"
           }
         }
       },

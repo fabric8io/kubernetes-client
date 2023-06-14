@@ -64,6 +64,7 @@ type Schema struct {
   Quantity                                 resource.Quantity
 
   TokenReview                              authenticationapi.TokenReview
+  TokenRequest                             authenticationapi.TokenRequest
   SelfSubjectReview                        authenticationv1alpha1.SelfSubjectReview
 
   V1Beta1AdmissionReview                   v1beta1admission.AdmissionReview
