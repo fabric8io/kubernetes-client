@@ -8,6 +8,7 @@
 * Fix #5224: Ensuring jetty sets the User-Agent header
 * Fix #4225: Enum fields written in generated crd yaml
 * Fix #5236: using scale v1beta1 compatible logic for DeploymentConfig
+* Fix #5235: Vert.x doesn't need to track derived HttpClients - prevents leakage
 
 #### Improvements
 

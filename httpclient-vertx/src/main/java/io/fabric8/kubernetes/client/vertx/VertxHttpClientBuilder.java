@@ -39,7 +39,7 @@ public class VertxHttpClientBuilder<F extends HttpClient.Factory>
     extends StandardHttpClientBuilder<VertxHttpClient<F>, F, VertxHttpClientBuilder<F>> {
 
   private static final int MAX_CONNECTIONS = 8192;
-  // the default for etcd seems to be 3 MB, but we'll default to unlimited to have the same behavior across clients
+  // the default for etcd seems to be 3 MB, but we'll default to unlimited, so we have the same behavior across clients
   private static final int MAX_WS_MESSAGE_SIZE = Integer.MAX_VALUE;
 
   final Vertx vertx;
@@ -111,13 +111,7 @@ public class VertxHttpClientBuilder<F extends HttpClient.Factory>
         }
       });
     }
-
-    // track derived clients to clean up properly
-    VertxHttpClient<F> result = new VertxHttpClient<>(this, options);
-    if (this.client != null) {
-      this.client.addDerivedClient(result);
-    }
-    return result;
+    return new VertxHttpClient<>(this, options);
   }
 
   @Override
