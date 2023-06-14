@@ -67,9 +67,10 @@ class DeploymentConfigIT {
 
   @Test
   void scale() {
-    DeploymentConfig deploymentConfig1 = client.deploymentConfigs().withName("dc-update").scale(3);
-    assertThat(deploymentConfig1).isNotNull();
-    assertEquals(3, deploymentConfig1.getSpec().getReplicas().intValue());
+    DeploymentConfig result = client.deploymentConfigs().withName("dc-scale").scale(2);
+    assertThat(result)
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("spec.replicas", 2);
   }
 
   @Test
