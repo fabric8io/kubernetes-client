@@ -121,6 +121,7 @@ import io.fabric8.kubernetes.client.dsl.RbacAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
 import io.fabric8.kubernetes.client.dsl.SchedulingAPIGroupDSL;
+import io.fabric8.kubernetes.client.dsl.ServiceAccountResource;
 import io.fabric8.kubernetes.client.dsl.ServiceResource;
 import io.fabric8.kubernetes.client.dsl.StorageAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.V1APIGroupDSL;
@@ -152,6 +153,7 @@ import io.fabric8.kubernetes.client.dsl.internal.batch.v1.JobOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.certificates.v1.CertificateSigningRequestOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.core.v1.PodOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.core.v1.ReplicationControllerOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.core.v1.ServiceAccountOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.core.v1.ServiceOperationsImpl;
 import io.fabric8.kubernetes.client.extended.leaderelection.LeaderElectorBuilder;
 import io.fabric8.kubernetes.client.extended.run.RunConfigBuilder;
@@ -251,6 +253,7 @@ public class KubernetesClientImpl extends BaseClient implements NamespacedKubern
     this.getAdapters().registerClient(V1beta1CertificatesAPIGroupDSL.class, new V1beta1CertificatesAPIGroupClient());
 
     this.getHandlers().register(Pod.class, PodOperationsImpl::new);
+    this.getHandlers().register(ServiceAccount.class, ServiceAccountOperationsImpl::new);
     this.getHandlers().register(Job.class, JobOperationsImpl::new);
     this.getHandlers().register(Service.class, ServiceOperationsImpl::new);
     this.getHandlers().register(Deployment.class, DeploymentOperationsImpl::new);
@@ -475,8 +478,8 @@ public class KubernetesClientImpl extends BaseClient implements NamespacedKubern
    * {@inheritDoc}
    */
   @Override
-  public MixedOperation<ServiceAccount, ServiceAccountList, Resource<ServiceAccount>> serviceAccounts() {
-    return resources(ServiceAccount.class, ServiceAccountList.class);
+  public MixedOperation<ServiceAccount, ServiceAccountList, ServiceAccountResource> serviceAccounts() {
+    return new ServiceAccountOperationsImpl(this);
   }
 
   /**
