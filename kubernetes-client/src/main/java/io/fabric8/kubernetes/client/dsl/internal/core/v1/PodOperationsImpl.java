@@ -92,7 +92,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
     implements PodResource, EphemeralContainersResource, CopyOrReadable {
 
   public static final int HTTP_TOO_MANY_REQUESTS = 429;
-  private static final Integer DEFAULT_POD_READY_WAIT_TIMEOUT = 5;
+  public static final int DEFAULT_POD_READY_WAIT_TIMEOUT_MS = 5000;
   private static final String[] EMPTY_COMMAND = { "/bin/sh", "-i" };
   public static final String DEFAULT_CONTAINER_ANNOTATION_NAME = "kubectl.kubernetes.io/default-container";
 
@@ -122,8 +122,8 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
     try {
       URL url = new URL(URLUtils.join(getResourceUrl().toString(), podOperationContext.getLogParameters()));
 
-      PodOperationUtil.waitUntilReadyOrSucceded(this,
-          getContext().getReadyWaitTimeout() != null ? getContext().getReadyWaitTimeout() : DEFAULT_POD_READY_WAIT_TIMEOUT);
+      PodOperationUtil.waitUntilReadyOrTerminal(this,
+          getContext().getReadyWaitTimeout() != null ? getContext().getReadyWaitTimeout() : DEFAULT_POD_READY_WAIT_TIMEOUT_MS);
 
       return handleRawGet(url, type);
     } catch (IOException ioException) {
@@ -176,8 +176,8 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
   public LogWatch watchLog(OutputStream out) {
     checkForPiped(out);
     try {
-      PodOperationUtil.waitUntilReadyOrSucceded(this,
-          getContext().getReadyWaitTimeout() != null ? getContext().getReadyWaitTimeout() : DEFAULT_POD_READY_WAIT_TIMEOUT);
+      PodOperationUtil.waitUntilReadyOrTerminal(this,
+          getContext().getReadyWaitTimeout() != null ? getContext().getReadyWaitTimeout() : DEFAULT_POD_READY_WAIT_TIMEOUT_MS);
       // Issue Pod Logs HTTP request
       URL url = new URL(URLUtils.join(getResourceUrl().toString(), getContext().getLogParameters() + "&follow=true"));
       final LogWatchCallback callback = new LogWatchCallback(out, context);
@@ -303,8 +303,8 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
   }
 
   private URL getURL(String operation, String[] commands) throws MalformedURLException {
-    Pod fromServer = PodOperationUtil.waitUntilReadyOrSucceded(this,
-        getContext().getReadyWaitTimeout() != null ? getContext().getReadyWaitTimeout() : DEFAULT_POD_READY_WAIT_TIMEOUT);
+    Pod fromServer = PodOperationUtil.waitUntilReadyOrTerminal(this,
+        getContext().getReadyWaitTimeout() != null ? getContext().getReadyWaitTimeout() : DEFAULT_POD_READY_WAIT_TIMEOUT_MS);
 
     String url = URLUtils.join(getResourceUrl().toString(), operation);
     URLBuilder httpUrlBuilder = new URLBuilder(url);

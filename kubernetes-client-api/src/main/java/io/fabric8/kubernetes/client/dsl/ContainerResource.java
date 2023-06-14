@@ -55,7 +55,7 @@ public interface ContainerResource
   CopyOrReadable dir(String path);
 
   /**
-   * How long to wait for the pod to be ready before performing an operation, such as
+   * How long to wait for the pod to be ready or terminal before performing an operation, such as
    * getting the logs, exec, attach, copy, etc.
    *
    * @param timeout in milliseconds

@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.client.utils.internal;
 import io.fabric8.kubernetes.api.model.OwnerReference;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodList;
+import io.fabric8.kubernetes.api.model.PodStatus;
 import io.fabric8.kubernetes.client.KubernetesClientTimeoutException;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
 import io.fabric8.kubernetes.client.dsl.Loggable;
@@ -34,6 +35,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -116,21 +118,27 @@ public class PodOperationUtil {
     return PodOperationUtil.getFilteredPodsForLogs(podOperations, controllerPodList, controllerUid);
   }
 
-  public static Pod waitUntilReadyOrSucceded(PodResource podOperation, Integer logWaitTimeout) {
+  public static Pod waitUntilReadyOrTerminal(PodResource podOperation, int logWaitTimeoutMs) {
     AtomicReference<Pod> podRef = new AtomicReference<>();
     try {
       // Wait for Pod to become ready or succeeded
       podOperation.waitUntilCondition(p -> {
         podRef.set(p);
-        return p != null && (Readiness.isPodReady(p) || Readiness.isPodSucceeded(p));
+        return isReadyOrTerminal(p);
       },
-          logWaitTimeout,
-          TimeUnit.SECONDS);
+          logWaitTimeoutMs,
+          TimeUnit.MILLISECONDS);
     } catch (KubernetesClientTimeoutException timeout) {
       LOG.debug("Timed out waiting for Pod to become Ready: {}, will still proceed", timeout.getMessage());
     } catch (Exception otherException) {
       LOG.warn("Error while waiting for Pod to become Ready", otherException);
     }
     return podRef.get();
+  }
+
+  static boolean isReadyOrTerminal(Pod p) {
+    // we'll treat missing as an exit condition - there's no expectation that we should wait for a pod that doesn't exist
+    return p == null || Readiness.isPodReady(p) || Optional.ofNullable(p.getStatus()).map(PodStatus::getPhase)
+        .filter(phase -> !Arrays.asList("Pending", "Unknown").contains(phase)).isPresent();
   }
 }

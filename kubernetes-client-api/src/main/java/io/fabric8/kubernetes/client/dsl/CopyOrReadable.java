@@ -41,7 +41,7 @@ public interface CopyOrReadable {
   boolean copy(Path destination);
 
   /**
-   * How long to wait for a ready pod before performing the copy or read operation.
+   * How long to wait for a ready or terminal pod before performing the copy or read operation.
    *
    * @param timeout in milliseconds
    */
