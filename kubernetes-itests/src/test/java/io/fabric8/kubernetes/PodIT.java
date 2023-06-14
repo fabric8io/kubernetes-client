@@ -57,6 +57,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
@@ -69,6 +70,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.BooleanSupplier;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
@@ -407,23 +409,31 @@ class PodIT {
   }
 
   @Test
-  void uploadDir() throws IOException {
+  void uploadDir(@TempDir Path toUpload) throws IOException {
+    // Given
     final String[] files = new String[] { "1", "2", "a", "b", "c" };
-    final Path tmpDir = Files.createTempDirectory("uploadDir");
-    for (String fileName : files) {
-      Path file = tmpDir.resolve(fileName);
-      Files.write(Files.createFile(file), Arrays.asList("I'm uploaded", fileName));
+    final Path nestedDir = Files.createDirectory(toUpload.resolve("nested"));
+    for (Path path : new Path[] { toUpload, nestedDir }) {
+      for (String fileName : files) {
+        Path file = path.resolve(fileName);
+        Files.write(Files.createFile(file), Arrays.asList("I'm uploaded", fileName));
+      }
     }
-
+    // When
     PodResource podResource = client.pods().withName("pod-standard");
-
-    retryUpload(() -> podResource.dir("/tmp/uploadDir").withReadyWaitTimeout(POD_READY_WAIT_IN_MILLIS).upload(tmpDir));
-
-    for (String fileName : files) {
-      try (InputStream checkIs = podResource.file("/tmp/uploadDir/" + fileName).read();
+    retryUpload(() -> podResource.dir("/tmp/upload-dir")
+        .withReadyWaitTimeout(POD_READY_WAIT_IN_MILLIS).upload(toUpload));
+    // Then
+    final List<Path> pathsToCheck = Stream.of(files)
+        .map(f -> new Path[] { Paths.get(f), Paths.get("nested").resolve(f) })
+        .flatMap(Stream::of)
+        .map(p -> Paths.get("tmp").resolve("upload-dir").resolve(p))
+        .collect(Collectors.toList());
+    for (Path pathToCheck : pathsToCheck) {
+      try (InputStream checkIs = podResource.file("/" + pathToCheck.toString()).read();
           BufferedReader br = new BufferedReader(new InputStreamReader(checkIs, StandardCharsets.UTF_8))) {
         String result = br.lines().collect(Collectors.joining(System.lineSeparator()));
-        assertEquals("I'm uploaded" + System.lineSeparator() + fileName, result);
+        assertEquals("I'm uploaded" + System.lineSeparator() + pathToCheck.getFileName(), result);
       }
     }
   }
