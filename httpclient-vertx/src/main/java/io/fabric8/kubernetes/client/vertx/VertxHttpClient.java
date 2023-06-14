@@ -32,7 +32,6 @@ import io.vertx.core.http.WebSocketConnectOptions;
 import io.vertx.ext.web.client.WebClientOptions;
 
 import java.nio.ByteBuffer;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -42,14 +41,11 @@ import static io.fabric8.kubernetes.client.vertx.VertxHttpRequest.toHeadersMap;
 
 public class VertxHttpClient<F extends io.fabric8.kubernetes.client.http.HttpClient.Factory>
     extends StandardHttpClient<VertxHttpClient<F>, F, VertxHttpClientBuilder<F>> {
-
-  private final List<VertxHttpClient<F>> derivedClients;
   private final Vertx vertx;
   private final HttpClient client;
 
   VertxHttpClient(VertxHttpClientBuilder<F> vertxHttpClientBuilder, WebClientOptions options) {
     super(vertxHttpClientBuilder);
-    derivedClients = Collections.synchronizedList(new ArrayList<>());
     this.vertx = vertxHttpClientBuilder.vertx;
     this.client = vertx.createHttpClient(options);
   }
@@ -119,17 +115,9 @@ public class VertxHttpClient<F extends io.fabric8.kubernetes.client.http.HttpCli
     return new VertxHttpRequest(vertx, options, request).consumeBytes(this.client, consumer);
   }
 
-  void addDerivedClient(VertxHttpClient<F> client) {
-    derivedClients.add(client);
-  }
-
   @Override
   public void close() {
     client.close();
-    synchronized (derivedClients) {
-      derivedClients.forEach(VertxHttpClient::close);
-      derivedClients.clear();
-    }
   }
 
 }
