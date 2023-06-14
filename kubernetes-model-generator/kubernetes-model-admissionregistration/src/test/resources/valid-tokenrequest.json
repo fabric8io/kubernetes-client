@@ -1,0 +1,22 @@
+{
+  "kind": "TokenRequest",
+  "apiVersion": "authentication.k8s.io/v1",
+  "metadata": {
+    "name": "my-service-account"
+  },
+  "spec": {
+    "audiences": [
+      "https://kubernetes.default.svc"
+    ],
+    "expirationSeconds": 3600,
+    "boundObjectRef": {
+      "kind": "Pod",
+      "apiVersion": "v1",
+      "name": "pod-foo-346acf"
+    }
+  },
+  "status": {
+    "token": "my.secret.token",
+    "expirationTimestamp": "2023-06-14T10:43:32Z"
+  }
+}
