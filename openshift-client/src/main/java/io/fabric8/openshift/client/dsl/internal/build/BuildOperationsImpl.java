@@ -30,6 +30,7 @@ import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.LogWatchCallback;
 import io.fabric8.kubernetes.client.dsl.internal.OperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.PodOperationContext;
+import io.fabric8.kubernetes.client.dsl.internal.core.v1.PodOperationsImpl;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.internal.PodOperationUtil;
 import io.fabric8.openshift.api.model.Build;
@@ -52,7 +53,6 @@ public class BuildOperationsImpl extends HasMetadataOperation<Build, BuildList, 
 
   public static final String OPENSHIFT_IO_BUILD_NAME = "openshift.io/build.name";
   private Integer version;
-  private static final Integer DEFAULT_POD_LOG_WAIT_TIMEOUT = 5;
   private final PodOperationContext operationContext;
 
   public BuildOperationsImpl(Client client) {
@@ -197,12 +197,13 @@ public class BuildOperationsImpl extends HasMetadataOperation<Build, BuildList, 
         getBuildPodLabels(build));
 
     waitForBuildPodToBecomeReady(podOps,
-        operationContext.getReadyWaitTimeout() != null ? operationContext.getReadyWaitTimeout() : DEFAULT_POD_LOG_WAIT_TIMEOUT);
+        operationContext.getReadyWaitTimeout() != null ? operationContext.getReadyWaitTimeout()
+            : PodOperationsImpl.DEFAULT_POD_READY_WAIT_TIMEOUT_MS);
   }
 
   private static void waitForBuildPodToBecomeReady(List<PodResource> podOps, Integer podLogWaitTimeout) {
     for (PodResource podOp : podOps) {
-      PodOperationUtil.waitUntilReadyOrSucceded(podOp, podLogWaitTimeout);
+      PodOperationUtil.waitUntilReadyOrTerminal(podOp, podLogWaitTimeout);
     }
   }
 

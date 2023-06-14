@@ -36,7 +36,7 @@ public interface Execable {
   ExecWatch attach();
 
   /**
-   * How long shall we wait until a Pod is ready before attaching or execing
+   * How long shall we wait until a Pod is ready or terminal before attaching or execing
    *
    * @param timeout in milliseconds
    * @return {@link Loggable} for fetching logs

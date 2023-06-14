@@ -30,6 +30,7 @@ import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.LogWatchCallback;
 import io.fabric8.kubernetes.client.dsl.internal.OperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.PodOperationContext;
+import io.fabric8.kubernetes.client.dsl.internal.core.v1.PodOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.extensions.v1beta1.LegacyRollableScalableResourceOperation;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.internal.PodOperationUtil;
@@ -53,7 +54,6 @@ public class DeploymentConfigOperationsImpl
     extends HasMetadataOperation<DeploymentConfig, DeploymentConfigList, DeployableScalableResource<DeploymentConfig>>
     implements DeployableScalableResource<DeploymentConfig> {
 
-  private static final Integer DEFAULT_POD_LOG_WAIT_TIMEOUT = 5;
   public static final String OPENSHIFT_IO_DEPLOYMENT_CONFIG_NAME = "openshift.io/deployment-config.name";
   private final PodOperationContext rollingOperationContext;
 
@@ -185,12 +185,13 @@ public class DeploymentConfigOperationsImpl
         rollingOperationContext,
         deploymentConfig.getMetadata().getUid(), getDeploymentConfigPodLabels(deploymentConfig));
 
-    waitForBuildPodToBecomeReady(podOps, podLogWaitTimeout != null ? podLogWaitTimeout : DEFAULT_POD_LOG_WAIT_TIMEOUT);
+    waitForBuildPodToBecomeReady(podOps,
+        podLogWaitTimeout != null ? podLogWaitTimeout : PodOperationsImpl.DEFAULT_POD_READY_WAIT_TIMEOUT_MS);
   }
 
   private static void waitForBuildPodToBecomeReady(List<PodResource> podOps, Integer podLogWaitTimeout) {
     for (PodResource podOp : podOps) {
-      PodOperationUtil.waitUntilReadyOrSucceded(podOp, podLogWaitTimeout);
+      PodOperationUtil.waitUntilReadyOrTerminal(podOp, podLogWaitTimeout);
     }
   }
 

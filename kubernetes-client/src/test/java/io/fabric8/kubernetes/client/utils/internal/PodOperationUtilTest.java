@@ -42,7 +42,9 @@ import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.eq;
@@ -91,9 +93,17 @@ class PodOperationUtilTest {
   @Test
   void testWaitUntilReadyBeforeFetchingLogs() {
     // When
-    PodOperationUtil.waitUntilReadyOrSucceded(podOperations, 5);
+    PodOperationUtil.waitUntilReadyOrTerminal(podOperations, 5);
     // Then
-    verify(podOperations, times(1)).waitUntilCondition(any(), eq(5L), eq(TimeUnit.SECONDS));
+    verify(podOperations, times(1)).waitUntilCondition(any(), eq(5L), eq(TimeUnit.MILLISECONDS));
+  }
+
+  @Test
+  void testIsReadyOrTerminal() {
+    assertTrue(PodOperationUtil.isReadyOrTerminal(null));
+    assertFalse(PodOperationUtil.isReadyOrTerminal(new Pod()));
+    assertTrue(PodOperationUtil.isReadyOrTerminal(new PodBuilder().withNewStatus().withPhase("Failed").endStatus().build()));
+    assertFalse(PodOperationUtil.isReadyOrTerminal(new PodBuilder().withNewStatus().withPhase("Pending").endStatus().build()));
   }
 
   @Test
