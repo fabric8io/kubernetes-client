@@ -1037,6 +1037,7 @@
             <removeOldOutput>true</removeOldOutput>
             <outputDirectory>${generate.targetDirectory}</outputDirectory>
             <annotationStyle>none</annotationStyle>
+            <inclusionLevel>USE_DEFAULTS</inclusionLevel>
           </configuration>
           <executions>
             <execution>

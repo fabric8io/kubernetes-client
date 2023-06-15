@@ -91,8 +91,8 @@ public class KubernetesSerialization {
   protected void configureMapper(ObjectMapper mapper) {
     mapper.registerModules(new JavaTimeModule(), unmatchedFieldTypeModule);
     mapper.disable(DeserializationFeature.FAIL_ON_INVALID_SUBTYPE);
-    // omit null fields, but keep null map values
-    mapper.setDefaultPropertyInclusion(JsonInclude.Value.construct(Include.NON_NULL, Include.ALWAYS));
+    // omit null / empty fields, but keep null map values for patches
+    mapper.setDefaultPropertyInclusion(JsonInclude.Value.construct(Include.NON_EMPTY, Include.ALWAYS));
     HandlerInstantiator instanciator = mapper.getDeserializationConfig().getHandlerInstantiator();
     mapper.setConfig(mapper.getDeserializationConfig().with(new HandlerInstantiator() {
 
