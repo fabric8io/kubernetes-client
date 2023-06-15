@@ -409,7 +409,7 @@ class PodIT {
   }
 
   @Test
-  void uploadDir(@TempDir Path toUpload) throws IOException {
+  void uploadDir(@TempDir Path toUpload) throws Exception {
     // Given
     final String[] files = new String[] { "1", "2", "a", "b", "c" };
     final Path nestedDir = Files.createDirectory(toUpload.resolve("nested"));
@@ -430,11 +430,13 @@ class PodIT {
         .map(p -> Paths.get("tmp").resolve("upload-dir").resolve(p))
         .collect(Collectors.toList());
     for (Path pathToCheck : pathsToCheck) {
-      try (InputStream checkIs = podResource.file("/" + pathToCheck.toString()).read();
-          BufferedReader br = new BufferedReader(new InputStreamReader(checkIs, StandardCharsets.UTF_8))) {
-        String result = br.lines().collect(Collectors.joining(System.lineSeparator()));
-        assertEquals("I'm uploaded" + System.lineSeparator() + pathToCheck.getFileName(), result);
-      }
+      final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+      podResource.writingOutput(baos)
+          .exec("sh", "-c", String.format("cat /%s", pathToCheck.toString())).exitCode().get();
+      assertThat(baos)
+          .extracting(ByteArrayOutputStream::toString)
+          .asString()
+          .startsWith("I'm uploaded" + System.lineSeparator() + pathToCheck.getFileName());
     }
   }
 
