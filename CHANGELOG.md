@@ -6,6 +6,7 @@
 
 #### Improvements
 * Fix #5166: Remove opinionated messages from Config's `errorMessages` and deprecate it
+* Fix #5233: Generalized SchemaSwap to allow for cycle expansion
 
 #### Dependency Upgrade
 
