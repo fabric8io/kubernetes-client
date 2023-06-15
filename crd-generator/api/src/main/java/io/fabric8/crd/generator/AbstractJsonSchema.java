@@ -17,6 +17,7 @@ package io.fabric8.crd.generator;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import io.fabric8.crd.generator.annotation.SchemaExpand;
 import io.fabric8.crd.generator.annotation.SchemaSwap;
 import io.fabric8.crd.generator.utils.Types;
 import io.fabric8.kubernetes.api.model.Duration;
@@ -108,6 +109,8 @@ public abstract class AbstractJsonSchema<T, B> {
   public static final String ANNOTATION_PERSERVE_UNKNOWN_FIELDS = "io.fabric8.crd.generator.annotation.PreserveUnknownFields";
   public static final String ANNOTATION_SCHEMA_SWAP = "io.fabric8.crd.generator.annotation.SchemaSwap";
   public static final String ANNOTATION_SCHEMA_SWAPS = "io.fabric8.crd.generator.annotation.SchemaSwaps";
+  public static final String ANNOTATION_SCHEMA_EXPAND = "io.fabric8.crd.generator.annotation.SchemaExpand";
+  public static final String ANNOTATION_SCHEMA_EXPANDS = "io.fabric8.crd.generator.annotation.SchemaExpands";
 
   public static final String JSON_NODE_TYPE = "com.fasterxml.jackson.databind.JsonNode";
   public static final String ANY_TYPE = "io.fabric8.kubernetes.api.model.AnyType";
@@ -203,8 +206,10 @@ public abstract class AbstractJsonSchema<T, B> {
    */
   protected T internalFrom(TypeDef definition, String... ignore) {
     InternalSchemaSwaps schemaSwaps = new InternalSchemaSwaps();
-    T ret = internalFromImpl(definition, new HashSet<>(), schemaSwaps, ignore);
+    InternalSchemaExpands schemaExpands = new InternalSchemaExpands();
+    T ret = internalFromImpl(definition, new HashSet<>(), schemaSwaps, schemaExpands, ignore);
     schemaSwaps.throwIfUnmatchedSwaps();
+    schemaExpands.throwIfUnmatchedReplacements();
     return ret;
   }
 
@@ -222,19 +227,32 @@ public abstract class AbstractJsonSchema<T, B> {
     }
   }
 
-  private void extractSchemaSwaps(ClassRef definitionType, AnnotationRef annotation, InternalSchemaSwaps schemaSwaps) {
+  private void extractAnnotations(ClassRef definitionType, AnnotationRef annotation, InternalSchemaSwaps schemaSwaps,
+      InternalSchemaExpands schemaExpands) {
     String fullyQualifiedName = annotation.getClassRef().getFullyQualifiedName();
     switch (fullyQualifiedName) {
       case ANNOTATION_SCHEMA_SWAP:
         extractSchemaSwap(definitionType, annotation, schemaSwaps);
         break;
-      case ANNOTATION_SCHEMA_SWAPS:
+      case ANNOTATION_SCHEMA_SWAPS: {
         Map<String, Object> params = annotation.getParameters();
         Object[] values = (Object[]) params.get("value");
         for (Object value : values) {
           extractSchemaSwap(definitionType, value, schemaSwaps);
         }
         break;
+      }
+      case ANNOTATION_SCHEMA_EXPAND:
+        extractSchemaExpand(definitionType, annotation, schemaExpands);
+        break;
+      case ANNOTATION_SCHEMA_EXPANDS: {
+        Map<String, Object> params = annotation.getParameters();
+        Object[] values = (Object[]) params.get("value");
+        for (Object value : values) {
+          extractSchemaExpand(definitionType, value, schemaExpands);
+        }
+        break;
+      }
     }
   }
 
@@ -259,7 +277,27 @@ public abstract class AbstractJsonSchema<T, B> {
     }
   }
 
-  private T internalFromImpl(TypeDef definition, Set<String> visited, InternalSchemaSwaps schemaSwaps, String... ignore) {
+  private void extractSchemaExpand(ClassRef definitionType, Object annotation, InternalSchemaExpands schemaExpands) {
+    if (annotation instanceof SchemaExpand) {
+      SchemaExpand schemaReplace = (SchemaExpand) annotation;
+      schemaExpands.registerReplacement(definitionType,
+          extractClassRef(schemaReplace.originalType()),
+          extractClassRef(schemaReplace.terminalType()), schemaReplace.depth());
+
+    } else if (annotation instanceof AnnotationRef
+        && ((AnnotationRef) annotation).getClassRef().getFullyQualifiedName().equals(ANNOTATION_SCHEMA_EXPAND)) {
+      Map<String, Object> params = ((AnnotationRef) annotation).getParameters();
+      schemaExpands.registerReplacement(definitionType,
+          extractClassRef(params.get("originalType")),
+          extractClassRef(params.getOrDefault("terminalType", void.class)), (Integer) params.getOrDefault("depth", 0));
+
+    } else {
+      throw new IllegalArgumentException("Unmanaged annotation type passed to the SchemaSwaps: " + annotation);
+    }
+  }
+
+  private T internalFromImpl(TypeDef definition, Set<String> visited, InternalSchemaSwaps schemaSwaps,
+      InternalSchemaExpands schemaExpands, String... ignore) {
     Set<String> ignores = ignore.length > 0 ? new LinkedHashSet<>(Arrays.asList(ignore))
         : Collections
             .emptySet();
@@ -273,12 +311,17 @@ public abstract class AbstractJsonSchema<T, B> {
 
     boolean preserveUnknownFields = isJsonNode;
 
-    definition.getAnnotations().forEach(annotation -> extractSchemaSwaps(definition.toReference(), annotation, schemaSwaps));
+    // TODO: InternalXXX classes should fork so that they only apply to this point of the hierarchy and below
+    definition.getAnnotations()
+        .forEach(annotation -> extractAnnotations(definition.toReference(), annotation, schemaSwaps, schemaExpands));
 
     // index potential accessors by name for faster lookup
     final Map<String, Method> accessors = indexPotentialAccessors(definition);
 
     for (Property property : definition.getProperties()) {
+      if (isJsonNode) {
+        break;
+      }
       String name = property.getName();
       if (property.isStatic() || ignores.contains(name)) {
         LOGGER.debug("Ignoring property {}", name);
@@ -295,7 +338,7 @@ public abstract class AbstractJsonSchema<T, B> {
       } else if (facade.ignored) {
         continue;
       }
-      final T schema = internalFromImpl(name, possiblyRenamedProperty.getTypeRef(), visited, schemaSwaps);
+      final T schema = internalFromImpl(name, possiblyRenamedProperty.getTypeRef(), visited, schemaSwaps, schemaExpands);
       if (facade.preserveUnknownFields) {
         preserveUnknownFields = true;
       }
@@ -635,16 +678,21 @@ public abstract class AbstractJsonSchema<T, B> {
    * @return the structural schema associated with the specified property
    */
   public T internalFrom(String name, TypeRef typeRef) {
-    return internalFromImpl(name, typeRef, new HashSet<>(), new InternalSchemaSwaps());
+    return internalFromImpl(name, typeRef, new HashSet<>(), new InternalSchemaSwaps(), new InternalSchemaExpands());
   }
 
-  private T internalFromImpl(String name, TypeRef typeRef, Set<String> visited, InternalSchemaSwaps schemaSwaps) {
+  private T internalFromImpl(String name, TypeRef typeRef, Set<String> visited, InternalSchemaSwaps schemaSwaps,
+      InternalSchemaExpands schemaExpands) {
     // Note that ordering of the checks here is meaningful: we need to check for complex types last
     // in case some "complex" types are handled specifically
     if (typeRef.getDimensions() > 0 || io.sundr.model.utils.Collections.isCollection(typeRef)) { // Handle Collections & Arrays
       final TypeRef collectionType = TypeAs.combine(TypeAs.UNWRAP_ARRAY_OF, TypeAs.UNWRAP_COLLECTION_OF)
           .apply(typeRef);
-      final T schema = internalFromImpl(name, collectionType, visited, schemaSwaps);
+
+      final T schema = internalFromImpl(name, collectionType, visited, schemaSwaps, schemaExpands);
+      if (schema == null) {
+        return null;
+      }
       return arrayLikeProperty(schema);
     } else if (io.sundr.model.utils.Collections.IS_MAP.apply(typeRef)) { // Handle Maps
       final TypeRef keyType = TypeAs.UNWRAP_MAP_KEY_OF.apply(typeRef);
@@ -654,17 +702,17 @@ public abstract class AbstractJsonSchema<T, B> {
       }
 
       final TypeRef valueType = TypeAs.UNWRAP_MAP_VALUE_OF.apply(typeRef);
-      T schema = internalFromImpl(name, valueType, visited, schemaSwaps);
+      T schema = internalFromImpl(name, valueType, visited, schemaSwaps, schemaExpands);
       if (schema == null) {
         LOGGER.warn(
             "Property '{}' with '{}' value type is mapped to 'object' because its CRD representation cannot be extracted.",
             name, typeRef);
-        schema = internalFromImpl(name, OBJECT_REF, visited, schemaSwaps);
+        schema = internalFromImpl(name, OBJECT_REF, visited, schemaSwaps, schemaExpands);
       }
 
       return mapLikeProperty(schema);
     } else if (io.sundr.model.utils.Optionals.isOptional(typeRef)) { // Handle Optionals
-      return internalFromImpl(name, TypeAs.UNWRAP_OPTIONAL_OF.apply(typeRef), visited, schemaSwaps);
+      return internalFromImpl(name, TypeAs.UNWRAP_OPTIONAL_OF.apply(typeRef), visited, schemaSwaps, schemaExpands);
     } else {
       final String typeName = COMMON_MAPPINGS.get(typeRef);
       if (typeName != null) { // we have a type that we handle specifically
@@ -688,8 +736,8 @@ public abstract class AbstractJsonSchema<T, B> {
                 .map(JsonNodeFactory.instance::textNode)
                 .toArray(JsonNode[]::new);
             return enumProperty(enumValues);
-          } else if (!classRef.getFullyQualifiedName().equals(VOID.getName())) {
-            return resolveNestedClass(name, def, visited, schemaSwaps);
+          } else if (!isVoid(classRef)) {
+            return resolveNestedClass(name, def, visited, schemaSwaps, schemaExpands);
           }
 
         }
@@ -701,7 +749,8 @@ public abstract class AbstractJsonSchema<T, B> {
   // Flag to detect cycles
   private boolean resolving = false;
 
-  private T resolveNestedClass(String name, TypeDef def, Set<String> visited, InternalSchemaSwaps schemaSwaps) {
+  private T resolveNestedClass(String name, TypeDef def, Set<String> visited, InternalSchemaSwaps schemaSwaps,
+      InternalSchemaExpands schemaExpands) {
     if (!resolving) {
       visited.clear();
       resolving = true;
@@ -714,9 +763,24 @@ public abstract class AbstractJsonSchema<T, B> {
       visited.add(visitedName);
     }
 
-    T res = internalFromImpl(def, visited, schemaSwaps);
-    resolving = false;
-    return res;
+    try {
+      schemaExpands = schemaExpands.branchDepths();
+      ClassRef potentialSchemaReplacement = schemaExpands.lookupAndMark(def.toReference(), visited::clear);
+      if (potentialSchemaReplacement != null) {
+        if (isVoid(potentialSchemaReplacement)) {
+          return null;
+        }
+        def = Types.typeDefFrom(potentialSchemaReplacement);
+      }
+
+      return internalFromImpl(def, visited, schemaSwaps, schemaExpands);
+    } finally {
+      resolving = false;
+    }
+  }
+
+  private boolean isVoid(ClassRef classRef) {
+    return classRef.getFullyQualifiedName().equals(VOID.getName());
   }
 
   /**

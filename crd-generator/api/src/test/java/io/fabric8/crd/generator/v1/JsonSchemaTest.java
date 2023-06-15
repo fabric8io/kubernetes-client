@@ -18,6 +18,8 @@ package io.fabric8.crd.generator.v1;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.fabric8.crd.example.annotated.Annotated;
 import io.fabric8.crd.example.basic.Basic;
+import io.fabric8.crd.example.extraction.CollectionCyclicSchemaSwap;
+import io.fabric8.crd.example.extraction.CyclicSchemaSwap;
 import io.fabric8.crd.example.extraction.DeeplyNestedSchemaSwaps;
 import io.fabric8.crd.example.extraction.Extraction;
 import io.fabric8.crd.example.extraction.IncorrectExtraction;
@@ -35,7 +37,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class JsonSchemaTest {
 
@@ -257,6 +264,49 @@ class JsonSchemaTest {
       assertPropertyHasType(level3.get("myObject1"), "shouldBeString", "string");
       assertPropertyHasType(level3.get("myObject2"), "shouldBeString", "string");
     }
+  }
+
+  @Test
+  void shouldApplyCyclicSchemaSwaps() {
+    TypeDef extraction = Types.typeDefFrom(CyclicSchemaSwap.class);
+    JSONSchemaProps schema = JsonSchema.from(extraction);
+    assertNotNull(schema);
+
+    Map<String, JSONSchemaProps> properties = assertSchemaHasNumberOfProperties(schema, 2);
+    Map<String, JSONSchemaProps> spec = assertSchemaHasNumberOfProperties(properties.get("spec"), 3);
+
+    // should just be an array of a single item
+    assertSchemaHasNumberOfProperties(spec.get("levels").getItems().getSchema(), 1);
+
+    assertPropertyHasType(spec.get("myObject"), "value", "integer");
+    Map<String, JSONSchemaProps> level1 = assertSchemaHasNumberOfProperties(spec.get("level"), 1);
+
+    assertPropertyHasType(level1.get("myObject"), "value", "integer");
+  }
+
+  @Test
+  void shouldApplyCollectionCyclicSchemaSwaps() {
+    TypeDef extraction = Types.typeDefFrom(CollectionCyclicSchemaSwap.class);
+    JSONSchemaProps schema = JsonSchema.from(extraction);
+    assertNotNull(schema);
+
+    Map<String, JSONSchemaProps> properties = assertSchemaHasNumberOfProperties(schema, 2);
+    Map<String, JSONSchemaProps> spec = assertSchemaHasNumberOfProperties(properties.get("spec"), 2);
+
+    assertPropertyHasType(spec.get("myObject"), "value", "integer");
+    Map<String, JSONSchemaProps> level1 = assertSchemaHasNumberOfProperties(spec.get("levels").getItems().getSchema(), 2);
+
+    assertPropertyHasType(level1.get("myObject"), "value", "integer");
+    Map<String, JSONSchemaProps> level2 = assertSchemaHasNumberOfProperties(level1.get("levels").getItems().getSchema(), 2);
+
+    assertPropertyHasType(level2.get("myObject"), "value", "integer");
+    Map<String, JSONSchemaProps> level3 = assertSchemaHasNumberOfProperties(level2.get("levels").getItems().getSchema(), 2);
+
+    assertPropertyHasType(level3.get("myObject"), "value", "integer");
+    // should terminate at the 3rd level with object
+    JSONSchemaProps terminal = level3.get("levels");
+    assertTrue(terminal.getItems().getSchema().getXKubernetesPreserveUnknownFields());
+    assertSchemaHasNumberOfProperties(terminal, 0);
   }
 
   @Test
