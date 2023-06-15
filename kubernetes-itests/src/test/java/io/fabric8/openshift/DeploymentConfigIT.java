@@ -60,7 +60,10 @@ class DeploymentConfigIT {
   @Test
   void update() {
     DeploymentConfig deploymentConfig1 = client.deploymentConfigs().withName("dc-update")
-        .accept(dc -> dc.getMetadata().getAnnotations().put("new", "annotation"));
+        .accept(dc -> {
+          dc.getMetadata().setResourceVersion(null);
+          dc.getMetadata().getAnnotations().put("new", "annotation");
+        });
     assertThat(deploymentConfig1).isNotNull();
     assertEquals("annotation", deploymentConfig1.getMetadata().getAnnotations().get("new"));
   }
