@@ -1,5 +1,17 @@
 ## CHANGELOG
 
+### 6.8-SNAPSHOT
+
+#### Bugs
+
+#### Improvements
+
+#### Dependency Upgrade
+
+#### New Features
+
+#### _**Note**_: Breaking changes
+
 ### 6.7.2 (2023-06-15)
 
 #### Bugs
