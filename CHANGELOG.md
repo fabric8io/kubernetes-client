@@ -12,6 +12,7 @@
 * Fix #5236: using scale v1beta1 compatible logic for DeploymentConfig
 * Fix #5235: Vert.x doesn't need to track derived HttpClients - prevents leakage
 * Fix #5238: Preserve folder structure again in PodUpload.upload()
+* Fix #5250: HttpLoggingInterceptor uses response body ByteBuffer copy
 
 #### Improvements
 
