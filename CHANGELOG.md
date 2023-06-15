@@ -1,26 +1,18 @@
 ## CHANGELOG
 
-### 6.8-SNAPSHOT
+### 6.7.2 (2023-06-15)
 
 #### Bugs
+* Fix #4225: Enum fields written in generated crd yaml
 * Fix #5194: prevented NPEs due to timing issues with KubernetesClient.visitResources
 * Fix #5214: null values are omitted by default, which means custom resources by in large won't need JsonIncludes annotations.  The only time that is required is when null is to be preserved via @JsonInclude(value = Include.ALWAYS) on the relevant field.
 * Fix #5218: No export for `io.fabric8.tekton.triggers.internal.knative.pkg.apis.duck.v1beta1` in tekton v1beta1 triggers model
 * Fix #5224: Ensuring jetty sets the User-Agent header
-* Fix #4225: Enum fields written in generated crd yaml
 * Fix #5229: Correcting the timeout units and behavior of withReadyWaitTimeout
-* Fix #5236: using scale v1beta1 compatible logic for DeploymentConfig
 * Fix #5235: Vert.x doesn't need to track derived HttpClients - prevents leakage
+* Fix #5236: using scale v1beta1 compatible logic for DeploymentConfig
 * Fix #5238: Preserve folder structure again in PodUpload.upload()
 * Fix #5250: HttpLoggingInterceptor uses response body ByteBuffer copy
-
-#### Improvements
-
-#### Dependency Upgrade
-
-#### New Features
-
-#### _**Note**_: Breaking changes
 
 ### 6.7.1(2023-06-06)
 
