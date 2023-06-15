@@ -15,7 +15,11 @@
  */
 package io.fabric8.crd.generator.annotation;
 
-import java.lang.annotation.*;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Repeatable;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  * Annotation that allows replacing a nested schema with one from another class.
@@ -52,4 +56,12 @@ public @interface SchemaSwap {
    * The default value of {@code void.class} causes the field to be skipped
    */
   Class<?> targetType() default void.class;
+
+  /**
+   * For fields that may include a reference cycle, how many expansions to include in the output before including the
+   * {@link #targetType()}
+   * <p>
+   * The default value of 0 replaces the field with the {@link #targetType()} without any expansion
+   */
+  int depth() default 0;
 }

@@ -203,9 +203,7 @@ public abstract class AbstractJsonSchema<T, B> {
    */
   protected T internalFrom(TypeDef definition, String... ignore) {
     InternalSchemaSwaps schemaSwaps = new InternalSchemaSwaps();
-    T ret = internalFromImpl(definition, new HashSet<>(), schemaSwaps, ignore);
-    schemaSwaps.throwIfUnmatchedSwaps();
-    return ret;
+    return internalFromImpl(definition, new HashSet<>(), schemaSwaps, ignore);
   }
 
   private static ClassRef extractClassRef(Object type) {
@@ -244,7 +242,7 @@ public abstract class AbstractJsonSchema<T, B> {
       schemaSwaps.registerSwap(definitionType,
           extractClassRef(schemaSwap.originalType()),
           schemaSwap.fieldName(),
-          extractClassRef(schemaSwap.targetType()));
+          extractClassRef(schemaSwap.targetType()), schemaSwap.depth());
 
     } else if (annotation instanceof AnnotationRef
         && ((AnnotationRef) annotation).getClassRef().getFullyQualifiedName().equals(ANNOTATION_SCHEMA_SWAP)) {
@@ -252,7 +250,7 @@ public abstract class AbstractJsonSchema<T, B> {
       schemaSwaps.registerSwap(definitionType,
           extractClassRef(params.get("originalType")),
           (String) params.get("fieldName"),
-          extractClassRef(params.getOrDefault("targetType", void.class)));
+          extractClassRef(params.getOrDefault("targetType", void.class)), (Integer) params.getOrDefault("depth", 0));
 
     } else {
       throw new IllegalArgumentException("Unmanaged annotation type passed to the SchemaSwaps: " + annotation);
@@ -273,19 +271,25 @@ public abstract class AbstractJsonSchema<T, B> {
 
     boolean preserveUnknownFields = isJsonNode;
 
-    definition.getAnnotations().forEach(annotation -> extractSchemaSwaps(definition.toReference(), annotation, schemaSwaps));
+    schemaSwaps = schemaSwaps.branchAnnotations();
+    final InternalSchemaSwaps swaps = schemaSwaps;
+    definition.getAnnotations().forEach(annotation -> extractSchemaSwaps(definition.toReference(), annotation, swaps));
 
     // index potential accessors by name for faster lookup
     final Map<String, Method> accessors = indexPotentialAccessors(definition);
 
     for (Property property : definition.getProperties()) {
+      if (isJsonNode) {
+        break;
+      }
       String name = property.getName();
       if (property.isStatic() || ignores.contains(name)) {
         LOGGER.debug("Ignoring property {}", name);
         continue;
       }
 
-      ClassRef potentialSchemaSwap = schemaSwaps.lookupAndMark(definition.toReference(), name).orElse(null);
+      schemaSwaps = schemaSwaps.branchDepths();
+      ClassRef potentialSchemaSwap = schemaSwaps.lookupAndMark(definition.toReference(), name, visited::clear);
       final PropertyFacade facade = new PropertyFacade(property, accessors, potentialSchemaSwap);
       final Property possiblyRenamedProperty = facade.process();
       name = possiblyRenamedProperty.getName();
@@ -320,6 +324,7 @@ public abstract class AbstractJsonSchema<T, B> {
       addProperty(possiblyRenamedProperty, builder, possiblyUpdatedSchema, options);
     }
 
+    swaps.throwIfUnmatchedSwaps();
     return build(builder, required, preserveUnknownFields);
   }
 

@@ -20,26 +20,71 @@ import io.sundr.model.ClassRef;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.StringJoiner;
 import java.util.stream.Collectors;
 
 public class InternalSchemaSwaps {
-  private final Map<Key, Value> swaps = new HashMap<>();
+  // swaps applicable above this point
+  private final Map<Key, Value> parentSwaps;
+  // swaps applicable to the current context
+  private final Map<Key, Value> swaps;
+  // current depths of all swaps
+  private final Map<Key, Integer> swapDepths;
 
-  public void registerSwap(ClassRef definitionType, ClassRef originalType, String fieldName, ClassRef targetType) {
-    Value value = new Value(definitionType, originalType, fieldName, targetType);
-    swaps.put(new Key(originalType, fieldName), value);
+  public InternalSchemaSwaps() {
+    this(new HashMap<>(), new HashMap<>(), new HashMap<>());
   }
 
-  public Optional<ClassRef> lookupAndMark(ClassRef originalType, String name) {
-    Value value = swaps.get(new Key(originalType, name));
-    if (value != null) {
-      value.markUsed();
-      return Optional.of(value.getTargetType());
-    } else {
-      return Optional.empty();
+  private InternalSchemaSwaps(Map<Key, Value> swaps, Map<Key, Integer> swapDepths, Map<Key, Value> parentSwaps) {
+    this.parentSwaps = parentSwaps;
+    this.swaps = swaps;
+    this.swapDepths = swapDepths;
+  }
+
+  public InternalSchemaSwaps branchDepths() {
+    InternalSchemaSwaps result = new InternalSchemaSwaps(this.swaps, new HashMap<>(), this.parentSwaps);
+    result.swapDepths.putAll(this.swapDepths);
+    return result;
+  }
+
+  public InternalSchemaSwaps branchAnnotations() {
+    Map<Key, Value> combined = new HashMap<>(swaps);
+    combined.putAll(parentSwaps);
+    InternalSchemaSwaps result = new InternalSchemaSwaps(new HashMap<>(), this.swapDepths, combined);
+    return result;
+  }
+
+  public void registerSwap(ClassRef definitionType, ClassRef originalType, String fieldName, ClassRef targetType,
+      int depth) {
+    Value value = new Value(definitionType, originalType, fieldName, targetType, depth);
+    Key key = new Key(originalType, fieldName);
+    if (parentSwaps.containsKey(key)) {
+      // it's simplest for now to just disallow this
+      throw new IllegalArgumentException("Nested SchemaSwap: " + value);
     }
+    if (swaps.put(key, value) != null) {
+      throw new IllegalArgumentException("Duplicate SchemaSwap: " + value);
+    }
+  }
+
+  public ClassRef lookupAndMark(ClassRef originalType, String name, Runnable swapApplicableAction) {
+    Key key = new Key(originalType, name);
+    Value value = swaps.getOrDefault(key, parentSwaps.get(key));
+    if (value != null) {
+      if (value.depth > 0) {
+        swapApplicableAction.run();
+      }
+      int currentDepth = swapDepths.getOrDefault(key, 0);
+      swapDepths.put(key, currentDepth+1);
+      value.markUsed();
+      if (currentDepth == value.depth) {
+        return value.getTargetType();
+      }
+      if (currentDepth > value.depth) {
+        throw new IllegalStateException("Somthing has gone wrong with tracking swap depths, please raise an issue.");
+      }
+    }
+    return null;
   }
 
   public void throwIfUnmatchedSwaps() {
@@ -100,12 +145,14 @@ public class InternalSchemaSwaps {
     private final ClassRef targetType;
     private boolean used;
     private final ClassRef definitionType;
+    private final int depth;
 
-    public Value(ClassRef definitionType, ClassRef originalType, String fieldName, ClassRef targetType) {
+    public Value(ClassRef definitionType, ClassRef originalType, String fieldName, ClassRef targetType, int depth) {
       this.definitionType = definitionType;
       this.originalType = originalType;
       this.fieldName = fieldName;
       this.targetType = targetType;
+      this.depth = depth;
       this.used = false;
     }
 

@@ -323,6 +323,10 @@ The CRD generator will perform the same substitution as a `SchemaFrom` annotatio
 
 The name of the field is restricted to the original `fieldName` and should be backed by a matching concrete field of the matching class. Getters, setters, and constructors are not taken into consideration.
 
+SchemaSwaps cannot currently be nested - if a more deeply nested class contains a swap for the same class and field, an exception will be thrown.
+
+The ScheamSwap annotation has an optional depth property, which is for advanced scenarios involving cyclic references.  Since CRDs cannot directly represent cycles, the depth property may be used to control an unrolling of the representation in your CRD.  A depth of 0, the default, performs the swap on the field without the originalType appearing in your CRD.  A depth of n will allow the originalType to appear in the CRD up to a nesting depth of n, with the specified field at the nth level terminated by the targetType.
+
 ### Generating `x-kubernetes-preserve-unknown-fields: true`
 
 If a field or one of its accessors is annotated with
@@ -437,7 +441,7 @@ The CRD generator will add the additional `labels`:
 | `io.fabric8.generator.annotation.Nullable`                   | The field is marked as `nullable`                                                     |
 | `io.fabric8.generator.annotation.Required`                   | The field is marked as `required`                                                     |
 | `io.fabric8.crd.generator.annotation.SchemaFrom`             | The field type for the generation is the one coming from the annotation               |
-| `io.fabric8.crd.generator.annotation.SchemaSwap`             | Same as SchemaFrom, but can be applied at any point in the class hierarchy            |
+| `io.fabric8.crd.generator.annotation.SchemaSwap`             | Similar to SchemaFrom, but can be applied at any point in the class hierarchy            |
 | `io.fabric8.crd.generator.annotation.Annotations`            | Additional `annotations` in `metadata`                                                |
 | `io.fabric8.crd.generator.annotation.Labels`                 | Additional `labels` in `metadata`                                                     |
 

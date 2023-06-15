@@ -18,14 +18,18 @@ package io.fabric8.crd.generator.v1;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.fabric8.crd.example.annotated.Annotated;
 import io.fabric8.crd.example.basic.Basic;
+import io.fabric8.crd.example.extraction.CollectionCyclicSchemaSwap;
+import io.fabric8.crd.example.extraction.CyclicSchemaSwap;
 import io.fabric8.crd.example.extraction.DeeplyNestedSchemaSwaps;
 import io.fabric8.crd.example.extraction.Extraction;
 import io.fabric8.crd.example.extraction.IncorrectExtraction;
 import io.fabric8.crd.example.extraction.IncorrectExtraction2;
 import io.fabric8.crd.example.extraction.MultipleSchemaSwaps;
+import io.fabric8.crd.example.extraction.NestedSchemaSwap;
 import io.fabric8.crd.example.json.ContainingJson;
 import io.fabric8.crd.example.person.Person;
 import io.fabric8.crd.generator.utils.Types;
+import io.fabric8.kubernetes.api.model.AnyType;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps;
 import io.sundr.model.TypeDef;
 import org.junit.jupiter.api.Test;
@@ -35,9 +39,23 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class JsonSchemaTest {
+
+  @Test
+  void shouldCreatAnyTypeWithoutProperties() {
+    TypeDef any = Types.typeDefFrom(AnyType.class);
+    JSONSchemaProps schema = JsonSchema.from(any);
+    assertNotNull(any);
+    assertSchemaHasNumberOfProperties(schema, 0);
+    assertTrue(schema.getXKubernetesPreserveUnknownFields());
+  }
 
   @Test
   void shouldCreateJsonSchemaFromClass() {
@@ -260,6 +278,51 @@ class JsonSchemaTest {
   }
 
   @Test
+  void shouldApplyCyclicSchemaSwaps() {
+    TypeDef extraction = Types.typeDefFrom(CyclicSchemaSwap.class);
+    JSONSchemaProps schema = JsonSchema.from(extraction);
+    assertNotNull(schema);
+
+    Map<String, JSONSchemaProps> properties = assertSchemaHasNumberOfProperties(schema, 2);
+    Map<String, JSONSchemaProps> spec = assertSchemaHasNumberOfProperties(properties.get("spec"), 3);
+
+    // the collection should emit a single level then terminate with void
+    assertNull(spec.get("roots").getItems().getSchema().getProperties().get("level").getProperties().get("level"));
+
+    assertPropertyHasType(spec.get("myObject"), "value", "integer");
+
+    // the field should emit a single level then terminate with void
+    assertNull(spec.get("root").getProperties().get("level").getProperties().get("level"));
+  }
+
+  @Test
+  void shouldApplyCollectionCyclicSchemaSwaps() {
+    TypeDef extraction = Types.typeDefFrom(CollectionCyclicSchemaSwap.class);
+    JSONSchemaProps schema = JsonSchema.from(extraction);
+    assertNotNull(schema);
+
+    Map<String, JSONSchemaProps> properties = assertSchemaHasNumberOfProperties(schema, 2);
+    Map<String, JSONSchemaProps> spec = assertSchemaHasNumberOfProperties(properties.get("spec"), 2);
+
+    assertPropertyHasType(spec.get("myObject"), "value", "integer");
+    Map<String, JSONSchemaProps> level1 = assertSchemaHasNumberOfProperties(spec.get("levels").getItems().getSchema(), 2);
+
+    assertPropertyHasType(level1.get("myObject"), "value", "integer");
+    Map<String, JSONSchemaProps> level2 = assertSchemaHasNumberOfProperties(level1.get("levels").getItems().getSchema(), 2);
+
+    assertPropertyHasType(level2.get("myObject"), "value", "integer");
+    Map<String, JSONSchemaProps> level3 = assertSchemaHasNumberOfProperties(level2.get("levels").getItems().getSchema(), 2);
+
+    assertPropertyHasType(level3.get("myObject"), "value", "integer");
+    // should terminate at the 3rd level with any - this is probably not quite the behavior we want
+    // targeting collection properties with a non-collection terminal seems problematic
+    JSONSchemaProps terminal = level3.get("levels");
+    assertNull(terminal.getItems());
+    assertTrue(terminal.getXKubernetesPreserveUnknownFields());
+    assertSchemaHasNumberOfProperties(terminal, 0);
+  }
+
+  @Test
   void shouldThrowIfSchemaSwapHasUnmatchedField() {
     TypeDef incorrectExtraction = Types.typeDefFrom(IncorrectExtraction.class);
     IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
@@ -278,6 +341,17 @@ class JsonSchemaTest {
     assertEquals(
         "Unmatched SchemaSwaps: @SchemaSwap(originalType=io.fabric8.crd.example.basic.BasicSpec, fieldName=\"bar\", targetType=io.fabric8.crd"
             + ".example.extraction.FooExtractor) on io.fabric8.crd.example.extraction.IncorrectExtraction2",
+        exception.getMessage());
+  }
+
+  @Test
+  void shouldThrowIfSchemaSwapNested() {
+    TypeDef nested = Types.typeDefFrom(NestedSchemaSwap.class);
+    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+        () -> JsonSchema.from(nested));
+    assertEquals(
+        "Nested SchemaSwap: @SchemaSwap(originalType=io.fabric8.crd.example.extraction.NestedSchemaSwap.End, fieldName=\"value\", targetType=java.lang.Void) "
+            + "on io.fabric8.crd.example.extraction.NestedSchemaSwap.Intermediate",
         exception.getMessage());
   }
 
