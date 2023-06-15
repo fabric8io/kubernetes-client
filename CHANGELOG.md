@@ -9,6 +9,7 @@
 #### Improvements
 * Fix #5368: added support for additional ListOptions fields
 * Fix #5388: [crd-generator] Generate deterministic CRDs
+* Fix #5257: Add ErrorStreamMessage and StatusStreamMessage to ease mocking of pods/exec requests
 
 #### Dependency Upgrade
 * Fix #5373: Gradle base API based on v8.2.1

@@ -38,9 +38,11 @@ import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.kubernetes.client.dsl.internal.core.v1.PodOperationsImpl;
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.ErrorStreamMessage;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.kubernetes.client.server.mock.OutputStreamMessage;
 import io.fabric8.kubernetes.client.server.mock.StatusMessage;
+import io.fabric8.kubernetes.client.server.mock.StatusStreamMessage;
 import io.fabric8.kubernetes.client.utils.InputStreamPumper;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.mockwebserver.internal.WebSocketMessage;
@@ -415,6 +417,76 @@ class PodTest {
     execLatch.await(10, TimeUnit.MINUTES);
     assertNotNull(watch);
     assertEquals(expectedOutput, baos.toString());
+    watch.close();
+  }
+
+  @Test
+  void testExecWithErrorOutput() throws InterruptedException {
+    String expectedError = "ls: cannot open directory '/': Permission denied";
+    server.expect()
+        .withPath("/api/v1/namespaces/test/pods/pod1/exec?command=ls&container=default&stderr=true")
+        .andUpgradeToWebSocket()
+        .open(new ErrorStreamMessage(expectedError))
+        .done()
+        .always();
+    server.expect()
+        .withPath("/api/v1/namespaces/test/pods/pod1")
+        .andReturn(200,
+            new PodBuilder().withNewMetadata()
+                .endMetadata()
+                .withNewSpec()
+                .addNewContainer()
+                .withName("default")
+                .endContainer()
+                .endSpec()
+                .build())
+        .once();
+
+    final CountDownLatch execLatch = new CountDownLatch(1);
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    ExecWatch watch = client.pods()
+        .withName("pod1")
+        .writingError(baos)
+        .usingListener(createCountDownLatchListener(execLatch))
+        .exec("ls");
+
+    assertTrue(execLatch.await(10, TimeUnit.MINUTES));
+    assertNotNull(watch);
+    assertEquals(expectedError, baos.toString());
+    watch.close();
+  }
+
+  @Test
+  void testExecWithExitCode() throws Exception {
+    server.expect()
+        .withPath("/api/v1/namespaces/test/pods/pod1/exec?command=ls&container=default&stdout=true")
+        .andUpgradeToWebSocket()
+        .open(new StatusStreamMessage(1))
+        .done()
+        .always();
+    server.expect()
+        .withPath("/api/v1/namespaces/test/pods/pod1")
+        .andReturn(200,
+            new PodBuilder().withNewMetadata()
+                .endMetadata()
+                .withNewSpec()
+                .addNewContainer()
+                .withName("default")
+                .endContainer()
+                .endSpec()
+                .build())
+        .once();
+
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    ExecWatch watch = client.pods()
+        .withName("pod1")
+        .writingOutput(baos)
+        .exec("ls");
+
+    final Integer exitCode = watch.exitCode().get(10, TimeUnit.MINUTES);
+    assertEquals(1, exitCode);
+    assertNotNull(watch);
+    assertEquals(0, baos.size());
     watch.close();
   }
 
