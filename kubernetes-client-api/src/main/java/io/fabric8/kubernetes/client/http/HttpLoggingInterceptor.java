@@ -28,6 +28,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
+import static io.fabric8.kubernetes.client.http.BufferUtil.copy;
+
 public class HttpLoggingInterceptor implements Interceptor {
 
   private final HttpLogger httpLogger;
@@ -93,7 +95,7 @@ public class HttpLoggingInterceptor implements Interceptor {
         value.stream().forEach(bb -> {
           if (responseBodySize.addAndGet(bb.remaining()) < MAX_BODY_SIZE && !bodyTruncated.get()
               && BufferUtil.isPlainText(bb)) {
-            responseBody.add(bb);
+            responseBody.add(copy(bb));
           } else {
             bodyTruncated.set(true);
           }
