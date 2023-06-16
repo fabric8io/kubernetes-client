@@ -32,6 +32,7 @@ import io.fabric8.kubernetes.client.PortForward;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.WatcherException;
+import io.fabric8.kubernetes.client.dsl.CopyOrReadable;
 import io.fabric8.kubernetes.client.dsl.ExecListener;
 import io.fabric8.kubernetes.client.dsl.ExecWatch;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
@@ -48,7 +49,6 @@ import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.mockwebserver.internal.WebSocketMessage;
 import okio.ByteString;
 import org.awaitility.Awaitility;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -67,6 +67,7 @@ import java.nio.channels.SocketChannel;
 import java.nio.channels.WritableByteChannel;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
+import java.time.Duration;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executors;
@@ -206,7 +207,7 @@ class PodTest {
     PodResource podOp = client.pods().withName("pod1");
 
     // Then
-    Assertions.assertThrows(KubernetesClientException.class, () -> podOp.edit(p -> p));
+    assertThrows(KubernetesClientException.class, () -> podOp.edit(p -> p));
   }
 
   @Test
@@ -233,11 +234,10 @@ class PodTest {
     server.expect().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, pod1).once();
     server.expect().withPath("/api/v1/namespaces/ns1/pods/pod2").andReturn(200, pod2).once();
 
-    Boolean deleted = client.pods().inAnyNamespace().delete(pod1, pod2);
+    boolean deleted = client.pods().inAnyNamespace().delete(pod1, pod2);
     assertTrue(deleted);
 
-    deleted = client.pods().inAnyNamespace().delete(pod3).size() == 1;
-    assertFalse(deleted);
+    assertEquals(0, client.pods().inAnyNamespace().delete(pod3).size());
   }
 
   @Test
@@ -247,7 +247,7 @@ class PodTest {
 
     // When + Then
     NonNamespaceOperation<Pod, PodList, PodResource> podOp = client.pods().inNamespace("test1");
-    assertFalse(podOp.delete(pod1).size() == 1);
+    assertEquals(0, podOp.delete(pod1).size());
   }
 
   @Test
@@ -255,13 +255,12 @@ class PodTest {
     Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").withNamespace("test").and().build();
     server.expect().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, pod1).once();
 
-    Boolean deleted = client.pods()
+    assertEquals(1, client.pods()
         .inNamespace("test")
         .withName("pod1")
         .withPropagationPolicy(DeletionPropagation.FOREGROUND)
         .delete()
-        .size() == 1;
-    assertTrue(deleted);
+        .size());
   }
 
   @Test
@@ -287,12 +286,12 @@ class PodTest {
         .andReturn(500, new PodBuilder().build())
         .once();
 
-    Boolean deleted = client.pods().withName("pod1").evict();
+    boolean deleted = client.pods().withName("pod1").evict();
     assertTrue(deleted);
 
     // not found
     PodResource podResource = client.pods().withName("pod2");
-    assertThrows(KubernetesClientException.class, () -> podResource.evict());
+    assertThrows(KubernetesClientException.class, podResource::evict);
 
     deleted = client.pods().inNamespace("ns1").withName("pod2").evict();
     assertTrue(deleted);
@@ -336,7 +335,7 @@ class PodTest {
     Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").withNamespace("test").and().build();
 
     PodResource podOp = client.pods().inNamespace("test1").withName("mypod1");
-    Assertions.assertThrows(KubernetesClientException.class, () -> podOp.create(pod1));
+    assertThrows(KubernetesClientException.class, () -> podOp.create(pod1));
   }
 
   @Test
@@ -414,7 +413,7 @@ class PodTest {
         .usingListener(createCountDownLatchListener(execLatch))
         .exec("ls");
 
-    execLatch.await(10, TimeUnit.MINUTES);
+    assertTrue(execLatch.await(10, TimeUnit.MINUTES));
     assertNotNull(watch);
     assertEquals(expectedOutput, baos.toString());
     watch.close();
@@ -566,7 +565,7 @@ class PodTest {
   }
 
   @Test
-  void testExecExplicitDefaultContainerMissing() throws InterruptedException, IOException {
+  void testExecExplicitDefaultContainerMissing() {
     server.expect()
         .withPath("/api/v1/namespaces/test/pods/pod1/exec?command=ls&container=first&stderr=true")
         .andUpgradeToWebSocket()
@@ -663,7 +662,7 @@ class PodTest {
         .until(() -> stdout.toString().equals(expectedOutput) && stderr.toString().equals(expectedError));
 
     watch.close();
-    latch.await(1, TimeUnit.MINUTES);
+    assertTrue(latch.await(1, TimeUnit.MINUTES));
   }
 
   private ExecListener createCountDownLatchListener(CountDownLatch latch) {
@@ -734,7 +733,7 @@ class PodTest {
     PodResource podOp = client.pods().withName("pod5");
 
     // When + Then
-    Assertions.assertThrows(KubernetesClientException.class, () -> podOp.getLog(true));
+    assertThrows(KubernetesClientException.class, () -> podOp.getLog(true));
   }
 
   @Test
@@ -744,7 +743,7 @@ class PodTest {
   }
 
   @Test
-  void testWait() throws InterruptedException {
+  void testWait() {
     Pod notReady = new PodBuilder()
         .withNewMetadata()
         .withName("pod1")
@@ -840,8 +839,7 @@ class PodTest {
   }
 
   @Test
-  void testPortForwardWithChannel() throws InterruptedException, IOException {
-
+  void testPortForwardWithChannel() throws IOException {
     server.expect()
         .withPath("/api/v1/namespaces/test/pods/pod1/portforward?ports=123")
         .andUpgradeToWebSocket()
@@ -864,9 +862,7 @@ class PodTest {
     WritableByteChannel outChannel = Channels.newChannel(out);
 
     try (PortForward portForward = client.pods().withName("pod1").portForward(123, inChannel, outChannel)) {
-      while (portForward.isAlive()) {
-        Thread.sleep(100);
-      }
+      Awaitility.await().atMost(Duration.ofSeconds(60)).until(() -> !portForward.isAlive());
     }
 
     String got = new String(out.toByteArray(), StandardCharsets.UTF_8);
@@ -875,9 +871,9 @@ class PodTest {
 
   @Test
   void testOptionalUpload() {
-    Assertions.assertThrows(KubernetesClientException.class, () -> {
-      client.pods().inNamespace("ns1").withName("pod2").dir("/etc/hosts/dir").upload(tempDir.toAbsolutePath());
-    });
+    final CopyOrReadable dir = client.pods().inNamespace("ns1").withName("pod2").dir("/etc/hosts/dir");
+    final Path absolutePath = tempDir.toAbsolutePath();
+    assertThrows(KubernetesClientException.class, () -> dir.upload(absolutePath));
   }
 
   @Test
@@ -898,44 +894,33 @@ class PodTest {
                 .build())
         .once();
 
-    Assertions.assertThrows(KubernetesClientException.class, () -> {
-      client.pods().inNamespace("ns1").withName("pod2").file("/etc/hosts").copy(tempDir.toAbsolutePath());
-    });
+    final CopyOrReadable file = client.pods().inNamespace("ns1").withName("pod2").file("/etc/hosts");
+    final Path absolutePath = tempDir.toAbsolutePath();
+    assertThrows(KubernetesClientException.class, () -> file.copy(absolutePath));
   }
 
   @Test
   void testOptionalCopyDir() {
-    Assertions.assertThrows(KubernetesClientException.class, () -> {
-      client.pods().inNamespace("ns1").withName("pod2").dir("/etc/hosts").copy(tempDir.toAbsolutePath());
-    });
+    final CopyOrReadable dir = client.pods().inNamespace("ns1").withName("pod2").dir("/etc/hosts");
+    final Path absolutePath = tempDir.toAbsolutePath();
+    assertThrows(KubernetesClientException.class, () -> dir.copy(absolutePath));
   }
 
   @Test
-  void testPipesNotAllowed() {
-    PipedInputStream in = new PipedInputStream();
-    PipedOutputStream out = new PipedOutputStream();
+  void testPipesNotAllowed() throws IOException {
+    try (PipedInputStream in = new PipedInputStream(); PipedOutputStream out = new PipedOutputStream()) {
+      PodResource podOp = client.pods().inNamespace("ns1").withName("pod2");
 
-    PodResource podOp = client.pods().inNamespace("ns1").withName("pod2");
+      assertThrows(KubernetesClientException.class, () -> podOp.watchLog(out));
 
-    Assertions.assertThrows(KubernetesClientException.class, () -> {
-      podOp.watchLog(out);
-    });
+      assertThrows(KubernetesClientException.class, () -> podOp.writingError(out));
 
-    Assertions.assertThrows(KubernetesClientException.class, () -> {
-      podOp.writingError(out);
-    });
+      assertThrows(KubernetesClientException.class, () -> podOp.writingErrorChannel(out));
 
-    Assertions.assertThrows(KubernetesClientException.class, () -> {
-      podOp.writingErrorChannel(out);
-    });
+      assertThrows(KubernetesClientException.class, () -> podOp.writingOutput(out));
 
-    Assertions.assertThrows(KubernetesClientException.class, () -> {
-      podOp.writingOutput(out);
-    });
-
-    Assertions.assertThrows(KubernetesClientException.class, () -> {
-      podOp.readingInput(in);
-    });
+      assertThrows(KubernetesClientException.class, () -> podOp.readingInput(in));
+    }
   }
 
   @Test
@@ -1061,7 +1046,7 @@ class PodTest {
         .usingListener(createCountDownLatchListener(execLatch))
         .exec("ls");
 
-    execLatch.await(10, TimeUnit.MINUTES);
+    assertTrue(execLatch.await(10, TimeUnit.MINUTES));
     assertNotNull(watch);
     assertEquals(expectedOutput, baos.toString());
     watch.close();
