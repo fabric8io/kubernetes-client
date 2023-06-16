@@ -37,6 +37,8 @@ import lombok.experimental.Accessors;
     "kind",
     "metadata",
     "policy",
+    "protocolStrategy",
+    "transportConfig",
     "upstreams"
 })
 @ToString
@@ -63,6 +65,10 @@ public class ForwardPlugin implements KubernetesResource
 
     @JsonProperty("policy")
     private String policy;
+    @JsonProperty("protocolStrategy")
+    private String protocolStrategy;
+    @JsonProperty("transportConfig")
+    private DNSTransportConfig transportConfig;
     @JsonProperty("upstreams")
     private List<String> upstreams = new ArrayList<String>();
     @JsonIgnore
@@ -75,9 +81,11 @@ public class ForwardPlugin implements KubernetesResource
     public ForwardPlugin() {
     }
 
-    public ForwardPlugin(String policy, List<String> upstreams) {
+    public ForwardPlugin(String policy, String protocolStrategy, DNSTransportConfig transportConfig, List<String> upstreams) {
         super();
         this.policy = policy;
+        this.protocolStrategy = protocolStrategy;
+        this.transportConfig = transportConfig;
         this.upstreams = upstreams;
     }
 
@@ -89,6 +97,26 @@ public class ForwardPlugin implements KubernetesResource
     @JsonProperty("policy")
     public void setPolicy(String policy) {
         this.policy = policy;
+    }
+
+    @JsonProperty("protocolStrategy")
+    public String getProtocolStrategy() {
+        return protocolStrategy;
+    }
+
+    @JsonProperty("protocolStrategy")
+    public void setProtocolStrategy(String protocolStrategy) {
+        this.protocolStrategy = protocolStrategy;
+    }
+
+    @JsonProperty("transportConfig")
+    public DNSTransportConfig getTransportConfig() {
+        return transportConfig;
+    }
+
+    @JsonProperty("transportConfig")
+    public void setTransportConfig(DNSTransportConfig transportConfig) {
+        this.transportConfig = transportConfig;
     }
 
     @JsonProperty("upstreams")

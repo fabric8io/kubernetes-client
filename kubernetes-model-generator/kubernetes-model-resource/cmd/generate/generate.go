@@ -19,7 +19,7 @@ import (
   "bytes"
   "encoding/json"
   "fmt"
-  v1alpha1resource "k8s.io/api/resource/v1alpha1"
+  v1alpha2resource "k8s.io/api/resource/v1alpha2"
 
   "log"
   "reflect"
@@ -32,14 +32,14 @@ import (
 )
 
 type Schema struct {
-  ResourceClaim                                  v1alpha1resource.ResourceClaim
-  ResourceClaimList                              v1alpha1resource.ResourceClaimList
-  PodScheduling                                  v1alpha1resource.PodScheduling
-  PodSchedulingList                              v1alpha1resource.PodSchedulingList
-  ResourceClass                                  v1alpha1resource.ResourceClaim
-  ResourceClassList                              v1alpha1resource.ResourceClassList
-  ResourceClaimTemplate                          v1alpha1resource.ResourceClaimTemplate
-  ResourceClaimTemplateList                      v1alpha1resource.ResourceClaimTemplateList
+  ResourceClaim                                  v1alpha2resource.ResourceClaim
+  ResourceClaimList                              v1alpha2resource.ResourceClaimList
+  ResourceClass                                  v1alpha2resource.ResourceClaim
+  PodSchedulingContext                           v1alpha2resource.PodSchedulingContext
+  PodSchedulingContextList                       v1alpha2resource.PodSchedulingContextList
+  ResourceClassList                              v1alpha2resource.ResourceClassList
+  ResourceClaimTemplate                          v1alpha2resource.ResourceClaimTemplate
+  ResourceClaimTemplateList                      v1alpha2resource.ResourceClaimTemplateList
 }
 
 func main() {
@@ -48,7 +48,7 @@ func main() {
     {"k8s.io/apimachinery/pkg/version", "", "io.fabric8.kubernetes.api.model.version", "kubernetes_apimachinery_pkg_version_", false},
     {"k8s.io/apimachinery/pkg/apis/meta/v1", "", "io.fabric8.kubernetes.api.model", "kubernetes_apimachinery_", false},
     {"k8s.io/api/core/v1", "", "io.fabric8.kubernetes.api.model", "kubernetes_core_", false},
-    {"k8s.io/api/resource/v1alpha1", "resource.k8s.io", "io.fabric8.kubernetes.api.model.resource.v1alpha1", "kubernetes_resource_v1alpha1_", true},
+    {"k8s.io/api/resource/v1alpha2", "resource.k8s.io", "io.fabric8.kubernetes.api.model.resource.v1alpha2", "kubernetes_resource_v1alpha2_", true},
   }
 
   typeMap := map[reflect.Type]reflect.Type{

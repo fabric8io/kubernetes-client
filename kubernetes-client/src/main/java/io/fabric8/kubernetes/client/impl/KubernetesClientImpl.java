@@ -80,7 +80,7 @@ import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
 import io.fabric8.kubernetes.client.RequestConfig;
 import io.fabric8.kubernetes.client.V1AdmissionRegistrationAPIGroupDSL;
 import io.fabric8.kubernetes.client.V1Alpha1AdmissionRegistrationAPIGroupDSL;
-import io.fabric8.kubernetes.client.V1Alpha1DynamicResourceAllocationAPIGroupDSL;
+import io.fabric8.kubernetes.client.V1Alpha2DynamicResourceAllocationAPIGroupDSL;
 import io.fabric8.kubernetes.client.V1ApiextensionAPIGroupDSL;
 import io.fabric8.kubernetes.client.V1AuthenticationAPIGroupDSL;
 import io.fabric8.kubernetes.client.V1AuthorizationAPIGroupDSL;
@@ -260,8 +260,8 @@ public class KubernetesClientImpl extends BaseClient implements NamespacedKubern
     adapters.registerClient(V1DiscoveryAPIGroupDSL.class, new V1DiscoveryAPIGroupClient());
     adapters.registerClient(DynamicResourceAllocationAPIGroupDSL.class,
         new DynamicResourceAllocationAPIGroupClient());
-    adapters.registerClient(V1Alpha1DynamicResourceAllocationAPIGroupDSL.class,
-        new V1Alpha1DynamicResourceAllocationAPIGroupClient());
+    adapters.registerClient(V1Alpha2DynamicResourceAllocationAPIGroupDSL.class,
+        new V1Alpha2DynamicResourceAllocationAPIGroupClient());
     adapters.registerClient(CertificatesAPIGroupDSL.class, new CertificatesAPIGroupClient());
     adapters.registerClient(V1CertificatesAPIGroupDSL.class, new V1CertificatesAPIGroupClient());
     adapters.registerClient(V1beta1CertificatesAPIGroupDSL.class, new V1beta1CertificatesAPIGroupClient());

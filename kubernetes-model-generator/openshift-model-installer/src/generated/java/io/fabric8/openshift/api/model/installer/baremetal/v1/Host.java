@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
@@ -76,7 +77,7 @@ public class Host implements KubernetesResource
     @JsonProperty("name")
     private String name;
     @JsonProperty("networkConfig")
-    private String networkConfig;
+    private JsonNode networkConfig;
     @JsonProperty("role")
     private String role;
     @JsonProperty("rootDeviceHints")
@@ -91,7 +92,7 @@ public class Host implements KubernetesResource
     public Host() {
     }
 
-    public Host(BMC bmc, String bootMACAddress, String bootMode, String hardwareProfile, String name, String networkConfig, String role, RootDeviceHints rootDeviceHints) {
+    public Host(BMC bmc, String bootMACAddress, String bootMode, String hardwareProfile, String name, JsonNode networkConfig, String role, RootDeviceHints rootDeviceHints) {
         super();
         this.bmc = bmc;
         this.bootMACAddress = bootMACAddress;
@@ -154,12 +155,12 @@ public class Host implements KubernetesResource
     }
 
     @JsonProperty("networkConfig")
-    public String getNetworkConfig() {
+    public JsonNode getNetworkConfig() {
         return networkConfig;
     }
 
     @JsonProperty("networkConfig")
-    public void setNetworkConfig(String networkConfig) {
+    public void setNetworkConfig(JsonNode networkConfig) {
         this.networkConfig = networkConfig;
     }
 

@@ -24,6 +24,7 @@ import (
   "k8s.io/apimachinery/pkg/api/resource"
   apimachineryversion "k8s.io/apimachinery/pkg/version"
   authenticationapi "k8s.io/api/authentication/v1"
+  authenticationv1beta1 "k8s.io/api/authentication/v1beta1"
   authenticationv1alpha1 "k8s.io/api/authentication/v1alpha1"
 
   v1beta1admission "k8s.io/api/admission/v1beta1"
@@ -65,6 +66,7 @@ type Schema struct {
 
   TokenReview                              authenticationapi.TokenReview
   TokenRequest                             authenticationapi.TokenRequest
+  V1Beta1SelfSubjectReview                 authenticationv1beta1.SelfSubjectReview
   SelfSubjectReview                        authenticationv1alpha1.SelfSubjectReview
 
   V1Beta1AdmissionReview                   v1beta1admission.AdmissionReview
@@ -114,6 +116,7 @@ func main() {
     {"k8s.io/api/admissionregistration/v1", "admissionregistration.k8s.io", "io.fabric8.kubernetes.api.model.admissionregistration.v1", "kubernetes_admissionregistration_v1_", true},
     {"k8s.io/api/authentication/v1", "authentication.k8s.io", "io.fabric8.kubernetes.api.model.authentication", "kubernetes_authentication_", true},
     {"k8s.io/api/authentication/v1alpha1", "authentication.k8s.io", "io.fabric8.kubernetes.api.model.authentication.v1alpha1", "kubernetes_authentication_v1alpha1_", true},
+    {"k8s.io/api/authentication/v1beta1", "authentication.k8s.io", "io.fabric8.kubernetes.api.model.authentication.v1beta1", "kubernetes_authentication_v1beta1_", true},
     {"k8s.io/apimachinery/pkg/util/intstr", "", "io.fabric8.kubernetes.api.model", "kubernetes_apimachinery_pkg_util_intstr_", false},
     {"k8s.io/apimachinery/pkg/runtime", "", "io.fabric8.kubernetes.api.model.runtime", "kubernetes_apimachinery_pkg_runtime_", false},
     {"k8s.io/apimachinery/pkg/version", "", "io.fabric8.kubernetes.api.model.version", "kubernetes_apimachinery_pkg_version_", false},

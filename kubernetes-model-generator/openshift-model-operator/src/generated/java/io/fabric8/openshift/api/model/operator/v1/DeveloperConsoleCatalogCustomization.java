@@ -36,7 +36,8 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "categories"
+    "categories",
+    "types"
 })
 @ToString
 @EqualsAndHashCode
@@ -63,6 +64,8 @@ public class DeveloperConsoleCatalogCustomization implements KubernetesResource
     @JsonProperty("categories")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<DeveloperConsoleCatalogCategory> categories = new ArrayList<DeveloperConsoleCatalogCategory>();
+    @JsonProperty("types")
+    private DeveloperConsoleCatalogTypes types;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -73,9 +76,10 @@ public class DeveloperConsoleCatalogCustomization implements KubernetesResource
     public DeveloperConsoleCatalogCustomization() {
     }
 
-    public DeveloperConsoleCatalogCustomization(List<DeveloperConsoleCatalogCategory> categories) {
+    public DeveloperConsoleCatalogCustomization(List<DeveloperConsoleCatalogCategory> categories, DeveloperConsoleCatalogTypes types) {
         super();
         this.categories = categories;
+        this.types = types;
     }
 
     @JsonProperty("categories")
@@ -86,6 +90,16 @@ public class DeveloperConsoleCatalogCustomization implements KubernetesResource
     @JsonProperty("categories")
     public void setCategories(List<DeveloperConsoleCatalogCategory> categories) {
         this.categories = categories;
+    }
+
+    @JsonProperty("types")
+    public DeveloperConsoleCatalogTypes getTypes() {
+        return types;
+    }
+
+    @JsonProperty("types")
+    public void setTypes(DeveloperConsoleCatalogTypes types) {
+        this.types = types;
     }
 
     @JsonAnyGetter

@@ -38,11 +38,14 @@ import lombok.experimental.Accessors;
     "metadata",
     "affinityGroupsNames",
     "autoPinningPolicy",
+    "clone",
     "cpu",
+    "format",
     "hugepages",
     "instanceTypeID",
     "memoryMB",
     "osDisk",
+    "sparse",
     "vmType"
 })
 @ToString
@@ -71,8 +74,12 @@ public class MachinePool implements KubernetesResource
     private List<String> affinityGroupsNames = new ArrayList<String>();
     @JsonProperty("autoPinningPolicy")
     private String autoPinningPolicy;
+    @JsonProperty("clone")
+    private Boolean clone;
     @JsonProperty("cpu")
     private CPU cpu;
+    @JsonProperty("format")
+    private String format;
     @JsonProperty("hugepages")
     private Integer hugepages;
     @JsonProperty("instanceTypeID")
@@ -81,6 +88,8 @@ public class MachinePool implements KubernetesResource
     private Integer memoryMB;
     @JsonProperty("osDisk")
     private Disk osDisk;
+    @JsonProperty("sparse")
+    private Boolean sparse;
     @JsonProperty("vmType")
     private String vmType;
     @JsonIgnore
@@ -93,15 +102,18 @@ public class MachinePool implements KubernetesResource
     public MachinePool() {
     }
 
-    public MachinePool(List<String> affinityGroupsNames, String autoPinningPolicy, CPU cpu, Integer hugepages, String instanceTypeID, Integer memoryMB, Disk osDisk, String vmType) {
+    public MachinePool(List<String> affinityGroupsNames, String autoPinningPolicy, Boolean clone, CPU cpu, String format, Integer hugepages, String instanceTypeID, Integer memoryMB, Disk osDisk, Boolean sparse, String vmType) {
         super();
         this.affinityGroupsNames = affinityGroupsNames;
         this.autoPinningPolicy = autoPinningPolicy;
+        this.clone = clone;
         this.cpu = cpu;
+        this.format = format;
         this.hugepages = hugepages;
         this.instanceTypeID = instanceTypeID;
         this.memoryMB = memoryMB;
         this.osDisk = osDisk;
+        this.sparse = sparse;
         this.vmType = vmType;
     }
 
@@ -125,6 +137,16 @@ public class MachinePool implements KubernetesResource
         this.autoPinningPolicy = autoPinningPolicy;
     }
 
+    @JsonProperty("clone")
+    public Boolean getClone() {
+        return clone;
+    }
+
+    @JsonProperty("clone")
+    public void setClone(Boolean clone) {
+        this.clone = clone;
+    }
+
     @JsonProperty("cpu")
     public CPU getCpu() {
         return cpu;
@@ -133,6 +155,16 @@ public class MachinePool implements KubernetesResource
     @JsonProperty("cpu")
     public void setCpu(CPU cpu) {
         this.cpu = cpu;
+    }
+
+    @JsonProperty("format")
+    public String getFormat() {
+        return format;
+    }
+
+    @JsonProperty("format")
+    public void setFormat(String format) {
+        this.format = format;
     }
 
     @JsonProperty("hugepages")
@@ -173,6 +205,16 @@ public class MachinePool implements KubernetesResource
     @JsonProperty("osDisk")
     public void setOsDisk(Disk osDisk) {
         this.osDisk = osDisk;
+    }
+
+    @JsonProperty("sparse")
+    public Boolean getSparse() {
+        return sparse;
+    }
+
+    @JsonProperty("sparse")
+    public void setSparse(Boolean sparse) {
+        this.sparse = sparse;
     }
 
     @JsonProperty("vmType")

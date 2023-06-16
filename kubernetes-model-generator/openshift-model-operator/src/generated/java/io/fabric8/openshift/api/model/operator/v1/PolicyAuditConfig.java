@@ -36,6 +36,7 @@ import lombok.experimental.Accessors;
     "metadata",
     "destination",
     "maxFileSize",
+    "maxLogFiles",
     "rateLimit",
     "syslogFacility"
 })
@@ -65,6 +66,8 @@ public class PolicyAuditConfig implements KubernetesResource
     private String destination;
     @JsonProperty("maxFileSize")
     private Integer maxFileSize;
+    @JsonProperty("maxLogFiles")
+    private Integer maxLogFiles;
     @JsonProperty("rateLimit")
     private Integer rateLimit;
     @JsonProperty("syslogFacility")
@@ -79,10 +82,11 @@ public class PolicyAuditConfig implements KubernetesResource
     public PolicyAuditConfig() {
     }
 
-    public PolicyAuditConfig(String destination, Integer maxFileSize, Integer rateLimit, String syslogFacility) {
+    public PolicyAuditConfig(String destination, Integer maxFileSize, Integer maxLogFiles, Integer rateLimit, String syslogFacility) {
         super();
         this.destination = destination;
         this.maxFileSize = maxFileSize;
+        this.maxLogFiles = maxLogFiles;
         this.rateLimit = rateLimit;
         this.syslogFacility = syslogFacility;
     }
@@ -105,6 +109,16 @@ public class PolicyAuditConfig implements KubernetesResource
     @JsonProperty("maxFileSize")
     public void setMaxFileSize(Integer maxFileSize) {
         this.maxFileSize = maxFileSize;
+    }
+
+    @JsonProperty("maxLogFiles")
+    public Integer getMaxLogFiles() {
+        return maxLogFiles;
+    }
+
+    @JsonProperty("maxLogFiles")
+    public void setMaxLogFiles(Integer maxLogFiles) {
+        this.maxLogFiles = maxLogFiles;
     }
 
     @JsonProperty("rateLimit")

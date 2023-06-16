@@ -34,6 +34,7 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
+    "matchType",
     "name",
     "regex",
     "value"
@@ -60,6 +61,8 @@ import lombok.experimental.Accessors;
 public class Matcher implements KubernetesResource
 {
 
+    @JsonProperty("matchType")
+    private String matchType;
     @JsonProperty("name")
     private String name;
     @JsonProperty("regex")
@@ -76,11 +79,22 @@ public class Matcher implements KubernetesResource
     public Matcher() {
     }
 
-    public Matcher(String name, Boolean regex, String value) {
+    public Matcher(String matchType, String name, Boolean regex, String value) {
         super();
+        this.matchType = matchType;
         this.name = name;
         this.regex = regex;
         this.value = value;
+    }
+
+    @JsonProperty("matchType")
+    public String getMatchType() {
+        return matchType;
+    }
+
+    @JsonProperty("matchType")
+    public void setMatchType(String matchType) {
+        this.matchType = matchType;
     }
 
     @JsonProperty("name")

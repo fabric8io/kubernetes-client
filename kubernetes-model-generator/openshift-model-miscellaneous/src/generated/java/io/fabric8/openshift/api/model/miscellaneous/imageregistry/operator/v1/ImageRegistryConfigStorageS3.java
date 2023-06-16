@@ -40,6 +40,7 @@ import lombok.experimental.Accessors;
     "keyID",
     "region",
     "regionEndpoint",
+    "trustedCA",
     "virtualHostedStyle"
 })
 @ToString
@@ -76,6 +77,8 @@ public class ImageRegistryConfigStorageS3 implements KubernetesResource
     private String region;
     @JsonProperty("regionEndpoint")
     private String regionEndpoint;
+    @JsonProperty("trustedCA")
+    private S3TrustedCASource trustedCA;
     @JsonProperty("virtualHostedStyle")
     private Boolean virtualHostedStyle;
     @JsonIgnore
@@ -88,7 +91,7 @@ public class ImageRegistryConfigStorageS3 implements KubernetesResource
     public ImageRegistryConfigStorageS3() {
     }
 
-    public ImageRegistryConfigStorageS3(String bucket, ImageRegistryConfigStorageS3CloudFront cloudFront, Boolean encrypt, String keyID, String region, String regionEndpoint, Boolean virtualHostedStyle) {
+    public ImageRegistryConfigStorageS3(String bucket, ImageRegistryConfigStorageS3CloudFront cloudFront, Boolean encrypt, String keyID, String region, String regionEndpoint, S3TrustedCASource trustedCA, Boolean virtualHostedStyle) {
         super();
         this.bucket = bucket;
         this.cloudFront = cloudFront;
@@ -96,6 +99,7 @@ public class ImageRegistryConfigStorageS3 implements KubernetesResource
         this.keyID = keyID;
         this.region = region;
         this.regionEndpoint = regionEndpoint;
+        this.trustedCA = trustedCA;
         this.virtualHostedStyle = virtualHostedStyle;
     }
 
@@ -157,6 +161,16 @@ public class ImageRegistryConfigStorageS3 implements KubernetesResource
     @JsonProperty("regionEndpoint")
     public void setRegionEndpoint(String regionEndpoint) {
         this.regionEndpoint = regionEndpoint;
+    }
+
+    @JsonProperty("trustedCA")
+    public S3TrustedCASource getTrustedCA() {
+        return trustedCA;
+    }
+
+    @JsonProperty("trustedCA")
+    public void setTrustedCA(S3TrustedCASource trustedCA) {
+        this.trustedCA = trustedCA;
     }
 
     @JsonProperty("virtualHostedStyle")

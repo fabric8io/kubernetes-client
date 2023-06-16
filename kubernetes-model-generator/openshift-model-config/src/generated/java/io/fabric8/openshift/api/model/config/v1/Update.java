@@ -34,6 +34,7 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
+    "architecture",
     "force",
     "image",
     "version"
@@ -60,6 +61,8 @@ import lombok.experimental.Accessors;
 public class Update implements KubernetesResource
 {
 
+    @JsonProperty("architecture")
+    private String architecture;
     @JsonProperty("force")
     private Boolean force;
     @JsonProperty("image")
@@ -76,11 +79,22 @@ public class Update implements KubernetesResource
     public Update() {
     }
 
-    public Update(Boolean force, String image, String version) {
+    public Update(String architecture, Boolean force, String image, String version) {
         super();
+        this.architecture = architecture;
         this.force = force;
         this.image = image;
         this.version = version;
+    }
+
+    @JsonProperty("architecture")
+    public String getArchitecture() {
+        return architecture;
+    }
+
+    @JsonProperty("architecture")
+    public void setArchitecture(String architecture) {
+        this.architecture = architecture;
     }
 
     @JsonProperty("force")

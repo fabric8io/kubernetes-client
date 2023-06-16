@@ -14,6 +14,7 @@
 
 #### Dependency Upgrade
 * Fix #5308: sundrio was updated to the latest version.  FluentImpl classes were removed, along with methods that had been previously deprecated.  Some seldom used builder methods dealing manipulating buildable fields as a subtype such as withXXXField were removed in favor of using more general methods such as withField.
+* Fix #5056: Update Kubernetes Model to v1.27.3
 
 #### New Features
 * Fix #5133: Support for using TokenRequest for existing ServiceAccount
@@ -22,6 +23,12 @@
 * Fix #2718: KubernetesResourceUtil.isResourceReady was deprecated.  Use `client.resource(item).isReady()` or `Readiness.getInstance().isReady(item)` instead.
 * Fix #5171: Removed Camel-K extension, use [`org.apache.camel.k:camel-k-crds`](https://central.sonatype.com/artifact/org.apache.camel.k/camel-k-crds) instead.
 * Fix #5279: (java-generator) Add native support for `date-time` fields, they are now mapped to native `java.time.ZonedDateTime`
+* Fix #2718: KubernetesResourceUtil.isResourceReady was deprecated. Use `client.resource(item).isReady()` or `Readiness.getInstance().isReady(item)` instead
+* Resource classes in `resource.k8s.io/v1alpha1` have been moved to `resource.k8s.io/v1alpha2` apiGroup in Kubernetes 1.27. Users are required to change package of the following classes:
+  - `io.fabric8.kubernetes.api.model.resource.v1alpha1.PodSchedulingContext` -> - `io.fabric8.kubernetes.api.model.resource.v1alpha2.PodSchedulingContext`
+  - `io.fabric8.kubernetes.api.model.resource.v1alpha1.ResourceClaim` -> - `io.fabric8.kubernetes.api.model.resource.v1alpha2.ResourceClaim`
+  - `io.fabric8.kubernetes.api.model.resource.v1alpha1.ResourceClaimTemplate` -> `io.fabric8.kubernetes.api.model.resource.v1alpha2.ResourceClaimTemplate`
+  - `io.fabric8.kubernetes.api.model.resource.v1alpha1.ResourceClass` -> `io.fabric8.kubernetes.api.model.resource.v1alpha2.ResourceClass`
 
 ### 6.7.2 (2023-06-15)
 

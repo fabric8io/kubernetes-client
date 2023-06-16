@@ -36,6 +36,7 @@ import lombok.experimental.Accessors;
     "metadata",
     "aws",
     "gcp",
+    "ibm",
     "type"
 })
 @ToString
@@ -64,6 +65,8 @@ public class ProviderLoadBalancerParameters implements KubernetesResource
     private AWSLoadBalancerParameters aws;
     @JsonProperty("gcp")
     private GCPLoadBalancerParameters gcp;
+    @JsonProperty("ibm")
+    private IBMLoadBalancerParameters ibm;
     @JsonProperty("type")
     private String type;
     @JsonIgnore
@@ -76,10 +79,11 @@ public class ProviderLoadBalancerParameters implements KubernetesResource
     public ProviderLoadBalancerParameters() {
     }
 
-    public ProviderLoadBalancerParameters(AWSLoadBalancerParameters aws, GCPLoadBalancerParameters gcp, String type) {
+    public ProviderLoadBalancerParameters(AWSLoadBalancerParameters aws, GCPLoadBalancerParameters gcp, IBMLoadBalancerParameters ibm, String type) {
         super();
         this.aws = aws;
         this.gcp = gcp;
+        this.ibm = ibm;
         this.type = type;
     }
 
@@ -101,6 +105,16 @@ public class ProviderLoadBalancerParameters implements KubernetesResource
     @JsonProperty("gcp")
     public void setGcp(GCPLoadBalancerParameters gcp) {
         this.gcp = gcp;
+    }
+
+    @JsonProperty("ibm")
+    public IBMLoadBalancerParameters getIbm() {
+        return ibm;
+    }
+
+    @JsonProperty("ibm")
+    public void setIbm(IBMLoadBalancerParameters ibm) {
+        this.ibm = ibm;
     }
 
     @JsonProperty("type")

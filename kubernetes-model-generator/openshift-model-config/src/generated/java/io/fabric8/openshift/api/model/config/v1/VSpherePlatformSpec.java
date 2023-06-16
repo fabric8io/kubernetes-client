@@ -1,13 +1,16 @@
 
 package io.fabric8.openshift.api.model.config.v1;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.model.Container;
@@ -32,7 +35,10 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "apiVersion",
     "kind",
-    "metadata"
+    "metadata",
+    "failureDomains",
+    "nodeNetworking",
+    "vcenters"
 })
 @ToString
 @EqualsAndHashCode
@@ -56,8 +62,60 @@ import lombok.experimental.Accessors;
 public class VSpherePlatformSpec implements KubernetesResource
 {
 
+    @JsonProperty("failureDomains")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<VSpherePlatformFailureDomainSpec> failureDomains = new ArrayList<VSpherePlatformFailureDomainSpec>();
+    @JsonProperty("nodeNetworking")
+    private VSpherePlatformNodeNetworking nodeNetworking;
+    @JsonProperty("vcenters")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<VSpherePlatformVCenterSpec> vcenters = new ArrayList<VSpherePlatformVCenterSpec>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
+
+    /**
+     * No args constructor for use in serialization
+     * 
+     */
+    public VSpherePlatformSpec() {
+    }
+
+    public VSpherePlatformSpec(List<VSpherePlatformFailureDomainSpec> failureDomains, VSpherePlatformNodeNetworking nodeNetworking, List<VSpherePlatformVCenterSpec> vcenters) {
+        super();
+        this.failureDomains = failureDomains;
+        this.nodeNetworking = nodeNetworking;
+        this.vcenters = vcenters;
+    }
+
+    @JsonProperty("failureDomains")
+    public List<VSpherePlatformFailureDomainSpec> getFailureDomains() {
+        return failureDomains;
+    }
+
+    @JsonProperty("failureDomains")
+    public void setFailureDomains(List<VSpherePlatformFailureDomainSpec> failureDomains) {
+        this.failureDomains = failureDomains;
+    }
+
+    @JsonProperty("nodeNetworking")
+    public VSpherePlatformNodeNetworking getNodeNetworking() {
+        return nodeNetworking;
+    }
+
+    @JsonProperty("nodeNetworking")
+    public void setNodeNetworking(VSpherePlatformNodeNetworking nodeNetworking) {
+        this.nodeNetworking = nodeNetworking;
+    }
+
+    @JsonProperty("vcenters")
+    public List<VSpherePlatformVCenterSpec> getVcenters() {
+        return vcenters;
+    }
+
+    @JsonProperty("vcenters")
+    public void setVcenters(List<VSpherePlatformVCenterSpec> vcenters) {
+        this.vcenters = vcenters;
+    }
 
     @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {

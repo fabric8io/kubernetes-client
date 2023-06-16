@@ -39,6 +39,7 @@ import lombok.experimental.Accessors;
     "authorization",
     "basicAuth",
     "bearerTokenSecret",
+    "followRedirects",
     "honorLabels",
     "honorTimestamps",
     "interval",
@@ -82,6 +83,8 @@ public class PodMetricsEndpoint implements KubernetesResource
     private BasicAuth basicAuth;
     @JsonProperty("bearerTokenSecret")
     private SecretKeySelector bearerTokenSecret;
+    @JsonProperty("followRedirects")
+    private Boolean followRedirects;
     @JsonProperty("honorLabels")
     private Boolean honorLabels;
     @JsonProperty("honorTimestamps")
@@ -123,11 +126,12 @@ public class PodMetricsEndpoint implements KubernetesResource
     public PodMetricsEndpoint() {
     }
 
-    public PodMetricsEndpoint(SafeAuthorization authorization, BasicAuth basicAuth, SecretKeySelector bearerTokenSecret, Boolean honorLabels, Boolean honorTimestamps, java.lang.String interval, List<RelabelConfig> metricRelabelings, OAuth2 oauth2, Map<String, ArrayList<String>> params, java.lang.String path, java.lang.String port, java.lang.String proxyUrl, List<RelabelConfig> relabelings, java.lang.String scheme, java.lang.String scrapeTimeout, io.fabric8.kubernetes.api.model.IntOrString targetPort, PodMetricsEndpointTLSConfig tlsConfig) {
+    public PodMetricsEndpoint(SafeAuthorization authorization, BasicAuth basicAuth, SecretKeySelector bearerTokenSecret, Boolean followRedirects, Boolean honorLabels, Boolean honorTimestamps, java.lang.String interval, List<RelabelConfig> metricRelabelings, OAuth2 oauth2, Map<String, ArrayList<String>> params, java.lang.String path, java.lang.String port, java.lang.String proxyUrl, List<RelabelConfig> relabelings, java.lang.String scheme, java.lang.String scrapeTimeout, io.fabric8.kubernetes.api.model.IntOrString targetPort, PodMetricsEndpointTLSConfig tlsConfig) {
         super();
         this.authorization = authorization;
         this.basicAuth = basicAuth;
         this.bearerTokenSecret = bearerTokenSecret;
+        this.followRedirects = followRedirects;
         this.honorLabels = honorLabels;
         this.honorTimestamps = honorTimestamps;
         this.interval = interval;
@@ -172,6 +176,16 @@ public class PodMetricsEndpoint implements KubernetesResource
     @JsonProperty("bearerTokenSecret")
     public void setBearerTokenSecret(SecretKeySelector bearerTokenSecret) {
         this.bearerTokenSecret = bearerTokenSecret;
+    }
+
+    @JsonProperty("followRedirects")
+    public Boolean getFollowRedirects() {
+        return followRedirects;
+    }
+
+    @JsonProperty("followRedirects")
+    public void setFollowRedirects(Boolean followRedirects) {
+        this.followRedirects = followRedirects;
     }
 
     @JsonProperty("honorLabels")

@@ -1,0 +1,31 @@
+{
+  "apiVersion": "internal.apiserver.k8s.io/v1alpha1",
+  "kind": "StorageVersion",
+  "metadata": {
+    "name": "apps.deployments"
+  },
+  "spec": {},
+  "status": {
+    "commonEncodingVersion": "apps/v1",
+    "conditions": [
+      {
+        "lastTransitionTime": "2023-06-04T17:16:57Z",
+        "message": "Common encoding version set",
+        "reason": "CommonEncodingVersionSet",
+        "status": "True",
+        "type": "AllEncodingVersionsEqual"
+      }
+    ],
+    "storageVersions": [
+      {
+        "apiServerID": "kube-apiserver-803c62b1-340f-4055-93ca-44aba8a35574",
+        "decodableVersions": [
+          "apps/v1",
+          "apps/v1beta2",
+          "apps/v1beta1"
+        ],
+        "encodingVersion": "apps/v1"
+      }
+    ]
+  }
+}

@@ -23,6 +23,7 @@ import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.kubernetes.api.model.SecretKeySelector;
 import io.fabric8.openshift.api.model.monitoring.v1.BasicAuth;
+import io.fabric8.openshift.api.model.monitoring.v1.OAuth2;
 import io.fabric8.openshift.api.model.monitoring.v1.SafeAuthorization;
 import io.fabric8.openshift.api.model.monitoring.v1.SafeTLSConfig;
 import io.sundr.builder.annotations.Buildable;
@@ -41,6 +42,8 @@ import lombok.experimental.Accessors;
     "authorization",
     "basicAuth",
     "bearerTokenSecret",
+    "followRedirects",
+    "oauth2",
     "proxyURL",
     "tlsConfig"
 })
@@ -72,6 +75,10 @@ public class HTTPConfig implements KubernetesResource
     private BasicAuth basicAuth;
     @JsonProperty("bearerTokenSecret")
     private SecretKeySelector bearerTokenSecret;
+    @JsonProperty("followRedirects")
+    private Boolean followRedirects;
+    @JsonProperty("oauth2")
+    private OAuth2 oauth2;
     @JsonProperty("proxyURL")
     private String proxyURL;
     @JsonProperty("tlsConfig")
@@ -86,11 +93,13 @@ public class HTTPConfig implements KubernetesResource
     public HTTPConfig() {
     }
 
-    public HTTPConfig(SafeAuthorization authorization, BasicAuth basicAuth, SecretKeySelector bearerTokenSecret, String proxyURL, SafeTLSConfig tlsConfig) {
+    public HTTPConfig(SafeAuthorization authorization, BasicAuth basicAuth, SecretKeySelector bearerTokenSecret, Boolean followRedirects, OAuth2 oauth2, String proxyURL, SafeTLSConfig tlsConfig) {
         super();
         this.authorization = authorization;
         this.basicAuth = basicAuth;
         this.bearerTokenSecret = bearerTokenSecret;
+        this.followRedirects = followRedirects;
+        this.oauth2 = oauth2;
         this.proxyURL = proxyURL;
         this.tlsConfig = tlsConfig;
     }
@@ -123,6 +132,26 @@ public class HTTPConfig implements KubernetesResource
     @JsonProperty("bearerTokenSecret")
     public void setBearerTokenSecret(SecretKeySelector bearerTokenSecret) {
         this.bearerTokenSecret = bearerTokenSecret;
+    }
+
+    @JsonProperty("followRedirects")
+    public Boolean getFollowRedirects() {
+        return followRedirects;
+    }
+
+    @JsonProperty("followRedirects")
+    public void setFollowRedirects(Boolean followRedirects) {
+        this.followRedirects = followRedirects;
+    }
+
+    @JsonProperty("oauth2")
+    public OAuth2 getOauth2() {
+        return oauth2;
+    }
+
+    @JsonProperty("oauth2")
+    public void setOauth2(OAuth2 oauth2) {
+        this.oauth2 = oauth2;
     }
 
     @JsonProperty("proxyURL")

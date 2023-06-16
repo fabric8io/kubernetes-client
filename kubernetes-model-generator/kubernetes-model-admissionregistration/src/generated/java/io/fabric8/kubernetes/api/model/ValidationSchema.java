@@ -27,7 +27,6 @@ import io.fabric8.kubernetes.api.model.admissionregistration.v1alpha1.Validating
 import io.fabric8.kubernetes.api.model.admissionregistration.v1alpha1.ValidatingAdmissionPolicyList;
 import io.fabric8.kubernetes.api.model.authentication.TokenRequest;
 import io.fabric8.kubernetes.api.model.authentication.TokenReview;
-import io.fabric8.kubernetes.api.model.authentication.v1alpha1.SelfSubjectReview;
 import io.fabric8.kubernetes.api.model.version.Info;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
@@ -79,6 +78,7 @@ import lombok.experimental.Accessors;
     "V1Beta1AdmissionReview",
     "V1Beta1Operation",
     "V1Beta1PatchType",
+    "V1Beta1SelfSubjectReview",
     "V1MutatingWebhookConfiguration",
     "V1MutatingWebhookConfigurationList",
     "V1Operation",
@@ -161,7 +161,7 @@ public class ValidationSchema {
     @JsonProperty("SelfSubjectAccessReview")
     private io.fabric8.kubernetes.api.model.authorization.v1.SelfSubjectAccessReview selfSubjectAccessReview;
     @JsonProperty("SelfSubjectReview")
-    private SelfSubjectReview selfSubjectReview;
+    private io.fabric8.kubernetes.api.model.authentication.v1alpha1.SelfSubjectReview selfSubjectReview;
     @JsonProperty("SelfSubjectRulesReview")
     private io.fabric8.kubernetes.api.model.authorization.v1.SelfSubjectRulesReview selfSubjectRulesReview;
     @JsonProperty("ServiceReference")
@@ -194,6 +194,8 @@ public class ValidationSchema {
     private java.lang.String v1Beta1Operation;
     @JsonProperty("V1Beta1PatchType")
     private java.lang.String v1Beta1PatchType;
+    @JsonProperty("V1Beta1SelfSubjectReview")
+    private io.fabric8.kubernetes.api.model.authentication.v1beta1.SelfSubjectReview v1Beta1SelfSubjectReview;
     @JsonProperty("V1MutatingWebhookConfiguration")
     private io.fabric8.kubernetes.api.model.admissionregistration.v1.MutatingWebhookConfiguration v1MutatingWebhookConfiguration;
     @JsonProperty("V1MutatingWebhookConfigurationList")
@@ -242,7 +244,7 @@ public class ValidationSchema {
     public ValidationSchema() {
     }
 
-    public ValidationSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, KubernetesList baseKubernetesList, CreateOptions createOptions, DeleteOptions deleteOptions, GetOptions getOptions, Info info, io.fabric8.kubernetes.api.model.authorization.v1.LocalSubjectAccessReview k8sLocalSubjectAccessReview, io.fabric8.kubernetes.api.model.authorization.v1.SubjectAccessReview k8sSubjectAccessReview, ListOptions listOptions, io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.MutatingWebhookConfiguration mutatingWebhookConfiguration, io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.MutatingWebhookConfigurationList mutatingWebhookConfigurationList, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, Patch patch, PatchOptions patchOptions, Quantity quantity, RootPaths rootPaths, Rule rule, RuleWithOperations ruleWithOperations, io.fabric8.kubernetes.api.model.authorization.v1.SelfSubjectAccessReview selfSubjectAccessReview, SelfSubjectReview selfSubjectReview, io.fabric8.kubernetes.api.model.authorization.v1.SelfSubjectRulesReview selfSubjectRulesReview, io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.ServiceReference serviceReference, Status status, String time, TokenRequest tokenRequest, TokenReview tokenReview, TypeMeta typeMeta, UpdateOptions updateOptions, io.fabric8.kubernetes.api.model.admission.v1.AdmissionRequest v1AdmissionRequest, io.fabric8.kubernetes.api.model.admission.v1.AdmissionResponse v1AdmissionResponse, io.fabric8.kubernetes.api.model.admission.v1.AdmissionReview v1AdmissionReview, io.fabric8.kubernetes.api.model.admission.v1beta1.AdmissionRequest v1Beta1AdmissionRequest, io.fabric8.kubernetes.api.model.admission.v1beta1.AdmissionResponse v1Beta1AdmissionResponse, io.fabric8.kubernetes.api.model.admission.v1beta1.AdmissionReview v1Beta1AdmissionReview, java.lang.String v1Beta1Operation, java.lang.String v1Beta1PatchType, io.fabric8.kubernetes.api.model.admissionregistration.v1.MutatingWebhookConfiguration v1MutatingWebhookConfiguration, io.fabric8.kubernetes.api.model.admissionregistration.v1.MutatingWebhookConfigurationList v1MutatingWebhookConfigurationList, java.lang.String v1Operation, java.lang.String v1PatchType, Rule v1Rule, RuleWithOperations v1RuleWithOperations, io.fabric8.kubernetes.api.model.admissionregistration.v1.ServiceReference v1ServiceReference, io.fabric8.kubernetes.api.model.admissionregistration.v1.ValidatingWebhookConfiguration v1ValidatingWebhookConfiguration, io.fabric8.kubernetes.api.model.admissionregistration.v1.ValidatingWebhookConfigurationList v1ValidatingWebhookConfigurationList, io.fabric8.kubernetes.api.model.authorization.v1beta1.LocalSubjectAccessReview v1beta1K8sLocalSubjectAccessReview, io.fabric8.kubernetes.api.model.authorization.v1beta1.SubjectAccessReview v1beta1K8sSubjectAccessReview, io.fabric8.kubernetes.api.model.authorization.v1beta1.SelfSubjectAccessReview v1beta1SelfSubjectAccessReview, io.fabric8.kubernetes.api.model.authorization.v1beta1.SelfSubjectRulesReview v1beta1SelfSubjectRulesReview, ValidatingAdmissionPolicy validatingAdmissionPolicies, ValidatingAdmissionPolicyList validatingAdmissionPoliciesList, ValidatingAdmissionPolicyBinding validatingAdmissionPolicyBinding, ValidatingAdmissionPolicyBindingList validatingAdmissionPolicyBindingList, io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.ValidatingWebhookConfiguration validatingWebhookConfiguration, io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.ValidatingWebhookConfigurationList validatingWebhookConfigurationList) {
+    public ValidationSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, KubernetesList baseKubernetesList, CreateOptions createOptions, DeleteOptions deleteOptions, GetOptions getOptions, Info info, io.fabric8.kubernetes.api.model.authorization.v1.LocalSubjectAccessReview k8sLocalSubjectAccessReview, io.fabric8.kubernetes.api.model.authorization.v1.SubjectAccessReview k8sSubjectAccessReview, ListOptions listOptions, io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.MutatingWebhookConfiguration mutatingWebhookConfiguration, io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.MutatingWebhookConfigurationList mutatingWebhookConfigurationList, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, Patch patch, PatchOptions patchOptions, Quantity quantity, RootPaths rootPaths, Rule rule, RuleWithOperations ruleWithOperations, io.fabric8.kubernetes.api.model.authorization.v1.SelfSubjectAccessReview selfSubjectAccessReview, io.fabric8.kubernetes.api.model.authentication.v1alpha1.SelfSubjectReview selfSubjectReview, io.fabric8.kubernetes.api.model.authorization.v1.SelfSubjectRulesReview selfSubjectRulesReview, io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.ServiceReference serviceReference, Status status, String time, TokenRequest tokenRequest, TokenReview tokenReview, TypeMeta typeMeta, UpdateOptions updateOptions, io.fabric8.kubernetes.api.model.admission.v1.AdmissionRequest v1AdmissionRequest, io.fabric8.kubernetes.api.model.admission.v1.AdmissionResponse v1AdmissionResponse, io.fabric8.kubernetes.api.model.admission.v1.AdmissionReview v1AdmissionReview, io.fabric8.kubernetes.api.model.admission.v1beta1.AdmissionRequest v1Beta1AdmissionRequest, io.fabric8.kubernetes.api.model.admission.v1beta1.AdmissionResponse v1Beta1AdmissionResponse, io.fabric8.kubernetes.api.model.admission.v1beta1.AdmissionReview v1Beta1AdmissionReview, java.lang.String v1Beta1Operation, java.lang.String v1Beta1PatchType, io.fabric8.kubernetes.api.model.authentication.v1beta1.SelfSubjectReview v1Beta1SelfSubjectReview, io.fabric8.kubernetes.api.model.admissionregistration.v1.MutatingWebhookConfiguration v1MutatingWebhookConfiguration, io.fabric8.kubernetes.api.model.admissionregistration.v1.MutatingWebhookConfigurationList v1MutatingWebhookConfigurationList, java.lang.String v1Operation, java.lang.String v1PatchType, Rule v1Rule, RuleWithOperations v1RuleWithOperations, io.fabric8.kubernetes.api.model.admissionregistration.v1.ServiceReference v1ServiceReference, io.fabric8.kubernetes.api.model.admissionregistration.v1.ValidatingWebhookConfiguration v1ValidatingWebhookConfiguration, io.fabric8.kubernetes.api.model.admissionregistration.v1.ValidatingWebhookConfigurationList v1ValidatingWebhookConfigurationList, io.fabric8.kubernetes.api.model.authorization.v1beta1.LocalSubjectAccessReview v1beta1K8sLocalSubjectAccessReview, io.fabric8.kubernetes.api.model.authorization.v1beta1.SubjectAccessReview v1beta1K8sSubjectAccessReview, io.fabric8.kubernetes.api.model.authorization.v1beta1.SelfSubjectAccessReview v1beta1SelfSubjectAccessReview, io.fabric8.kubernetes.api.model.authorization.v1beta1.SelfSubjectRulesReview v1beta1SelfSubjectRulesReview, ValidatingAdmissionPolicy validatingAdmissionPolicies, ValidatingAdmissionPolicyList validatingAdmissionPoliciesList, ValidatingAdmissionPolicyBinding validatingAdmissionPolicyBinding, ValidatingAdmissionPolicyBindingList validatingAdmissionPolicyBindingList, io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.ValidatingWebhookConfiguration validatingWebhookConfiguration, io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.ValidatingWebhookConfigurationList validatingWebhookConfigurationList) {
         super();
         this.aPIGroup = aPIGroup;
         this.aPIGroupList = aPIGroupList;
@@ -281,6 +283,7 @@ public class ValidationSchema {
         this.v1Beta1AdmissionReview = v1Beta1AdmissionReview;
         this.v1Beta1Operation = v1Beta1Operation;
         this.v1Beta1PatchType = v1Beta1PatchType;
+        this.v1Beta1SelfSubjectReview = v1Beta1SelfSubjectReview;
         this.v1MutatingWebhookConfiguration = v1MutatingWebhookConfiguration;
         this.v1MutatingWebhookConfigurationList = v1MutatingWebhookConfigurationList;
         this.v1Operation = v1Operation;
@@ -503,12 +506,12 @@ public class ValidationSchema {
     }
 
     @JsonProperty("SelfSubjectReview")
-    public SelfSubjectReview getSelfSubjectReview() {
+    public io.fabric8.kubernetes.api.model.authentication.v1alpha1.SelfSubjectReview getSelfSubjectReview() {
         return selfSubjectReview;
     }
 
     @JsonProperty("SelfSubjectReview")
-    public void setSelfSubjectReview(SelfSubjectReview selfSubjectReview) {
+    public void setSelfSubjectReview(io.fabric8.kubernetes.api.model.authentication.v1alpha1.SelfSubjectReview selfSubjectReview) {
         this.selfSubjectReview = selfSubjectReview;
     }
 
@@ -670,6 +673,16 @@ public class ValidationSchema {
     @JsonProperty("V1Beta1PatchType")
     public void setV1Beta1PatchType(java.lang.String v1Beta1PatchType) {
         this.v1Beta1PatchType = v1Beta1PatchType;
+    }
+
+    @JsonProperty("V1Beta1SelfSubjectReview")
+    public io.fabric8.kubernetes.api.model.authentication.v1beta1.SelfSubjectReview getV1Beta1SelfSubjectReview() {
+        return v1Beta1SelfSubjectReview;
+    }
+
+    @JsonProperty("V1Beta1SelfSubjectReview")
+    public void setV1Beta1SelfSubjectReview(io.fabric8.kubernetes.api.model.authentication.v1beta1.SelfSubjectReview v1Beta1SelfSubjectReview) {
+        this.v1Beta1SelfSubjectReview = v1Beta1SelfSubjectReview;
     }
 
     @JsonProperty("V1MutatingWebhookConfiguration")

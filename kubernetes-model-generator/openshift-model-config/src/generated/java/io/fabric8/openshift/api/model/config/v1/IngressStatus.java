@@ -36,7 +36,8 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "componentRoutes"
+    "componentRoutes",
+    "defaultPlacement"
 })
 @ToString
 @EqualsAndHashCode
@@ -63,6 +64,8 @@ public class IngressStatus implements KubernetesResource
     @JsonProperty("componentRoutes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ComponentRouteStatus> componentRoutes = new ArrayList<ComponentRouteStatus>();
+    @JsonProperty("defaultPlacement")
+    private String defaultPlacement;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -73,9 +76,10 @@ public class IngressStatus implements KubernetesResource
     public IngressStatus() {
     }
 
-    public IngressStatus(List<ComponentRouteStatus> componentRoutes) {
+    public IngressStatus(List<ComponentRouteStatus> componentRoutes, String defaultPlacement) {
         super();
         this.componentRoutes = componentRoutes;
+        this.defaultPlacement = defaultPlacement;
     }
 
     @JsonProperty("componentRoutes")
@@ -86,6 +90,16 @@ public class IngressStatus implements KubernetesResource
     @JsonProperty("componentRoutes")
     public void setComponentRoutes(List<ComponentRouteStatus> componentRoutes) {
         this.componentRoutes = componentRoutes;
+    }
+
+    @JsonProperty("defaultPlacement")
+    public String getDefaultPlacement() {
+        return defaultPlacement;
+    }
+
+    @JsonProperty("defaultPlacement")
+    public void setDefaultPlacement(String defaultPlacement) {
+        this.defaultPlacement = defaultPlacement;
     }
 
     @JsonAnyGetter

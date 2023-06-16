@@ -39,6 +39,8 @@ import (
   ovirt "github.com/openshift/installer/pkg/types/ovirt"
   vsphere "github.com/openshift/installer/pkg/types/vsphere"
   ipnet "github.com/openshift/installer/pkg/ipnet"
+  intstr "k8s.io/apimachinery/pkg/util/intstr"
+  v1apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 
   "github.com/fabric8io/kubernetes-client/kubernetes-model-generator/pkg/schemagen"
 )
@@ -68,6 +70,9 @@ type Schema struct {
 func main() {
   packages := []schemagen.PackageDescriptor{
     {"k8s.io/apimachinery/pkg/apis/meta/v1", "", "io.fabric8.kubernetes.api.model", "kubernetes_apimachinery_", false},
+    {"github.com/openshift/api/config/v1", "", "io.fabric8.openshift.api.model.config.v1", "os_config_v1_", false},
+    {"github.com/openshift/api/machine/v1alpha1", "", "io.fabric8.openshift.api.model.machine.v1alpha1", "os_machine_v1alpha1_", false},
+    {"github.com/openshift/api/machine/v1", "", "io.fabric8.openshift.api.model.machine.v1", "os_machine_v1_", false},
     {"github.com/openshift/installer/pkg/types", "install", "io.fabric8.openshift.api.model.installer.v1", "os_installer_v1_", true},
     {"github.com/openshift/installer/pkg/ipnet", "", "io.fabric8.openshift.api.model.installer.ipnet.v1", "os_installer_ipnet_v1_", true},
     {"github.com/openshift/installer/pkg/types/alibabacloud", "", "io.fabric8.openshift.api.model.installer.alibabacloud.v1", "os_installer_alibabacloud_v1_", true},
@@ -81,6 +86,9 @@ func main() {
     {"github.com/openshift/installer/pkg/types/vsphere", "", "io.fabric8.openshift.api.model.installer.vsphere.v1", "os_installer_vsphere_v1_", true},
     {"github.com/openshift/installer/pkg/types/ovirt", "", "io.fabric8.openshift.api.model.installer.ovirt.v1", "os_installer_ovirt_v1_", true},
     {"github.com/openshift/installer/pkg/types/none", "", "io.fabric8.openshift.api.model.installer.none.v1", "os_installer_none_v1_", true},
+    {"github.com/openshift/installer/pkg/asset/installconfig", "", "io.fabric8.openshift.api.model.installer.asset.installconfig", "os_installer_asset_installconfig_", true},
+    {"github.com/openshift/installer/pkg/types/powervs", "", "io.fabric8.openshift.api.model.installer.powervs.v1", "os_installer_powervs_v1_", true},
+    {"github.com/openshift/installer/pkg/types/nutanix", "", "io.fabric8.openshift.api.model.installer.nutanix.v1", "os_installer_nutanix_v1_", true},
   }
 
   typeMap := map[reflect.Type]reflect.Type{
@@ -90,6 +98,8 @@ func main() {
   }
   manualTypeMap := map[reflect.Type]string {
     reflect.TypeOf(runtime.RawExtension{}): "java.util.Map<String, Object>",
+    reflect.TypeOf(v1apiextensions.JSON{}): "com.fasterxml.jackson.databind.JsonNode",
+    reflect.TypeOf(intstr.IntOrString{}): "io.fabric8.kubernetes.api.model.IntOrString",
   }
   schema, err := schemagen.GenerateSchema(reflect.TypeOf(Schema{}), packages, typeMap, manualTypeMap,"installer")
   if err != nil {

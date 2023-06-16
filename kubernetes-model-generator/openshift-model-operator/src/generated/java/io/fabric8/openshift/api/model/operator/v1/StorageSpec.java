@@ -40,7 +40,8 @@ import lombok.experimental.Accessors;
     "managementState",
     "observedConfig",
     "operatorLogLevel",
-    "unsupportedConfigOverrides"
+    "unsupportedConfigOverrides",
+    "vsphereStorageDriver"
 })
 @ToString
 @EqualsAndHashCode
@@ -76,6 +77,8 @@ public class StorageSpec implements KubernetesResource
     private String operatorLogLevel;
     @JsonProperty("unsupportedConfigOverrides")
     private KubernetesResource unsupportedConfigOverrides;
+    @JsonProperty("vsphereStorageDriver")
+    private String vsphereStorageDriver;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -86,13 +89,14 @@ public class StorageSpec implements KubernetesResource
     public StorageSpec() {
     }
 
-    public StorageSpec(String logLevel, String managementState, KubernetesResource observedConfig, String operatorLogLevel, KubernetesResource unsupportedConfigOverrides) {
+    public StorageSpec(String logLevel, String managementState, KubernetesResource observedConfig, String operatorLogLevel, KubernetesResource unsupportedConfigOverrides, String vsphereStorageDriver) {
         super();
         this.logLevel = logLevel;
         this.managementState = managementState;
         this.observedConfig = observedConfig;
         this.operatorLogLevel = operatorLogLevel;
         this.unsupportedConfigOverrides = unsupportedConfigOverrides;
+        this.vsphereStorageDriver = vsphereStorageDriver;
     }
 
     @JsonProperty("logLevel")
@@ -143,6 +147,16 @@ public class StorageSpec implements KubernetesResource
     @JsonProperty("unsupportedConfigOverrides")
     public void setUnsupportedConfigOverrides(KubernetesResource unsupportedConfigOverrides) {
         this.unsupportedConfigOverrides = unsupportedConfigOverrides;
+    }
+
+    @JsonProperty("vsphereStorageDriver")
+    public String getVsphereStorageDriver() {
+        return vsphereStorageDriver;
+    }
+
+    @JsonProperty("vsphereStorageDriver")
+    public void setVsphereStorageDriver(String vsphereStorageDriver) {
+        this.vsphereStorageDriver = vsphereStorageDriver;
     }
 
     @JsonAnyGetter

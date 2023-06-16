@@ -44,6 +44,7 @@ import lombok.experimental.Accessors;
     "dockerImageLayers",
     "dockerImageManifest",
     "dockerImageManifestMediaType",
+    "dockerImageManifests",
     "dockerImageMetadata",
     "dockerImageMetadataVersion",
     "dockerImageReference",
@@ -87,11 +88,15 @@ public class Image implements HasMetadata
     @JsonProperty("dockerImageConfig")
     private String dockerImageConfig;
     @JsonProperty("dockerImageLayers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ImageLayer> dockerImageLayers = new ArrayList<ImageLayer>();
     @JsonProperty("dockerImageManifest")
     private String dockerImageManifest;
     @JsonProperty("dockerImageManifestMediaType")
     private String dockerImageManifestMediaType;
+    @JsonProperty("dockerImageManifests")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<ImageManifest> dockerImageManifests = new ArrayList<ImageManifest>();
     @JsonProperty("dockerImageMetadata")
     private RawExtension dockerImageMetadata;
     @JsonProperty("dockerImageMetadataVersion")
@@ -123,13 +128,14 @@ public class Image implements HasMetadata
     public Image() {
     }
 
-    public Image(String apiVersion, String dockerImageConfig, List<ImageLayer> dockerImageLayers, String dockerImageManifest, String dockerImageManifestMediaType, RawExtension dockerImageMetadata, String dockerImageMetadataVersion, String dockerImageReference, List<String> dockerImageSignatures, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, List<ImageSignature> signatures) {
+    public Image(String apiVersion, String dockerImageConfig, List<ImageLayer> dockerImageLayers, String dockerImageManifest, String dockerImageManifestMediaType, List<ImageManifest> dockerImageManifests, RawExtension dockerImageMetadata, String dockerImageMetadataVersion, String dockerImageReference, List<String> dockerImageSignatures, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, List<ImageSignature> signatures) {
         super();
         this.apiVersion = apiVersion;
         this.dockerImageConfig = dockerImageConfig;
         this.dockerImageLayers = dockerImageLayers;
         this.dockerImageManifest = dockerImageManifest;
         this.dockerImageManifestMediaType = dockerImageManifestMediaType;
+        this.dockerImageManifests = dockerImageManifests;
         this.dockerImageMetadata = dockerImageMetadata;
         this.dockerImageMetadataVersion = dockerImageMetadataVersion;
         this.dockerImageReference = dockerImageReference;
@@ -197,6 +203,16 @@ public class Image implements HasMetadata
     @JsonProperty("dockerImageManifestMediaType")
     public void setDockerImageManifestMediaType(String dockerImageManifestMediaType) {
         this.dockerImageManifestMediaType = dockerImageManifestMediaType;
+    }
+
+    @JsonProperty("dockerImageManifests")
+    public List<ImageManifest> getDockerImageManifests() {
+        return dockerImageManifests;
+    }
+
+    @JsonProperty("dockerImageManifests")
+    public void setDockerImageManifests(List<ImageManifest> dockerImageManifests) {
+        this.dockerImageManifests = dockerImageManifests;
     }
 
     @JsonProperty("dockerImageMetadata")

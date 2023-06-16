@@ -2232,10 +2232,172 @@
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
+    },
+    "kubernetes_internal_apiserver_v1alpha1_ServerStorageVersion": {
+      "type": "object",
+      "properties": {
+        "apiServerID": {
+          "type": "string"
+        },
+        "decodableVersions": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "encodingVersion": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.internal.apiserver.v1alpha1.ServerStorageVersion",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_internal_apiserver_v1alpha1_StorageVersion": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "internal.apiserver.k8s.io/v1alpha1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "StorageVersion",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/kubernetes_internal_apiserver_v1alpha1_StorageVersionSpec",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.internal.apiserver.v1alpha1.StorageVersionSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/kubernetes_internal_apiserver_v1alpha1_StorageVersionStatus",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.internal.apiserver.v1alpha1.StorageVersionStatus"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.internal.apiserver.v1alpha1.StorageVersion",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata"
+      ]
+    },
+    "kubernetes_internal_apiserver_v1alpha1_StorageVersionCondition": {
+      "type": "object",
+      "properties": {
+        "lastTransitionTime": {
+          "$ref": "#/definitions/kubernetes_apimachinery_Time",
+          "existingJavaType": "String"
+        },
+        "message": {
+          "type": "string"
+        },
+        "observedGeneration": {
+          "type": "integer",
+          "existingJavaType": "Long"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.internal.apiserver.v1alpha1.StorageVersionCondition",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_internal_apiserver_v1alpha1_StorageVersionList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "internal.apiserver.k8s.io/v1alpha1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/kubernetes_internal_apiserver_v1alpha1_StorageVersion",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.internal.apiserver.v1alpha1.StorageVersion"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "StorageVersionList",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ListMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.internal.apiserver.v1alpha1.StorageVersionList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kubernetes.api.model.internal.apiserver.v1alpha1.StorageVersion\u003e"
+      ]
+    },
+    "kubernetes_internal_apiserver_v1alpha1_StorageVersionSpec": {
+      "type": "object",
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.internal.apiserver.v1alpha1.StorageVersionSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_internal_apiserver_v1alpha1_StorageVersionStatus": {
+      "type": "object",
+      "properties": {
+        "commonEncodingVersion": {
+          "type": "string"
+        },
+        "conditions": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_internal_apiserver_v1alpha1_StorageVersionCondition",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.internal.apiserver.v1alpha1.StorageVersionCondition"
+          }
+        },
+        "storageVersions": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_internal_apiserver_v1alpha1_ServerStorageVersion",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.internal.apiserver.v1alpha1.ServerStorageVersion"
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.internal.apiserver.v1alpha1.StorageVersionStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
     }
   },
   "type": "object",
   "properties": {
+    "V1Alpha1StorageVersion": {
+      "$ref": "#/definitions/kubernetes_internal_apiserver_v1alpha1_StorageVersion",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.internal.apiserver.v1alpha1.StorageVersion"
+    },
+    "V1Alpha1StorageVersionList": {
+      "$ref": "#/definitions/kubernetes_internal_apiserver_v1alpha1_StorageVersionList",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.internal.apiserver.v1alpha1.StorageVersionList"
+    },
     "V1alpha1FlowSchema": {
       "$ref": "#/definitions/kubernetes_flowcontrol_v1alpha1_FlowSchema",
       "existingJavaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1alpha1.FlowSchema"

@@ -37,6 +37,7 @@ import lombok.experimental.Accessors;
     "aws",
     "azure",
     "gcp",
+    "ibmcloud",
     "openstack",
     "ovirt",
     "vsphere"
@@ -69,6 +70,8 @@ public class MachinePoolPlatform implements KubernetesResource
     private io.fabric8.openshift.api.model.hive.azure.v1.MachinePool azure;
     @JsonProperty("gcp")
     private io.fabric8.openshift.api.model.hive.gcp.v1.MachinePool gcp;
+    @JsonProperty("ibmcloud")
+    private io.fabric8.openshift.api.model.hive.ibmcloud.v1.MachinePool ibmcloud;
     @JsonProperty("openstack")
     private io.fabric8.openshift.api.model.hive.openstack.v1.MachinePool openstack;
     @JsonProperty("ovirt")
@@ -85,11 +88,12 @@ public class MachinePoolPlatform implements KubernetesResource
     public MachinePoolPlatform() {
     }
 
-    public MachinePoolPlatform(io.fabric8.openshift.api.model.hive.aws.v1.MachinePoolPlatform aws, io.fabric8.openshift.api.model.hive.azure.v1.MachinePool azure, io.fabric8.openshift.api.model.hive.gcp.v1.MachinePool gcp, io.fabric8.openshift.api.model.hive.openstack.v1.MachinePool openstack, io.fabric8.openshift.api.model.hive.ovirt.v1.MachinePool ovirt, io.fabric8.openshift.api.model.hive.vsphere.v1.MachinePool vsphere) {
+    public MachinePoolPlatform(io.fabric8.openshift.api.model.hive.aws.v1.MachinePoolPlatform aws, io.fabric8.openshift.api.model.hive.azure.v1.MachinePool azure, io.fabric8.openshift.api.model.hive.gcp.v1.MachinePool gcp, io.fabric8.openshift.api.model.hive.ibmcloud.v1.MachinePool ibmcloud, io.fabric8.openshift.api.model.hive.openstack.v1.MachinePool openstack, io.fabric8.openshift.api.model.hive.ovirt.v1.MachinePool ovirt, io.fabric8.openshift.api.model.hive.vsphere.v1.MachinePool vsphere) {
         super();
         this.aws = aws;
         this.azure = azure;
         this.gcp = gcp;
+        this.ibmcloud = ibmcloud;
         this.openstack = openstack;
         this.ovirt = ovirt;
         this.vsphere = vsphere;
@@ -123,6 +127,16 @@ public class MachinePoolPlatform implements KubernetesResource
     @JsonProperty("gcp")
     public void setGcp(io.fabric8.openshift.api.model.hive.gcp.v1.MachinePool gcp) {
         this.gcp = gcp;
+    }
+
+    @JsonProperty("ibmcloud")
+    public io.fabric8.openshift.api.model.hive.ibmcloud.v1.MachinePool getIbmcloud() {
+        return ibmcloud;
+    }
+
+    @JsonProperty("ibmcloud")
+    public void setIbmcloud(io.fabric8.openshift.api.model.hive.ibmcloud.v1.MachinePool ibmcloud) {
+        this.ibmcloud = ibmcloud;
     }
 
     @JsonProperty("openstack")

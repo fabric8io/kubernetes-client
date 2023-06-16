@@ -35,6 +35,7 @@ import lombok.experimental.Accessors;
     "kind",
     "metadata",
     "cisInstanceCRN",
+    "dnsInstanceCRN",
     "location",
     "providerType",
     "resourceGroupName"
@@ -63,6 +64,8 @@ public class IBMCloudPlatformStatus implements KubernetesResource
 
     @JsonProperty("cisInstanceCRN")
     private String cisInstanceCRN;
+    @JsonProperty("dnsInstanceCRN")
+    private String dnsInstanceCRN;
     @JsonProperty("location")
     private String location;
     @JsonProperty("providerType")
@@ -79,9 +82,10 @@ public class IBMCloudPlatformStatus implements KubernetesResource
     public IBMCloudPlatformStatus() {
     }
 
-    public IBMCloudPlatformStatus(String cisInstanceCRN, String location, String providerType, String resourceGroupName) {
+    public IBMCloudPlatformStatus(String cisInstanceCRN, String dnsInstanceCRN, String location, String providerType, String resourceGroupName) {
         super();
         this.cisInstanceCRN = cisInstanceCRN;
+        this.dnsInstanceCRN = dnsInstanceCRN;
         this.location = location;
         this.providerType = providerType;
         this.resourceGroupName = resourceGroupName;
@@ -95,6 +99,16 @@ public class IBMCloudPlatformStatus implements KubernetesResource
     @JsonProperty("cisInstanceCRN")
     public void setCisInstanceCRN(String cisInstanceCRN) {
         this.cisInstanceCRN = cisInstanceCRN;
+    }
+
+    @JsonProperty("dnsInstanceCRN")
+    public String getDnsInstanceCRN() {
+        return dnsInstanceCRN;
+    }
+
+    @JsonProperty("dnsInstanceCRN")
+    public void setDnsInstanceCRN(String dnsInstanceCRN) {
+        this.dnsInstanceCRN = dnsInstanceCRN;
     }
 
     @JsonProperty("location")

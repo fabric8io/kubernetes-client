@@ -38,6 +38,7 @@ import lombok.experimental.Accessors;
     "metadata",
     "additionalNetworkIDs",
     "additionalSecurityGroupIDs",
+    "failureDomains",
     "rootVolume",
     "serverGroupPolicy",
     "type",
@@ -71,6 +72,9 @@ public class MachinePool implements KubernetesResource
     @JsonProperty("additionalSecurityGroupIDs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> additionalSecurityGroupIDs = new ArrayList<String>();
+    @JsonProperty("failureDomains")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<FailureDomain> failureDomains = new ArrayList<FailureDomain>();
     @JsonProperty("rootVolume")
     private RootVolume rootVolume;
     @JsonProperty("serverGroupPolicy")
@@ -90,10 +94,11 @@ public class MachinePool implements KubernetesResource
     public MachinePool() {
     }
 
-    public MachinePool(List<String> additionalNetworkIDs, List<String> additionalSecurityGroupIDs, RootVolume rootVolume, String serverGroupPolicy, String type, List<String> zones) {
+    public MachinePool(List<String> additionalNetworkIDs, List<String> additionalSecurityGroupIDs, List<FailureDomain> failureDomains, RootVolume rootVolume, String serverGroupPolicy, String type, List<String> zones) {
         super();
         this.additionalNetworkIDs = additionalNetworkIDs;
         this.additionalSecurityGroupIDs = additionalSecurityGroupIDs;
+        this.failureDomains = failureDomains;
         this.rootVolume = rootVolume;
         this.serverGroupPolicy = serverGroupPolicy;
         this.type = type;
@@ -118,6 +123,16 @@ public class MachinePool implements KubernetesResource
     @JsonProperty("additionalSecurityGroupIDs")
     public void setAdditionalSecurityGroupIDs(List<String> additionalSecurityGroupIDs) {
         this.additionalSecurityGroupIDs = additionalSecurityGroupIDs;
+    }
+
+    @JsonProperty("failureDomains")
+    public List<FailureDomain> getFailureDomains() {
+        return failureDomains;
+    }
+
+    @JsonProperty("failureDomains")
+    public void setFailureDomains(List<FailureDomain> failureDomains) {
+        this.failureDomains = failureDomains;
     }
 
     @JsonProperty("rootVolume")

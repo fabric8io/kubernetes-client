@@ -40,6 +40,7 @@ import lombok.experimental.Accessors;
     "azure",
     "baremetal",
     "gcp",
+    "ibmcloud",
     "openstack",
     "ovirt",
     "vsphere"
@@ -76,6 +77,8 @@ public class Platform implements KubernetesResource
     private io.fabric8.openshift.api.model.hive.baremetal.v1.Platform baremetal;
     @JsonProperty("gcp")
     private io.fabric8.openshift.api.model.hive.gcp.v1.Platform gcp;
+    @JsonProperty("ibmcloud")
+    private io.fabric8.openshift.api.model.hive.ibmcloud.v1.Platform ibmcloud;
     @JsonProperty("openstack")
     private io.fabric8.openshift.api.model.hive.openstack.v1.Platform openstack;
     @JsonProperty("ovirt")
@@ -92,13 +95,14 @@ public class Platform implements KubernetesResource
     public Platform() {
     }
 
-    public Platform(BareMetalPlatform agentBareMetal, io.fabric8.openshift.api.model.hive.aws.v1.Platform aws, io.fabric8.openshift.api.model.hive.azure.v1.Platform azure, io.fabric8.openshift.api.model.hive.baremetal.v1.Platform baremetal, io.fabric8.openshift.api.model.hive.gcp.v1.Platform gcp, io.fabric8.openshift.api.model.hive.openstack.v1.Platform openstack, io.fabric8.openshift.api.model.hive.ovirt.v1.Platform ovirt, io.fabric8.openshift.api.model.hive.vsphere.v1.Platform vsphere) {
+    public Platform(BareMetalPlatform agentBareMetal, io.fabric8.openshift.api.model.hive.aws.v1.Platform aws, io.fabric8.openshift.api.model.hive.azure.v1.Platform azure, io.fabric8.openshift.api.model.hive.baremetal.v1.Platform baremetal, io.fabric8.openshift.api.model.hive.gcp.v1.Platform gcp, io.fabric8.openshift.api.model.hive.ibmcloud.v1.Platform ibmcloud, io.fabric8.openshift.api.model.hive.openstack.v1.Platform openstack, io.fabric8.openshift.api.model.hive.ovirt.v1.Platform ovirt, io.fabric8.openshift.api.model.hive.vsphere.v1.Platform vsphere) {
         super();
         this.agentBareMetal = agentBareMetal;
         this.aws = aws;
         this.azure = azure;
         this.baremetal = baremetal;
         this.gcp = gcp;
+        this.ibmcloud = ibmcloud;
         this.openstack = openstack;
         this.ovirt = ovirt;
         this.vsphere = vsphere;
@@ -152,6 +156,16 @@ public class Platform implements KubernetesResource
     @JsonProperty("gcp")
     public void setGcp(io.fabric8.openshift.api.model.hive.gcp.v1.Platform gcp) {
         this.gcp = gcp;
+    }
+
+    @JsonProperty("ibmcloud")
+    public io.fabric8.openshift.api.model.hive.ibmcloud.v1.Platform getIbmcloud() {
+        return ibmcloud;
+    }
+
+    @JsonProperty("ibmcloud")
+    public void setIbmcloud(io.fabric8.openshift.api.model.hive.ibmcloud.v1.Platform ibmcloud) {
+        this.ibmcloud = ibmcloud;
     }
 
     @JsonProperty("openstack")

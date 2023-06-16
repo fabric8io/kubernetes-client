@@ -655,6 +655,9 @@
         "resourceVersionMatch": {
           "type": "string"
         },
+        "sendInitialEvents": {
+          "type": "boolean"
+        },
         "timeoutSeconds": {
           "type": "integer",
           "existingJavaType": "Long"
@@ -2243,6 +2246,14 @@
           "$ref": "#/definitions/kubernetes_core_Probe",
           "existingJavaType": "io.fabric8.kubernetes.api.model.Probe"
         },
+        "resizePolicy": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_core_ContainerResizePolicy",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.ContainerResizePolicy"
+          }
+        },
         "resources": {
           "$ref": "#/definitions/kubernetes_core_ResourceRequirements",
           "existingJavaType": "io.fabric8.kubernetes.api.model.ResourceRequirements"
@@ -2343,6 +2354,22 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "kubernetes_core_ContainerResizePolicy": {
+      "type": "object",
+      "properties": {
+        "resourceName": {
+          "type": "string"
+        },
+        "restartPolicy": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.ContainerResizePolicy",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "kubernetes_core_ContainerState": {
       "type": "object",
       "properties": {
@@ -2431,6 +2458,14 @@
     "kubernetes_core_ContainerStatus": {
       "type": "object",
       "properties": {
+        "allocatedResources": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/kubernetes_resource_Quantity",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.Quantity"
+          },
+          "existingJavaType": "java.util.Map\u003cString, io.fabric8.kubernetes.api.model.Quantity\u003e"
+        },
         "containerID": {
           "type": "string"
         },
@@ -2451,6 +2486,10 @@
         },
         "ready": {
           "type": "boolean"
+        },
+        "resources": {
+          "$ref": "#/definitions/kubernetes_core_ResourceRequirements",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ResourceRequirements"
         },
         "restartCount": {
           "type": "integer"
@@ -2838,6 +2877,14 @@
           "$ref": "#/definitions/kubernetes_core_Probe",
           "existingJavaType": "io.fabric8.kubernetes.api.model.Probe"
         },
+        "resizePolicy": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_core_ContainerResizePolicy",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.ContainerResizePolicy"
+          }
+        },
         "resources": {
           "$ref": "#/definitions/kubernetes_core_ResourceRequirements",
           "existingJavaType": "io.fabric8.kubernetes.api.model.ResourceRequirements"
@@ -2955,6 +3002,14 @@
         "readinessProbe": {
           "$ref": "#/definitions/kubernetes_core_Probe",
           "existingJavaType": "io.fabric8.kubernetes.api.model.Probe"
+        },
+        "resizePolicy": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_core_ContainerResizePolicy",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.ContainerResizePolicy"
+          }
         },
         "resources": {
           "$ref": "#/definitions/kubernetes_core_ResourceRequirements",
@@ -5631,6 +5686,9 @@
           "type": "string"
         },
         "reason": {
+          "type": "string"
+        },
+        "resize": {
           "type": "string"
         },
         "startTime": {

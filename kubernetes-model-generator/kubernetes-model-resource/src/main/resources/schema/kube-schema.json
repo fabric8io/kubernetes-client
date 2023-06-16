@@ -273,37 +273,42 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "kubernetes_resource_v1alpha1_AllocationResult": {
+    "kubernetes_resource_v1alpha2_AllocationResult": {
       "type": "object",
       "properties": {
         "availableOnNodes": {
           "$ref": "#/definitions/kubernetes_core_NodeSelector",
           "existingJavaType": "io.fabric8.kubernetes.api.model.NodeSelector"
         },
-        "resourceHandle": {
-          "type": "string"
+        "resourceHandles": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_resource_v1alpha2_ResourceHandle",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.resource.v1alpha2.ResourceHandle"
+          }
         },
         "shareable": {
           "type": "boolean"
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.resource.v1alpha1.AllocationResult",
+      "javaType": "io.fabric8.kubernetes.api.model.resource.v1alpha2.AllocationResult",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "kubernetes_resource_v1alpha1_PodScheduling": {
+    "kubernetes_resource_v1alpha2_PodSchedulingContext": {
       "type": "object",
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "resource.k8s.io/v1alpha1",
+          "default": "resource.k8s.io/v1alpha2",
           "required": true
         },
         "kind": {
           "type": "string",
-          "default": "PodScheduling",
+          "default": "PodSchedulingContext",
           "required": true
         },
         "metadata": {
@@ -311,39 +316,39 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
-          "$ref": "#/definitions/kubernetes_resource_v1alpha1_PodSchedulingSpec",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.resource.v1alpha1.PodSchedulingSpec"
+          "$ref": "#/definitions/kubernetes_resource_v1alpha2_PodSchedulingContextSpec",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.resource.v1alpha2.PodSchedulingContextSpec"
         },
         "status": {
-          "$ref": "#/definitions/kubernetes_resource_v1alpha1_PodSchedulingStatus",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.resource.v1alpha1.PodSchedulingStatus"
+          "$ref": "#/definitions/kubernetes_resource_v1alpha2_PodSchedulingContextStatus",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.resource.v1alpha2.PodSchedulingContextStatus"
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.resource.v1alpha1.PodScheduling",
+      "javaType": "io.fabric8.kubernetes.api.model.resource.v1alpha2.PodSchedulingContext",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.HasMetadata",
         "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
-    "kubernetes_resource_v1alpha1_PodSchedulingList": {
+    "kubernetes_resource_v1alpha2_PodSchedulingContextList": {
       "type": "object",
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "resource.k8s.io/v1alpha1",
+          "default": "resource.k8s.io/v1alpha2",
           "required": true
         },
         "items": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/kubernetes_resource_v1alpha1_PodScheduling",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.resource.v1alpha1.PodScheduling"
+            "$ref": "#/definitions/kubernetes_resource_v1alpha2_PodSchedulingContext",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.resource.v1alpha2.PodSchedulingContext"
           }
         },
         "kind": {
           "type": "string",
-          "default": "PodSchedulingList",
+          "default": "PodSchedulingContextList",
           "required": true
         },
         "metadata": {
@@ -352,13 +357,13 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.resource.v1alpha1.PodSchedulingList",
+      "javaType": "io.fabric8.kubernetes.api.model.resource.v1alpha2.PodSchedulingContextList",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource",
-        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kubernetes.api.model.resource.v1alpha1.PodScheduling\u003e"
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kubernetes.api.model.resource.v1alpha2.PodSchedulingContext\u003e"
       ]
     },
-    "kubernetes_resource_v1alpha1_PodSchedulingSpec": {
+    "kubernetes_resource_v1alpha2_PodSchedulingContextSpec": {
       "type": "object",
       "properties": {
         "potentialNodes": {
@@ -373,35 +378,35 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.resource.v1alpha1.PodSchedulingSpec",
+      "javaType": "io.fabric8.kubernetes.api.model.resource.v1alpha2.PodSchedulingContextSpec",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "kubernetes_resource_v1alpha1_PodSchedulingStatus": {
+    "kubernetes_resource_v1alpha2_PodSchedulingContextStatus": {
       "type": "object",
       "properties": {
         "resourceClaims": {
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/kubernetes_resource_v1alpha1_ResourceClaimSchedulingStatus",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.resource.v1alpha1.ResourceClaimSchedulingStatus"
+            "$ref": "#/definitions/kubernetes_resource_v1alpha2_ResourceClaimSchedulingStatus",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.resource.v1alpha2.ResourceClaimSchedulingStatus"
           }
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.resource.v1alpha1.PodSchedulingStatus",
+      "javaType": "io.fabric8.kubernetes.api.model.resource.v1alpha2.PodSchedulingContextStatus",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "kubernetes_resource_v1alpha1_ResourceClaim": {
+    "kubernetes_resource_v1alpha2_ResourceClaim": {
       "type": "object",
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "resource.k8s.io/v1alpha1",
+          "default": "resource.k8s.io/v1alpha2",
           "required": true
         },
         "kind": {
@@ -414,22 +419,22 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
-          "$ref": "#/definitions/kubernetes_resource_v1alpha1_ResourceClaimSpec",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.resource.v1alpha1.ResourceClaimSpec"
+          "$ref": "#/definitions/kubernetes_resource_v1alpha2_ResourceClaimSpec",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.resource.v1alpha2.ResourceClaimSpec"
         },
         "status": {
-          "$ref": "#/definitions/kubernetes_resource_v1alpha1_ResourceClaimStatus",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.resource.v1alpha1.ResourceClaimStatus"
+          "$ref": "#/definitions/kubernetes_resource_v1alpha2_ResourceClaimStatus",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.resource.v1alpha2.ResourceClaimStatus"
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.resource.v1alpha1.ResourceClaim",
+      "javaType": "io.fabric8.kubernetes.api.model.resource.v1alpha2.ResourceClaim",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.HasMetadata",
         "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
-    "kubernetes_resource_v1alpha1_ResourceClaimConsumerReference": {
+    "kubernetes_resource_v1alpha2_ResourceClaimConsumerReference": {
       "type": "object",
       "properties": {
         "apiGroup": {
@@ -446,24 +451,24 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.resource.v1alpha1.ResourceClaimConsumerReference",
+      "javaType": "io.fabric8.kubernetes.api.model.resource.v1alpha2.ResourceClaimConsumerReference",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "kubernetes_resource_v1alpha1_ResourceClaimList": {
+    "kubernetes_resource_v1alpha2_ResourceClaimList": {
       "type": "object",
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "resource.k8s.io/v1alpha1",
+          "default": "resource.k8s.io/v1alpha2",
           "required": true
         },
         "items": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/kubernetes_resource_v1alpha1_ResourceClaim",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.resource.v1alpha1.ResourceClaim"
+            "$ref": "#/definitions/kubernetes_resource_v1alpha2_ResourceClaim",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.resource.v1alpha2.ResourceClaim"
           }
         },
         "kind": {
@@ -477,13 +482,13 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.resource.v1alpha1.ResourceClaimList",
+      "javaType": "io.fabric8.kubernetes.api.model.resource.v1alpha2.ResourceClaimList",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource",
-        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kubernetes.api.model.resource.v1alpha1.ResourceClaim\u003e"
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kubernetes.api.model.resource.v1alpha2.ResourceClaim\u003e"
       ]
     },
-    "kubernetes_resource_v1alpha1_ResourceClaimParametersReference": {
+    "kubernetes_resource_v1alpha2_ResourceClaimParametersReference": {
       "type": "object",
       "properties": {
         "apiGroup": {
@@ -497,12 +502,12 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.resource.v1alpha1.ResourceClaimParametersReference",
+      "javaType": "io.fabric8.kubernetes.api.model.resource.v1alpha2.ResourceClaimParametersReference",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "kubernetes_resource_v1alpha1_ResourceClaimSchedulingStatus": {
+    "kubernetes_resource_v1alpha2_ResourceClaimSchedulingStatus": {
       "type": "object",
       "properties": {
         "name": {
@@ -517,37 +522,37 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.resource.v1alpha1.ResourceClaimSchedulingStatus",
+      "javaType": "io.fabric8.kubernetes.api.model.resource.v1alpha2.ResourceClaimSchedulingStatus",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "kubernetes_resource_v1alpha1_ResourceClaimSpec": {
+    "kubernetes_resource_v1alpha2_ResourceClaimSpec": {
       "type": "object",
       "properties": {
         "allocationMode": {
           "type": "string"
         },
         "parametersRef": {
-          "$ref": "#/definitions/kubernetes_resource_v1alpha1_ResourceClaimParametersReference",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.resource.v1alpha1.ResourceClaimParametersReference"
+          "$ref": "#/definitions/kubernetes_resource_v1alpha2_ResourceClaimParametersReference",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.resource.v1alpha2.ResourceClaimParametersReference"
         },
         "resourceClassName": {
           "type": "string"
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.resource.v1alpha1.ResourceClaimSpec",
+      "javaType": "io.fabric8.kubernetes.api.model.resource.v1alpha2.ResourceClaimSpec",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "kubernetes_resource_v1alpha1_ResourceClaimStatus": {
+    "kubernetes_resource_v1alpha2_ResourceClaimStatus": {
       "type": "object",
       "properties": {
         "allocation": {
-          "$ref": "#/definitions/kubernetes_resource_v1alpha1_AllocationResult",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.resource.v1alpha1.AllocationResult"
+          "$ref": "#/definitions/kubernetes_resource_v1alpha2_AllocationResult",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.resource.v1alpha2.AllocationResult"
         },
         "deallocationRequested": {
           "type": "boolean"
@@ -559,23 +564,23 @@
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/kubernetes_resource_v1alpha1_ResourceClaimConsumerReference",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.resource.v1alpha1.ResourceClaimConsumerReference"
+            "$ref": "#/definitions/kubernetes_resource_v1alpha2_ResourceClaimConsumerReference",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.resource.v1alpha2.ResourceClaimConsumerReference"
           }
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.resource.v1alpha1.ResourceClaimStatus",
+      "javaType": "io.fabric8.kubernetes.api.model.resource.v1alpha2.ResourceClaimStatus",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "kubernetes_resource_v1alpha1_ResourceClaimTemplate": {
+    "kubernetes_resource_v1alpha2_ResourceClaimTemplate": {
       "type": "object",
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "resource.k8s.io/v1alpha1",
+          "default": "resource.k8s.io/v1alpha2",
           "required": true
         },
         "kind": {
@@ -588,30 +593,30 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
-          "$ref": "#/definitions/kubernetes_resource_v1alpha1_ResourceClaimTemplateSpec",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.resource.v1alpha1.ResourceClaimTemplateSpec"
+          "$ref": "#/definitions/kubernetes_resource_v1alpha2_ResourceClaimTemplateSpec",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.resource.v1alpha2.ResourceClaimTemplateSpec"
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.resource.v1alpha1.ResourceClaimTemplate",
+      "javaType": "io.fabric8.kubernetes.api.model.resource.v1alpha2.ResourceClaimTemplate",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.HasMetadata",
         "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
-    "kubernetes_resource_v1alpha1_ResourceClaimTemplateList": {
+    "kubernetes_resource_v1alpha2_ResourceClaimTemplateList": {
       "type": "object",
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "resource.k8s.io/v1alpha1",
+          "default": "resource.k8s.io/v1alpha2",
           "required": true
         },
         "items": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/kubernetes_resource_v1alpha1_ResourceClaimTemplate",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.resource.v1alpha1.ResourceClaimTemplate"
+            "$ref": "#/definitions/kubernetes_resource_v1alpha2_ResourceClaimTemplate",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.resource.v1alpha2.ResourceClaimTemplate"
           }
         },
         "kind": {
@@ -625,13 +630,13 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.resource.v1alpha1.ResourceClaimTemplateList",
+      "javaType": "io.fabric8.kubernetes.api.model.resource.v1alpha2.ResourceClaimTemplateList",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource",
-        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kubernetes.api.model.resource.v1alpha1.ResourceClaimTemplate\u003e"
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kubernetes.api.model.resource.v1alpha2.ResourceClaimTemplate\u003e"
       ]
     },
-    "kubernetes_resource_v1alpha1_ResourceClaimTemplateSpec": {
+    "kubernetes_resource_v1alpha2_ResourceClaimTemplateSpec": {
       "type": "object",
       "properties": {
         "metadata": {
@@ -639,22 +644,22 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
-          "$ref": "#/definitions/kubernetes_resource_v1alpha1_ResourceClaimSpec",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.resource.v1alpha1.ResourceClaimSpec"
+          "$ref": "#/definitions/kubernetes_resource_v1alpha2_ResourceClaimSpec",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.resource.v1alpha2.ResourceClaimSpec"
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.resource.v1alpha1.ResourceClaimTemplateSpec",
+      "javaType": "io.fabric8.kubernetes.api.model.resource.v1alpha2.ResourceClaimTemplateSpec",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "kubernetes_resource_v1alpha1_ResourceClass": {
+    "kubernetes_resource_v1alpha2_ResourceClass": {
       "type": "object",
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "resource.k8s.io/v1alpha1",
+          "default": "resource.k8s.io/v1alpha2",
           "required": true
         },
         "driverName": {
@@ -670,8 +675,8 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "parametersRef": {
-          "$ref": "#/definitions/kubernetes_resource_v1alpha1_ResourceClassParametersReference",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.resource.v1alpha1.ResourceClassParametersReference"
+          "$ref": "#/definitions/kubernetes_resource_v1alpha2_ResourceClassParametersReference",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.resource.v1alpha2.ResourceClassParametersReference"
         },
         "suitableNodes": {
           "$ref": "#/definitions/kubernetes_core_NodeSelector",
@@ -679,24 +684,24 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.resource.v1alpha1.ResourceClass",
+      "javaType": "io.fabric8.kubernetes.api.model.resource.v1alpha2.ResourceClass",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.HasMetadata"
       ]
     },
-    "kubernetes_resource_v1alpha1_ResourceClassList": {
+    "kubernetes_resource_v1alpha2_ResourceClassList": {
       "type": "object",
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "resource.k8s.io/v1alpha1",
+          "default": "resource.k8s.io/v1alpha2",
           "required": true
         },
         "items": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/kubernetes_resource_v1alpha1_ResourceClass",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.resource.v1alpha1.ResourceClass"
+            "$ref": "#/definitions/kubernetes_resource_v1alpha2_ResourceClass",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.resource.v1alpha2.ResourceClass"
           }
         },
         "kind": {
@@ -710,13 +715,13 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.resource.v1alpha1.ResourceClassList",
+      "javaType": "io.fabric8.kubernetes.api.model.resource.v1alpha2.ResourceClassList",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource",
-        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kubernetes.api.model.resource.v1alpha1.ResourceClass\u003e"
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kubernetes.api.model.resource.v1alpha2.ResourceClass\u003e"
       ]
     },
-    "kubernetes_resource_v1alpha1_ResourceClassParametersReference": {
+    "kubernetes_resource_v1alpha2_ResourceClassParametersReference": {
       "type": "object",
       "properties": {
         "apiGroup": {
@@ -733,7 +738,23 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.resource.v1alpha1.ResourceClassParametersReference",
+      "javaType": "io.fabric8.kubernetes.api.model.resource.v1alpha2.ResourceClassParametersReference",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_resource_v1alpha2_ResourceHandle": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "string"
+        },
+        "driverName": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.resource.v1alpha2.ResourceHandle",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -741,37 +762,37 @@
   },
   "type": "object",
   "properties": {
-    "PodScheduling": {
-      "$ref": "#/definitions/kubernetes_resource_v1alpha1_PodScheduling",
-      "existingJavaType": "io.fabric8.kubernetes.api.model.resource.v1alpha1.PodScheduling"
+    "PodSchedulingContext": {
+      "$ref": "#/definitions/kubernetes_resource_v1alpha2_PodSchedulingContext",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.resource.v1alpha2.PodSchedulingContext"
     },
-    "PodSchedulingList": {
-      "$ref": "#/definitions/kubernetes_resource_v1alpha1_PodSchedulingList",
-      "existingJavaType": "io.fabric8.kubernetes.api.model.resource.v1alpha1.PodSchedulingList"
+    "PodSchedulingContextList": {
+      "$ref": "#/definitions/kubernetes_resource_v1alpha2_PodSchedulingContextList",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.resource.v1alpha2.PodSchedulingContextList"
     },
     "ResourceClaim": {
-      "$ref": "#/definitions/kubernetes_resource_v1alpha1_ResourceClaim",
-      "existingJavaType": "io.fabric8.kubernetes.api.model.resource.v1alpha1.ResourceClaim"
+      "$ref": "#/definitions/kubernetes_resource_v1alpha2_ResourceClaim",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.resource.v1alpha2.ResourceClaim"
     },
     "ResourceClaimList": {
-      "$ref": "#/definitions/kubernetes_resource_v1alpha1_ResourceClaimList",
-      "existingJavaType": "io.fabric8.kubernetes.api.model.resource.v1alpha1.ResourceClaimList"
+      "$ref": "#/definitions/kubernetes_resource_v1alpha2_ResourceClaimList",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.resource.v1alpha2.ResourceClaimList"
     },
     "ResourceClaimTemplate": {
-      "$ref": "#/definitions/kubernetes_resource_v1alpha1_ResourceClaimTemplate",
-      "existingJavaType": "io.fabric8.kubernetes.api.model.resource.v1alpha1.ResourceClaimTemplate"
+      "$ref": "#/definitions/kubernetes_resource_v1alpha2_ResourceClaimTemplate",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.resource.v1alpha2.ResourceClaimTemplate"
     },
     "ResourceClaimTemplateList": {
-      "$ref": "#/definitions/kubernetes_resource_v1alpha1_ResourceClaimTemplateList",
-      "existingJavaType": "io.fabric8.kubernetes.api.model.resource.v1alpha1.ResourceClaimTemplateList"
+      "$ref": "#/definitions/kubernetes_resource_v1alpha2_ResourceClaimTemplateList",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.resource.v1alpha2.ResourceClaimTemplateList"
     },
     "ResourceClass": {
-      "$ref": "#/definitions/kubernetes_resource_v1alpha1_ResourceClaim",
-      "existingJavaType": "io.fabric8.kubernetes.api.model.resource.v1alpha1.ResourceClaim"
+      "$ref": "#/definitions/kubernetes_resource_v1alpha2_ResourceClaim",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.resource.v1alpha2.ResourceClaim"
     },
     "ResourceClassList": {
-      "$ref": "#/definitions/kubernetes_resource_v1alpha1_ResourceClassList",
-      "existingJavaType": "io.fabric8.kubernetes.api.model.resource.v1alpha1.ResourceClassList"
+      "$ref": "#/definitions/kubernetes_resource_v1alpha2_ResourceClassList",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.resource.v1alpha2.ResourceClassList"
     }
   },
   "additionalProperties": true

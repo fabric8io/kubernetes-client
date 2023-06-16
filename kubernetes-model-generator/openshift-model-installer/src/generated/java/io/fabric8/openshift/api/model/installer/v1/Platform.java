@@ -42,8 +42,10 @@ import lombok.experimental.Accessors;
     "ibmcloud",
     "libvirt",
     "none",
+    "nutanix",
     "openstack",
     "ovirt",
+    "powervs",
     "vsphere"
 })
 @ToString
@@ -84,10 +86,14 @@ public class Platform implements KubernetesResource
     private io.fabric8.openshift.api.model.installer.libvirt.v1.Platform libvirt;
     @JsonProperty("none")
     private io.fabric8.openshift.api.model.installer.none.v1.Platform none;
+    @JsonProperty("nutanix")
+    private io.fabric8.openshift.api.model.installer.nutanix.v1.Platform nutanix;
     @JsonProperty("openstack")
     private io.fabric8.openshift.api.model.installer.openstack.v1.Platform openstack;
     @JsonProperty("ovirt")
     private io.fabric8.openshift.api.model.installer.ovirt.v1.Platform ovirt;
+    @JsonProperty("powervs")
+    private io.fabric8.openshift.api.model.installer.powervs.v1.Platform powervs;
     @JsonProperty("vsphere")
     private io.fabric8.openshift.api.model.installer.vsphere.v1.Platform vsphere;
     @JsonIgnore
@@ -100,7 +106,7 @@ public class Platform implements KubernetesResource
     public Platform() {
     }
 
-    public Platform(io.fabric8.openshift.api.model.installer.alibabacloud.v1.Platform alibabacloud, io.fabric8.openshift.api.model.installer.aws.v1.Platform aws, io.fabric8.openshift.api.model.installer.azure.v1.Platform azure, io.fabric8.openshift.api.model.installer.baremetal.v1.Platform baremetal, io.fabric8.openshift.api.model.installer.gcp.v1.Platform gcp, io.fabric8.openshift.api.model.installer.ibmcloud.v1.Platform ibmcloud, io.fabric8.openshift.api.model.installer.libvirt.v1.Platform libvirt, io.fabric8.openshift.api.model.installer.none.v1.Platform none, io.fabric8.openshift.api.model.installer.openstack.v1.Platform openstack, io.fabric8.openshift.api.model.installer.ovirt.v1.Platform ovirt, io.fabric8.openshift.api.model.installer.vsphere.v1.Platform vsphere) {
+    public Platform(io.fabric8.openshift.api.model.installer.alibabacloud.v1.Platform alibabacloud, io.fabric8.openshift.api.model.installer.aws.v1.Platform aws, io.fabric8.openshift.api.model.installer.azure.v1.Platform azure, io.fabric8.openshift.api.model.installer.baremetal.v1.Platform baremetal, io.fabric8.openshift.api.model.installer.gcp.v1.Platform gcp, io.fabric8.openshift.api.model.installer.ibmcloud.v1.Platform ibmcloud, io.fabric8.openshift.api.model.installer.libvirt.v1.Platform libvirt, io.fabric8.openshift.api.model.installer.none.v1.Platform none, io.fabric8.openshift.api.model.installer.nutanix.v1.Platform nutanix, io.fabric8.openshift.api.model.installer.openstack.v1.Platform openstack, io.fabric8.openshift.api.model.installer.ovirt.v1.Platform ovirt, io.fabric8.openshift.api.model.installer.powervs.v1.Platform powervs, io.fabric8.openshift.api.model.installer.vsphere.v1.Platform vsphere) {
         super();
         this.alibabacloud = alibabacloud;
         this.aws = aws;
@@ -110,8 +116,10 @@ public class Platform implements KubernetesResource
         this.ibmcloud = ibmcloud;
         this.libvirt = libvirt;
         this.none = none;
+        this.nutanix = nutanix;
         this.openstack = openstack;
         this.ovirt = ovirt;
+        this.powervs = powervs;
         this.vsphere = vsphere;
     }
 
@@ -195,6 +203,16 @@ public class Platform implements KubernetesResource
         this.none = none;
     }
 
+    @JsonProperty("nutanix")
+    public io.fabric8.openshift.api.model.installer.nutanix.v1.Platform getNutanix() {
+        return nutanix;
+    }
+
+    @JsonProperty("nutanix")
+    public void setNutanix(io.fabric8.openshift.api.model.installer.nutanix.v1.Platform nutanix) {
+        this.nutanix = nutanix;
+    }
+
     @JsonProperty("openstack")
     public io.fabric8.openshift.api.model.installer.openstack.v1.Platform getOpenstack() {
         return openstack;
@@ -213,6 +231,16 @@ public class Platform implements KubernetesResource
     @JsonProperty("ovirt")
     public void setOvirt(io.fabric8.openshift.api.model.installer.ovirt.v1.Platform ovirt) {
         this.ovirt = ovirt;
+    }
+
+    @JsonProperty("powervs")
+    public io.fabric8.openshift.api.model.installer.powervs.v1.Platform getPowervs() {
+        return powervs;
+    }
+
+    @JsonProperty("powervs")
+    public void setPowervs(io.fabric8.openshift.api.model.installer.powervs.v1.Platform powervs) {
+        this.powervs = powervs;
     }
 
     @JsonProperty("vsphere")

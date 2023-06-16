@@ -44,6 +44,7 @@ import lombok.experimental.Accessors;
     "podSpec",
     "prevClusterID",
     "prevInfraID",
+    "prevProvisionName",
     "stage"
 })
 @ToString
@@ -91,6 +92,8 @@ public class ClusterProvisionSpec implements KubernetesResource
     private java.lang.String prevClusterID;
     @JsonProperty("prevInfraID")
     private java.lang.String prevInfraID;
+    @JsonProperty("prevProvisionName")
+    private java.lang.String prevProvisionName;
     @JsonProperty("stage")
     private java.lang.String stage;
     @JsonIgnore
@@ -103,7 +106,7 @@ public class ClusterProvisionSpec implements KubernetesResource
     public ClusterProvisionSpec() {
     }
 
-    public ClusterProvisionSpec(io.fabric8.kubernetes.api.model.LocalObjectReference adminKubeconfigSecretRef, io.fabric8.kubernetes.api.model.LocalObjectReference adminPasswordSecretRef, Integer attempt, io.fabric8.kubernetes.api.model.LocalObjectReference clusterDeploymentRef, java.lang.String clusterID, java.lang.String infraID, java.lang.String installLog, Map<String, Object> metadata, PodSpec podSpec, java.lang.String prevClusterID, java.lang.String prevInfraID, java.lang.String stage) {
+    public ClusterProvisionSpec(io.fabric8.kubernetes.api.model.LocalObjectReference adminKubeconfigSecretRef, io.fabric8.kubernetes.api.model.LocalObjectReference adminPasswordSecretRef, Integer attempt, io.fabric8.kubernetes.api.model.LocalObjectReference clusterDeploymentRef, java.lang.String clusterID, java.lang.String infraID, java.lang.String installLog, Map<String, Object> metadata, PodSpec podSpec, java.lang.String prevClusterID, java.lang.String prevInfraID, java.lang.String prevProvisionName, java.lang.String stage) {
         super();
         this.adminKubeconfigSecretRef = adminKubeconfigSecretRef;
         this.adminPasswordSecretRef = adminPasswordSecretRef;
@@ -116,6 +119,7 @@ public class ClusterProvisionSpec implements KubernetesResource
         this.podSpec = podSpec;
         this.prevClusterID = prevClusterID;
         this.prevInfraID = prevInfraID;
+        this.prevProvisionName = prevProvisionName;
         this.stage = stage;
     }
 
@@ -227,6 +231,16 @@ public class ClusterProvisionSpec implements KubernetesResource
     @JsonProperty("prevInfraID")
     public void setPrevInfraID(java.lang.String prevInfraID) {
         this.prevInfraID = prevInfraID;
+    }
+
+    @JsonProperty("prevProvisionName")
+    public java.lang.String getPrevProvisionName() {
+        return prevProvisionName;
+    }
+
+    @JsonProperty("prevProvisionName")
+    public void setPrevProvisionName(java.lang.String prevProvisionName) {
+        this.prevProvisionName = prevProvisionName;
     }
 
     @JsonProperty("stage")

@@ -37,6 +37,7 @@ import lombok.experimental.Accessors;
     "aws",
     "azure",
     "gcp",
+    "ibmcloud",
     "openstack",
     "ovirt",
     "vsphere"
@@ -69,6 +70,8 @@ public class ClusterDeprovisionPlatform implements KubernetesResource
     private AzureClusterDeprovision azure;
     @JsonProperty("gcp")
     private GCPClusterDeprovision gcp;
+    @JsonProperty("ibmcloud")
+    private IBMClusterDeprovision ibmcloud;
     @JsonProperty("openstack")
     private OpenStackClusterDeprovision openstack;
     @JsonProperty("ovirt")
@@ -85,11 +88,12 @@ public class ClusterDeprovisionPlatform implements KubernetesResource
     public ClusterDeprovisionPlatform() {
     }
 
-    public ClusterDeprovisionPlatform(AWSClusterDeprovision aws, AzureClusterDeprovision azure, GCPClusterDeprovision gcp, OpenStackClusterDeprovision openstack, OvirtClusterDeprovision ovirt, VSphereClusterDeprovision vsphere) {
+    public ClusterDeprovisionPlatform(AWSClusterDeprovision aws, AzureClusterDeprovision azure, GCPClusterDeprovision gcp, IBMClusterDeprovision ibmcloud, OpenStackClusterDeprovision openstack, OvirtClusterDeprovision ovirt, VSphereClusterDeprovision vsphere) {
         super();
         this.aws = aws;
         this.azure = azure;
         this.gcp = gcp;
+        this.ibmcloud = ibmcloud;
         this.openstack = openstack;
         this.ovirt = ovirt;
         this.vsphere = vsphere;
@@ -123,6 +127,16 @@ public class ClusterDeprovisionPlatform implements KubernetesResource
     @JsonProperty("gcp")
     public void setGcp(GCPClusterDeprovision gcp) {
         this.gcp = gcp;
+    }
+
+    @JsonProperty("ibmcloud")
+    public IBMClusterDeprovision getIbmcloud() {
+        return ibmcloud;
+    }
+
+    @JsonProperty("ibmcloud")
+    public void setIbmcloud(IBMClusterDeprovision ibmcloud) {
+        this.ibmcloud = ibmcloud;
     }
 
     @JsonProperty("openstack")

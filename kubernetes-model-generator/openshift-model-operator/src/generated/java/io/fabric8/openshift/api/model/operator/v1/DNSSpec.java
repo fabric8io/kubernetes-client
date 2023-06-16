@@ -36,6 +36,7 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
+    "cache",
     "logLevel",
     "managementState",
     "nodePlacement",
@@ -65,6 +66,8 @@ import lombok.experimental.Accessors;
 public class DNSSpec implements KubernetesResource
 {
 
+    @JsonProperty("cache")
+    private DNSCache cache;
     @JsonProperty("logLevel")
     private String logLevel;
     @JsonProperty("managementState")
@@ -88,14 +91,25 @@ public class DNSSpec implements KubernetesResource
     public DNSSpec() {
     }
 
-    public DNSSpec(String logLevel, String managementState, DNSNodePlacement nodePlacement, String operatorLogLevel, List<Server> servers, UpstreamResolvers upstreamResolvers) {
+    public DNSSpec(DNSCache cache, String logLevel, String managementState, DNSNodePlacement nodePlacement, String operatorLogLevel, List<Server> servers, UpstreamResolvers upstreamResolvers) {
         super();
+        this.cache = cache;
         this.logLevel = logLevel;
         this.managementState = managementState;
         this.nodePlacement = nodePlacement;
         this.operatorLogLevel = operatorLogLevel;
         this.servers = servers;
         this.upstreamResolvers = upstreamResolvers;
+    }
+
+    @JsonProperty("cache")
+    public DNSCache getCache() {
+        return cache;
+    }
+
+    @JsonProperty("cache")
+    public void setCache(DNSCache cache) {
+        this.cache = cache;
     }
 
     @JsonProperty("logLevel")

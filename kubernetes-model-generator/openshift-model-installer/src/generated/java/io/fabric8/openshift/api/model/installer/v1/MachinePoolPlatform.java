@@ -41,8 +41,10 @@ import lombok.experimental.Accessors;
     "gcp",
     "ibmcloud",
     "libvirt",
+    "nutanix",
     "openstack",
     "ovirt",
+    "powervs",
     "vsphere"
 })
 @ToString
@@ -81,10 +83,14 @@ public class MachinePoolPlatform implements KubernetesResource
     private io.fabric8.openshift.api.model.installer.ibmcloud.v1.MachinePool ibmcloud;
     @JsonProperty("libvirt")
     private io.fabric8.openshift.api.model.installer.libvirt.v1.MachinePool libvirt;
+    @JsonProperty("nutanix")
+    private io.fabric8.openshift.api.model.installer.nutanix.v1.MachinePool nutanix;
     @JsonProperty("openstack")
     private io.fabric8.openshift.api.model.installer.openstack.v1.MachinePool openstack;
     @JsonProperty("ovirt")
     private io.fabric8.openshift.api.model.installer.ovirt.v1.MachinePool ovirt;
+    @JsonProperty("powervs")
+    private io.fabric8.openshift.api.model.installer.powervs.v1.MachinePool powervs;
     @JsonProperty("vsphere")
     private io.fabric8.openshift.api.model.installer.vsphere.v1.MachinePool vsphere;
     @JsonIgnore
@@ -97,7 +103,7 @@ public class MachinePoolPlatform implements KubernetesResource
     public MachinePoolPlatform() {
     }
 
-    public MachinePoolPlatform(io.fabric8.openshift.api.model.installer.alibabacloud.v1.MachinePool alibabacloud, io.fabric8.openshift.api.model.installer.aws.v1.MachinePool aws, io.fabric8.openshift.api.model.installer.azure.v1.MachinePool azure, io.fabric8.openshift.api.model.installer.baremetal.v1.MachinePool baremetal, io.fabric8.openshift.api.model.installer.gcp.v1.MachinePool gcp, io.fabric8.openshift.api.model.installer.ibmcloud.v1.MachinePool ibmcloud, io.fabric8.openshift.api.model.installer.libvirt.v1.MachinePool libvirt, io.fabric8.openshift.api.model.installer.openstack.v1.MachinePool openstack, io.fabric8.openshift.api.model.installer.ovirt.v1.MachinePool ovirt, io.fabric8.openshift.api.model.installer.vsphere.v1.MachinePool vsphere) {
+    public MachinePoolPlatform(io.fabric8.openshift.api.model.installer.alibabacloud.v1.MachinePool alibabacloud, io.fabric8.openshift.api.model.installer.aws.v1.MachinePool aws, io.fabric8.openshift.api.model.installer.azure.v1.MachinePool azure, io.fabric8.openshift.api.model.installer.baremetal.v1.MachinePool baremetal, io.fabric8.openshift.api.model.installer.gcp.v1.MachinePool gcp, io.fabric8.openshift.api.model.installer.ibmcloud.v1.MachinePool ibmcloud, io.fabric8.openshift.api.model.installer.libvirt.v1.MachinePool libvirt, io.fabric8.openshift.api.model.installer.nutanix.v1.MachinePool nutanix, io.fabric8.openshift.api.model.installer.openstack.v1.MachinePool openstack, io.fabric8.openshift.api.model.installer.ovirt.v1.MachinePool ovirt, io.fabric8.openshift.api.model.installer.powervs.v1.MachinePool powervs, io.fabric8.openshift.api.model.installer.vsphere.v1.MachinePool vsphere) {
         super();
         this.alibabacloud = alibabacloud;
         this.aws = aws;
@@ -106,8 +112,10 @@ public class MachinePoolPlatform implements KubernetesResource
         this.gcp = gcp;
         this.ibmcloud = ibmcloud;
         this.libvirt = libvirt;
+        this.nutanix = nutanix;
         this.openstack = openstack;
         this.ovirt = ovirt;
+        this.powervs = powervs;
         this.vsphere = vsphere;
     }
 
@@ -181,6 +189,16 @@ public class MachinePoolPlatform implements KubernetesResource
         this.libvirt = libvirt;
     }
 
+    @JsonProperty("nutanix")
+    public io.fabric8.openshift.api.model.installer.nutanix.v1.MachinePool getNutanix() {
+        return nutanix;
+    }
+
+    @JsonProperty("nutanix")
+    public void setNutanix(io.fabric8.openshift.api.model.installer.nutanix.v1.MachinePool nutanix) {
+        this.nutanix = nutanix;
+    }
+
     @JsonProperty("openstack")
     public io.fabric8.openshift.api.model.installer.openstack.v1.MachinePool getOpenstack() {
         return openstack;
@@ -199,6 +217,16 @@ public class MachinePoolPlatform implements KubernetesResource
     @JsonProperty("ovirt")
     public void setOvirt(io.fabric8.openshift.api.model.installer.ovirt.v1.MachinePool ovirt) {
         this.ovirt = ovirt;
+    }
+
+    @JsonProperty("powervs")
+    public io.fabric8.openshift.api.model.installer.powervs.v1.MachinePool getPowervs() {
+        return powervs;
+    }
+
+    @JsonProperty("powervs")
+    public void setPowervs(io.fabric8.openshift.api.model.installer.powervs.v1.MachinePool powervs) {
+        this.powervs = powervs;
     }
 
     @JsonProperty("vsphere")

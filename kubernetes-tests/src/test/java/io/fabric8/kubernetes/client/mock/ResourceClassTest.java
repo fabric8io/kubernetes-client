@@ -17,10 +17,10 @@ package io.fabric8.kubernetes.client.mock;
 
 import io.fabric8.kubernetes.api.model.NodeSelectorBuilder;
 import io.fabric8.kubernetes.api.model.NodeSelectorRequirementBuilder;
-import io.fabric8.kubernetes.api.model.resource.v1alpha1.ResourceClass;
-import io.fabric8.kubernetes.api.model.resource.v1alpha1.ResourceClassBuilder;
-import io.fabric8.kubernetes.api.model.resource.v1alpha1.ResourceClassList;
-import io.fabric8.kubernetes.api.model.resource.v1alpha1.ResourceClassListBuilder;
+import io.fabric8.kubernetes.api.model.resource.v1alpha2.ResourceClass;
+import io.fabric8.kubernetes.api.model.resource.v1alpha2.ResourceClassBuilder;
+import io.fabric8.kubernetes.api.model.resource.v1alpha2.ResourceClassList;
+import io.fabric8.kubernetes.api.model.resource.v1alpha2.ResourceClassListBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
@@ -38,12 +38,12 @@ class ResourceClassTest {
   @Test
   void get() {
     // Given
-    server.expect().get().withPath("/apis/resource.k8s.io/v1alpha1/resourceclasses/test-get")
+    server.expect().get().withPath("/apis/resource.k8s.io/v1alpha2/resourceclasses/test-get")
         .andReturn(HttpURLConnection.HTTP_OK, createNewResourceClass("test-get"))
         .once();
 
     // When
-    ResourceClass resourceClass = client.dynamicResourceAllocation().v1alpha1().resourceClasses().withName("test-get").get();
+    ResourceClass resourceClass = client.dynamicResourceAllocation().v1alpha2().resourceClasses().withName("test-get").get();
 
     // Then
     assertThat(resourceClass)
@@ -54,14 +54,14 @@ class ResourceClassTest {
   @Test
   void list() {
     // Given
-    server.expect().get().withPath("/apis/resource.k8s.io/v1alpha1/resourceclasses")
+    server.expect().get().withPath("/apis/resource.k8s.io/v1alpha2/resourceclasses")
         .andReturn(HttpURLConnection.HTTP_OK, new ResourceClassListBuilder()
             .addToItems(createNewResourceClass("test-list"))
             .build())
         .once();
 
     // When
-    ResourceClassList resourceClassList = client.dynamicResourceAllocation().v1alpha1().resourceClasses().list();
+    ResourceClassList resourceClassList = client.dynamicResourceAllocation().v1alpha2().resourceClasses().list();
 
     // Then
     assertThat(resourceClassList).isNotNull();
@@ -73,12 +73,12 @@ class ResourceClassTest {
   @Test
   void delete() {
     // Given
-    server.expect().delete().withPath("/apis/resource.k8s.io/v1alpha1/resourceclasses/cluster")
+    server.expect().delete().withPath("/apis/resource.k8s.io/v1alpha2/resourceclasses/cluster")
         .andReturn(HttpURLConnection.HTTP_OK, createNewResourceClass("cluster"))
         .once();
 
     // When
-    boolean isDeleted = client.dynamicResourceAllocation().v1alpha1().resourceClasses().withName("cluster").delete()
+    boolean isDeleted = client.dynamicResourceAllocation().v1alpha2().resourceClasses().withName("cluster").delete()
         .size() == 1;
 
     // Then

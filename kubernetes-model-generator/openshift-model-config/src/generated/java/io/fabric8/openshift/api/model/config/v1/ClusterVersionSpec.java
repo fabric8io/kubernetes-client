@@ -36,6 +36,7 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
+    "capabilities",
     "channel",
     "clusterID",
     "desiredUpdate",
@@ -64,6 +65,8 @@ import lombok.experimental.Accessors;
 public class ClusterVersionSpec implements KubernetesResource
 {
 
+    @JsonProperty("capabilities")
+    private ClusterVersionCapabilitiesSpec capabilities;
     @JsonProperty("channel")
     private String channel;
     @JsonProperty("clusterID")
@@ -85,13 +88,24 @@ public class ClusterVersionSpec implements KubernetesResource
     public ClusterVersionSpec() {
     }
 
-    public ClusterVersionSpec(String channel, String clusterID, Update desiredUpdate, List<ComponentOverride> overrides, String upstream) {
+    public ClusterVersionSpec(ClusterVersionCapabilitiesSpec capabilities, String channel, String clusterID, Update desiredUpdate, List<ComponentOverride> overrides, String upstream) {
         super();
+        this.capabilities = capabilities;
         this.channel = channel;
         this.clusterID = clusterID;
         this.desiredUpdate = desiredUpdate;
         this.overrides = overrides;
         this.upstream = upstream;
+    }
+
+    @JsonProperty("capabilities")
+    public ClusterVersionCapabilitiesSpec getCapabilities() {
+        return capabilities;
+    }
+
+    @JsonProperty("capabilities")
+    public void setCapabilities(ClusterVersionCapabilitiesSpec capabilities) {
+        this.capabilities = capabilities;
     }
 
     @JsonProperty("channel")

@@ -16,7 +16,6 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
-import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
@@ -41,7 +40,9 @@ import lombok.experimental.Accessors;
     "conditions",
     "domain",
     "endpointPublishingStrategy",
+    "namespaceSelector",
     "observedGeneration",
+    "routeSelector",
     "selector",
     "tlsProfile"
 })
@@ -54,7 +55,7 @@ import lombok.experimental.Accessors;
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
-    @BuildableReference(LabelSelector.class),
+    @BuildableReference(io.fabric8.kubernetes.api.model.LabelSelector.class),
     @BuildableReference(Container.class),
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
@@ -76,8 +77,12 @@ public class IngressControllerStatus implements KubernetesResource
     private String domain;
     @JsonProperty("endpointPublishingStrategy")
     private EndpointPublishingStrategy endpointPublishingStrategy;
+    @JsonProperty("namespaceSelector")
+    private io.fabric8.kubernetes.api.model.LabelSelector namespaceSelector;
     @JsonProperty("observedGeneration")
     private Long observedGeneration;
+    @JsonProperty("routeSelector")
+    private io.fabric8.kubernetes.api.model.LabelSelector routeSelector;
     @JsonProperty("selector")
     private String selector;
     @JsonProperty("tlsProfile")
@@ -92,13 +97,15 @@ public class IngressControllerStatus implements KubernetesResource
     public IngressControllerStatus() {
     }
 
-    public IngressControllerStatus(Integer availableReplicas, List<OperatorCondition> conditions, String domain, EndpointPublishingStrategy endpointPublishingStrategy, Long observedGeneration, String selector, TLSProfileSpec tlsProfile) {
+    public IngressControllerStatus(Integer availableReplicas, List<OperatorCondition> conditions, String domain, EndpointPublishingStrategy endpointPublishingStrategy, io.fabric8.kubernetes.api.model.LabelSelector namespaceSelector, Long observedGeneration, io.fabric8.kubernetes.api.model.LabelSelector routeSelector, String selector, TLSProfileSpec tlsProfile) {
         super();
         this.availableReplicas = availableReplicas;
         this.conditions = conditions;
         this.domain = domain;
         this.endpointPublishingStrategy = endpointPublishingStrategy;
+        this.namespaceSelector = namespaceSelector;
         this.observedGeneration = observedGeneration;
+        this.routeSelector = routeSelector;
         this.selector = selector;
         this.tlsProfile = tlsProfile;
     }
@@ -143,6 +150,16 @@ public class IngressControllerStatus implements KubernetesResource
         this.endpointPublishingStrategy = endpointPublishingStrategy;
     }
 
+    @JsonProperty("namespaceSelector")
+    public io.fabric8.kubernetes.api.model.LabelSelector getNamespaceSelector() {
+        return namespaceSelector;
+    }
+
+    @JsonProperty("namespaceSelector")
+    public void setNamespaceSelector(io.fabric8.kubernetes.api.model.LabelSelector namespaceSelector) {
+        this.namespaceSelector = namespaceSelector;
+    }
+
     @JsonProperty("observedGeneration")
     public Long getObservedGeneration() {
         return observedGeneration;
@@ -151,6 +168,16 @@ public class IngressControllerStatus implements KubernetesResource
     @JsonProperty("observedGeneration")
     public void setObservedGeneration(Long observedGeneration) {
         this.observedGeneration = observedGeneration;
+    }
+
+    @JsonProperty("routeSelector")
+    public io.fabric8.kubernetes.api.model.LabelSelector getRouteSelector() {
+        return routeSelector;
+    }
+
+    @JsonProperty("routeSelector")
+    public void setRouteSelector(io.fabric8.kubernetes.api.model.LabelSelector routeSelector) {
+        this.routeSelector = routeSelector;
     }
 
     @JsonProperty("selector")

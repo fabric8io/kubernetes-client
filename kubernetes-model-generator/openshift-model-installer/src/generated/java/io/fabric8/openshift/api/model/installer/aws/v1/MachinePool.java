@@ -38,6 +38,7 @@ import lombok.experimental.Accessors;
     "metadata",
     "amiID",
     "iamRole",
+    "metadataService",
     "rootVolume",
     "type",
     "zones"
@@ -68,6 +69,8 @@ public class MachinePool implements KubernetesResource
     private String amiID;
     @JsonProperty("iamRole")
     private String iamRole;
+    @JsonProperty("metadataService")
+    private EC2Metadata metadataService;
     @JsonProperty("rootVolume")
     private EC2RootVolume rootVolume;
     @JsonProperty("type")
@@ -85,10 +88,11 @@ public class MachinePool implements KubernetesResource
     public MachinePool() {
     }
 
-    public MachinePool(String amiID, String iamRole, EC2RootVolume rootVolume, String type, List<String> zones) {
+    public MachinePool(String amiID, String iamRole, EC2Metadata metadataService, EC2RootVolume rootVolume, String type, List<String> zones) {
         super();
         this.amiID = amiID;
         this.iamRole = iamRole;
+        this.metadataService = metadataService;
         this.rootVolume = rootVolume;
         this.type = type;
         this.zones = zones;
@@ -112,6 +116,16 @@ public class MachinePool implements KubernetesResource
     @JsonProperty("iamRole")
     public void setIamRole(String iamRole) {
         this.iamRole = iamRole;
+    }
+
+    @JsonProperty("metadataService")
+    public EC2Metadata getMetadataService() {
+        return metadataService;
+    }
+
+    @JsonProperty("metadataService")
+    public void setMetadataService(EC2Metadata metadataService) {
+        this.metadataService = metadataService;
     }
 
     @JsonProperty("rootVolume")

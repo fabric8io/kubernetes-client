@@ -38,7 +38,8 @@ import lombok.experimental.Accessors;
     "metadata",
     "conditions",
     "ready",
-    "size"
+    "size",
+    "standby"
 })
 @ToString
 @EqualsAndHashCode
@@ -69,6 +70,8 @@ public class ClusterPoolStatus implements KubernetesResource
     private Integer ready;
     @JsonProperty("size")
     private Integer size;
+    @JsonProperty("standby")
+    private Integer standby;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -79,11 +82,12 @@ public class ClusterPoolStatus implements KubernetesResource
     public ClusterPoolStatus() {
     }
 
-    public ClusterPoolStatus(List<ClusterPoolCondition> conditions, Integer ready, Integer size) {
+    public ClusterPoolStatus(List<ClusterPoolCondition> conditions, Integer ready, Integer size, Integer standby) {
         super();
         this.conditions = conditions;
         this.ready = ready;
         this.size = size;
+        this.standby = standby;
     }
 
     @JsonProperty("conditions")
@@ -114,6 +118,16 @@ public class ClusterPoolStatus implements KubernetesResource
     @JsonProperty("size")
     public void setSize(Integer size) {
         this.size = size;
+    }
+
+    @JsonProperty("standby")
+    public Integer getStandby() {
+        return standby;
+    }
+
+    @JsonProperty("standby")
+    public void setStandby(Integer standby) {
+        this.standby = standby;
     }
 
     @JsonAnyGetter

@@ -909,6 +909,14 @@
           "$ref": "#/definitions/kubernetes_core_Probe",
           "existingJavaType": "io.fabric8.kubernetes.api.model.Probe"
         },
+        "resizePolicy": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_core_ContainerResizePolicy",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.ContainerResizePolicy"
+          }
+        },
         "resources": {
           "$ref": "#/definitions/kubernetes_core_ResourceRequirements",
           "existingJavaType": "io.fabric8.kubernetes.api.model.ResourceRequirements"
@@ -985,6 +993,22 @@
       },
       "additionalProperties": true,
       "existingJavaType": "io.fabric8.kubernetes.api.model.ContainerPort",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_core_ContainerResizePolicy": {
+      "type": "object",
+      "properties": {
+        "resourceName": {
+          "type": "string"
+        },
+        "restartPolicy": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "existingJavaType": "io.fabric8.kubernetes.api.model.ContainerResizePolicy",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -1199,6 +1223,14 @@
           "$ref": "#/definitions/kubernetes_core_Probe",
           "existingJavaType": "io.fabric8.kubernetes.api.model.Probe"
         },
+        "resizePolicy": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_core_ContainerResizePolicy",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.ContainerResizePolicy"
+          }
+        },
         "resources": {
           "$ref": "#/definitions/kubernetes_core_ResourceRequirements",
           "existingJavaType": "io.fabric8.kubernetes.api.model.ResourceRequirements"
@@ -1316,6 +1348,14 @@
         "readinessProbe": {
           "$ref": "#/definitions/kubernetes_core_Probe",
           "existingJavaType": "io.fabric8.kubernetes.api.model.Probe"
+        },
+        "resizePolicy": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_core_ContainerResizePolicy",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.ContainerResizePolicy"
+          }
         },
         "resources": {
           "$ref": "#/definitions/kubernetes_core_ResourceRequirements",
@@ -4401,6 +4441,90 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "os_hive_ibmcloud_v1_BootVolume": {
+      "type": "object",
+      "properties": {
+        "encryptionKey": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.hive.ibmcloud.v1.BootVolume",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_hive_ibmcloud_v1_DedicatedHost": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "profile": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.hive.ibmcloud.v1.DedicatedHost",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_hive_ibmcloud_v1_MachinePool": {
+      "type": "object",
+      "properties": {
+        "bootVolume": {
+          "$ref": "#/definitions/os_hive_ibmcloud_v1_BootVolume",
+          "existingJavaType": "io.fabric8.openshift.api.model.hive.ibmcloud.v1.BootVolume"
+        },
+        "dedicatedHosts": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/os_hive_ibmcloud_v1_DedicatedHost",
+            "existingJavaType": "io.fabric8.openshift.api.model.hive.ibmcloud.v1.DedicatedHost"
+          }
+        },
+        "type": {
+          "type": "string"
+        },
+        "zones": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.hive.ibmcloud.v1.MachinePool",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_hive_ibmcloud_v1_Platform": {
+      "type": "object",
+      "properties": {
+        "accountID": {
+          "type": "string"
+        },
+        "cisInstanceCRN": {
+          "type": "string"
+        },
+        "credentialsSecretRef": {
+          "$ref": "#/definitions/kubernetes_core_LocalObjectReference",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.LocalObjectReference"
+        },
+        "region": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.hive.ibmcloud.v1.Platform",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "os_hive_openstack_v1_MachinePool": {
       "type": "object",
       "properties": {
@@ -5460,6 +5584,10 @@
           "$ref": "#/definitions/os_hive_v1_GCPClusterDeprovision",
           "existingJavaType": "io.fabric8.openshift.api.model.hive.v1.GCPClusterDeprovision"
         },
+        "ibmcloud": {
+          "$ref": "#/definitions/os_hive_v1_IBMClusterDeprovision",
+          "existingJavaType": "io.fabric8.openshift.api.model.hive.v1.IBMClusterDeprovision"
+        },
         "openstack": {
           "$ref": "#/definitions/os_hive_v1_OpenStackClusterDeprovision",
           "existingJavaType": "io.fabric8.openshift.api.model.hive.v1.OpenStackClusterDeprovision"
@@ -5869,6 +5997,10 @@
           "$ref": "#/definitions/kubernetes_apimachinery_Duration",
           "existingJavaType": "io.fabric8.kubernetes.api.model.Duration"
         },
+        "hibernationConfig": {
+          "$ref": "#/definitions/os_hive_v1_HibernationConfig",
+          "existingJavaType": "io.fabric8.openshift.api.model.hive.v1.HibernationConfig"
+        },
         "imageSetRef": {
           "$ref": "#/definitions/os_hive_v1_ClusterImageSetReference",
           "existingJavaType": "io.fabric8.openshift.api.model.hive.v1.ClusterImageSetReference"
@@ -5932,6 +6064,9 @@
           "type": "integer"
         },
         "size": {
+          "type": "integer"
+        },
+        "standby": {
           "type": "integer"
         }
       },
@@ -6075,6 +6210,9 @@
           "type": "string"
         },
         "prevInfraID": {
+          "type": "string"
+        },
+        "prevProvisionName": {
           "type": "string"
         },
         "stage": {
@@ -6695,6 +6833,20 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "os_hive_v1_HibernationConfig": {
+      "type": "object",
+      "properties": {
+        "resumeTimeout": {
+          "$ref": "#/definitions/kubernetes_apimachinery_Duration",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.Duration"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.hive.v1.HibernationConfig",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "os_hive_v1_HiveConfig": {
       "type": "object",
       "properties": {
@@ -6903,6 +7055,32 @@
       },
       "additionalProperties": true,
       "javaType": "io.fabric8.openshift.api.model.hive.v1.HiveConfigStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_hive_v1_IBMClusterDeprovision": {
+      "type": "object",
+      "properties": {
+        "accountID": {
+          "type": "string"
+        },
+        "baseDomain": {
+          "type": "string"
+        },
+        "cisInstanceCRN": {
+          "type": "string"
+        },
+        "credentialsSecretRef": {
+          "$ref": "#/definitions/kubernetes_core_LocalObjectReference",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.LocalObjectReference"
+        },
+        "region": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.hive.v1.IBMClusterDeprovision",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -7137,6 +7315,10 @@
         "gcp": {
           "$ref": "#/definitions/os_hive_gcp_v1_MachinePool",
           "existingJavaType": "io.fabric8.openshift.api.model.hive.gcp.v1.MachinePool"
+        },
+        "ibmcloud": {
+          "$ref": "#/definitions/os_hive_ibmcloud_v1_MachinePool",
+          "existingJavaType": "io.fabric8.openshift.api.model.hive.ibmcloud.v1.MachinePool"
         },
         "openstack": {
           "$ref": "#/definitions/os_hive_openstack_v1_MachinePool",
@@ -7404,6 +7586,10 @@
         "gcp": {
           "$ref": "#/definitions/os_hive_gcp_v1_Platform",
           "existingJavaType": "io.fabric8.openshift.api.model.hive.gcp.v1.Platform"
+        },
+        "ibmcloud": {
+          "$ref": "#/definitions/os_hive_ibmcloud_v1_Platform",
+          "existingJavaType": "io.fabric8.openshift.api.model.hive.ibmcloud.v1.Platform"
         },
         "openstack": {
           "$ref": "#/definitions/os_hive_openstack_v1_Platform",
@@ -8750,6 +8936,14 @@
       },
       "additionalProperties": true
     },
+    "bootvolume": {
+      "properties": {
+        "encryptionKey": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
     "capabilities": {
       "properties": {
         "add": {
@@ -9347,6 +9541,10 @@
           "$ref": "#/definitions/os_hive_v1_GCPClusterDeprovision",
           "existingJavaType": "io.fabric8.openshift.api.model.hive.v1.GCPClusterDeprovision"
         },
+        "ibmcloud": {
+          "$ref": "#/definitions/os_hive_v1_IBMClusterDeprovision",
+          "existingJavaType": "io.fabric8.openshift.api.model.hive.v1.IBMClusterDeprovision"
+        },
         "openstack": {
           "$ref": "#/definitions/os_hive_v1_OpenStackClusterDeprovision",
           "existingJavaType": "io.fabric8.openshift.api.model.hive.v1.OpenStackClusterDeprovision"
@@ -9689,6 +9887,10 @@
           "$ref": "#/definitions/kubernetes_apimachinery_Duration",
           "existingJavaType": "io.fabric8.kubernetes.api.model.Duration"
         },
+        "hibernationConfig": {
+          "$ref": "#/definitions/os_hive_v1_HibernationConfig",
+          "existingJavaType": "io.fabric8.openshift.api.model.hive.v1.HibernationConfig"
+        },
         "imageSetRef": {
           "$ref": "#/definitions/os_hive_v1_ClusterImageSetReference",
           "existingJavaType": "io.fabric8.openshift.api.model.hive.v1.ClusterImageSetReference"
@@ -9747,6 +9949,9 @@
           "type": "integer"
         },
         "size": {
+          "type": "integer"
+        },
+        "standby": {
           "type": "integer"
         }
       },
@@ -9868,6 +10073,9 @@
           "type": "string"
         },
         "prevInfraID": {
+          "type": "string"
+        },
+        "prevProvisionName": {
           "type": "string"
         },
         "stage": {
@@ -10172,6 +10380,14 @@
           "$ref": "#/definitions/kubernetes_core_Probe",
           "existingJavaType": "io.fabric8.kubernetes.api.model.Probe"
         },
+        "resizePolicy": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_core_ContainerResizePolicy",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.ContainerResizePolicy"
+          }
+        },
         "resources": {
           "$ref": "#/definitions/kubernetes_core_ResourceRequirements",
           "existingJavaType": "io.fabric8.kubernetes.api.model.ResourceRequirements"
@@ -10238,6 +10454,17 @@
           "pattern": "^[a-z0-9]([-a-z0-9]*[a-z0-9])?$"
         },
         "protocol": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "containerresizepolicy": {
+      "properties": {
+        "resourceName": {
+          "type": "string"
+        },
+        "restartPolicy": {
           "type": "string"
         }
       },
@@ -10354,6 +10581,17 @@
             "type": "string"
           },
           "existingJavaType": "java.util.Map\u003cString, String\u003e"
+        }
+      },
+      "additionalProperties": true
+    },
+    "dedicatedhost": {
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "profile": {
+          "type": "string"
         }
       },
       "additionalProperties": true
@@ -10723,6 +10961,14 @@
           "$ref": "#/definitions/kubernetes_core_Probe",
           "existingJavaType": "io.fabric8.kubernetes.api.model.Probe"
         },
+        "resizePolicy": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_core_ContainerResizePolicy",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.ContainerResizePolicy"
+          }
+        },
         "resources": {
           "$ref": "#/definitions/kubernetes_core_ResourceRequirements",
           "existingJavaType": "io.fabric8.kubernetes.api.model.ResourceRequirements"
@@ -10835,6 +11081,14 @@
         "readinessProbe": {
           "$ref": "#/definitions/kubernetes_core_Probe",
           "existingJavaType": "io.fabric8.kubernetes.api.model.Probe"
+        },
+        "resizePolicy": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_core_ContainerResizePolicy",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.ContainerResizePolicy"
+          }
         },
         "resources": {
           "$ref": "#/definitions/kubernetes_core_ResourceRequirements",
@@ -11197,6 +11451,15 @@
       },
       "additionalProperties": true
     },
+    "hibernationconfig": {
+      "properties": {
+        "resumeTimeout": {
+          "$ref": "#/definitions/kubernetes_apimachinery_Duration",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.Duration"
+        }
+      },
+      "additionalProperties": true
+    },
     "hiveconfig": {
       "properties": {
         "apiVersion": {
@@ -11450,6 +11713,27 @@
           "type": "string"
         },
         "value": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "ibmclusterdeprovision": {
+      "properties": {
+        "accountID": {
+          "type": "string"
+        },
+        "baseDomain": {
+          "type": "string"
+        },
+        "cisInstanceCRN": {
+          "type": "string"
+        },
+        "credentialsSecretRef": {
+          "$ref": "#/definitions/kubernetes_core_LocalObjectReference",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.LocalObjectReference"
+        },
+        "region": {
           "type": "string"
         }
       },
@@ -11855,19 +12139,12 @@
     },
     "machinepool": {
       "properties": {
-        "coresPerSocket": {
-          "type": "integer"
+        "flavor": {
+          "type": "string"
         },
-        "cpus": {
-          "type": "integer"
-        },
-        "memoryMB": {
-          "type": "integer",
-          "existingJavaType": "Long"
-        },
-        "osDisk": {
-          "$ref": "#/definitions/os_hive_vsphere_v1_OSDisk",
-          "existingJavaType": "io.fabric8.openshift.api.model.hive.vsphere.v1.OSDisk"
+        "rootVolume": {
+          "$ref": "#/definitions/os_hive_openstack_v1_RootVolume",
+          "existingJavaType": "io.fabric8.openshift.api.model.hive.openstack.v1.RootVolume"
         }
       },
       "additionalProperties": true
@@ -12600,28 +12877,36 @@
     },
     "platform": {
       "properties": {
-        "certificatesSecretRef": {
-          "$ref": "#/definitions/kubernetes_core_LocalObjectReference",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.LocalObjectReference"
-        },
-        "cloud": {
-          "type": "string"
+        "credentialsAssumeRole": {
+          "$ref": "#/definitions/os_hive_aws_v1_AssumeRole",
+          "existingJavaType": "io.fabric8.openshift.api.model.hive.aws.v1.AssumeRole"
         },
         "credentialsSecretRef": {
           "$ref": "#/definitions/kubernetes_core_LocalObjectReference",
           "existingJavaType": "io.fabric8.kubernetes.api.model.LocalObjectReference"
         },
-        "trunkSupport": {
-          "type": "boolean"
+        "privateLink": {
+          "$ref": "#/definitions/os_hive_aws_v1_PrivateLinkAccess",
+          "existingJavaType": "io.fabric8.openshift.api.model.hive.aws.v1.PrivateLinkAccess"
+        },
+        "region": {
+          "type": "string"
+        },
+        "userTags": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "existingJavaType": "java.util.Map\u003cString, String\u003e"
         }
       },
       "additionalProperties": true
     },
     "platformstatus": {
       "properties": {
-        "privateLink": {
-          "$ref": "#/definitions/os_hive_aws_v1_PrivateLinkAccessStatus",
-          "existingJavaType": "io.fabric8.openshift.api.model.hive.aws.v1.PrivateLinkAccessStatus"
+        "aws": {
+          "$ref": "#/definitions/os_hive_aws_v1_PlatformStatus",
+          "existingJavaType": "io.fabric8.openshift.api.model.hive.aws.v1.PlatformStatus"
         }
       },
       "additionalProperties": true

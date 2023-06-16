@@ -374,6 +374,9 @@
         "resourceVersionMatch": {
           "type": "string"
         },
+        "sendInitialEvents": {
+          "type": "boolean"
+        },
         "timeoutSeconds": {
           "type": "integer",
           "existingJavaType": "Long"
@@ -1632,8 +1635,7 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.networking.v1alpha1.ClusterCIDR",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata",
-        "io.fabric8.kubernetes.api.model.Namespaced"
+        "io.fabric8.kubernetes.api.model.HasMetadata"
       ]
     },
     "kubernetes_networking_v1alpha1_ClusterCIDRList": {
@@ -1687,6 +1689,105 @@
       },
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.networking.v1alpha1.ClusterCIDRSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_networking_v1alpha1_IPAddress": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "networking.k8s.io/v1alpha1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "IPAddress",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/kubernetes_networking_v1alpha1_IPAddressSpec",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.networking.v1alpha1.IPAddressSpec"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.networking.v1alpha1.IPAddress",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata"
+      ]
+    },
+    "kubernetes_networking_v1alpha1_IPAddressList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "networking.k8s.io/v1alpha1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/kubernetes_networking_v1alpha1_IPAddress",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.networking.v1alpha1.IPAddress"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "IPAddressList",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ListMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.networking.v1alpha1.IPAddressList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kubernetes.api.model.networking.v1alpha1.IPAddress\u003e"
+      ]
+    },
+    "kubernetes_networking_v1alpha1_IPAddressSpec": {
+      "type": "object",
+      "properties": {
+        "parentRef": {
+          "$ref": "#/definitions/kubernetes_networking_v1alpha1_ParentReference",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.networking.v1alpha1.ParentReference"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.networking.v1alpha1.IPAddressSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_networking_v1alpha1_ParentReference": {
+      "type": "object",
+      "properties": {
+        "group": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "namespace": {
+          "type": "string"
+        },
+        "resource": {
+          "type": "string"
+        },
+        "uid": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.networking.v1alpha1.ParentReference",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -2181,6 +2282,14 @@
     "V1Alpha1ClusterCIDRList": {
       "$ref": "#/definitions/kubernetes_networking_v1alpha1_ClusterCIDRList",
       "existingJavaType": "io.fabric8.kubernetes.api.model.networking.v1alpha1.ClusterCIDRList"
+    },
+    "V1Alpha1IPAddress": {
+      "$ref": "#/definitions/kubernetes_networking_v1alpha1_IPAddress",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.networking.v1alpha1.IPAddress"
+    },
+    "V1Alpha1IPAddressList": {
+      "$ref": "#/definitions/kubernetes_networking_v1alpha1_IPAddressList",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.networking.v1alpha1.IPAddressList"
     },
     "V1Ingress": {
       "$ref": "#/definitions/kubernetes_networking_v1_Ingress",

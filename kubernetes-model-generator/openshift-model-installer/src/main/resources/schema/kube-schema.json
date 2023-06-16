@@ -3,10 +3,38 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$module": "installer",
   "definitions": {
+    "k8s_io_apiextensions_apiserver_pkg_apis_apiextensions_v1_JSON": {
+      "type": "object",
+      "additionalProperties": true,
+      "existingJavaType": "com.fasterxml.jackson.databind.JsonNode",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "k8s_io_apimachinery_pkg_runtime_RawExtension": {
       "type": "object",
       "additionalProperties": true,
       "existingJavaType": "java.util.Map\u003cString, Object\u003e",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "k8s_io_apimachinery_pkg_util_intstr_IntOrString": {
+      "type": "object",
+      "properties": {
+        "IntVal": {
+          "type": "integer"
+        },
+        "StrVal": {
+          "type": "string"
+        },
+        "Type": {
+          "type": "integer",
+          "existingJavaType": "Long"
+        }
+      },
+      "additionalProperties": true,
+      "existingJavaType": "io.fabric8.kubernetes.api.model.IntOrString",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -448,6 +476,71 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "os_config_v1_BareMetalPlatformLoadBalancer": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "existingJavaType": "io.fabric8.openshift.api.model.config.v1.BareMetalPlatformLoadBalancer",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_config_v1_NutanixPlatformLoadBalancer": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "existingJavaType": "io.fabric8.openshift.api.model.config.v1.NutanixPlatformLoadBalancer",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_config_v1_OpenStackPlatformLoadBalancer": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "existingJavaType": "io.fabric8.openshift.api.model.config.v1.OpenStackPlatformLoadBalancer",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_config_v1_OvirtPlatformLoadBalancer": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "existingJavaType": "io.fabric8.openshift.api.model.config.v1.OvirtPlatformLoadBalancer",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_config_v1_VSpherePlatformLoadBalancer": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "existingJavaType": "io.fabric8.openshift.api.model.config.v1.VSpherePlatformLoadBalancer",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "os_installer_alibabacloud_v1_MachinePool": {
       "type": "object",
       "properties": {
@@ -517,6 +610,19 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "os_installer_aws_v1_EC2Metadata": {
+      "type": "object",
+      "properties": {
+        "authentication": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.installer.aws.v1.EC2Metadata",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "os_installer_aws_v1_EC2RootVolume": {
       "type": "object",
       "properties": {
@@ -547,6 +653,10 @@
         },
         "iamRole": {
           "type": "string"
+        },
+        "metadataService": {
+          "$ref": "#/definitions/os_installer_aws_v1_EC2Metadata",
+          "existingJavaType": "io.fabric8.openshift.api.model.installer.aws.v1.EC2Metadata"
         },
         "rootVolume": {
           "$ref": "#/definitions/os_installer_aws_v1_EC2RootVolume",
@@ -584,6 +694,12 @@
         },
         "hostedZone": {
           "type": "string"
+        },
+        "lbType": {
+          "type": "string"
+        },
+        "propagateUserTags": {
+          "type": "boolean"
         },
         "region": {
           "type": "string"
@@ -633,14 +749,46 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "os_installer_azure_v1_DiskEncryptionSet": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "resourceGroup": {
+          "type": "string"
+        },
+        "subscriptionId": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.installer.azure.v1.DiskEncryptionSet",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "os_installer_azure_v1_MachinePool": {
       "type": "object",
       "properties": {
+        "encryptionAtHost": {
+          "type": "boolean"
+        },
         "osDisk": {
           "$ref": "#/definitions/os_installer_azure_v1_OSDisk",
           "existingJavaType": "io.fabric8.openshift.api.model.installer.azure.v1.OSDisk"
         },
+        "osImage": {
+          "$ref": "#/definitions/os_installer_azure_v1_OSImage",
+          "existingJavaType": "io.fabric8.openshift.api.model.installer.azure.v1.OSImage"
+        },
         "type": {
+          "type": "string"
+        },
+        "ultraSSDCapability": {
+          "type": "string"
+        },
+        "vmNetworkingType": {
           "type": "string"
         },
         "zones": {
@@ -660,6 +808,10 @@
     "os_installer_azure_v1_OSDisk": {
       "type": "object",
       "properties": {
+        "diskEncryptionSet": {
+          "$ref": "#/definitions/os_installer_azure_v1_DiskEncryptionSet",
+          "existingJavaType": "io.fabric8.openshift.api.model.installer.azure.v1.DiskEncryptionSet"
+        },
         "diskSizeGB": {
           "type": "integer"
         },
@@ -669,6 +821,28 @@
       },
       "additionalProperties": true,
       "javaType": "io.fabric8.openshift.api.model.installer.azure.v1.OSDisk",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_installer_azure_v1_OSImage": {
+      "type": "object",
+      "properties": {
+        "offer": {
+          "type": "string"
+        },
+        "publisher": {
+          "type": "string"
+        },
+        "sku": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.installer.azure.v1.OSImage",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -709,6 +883,13 @@
         },
         "resourceGroupName": {
           "type": "string"
+        },
+        "userTags": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "existingJavaType": "java.util.Map\u003cString, String\u003e"
         },
         "virtualNetwork": {
           "type": "string"
@@ -762,7 +943,8 @@
           "type": "string"
         },
         "networkConfig": {
-          "type": "string"
+          "$ref": "#/definitions/k8s_io_apiextensions_apiserver_pkg_apis_apiextensions_v1_JSON",
+          "existingJavaType": "com.fasterxml.jackson.databind.JsonNode"
         },
         "role": {
           "type": "string"
@@ -790,6 +972,19 @@
       "type": "object",
       "properties": {
         "apiVIP": {
+          "type": "string"
+        },
+        "apiVIPs": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "bootstrapExternalStaticGateway": {
+          "type": "string"
+        },
+        "bootstrapExternalStaticIP": {
           "type": "string"
         },
         "bootstrapOSImage": {
@@ -824,8 +1019,19 @@
         "ingressVIP": {
           "type": "string"
         },
+        "ingressVIPs": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
         "libvirtURI": {
           "type": "string"
+        },
+        "loadBalancer": {
+          "$ref": "#/definitions/os_config_v1_BareMetalPlatformLoadBalancer",
+          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.BareMetalPlatformLoadBalancer"
         },
         "provisioningBridge": {
           "type": "string"
@@ -940,9 +1146,25 @@
     "os_installer_gcp_v1_MachinePool": {
       "type": "object",
       "properties": {
+        "confidentialCompute": {
+          "type": "string"
+        },
+        "onHostMaintenance": {
+          "type": "string"
+        },
         "osDisk": {
           "$ref": "#/definitions/os_installer_gcp_v1_OSDisk",
           "existingJavaType": "io.fabric8.openshift.api.model.installer.gcp.v1.OSDisk"
+        },
+        "secureBoot": {
+          "type": "string"
+        },
+        "tags": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
         },
         "type": {
           "type": "string"
@@ -968,7 +1190,7 @@
           "type": "integer",
           "existingJavaType": "Long"
         },
-        "DiskType": {
+        "diskType": {
           "type": "string"
         },
         "encryptionKey": {
@@ -1003,6 +1225,9 @@
           }
         },
         "network": {
+          "type": "string"
+        },
+        "networkProjectID": {
           "type": "string"
         },
         "projectID": {
@@ -1082,9 +1307,26 @@
     "os_installer_ibmcloud_v1_Platform": {
       "type": "object",
       "properties": {
+        "computeSubnets": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "controlPlaneSubnets": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
         "defaultMachinePlatform": {
           "$ref": "#/definitions/os_installer_ibmcloud_v1_MachinePool",
           "existingJavaType": "io.fabric8.openshift.api.model.installer.ibmcloud.v1.MachinePool"
+        },
+        "networkResourceGroupName": {
+          "type": "string"
         },
         "region": {
           "type": "string"
@@ -1092,17 +1334,7 @@
         "resourceGroupName": {
           "type": "string"
         },
-        "subnets": {
-          "type": "array",
-          "javaOmitEmpty": true,
-          "items": {
-            "type": "string"
-          }
-        },
-        "vpc": {
-          "type": "string"
-        },
-        "vpcResourceGroupName": {
+        "vpcName": {
           "type": "string"
         }
       },
@@ -1186,6 +1418,212 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "os_installer_nutanix_v1_MachinePool": {
+      "type": "object",
+      "properties": {
+        "bootType": {
+          "type": "string"
+        },
+        "categories": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/os_machine_v1_NutanixCategory",
+            "existingJavaType": "io.fabric8.openshift.api.model.machine.v1.NutanixCategory"
+          }
+        },
+        "coresPerSocket": {
+          "type": "integer",
+          "existingJavaType": "Long"
+        },
+        "cpus": {
+          "type": "integer",
+          "existingJavaType": "Long"
+        },
+        "memoryMiB": {
+          "type": "integer",
+          "existingJavaType": "Long"
+        },
+        "osDisk": {
+          "$ref": "#/definitions/os_installer_nutanix_v1_OSDisk",
+          "existingJavaType": "io.fabric8.openshift.api.model.installer.nutanix.v1.OSDisk"
+        },
+        "project": {
+          "$ref": "#/definitions/os_machine_v1_NutanixResourceIdentifier",
+          "existingJavaType": "io.fabric8.openshift.api.model.machine.v1.NutanixResourceIdentifier"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.installer.nutanix.v1.MachinePool",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_installer_nutanix_v1_OSDisk": {
+      "type": "object",
+      "properties": {
+        "diskSizeGiB": {
+          "type": "integer",
+          "existingJavaType": "Long"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.installer.nutanix.v1.OSDisk",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_installer_nutanix_v1_Platform": {
+      "type": "object",
+      "properties": {
+        "apiVIP": {
+          "type": "string"
+        },
+        "apiVIPs": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "clusterOSImage": {
+          "type": "string"
+        },
+        "defaultMachinePlatform": {
+          "$ref": "#/definitions/os_installer_nutanix_v1_MachinePool",
+          "existingJavaType": "io.fabric8.openshift.api.model.installer.nutanix.v1.MachinePool"
+        },
+        "ingressVIP": {
+          "type": "string"
+        },
+        "ingressVIPs": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "loadBalancer": {
+          "$ref": "#/definitions/os_config_v1_NutanixPlatformLoadBalancer",
+          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.NutanixPlatformLoadBalancer"
+        },
+        "prismCentral": {
+          "$ref": "#/definitions/os_installer_nutanix_v1_PrismCentral",
+          "existingJavaType": "io.fabric8.openshift.api.model.installer.nutanix.v1.PrismCentral"
+        },
+        "prismElements": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/os_installer_nutanix_v1_PrismElement",
+            "existingJavaType": "io.fabric8.openshift.api.model.installer.nutanix.v1.PrismElement"
+          }
+        },
+        "subnetUUIDs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.installer.nutanix.v1.Platform",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_installer_nutanix_v1_PrismCentral": {
+      "type": "object",
+      "properties": {
+        "endpoint": {
+          "$ref": "#/definitions/os_installer_nutanix_v1_PrismEndpoint",
+          "existingJavaType": "io.fabric8.openshift.api.model.installer.nutanix.v1.PrismEndpoint"
+        },
+        "password": {
+          "type": "string"
+        },
+        "username": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.installer.nutanix.v1.PrismCentral",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_installer_nutanix_v1_PrismElement": {
+      "type": "object",
+      "properties": {
+        "endpoint": {
+          "$ref": "#/definitions/os_installer_nutanix_v1_PrismEndpoint",
+          "existingJavaType": "io.fabric8.openshift.api.model.installer.nutanix.v1.PrismEndpoint"
+        },
+        "name": {
+          "type": "string"
+        },
+        "uuid": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.installer.nutanix.v1.PrismElement",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_installer_nutanix_v1_PrismEndpoint": {
+      "type": "object",
+      "properties": {
+        "address": {
+          "type": "string"
+        },
+        "port": {
+          "type": "integer"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.installer.nutanix.v1.PrismEndpoint",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_installer_openstack_v1_FailureDomain": {
+      "type": "object",
+      "properties": {
+        "computeAvailabilityZone": {
+          "type": "string"
+        },
+        "portTargets": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/os_installer_openstack_v1_NamedPortTarget",
+            "existingJavaType": "io.fabric8.openshift.api.model.installer.openstack.v1.NamedPortTarget"
+          }
+        },
+        "storageAvailabilityZone": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.installer.openstack.v1.FailureDomain",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_installer_openstack_v1_FixedIP": {
+      "type": "object",
+      "properties": {
+        "subnet": {
+          "$ref": "#/definitions/os_machine_v1alpha1_SubnetFilter",
+          "existingJavaType": "io.fabric8.openshift.api.model.machine.v1alpha1.SubnetFilter"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.installer.openstack.v1.FixedIP",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "os_installer_openstack_v1_MachinePool": {
       "type": "object",
       "properties": {
@@ -1201,6 +1639,14 @@
           "javaOmitEmpty": true,
           "items": {
             "type": "string"
+          }
+        },
+        "failureDomains": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/os_installer_openstack_v1_FailureDomain",
+            "existingJavaType": "io.fabric8.openshift.api.model.installer.openstack.v1.FailureDomain"
           }
         },
         "rootVolume": {
@@ -1227,6 +1673,47 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "os_installer_openstack_v1_NamedPortTarget": {
+      "type": "object",
+      "properties": {
+        "fixedIPs": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/os_installer_openstack_v1_FixedIP",
+            "existingJavaType": "io.fabric8.openshift.api.model.installer.openstack.v1.FixedIP"
+          }
+        },
+        "id": {
+          "type": "string"
+        },
+        "network": {
+          "$ref": "#/definitions/os_installer_openstack_v1_NetworkFilter",
+          "existingJavaType": "io.fabric8.openshift.api.model.installer.openstack.v1.NetworkFilter"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.installer.openstack.v1.NamedPortTarget",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_installer_openstack_v1_NetworkFilter": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.installer.openstack.v1.NetworkFilter",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "os_installer_openstack_v1_Platform": {
       "type": "object",
       "properties": {
@@ -1235,6 +1722,13 @@
         },
         "apiVIP": {
           "type": "string"
+        },
+        "apiVIPs": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
         },
         "cloud": {
           "type": "string"
@@ -1271,8 +1765,19 @@
         "ingressVIP": {
           "type": "string"
         },
+        "ingressVIPs": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
         "lbFloatingIP": {
           "type": "string"
+        },
+        "loadBalancer": {
+          "$ref": "#/definitions/os_config_v1_OpenStackPlatformLoadBalancer",
+          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.OpenStackPlatformLoadBalancer"
         },
         "machinesSubnet": {
           "type": "string"
@@ -1289,6 +1794,28 @@
       },
       "additionalProperties": true,
       "javaType": "io.fabric8.openshift.api.model.installer.openstack.v1.Platform",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_installer_openstack_v1_PortTarget": {
+      "type": "object",
+      "properties": {
+        "fixedIPs": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/os_installer_openstack_v1_FixedIP",
+            "existingJavaType": "io.fabric8.openshift.api.model.installer.openstack.v1.FixedIP"
+          }
+        },
+        "network": {
+          "$ref": "#/definitions/os_installer_openstack_v1_NetworkFilter",
+          "existingJavaType": "io.fabric8.openshift.api.model.installer.openstack.v1.NetworkFilter"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.installer.openstack.v1.PortTarget",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -1346,6 +1873,9 @@
         },
         "sockets": {
           "type": "integer"
+        },
+        "threads": {
+          "type": "integer"
         }
       },
       "additionalProperties": true,
@@ -1380,9 +1910,15 @@
         "autoPinningPolicy": {
           "type": "string"
         },
+        "clone": {
+          "type": "boolean"
+        },
         "cpu": {
           "$ref": "#/definitions/os_installer_ovirt_v1_CPU",
           "existingJavaType": "io.fabric8.openshift.api.model.installer.ovirt.v1.CPU"
+        },
+        "format": {
+          "type": "string"
         },
         "hugepages": {
           "type": "integer"
@@ -1396,6 +1932,9 @@
         "osDisk": {
           "$ref": "#/definitions/os_installer_ovirt_v1_Disk",
           "existingJavaType": "io.fabric8.openshift.api.model.installer.ovirt.v1.Disk"
+        },
+        "sparse": {
+          "type": "boolean"
         },
         "vmType": {
           "type": "string"
@@ -1420,12 +1959,30 @@
         "api_vip": {
           "type": "string"
         },
+        "api_vips": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
         "defaultMachinePlatform": {
           "$ref": "#/definitions/os_installer_ovirt_v1_MachinePool",
           "existingJavaType": "io.fabric8.openshift.api.model.installer.ovirt.v1.MachinePool"
         },
         "ingress_vip": {
           "type": "string"
+        },
+        "ingress_vips": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "loadBalancer": {
+          "$ref": "#/definitions/os_config_v1_OvirtPlatformLoadBalancer",
+          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.OvirtPlatformLoadBalancer"
         },
         "ovirt_cluster_id": {
           "type": "string"
@@ -1446,6 +2003,87 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "os_installer_powervs_v1_MachinePool": {
+      "type": "object",
+      "properties": {
+        "memoryGiB": {
+          "type": "integer"
+        },
+        "procType": {
+          "type": "string"
+        },
+        "processors": {
+          "$ref": "#/definitions/k8s_io_apimachinery_pkg_util_intstr_IntOrString",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.IntOrString"
+        },
+        "sysType": {
+          "type": "string"
+        },
+        "volumeIDs": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.installer.powervs.v1.MachinePool",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_installer_powervs_v1_Platform": {
+      "type": "object",
+      "properties": {
+        "cloudConnectionName": {
+          "type": "string"
+        },
+        "clusterOSImage": {
+          "type": "string"
+        },
+        "defaultMachinePlatform": {
+          "$ref": "#/definitions/os_installer_powervs_v1_MachinePool",
+          "existingJavaType": "io.fabric8.openshift.api.model.installer.powervs.v1.MachinePool"
+        },
+        "powervsResourceGroup": {
+          "type": "string"
+        },
+        "pvsNetworkName": {
+          "type": "string"
+        },
+        "region": {
+          "type": "string"
+        },
+        "serviceInstanceID": {
+          "type": "string"
+        },
+        "userID": {
+          "type": "string"
+        },
+        "vpcName": {
+          "type": "string"
+        },
+        "vpcRegion": {
+          "type": "string"
+        },
+        "vpcSubnets": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "zone": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.installer.powervs.v1.Platform",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "os_installer_v1_BootstrapInPlace": {
       "type": "object",
       "properties": {
@@ -1455,6 +2093,26 @@
       },
       "additionalProperties": true,
       "javaType": "io.fabric8.openshift.api.model.installer.v1.BootstrapInPlace",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_installer_v1_Capabilities": {
+      "type": "object",
+      "properties": {
+        "additionalEnabledCapabilities": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "baselineCapabilitySet": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.installer.v1.Capabilities",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -1504,6 +2162,9 @@
         "additionalTrustBundle": {
           "type": "string"
         },
+        "additionalTrustBundlePolicy": {
+          "type": "string"
+        },
         "apiVersion": {
           "type": "string",
           "default": "install.openshift.io/v1",
@@ -1515,6 +2176,10 @@
         "bootstrapInPlace": {
           "$ref": "#/definitions/os_installer_v1_BootstrapInPlace",
           "existingJavaType": "io.fabric8.openshift.api.model.installer.v1.BootstrapInPlace"
+        },
+        "capabilities": {
+          "$ref": "#/definitions/os_installer_v1_Capabilities",
+          "existingJavaType": "io.fabric8.openshift.api.model.installer.v1.Capabilities"
         },
         "compute": {
           "type": "array",
@@ -1528,7 +2193,13 @@
           "$ref": "#/definitions/os_installer_v1_MachinePool",
           "existingJavaType": "io.fabric8.openshift.api.model.installer.v1.MachinePool"
         },
+        "cpuPartitioningMode": {
+          "type": "string"
+        },
         "credentialsMode": {
+          "type": "string"
+        },
+        "featureSet": {
           "type": "string"
         },
         "fips": {
@@ -1651,6 +2322,10 @@
           "$ref": "#/definitions/os_installer_libvirt_v1_MachinePool",
           "existingJavaType": "io.fabric8.openshift.api.model.installer.libvirt.v1.MachinePool"
         },
+        "nutanix": {
+          "$ref": "#/definitions/os_installer_nutanix_v1_MachinePool",
+          "existingJavaType": "io.fabric8.openshift.api.model.installer.nutanix.v1.MachinePool"
+        },
         "openstack": {
           "$ref": "#/definitions/os_installer_openstack_v1_MachinePool",
           "existingJavaType": "io.fabric8.openshift.api.model.installer.openstack.v1.MachinePool"
@@ -1658,6 +2333,10 @@
         "ovirt": {
           "$ref": "#/definitions/os_installer_ovirt_v1_MachinePool",
           "existingJavaType": "io.fabric8.openshift.api.model.installer.ovirt.v1.MachinePool"
+        },
+        "powervs": {
+          "$ref": "#/definitions/os_installer_powervs_v1_MachinePool",
+          "existingJavaType": "io.fabric8.openshift.api.model.installer.powervs.v1.MachinePool"
         },
         "vsphere": {
           "$ref": "#/definitions/os_installer_vsphere_v1_MachinePool",
@@ -1758,6 +2437,10 @@
           "$ref": "#/definitions/os_installer_none_v1_Platform",
           "existingJavaType": "io.fabric8.openshift.api.model.installer.none.v1.Platform"
         },
+        "nutanix": {
+          "$ref": "#/definitions/os_installer_nutanix_v1_Platform",
+          "existingJavaType": "io.fabric8.openshift.api.model.installer.nutanix.v1.Platform"
+        },
         "openstack": {
           "$ref": "#/definitions/os_installer_openstack_v1_Platform",
           "existingJavaType": "io.fabric8.openshift.api.model.installer.openstack.v1.Platform"
@@ -1765,6 +2448,10 @@
         "ovirt": {
           "$ref": "#/definitions/os_installer_ovirt_v1_Platform",
           "existingJavaType": "io.fabric8.openshift.api.model.installer.ovirt.v1.Platform"
+        },
+        "powervs": {
+          "$ref": "#/definitions/os_installer_powervs_v1_Platform",
+          "existingJavaType": "io.fabric8.openshift.api.model.installer.powervs.v1.Platform"
         },
         "vsphere": {
           "$ref": "#/definitions/os_installer_vsphere_v1_Platform",
@@ -1796,6 +2483,32 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "os_installer_vsphere_v1_FailureDomain": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "region": {
+          "type": "string"
+        },
+        "server": {
+          "type": "string"
+        },
+        "topology": {
+          "$ref": "#/definitions/os_installer_vsphere_v1_Topology",
+          "existingJavaType": "io.fabric8.openshift.api.model.installer.vsphere.v1.Topology"
+        },
+        "zone": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.installer.vsphere.v1.FailureDomain",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "os_installer_vsphere_v1_MachinePool": {
       "type": "object",
       "properties": {
@@ -1812,6 +2525,13 @@
         "osDisk": {
           "$ref": "#/definitions/os_installer_vsphere_v1_OSDisk",
           "existingJavaType": "io.fabric8.openshift.api.model.installer.vsphere.v1.OSDisk"
+        },
+        "zones": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
         }
       },
       "additionalProperties": true,
@@ -1839,6 +2559,13 @@
         "apiVIP": {
           "type": "string"
         },
+        "apiVIPs": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
         "cluster": {
           "type": "string"
         },
@@ -1858,11 +2585,30 @@
         "diskType": {
           "type": "string"
         },
+        "failureDomains": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/os_installer_vsphere_v1_FailureDomain",
+            "existingJavaType": "io.fabric8.openshift.api.model.installer.vsphere.v1.FailureDomain"
+          }
+        },
         "folder": {
           "type": "string"
         },
         "ingressVIP": {
           "type": "string"
+        },
+        "ingressVIPs": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "loadBalancer": {
+          "$ref": "#/definitions/os_config_v1_VSpherePlatformLoadBalancer",
+          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.VSpherePlatformLoadBalancer"
         },
         "network": {
           "type": "string"
@@ -1878,10 +2624,186 @@
         },
         "vCenter": {
           "type": "string"
+        },
+        "vcenters": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/os_installer_vsphere_v1_VCenter",
+            "existingJavaType": "io.fabric8.openshift.api.model.installer.vsphere.v1.VCenter"
+          }
         }
       },
       "additionalProperties": true,
       "javaType": "io.fabric8.openshift.api.model.installer.vsphere.v1.Platform",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_installer_vsphere_v1_Topology": {
+      "type": "object",
+      "properties": {
+        "computeCluster": {
+          "type": "string"
+        },
+        "datacenter": {
+          "type": "string"
+        },
+        "datastore": {
+          "type": "string"
+        },
+        "folder": {
+          "type": "string"
+        },
+        "networks": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "resourcePool": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.installer.vsphere.v1.Topology",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_installer_vsphere_v1_VCenter": {
+      "type": "object",
+      "properties": {
+        "datacenters": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "password": {
+          "type": "string"
+        },
+        "port": {
+          "type": "integer"
+        },
+        "server": {
+          "type": "string"
+        },
+        "user": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.installer.vsphere.v1.VCenter",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_machine_v1_NutanixCategory": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "existingJavaType": "io.fabric8.openshift.api.model.machine.v1.NutanixCategory",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_machine_v1_NutanixResourceIdentifier": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "uuid": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "existingJavaType": "io.fabric8.openshift.api.model.machine.v1.NutanixResourceIdentifier",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_machine_v1alpha1_SubnetFilter": {
+      "type": "object",
+      "properties": {
+        "cidr": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "enableDhcp": {
+          "type": "boolean"
+        },
+        "gateway_ip": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "ipVersion": {
+          "type": "integer"
+        },
+        "ipv6AddressMode": {
+          "type": "string"
+        },
+        "ipv6RaMode": {
+          "type": "string"
+        },
+        "limit": {
+          "type": "integer"
+        },
+        "marker": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "networkId": {
+          "type": "string"
+        },
+        "notTags": {
+          "type": "string"
+        },
+        "notTagsAny": {
+          "type": "string"
+        },
+        "projectId": {
+          "type": "string"
+        },
+        "sortDir": {
+          "type": "string"
+        },
+        "sortKey": {
+          "type": "string"
+        },
+        "subnetpoolId": {
+          "type": "string"
+        },
+        "tags": {
+          "type": "string"
+        },
+        "tagsAny": {
+          "type": "string"
+        },
+        "tenantId": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "existingJavaType": "io.fabric8.openshift.api.model.machine.v1alpha1.SubnetFilter",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
