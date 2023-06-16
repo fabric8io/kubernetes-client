@@ -35,6 +35,7 @@ import lombok.experimental.Accessors;
     "kind",
     "metadata",
     "message",
+    "messageExpression",
     "rule"
 })
 @ToString
@@ -61,6 +62,8 @@ public class ValidationRule implements KubernetesResource
 
     @JsonProperty("message")
     private String message;
+    @JsonProperty("messageExpression")
+    private String messageExpression;
     @JsonProperty("rule")
     private String rule;
     @JsonIgnore
@@ -73,9 +76,10 @@ public class ValidationRule implements KubernetesResource
     public ValidationRule() {
     }
 
-    public ValidationRule(String message, String rule) {
+    public ValidationRule(String message, String messageExpression, String rule) {
         super();
         this.message = message;
+        this.messageExpression = messageExpression;
         this.rule = rule;
     }
 
@@ -87,6 +91,16 @@ public class ValidationRule implements KubernetesResource
     @JsonProperty("message")
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    @JsonProperty("messageExpression")
+    public String getMessageExpression() {
+        return messageExpression;
+    }
+
+    @JsonProperty("messageExpression")
+    public void setMessageExpression(String messageExpression) {
+        this.messageExpression = messageExpression;
     }
 
     @JsonProperty("rule")

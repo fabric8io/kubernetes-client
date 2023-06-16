@@ -1,9 +1,7 @@
 
 package io.fabric8.openshift.api.model.console.v1alpha1;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -36,7 +34,11 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "services"
+    "alias",
+    "authorize",
+    "caCertificate",
+    "service",
+    "type"
 })
 @ToString
 @EqualsAndHashCode
@@ -60,8 +62,16 @@ import lombok.experimental.Accessors;
 public class ConsolePluginProxy implements KubernetesResource
 {
 
-    @JsonProperty("services")
-    private List<ConsolePluginProxyService> services = new ArrayList<ConsolePluginProxyService>();
+    @JsonProperty("alias")
+    private String alias;
+    @JsonProperty("authorize")
+    private Boolean authorize;
+    @JsonProperty("caCertificate")
+    private String caCertificate;
+    @JsonProperty("service")
+    private ConsolePluginProxyServiceConfig service;
+    @JsonProperty("type")
+    private String type;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -72,19 +82,63 @@ public class ConsolePluginProxy implements KubernetesResource
     public ConsolePluginProxy() {
     }
 
-    public ConsolePluginProxy(List<ConsolePluginProxyService> services) {
+    public ConsolePluginProxy(String alias, Boolean authorize, String caCertificate, ConsolePluginProxyServiceConfig service, String type) {
         super();
-        this.services = services;
+        this.alias = alias;
+        this.authorize = authorize;
+        this.caCertificate = caCertificate;
+        this.service = service;
+        this.type = type;
     }
 
-    @JsonProperty("services")
-    public List<ConsolePluginProxyService> getServices() {
-        return services;
+    @JsonProperty("alias")
+    public String getAlias() {
+        return alias;
     }
 
-    @JsonProperty("services")
-    public void setServices(List<ConsolePluginProxyService> services) {
-        this.services = services;
+    @JsonProperty("alias")
+    public void setAlias(String alias) {
+        this.alias = alias;
+    }
+
+    @JsonProperty("authorize")
+    public Boolean getAuthorize() {
+        return authorize;
+    }
+
+    @JsonProperty("authorize")
+    public void setAuthorize(Boolean authorize) {
+        this.authorize = authorize;
+    }
+
+    @JsonProperty("caCertificate")
+    public String getCaCertificate() {
+        return caCertificate;
+    }
+
+    @JsonProperty("caCertificate")
+    public void setCaCertificate(String caCertificate) {
+        this.caCertificate = caCertificate;
+    }
+
+    @JsonProperty("service")
+    public ConsolePluginProxyServiceConfig getService() {
+        return service;
+    }
+
+    @JsonProperty("service")
+    public void setService(ConsolePluginProxyServiceConfig service) {
+        this.service = service;
+    }
+
+    @JsonProperty("type")
+    public String getType() {
+        return type;
+    }
+
+    @JsonProperty("type")
+    public void setType(String type) {
+        this.type = type;
     }
 
     @JsonAnyGetter

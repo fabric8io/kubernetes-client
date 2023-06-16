@@ -37,6 +37,7 @@ import lombok.experimental.Accessors;
     "kind",
     "metadata",
     "availableUpdates",
+    "capabilities",
     "conditionalUpdates",
     "conditions",
     "desired",
@@ -68,6 +69,8 @@ public class ClusterVersionStatus implements KubernetesResource
 
     @JsonProperty("availableUpdates")
     private List<Release> availableUpdates = new ArrayList<Release>();
+    @JsonProperty("capabilities")
+    private ClusterVersionCapabilitiesStatus capabilities;
     @JsonProperty("conditionalUpdates")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ConditionalUpdate> conditionalUpdates = new ArrayList<ConditionalUpdate>();
@@ -93,9 +96,10 @@ public class ClusterVersionStatus implements KubernetesResource
     public ClusterVersionStatus() {
     }
 
-    public ClusterVersionStatus(List<Release> availableUpdates, List<ConditionalUpdate> conditionalUpdates, List<ClusterOperatorStatusCondition> conditions, Release desired, List<UpdateHistory> history, Long observedGeneration, String versionHash) {
+    public ClusterVersionStatus(List<Release> availableUpdates, ClusterVersionCapabilitiesStatus capabilities, List<ConditionalUpdate> conditionalUpdates, List<ClusterOperatorStatusCondition> conditions, Release desired, List<UpdateHistory> history, Long observedGeneration, String versionHash) {
         super();
         this.availableUpdates = availableUpdates;
+        this.capabilities = capabilities;
         this.conditionalUpdates = conditionalUpdates;
         this.conditions = conditions;
         this.desired = desired;
@@ -112,6 +116,16 @@ public class ClusterVersionStatus implements KubernetesResource
     @JsonProperty("availableUpdates")
     public void setAvailableUpdates(List<Release> availableUpdates) {
         this.availableUpdates = availableUpdates;
+    }
+
+    @JsonProperty("capabilities")
+    public ClusterVersionCapabilitiesStatus getCapabilities() {
+        return capabilities;
+    }
+
+    @JsonProperty("capabilities")
+    public void setCapabilities(ClusterVersionCapabilitiesStatus capabilities) {
+        this.capabilities = capabilities;
     }
 
     @JsonProperty("conditionalUpdates")

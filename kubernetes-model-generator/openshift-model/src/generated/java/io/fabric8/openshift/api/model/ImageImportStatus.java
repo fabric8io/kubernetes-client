@@ -1,7 +1,9 @@
 
 package io.fabric8.openshift.api.model;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -36,6 +38,7 @@ import lombok.experimental.Accessors;
     "kind",
     "metadata",
     "image",
+    "manifests",
     "status",
     "tag"
 })
@@ -63,6 +66,9 @@ public class ImageImportStatus implements KubernetesResource
 
     @JsonProperty("image")
     private Image image;
+    @JsonProperty("manifests")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<Image> manifests = new ArrayList<Image>();
     @JsonProperty("status")
     private Status status;
     @JsonProperty("tag")
@@ -77,9 +83,10 @@ public class ImageImportStatus implements KubernetesResource
     public ImageImportStatus() {
     }
 
-    public ImageImportStatus(Image image, Status status, String tag) {
+    public ImageImportStatus(Image image, List<Image> manifests, Status status, String tag) {
         super();
         this.image = image;
+        this.manifests = manifests;
         this.status = status;
         this.tag = tag;
     }
@@ -92,6 +99,16 @@ public class ImageImportStatus implements KubernetesResource
     @JsonProperty("image")
     public void setImage(Image image) {
         this.image = image;
+    }
+
+    @JsonProperty("manifests")
+    public List<Image> getManifests() {
+        return manifests;
+    }
+
+    @JsonProperty("manifests")
+    public void setManifests(List<Image> manifests) {
+        this.manifests = manifests;
     }
 
     @JsonProperty("status")

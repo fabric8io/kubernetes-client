@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.model.Container;
@@ -32,7 +33,8 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "apiVersion",
     "kind",
-    "metadata"
+    "metadata",
+    "maxLength"
 })
 @ToString
 @EqualsAndHashCode
@@ -56,8 +58,32 @@ import lombok.experimental.Accessors;
 public class ContainerLoggingDestinationParameters implements KubernetesResource
 {
 
+    @JsonProperty("maxLength")
+    private Integer maxLength;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
+
+    /**
+     * No args constructor for use in serialization
+     * 
+     */
+    public ContainerLoggingDestinationParameters() {
+    }
+
+    public ContainerLoggingDestinationParameters(Integer maxLength) {
+        super();
+        this.maxLength = maxLength;
+    }
+
+    @JsonProperty("maxLength")
+    public Integer getMaxLength() {
+        return maxLength;
+    }
+
+    @JsonProperty("maxLength")
+    public void setMaxLength(Integer maxLength) {
+        this.maxLength = maxLength;
+    }
 
     @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {

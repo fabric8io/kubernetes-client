@@ -38,6 +38,7 @@ import lombok.experimental.Accessors;
     "baseDomain",
     "claimLifetime",
     "hibernateAfter",
+    "hibernationConfig",
     "imageSetRef",
     "installAttemptsLimit",
     "installConfigSecretTemplateRef",
@@ -81,6 +82,8 @@ public class ClusterPoolSpec implements KubernetesResource
     private ClusterPoolClaimLifetime claimLifetime;
     @JsonProperty("hibernateAfter")
     private Duration hibernateAfter;
+    @JsonProperty("hibernationConfig")
+    private HibernationConfig hibernationConfig;
     @JsonProperty("imageSetRef")
     private ClusterImageSetReference imageSetRef;
     @JsonProperty("installAttemptsLimit")
@@ -114,12 +117,13 @@ public class ClusterPoolSpec implements KubernetesResource
     public ClusterPoolSpec() {
     }
 
-    public ClusterPoolSpec(Map<String, String> annotations, java.lang.String baseDomain, ClusterPoolClaimLifetime claimLifetime, Duration hibernateAfter, ClusterImageSetReference imageSetRef, Integer installAttemptsLimit, io.fabric8.kubernetes.api.model.LocalObjectReference installConfigSecretTemplateRef, Map<String, String> labels, Integer maxConcurrent, Integer maxSize, Platform platform, io.fabric8.kubernetes.api.model.LocalObjectReference pullSecretRef, Integer runningCount, Integer size, Boolean skipMachinePools) {
+    public ClusterPoolSpec(Map<String, String> annotations, java.lang.String baseDomain, ClusterPoolClaimLifetime claimLifetime, Duration hibernateAfter, HibernationConfig hibernationConfig, ClusterImageSetReference imageSetRef, Integer installAttemptsLimit, io.fabric8.kubernetes.api.model.LocalObjectReference installConfigSecretTemplateRef, Map<String, String> labels, Integer maxConcurrent, Integer maxSize, Platform platform, io.fabric8.kubernetes.api.model.LocalObjectReference pullSecretRef, Integer runningCount, Integer size, Boolean skipMachinePools) {
         super();
         this.annotations = annotations;
         this.baseDomain = baseDomain;
         this.claimLifetime = claimLifetime;
         this.hibernateAfter = hibernateAfter;
+        this.hibernationConfig = hibernationConfig;
         this.imageSetRef = imageSetRef;
         this.installAttemptsLimit = installAttemptsLimit;
         this.installConfigSecretTemplateRef = installConfigSecretTemplateRef;
@@ -171,6 +175,16 @@ public class ClusterPoolSpec implements KubernetesResource
     @JsonProperty("hibernateAfter")
     public void setHibernateAfter(Duration hibernateAfter) {
         this.hibernateAfter = hibernateAfter;
+    }
+
+    @JsonProperty("hibernationConfig")
+    public HibernationConfig getHibernationConfig() {
+        return hibernationConfig;
+    }
+
+    @JsonProperty("hibernationConfig")
+    public void setHibernationConfig(HibernationConfig hibernationConfig) {
+        this.hibernationConfig = hibernationConfig;
     }
 
     @JsonProperty("imageSetRef")

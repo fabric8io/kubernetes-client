@@ -39,6 +39,7 @@ import lombok.experimental.Accessors;
     "appsDomain",
     "componentRoutes",
     "domain",
+    "loadBalancer",
     "requiredHSTSPolicies"
 })
 @ToString
@@ -70,6 +71,8 @@ public class IngressSpec implements KubernetesResource
     private List<ComponentRouteSpec> componentRoutes = new ArrayList<ComponentRouteSpec>();
     @JsonProperty("domain")
     private String domain;
+    @JsonProperty("loadBalancer")
+    private LoadBalancer loadBalancer;
     @JsonProperty("requiredHSTSPolicies")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<RequiredHSTSPolicy> requiredHSTSPolicies = new ArrayList<RequiredHSTSPolicy>();
@@ -83,11 +86,12 @@ public class IngressSpec implements KubernetesResource
     public IngressSpec() {
     }
 
-    public IngressSpec(String appsDomain, List<ComponentRouteSpec> componentRoutes, String domain, List<RequiredHSTSPolicy> requiredHSTSPolicies) {
+    public IngressSpec(String appsDomain, List<ComponentRouteSpec> componentRoutes, String domain, LoadBalancer loadBalancer, List<RequiredHSTSPolicy> requiredHSTSPolicies) {
         super();
         this.appsDomain = appsDomain;
         this.componentRoutes = componentRoutes;
         this.domain = domain;
+        this.loadBalancer = loadBalancer;
         this.requiredHSTSPolicies = requiredHSTSPolicies;
     }
 
@@ -119,6 +123,16 @@ public class IngressSpec implements KubernetesResource
     @JsonProperty("domain")
     public void setDomain(String domain) {
         this.domain = domain;
+    }
+
+    @JsonProperty("loadBalancer")
+    public LoadBalancer getLoadBalancer() {
+        return loadBalancer;
+    }
+
+    @JsonProperty("loadBalancer")
+    public void setLoadBalancer(LoadBalancer loadBalancer) {
+        this.loadBalancer = loadBalancer;
     }
 
     @JsonProperty("requiredHSTSPolicies")

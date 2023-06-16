@@ -20,6 +20,9 @@ import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.kubernetes.api.model.version.Info;
+import io.fabric8.openshift.api.model.machine.v1.NutanixCategory;
+import io.fabric8.openshift.api.model.machine.v1.NutanixResourceIdentifier;
+import io.fabric8.openshift.api.model.machine.v1alpha1.SubnetFilter;
 import io.fabric8.openshift.api.model.machine.v1beta1.Machine;
 import io.fabric8.openshift.api.model.machine.v1beta1.MachineHealthCheck;
 import io.fabric8.openshift.api.model.machine.v1beta1.MachineHealthCheckList;
@@ -53,7 +56,10 @@ import lombok.experimental.Accessors;
     "Patch",
     "Status",
     "Time",
-    "TypeMeta"
+    "TypeMeta",
+    "V1Alpha1SubnetFilter",
+    "V1NutanixCategory",
+    "V1NutanixResourceIdentifier"
 })
 @ToString
 @EqualsAndHashCode
@@ -106,6 +112,12 @@ public class ValidationSchema {
     private String time;
     @JsonProperty("TypeMeta")
     private TypeMeta typeMeta;
+    @JsonProperty("V1Alpha1SubnetFilter")
+    private SubnetFilter v1Alpha1SubnetFilter;
+    @JsonProperty("V1NutanixCategory")
+    private NutanixCategory v1NutanixCategory;
+    @JsonProperty("V1NutanixResourceIdentifier")
+    private NutanixResourceIdentifier v1NutanixResourceIdentifier;
     @JsonIgnore
     private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
@@ -116,7 +128,7 @@ public class ValidationSchema {
     public ValidationSchema() {
     }
 
-    public ValidationSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, KubernetesList baseKubernetesList, Info info, Machine machine, MachineHealthCheck machineHealthCheck, MachineHealthCheckList machineHealthCheckList, MachineList machineList, MachineSet machineSet, MachineSetList machineSetList, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, Patch patch, Status status, String time, TypeMeta typeMeta) {
+    public ValidationSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, KubernetesList baseKubernetesList, Info info, Machine machine, MachineHealthCheck machineHealthCheck, MachineHealthCheckList machineHealthCheckList, MachineList machineList, MachineSet machineSet, MachineSetList machineSetList, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, Patch patch, Status status, String time, TypeMeta typeMeta, SubnetFilter v1Alpha1SubnetFilter, NutanixCategory v1NutanixCategory, NutanixResourceIdentifier v1NutanixResourceIdentifier) {
         super();
         this.aPIGroup = aPIGroup;
         this.aPIGroupList = aPIGroupList;
@@ -133,6 +145,9 @@ public class ValidationSchema {
         this.status = status;
         this.time = time;
         this.typeMeta = typeMeta;
+        this.v1Alpha1SubnetFilter = v1Alpha1SubnetFilter;
+        this.v1NutanixCategory = v1NutanixCategory;
+        this.v1NutanixResourceIdentifier = v1NutanixResourceIdentifier;
     }
 
     @JsonProperty("APIGroup")
@@ -283,6 +298,36 @@ public class ValidationSchema {
     @JsonProperty("TypeMeta")
     public void setTypeMeta(TypeMeta typeMeta) {
         this.typeMeta = typeMeta;
+    }
+
+    @JsonProperty("V1Alpha1SubnetFilter")
+    public SubnetFilter getV1Alpha1SubnetFilter() {
+        return v1Alpha1SubnetFilter;
+    }
+
+    @JsonProperty("V1Alpha1SubnetFilter")
+    public void setV1Alpha1SubnetFilter(SubnetFilter v1Alpha1SubnetFilter) {
+        this.v1Alpha1SubnetFilter = v1Alpha1SubnetFilter;
+    }
+
+    @JsonProperty("V1NutanixCategory")
+    public NutanixCategory getV1NutanixCategory() {
+        return v1NutanixCategory;
+    }
+
+    @JsonProperty("V1NutanixCategory")
+    public void setV1NutanixCategory(NutanixCategory v1NutanixCategory) {
+        this.v1NutanixCategory = v1NutanixCategory;
+    }
+
+    @JsonProperty("V1NutanixResourceIdentifier")
+    public NutanixResourceIdentifier getV1NutanixResourceIdentifier() {
+        return v1NutanixResourceIdentifier;
+    }
+
+    @JsonProperty("V1NutanixResourceIdentifier")
+    public void setV1NutanixResourceIdentifier(NutanixResourceIdentifier v1NutanixResourceIdentifier) {
+        this.v1NutanixResourceIdentifier = v1NutanixResourceIdentifier;
     }
 
     @JsonAnyGetter

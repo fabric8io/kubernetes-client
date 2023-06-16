@@ -36,6 +36,7 @@ import lombok.experimental.Accessors;
     "metadata",
     "expression",
     "message",
+    "messageExpression",
     "reason"
 })
 @ToString
@@ -64,6 +65,8 @@ public class Validation implements KubernetesResource
     private String expression;
     @JsonProperty("message")
     private String message;
+    @JsonProperty("messageExpression")
+    private String messageExpression;
     @JsonProperty("reason")
     private String reason;
     @JsonIgnore
@@ -76,10 +79,11 @@ public class Validation implements KubernetesResource
     public Validation() {
     }
 
-    public Validation(String expression, String message, String reason) {
+    public Validation(String expression, String message, String messageExpression, String reason) {
         super();
         this.expression = expression;
         this.message = message;
+        this.messageExpression = messageExpression;
         this.reason = reason;
     }
 
@@ -101,6 +105,16 @@ public class Validation implements KubernetesResource
     @JsonProperty("message")
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    @JsonProperty("messageExpression")
+    public String getMessageExpression() {
+        return messageExpression;
+    }
+
+    @JsonProperty("messageExpression")
+    public void setMessageExpression(String messageExpression) {
+        this.messageExpression = messageExpression;
     }
 
     @JsonProperty("reason")

@@ -1,7 +1,9 @@
 
 package io.fabric8.openshift.api.model.miscellaneous.metal3.v1alpha1;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -34,9 +36,11 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
+    "controller",
     "level",
     "name",
     "numberOfPhysicalDisks",
+    "physicalDisks",
     "rotational",
     "sizeGibibytes"
 })
@@ -62,12 +66,17 @@ import lombok.experimental.Accessors;
 public class HardwareRAIDVolume implements KubernetesResource
 {
 
+    @JsonProperty("controller")
+    private String controller;
     @JsonProperty("level")
     private String level;
     @JsonProperty("name")
     private String name;
     @JsonProperty("numberOfPhysicalDisks")
     private Integer numberOfPhysicalDisks;
+    @JsonProperty("physicalDisks")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> physicalDisks = new ArrayList<String>();
     @JsonProperty("rotational")
     private Boolean rotational;
     @JsonProperty("sizeGibibytes")
@@ -82,13 +91,25 @@ public class HardwareRAIDVolume implements KubernetesResource
     public HardwareRAIDVolume() {
     }
 
-    public HardwareRAIDVolume(String level, String name, Integer numberOfPhysicalDisks, Boolean rotational, Integer sizeGibibytes) {
+    public HardwareRAIDVolume(String controller, String level, String name, Integer numberOfPhysicalDisks, List<String> physicalDisks, Boolean rotational, Integer sizeGibibytes) {
         super();
+        this.controller = controller;
         this.level = level;
         this.name = name;
         this.numberOfPhysicalDisks = numberOfPhysicalDisks;
+        this.physicalDisks = physicalDisks;
         this.rotational = rotational;
         this.sizeGibibytes = sizeGibibytes;
+    }
+
+    @JsonProperty("controller")
+    public String getController() {
+        return controller;
+    }
+
+    @JsonProperty("controller")
+    public void setController(String controller) {
+        this.controller = controller;
     }
 
     @JsonProperty("level")
@@ -119,6 +140,16 @@ public class HardwareRAIDVolume implements KubernetesResource
     @JsonProperty("numberOfPhysicalDisks")
     public void setNumberOfPhysicalDisks(Integer numberOfPhysicalDisks) {
         this.numberOfPhysicalDisks = numberOfPhysicalDisks;
+    }
+
+    @JsonProperty("physicalDisks")
+    public List<String> getPhysicalDisks() {
+        return physicalDisks;
+    }
+
+    @JsonProperty("physicalDisks")
+    public void setPhysicalDisks(List<String> physicalDisks) {
+        this.physicalDisks = physicalDisks;
     }
 
     @JsonProperty("rotational")

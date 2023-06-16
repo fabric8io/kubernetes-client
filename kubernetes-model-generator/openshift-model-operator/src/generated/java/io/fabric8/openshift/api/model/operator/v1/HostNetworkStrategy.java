@@ -34,7 +34,10 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "protocol"
+    "httpPort",
+    "httpsPort",
+    "protocol",
+    "statsPort"
 })
 @ToString
 @EqualsAndHashCode
@@ -58,8 +61,14 @@ import lombok.experimental.Accessors;
 public class HostNetworkStrategy implements KubernetesResource
 {
 
+    @JsonProperty("httpPort")
+    private Integer httpPort;
+    @JsonProperty("httpsPort")
+    private Integer httpsPort;
     @JsonProperty("protocol")
     private String protocol;
+    @JsonProperty("statsPort")
+    private Integer statsPort;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -70,9 +79,32 @@ public class HostNetworkStrategy implements KubernetesResource
     public HostNetworkStrategy() {
     }
 
-    public HostNetworkStrategy(String protocol) {
+    public HostNetworkStrategy(Integer httpPort, Integer httpsPort, String protocol, Integer statsPort) {
         super();
+        this.httpPort = httpPort;
+        this.httpsPort = httpsPort;
         this.protocol = protocol;
+        this.statsPort = statsPort;
+    }
+
+    @JsonProperty("httpPort")
+    public Integer getHttpPort() {
+        return httpPort;
+    }
+
+    @JsonProperty("httpPort")
+    public void setHttpPort(Integer httpPort) {
+        this.httpPort = httpPort;
+    }
+
+    @JsonProperty("httpsPort")
+    public Integer getHttpsPort() {
+        return httpsPort;
+    }
+
+    @JsonProperty("httpsPort")
+    public void setHttpsPort(Integer httpsPort) {
+        this.httpsPort = httpsPort;
     }
 
     @JsonProperty("protocol")
@@ -83,6 +115,16 @@ public class HostNetworkStrategy implements KubernetesResource
     @JsonProperty("protocol")
     public void setProtocol(String protocol) {
         this.protocol = protocol;
+    }
+
+    @JsonProperty("statsPort")
+    public Integer getStatsPort() {
+        return statsPort;
+    }
+
+    @JsonProperty("statsPort")
+    public void setStatsPort(Integer statsPort) {
+        this.statsPort = statsPort;
     }
 
     @JsonAnyGetter

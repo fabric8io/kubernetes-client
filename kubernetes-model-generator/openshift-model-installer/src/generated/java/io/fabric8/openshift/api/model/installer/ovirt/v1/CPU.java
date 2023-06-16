@@ -35,7 +35,8 @@ import lombok.experimental.Accessors;
     "kind",
     "metadata",
     "cores",
-    "sockets"
+    "sockets",
+    "threads"
 })
 @ToString
 @EqualsAndHashCode
@@ -63,6 +64,8 @@ public class CPU implements KubernetesResource
     private Integer cores;
     @JsonProperty("sockets")
     private Integer sockets;
+    @JsonProperty("threads")
+    private Integer threads;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -73,10 +76,11 @@ public class CPU implements KubernetesResource
     public CPU() {
     }
 
-    public CPU(Integer cores, Integer sockets) {
+    public CPU(Integer cores, Integer sockets, Integer threads) {
         super();
         this.cores = cores;
         this.sockets = sockets;
+        this.threads = threads;
     }
 
     @JsonProperty("cores")
@@ -97,6 +101,16 @@ public class CPU implements KubernetesResource
     @JsonProperty("sockets")
     public void setSockets(Integer sockets) {
         this.sockets = sockets;
+    }
+
+    @JsonProperty("threads")
+    public Integer getThreads() {
+        return threads;
+    }
+
+    @JsonProperty("threads")
+    public void setThreads(Integer threads) {
+        this.threads = threads;
     }
 
     @JsonAnyGetter

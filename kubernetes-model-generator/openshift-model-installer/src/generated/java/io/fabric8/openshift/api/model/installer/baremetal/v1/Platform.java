@@ -23,6 +23,7 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
+import io.fabric8.openshift.api.model.config.v1.BareMetalPlatformLoadBalancer;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -37,6 +38,9 @@ import lombok.experimental.Accessors;
     "kind",
     "metadata",
     "apiVIP",
+    "apiVIPs",
+    "bootstrapExternalStaticGateway",
+    "bootstrapExternalStaticIP",
     "bootstrapOSImage",
     "bootstrapProvisioningIP",
     "clusterOSImage",
@@ -46,7 +50,9 @@ import lombok.experimental.Accessors;
     "externalMACAddress",
     "hosts",
     "ingressVIP",
+    "ingressVIPs",
     "libvirtURI",
+    "loadBalancer",
     "provisioningBridge",
     "provisioningDHCPExternal",
     "provisioningDHCPRange",
@@ -80,6 +86,13 @@ public class Platform implements KubernetesResource
 
     @JsonProperty("apiVIP")
     private String apiVIP;
+    @JsonProperty("apiVIPs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> apiVIPs = new ArrayList<String>();
+    @JsonProperty("bootstrapExternalStaticGateway")
+    private String bootstrapExternalStaticGateway;
+    @JsonProperty("bootstrapExternalStaticIP")
+    private String bootstrapExternalStaticIP;
     @JsonProperty("bootstrapOSImage")
     private String bootstrapOSImage;
     @JsonProperty("bootstrapProvisioningIP")
@@ -98,8 +111,13 @@ public class Platform implements KubernetesResource
     private List<Host> hosts = new ArrayList<Host>();
     @JsonProperty("ingressVIP")
     private String ingressVIP;
+    @JsonProperty("ingressVIPs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> ingressVIPs = new ArrayList<String>();
     @JsonProperty("libvirtURI")
     private String libvirtURI;
+    @JsonProperty("loadBalancer")
+    private BareMetalPlatformLoadBalancer loadBalancer;
     @JsonProperty("provisioningBridge")
     private String provisioningBridge;
     @JsonProperty("provisioningDHCPExternal")
@@ -126,9 +144,12 @@ public class Platform implements KubernetesResource
     public Platform() {
     }
 
-    public Platform(String apiVIP, String bootstrapOSImage, String bootstrapProvisioningIP, String clusterOSImage, String clusterProvisioningIP, MachinePool defaultMachinePlatform, String externalBridge, String externalMACAddress, List<Host> hosts, String ingressVIP, String libvirtURI, String provisioningBridge, Boolean provisioningDHCPExternal, String provisioningDHCPRange, String provisioningHostIP, String provisioningMACAddress, String provisioningNetwork, String provisioningNetworkCIDR, String provisioningNetworkInterface) {
+    public Platform(String apiVIP, List<String> apiVIPs, String bootstrapExternalStaticGateway, String bootstrapExternalStaticIP, String bootstrapOSImage, String bootstrapProvisioningIP, String clusterOSImage, String clusterProvisioningIP, MachinePool defaultMachinePlatform, String externalBridge, String externalMACAddress, List<Host> hosts, String ingressVIP, List<String> ingressVIPs, String libvirtURI, BareMetalPlatformLoadBalancer loadBalancer, String provisioningBridge, Boolean provisioningDHCPExternal, String provisioningDHCPRange, String provisioningHostIP, String provisioningMACAddress, String provisioningNetwork, String provisioningNetworkCIDR, String provisioningNetworkInterface) {
         super();
         this.apiVIP = apiVIP;
+        this.apiVIPs = apiVIPs;
+        this.bootstrapExternalStaticGateway = bootstrapExternalStaticGateway;
+        this.bootstrapExternalStaticIP = bootstrapExternalStaticIP;
         this.bootstrapOSImage = bootstrapOSImage;
         this.bootstrapProvisioningIP = bootstrapProvisioningIP;
         this.clusterOSImage = clusterOSImage;
@@ -138,7 +159,9 @@ public class Platform implements KubernetesResource
         this.externalMACAddress = externalMACAddress;
         this.hosts = hosts;
         this.ingressVIP = ingressVIP;
+        this.ingressVIPs = ingressVIPs;
         this.libvirtURI = libvirtURI;
+        this.loadBalancer = loadBalancer;
         this.provisioningBridge = provisioningBridge;
         this.provisioningDHCPExternal = provisioningDHCPExternal;
         this.provisioningDHCPRange = provisioningDHCPRange;
@@ -157,6 +180,36 @@ public class Platform implements KubernetesResource
     @JsonProperty("apiVIP")
     public void setApiVIP(String apiVIP) {
         this.apiVIP = apiVIP;
+    }
+
+    @JsonProperty("apiVIPs")
+    public List<String> getApiVIPs() {
+        return apiVIPs;
+    }
+
+    @JsonProperty("apiVIPs")
+    public void setApiVIPs(List<String> apiVIPs) {
+        this.apiVIPs = apiVIPs;
+    }
+
+    @JsonProperty("bootstrapExternalStaticGateway")
+    public String getBootstrapExternalStaticGateway() {
+        return bootstrapExternalStaticGateway;
+    }
+
+    @JsonProperty("bootstrapExternalStaticGateway")
+    public void setBootstrapExternalStaticGateway(String bootstrapExternalStaticGateway) {
+        this.bootstrapExternalStaticGateway = bootstrapExternalStaticGateway;
+    }
+
+    @JsonProperty("bootstrapExternalStaticIP")
+    public String getBootstrapExternalStaticIP() {
+        return bootstrapExternalStaticIP;
+    }
+
+    @JsonProperty("bootstrapExternalStaticIP")
+    public void setBootstrapExternalStaticIP(String bootstrapExternalStaticIP) {
+        this.bootstrapExternalStaticIP = bootstrapExternalStaticIP;
     }
 
     @JsonProperty("bootstrapOSImage")
@@ -249,6 +302,16 @@ public class Platform implements KubernetesResource
         this.ingressVIP = ingressVIP;
     }
 
+    @JsonProperty("ingressVIPs")
+    public List<String> getIngressVIPs() {
+        return ingressVIPs;
+    }
+
+    @JsonProperty("ingressVIPs")
+    public void setIngressVIPs(List<String> ingressVIPs) {
+        this.ingressVIPs = ingressVIPs;
+    }
+
     @JsonProperty("libvirtURI")
     public String getLibvirtURI() {
         return libvirtURI;
@@ -257,6 +320,16 @@ public class Platform implements KubernetesResource
     @JsonProperty("libvirtURI")
     public void setLibvirtURI(String libvirtURI) {
         this.libvirtURI = libvirtURI;
+    }
+
+    @JsonProperty("loadBalancer")
+    public BareMetalPlatformLoadBalancer getLoadBalancer() {
+        return loadBalancer;
+    }
+
+    @JsonProperty("loadBalancer")
+    public void setLoadBalancer(BareMetalPlatformLoadBalancer loadBalancer) {
+        this.loadBalancer = loadBalancer;
     }
 
     @JsonProperty("provisioningBridge")

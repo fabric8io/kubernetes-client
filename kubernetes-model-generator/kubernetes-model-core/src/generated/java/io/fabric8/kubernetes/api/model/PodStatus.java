@@ -37,6 +37,7 @@ import lombok.experimental.Accessors;
     "podIPs",
     "qosClass",
     "reason",
+    "resize",
     "startTime"
 })
 @ToString
@@ -80,6 +81,8 @@ public class PodStatus implements KubernetesResource
     private java.lang.String qosClass;
     @JsonProperty("reason")
     private java.lang.String reason;
+    @JsonProperty("resize")
+    private java.lang.String resize;
     @JsonProperty("startTime")
     private String startTime;
     @JsonIgnore
@@ -92,7 +95,7 @@ public class PodStatus implements KubernetesResource
     public PodStatus() {
     }
 
-    public PodStatus(List<PodCondition> conditions, List<ContainerStatus> containerStatuses, List<ContainerStatus> ephemeralContainerStatuses, java.lang.String hostIP, List<ContainerStatus> initContainerStatuses, java.lang.String message, java.lang.String nominatedNodeName, java.lang.String phase, java.lang.String podIP, List<PodIP> podIPs, java.lang.String qosClass, java.lang.String reason, String startTime) {
+    public PodStatus(List<PodCondition> conditions, List<ContainerStatus> containerStatuses, List<ContainerStatus> ephemeralContainerStatuses, java.lang.String hostIP, List<ContainerStatus> initContainerStatuses, java.lang.String message, java.lang.String nominatedNodeName, java.lang.String phase, java.lang.String podIP, List<PodIP> podIPs, java.lang.String qosClass, java.lang.String reason, java.lang.String resize, String startTime) {
         super();
         this.conditions = conditions;
         this.containerStatuses = containerStatuses;
@@ -106,6 +109,7 @@ public class PodStatus implements KubernetesResource
         this.podIPs = podIPs;
         this.qosClass = qosClass;
         this.reason = reason;
+        this.resize = resize;
         this.startTime = startTime;
     }
 
@@ -227,6 +231,16 @@ public class PodStatus implements KubernetesResource
     @JsonProperty("reason")
     public void setReason(java.lang.String reason) {
         this.reason = reason;
+    }
+
+    @JsonProperty("resize")
+    public java.lang.String getResize() {
+        return resize;
+    }
+
+    @JsonProperty("resize")
+    public void setResize(java.lang.String resize) {
+        this.resize = resize;
     }
 
     @JsonProperty("startTime")

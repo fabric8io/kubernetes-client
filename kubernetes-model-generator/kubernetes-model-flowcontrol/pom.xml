@@ -34,7 +34,8 @@
     <clone-kube>true</clone-kube>
     <osgi.import>*</osgi.import>
     <osgi.export>
-      io.fabric8.kubernetes.api.model.flowcontrol**
+      io.fabric8.kubernetes.api.model.flowcontrol**,
+      io.fabric8.kubernetes.api.model.internal.apiserver**
     </osgi.export>
   </properties>
 
@@ -46,6 +47,11 @@
     <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>kubernetes-model-common</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-core</artifactId>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 

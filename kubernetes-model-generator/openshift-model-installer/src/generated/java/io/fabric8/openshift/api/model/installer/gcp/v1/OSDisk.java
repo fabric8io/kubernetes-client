@@ -35,7 +35,7 @@ import lombok.experimental.Accessors;
     "kind",
     "metadata",
     "DiskSizeGB",
-    "DiskType",
+    "diskType",
     "encryptionKey"
 })
 @ToString
@@ -62,7 +62,7 @@ public class OSDisk implements KubernetesResource
 
     @JsonProperty("DiskSizeGB")
     private Long diskSizeGB;
-    @JsonProperty("DiskType")
+    @JsonProperty("diskType")
     private String diskType;
     @JsonProperty("encryptionKey")
     private EncryptionKeyReference encryptionKey;
@@ -93,12 +93,12 @@ public class OSDisk implements KubernetesResource
         this.diskSizeGB = diskSizeGB;
     }
 
-    @JsonProperty("DiskType")
+    @JsonProperty("diskType")
     public String getDiskType() {
         return diskType;
     }
 
-    @JsonProperty("DiskType")
+    @JsonProperty("diskType")
     public void setDiskType(String diskType) {
         this.diskType = diskType;
     }

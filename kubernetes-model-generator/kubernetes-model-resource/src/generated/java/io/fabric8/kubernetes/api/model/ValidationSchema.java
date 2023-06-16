@@ -20,13 +20,13 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.kubernetes.api.model.resource.v1alpha1.PodScheduling;
-import io.fabric8.kubernetes.api.model.resource.v1alpha1.PodSchedulingList;
-import io.fabric8.kubernetes.api.model.resource.v1alpha1.ResourceClaim;
-import io.fabric8.kubernetes.api.model.resource.v1alpha1.ResourceClaimList;
-import io.fabric8.kubernetes.api.model.resource.v1alpha1.ResourceClaimTemplate;
-import io.fabric8.kubernetes.api.model.resource.v1alpha1.ResourceClaimTemplateList;
-import io.fabric8.kubernetes.api.model.resource.v1alpha1.ResourceClassList;
+import io.fabric8.kubernetes.api.model.resource.v1alpha2.PodSchedulingContext;
+import io.fabric8.kubernetes.api.model.resource.v1alpha2.PodSchedulingContextList;
+import io.fabric8.kubernetes.api.model.resource.v1alpha2.ResourceClaim;
+import io.fabric8.kubernetes.api.model.resource.v1alpha2.ResourceClaimList;
+import io.fabric8.kubernetes.api.model.resource.v1alpha2.ResourceClaimTemplate;
+import io.fabric8.kubernetes.api.model.resource.v1alpha2.ResourceClaimTemplateList;
+import io.fabric8.kubernetes.api.model.resource.v1alpha2.ResourceClassList;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -40,8 +40,8 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "PodScheduling",
-    "PodSchedulingList",
+    "PodSchedulingContext",
+    "PodSchedulingContextList",
     "ResourceClaim",
     "ResourceClaimList",
     "ResourceClaimTemplate",
@@ -70,10 +70,10 @@ import lombok.experimental.Accessors;
 @Generated("jsonschema2pojo")
 public class ValidationSchema {
 
-    @JsonProperty("PodScheduling")
-    private PodScheduling podScheduling;
-    @JsonProperty("PodSchedulingList")
-    private PodSchedulingList podSchedulingList;
+    @JsonProperty("PodSchedulingContext")
+    private PodSchedulingContext podSchedulingContext;
+    @JsonProperty("PodSchedulingContextList")
+    private PodSchedulingContextList podSchedulingContextList;
     @JsonProperty("ResourceClaim")
     private ResourceClaim resourceClaim;
     @JsonProperty("ResourceClaimList")
@@ -96,10 +96,10 @@ public class ValidationSchema {
     public ValidationSchema() {
     }
 
-    public ValidationSchema(PodScheduling podScheduling, PodSchedulingList podSchedulingList, ResourceClaim resourceClaim, ResourceClaimList resourceClaimList, ResourceClaimTemplate resourceClaimTemplate, ResourceClaimTemplateList resourceClaimTemplateList, ResourceClaim resourceClass, ResourceClassList resourceClassList) {
+    public ValidationSchema(PodSchedulingContext podSchedulingContext, PodSchedulingContextList podSchedulingContextList, ResourceClaim resourceClaim, ResourceClaimList resourceClaimList, ResourceClaimTemplate resourceClaimTemplate, ResourceClaimTemplateList resourceClaimTemplateList, ResourceClaim resourceClass, ResourceClassList resourceClassList) {
         super();
-        this.podScheduling = podScheduling;
-        this.podSchedulingList = podSchedulingList;
+        this.podSchedulingContext = podSchedulingContext;
+        this.podSchedulingContextList = podSchedulingContextList;
         this.resourceClaim = resourceClaim;
         this.resourceClaimList = resourceClaimList;
         this.resourceClaimTemplate = resourceClaimTemplate;
@@ -108,24 +108,24 @@ public class ValidationSchema {
         this.resourceClassList = resourceClassList;
     }
 
-    @JsonProperty("PodScheduling")
-    public PodScheduling getPodScheduling() {
-        return podScheduling;
+    @JsonProperty("PodSchedulingContext")
+    public PodSchedulingContext getPodSchedulingContext() {
+        return podSchedulingContext;
     }
 
-    @JsonProperty("PodScheduling")
-    public void setPodScheduling(PodScheduling podScheduling) {
-        this.podScheduling = podScheduling;
+    @JsonProperty("PodSchedulingContext")
+    public void setPodSchedulingContext(PodSchedulingContext podSchedulingContext) {
+        this.podSchedulingContext = podSchedulingContext;
     }
 
-    @JsonProperty("PodSchedulingList")
-    public PodSchedulingList getPodSchedulingList() {
-        return podSchedulingList;
+    @JsonProperty("PodSchedulingContextList")
+    public PodSchedulingContextList getPodSchedulingContextList() {
+        return podSchedulingContextList;
     }
 
-    @JsonProperty("PodSchedulingList")
-    public void setPodSchedulingList(PodSchedulingList podSchedulingList) {
-        this.podSchedulingList = podSchedulingList;
+    @JsonProperty("PodSchedulingContextList")
+    public void setPodSchedulingContextList(PodSchedulingContextList podSchedulingContextList) {
+        this.podSchedulingContextList = podSchedulingContextList;
     }
 
     @JsonProperty("ResourceClaim")

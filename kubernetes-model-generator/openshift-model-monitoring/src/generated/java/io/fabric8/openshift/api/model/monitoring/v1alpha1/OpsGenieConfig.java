@@ -37,10 +37,12 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
+    "actions",
     "apiKey",
     "apiURL",
     "description",
     "details",
+    "entity",
     "httpConfig",
     "message",
     "note",
@@ -48,7 +50,8 @@ import lombok.experimental.Accessors;
     "responders",
     "sendResolved",
     "source",
-    "tags"
+    "tags",
+    "updateAlerts"
 })
 @ToString
 @EqualsAndHashCode
@@ -72,6 +75,8 @@ import lombok.experimental.Accessors;
 public class OpsGenieConfig implements KubernetesResource
 {
 
+    @JsonProperty("actions")
+    private String actions;
     @JsonProperty("apiKey")
     private SecretKeySelector apiKey;
     @JsonProperty("apiURL")
@@ -81,6 +86,8 @@ public class OpsGenieConfig implements KubernetesResource
     @JsonProperty("details")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<KeyValue> details = new ArrayList<KeyValue>();
+    @JsonProperty("entity")
+    private String entity;
     @JsonProperty("httpConfig")
     private HTTPConfig httpConfig;
     @JsonProperty("message")
@@ -98,6 +105,8 @@ public class OpsGenieConfig implements KubernetesResource
     private String source;
     @JsonProperty("tags")
     private String tags;
+    @JsonProperty("updateAlerts")
+    private Boolean updateAlerts;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -108,12 +117,14 @@ public class OpsGenieConfig implements KubernetesResource
     public OpsGenieConfig() {
     }
 
-    public OpsGenieConfig(SecretKeySelector apiKey, String apiURL, String description, List<KeyValue> details, HTTPConfig httpConfig, String message, String note, String priority, List<OpsGenieConfigResponder> responders, Boolean sendResolved, String source, String tags) {
+    public OpsGenieConfig(String actions, SecretKeySelector apiKey, String apiURL, String description, List<KeyValue> details, String entity, HTTPConfig httpConfig, String message, String note, String priority, List<OpsGenieConfigResponder> responders, Boolean sendResolved, String source, String tags, Boolean updateAlerts) {
         super();
+        this.actions = actions;
         this.apiKey = apiKey;
         this.apiURL = apiURL;
         this.description = description;
         this.details = details;
+        this.entity = entity;
         this.httpConfig = httpConfig;
         this.message = message;
         this.note = note;
@@ -122,6 +133,17 @@ public class OpsGenieConfig implements KubernetesResource
         this.sendResolved = sendResolved;
         this.source = source;
         this.tags = tags;
+        this.updateAlerts = updateAlerts;
+    }
+
+    @JsonProperty("actions")
+    public String getActions() {
+        return actions;
+    }
+
+    @JsonProperty("actions")
+    public void setActions(String actions) {
+        this.actions = actions;
     }
 
     @JsonProperty("apiKey")
@@ -162,6 +184,16 @@ public class OpsGenieConfig implements KubernetesResource
     @JsonProperty("details")
     public void setDetails(List<KeyValue> details) {
         this.details = details;
+    }
+
+    @JsonProperty("entity")
+    public String getEntity() {
+        return entity;
+    }
+
+    @JsonProperty("entity")
+    public void setEntity(String entity) {
+        this.entity = entity;
     }
 
     @JsonProperty("httpConfig")
@@ -242,6 +274,16 @@ public class OpsGenieConfig implements KubernetesResource
     @JsonProperty("tags")
     public void setTags(String tags) {
         this.tags = tags;
+    }
+
+    @JsonProperty("updateAlerts")
+    public Boolean getUpdateAlerts() {
+        return updateAlerts;
+    }
+
+    @JsonProperty("updateAlerts")
+    public void setUpdateAlerts(Boolean updateAlerts) {
+        this.updateAlerts = updateAlerts;
     }
 
     @JsonAnyGetter

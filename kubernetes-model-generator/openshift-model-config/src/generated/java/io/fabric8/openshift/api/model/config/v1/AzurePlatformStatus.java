@@ -1,7 +1,9 @@
 
 package io.fabric8.openshift.api.model.config.v1;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -37,7 +39,8 @@ import lombok.experimental.Accessors;
     "armEndpoint",
     "cloudName",
     "networkResourceGroupName",
-    "resourceGroupName"
+    "resourceGroupName",
+    "resourceTags"
 })
 @ToString
 @EqualsAndHashCode
@@ -69,6 +72,9 @@ public class AzurePlatformStatus implements KubernetesResource
     private String networkResourceGroupName;
     @JsonProperty("resourceGroupName")
     private String resourceGroupName;
+    @JsonProperty("resourceTags")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<AzureResourceTag> resourceTags = new ArrayList<AzureResourceTag>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -79,12 +85,13 @@ public class AzurePlatformStatus implements KubernetesResource
     public AzurePlatformStatus() {
     }
 
-    public AzurePlatformStatus(String armEndpoint, String cloudName, String networkResourceGroupName, String resourceGroupName) {
+    public AzurePlatformStatus(String armEndpoint, String cloudName, String networkResourceGroupName, String resourceGroupName, List<AzureResourceTag> resourceTags) {
         super();
         this.armEndpoint = armEndpoint;
         this.cloudName = cloudName;
         this.networkResourceGroupName = networkResourceGroupName;
         this.resourceGroupName = resourceGroupName;
+        this.resourceTags = resourceTags;
     }
 
     @JsonProperty("armEndpoint")
@@ -125,6 +132,16 @@ public class AzurePlatformStatus implements KubernetesResource
     @JsonProperty("resourceGroupName")
     public void setResourceGroupName(String resourceGroupName) {
         this.resourceGroupName = resourceGroupName;
+    }
+
+    @JsonProperty("resourceTags")
+    public List<AzureResourceTag> getResourceTags() {
+        return resourceTags;
+    }
+
+    @JsonProperty("resourceTags")
+    public void setResourceTags(List<AzureResourceTag> resourceTags) {
+        this.resourceTags = resourceTags;
     }
 
     @JsonAnyGetter

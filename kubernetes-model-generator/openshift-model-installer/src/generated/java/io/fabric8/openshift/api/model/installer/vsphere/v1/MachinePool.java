@@ -1,7 +1,9 @@
 
 package io.fabric8.openshift.api.model.installer.vsphere.v1;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -37,7 +39,8 @@ import lombok.experimental.Accessors;
     "coresPerSocket",
     "cpus",
     "memoryMB",
-    "osDisk"
+    "osDisk",
+    "zones"
 })
 @ToString
 @EqualsAndHashCode
@@ -69,6 +72,9 @@ public class MachinePool implements KubernetesResource
     private Long memoryMB;
     @JsonProperty("osDisk")
     private OSDisk osDisk;
+    @JsonProperty("zones")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> zones = new ArrayList<String>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -79,12 +85,13 @@ public class MachinePool implements KubernetesResource
     public MachinePool() {
     }
 
-    public MachinePool(Integer coresPerSocket, Integer cpus, Long memoryMB, OSDisk osDisk) {
+    public MachinePool(Integer coresPerSocket, Integer cpus, Long memoryMB, OSDisk osDisk, List<String> zones) {
         super();
         this.coresPerSocket = coresPerSocket;
         this.cpus = cpus;
         this.memoryMB = memoryMB;
         this.osDisk = osDisk;
+        this.zones = zones;
     }
 
     @JsonProperty("coresPerSocket")
@@ -125,6 +132,16 @@ public class MachinePool implements KubernetesResource
     @JsonProperty("osDisk")
     public void setOsDisk(OSDisk osDisk) {
         this.osDisk = osDisk;
+    }
+
+    @JsonProperty("zones")
+    public List<String> getZones() {
+        return zones;
+    }
+
+    @JsonProperty("zones")
+    public void setZones(List<String> zones) {
+        this.zones = zones;
     }
 
     @JsonAnyGetter

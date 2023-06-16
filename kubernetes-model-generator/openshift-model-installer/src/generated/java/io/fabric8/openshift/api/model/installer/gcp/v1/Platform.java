@@ -41,6 +41,7 @@ import lombok.experimental.Accessors;
     "defaultMachinePlatform",
     "licenses",
     "network",
+    "networkProjectID",
     "projectID",
     "region"
 })
@@ -77,6 +78,8 @@ public class Platform implements KubernetesResource
     private List<String> licenses = new ArrayList<String>();
     @JsonProperty("network")
     private String network;
+    @JsonProperty("networkProjectID")
+    private String networkProjectID;
     @JsonProperty("projectID")
     private String projectID;
     @JsonProperty("region")
@@ -91,13 +94,14 @@ public class Platform implements KubernetesResource
     public Platform() {
     }
 
-    public Platform(String computeSubnet, String controlPlaneSubnet, MachinePool defaultMachinePlatform, List<String> licenses, String network, String projectID, String region) {
+    public Platform(String computeSubnet, String controlPlaneSubnet, MachinePool defaultMachinePlatform, List<String> licenses, String network, String networkProjectID, String projectID, String region) {
         super();
         this.computeSubnet = computeSubnet;
         this.controlPlaneSubnet = controlPlaneSubnet;
         this.defaultMachinePlatform = defaultMachinePlatform;
         this.licenses = licenses;
         this.network = network;
+        this.networkProjectID = networkProjectID;
         this.projectID = projectID;
         this.region = region;
     }
@@ -150,6 +154,16 @@ public class Platform implements KubernetesResource
     @JsonProperty("network")
     public void setNetwork(String network) {
         this.network = network;
+    }
+
+    @JsonProperty("networkProjectID")
+    public String getNetworkProjectID() {
+        return networkProjectID;
+    }
+
+    @JsonProperty("networkProjectID")
+    public void setNetworkProjectID(String networkProjectID) {
+        this.networkProjectID = networkProjectID;
     }
 
     @JsonProperty("projectID")

@@ -35,6 +35,7 @@ import lombok.experimental.Accessors;
     "kind",
     "metadata",
     "baseDomain",
+    "platform",
     "privateZone",
     "publicZone"
 })
@@ -62,6 +63,8 @@ public class DNSSpec implements KubernetesResource
 
     @JsonProperty("baseDomain")
     private String baseDomain;
+    @JsonProperty("platform")
+    private DNSPlatformSpec platform;
     @JsonProperty("privateZone")
     private DNSZone privateZone;
     @JsonProperty("publicZone")
@@ -76,9 +79,10 @@ public class DNSSpec implements KubernetesResource
     public DNSSpec() {
     }
 
-    public DNSSpec(String baseDomain, DNSZone privateZone, DNSZone publicZone) {
+    public DNSSpec(String baseDomain, DNSPlatformSpec platform, DNSZone privateZone, DNSZone publicZone) {
         super();
         this.baseDomain = baseDomain;
+        this.platform = platform;
         this.privateZone = privateZone;
         this.publicZone = publicZone;
     }
@@ -91,6 +95,16 @@ public class DNSSpec implements KubernetesResource
     @JsonProperty("baseDomain")
     public void setBaseDomain(String baseDomain) {
         this.baseDomain = baseDomain;
+    }
+
+    @JsonProperty("platform")
+    public DNSPlatformSpec getPlatform() {
+        return platform;
+    }
+
+    @JsonProperty("platform")
+    public void setPlatform(DNSPlatformSpec platform) {
+        this.platform = platform;
     }
 
     @JsonProperty("privateZone")

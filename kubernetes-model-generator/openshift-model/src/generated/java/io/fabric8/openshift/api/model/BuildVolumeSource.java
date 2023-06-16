@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.model.CSIVolumeSource;
 import io.fabric8.kubernetes.api.model.ConfigMapVolumeSource;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
@@ -37,6 +38,7 @@ import lombok.experimental.Accessors;
     "kind",
     "metadata",
     "configMap",
+    "csi",
     "secret",
     "type"
 })
@@ -64,6 +66,8 @@ public class BuildVolumeSource implements KubernetesResource
 
     @JsonProperty("configMap")
     private ConfigMapVolumeSource configMap;
+    @JsonProperty("csi")
+    private CSIVolumeSource csi;
     @JsonProperty("secret")
     private SecretVolumeSource secret;
     @JsonProperty("type")
@@ -78,9 +82,10 @@ public class BuildVolumeSource implements KubernetesResource
     public BuildVolumeSource() {
     }
 
-    public BuildVolumeSource(ConfigMapVolumeSource configMap, SecretVolumeSource secret, String type) {
+    public BuildVolumeSource(ConfigMapVolumeSource configMap, CSIVolumeSource csi, SecretVolumeSource secret, String type) {
         super();
         this.configMap = configMap;
+        this.csi = csi;
         this.secret = secret;
         this.type = type;
     }
@@ -93,6 +98,16 @@ public class BuildVolumeSource implements KubernetesResource
     @JsonProperty("configMap")
     public void setConfigMap(ConfigMapVolumeSource configMap) {
         this.configMap = configMap;
+    }
+
+    @JsonProperty("csi")
+    public CSIVolumeSource getCsi() {
+        return csi;
+    }
+
+    @JsonProperty("csi")
+    public void setCsi(CSIVolumeSource csi) {
+        this.csi = csi;
     }
 
     @JsonProperty("secret")

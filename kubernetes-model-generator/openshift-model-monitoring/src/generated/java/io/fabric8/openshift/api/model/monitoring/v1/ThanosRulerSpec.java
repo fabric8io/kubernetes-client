@@ -17,7 +17,6 @@ import io.fabric8.kubernetes.api.model.Affinity;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
-import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodSecurityContext;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
@@ -48,8 +47,10 @@ import lombok.experimental.Accessors;
     "containers",
     "enforcedNamespaceLabel",
     "evaluationInterval",
+    "excludedFromEnforcement",
     "externalPrefix",
     "grpcServerTlsConfig",
+    "hostAliases",
     "image",
     "imagePullSecrets",
     "initContainers",
@@ -96,7 +97,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(io.fabric8.kubernetes.api.model.ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
-    @BuildableReference(ObjectReference.class),
+    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
     @BuildableReference(io.fabric8.kubernetes.api.model.LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
@@ -127,10 +128,16 @@ public class ThanosRulerSpec implements KubernetesResource
     private java.lang.String enforcedNamespaceLabel;
     @JsonProperty("evaluationInterval")
     private java.lang.String evaluationInterval;
+    @JsonProperty("excludedFromEnforcement")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<io.fabric8.openshift.api.model.monitoring.v1.ObjectReference> excludedFromEnforcement = new ArrayList<io.fabric8.openshift.api.model.monitoring.v1.ObjectReference>();
     @JsonProperty("externalPrefix")
     private java.lang.String externalPrefix;
     @JsonProperty("grpcServerTlsConfig")
     private TLSConfig grpcServerTlsConfig;
+    @JsonProperty("hostAliases")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<HostAlias> hostAliases = new ArrayList<HostAlias>();
     @JsonProperty("image")
     private java.lang.String image;
     @JsonProperty("imagePullSecrets")
@@ -212,7 +219,7 @@ public class ThanosRulerSpec implements KubernetesResource
     public ThanosRulerSpec() {
     }
 
-    public ThanosRulerSpec(Affinity affinity, List<java.lang.String> alertDropLabels, java.lang.String alertQueryUrl, java.lang.String alertRelabelConfigFile, SecretKeySelector alertRelabelConfigs, SecretKeySelector alertmanagersConfig, List<java.lang.String> alertmanagersUrl, List<io.fabric8.kubernetes.api.model.Container> containers, java.lang.String enforcedNamespaceLabel, java.lang.String evaluationInterval, java.lang.String externalPrefix, TLSConfig grpcServerTlsConfig, java.lang.String image, List<io.fabric8.kubernetes.api.model.LocalObjectReference> imagePullSecrets, List<io.fabric8.kubernetes.api.model.Container> initContainers, Map<String, String> labels, Boolean listenLocal, java.lang.String logFormat, java.lang.String logLevel, Integer minReadySeconds, Map<String, String> nodeSelector, SecretKeySelector objectStorageConfig, java.lang.String objectStorageConfigFile, Boolean paused, EmbeddedObjectMetadata podMetadata, java.lang.String portName, java.lang.String priorityClassName, List<PrometheusRuleExcludeConfig> prometheusRulesExcludedFromEnforce, SecretKeySelector queryConfig, List<java.lang.String> queryEndpoints, Integer replicas, io.fabric8.kubernetes.api.model.ResourceRequirements resources, java.lang.String retention, java.lang.String routePrefix, io.fabric8.kubernetes.api.model.LabelSelector ruleNamespaceSelector, io.fabric8.kubernetes.api.model.LabelSelector ruleSelector, PodSecurityContext securityContext, java.lang.String serviceAccountName, StorageSpec storage, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, SecretKeySelector tracingConfig, List<Volume> volumes) {
+    public ThanosRulerSpec(Affinity affinity, List<java.lang.String> alertDropLabels, java.lang.String alertQueryUrl, java.lang.String alertRelabelConfigFile, SecretKeySelector alertRelabelConfigs, SecretKeySelector alertmanagersConfig, List<java.lang.String> alertmanagersUrl, List<io.fabric8.kubernetes.api.model.Container> containers, java.lang.String enforcedNamespaceLabel, java.lang.String evaluationInterval, List<io.fabric8.openshift.api.model.monitoring.v1.ObjectReference> excludedFromEnforcement, java.lang.String externalPrefix, TLSConfig grpcServerTlsConfig, List<HostAlias> hostAliases, java.lang.String image, List<io.fabric8.kubernetes.api.model.LocalObjectReference> imagePullSecrets, List<io.fabric8.kubernetes.api.model.Container> initContainers, Map<String, String> labels, Boolean listenLocal, java.lang.String logFormat, java.lang.String logLevel, Integer minReadySeconds, Map<String, String> nodeSelector, SecretKeySelector objectStorageConfig, java.lang.String objectStorageConfigFile, Boolean paused, EmbeddedObjectMetadata podMetadata, java.lang.String portName, java.lang.String priorityClassName, List<PrometheusRuleExcludeConfig> prometheusRulesExcludedFromEnforce, SecretKeySelector queryConfig, List<java.lang.String> queryEndpoints, Integer replicas, io.fabric8.kubernetes.api.model.ResourceRequirements resources, java.lang.String retention, java.lang.String routePrefix, io.fabric8.kubernetes.api.model.LabelSelector ruleNamespaceSelector, io.fabric8.kubernetes.api.model.LabelSelector ruleSelector, PodSecurityContext securityContext, java.lang.String serviceAccountName, StorageSpec storage, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, SecretKeySelector tracingConfig, List<Volume> volumes) {
         super();
         this.affinity = affinity;
         this.alertDropLabels = alertDropLabels;
@@ -224,8 +231,10 @@ public class ThanosRulerSpec implements KubernetesResource
         this.containers = containers;
         this.enforcedNamespaceLabel = enforcedNamespaceLabel;
         this.evaluationInterval = evaluationInterval;
+        this.excludedFromEnforcement = excludedFromEnforcement;
         this.externalPrefix = externalPrefix;
         this.grpcServerTlsConfig = grpcServerTlsConfig;
+        this.hostAliases = hostAliases;
         this.image = image;
         this.imagePullSecrets = imagePullSecrets;
         this.initContainers = initContainers;
@@ -359,6 +368,16 @@ public class ThanosRulerSpec implements KubernetesResource
         this.evaluationInterval = evaluationInterval;
     }
 
+    @JsonProperty("excludedFromEnforcement")
+    public List<io.fabric8.openshift.api.model.monitoring.v1.ObjectReference> getExcludedFromEnforcement() {
+        return excludedFromEnforcement;
+    }
+
+    @JsonProperty("excludedFromEnforcement")
+    public void setExcludedFromEnforcement(List<io.fabric8.openshift.api.model.monitoring.v1.ObjectReference> excludedFromEnforcement) {
+        this.excludedFromEnforcement = excludedFromEnforcement;
+    }
+
     @JsonProperty("externalPrefix")
     public java.lang.String getExternalPrefix() {
         return externalPrefix;
@@ -377,6 +396,16 @@ public class ThanosRulerSpec implements KubernetesResource
     @JsonProperty("grpcServerTlsConfig")
     public void setGrpcServerTlsConfig(TLSConfig grpcServerTlsConfig) {
         this.grpcServerTlsConfig = grpcServerTlsConfig;
+    }
+
+    @JsonProperty("hostAliases")
+    public List<HostAlias> getHostAliases() {
+        return hostAliases;
+    }
+
+    @JsonProperty("hostAliases")
+    public void setHostAliases(List<HostAlias> hostAliases) {
+        this.hostAliases = hostAliases;
     }
 
     @JsonProperty("image")

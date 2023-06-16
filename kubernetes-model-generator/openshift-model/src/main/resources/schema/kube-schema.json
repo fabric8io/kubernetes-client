@@ -361,6 +361,9 @@
         "resourceVersionMatch": {
           "type": "string"
         },
+        "sendInitialEvents": {
+          "type": "boolean"
+        },
         "timeoutSeconds": {
           "type": "integer",
           "existingJavaType": "Long"
@@ -1662,6 +1665,14 @@
           "$ref": "#/definitions/kubernetes_core_Probe",
           "existingJavaType": "io.fabric8.kubernetes.api.model.Probe"
         },
+        "resizePolicy": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_core_ContainerResizePolicy",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.ContainerResizePolicy"
+          }
+        },
         "resources": {
           "$ref": "#/definitions/kubernetes_core_ResourceRequirements",
           "existingJavaType": "io.fabric8.kubernetes.api.model.ResourceRequirements"
@@ -1738,6 +1749,22 @@
       },
       "additionalProperties": true,
       "existingJavaType": "io.fabric8.kubernetes.api.model.ContainerPort",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_core_ContainerResizePolicy": {
+      "type": "object",
+      "properties": {
+        "resourceName": {
+          "type": "string"
+        },
+        "restartPolicy": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "existingJavaType": "io.fabric8.kubernetes.api.model.ContainerResizePolicy",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -1952,6 +1979,14 @@
           "$ref": "#/definitions/kubernetes_core_Probe",
           "existingJavaType": "io.fabric8.kubernetes.api.model.Probe"
         },
+        "resizePolicy": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_core_ContainerResizePolicy",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.ContainerResizePolicy"
+          }
+        },
         "resources": {
           "$ref": "#/definitions/kubernetes_core_ResourceRequirements",
           "existingJavaType": "io.fabric8.kubernetes.api.model.ResourceRequirements"
@@ -2069,6 +2104,14 @@
         "readinessProbe": {
           "$ref": "#/definitions/kubernetes_core_Probe",
           "existingJavaType": "io.fabric8.kubernetes.api.model.Probe"
+        },
+        "resizePolicy": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_core_ContainerResizePolicy",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.ContainerResizePolicy"
+          }
         },
         "resources": {
           "$ref": "#/definitions/kubernetes_core_ResourceRequirements",
@@ -6120,6 +6163,10 @@
           "$ref": "#/definitions/kubernetes_core_ConfigMapVolumeSource",
           "existingJavaType": "io.fabric8.kubernetes.api.model.ConfigMapVolumeSource"
         },
+        "csi": {
+          "$ref": "#/definitions/kubernetes_core_CSIVolumeSource",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.CSIVolumeSource"
+        },
         "secret": {
           "$ref": "#/definitions/kubernetes_core_SecretVolumeSource",
           "existingJavaType": "io.fabric8.kubernetes.api.model.SecretVolumeSource"
@@ -7487,6 +7534,7 @@
         },
         "dockerImageLayers": {
           "type": "array",
+          "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/os_image_ImageLayer",
             "existingJavaType": "io.fabric8.openshift.api.model.ImageLayer"
@@ -7497,6 +7545,14 @@
         },
         "dockerImageManifestMediaType": {
           "type": "string"
+        },
+        "dockerImageManifests": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/os_image_ImageManifest",
+            "existingJavaType": "io.fabric8.openshift.api.model.ImageManifest"
+          }
         },
         "dockerImageMetadata": {
           "existingJavaType": "io.fabric8.openshift.api.model.runtime.RawExtension"
@@ -7574,6 +7630,14 @@
           "$ref": "#/definitions/os_image_Image",
           "existingJavaType": "io.fabric8.openshift.api.model.Image"
         },
+        "manifests": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/os_image_Image",
+            "existingJavaType": "io.fabric8.openshift.api.model.Image"
+          }
+        },
         "status": {
           "$ref": "#/definitions/kubernetes_apimachinery_Status",
           "existingJavaType": "io.fabric8.kubernetes.api.model.Status"
@@ -7649,6 +7713,35 @@
       },
       "additionalProperties": true,
       "javaType": "io.fabric8.openshift.api.model.ImageLookupPolicy",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_image_ImageManifest": {
+      "type": "object",
+      "properties": {
+        "architecture": {
+          "type": "string"
+        },
+        "digest": {
+          "type": "string"
+        },
+        "manifestSize": {
+          "type": "integer",
+          "existingJavaType": "Long"
+        },
+        "mediaType": {
+          "type": "string"
+        },
+        "os": {
+          "type": "string"
+        },
+        "variant": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.ImageManifest",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -8342,6 +8435,9 @@
     "os_image_TagImportPolicy": {
       "type": "object",
       "properties": {
+        "importMode": {
+          "type": "string"
+        },
         "insecure": {
           "type": "boolean"
         },

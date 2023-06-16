@@ -41,11 +41,15 @@ import lombok.experimental.Accessors;
     "kind",
     "metadata",
     "additionalTrustBundle",
+    "additionalTrustBundlePolicy",
     "baseDomain",
     "bootstrapInPlace",
+    "capabilities",
     "compute",
     "controlPlane",
+    "cpuPartitioningMode",
     "credentialsMode",
+    "featureSet",
     "fips",
     "imageContentSources",
     "networking",
@@ -84,6 +88,8 @@ public class InstallConfig implements HasMetadata, Namespaced
 
     @JsonProperty("additionalTrustBundle")
     private String additionalTrustBundle;
+    @JsonProperty("additionalTrustBundlePolicy")
+    private String additionalTrustBundlePolicy;
     /**
      * 
      * (Required)
@@ -95,13 +101,19 @@ public class InstallConfig implements HasMetadata, Namespaced
     private String baseDomain;
     @JsonProperty("bootstrapInPlace")
     private BootstrapInPlace bootstrapInPlace;
+    @JsonProperty("capabilities")
+    private Capabilities capabilities;
     @JsonProperty("compute")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<MachinePool> compute = new ArrayList<MachinePool>();
     @JsonProperty("controlPlane")
     private MachinePool controlPlane;
+    @JsonProperty("cpuPartitioningMode")
+    private String cpuPartitioningMode;
     @JsonProperty("credentialsMode")
     private String credentialsMode;
+    @JsonProperty("featureSet")
+    private String featureSet;
     @JsonProperty("fips")
     private Boolean fips;
     @JsonProperty("imageContentSources")
@@ -138,15 +150,19 @@ public class InstallConfig implements HasMetadata, Namespaced
     public InstallConfig() {
     }
 
-    public InstallConfig(String additionalTrustBundle, String apiVersion, String baseDomain, BootstrapInPlace bootstrapInPlace, List<MachinePool> compute, MachinePool controlPlane, String credentialsMode, Boolean fips, List<ImageContentSource> imageContentSources, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, Networking networking, Platform platform, Proxy proxy, String publish, String pullSecret, String sshKey) {
+    public InstallConfig(String additionalTrustBundle, String additionalTrustBundlePolicy, String apiVersion, String baseDomain, BootstrapInPlace bootstrapInPlace, Capabilities capabilities, List<MachinePool> compute, MachinePool controlPlane, String cpuPartitioningMode, String credentialsMode, String featureSet, Boolean fips, List<ImageContentSource> imageContentSources, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, Networking networking, Platform platform, Proxy proxy, String publish, String pullSecret, String sshKey) {
         super();
         this.additionalTrustBundle = additionalTrustBundle;
+        this.additionalTrustBundlePolicy = additionalTrustBundlePolicy;
         this.apiVersion = apiVersion;
         this.baseDomain = baseDomain;
         this.bootstrapInPlace = bootstrapInPlace;
+        this.capabilities = capabilities;
         this.compute = compute;
         this.controlPlane = controlPlane;
+        this.cpuPartitioningMode = cpuPartitioningMode;
         this.credentialsMode = credentialsMode;
+        this.featureSet = featureSet;
         this.fips = fips;
         this.imageContentSources = imageContentSources;
         this.kind = kind;
@@ -167,6 +183,16 @@ public class InstallConfig implements HasMetadata, Namespaced
     @JsonProperty("additionalTrustBundle")
     public void setAdditionalTrustBundle(String additionalTrustBundle) {
         this.additionalTrustBundle = additionalTrustBundle;
+    }
+
+    @JsonProperty("additionalTrustBundlePolicy")
+    public String getAdditionalTrustBundlePolicy() {
+        return additionalTrustBundlePolicy;
+    }
+
+    @JsonProperty("additionalTrustBundlePolicy")
+    public void setAdditionalTrustBundlePolicy(String additionalTrustBundlePolicy) {
+        this.additionalTrustBundlePolicy = additionalTrustBundlePolicy;
     }
 
     /**
@@ -209,6 +235,16 @@ public class InstallConfig implements HasMetadata, Namespaced
         this.bootstrapInPlace = bootstrapInPlace;
     }
 
+    @JsonProperty("capabilities")
+    public Capabilities getCapabilities() {
+        return capabilities;
+    }
+
+    @JsonProperty("capabilities")
+    public void setCapabilities(Capabilities capabilities) {
+        this.capabilities = capabilities;
+    }
+
     @JsonProperty("compute")
     public List<MachinePool> getCompute() {
         return compute;
@@ -229,6 +265,16 @@ public class InstallConfig implements HasMetadata, Namespaced
         this.controlPlane = controlPlane;
     }
 
+    @JsonProperty("cpuPartitioningMode")
+    public String getCpuPartitioningMode() {
+        return cpuPartitioningMode;
+    }
+
+    @JsonProperty("cpuPartitioningMode")
+    public void setCpuPartitioningMode(String cpuPartitioningMode) {
+        this.cpuPartitioningMode = cpuPartitioningMode;
+    }
+
     @JsonProperty("credentialsMode")
     public String getCredentialsMode() {
         return credentialsMode;
@@ -237,6 +283,16 @@ public class InstallConfig implements HasMetadata, Namespaced
     @JsonProperty("credentialsMode")
     public void setCredentialsMode(String credentialsMode) {
         this.credentialsMode = credentialsMode;
+    }
+
+    @JsonProperty("featureSet")
+    public String getFeatureSet() {
+        return featureSet;
+    }
+
+    @JsonProperty("featureSet")
+    public void setFeatureSet(String featureSet) {
+        this.featureSet = featureSet;
     }
 
     @JsonProperty("fips")

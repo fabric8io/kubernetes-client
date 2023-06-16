@@ -34,11 +34,15 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
+    "egressIPConfig",
+    "gatewayConfig",
     "genevePort",
     "hybridOverlayConfig",
     "ipsecConfig",
     "mtu",
-    "policyAuditConfig"
+    "policyAuditConfig",
+    "v4InternalSubnet",
+    "v6InternalSubnet"
 })
 @ToString
 @EqualsAndHashCode
@@ -62,6 +66,10 @@ import lombok.experimental.Accessors;
 public class OVNKubernetesConfig implements KubernetesResource
 {
 
+    @JsonProperty("egressIPConfig")
+    private EgressIPConfig egressIPConfig;
+    @JsonProperty("gatewayConfig")
+    private GatewayConfig gatewayConfig;
     @JsonProperty("genevePort")
     private Integer genevePort;
     @JsonProperty("hybridOverlayConfig")
@@ -72,6 +80,10 @@ public class OVNKubernetesConfig implements KubernetesResource
     private Integer mtu;
     @JsonProperty("policyAuditConfig")
     private PolicyAuditConfig policyAuditConfig;
+    @JsonProperty("v4InternalSubnet")
+    private String v4InternalSubnet;
+    @JsonProperty("v6InternalSubnet")
+    private String v6InternalSubnet;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -82,13 +94,37 @@ public class OVNKubernetesConfig implements KubernetesResource
     public OVNKubernetesConfig() {
     }
 
-    public OVNKubernetesConfig(Integer genevePort, HybridOverlayConfig hybridOverlayConfig, IPsecConfig ipsecConfig, Integer mtu, PolicyAuditConfig policyAuditConfig) {
+    public OVNKubernetesConfig(EgressIPConfig egressIPConfig, GatewayConfig gatewayConfig, Integer genevePort, HybridOverlayConfig hybridOverlayConfig, IPsecConfig ipsecConfig, Integer mtu, PolicyAuditConfig policyAuditConfig, String v4InternalSubnet, String v6InternalSubnet) {
         super();
+        this.egressIPConfig = egressIPConfig;
+        this.gatewayConfig = gatewayConfig;
         this.genevePort = genevePort;
         this.hybridOverlayConfig = hybridOverlayConfig;
         this.ipsecConfig = ipsecConfig;
         this.mtu = mtu;
         this.policyAuditConfig = policyAuditConfig;
+        this.v4InternalSubnet = v4InternalSubnet;
+        this.v6InternalSubnet = v6InternalSubnet;
+    }
+
+    @JsonProperty("egressIPConfig")
+    public EgressIPConfig getEgressIPConfig() {
+        return egressIPConfig;
+    }
+
+    @JsonProperty("egressIPConfig")
+    public void setEgressIPConfig(EgressIPConfig egressIPConfig) {
+        this.egressIPConfig = egressIPConfig;
+    }
+
+    @JsonProperty("gatewayConfig")
+    public GatewayConfig getGatewayConfig() {
+        return gatewayConfig;
+    }
+
+    @JsonProperty("gatewayConfig")
+    public void setGatewayConfig(GatewayConfig gatewayConfig) {
+        this.gatewayConfig = gatewayConfig;
     }
 
     @JsonProperty("genevePort")
@@ -139,6 +175,26 @@ public class OVNKubernetesConfig implements KubernetesResource
     @JsonProperty("policyAuditConfig")
     public void setPolicyAuditConfig(PolicyAuditConfig policyAuditConfig) {
         this.policyAuditConfig = policyAuditConfig;
+    }
+
+    @JsonProperty("v4InternalSubnet")
+    public String getV4InternalSubnet() {
+        return v4InternalSubnet;
+    }
+
+    @JsonProperty("v4InternalSubnet")
+    public void setV4InternalSubnet(String v4InternalSubnet) {
+        this.v4InternalSubnet = v4InternalSubnet;
+    }
+
+    @JsonProperty("v6InternalSubnet")
+    public String getV6InternalSubnet() {
+        return v6InternalSubnet;
+    }
+
+    @JsonProperty("v6InternalSubnet")
+    public void setV6InternalSubnet(String v6InternalSubnet) {
+        this.v6InternalSubnet = v6InternalSubnet;
     }
 
     @JsonAnyGetter

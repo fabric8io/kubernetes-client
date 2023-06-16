@@ -39,6 +39,9 @@ import lombok.experimental.Accessors;
     "clientTimeout",
     "headerBufferBytes",
     "headerBufferMaxRewriteBytes",
+    "healthCheckInterval",
+    "maxConnections",
+    "reloadInterval",
     "serverFinTimeout",
     "serverTimeout",
     "threadCount",
@@ -75,6 +78,12 @@ public class IngressControllerTuningOptions implements KubernetesResource
     private Integer headerBufferBytes;
     @JsonProperty("headerBufferMaxRewriteBytes")
     private Integer headerBufferMaxRewriteBytes;
+    @JsonProperty("healthCheckInterval")
+    private Duration healthCheckInterval;
+    @JsonProperty("maxConnections")
+    private Integer maxConnections;
+    @JsonProperty("reloadInterval")
+    private Duration reloadInterval;
     @JsonProperty("serverFinTimeout")
     private Duration serverFinTimeout;
     @JsonProperty("serverTimeout")
@@ -95,12 +104,15 @@ public class IngressControllerTuningOptions implements KubernetesResource
     public IngressControllerTuningOptions() {
     }
 
-    public IngressControllerTuningOptions(Duration clientFinTimeout, Duration clientTimeout, Integer headerBufferBytes, Integer headerBufferMaxRewriteBytes, Duration serverFinTimeout, Duration serverTimeout, Integer threadCount, Duration tlsInspectDelay, Duration tunnelTimeout) {
+    public IngressControllerTuningOptions(Duration clientFinTimeout, Duration clientTimeout, Integer headerBufferBytes, Integer headerBufferMaxRewriteBytes, Duration healthCheckInterval, Integer maxConnections, Duration reloadInterval, Duration serverFinTimeout, Duration serverTimeout, Integer threadCount, Duration tlsInspectDelay, Duration tunnelTimeout) {
         super();
         this.clientFinTimeout = clientFinTimeout;
         this.clientTimeout = clientTimeout;
         this.headerBufferBytes = headerBufferBytes;
         this.headerBufferMaxRewriteBytes = headerBufferMaxRewriteBytes;
+        this.healthCheckInterval = healthCheckInterval;
+        this.maxConnections = maxConnections;
+        this.reloadInterval = reloadInterval;
         this.serverFinTimeout = serverFinTimeout;
         this.serverTimeout = serverTimeout;
         this.threadCount = threadCount;
@@ -146,6 +158,36 @@ public class IngressControllerTuningOptions implements KubernetesResource
     @JsonProperty("headerBufferMaxRewriteBytes")
     public void setHeaderBufferMaxRewriteBytes(Integer headerBufferMaxRewriteBytes) {
         this.headerBufferMaxRewriteBytes = headerBufferMaxRewriteBytes;
+    }
+
+    @JsonProperty("healthCheckInterval")
+    public Duration getHealthCheckInterval() {
+        return healthCheckInterval;
+    }
+
+    @JsonProperty("healthCheckInterval")
+    public void setHealthCheckInterval(Duration healthCheckInterval) {
+        this.healthCheckInterval = healthCheckInterval;
+    }
+
+    @JsonProperty("maxConnections")
+    public Integer getMaxConnections() {
+        return maxConnections;
+    }
+
+    @JsonProperty("maxConnections")
+    public void setMaxConnections(Integer maxConnections) {
+        this.maxConnections = maxConnections;
+    }
+
+    @JsonProperty("reloadInterval")
+    public Duration getReloadInterval() {
+        return reloadInterval;
+    }
+
+    @JsonProperty("reloadInterval")
+    public void setReloadInterval(Duration reloadInterval) {
+        this.reloadInterval = reloadInterval;
     }
 
     @JsonProperty("serverFinTimeout")

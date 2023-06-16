@@ -42,6 +42,7 @@ import lombok.experimental.Accessors;
     "groupInterval",
     "groupWait",
     "matchers",
+    "muteTimeIntervals",
     "receiver",
     "repeatInterval",
     "routes"
@@ -80,6 +81,9 @@ public class Route implements KubernetesResource
     @JsonProperty("matchers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Matcher> matchers = new ArrayList<Matcher>();
+    @JsonProperty("muteTimeIntervals")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> muteTimeIntervals = new ArrayList<String>();
     @JsonProperty("receiver")
     private String receiver;
     @JsonProperty("repeatInterval")
@@ -97,13 +101,14 @@ public class Route implements KubernetesResource
     public Route() {
     }
 
-    public Route(Boolean _continue, List<String> groupBy, String groupInterval, String groupWait, List<Matcher> matchers, String receiver, String repeatInterval, List<JsonNode> routes) {
+    public Route(Boolean _continue, List<String> groupBy, String groupInterval, String groupWait, List<Matcher> matchers, List<String> muteTimeIntervals, String receiver, String repeatInterval, List<JsonNode> routes) {
         super();
         this._continue = _continue;
         this.groupBy = groupBy;
         this.groupInterval = groupInterval;
         this.groupWait = groupWait;
         this.matchers = matchers;
+        this.muteTimeIntervals = muteTimeIntervals;
         this.receiver = receiver;
         this.repeatInterval = repeatInterval;
         this.routes = routes;
@@ -157,6 +162,16 @@ public class Route implements KubernetesResource
     @JsonProperty("matchers")
     public void setMatchers(List<Matcher> matchers) {
         this.matchers = matchers;
+    }
+
+    @JsonProperty("muteTimeIntervals")
+    public List<String> getMuteTimeIntervals() {
+        return muteTimeIntervals;
+    }
+
+    @JsonProperty("muteTimeIntervals")
+    public void setMuteTimeIntervals(List<String> muteTimeIntervals) {
+        this.muteTimeIntervals = muteTimeIntervals;
     }
 
     @JsonProperty("receiver")

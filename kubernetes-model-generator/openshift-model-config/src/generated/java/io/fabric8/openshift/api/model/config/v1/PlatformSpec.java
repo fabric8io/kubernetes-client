@@ -39,9 +39,11 @@ import lombok.experimental.Accessors;
     "azure",
     "baremetal",
     "equinixMetal",
+    "external",
     "gcp",
     "ibmcloud",
     "kubevirt",
+    "nutanix",
     "openstack",
     "ovirt",
     "powervs",
@@ -80,12 +82,16 @@ public class PlatformSpec implements KubernetesResource
     private BareMetalPlatformSpec baremetal;
     @JsonProperty("equinixMetal")
     private EquinixMetalPlatformSpec equinixMetal;
+    @JsonProperty("external")
+    private ExternalPlatformSpec external;
     @JsonProperty("gcp")
     private GCPPlatformSpec gcp;
     @JsonProperty("ibmcloud")
     private IBMCloudPlatformSpec ibmcloud;
     @JsonProperty("kubevirt")
     private KubevirtPlatformSpec kubevirt;
+    @JsonProperty("nutanix")
+    private NutanixPlatformSpec nutanix;
     @JsonProperty("openstack")
     private OpenStackPlatformSpec openstack;
     @JsonProperty("ovirt")
@@ -106,16 +112,18 @@ public class PlatformSpec implements KubernetesResource
     public PlatformSpec() {
     }
 
-    public PlatformSpec(AlibabaCloudPlatformSpec alibabaCloud, AWSPlatformSpec aws, AzurePlatformSpec azure, BareMetalPlatformSpec baremetal, EquinixMetalPlatformSpec equinixMetal, GCPPlatformSpec gcp, IBMCloudPlatformSpec ibmcloud, KubevirtPlatformSpec kubevirt, OpenStackPlatformSpec openstack, OvirtPlatformSpec ovirt, PowerVSPlatformSpec powervs, String type, VSpherePlatformSpec vsphere) {
+    public PlatformSpec(AlibabaCloudPlatformSpec alibabaCloud, AWSPlatformSpec aws, AzurePlatformSpec azure, BareMetalPlatformSpec baremetal, EquinixMetalPlatformSpec equinixMetal, ExternalPlatformSpec external, GCPPlatformSpec gcp, IBMCloudPlatformSpec ibmcloud, KubevirtPlatformSpec kubevirt, NutanixPlatformSpec nutanix, OpenStackPlatformSpec openstack, OvirtPlatformSpec ovirt, PowerVSPlatformSpec powervs, String type, VSpherePlatformSpec vsphere) {
         super();
         this.alibabaCloud = alibabaCloud;
         this.aws = aws;
         this.azure = azure;
         this.baremetal = baremetal;
         this.equinixMetal = equinixMetal;
+        this.external = external;
         this.gcp = gcp;
         this.ibmcloud = ibmcloud;
         this.kubevirt = kubevirt;
+        this.nutanix = nutanix;
         this.openstack = openstack;
         this.ovirt = ovirt;
         this.powervs = powervs;
@@ -173,6 +181,16 @@ public class PlatformSpec implements KubernetesResource
         this.equinixMetal = equinixMetal;
     }
 
+    @JsonProperty("external")
+    public ExternalPlatformSpec getExternal() {
+        return external;
+    }
+
+    @JsonProperty("external")
+    public void setExternal(ExternalPlatformSpec external) {
+        this.external = external;
+    }
+
     @JsonProperty("gcp")
     public GCPPlatformSpec getGcp() {
         return gcp;
@@ -201,6 +219,16 @@ public class PlatformSpec implements KubernetesResource
     @JsonProperty("kubevirt")
     public void setKubevirt(KubevirtPlatformSpec kubevirt) {
         this.kubevirt = kubevirt;
+    }
+
+    @JsonProperty("nutanix")
+    public NutanixPlatformSpec getNutanix() {
+        return nutanix;
+    }
+
+    @JsonProperty("nutanix")
+    public void setNutanix(NutanixPlatformSpec nutanix) {
+        this.nutanix = nutanix;
     }
 
     @JsonProperty("openstack")

@@ -296,6 +296,9 @@
         "resourceVersionMatch": {
           "type": "string"
         },
+        "sendInitialEvents": {
+          "type": "boolean"
+        },
         "timeoutSeconds": {
           "type": "integer",
           "existingJavaType": "Long"
@@ -1434,8 +1437,8 @@
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/kubernetes_discovery_v1beta1_ForZone",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.discovery.v1beta1.ForZone"
+            "$ref": "#/definitions/kubernetes_discovery_v1_ForZone",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.discovery.v1.ForZone"
           }
         }
       },
@@ -1671,6 +1674,9 @@
         },
         "resourceVersionMatch": {
           "type": "string"
+        },
+        "sendInitialEvents": {
+          "type": "boolean"
         },
         "timeoutSeconds": {
           "type": "integer",

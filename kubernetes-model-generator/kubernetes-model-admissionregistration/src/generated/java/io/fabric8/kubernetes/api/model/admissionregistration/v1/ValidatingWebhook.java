@@ -38,6 +38,7 @@ import lombok.experimental.Accessors;
     "admissionReviewVersions",
     "clientConfig",
     "failurePolicy",
+    "matchConditions",
     "matchPolicy",
     "name",
     "namespaceSelector",
@@ -74,6 +75,9 @@ public class ValidatingWebhook implements KubernetesResource
     private WebhookClientConfig clientConfig;
     @JsonProperty("failurePolicy")
     private String failurePolicy;
+    @JsonProperty("matchConditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<MatchCondition> matchConditions = new ArrayList<MatchCondition>();
     @JsonProperty("matchPolicy")
     private String matchPolicy;
     @JsonProperty("name")
@@ -99,11 +103,12 @@ public class ValidatingWebhook implements KubernetesResource
     public ValidatingWebhook() {
     }
 
-    public ValidatingWebhook(List<String> admissionReviewVersions, WebhookClientConfig clientConfig, String failurePolicy, String matchPolicy, String name, io.fabric8.kubernetes.api.model.LabelSelector namespaceSelector, io.fabric8.kubernetes.api.model.LabelSelector objectSelector, List<RuleWithOperations> rules, String sideEffects, Integer timeoutSeconds) {
+    public ValidatingWebhook(List<String> admissionReviewVersions, WebhookClientConfig clientConfig, String failurePolicy, List<MatchCondition> matchConditions, String matchPolicy, String name, io.fabric8.kubernetes.api.model.LabelSelector namespaceSelector, io.fabric8.kubernetes.api.model.LabelSelector objectSelector, List<RuleWithOperations> rules, String sideEffects, Integer timeoutSeconds) {
         super();
         this.admissionReviewVersions = admissionReviewVersions;
         this.clientConfig = clientConfig;
         this.failurePolicy = failurePolicy;
+        this.matchConditions = matchConditions;
         this.matchPolicy = matchPolicy;
         this.name = name;
         this.namespaceSelector = namespaceSelector;
@@ -141,6 +146,16 @@ public class ValidatingWebhook implements KubernetesResource
     @JsonProperty("failurePolicy")
     public void setFailurePolicy(String failurePolicy) {
         this.failurePolicy = failurePolicy;
+    }
+
+    @JsonProperty("matchConditions")
+    public List<MatchCondition> getMatchConditions() {
+        return matchConditions;
+    }
+
+    @JsonProperty("matchConditions")
+    public void setMatchConditions(List<MatchCondition> matchConditions) {
+        this.matchConditions = matchConditions;
     }
 
     @JsonProperty("matchPolicy")

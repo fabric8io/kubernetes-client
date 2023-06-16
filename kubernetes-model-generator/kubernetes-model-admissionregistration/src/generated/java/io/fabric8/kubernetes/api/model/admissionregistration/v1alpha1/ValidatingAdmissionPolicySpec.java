@@ -36,7 +36,9 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
+    "auditAnnotations",
     "failurePolicy",
+    "matchConditions",
     "matchConstraints",
     "paramKind",
     "validations"
@@ -63,13 +65,20 @@ import lombok.experimental.Accessors;
 public class ValidatingAdmissionPolicySpec implements KubernetesResource
 {
 
+    @JsonProperty("auditAnnotations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<AuditAnnotation> auditAnnotations = new ArrayList<AuditAnnotation>();
     @JsonProperty("failurePolicy")
     private String failurePolicy;
+    @JsonProperty("matchConditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<MatchCondition> matchConditions = new ArrayList<MatchCondition>();
     @JsonProperty("matchConstraints")
     private MatchResources matchConstraints;
     @JsonProperty("paramKind")
     private ParamKind paramKind;
     @JsonProperty("validations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Validation> validations = new ArrayList<Validation>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
@@ -81,12 +90,24 @@ public class ValidatingAdmissionPolicySpec implements KubernetesResource
     public ValidatingAdmissionPolicySpec() {
     }
 
-    public ValidatingAdmissionPolicySpec(String failurePolicy, MatchResources matchConstraints, ParamKind paramKind, List<Validation> validations) {
+    public ValidatingAdmissionPolicySpec(List<AuditAnnotation> auditAnnotations, String failurePolicy, List<MatchCondition> matchConditions, MatchResources matchConstraints, ParamKind paramKind, List<Validation> validations) {
         super();
+        this.auditAnnotations = auditAnnotations;
         this.failurePolicy = failurePolicy;
+        this.matchConditions = matchConditions;
         this.matchConstraints = matchConstraints;
         this.paramKind = paramKind;
         this.validations = validations;
+    }
+
+    @JsonProperty("auditAnnotations")
+    public List<AuditAnnotation> getAuditAnnotations() {
+        return auditAnnotations;
+    }
+
+    @JsonProperty("auditAnnotations")
+    public void setAuditAnnotations(List<AuditAnnotation> auditAnnotations) {
+        this.auditAnnotations = auditAnnotations;
     }
 
     @JsonProperty("failurePolicy")
@@ -97,6 +118,16 @@ public class ValidatingAdmissionPolicySpec implements KubernetesResource
     @JsonProperty("failurePolicy")
     public void setFailurePolicy(String failurePolicy) {
         this.failurePolicy = failurePolicy;
+    }
+
+    @JsonProperty("matchConditions")
+    public List<MatchCondition> getMatchConditions() {
+        return matchConditions;
+    }
+
+    @JsonProperty("matchConditions")
+    public void setMatchConditions(List<MatchCondition> matchConditions) {
+        this.matchConditions = matchConditions;
     }
 
     @JsonProperty("matchConstraints")

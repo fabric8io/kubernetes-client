@@ -1297,12 +1297,21 @@
     "os_console_v1alpha1_ConsolePluginProxy": {
       "type": "object",
       "properties": {
-        "services": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/os_console_v1alpha1_ConsolePluginProxyService",
-            "existingJavaType": "io.fabric8.openshift.api.model.console.v1alpha1.ConsolePluginProxyService"
-          }
+        "alias": {
+          "type": "string"
+        },
+        "authorize": {
+          "type": "boolean"
+        },
+        "caCertificate": {
+          "type": "string"
+        },
+        "service": {
+          "$ref": "#/definitions/os_console_v1alpha1_ConsolePluginProxyServiceConfig",
+          "existingJavaType": "io.fabric8.openshift.api.model.console.v1alpha1.ConsolePluginProxyServiceConfig"
+        },
+        "type": {
+          "type": "string"
         }
       },
       "additionalProperties": true,
@@ -1311,15 +1320,9 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "os_console_v1alpha1_ConsolePluginProxyService": {
+    "os_console_v1alpha1_ConsolePluginProxyServiceConfig": {
       "type": "object",
       "properties": {
-        "authorize": {
-          "type": "boolean"
-        },
-        "caCertificate": {
-          "type": "string"
-        },
         "name": {
           "type": "string"
         },
@@ -1331,7 +1334,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.openshift.api.model.console.v1alpha1.ConsolePluginProxyService",
+      "javaType": "io.fabric8.openshift.api.model.console.v1alpha1.ConsolePluginProxyServiceConfig",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -1365,8 +1368,12 @@
           "type": "string"
         },
         "proxy": {
-          "$ref": "#/definitions/os_console_v1alpha1_ConsolePluginProxy",
-          "existingJavaType": "io.fabric8.openshift.api.model.console.v1alpha1.ConsolePluginProxy"
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/os_console_v1alpha1_ConsolePluginProxy",
+            "existingJavaType": "io.fabric8.openshift.api.model.console.v1alpha1.ConsolePluginProxy"
+          }
         },
         "service": {
           "$ref": "#/definitions/os_console_v1alpha1_ConsolePluginService",
@@ -1884,24 +1891,27 @@
     },
     "consolepluginproxy": {
       "properties": {
-        "services": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/os_console_v1alpha1_ConsolePluginProxyService",
-            "existingJavaType": "io.fabric8.openshift.api.model.console.v1alpha1.ConsolePluginProxyService"
-          }
-        }
-      },
-      "additionalProperties": true
-    },
-    "consolepluginproxyservice": {
-      "properties": {
+        "alias": {
+          "type": "string"
+        },
         "authorize": {
           "type": "boolean"
         },
         "caCertificate": {
           "type": "string"
         },
+        "service": {
+          "$ref": "#/definitions/os_console_v1alpha1_ConsolePluginProxyServiceConfig",
+          "existingJavaType": "io.fabric8.openshift.api.model.console.v1alpha1.ConsolePluginProxyServiceConfig"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "consolepluginproxyserviceconfig": {
+      "properties": {
         "name": {
           "type": "string"
         },
@@ -1937,8 +1947,12 @@
           "type": "string"
         },
         "proxy": {
-          "$ref": "#/definitions/os_console_v1alpha1_ConsolePluginProxy",
-          "existingJavaType": "io.fabric8.openshift.api.model.console.v1alpha1.ConsolePluginProxy"
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/os_console_v1alpha1_ConsolePluginProxy",
+            "existingJavaType": "io.fabric8.openshift.api.model.console.v1alpha1.ConsolePluginProxy"
+          }
         },
         "service": {
           "$ref": "#/definitions/os_console_v1alpha1_ConsolePluginService",

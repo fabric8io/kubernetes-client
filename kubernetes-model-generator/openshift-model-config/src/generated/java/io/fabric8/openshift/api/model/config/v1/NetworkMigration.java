@@ -34,6 +34,7 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
+    "mtu",
     "networkType"
 })
 @ToString
@@ -58,6 +59,8 @@ import lombok.experimental.Accessors;
 public class NetworkMigration implements KubernetesResource
 {
 
+    @JsonProperty("mtu")
+    private MTUMigration mtu;
     @JsonProperty("networkType")
     private String networkType;
     @JsonIgnore
@@ -70,9 +73,20 @@ public class NetworkMigration implements KubernetesResource
     public NetworkMigration() {
     }
 
-    public NetworkMigration(String networkType) {
+    public NetworkMigration(MTUMigration mtu, String networkType) {
         super();
+        this.mtu = mtu;
         this.networkType = networkType;
+    }
+
+    @JsonProperty("mtu")
+    public MTUMigration getMtu() {
+        return mtu;
+    }
+
+    @JsonProperty("mtu")
+    public void setMtu(MTUMigration mtu) {
+        this.mtu = mtu;
     }
 
     @JsonProperty("networkType")
