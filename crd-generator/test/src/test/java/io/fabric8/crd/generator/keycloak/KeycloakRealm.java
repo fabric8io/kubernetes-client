@@ -28,8 +28,8 @@ import org.keycloak.representations.idm.authorization.ScopeRepresentation;
 
 @Group("sample.fabric8.io")
 @Version("v1alpha1")
-@SchemaSwap(originalType = ComponentExportRepresentation.class, fieldName = "subComponents")
-@SchemaSwap(originalType = GroupRepresentation.class, fieldName = "subGroups")
+@SchemaSwap(originalType = GroupRepresentation.class, fieldName = "subGroups", depth = 10)
+@SchemaSwap(originalType = ComponentExportRepresentation.class, fieldName = "subComponents", depth = 10)
 @SchemaSwap(originalType = ScopeRepresentation.class, fieldName = "policies")
 @SchemaSwap(originalType = ScopeRepresentation.class, fieldName = "resources")
 public class KeycloakRealm extends CustomResource<RealmRepresentation, Void> implements Namespaced {

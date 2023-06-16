@@ -67,24 +67,32 @@ public class InternalSchemaSwaps {
     }
   }
 
-  public ClassRef lookupAndMark(ClassRef originalType, String name, Runnable swapApplicableAction) {
+  static class SwapResult {
+    final ClassRef classRef;
+    final boolean onGoing;
+
+    public SwapResult(ClassRef classRef, boolean onGoing) {
+      this.classRef = classRef;
+      this.onGoing = onGoing;
+    }
+  }
+
+  public SwapResult lookupAndMark(ClassRef originalType, String name) {
     Key key = new Key(originalType, name);
     Value value = swaps.getOrDefault(key, parentSwaps.get(key));
     if (value != null) {
-      if (value.depth > 0) {
-        swapApplicableAction.run();
-      }
       int currentDepth = swapDepths.getOrDefault(key, 0);
-      swapDepths.put(key, currentDepth+1);
+      swapDepths.put(key, currentDepth + 1);
       value.markUsed();
       if (currentDepth == value.depth) {
-        return value.getTargetType();
+        return new SwapResult(value.getTargetType(), false);
       }
       if (currentDepth > value.depth) {
         throw new IllegalStateException("Somthing has gone wrong with tracking swap depths, please raise an issue.");
       }
+      return new SwapResult(null, true);
     }
-    return null;
+    return new SwapResult(null, false);
   }
 
   public void throwIfUnmatchedSwaps() {

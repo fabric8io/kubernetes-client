@@ -17,6 +17,7 @@ package io.fabric8.crd.generator;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import io.fabric8.crd.generator.InternalSchemaSwaps.SwapResult;
 import io.fabric8.crd.generator.annotation.SchemaSwap;
 import io.fabric8.crd.generator.utils.Types;
 import io.fabric8.kubernetes.api.model.Duration;
@@ -289,8 +290,12 @@ public abstract class AbstractJsonSchema<T, B> {
       }
 
       schemaSwaps = schemaSwaps.branchDepths();
-      ClassRef potentialSchemaSwap = schemaSwaps.lookupAndMark(definition.toReference(), name, visited::clear);
-      final PropertyFacade facade = new PropertyFacade(property, accessors, potentialSchemaSwap);
+      SwapResult swapResult = schemaSwaps.lookupAndMark(definition.toReference(), name);
+      if (swapResult.onGoing) {
+        // hack to prevent cycle detection - this may need improved at some point should stackoverflows be encountered
+        visited.clear();
+      }
+      final PropertyFacade facade = new PropertyFacade(property, accessors, swapResult.classRef);
       final Property possiblyRenamedProperty = facade.process();
       name = possiblyRenamedProperty.getName();
 
