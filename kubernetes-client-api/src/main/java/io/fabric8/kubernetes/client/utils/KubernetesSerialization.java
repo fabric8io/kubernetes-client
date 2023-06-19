@@ -380,7 +380,7 @@ public class KubernetesSerialization {
     return unmatchedFieldTypeModule;
   }
 
-  ObjectMapper getMapper() {
+  public ObjectMapper getMapper() {
     return mapper;
   }
 
