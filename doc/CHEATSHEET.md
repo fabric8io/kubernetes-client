@@ -39,6 +39,7 @@ This document contains common usages of different resources using Fabric8 Kubern
   * [CustomResourceDefinition](#customresourcedefinition)
   * [Resource Typed API](#resource-typed-api)
   * [Resource Typeless API](#resource-typeless-api)
+  * [Resource Typed API vs. Resource Typeless API](#resource-typed-api-vs-resource-typeless-api)
   * [CertificateSigningRequest](#certificatesigningrequest)
   * [SharedInformers](#sharedinformers)
   * [List Options](#list-options)
@@ -1999,6 +2000,41 @@ client.genericKubernetesResources(crdContext).inNamespace(namespace).watch(new W
     }
 });
 closeLatch.await(10, TimeUnit.MINUTES);
+```
+
+### Resource Typed API vs. Resource Typeless API
+Following examples demonstrate how to define the same context for custom resources in two different ways by example of the spark operator.
+
+Resource Typed API:
+```
+@Group("sparkoperator.k8s.io")
+@Plural("sparkapps")
+@Version("v1beta2")
+@Kind("SparkApplication")
+public class SparkOperatorResource extends GenericKubernetesResource implements Namespaced { ... }
+```
+
+Usage with Resource Typed API by `SparkOperatorResource`
+```
+kubernetesClient.resources(SparkOperatorResource.class).inNamespace("myNamespace")...
+```
+
+Resource Typeless API:
+```
+public static ResourceDefinitionContext getResourceDefinitionContext() {
+    return new ResourceDefinitionContext.Builder()
+            .withGroup("sparkoperator.k8s.io")
+            .withPlural("sparkapps")
+            .withVersion("v1beta2")
+            .withKind("SparkApplication")
+            .withNamespaced(true)
+            .build();
+}
+```
+
+Usage with Resource Typeless API:
+```
+kubernetesClient.genericKubernetesResources(getResourceDefinitionContext()).inNamespace("myNamespace")...
 ```
 
 ### CertificateSigningRequest
