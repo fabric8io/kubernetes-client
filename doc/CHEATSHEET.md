@@ -2153,7 +2153,7 @@ SharedIndexInformer<Pod> podInformer = client.pods().inNamespace("default").info
 
 logger.info("Informer initialized.");
 ```
-- Create Namespaced Informer for a Custom Resource(**Note:** Your CustomResource POJO must implement `Namespaced` interface like the one used in this example: [Dummy.java](https://github.com/fabric8io/kubernetes-client/blob/master/kubernetes-examples/src/main/java/io/fabric8/kubernetes/examples/crds/Dummy.java))
+- Create Namespaced Informer for a Custom Resource(**Note:** Your CustomResource POJO must implement `Namespaced` interface like the one used in this example: [Dummy.java](https://github.com/fabric8io/kubernetes-client/blob/main/kubernetes-examples/src/main/java/io/fabric8/kubernetes/examples/crds/Dummy.java))
 You should have your CustomResource type POJO annotated with group, version fields with respect to your CRD:
 ```java
 import io.fabric8.kubernetes.api.model.KubernetesResource;

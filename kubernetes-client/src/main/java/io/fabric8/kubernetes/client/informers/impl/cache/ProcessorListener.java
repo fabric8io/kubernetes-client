@@ -25,7 +25,7 @@ import java.time.temporal.ChronoUnit;
  * and actually executes its event handler on notification.
  *
  * This has been taken from official client:
- * https://github.com/kubernetes-client/java/blob/master/util/src/main/java/io/kubernetes/client/informer/cache/ProcessorListener.java
+ * https://github.com/kubernetes-client/java/blob/main/util/src/main/java/io/kubernetes/client/informer/cache/ProcessorListener.java
  * which has been ported from official go client:
  * https://github.com/kubernetes/client-go/blob/master/tools/cache/shared_informer.go#L570
  *

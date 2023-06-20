@@ -25,7 +25,7 @@ public interface CreateOrReplaceable<T> extends Replaceable<T> {
    *
    * @deprecated please use {@link ServerSideApplicable#serverSideApply()} or attempt a create then edit/patch operation.
    * @see <a href=
-   *      "https://github.com/fabric8io/kubernetes-client/blob/master/doc/FAQ.md#alternatives-to-createOrReplace-and-replace"
+   *      "https://github.com/fabric8io/kubernetes-client/blob/main/doc/FAQ.md#alternatives-to-createOrReplace-and-replace"
    *      >Migration FAQ</a>
    */
   @Deprecated

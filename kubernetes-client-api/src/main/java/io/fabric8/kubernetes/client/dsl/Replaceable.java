@@ -34,7 +34,7 @@ public interface Replaceable<T> {
    * @deprecated use {@link #update()} instead
    *
    * @see <a href=
-   *      "https://github.com/fabric8io/kubernetes-client/blob/master/doc/FAQ.md#alternatives-to-createOrReplace-and-replace"
+   *      "https://github.com/fabric8io/kubernetes-client/blob/main/doc/FAQ.md#alternatives-to-createOrReplace-and-replace"
    *      >Migration FAQ</a>
    */
   @Deprecated
@@ -48,7 +48,7 @@ public interface Replaceable<T> {
    * @deprecated use {@link #updateStatus()} instead
    *
    * @see <a href=
-   *      "https://github.com/fabric8io/kubernetes-client/blob/master/doc/FAQ.md#alternatives-to-createOrReplace-and-replace"
+   *      "https://github.com/fabric8io/kubernetes-client/blob/main/doc/FAQ.md#alternatives-to-createOrReplace-and-replace"
    *      >Migration FAQ</a>
    */
   @Deprecated

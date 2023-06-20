@@ -18,9 +18,9 @@ What types of changes does your code introduce? Put an `x` in all the boxes that
 
 ## Checklist
  - [ ] Code contributed by me aligns with current project license: [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0)
- - [ ] I Added [CHANGELOG](https://github.com/fabric8io/kubernetes-client/blob/master/CHANGELOG.md) entry regarding this change
+ - [ ] I Added [CHANGELOG](https://github.com/fabric8io/kubernetes-client/blob/main/CHANGELOG.md) entry regarding this change
  - [ ] I have implemented unit tests to cover my changes
- - [ ] I have added/updated the [javadocs](https://www.javadoc.io/doc/io.fabric8/kubernetes-client/latest/index.html) and other [documentation](https://github.com/fabric8io/kubernetes-client/blob/master/doc/CHEATSHEET.md) accordingly
+ - [ ] I have added/updated the [javadocs](https://www.javadoc.io/doc/io.fabric8/kubernetes-client/latest/index.html) and other [documentation](https://github.com/fabric8io/kubernetes-client/blob/main/doc/CHEATSHEET.md) accordingly
  - [ ] No new bugs, code smells, etc. in [SonarCloud](https://sonarcloud.io/dashboard?id=fabric8io_kubernetes-client) report
  - [ ] I tested my code in Kubernetes
  - [ ] I tested my code in OpenShift
