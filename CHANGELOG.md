@@ -12,6 +12,7 @@
 * Fix #5368: added support for additional ListOptions fields
 * Fix #5377: added a createOr and unlock function to provide a straight-forward replacement for createOrReplace.
 * Fix #5388: [crd-generator] Generate deterministic CRDs
+* Fix #5135: added per instance methods to create a builder - instead on new PodBuilder(pod), you may use pod.toBuilder()
 * Fix #5257: Add ErrorStreamMessage and StatusStreamMessage to ease mocking of pods/exec requests
 * Fix #5220: refinements and clarifications to the validation of names
 

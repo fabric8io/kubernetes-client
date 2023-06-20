@@ -54,7 +54,7 @@ import java.util.Map;
 @Group("")
 @Kind("List")
 @JsonDeserialize(using = JsonDeserializer.None.class)
-@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, builderPackage = "io.fabric8.kubernetes.api.builder")
+@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 public class KubernetesList extends DefaultKubernetesResourceList<HasMetadata> implements KubernetesResource {
 
   @JsonIgnore

@@ -40,7 +40,7 @@ import java.io.Serializable;
 @ToString
 @Setter
 @EqualsAndHashCode
-@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
+@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 public class AnyType implements Serializable {
 
   protected Object value;
@@ -50,7 +50,7 @@ public class AnyType implements Serializable {
 
   @JsonCreator
   //Builders are generated for the first non-empty constructor found.
-  @Buildable(editableEnabled = false, generateBuilderPackage = true, builderPackage = "io.fabric8.kubernetes.api.builder")
+  @Buildable(editableEnabled = false, generateBuilderPackage = false, builderPackage = "io.fabric8.kubernetes.api.builder")
   public AnyType(Object value) {
     this.value = value;
   }
