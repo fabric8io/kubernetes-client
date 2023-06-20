@@ -41,50 +41,72 @@ import io.fabric8.kubernetes.client.extension.ClientAdapter;
 
 public class ExtensionsAPIGroupClient extends ClientAdapter<ExtensionsAPIGroupClient> implements ExtensionsAPIGroupDSL {
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   @Deprecated
   public MixedOperation<DaemonSet, DaemonSetList, Resource<DaemonSet>> daemonSets() {
     return resources(DaemonSet.class, DaemonSetList.class);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   @Deprecated
   public MixedOperation<Deployment, DeploymentList, RollableScalableResource<Deployment>> deployments() {
     return new DeploymentOperationsImpl(this);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   @Deprecated
   public MixedOperation<Ingress, IngressList, Resource<Ingress>> ingress() {
     return ingresses();
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
+  @Deprecated
   public MixedOperation<Ingress, IngressList, Resource<Ingress>> ingresses() {
     return resources(Ingress.class, IngressList.class);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   @Deprecated
   public MixedOperation<Job, JobList, ScalableResource<Job>> jobs() {
     return new JobOperationsImpl(this);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   @Deprecated
   public MixedOperation<NetworkPolicy, NetworkPolicyList, Resource<NetworkPolicy>> networkPolicies() {
     return resources(NetworkPolicy.class, NetworkPolicyList.class);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   @Deprecated
-  /**
-   * @deprecated Replaced by {@link PolicyAPIGroupClient#podSecurityPolicies()}
-   */
   public MixedOperation<PodSecurityPolicy, PodSecurityPolicyList, Resource<PodSecurityPolicy>> podSecurityPolicies() {
     return resources(PodSecurityPolicy.class, PodSecurityPolicyList.class);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   @Deprecated
   public MixedOperation<ReplicaSet, ReplicaSetList, RollableScalableResource<ReplicaSet>> replicaSets() {

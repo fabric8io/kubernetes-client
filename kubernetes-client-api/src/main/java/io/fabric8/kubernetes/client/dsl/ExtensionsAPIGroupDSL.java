@@ -31,33 +31,64 @@ import io.fabric8.kubernetes.api.model.extensions.ReplicaSetList;
 import io.fabric8.kubernetes.api.model.policy.v1beta1.PodSecurityPolicy;
 import io.fabric8.kubernetes.api.model.policy.v1beta1.PodSecurityPolicyList;
 import io.fabric8.kubernetes.client.Client;
+import io.fabric8.kubernetes.client.V1NetworkAPIGroupDSL;
 
 public interface ExtensionsAPIGroupDSL extends Client {
 
+  /**
+   * @deprecated The extensions/v1beta1 API is deprecated. Use apps/v1 instead ({@link AppsAPIGroupDSL#daemonSets()
+   *             kubernetesClient.apps().daemonSets()}).
+   */
   @Deprecated
   MixedOperation<DaemonSet, DaemonSetList, Resource<DaemonSet>> daemonSets();
 
+  /**
+   * @deprecated The extensions/v1beta1 API is deprecated. Use apps/v1 instead ({@link AppsAPIGroupDSL#deployments()
+   *             kubernetesClient.apps().deployments()}).
+   */
   @Deprecated
   MixedOperation<Deployment, DeploymentList, RollableScalableResource<Deployment>> deployments();
 
+  /**
+   * @deprecated The extensions/v1beta1 API is deprecated. Use networking.k8s.io/v1 instead
+   *             ({@link V1NetworkAPIGroupDSL#ingresses() kubernetesClient.network().v1().ingresses()}).
+   */
   @Deprecated
   MixedOperation<Ingress, IngressList, Resource<Ingress>> ingress();
 
+  /**
+   * @deprecated The extensions/v1beta1 API is deprecated. Use networking.k8s.io/v1 instead
+   *             ({@link V1NetworkAPIGroupDSL#ingresses() kubernetesClient.network().v1().ingresses()}).
+   */
   MixedOperation<Ingress, IngressList, Resource<Ingress>> ingresses();
 
+  /**
+   * @deprecated The extensions/v1beta1 API is deprecated. Use batch/v1 instead ({@link V1BatchAPIGroupDSL#jobs()
+   *             kubernetesClient.batch().v1().jobs()}).
+   */
   @Deprecated
   MixedOperation<Job, JobList, ScalableResource<Job>> jobs();
 
+  /**
+   * @deprecated The extensions/v1beta1 API is deprecated. Use networking.k8s.io/v1 instead
+   *             ({@link V1NetworkAPIGroupDSL#networkPolicies() kubernetesClient.network().v1().networkPolicies()}).
+   */
   @Deprecated
   MixedOperation<NetworkPolicy, NetworkPolicyList, Resource<NetworkPolicy>> networkPolicies();
 
+  /**
+   * @deprecated The extensions/v1beta1 API is deprecated. Use apps/v1 instead ({@link AppsAPIGroupDSL#replicaSets()
+   *             kubernetesClient.apps().replicaSets()}).
+   */
   @Deprecated
   MixedOperation<ReplicaSet, ReplicaSetList, RollableScalableResource<ReplicaSet>> replicaSets();
 
-  @Deprecated
   /**
-   * @deprecated Replaced by {@link PolicyAPIGroupDSL#podSecurityPolicies()}
+   * @deprecated The extensions/v1beta1 API is deprecated. Use policy/v1beta1 instead
+   *             ({@link V1beta1PolicyAPIGroupDSL#podSecurityPolicies()
+   *             kubernetesClient.policy().v1beta1().podSecurityPolicies()}).
    */
+  @Deprecated
   MixedOperation<PodSecurityPolicy, PodSecurityPolicyList, Resource<PodSecurityPolicy>> podSecurityPolicies();
 
 }
