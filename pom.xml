@@ -132,6 +132,7 @@
     <guava.version>32.1.2-jre</guava.version> <!-- Required by Gradle Testing Toolkit -->
     <scr.annotations.version>1.12.0</scr.annotations.version>
     <jsonschema2pojo.version>1.2.1</jsonschema2pojo.version>
+    <picocli.version>4.7.4</picocli.version>
     <properties.maven.plugin.version>1.0.0</properties.maven.plugin.version>
 
     <!-- Maven plugin versions -->
@@ -804,6 +805,11 @@
           </exclusion>
         </exclusions>
       </dependency>
+      <dependency>
+        <groupId>info.picocli</groupId>
+        <artifactId>picocli</artifactId>
+        <version>${picocli.version}</version>
+      </dependency>
 
       <!-- Testing and Mocking -->
       <dependency>
@@ -1316,6 +1322,7 @@
       <id>itests</id>
       <modules>
         <module>kubernetes-itests</module>
+        <module>chaos-tests</module>
       </modules>
       <build>
         <plugins>

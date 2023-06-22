@@ -29,10 +29,6 @@
   <artifactId>java-generator-cli</artifactId>
   <name>Fabric8 :: Java generator :: CLI</name>
 
-  <properties>
-    <picocli.version>4.7.5</picocli.version>
-  </properties>
-
   <dependencies>
     <dependency>
       <groupId>io.fabric8</groupId>
@@ -43,7 +39,6 @@
     <dependency>
       <groupId>info.picocli</groupId>
       <artifactId>picocli</artifactId>
-      <version>${picocli.version}</version>
     </dependency>
 
     <dependency>
