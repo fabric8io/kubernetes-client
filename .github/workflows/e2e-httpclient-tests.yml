@@ -84,3 +84,49 @@ jobs:
       - name: Run Integration Tests
         run: |
           ./mvnw ${MAVEN_ARGS} -P"httpclient-${{ matrix.httpclient }}" -Pitests -pl $IT_MODULE verify
+
+  chaos-tests:
+    name: K8S Chaos Test
+    runs-on: ubuntu-latest
+    if: github.repository == 'fabric8io/kubernetes-client'
+    strategy:
+      fail-fast: false
+      matrix:
+        kubernetes: [v1.25.0]
+        java-version: [11,17]
+        http-client: [okhttp,jdk,jetty,vertx]
+        chaos-test: ["network-delay.yaml", "network-loss.yaml", "network-duplicate.yaml"]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup Minikube-Kubernetes
+        uses: manusa/actions-setup-minikube@v2.7.2
+        with:
+          minikube version: v1.28.0
+          kubernetes version: ${{ matrix.kubernetes }}
+          github token: ${{ secrets.GITHUB_TOKEN }}
+          start args: '--force'
+      - name: Setup Kubectl
+        uses: azure/setup-kubectl@v3
+        with:
+          version: ${{ matrix.kubernetes }}
+      - name: Setup Java ${{ matrix.java-version }}
+        uses: actions/setup-java@v3
+        with:
+          java-version: "${{ matrix.java-version }}"
+          distribution: "temurin"
+          cache: maven
+      - name: Install Chaos Mesh
+        run: |
+          curl -sSL https://mirrors.chaos-mesh.org/v2.6.0/install.sh | bash
+          kubectl wait --for=condition=Ready pods --all-namespaces --all --timeout=600s
+      - name: Build the Support apps containers
+        run: |
+          # eval $(minikube -p minikube docker-env) -> check if needed in CI
+          ./mvnw ${MAVEN_ARGS} -U -Pitests -P"httpclient-${{ matrix.http-client }}" -Pchecker clean package k8s:build -pl chaos-tests -DskipTests
+          ./mvnw ${MAVEN_ARGS} -U -Pitests -P"httpclient-${{ matrix.http-client }}" -Pcontrol clean package k8s:build -pl chaos-tests -DskipTests
+      - name: Run Chaos Tests
+        env:
+          CHAOS_TEST: ${{ matrix.chaos-test }}
+        run: |
+          ./mvnw ${MAVEN_ARGS} -Pitests verify -pl chaos-tests
