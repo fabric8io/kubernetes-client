@@ -19,6 +19,7 @@ kind: CertificateRequest
 metadata:
   name: my-ca-cr
 spec:
+  datetime: "2017-07-21T17:32:28Z"
   request: dGVzdAo=
   isCA: false
   usages:
@@ -31,4 +32,4 @@ spec:
   issuerRef:
     name: ca-issuer
     kind: Issuer
-    group: cert-manager.io
+    group: cert-manager.io           

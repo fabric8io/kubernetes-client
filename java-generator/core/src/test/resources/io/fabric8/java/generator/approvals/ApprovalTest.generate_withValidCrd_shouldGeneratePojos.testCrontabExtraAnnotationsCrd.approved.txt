@@ -28,7 +28,7 @@ public class CronTab extends io.fabric8.kubernetes.client.CustomResource<org.tes
 CrontabJavaExtraAnnotationsCr[1] = package org.test.v1;
 
 @com.fasterxml.jackson.annotation.JsonInclude(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL)
-@com.fasterxml.jackson.annotation.JsonPropertyOrder({"cronSpec","image","replicas"})
+@com.fasterxml.jackson.annotation.JsonPropertyOrder({"cronSpec","image","issuedAt","replicas"})
 @com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @javax.annotation.processing.Generated("io.fabric8.java.generator.CRGeneratorRunner")
 @lombok.ToString()
@@ -72,6 +72,19 @@ public class CronTabSpec implements io.fabric8.kubernetes.api.model.KubernetesRe
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    @com.fasterxml.jackson.annotation.JsonProperty("issuedAt")
+    @com.fasterxml.jackson.annotation.JsonFormat(timezone = "UTC", pattern = "yyyy-MM-dd'T'HH:mm:ssX")
+    @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
+    private java.time.ZonedDateTime issuedAt;
+
+    public java.time.ZonedDateTime getIssuedAt() {
+        return issuedAt;
+    }
+
+    public void setIssuedAt(java.time.ZonedDateTime issuedAt) {
+        this.issuedAt = issuedAt;
     }
 
     @com.fasterxml.jackson.annotation.JsonProperty("replicas")

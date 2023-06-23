@@ -39,6 +39,9 @@ spec:
                   type: string
                 replicas:
                   type: integer
+                issuedAt:
+                  format: date-time
+                  type: string
             status:
               type: object
               properties:

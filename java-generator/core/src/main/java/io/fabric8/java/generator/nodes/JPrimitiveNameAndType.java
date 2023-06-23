@@ -16,6 +16,7 @@
 package io.fabric8.java.generator.nodes;
 
 public class JPrimitiveNameAndType extends JavaNameAndType {
+  static final String DATETIME_NAME = "java.time.ZonedDateTime";
   static final JPrimitiveNameAndType INT_OR_STRING = new JPrimitiveNameAndType("io.fabric8.kubernetes.api.model.IntOrString");
   static final JPrimitiveNameAndType BOOL = new JPrimitiveNameAndType("Boolean");
   static final JPrimitiveNameAndType INTEGER = new JPrimitiveNameAndType("Integer");
@@ -23,6 +24,7 @@ public class JPrimitiveNameAndType extends JavaNameAndType {
   static final JPrimitiveNameAndType FLOAT = new JPrimitiveNameAndType("Float");
   static final JPrimitiveNameAndType DOUBLE = new JPrimitiveNameAndType("Double");
   static final JPrimitiveNameAndType STRING = new JPrimitiveNameAndType("String");
+  static final JPrimitiveNameAndType DATETIME = new JPrimitiveNameAndType(DATETIME_NAME);
   static final JPrimitiveNameAndType ANY_TYPE = new JPrimitiveNameAndType("io.fabric8.kubernetes.api.model.AnyType");
 
   public JPrimitiveNameAndType(String name) {
