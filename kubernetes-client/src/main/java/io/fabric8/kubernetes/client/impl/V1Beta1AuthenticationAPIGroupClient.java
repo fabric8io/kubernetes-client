@@ -15,31 +15,20 @@
  */
 package io.fabric8.kubernetes.client.impl;
 
-import io.fabric8.kubernetes.client.V1AuthenticationAPIGroupDSL;
-import io.fabric8.kubernetes.client.dsl.AuthenticationAPIGroupDSL;
-import io.fabric8.kubernetes.client.dsl.V1Alpha1AuthenticationAPIGroupDSL;
+import io.fabric8.kubernetes.api.model.authentication.v1beta1.SelfSubjectReview;
+import io.fabric8.kubernetes.client.dsl.InOutCreateable;
 import io.fabric8.kubernetes.client.dsl.V1Beta1AuthenticationAPIGroupDSL;
 import io.fabric8.kubernetes.client.extension.ClientAdapter;
 
-public class AuthenticationAPIGroupClient extends ClientAdapter<AuthenticationAPIGroupClient>
-    implements AuthenticationAPIGroupDSL {
+public class V1Beta1AuthenticationAPIGroupClient extends ClientAdapter<V1Beta1AuthenticationAPIGroupClient>
+    implements V1Beta1AuthenticationAPIGroupDSL {
   @Override
-  public V1AuthenticationAPIGroupDSL v1() {
-    return adapt(V1AuthenticationAPIGroupClient.class);
+  public InOutCreateable<SelfSubjectReview, SelfSubjectReview> selfSubjectReview() {
+    return getClient().adapt(BaseClient.class).getHandlers().getNonListingOperation(SelfSubjectReview.class, this);
   }
 
   @Override
-  public V1Alpha1AuthenticationAPIGroupDSL v1alpha1() {
-    return adapt(V1Alpha1AuthenticationAPIGroupClient.class);
-  }
-
-  @Override
-  public V1Beta1AuthenticationAPIGroupDSL v1beta1() {
-    return adapt(V1Beta1AuthenticationAPIGroupClient.class);
-  }
-
-  @Override
-  public AuthenticationAPIGroupClient newInstance() {
-    return new AuthenticationAPIGroupClient();
+  public V1Beta1AuthenticationAPIGroupClient newInstance() {
+    return new V1Beta1AuthenticationAPIGroupClient();
   }
 }
