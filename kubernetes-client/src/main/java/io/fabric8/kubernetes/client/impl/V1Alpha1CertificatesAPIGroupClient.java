@@ -15,31 +15,22 @@
  */
 package io.fabric8.kubernetes.client.impl;
 
-import io.fabric8.kubernetes.client.dsl.CertificatesAPIGroupDSL;
+import io.fabric8.kubernetes.api.model.certificates.v1alpha1.ClusterTrustBundle;
+import io.fabric8.kubernetes.api.model.certificates.v1alpha1.ClusterTrustBundleList;
+import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
+import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.V1Alpha1CertificatesAPIGroupDSL;
-import io.fabric8.kubernetes.client.dsl.V1CertificatesAPIGroupDSL;
-import io.fabric8.kubernetes.client.dsl.V1beta1CertificatesAPIGroupDSL;
 import io.fabric8.kubernetes.client.extension.ClientAdapter;
 
-public class CertificatesAPIGroupClient extends ClientAdapter<CertificatesAPIGroupClient> implements CertificatesAPIGroupDSL {
-
+public class V1Alpha1CertificatesAPIGroupClient extends ClientAdapter<V1Alpha1CertificatesAPIGroupClient>
+    implements V1Alpha1CertificatesAPIGroupDSL {
   @Override
-  public V1CertificatesAPIGroupDSL v1() {
-    return adapt(V1CertificatesAPIGroupClient.class);
+  public NonNamespaceOperation<ClusterTrustBundle, ClusterTrustBundleList, Resource<ClusterTrustBundle>> clusterTrustBundles() {
+    return resources(ClusterTrustBundle.class, ClusterTrustBundleList.class);
   }
 
   @Override
-  public V1beta1CertificatesAPIGroupDSL v1beta1() {
-    return adapt(V1beta1CertificatesAPIGroupClient.class);
-  }
-
-  @Override
-  public V1Alpha1CertificatesAPIGroupDSL v1alpha1() {
-    return adapt(V1Alpha1CertificatesAPIGroupClient.class);
-  }
-
-  @Override
-  public CertificatesAPIGroupClient newInstance() {
-    return new CertificatesAPIGroupClient();
+  public V1Alpha1CertificatesAPIGroupClient newInstance() {
+    return new V1Alpha1CertificatesAPIGroupClient();
   }
 }
