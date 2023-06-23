@@ -21,48 +21,23 @@ import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
-import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.HttpResponse;
-import io.fabric8.kubernetes.client.server.mock.KubernetesCrudDispatcher;
-import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.kubernetes.client.server.mock.crud.crd.Owl;
 import io.fabric8.kubernetes.client.utils.Serialization;
-import io.fabric8.mockwebserver.Context;
-import okhttp3.mockwebserver.MockWebServer;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 import static io.fabric8.kubernetes.client.dsl.internal.OperationSupport.JSON;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class KubernetesCrudDispatcherPostTest {
-
-  private KubernetesMockServer server;
-  private KubernetesClient client;
-
-  @BeforeEach
-  void setUp() {
-    server = new KubernetesMockServer(new Context(Serialization.jsonMapper()),
-        new MockWebServer(), new HashMap<>(), new KubernetesCrudDispatcher(), false);
-    server.start();
-    client = server.createClient();
-  }
-
-  @AfterEach
-  void tearDown() {
-    client.close();
-    server.shutdown();
-  }
+class KubernetesCrudDispatcherPostTest extends KubernetesCrudDispatcherTestBase {
 
   @Test
   @DisplayName("create, namespaced and not existing, creates new resource with default metadata")
@@ -84,6 +59,7 @@ class KubernetesCrudDispatcherPostTest {
         .extracting(Pod::getMetadata)
         .satisfies(m -> assertThat(m.getCreationTimestamp()).isNotBlank())
         .satisfies(m -> assertThat(m.getUid()).isNotBlank());
+    assertLocked(1, 0);
   }
 
   @Test
@@ -106,6 +82,7 @@ class KubernetesCrudDispatcherPostTest {
         .satisfies(m -> assertThat(m.getName()).startsWith("foo-gen-"))
         .satisfies(m -> assertThat(m.getCreationTimestamp()).isNotBlank())
         .satisfies(m -> assertThat(m.getUid()).isNotBlank());
+    assertLocked(1, 0);
   }
 
   @Test
@@ -124,6 +101,7 @@ class KubernetesCrudDispatcherPostTest {
     assertThat(result)
         .hasFieldOrPropertyWithValue("code", 409)
         .hasMessageContaining("Pod 'foo' already exists");
+    assertLocked(2, 0);
   }
 
   @Test
@@ -141,6 +119,7 @@ class KubernetesCrudDispatcherPostTest {
     assertThat(result)
         .hasFieldOrPropertyWithValue("code", 422)
         .hasMessageContaining("Required value: kind is required");
+    assertLocked(1, 0);
   }
 
   @Test
@@ -159,6 +138,7 @@ class KubernetesCrudDispatcherPostTest {
         .hasFieldOrPropertyWithValue("code", 422)
         .hasMessageContaining("ConfigMap is invalid")
         .hasMessageContaining("Required value: metadata is required");
+    assertLocked(1, 0);
   }
 
   @Test
@@ -181,6 +161,7 @@ class KubernetesCrudDispatcherPostTest {
         .returns(400, HttpResponse::code)
         .extracting(HttpResponse::body).asString()
         .contains("the namespace of the object (different) does not match the namespace on the URL (test)");
+    assertLocked(1, 0);
   }
 
   @Test
@@ -199,5 +180,6 @@ class KubernetesCrudDispatcherPostTest {
     assertThat(result)
         .hasFieldOrPropertyWithValue("spec.species", "Barn owl")
         .hasFieldOrPropertyWithValue("status.notes", null);
+    assertLocked(2, 0);
   }
 }
