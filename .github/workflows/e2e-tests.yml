@@ -60,8 +60,8 @@ jobs:
       - name: Install Kubernetes Client
         run: ./mvnw ${MAVEN_ARGS} clean install -DskipTests -Djacoco.skip=true
 
-  minikube:
-    name: K8S
+  minikube_baremetal:
+    name: Baremetal K8S
     needs: buildWithoutTests
     runs-on: ubuntu-latest
     if: github.repository == 'fabric8io/kubernetes-client'
@@ -93,23 +93,25 @@ jobs:
         run: |
           ./mvnw ${MAVEN_ARGS} -Pitests -pl $IT_MODULE test -Dtest="io.fabric8.kubernetes.**"
 
-  k8s-1_26:
-    name: K8S 1.26
+  minikube_docker:
+    name: Docker K8S
     needs: buildWithoutTests
     runs-on: ubuntu-latest
     if: github.repository == 'fabric8io/kubernetes-client'
     strategy:
       fail-fast: false
+      matrix:
+        kubernetes: [v1.27.3, v1.26.0]
     steps:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Setup Minikube-Kubernetes
         uses: manusa/actions-setup-minikube@v2.7.2
         with:
-          minikube version: v1.28.0
+          minikube version: v1.30.1
           driver: docker
           container runtime: containerd
-          kubernetes version: v1.26.0
+          kubernetes version: ${{ matrix.kubernetes }}
           github token: ${{ secrets.GITHUB_TOKEN }}
           start args: '--force'
       - name: Cache .m2 registry
