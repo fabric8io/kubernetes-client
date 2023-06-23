@@ -21,12 +21,16 @@ import io.cert_manager.v1.certificaterequestspec.Ten;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import org.junit.jupiter.api.Test;
 
+import java.time.format.DateTimeFormatter;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 import static io.cert_manager.v1.CertificateRequestSpec.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class TestDefaultValues {
+
+  DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssX");
 
   @Test
   void testDefaultValues() throws Exception {
@@ -46,6 +50,7 @@ class TestDefaultValues {
     List<String> nine = cr.getSpec().getNine();
     Ten ten = cr.getSpec().getTen();
     Eleven eleven = cr.getSpec().getEleven();
+    ZonedDateTime twelve = cr.getSpec().getTwelve();
 
     // Assert
     assertEquals("one", one);
@@ -62,5 +67,6 @@ class TestDefaultValues {
     assertEquals("tenone", ten.getTenOne());
     assertEquals("tentwo", ten.getTenTwo());
     assertEquals(Eleven.BAZ, eleven);
+    assertEquals(ZonedDateTime.parse("2017-07-21T17:32:28Z", formatter), twelve);
   }
 }

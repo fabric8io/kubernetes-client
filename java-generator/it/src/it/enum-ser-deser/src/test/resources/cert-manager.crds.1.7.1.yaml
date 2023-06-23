@@ -92,6 +92,9 @@ spec:
                 - issuerRef
                 - request
               properties:
+                datetime:
+                  format: date-time
+                  type: string
                 duration:
                   description: The requested 'duration' (i.e. lifetime) of the Certificate. This option may be ignored/overridden by some issuer types.
                   type: string

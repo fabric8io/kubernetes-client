@@ -39,6 +39,8 @@ import io.fabric8.kubernetes.client.utils.Utils;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static io.fabric8.java.generator.nodes.JPrimitiveNameAndType.DATETIME_NAME;
+
 public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnnotations {
 
   public static final String DEPRECATED_FIELD_MARKER = "deprecated";
@@ -215,6 +217,12 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
                 new Name("com.fasterxml.jackson.annotation.JsonProperty"),
                 new StringLiteralExpr(originalFieldName)));
 
+        if (prop.getClassType().equals(DATETIME_NAME)) {
+          objField.addAnnotation(new SingleMemberAnnotationExpr(
+              new Name("com.fasterxml.jackson.annotation.JsonFormat"),
+              new NameExpr("timezone = \"UTC\", pattern = \"" + DATETIME_FORMAT + "\"")));
+        }
+
         if (isRequired) {
           objField.addAnnotation("io.fabric8.generator.annotation.Required");
         }
@@ -347,6 +355,9 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
         return new DoubleLiteralExpr(value + "f");
       } else if (prop.getClassType().equals("Boolean") && prop.getDefaultValue().isBoolean()) {
         return new BooleanLiteralExpr(prop.getDefaultValue().booleanValue());
+      } else if (prop.getClassType().equals(DATETIME_NAME) && prop.getDefaultValue().isTextual()) {
+        return new NameExpr(DATETIME_NAME + ".parse(" + prop.getDefaultValue()
+            + ", java.time.format.DateTimeFormatter.ofPattern(\"" + DATETIME_FORMAT + "\"))");
       } else {
         return new NameExpr(value);
       }

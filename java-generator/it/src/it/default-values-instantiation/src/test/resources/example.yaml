@@ -97,5 +97,9 @@ spec:
                     - "bar"
                     - "baz"
                   default: "baz"
+                twelve:
+                  type: string
+                  format: date-time
+                  default: "2017-07-21T17:32:28Z"
       served: true
       storage: true

@@ -20,6 +20,7 @@
 
 #### _**Note**_: Breaking changes
 * Fix #2718: KubernetesResourceUtil.isResourceReady was deprecated.  Use
+* Fix #5279: (java-generator) Add native support for `date-time` fields, they are now mapped to native `java.time.ZonedDateTime`
 
 ### 6.7.2 (2023-06-15)
 

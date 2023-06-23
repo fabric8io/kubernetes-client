@@ -39,6 +39,7 @@ public abstract class AbstractJSONSchema2Pojo {
   static final String FLOAT_CRD_TYPE = "float";
   static final String DOUBLE_CRD_TYPE = "double";
   static final String STRING_CRD_TYPE = "string";
+  static final String DATETIME_CRD_TYPE = "date-time";
   static final String OBJECT_CRD_TYPE = "object";
   static final String ARRAY_CRD_TYPE = "array";
 
@@ -47,6 +48,9 @@ public abstract class AbstractJSONSchema2Pojo {
         new Name("javax.annotation.processing.Generated"),
         new StringLiteralExpr("io.fabric8.java.generator.CRGeneratorRunner"));
   }
+
+  // RFC 3339 - from: https://swagger.io/docs/specification/data-models/data-types/
+  public static final String DATETIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ssX";
 
   protected final String description;
   protected final Config config;
@@ -197,7 +201,17 @@ public abstract class AbstractJSONSchema2Pojo {
               return fromJsonSchema.apply(JPrimitiveNameAndType.DOUBLE);
           }
         case STRING_CRD_TYPE:
-          return fromJsonSchema.apply(JPrimitiveNameAndType.STRING);
+          String stringFormat = prop.getFormat();
+          if (stringFormat == null)
+            stringFormat = STRING_CRD_TYPE;
+
+          switch (stringFormat) {
+            case DATETIME_CRD_TYPE:
+              return fromJsonSchema.apply(JPrimitiveNameAndType.DATETIME);
+            case STRING_CRD_TYPE:
+            default:
+              return fromJsonSchema.apply(JPrimitiveNameAndType.STRING);
+          }
         case OBJECT_CRD_TYPE:
           if (prop.getAdditionalProperties() != null && prop.getAdditionalProperties().getSchema() != null) {
             return fromJsonSchema.apply(new JMapNameAndType(key));

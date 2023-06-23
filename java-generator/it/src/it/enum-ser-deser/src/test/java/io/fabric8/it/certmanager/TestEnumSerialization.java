@@ -25,11 +25,15 @@ import io.fabric8.java.generator.testing.KubernetesResourceDiff;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.Files;
+import java.time.format.DateTimeFormatter;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class TestEnumSerialization {
+
+  DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssX");
 
   @Test
   void testDeserialization() {
@@ -47,6 +51,8 @@ class TestEnumSerialization {
     assertEquals(CertificateRequestSpec.Usages.DIGITAL_SIGNATURE, usagesList.get(2));
     assertEquals(CertificateRequestSpec.Usages.SERVER_AUTH, usagesList.get(3));
     assertEquals(CertificateRequestSpec.Usages.S_MIME, usagesList.get(4));
+
+    assertEquals(ZonedDateTime.parse("2017-07-21T17:32:28Z", formatter), sample.getSpec().getDatetime());
   }
 
   @Test
