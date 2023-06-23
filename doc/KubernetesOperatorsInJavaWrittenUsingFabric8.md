@@ -15,3 +15,8 @@ You can easily rely on Fabric8 Kubernetes Client to implement your Kubernetes Op
 - [RabbitMQ Operator](https://github.com/YJFinBJ/rabbitmq-operator)
 - [Locust k8s operator: Cloud native solution to run Locust on any Kubernetes cluster](https://github.com/AbdelrhmanHamouda/locust-k8s-operator)
 
+While sometimes simply using the client is enough to create an operator, using a specialized 
+framework to do so might make the task easier. The 
+[Java Operator SDK (JOSDK)](https://github.com/operator-framework/java-operator-sdk) builds on 
+top of the Fabric8 Kubernetes Client to provide higher-level abstractions, common operator 
+patterns and optimizations, letting developers focus on their operator's logic.
