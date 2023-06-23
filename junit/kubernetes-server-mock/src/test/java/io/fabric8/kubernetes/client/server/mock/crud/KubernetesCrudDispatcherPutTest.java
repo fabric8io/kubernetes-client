@@ -22,49 +22,24 @@ import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.rbac.ClusterRole;
 import io.fabric8.kubernetes.api.model.rbac.ClusterRoleBuilder;
-import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.ReplaceDeletable;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.HttpResponse;
-import io.fabric8.kubernetes.client.server.mock.KubernetesCrudDispatcher;
-import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.kubernetes.client.server.mock.crud.crd.Owl;
 import io.fabric8.kubernetes.client.utils.Serialization;
-import io.fabric8.mockwebserver.Context;
-import okhttp3.mockwebserver.MockWebServer;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 import static io.fabric8.kubernetes.client.dsl.internal.OperationSupport.JSON;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class KubernetesCrudDispatcherPutTest {
-
-  private KubernetesMockServer server;
-  private KubernetesClient client;
-
-  @BeforeEach
-  void setUp() {
-    server = new KubernetesMockServer(new Context(Serialization.jsonMapper()),
-        new MockWebServer(), new HashMap<>(), new KubernetesCrudDispatcher(), false);
-    server.start();
-    client = server.createClient();
-  }
-
-  @AfterEach
-  void tearDown() {
-    client.close();
-    server.shutdown();
-  }
+class KubernetesCrudDispatcherPutTest extends KubernetesCrudDispatcherTestBase {
 
   @Test
   @DisplayName("replace, not existing, should return not found")
@@ -78,6 +53,8 @@ class KubernetesCrudDispatcherPutTest {
     assertThat(result)
         .hasFieldOrPropertyWithValue("code", 404)
         .hasMessageContaining("Not Found");
+    // replace will first fetch from the server, resulting in the 404 status
+    assertLocked(0, 1);
   }
 
   @Test
@@ -95,6 +72,7 @@ class KubernetesCrudDispatcherPutTest {
     // Then
     assertThat(result)
         .returns(404, HttpResponse::code);
+    assertLocked(1, 0);
   }
 
   @Test
@@ -117,6 +95,7 @@ class KubernetesCrudDispatcherPutTest {
         .returns(400, HttpResponse::code)
         .extracting(HttpResponse::body).asString()
         .contains("the name of the object (different) does not match the name on the URL (mismatched-name)");
+    assertLocked(2, 0);
   }
 
   @Test
@@ -143,6 +122,7 @@ class KubernetesCrudDispatcherPutTest {
         .hasFieldOrPropertyWithValue("metadata.resourceVersion", "2")
         .hasFieldOrPropertyWithValue("metadata.generation", 2L)
         .hasFieldOrPropertyWithValue("data.change", "changed");
+    assertLocked(2, 0);
   }
 
   @Test
@@ -163,6 +143,7 @@ class KubernetesCrudDispatcherPutTest {
         .hasFieldOrPropertyWithValue("metadata.generation", 2L)
         .extracting(ClusterRole::getRules).asList().flatExtracting("resourceNames")
         .containsExactlyInAnyOrder("Resource", "Other");
+    assertLocked(2, 0);
   }
 
   @Test
@@ -181,6 +162,7 @@ class KubernetesCrudDispatcherPutTest {
         .hasFieldOrPropertyWithValue("metadata.resourceVersion", "1")
         .hasFieldOrPropertyWithValue("metadata.generation", 1L)
         .hasFieldOrPropertyWithValue("data.change", "me");
+    assertLocked(2, 0);
   }
 
   @Test
@@ -209,6 +191,7 @@ class KubernetesCrudDispatcherPutTest {
         .returns(409, KubernetesClientException::getCode)
         .extracting(KubernetesClientException::getMessage).asString()
         .contains("the object has been modified");
+    assertLocked(3, 0);
   }
 
   @Test
@@ -225,6 +208,7 @@ class KubernetesCrudDispatcherPutTest {
         .hasFieldOrPropertyWithValue("metadata.resourceVersion", "2")
         .hasFieldOrPropertyWithValue("metadata.generation", 1L)
         .hasFieldOrPropertyWithValue("status.message", "new-message");
+    assertLocked(2, 0);
   }
 
   @Test
@@ -245,6 +229,7 @@ class KubernetesCrudDispatcherPutTest {
     assertThat(result)
         .hasFieldOrPropertyWithValue("spec.species", "Snowy owl")
         .hasFieldOrPropertyWithValue("status.notes", null);
+    assertLocked(3, 1);
   }
 
   @Test
@@ -265,5 +250,6 @@ class KubernetesCrudDispatcherPutTest {
     assertThat(result)
         .hasFieldOrPropertyWithValue("spec.species", "Barn owl")
         .hasFieldOrPropertyWithValue("status.notes", "updated");
+    assertLocked(3, 1);
   }
 }

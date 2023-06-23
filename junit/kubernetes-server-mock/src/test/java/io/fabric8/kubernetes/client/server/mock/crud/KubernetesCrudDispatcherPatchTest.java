@@ -22,50 +22,24 @@ import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.rbac.ClusterRole;
 import io.fabric8.kubernetes.api.model.rbac.ClusterRoleBuilder;
-import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.NamespaceableResource;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.PatchContext;
 import io.fabric8.kubernetes.client.dsl.base.PatchType;
-import io.fabric8.kubernetes.client.server.mock.KubernetesCrudDispatcher;
-import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.kubernetes.client.server.mock.crud.crd.Owl;
-import io.fabric8.kubernetes.client.utils.Serialization;
-import io.fabric8.mockwebserver.Context;
-import okhttp3.mockwebserver.MockWebServer;
 import org.assertj.core.api.InstanceOfAssertFactories;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import java.util.HashMap;
 import java.util.function.UnaryOperator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class KubernetesCrudDispatcherPatchTest {
-
-  private KubernetesMockServer server;
-  private KubernetesClient client;
-
-  @BeforeEach
-  void setUp() {
-    server = new KubernetesMockServer(new Context(Serialization.jsonMapper()),
-        new MockWebServer(), new HashMap<>(), new KubernetesCrudDispatcher(), false);
-    server.start();
-    client = server.createClient();
-  }
-
-  @AfterEach
-  void tearDown() {
-    client.close();
-    server.shutdown();
-  }
+class KubernetesCrudDispatcherPatchTest extends KubernetesCrudDispatcherTestBase {
 
   @Test
   @DisplayName("patch, not existing, should return not found")
@@ -79,6 +53,7 @@ class KubernetesCrudDispatcherPatchTest {
     assertThat(result)
         .hasFieldOrPropertyWithValue("code", 404)
         .hasMessageContaining("Not Found");
+    assertLocked(1, 0);
   }
 
   @Test
@@ -96,6 +71,7 @@ class KubernetesCrudDispatcherPatchTest {
     assertThat(result)
         .hasFieldOrPropertyWithValue("code", 415)
         .hasMessageContaining("Unsupported Media Type");
+    assertLocked(2, 0);
   }
 
   @Test
@@ -114,6 +90,8 @@ class KubernetesCrudDispatcherPatchTest {
     assertThat(result)
         .hasFieldOrPropertyWithValue("code", 400)
         .hasMessageContaining("the name of the object (different) does not match the name on the URL (mismatched-name)");
+    // Patch reads before write
+    assertLocked(2, 1);
   }
 
   @Test
@@ -132,6 +110,8 @@ class KubernetesCrudDispatcherPatchTest {
     assertThat(result)
         .hasFieldOrPropertyWithValue("code", 400)
         .hasMessageContaining("the namespace of the object (different) does not match the namespace on the URL (test)");
+    // Patch reads before write
+    assertLocked(2, 1);
   }
 
   @Test
@@ -158,6 +138,7 @@ class KubernetesCrudDispatcherPatchTest {
         .hasFieldOrPropertyWithValue("metadata.generation", created.getMetadata().getGeneration() + 1)
         .hasFieldOrPropertyWithValue("spec.dnsPolicy", "always-dns")
         .hasFieldOrPropertyWithValue("spec.hostname", "changed");
+    assertLocked(2, 0);
   }
 
   @Test
