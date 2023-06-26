@@ -7,6 +7,7 @@
 #### Improvements
 * Fix #5166: Remove opinionated messages from Config's `errorMessages` and deprecate it
 * Fix #5233: Generalized SchemaSwap to allow for cycle expansion
+* Fix #5287: Add an option to filter the files processed by the java-generator, based on a suffix allowlist
 
 #### Dependency Upgrade
 
