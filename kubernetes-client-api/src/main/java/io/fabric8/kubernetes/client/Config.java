@@ -702,71 +702,96 @@ public class Config {
   // the kubeconfig references some assets via relative paths.
   private static boolean loadFromKubeconfig(Config config, String context, String kubeconfigContents) {
     try {
-      io.fabric8.kubernetes.api.model.Config kubeConfig = KubeConfigUtils.parseConfigFromString(kubeconfigContents);
-      config.setContexts(kubeConfig.getContexts());
-      Context currentContext = setCurrentContext(context, config, kubeConfig);
-      Cluster currentCluster = KubeConfigUtils.getCluster(kubeConfig, currentContext);
-      if (currentContext != null) {
-        config.setNamespace(currentContext.getNamespace());
-      }
-      if (currentCluster != null) {
-        config.setMasterUrl(currentCluster.getServer());
-        config.setTrustCerts(currentCluster.getInsecureSkipTlsVerify() != null && currentCluster.getInsecureSkipTlsVerify());
-        config.setDisableHostnameVerification(
-            currentCluster.getInsecureSkipTlsVerify() != null && currentCluster.getInsecureSkipTlsVerify());
-        config.setCaCertData(currentCluster.getCertificateAuthorityData());
-        AuthInfo currentAuthInfo = KubeConfigUtils.getUserAuthInfo(kubeConfig, currentContext);
-        if (currentAuthInfo != null) {
-          // rewrite tls asset paths if needed
-          String caCertFile = currentCluster.getCertificateAuthority();
-          String clientCertFile = currentAuthInfo.getClientCertificate();
-          String clientKeyFile = currentAuthInfo.getClientKey();
-          File configFile = config.file;
-          if (configFile != null) {
-            caCertFile = absolutify(configFile, currentCluster.getCertificateAuthority());
-            clientCertFile = absolutify(configFile, currentAuthInfo.getClientCertificate());
-            clientKeyFile = absolutify(configFile, currentAuthInfo.getClientKey());
-          }
-          config.setCaCertFile(caCertFile);
-          config.setClientCertFile(clientCertFile);
-          config.setClientCertData(currentAuthInfo.getClientCertificateData());
-          config.setClientKeyFile(clientKeyFile);
-          config.setClientKeyData(currentAuthInfo.getClientKeyData());
-          config.setClientKeyAlgo(getKeyAlgorithm(config.getClientKeyFile(), config.getClientKeyData()));
-          config.setAutoOAuthToken(currentAuthInfo.getToken());
-          config.setUsername(currentAuthInfo.getUsername());
-          config.setPassword(currentAuthInfo.getPassword());
-
-          if (Utils.isNullOrEmpty(config.getAutoOAuthToken()) && currentAuthInfo.getAuthProvider() != null) {
-            if (currentAuthInfo.getAuthProvider().getConfig() != null) {
-              config.setAuthProvider(currentAuthInfo.getAuthProvider());
-              if (!Utils.isNullOrEmpty(currentAuthInfo.getAuthProvider().getConfig().get(ACCESS_TOKEN))) {
-                // GKE token
-                config.setAutoOAuthToken(currentAuthInfo.getAuthProvider().getConfig().get(ACCESS_TOKEN));
-              } else if (!Utils.isNullOrEmpty(currentAuthInfo.getAuthProvider().getConfig().get(ID_TOKEN))) {
-                // OpenID Connect token
-                config.setAutoOAuthToken(currentAuthInfo.getAuthProvider().getConfig().get(ID_TOKEN));
-              }
-            }
-          } else if (config.getOauthTokenProvider() == null) { // https://kubernetes.io/docs/reference/access-authn-authz/authentication/#client-go-credential-plugins
-            ExecConfig exec = currentAuthInfo.getExec();
-            if (exec != null) {
-              ExecCredential ec = getExecCredentialFromExecConfig(exec, configFile);
-              if (ec != null && ec.status != null && ec.status.token != null) {
-                config.setAutoOAuthToken(ec.status.token);
-              } else {
-                LOGGER.warn("No token returned");
-              }
-            }
-          }
-        }
+      if (kubeconfigContents != null && !kubeconfigContents.isEmpty()) {
+        io.fabric8.kubernetes.api.model.Config kubeConfig = KubeConfigUtils.parseConfigFromString(kubeconfigContents);
+        mergeKubeConfigContents(config, context, kubeConfig);
         return true;
       }
-    } catch (Exception e) {
-      throw KubernetesClientException.launderThrowable("Failed to parse the kubeconfig.", e);
+    } catch (IOException ioException) {
+      throw KubernetesClientException.launderThrowable("Failed to parse the kubeconfig.", ioException);
     }
 
     return false;
+  }
+
+  private static void mergeKubeConfigContents(Config config, String context, io.fabric8.kubernetes.api.model.Config kubeConfig)
+      throws IOException {
+    config.setContexts(kubeConfig.getContexts());
+    Context currentContext = setCurrentContext(context, config, kubeConfig);
+    Cluster currentCluster = KubeConfigUtils.getCluster(kubeConfig, currentContext);
+    if (currentContext != null) {
+      config.setNamespace(currentContext.getNamespace());
+    }
+    if (currentCluster != null) {
+      config.setMasterUrl(currentCluster.getServer());
+      config.setTrustCerts(currentCluster.getInsecureSkipTlsVerify() != null && currentCluster.getInsecureSkipTlsVerify());
+      config.setDisableHostnameVerification(
+          currentCluster.getInsecureSkipTlsVerify() != null && currentCluster.getInsecureSkipTlsVerify());
+      config.setCaCertData(currentCluster.getCertificateAuthorityData());
+      AuthInfo currentAuthInfo = KubeConfigUtils.getUserAuthInfo(kubeConfig, currentContext);
+      if (currentAuthInfo != null) {
+        mergeKubeConfigAuthInfo(config, currentCluster, currentAuthInfo);
+      }
+    }
+  }
+
+  private static void mergeKubeConfigAuthInfo(Config config, Cluster currentCluster, AuthInfo currentAuthInfo)
+      throws IOException {
+    // rewrite tls asset paths if needed
+    String caCertFile = currentCluster.getCertificateAuthority();
+    String clientCertFile = currentAuthInfo.getClientCertificate();
+    String clientKeyFile = currentAuthInfo.getClientKey();
+    File configFile = config.file;
+    if (configFile != null) {
+      caCertFile = absolutify(configFile, currentCluster.getCertificateAuthority());
+      clientCertFile = absolutify(configFile, currentAuthInfo.getClientCertificate());
+      clientKeyFile = absolutify(configFile, currentAuthInfo.getClientKey());
+    }
+    config.setCaCertFile(caCertFile);
+    config.setClientCertFile(clientCertFile);
+    config.setClientCertData(currentAuthInfo.getClientCertificateData());
+    config.setClientKeyFile(clientKeyFile);
+    config.setClientKeyData(currentAuthInfo.getClientKeyData());
+    config.setClientKeyAlgo(getKeyAlgorithm(config.getClientKeyFile(), config.getClientKeyData()));
+    config.setAutoOAuthToken(currentAuthInfo.getToken());
+    config.setUsername(currentAuthInfo.getUsername());
+    config.setPassword(currentAuthInfo.getPassword());
+
+    if (Utils.isNullOrEmpty(config.getAutoOAuthToken()) && currentAuthInfo.getAuthProvider() != null) {
+      mergeKubeConfigAuthProviderConfig(config, currentAuthInfo);
+    } else if (config.getOauthTokenProvider() == null) { // https://kubernetes.io/docs/reference/access-authn-authz/authentication/#client-go-credential-plugins
+      mergeKubeConfigExecCredential(config, currentAuthInfo.getExec(), configFile);
+    }
+  }
+
+  private static void mergeKubeConfigAuthProviderConfig(Config config, AuthInfo currentAuthInfo) {
+    if (currentAuthInfo.getAuthProvider().getConfig() != null) {
+      config.setAuthProvider(currentAuthInfo.getAuthProvider());
+      if (!Utils.isNullOrEmpty(currentAuthInfo.getAuthProvider().getConfig().get(ACCESS_TOKEN))) {
+        // GKE token
+        config.setAutoOAuthToken(currentAuthInfo.getAuthProvider().getConfig().get(ACCESS_TOKEN));
+      } else if (!Utils.isNullOrEmpty(currentAuthInfo.getAuthProvider().getConfig().get(ID_TOKEN))) {
+        // OpenID Connect token
+        config.setAutoOAuthToken(currentAuthInfo.getAuthProvider().getConfig().get(ID_TOKEN));
+      }
+    }
+  }
+
+  private static void mergeKubeConfigExecCredential(Config config, ExecConfig exec, File configFile)
+      throws IOException {
+    if (exec != null) {
+      try {
+        ExecCredential ec = getExecCredentialFromExecConfig(exec, configFile);
+        if (ec != null && ec.status != null && ec.status.token != null) {
+          config.setAutoOAuthToken(ec.status.token);
+        } else {
+          LOGGER.warn("No token returned");
+        }
+      } catch (InterruptedException interruptedException) {
+        Thread.currentThread().interrupt();
+        throw KubernetesClientException.launderThrowable("failure while running exec credential ", interruptedException);
+      }
+    }
   }
 
   protected static ExecCredential getExecCredentialFromExecConfig(ExecConfig exec, File configFile)
