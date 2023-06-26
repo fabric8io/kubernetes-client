@@ -100,7 +100,8 @@ public abstract class JavaGeneratorPluginExtension {
     javaGeneratorConfig = new Config(isEnumUppercase,
         javaGeneratorConfig.isObjectExtraAnnotations(),
         javaGeneratorConfig.isGeneratedAnnotations(),
-        javaGeneratorConfig.getPackageOverrides());
+        javaGeneratorConfig.getPackageOverrides(),
+        javaGeneratorConfig.getFilesSuffixes());
   }
 
   /**
@@ -115,7 +116,8 @@ public abstract class JavaGeneratorPluginExtension {
     javaGeneratorConfig = new Config(javaGeneratorConfig.isUppercaseEnums(),
         isExtraAnnotations,
         javaGeneratorConfig.isGeneratedAnnotations(),
-        javaGeneratorConfig.getPackageOverrides());
+        javaGeneratorConfig.getPackageOverrides(),
+        javaGeneratorConfig.getFilesSuffixes());
   }
 
   /**
@@ -130,7 +132,8 @@ public abstract class JavaGeneratorPluginExtension {
     javaGeneratorConfig = new Config(javaGeneratorConfig.isUppercaseEnums(),
         javaGeneratorConfig.isObjectExtraAnnotations(),
         isGeneratedAnnotations,
-        javaGeneratorConfig.getPackageOverrides());
+        javaGeneratorConfig.getPackageOverrides(),
+        javaGeneratorConfig.getFilesSuffixes());
   }
 
   /**
@@ -145,6 +148,23 @@ public abstract class JavaGeneratorPluginExtension {
     javaGeneratorConfig = new Config(javaGeneratorConfig.isUppercaseEnums(),
         javaGeneratorConfig.isObjectExtraAnnotations(),
         javaGeneratorConfig.isGeneratedAnnotations(),
-        packageOverrides);
+        packageOverrides,
+        javaGeneratorConfig.getFilesSuffixes());
+  }
+
+  /**
+   * Files suffixes to be processed
+   *
+   */
+  public List<String> getFilesSuffixes() {
+    return javaGeneratorConfig.getFilesSuffixes();
+  }
+
+  public void setPackageOverrides(final List<String> filesSuffixes) {
+    javaGeneratorConfig = new Config(javaGeneratorConfig.isUppercaseEnums(),
+        javaGeneratorConfig.isObjectExtraAnnotations(),
+        javaGeneratorConfig.isGeneratedAnnotations(),
+        javaGeneratorConfig.getPackageOverrides(),
+        filesSuffixes);
   }
 }

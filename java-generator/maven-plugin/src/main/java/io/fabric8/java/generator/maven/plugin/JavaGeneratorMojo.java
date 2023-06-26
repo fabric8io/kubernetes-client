@@ -102,6 +102,13 @@ public class JavaGeneratorMojo extends AbstractMojo {
   @Parameter(property = "fabric8.java-generator.package-overrides", required = false)
   Map<String, String> packageOverrides = null;
 
+  /**
+   * Files suffixes to be processed
+   *
+   */
+  @Parameter(property = "fabric8.java-generator.files-suffixes", required = false)
+  List<String> filesSuffixes = null;
+
   @Override
   public void execute() throws MojoExecutionException {
     final Config config = Config.builder()
@@ -109,6 +116,7 @@ public class JavaGeneratorMojo extends AbstractMojo {
         .objectExtraAnnotations(extraAnnotations)
         .generatedAnnotations(generatedAnnotations)
         .packageOverrides(packageOverrides)
+        .filesSuffixes(filesSuffixes)
         .build();
 
     List<JavaGenerator> runners = new ArrayList<>();

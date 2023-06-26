@@ -91,6 +91,8 @@ Usage: java-gen [-hV] [-add-extra-annotations] [-enum-uppercase]
                             crds
       -enum-uppercase, --enum-uppercase
                           Uppercase the enum values
+      -files-suffixes, --files-suffixes=<filesSuffixes>
+                          Filter the source files with the specific suffixes
   -h, --help              Show this help message and exit.
       -package-overrides, --package-overrides=<String=String>
                           Apply the overrides to the package names
@@ -117,6 +119,10 @@ And the corresponding configurations of the Maven plugin are (output of `mvn hel
     extraAnnotations
       User property: fabric8.java-generator.extra-annotations
       Generate Extra annotation for lombok and sundrio integration
+
+    filesSuffixes
+      User property: fabric8.java-generator.files-suffixes
+      Files suffixes to be processed
 
     generatedAnnotations
       User property: fabric8.java-generator.generated-annotations

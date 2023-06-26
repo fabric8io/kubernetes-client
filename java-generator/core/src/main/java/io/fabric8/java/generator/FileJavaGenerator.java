@@ -46,11 +46,13 @@ public class FileJavaGenerator implements JavaGenerator {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(FileJavaGenerator.class);
 
+  private final Config config;
   private final File source;
   private final CRGeneratorRunner crGeneratorRunner;
 
   public FileJavaGenerator(Config config, File source) {
     crGeneratorRunner = new CRGeneratorRunner(config);
+    this.config = config;
     this.source = source;
   }
 
@@ -64,6 +66,7 @@ public class FileJavaGenerator implements JavaGenerator {
         walk
             .map(Path::toFile)
             .filter(f -> !f.getAbsolutePath().equals(source.getAbsolutePath()) && f.isFile())
+            .filter(f -> config.getFilesSuffixes().stream().anyMatch(suffix -> f.getName().endsWith(suffix)))
             .forEach(f -> runOnSingleSource(f, outputDirectory));
       } catch (IOException e) {
         throw new JavaGeneratorException(

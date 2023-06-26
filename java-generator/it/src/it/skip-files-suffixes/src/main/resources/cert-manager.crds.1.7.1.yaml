@@ -1,0 +1,107 @@
+#
+# Copyright (C) 2015 Red Hat, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#         http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+
+---
+# Partial Source: cert-manager/templates/templates.out
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: certificaterequests.cert-manager.io
+  annotations:
+    cert-manager.io/inject-ca-from-secret: 'cert-manager/cert-manager-webhook-ca'
+  labels:
+    app: 'cert-manager'
+    app.kubernetes.io/name: 'cert-manager'
+    app.kubernetes.io/instance: 'cert-manager'
+    # Generated labels
+    app.kubernetes.io/version: "v1.7.1"
+spec:
+  group: cert-manager.io
+  names:
+    kind: CertificateRequest
+    listKind: CertificateRequestList
+    plural: certificaterequests
+    shortNames:
+      - cr
+      - crs
+    singular: certificaterequest
+    categories:
+      - cert-manager
+  scope: Namespaced
+  versions:
+    - name: v1
+      subresources:
+        status: {}
+      schema:
+        openAPIV3Schema:
+          description: "A CertificateRequest is used to request a signed certificate from one of the configured issuers. \n All fields within the CertificateRequest's `spec` are immutable after creation. A CertificateRequest will either succeed or fail, as denoted by its `status.state` field. \n A CertificateRequest is a one-shot resource, meaning it represents a single point in time request for a certificate and cannot be re-used."
+          type: object
+          required:
+            - spec
+          properties:
+            apiVersion:
+              description: 'APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+              type: string
+            kind:
+              description: 'Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+              type: string
+            metadata:
+              type: object
+            spec:
+              description: Desired state of the CertificateRequest resource.
+              type: object
+              required:
+                - issuerRef
+                - request
+              properties:
+                duration:
+                  description: The requested 'duration' (i.e. lifetime) of the Certificate. This option may be ignored/overridden by some issuer types.
+                  type: string
+            status:
+              type: object
+              properties:
+                authorizations:
+                  description: Authorizations contains data returned from the ACME server on what authorizations must be completed in order to validate the DNS names specified on the Order.
+                  type: array
+                  items:
+                    description: ACMEAuthorization contains data returned from the ACME server on an authorization that must be completed in order validate a DNS name on an ACME Order resource.
+                    type: object
+                    required:
+                      - url
+                    properties:
+                      challenges:
+                        description: Challenges specifies the challenge types offered by the ACME server. One of these challenge types will be selected when validating the DNS name and an appropriate Challenge resource will be created to perform the ACME challenge process.
+                        type: array
+                        items:
+                          description: Challenge specifies a challenge offered by the ACME server for an Order. An appropriate Challenge resource can be created to perform the ACME challenge process.
+                          type: object
+                          required:
+                            - token
+                            - type
+                            - url
+                          properties:
+                            token:
+                              description: Token is the token that must be presented for this challenge. This is used to compute the 'key' that must also be presented.
+                              type: string
+                            type:
+                              description: Type is the type of challenge being offered, e.g. 'http-01', 'dns-01', 'tls-sni-01', etc. This is the raw value retrieved from the ACME server. Only 'http-01' and 'dns-01' are supported by cert-manager, other values will be ignored.
+                              type: string
+                            url:
+                              description: URL is the URL of this challenge. It can be used to retrieve additional metadata about the Challenge from the ACME server.
+                              type: string
+      served: true
+      storage: true
