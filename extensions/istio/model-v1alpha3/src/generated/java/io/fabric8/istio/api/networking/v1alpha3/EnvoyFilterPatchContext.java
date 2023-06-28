@@ -3,8 +3,10 @@ package io.fabric8.istio.api.networking.v1alpha3;
 
 import java.util.HashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
+@Generated("jsonschema2pojo")
 public enum EnvoyFilterPatchContext {
 
     ANY(0),
@@ -24,7 +26,7 @@ public enum EnvoyFilterPatchContext {
         }
     }
 
-    private EnvoyFilterPatchContext(Integer value) {
+    EnvoyFilterPatchContext(Integer value) {
         this.value = value;
     }
 

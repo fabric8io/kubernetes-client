@@ -1,8 +1,9 @@
 
 package io.fabric8.istio.api.networking.v1alpha3;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -64,6 +65,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class EnvoyFilterEnvoyConfigObjectMatch implements KubernetesResource
 {
 
@@ -75,7 +77,7 @@ public class EnvoyFilterEnvoyConfigObjectMatch implements KubernetesResource
     @JsonProperty("proxy")
     private EnvoyFilterProxyMatch proxy;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -84,12 +86,6 @@ public class EnvoyFilterEnvoyConfigObjectMatch implements KubernetesResource
     public EnvoyFilterEnvoyConfigObjectMatch() {
     }
 
-    /**
-     * 
-     * @param proxy
-     * @param context
-     * @param objectTypes
-     */
     public EnvoyFilterEnvoyConfigObjectMatch(IsEnvoyFilterEnvoyConfigObjectMatchObjectTypes objectTypes, EnvoyFilterPatchContext context, EnvoyFilterProxyMatch proxy) {
         super();
         this.objectTypes = objectTypes;

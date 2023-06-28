@@ -2,9 +2,10 @@
 package io.fabric8.openshift.api.model.operatorhub.v1alpha1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -65,6 +66,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class APIServiceDescription implements KubernetesResource
 {
 
@@ -97,7 +99,7 @@ public class APIServiceDescription implements KubernetesResource
     @JsonProperty("version")
     private String version;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -106,21 +108,6 @@ public class APIServiceDescription implements KubernetesResource
     public APIServiceDescription() {
     }
 
-    /**
-     * 
-     * @param actionDescriptors
-     * @param specDescriptors
-     * @param displayName
-     * @param kind
-     * @param name
-     * @param containerPort
-     * @param description
-     * @param resources
-     * @param deploymentName
-     * @param statusDescriptors
-     * @param version
-     * @param group
-     */
     public APIServiceDescription(List<ActionDescriptor> actionDescriptors, Integer containerPort, String deploymentName, String description, String displayName, String group, String kind, String name, List<APIResourceReference> resources, List<SpecDescriptor> specDescriptors, List<StatusDescriptor> statusDescriptors, String version) {
         super();
         this.actionDescriptors = actionDescriptors;

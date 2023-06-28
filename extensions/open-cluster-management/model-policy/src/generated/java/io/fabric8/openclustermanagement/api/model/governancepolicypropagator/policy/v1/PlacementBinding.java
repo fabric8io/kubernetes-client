@@ -2,9 +2,10 @@
 package io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -74,6 +75,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1")
 @Group("policy.open-cluster-management.io")
+@Generated("jsonschema2pojo")
 public class PlacementBinding implements HasMetadata, Namespaced
 {
 
@@ -100,7 +102,7 @@ public class PlacementBinding implements HasMetadata, Namespaced
     @JsonProperty("subjects")
     private List<Subject> subjects = new ArrayList<Subject>();
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -109,15 +111,6 @@ public class PlacementBinding implements HasMetadata, Namespaced
     public PlacementBinding() {
     }
 
-    /**
-     * 
-     * @param metadata
-     * @param apiVersion
-     * @param placementRef
-     * @param kind
-     * @param subjects
-     * @param status
-     */
     public PlacementBinding(String apiVersion, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, PlacementSubject placementRef, PlacementBindingStatus status, List<Subject> subjects) {
         super();
         this.apiVersion = apiVersion;

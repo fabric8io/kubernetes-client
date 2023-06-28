@@ -2,9 +2,10 @@
 package io.fabric8.istio.api.networking.v1beta1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -67,6 +68,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class TrafficPolicy implements KubernetesResource
 {
 
@@ -82,7 +84,7 @@ public class TrafficPolicy implements KubernetesResource
     @JsonProperty("tls")
     private ClientTLSSettings tls;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -91,14 +93,6 @@ public class TrafficPolicy implements KubernetesResource
     public TrafficPolicy() {
     }
 
-    /**
-     * 
-     * @param loadBalancer
-     * @param portLevelSettings
-     * @param connectionPool
-     * @param tls
-     * @param outlierDetection
-     */
     public TrafficPolicy(ConnectionPoolSettings connectionPool, LoadBalancerSettings loadBalancer, OutlierDetection outlierDetection, List<TrafficPolicyPortTrafficPolicy> portLevelSettings, ClientTLSSettings tls) {
         super();
         this.connectionPool = connectionPool;

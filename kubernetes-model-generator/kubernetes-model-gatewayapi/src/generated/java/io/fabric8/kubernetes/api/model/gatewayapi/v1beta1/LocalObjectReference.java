@@ -1,8 +1,9 @@
 
 package io.fabric8.kubernetes.api.model.gatewayapi.v1beta1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -53,6 +54,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(io.fabric8.kubernetes.api.model.LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class LocalObjectReference implements KubernetesResource
 {
 
@@ -63,7 +65,7 @@ public class LocalObjectReference implements KubernetesResource
     @JsonProperty("name")
     private String name;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -72,12 +74,6 @@ public class LocalObjectReference implements KubernetesResource
     public LocalObjectReference() {
     }
 
-    /**
-     * 
-     * @param kind
-     * @param name
-     * @param group
-     */
     public LocalObjectReference(String group, String kind, String name) {
         super();
         this.group = group;

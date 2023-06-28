@@ -1,8 +1,9 @@
 
 package io.fabric8.kubernetes.api.model.autoscaling.v2beta2;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -55,6 +56,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class HPAScalingPolicy implements KubernetesResource
 {
 
@@ -65,7 +67,7 @@ public class HPAScalingPolicy implements KubernetesResource
     @JsonProperty("value")
     private Integer value;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -74,12 +76,6 @@ public class HPAScalingPolicy implements KubernetesResource
     public HPAScalingPolicy() {
     }
 
-    /**
-     * 
-     * @param periodSeconds
-     * @param type
-     * @param value
-     */
     public HPAScalingPolicy(Integer periodSeconds, String type, Integer value) {
         super();
         this.periodSeconds = periodSeconds;

@@ -2,10 +2,10 @@
 package io.fabric8.kubernetes.api.model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -49,6 +49,7 @@ import lombok.experimental.Accessors;
     ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
+@Generated("jsonschema2pojo")
 public class AuthInfo implements KubernetesResource
 {
 
@@ -86,7 +87,7 @@ public class AuthInfo implements KubernetesResource
     @JsonProperty("username")
     private java.lang.String username;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -95,24 +96,6 @@ public class AuthInfo implements KubernetesResource
     public AuthInfo() {
     }
 
-    /**
-     * 
-     * @param clientCertificate
-     * @param asGroups
-     * @param token
-     * @param authProvider
-     * @param as
-     * @param asUid
-     * @param extensions
-     * @param password
-     * @param clientKeyData
-     * @param clientKey
-     * @param asUserExtra
-     * @param clientCertificateData
-     * @param tokenFile
-     * @param exec
-     * @param username
-     */
     public AuthInfo(java.lang.String as, List<java.lang.String> asGroups, java.lang.String asUid, Map<String, ArrayList<String>> asUserExtra, AuthProviderConfig authProvider, java.lang.String clientCertificate, java.lang.String clientCertificateData, java.lang.String clientKey, java.lang.String clientKeyData, ExecConfig exec, List<NamedExtension> extensions, java.lang.String password, java.lang.String token, java.lang.String tokenFile, java.lang.String username) {
         super();
         this.as = as;

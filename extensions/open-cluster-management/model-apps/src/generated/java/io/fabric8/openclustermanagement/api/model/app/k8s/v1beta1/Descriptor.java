@@ -2,9 +2,10 @@
 package io.fabric8.openclustermanagement.api.model.app.k8s.v1beta1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -71,6 +72,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class Descriptor implements KubernetesResource
 {
 
@@ -98,7 +100,7 @@ public class Descriptor implements KubernetesResource
     @JsonProperty("version")
     private String version;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -107,18 +109,6 @@ public class Descriptor implements KubernetesResource
     public Descriptor() {
     }
 
-    /**
-     * 
-     * @param maintainers
-     * @param notes
-     * @param keywords
-     * @param description
-     * @param links
-     * @param owners
-     * @param icons
-     * @param type
-     * @param version
-     */
     public Descriptor(String description, List<ImageSpec> icons, List<String> keywords, List<Link> links, List<ContactData> maintainers, String notes, List<ContactData> owners, String type, String version) {
         super();
         this.description = description;

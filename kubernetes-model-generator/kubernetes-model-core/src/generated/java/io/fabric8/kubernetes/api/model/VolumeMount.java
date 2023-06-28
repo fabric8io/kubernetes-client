@@ -1,8 +1,9 @@
 
 package io.fabric8.kubernetes.api.model;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -37,6 +38,7 @@ import lombok.experimental.Accessors;
     ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
+@Generated("jsonschema2pojo")
 public class VolumeMount implements KubernetesResource
 {
 
@@ -53,7 +55,7 @@ public class VolumeMount implements KubernetesResource
     @JsonProperty("subPathExpr")
     private String subPathExpr;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -62,15 +64,6 @@ public class VolumeMount implements KubernetesResource
     public VolumeMount() {
     }
 
-    /**
-     * 
-     * @param mountPath
-     * @param mountPropagation
-     * @param name
-     * @param readOnly
-     * @param subPath
-     * @param subPathExpr
-     */
     public VolumeMount(String mountPath, String mountPropagation, String name, Boolean readOnly, String subPath, String subPathExpr) {
         super();
         this.mountPath = mountPath;

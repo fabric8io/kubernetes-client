@@ -3,8 +3,10 @@ package io.fabric8.istio.api.analysis.v1alpha1;
 
 import java.util.HashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
+@Generated("jsonschema2pojo")
 public enum AnalysisMessageBaseLevel {
 
     UNKNOWN(0),
@@ -24,7 +26,7 @@ public enum AnalysisMessageBaseLevel {
         }
     }
 
-    private AnalysisMessageBaseLevel(Integer value) {
+    AnalysisMessageBaseLevel(Integer value) {
         this.value = value;
     }
 

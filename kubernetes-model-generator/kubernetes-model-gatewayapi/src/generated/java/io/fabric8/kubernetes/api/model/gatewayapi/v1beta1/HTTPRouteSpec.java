@@ -2,9 +2,10 @@
 package io.fabric8.kubernetes.api.model.gatewayapi.v1beta1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -57,6 +58,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class HTTPRouteSpec implements KubernetesResource
 {
 
@@ -70,7 +72,7 @@ public class HTTPRouteSpec implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<HTTPRouteRule> rules = new ArrayList<HTTPRouteRule>();
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -79,12 +81,6 @@ public class HTTPRouteSpec implements KubernetesResource
     public HTTPRouteSpec() {
     }
 
-    /**
-     * 
-     * @param parentRefs
-     * @param hostnames
-     * @param rules
-     */
     public HTTPRouteSpec(List<String> hostnames, List<ParentReference> parentRefs, List<HTTPRouteRule> rules) {
         super();
         this.hostnames = hostnames;

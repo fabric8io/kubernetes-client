@@ -2,9 +2,10 @@
 package io.fabric8.tekton.triggers.v1alpha1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -64,6 +65,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class CELInterceptor implements KubernetesResource
 {
 
@@ -73,7 +75,7 @@ public class CELInterceptor implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<CELOverlay> overlays = new ArrayList<CELOverlay>();
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -82,11 +84,6 @@ public class CELInterceptor implements KubernetesResource
     public CELInterceptor() {
     }
 
-    /**
-     * 
-     * @param filter
-     * @param overlays
-     */
     public CELInterceptor(String filter, List<CELOverlay> overlays) {
         super();
         this.filter = filter;

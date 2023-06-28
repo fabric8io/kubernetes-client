@@ -2,9 +2,10 @@
 package io.fabric8.kubernetes.api.model.kustomize.v1beta1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -37,6 +38,7 @@ import lombok.experimental.Accessors;
     ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
+@Generated("jsonschema2pojo")
 public class ReplacementField implements KubernetesResource
 {
 
@@ -48,7 +50,7 @@ public class ReplacementField implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<TargetSelector> targets = new ArrayList<TargetSelector>();
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -57,12 +59,6 @@ public class ReplacementField implements KubernetesResource
     public ReplacementField() {
     }
 
-    /**
-     * 
-     * @param path
-     * @param source
-     * @param targets
-     */
     public ReplacementField(String path, SourceSelector source, List<TargetSelector> targets) {
         super();
         this.path = path;

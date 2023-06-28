@@ -1,8 +1,9 @@
 
 package io.fabric8.kubernetes.api.model;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -40,6 +41,7 @@ import lombok.experimental.Accessors;
     ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
+@Generated("jsonschema2pojo")
 public class ContainerStatus implements KubernetesResource
 {
 
@@ -62,7 +64,7 @@ public class ContainerStatus implements KubernetesResource
     @JsonProperty("state")
     private ContainerState state;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -71,18 +73,6 @@ public class ContainerStatus implements KubernetesResource
     public ContainerStatus() {
     }
 
-    /**
-     * 
-     * @param image
-     * @param imageID
-     * @param restartCount
-     * @param ready
-     * @param name
-     * @param started
-     * @param state
-     * @param containerID
-     * @param lastState
-     */
     public ContainerStatus(String containerID, String image, String imageID, ContainerState lastState, String name, Boolean ready, Integer restartCount, Boolean started, ContainerState state) {
         super();
         this.containerID = containerID;

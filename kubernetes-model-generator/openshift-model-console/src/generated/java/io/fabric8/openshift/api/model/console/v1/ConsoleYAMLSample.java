@@ -1,8 +1,9 @@
 
 package io.fabric8.openshift.api.model.console.v1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -61,6 +62,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1")
 @Group("console.openshift.io")
+@Generated("jsonschema2pojo")
 public class ConsoleYAMLSample implements HasMetadata
 {
 
@@ -83,7 +85,7 @@ public class ConsoleYAMLSample implements HasMetadata
     @JsonProperty("spec")
     private ConsoleYAMLSampleSpec spec;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -92,13 +94,6 @@ public class ConsoleYAMLSample implements HasMetadata
     public ConsoleYAMLSample() {
     }
 
-    /**
-     * 
-     * @param metadata
-     * @param apiVersion
-     * @param kind
-     * @param spec
-     */
     public ConsoleYAMLSample(String apiVersion, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, ConsoleYAMLSampleSpec spec) {
         super();
         this.apiVersion = apiVersion;

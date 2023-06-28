@@ -1,8 +1,9 @@
 
 package io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta2;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -60,13 +61,14 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class CompactSpec implements KubernetesResource
 {
 
     @JsonProperty("resources")
     private io.fabric8.kubernetes.api.model.ResourceRequirements resources;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -75,10 +77,6 @@ public class CompactSpec implements KubernetesResource
     public CompactSpec() {
     }
 
-    /**
-     * 
-     * @param resources
-     */
     public CompactSpec(io.fabric8.kubernetes.api.model.ResourceRequirements resources) {
         super();
         this.resources = resources;

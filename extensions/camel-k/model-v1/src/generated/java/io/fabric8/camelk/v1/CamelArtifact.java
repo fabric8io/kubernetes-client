@@ -2,9 +2,10 @@
 package io.fabric8.camelk.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -71,6 +72,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class CamelArtifact implements KubernetesResource
 {
 
@@ -99,7 +101,7 @@ public class CamelArtifact implements KubernetesResource
     @JsonProperty("version")
     private String version;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -108,18 +110,6 @@ public class CamelArtifact implements KubernetesResource
     public CamelArtifact() {
     }
 
-    /**
-     * 
-     * @param javaTypes
-     * @param languages
-     * @param groupId
-     * @param artifactId
-     * @param exclusions
-     * @param schemes
-     * @param version
-     * @param dataformats
-     * @param dependencies
-     */
     public CamelArtifact(String artifactId, List<String> dataformats, List<CamelArtifactDependency> dependencies, List<CamelArtifactExclusion> exclusions, String groupId, List<String> javaTypes, List<String> languages, List<CamelScheme> schemes, String version) {
         super();
         this.artifactId = artifactId;

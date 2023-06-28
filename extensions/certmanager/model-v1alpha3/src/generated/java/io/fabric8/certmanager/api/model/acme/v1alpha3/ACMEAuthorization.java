@@ -2,9 +2,10 @@
 package io.fabric8.certmanager.api.model.acme.v1alpha3;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -67,6 +68,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class ACMEAuthorization implements KubernetesResource
 {
 
@@ -82,7 +84,7 @@ public class ACMEAuthorization implements KubernetesResource
     @JsonProperty("wildcard")
     private Boolean wildcard;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -91,14 +93,6 @@ public class ACMEAuthorization implements KubernetesResource
     public ACMEAuthorization() {
     }
 
-    /**
-     * 
-     * @param identifier
-     * @param initialState
-     * @param challenges
-     * @param url
-     * @param wildcard
-     */
     public ACMEAuthorization(List<ACMEChallenge> challenges, String identifier, String initialState, String url, Boolean wildcard) {
         super();
         this.challenges = challenges;

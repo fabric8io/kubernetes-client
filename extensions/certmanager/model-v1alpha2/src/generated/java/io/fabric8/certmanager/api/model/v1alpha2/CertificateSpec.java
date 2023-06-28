@@ -2,9 +2,10 @@
 package io.fabric8.certmanager.api.model.v1alpha2;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -83,6 +84,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class CertificateSpec implements KubernetesResource
 {
 
@@ -135,7 +137,7 @@ public class CertificateSpec implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> usages = new ArrayList<String>();
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -144,30 +146,6 @@ public class CertificateSpec implements KubernetesResource
     public CertificateSpec() {
     }
 
-    /**
-     * 
-     * @param commonName
-     * @param secretName
-     * @param keyAlgorithm
-     * @param keySize
-     * @param secretTemplate
-     * @param dnsNames
-     * @param keystores
-     * @param subject
-     * @param issuerRef
-     * @param encodeUsagesInRequest
-     * @param emailSANs
-     * @param duration
-     * @param keyEncoding
-     * @param uriSANs
-     * @param privateKey
-     * @param organization
-     * @param renewBefore
-     * @param isCA
-     * @param ipAddresses
-     * @param revisionHistoryLimit
-     * @param usages
-     */
     public CertificateSpec(String commonName, List<String> dnsNames, Duration duration, List<String> emailSANs, Boolean encodeUsagesInRequest, List<String> ipAddresses, java.lang.Boolean isCA, io.fabric8.certmanager.api.model.meta.v1.ObjectReference issuerRef, String keyAlgorithm, String keyEncoding, java.lang.Integer keySize, CertificateKeystores keystores, List<String> organization, CertificatePrivateKey privateKey, Duration renewBefore, Integer revisionHistoryLimit, String secretName, CertificateSecretTemplate secretTemplate, X509Subject subject, List<String> uriSANs, List<String> usages) {
         super();
         this.commonName = commonName;

@@ -1,9 +1,9 @@
 
 package io.fabric8.istio.api.security.v1beta1;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -65,6 +65,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class PeerAuthenticationSpec implements KubernetesResource
 {
 
@@ -76,7 +77,7 @@ public class PeerAuthenticationSpec implements KubernetesResource
     @JsonProperty("selector")
     private WorkloadSelector selector;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -85,12 +86,6 @@ public class PeerAuthenticationSpec implements KubernetesResource
     public PeerAuthenticationSpec() {
     }
 
-    /**
-     * 
-     * @param selector
-     * @param mtls
-     * @param portLevelMtls
-     */
     public PeerAuthenticationSpec(io.fabric8.istio.api.security.v1beta1.PeerAuthenticationMutualTLS mtls, Map<Long, io.fabric8.istio.api.security.v1beta1.PeerAuthenticationMutualTLS> portLevelMtls, WorkloadSelector selector) {
         super();
         this.mtls = mtls;

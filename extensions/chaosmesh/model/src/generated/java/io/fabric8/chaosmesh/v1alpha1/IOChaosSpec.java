@@ -2,9 +2,10 @@
 package io.fabric8.chaosmesh.v1alpha1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -76,6 +77,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class IOChaosSpec implements KubernetesResource
 {
 
@@ -109,7 +111,7 @@ public class IOChaosSpec implements KubernetesResource
     @JsonProperty("volumePath")
     private java.lang.String volumePath;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -118,23 +120,6 @@ public class IOChaosSpec implements KubernetesResource
     public IOChaosSpec() {
     }
 
-    /**
-     * 
-     * @param mistake
-     * @param errno
-     * @param methods
-     * @param volumePath
-     * @param percent
-     * @param containerNames
-     * @param duration
-     * @param mode
-     * @param path
-     * @param delay
-     * @param action
-     * @param selector
-     * @param attr
-     * @param value
-     */
     public IOChaosSpec(java.lang.String action, AttrOverrideSpec attr, List<java.lang.String> containerNames, java.lang.String delay, String duration, Integer errno, List<java.lang.String> methods, MistakeSpec mistake, java.lang.String mode, java.lang.String path, Integer percent, PodSelectorSpec selector, java.lang.String value, java.lang.String volumePath) {
         super();
         this.action = action;

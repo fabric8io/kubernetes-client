@@ -1,8 +1,9 @@
 
 package io.fabric8.certmanager.api.model.acme.v1alpha2;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -70,6 +71,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class ACMEChallengeSolverDNS01 implements KubernetesResource
 {
 
@@ -94,7 +96,7 @@ public class ACMEChallengeSolverDNS01 implements KubernetesResource
     @JsonProperty("webhook")
     private ACMEIssuerDNS01ProviderWebhook webhook;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -103,19 +105,6 @@ public class ACMEChallengeSolverDNS01 implements KubernetesResource
     public ACMEChallengeSolverDNS01() {
     }
 
-    /**
-     * 
-     * @param route53
-     * @param webhook
-     * @param acmedns
-     * @param cnameStrategy
-     * @param akamai
-     * @param clouddns
-     * @param cloudflare
-     * @param digitalocean
-     * @param azuredns
-     * @param rfc2136
-     */
     public ACMEChallengeSolverDNS01(ACMEIssuerDNS01ProviderAcmeDNS acmedns, ACMEIssuerDNS01ProviderAkamai akamai, ACMEIssuerDNS01ProviderAzureDNS azuredns, ACMEIssuerDNS01ProviderCloudDNS clouddns, ACMEIssuerDNS01ProviderCloudflare cloudflare, String cnameStrategy, ACMEIssuerDNS01ProviderDigitalOcean digitalocean, ACMEIssuerDNS01ProviderRFC2136 rfc2136, ACMEIssuerDNS01ProviderRoute53 route53, ACMEIssuerDNS01ProviderWebhook webhook) {
         super();
         this.acmedns = acmedns;

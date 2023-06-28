@@ -1,9 +1,9 @@
 
 package io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1beta1;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -65,6 +65,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class AutomationDef implements KubernetesResource
 {
 
@@ -78,7 +79,7 @@ public class AutomationDef implements KubernetesResource
     @JsonProperty("type")
     private java.lang.String type;
     @JsonIgnore
-    private Map<java.lang.String, java.lang.Object> additionalProperties = new HashMap<java.lang.String, java.lang.Object>();
+    private Map<java.lang.String, java.lang.Object> additionalProperties = new LinkedHashMap<java.lang.String, java.lang.Object>();
 
     /**
      * No args constructor for use in serialization
@@ -87,13 +88,6 @@ public class AutomationDef implements KubernetesResource
     public AutomationDef() {
     }
 
-    /**
-     * 
-     * @param name
-     * @param extraVars
-     * @param secret
-     * @param type
-     */
     public AutomationDef(Map<String, Object> extraVars, java.lang.String name, java.lang.String secret, java.lang.String type) {
         super();
         this.extraVars = extraVars;

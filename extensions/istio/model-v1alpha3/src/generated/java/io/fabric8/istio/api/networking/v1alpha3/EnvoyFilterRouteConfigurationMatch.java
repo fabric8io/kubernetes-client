@@ -1,8 +1,9 @@
 
 package io.fabric8.istio.api.networking.v1alpha3;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -65,6 +66,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class EnvoyFilterRouteConfigurationMatch implements KubernetesResource
 {
 
@@ -79,7 +81,7 @@ public class EnvoyFilterRouteConfigurationMatch implements KubernetesResource
     @JsonProperty("vhost")
     private EnvoyFilterRouteConfigurationMatchVirtualHostMatch vhost;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -88,14 +90,6 @@ public class EnvoyFilterRouteConfigurationMatch implements KubernetesResource
     public EnvoyFilterRouteConfigurationMatch() {
     }
 
-    /**
-     * 
-     * @param vhost
-     * @param name
-     * @param portName
-     * @param gateway
-     * @param portNumber
-     */
     public EnvoyFilterRouteConfigurationMatch(String gateway, String name, String portName, Integer portNumber, EnvoyFilterRouteConfigurationMatchVirtualHostMatch vhost) {
         super();
         this.gateway = gateway;

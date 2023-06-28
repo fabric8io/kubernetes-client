@@ -2,9 +2,10 @@
 package io.fabric8.kubernetes.api.model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -40,6 +41,7 @@ import lombok.experimental.Accessors;
 @TemplateTransformations({
     @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true)
 })
+@Generated("jsonschema2pojo")
 public class APIResourceList implements KubernetesResource
 {
 
@@ -62,7 +64,7 @@ public class APIResourceList implements KubernetesResource
     @JsonProperty("resources")
     private List<APIResource> resources = new ArrayList<APIResource>();
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -71,13 +73,6 @@ public class APIResourceList implements KubernetesResource
     public APIResourceList() {
     }
 
-    /**
-     * 
-     * @param apiVersion
-     * @param kind
-     * @param groupVersion
-     * @param resources
-     */
     public APIResourceList(String apiVersion, String groupVersion, String kind, List<APIResource> resources) {
         super();
         this.apiVersion = apiVersion;

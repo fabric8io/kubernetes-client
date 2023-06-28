@@ -1,8 +1,9 @@
 
 package io.fabric8.certmanager.api.model.v1alpha2;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -66,6 +67,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class IssuerSpec implements KubernetesResource
 {
 
@@ -80,7 +82,7 @@ public class IssuerSpec implements KubernetesResource
     @JsonProperty("venafi")
     private VenafiIssuer venafi;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -89,14 +91,6 @@ public class IssuerSpec implements KubernetesResource
     public IssuerSpec() {
     }
 
-    /**
-     * 
-     * @param acme
-     * @param selfSigned
-     * @param venafi
-     * @param ca
-     * @param vault
-     */
     public IssuerSpec(ACMEIssuer acme, CAIssuer ca, SelfSignedIssuer selfSigned, VaultIssuer vault, VenafiIssuer venafi) {
         super();
         this.acme = acme;

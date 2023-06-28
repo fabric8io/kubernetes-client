@@ -1,8 +1,9 @@
 
 package io.fabric8.openshift.api.model;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -53,13 +54,14 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class BuildStatusOutput implements KubernetesResource
 {
 
     @JsonProperty("to")
     private BuildStatusOutputTo to;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -68,10 +70,6 @@ public class BuildStatusOutput implements KubernetesResource
     public BuildStatusOutput() {
     }
 
-    /**
-     * 
-     * @param to
-     */
     public BuildStatusOutput(BuildStatusOutputTo to) {
         super();
         this.to = to;

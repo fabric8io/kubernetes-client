@@ -1,8 +1,9 @@
 
 package io.fabric8.openshift.api.model.monitoring.v1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -55,6 +56,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class BasicAuth implements KubernetesResource
 {
 
@@ -63,7 +65,7 @@ public class BasicAuth implements KubernetesResource
     @JsonProperty("username")
     private SecretKeySelector username;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -72,11 +74,6 @@ public class BasicAuth implements KubernetesResource
     public BasicAuth() {
     }
 
-    /**
-     * 
-     * @param password
-     * @param username
-     */
     public BasicAuth(SecretKeySelector password, SecretKeySelector username) {
         super();
         this.password = password;

@@ -2,10 +2,10 @@
 package io.fabric8.camelk.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -74,6 +74,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class IntegrationPlatformStatus implements KubernetesResource
 {
 
@@ -104,7 +105,7 @@ public class IntegrationPlatformStatus implements KubernetesResource
     @JsonProperty("version")
     private java.lang.String version;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -113,20 +114,6 @@ public class IntegrationPlatformStatus implements KubernetesResource
     public IntegrationPlatformStatus() {
     }
 
-    /**
-     * 
-     * @param phase
-     * @param cluster
-     * @param traits
-     * @param build
-     * @param configuration
-     * @param profile
-     * @param resources
-     * @param conditions
-     * @param kamelet
-     * @param version
-     * @param info
-     */
     public IntegrationPlatformStatus(IntegrationPlatformBuildSpec build, java.lang.String cluster, List<IntegrationPlatformCondition> conditions, List<ConfigurationSpec> configuration, Map<String, String> info, IntegrationPlatformKameletSpec kamelet, java.lang.String phase, java.lang.String profile, IntegrationPlatformResourcesSpec resources, Map<String, TraitSpec> traits, java.lang.String version) {
         super();
         this.build = build;

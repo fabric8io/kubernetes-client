@@ -2,9 +2,10 @@
 package io.fabric8.volcano.scheduling.v1beta1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -67,6 +68,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class PodGroupStatus implements KubernetesResource
 {
 
@@ -82,7 +84,7 @@ public class PodGroupStatus implements KubernetesResource
     @JsonProperty("succeeded")
     private Integer succeeded;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -91,14 +93,6 @@ public class PodGroupStatus implements KubernetesResource
     public PodGroupStatus() {
     }
 
-    /**
-     * 
-     * @param phase
-     * @param running
-     * @param failed
-     * @param conditions
-     * @param succeeded
-     */
     public PodGroupStatus(List<PodGroupCondition> conditions, Integer failed, String phase, Integer running, Integer succeeded) {
         super();
         this.conditions = conditions;

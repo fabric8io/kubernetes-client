@@ -1,8 +1,9 @@
 
 package io.fabric8.openshift.api.model.miscellaneous.imageregistry.operator.v1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -60,6 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class ImageRegistryConfigStorage implements KubernetesResource
 {
 
@@ -80,7 +82,7 @@ public class ImageRegistryConfigStorage implements KubernetesResource
     @JsonProperty("swift")
     private ImageRegistryConfigStorageSwift swift;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -89,17 +91,6 @@ public class ImageRegistryConfigStorage implements KubernetesResource
     public ImageRegistryConfigStorage() {
     }
 
-    /**
-     * 
-     * @param s3
-     * @param gcs
-     * @param emptyDir
-     * @param ibmcos
-     * @param pvc
-     * @param azure
-     * @param managementState
-     * @param swift
-     */
     public ImageRegistryConfigStorage(ImageRegistryConfigStorageAzure azure, ImageRegistryConfigStorageEmptyDir emptyDir, ImageRegistryConfigStorageGCS gcs, ImageRegistryConfigStorageIBMCOS ibmcos, String managementState, ImageRegistryConfigStoragePVC pvc, ImageRegistryConfigStorageS3 s3, ImageRegistryConfigStorageSwift swift) {
         super();
         this.azure = azure;

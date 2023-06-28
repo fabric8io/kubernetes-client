@@ -1,8 +1,9 @@
 
 package io.fabric8.openshift.api.model.monitoring.v1alpha1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -55,6 +56,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class SlackField implements KubernetesResource
 {
 
@@ -65,7 +67,7 @@ public class SlackField implements KubernetesResource
     @JsonProperty("value")
     private String value;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -74,12 +76,6 @@ public class SlackField implements KubernetesResource
     public SlackField() {
     }
 
-    /**
-     * 
-     * @param _short
-     * @param title
-     * @param value
-     */
     public SlackField(Boolean _short, String title, String value) {
         super();
         this._short = _short;

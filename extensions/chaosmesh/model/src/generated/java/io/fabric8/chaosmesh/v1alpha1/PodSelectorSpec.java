@@ -2,10 +2,10 @@
 package io.fabric8.chaosmesh.v1alpha1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -73,6 +73,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class PodSelectorSpec implements KubernetesResource
 {
 
@@ -101,7 +102,7 @@ public class PodSelectorSpec implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, List<java.lang.String>> pods = new LinkedHashMap<String, List<java.lang.String>>();
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -110,18 +111,6 @@ public class PodSelectorSpec implements KubernetesResource
     public PodSelectorSpec() {
     }
 
-    /**
-     * 
-     * @param podPhaseSelectors
-     * @param expressionSelectors
-     * @param fieldSelectors
-     * @param nodes
-     * @param labelSelectors
-     * @param pods
-     * @param annotationSelectors
-     * @param namespaces
-     * @param nodeSelectors
-     */
     public PodSelectorSpec(Map<String, String> annotationSelectors, List<LabelSelectorRequirement> expressionSelectors, Map<String, String> fieldSelectors, Map<String, String> labelSelectors, List<java.lang.String> namespaces, Map<String, String> nodeSelectors, List<java.lang.String> nodes, List<java.lang.String> podPhaseSelectors, Map<String, List<java.lang.String>> pods) {
         super();
         this.annotationSelectors = annotationSelectors;

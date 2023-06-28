@@ -2,10 +2,10 @@
 package io.fabric8.camelk.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -71,6 +71,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class MavenSpec implements KubernetesResource
 {
 
@@ -93,7 +94,7 @@ public class MavenSpec implements KubernetesResource
     @JsonProperty("settings")
     private ValueSource settings;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -102,16 +103,6 @@ public class MavenSpec implements KubernetesResource
     public MavenSpec() {
     }
 
-    /**
-     * 
-     * @param settings
-     * @param extension
-     * @param caSecrets
-     * @param cliOptions
-     * @param properties
-     * @param caSecret
-     * @param localRepository
-     */
     public MavenSpec(SecretKeySelector caSecret, List<SecretKeySelector> caSecrets, List<java.lang.String> cliOptions, List<MavenArtifact> extension, java.lang.String localRepository, Map<String, String> properties, ValueSource settings) {
         super();
         this.caSecret = caSecret;

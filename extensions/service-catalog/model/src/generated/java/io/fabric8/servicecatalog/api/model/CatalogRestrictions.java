@@ -2,9 +2,10 @@
 package io.fabric8.servicecatalog.api.model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -64,6 +65,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class CatalogRestrictions implements KubernetesResource
 {
 
@@ -74,7 +76,7 @@ public class CatalogRestrictions implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> servicePlan = new ArrayList<String>();
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -83,11 +85,6 @@ public class CatalogRestrictions implements KubernetesResource
     public CatalogRestrictions() {
     }
 
-    /**
-     * 
-     * @param servicePlan
-     * @param serviceClass
-     */
     public CatalogRestrictions(List<String> serviceClass, List<String> servicePlan) {
         super();
         this.serviceClass = serviceClass;

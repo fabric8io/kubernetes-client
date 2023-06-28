@@ -2,9 +2,10 @@
 package io.fabric8.openshift.api.model.monitoring.v1alpha1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -63,6 +64,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class Receiver implements KubernetesResource
 {
 
@@ -93,7 +95,7 @@ public class Receiver implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<WeChatConfig> wechatConfigs = new ArrayList<WeChatConfig>();
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -102,18 +104,6 @@ public class Receiver implements KubernetesResource
     public Receiver() {
     }
 
-    /**
-     * 
-     * @param victoropsConfigs
-     * @param emailConfigs
-     * @param webhookConfigs
-     * @param pagerdutyConfigs
-     * @param pushoverConfigs
-     * @param name
-     * @param slackConfigs
-     * @param opsgenieConfigs
-     * @param wechatConfigs
-     */
     public Receiver(List<EmailConfig> emailConfigs, String name, List<OpsGenieConfig> opsgenieConfigs, List<PagerDutyConfig> pagerdutyConfigs, List<PushoverConfig> pushoverConfigs, List<SlackConfig> slackConfigs, List<VictorOpsConfig> victoropsConfigs, List<WebhookConfig> webhookConfigs, List<WeChatConfig> wechatConfigs) {
         super();
         this.emailConfigs = emailConfigs;

@@ -1,8 +1,9 @@
 
 package io.fabric8.openshift.api.model;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -61,6 +62,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1")
 @Group("user.openshift.io")
+@Generated("jsonschema2pojo")
 public class UserIdentityMapping implements HasMetadata
 {
 
@@ -85,7 +87,7 @@ public class UserIdentityMapping implements HasMetadata
     @JsonProperty("user")
     private io.fabric8.kubernetes.api.model.ObjectReference user;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -94,14 +96,6 @@ public class UserIdentityMapping implements HasMetadata
     public UserIdentityMapping() {
     }
 
-    /**
-     * 
-     * @param metadata
-     * @param apiVersion
-     * @param identity
-     * @param kind
-     * @param user
-     */
     public UserIdentityMapping(String apiVersion, io.fabric8.kubernetes.api.model.ObjectReference identity, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, io.fabric8.kubernetes.api.model.ObjectReference user) {
         super();
         this.apiVersion = apiVersion;

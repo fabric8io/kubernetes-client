@@ -1,9 +1,9 @@
 
 package io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.v1;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -62,6 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class SubscriptionPerClusterStatus implements KubernetesResource
 {
 
@@ -69,7 +70,7 @@ public class SubscriptionPerClusterStatus implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, SubscriptionUnitStatus> packages = new LinkedHashMap<String, SubscriptionUnitStatus>();
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -78,10 +79,6 @@ public class SubscriptionPerClusterStatus implements KubernetesResource
     public SubscriptionPerClusterStatus() {
     }
 
-    /**
-     * 
-     * @param packages
-     */
     public SubscriptionPerClusterStatus(Map<String, SubscriptionUnitStatus> packages) {
         super();
         this.packages = packages;

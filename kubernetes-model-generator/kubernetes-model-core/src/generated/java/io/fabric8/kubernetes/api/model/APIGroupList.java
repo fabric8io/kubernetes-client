@@ -2,9 +2,10 @@
 package io.fabric8.kubernetes.api.model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -43,6 +44,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1")
 @Group("")
+@Generated("jsonschema2pojo")
 public class APIGroupList implements KubernetesResource
 {
 
@@ -63,7 +65,7 @@ public class APIGroupList implements KubernetesResource
     @JsonProperty("kind")
     private String kind = "APIGroupList";
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -72,12 +74,6 @@ public class APIGroupList implements KubernetesResource
     public APIGroupList() {
     }
 
-    /**
-     * 
-     * @param apiVersion
-     * @param kind
-     * @param groups
-     */
     public APIGroupList(String apiVersion, List<APIGroup> groups, String kind) {
         super();
         this.apiVersion = apiVersion;

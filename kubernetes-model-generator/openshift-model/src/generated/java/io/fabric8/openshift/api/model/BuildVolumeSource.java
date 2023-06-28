@@ -1,8 +1,9 @@
 
 package io.fabric8.openshift.api.model;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -57,6 +58,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class BuildVolumeSource implements KubernetesResource
 {
 
@@ -67,7 +69,7 @@ public class BuildVolumeSource implements KubernetesResource
     @JsonProperty("type")
     private String type;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -76,12 +78,6 @@ public class BuildVolumeSource implements KubernetesResource
     public BuildVolumeSource() {
     }
 
-    /**
-     * 
-     * @param configMap
-     * @param secret
-     * @param type
-     */
     public BuildVolumeSource(ConfigMapVolumeSource configMap, SecretVolumeSource secret, String type) {
         super();
         this.configMap = configMap;

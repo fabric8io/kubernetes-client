@@ -2,10 +2,10 @@
 package io.fabric8.knative.serving.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -69,6 +69,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class ConfigurationStatus implements KubernetesResource
 {
 
@@ -85,7 +86,7 @@ public class ConfigurationStatus implements KubernetesResource
     @JsonProperty("observedGeneration")
     private Long observedGeneration;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -94,14 +95,6 @@ public class ConfigurationStatus implements KubernetesResource
     public ConfigurationStatus() {
     }
 
-    /**
-     * 
-     * @param latestCreatedRevisionName
-     * @param annotations
-     * @param conditions
-     * @param latestReadyRevisionName
-     * @param observedGeneration
-     */
     public ConfigurationStatus(Map<String, String> annotations, List<Condition> conditions, java.lang.String latestCreatedRevisionName, java.lang.String latestReadyRevisionName, Long observedGeneration) {
         super();
         this.annotations = annotations;

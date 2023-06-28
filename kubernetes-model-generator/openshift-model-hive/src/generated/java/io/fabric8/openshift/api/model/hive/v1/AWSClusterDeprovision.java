@@ -1,8 +1,9 @@
 
 package io.fabric8.openshift.api.model.hive.v1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -55,6 +56,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(io.fabric8.kubernetes.api.model.LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class AWSClusterDeprovision implements KubernetesResource
 {
 
@@ -65,7 +67,7 @@ public class AWSClusterDeprovision implements KubernetesResource
     @JsonProperty("region")
     private String region;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -74,12 +76,6 @@ public class AWSClusterDeprovision implements KubernetesResource
     public AWSClusterDeprovision() {
     }
 
-    /**
-     * 
-     * @param credentialsSecretRef
-     * @param region
-     * @param credentialsAssumeRole
-     */
     public AWSClusterDeprovision(AssumeRole credentialsAssumeRole, io.fabric8.kubernetes.api.model.LocalObjectReference credentialsSecretRef, String region) {
         super();
         this.credentialsAssumeRole = credentialsAssumeRole;

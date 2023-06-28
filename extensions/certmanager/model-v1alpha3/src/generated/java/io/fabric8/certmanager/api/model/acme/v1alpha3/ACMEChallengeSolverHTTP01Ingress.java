@@ -1,8 +1,9 @@
 
 package io.fabric8.certmanager.api.model.acme.v1alpha3;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -65,6 +66,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class ACMEChallengeSolverHTTP01Ingress implements KubernetesResource
 {
 
@@ -79,7 +81,7 @@ public class ACMEChallengeSolverHTTP01Ingress implements KubernetesResource
     @JsonProperty("serviceType")
     private java.lang.String serviceType;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -88,14 +90,6 @@ public class ACMEChallengeSolverHTTP01Ingress implements KubernetesResource
     public ACMEChallengeSolverHTTP01Ingress() {
     }
 
-    /**
-     * 
-     * @param serviceType
-     * @param ingressTemplate
-     * @param name
-     * @param podTemplate
-     * @param className
-     */
     public ACMEChallengeSolverHTTP01Ingress(String className, ACMEChallengeSolverHTTP01IngressTemplate ingressTemplate, java.lang.String name, ACMEChallengeSolverHTTP01IngressPodTemplate podTemplate, java.lang.String serviceType) {
         super();
         this.className = className;

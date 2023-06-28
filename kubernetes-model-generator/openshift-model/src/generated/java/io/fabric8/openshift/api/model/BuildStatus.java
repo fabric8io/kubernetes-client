@@ -2,9 +2,10 @@
 package io.fabric8.openshift.api.model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -66,6 +67,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class BuildStatus implements KubernetesResource
 {
 
@@ -98,7 +100,7 @@ public class BuildStatus implements KubernetesResource
     @JsonProperty("startTimestamp")
     private String startTimestamp;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -107,22 +109,6 @@ public class BuildStatus implements KubernetesResource
     public BuildStatus() {
     }
 
-    /**
-     * 
-     * @param phase
-     * @param reason
-     * @param message
-     * @param logSnippet
-     * @param duration
-     * @param output
-     * @param completionTimestamp
-     * @param stages
-     * @param cancelled
-     * @param conditions
-     * @param config
-     * @param outputDockerImageReference
-     * @param startTimestamp
-     */
     public BuildStatus(Boolean cancelled, String completionTimestamp, List<BuildCondition> conditions, io.fabric8.kubernetes.api.model.ObjectReference config, Long duration, java.lang.String logSnippet, java.lang.String message, BuildStatusOutput output, java.lang.String outputDockerImageReference, java.lang.String phase, java.lang.String reason, List<StageInfo> stages, String startTimestamp) {
         super();
         this.cancelled = cancelled;

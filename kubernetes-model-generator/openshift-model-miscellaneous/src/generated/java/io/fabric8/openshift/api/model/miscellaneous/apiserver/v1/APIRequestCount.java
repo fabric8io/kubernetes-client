@@ -1,8 +1,9 @@
 
 package io.fabric8.openshift.api.model.miscellaneous.apiserver.v1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -62,6 +63,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1")
 @Group("apiserver.openshift.io")
+@Generated("jsonschema2pojo")
 public class APIRequestCount implements HasMetadata
 {
 
@@ -86,7 +88,7 @@ public class APIRequestCount implements HasMetadata
     @JsonProperty("status")
     private APIRequestCountStatus status;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -95,14 +97,6 @@ public class APIRequestCount implements HasMetadata
     public APIRequestCount() {
     }
 
-    /**
-     * 
-     * @param metadata
-     * @param apiVersion
-     * @param kind
-     * @param spec
-     * @param status
-     */
     public APIRequestCount(String apiVersion, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, APIRequestCountSpec spec, APIRequestCountStatus status) {
         super();
         this.apiVersion = apiVersion;

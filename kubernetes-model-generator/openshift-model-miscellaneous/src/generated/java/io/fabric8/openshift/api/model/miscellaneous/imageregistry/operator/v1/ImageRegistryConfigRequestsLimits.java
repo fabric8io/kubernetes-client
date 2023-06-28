@@ -1,8 +1,9 @@
 
 package io.fabric8.openshift.api.model.miscellaneous.imageregistry.operator.v1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -56,6 +57,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class ImageRegistryConfigRequestsLimits implements KubernetesResource
 {
 
@@ -66,7 +68,7 @@ public class ImageRegistryConfigRequestsLimits implements KubernetesResource
     @JsonProperty("maxWaitInQueue")
     private Duration maxWaitInQueue;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -75,12 +77,6 @@ public class ImageRegistryConfigRequestsLimits implements KubernetesResource
     public ImageRegistryConfigRequestsLimits() {
     }
 
-    /**
-     * 
-     * @param maxInQueue
-     * @param maxWaitInQueue
-     * @param maxRunning
-     */
     public ImageRegistryConfigRequestsLimits(Integer maxInQueue, Integer maxRunning, Duration maxWaitInQueue) {
         super();
         this.maxInQueue = maxInQueue;

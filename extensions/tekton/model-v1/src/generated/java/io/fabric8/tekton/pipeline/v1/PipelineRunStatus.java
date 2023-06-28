@@ -2,10 +2,10 @@
 package io.fabric8.tekton.pipeline.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -76,6 +76,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class PipelineRunStatus implements KubernetesResource
 {
 
@@ -110,7 +111,7 @@ public class PipelineRunStatus implements KubernetesResource
     @JsonProperty("startTime")
     private java.lang.String startTime;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -119,21 +120,6 @@ public class PipelineRunStatus implements KubernetesResource
     public PipelineRunStatus() {
     }
 
-    /**
-     * 
-     * @param completionTime
-     * @param skippedTasks
-     * @param pipelineSpec
-     * @param childReferences
-     * @param provenance
-     * @param finallyStartTime
-     * @param annotations
-     * @param spanContext
-     * @param startTime
-     * @param conditions
-     * @param results
-     * @param observedGeneration
-     */
     public PipelineRunStatus(Map<String, String> annotations, List<ChildStatusReference> childReferences, java.lang.String completionTime, List<Condition> conditions, java.lang.String finallyStartTime, Long observedGeneration, PipelineSpec pipelineSpec, Provenance provenance, List<PipelineRunResult> results, List<SkippedTask> skippedTasks, Map<String, String> spanContext, java.lang.String startTime) {
         super();
         this.annotations = annotations;

@@ -2,9 +2,10 @@
 package io.fabric8.openshift.api.model.operatorhub.v1alpha1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -59,6 +60,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class BundleLookup implements KubernetesResource
 {
 
@@ -76,7 +78,7 @@ public class BundleLookup implements KubernetesResource
     @JsonProperty("replaces")
     private String replaces;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -85,15 +87,6 @@ public class BundleLookup implements KubernetesResource
     public BundleLookup() {
     }
 
-    /**
-     * 
-     * @param catalogSourceRef
-     * @param identifier
-     * @param path
-     * @param replaces
-     * @param conditions
-     * @param properties
-     */
     public BundleLookup(io.fabric8.kubernetes.api.model.ObjectReference catalogSourceRef, List<BundleLookupCondition> conditions, String identifier, String path, String properties, String replaces) {
         super();
         this.catalogSourceRef = catalogSourceRef;

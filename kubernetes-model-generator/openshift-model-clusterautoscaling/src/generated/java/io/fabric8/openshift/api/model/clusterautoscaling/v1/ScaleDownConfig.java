@@ -1,8 +1,9 @@
 
 package io.fabric8.openshift.api.model.clusterautoscaling.v1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -57,6 +58,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class ScaleDownConfig implements KubernetesResource
 {
 
@@ -71,7 +73,7 @@ public class ScaleDownConfig implements KubernetesResource
     @JsonProperty("unneededTime")
     private String unneededTime;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -80,14 +82,6 @@ public class ScaleDownConfig implements KubernetesResource
     public ScaleDownConfig() {
     }
 
-    /**
-     * 
-     * @param delayAfterAdd
-     * @param unneededTime
-     * @param delayAfterFailure
-     * @param delayAfterDelete
-     * @param enabled
-     */
     public ScaleDownConfig(String delayAfterAdd, String delayAfterDelete, String delayAfterFailure, Boolean enabled, String unneededTime) {
         super();
         this.delayAfterAdd = delayAfterAdd;

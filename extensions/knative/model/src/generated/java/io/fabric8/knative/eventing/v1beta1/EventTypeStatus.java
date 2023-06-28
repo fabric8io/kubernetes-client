@@ -2,10 +2,10 @@
 package io.fabric8.knative.eventing.v1beta1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -67,6 +67,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class EventTypeStatus implements KubernetesResource
 {
 
@@ -79,7 +80,7 @@ public class EventTypeStatus implements KubernetesResource
     @JsonProperty("observedGeneration")
     private Long observedGeneration;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -88,12 +89,6 @@ public class EventTypeStatus implements KubernetesResource
     public EventTypeStatus() {
     }
 
-    /**
-     * 
-     * @param annotations
-     * @param conditions
-     * @param observedGeneration
-     */
     public EventTypeStatus(Map<String, String> annotations, List<Condition> conditions, Long observedGeneration) {
         super();
         this.annotations = annotations;

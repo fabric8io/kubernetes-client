@@ -1,8 +1,9 @@
 
 package io.fabric8.tekton.pipeline.v1beta1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -64,6 +65,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class CloudEventDeliveryState implements KubernetesResource
 {
 
@@ -76,7 +78,7 @@ public class CloudEventDeliveryState implements KubernetesResource
     @JsonProperty("sentAt")
     private String sentAt;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -85,13 +87,6 @@ public class CloudEventDeliveryState implements KubernetesResource
     public CloudEventDeliveryState() {
     }
 
-    /**
-     * 
-     * @param condition
-     * @param retryCount
-     * @param sentAt
-     * @param message
-     */
     public CloudEventDeliveryState(String condition, String message, Integer retryCount, String sentAt) {
         super();
         this.condition = condition;

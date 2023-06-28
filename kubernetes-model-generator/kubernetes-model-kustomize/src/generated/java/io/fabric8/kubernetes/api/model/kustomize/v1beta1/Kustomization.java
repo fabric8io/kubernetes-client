@@ -2,10 +2,10 @@
 package io.fabric8.kubernetes.api.model.kustomize.v1beta1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -66,6 +66,7 @@ import lombok.experimental.Accessors;
     ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
+@Generated("jsonschema2pojo")
 public class Kustomization implements KubernetesResource
 {
 
@@ -173,7 +174,7 @@ public class Kustomization implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Var> vars = new ArrayList<Var>();
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -182,43 +183,6 @@ public class Kustomization implements KubernetesResource
     public Kustomization() {
     }
 
-    /**
-     * 
-     * @param commonLabels
-     * @param components
-     * @param metadata
-     * @param helmGlobals
-     * @param configurations
-     * @param validators
-     * @param nameSuffix
-     * @param patchesJson6902
-     * @param bases
-     * @param crds
-     * @param apiVersion
-     * @param namePrefix
-     * @param buildMetadata
-     * @param replacements
-     * @param vars
-     * @param images
-     * @param transformers
-     * @param helmCharts
-     * @param openapi
-     * @param secretGenerator
-     * @param configMapGenerator
-     * @param kind
-     * @param replicas
-     * @param patches
-     * @param resources
-     * @param labels
-     * @param generatorOptions
-     * @param sortOptions
-     * @param generators
-     * @param namespace
-     * @param helmChartInflationGenerator
-     * @param imageTags
-     * @param commonAnnotations
-     * @param patchesStrategicMerge
-     */
     public Kustomization(java.lang.String apiVersion, List<java.lang.String> bases, List<java.lang.String> buildMetadata, Map<String, String> commonAnnotations, Map<String, String> commonLabels, List<java.lang.String> components, List<ConfigMapArgs> configMapGenerator, List<java.lang.String> configurations, List<java.lang.String> crds, GeneratorOptions generatorOptions, List<java.lang.String> generators, List<HelmChartArgs> helmChartInflationGenerator, List<HelmChart> helmCharts, HelmGlobals helmGlobals, List<Image> imageTags, List<Image> images, java.lang.String kind, List<Label> labels, ObjectMeta metadata, java.lang.String namePrefix, java.lang.String nameSuffix, java.lang.String namespace, Map<String, String> openapi, List<Patch> patches, List<Patch> patchesJson6902, List<java.lang.String> patchesStrategicMerge, List<ReplacementField> replacements, List<Replica> replicas, List<java.lang.String> resources, List<SecretArgs> secretGenerator, SortOptions sortOptions, List<java.lang.String> transformers, List<java.lang.String> validators, List<Var> vars) {
         super();
         this.apiVersion = apiVersion;

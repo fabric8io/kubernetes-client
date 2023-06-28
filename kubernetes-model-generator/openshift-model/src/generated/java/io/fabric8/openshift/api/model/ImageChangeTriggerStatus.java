@@ -1,8 +1,9 @@
 
 package io.fabric8.openshift.api.model;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -55,6 +56,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class ImageChangeTriggerStatus implements KubernetesResource
 {
 
@@ -65,7 +67,7 @@ public class ImageChangeTriggerStatus implements KubernetesResource
     @JsonProperty("lastTriggeredImageID")
     private java.lang.String lastTriggeredImageID;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -74,12 +76,6 @@ public class ImageChangeTriggerStatus implements KubernetesResource
     public ImageChangeTriggerStatus() {
     }
 
-    /**
-     * 
-     * @param lastTriggeredImageID
-     * @param lastTriggerTime
-     * @param from
-     */
     public ImageChangeTriggerStatus(ImageStreamTagReference from, String lastTriggerTime, java.lang.String lastTriggeredImageID) {
         super();
         this.from = from;

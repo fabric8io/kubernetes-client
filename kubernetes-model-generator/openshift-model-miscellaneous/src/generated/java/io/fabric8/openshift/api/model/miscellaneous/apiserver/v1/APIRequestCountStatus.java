@@ -2,9 +2,10 @@
 package io.fabric8.openshift.api.model.miscellaneous.apiserver.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -60,6 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class APIRequestCountStatus implements KubernetesResource
 {
 
@@ -74,7 +76,7 @@ public class APIRequestCountStatus implements KubernetesResource
     @JsonProperty("requestCount")
     private Long requestCount;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -83,14 +85,6 @@ public class APIRequestCountStatus implements KubernetesResource
     public APIRequestCountStatus() {
     }
 
-    /**
-     * 
-     * @param last24h
-     * @param requestCount
-     * @param removedInRelease
-     * @param conditions
-     * @param currentHour
-     */
     public APIRequestCountStatus(List<Condition> conditions, PerResourceAPIRequestLog currentHour, List<PerResourceAPIRequestLog> last24h, String removedInRelease, Long requestCount) {
         super();
         this.conditions = conditions;

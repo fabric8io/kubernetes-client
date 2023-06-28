@@ -1,8 +1,9 @@
 
 package io.fabric8.openshift.api.model.operator.v1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -57,6 +58,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class OVNKubernetesConfig implements KubernetesResource
 {
 
@@ -71,7 +73,7 @@ public class OVNKubernetesConfig implements KubernetesResource
     @JsonProperty("policyAuditConfig")
     private PolicyAuditConfig policyAuditConfig;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -80,14 +82,6 @@ public class OVNKubernetesConfig implements KubernetesResource
     public OVNKubernetesConfig() {
     }
 
-    /**
-     * 
-     * @param policyAuditConfig
-     * @param genevePort
-     * @param hybridOverlayConfig
-     * @param ipsecConfig
-     * @param mtu
-     */
     public OVNKubernetesConfig(Integer genevePort, HybridOverlayConfig hybridOverlayConfig, IPsecConfig ipsecConfig, Integer mtu, PolicyAuditConfig policyAuditConfig) {
         super();
         this.genevePort = genevePort;

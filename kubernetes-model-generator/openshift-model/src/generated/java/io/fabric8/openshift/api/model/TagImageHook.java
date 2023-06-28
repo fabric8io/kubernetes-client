@@ -1,8 +1,9 @@
 
 package io.fabric8.openshift.api.model;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -53,6 +54,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class TagImageHook implements KubernetesResource
 {
 
@@ -61,7 +63,7 @@ public class TagImageHook implements KubernetesResource
     @JsonProperty("to")
     private io.fabric8.kubernetes.api.model.ObjectReference to;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -70,11 +72,6 @@ public class TagImageHook implements KubernetesResource
     public TagImageHook() {
     }
 
-    /**
-     * 
-     * @param containerName
-     * @param to
-     */
     public TagImageHook(String containerName, io.fabric8.kubernetes.api.model.ObjectReference to) {
         super();
         this.containerName = containerName;

@@ -2,9 +2,10 @@
 package io.fabric8.knative.eventing.contrib.kafka.v1beta1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -69,6 +70,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class KafkaChannelSpec implements KubernetesResource
 {
 
@@ -84,7 +86,7 @@ public class KafkaChannelSpec implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<SubscriberSpec> subscribers = new ArrayList<SubscriberSpec>();
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -93,14 +95,6 @@ public class KafkaChannelSpec implements KubernetesResource
     public KafkaChannelSpec() {
     }
 
-    /**
-     * 
-     * @param delivery
-     * @param replicationFactor
-     * @param subscribers
-     * @param numPartitions
-     * @param retentionDuration
-     */
     public KafkaChannelSpec(DeliverySpec delivery, Integer numPartitions, Integer replicationFactor, String retentionDuration, List<SubscriberSpec> subscribers) {
         super();
         this.delivery = delivery;

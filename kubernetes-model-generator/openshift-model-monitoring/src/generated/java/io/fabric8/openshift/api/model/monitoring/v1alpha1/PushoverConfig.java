@@ -1,8 +1,9 @@
 
 package io.fabric8.openshift.api.model.monitoring.v1alpha1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -66,6 +67,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class PushoverConfig implements KubernetesResource
 {
 
@@ -96,7 +98,7 @@ public class PushoverConfig implements KubernetesResource
     @JsonProperty("userKey")
     private SecretKeySelector userKey;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -105,22 +107,6 @@ public class PushoverConfig implements KubernetesResource
     public PushoverConfig() {
     }
 
-    /**
-     * 
-     * @param urlTitle
-     * @param sound
-     * @param message
-     * @param priority
-     * @param title
-     * @param url
-     * @param userKey
-     * @param token
-     * @param sendResolved
-     * @param httpConfig
-     * @param expire
-     * @param html
-     * @param retry
-     */
     public PushoverConfig(String expire, Boolean html, HTTPConfig httpConfig, String message, String priority, String retry, Boolean sendResolved, String sound, String title, SecretKeySelector token, String url, String urlTitle, SecretKeySelector userKey) {
         super();
         this.expire = expire;

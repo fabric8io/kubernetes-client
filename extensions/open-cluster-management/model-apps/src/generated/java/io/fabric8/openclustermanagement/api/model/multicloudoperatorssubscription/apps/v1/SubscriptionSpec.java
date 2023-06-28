@@ -2,9 +2,10 @@
 package io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -73,6 +74,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class SubscriptionSpec implements KubernetesResource
 {
 
@@ -103,7 +105,7 @@ public class SubscriptionSpec implements KubernetesResource
     @JsonProperty("timewindow")
     private TimeWindow timewindow;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -112,20 +114,6 @@ public class SubscriptionSpec implements KubernetesResource
     public SubscriptionSpec() {
     }
 
-    /**
-     * 
-     * @param allow
-     * @param deny
-     * @param timewindow
-     * @param channel
-     * @param hooksecretref
-     * @param name
-     * @param packageOverrides
-     * @param secondaryChannel
-     * @param overrides
-     * @param placement
-     * @param packageFilter
-     */
     public SubscriptionSpec(List<AllowDenyItem> allow, String channel, List<AllowDenyItem> deny, io.fabric8.kubernetes.api.model.ObjectReference hooksecretref, String name, List<ClusterOverrides> overrides, PackageFilter packageFilter, List<Overrides> packageOverrides, Placement placement, String secondaryChannel, TimeWindow timewindow) {
         super();
         this.allow = allow;

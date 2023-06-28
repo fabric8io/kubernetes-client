@@ -2,9 +2,10 @@
 package io.fabric8.openshift.api.model.operatorhub.v1alpha1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -57,6 +58,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class StrategyDeploymentPermissions implements KubernetesResource
 {
 
@@ -65,7 +67,7 @@ public class StrategyDeploymentPermissions implements KubernetesResource
     @JsonProperty("serviceAccountName")
     private String serviceAccountName;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -74,11 +76,6 @@ public class StrategyDeploymentPermissions implements KubernetesResource
     public StrategyDeploymentPermissions() {
     }
 
-    /**
-     * 
-     * @param serviceAccountName
-     * @param rules
-     */
     public StrategyDeploymentPermissions(List<PolicyRule> rules, String serviceAccountName) {
         super();
         this.rules = rules;

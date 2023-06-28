@@ -1,8 +1,9 @@
 
 package io.fabric8.kubernetes.api.model.admission.v1beta1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -63,6 +64,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1beta1")
 @Group("admission.k8s.io")
+@Generated("jsonschema2pojo")
 public class AdmissionReview implements KubernetesResource
 {
 
@@ -85,7 +87,7 @@ public class AdmissionReview implements KubernetesResource
     @JsonProperty("response")
     private AdmissionResponse response;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -94,13 +96,6 @@ public class AdmissionReview implements KubernetesResource
     public AdmissionReview() {
     }
 
-    /**
-     * 
-     * @param request
-     * @param apiVersion
-     * @param kind
-     * @param response
-     */
     public AdmissionReview(String apiVersion, String kind, AdmissionRequest request, AdmissionResponse response) {
         super();
         this.apiVersion = apiVersion;

@@ -2,9 +2,10 @@
 package io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.placementrule.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -64,6 +65,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class Placement implements KubernetesResource
 {
 
@@ -77,7 +79,7 @@ public class Placement implements KubernetesResource
     @JsonProperty("placementRef")
     private io.fabric8.kubernetes.api.model.ObjectReference placementRef;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -86,13 +88,6 @@ public class Placement implements KubernetesResource
     public Placement() {
     }
 
-    /**
-     * 
-     * @param placementRef
-     * @param clusterSelector
-     * @param clusters
-     * @param local
-     */
     public Placement(io.fabric8.kubernetes.api.model.LabelSelector clusterSelector, List<GenericClusterReference> clusters, Boolean local, io.fabric8.kubernetes.api.model.ObjectReference placementRef) {
         super();
         this.clusterSelector = clusterSelector;

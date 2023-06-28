@@ -1,6 +1,7 @@
 
 package io.fabric8.openclustermanagement.api.model;
 
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -94,6 +95,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class OpenClusterManagementPolicySchema {
 
     @JsonProperty("github_com_open-cluster-management_governance-policy-propagator_api_v1_ComplianceHistory")
@@ -144,29 +146,6 @@ public class OpenClusterManagementPolicySchema {
     public OpenClusterManagementPolicySchema() {
     }
 
-    /**
-     * 
-     * @param githubComOpenClusterManagementGovernancePolicyPropagatorApiV1Policy
-     * @param githubComOpenClusterManagementGovernancePolicyPropagatorApiV1PolicyTemplate
-     * @param githubComOpenClusterManagementGovernancePolicyPropagatorApiV1beta1PolicyAutomationStatus
-     * @param githubComOpenClusterManagementGovernancePolicyPropagatorApiV1ComplianceHistory
-     * @param githubComOpenClusterManagementGovernancePolicyPropagatorApiV1CompliancePerClusterStatus
-     * @param githubComOpenClusterManagementGovernancePolicyPropagatorApiV1PlacementSubject
-     * @param githubComOpenClusterManagementMulticloudOperatorsPlacementrulePkgApisAppsV1PlacementDecision
-     * @param githubComOpenClusterManagementGovernancePolicyPropagatorApiV1Subject
-     * @param githubComOpenClusterManagementGovernancePolicyPropagatorApiV1Placement
-     * @param githubComOpenClusterManagementGovernancePolicyPropagatorApiV1beta1AutomationDef
-     * @param githubComOpenClusterManagementGovernancePolicyPropagatorApiV1beta1PolicyAutomation
-     * @param githubComOpenClusterManagementGovernancePolicyPropagatorApiV1beta1PolicyAutomationList
-     * @param githubComOpenClusterManagementGovernancePolicyPropagatorApiV1PolicySpec
-     * @param githubComOpenClusterManagementGovernancePolicyPropagatorApiV1PlacementBindingStatus
-     * @param githubComOpenClusterManagementGovernancePolicyPropagatorApiV1beta1PolicyAutomationSpec
-     * @param githubComOpenClusterManagementGovernancePolicyPropagatorApiV1PolicyList
-     * @param githubComOpenClusterManagementGovernancePolicyPropagatorApiV1DetailsPerTemplate
-     * @param githubComOpenClusterManagementGovernancePolicyPropagatorApiV1PlacementBindingList
-     * @param githubComOpenClusterManagementGovernancePolicyPropagatorApiV1PolicyStatus
-     * @param githubComOpenClusterManagementGovernancePolicyPropagatorApiV1PlacementBinding
-     */
     public OpenClusterManagementPolicySchema(ComplianceHistory githubComOpenClusterManagementGovernancePolicyPropagatorApiV1ComplianceHistory, CompliancePerClusterStatus githubComOpenClusterManagementGovernancePolicyPropagatorApiV1CompliancePerClusterStatus, DetailsPerTemplate githubComOpenClusterManagementGovernancePolicyPropagatorApiV1DetailsPerTemplate, Placement githubComOpenClusterManagementGovernancePolicyPropagatorApiV1Placement, PlacementBinding githubComOpenClusterManagementGovernancePolicyPropagatorApiV1PlacementBinding, PlacementBindingList githubComOpenClusterManagementGovernancePolicyPropagatorApiV1PlacementBindingList, PlacementBindingStatus githubComOpenClusterManagementGovernancePolicyPropagatorApiV1PlacementBindingStatus, PlacementSubject githubComOpenClusterManagementGovernancePolicyPropagatorApiV1PlacementSubject, Policy githubComOpenClusterManagementGovernancePolicyPropagatorApiV1Policy, PolicyList githubComOpenClusterManagementGovernancePolicyPropagatorApiV1PolicyList, PolicySpec githubComOpenClusterManagementGovernancePolicyPropagatorApiV1PolicySpec, PolicyStatus githubComOpenClusterManagementGovernancePolicyPropagatorApiV1PolicyStatus, PolicyTemplate githubComOpenClusterManagementGovernancePolicyPropagatorApiV1PolicyTemplate, Subject githubComOpenClusterManagementGovernancePolicyPropagatorApiV1Subject, AutomationDef githubComOpenClusterManagementGovernancePolicyPropagatorApiV1beta1AutomationDef, PolicyAutomation githubComOpenClusterManagementGovernancePolicyPropagatorApiV1beta1PolicyAutomation, PolicyAutomationList githubComOpenClusterManagementGovernancePolicyPropagatorApiV1beta1PolicyAutomationList, PolicyAutomationSpec githubComOpenClusterManagementGovernancePolicyPropagatorApiV1beta1PolicyAutomationSpec, PolicyAutomationStatus githubComOpenClusterManagementGovernancePolicyPropagatorApiV1beta1PolicyAutomationStatus, PlacementDecision githubComOpenClusterManagementMulticloudOperatorsPlacementrulePkgApisAppsV1PlacementDecision) {
         super();
         this.githubComOpenClusterManagementGovernancePolicyPropagatorApiV1ComplianceHistory = githubComOpenClusterManagementGovernancePolicyPropagatorApiV1ComplianceHistory;

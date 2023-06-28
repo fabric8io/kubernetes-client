@@ -2,9 +2,10 @@
 package io.fabric8.knative.eventing.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -69,6 +70,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class TriggerSpec implements KubernetesResource
 {
 
@@ -84,7 +86,7 @@ public class TriggerSpec implements KubernetesResource
     @JsonProperty("subscriber")
     private Destination subscriber;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -93,14 +95,6 @@ public class TriggerSpec implements KubernetesResource
     public TriggerSpec() {
     }
 
-    /**
-     * 
-     * @param filter
-     * @param delivery
-     * @param subscriber
-     * @param filters
-     * @param broker
-     */
     public TriggerSpec(String broker, DeliverySpec delivery, TriggerFilter filter, List<SubscriptionsAPIFilter> filters, Destination subscriber) {
         super();
         this.broker = broker;

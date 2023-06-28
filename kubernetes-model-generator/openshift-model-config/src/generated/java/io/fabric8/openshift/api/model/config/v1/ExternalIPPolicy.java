@@ -2,9 +2,10 @@
 package io.fabric8.openshift.api.model.config.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -56,6 +57,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class ExternalIPPolicy implements KubernetesResource
 {
 
@@ -66,7 +68,7 @@ public class ExternalIPPolicy implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> rejectedCIDRs = new ArrayList<String>();
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -75,11 +77,6 @@ public class ExternalIPPolicy implements KubernetesResource
     public ExternalIPPolicy() {
     }
 
-    /**
-     * 
-     * @param rejectedCIDRs
-     * @param allowedCIDRs
-     */
     public ExternalIPPolicy(List<String> allowedCIDRs, List<String> rejectedCIDRs) {
         super();
         this.allowedCIDRs = allowedCIDRs;

@@ -1,8 +1,9 @@
 
 package io.fabric8.kubernetes.api.model;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -35,6 +36,7 @@ import lombok.experimental.Accessors;
     ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
+@Generated("jsonschema2pojo")
 public class DownwardAPIVolumeFile implements KubernetesResource
 {
 
@@ -47,7 +49,7 @@ public class DownwardAPIVolumeFile implements KubernetesResource
     @JsonProperty("resourceFieldRef")
     private ResourceFieldSelector resourceFieldRef;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -56,13 +58,6 @@ public class DownwardAPIVolumeFile implements KubernetesResource
     public DownwardAPIVolumeFile() {
     }
 
-    /**
-     * 
-     * @param mode
-     * @param path
-     * @param resourceFieldRef
-     * @param fieldRef
-     */
     public DownwardAPIVolumeFile(ObjectFieldSelector fieldRef, Integer mode, String path, ResourceFieldSelector resourceFieldRef) {
         super();
         this.fieldRef = fieldRef;

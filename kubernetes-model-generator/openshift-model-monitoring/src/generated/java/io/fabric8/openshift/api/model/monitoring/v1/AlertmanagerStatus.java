@@ -1,8 +1,9 @@
 
 package io.fabric8.openshift.api.model.monitoring.v1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -57,6 +58,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class AlertmanagerStatus implements KubernetesResource
 {
 
@@ -71,7 +73,7 @@ public class AlertmanagerStatus implements KubernetesResource
     @JsonProperty("updatedReplicas")
     private Integer updatedReplicas;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -80,14 +82,6 @@ public class AlertmanagerStatus implements KubernetesResource
     public AlertmanagerStatus() {
     }
 
-    /**
-     * 
-     * @param paused
-     * @param unavailableReplicas
-     * @param replicas
-     * @param updatedReplicas
-     * @param availableReplicas
-     */
     public AlertmanagerStatus(Integer availableReplicas, Boolean paused, Integer replicas, Integer unavailableReplicas, Integer updatedReplicas) {
         super();
         this.availableReplicas = availableReplicas;

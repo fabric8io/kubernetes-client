@@ -1,8 +1,9 @@
 
 package io.fabric8.kubernetes.api.model.batch.v1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -60,6 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class CronJobSpec implements KubernetesResource
 {
 
@@ -80,7 +82,7 @@ public class CronJobSpec implements KubernetesResource
     @JsonProperty("timeZone")
     private String timeZone;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -89,17 +91,6 @@ public class CronJobSpec implements KubernetesResource
     public CronJobSpec() {
     }
 
-    /**
-     * 
-     * @param suspend
-     * @param schedule
-     * @param jobTemplate
-     * @param startingDeadlineSeconds
-     * @param concurrencyPolicy
-     * @param timeZone
-     * @param failedJobsHistoryLimit
-     * @param successfulJobsHistoryLimit
-     */
     public CronJobSpec(String concurrencyPolicy, Integer failedJobsHistoryLimit, JobTemplateSpec jobTemplate, String schedule, Long startingDeadlineSeconds, Integer successfulJobsHistoryLimit, Boolean suspend, String timeZone) {
         super();
         this.concurrencyPolicy = concurrencyPolicy;

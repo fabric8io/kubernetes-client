@@ -1,8 +1,9 @@
 
 package io.fabric8.kubernetes.api.model.resource.v1alpha1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -64,6 +65,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1alpha1")
 @Group("resource.k8s.io")
+@Generated("jsonschema2pojo")
 public class ResourceClass implements HasMetadata
 {
 
@@ -90,7 +92,7 @@ public class ResourceClass implements HasMetadata
     @JsonProperty("suitableNodes")
     private NodeSelector suitableNodes;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -99,15 +101,6 @@ public class ResourceClass implements HasMetadata
     public ResourceClass() {
     }
 
-    /**
-     * 
-     * @param suitableNodes
-     * @param metadata
-     * @param apiVersion
-     * @param kind
-     * @param parametersRef
-     * @param driverName
-     */
     public ResourceClass(String apiVersion, String driverName, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, ResourceClassParametersReference parametersRef, NodeSelector suitableNodes) {
         super();
         this.apiVersion = apiVersion;

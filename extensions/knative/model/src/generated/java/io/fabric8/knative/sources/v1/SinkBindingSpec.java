@@ -1,8 +1,9 @@
 
 package io.fabric8.knative.sources.v1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -66,6 +67,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class SinkBindingSpec implements KubernetesResource
 {
 
@@ -76,7 +78,7 @@ public class SinkBindingSpec implements KubernetesResource
     @JsonProperty("subject")
     private Reference subject;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -85,12 +87,6 @@ public class SinkBindingSpec implements KubernetesResource
     public SinkBindingSpec() {
     }
 
-    /**
-     * 
-     * @param sink
-     * @param subject
-     * @param ceOverrides
-     */
     public SinkBindingSpec(CloudEventOverrides ceOverrides, Destination sink, Reference subject) {
         super();
         this.ceOverrides = ceOverrides;

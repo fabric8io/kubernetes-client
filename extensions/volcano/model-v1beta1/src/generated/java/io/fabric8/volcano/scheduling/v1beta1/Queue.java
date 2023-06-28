@@ -1,8 +1,9 @@
 
 package io.fabric8.volcano.scheduling.v1beta1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -70,6 +71,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1beta1")
 @Group("scheduling.volcano.sh")
+@Generated("jsonschema2pojo")
 public class Queue implements HasMetadata
 {
 
@@ -94,7 +96,7 @@ public class Queue implements HasMetadata
     @JsonProperty("status")
     private QueueStatus status;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -103,14 +105,6 @@ public class Queue implements HasMetadata
     public Queue() {
     }
 
-    /**
-     * 
-     * @param metadata
-     * @param apiVersion
-     * @param kind
-     * @param spec
-     * @param status
-     */
     public Queue(String apiVersion, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, QueueSpec spec, QueueStatus status) {
         super();
         this.apiVersion = apiVersion;

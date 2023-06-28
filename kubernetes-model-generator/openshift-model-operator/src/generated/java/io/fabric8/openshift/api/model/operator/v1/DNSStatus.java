@@ -2,9 +2,10 @@
 package io.fabric8.openshift.api.model.operator.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -57,6 +58,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class DNSStatus implements KubernetesResource
 {
 
@@ -68,7 +70,7 @@ public class DNSStatus implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<OperatorCondition> conditions = new ArrayList<OperatorCondition>();
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -77,12 +79,6 @@ public class DNSStatus implements KubernetesResource
     public DNSStatus() {
     }
 
-    /**
-     * 
-     * @param clusterDomain
-     * @param conditions
-     * @param clusterIP
-     */
     public DNSStatus(String clusterDomain, String clusterIP, List<OperatorCondition> conditions) {
         super();
         this.clusterDomain = clusterDomain;

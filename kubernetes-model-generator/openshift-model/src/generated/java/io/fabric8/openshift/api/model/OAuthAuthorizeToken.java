@@ -2,9 +2,10 @@
 package io.fabric8.openshift.api.model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -71,6 +72,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1")
 @Group("oauth.openshift.io")
+@Generated("jsonschema2pojo")
 public class OAuthAuthorizeToken implements HasMetadata
 {
 
@@ -110,7 +112,7 @@ public class OAuthAuthorizeToken implements HasMetadata
     @JsonProperty("userUID")
     private String userUID;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -119,21 +121,6 @@ public class OAuthAuthorizeToken implements HasMetadata
     public OAuthAuthorizeToken() {
     }
 
-    /**
-     * 
-     * @param expiresIn
-     * @param redirectURI
-     * @param metadata
-     * @param apiVersion
-     * @param clientName
-     * @param kind
-     * @param codeChallenge
-     * @param codeChallengeMethod
-     * @param scopes
-     * @param state
-     * @param userName
-     * @param userUID
-     */
     public OAuthAuthorizeToken(String apiVersion, String clientName, String codeChallenge, String codeChallengeMethod, Long expiresIn, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, String redirectURI, List<String> scopes, String state, String userName, String userUID) {
         super();
         this.apiVersion = apiVersion;

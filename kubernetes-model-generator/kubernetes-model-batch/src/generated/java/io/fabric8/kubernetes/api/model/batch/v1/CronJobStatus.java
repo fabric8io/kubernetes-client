@@ -2,9 +2,10 @@
 package io.fabric8.kubernetes.api.model.batch.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -56,6 +57,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class CronJobStatus implements KubernetesResource
 {
 
@@ -67,7 +69,7 @@ public class CronJobStatus implements KubernetesResource
     @JsonProperty("lastSuccessfulTime")
     private String lastSuccessfulTime;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -76,12 +78,6 @@ public class CronJobStatus implements KubernetesResource
     public CronJobStatus() {
     }
 
-    /**
-     * 
-     * @param lastScheduleTime
-     * @param active
-     * @param lastSuccessfulTime
-     */
     public CronJobStatus(List<io.fabric8.kubernetes.api.model.ObjectReference> active, String lastScheduleTime, String lastSuccessfulTime) {
         super();
         this.active = active;

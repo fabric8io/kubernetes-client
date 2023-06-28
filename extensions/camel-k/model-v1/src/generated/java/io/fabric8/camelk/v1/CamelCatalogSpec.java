@@ -1,9 +1,9 @@
 
 package io.fabric8.camelk.v1;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -64,6 +64,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class CamelCatalogSpec implements KubernetesResource
 {
 
@@ -76,7 +77,7 @@ public class CamelCatalogSpec implements KubernetesResource
     @JsonProperty("runtime")
     private RuntimeSpec runtime;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -85,12 +86,6 @@ public class CamelCatalogSpec implements KubernetesResource
     public CamelCatalogSpec() {
     }
 
-    /**
-     * 
-     * @param loaders
-     * @param runtime
-     * @param artifacts
-     */
     public CamelCatalogSpec(Map<String, CamelArtifact> artifacts, Map<String, CamelLoader> loaders, RuntimeSpec runtime) {
         super();
         this.artifacts = artifacts;

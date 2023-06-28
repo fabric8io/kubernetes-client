@@ -1,8 +1,9 @@
 
 package io.fabric8.kubernetes.api.model;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -37,6 +38,7 @@ import lombok.experimental.Accessors;
     ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
+@Generated("jsonschema2pojo")
 public class ManagedFieldsEntry implements KubernetesResource
 {
 
@@ -55,7 +57,7 @@ public class ManagedFieldsEntry implements KubernetesResource
     @JsonProperty("time")
     private String time;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -64,16 +66,6 @@ public class ManagedFieldsEntry implements KubernetesResource
     public ManagedFieldsEntry() {
     }
 
-    /**
-     * 
-     * @param apiVersion
-     * @param fieldsV1
-     * @param manager
-     * @param subresource
-     * @param time
-     * @param operation
-     * @param fieldsType
-     */
     public ManagedFieldsEntry(java.lang.String apiVersion, java.lang.String fieldsType, FieldsV1 fieldsV1, java.lang.String manager, java.lang.String operation, java.lang.String subresource, String time) {
         super();
         this.apiVersion = apiVersion;

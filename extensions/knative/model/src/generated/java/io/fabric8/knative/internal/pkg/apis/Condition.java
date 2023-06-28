@@ -1,8 +1,9 @@
 
 package io.fabric8.knative.internal.pkg.apis;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -67,6 +68,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class Condition implements KubernetesResource
 {
 
@@ -108,7 +110,7 @@ public class Condition implements KubernetesResource
     @JsonPropertyDescription("type of status condition")
     private String type;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -120,11 +122,15 @@ public class Condition implements KubernetesResource
     /**
      * 
      * @param severity
+     *     how to interpret failures of this condition.
      * @param reason
-     * @param lastTransitionTime
+     *     one-word CamelCase reason for the condition's last transition.
      * @param message
+     *     human-readable message indicating details about last transition.
      * @param type
+     *     type of status condition.
      * @param status
+     *     status of the condition.
      */
     public Condition(String lastTransitionTime, String message, String reason, String severity, String status, String type) {
         super();

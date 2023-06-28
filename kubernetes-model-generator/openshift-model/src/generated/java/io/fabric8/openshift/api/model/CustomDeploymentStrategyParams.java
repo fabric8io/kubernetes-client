@@ -2,9 +2,10 @@
 package io.fabric8.openshift.api.model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -58,6 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class CustomDeploymentStrategyParams implements KubernetesResource
 {
 
@@ -70,7 +72,7 @@ public class CustomDeploymentStrategyParams implements KubernetesResource
     @JsonProperty("image")
     private String image;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -79,12 +81,6 @@ public class CustomDeploymentStrategyParams implements KubernetesResource
     public CustomDeploymentStrategyParams() {
     }
 
-    /**
-     * 
-     * @param image
-     * @param environment
-     * @param command
-     */
     public CustomDeploymentStrategyParams(List<String> command, List<EnvVar> environment, String image) {
         super();
         this.command = command;

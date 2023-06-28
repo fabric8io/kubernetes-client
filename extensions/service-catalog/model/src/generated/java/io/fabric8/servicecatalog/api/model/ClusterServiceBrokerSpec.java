@@ -1,8 +1,9 @@
 
 package io.fabric8.servicecatalog.api.model;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -69,6 +70,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class ClusterServiceBrokerSpec implements KubernetesResource
 {
 
@@ -89,7 +91,7 @@ public class ClusterServiceBrokerSpec implements KubernetesResource
     @JsonProperty("url")
     private String url;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -98,17 +100,6 @@ public class ClusterServiceBrokerSpec implements KubernetesResource
     public ClusterServiceBrokerSpec() {
     }
 
-    /**
-     * 
-     * @param caBundle
-     * @param catalogRestrictions
-     * @param relistDuration
-     * @param insecureSkipTLSVerify
-     * @param relistRequests
-     * @param relistBehavior
-     * @param url
-     * @param authInfo
-     */
     public ClusterServiceBrokerSpec(ClusterServiceBrokerAuthInfo authInfo, String caBundle, CatalogRestrictions catalogRestrictions, Boolean insecureSkipTLSVerify, String relistBehavior, Duration relistDuration, Long relistRequests, String url) {
         super();
         this.authInfo = authInfo;

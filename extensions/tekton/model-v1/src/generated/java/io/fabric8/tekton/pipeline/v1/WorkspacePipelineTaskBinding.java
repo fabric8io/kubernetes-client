@@ -1,8 +1,9 @@
 
 package io.fabric8.tekton.pipeline.v1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -63,6 +64,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class WorkspacePipelineTaskBinding implements KubernetesResource
 {
 
@@ -73,7 +75,7 @@ public class WorkspacePipelineTaskBinding implements KubernetesResource
     @JsonProperty("workspace")
     private String workspace;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -82,12 +84,6 @@ public class WorkspacePipelineTaskBinding implements KubernetesResource
     public WorkspacePipelineTaskBinding() {
     }
 
-    /**
-     * 
-     * @param workspace
-     * @param name
-     * @param subPath
-     */
     public WorkspacePipelineTaskBinding(String name, String subPath, String workspace) {
         super();
         this.name = name;

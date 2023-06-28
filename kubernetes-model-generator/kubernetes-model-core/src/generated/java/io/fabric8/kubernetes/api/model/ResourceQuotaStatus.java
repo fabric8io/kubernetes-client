@@ -1,9 +1,9 @@
 
 package io.fabric8.kubernetes.api.model;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -34,6 +34,7 @@ import lombok.experimental.Accessors;
     ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
+@Generated("jsonschema2pojo")
 public class ResourceQuotaStatus implements KubernetesResource
 {
 
@@ -44,7 +45,7 @@ public class ResourceQuotaStatus implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, io.fabric8.kubernetes.api.model.Quantity> used = new LinkedHashMap<String, io.fabric8.kubernetes.api.model.Quantity>();
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -53,11 +54,6 @@ public class ResourceQuotaStatus implements KubernetesResource
     public ResourceQuotaStatus() {
     }
 
-    /**
-     * 
-     * @param hard
-     * @param used
-     */
     public ResourceQuotaStatus(Map<String, io.fabric8.kubernetes.api.model.Quantity> hard, Map<String, io.fabric8.kubernetes.api.model.Quantity> used) {
         super();
         this.hard = hard;

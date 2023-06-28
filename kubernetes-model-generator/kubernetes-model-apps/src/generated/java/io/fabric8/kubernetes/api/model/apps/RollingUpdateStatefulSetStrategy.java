@@ -1,8 +1,9 @@
 
 package io.fabric8.kubernetes.api.model.apps;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -53,6 +54,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class RollingUpdateStatefulSetStrategy implements KubernetesResource
 {
 
@@ -61,7 +63,7 @@ public class RollingUpdateStatefulSetStrategy implements KubernetesResource
     @JsonProperty("partition")
     private Integer partition;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -70,11 +72,6 @@ public class RollingUpdateStatefulSetStrategy implements KubernetesResource
     public RollingUpdateStatefulSetStrategy() {
     }
 
-    /**
-     * 
-     * @param partition
-     * @param maxUnavailable
-     */
     public RollingUpdateStatefulSetStrategy(io.fabric8.kubernetes.api.model.IntOrString maxUnavailable, Integer partition) {
         super();
         this.maxUnavailable = maxUnavailable;

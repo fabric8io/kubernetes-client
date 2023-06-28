@@ -2,9 +2,10 @@
 package io.fabric8.tekton.pipeline.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -75,6 +76,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class PipelineTask implements KubernetesResource
 {
 
@@ -107,7 +109,7 @@ public class PipelineTask implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<WorkspacePipelineTaskBinding> workspaces = new ArrayList<WorkspacePipelineTaskBinding>();
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -116,21 +118,6 @@ public class PipelineTask implements KubernetesResource
     public PipelineTask() {
     }
 
-    /**
-     * 
-     * @param retries
-     * @param taskRef
-     * @param displayName
-     * @param name
-     * @param description
-     * @param runAfter
-     * @param workspaces
-     * @param matrix
-     * @param params
-     * @param taskSpec
-     * @param when
-     * @param timeout
-     */
     public PipelineTask(String description, String displayName, Matrix matrix, String name, List<Param> params, Integer retries, List<String> runAfter, TaskRef taskRef, EmbeddedTask taskSpec, Duration timeout, List<WhenExpression> when, List<WorkspacePipelineTaskBinding> workspaces) {
         super();
         this.description = description;

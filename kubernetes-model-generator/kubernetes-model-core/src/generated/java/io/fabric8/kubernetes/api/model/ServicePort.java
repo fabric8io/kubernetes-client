@@ -1,8 +1,9 @@
 
 package io.fabric8.kubernetes.api.model;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -37,6 +38,7 @@ import lombok.experimental.Accessors;
     ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
+@Generated("jsonschema2pojo")
 public class ServicePort implements KubernetesResource
 {
 
@@ -53,7 +55,7 @@ public class ServicePort implements KubernetesResource
     @JsonProperty("targetPort")
     private IntOrString targetPort;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -62,15 +64,6 @@ public class ServicePort implements KubernetesResource
     public ServicePort() {
     }
 
-    /**
-     * 
-     * @param protocol
-     * @param port
-     * @param appProtocol
-     * @param name
-     * @param nodePort
-     * @param targetPort
-     */
     public ServicePort(String appProtocol, String name, Integer nodePort, Integer port, String protocol, IntOrString targetPort) {
         super();
         this.appProtocol = appProtocol;

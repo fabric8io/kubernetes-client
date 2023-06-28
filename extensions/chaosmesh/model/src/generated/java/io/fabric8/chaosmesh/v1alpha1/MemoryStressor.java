@@ -2,9 +2,10 @@
 package io.fabric8.chaosmesh.v1alpha1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -65,6 +66,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class MemoryStressor implements KubernetesResource
 {
 
@@ -75,7 +77,7 @@ public class MemoryStressor implements KubernetesResource
     @JsonProperty("workers")
     private Integer workers;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -84,12 +86,6 @@ public class MemoryStressor implements KubernetesResource
     public MemoryStressor() {
     }
 
-    /**
-     * 
-     * @param size
-     * @param options
-     * @param workers
-     */
     public MemoryStressor(List<String> options, String size, Integer workers) {
         super();
         this.options = options;

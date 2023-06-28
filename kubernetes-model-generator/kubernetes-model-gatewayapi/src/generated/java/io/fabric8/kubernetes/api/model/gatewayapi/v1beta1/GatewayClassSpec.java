@@ -1,8 +1,9 @@
 
 package io.fabric8.kubernetes.api.model.gatewayapi.v1beta1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -55,6 +56,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class GatewayClassSpec implements KubernetesResource
 {
 
@@ -65,7 +67,7 @@ public class GatewayClassSpec implements KubernetesResource
     @JsonProperty("parametersRef")
     private ParametersReference parametersRef;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -74,12 +76,6 @@ public class GatewayClassSpec implements KubernetesResource
     public GatewayClassSpec() {
     }
 
-    /**
-     * 
-     * @param controllerName
-     * @param description
-     * @param parametersRef
-     */
     public GatewayClassSpec(String controllerName, String description, ParametersReference parametersRef) {
         super();
         this.controllerName = controllerName;

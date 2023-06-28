@@ -1,8 +1,9 @@
 
 package io.fabric8.istio.api.networking.v1alpha3;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -67,6 +68,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class ReadinessProbe implements KubernetesResource
 {
 
@@ -84,7 +86,7 @@ public class ReadinessProbe implements KubernetesResource
     @JsonProperty("timeoutSeconds")
     private Integer timeoutSeconds;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -93,15 +95,6 @@ public class ReadinessProbe implements KubernetesResource
     public ReadinessProbe() {
     }
 
-    /**
-     * 
-     * @param failureThreshold
-     * @param periodSeconds
-     * @param timeoutSeconds
-     * @param healthCheckMethod
-     * @param successThreshold
-     * @param initialDelaySeconds
-     */
     public ReadinessProbe(IsReadinessProbeHealthCheckMethod healthCheckMethod, Integer failureThreshold, Integer initialDelaySeconds, Integer periodSeconds, Integer successThreshold, Integer timeoutSeconds) {
         super();
         this.healthCheckMethod = healthCheckMethod;

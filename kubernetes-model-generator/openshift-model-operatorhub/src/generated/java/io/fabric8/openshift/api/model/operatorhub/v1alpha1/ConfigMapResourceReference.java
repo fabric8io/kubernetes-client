@@ -1,8 +1,9 @@
 
 package io.fabric8.openshift.api.model.operatorhub.v1alpha1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -57,6 +58,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class ConfigMapResourceReference implements KubernetesResource
 {
 
@@ -71,7 +73,7 @@ public class ConfigMapResourceReference implements KubernetesResource
     @JsonProperty("uid")
     private java.lang.String uid;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -80,14 +82,6 @@ public class ConfigMapResourceReference implements KubernetesResource
     public ConfigMapResourceReference() {
     }
 
-    /**
-     * 
-     * @param uid
-     * @param resourceVersion
-     * @param name
-     * @param namespace
-     * @param lastUpdateTime
-     */
     public ConfigMapResourceReference(String lastUpdateTime, java.lang.String name, java.lang.String namespace, java.lang.String resourceVersion, java.lang.String uid) {
         super();
         this.lastUpdateTime = lastUpdateTime;

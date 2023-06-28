@@ -2,10 +2,10 @@
 package io.fabric8.servicecatalog.api.model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -83,6 +83,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class ServiceInstanceSpec implements KubernetesResource
 {
 
@@ -131,7 +132,7 @@ public class ServiceInstanceSpec implements KubernetesResource
     @JsonProperty("userInfo")
     private UserInfo userInfo;
     @JsonIgnore
-    private Map<java.lang.String, java.lang.Object> additionalProperties = new HashMap<java.lang.String, java.lang.Object>();
+    private Map<java.lang.String, java.lang.Object> additionalProperties = new LinkedHashMap<java.lang.String, java.lang.Object>();
 
     /**
      * No args constructor for use in serialization
@@ -140,30 +141,6 @@ public class ServiceInstanceSpec implements KubernetesResource
     public ServiceInstanceSpec() {
     }
 
-    /**
-     * 
-     * @param updateRequests
-     * @param userInfo
-     * @param parametersFrom
-     * @param clusterServicePlanExternalID
-     * @param externalID
-     * @param clusterServiceClassExternalID
-     * @param clusterServiceClassName
-     * @param clusterServicePlanRef
-     * @param serviceClassExternalName
-     * @param serviceClassName
-     * @param serviceClassExternalID
-     * @param servicePlanExternalName
-     * @param clusterServiceClassExternalName
-     * @param clusterServiceClassRef
-     * @param serviceClassRef
-     * @param clusterServicePlanName
-     * @param servicePlanName
-     * @param clusterServicePlanExternalName
-     * @param servicePlanExternalID
-     * @param servicePlanRef
-     * @param parameters
-     */
     public ServiceInstanceSpec(java.lang.String clusterServiceClassExternalID, java.lang.String clusterServiceClassExternalName, java.lang.String clusterServiceClassName, ClusterObjectReference clusterServiceClassRef, java.lang.String clusterServicePlanExternalID, java.lang.String clusterServicePlanExternalName, java.lang.String clusterServicePlanName, ClusterObjectReference clusterServicePlanRef, java.lang.String externalID, Map<String, Object> parameters, List<ParametersFromSource> parametersFrom, java.lang.String serviceClassExternalID, java.lang.String serviceClassExternalName, java.lang.String serviceClassName, io.fabric8.servicecatalog.api.model.LocalObjectReference serviceClassRef, java.lang.String servicePlanExternalID, java.lang.String servicePlanExternalName, java.lang.String servicePlanName, io.fabric8.servicecatalog.api.model.LocalObjectReference servicePlanRef, Long updateRequests, UserInfo userInfo) {
         super();
         this.clusterServiceClassExternalID = clusterServiceClassExternalID;

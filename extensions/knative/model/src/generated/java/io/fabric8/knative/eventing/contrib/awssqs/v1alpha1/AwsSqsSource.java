@@ -1,8 +1,9 @@
 
 package io.fabric8.knative.eventing.contrib.awssqs.v1alpha1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -71,6 +72,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1alpha1")
 @Group("sources.knative.dev")
+@Generated("jsonschema2pojo")
 public class AwsSqsSource implements HasMetadata, Namespaced
 {
 
@@ -95,7 +97,7 @@ public class AwsSqsSource implements HasMetadata, Namespaced
     @JsonProperty("status")
     private AwsSqsSourceStatus status;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -104,14 +106,6 @@ public class AwsSqsSource implements HasMetadata, Namespaced
     public AwsSqsSource() {
     }
 
-    /**
-     * 
-     * @param metadata
-     * @param apiVersion
-     * @param kind
-     * @param spec
-     * @param status
-     */
     public AwsSqsSource(String apiVersion, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, AwsSqsSourceSpec spec, AwsSqsSourceStatus status) {
         super();
         this.apiVersion = apiVersion;

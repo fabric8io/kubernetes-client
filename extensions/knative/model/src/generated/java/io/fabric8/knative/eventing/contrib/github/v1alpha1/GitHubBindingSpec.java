@@ -1,8 +1,9 @@
 
 package io.fabric8.knative.eventing.contrib.github.v1alpha1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -63,6 +64,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class GitHubBindingSpec implements KubernetesResource
 {
 
@@ -71,7 +73,7 @@ public class GitHubBindingSpec implements KubernetesResource
     @JsonProperty("subject")
     private Reference subject;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -80,11 +82,6 @@ public class GitHubBindingSpec implements KubernetesResource
     public GitHubBindingSpec() {
     }
 
-    /**
-     * 
-     * @param subject
-     * @param accessToken
-     */
     public GitHubBindingSpec(SecretValueFromSource accessToken, Reference subject) {
         super();
         this.accessToken = accessToken;

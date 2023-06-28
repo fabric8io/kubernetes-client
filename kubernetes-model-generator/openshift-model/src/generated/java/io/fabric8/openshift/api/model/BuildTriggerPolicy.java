@@ -1,8 +1,9 @@
 
 package io.fabric8.openshift.api.model;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -58,6 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class BuildTriggerPolicy implements KubernetesResource
 {
 
@@ -74,7 +76,7 @@ public class BuildTriggerPolicy implements KubernetesResource
     @JsonProperty("type")
     private String type;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -83,15 +85,6 @@ public class BuildTriggerPolicy implements KubernetesResource
     public BuildTriggerPolicy() {
     }
 
-    /**
-     * 
-     * @param imageChange
-     * @param github
-     * @param gitlab
-     * @param bitbucket
-     * @param type
-     * @param generic
-     */
     public BuildTriggerPolicy(WebHookTrigger bitbucket, WebHookTrigger generic, WebHookTrigger github, WebHookTrigger gitlab, ImageChangeTrigger imageChange, String type) {
         super();
         this.bitbucket = bitbucket;

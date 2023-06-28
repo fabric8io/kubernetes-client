@@ -2,9 +2,10 @@
 package io.fabric8.tekton.pipeline.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -68,6 +69,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class PipelineTaskRunSpec implements KubernetesResource
 {
 
@@ -88,7 +90,7 @@ public class PipelineTaskRunSpec implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<TaskRunStepSpec> stepSpecs = new ArrayList<TaskRunStepSpec>();
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -97,16 +99,6 @@ public class PipelineTaskRunSpec implements KubernetesResource
     public PipelineTaskRunSpec() {
     }
 
-    /**
-     * 
-     * @param metadata
-     * @param sidecarSpecs
-     * @param serviceAccountName
-     * @param computeResources
-     * @param podTemplate
-     * @param stepSpecs
-     * @param pipelineTaskName
-     */
     public PipelineTaskRunSpec(io.fabric8.kubernetes.api.model.ResourceRequirements computeResources, PipelineTaskMetadata metadata, String pipelineTaskName, Template podTemplate, String serviceAccountName, List<TaskRunSidecarSpec> sidecarSpecs, List<TaskRunStepSpec> stepSpecs) {
         super();
         this.computeResources = computeResources;

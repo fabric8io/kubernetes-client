@@ -1,8 +1,9 @@
 
 package io.fabric8.openshift.api.model.hive.v1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -56,6 +57,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class SyncObjectPatch implements KubernetesResource
 {
 
@@ -72,7 +74,7 @@ public class SyncObjectPatch implements KubernetesResource
     @JsonProperty("patchType")
     private String patchType;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -81,15 +83,6 @@ public class SyncObjectPatch implements KubernetesResource
     public SyncObjectPatch() {
     }
 
-    /**
-     * 
-     * @param patch
-     * @param apiVersion
-     * @param patchType
-     * @param kind
-     * @param name
-     * @param namespace
-     */
     public SyncObjectPatch(String apiVersion, String kind, String name, String namespace, String patch, String patchType) {
         super();
         this.apiVersion = apiVersion;

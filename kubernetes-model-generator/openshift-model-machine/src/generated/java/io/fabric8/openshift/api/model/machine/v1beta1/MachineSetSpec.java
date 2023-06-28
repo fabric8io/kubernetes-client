@@ -1,8 +1,9 @@
 
 package io.fabric8.openshift.api.model.machine.v1beta1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -56,6 +57,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class MachineSetSpec implements KubernetesResource
 {
 
@@ -70,7 +72,7 @@ public class MachineSetSpec implements KubernetesResource
     @JsonProperty("template")
     private MachineTemplateSpec template;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -79,14 +81,6 @@ public class MachineSetSpec implements KubernetesResource
     public MachineSetSpec() {
     }
 
-    /**
-     * 
-     * @param template
-     * @param replicas
-     * @param deletePolicy
-     * @param selector
-     * @param minReadySeconds
-     */
     public MachineSetSpec(String deletePolicy, Integer minReadySeconds, Integer replicas, io.fabric8.kubernetes.api.model.LabelSelector selector, MachineTemplateSpec template) {
         super();
         this.deletePolicy = deletePolicy;

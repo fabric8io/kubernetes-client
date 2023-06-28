@@ -1,8 +1,9 @@
 
 package io.fabric8.certmanager.api.model.acme.v1alpha2;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -63,6 +64,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class ACMEChallengeSolver implements KubernetesResource
 {
 
@@ -73,7 +75,7 @@ public class ACMEChallengeSolver implements KubernetesResource
     @JsonProperty("selector")
     private CertificateDNSNameSelector selector;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -82,12 +84,6 @@ public class ACMEChallengeSolver implements KubernetesResource
     public ACMEChallengeSolver() {
     }
 
-    /**
-     * 
-     * @param http01
-     * @param selector
-     * @param dns01
-     */
     public ACMEChallengeSolver(ACMEChallengeSolverDNS01 dns01, ACMEChallengeSolverHTTP01 http01, CertificateDNSNameSelector selector) {
         super();
         this.dns01 = dns01;

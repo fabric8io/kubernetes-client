@@ -1,9 +1,9 @@
 
 package io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.v1;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -66,6 +66,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class SubscriptionUnitStatus implements KubernetesResource
 {
 
@@ -81,7 +82,7 @@ public class SubscriptionUnitStatus implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, Object> resourceStatus = new LinkedHashMap<String, Object>();
     @JsonIgnore
-    private Map<java.lang.String, java.lang.Object> additionalProperties = new HashMap<java.lang.String, java.lang.Object>();
+    private Map<java.lang.String, java.lang.Object> additionalProperties = new LinkedHashMap<java.lang.String, java.lang.Object>();
 
     /**
      * No args constructor for use in serialization
@@ -90,14 +91,6 @@ public class SubscriptionUnitStatus implements KubernetesResource
     public SubscriptionUnitStatus() {
     }
 
-    /**
-     * 
-     * @param phase
-     * @param reason
-     * @param resourceStatus
-     * @param message
-     * @param lastUpdateTime
-     */
     public SubscriptionUnitStatus(java.lang.String lastUpdateTime, java.lang.String message, java.lang.String phase, java.lang.String reason, Map<String, Object> resourceStatus) {
         super();
         this.lastUpdateTime = lastUpdateTime;

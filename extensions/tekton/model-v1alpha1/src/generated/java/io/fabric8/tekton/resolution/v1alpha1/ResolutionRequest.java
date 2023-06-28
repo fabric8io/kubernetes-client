@@ -1,8 +1,9 @@
 
 package io.fabric8.tekton.resolution.v1alpha1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -71,6 +72,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1alpha1")
 @Group("resolution.tekton.dev")
+@Generated("jsonschema2pojo")
 public class ResolutionRequest implements HasMetadata, Namespaced
 {
 
@@ -95,7 +97,7 @@ public class ResolutionRequest implements HasMetadata, Namespaced
     @JsonProperty("status")
     private ResolutionRequestStatus status;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -104,14 +106,6 @@ public class ResolutionRequest implements HasMetadata, Namespaced
     public ResolutionRequest() {
     }
 
-    /**
-     * 
-     * @param metadata
-     * @param apiVersion
-     * @param kind
-     * @param spec
-     * @param status
-     */
     public ResolutionRequest(String apiVersion, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, ResolutionRequestSpec spec, ResolutionRequestStatus status) {
         super();
         this.apiVersion = apiVersion;

@@ -2,9 +2,10 @@
 package io.fabric8.openshift.api.model.operatorhub.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -66,6 +67,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1")
 @Group("operators.coreos.com")
+@Generated("jsonschema2pojo")
 public class OperatorConditionList implements KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.operatorhub.v1.OperatorCondition>
 {
 
@@ -88,7 +90,7 @@ public class OperatorConditionList implements KubernetesResource, KubernetesReso
     @JsonProperty("metadata")
     private ListMeta metadata;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -97,13 +99,6 @@ public class OperatorConditionList implements KubernetesResource, KubernetesReso
     public OperatorConditionList() {
     }
 
-    /**
-     * 
-     * @param metadata
-     * @param apiVersion
-     * @param kind
-     * @param items
-     */
     public OperatorConditionList(String apiVersion, List<io.fabric8.openshift.api.model.operatorhub.v1.OperatorCondition> items, String kind, ListMeta metadata) {
         super();
         this.apiVersion = apiVersion;

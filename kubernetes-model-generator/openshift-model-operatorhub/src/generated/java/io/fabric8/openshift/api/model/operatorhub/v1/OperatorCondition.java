@@ -1,8 +1,9 @@
 
 package io.fabric8.openshift.api.model.operatorhub.v1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -63,6 +64,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1")
 @Group("operators.coreos.com")
+@Generated("jsonschema2pojo")
 public class OperatorCondition implements HasMetadata, Namespaced
 {
 
@@ -87,7 +89,7 @@ public class OperatorCondition implements HasMetadata, Namespaced
     @JsonProperty("status")
     private OperatorConditionStatus status;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -96,14 +98,6 @@ public class OperatorCondition implements HasMetadata, Namespaced
     public OperatorCondition() {
     }
 
-    /**
-     * 
-     * @param metadata
-     * @param apiVersion
-     * @param kind
-     * @param spec
-     * @param status
-     */
     public OperatorCondition(String apiVersion, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, OperatorConditionSpec spec, OperatorConditionStatus status) {
         super();
         this.apiVersion = apiVersion;

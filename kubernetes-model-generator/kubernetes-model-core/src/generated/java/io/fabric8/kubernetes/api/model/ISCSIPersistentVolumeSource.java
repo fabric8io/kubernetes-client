@@ -2,9 +2,10 @@
 package io.fabric8.kubernetes.api.model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -44,6 +45,7 @@ import lombok.experimental.Accessors;
     ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
+@Generated("jsonschema2pojo")
 public class ISCSIPersistentVolumeSource implements KubernetesResource
 {
 
@@ -71,7 +73,7 @@ public class ISCSIPersistentVolumeSource implements KubernetesResource
     @JsonProperty("targetPortal")
     private String targetPortal;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -80,20 +82,6 @@ public class ISCSIPersistentVolumeSource implements KubernetesResource
     public ISCSIPersistentVolumeSource() {
     }
 
-    /**
-     * 
-     * @param chapAuthSession
-     * @param iscsiInterface
-     * @param lun
-     * @param chapAuthDiscovery
-     * @param iqn
-     * @param portals
-     * @param secretRef
-     * @param initiatorName
-     * @param readOnly
-     * @param fsType
-     * @param targetPortal
-     */
     public ISCSIPersistentVolumeSource(Boolean chapAuthDiscovery, Boolean chapAuthSession, String fsType, String initiatorName, String iqn, String iscsiInterface, Integer lun, List<String> portals, Boolean readOnly, SecretReference secretRef, String targetPortal) {
         super();
         this.chapAuthDiscovery = chapAuthDiscovery;

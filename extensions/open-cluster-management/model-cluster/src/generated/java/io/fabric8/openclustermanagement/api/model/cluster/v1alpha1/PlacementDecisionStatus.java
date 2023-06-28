@@ -2,9 +2,10 @@
 package io.fabric8.openclustermanagement.api.model.cluster.v1alpha1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -63,13 +64,14 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class PlacementDecisionStatus implements KubernetesResource
 {
 
     @JsonProperty("decisions")
     private List<ClusterDecision> decisions = new ArrayList<ClusterDecision>();
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -78,10 +80,6 @@ public class PlacementDecisionStatus implements KubernetesResource
     public PlacementDecisionStatus() {
     }
 
-    /**
-     * 
-     * @param decisions
-     */
     public PlacementDecisionStatus(List<ClusterDecision> decisions) {
         super();
         this.decisions = decisions;

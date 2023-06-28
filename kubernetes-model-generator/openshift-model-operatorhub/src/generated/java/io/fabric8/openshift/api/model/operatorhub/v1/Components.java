@@ -2,9 +2,10 @@
 package io.fabric8.openshift.api.model.operatorhub.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -56,6 +57,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class Components implements KubernetesResource
 {
 
@@ -65,7 +67,7 @@ public class Components implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<JsonNode> refs = new ArrayList<JsonNode>();
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -74,11 +76,6 @@ public class Components implements KubernetesResource
     public Components() {
     }
 
-    /**
-     * 
-     * @param refs
-     * @param labelSelector
-     */
     public Components(io.fabric8.kubernetes.api.model.LabelSelector labelSelector, List<JsonNode> refs) {
         super();
         this.labelSelector = labelSelector;

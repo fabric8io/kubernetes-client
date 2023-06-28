@@ -1,8 +1,9 @@
 
 package io.fabric8.openshift.api.model.operatorhub.v1alpha1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -58,6 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class StepResource implements KubernetesResource
 {
 
@@ -76,7 +78,7 @@ public class StepResource implements KubernetesResource
     @JsonProperty("version")
     private String version;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -85,16 +87,6 @@ public class StepResource implements KubernetesResource
     public StepResource() {
     }
 
-    /**
-     * 
-     * @param kind
-     * @param manifest
-     * @param name
-     * @param sourceNamespace
-     * @param sourceName
-     * @param version
-     * @param group
-     */
     public StepResource(String group, String kind, String manifest, String name, String sourceName, String sourceNamespace, String version) {
         super();
         this.group = group;

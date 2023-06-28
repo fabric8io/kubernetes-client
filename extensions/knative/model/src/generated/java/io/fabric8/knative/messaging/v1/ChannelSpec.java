@@ -2,9 +2,10 @@
 package io.fabric8.knative.messaging.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -67,6 +68,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class ChannelSpec implements KubernetesResource
 {
 
@@ -78,7 +80,7 @@ public class ChannelSpec implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<SubscriberSpec> subscribers = new ArrayList<SubscriberSpec>();
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -87,12 +89,6 @@ public class ChannelSpec implements KubernetesResource
     public ChannelSpec() {
     }
 
-    /**
-     * 
-     * @param delivery
-     * @param subscribers
-     * @param channelTemplate
-     */
     public ChannelSpec(ChannelTemplateSpec channelTemplate, DeliverySpec delivery, List<SubscriberSpec> subscribers) {
         super();
         this.channelTemplate = channelTemplate;

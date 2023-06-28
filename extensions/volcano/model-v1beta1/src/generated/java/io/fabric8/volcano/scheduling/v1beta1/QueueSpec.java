@@ -1,9 +1,9 @@
 
 package io.fabric8.volcano.scheduling.v1beta1;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -65,6 +65,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class QueueSpec implements KubernetesResource
 {
 
@@ -76,7 +77,7 @@ public class QueueSpec implements KubernetesResource
     @JsonProperty("weight")
     private Integer weight;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -85,12 +86,6 @@ public class QueueSpec implements KubernetesResource
     public QueueSpec() {
     }
 
-    /**
-     * 
-     * @param capability
-     * @param weight
-     * @param reclaimable
-     */
     public QueueSpec(Map<String, Quantity> capability, Boolean reclaimable, Integer weight) {
         super();
         this.capability = capability;

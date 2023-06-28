@@ -2,9 +2,10 @@
 package io.fabric8.openclustermanagement.api.model.multiclusterhub.operator.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -67,6 +68,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class HiveConfigSpec implements KubernetesResource
 {
 
@@ -84,7 +86,7 @@ public class HiveConfigSpec implements KubernetesResource
     @JsonProperty("maintenanceMode")
     private Boolean maintenanceMode;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -93,15 +95,6 @@ public class HiveConfigSpec implements KubernetesResource
     public HiveConfigSpec() {
     }
 
-    /**
-     * 
-     * @param globalPullSecret
-     * @param backup
-     * @param failedProvisionConfig
-     * @param externalDNS
-     * @param maintenanceMode
-     * @param additionalCertificateAuthorities
-     */
     public HiveConfigSpec(List<io.fabric8.kubernetes.api.model.LocalObjectReference> additionalCertificateAuthorities, BackupConfig backup, ExternalDNSConfig externalDNS, FailedProvisionConfig failedProvisionConfig, io.fabric8.kubernetes.api.model.LocalObjectReference globalPullSecret, Boolean maintenanceMode) {
         super();
         this.additionalCertificateAuthorities = additionalCertificateAuthorities;

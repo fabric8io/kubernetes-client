@@ -2,10 +2,10 @@
 package io.fabric8.openshift.api.model.installer.aws.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -63,6 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class Platform implements KubernetesResource
 {
 
@@ -86,7 +87,7 @@ public class Platform implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> userTags = new LinkedHashMap<String, String>();
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -95,17 +96,6 @@ public class Platform implements KubernetesResource
     public Platform() {
     }
 
-    /**
-     * 
-     * @param amiID
-     * @param hostedZone
-     * @param experimentalPropagateUserTags
-     * @param defaultMachinePlatform
-     * @param userTags
-     * @param subnets
-     * @param region
-     * @param serviceEndpoints
-     */
     public Platform(java.lang.String amiID, MachinePool defaultMachinePlatform, Boolean experimentalPropagateUserTags, java.lang.String hostedZone, java.lang.String region, List<ServiceEndpoint> serviceEndpoints, List<java.lang.String> subnets, Map<String, String> userTags) {
         super();
         this.amiID = amiID;

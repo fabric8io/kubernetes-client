@@ -1,9 +1,9 @@
 
 package io.fabric8.kubernetes.api.model;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -34,6 +34,7 @@ import lombok.experimental.Accessors;
     ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
+@Generated("jsonschema2pojo")
 public class AuthProviderConfig implements KubernetesResource
 {
 
@@ -43,7 +44,7 @@ public class AuthProviderConfig implements KubernetesResource
     @JsonProperty("name")
     private java.lang.String name;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -52,11 +53,6 @@ public class AuthProviderConfig implements KubernetesResource
     public AuthProviderConfig() {
     }
 
-    /**
-     * 
-     * @param name
-     * @param config
-     */
     public AuthProviderConfig(Map<String, String> config, java.lang.String name) {
         super();
         this.config = config;

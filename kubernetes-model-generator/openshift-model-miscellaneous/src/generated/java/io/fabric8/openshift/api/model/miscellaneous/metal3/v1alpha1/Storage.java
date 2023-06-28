@@ -1,8 +1,9 @@
 
 package io.fabric8.openshift.api.model.miscellaneous.metal3.v1alpha1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -63,6 +64,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class Storage implements KubernetesResource
 {
 
@@ -89,7 +91,7 @@ public class Storage implements KubernetesResource
     @JsonProperty("wwnWithExtension")
     private String wwnWithExtension;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -98,20 +100,6 @@ public class Storage implements KubernetesResource
     public Storage() {
     }
 
-    /**
-     * 
-     * @param wwnVendorExtension
-     * @param hctl
-     * @param serialNumber
-     * @param vendor
-     * @param name
-     * @param wwnWithExtension
-     * @param model
-     * @param rotational
-     * @param type
-     * @param sizeBytes
-     * @param wwn
-     */
     public Storage(String hctl, String model, String name, Boolean rotational, String serialNumber, Long sizeBytes, String type, String vendor, String wwn, String wwnVendorExtension, String wwnWithExtension) {
         super();
         this.hctl = hctl;

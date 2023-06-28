@@ -2,10 +2,10 @@
 package io.fabric8.camelk.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -69,6 +69,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class IntegrationKitSpec implements KubernetesResource
 {
 
@@ -89,7 +90,7 @@ public class IntegrationKitSpec implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, TraitSpec> traits = new LinkedHashMap<String, TraitSpec>();
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -98,15 +99,6 @@ public class IntegrationKitSpec implements KubernetesResource
     public IntegrationKitSpec() {
     }
 
-    /**
-     * 
-     * @param image
-     * @param traits
-     * @param configuration
-     * @param repositories
-     * @param profile
-     * @param dependencies
-     */
     public IntegrationKitSpec(List<ConfigurationSpec> configuration, List<java.lang.String> dependencies, java.lang.String image, java.lang.String profile, List<java.lang.String> repositories, Map<String, TraitSpec> traits) {
         super();
         this.configuration = configuration;

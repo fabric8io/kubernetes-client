@@ -1,9 +1,9 @@
 
 package io.fabric8.kubernetes.api.model.kustomize.v1beta1;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -37,6 +37,7 @@ import lombok.experimental.Accessors;
     ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
+@Generated("jsonschema2pojo")
 public class Patch implements KubernetesResource
 {
 
@@ -50,7 +51,7 @@ public class Patch implements KubernetesResource
     @JsonProperty("target")
     private Selector target;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -59,13 +60,6 @@ public class Patch implements KubernetesResource
     public Patch() {
     }
 
-    /**
-     * 
-     * @param patch
-     * @param path
-     * @param options
-     * @param target
-     */
     public Patch(Map<String, Boolean> options, java.lang.String patch, java.lang.String path, Selector target) {
         super();
         this.options = options;

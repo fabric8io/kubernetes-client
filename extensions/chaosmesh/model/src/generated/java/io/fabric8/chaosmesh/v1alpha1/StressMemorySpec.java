@@ -1,8 +1,9 @@
 
 package io.fabric8.chaosmesh.v1alpha1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -62,6 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class StressMemorySpec implements KubernetesResource
 {
 
@@ -70,7 +72,7 @@ public class StressMemorySpec implements KubernetesResource
     @JsonProperty("size")
     private String size;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -79,11 +81,6 @@ public class StressMemorySpec implements KubernetesResource
     public StressMemorySpec() {
     }
 
-    /**
-     * 
-     * @param size
-     * @param options
-     */
     public StressMemorySpec(String options, String size) {
         super();
         this.options = options;

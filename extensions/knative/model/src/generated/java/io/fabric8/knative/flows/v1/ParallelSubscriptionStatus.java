@@ -1,8 +1,9 @@
 
 package io.fabric8.knative.flows.v1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -62,6 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class ParallelSubscriptionStatus implements KubernetesResource
 {
 
@@ -70,7 +72,7 @@ public class ParallelSubscriptionStatus implements KubernetesResource
     @JsonProperty("subscription")
     private io.fabric8.kubernetes.api.model.ObjectReference subscription;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -79,11 +81,6 @@ public class ParallelSubscriptionStatus implements KubernetesResource
     public ParallelSubscriptionStatus() {
     }
 
-    /**
-     * 
-     * @param ready
-     * @param subscription
-     */
     public ParallelSubscriptionStatus(Condition ready, io.fabric8.kubernetes.api.model.ObjectReference subscription) {
         super();
         this.ready = ready;

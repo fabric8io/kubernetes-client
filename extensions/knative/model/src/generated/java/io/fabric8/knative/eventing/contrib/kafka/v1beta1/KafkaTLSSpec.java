@@ -1,8 +1,9 @@
 
 package io.fabric8.knative.eventing.contrib.kafka.v1beta1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -64,6 +65,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class KafkaTLSSpec implements KubernetesResource
 {
 
@@ -76,7 +78,7 @@ public class KafkaTLSSpec implements KubernetesResource
     @JsonProperty("key")
     private SecretValueFromSource key;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -85,13 +87,6 @@ public class KafkaTLSSpec implements KubernetesResource
     public KafkaTLSSpec() {
     }
 
-    /**
-     * 
-     * @param caCert
-     * @param enable
-     * @param cert
-     * @param key
-     */
     public KafkaTLSSpec(SecretValueFromSource caCert, SecretValueFromSource cert, Boolean enable, SecretValueFromSource key) {
         super();
         this.caCert = caCert;

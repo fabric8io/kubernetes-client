@@ -1,8 +1,9 @@
 
 package io.fabric8.openclustermanagement.api.model.operator.v1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -66,6 +67,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class GenerationStatus implements KubernetesResource
 {
 
@@ -82,7 +84,7 @@ public class GenerationStatus implements KubernetesResource
     @JsonProperty("version")
     private String version;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -91,15 +93,6 @@ public class GenerationStatus implements KubernetesResource
     public GenerationStatus() {
     }
 
-    /**
-     * 
-     * @param lastGeneration
-     * @param resource
-     * @param name
-     * @param namespace
-     * @param version
-     * @param group
-     */
     public GenerationStatus(String group, Long lastGeneration, String name, String namespace, String resource, String version) {
         super();
         this.group = group;

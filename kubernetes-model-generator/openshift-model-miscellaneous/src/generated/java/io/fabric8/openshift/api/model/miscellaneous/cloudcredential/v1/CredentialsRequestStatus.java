@@ -2,10 +2,10 @@
 package io.fabric8.openshift.api.model.miscellaneous.cloudcredential.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -61,6 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class CredentialsRequestStatus implements KubernetesResource
 {
 
@@ -79,7 +80,7 @@ public class CredentialsRequestStatus implements KubernetesResource
     @JsonProperty("provisioned")
     private Boolean provisioned;
     @JsonIgnore
-    private Map<java.lang.String, java.lang.Object> additionalProperties = new HashMap<java.lang.String, java.lang.Object>();
+    private Map<java.lang.String, java.lang.Object> additionalProperties = new LinkedHashMap<java.lang.String, java.lang.Object>();
 
     /**
      * No args constructor for use in serialization
@@ -88,15 +89,6 @@ public class CredentialsRequestStatus implements KubernetesResource
     public CredentialsRequestStatus() {
     }
 
-    /**
-     * 
-     * @param lastSyncTimestamp
-     * @param provisioned
-     * @param lastSyncCloudCredsSecretResourceVersion
-     * @param lastSyncGeneration
-     * @param conditions
-     * @param providerStatus
-     */
     public CredentialsRequestStatus(List<CredentialsRequestCondition> conditions, java.lang.String lastSyncCloudCredsSecretResourceVersion, Long lastSyncGeneration, String lastSyncTimestamp, Map<String, Object> providerStatus, Boolean provisioned) {
         super();
         this.conditions = conditions;

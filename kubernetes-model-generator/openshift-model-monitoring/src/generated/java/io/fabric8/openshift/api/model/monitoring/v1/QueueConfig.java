@@ -1,8 +1,9 @@
 
 package io.fabric8.openshift.api.model.monitoring.v1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -60,6 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class QueueConfig implements KubernetesResource
 {
 
@@ -80,7 +82,7 @@ public class QueueConfig implements KubernetesResource
     @JsonProperty("minShards")
     private Integer minShards;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -89,17 +91,6 @@ public class QueueConfig implements KubernetesResource
     public QueueConfig() {
     }
 
-    /**
-     * 
-     * @param maxRetries
-     * @param minShards
-     * @param maxBackoff
-     * @param maxShards
-     * @param minBackoff
-     * @param batchSendDeadline
-     * @param maxSamplesPerSend
-     * @param capacity
-     */
     public QueueConfig(String batchSendDeadline, Integer capacity, String maxBackoff, Integer maxRetries, Integer maxSamplesPerSend, Integer maxShards, String minBackoff, Integer minShards) {
         super();
         this.batchSendDeadline = batchSendDeadline;

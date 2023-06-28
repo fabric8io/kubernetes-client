@@ -2,9 +2,10 @@
 package io.fabric8.openshift.api.model.monitoring.v1alpha1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -70,6 +71,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class EmailConfig implements KubernetesResource
 {
 
@@ -103,7 +105,7 @@ public class EmailConfig implements KubernetesResource
     @JsonProperty("to")
     private String to;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -112,23 +114,6 @@ public class EmailConfig implements KubernetesResource
     public EmailConfig() {
     }
 
-    /**
-     * 
-     * @param headers
-     * @param requireTLS
-     * @param smarthost
-     * @param authIdentity
-     * @param authPassword
-     * @param tlsConfig
-     * @param authSecret
-     * @param authUsername
-     * @param sendResolved
-     * @param from
-     * @param html
-     * @param hello
-     * @param text
-     * @param to
-     */
     public EmailConfig(String authIdentity, SecretKeySelector authPassword, SecretKeySelector authSecret, String authUsername, String from, List<KeyValue> headers, String hello, String html, Boolean requireTLS, Boolean sendResolved, String smarthost, String text, SafeTLSConfig tlsConfig, String to) {
         super();
         this.authIdentity = authIdentity;

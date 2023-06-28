@@ -2,9 +2,10 @@
 package io.fabric8.kubernetes.api.model.extensions;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -57,6 +58,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class NetworkPolicySpec implements KubernetesResource
 {
 
@@ -72,7 +74,7 @@ public class NetworkPolicySpec implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> policyTypes = new ArrayList<String>();
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -81,13 +83,6 @@ public class NetworkPolicySpec implements KubernetesResource
     public NetworkPolicySpec() {
     }
 
-    /**
-     * 
-     * @param ingress
-     * @param podSelector
-     * @param policyTypes
-     * @param egress
-     */
     public NetworkPolicySpec(List<NetworkPolicyEgressRule> egress, List<NetworkPolicyIngressRule> ingress, io.fabric8.kubernetes.api.model.LabelSelector podSelector, List<String> policyTypes) {
         super();
         this.egress = egress;

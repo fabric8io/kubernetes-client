@@ -2,9 +2,10 @@
 package io.fabric8.certmanager.api.model.acme.v1alpha2;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -68,6 +69,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class OrderSpec implements KubernetesResource
 {
 
@@ -86,7 +88,7 @@ public class OrderSpec implements KubernetesResource
     @JsonProperty("issuerRef")
     private io.fabric8.certmanager.api.model.meta.v1.ObjectReference issuerRef;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -95,15 +97,6 @@ public class OrderSpec implements KubernetesResource
     public OrderSpec() {
     }
 
-    /**
-     * 
-     * @param duration
-     * @param commonName
-     * @param csr
-     * @param dnsNames
-     * @param ipAddresses
-     * @param issuerRef
-     */
     public OrderSpec(String commonName, String csr, List<String> dnsNames, Duration duration, List<String> ipAddresses, io.fabric8.certmanager.api.model.meta.v1.ObjectReference issuerRef) {
         super();
         this.commonName = commonName;

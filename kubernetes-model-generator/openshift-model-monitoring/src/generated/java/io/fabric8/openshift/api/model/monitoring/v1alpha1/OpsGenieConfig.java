@@ -2,9 +2,10 @@
 package io.fabric8.openshift.api.model.monitoring.v1alpha1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -67,6 +68,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class OpsGenieConfig implements KubernetesResource
 {
 
@@ -97,7 +99,7 @@ public class OpsGenieConfig implements KubernetesResource
     @JsonProperty("tags")
     private String tags;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -106,21 +108,6 @@ public class OpsGenieConfig implements KubernetesResource
     public OpsGenieConfig() {
     }
 
-    /**
-     * 
-     * @param note
-     * @param sendResolved
-     * @param apiKey
-     * @param apiURL
-     * @param httpConfig
-     * @param description
-     * @param details
-     * @param source
-     * @param message
-     * @param priority
-     * @param responders
-     * @param tags
-     */
     public OpsGenieConfig(SecretKeySelector apiKey, String apiURL, String description, List<KeyValue> details, HTTPConfig httpConfig, String message, String note, String priority, List<OpsGenieConfigResponder> responders, Boolean sendResolved, String source, String tags) {
         super();
         this.apiKey = apiKey;

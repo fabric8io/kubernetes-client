@@ -2,9 +2,10 @@
 package io.fabric8.openshift.api.model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -67,6 +68,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1")
 @Group("network.openshift.io")
+@Generated("jsonschema2pojo")
 public class HostSubnet implements HasMetadata
 {
 
@@ -99,7 +101,7 @@ public class HostSubnet implements HasMetadata
     @JsonProperty("subnet")
     private String subnet;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -108,17 +110,6 @@ public class HostSubnet implements HasMetadata
     public HostSubnet() {
     }
 
-    /**
-     * 
-     * @param subnet
-     * @param metadata
-     * @param apiVersion
-     * @param egressIPs
-     * @param hostIP
-     * @param kind
-     * @param host
-     * @param egressCIDRs
-     */
     public HostSubnet(String apiVersion, List<String> egressCIDRs, List<String> egressIPs, String host, String hostIP, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, String subnet) {
         super();
         this.apiVersion = apiVersion;

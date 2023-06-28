@@ -1,8 +1,9 @@
 
 package io.fabric8.kubernetes.api.model.events.v1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -76,6 +77,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1")
 @Group("events.k8s.io")
+@Generated("jsonschema2pojo")
 public class Event implements HasMetadata, Namespaced
 {
 
@@ -124,7 +126,7 @@ public class Event implements HasMetadata, Namespaced
     @JsonProperty("type")
     private java.lang.String type;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -133,26 +135,6 @@ public class Event implements HasMetadata, Namespaced
     public Event() {
     }
 
-    /**
-     * 
-     * @param note
-     * @param reason
-     * @param metadata
-     * @param reportingInstance
-     * @param deprecatedCount
-     * @param kind
-     * @param deprecatedSource
-     * @param type
-     * @param deprecatedLastTimestamp
-     * @param regarding
-     * @param deprecatedFirstTimestamp
-     * @param apiVersion
-     * @param reportingController
-     * @param related
-     * @param series
-     * @param eventTime
-     * @param action
-     */
     public Event(java.lang.String action, java.lang.String apiVersion, Integer deprecatedCount, String deprecatedFirstTimestamp, String deprecatedLastTimestamp, EventSource deprecatedSource, MicroTime eventTime, java.lang.String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, java.lang.String note, java.lang.String reason, io.fabric8.kubernetes.api.model.ObjectReference regarding, io.fabric8.kubernetes.api.model.ObjectReference related, java.lang.String reportingController, java.lang.String reportingInstance, EventSeries series, java.lang.String type) {
         super();
         this.action = action;

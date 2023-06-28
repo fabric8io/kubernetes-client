@@ -2,9 +2,10 @@
 package io.fabric8.kubernetes.api.model.batch.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -63,6 +64,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class JobStatus implements KubernetesResource
 {
 
@@ -86,7 +88,7 @@ public class JobStatus implements KubernetesResource
     @JsonProperty("uncountedTerminatedPods")
     private UncountedTerminatedPods uncountedTerminatedPods;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -95,18 +97,6 @@ public class JobStatus implements KubernetesResource
     public JobStatus() {
     }
 
-    /**
-     * 
-     * @param completionTime
-     * @param completedIndexes
-     * @param ready
-     * @param active
-     * @param startTime
-     * @param uncountedTerminatedPods
-     * @param failed
-     * @param conditions
-     * @param succeeded
-     */
     public JobStatus(Integer active, java.lang.String completedIndexes, String completionTime, List<JobCondition> conditions, Integer failed, Integer ready, String startTime, Integer succeeded, UncountedTerminatedPods uncountedTerminatedPods) {
         super();
         this.active = active;

@@ -1,6 +1,7 @@
 
 package io.fabric8.openclustermanagement.api.model;
 
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -72,6 +73,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class OpenClusterManagementDiscoverySchema {
 
     @JsonProperty("github_com_open-cluster-management_discovery_api_v1alpha1_DiscoveredCluster")
@@ -100,18 +102,6 @@ public class OpenClusterManagementDiscoverySchema {
     public OpenClusterManagementDiscoverySchema() {
     }
 
-    /**
-     * 
-     * @param githubComOpenClusterManagementDiscoveryApiV1alpha1DiscoveredClusterList
-     * @param githubComOpenClusterManagementDiscoveryApiV1alpha1DiscoveryConfigList
-     * @param githubComOpenClusterManagementDiscoveryApiV1alpha1DiscoveredClusterSpec
-     * @param githubComOpenClusterManagementDiscoveryApiV1alpha1Filter
-     * @param githubComOpenClusterManagementDiscoveryApiV1alpha1DiscoveredClusterStatus
-     * @param githubComOpenClusterManagementDiscoveryApiV1alpha1DiscoveryConfigSpec
-     * @param githubComOpenClusterManagementDiscoveryApiV1alpha1DiscoveredCluster
-     * @param githubComOpenClusterManagementDiscoveryApiV1alpha1DiscoveryConfigStatus
-     * @param githubComOpenClusterManagementDiscoveryApiV1alpha1DiscoveryConfig
-     */
     public OpenClusterManagementDiscoverySchema(DiscoveredCluster githubComOpenClusterManagementDiscoveryApiV1alpha1DiscoveredCluster, DiscoveredClusterList githubComOpenClusterManagementDiscoveryApiV1alpha1DiscoveredClusterList, DiscoveredClusterSpec githubComOpenClusterManagementDiscoveryApiV1alpha1DiscoveredClusterSpec, DiscoveredClusterStatus githubComOpenClusterManagementDiscoveryApiV1alpha1DiscoveredClusterStatus, DiscoveryConfig githubComOpenClusterManagementDiscoveryApiV1alpha1DiscoveryConfig, DiscoveryConfigList githubComOpenClusterManagementDiscoveryApiV1alpha1DiscoveryConfigList, DiscoveryConfigSpec githubComOpenClusterManagementDiscoveryApiV1alpha1DiscoveryConfigSpec, DiscoveryConfigStatus githubComOpenClusterManagementDiscoveryApiV1alpha1DiscoveryConfigStatus, Filter githubComOpenClusterManagementDiscoveryApiV1alpha1Filter) {
         super();
         this.githubComOpenClusterManagementDiscoveryApiV1alpha1DiscoveredCluster = githubComOpenClusterManagementDiscoveryApiV1alpha1DiscoveredCluster;

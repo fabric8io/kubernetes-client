@@ -2,9 +2,10 @@
 package io.fabric8.kubernetes.api.model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -45,6 +46,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1")
 @Group("")
+@Generated("jsonschema2pojo")
 public class UpdateOptions implements KubernetesResource
 {
 
@@ -70,7 +72,7 @@ public class UpdateOptions implements KubernetesResource
     @JsonProperty("kind")
     private String kind = "UpdateOptions";
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -79,14 +81,6 @@ public class UpdateOptions implements KubernetesResource
     public UpdateOptions() {
     }
 
-    /**
-     * 
-     * @param apiVersion
-     * @param dryRun
-     * @param fieldValidation
-     * @param kind
-     * @param fieldManager
-     */
     public UpdateOptions(String apiVersion, List<String> dryRun, String fieldManager, String fieldValidation, String kind) {
         super();
         this.apiVersion = apiVersion;

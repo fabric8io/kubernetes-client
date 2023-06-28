@@ -1,8 +1,9 @@
 
 package io.fabric8.openshift.api.model;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -57,6 +58,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class GitBuildSource implements KubernetesResource
 {
 
@@ -71,7 +73,7 @@ public class GitBuildSource implements KubernetesResource
     @JsonProperty("uri")
     private String uri;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -80,14 +82,6 @@ public class GitBuildSource implements KubernetesResource
     public GitBuildSource() {
     }
 
-    /**
-     * 
-     * @param ref
-     * @param httpProxy
-     * @param httpsProxy
-     * @param noProxy
-     * @param uri
-     */
     public GitBuildSource(String httpProxy, String httpsProxy, String noProxy, String ref, String uri) {
         super();
         this.httpProxy = httpProxy;

@@ -1,8 +1,9 @@
 
 package io.fabric8.kubernetes.api.model.apps;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -63,6 +64,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1")
 @Group("apps")
+@Generated("jsonschema2pojo")
 public class Deployment implements HasMetadata, Namespaced
 {
 
@@ -87,7 +89,7 @@ public class Deployment implements HasMetadata, Namespaced
     @JsonProperty("status")
     private DeploymentStatus status;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -96,14 +98,6 @@ public class Deployment implements HasMetadata, Namespaced
     public Deployment() {
     }
 
-    /**
-     * 
-     * @param metadata
-     * @param apiVersion
-     * @param kind
-     * @param spec
-     * @param status
-     */
     public Deployment(String apiVersion, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, DeploymentSpec spec, DeploymentStatus status) {
         super();
         this.apiVersion = apiVersion;

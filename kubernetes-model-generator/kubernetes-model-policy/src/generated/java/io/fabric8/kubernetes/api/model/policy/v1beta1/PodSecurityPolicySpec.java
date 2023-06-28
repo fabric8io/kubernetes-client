@@ -2,9 +2,10 @@
 package io.fabric8.kubernetes.api.model.policy.v1beta1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -78,6 +79,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class PodSecurityPolicySpec implements KubernetesResource
 {
 
@@ -141,7 +143,7 @@ public class PodSecurityPolicySpec implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> volumes = new ArrayList<String>();
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -150,33 +152,6 @@ public class PodSecurityPolicySpec implements KubernetesResource
     public PodSecurityPolicySpec() {
     }
 
-    /**
-     * 
-     * @param defaultAddCapabilities
-     * @param hostPorts
-     * @param allowedProcMountTypes
-     * @param fsGroup
-     * @param seLinux
-     * @param hostNetwork
-     * @param hostIPC
-     * @param volumes
-     * @param requiredDropCapabilities
-     * @param runAsGroup
-     * @param allowedCapabilities
-     * @param readOnlyRootFilesystem
-     * @param privileged
-     * @param runAsUser
-     * @param runtimeClass
-     * @param allowedHostPaths
-     * @param forbiddenSysctls
-     * @param allowedCSIDrivers
-     * @param supplementalGroups
-     * @param defaultAllowPrivilegeEscalation
-     * @param allowedUnsafeSysctls
-     * @param allowPrivilegeEscalation
-     * @param allowedFlexVolumes
-     * @param hostPID
-     */
     public PodSecurityPolicySpec(Boolean allowPrivilegeEscalation, List<AllowedCSIDriver> allowedCSIDrivers, List<String> allowedCapabilities, List<AllowedFlexVolume> allowedFlexVolumes, List<AllowedHostPath> allowedHostPaths, List<String> allowedProcMountTypes, List<String> allowedUnsafeSysctls, List<String> defaultAddCapabilities, Boolean defaultAllowPrivilegeEscalation, List<String> forbiddenSysctls, FSGroupStrategyOptions fsGroup, Boolean hostIPC, Boolean hostNetwork, Boolean hostPID, List<HostPortRange> hostPorts, Boolean privileged, Boolean readOnlyRootFilesystem, List<String> requiredDropCapabilities, RunAsGroupStrategyOptions runAsGroup, RunAsUserStrategyOptions runAsUser, RuntimeClassStrategyOptions runtimeClass, SELinuxStrategyOptions seLinux, SupplementalGroupsStrategyOptions supplementalGroups, List<String> volumes) {
         super();
         this.allowPrivilegeEscalation = allowPrivilegeEscalation;

@@ -1,8 +1,9 @@
 
 package io.fabric8.verticalpodautoscaler.api.model.v1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -62,6 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class VerticalPodAutoscalerCheckpointSpec implements KubernetesResource
 {
 
@@ -70,7 +72,7 @@ public class VerticalPodAutoscalerCheckpointSpec implements KubernetesResource
     @JsonProperty("vpaObjectName")
     private String vpaObjectName;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -79,11 +81,6 @@ public class VerticalPodAutoscalerCheckpointSpec implements KubernetesResource
     public VerticalPodAutoscalerCheckpointSpec() {
     }
 
-    /**
-     * 
-     * @param containerName
-     * @param vpaObjectName
-     */
     public VerticalPodAutoscalerCheckpointSpec(String containerName, String vpaObjectName) {
         super();
         this.containerName = containerName;

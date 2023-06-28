@@ -1,8 +1,9 @@
 
 package io.fabric8.chaosmesh.v1alpha1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -65,6 +66,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class JVMExceptionSpec implements KubernetesResource
 {
 
@@ -79,7 +81,7 @@ public class JVMExceptionSpec implements KubernetesResource
     @JsonProperty("port")
     private Integer port;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -88,14 +90,6 @@ public class JVMExceptionSpec implements KubernetesResource
     public JVMExceptionSpec() {
     }
 
-    /**
-     * 
-     * @param exception
-     * @param method
-     * @param port
-     * @param className
-     * @param pid
-     */
     public JVMExceptionSpec(String className, String exception, String method, Integer pid, Integer port) {
         super();
         this.className = className;

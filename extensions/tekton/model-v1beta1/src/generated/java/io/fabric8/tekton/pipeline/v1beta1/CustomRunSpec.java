@@ -2,9 +2,10 @@
 package io.fabric8.tekton.pipeline.v1beta1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -72,6 +73,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class CustomRunSpec implements KubernetesResource
 {
 
@@ -96,7 +98,7 @@ public class CustomRunSpec implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<WorkspaceBinding> workspaces = new ArrayList<WorkspaceBinding>();
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -105,18 +107,6 @@ public class CustomRunSpec implements KubernetesResource
     public CustomRunSpec() {
     }
 
-    /**
-     * 
-     * @param retries
-     * @param customSpec
-     * @param serviceAccountName
-     * @param workspaces
-     * @param customRef
-     * @param params
-     * @param statusMessage
-     * @param timeout
-     * @param status
-     */
     public CustomRunSpec(TaskRef customRef, EmbeddedCustomRunSpec customSpec, List<Param> params, Integer retries, String serviceAccountName, String status, String statusMessage, Duration timeout, List<WorkspaceBinding> workspaces) {
         super();
         this.customRef = customRef;

@@ -2,10 +2,10 @@
 package io.fabric8.openshift.api.model.tuned.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -60,6 +60,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class TunedRecommend implements KubernetesResource
 {
 
@@ -76,7 +77,7 @@ public class TunedRecommend implements KubernetesResource
     @JsonProperty("profile")
     private java.lang.String profile;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -85,14 +86,6 @@ public class TunedRecommend implements KubernetesResource
     public TunedRecommend() {
     }
 
-    /**
-     * 
-     * @param machineConfigLabels
-     * @param profile
-     * @param match
-     * @param priority
-     * @param operand
-     */
     public TunedRecommend(Map<String, String> machineConfigLabels, List<TunedMatch> match, OperandConfig operand, Long priority, java.lang.String profile) {
         super();
         this.machineConfigLabels = machineConfigLabels;

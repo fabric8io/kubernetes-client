@@ -2,9 +2,10 @@
 package io.fabric8.certmanager.api.model.v1alpha2;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -74,6 +75,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1alpha2")
 @Group("cert-manager.io")
+@Generated("jsonschema2pojo")
 public class ClusterIssuerList implements KubernetesResource, KubernetesResourceList<io.fabric8.certmanager.api.model.v1alpha2.ClusterIssuer>
 {
 
@@ -96,7 +98,7 @@ public class ClusterIssuerList implements KubernetesResource, KubernetesResource
     @JsonProperty("metadata")
     private ListMeta metadata;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -105,13 +107,6 @@ public class ClusterIssuerList implements KubernetesResource, KubernetesResource
     public ClusterIssuerList() {
     }
 
-    /**
-     * 
-     * @param metadata
-     * @param apiVersion
-     * @param kind
-     * @param items
-     */
     public ClusterIssuerList(String apiVersion, List<io.fabric8.certmanager.api.model.v1alpha2.ClusterIssuer> items, String kind, ListMeta metadata) {
         super();
         this.apiVersion = apiVersion;

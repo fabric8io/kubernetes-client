@@ -1,8 +1,9 @@
 
 package io.fabric8.kubernetes.api.model.node.v1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -63,6 +64,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1")
 @Group("node.k8s.io")
+@Generated("jsonschema2pojo")
 public class RuntimeClass implements HasMetadata
 {
 
@@ -89,7 +91,7 @@ public class RuntimeClass implements HasMetadata
     @JsonProperty("scheduling")
     private Scheduling scheduling;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -98,15 +100,6 @@ public class RuntimeClass implements HasMetadata
     public RuntimeClass() {
     }
 
-    /**
-     * 
-     * @param handler
-     * @param metadata
-     * @param apiVersion
-     * @param kind
-     * @param overhead
-     * @param scheduling
-     */
     public RuntimeClass(String apiVersion, String handler, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, Overhead overhead, Scheduling scheduling) {
         super();
         this.apiVersion = apiVersion;

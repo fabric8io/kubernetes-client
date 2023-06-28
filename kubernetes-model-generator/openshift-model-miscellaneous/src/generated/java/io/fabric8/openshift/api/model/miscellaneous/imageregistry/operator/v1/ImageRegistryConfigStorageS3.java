@@ -1,8 +1,9 @@
 
 package io.fabric8.openshift.api.model.miscellaneous.imageregistry.operator.v1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -59,6 +60,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class ImageRegistryConfigStorageS3 implements KubernetesResource
 {
 
@@ -77,7 +79,7 @@ public class ImageRegistryConfigStorageS3 implements KubernetesResource
     @JsonProperty("virtualHostedStyle")
     private Boolean virtualHostedStyle;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -86,16 +88,6 @@ public class ImageRegistryConfigStorageS3 implements KubernetesResource
     public ImageRegistryConfigStorageS3() {
     }
 
-    /**
-     * 
-     * @param bucket
-     * @param cloudFront
-     * @param regionEndpoint
-     * @param encrypt
-     * @param keyID
-     * @param region
-     * @param virtualHostedStyle
-     */
     public ImageRegistryConfigStorageS3(String bucket, ImageRegistryConfigStorageS3CloudFront cloudFront, Boolean encrypt, String keyID, String region, String regionEndpoint, Boolean virtualHostedStyle) {
         super();
         this.bucket = bucket;

@@ -1,8 +1,9 @@
 
 package io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta2;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -66,6 +67,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class RetentionConfig implements KubernetesResource
 {
 
@@ -82,7 +84,7 @@ public class RetentionConfig implements KubernetesResource
     @JsonProperty("retentionResolutionRaw")
     private String retentionResolutionRaw;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -91,15 +93,6 @@ public class RetentionConfig implements KubernetesResource
     public RetentionConfig() {
     }
 
-    /**
-     * 
-     * @param retentionInLocal
-     * @param blockDuration
-     * @param retentionResolution5m
-     * @param deleteDelay
-     * @param retentionResolution1h
-     * @param retentionResolutionRaw
-     */
     public RetentionConfig(String blockDuration, String deleteDelay, String retentionInLocal, String retentionResolution1h, String retentionResolution5m, String retentionResolutionRaw) {
         super();
         this.blockDuration = blockDuration;

@@ -1,8 +1,9 @@
 
 package io.fabric8.kubernetes.api.model.authentication;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -54,6 +55,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class BoundObjectReference implements KubernetesResource
 {
 
@@ -66,7 +68,7 @@ public class BoundObjectReference implements KubernetesResource
     @JsonProperty("uid")
     private String uid;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -75,13 +77,6 @@ public class BoundObjectReference implements KubernetesResource
     public BoundObjectReference() {
     }
 
-    /**
-     * 
-     * @param uid
-     * @param apiVersion
-     * @param kind
-     * @param name
-     */
     public BoundObjectReference(String apiVersion, String kind, String name, String uid) {
         super();
         this.apiVersion = apiVersion;

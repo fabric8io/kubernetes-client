@@ -2,9 +2,10 @@
 package io.fabric8.certmanager.api.model.acme.v1beta1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -69,6 +70,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class OrderStatus implements KubernetesResource
 {
 
@@ -89,7 +91,7 @@ public class OrderStatus implements KubernetesResource
     @JsonProperty("url")
     private String url;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -98,16 +100,6 @@ public class OrderStatus implements KubernetesResource
     public OrderStatus() {
     }
 
-    /**
-     * 
-     * @param reason
-     * @param authorizations
-     * @param certificate
-     * @param failureTime
-     * @param state
-     * @param finalizeURL
-     * @param url
-     */
     public OrderStatus(List<ACMEAuthorization> authorizations, String certificate, String failureTime, String finalizeURL, String reason, String state, String url) {
         super();
         this.authorizations = authorizations;

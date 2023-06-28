@@ -1,8 +1,9 @@
 
 package io.fabric8.kubernetes.api.model.autoscaling.v2beta1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -57,6 +58,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class ObjectMetricSource implements KubernetesResource
 {
 
@@ -71,7 +73,7 @@ public class ObjectMetricSource implements KubernetesResource
     @JsonProperty("targetValue")
     private Quantity targetValue;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -80,14 +82,6 @@ public class ObjectMetricSource implements KubernetesResource
     public ObjectMetricSource() {
     }
 
-    /**
-     * 
-     * @param averageValue
-     * @param metricName
-     * @param targetValue
-     * @param selector
-     * @param target
-     */
     public ObjectMetricSource(Quantity averageValue, String metricName, io.fabric8.kubernetes.api.model.LabelSelector selector, CrossVersionObjectReference target, Quantity targetValue) {
         super();
         this.averageValue = averageValue;

@@ -1,8 +1,9 @@
 
 package io.fabric8.istio.api.networking.v1alpha3;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -63,6 +64,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class ConnectionPoolSettingsTCPSettingsTcpKeepalive implements KubernetesResource
 {
 
@@ -73,7 +75,7 @@ public class ConnectionPoolSettingsTCPSettingsTcpKeepalive implements Kubernetes
     @JsonProperty("time")
     private String time;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -82,12 +84,6 @@ public class ConnectionPoolSettingsTCPSettingsTcpKeepalive implements Kubernetes
     public ConnectionPoolSettingsTCPSettingsTcpKeepalive() {
     }
 
-    /**
-     * 
-     * @param interval
-     * @param probes
-     * @param time
-     */
     public ConnectionPoolSettingsTCPSettingsTcpKeepalive(String interval, Integer probes, String time) {
         super();
         this.interval = interval;

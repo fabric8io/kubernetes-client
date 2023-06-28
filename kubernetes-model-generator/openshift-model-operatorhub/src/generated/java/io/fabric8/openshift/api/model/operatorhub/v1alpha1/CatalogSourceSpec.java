@@ -2,9 +2,10 @@
 package io.fabric8.openshift.api.model.operatorhub.v1alpha1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -65,6 +66,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class CatalogSourceSpec implements KubernetesResource
 {
 
@@ -92,7 +94,7 @@ public class CatalogSourceSpec implements KubernetesResource
     @JsonProperty("updateStrategy")
     private UpdateStrategy updateStrategy;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -101,20 +103,6 @@ public class CatalogSourceSpec implements KubernetesResource
     public CatalogSourceSpec() {
     }
 
-    /**
-     * 
-     * @param image
-     * @param updateStrategy
-     * @param address
-     * @param sourceType
-     * @param configMap
-     * @param displayName
-     * @param icon
-     * @param description
-     * @param publisher
-     * @param priority
-     * @param secrets
-     */
     public CatalogSourceSpec(String address, String configMap, String description, String displayName, Icon icon, String image, Integer priority, String publisher, List<String> secrets, String sourceType, UpdateStrategy updateStrategy) {
         super();
         this.address = address;

@@ -2,9 +2,10 @@
 package io.fabric8.openshift.api.model.operator.controlplane.v1alpha1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -59,6 +60,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class OutageEntry implements KubernetesResource
 {
 
@@ -75,7 +77,7 @@ public class OutageEntry implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<LogEntry> startLogs = new ArrayList<LogEntry>();
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -84,14 +86,6 @@ public class OutageEntry implements KubernetesResource
     public OutageEntry() {
     }
 
-    /**
-     * 
-     * @param startLogs
-     * @param endLogs
-     * @param start
-     * @param end
-     * @param message
-     */
     public OutageEntry(String end, List<LogEntry> endLogs, java.lang.String message, String start, List<LogEntry> startLogs) {
         super();
         this.end = end;

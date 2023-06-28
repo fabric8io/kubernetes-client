@@ -2,9 +2,10 @@
 package io.fabric8.openshift.api.model.hive.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -66,6 +67,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(io.fabric8.kubernetes.api.model.LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class ClusterDeploymentStatus implements KubernetesResource
 {
 
@@ -98,7 +100,7 @@ public class ClusterDeploymentStatus implements KubernetesResource
     @JsonProperty("webConsoleURL")
     private java.lang.String webConsoleURL;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -107,22 +109,6 @@ public class ClusterDeploymentStatus implements KubernetesResource
     public ClusterDeploymentStatus() {
     }
 
-    /**
-     * 
-     * @param cliImage
-     * @param webConsoleURL
-     * @param provisionRef
-     * @param installerImage
-     * @param installStartedTimestamp
-     * @param platformStatus
-     * @param certificateBundles
-     * @param installVersion
-     * @param installedTimestamp
-     * @param powerState
-     * @param apiURL
-     * @param installRestarts
-     * @param conditions
-     */
     public ClusterDeploymentStatus(java.lang.String apiURL, List<CertificateBundleStatus> certificateBundles, java.lang.String cliImage, List<ClusterDeploymentCondition> conditions, Integer installRestarts, String installStartedTimestamp, java.lang.String installVersion, String installedTimestamp, java.lang.String installerImage, PlatformStatus platformStatus, java.lang.String powerState, io.fabric8.kubernetes.api.model.LocalObjectReference provisionRef, java.lang.String webConsoleURL) {
         super();
         this.apiURL = apiURL;

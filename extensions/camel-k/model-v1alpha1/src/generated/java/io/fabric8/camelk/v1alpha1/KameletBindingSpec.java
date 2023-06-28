@@ -2,9 +2,10 @@
 package io.fabric8.camelk.v1alpha1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -69,6 +70,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class KameletBindingSpec implements KubernetesResource
 {
 
@@ -86,7 +88,7 @@ public class KameletBindingSpec implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Endpoint> steps = new ArrayList<Endpoint>();
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -95,15 +97,6 @@ public class KameletBindingSpec implements KubernetesResource
     public KameletBindingSpec() {
     }
 
-    /**
-     * 
-     * @param replicas
-     * @param sink
-     * @param integration
-     * @param errorHandler
-     * @param source
-     * @param steps
-     */
     public KameletBindingSpec(ErrorHandlerSpec errorHandler, IntegrationSpec integration, Integer replicas, Endpoint sink, Endpoint source, List<Endpoint> steps) {
         super();
         this.errorHandler = errorHandler;

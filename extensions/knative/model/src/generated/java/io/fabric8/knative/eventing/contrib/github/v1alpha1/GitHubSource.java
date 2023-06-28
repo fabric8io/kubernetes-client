@@ -1,8 +1,9 @@
 
 package io.fabric8.knative.eventing.contrib.github.v1alpha1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -71,6 +72,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1alpha1")
 @Group("sources.knative.dev")
+@Generated("jsonschema2pojo")
 public class GitHubSource implements HasMetadata, Namespaced
 {
 
@@ -95,7 +97,7 @@ public class GitHubSource implements HasMetadata, Namespaced
     @JsonProperty("status")
     private GitHubSourceStatus status;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -104,14 +106,6 @@ public class GitHubSource implements HasMetadata, Namespaced
     public GitHubSource() {
     }
 
-    /**
-     * 
-     * @param metadata
-     * @param apiVersion
-     * @param kind
-     * @param spec
-     * @param status
-     */
     public GitHubSource(String apiVersion, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, GitHubSourceSpec spec, GitHubSourceStatus status) {
         super();
         this.apiVersion = apiVersion;

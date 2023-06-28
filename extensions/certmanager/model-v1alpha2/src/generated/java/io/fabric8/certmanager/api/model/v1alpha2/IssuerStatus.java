@@ -2,9 +2,10 @@
 package io.fabric8.certmanager.api.model.v1alpha2;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -65,6 +66,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class IssuerStatus implements KubernetesResource
 {
 
@@ -74,7 +76,7 @@ public class IssuerStatus implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<IssuerCondition> conditions = new ArrayList<IssuerCondition>();
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -83,11 +85,6 @@ public class IssuerStatus implements KubernetesResource
     public IssuerStatus() {
     }
 
-    /**
-     * 
-     * @param acme
-     * @param conditions
-     */
     public IssuerStatus(ACMEIssuerStatus acme, List<IssuerCondition> conditions) {
         super();
         this.acme = acme;

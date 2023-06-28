@@ -2,10 +2,10 @@
 package io.fabric8.camelk.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -73,6 +73,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(io.fabric8.kubernetes.api.model.Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class PodSpec implements KubernetesResource
 {
 
@@ -102,7 +103,7 @@ public class PodSpec implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.kubernetes.api.model.Volume> volumes = new ArrayList<io.fabric8.kubernetes.api.model.Volume>();
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -111,19 +112,6 @@ public class PodSpec implements KubernetesResource
     public PodSpec() {
     }
 
-    /**
-     * 
-     * @param dnsPolicy
-     * @param terminationGracePeriodSeconds
-     * @param topologySpreadConstraints
-     * @param volumes
-     * @param containers
-     * @param ephemeralContainers
-     * @param restartPolicy
-     * @param activeDeadlineSeconds
-     * @param initContainers
-     * @param nodeSelector
-     */
     public PodSpec(Long activeDeadlineSeconds, List<io.fabric8.kubernetes.api.model.Container> containers, java.lang.String dnsPolicy, List<EphemeralContainer> ephemeralContainers, List<io.fabric8.kubernetes.api.model.Container> initContainers, Map<String, String> nodeSelector, java.lang.String restartPolicy, Long terminationGracePeriodSeconds, List<TopologySpreadConstraint> topologySpreadConstraints, List<io.fabric8.kubernetes.api.model.Volume> volumes) {
         super();
         this.activeDeadlineSeconds = activeDeadlineSeconds;

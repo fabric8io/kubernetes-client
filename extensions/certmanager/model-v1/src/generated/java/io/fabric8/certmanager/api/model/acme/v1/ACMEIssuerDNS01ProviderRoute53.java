@@ -1,8 +1,9 @@
 
 package io.fabric8.certmanager.api.model.acme.v1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -67,6 +68,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class ACMEIssuerDNS01ProviderRoute53 implements KubernetesResource
 {
 
@@ -83,7 +85,7 @@ public class ACMEIssuerDNS01ProviderRoute53 implements KubernetesResource
     @JsonProperty("secretAccessKeySecretRef")
     private SecretKeySelector secretAccessKeySecretRef;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -92,15 +94,6 @@ public class ACMEIssuerDNS01ProviderRoute53 implements KubernetesResource
     public ACMEIssuerDNS01ProviderRoute53() {
     }
 
-    /**
-     * 
-     * @param accessKeyID
-     * @param hostedZoneID
-     * @param role
-     * @param accessKeyIDSecretRef
-     * @param secretAccessKeySecretRef
-     * @param region
-     */
     public ACMEIssuerDNS01ProviderRoute53(String accessKeyID, SecretKeySelector accessKeyIDSecretRef, String hostedZoneID, String region, String role, SecretKeySelector secretAccessKeySecretRef) {
         super();
         this.accessKeyID = accessKeyID;

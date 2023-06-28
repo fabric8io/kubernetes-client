@@ -1,8 +1,9 @@
 
 package io.fabric8.istio.api.networking.v1alpha3;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -64,6 +65,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class Port implements KubernetesResource
 {
 
@@ -76,7 +78,7 @@ public class Port implements KubernetesResource
     @JsonProperty("targetPort")
     private Integer targetPort;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -85,13 +87,6 @@ public class Port implements KubernetesResource
     public Port() {
     }
 
-    /**
-     * 
-     * @param number
-     * @param protocol
-     * @param name
-     * @param targetPort
-     */
     public Port(String name, Integer number, String protocol, Integer targetPort) {
         super();
         this.name = name;

@@ -2,9 +2,10 @@
 package io.fabric8.openclustermanagement.api.model.multicloudoperatorschannel.apps.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -68,6 +69,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class ChannelSpec implements KubernetesResource
 {
 
@@ -87,7 +89,7 @@ public class ChannelSpec implements KubernetesResource
     @JsonProperty("type")
     private String type;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -96,16 +98,6 @@ public class ChannelSpec implements KubernetesResource
     public ChannelSpec() {
     }
 
-    /**
-     * 
-     * @param gates
-     * @param configMapRef
-     * @param sourceNamespaces
-     * @param insecureSkipVerify
-     * @param secretRef
-     * @param type
-     * @param pathname
-     */
     public ChannelSpec(io.fabric8.kubernetes.api.model.ObjectReference configMapRef, ChannelGate gates, Boolean insecureSkipVerify, String pathname, io.fabric8.kubernetes.api.model.ObjectReference secretRef, List<String> sourceNamespaces, String type) {
         super();
         this.configMapRef = configMapRef;

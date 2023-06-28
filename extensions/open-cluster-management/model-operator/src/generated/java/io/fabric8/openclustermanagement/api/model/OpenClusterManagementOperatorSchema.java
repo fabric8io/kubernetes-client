@@ -1,6 +1,7 @@
 
 package io.fabric8.openclustermanagement.api.model;
 
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -108,6 +109,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class OpenClusterManagementOperatorSchema {
 
     @JsonProperty("github_com_open-cluster-management_multiclusterhub-operator_api_v1_BackupConfig")
@@ -172,36 +174,6 @@ public class OpenClusterManagementOperatorSchema {
     public OpenClusterManagementOperatorSchema() {
     }
 
-    /**
-     * 
-     * @param githubComOpenClusterManagementMulticlusterhubOperatorApiV1FailedProvisionConfig
-     * @param githubComOpenClusterManagementMulticlusterhubOperatorApiV1ExternalDNSConfig
-     * @param githubComOpenClusterManagementMulticlusterhubOperatorApiV1HiveConfigSpec
-     * @param githubComOpenClusterManagementMulticlusterhubOperatorApiV1ExternalDNSAWSConfig
-     * @param openClusterManagementIoApiOperatorV1NodePlacement
-     * @param openClusterManagementIoApiOperatorV1ClusterManagerSpec
-     * @param openClusterManagementIoApiOperatorV1Klusterlet
-     * @param openClusterManagementIoApiOperatorV1KlusterletSpec
-     * @param openClusterManagementIoApiOperatorV1GenerationStatus
-     * @param openClusterManagementIoApiOperatorV1ClusterManagerList
-     * @param githubComOpenClusterManagementMulticlusterhubOperatorApiV1MultiClusterHub
-     * @param openClusterManagementIoApiOperatorV1ClusterManager
-     * @param githubComOpenClusterManagementMulticlusterhubOperatorApiV1StatusCondition
-     * @param githubComOpenClusterManagementMulticlusterhubOperatorApiV1Overrides
-     * @param githubComOpenClusterManagementMulticlusterhubOperatorApiV1VeleroBackupConfig
-     * @param openClusterManagementIoApiOperatorV1ClusterManagerStatus
-     * @param githubComOpenClusterManagementMulticlusterhubOperatorApiV1MultiClusterHubSpec
-     * @param openClusterManagementIoApiOperatorV1RelatedResourceMeta
-     * @param githubComOpenClusterManagementMulticlusterhubOperatorApiV1MultiClusterHubList
-     * @param githubComOpenClusterManagementMulticlusterhubOperatorApiV1IngressSpec
-     * @param openClusterManagementIoApiOperatorV1ServerURL
-     * @param githubComOpenClusterManagementMulticlusterhubOperatorApiV1MultiClusterHubStatus
-     * @param githubComOpenClusterManagementMulticlusterhubOperatorApiV1BackupConfig
-     * @param githubComOpenClusterManagementMulticlusterhubOperatorApiV1ExternalDNSGCPConfig
-     * @param openClusterManagementIoApiOperatorV1KlusterletStatus
-     * @param githubComOpenClusterManagementMulticlusterhubOperatorApiV1HubCondition
-     * @param openClusterManagementIoApiOperatorV1KlusterletList
-     */
     public OpenClusterManagementOperatorSchema(BackupConfig githubComOpenClusterManagementMulticlusterhubOperatorApiV1BackupConfig, ExternalDNSAWSConfig githubComOpenClusterManagementMulticlusterhubOperatorApiV1ExternalDNSAWSConfig, ExternalDNSConfig githubComOpenClusterManagementMulticlusterhubOperatorApiV1ExternalDNSConfig, ExternalDNSGCPConfig githubComOpenClusterManagementMulticlusterhubOperatorApiV1ExternalDNSGCPConfig, FailedProvisionConfig githubComOpenClusterManagementMulticlusterhubOperatorApiV1FailedProvisionConfig, HiveConfigSpec githubComOpenClusterManagementMulticlusterhubOperatorApiV1HiveConfigSpec, HubCondition githubComOpenClusterManagementMulticlusterhubOperatorApiV1HubCondition, IngressSpec githubComOpenClusterManagementMulticlusterhubOperatorApiV1IngressSpec, MultiClusterHub githubComOpenClusterManagementMulticlusterhubOperatorApiV1MultiClusterHub, MultiClusterHubList githubComOpenClusterManagementMulticlusterhubOperatorApiV1MultiClusterHubList, MultiClusterHubSpec githubComOpenClusterManagementMulticlusterhubOperatorApiV1MultiClusterHubSpec, MultiClusterHubStatus githubComOpenClusterManagementMulticlusterhubOperatorApiV1MultiClusterHubStatus, Overrides githubComOpenClusterManagementMulticlusterhubOperatorApiV1Overrides, StatusCondition githubComOpenClusterManagementMulticlusterhubOperatorApiV1StatusCondition, VeleroBackupConfig githubComOpenClusterManagementMulticlusterhubOperatorApiV1VeleroBackupConfig, ClusterManager openClusterManagementIoApiOperatorV1ClusterManager, ClusterManagerList openClusterManagementIoApiOperatorV1ClusterManagerList, ClusterManagerSpec openClusterManagementIoApiOperatorV1ClusterManagerSpec, ClusterManagerStatus openClusterManagementIoApiOperatorV1ClusterManagerStatus, GenerationStatus openClusterManagementIoApiOperatorV1GenerationStatus, Klusterlet openClusterManagementIoApiOperatorV1Klusterlet, KlusterletList openClusterManagementIoApiOperatorV1KlusterletList, KlusterletSpec openClusterManagementIoApiOperatorV1KlusterletSpec, KlusterletStatus openClusterManagementIoApiOperatorV1KlusterletStatus, NodePlacement openClusterManagementIoApiOperatorV1NodePlacement, RelatedResourceMeta openClusterManagementIoApiOperatorV1RelatedResourceMeta, ServerURL openClusterManagementIoApiOperatorV1ServerURL) {
         super();
         this.githubComOpenClusterManagementMulticlusterhubOperatorApiV1BackupConfig = githubComOpenClusterManagementMulticlusterhubOperatorApiV1BackupConfig;

@@ -1,8 +1,9 @@
 
 package io.fabric8.kubernetes.api.model;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -89,6 +90,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class ValidationSchema {
 
     @JsonProperty("APIGroup")
@@ -140,7 +142,7 @@ public class ValidationSchema {
     @JsonProperty("TypeMeta")
     private TypeMeta typeMeta;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -149,33 +151,6 @@ public class ValidationSchema {
     public ValidationSchema() {
     }
 
-    /**
-     * 
-     * @param aPIGroupList
-     * @param consoleLinkList
-     * @param baseKubernetesList
-     * @param consoleCLIDownload
-     * @param consolePlugin
-     * @param consoleQuickStartList
-     * @param resourceAttributes
-     * @param patch
-     * @param aPIGroup
-     * @param typeMeta
-     * @param consoleNotificationList
-     * @param consoleCLIDownloadList
-     * @param consoleExternalLogLink
-     * @param consoleNotification
-     * @param consoleYAMLSample
-     * @param consoleQuickStart
-     * @param objectMeta
-     * @param consoleExternalLogLinkList
-     * @param consolePluginList
-     * @param consoleLink
-     * @param consoleYAMLSampleList
-     * @param time
-     * @param info
-     * @param status
-     */
     public ValidationSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, KubernetesList baseKubernetesList, ConsoleCLIDownload consoleCLIDownload, ConsoleCLIDownloadList consoleCLIDownloadList, ConsoleExternalLogLink consoleExternalLogLink, ConsoleExternalLogLinkList consoleExternalLogLinkList, ConsoleLink consoleLink, ConsoleLinkList consoleLinkList, ConsoleNotification consoleNotification, ConsoleNotificationList consoleNotificationList, ConsolePluginList consolePlugin, ConsolePluginList consolePluginList, ConsoleQuickStart consoleQuickStart, ConsoleQuickStartList consoleQuickStartList, ConsoleYAMLSample consoleYAMLSample, ConsoleYAMLSampleList consoleYAMLSampleList, Info info, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, Patch patch, ResourceAttributes resourceAttributes, Status status, String time, TypeMeta typeMeta) {
         super();
         this.aPIGroup = aPIGroup;

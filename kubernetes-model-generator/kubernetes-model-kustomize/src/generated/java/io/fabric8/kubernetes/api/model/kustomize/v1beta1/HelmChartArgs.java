@@ -2,10 +2,10 @@
 package io.fabric8.kubernetes.api.model.kustomize.v1beta1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -48,6 +48,7 @@ import lombok.experimental.Accessors;
     ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
+@Generated("jsonschema2pojo")
 public class HelmChartArgs implements KubernetesResource
 {
 
@@ -80,7 +81,7 @@ public class HelmChartArgs implements KubernetesResource
     @JsonProperty("valuesMerge")
     private java.lang.String valuesMerge;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -89,22 +90,6 @@ public class HelmChartArgs implements KubernetesResource
     public HelmChartArgs() {
     }
 
-    /**
-     * 
-     * @param helmHome
-     * @param chartVersion
-     * @param chartHome
-     * @param releaseName
-     * @param values
-     * @param helmBin
-     * @param chartRepoName
-     * @param extraArgs
-     * @param valuesMerge
-     * @param chartName
-     * @param valuesLocal
-     * @param releaseNamespace
-     * @param chartRepoUrl
-     */
     public HelmChartArgs(java.lang.String chartHome, java.lang.String chartName, java.lang.String chartRepoName, java.lang.String chartRepoUrl, java.lang.String chartVersion, List<java.lang.String> extraArgs, java.lang.String helmBin, java.lang.String helmHome, java.lang.String releaseName, java.lang.String releaseNamespace, java.lang.String values, Map<String, Object> valuesLocal, java.lang.String valuesMerge) {
         super();
         this.chartHome = chartHome;

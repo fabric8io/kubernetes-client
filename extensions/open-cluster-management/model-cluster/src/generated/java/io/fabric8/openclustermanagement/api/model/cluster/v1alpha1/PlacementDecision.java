@@ -1,8 +1,9 @@
 
 package io.fabric8.openclustermanagement.api.model.cluster.v1alpha1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -70,6 +71,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1alpha1")
 @Group("cluster.open-cluster-management.io")
+@Generated("jsonschema2pojo")
 public class PlacementDecision implements HasMetadata, Namespaced
 {
 
@@ -92,7 +94,7 @@ public class PlacementDecision implements HasMetadata, Namespaced
     @JsonProperty("status")
     private PlacementDecisionStatus status;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -101,13 +103,6 @@ public class PlacementDecision implements HasMetadata, Namespaced
     public PlacementDecision() {
     }
 
-    /**
-     * 
-     * @param metadata
-     * @param apiVersion
-     * @param kind
-     * @param status
-     */
     public PlacementDecision(String apiVersion, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, PlacementDecisionStatus status) {
         super();
         this.apiVersion = apiVersion;

@@ -1,8 +1,9 @@
 
 package io.fabric8.kubernetes.api.model;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -34,6 +35,7 @@ import lombok.experimental.Accessors;
     ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
+@Generated("jsonschema2pojo")
 public class GlusterfsVolumeSource implements KubernetesResource
 {
 
@@ -44,7 +46,7 @@ public class GlusterfsVolumeSource implements KubernetesResource
     @JsonProperty("readOnly")
     private Boolean readOnly;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -53,12 +55,6 @@ public class GlusterfsVolumeSource implements KubernetesResource
     public GlusterfsVolumeSource() {
     }
 
-    /**
-     * 
-     * @param path
-     * @param endpoints
-     * @param readOnly
-     */
     public GlusterfsVolumeSource(String endpoints, String path, Boolean readOnly) {
         super();
         this.endpoints = endpoints;

@@ -1,8 +1,9 @@
 
 package io.fabric8.kubernetes.api.model;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -35,6 +36,7 @@ import lombok.experimental.Accessors;
     ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
+@Generated("jsonschema2pojo")
 public class Taint implements KubernetesResource
 {
 
@@ -47,7 +49,7 @@ public class Taint implements KubernetesResource
     @JsonProperty("value")
     private java.lang.String value;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -56,13 +58,6 @@ public class Taint implements KubernetesResource
     public Taint() {
     }
 
-    /**
-     * 
-     * @param timeAdded
-     * @param effect
-     * @param value
-     * @param key
-     */
     public Taint(java.lang.String effect, java.lang.String key, String timeAdded, java.lang.String value) {
         super();
         this.effect = effect;

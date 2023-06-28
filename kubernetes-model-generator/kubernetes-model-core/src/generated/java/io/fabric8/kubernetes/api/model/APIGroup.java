@@ -2,9 +2,10 @@
 package io.fabric8.kubernetes.api.model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -46,6 +47,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1")
 @Group("")
+@Generated("jsonschema2pojo")
 public class APIGroup implements KubernetesResource
 {
 
@@ -73,7 +75,7 @@ public class APIGroup implements KubernetesResource
     @JsonProperty("versions")
     private List<GroupVersionForDiscovery> versions = new ArrayList<GroupVersionForDiscovery>();
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -82,15 +84,6 @@ public class APIGroup implements KubernetesResource
     public APIGroup() {
     }
 
-    /**
-     * 
-     * @param apiVersion
-     * @param versions
-     * @param kind
-     * @param preferredVersion
-     * @param name
-     * @param serverAddressByClientCIDRs
-     */
     public APIGroup(String apiVersion, String kind, String name, GroupVersionForDiscovery preferredVersion, List<ServerAddressByClientCIDR> serverAddressByClientCIDRs, List<GroupVersionForDiscovery> versions) {
         super();
         this.apiVersion = apiVersion;

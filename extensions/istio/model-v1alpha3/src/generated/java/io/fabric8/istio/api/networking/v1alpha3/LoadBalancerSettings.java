@@ -1,8 +1,9 @@
 
 package io.fabric8.istio.api.networking.v1alpha3;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -63,6 +64,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class LoadBalancerSettings implements KubernetesResource
 {
 
@@ -72,7 +74,7 @@ public class LoadBalancerSettings implements KubernetesResource
     @JsonProperty("localityLbSetting")
     private LocalityLoadBalancerSetting localityLbSetting;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -81,11 +83,6 @@ public class LoadBalancerSettings implements KubernetesResource
     public LoadBalancerSettings() {
     }
 
-    /**
-     * 
-     * @param localityLbSetting
-     * @param lbPolicy
-     */
     public LoadBalancerSettings(IsLoadBalancerSettingsLbPolicy lbPolicy, LocalityLoadBalancerSetting localityLbSetting) {
         super();
         this.lbPolicy = lbPolicy;

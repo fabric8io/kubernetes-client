@@ -2,9 +2,10 @@
 package io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -65,6 +66,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class Overrides implements KubernetesResource
 {
 
@@ -76,7 +78,7 @@ public class Overrides implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Map<String, Object>> packageOverrides = new ArrayList<Map<String, Object>>();
     @JsonIgnore
-    private Map<java.lang.String, java.lang.Object> additionalProperties = new HashMap<java.lang.String, java.lang.Object>();
+    private Map<java.lang.String, java.lang.Object> additionalProperties = new LinkedHashMap<java.lang.String, java.lang.Object>();
 
     /**
      * No args constructor for use in serialization
@@ -85,12 +87,6 @@ public class Overrides implements KubernetesResource
     public Overrides() {
     }
 
-    /**
-     * 
-     * @param packageOverrides
-     * @param packageName
-     * @param packageAlias
-     */
     public Overrides(java.lang.String packageAlias, java.lang.String packageName, List<Map<String, Object>> packageOverrides) {
         super();
         this.packageAlias = packageAlias;

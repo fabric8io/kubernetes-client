@@ -2,9 +2,10 @@
 package io.fabric8.tekton.pipeline.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -77,6 +78,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class TaskRunSpec implements KubernetesResource
 {
 
@@ -113,7 +115,7 @@ public class TaskRunSpec implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<WorkspaceBinding> workspaces = new ArrayList<WorkspaceBinding>();
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -122,23 +124,6 @@ public class TaskRunSpec implements KubernetesResource
     public TaskRunSpec() {
     }
 
-    /**
-     * 
-     * @param debug
-     * @param serviceAccountName
-     * @param podTemplate
-     * @param params
-     * @param stepSpecs
-     * @param taskSpec
-     * @param statusMessage
-     * @param timeout
-     * @param retries
-     * @param taskRef
-     * @param sidecarSpecs
-     * @param computeResources
-     * @param workspaces
-     * @param status
-     */
     public TaskRunSpec(io.fabric8.kubernetes.api.model.ResourceRequirements computeResources, TaskRunDebug debug, List<Param> params, Template podTemplate, Integer retries, String serviceAccountName, List<TaskRunSidecarSpec> sidecarSpecs, String status, String statusMessage, List<TaskRunStepSpec> stepSpecs, TaskRef taskRef, TaskSpec taskSpec, Duration timeout, List<WorkspaceBinding> workspaces) {
         super();
         this.computeResources = computeResources;

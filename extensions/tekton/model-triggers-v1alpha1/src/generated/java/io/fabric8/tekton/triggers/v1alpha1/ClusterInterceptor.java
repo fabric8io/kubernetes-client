@@ -1,8 +1,9 @@
 
 package io.fabric8.tekton.triggers.v1alpha1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -70,6 +71,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1alpha1")
 @Group("triggers.tekton.dev")
+@Generated("jsonschema2pojo")
 public class ClusterInterceptor implements HasMetadata
 {
 
@@ -94,7 +96,7 @@ public class ClusterInterceptor implements HasMetadata
     @JsonProperty("status")
     private ClusterInterceptorStatus status;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -103,14 +105,6 @@ public class ClusterInterceptor implements HasMetadata
     public ClusterInterceptor() {
     }
 
-    /**
-     * 
-     * @param metadata
-     * @param apiVersion
-     * @param kind
-     * @param spec
-     * @param status
-     */
     public ClusterInterceptor(String apiVersion, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, ClusterInterceptorSpec spec, ClusterInterceptorStatus status) {
         super();
         this.apiVersion = apiVersion;

@@ -1,8 +1,9 @@
 
 package io.fabric8.kubernetes.api.model;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -74,6 +75,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class ValidationSchema {
 
     @JsonProperty("APIGroup")
@@ -125,7 +127,7 @@ public class ValidationSchema {
     @JsonProperty("V1EventSeries")
     private io.fabric8.kubernetes.api.model.events.v1.EventSeries v1EventSeries;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -134,33 +136,6 @@ public class ValidationSchema {
     public ValidationSchema() {
     }
 
-    /**
-     * 
-     * @param listOptions
-     * @param aPIGroupList
-     * @param patchOptions
-     * @param deleteOptions
-     * @param quantity
-     * @param v1Beta1EventSeries
-     * @param v1EventSeries
-     * @param baseKubernetesList
-     * @param updateOptions
-     * @param v1Beta1Event
-     * @param objectReference
-     * @param v1Beta1EventList
-     * @param createOptions
-     * @param patch
-     * @param aPIGroup
-     * @param typeMeta
-     * @param objectMeta
-     * @param rootPaths
-     * @param getOptions
-     * @param time
-     * @param v1EventList
-     * @param info
-     * @param status
-     * @param v1Event
-     */
     public ValidationSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, KubernetesList baseKubernetesList, CreateOptions createOptions, DeleteOptions deleteOptions, GetOptions getOptions, Info info, ListOptions listOptions, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, io.fabric8.kubernetes.api.model.ObjectReference objectReference, Patch patch, PatchOptions patchOptions, Quantity quantity, RootPaths rootPaths, Status status, String time, TypeMeta typeMeta, UpdateOptions updateOptions, io.fabric8.kubernetes.api.model.events.v1beta1.Event v1Beta1Event, io.fabric8.kubernetes.api.model.events.v1beta1.EventList v1Beta1EventList, io.fabric8.kubernetes.api.model.events.v1beta1.EventSeries v1Beta1EventSeries, io.fabric8.kubernetes.api.model.events.v1.Event v1Event, io.fabric8.kubernetes.api.model.events.v1.EventList v1EventList, io.fabric8.kubernetes.api.model.events.v1.EventSeries v1EventSeries) {
         super();
         this.aPIGroup = aPIGroup;

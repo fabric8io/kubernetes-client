@@ -1,8 +1,9 @@
 
 package io.fabric8.openshift.api.model.config.v1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -59,6 +60,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class UpdateHistory implements KubernetesResource
 {
 
@@ -77,7 +79,7 @@ public class UpdateHistory implements KubernetesResource
     @JsonProperty("version")
     private java.lang.String version;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -86,16 +88,6 @@ public class UpdateHistory implements KubernetesResource
     public UpdateHistory() {
     }
 
-    /**
-     * 
-     * @param completionTime
-     * @param image
-     * @param startedTime
-     * @param acceptedRisks
-     * @param verified
-     * @param state
-     * @param version
-     */
     public UpdateHistory(java.lang.String acceptedRisks, String completionTime, java.lang.String image, String startedTime, java.lang.String state, Boolean verified, java.lang.String version) {
         super();
         this.acceptedRisks = acceptedRisks;

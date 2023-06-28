@@ -2,9 +2,10 @@
 package io.fabric8.openshift.api.model.installer.baremetal.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -73,6 +74,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class Platform implements KubernetesResource
 {
 
@@ -115,7 +117,7 @@ public class Platform implements KubernetesResource
     @JsonProperty("provisioningNetworkInterface")
     private String provisioningNetworkInterface;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -124,28 +126,6 @@ public class Platform implements KubernetesResource
     public Platform() {
     }
 
-    /**
-     * 
-     * @param bootstrapProvisioningIP
-     * @param provisioningNetworkInterface
-     * @param apiVIP
-     * @param ingressVIP
-     * @param provisioningDHCPExternal
-     * @param hosts
-     * @param provisioningNetwork
-     * @param provisioningNetworkCIDR
-     * @param clusterProvisioningIP
-     * @param bootstrapOSImage
-     * @param provisioningDHCPRange
-     * @param clusterOSImage
-     * @param defaultMachinePlatform
-     * @param provisioningBridge
-     * @param externalMACAddress
-     * @param provisioningHostIP
-     * @param provisioningMACAddress
-     * @param libvirtURI
-     * @param externalBridge
-     */
     public Platform(String apiVIP, String bootstrapOSImage, String bootstrapProvisioningIP, String clusterOSImage, String clusterProvisioningIP, MachinePool defaultMachinePlatform, String externalBridge, String externalMACAddress, List<Host> hosts, String ingressVIP, String libvirtURI, String provisioningBridge, Boolean provisioningDHCPExternal, String provisioningDHCPRange, String provisioningHostIP, String provisioningMACAddress, String provisioningNetwork, String provisioningNetworkCIDR, String provisioningNetworkInterface) {
         super();
         this.apiVIP = apiVIP;

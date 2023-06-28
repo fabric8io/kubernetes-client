@@ -2,10 +2,10 @@
 package io.fabric8.kubernetes.api.model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -49,6 +49,7 @@ import lombok.experimental.Accessors;
     ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
+@Generated("jsonschema2pojo")
 public class ObjectMeta implements KubernetesResource
 {
 
@@ -88,7 +89,7 @@ public class ObjectMeta implements KubernetesResource
     @JsonProperty("uid")
     private java.lang.String uid;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -97,24 +98,6 @@ public class ObjectMeta implements KubernetesResource
     public ObjectMeta() {
     }
 
-    /**
-     * 
-     * @param generation
-     * @param finalizers
-     * @param resourceVersion
-     * @param annotations
-     * @param generateName
-     * @param deletionTimestamp
-     * @param labels
-     * @param ownerReferences
-     * @param selfLink
-     * @param deletionGracePeriodSeconds
-     * @param uid
-     * @param managedFields
-     * @param creationTimestamp
-     * @param name
-     * @param namespace
-     */
     public ObjectMeta(Map<String, String> annotations, String creationTimestamp, Long deletionGracePeriodSeconds, String deletionTimestamp, List<java.lang.String> finalizers, java.lang.String generateName, Long generation, Map<String, String> labels, List<ManagedFieldsEntry> managedFields, java.lang.String name, java.lang.String namespace, List<OwnerReference> ownerReferences, java.lang.String resourceVersion, java.lang.String selfLink, java.lang.String uid) {
         super();
         this.annotations = annotations;

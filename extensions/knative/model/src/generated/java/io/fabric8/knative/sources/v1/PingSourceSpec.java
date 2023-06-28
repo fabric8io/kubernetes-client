@@ -1,8 +1,9 @@
 
 package io.fabric8.knative.sources.v1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -69,6 +70,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class PingSourceSpec implements KubernetesResource
 {
 
@@ -87,7 +89,7 @@ public class PingSourceSpec implements KubernetesResource
     @JsonProperty("timezone")
     private String timezone;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -96,16 +98,6 @@ public class PingSourceSpec implements KubernetesResource
     public PingSourceSpec() {
     }
 
-    /**
-     * 
-     * @param schedule
-     * @param data
-     * @param dataBase64
-     * @param sink
-     * @param timezone
-     * @param ceOverrides
-     * @param contentType
-     */
     public PingSourceSpec(CloudEventOverrides ceOverrides, String contentType, String data, String dataBase64, String schedule, Destination sink, String timezone) {
         super();
         this.ceOverrides = ceOverrides;

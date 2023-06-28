@@ -1,8 +1,9 @@
 
 package io.fabric8.chaosmesh.v1alpha1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -68,6 +69,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class AWSChaosSpec implements KubernetesResource
 {
 
@@ -88,7 +90,7 @@ public class AWSChaosSpec implements KubernetesResource
     @JsonProperty("volumeID")
     private String volumeID;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -97,17 +99,6 @@ public class AWSChaosSpec implements KubernetesResource
     public AWSChaosSpec() {
     }
 
-    /**
-     * 
-     * @param duration
-     * @param awsRegion
-     * @param endpoint
-     * @param secretName
-     * @param ec2Instance
-     * @param volumeID
-     * @param action
-     * @param deviceName
-     */
     public AWSChaosSpec(java.lang.String action, java.lang.String awsRegion, String deviceName, String duration, java.lang.String ec2Instance, String endpoint, String secretName, String volumeID) {
         super();
         this.action = action;

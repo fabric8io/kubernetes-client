@@ -1,9 +1,9 @@
 
 package io.fabric8.chaosmesh.v1alpha1;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -76,6 +76,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class HTTPChaosSpec implements KubernetesResource
 {
 
@@ -112,7 +113,7 @@ public class HTTPChaosSpec implements KubernetesResource
     @JsonProperty("value")
     private java.lang.String value;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -121,24 +122,6 @@ public class HTTPChaosSpec implements KubernetesResource
     public HTTPChaosSpec() {
     }
 
-    /**
-     * 
-     * @param code
-     * @param method
-     * @param replace
-     * @param target
-     * @param duration
-     * @param mode
-     * @param patch
-     * @param path
-     * @param delay
-     * @param requestHeaders
-     * @param responseHeaders
-     * @param abort
-     * @param port
-     * @param selector
-     * @param value
-     */
     public HTTPChaosSpec(Boolean abort, Integer code, String delay, String duration, String method, java.lang.String mode, PodHttpChaosPatchActions patch, String path, java.lang.Integer port, PodHttpChaosReplaceActions replace, Map<String, String> requestHeaders, Map<String, String> responseHeaders, PodSelectorSpec selector, java.lang.String target, java.lang.String value) {
         super();
         this.abort = abort;

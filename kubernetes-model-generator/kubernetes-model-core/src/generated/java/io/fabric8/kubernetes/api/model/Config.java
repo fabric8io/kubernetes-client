@@ -2,9 +2,10 @@
 package io.fabric8.kubernetes.api.model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -39,6 +40,7 @@ import lombok.experimental.Accessors;
     ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
+@Generated("jsonschema2pojo")
 public class Config implements KubernetesResource
 {
 
@@ -60,7 +62,7 @@ public class Config implements KubernetesResource
     @JsonProperty("users")
     private List<NamedAuthInfo> users = new ArrayList<NamedAuthInfo>();
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -69,17 +71,6 @@ public class Config implements KubernetesResource
     public Config() {
     }
 
-    /**
-     * 
-     * @param extensions
-     * @param preferences
-     * @param apiVersion
-     * @param currentContext
-     * @param kind
-     * @param contexts
-     * @param clusters
-     * @param users
-     */
     public Config(String apiVersion, List<NamedCluster> clusters, List<NamedContext> contexts, String currentContext, List<NamedExtension> extensions, String kind, Preferences preferences, List<NamedAuthInfo> users) {
         super();
         this.apiVersion = apiVersion;

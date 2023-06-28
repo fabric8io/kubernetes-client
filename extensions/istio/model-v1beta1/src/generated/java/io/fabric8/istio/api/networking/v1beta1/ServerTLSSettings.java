@@ -2,9 +2,10 @@
 package io.fabric8.istio.api.networking.v1beta1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -74,6 +75,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class ServerTLSSettings implements KubernetesResource
 {
 
@@ -106,7 +108,7 @@ public class ServerTLSSettings implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> verifyCertificateSpki = new ArrayList<String>();
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -115,21 +117,6 @@ public class ServerTLSSettings implements KubernetesResource
     public ServerTLSSettings() {
     }
 
-    /**
-     * 
-     * @param mode
-     * @param privateKey
-     * @param caCertificates
-     * @param serverCertificate
-     * @param cipherSuites
-     * @param httpsRedirect
-     * @param verifyCertificateHash
-     * @param verifyCertificateSpki
-     * @param maxProtocolVersion
-     * @param subjectAltNames
-     * @param credentialName
-     * @param minProtocolVersion
-     */
     public ServerTLSSettings(String caCertificates, List<String> cipherSuites, String credentialName, Boolean httpsRedirect, ServerTLSSettingsTLSProtocol maxProtocolVersion, ServerTLSSettingsTLSProtocol minProtocolVersion, ServerTLSSettingsTLSmode mode, String privateKey, String serverCertificate, List<String> subjectAltNames, List<String> verifyCertificateHash, List<String> verifyCertificateSpki) {
         super();
         this.caCertificates = caCertificates;

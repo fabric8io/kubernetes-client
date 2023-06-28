@@ -2,9 +2,10 @@
 package io.fabric8.openshift.api.model.miscellaneous.metal3.v1alpha1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -59,6 +60,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class CPU implements KubernetesResource
 {
 
@@ -74,7 +76,7 @@ public class CPU implements KubernetesResource
     @JsonProperty("model")
     private String model;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -83,14 +85,6 @@ public class CPU implements KubernetesResource
     public CPU() {
     }
 
-    /**
-     * 
-     * @param clockMegahertz
-     * @param count
-     * @param flags
-     * @param model
-     * @param arch
-     */
     public CPU(String arch, Double clockMegahertz, Integer count, List<String> flags, String model) {
         super();
         this.arch = arch;

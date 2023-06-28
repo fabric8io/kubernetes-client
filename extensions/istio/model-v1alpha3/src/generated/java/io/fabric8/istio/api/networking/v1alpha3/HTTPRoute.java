@@ -2,9 +2,10 @@
 package io.fabric8.istio.api.networking.v1alpha3;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -76,6 +77,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class HTTPRoute implements KubernetesResource
 {
 
@@ -110,7 +112,7 @@ public class HTTPRoute implements KubernetesResource
     @JsonProperty("timeout")
     private String timeout;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -119,23 +121,6 @@ public class HTTPRoute implements KubernetesResource
     public HTTPRoute() {
     }
 
-    /**
-     * 
-     * @param redirect
-     * @param headers
-     * @param mirror
-     * @param mirrorPercent
-     * @param corsPolicy
-     * @param match
-     * @param fault
-     * @param mirrorPercentage
-     * @param rewrite
-     * @param timeout
-     * @param delegate
-     * @param retries
-     * @param route
-     * @param name
-     */
     public HTTPRoute(CorsPolicy corsPolicy, Delegate delegate, HTTPFaultInjection fault, Headers headers, List<HTTPMatchRequest> match, Destination mirror, Integer mirrorPercent, Percent mirrorPercentage, String name, HTTPRedirect redirect, HTTPRetry retries, HTTPRewrite rewrite, List<HTTPRouteDestination> route, String timeout) {
         super();
         this.corsPolicy = corsPolicy;

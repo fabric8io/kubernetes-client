@@ -1,8 +1,9 @@
 
 package io.fabric8.openclustermanagement.api.model.cluster.v1alpha1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -61,13 +62,14 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class ClusterPredicate implements KubernetesResource
 {
 
     @JsonProperty("requiredClusterSelector")
     private ClusterSelector requiredClusterSelector;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -76,10 +78,6 @@ public class ClusterPredicate implements KubernetesResource
     public ClusterPredicate() {
     }
 
-    /**
-     * 
-     * @param requiredClusterSelector
-     */
     public ClusterPredicate(ClusterSelector requiredClusterSelector) {
         super();
         this.requiredClusterSelector = requiredClusterSelector;

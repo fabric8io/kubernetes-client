@@ -1,8 +1,9 @@
 
 package io.fabric8.openshift.api.model;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -54,6 +55,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class ImageChangeTrigger implements KubernetesResource
 {
 
@@ -64,7 +66,7 @@ public class ImageChangeTrigger implements KubernetesResource
     @JsonProperty("paused")
     private Boolean paused;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -73,12 +75,6 @@ public class ImageChangeTrigger implements KubernetesResource
     public ImageChangeTrigger() {
     }
 
-    /**
-     * 
-     * @param lastTriggeredImageID
-     * @param paused
-     * @param from
-     */
     public ImageChangeTrigger(io.fabric8.kubernetes.api.model.ObjectReference from, String lastTriggeredImageID, Boolean paused) {
         super();
         this.from = from;

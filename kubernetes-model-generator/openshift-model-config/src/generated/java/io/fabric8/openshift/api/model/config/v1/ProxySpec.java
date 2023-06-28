@@ -2,9 +2,10 @@
 package io.fabric8.openshift.api.model.config.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -59,6 +60,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class ProxySpec implements KubernetesResource
 {
 
@@ -74,7 +76,7 @@ public class ProxySpec implements KubernetesResource
     @JsonProperty("trustedCA")
     private ConfigMapNameReference trustedCA;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -83,14 +85,6 @@ public class ProxySpec implements KubernetesResource
     public ProxySpec() {
     }
 
-    /**
-     * 
-     * @param httpProxy
-     * @param trustedCA
-     * @param httpsProxy
-     * @param noProxy
-     * @param readinessEndpoints
-     */
     public ProxySpec(String httpProxy, String httpsProxy, String noProxy, List<String> readinessEndpoints, ConfigMapNameReference trustedCA) {
         super();
         this.httpProxy = httpProxy;

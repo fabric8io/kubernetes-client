@@ -1,8 +1,9 @@
 
 package io.fabric8.openshift.api.model.monitoring.v1alpha1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -59,6 +60,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class SlackAction implements KubernetesResource
 {
 
@@ -77,7 +79,7 @@ public class SlackAction implements KubernetesResource
     @JsonProperty("value")
     private String value;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -86,16 +88,6 @@ public class SlackAction implements KubernetesResource
     public SlackAction() {
     }
 
-    /**
-     * 
-     * @param confirm
-     * @param name
-     * @param style
-     * @param text
-     * @param type
-     * @param value
-     * @param url
-     */
     public SlackAction(SlackConfirmationField confirm, String name, String style, String text, String type, String url, String value) {
         super();
         this.confirm = confirm;

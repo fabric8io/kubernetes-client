@@ -1,9 +1,9 @@
 
 package io.fabric8.servicecatalog.api.model;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -68,6 +68,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class ServiceInstancePropertiesState implements KubernetesResource
 {
 
@@ -87,7 +88,7 @@ public class ServiceInstancePropertiesState implements KubernetesResource
     @JsonProperty("userInfo")
     private UserInfo userInfo;
     @JsonIgnore
-    private Map<java.lang.String, java.lang.Object> additionalProperties = new HashMap<java.lang.String, java.lang.Object>();
+    private Map<java.lang.String, java.lang.Object> additionalProperties = new LinkedHashMap<java.lang.String, java.lang.Object>();
 
     /**
      * No args constructor for use in serialization
@@ -96,16 +97,6 @@ public class ServiceInstancePropertiesState implements KubernetesResource
     public ServiceInstancePropertiesState() {
     }
 
-    /**
-     * 
-     * @param userInfo
-     * @param parameterChecksum
-     * @param clusterServicePlanExternalName
-     * @param clusterServicePlanExternalID
-     * @param servicePlanExternalID
-     * @param parameters
-     * @param servicePlanExternalName
-     */
     public ServiceInstancePropertiesState(java.lang.String clusterServicePlanExternalID, java.lang.String clusterServicePlanExternalName, java.lang.String parameterChecksum, Map<String, Object> parameters, java.lang.String servicePlanExternalID, java.lang.String servicePlanExternalName, UserInfo userInfo) {
         super();
         this.clusterServicePlanExternalID = clusterServicePlanExternalID;

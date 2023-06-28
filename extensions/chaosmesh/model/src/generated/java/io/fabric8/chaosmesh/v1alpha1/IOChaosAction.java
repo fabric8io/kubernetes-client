@@ -2,9 +2,10 @@
 package io.fabric8.chaosmesh.v1alpha1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -81,6 +82,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class IOChaosAction implements KubernetesResource
 {
 
@@ -127,7 +129,7 @@ public class IOChaosAction implements KubernetesResource
     @JsonProperty("uid")
     private Long uid;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -136,29 +138,6 @@ public class IOChaosAction implements KubernetesResource
     public IOChaosAction() {
     }
 
-    /**
-     * 
-     * @param mistake
-     * @param atime
-     * @param gid
-     * @param perm
-     * @param blocks
-     * @param kind
-     * @param methods
-     * @param latency
-     * @param nlink
-     * @param ino
-     * @param source
-     * @param mtime
-     * @param type
-     * @param faults
-     * @param percent
-     * @param path
-     * @param uid
-     * @param size
-     * @param rdev
-     * @param ctime
-     */
     public IOChaosAction(Timespec atime, Long blocks, Timespec ctime, List<IoFault> faults, Long gid, Long ino, String kind, java.lang.String latency, List<java.lang.String> methods, MistakeSpec mistake, Timespec mtime, Long nlink, java.lang.String path, java.lang.Integer percent, Integer perm, Long rdev, Long size, java.lang.String source, java.lang.String type, Long uid) {
         super();
         this.atime = atime;

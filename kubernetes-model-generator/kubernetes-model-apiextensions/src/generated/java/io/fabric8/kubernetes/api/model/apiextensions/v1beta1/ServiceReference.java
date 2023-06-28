@@ -1,8 +1,9 @@
 
 package io.fabric8.kubernetes.api.model.apiextensions.v1beta1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -56,6 +57,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class ServiceReference implements KubernetesResource
 {
 
@@ -68,7 +70,7 @@ public class ServiceReference implements KubernetesResource
     @JsonProperty("port")
     private Integer port;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -77,13 +79,6 @@ public class ServiceReference implements KubernetesResource
     public ServiceReference() {
     }
 
-    /**
-     * 
-     * @param path
-     * @param port
-     * @param name
-     * @param namespace
-     */
     public ServiceReference(String name, String namespace, String path, Integer port) {
         super();
         this.name = name;

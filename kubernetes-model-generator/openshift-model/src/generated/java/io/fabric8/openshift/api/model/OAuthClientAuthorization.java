@@ -2,9 +2,10 @@
 package io.fabric8.openshift.api.model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -66,6 +67,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1")
 @Group("oauth.openshift.io")
+@Generated("jsonschema2pojo")
 public class OAuthClientAuthorization implements HasMetadata
 {
 
@@ -95,7 +97,7 @@ public class OAuthClientAuthorization implements HasMetadata
     @JsonProperty("userUID")
     private String userUID;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -104,16 +106,6 @@ public class OAuthClientAuthorization implements HasMetadata
     public OAuthClientAuthorization() {
     }
 
-    /**
-     * 
-     * @param metadata
-     * @param apiVersion
-     * @param clientName
-     * @param kind
-     * @param scopes
-     * @param userName
-     * @param userUID
-     */
     public OAuthClientAuthorization(String apiVersion, String clientName, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, List<String> scopes, String userName, String userUID) {
         super();
         this.apiVersion = apiVersion;

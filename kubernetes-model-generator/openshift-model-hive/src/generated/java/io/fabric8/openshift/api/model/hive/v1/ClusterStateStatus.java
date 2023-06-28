@@ -2,9 +2,10 @@
 package io.fabric8.openshift.api.model.hive.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -56,6 +57,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class ClusterStateStatus implements KubernetesResource
 {
 
@@ -65,7 +67,7 @@ public class ClusterStateStatus implements KubernetesResource
     @JsonProperty("lastUpdated")
     private String lastUpdated;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -74,11 +76,6 @@ public class ClusterStateStatus implements KubernetesResource
     public ClusterStateStatus() {
     }
 
-    /**
-     * 
-     * @param lastUpdated
-     * @param clusterOperators
-     */
     public ClusterStateStatus(List<ClusterOperatorState> clusterOperators, String lastUpdated) {
         super();
         this.clusterOperators = clusterOperators;

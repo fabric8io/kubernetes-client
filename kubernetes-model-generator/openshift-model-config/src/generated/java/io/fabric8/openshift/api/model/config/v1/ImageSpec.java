@@ -2,9 +2,10 @@
 package io.fabric8.openshift.api.model.config.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -58,6 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class ImageSpec implements KubernetesResource
 {
 
@@ -72,7 +74,7 @@ public class ImageSpec implements KubernetesResource
     @JsonProperty("registrySources")
     private RegistrySources registrySources;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -81,13 +83,6 @@ public class ImageSpec implements KubernetesResource
     public ImageSpec() {
     }
 
-    /**
-     * 
-     * @param registrySources
-     * @param allowedRegistriesForImport
-     * @param additionalTrustedCA
-     * @param externalRegistryHostnames
-     */
     public ImageSpec(ConfigMapNameReference additionalTrustedCA, List<RegistryLocation> allowedRegistriesForImport, List<String> externalRegistryHostnames, RegistrySources registrySources) {
         super();
         this.additionalTrustedCA = additionalTrustedCA;

@@ -2,10 +2,10 @@
 package io.fabric8.kubernetes.api.model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -73,6 +73,7 @@ import lombok.experimental.Accessors;
     ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
+@Generated("jsonschema2pojo")
 public class PodSpec implements KubernetesResource
 {
 
@@ -167,7 +168,7 @@ public class PodSpec implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Volume> volumes = new ArrayList<Volume>();
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -176,48 +177,6 @@ public class PodSpec implements KubernetesResource
     public PodSpec() {
     }
 
-    /**
-     * 
-     * @param dnsPolicy
-     * @param nodeName
-     * @param terminationGracePeriodSeconds
-     * @param dnsConfig
-     * @param hostNetwork
-     * @param readinessGates
-     * @param serviceAccountName
-     * @param imagePullSecrets
-     * @param priorityClassName
-     * @param hostAliases
-     * @param securityContext
-     * @param preemptionPolicy
-     * @param nodeSelector
-     * @param hostname
-     * @param runtimeClassName
-     * @param tolerations
-     * @param automountServiceAccountToken
-     * @param schedulingGates
-     * @param schedulerName
-     * @param activeDeadlineSeconds
-     * @param os
-     * @param setHostnameAsFQDN
-     * @param enableServiceLinks
-     * @param overhead
-     * @param hostIPC
-     * @param topologySpreadConstraints
-     * @param volumes
-     * @param ephemeralContainers
-     * @param serviceAccount
-     * @param priority
-     * @param restartPolicy
-     * @param shareProcessNamespace
-     * @param hostUsers
-     * @param resourceClaims
-     * @param subdomain
-     * @param containers
-     * @param initContainers
-     * @param affinity
-     * @param hostPID
-     */
     public PodSpec(Long activeDeadlineSeconds, Affinity affinity, Boolean automountServiceAccountToken, List<Container> containers, PodDNSConfig dnsConfig, java.lang.String dnsPolicy, Boolean enableServiceLinks, List<EphemeralContainer> ephemeralContainers, List<HostAlias> hostAliases, Boolean hostIPC, Boolean hostNetwork, Boolean hostPID, Boolean hostUsers, java.lang.String hostname, List<LocalObjectReference> imagePullSecrets, List<Container> initContainers, java.lang.String nodeName, Map<String, String> nodeSelector, PodOS os, Map<String, Quantity> overhead, java.lang.String preemptionPolicy, Integer priority, java.lang.String priorityClassName, List<PodReadinessGate> readinessGates, List<PodResourceClaim> resourceClaims, java.lang.String restartPolicy, java.lang.String runtimeClassName, java.lang.String schedulerName, List<PodSchedulingGate> schedulingGates, PodSecurityContext securityContext, java.lang.String serviceAccount, java.lang.String serviceAccountName, Boolean setHostnameAsFQDN, Boolean shareProcessNamespace, java.lang.String subdomain, Long terminationGracePeriodSeconds, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, List<Volume> volumes) {
         super();
         this.activeDeadlineSeconds = activeDeadlineSeconds;

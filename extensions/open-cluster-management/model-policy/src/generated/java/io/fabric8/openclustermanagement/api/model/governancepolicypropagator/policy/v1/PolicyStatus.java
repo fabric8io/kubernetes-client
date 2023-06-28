@@ -2,9 +2,10 @@
 package io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -66,6 +67,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class PolicyStatus implements KubernetesResource
 {
 
@@ -81,7 +83,7 @@ public class PolicyStatus implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<CompliancePerClusterStatus> status = new ArrayList<CompliancePerClusterStatus>();
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -90,13 +92,6 @@ public class PolicyStatus implements KubernetesResource
     public PolicyStatus() {
     }
 
-    /**
-     * 
-     * @param compliant
-     * @param details
-     * @param placement
-     * @param status
-     */
     public PolicyStatus(String compliant, List<DetailsPerTemplate> details, List<Placement> placement, List<CompliancePerClusterStatus> status) {
         super();
         this.compliant = compliant;

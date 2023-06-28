@@ -1,8 +1,9 @@
 
 package io.fabric8.openshift.api.model;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -56,6 +57,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class RecreateDeploymentStrategyParams implements KubernetesResource
 {
 
@@ -68,7 +70,7 @@ public class RecreateDeploymentStrategyParams implements KubernetesResource
     @JsonProperty("timeoutSeconds")
     private Long timeoutSeconds;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -77,13 +79,6 @@ public class RecreateDeploymentStrategyParams implements KubernetesResource
     public RecreateDeploymentStrategyParams() {
     }
 
-    /**
-     * 
-     * @param pre
-     * @param post
-     * @param mid
-     * @param timeoutSeconds
-     */
     public RecreateDeploymentStrategyParams(LifecycleHook mid, LifecycleHook post, LifecycleHook pre, Long timeoutSeconds) {
         super();
         this.mid = mid;

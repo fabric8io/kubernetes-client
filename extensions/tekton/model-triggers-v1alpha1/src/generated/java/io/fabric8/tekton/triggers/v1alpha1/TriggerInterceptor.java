@@ -2,9 +2,10 @@
 package io.fabric8.tekton.triggers.v1alpha1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -70,6 +71,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class TriggerInterceptor implements KubernetesResource
 {
 
@@ -91,7 +93,7 @@ public class TriggerInterceptor implements KubernetesResource
     @JsonProperty("webhook")
     private WebhookInterceptor webhook;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -100,17 +102,6 @@ public class TriggerInterceptor implements KubernetesResource
     public TriggerInterceptor() {
     }
 
-    /**
-     * 
-     * @param github
-     * @param ref
-     * @param webhook
-     * @param name
-     * @param gitlab
-     * @param cel
-     * @param bitbucket
-     * @param params
-     */
     public TriggerInterceptor(BitbucketInterceptor bitbucket, CELInterceptor cel, GitHubInterceptor github, GitLabInterceptor gitlab, String name, List<InterceptorParams> params, InterceptorRef ref, WebhookInterceptor webhook) {
         super();
         this.bitbucket = bitbucket;

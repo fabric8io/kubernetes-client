@@ -2,10 +2,10 @@
 package io.fabric8.openclustermanagement.api.model.cluster.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -70,6 +70,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class ManagedClusterStatus implements KubernetesResource
 {
 
@@ -87,7 +88,7 @@ public class ManagedClusterStatus implements KubernetesResource
     @JsonProperty("version")
     private ManagedClusterVersion version;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -96,14 +97,6 @@ public class ManagedClusterStatus implements KubernetesResource
     public ManagedClusterStatus() {
     }
 
-    /**
-     * 
-     * @param allocatable
-     * @param clusterClaims
-     * @param conditions
-     * @param version
-     * @param capacity
-     */
     public ManagedClusterStatus(Map<String, Quantity> allocatable, Map<String, Quantity> capacity, List<ManagedClusterClaim> clusterClaims, List<Condition> conditions, ManagedClusterVersion version) {
         super();
         this.allocatable = allocatable;

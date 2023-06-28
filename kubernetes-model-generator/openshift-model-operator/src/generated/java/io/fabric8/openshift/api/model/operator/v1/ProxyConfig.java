@@ -2,9 +2,9 @@
 package io.fabric8.openshift.api.model.operator.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -57,6 +57,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class ProxyConfig implements KubernetesResource
 {
 
@@ -68,7 +69,7 @@ public class ProxyConfig implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, ArrayList<String>> proxyArguments = new LinkedHashMap<String, ArrayList<String>>();
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -77,12 +78,6 @@ public class ProxyConfig implements KubernetesResource
     public ProxyConfig() {
     }
 
-    /**
-     * 
-     * @param iptablesSyncPeriod
-     * @param proxyArguments
-     * @param bindAddress
-     */
     public ProxyConfig(java.lang.String bindAddress, java.lang.String iptablesSyncPeriod, Map<String, ArrayList<String>> proxyArguments) {
         super();
         this.bindAddress = bindAddress;

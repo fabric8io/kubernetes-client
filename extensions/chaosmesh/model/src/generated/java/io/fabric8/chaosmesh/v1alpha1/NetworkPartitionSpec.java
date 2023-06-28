@@ -1,8 +1,9 @@
 
 package io.fabric8.chaosmesh.v1alpha1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -66,6 +67,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class NetworkPartitionSpec implements KubernetesResource
 {
 
@@ -82,7 +84,7 @@ public class NetworkPartitionSpec implements KubernetesResource
     @JsonProperty("ip-protocol")
     private String ipProtocol;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -91,15 +93,6 @@ public class NetworkPartitionSpec implements KubernetesResource
     public NetworkPartitionSpec() {
     }
 
-    /**
-     * 
-     * @param hostname
-     * @param acceptTcpFlags
-     * @param ipAddress
-     * @param ipProtocol
-     * @param device
-     * @param direction
-     */
     public NetworkPartitionSpec(String acceptTcpFlags, String device, String direction, String hostname, String ipAddress, String ipProtocol) {
         super();
         this.acceptTcpFlags = acceptTcpFlags;

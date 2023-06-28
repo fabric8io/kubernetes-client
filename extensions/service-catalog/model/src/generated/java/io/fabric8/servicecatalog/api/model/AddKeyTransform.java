@@ -1,8 +1,9 @@
 
 package io.fabric8.servicecatalog.api.model;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -64,6 +65,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class AddKeyTransform implements KubernetesResource
 {
 
@@ -76,7 +78,7 @@ public class AddKeyTransform implements KubernetesResource
     @JsonProperty("value")
     private java.lang.String value;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -85,13 +87,6 @@ public class AddKeyTransform implements KubernetesResource
     public AddKeyTransform() {
     }
 
-    /**
-     * 
-     * @param stringValue
-     * @param jsonPathExpression
-     * @param value
-     * @param key
-     */
     public AddKeyTransform(String jsonPathExpression, java.lang.String key, String stringValue, java.lang.String value) {
         super();
         this.jsonPathExpression = jsonPathExpression;

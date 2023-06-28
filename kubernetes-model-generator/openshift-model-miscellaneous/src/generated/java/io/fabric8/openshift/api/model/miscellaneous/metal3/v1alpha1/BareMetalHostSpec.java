@@ -2,9 +2,10 @@
 package io.fabric8.openshift.api.model.miscellaneous.metal3.v1alpha1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -74,6 +75,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class BareMetalHostSpec implements KubernetesResource
 {
 
@@ -117,7 +119,7 @@ public class BareMetalHostSpec implements KubernetesResource
     @JsonProperty("userData")
     private SecretReference userData;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -126,28 +128,6 @@ public class BareMetalHostSpec implements KubernetesResource
     public BareMetalHostSpec() {
     }
 
-    /**
-     * 
-     * @param image
-     * @param bootMACAddress
-     * @param userData
-     * @param hardwareProfile
-     * @param automatedCleaningMode
-     * @param consumerRef
-     * @param description
-     * @param taints
-     * @param rootDeviceHints
-     * @param bootMode
-     * @param metaData
-     * @param networkData
-     * @param customDeploy
-     * @param preprovisioningNetworkDataName
-     * @param bmc
-     * @param online
-     * @param externallyProvisioned
-     * @param firmware
-     * @param raid
-     */
     public BareMetalHostSpec(String automatedCleaningMode, BMCDetails bmc, String bootMACAddress, String bootMode, io.fabric8.kubernetes.api.model.ObjectReference consumerRef, CustomDeploy customDeploy, String description, Boolean externallyProvisioned, FirmwareConfig firmware, String hardwareProfile, Image image, SecretReference metaData, SecretReference networkData, Boolean online, String preprovisioningNetworkDataName, RAIDConfig raid, RootDeviceHints rootDeviceHints, List<Taint> taints, SecretReference userData) {
         super();
         this.automatedCleaningMode = automatedCleaningMode;

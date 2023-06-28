@@ -2,9 +2,10 @@
 package io.fabric8.openshift.api.model.operatorhub.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -58,6 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class OperatorConditionSpec implements KubernetesResource
 {
 
@@ -71,7 +73,7 @@ public class OperatorConditionSpec implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> serviceAccounts = new ArrayList<String>();
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -80,12 +82,6 @@ public class OperatorConditionSpec implements KubernetesResource
     public OperatorConditionSpec() {
     }
 
-    /**
-     * 
-     * @param deployments
-     * @param serviceAccounts
-     * @param overrides
-     */
     public OperatorConditionSpec(List<String> deployments, List<Condition> overrides, List<String> serviceAccounts) {
         super();
         this.deployments = deployments;

@@ -3,8 +3,10 @@ package io.fabric8.istio.api.networking.v1beta1;
 
 import java.util.HashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
+@Generated("jsonschema2pojo")
 public enum ServiceEntryResolution {
 
     NONE(0),
@@ -24,7 +26,7 @@ public enum ServiceEntryResolution {
         }
     }
 
-    private ServiceEntryResolution(Integer value) {
+    ServiceEntryResolution(Integer value) {
         this.value = value;
     }
 

@@ -1,9 +1,9 @@
 
 package io.fabric8.chaosmesh.v1alpha1;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -67,6 +67,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class PodHttpChaosSelector implements KubernetesResource
 {
 
@@ -85,7 +86,7 @@ public class PodHttpChaosSelector implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> responseHeaders = new LinkedHashMap<String, String>();
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -94,15 +95,6 @@ public class PodHttpChaosSelector implements KubernetesResource
     public PodHttpChaosSelector() {
     }
 
-    /**
-     * 
-     * @param path
-     * @param code
-     * @param requestHeaders
-     * @param responseHeaders
-     * @param method
-     * @param port
-     */
     public PodHttpChaosSelector(Integer code, String method, String path, Integer port, Map<String, String> requestHeaders, Map<String, String> responseHeaders) {
         super();
         this.code = code;

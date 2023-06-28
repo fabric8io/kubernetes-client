@@ -2,9 +2,10 @@
 package io.fabric8.openshift.api.model.config.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -62,6 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class RequestHeaderIdentityProvider implements KubernetesResource
 {
 
@@ -83,7 +85,7 @@ public class RequestHeaderIdentityProvider implements KubernetesResource
     @JsonProperty("preferredUsernameHeaders")
     private List<String> preferredUsernameHeaders = new ArrayList<String>();
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -92,17 +94,6 @@ public class RequestHeaderIdentityProvider implements KubernetesResource
     public RequestHeaderIdentityProvider() {
     }
 
-    /**
-     * 
-     * @param emailHeaders
-     * @param headers
-     * @param loginURL
-     * @param nameHeaders
-     * @param preferredUsernameHeaders
-     * @param ca
-     * @param challengeURL
-     * @param clientCommonNames
-     */
     public RequestHeaderIdentityProvider(ConfigMapNameReference ca, String challengeURL, List<String> clientCommonNames, List<String> emailHeaders, List<String> headers, String loginURL, List<String> nameHeaders, List<String> preferredUsernameHeaders) {
         super();
         this.ca = ca;

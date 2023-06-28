@@ -1,8 +1,9 @@
 
 package io.fabric8.kubernetes.api.model.autoscaling.v1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -53,13 +54,14 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class ScaleSpec implements KubernetesResource
 {
 
     @JsonProperty("replicas")
     private Integer replicas;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -68,10 +70,6 @@ public class ScaleSpec implements KubernetesResource
     public ScaleSpec() {
     }
 
-    /**
-     * 
-     * @param replicas
-     */
     public ScaleSpec(Integer replicas) {
         super();
         this.replicas = replicas;

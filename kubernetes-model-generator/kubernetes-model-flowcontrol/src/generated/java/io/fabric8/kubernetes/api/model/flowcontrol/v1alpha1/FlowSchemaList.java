@@ -2,9 +2,10 @@
 package io.fabric8.kubernetes.api.model.flowcontrol.v1alpha1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -66,6 +67,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1alpha1")
 @Group("flowcontrol.apiserver.k8s.io")
+@Generated("jsonschema2pojo")
 public class FlowSchemaList implements KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.flowcontrol.v1alpha1.FlowSchema>
 {
 
@@ -88,7 +90,7 @@ public class FlowSchemaList implements KubernetesResource, KubernetesResourceLis
     @JsonProperty("metadata")
     private ListMeta metadata;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -97,13 +99,6 @@ public class FlowSchemaList implements KubernetesResource, KubernetesResourceLis
     public FlowSchemaList() {
     }
 
-    /**
-     * 
-     * @param metadata
-     * @param apiVersion
-     * @param kind
-     * @param items
-     */
     public FlowSchemaList(String apiVersion, List<io.fabric8.kubernetes.api.model.flowcontrol.v1alpha1.FlowSchema> items, String kind, ListMeta metadata) {
         super();
         this.apiVersion = apiVersion;

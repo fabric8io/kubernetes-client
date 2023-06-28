@@ -1,8 +1,9 @@
 
 package io.fabric8.kubernetes.api.model;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -78,6 +79,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class KubeSchema {
 
     @JsonProperty("APIGroup")
@@ -135,7 +137,7 @@ public class KubeSchema {
     @JsonProperty("V1Beta1CertificateSigningRequestStatus")
     private io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequestStatus v1Beta1CertificateSigningRequestStatus;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -144,36 +146,6 @@ public class KubeSchema {
     public KubeSchema() {
     }
 
-    /**
-     * 
-     * @param listOptions
-     * @param aPIGroupList
-     * @param baseKubernetesList
-     * @param certificateSigningRequestSpec
-     * @param updateOptions
-     * @param certificateSigningRequest
-     * @param patch
-     * @param v1Beta1CertificateSigningRequestCondition
-     * @param v1Beta1CertificateSigningRequestSpec
-     * @param rootPaths
-     * @param certificateSigningRequestStatus
-     * @param info
-     * @param patchOptions
-     * @param deleteOptions
-     * @param quantity
-     * @param certificateSigningRequestList
-     * @param createOptions
-     * @param aPIGroup
-     * @param typeMeta
-     * @param objectMeta
-     * @param v1Beta1CertificateSigningRequestList
-     * @param v1Beta1CertificateSigningRequestStatus
-     * @param getOptions
-     * @param time
-     * @param certificateSigningRequestCondition
-     * @param status
-     * @param v1Beta1CertificateSigningRequest
-     */
     public KubeSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, KubernetesList baseKubernetesList, io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequest certificateSigningRequest, io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequestCondition certificateSigningRequestCondition, io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequestList certificateSigningRequestList, io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequestSpec certificateSigningRequestSpec, io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequestStatus certificateSigningRequestStatus, CreateOptions createOptions, DeleteOptions deleteOptions, GetOptions getOptions, Info info, ListOptions listOptions, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, Patch patch, PatchOptions patchOptions, Quantity quantity, RootPaths rootPaths, Status status, String time, TypeMeta typeMeta, UpdateOptions updateOptions, io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequest v1Beta1CertificateSigningRequest, io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequestCondition v1Beta1CertificateSigningRequestCondition, io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequestList v1Beta1CertificateSigningRequestList, io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequestSpec v1Beta1CertificateSigningRequestSpec, io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequestStatus v1Beta1CertificateSigningRequestStatus) {
         super();
         this.aPIGroup = aPIGroup;

@@ -1,9 +1,9 @@
 
 package io.fabric8.tekton.pipeline.v1;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -64,6 +64,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class RefSource implements KubernetesResource
 {
 
@@ -75,7 +76,7 @@ public class RefSource implements KubernetesResource
     @JsonProperty("uri")
     private java.lang.String uri;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -84,12 +85,6 @@ public class RefSource implements KubernetesResource
     public RefSource() {
     }
 
-    /**
-     * 
-     * @param digest
-     * @param entryPoint
-     * @param uri
-     */
     public RefSource(Map<String, String> digest, java.lang.String entryPoint, java.lang.String uri) {
         super();
         this.digest = digest;

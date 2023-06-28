@@ -2,10 +2,10 @@
 package io.fabric8.knative.eventing.contrib.github.v1alpha1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -71,6 +71,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class GitHubSourceStatus implements KubernetesResource
 {
 
@@ -90,7 +91,7 @@ public class GitHubSourceStatus implements KubernetesResource
     @JsonProperty("webhookIDKey")
     private java.lang.String webhookIDKey;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -99,15 +100,6 @@ public class GitHubSourceStatus implements KubernetesResource
     public GitHubSourceStatus() {
     }
 
-    /**
-     * 
-     * @param sinkUri
-     * @param ceAttributes
-     * @param webhookIDKey
-     * @param annotations
-     * @param conditions
-     * @param observedGeneration
-     */
     public GitHubSourceStatus(Map<String, String> annotations, List<CloudEventAttributes> ceAttributes, List<Condition> conditions, Long observedGeneration, java.lang.String sinkUri, java.lang.String webhookIDKey) {
         super();
         this.annotations = annotations;

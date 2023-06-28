@@ -2,9 +2,10 @@
 package io.fabric8.kubernetes.api.model.storage;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -62,6 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class CSIDriverSpec implements KubernetesResource
 {
 
@@ -84,7 +86,7 @@ public class CSIDriverSpec implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> volumeLifecycleModes = new ArrayList<String>();
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -93,17 +95,6 @@ public class CSIDriverSpec implements KubernetesResource
     public CSIDriverSpec() {
     }
 
-    /**
-     * 
-     * @param fsGroupPolicy
-     * @param attachRequired
-     * @param requiresRepublish
-     * @param storageCapacity
-     * @param tokenRequests
-     * @param volumeLifecycleModes
-     * @param podInfoOnMount
-     * @param seLinuxMount
-     */
     public CSIDriverSpec(Boolean attachRequired, String fsGroupPolicy, Boolean podInfoOnMount, Boolean requiresRepublish, Boolean seLinuxMount, Boolean storageCapacity, List<TokenRequest> tokenRequests, List<String> volumeLifecycleModes) {
         super();
         this.attachRequired = attachRequired;

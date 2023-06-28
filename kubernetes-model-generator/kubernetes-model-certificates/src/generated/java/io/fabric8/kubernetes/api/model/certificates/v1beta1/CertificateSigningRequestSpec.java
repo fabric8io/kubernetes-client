@@ -2,10 +2,10 @@
 package io.fabric8.kubernetes.api.model.certificates.v1beta1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -63,6 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class CertificateSigningRequestSpec implements KubernetesResource
 {
 
@@ -86,7 +87,7 @@ public class CertificateSigningRequestSpec implements KubernetesResource
     @JsonProperty("username")
     private java.lang.String username;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -95,17 +96,6 @@ public class CertificateSigningRequestSpec implements KubernetesResource
     public CertificateSigningRequestSpec() {
     }
 
-    /**
-     * 
-     * @param request
-     * @param uid
-     * @param expirationSeconds
-     * @param extra
-     * @param groups
-     * @param usages
-     * @param signerName
-     * @param username
-     */
     public CertificateSigningRequestSpec(Integer expirationSeconds, Map<String, ArrayList<String>> extra, List<java.lang.String> groups, java.lang.String request, java.lang.String signerName, java.lang.String uid, List<java.lang.String> usages, java.lang.String username) {
         super();
         this.expirationSeconds = expirationSeconds;

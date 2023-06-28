@@ -2,10 +2,10 @@
 package io.fabric8.certmanager.api.model.v1alpha2;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -72,6 +72,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class CertificateRequestSpec implements KubernetesResource
 {
 
@@ -97,7 +98,7 @@ public class CertificateRequestSpec implements KubernetesResource
     @JsonProperty("username")
     private java.lang.String username;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -106,18 +107,6 @@ public class CertificateRequestSpec implements KubernetesResource
     public CertificateRequestSpec() {
     }
 
-    /**
-     * 
-     * @param duration
-     * @param uid
-     * @param csr
-     * @param extra
-     * @param groups
-     * @param isCA
-     * @param issuerRef
-     * @param usages
-     * @param username
-     */
     public CertificateRequestSpec(java.lang.String csr, Duration duration, Map<String, List<String>> extra, List<java.lang.String> groups, Boolean isCA, io.fabric8.certmanager.api.model.meta.v1.ObjectReference issuerRef, java.lang.String uid, List<java.lang.String> usages, java.lang.String username) {
         super();
         this.csr = csr;

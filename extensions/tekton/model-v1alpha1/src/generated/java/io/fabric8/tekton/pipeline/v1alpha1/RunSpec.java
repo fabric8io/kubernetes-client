@@ -2,9 +2,10 @@
 package io.fabric8.tekton.pipeline.v1alpha1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -77,6 +78,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class RunSpec implements KubernetesResource
 {
 
@@ -103,7 +105,7 @@ public class RunSpec implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<WorkspaceBinding> workspaces = new ArrayList<WorkspaceBinding>();
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -112,19 +114,6 @@ public class RunSpec implements KubernetesResource
     public RunSpec() {
     }
 
-    /**
-     * 
-     * @param retries
-     * @param ref
-     * @param serviceAccountName
-     * @param podTemplate
-     * @param workspaces
-     * @param params
-     * @param spec
-     * @param statusMessage
-     * @param timeout
-     * @param status
-     */
     public RunSpec(List<Param> params, Template podTemplate, TaskRef ref, Integer retries, String serviceAccountName, EmbeddedRunSpec spec, String status, String statusMessage, Duration timeout, List<WorkspaceBinding> workspaces) {
         super();
         this.params = params;

@@ -1,8 +1,9 @@
 
 package io.fabric8.servicecatalog.api.model;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -62,6 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class ClusterServiceBrokerAuthInfo implements KubernetesResource
 {
 
@@ -70,7 +72,7 @@ public class ClusterServiceBrokerAuthInfo implements KubernetesResource
     @JsonProperty("bearer")
     private ClusterBearerTokenAuthConfig bearer;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -79,11 +81,6 @@ public class ClusterServiceBrokerAuthInfo implements KubernetesResource
     public ClusterServiceBrokerAuthInfo() {
     }
 
-    /**
-     * 
-     * @param bearer
-     * @param basic
-     */
     public ClusterServiceBrokerAuthInfo(ClusterBasicAuthConfig basic, ClusterBearerTokenAuthConfig bearer) {
         super();
         this.basic = basic;

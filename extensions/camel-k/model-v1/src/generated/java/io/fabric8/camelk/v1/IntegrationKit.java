@@ -1,8 +1,9 @@
 
 package io.fabric8.camelk.v1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -71,6 +72,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1")
 @Group("camel.apache.org")
+@Generated("jsonschema2pojo")
 public class IntegrationKit implements HasMetadata, Namespaced
 {
 
@@ -95,7 +97,7 @@ public class IntegrationKit implements HasMetadata, Namespaced
     @JsonProperty("status")
     private IntegrationKitStatus status;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -104,14 +106,6 @@ public class IntegrationKit implements HasMetadata, Namespaced
     public IntegrationKit() {
     }
 
-    /**
-     * 
-     * @param metadata
-     * @param apiVersion
-     * @param kind
-     * @param spec
-     * @param status
-     */
     public IntegrationKit(String apiVersion, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, IntegrationKitSpec spec, IntegrationKitStatus status) {
         super();
         this.apiVersion = apiVersion;

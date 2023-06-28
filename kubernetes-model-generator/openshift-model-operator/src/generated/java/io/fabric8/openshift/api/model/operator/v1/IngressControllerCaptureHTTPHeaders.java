@@ -2,9 +2,10 @@
 package io.fabric8.openshift.api.model.operator.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -56,6 +57,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class IngressControllerCaptureHTTPHeaders implements KubernetesResource
 {
 
@@ -66,7 +68,7 @@ public class IngressControllerCaptureHTTPHeaders implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<IngressControllerCaptureHTTPHeader> response = new ArrayList<IngressControllerCaptureHTTPHeader>();
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -75,11 +77,6 @@ public class IngressControllerCaptureHTTPHeaders implements KubernetesResource
     public IngressControllerCaptureHTTPHeaders() {
     }
 
-    /**
-     * 
-     * @param request
-     * @param response
-     */
     public IngressControllerCaptureHTTPHeaders(List<IngressControllerCaptureHTTPHeader> request, List<IngressControllerCaptureHTTPHeader> response) {
         super();
         this.request = request;

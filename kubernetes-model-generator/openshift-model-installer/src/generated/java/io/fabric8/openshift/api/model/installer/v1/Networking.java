@@ -2,9 +2,10 @@
 package io.fabric8.openshift.api.model.installer.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -62,6 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class Networking implements KubernetesResource
 {
 
@@ -86,7 +88,7 @@ public class Networking implements KubernetesResource
     @JsonProperty("type")
     private String type;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -95,17 +97,6 @@ public class Networking implements KubernetesResource
     public Networking() {
     }
 
-    /**
-     * 
-     * @param machineNetwork
-     * @param deprecatedClusterNetworks
-     * @param serviceNetwork
-     * @param clusterNetwork
-     * @param machineCIDR
-     * @param networkType
-     * @param type
-     * @param serviceCIDR
-     */
     public Networking(List<ClusterNetworkEntry> clusterNetwork, List<ClusterNetworkEntry> deprecatedClusterNetworks, String machineCIDR, List<MachineNetworkEntry> machineNetwork, String networkType, String serviceCIDR, List<String> serviceNetwork, String type) {
         super();
         this.clusterNetwork = clusterNetwork;

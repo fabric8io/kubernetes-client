@@ -1,8 +1,9 @@
 
 package io.fabric8.istio.api.internal.protobuf.types;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -62,6 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class Value implements KubernetesResource
 {
 
@@ -69,7 +71,7 @@ public class Value implements KubernetesResource
     @JsonUnwrapped
     private IsValueKind kind;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -78,10 +80,6 @@ public class Value implements KubernetesResource
     public Value() {
     }
 
-    /**
-     * 
-     * @param kind
-     */
     public Value(IsValueKind kind) {
         super();
         this.kind = kind;

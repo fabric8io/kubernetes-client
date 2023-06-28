@@ -2,9 +2,10 @@
 package io.fabric8.openshift.api.model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -63,6 +64,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class DeploymentConfigStatus implements KubernetesResource
 {
 
@@ -86,7 +88,7 @@ public class DeploymentConfigStatus implements KubernetesResource
     @JsonProperty("updatedReplicas")
     private Integer updatedReplicas;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -95,18 +97,6 @@ public class DeploymentConfigStatus implements KubernetesResource
     public DeploymentConfigStatus() {
     }
 
-    /**
-     * 
-     * @param unavailableReplicas
-     * @param latestVersion
-     * @param replicas
-     * @param readyReplicas
-     * @param details
-     * @param conditions
-     * @param updatedReplicas
-     * @param availableReplicas
-     * @param observedGeneration
-     */
     public DeploymentConfigStatus(Integer availableReplicas, List<DeploymentCondition> conditions, DeploymentDetails details, Long latestVersion, Long observedGeneration, Integer readyReplicas, Integer replicas, Integer unavailableReplicas, Integer updatedReplicas) {
         super();
         this.availableReplicas = availableReplicas;

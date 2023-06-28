@@ -1,8 +1,9 @@
 
 package io.fabric8.certmanager.api.model.v1alpha2;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -71,6 +72,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1alpha2")
 @Group("cert-manager.io")
+@Generated("jsonschema2pojo")
 public class Issuer implements HasMetadata, Namespaced
 {
 
@@ -95,7 +97,7 @@ public class Issuer implements HasMetadata, Namespaced
     @JsonProperty("status")
     private IssuerStatus status;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -104,14 +106,6 @@ public class Issuer implements HasMetadata, Namespaced
     public Issuer() {
     }
 
-    /**
-     * 
-     * @param metadata
-     * @param apiVersion
-     * @param kind
-     * @param spec
-     * @param status
-     */
     public Issuer(String apiVersion, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, IssuerSpec spec, IssuerStatus status) {
         super();
         this.apiVersion = apiVersion;

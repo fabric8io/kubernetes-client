@@ -2,10 +2,10 @@
 package io.fabric8.openshift.api.model.monitoring.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -71,6 +71,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class RemoteWriteSpec implements KubernetesResource
 {
 
@@ -109,7 +110,7 @@ public class RemoteWriteSpec implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<RelabelConfig> writeRelabelConfigs = new ArrayList<RelabelConfig>();
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -118,25 +119,6 @@ public class RemoteWriteSpec implements KubernetesResource
     public RemoteWriteSpec() {
     }
 
-    /**
-     * 
-     * @param headers
-     * @param basicAuth
-     * @param proxyUrl
-     * @param sigv4
-     * @param oauth2
-     * @param url
-     * @param tlsConfig
-     * @param authorization
-     * @param bearerToken
-     * @param remoteTimeout
-     * @param queueConfig
-     * @param writeRelabelConfigs
-     * @param name
-     * @param sendExemplars
-     * @param bearerTokenFile
-     * @param metadataConfig
-     */
     public RemoteWriteSpec(Authorization authorization, BasicAuth basicAuth, java.lang.String bearerToken, java.lang.String bearerTokenFile, Map<String, String> headers, MetadataConfig metadataConfig, java.lang.String name, OAuth2 oauth2, java.lang.String proxyUrl, QueueConfig queueConfig, java.lang.String remoteTimeout, Boolean sendExemplars, Sigv4 sigv4, TLSConfig tlsConfig, java.lang.String url, List<RelabelConfig> writeRelabelConfigs) {
         super();
         this.authorization = authorization;

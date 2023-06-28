@@ -1,8 +1,9 @@
 
 package io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -58,6 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(io.fabric8.kubernetes.api.model.LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class GRPCRouteFilter implements KubernetesResource
 {
 
@@ -72,7 +74,7 @@ public class GRPCRouteFilter implements KubernetesResource
     @JsonProperty("type")
     private String type;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -81,14 +83,6 @@ public class GRPCRouteFilter implements KubernetesResource
     public GRPCRouteFilter() {
     }
 
-    /**
-     * 
-     * @param requestMirror
-     * @param requestHeaderModifier
-     * @param responseHeaderModifier
-     * @param type
-     * @param extensionRef
-     */
     public GRPCRouteFilter(io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.LocalObjectReference extensionRef, HTTPHeaderFilter requestHeaderModifier, HTTPRequestMirrorFilter requestMirror, HTTPHeaderFilter responseHeaderModifier, String type) {
         super();
         this.extensionRef = extensionRef;

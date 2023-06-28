@@ -1,8 +1,9 @@
 
 package io.fabric8.openclustermanagement.api.model.operator.v1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -64,6 +65,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class ClusterManagerSpec implements KubernetesResource
 {
 
@@ -76,7 +78,7 @@ public class ClusterManagerSpec implements KubernetesResource
     @JsonProperty("workImagePullSpec")
     private String workImagePullSpec;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -85,13 +87,6 @@ public class ClusterManagerSpec implements KubernetesResource
     public ClusterManagerSpec() {
     }
 
-    /**
-     * 
-     * @param nodePlacement
-     * @param placementImagePullSpec
-     * @param workImagePullSpec
-     * @param registrationImagePullSpec
-     */
     public ClusterManagerSpec(NodePlacement nodePlacement, String placementImagePullSpec, String registrationImagePullSpec, String workImagePullSpec) {
         super();
         this.nodePlacement = nodePlacement;

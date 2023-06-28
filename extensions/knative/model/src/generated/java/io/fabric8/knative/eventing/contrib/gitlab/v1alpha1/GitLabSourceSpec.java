@@ -2,9 +2,10 @@
 package io.fabric8.knative.eventing.contrib.gitlab.v1alpha1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -72,6 +73,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class GitLabSourceSpec implements KubernetesResource
 {
 
@@ -92,7 +94,7 @@ public class GitLabSourceSpec implements KubernetesResource
     @JsonProperty("sslverify")
     private Boolean sslverify;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -101,17 +103,6 @@ public class GitLabSourceSpec implements KubernetesResource
     public GitLabSourceSpec() {
     }
 
-    /**
-     * 
-     * @param projectUrl
-     * @param sslverify
-     * @param serviceAccountName
-     * @param sink
-     * @param secretToken
-     * @param accessToken
-     * @param ceOverrides
-     * @param eventTypes
-     */
     public GitLabSourceSpec(SecretValueFromSource accessToken, CloudEventOverrides ceOverrides, List<String> eventTypes, String projectUrl, SecretValueFromSource secretToken, String serviceAccountName, Destination sink, Boolean sslverify) {
         super();
         this.accessToken = accessToken;

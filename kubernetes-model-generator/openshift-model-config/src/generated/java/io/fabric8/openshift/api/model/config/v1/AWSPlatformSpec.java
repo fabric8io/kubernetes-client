@@ -2,9 +2,10 @@
 package io.fabric8.openshift.api.model.config.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -55,6 +56,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class AWSPlatformSpec implements KubernetesResource
 {
 
@@ -62,7 +64,7 @@ public class AWSPlatformSpec implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<AWSServiceEndpoint> serviceEndpoints = new ArrayList<AWSServiceEndpoint>();
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -71,10 +73,6 @@ public class AWSPlatformSpec implements KubernetesResource
     public AWSPlatformSpec() {
     }
 
-    /**
-     * 
-     * @param serviceEndpoints
-     */
     public AWSPlatformSpec(List<AWSServiceEndpoint> serviceEndpoints) {
         super();
         this.serviceEndpoints = serviceEndpoints;

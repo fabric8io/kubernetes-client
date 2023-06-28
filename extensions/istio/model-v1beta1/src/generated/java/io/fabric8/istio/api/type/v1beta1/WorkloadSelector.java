@@ -1,9 +1,9 @@
 
 package io.fabric8.istio.api.type.v1beta1;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -62,6 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class WorkloadSelector implements KubernetesResource
 {
 
@@ -69,7 +70,7 @@ public class WorkloadSelector implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> matchLabels = new LinkedHashMap<String, String>();
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -78,10 +79,6 @@ public class WorkloadSelector implements KubernetesResource
     public WorkloadSelector() {
     }
 
-    /**
-     * 
-     * @param matchLabels
-     */
     public WorkloadSelector(Map<String, String> matchLabels) {
         super();
         this.matchLabels = matchLabels;

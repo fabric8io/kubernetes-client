@@ -2,9 +2,10 @@
 package io.fabric8.openshift.api.model.hive.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -72,6 +73,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(io.fabric8.kubernetes.api.model.LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class HiveConfigSpec implements KubernetesResource
 {
 
@@ -117,7 +119,7 @@ public class HiveConfigSpec implements KubernetesResource
     @JsonProperty("targetNamespace")
     private String targetNamespace;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -126,28 +128,6 @@ public class HiveConfigSpec implements KubernetesResource
     public HiveConfigSpec() {
     }
 
-    /**
-     * 
-     * @param syncSetReapplyInterval
-     * @param backup
-     * @param managedDomains
-     * @param argoCDConfig
-     * @param deleteProtection
-     * @param awsPrivateLink
-     * @param deprovisionsDisabled
-     * @param featureGates
-     * @param releaseImageVerificationConfigMapRef
-     * @param additionalCertificateAuthoritiesSecretRef
-     * @param disabledControllers
-     * @param failedProvisionConfig
-     * @param logLevel
-     * @param targetNamespace
-     * @param globalPullSecretRef
-     * @param maintenanceMode
-     * @param serviceProviderCredentialsConfig
-     * @param controllersConfig
-     * @param exportMetrics
-     */
     public HiveConfigSpec(List<io.fabric8.kubernetes.api.model.LocalObjectReference> additionalCertificateAuthoritiesSecretRef, ArgoCDConfig argoCDConfig, AWSPrivateLinkConfig awsPrivateLink, BackupConfig backup, ControllersConfig controllersConfig, String deleteProtection, Boolean deprovisionsDisabled, List<String> disabledControllers, Boolean exportMetrics, FailedProvisionConfig failedProvisionConfig, FeatureGateSelection featureGates, io.fabric8.kubernetes.api.model.LocalObjectReference globalPullSecretRef, String logLevel, Boolean maintenanceMode, List<ManageDNSConfig> managedDomains, ReleaseImageVerificationConfigMapReference releaseImageVerificationConfigMapRef, ServiceProviderCredentials serviceProviderCredentialsConfig, String syncSetReapplyInterval, String targetNamespace) {
         super();
         this.additionalCertificateAuthoritiesSecretRef = additionalCertificateAuthoritiesSecretRef;

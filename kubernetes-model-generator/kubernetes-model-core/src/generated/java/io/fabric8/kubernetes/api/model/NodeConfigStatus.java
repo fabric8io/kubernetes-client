@@ -1,8 +1,9 @@
 
 package io.fabric8.kubernetes.api.model;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -35,6 +36,7 @@ import lombok.experimental.Accessors;
     ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
+@Generated("jsonschema2pojo")
 public class NodeConfigStatus implements KubernetesResource
 {
 
@@ -47,7 +49,7 @@ public class NodeConfigStatus implements KubernetesResource
     @JsonProperty("lastKnownGood")
     private NodeConfigSource lastKnownGood;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -56,13 +58,6 @@ public class NodeConfigStatus implements KubernetesResource
     public NodeConfigStatus() {
     }
 
-    /**
-     * 
-     * @param lastKnownGood
-     * @param active
-     * @param assigned
-     * @param error
-     */
     public NodeConfigStatus(NodeConfigSource active, NodeConfigSource assigned, String error, NodeConfigSource lastKnownGood) {
         super();
         this.active = active;

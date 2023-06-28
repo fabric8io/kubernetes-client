@@ -1,6 +1,7 @@
 
 package io.fabric8.openclustermanagement.api.model;
 
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -66,6 +67,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class OpenClusterManagementAgentSchema {
 
     @JsonProperty("github_com_open-cluster-management_klusterlet-addon-controller_pkg_apis_agent_v1_KlusterletAddonAgentConfigSpec")
@@ -88,15 +90,6 @@ public class OpenClusterManagementAgentSchema {
     public OpenClusterManagementAgentSchema() {
     }
 
-    /**
-     * 
-     * @param githubComOpenClusterManagementKlusterletAddonControllerPkgApisAgentV1ProxyConfig
-     * @param githubComOpenClusterManagementKlusterletAddonControllerPkgApisAgentV1KlusterletAddonConfigList
-     * @param githubComOpenClusterManagementKlusterletAddonControllerPkgApisAgentV1KlusterletAddonConfigSpec
-     * @param githubComOpenClusterManagementKlusterletAddonControllerPkgApisAgentV1KlusterletAddonConfigStatus
-     * @param githubComOpenClusterManagementKlusterletAddonControllerPkgApisAgentV1KlusterletAddonConfig
-     * @param githubComOpenClusterManagementKlusterletAddonControllerPkgApisAgentV1KlusterletAddonAgentConfigSpec
-     */
     public OpenClusterManagementAgentSchema(KlusterletAddonAgentConfigSpec githubComOpenClusterManagementKlusterletAddonControllerPkgApisAgentV1KlusterletAddonAgentConfigSpec, KlusterletAddonConfig githubComOpenClusterManagementKlusterletAddonControllerPkgApisAgentV1KlusterletAddonConfig, KlusterletAddonConfigList githubComOpenClusterManagementKlusterletAddonControllerPkgApisAgentV1KlusterletAddonConfigList, KlusterletAddonConfigSpec githubComOpenClusterManagementKlusterletAddonControllerPkgApisAgentV1KlusterletAddonConfigSpec, KlusterletAddonConfigStatus githubComOpenClusterManagementKlusterletAddonControllerPkgApisAgentV1KlusterletAddonConfigStatus, ProxyConfig githubComOpenClusterManagementKlusterletAddonControllerPkgApisAgentV1ProxyConfig) {
         super();
         this.githubComOpenClusterManagementKlusterletAddonControllerPkgApisAgentV1KlusterletAddonAgentConfigSpec = githubComOpenClusterManagementKlusterletAddonControllerPkgApisAgentV1KlusterletAddonAgentConfigSpec;

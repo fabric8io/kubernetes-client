@@ -2,10 +2,10 @@
 package io.fabric8.tekton.v1beta1.internal.pipeline.pkg.apis.pipeline.pod;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -83,6 +83,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(io.fabric8.kubernetes.api.model.Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class Template implements KubernetesResource
 {
 
@@ -128,7 +129,7 @@ public class Template implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.kubernetes.api.model.Volume> volumes = new ArrayList<io.fabric8.kubernetes.api.model.Volume>();
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -137,26 +138,6 @@ public class Template implements KubernetesResource
     public Template() {
     }
 
-    /**
-     * 
-     * @param dnsPolicy
-     * @param enableServiceLinks
-     * @param dnsConfig
-     * @param hostNetwork
-     * @param imagePullSecrets
-     * @param priorityClassName
-     * @param topologySpreadConstraints
-     * @param volumes
-     * @param hostAliases
-     * @param securityContext
-     * @param env
-     * @param nodeSelector
-     * @param runtimeClassName
-     * @param tolerations
-     * @param automountServiceAccountToken
-     * @param schedulerName
-     * @param affinity
-     */
     public Template(Affinity affinity, Boolean automountServiceAccountToken, PodDNSConfig dnsConfig, String dnsPolicy, Boolean enableServiceLinks, List<io.fabric8.kubernetes.api.model.EnvVar> env, List<HostAlias> hostAliases, java.lang.Boolean hostNetwork, List<io.fabric8.kubernetes.api.model.LocalObjectReference> imagePullSecrets, Map<String, String> nodeSelector, String priorityClassName, String runtimeClassName, java.lang.String schedulerName, PodSecurityContext securityContext, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, List<io.fabric8.kubernetes.api.model.Volume> volumes) {
         super();
         this.affinity = affinity;

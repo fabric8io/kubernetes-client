@@ -2,9 +2,10 @@
 package io.fabric8.tekton.pipeline.v1beta1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -67,6 +68,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class TaskResourceBinding implements KubernetesResource
 {
 
@@ -80,7 +82,7 @@ public class TaskResourceBinding implements KubernetesResource
     @JsonProperty("resourceSpec")
     private PipelineResourceSpec resourceSpec;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -89,13 +91,6 @@ public class TaskResourceBinding implements KubernetesResource
     public TaskResourceBinding() {
     }
 
-    /**
-     * 
-     * @param resourceRef
-     * @param paths
-     * @param name
-     * @param resourceSpec
-     */
     public TaskResourceBinding(String name, List<String> paths, PipelineResourceRef resourceRef, PipelineResourceSpec resourceSpec) {
         super();
         this.name = name;

@@ -2,9 +2,10 @@
 package io.fabric8.tekton.pipeline.v1alpha1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -65,6 +66,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class VerificationPolicySpec implements KubernetesResource
 {
 
@@ -75,7 +77,7 @@ public class VerificationPolicySpec implements KubernetesResource
     @JsonProperty("resources")
     private List<ResourcePattern> resources = new ArrayList<ResourcePattern>();
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -84,12 +86,6 @@ public class VerificationPolicySpec implements KubernetesResource
     public VerificationPolicySpec() {
     }
 
-    /**
-     * 
-     * @param mode
-     * @param resources
-     * @param authorities
-     */
     public VerificationPolicySpec(List<Authority> authorities, String mode, List<ResourcePattern> resources) {
         super();
         this.authorities = authorities;

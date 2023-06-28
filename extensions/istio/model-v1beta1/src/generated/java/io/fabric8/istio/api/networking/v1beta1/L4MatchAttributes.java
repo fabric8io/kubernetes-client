@@ -2,10 +2,10 @@
 package io.fabric8.istio.api.networking.v1beta1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -69,6 +69,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class L4MatchAttributes implements KubernetesResource
 {
 
@@ -88,7 +89,7 @@ public class L4MatchAttributes implements KubernetesResource
     @JsonProperty("sourceSubnet")
     private java.lang.String sourceSubnet;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -97,15 +98,6 @@ public class L4MatchAttributes implements KubernetesResource
     public L4MatchAttributes() {
     }
 
-    /**
-     * 
-     * @param gateways
-     * @param destinationSubnets
-     * @param sourceSubnet
-     * @param port
-     * @param sourceLabels
-     * @param sourceNamespace
-     */
     public L4MatchAttributes(List<java.lang.String> destinationSubnets, List<java.lang.String> gateways, Integer port, Map<String, String> sourceLabels, java.lang.String sourceNamespace, java.lang.String sourceSubnet) {
         super();
         this.destinationSubnets = destinationSubnets;

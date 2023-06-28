@@ -1,8 +1,9 @@
 
 package io.fabric8.tekton.v1beta1.internal.pipeline.pkg.apis.config;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -74,6 +75,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class FeatureFlags implements KubernetesResource
 {
 
@@ -106,7 +108,7 @@ public class FeatureFlags implements KubernetesResource
     @JsonProperty("VerificationNoMatchPolicy")
     private String verificationNoMatchPolicy;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -115,23 +117,6 @@ public class FeatureFlags implements KubernetesResource
     public FeatureFlags() {
     }
 
-    /**
-     * 
-     * @param scopeWhenExpressionsToTask
-     * @param disableAffinityAssistant
-     * @param requireGitSSHSecretKnownHosts
-     * @param maxResultSize
-     * @param verificationNoMatchPolicy
-     * @param enableTektonOCIBundles
-     * @param resultExtractionMethod
-     * @param enableAPIFields
-     * @param disableCredsInit
-     * @param enableProvenanceInStatus
-     * @param runningInEnvWithInjectedSidecars
-     * @param awaitSidecarReadiness
-     * @param enforceNonfalsifiability
-     * @param sendCloudEventsForRuns
-     */
     public FeatureFlags(Boolean awaitSidecarReadiness, Boolean disableAffinityAssistant, Boolean disableCredsInit, String enableAPIFields, Boolean enableProvenanceInStatus, Boolean enableTektonOCIBundles, String enforceNonfalsifiability, Integer maxResultSize, Boolean requireGitSSHSecretKnownHosts, String resultExtractionMethod, Boolean runningInEnvWithInjectedSidecars, Boolean scopeWhenExpressionsToTask, Boolean sendCloudEventsForRuns, String verificationNoMatchPolicy) {
         super();
         this.awaitSidecarReadiness = awaitSidecarReadiness;

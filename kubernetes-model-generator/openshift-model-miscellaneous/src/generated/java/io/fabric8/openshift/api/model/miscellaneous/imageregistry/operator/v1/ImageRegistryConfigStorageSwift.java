@@ -1,8 +1,9 @@
 
 package io.fabric8.openshift.api.model.miscellaneous.imageregistry.operator.v1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -60,6 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class ImageRegistryConfigStorageSwift implements KubernetesResource
 {
 
@@ -80,7 +82,7 @@ public class ImageRegistryConfigStorageSwift implements KubernetesResource
     @JsonProperty("tenantID")
     private String tenantID;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -89,17 +91,6 @@ public class ImageRegistryConfigStorageSwift implements KubernetesResource
     public ImageRegistryConfigStorageSwift() {
     }
 
-    /**
-     * 
-     * @param container
-     * @param authURL
-     * @param authVersion
-     * @param domain
-     * @param regionName
-     * @param tenantID
-     * @param domainID
-     * @param tenant
-     */
     public ImageRegistryConfigStorageSwift(String authURL, String authVersion, String container, String domain, String domainID, String regionName, String tenant, String tenantID) {
         super();
         this.authURL = authURL;

@@ -1,8 +1,9 @@
 
 package io.fabric8.kubernetes.api.model;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -61,6 +62,7 @@ import lombok.experimental.Accessors;
     ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
+@Generated("jsonschema2pojo")
 public class Volume implements KubernetesResource
 {
 
@@ -125,7 +127,7 @@ public class Volume implements KubernetesResource
     @JsonProperty("vsphereVolume")
     private VsphereVirtualDiskVolumeSource vsphereVolume;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -134,39 +136,6 @@ public class Volume implements KubernetesResource
     public Volume() {
     }
 
-    /**
-     * 
-     * @param quobyte
-     * @param azureFile
-     * @param flexVolume
-     * @param ephemeral
-     * @param secret
-     * @param projected
-     * @param cephfs
-     * @param scaleIO
-     * @param emptyDir
-     * @param glusterfs
-     * @param gcePersistentDisk
-     * @param photonPersistentDisk
-     * @param azureDisk
-     * @param cinder
-     * @param downwardAPI
-     * @param awsElasticBlockStore
-     * @param flocker
-     * @param iscsi
-     * @param rbd
-     * @param configMap
-     * @param storageos
-     * @param csi
-     * @param name
-     * @param nfs
-     * @param persistentVolumeClaim
-     * @param gitRepo
-     * @param portworxVolume
-     * @param vsphereVolume
-     * @param fc
-     * @param hostPath
-     */
     public Volume(AWSElasticBlockStoreVolumeSource awsElasticBlockStore, AzureDiskVolumeSource azureDisk, AzureFileVolumeSource azureFile, CephFSVolumeSource cephfs, CinderVolumeSource cinder, ConfigMapVolumeSource configMap, CSIVolumeSource csi, DownwardAPIVolumeSource downwardAPI, EmptyDirVolumeSource emptyDir, EphemeralVolumeSource ephemeral, FCVolumeSource fc, FlexVolumeSource flexVolume, FlockerVolumeSource flocker, GCEPersistentDiskVolumeSource gcePersistentDisk, GitRepoVolumeSource gitRepo, GlusterfsVolumeSource glusterfs, HostPathVolumeSource hostPath, ISCSIVolumeSource iscsi, String name, NFSVolumeSource nfs, PersistentVolumeClaimVolumeSource persistentVolumeClaim, PhotonPersistentDiskVolumeSource photonPersistentDisk, PortworxVolumeSource portworxVolume, ProjectedVolumeSource projected, QuobyteVolumeSource quobyte, RBDVolumeSource rbd, ScaleIOVolumeSource scaleIO, SecretVolumeSource secret, StorageOSVolumeSource storageos, VsphereVirtualDiskVolumeSource vsphereVolume) {
         super();
         this.awsElasticBlockStore = awsElasticBlockStore;

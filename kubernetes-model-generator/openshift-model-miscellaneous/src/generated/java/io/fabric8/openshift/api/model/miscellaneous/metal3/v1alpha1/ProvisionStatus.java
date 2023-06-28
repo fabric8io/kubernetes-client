@@ -1,8 +1,9 @@
 
 package io.fabric8.openshift.api.model.miscellaneous.metal3.v1alpha1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -60,6 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class ProvisionStatus implements KubernetesResource
 {
 
@@ -80,7 +82,7 @@ public class ProvisionStatus implements KubernetesResource
     @JsonProperty("state")
     private String state;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -89,17 +91,6 @@ public class ProvisionStatus implements KubernetesResource
     public ProvisionStatus() {
     }
 
-    /**
-     * 
-     * @param image
-     * @param customDeploy
-     * @param id
-     * @param state
-     * @param rootDeviceHints
-     * @param bootMode
-     * @param firmware
-     * @param raid
-     */
     public ProvisionStatus(String id, String bootMode, CustomDeploy customDeploy, FirmwareConfig firmware, Image image, RAIDConfig raid, RootDeviceHints rootDeviceHints, String state) {
         super();
         this.id = id;

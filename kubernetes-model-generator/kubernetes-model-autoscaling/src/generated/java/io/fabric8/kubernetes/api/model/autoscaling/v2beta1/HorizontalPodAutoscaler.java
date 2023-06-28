@@ -1,8 +1,9 @@
 
 package io.fabric8.kubernetes.api.model.autoscaling.v2beta1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -63,6 +64,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v2beta1")
 @Group("autoscaling")
+@Generated("jsonschema2pojo")
 public class HorizontalPodAutoscaler implements HasMetadata, Namespaced
 {
 
@@ -87,7 +89,7 @@ public class HorizontalPodAutoscaler implements HasMetadata, Namespaced
     @JsonProperty("status")
     private HorizontalPodAutoscalerStatus status;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -96,14 +98,6 @@ public class HorizontalPodAutoscaler implements HasMetadata, Namespaced
     public HorizontalPodAutoscaler() {
     }
 
-    /**
-     * 
-     * @param metadata
-     * @param apiVersion
-     * @param kind
-     * @param spec
-     * @param status
-     */
     public HorizontalPodAutoscaler(String apiVersion, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, HorizontalPodAutoscalerSpec spec, HorizontalPodAutoscalerStatus status) {
         super();
         this.apiVersion = apiVersion;

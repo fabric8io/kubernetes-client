@@ -1,8 +1,9 @@
 
 package io.fabric8.openshift.api.model.installer.vsphere.v1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -66,6 +67,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class Platform implements KubernetesResource
 {
 
@@ -98,7 +100,7 @@ public class Platform implements KubernetesResource
     @JsonProperty("vCenter")
     private String vCenter;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -107,23 +109,6 @@ public class Platform implements KubernetesResource
     public Platform() {
     }
 
-    /**
-     * 
-     * @param cluster
-     * @param apiVIP
-     * @param ingressVIP
-     * @param datacenter
-     * @param network
-     * @param defaultDatastore
-     * @param password
-     * @param folder
-     * @param clusterOSImage
-     * @param defaultMachinePlatform
-     * @param diskType
-     * @param vCenter
-     * @param resourcePool
-     * @param username
-     */
     public Platform(String apiVIP, String cluster, String clusterOSImage, String datacenter, String defaultDatastore, MachinePool defaultMachinePlatform, String diskType, String folder, String ingressVIP, String network, String password, String resourcePool, String username, String vCenter) {
         super();
         this.apiVIP = apiVIP;

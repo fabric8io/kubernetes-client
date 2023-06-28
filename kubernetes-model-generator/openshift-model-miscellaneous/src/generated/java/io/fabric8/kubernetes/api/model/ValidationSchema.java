@@ -1,8 +1,9 @@
 
 package io.fabric8.kubernetes.api.model;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -88,6 +89,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class ValidationSchema {
 
     @JsonProperty("APIGroup")
@@ -137,7 +139,7 @@ public class ValidationSchema {
     @JsonProperty("TypeMeta")
     private TypeMeta typeMeta;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -146,32 +148,6 @@ public class ValidationSchema {
     public ValidationSchema() {
     }
 
-    /**
-     * 
-     * @param aPIGroupList
-     * @param aPIRequestCount
-     * @param baseKubernetesList
-     * @param networkAttachmentDefinition
-     * @param configList
-     * @param patch
-     * @param aPIGroup
-     * @param typeMeta
-     * @param objectMeta
-     * @param operatorPKIList
-     * @param aPIRequestCountList
-     * @param bareMetalHostList
-     * @param egressRouterList
-     * @param operatorPKI
-     * @param networkAttachmentDefinitionList
-     * @param time
-     * @param egressRouter
-     * @param config
-     * @param credentialsRequestList
-     * @param bareMetalHost
-     * @param credentialsRequest
-     * @param info
-     * @param status
-     */
     public ValidationSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, APIRequestCount aPIRequestCount, APIRequestCountList aPIRequestCountList, BareMetalHost bareMetalHost, BareMetalHostList bareMetalHostList, KubernetesList baseKubernetesList, Config config, ConfigList configList, CredentialsRequest credentialsRequest, CredentialsRequestList credentialsRequestList, EgressRouter egressRouter, EgressRouterList egressRouterList, Info info, NetworkAttachmentDefinition networkAttachmentDefinition, NetworkAttachmentDefinitionList networkAttachmentDefinitionList, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, OperatorPKI operatorPKI, OperatorPKIList operatorPKIList, Patch patch, Status status, String time, TypeMeta typeMeta) {
         super();
         this.aPIGroup = aPIGroup;

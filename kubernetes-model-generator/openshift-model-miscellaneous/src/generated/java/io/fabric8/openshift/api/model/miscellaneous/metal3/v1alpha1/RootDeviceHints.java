@@ -1,8 +1,9 @@
 
 package io.fabric8.openshift.api.model.miscellaneous.metal3.v1alpha1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -62,6 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class RootDeviceHints implements KubernetesResource
 {
 
@@ -86,7 +88,7 @@ public class RootDeviceHints implements KubernetesResource
     @JsonProperty("wwnWithExtension")
     private String wwnWithExtension;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -95,19 +97,6 @@ public class RootDeviceHints implements KubernetesResource
     public RootDeviceHints() {
     }
 
-    /**
-     * 
-     * @param wwnVendorExtension
-     * @param hctl
-     * @param serialNumber
-     * @param vendor
-     * @param wwnWithExtension
-     * @param model
-     * @param rotational
-     * @param deviceName
-     * @param minSizeGigabytes
-     * @param wwn
-     */
     public RootDeviceHints(String deviceName, String hctl, Integer minSizeGigabytes, String model, Boolean rotational, String serialNumber, String vendor, String wwn, String wwnVendorExtension, String wwnWithExtension) {
         super();
         this.deviceName = deviceName;

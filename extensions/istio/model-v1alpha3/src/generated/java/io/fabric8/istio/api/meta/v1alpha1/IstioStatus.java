@@ -2,9 +2,10 @@
 package io.fabric8.istio.api.meta.v1alpha1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -66,6 +67,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class IstioStatus implements KubernetesResource
 {
 
@@ -78,7 +80,7 @@ public class IstioStatus implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<AnalysisMessageBase> validationMessages = new ArrayList<AnalysisMessageBase>();
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -87,12 +89,6 @@ public class IstioStatus implements KubernetesResource
     public IstioStatus() {
     }
 
-    /**
-     * 
-     * @param validationMessages
-     * @param conditions
-     * @param observedGeneration
-     */
     public IstioStatus(List<IstioCondition> conditions, Long observedGeneration, List<AnalysisMessageBase> validationMessages) {
         super();
         this.conditions = conditions;

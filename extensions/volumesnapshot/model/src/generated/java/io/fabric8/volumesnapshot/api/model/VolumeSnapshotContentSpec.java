@@ -1,8 +1,9 @@
 
 package io.fabric8.volumesnapshot.api.model;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -64,6 +65,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class VolumeSnapshotContentSpec implements KubernetesResource
 {
 
@@ -78,7 +80,7 @@ public class VolumeSnapshotContentSpec implements KubernetesResource
     @JsonProperty("volumeSnapshotRef")
     private io.fabric8.kubernetes.api.model.ObjectReference volumeSnapshotRef;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -87,14 +89,6 @@ public class VolumeSnapshotContentSpec implements KubernetesResource
     public VolumeSnapshotContentSpec() {
     }
 
-    /**
-     * 
-     * @param volumeSnapshotRef
-     * @param driver
-     * @param volumeSnapshotClassName
-     * @param deletionPolicy
-     * @param source
-     */
     public VolumeSnapshotContentSpec(java.lang.String deletionPolicy, java.lang.String driver, VolumeSnapshotContentSource source, String volumeSnapshotClassName, io.fabric8.kubernetes.api.model.ObjectReference volumeSnapshotRef) {
         super();
         this.deletionPolicy = deletionPolicy;

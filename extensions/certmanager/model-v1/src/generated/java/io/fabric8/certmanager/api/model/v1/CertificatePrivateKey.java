@@ -1,8 +1,9 @@
 
 package io.fabric8.certmanager.api.model.v1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -64,6 +65,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class CertificatePrivateKey implements KubernetesResource
 {
 
@@ -76,7 +78,7 @@ public class CertificatePrivateKey implements KubernetesResource
     @JsonProperty("size")
     private Integer size;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -85,13 +87,6 @@ public class CertificatePrivateKey implements KubernetesResource
     public CertificatePrivateKey() {
     }
 
-    /**
-     * 
-     * @param size
-     * @param rotationPolicy
-     * @param encoding
-     * @param algorithm
-     */
     public CertificatePrivateKey(String algorithm, String encoding, String rotationPolicy, Integer size) {
         super();
         this.algorithm = algorithm;

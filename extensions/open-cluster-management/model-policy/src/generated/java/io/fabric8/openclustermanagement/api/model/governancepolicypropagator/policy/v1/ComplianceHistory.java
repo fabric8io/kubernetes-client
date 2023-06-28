@@ -1,8 +1,9 @@
 
 package io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -63,6 +64,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class ComplianceHistory implements KubernetesResource
 {
 
@@ -73,7 +75,7 @@ public class ComplianceHistory implements KubernetesResource
     @JsonProperty("message")
     private String message;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -82,12 +84,6 @@ public class ComplianceHistory implements KubernetesResource
     public ComplianceHistory() {
     }
 
-    /**
-     * 
-     * @param lastTimestamp
-     * @param eventName
-     * @param message
-     */
     public ComplianceHistory(String eventName, String lastTimestamp, String message) {
         super();
         this.eventName = eventName;

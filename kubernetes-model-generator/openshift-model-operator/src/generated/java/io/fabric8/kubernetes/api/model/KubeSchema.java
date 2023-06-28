@@ -1,8 +1,9 @@
 
 package io.fabric8.kubernetes.api.model;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -161,6 +162,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class KubeSchema {
 
     @JsonProperty("APIGroup")
@@ -284,7 +286,7 @@ public class KubeSchema {
     @JsonProperty("TypeMeta")
     private TypeMeta typeMeta;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -293,69 +295,6 @@ public class KubeSchema {
     public KubeSchema() {
     }
 
-    /**
-     * 
-     * @param secretNameReference
-     * @param aPIGroupList
-     * @param kubeControllerManager
-     * @param cSISnapshotControllerList
-     * @param serviceCatalogControllerManager
-     * @param dNSRecordList
-     * @param configList
-     * @param kubeSchedulerList
-     * @param authenticationList
-     * @param patch
-     * @param cloudCredentialList
-     * @param storageList
-     * @param ingressControllerList
-     * @param clusterCSIDriver
-     * @param kubeAPIServer
-     * @param openShiftAPIServer
-     * @param info
-     * @param openShiftContollerManager
-     * @param kubeStorageVersionMigratorList
-     * @param dns
-     * @param imagePruner
-     * @param kubeAPIServerList
-     * @param etcdList
-     * @param configMapFileReference
-     * @param kubeControllerManagerList
-     * @param serviceCAList
-     * @param cloudCredential
-     * @param networkList
-     * @param podNetworkConnectivityCheck
-     * @param openShiftAPIServerList
-     * @param consoleList
-     * @param serviceCA
-     * @param status
-     * @param ingressController
-     * @param serviceCatalogAPIServer
-     * @param podNetworkConnectivityCheckList
-     * @param baseKubernetesList
-     * @param storage
-     * @param cSISnapshotController
-     * @param imageContentSourcePolicyList
-     * @param imagePrunerList
-     * @param network
-     * @param serviceCatalogControllerManagerList
-     * @param clusterCSIDriverList
-     * @param kubeScheduler
-     * @param dNSList
-     * @param kubeStorageVersionMigrator
-     * @param authentication
-     * @param console
-     * @param quantity
-     * @param imageContentSourcePolicy
-     * @param aPIGroup
-     * @param typeMeta
-     * @param objectMeta
-     * @param serviceCatalogAPIServerList
-     * @param time
-     * @param config
-     * @param dNSRecord
-     * @param openShiftControllerManagerList
-     * @param etcd
-     */
     public KubeSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, Authentication authentication, AuthenticationList authenticationList, KubernetesList baseKubernetesList, CSISnapshotController cSISnapshotController, CSISnapshotControllerList cSISnapshotControllerList, CloudCredential cloudCredential, CloudCredentialList cloudCredentialList, ClusterCSIDriver clusterCSIDriver, ClusterCSIDriverList clusterCSIDriverList, Config config, ConfigList configList, ConfigMapFileReference configMapFileReference, Console console, ConsoleList consoleList, DNS dns, DNSList dNSList, DNSRecord dNSRecord, DNSRecordList dNSRecordList, Etcd etcd, EtcdList etcdList, ImageContentSourcePolicy imageContentSourcePolicy, ImageContentSourcePolicyList imageContentSourcePolicyList, ImagePruner imagePruner, ImagePrunerList imagePrunerList, Info info, IngressController ingressController, IngressControllerList ingressControllerList, KubeAPIServer kubeAPIServer, KubeAPIServerList kubeAPIServerList, KubeControllerManager kubeControllerManager, KubeControllerManagerList kubeControllerManagerList, KubeScheduler kubeScheduler, KubeSchedulerList kubeSchedulerList, KubeStorageVersionMigrator kubeStorageVersionMigrator, KubeStorageVersionMigratorList kubeStorageVersionMigratorList, Network network, NetworkList networkList, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, OpenShiftAPIServer openShiftAPIServer, OpenShiftAPIServerList openShiftAPIServerList, OpenShiftControllerManager openShiftContollerManager, OpenShiftControllerManagerList openShiftControllerManagerList, Patch patch, PodNetworkConnectivityCheck podNetworkConnectivityCheck, PodNetworkConnectivityCheckList podNetworkConnectivityCheckList, Quantity quantity, SecretNameReference secretNameReference, ServiceCA serviceCA, ServiceCAList serviceCAList, ServiceCatalogAPIServer serviceCatalogAPIServer, ServiceCatalogAPIServerList serviceCatalogAPIServerList, ServiceCatalogControllerManager serviceCatalogControllerManager, ServiceCatalogControllerManagerList serviceCatalogControllerManagerList, Status status, Storage storage, StorageList storageList, String time, TypeMeta typeMeta) {
         super();
         this.aPIGroup = aPIGroup;

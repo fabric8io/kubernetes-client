@@ -1,8 +1,9 @@
 
 package io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.helmrelease.v1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -66,6 +67,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class AltSource implements KubernetesResource
 {
 
@@ -84,7 +86,7 @@ public class AltSource implements KubernetesResource
     @JsonProperty("type")
     private String type;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -93,16 +95,6 @@ public class AltSource implements KubernetesResource
     public AltSource() {
     }
 
-    /**
-     * 
-     * @param helmRepo
-     * @param github
-     * @param git
-     * @param configMapRef
-     * @param insecureSkipVerify
-     * @param secretRef
-     * @param type
-     */
     public AltSource(io.fabric8.kubernetes.api.model.ObjectReference configMapRef, Git git, GitHub github, HelmRepo helmRepo, Boolean insecureSkipVerify, io.fabric8.kubernetes.api.model.ObjectReference secretRef, String type) {
         super();
         this.configMapRef = configMapRef;

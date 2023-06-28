@@ -2,9 +2,10 @@
 package io.fabric8.openshift.api.model.config.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -59,6 +60,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class NetworkSpec implements KubernetesResource
 {
 
@@ -73,7 +75,7 @@ public class NetworkSpec implements KubernetesResource
     @JsonProperty("serviceNodePortRange")
     private String serviceNodePortRange;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -82,14 +84,6 @@ public class NetworkSpec implements KubernetesResource
     public NetworkSpec() {
     }
 
-    /**
-     * 
-     * @param serviceNetwork
-     * @param clusterNetwork
-     * @param serviceNodePortRange
-     * @param networkType
-     * @param externalIP
-     */
     public NetworkSpec(List<ClusterNetworkEntry> clusterNetwork, ExternalIPConfig externalIP, String networkType, List<String> serviceNetwork, String serviceNodePortRange) {
         super();
         this.clusterNetwork = clusterNetwork;

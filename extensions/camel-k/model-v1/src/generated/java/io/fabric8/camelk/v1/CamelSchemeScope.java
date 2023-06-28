@@ -2,9 +2,10 @@
 package io.fabric8.camelk.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -63,6 +64,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class CamelSchemeScope implements KubernetesResource
 {
 
@@ -70,7 +72,7 @@ public class CamelSchemeScope implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<CamelArtifactDependency> dependencies = new ArrayList<CamelArtifactDependency>();
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -79,10 +81,6 @@ public class CamelSchemeScope implements KubernetesResource
     public CamelSchemeScope() {
     }
 
-    /**
-     * 
-     * @param dependencies
-     */
     public CamelSchemeScope(List<CamelArtifactDependency> dependencies) {
         super();
         this.dependencies = dependencies;

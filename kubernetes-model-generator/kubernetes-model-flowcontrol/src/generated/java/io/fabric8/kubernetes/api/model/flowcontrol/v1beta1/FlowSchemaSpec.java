@@ -2,9 +2,10 @@
 package io.fabric8.kubernetes.api.model.flowcontrol.v1beta1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -58,6 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class FlowSchemaSpec implements KubernetesResource
 {
 
@@ -71,7 +73,7 @@ public class FlowSchemaSpec implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<PolicyRulesWithSubjects> rules = new ArrayList<PolicyRulesWithSubjects>();
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -80,13 +82,6 @@ public class FlowSchemaSpec implements KubernetesResource
     public FlowSchemaSpec() {
     }
 
-    /**
-     * 
-     * @param priorityLevelConfiguration
-     * @param matchingPrecedence
-     * @param rules
-     * @param distinguisherMethod
-     */
     public FlowSchemaSpec(FlowDistinguisherMethod distinguisherMethod, Integer matchingPrecedence, PriorityLevelConfigurationReference priorityLevelConfiguration, List<PolicyRulesWithSubjects> rules) {
         super();
         this.distinguisherMethod = distinguisherMethod;

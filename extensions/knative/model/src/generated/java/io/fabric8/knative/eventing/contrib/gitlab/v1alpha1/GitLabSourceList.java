@@ -2,9 +2,10 @@
 package io.fabric8.knative.eventing.contrib.gitlab.v1alpha1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -74,6 +75,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1alpha1")
 @Group("sources.knative.dev")
+@Generated("jsonschema2pojo")
 public class GitLabSourceList implements KubernetesResource, KubernetesResourceList<io.fabric8.knative.eventing.contrib.gitlab.v1alpha1.GitLabSource>
 {
 
@@ -96,7 +98,7 @@ public class GitLabSourceList implements KubernetesResource, KubernetesResourceL
     @JsonProperty("metadata")
     private ListMeta metadata;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -105,13 +107,6 @@ public class GitLabSourceList implements KubernetesResource, KubernetesResourceL
     public GitLabSourceList() {
     }
 
-    /**
-     * 
-     * @param metadata
-     * @param apiVersion
-     * @param kind
-     * @param items
-     */
     public GitLabSourceList(String apiVersion, List<io.fabric8.knative.eventing.contrib.gitlab.v1alpha1.GitLabSource> items, String kind, ListMeta metadata) {
         super();
         this.apiVersion = apiVersion;

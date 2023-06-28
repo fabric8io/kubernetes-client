@@ -1,8 +1,9 @@
 
 package io.fabric8.knative.flows.v1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -65,6 +66,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class SequenceStep implements KubernetesResource
 {
 
@@ -75,7 +77,7 @@ public class SequenceStep implements KubernetesResource
     @JsonProperty("uri")
     private String uri;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -84,12 +86,6 @@ public class SequenceStep implements KubernetesResource
     public SequenceStep() {
     }
 
-    /**
-     * 
-     * @param delivery
-     * @param ref
-     * @param uri
-     */
     public SequenceStep(DeliverySpec delivery, KReference ref, String uri) {
         super();
         this.delivery = delivery;

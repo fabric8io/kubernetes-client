@@ -1,8 +1,9 @@
 
 package io.fabric8.kubernetes.api.model;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -41,6 +42,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1")
 @Group("")
+@Generated("jsonschema2pojo")
 public class Binding implements HasMetadata, Namespaced
 {
 
@@ -63,7 +65,7 @@ public class Binding implements HasMetadata, Namespaced
     @JsonProperty("target")
     private ObjectReference target;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -72,13 +74,6 @@ public class Binding implements HasMetadata, Namespaced
     public Binding() {
     }
 
-    /**
-     * 
-     * @param metadata
-     * @param apiVersion
-     * @param kind
-     * @param target
-     */
     public Binding(String apiVersion, String kind, ObjectMeta metadata, ObjectReference target) {
         super();
         this.apiVersion = apiVersion;

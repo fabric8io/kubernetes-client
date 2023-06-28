@@ -2,9 +2,10 @@
 package io.fabric8.kubernetes.api.model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -48,6 +49,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1")
 @Group("")
+@Generated("jsonschema2pojo")
 public class PodExecOptions implements KubernetesResource
 {
 
@@ -78,7 +80,7 @@ public class PodExecOptions implements KubernetesResource
     @JsonProperty("tty")
     private Boolean tty;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -87,17 +89,6 @@ public class PodExecOptions implements KubernetesResource
     public PodExecOptions() {
     }
 
-    /**
-     * 
-     * @param container
-     * @param stdin
-     * @param apiVersion
-     * @param stdout
-     * @param kind
-     * @param tty
-     * @param stderr
-     * @param command
-     */
     public PodExecOptions(String apiVersion, List<String> command, String container, String kind, Boolean stderr, Boolean stdin, Boolean stdout, Boolean tty) {
         super();
         this.apiVersion = apiVersion;

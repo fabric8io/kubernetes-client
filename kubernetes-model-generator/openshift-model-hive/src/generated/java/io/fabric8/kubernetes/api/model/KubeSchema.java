@@ -1,8 +1,9 @@
 
 package io.fabric8.kubernetes.api.model;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -131,6 +132,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(io.fabric8.kubernetes.api.model.LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class KubeSchema {
 
     @JsonProperty("APIGroup")
@@ -228,7 +230,7 @@ public class KubeSchema {
     @JsonProperty("VsphereOSDisk")
     private io.fabric8.openshift.api.model.hive.vsphere.v1.OSDisk vsphereOSDisk;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -237,56 +239,6 @@ public class KubeSchema {
     public KubeSchema() {
     }
 
-    /**
-     * 
-     * @param checkpoint
-     * @param clusterRelocateList
-     * @param aPIGroupList
-     * @param clusterImageSetList
-     * @param hiveConfigList
-     * @param clusterDeployment
-     * @param clusterPool
-     * @param machinePoolNameLease
-     * @param baseKubernetesList
-     * @param clusterDeprovisionList
-     * @param clusterProvisionList
-     * @param clusterProvision
-     * @param clusterStateList
-     * @param localObjectReference
-     * @param patch
-     * @param clusterPoolList
-     * @param selectorSyncIdentityProviderList
-     * @param vsphereOSDisk
-     * @param selectorSyncSetList
-     * @param machinePoolList
-     * @param syncIdentityProviderList
-     * @param selectorSyncSet
-     * @param clusterState
-     * @param clusterDeploymentList
-     * @param clusterDeprovision
-     * @param gcpOSDisk
-     * @param syncSet
-     * @param clusterRelocate
-     * @param clusterOperatorStatusCondition
-     * @param clusterClaim
-     * @param syncIdentityProvider
-     * @param clusterImageSet
-     * @param machinePoolNameLeaseList
-     * @param checkpointList
-     * @param dNSZone
-     * @param aPIGroup
-     * @param syncSetList
-     * @param typeMeta
-     * @param clusterClaimList
-     * @param objectMeta
-     * @param hiveConfig
-     * @param azureOSDisk
-     * @param selectorSyncIdentityProvider
-     * @param time
-     * @param machinePool
-     * @param dNSZoneList
-     * @param status
-     */
     public KubeSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, io.fabric8.openshift.api.model.hive.azure.v1.OSDisk azureOSDisk, KubernetesList baseKubernetesList, Checkpoint checkpoint, CheckpointList checkpointList, ClusterClaim clusterClaim, ClusterClaimList clusterClaimList, ClusterDeployment clusterDeployment, ClusterDeploymentList clusterDeploymentList, ClusterDeprovision clusterDeprovision, ClusterDeprovisionList clusterDeprovisionList, ClusterImageSet clusterImageSet, ClusterImageSetList clusterImageSetList, ClusterOperatorStatusCondition clusterOperatorStatusCondition, ClusterPool clusterPool, ClusterPoolList clusterPoolList, ClusterProvision clusterProvision, ClusterProvisionList clusterProvisionList, ClusterRelocate clusterRelocate, ClusterRelocateList clusterRelocateList, ClusterState clusterState, ClusterStateList clusterStateList, DNSZone dNSZone, DNSZoneList dNSZoneList, io.fabric8.openshift.api.model.hive.gcp.v1.OSDisk gcpOSDisk, HiveConfig hiveConfig, HiveConfigList hiveConfigList, io.fabric8.kubernetes.api.model.LocalObjectReference localObjectReference, MachinePool machinePool, MachinePoolList machinePoolList, MachinePoolNameLease machinePoolNameLease, MachinePoolNameLeaseList machinePoolNameLeaseList, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, Patch patch, SelectorSyncIdentityProvider selectorSyncIdentityProvider, SelectorSyncIdentityProviderList selectorSyncIdentityProviderList, SelectorSyncSet selectorSyncSet, SelectorSyncSetList selectorSyncSetList, Status status, SyncIdentityProvider syncIdentityProvider, SyncIdentityProviderList syncIdentityProviderList, SyncSet syncSet, SyncSetList syncSetList, String time, TypeMeta typeMeta, io.fabric8.openshift.api.model.hive.vsphere.v1.OSDisk vsphereOSDisk) {
         super();
         this.aPIGroup = aPIGroup;

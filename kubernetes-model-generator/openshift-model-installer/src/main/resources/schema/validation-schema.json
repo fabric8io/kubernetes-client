@@ -2369,34 +2369,19 @@
     },
     "machinepool": {
       "properties": {
-        "affinityGroupsNames": {
+        "osDisk": {
+          "$ref": "#/definitions/os_installer_gcp_v1_OSDisk",
+          "existingJavaType": "io.fabric8.openshift.api.model.installer.gcp.v1.OSDisk"
+        },
+        "type": {
+          "type": "string"
+        },
+        "zones": {
           "type": "array",
+          "javaOmitEmpty": true,
           "items": {
             "type": "string"
           }
-        },
-        "autoPinningPolicy": {
-          "type": "string"
-        },
-        "cpu": {
-          "$ref": "#/definitions/os_installer_ovirt_v1_CPU",
-          "existingJavaType": "io.fabric8.openshift.api.model.installer.ovirt.v1.CPU"
-        },
-        "hugepages": {
-          "type": "integer"
-        },
-        "instanceTypeID": {
-          "type": "string"
-        },
-        "memoryMB": {
-          "type": "integer"
-        },
-        "osDisk": {
-          "$ref": "#/definitions/os_installer_ovirt_v1_Disk",
-          "existingJavaType": "io.fabric8.openshift.api.model.installer.ovirt.v1.Disk"
-        },
-        "vmType": {
-          "type": "string"
         }
       },
       "additionalProperties": true
@@ -2620,6 +2605,9 @@
       "properties": {
         "diskSizeGB": {
           "type": "integer"
+        },
+        "diskType": {
+          "type": "string"
         }
       },
       "additionalProperties": true
@@ -2652,35 +2640,48 @@
     },
     "platform": {
       "properties": {
+        "apiVIP": {
+          "type": "string"
+        },
+        "cluster": {
+          "type": "string"
+        },
+        "clusterOSImage": {
+          "type": "string"
+        },
+        "datacenter": {
+          "type": "string"
+        },
+        "defaultDatastore": {
+          "type": "string"
+        },
         "defaultMachinePlatform": {
-          "$ref": "#/definitions/os_installer_alibabacloud_v1_MachinePool",
-          "existingJavaType": "io.fabric8.openshift.api.model.installer.alibabacloud.v1.MachinePool"
+          "$ref": "#/definitions/os_installer_vsphere_v1_MachinePool",
+          "existingJavaType": "io.fabric8.openshift.api.model.installer.vsphere.v1.MachinePool"
         },
-        "privateZoneID": {
+        "diskType": {
           "type": "string"
         },
-        "region": {
+        "folder": {
           "type": "string"
         },
-        "resourceGroupID": {
+        "ingressVIP": {
           "type": "string"
         },
-        "tags": {
-          "type": "object",
-          "additionalProperties": {
-            "type": "string"
-          },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
-        },
-        "vpcID": {
+        "network": {
           "type": "string"
         },
-        "vswitchIDs": {
-          "type": "array",
-          "javaOmitEmpty": true,
-          "items": {
-            "type": "string"
-          }
+        "password": {
+          "type": "string"
+        },
+        "resourcePool": {
+          "type": "string"
+        },
+        "username": {
+          "type": "string"
+        },
+        "vCenter": {
+          "type": "string"
         }
       },
       "additionalProperties": true

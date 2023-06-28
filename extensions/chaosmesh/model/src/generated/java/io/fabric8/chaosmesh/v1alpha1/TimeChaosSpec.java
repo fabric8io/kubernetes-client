@@ -2,9 +2,10 @@
 package io.fabric8.chaosmesh.v1alpha1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -69,6 +70,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class TimeChaosSpec implements KubernetesResource
 {
 
@@ -87,7 +89,7 @@ public class TimeChaosSpec implements KubernetesResource
     @JsonProperty("value")
     private java.lang.String value;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -96,16 +98,6 @@ public class TimeChaosSpec implements KubernetesResource
     public TimeChaosSpec() {
     }
 
-    /**
-     * 
-     * @param duration
-     * @param mode
-     * @param selector
-     * @param timeOffset
-     * @param value
-     * @param clockIds
-     * @param containerNames
-     */
     public TimeChaosSpec(List<java.lang.String> clockIds, List<java.lang.String> containerNames, String duration, java.lang.String mode, PodSelectorSpec selector, java.lang.String timeOffset, java.lang.String value) {
         super();
         this.clockIds = clockIds;

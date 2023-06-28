@@ -1,8 +1,9 @@
 
 package io.fabric8.openshift.api.model.config.v1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -56,6 +57,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class ComponentOverride implements KubernetesResource
 {
 
@@ -70,7 +72,7 @@ public class ComponentOverride implements KubernetesResource
     @JsonProperty("unmanaged")
     private Boolean unmanaged;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -79,14 +81,6 @@ public class ComponentOverride implements KubernetesResource
     public ComponentOverride() {
     }
 
-    /**
-     * 
-     * @param kind
-     * @param unmanaged
-     * @param name
-     * @param namespace
-     * @param group
-     */
     public ComponentOverride(String group, String kind, String name, String namespace, Boolean unmanaged) {
         super();
         this.group = group;

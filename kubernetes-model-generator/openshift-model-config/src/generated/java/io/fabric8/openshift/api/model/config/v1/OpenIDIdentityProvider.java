@@ -2,10 +2,10 @@
 package io.fabric8.openshift.api.model.config.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -62,6 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class OpenIDIdentityProvider implements KubernetesResource
 {
 
@@ -82,7 +83,7 @@ public class OpenIDIdentityProvider implements KubernetesResource
     @JsonProperty("issuer")
     private java.lang.String issuer;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -91,16 +92,6 @@ public class OpenIDIdentityProvider implements KubernetesResource
     public OpenIDIdentityProvider() {
     }
 
-    /**
-     * 
-     * @param clientID
-     * @param extraAuthorizeParameters
-     * @param claims
-     * @param clientSecret
-     * @param extraScopes
-     * @param ca
-     * @param issuer
-     */
     public OpenIDIdentityProvider(ConfigMapNameReference ca, OpenIDClaims claims, java.lang.String clientID, SecretNameReference clientSecret, Map<String, String> extraAuthorizeParameters, List<java.lang.String> extraScopes, java.lang.String issuer) {
         super();
         this.ca = ca;

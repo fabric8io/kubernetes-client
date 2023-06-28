@@ -2,9 +2,10 @@
 package io.fabric8.openshift.api.model.hive.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -57,6 +58,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(io.fabric8.kubernetes.api.model.LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class AWSPrivateLinkConfig implements KubernetesResource
 {
 
@@ -71,7 +73,7 @@ public class AWSPrivateLinkConfig implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<AWSPrivateLinkInventory> endpointVPCInventory = new ArrayList<AWSPrivateLinkInventory>();
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -80,13 +82,6 @@ public class AWSPrivateLinkConfig implements KubernetesResource
     public AWSPrivateLinkConfig() {
     }
 
-    /**
-     * 
-     * @param credentialsSecretRef
-     * @param dnsRecordType
-     * @param associatedVPCs
-     * @param endpointVPCInventory
-     */
     public AWSPrivateLinkConfig(List<AWSAssociatedVPC> associatedVPCs, io.fabric8.kubernetes.api.model.LocalObjectReference credentialsSecretRef, String dnsRecordType, List<AWSPrivateLinkInventory> endpointVPCInventory) {
         super();
         this.associatedVPCs = associatedVPCs;

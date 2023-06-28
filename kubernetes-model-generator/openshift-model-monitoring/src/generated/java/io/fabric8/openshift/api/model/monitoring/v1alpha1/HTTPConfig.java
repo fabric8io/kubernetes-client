@@ -1,8 +1,9 @@
 
 package io.fabric8.openshift.api.model.monitoring.v1alpha1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -61,6 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class HTTPConfig implements KubernetesResource
 {
 
@@ -75,7 +77,7 @@ public class HTTPConfig implements KubernetesResource
     @JsonProperty("tlsConfig")
     private SafeTLSConfig tlsConfig;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -84,14 +86,6 @@ public class HTTPConfig implements KubernetesResource
     public HTTPConfig() {
     }
 
-    /**
-     * 
-     * @param authorization
-     * @param bearerTokenSecret
-     * @param basicAuth
-     * @param proxyURL
-     * @param tlsConfig
-     */
     public HTTPConfig(SafeAuthorization authorization, BasicAuth basicAuth, SecretKeySelector bearerTokenSecret, String proxyURL, SafeTLSConfig tlsConfig) {
         super();
         this.authorization = authorization;

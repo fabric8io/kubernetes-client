@@ -1,8 +1,9 @@
 
 package io.fabric8.openshift.api.model.operatorhub.v1alpha1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -59,6 +60,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class SubscriptionCondition implements KubernetesResource
 {
 
@@ -95,7 +97,7 @@ public class SubscriptionCondition implements KubernetesResource
     @JsonPropertyDescription("type of Subscription condition")
     private java.lang.String type;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -107,11 +109,13 @@ public class SubscriptionCondition implements KubernetesResource
     /**
      * 
      * @param reason
-     * @param lastHeartbeatTime
-     * @param lastTransitionTime
+     *     one-word CamelCase reason for the condition's last transition.
      * @param message
+     *     human-readable message indicating details about last transition.
      * @param type
+     *     type of Subscription condition.
      * @param status
+     *     status of the condition.
      */
     public SubscriptionCondition(String lastHeartbeatTime, String lastTransitionTime, java.lang.String message, java.lang.String reason, java.lang.String status, java.lang.String type) {
         super();

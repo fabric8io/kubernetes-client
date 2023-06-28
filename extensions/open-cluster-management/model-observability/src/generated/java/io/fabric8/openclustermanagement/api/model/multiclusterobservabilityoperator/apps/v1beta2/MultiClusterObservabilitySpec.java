@@ -2,10 +2,10 @@
 package io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta2;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -73,6 +73,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class MultiClusterObservabilitySpec implements KubernetesResource
 {
 
@@ -95,7 +96,7 @@ public class MultiClusterObservabilitySpec implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Toleration> tolerations = new ArrayList<Toleration>();
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -104,17 +105,6 @@ public class MultiClusterObservabilitySpec implements KubernetesResource
     public MultiClusterObservabilitySpec() {
     }
 
-    /**
-     * 
-     * @param imagePullPolicy
-     * @param imagePullSecret
-     * @param tolerations
-     * @param storageConfig
-     * @param advanced
-     * @param observabilityAddonSpec
-     * @param enableDownsampling
-     * @param nodeSelector
-     */
     public MultiClusterObservabilitySpec(AdvancedConfig advanced, Boolean enableDownsampling, java.lang.String imagePullPolicy, java.lang.String imagePullSecret, Map<String, String> nodeSelector, ObservabilityAddonSpec observabilityAddonSpec, StorageConfig storageConfig, List<Toleration> tolerations) {
         super();
         this.advanced = advanced;

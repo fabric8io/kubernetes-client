@@ -1,8 +1,9 @@
 
 package io.fabric8.kubernetes.api.model.batch.v1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -52,6 +53,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class JobTemplateSpec implements KubernetesResource
 {
 
@@ -60,7 +62,7 @@ public class JobTemplateSpec implements KubernetesResource
     @JsonProperty("spec")
     private JobSpec spec;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -69,11 +71,6 @@ public class JobTemplateSpec implements KubernetesResource
     public JobTemplateSpec() {
     }
 
-    /**
-     * 
-     * @param metadata
-     * @param spec
-     */
     public JobTemplateSpec(io.fabric8.kubernetes.api.model.ObjectMeta metadata, JobSpec spec) {
         super();
         this.metadata = metadata;

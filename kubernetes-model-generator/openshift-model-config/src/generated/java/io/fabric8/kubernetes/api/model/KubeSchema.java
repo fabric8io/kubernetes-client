@@ -1,8 +1,9 @@
 
 package io.fabric8.kubernetes.api.model;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -142,6 +143,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class KubeSchema {
 
     @JsonProperty("APIGroup")
@@ -245,7 +247,7 @@ public class KubeSchema {
     @JsonProperty("TypeMeta")
     private TypeMeta typeMeta;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -254,59 +256,6 @@ public class KubeSchema {
     public KubeSchema() {
     }
 
-    /**
-     * 
-     * @param secretNameReference
-     * @param aPIGroupList
-     * @param schedulerList
-     * @param infrastructureList
-     * @param project
-     * @param imageContentPolicy
-     * @param oAuth
-     * @param clusterOperator
-     * @param authenticationList
-     * @param patch
-     * @param oAuthList
-     * @param info
-     * @param projectList
-     * @param image
-     * @param operatorHub
-     * @param operatorHubList
-     * @param aPIServer
-     * @param clusterVersionList
-     * @param dns
-     * @param dNSZone
-     * @param ingress
-     * @param proxy
-     * @param proxyList
-     * @param configMapFileReference
-     * @param networkList
-     * @param imageList
-     * @param consoleList
-     * @param featureGateList
-     * @param status
-     * @param ingressList
-     * @param baseKubernetesList
-     * @param clusterVersion
-     * @param resourceAttributes
-     * @param network
-     * @param scheduler
-     * @param clusterOperatorList
-     * @param buildList
-     * @param dNSList
-     * @param authentication
-     * @param featureGate
-     * @param console
-     * @param aPIServerList
-     * @param aPIGroup
-     * @param typeMeta
-     * @param build
-     * @param infrastructure
-     * @param objectMeta
-     * @param tLSProfileSpec
-     * @param imageContentPolicyList
-     * @param time
-     */
     public KubeSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, APIServer aPIServer, APIServerList aPIServerList, Authentication authentication, AuthenticationList authenticationList, KubernetesList baseKubernetesList, Build build, BuildList buildList, ClusterOperator clusterOperator, ClusterOperatorList clusterOperatorList, ClusterVersion clusterVersion, ClusterVersionList clusterVersionList, ConfigMapFileReference configMapFileReference, Console console, ConsoleList consoleList, DNS dns, DNSList dNSList, DNSZone dNSZone, FeatureGate featureGate, FeatureGateList featureGateList, Image image, ImageContentPolicy imageContentPolicy, ImageContentPolicyList imageContentPolicyList, ImageList imageList, Info info, Infrastructure infrastructure, InfrastructureList infrastructureList, Ingress ingress, IngressList ingressList, Network network, NetworkList networkList, OAuth oAuth, OAuthList oAuthList, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, OperatorHub operatorHub, OperatorHubList operatorHubList, Patch patch, Project project, ProjectList projectList, Proxy proxy, ProxyList proxyList, ResourceAttributes resourceAttributes, Scheduler scheduler, SchedulerList schedulerList, SecretNameReference secretNameReference, Status status, TLSProfileSpec tLSProfileSpec, String time, TypeMeta typeMeta) {
         super();
         this.aPIGroup = aPIGroup;

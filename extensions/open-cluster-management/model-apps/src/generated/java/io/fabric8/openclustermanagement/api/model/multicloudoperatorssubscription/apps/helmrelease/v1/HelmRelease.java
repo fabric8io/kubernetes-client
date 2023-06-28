@@ -1,9 +1,9 @@
 
 package io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.helmrelease.v1;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -73,6 +73,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1")
 @Group("apps.open-cluster-management.io")
+@Generated("jsonschema2pojo")
 public class HelmRelease implements HasMetadata, Namespaced
 {
 
@@ -100,7 +101,7 @@ public class HelmRelease implements HasMetadata, Namespaced
     @JsonProperty("status")
     private HelmAppStatus status;
     @JsonIgnore
-    private Map<java.lang.String, java.lang.Object> additionalProperties = new HashMap<java.lang.String, java.lang.Object>();
+    private Map<java.lang.String, java.lang.Object> additionalProperties = new LinkedHashMap<java.lang.String, java.lang.Object>();
 
     /**
      * No args constructor for use in serialization
@@ -109,15 +110,6 @@ public class HelmRelease implements HasMetadata, Namespaced
     public HelmRelease() {
     }
 
-    /**
-     * 
-     * @param metadata
-     * @param apiVersion
-     * @param kind
-     * @param repo
-     * @param spec
-     * @param status
-     */
     public HelmRelease(java.lang.String apiVersion, java.lang.String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, HelmReleaseRepo repo, Map<String, Object> spec, HelmAppStatus status) {
         super();
         this.apiVersion = apiVersion;

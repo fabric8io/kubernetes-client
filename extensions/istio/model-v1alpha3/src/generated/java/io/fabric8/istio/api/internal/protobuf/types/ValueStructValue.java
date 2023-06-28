@@ -1,9 +1,9 @@
 
 package io.fabric8.istio.api.internal.protobuf.types;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -61,6 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class ValueStructValue implements IsValueKind
 {
 
@@ -68,7 +69,7 @@ public class ValueStructValue implements IsValueKind
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, Object> structValue = new LinkedHashMap<String, Object>();
     @JsonIgnore
-    private Map<java.lang.String, java.lang.Object> additionalProperties = new HashMap<java.lang.String, java.lang.Object>();
+    private Map<java.lang.String, java.lang.Object> additionalProperties = new LinkedHashMap<java.lang.String, java.lang.Object>();
 
     /**
      * No args constructor for use in serialization
@@ -77,10 +78,6 @@ public class ValueStructValue implements IsValueKind
     public ValueStructValue() {
     }
 
-    /**
-     * 
-     * @param structValue
-     */
     public ValueStructValue(Map<String, Object> structValue) {
         super();
         this.structValue = structValue;

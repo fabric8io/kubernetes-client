@@ -2,9 +2,10 @@
 package io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -67,6 +68,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class Placement implements KubernetesResource
 {
 
@@ -80,7 +82,7 @@ public class Placement implements KubernetesResource
     @JsonProperty("placementRule")
     private String placementRule;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -89,13 +91,6 @@ public class Placement implements KubernetesResource
     public Placement() {
     }
 
-    /**
-     * 
-     * @param placementRule
-     * @param decisions
-     * @param placement
-     * @param placementBinding
-     */
     public Placement(List<PlacementDecision> decisions, String placement, String placementBinding, String placementRule) {
         super();
         this.decisions = decisions;
