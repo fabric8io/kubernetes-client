@@ -94,10 +94,12 @@ public abstract class AbstractCustomResourceHandler {
             .collect(Collectors.joining(" ")).trim();
         String format = (String) parameters.get("format");
 
-        resources.decorate(
-            getPrinterColumnDecorator(name, version, path, type, column, description, format));
+        resources.decorate(getPrinterColumnDecorator(name, version, path, type, column, description, format));
       });
     } catch (Exception e) {
+      if(e instanceof IllegalArgumentException) {
+        throw e;
+      }
       throw new RuntimeException("Couldn't generate CRD for " + config.crdName(), e);
     }
   }
