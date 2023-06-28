@@ -97,7 +97,7 @@ public abstract class AbstractCustomResourceHandler {
         resources.decorate(getPrinterColumnDecorator(name, version, path, type, column, description, format));
       });
     } catch (Exception e) {
-      if(e instanceof IllegalArgumentException) {
+      if (e instanceof IllegalArgumentException) {
         throw e;
       }
       throw new RuntimeException("Couldn't generate CRD for " + config.crdName(), e);
