@@ -24,6 +24,7 @@ import io.sundr.model.Property;
 import io.sundr.model.TypeDef;
 import io.sundr.model.TypeDefBuilder;
 
+import java.awt.event.WindowFocusListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -51,51 +52,55 @@ public abstract class AbstractCustomResourceHandler {
   }
 
   public void handle(CustomResourceInfo config) {
-    final String name = config.crdName();
-    final String version = config.version();
+    try {
+      final String name = config.crdName();
+      final String version = config.version();
 
-    TypeDef def = config.definition();
+      TypeDef def = config.definition();
 
-    SpecReplicasPathDetector specReplicasPathDetector = new SpecReplicasPathDetector();
-    StatusReplicasPathDetector statusReplicasPathDetector = new StatusReplicasPathDetector();
-    LabelSelectorPathDetector labelSelectorPathDetector = new LabelSelectorPathDetector();
-    AdditionalPrinterColumnDetector additionalPrinterColumnDetector = new AdditionalPrinterColumnDetector();
+      SpecReplicasPathDetector specReplicasPathDetector = new SpecReplicasPathDetector();
+      StatusReplicasPathDetector statusReplicasPathDetector = new StatusReplicasPathDetector();
+      LabelSelectorPathDetector labelSelectorPathDetector = new LabelSelectorPathDetector();
+      AdditionalPrinterColumnDetector additionalPrinterColumnDetector = new AdditionalPrinterColumnDetector();
 
-    ClassDependenciesVisitor traversedClassesVisitor = new ClassDependenciesVisitor(config.crClassName(), name);
+      ClassDependenciesVisitor traversedClassesVisitor = new ClassDependenciesVisitor(config.crClassName(), name);
 
-    List<Visitor<TypeDefBuilder>> visitors = new ArrayList<>();
-    if (config.specClassName().isPresent()) {
-      visitors.add(specReplicasPathDetector);
-    }
-    if (config.statusClassName().isPresent()) {
-      visitors.add(statusReplicasPathDetector);
-    }
-    visitors.add(labelSelectorPathDetector);
-    visitors.add(additionalPrinterColumnDetector);
-    visitors.add(traversedClassesVisitor);
-
-    visitTypeDef(def, visitors);
-
-    addDecorators(config, def, specReplicasPathDetector.getPath(),
-        statusReplicasPathDetector.getPath(), labelSelectorPathDetector.getPath());
-
-    Map<String, Property> additionalPrinterColumns = new HashMap<>(additionalPrinterColumnDetector.getProperties());
-    additionalPrinterColumns.forEach((path, property) -> {
-      Map<String, Object> parameters = property.getAnnotations().stream()
-          .filter(a -> a.getClassRef().getName().equals("PrinterColumn")).map(AnnotationRef::getParameters)
-          .findFirst().orElse(Collections.emptyMap());
-      String type = AbstractJsonSchema.getSchemaTypeFor(property.getTypeRef());
-      String column = (String) parameters.get("name");
-      if (Utils.isNullOrEmpty(column)) {
-        column = property.getName().toUpperCase();
+      List<Visitor<TypeDefBuilder>> visitors = new ArrayList<>();
+      if (config.specClassName().isPresent()) {
+        visitors.add(specReplicasPathDetector);
       }
-      String description = property.getComments().stream().filter(l -> !l.trim().startsWith("@"))
-          .collect(Collectors.joining(" ")).trim();
-      String format = (String) parameters.get("format");
+      if (config.statusClassName().isPresent()) {
+        visitors.add(statusReplicasPathDetector);
+      }
+      visitors.add(labelSelectorPathDetector);
+      visitors.add(additionalPrinterColumnDetector);
+      visitors.add(traversedClassesVisitor);
 
-      resources.decorate(
-          getPrinterColumnDecorator(name, version, path, type, column, description, format));
-    });
+      visitTypeDef(def, visitors);
+
+      addDecorators(config, def, specReplicasPathDetector.getPath(),
+          statusReplicasPathDetector.getPath(), labelSelectorPathDetector.getPath());
+
+      Map<String, Property> additionalPrinterColumns = new HashMap<>(additionalPrinterColumnDetector.getProperties());
+      additionalPrinterColumns.forEach((path, property) -> {
+        Map<String, Object> parameters = property.getAnnotations().stream()
+            .filter(a -> a.getClassRef().getName().equals("PrinterColumn")).map(AnnotationRef::getParameters)
+            .findFirst().orElse(Collections.emptyMap());
+        String type = AbstractJsonSchema.getSchemaTypeFor(property.getTypeRef());
+        String column = (String) parameters.get("name");
+        if (Utils.isNullOrEmpty(column)) {
+          column = property.getName().toUpperCase();
+        }
+        String description = property.getComments().stream().filter(l -> !l.trim().startsWith("@"))
+            .collect(Collectors.joining(" ")).trim();
+        String format = (String) parameters.get("format");
+
+        resources.decorate(
+            getPrinterColumnDecorator(name, version, path, type, column, description, format));
+      });
+    } catch (Exception e) {
+      throw new RuntimeException("Couldn't generate CRD for " + config.crdName(), e);
+    }
   }
 
   private TypeDef visitTypeDef(TypeDef def, List<Visitor<TypeDefBuilder>> visitors) {
