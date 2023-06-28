@@ -184,7 +184,13 @@ public class CertUtils {
         @Override
         public PrivateKey call() throws IOException {
           if (Security.getProvider("BC") == null && Security.getProvider("BCFIPS") == null) {
-            Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
+            new Callable<String>() {
+              @Override
+              public String call() {
+                Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
+                return null;
+              }
+            }.call();
           }
           Object pemObject = new PEMParser(new InputStreamReader(keyInputStream)).readObject();
           if (pemObject == null) {
