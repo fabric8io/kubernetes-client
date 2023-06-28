@@ -1,8 +1,9 @@
 
 package io.fabric8.tekton.triggers.v1alpha1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -63,6 +64,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class TriggerSpecTemplate implements KubernetesResource
 {
 
@@ -73,7 +75,7 @@ public class TriggerSpecTemplate implements KubernetesResource
     @JsonProperty("spec")
     private TriggerTemplateSpec spec;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -82,12 +84,6 @@ public class TriggerSpecTemplate implements KubernetesResource
     public TriggerSpecTemplate() {
     }
 
-    /**
-     * 
-     * @param ref
-     * @param apiversion
-     * @param spec
-     */
     public TriggerSpecTemplate(java.lang.String apiversion, String ref, TriggerTemplateSpec spec) {
         super();
         this.apiversion = apiversion;

@@ -2,9 +2,10 @@
 package io.fabric8.kubernetes.api.model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -41,6 +42,7 @@ import lombok.experimental.Accessors;
     ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
+@Generated("jsonschema2pojo")
 public class Cluster implements KubernetesResource
 {
 
@@ -62,7 +64,7 @@ public class Cluster implements KubernetesResource
     @JsonProperty("tls-server-name")
     private String tlsServerName;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -71,17 +73,6 @@ public class Cluster implements KubernetesResource
     public Cluster() {
     }
 
-    /**
-     * 
-     * @param server
-     * @param extensions
-     * @param disableCompression
-     * @param insecureSkipTlsVerify
-     * @param proxyUrl
-     * @param certificateAuthorityData
-     * @param certificateAuthority
-     * @param tlsServerName
-     */
     public Cluster(String certificateAuthority, String certificateAuthorityData, Boolean disableCompression, List<NamedExtension> extensions, Boolean insecureSkipTlsVerify, String proxyUrl, String server, String tlsServerName) {
         super();
         this.certificateAuthority = certificateAuthority;

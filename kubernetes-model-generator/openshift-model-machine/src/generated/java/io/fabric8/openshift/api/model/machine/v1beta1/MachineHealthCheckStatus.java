@@ -2,9 +2,10 @@
 package io.fabric8.openshift.api.model.machine.v1beta1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -58,6 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class MachineHealthCheckStatus implements KubernetesResource
 {
 
@@ -71,7 +73,7 @@ public class MachineHealthCheckStatus implements KubernetesResource
     @JsonProperty("remediationsAllowed")
     private Integer remediationsAllowed;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -80,13 +82,6 @@ public class MachineHealthCheckStatus implements KubernetesResource
     public MachineHealthCheckStatus() {
     }
 
-    /**
-     * 
-     * @param remediationsAllowed
-     * @param currentHealthy
-     * @param conditions
-     * @param expectedMachines
-     */
     public MachineHealthCheckStatus(List<Condition> conditions, Integer currentHealthy, Integer expectedMachines, Integer remediationsAllowed) {
         super();
         this.conditions = conditions;

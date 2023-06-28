@@ -2,9 +2,10 @@
 package io.fabric8.kubernetes.api.model.batch.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -56,6 +57,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class UncountedTerminatedPods implements KubernetesResource
 {
 
@@ -66,7 +68,7 @@ public class UncountedTerminatedPods implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> succeeded = new ArrayList<String>();
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -75,11 +77,6 @@ public class UncountedTerminatedPods implements KubernetesResource
     public UncountedTerminatedPods() {
     }
 
-    /**
-     * 
-     * @param failed
-     * @param succeeded
-     */
     public UncountedTerminatedPods(List<String> failed, List<String> succeeded) {
         super();
         this.failed = failed;

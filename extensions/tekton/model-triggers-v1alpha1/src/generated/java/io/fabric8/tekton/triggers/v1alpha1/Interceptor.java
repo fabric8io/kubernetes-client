@@ -1,8 +1,9 @@
 
 package io.fabric8.tekton.triggers.v1alpha1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -71,6 +72,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1alpha1")
 @Group("triggers.tekton.dev")
+@Generated("jsonschema2pojo")
 public class Interceptor implements HasMetadata, Namespaced
 {
 
@@ -95,7 +97,7 @@ public class Interceptor implements HasMetadata, Namespaced
     @JsonProperty("status")
     private InterceptorStatus status;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -104,14 +106,6 @@ public class Interceptor implements HasMetadata, Namespaced
     public Interceptor() {
     }
 
-    /**
-     * 
-     * @param metadata
-     * @param apiVersion
-     * @param kind
-     * @param spec
-     * @param status
-     */
     public Interceptor(String apiVersion, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, InterceptorSpec spec, InterceptorStatus status) {
         super();
         this.apiVersion = apiVersion;

@@ -2,9 +2,10 @@
 package io.fabric8.openshift.api.model.monitoring.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -64,6 +65,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class WebTLSConfig implements KubernetesResource
 {
 
@@ -88,7 +90,7 @@ public class WebTLSConfig implements KubernetesResource
     @JsonProperty("preferServerCipherSuites")
     private Boolean preferServerCipherSuites;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -97,18 +99,6 @@ public class WebTLSConfig implements KubernetesResource
     public WebTLSConfig() {
     }
 
-    /**
-     * 
-     * @param clientAuthType
-     * @param minVersion
-     * @param cipherSuites
-     * @param maxVersion
-     * @param preferServerCipherSuites
-     * @param cert
-     * @param curvePreferences
-     * @param clientCa
-     * @param keySecret
-     */
     public WebTLSConfig(SecretOrConfigMap cert, List<String> cipherSuites, String clientAuthType, SecretOrConfigMap clientCa, List<String> curvePreferences, SecretKeySelector keySecret, String maxVersion, String minVersion, Boolean preferServerCipherSuites) {
         super();
         this.cert = cert;

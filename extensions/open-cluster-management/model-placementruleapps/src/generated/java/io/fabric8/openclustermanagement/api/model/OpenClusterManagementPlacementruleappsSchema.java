@@ -1,6 +1,7 @@
 
 package io.fabric8.openclustermanagement.api.model;
 
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -80,6 +81,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class OpenClusterManagementPlacementruleappsSchema {
 
     @JsonProperty("github_com_open-cluster-management_multicloud-integrations_pkg_apis_apps_v1beta1_ArgoServerSpec")
@@ -116,22 +118,6 @@ public class OpenClusterManagementPlacementruleappsSchema {
     public OpenClusterManagementPlacementruleappsSchema() {
     }
 
-    /**
-     * 
-     * @param githubComOpenClusterManagementMulticloudOperatorsPlacementrulePkgApisAppsV1ResourceHint
-     * @param githubComOpenClusterManagementMulticloudIntegrationsPkgApisAppsV1beta1ArgoServerSpec
-     * @param githubComOpenClusterManagementMulticloudIntegrationsPkgApisAppsV1beta1GitOpsCluster
-     * @param githubComOpenClusterManagementMulticloudOperatorsPlacementrulePkgApisAppsV1PlacementDecision
-     * @param githubComOpenClusterManagementMulticloudOperatorsPlacementrulePkgApisAppsV1PlacementRuleSpec
-     * @param githubComOpenClusterManagementMulticloudOperatorsPlacementrulePkgApisAppsV1PlacementRuleList
-     * @param githubComOpenClusterManagementMulticloudIntegrationsPkgApisAppsV1beta1GitOpsClusterList
-     * @param githubComOpenClusterManagementMulticloudIntegrationsPkgApisAppsV1beta1GitOpsClusterStatus
-     * @param githubComOpenClusterManagementMulticloudOperatorsPlacementrulePkgApisAppsV1PlacementRuleStatus
-     * @param githubComOpenClusterManagementMulticloudIntegrationsPkgApisAppsV1beta1GitOpsClusterSpec
-     * @param githubComOpenClusterManagementMulticloudOperatorsPlacementrulePkgApisAppsV1ClusterConditionFilter
-     * @param githubComOpenClusterManagementMulticloudOperatorsPlacementrulePkgApisAppsV1PlacementRule
-     * @param githubComOpenClusterManagementMulticloudOperatorsPlacementrulePkgApisAppsV1GenericClusterReference
-     */
     public OpenClusterManagementPlacementruleappsSchema(ArgoServerSpec githubComOpenClusterManagementMulticloudIntegrationsPkgApisAppsV1beta1ArgoServerSpec, GitOpsCluster githubComOpenClusterManagementMulticloudIntegrationsPkgApisAppsV1beta1GitOpsCluster, GitOpsClusterList githubComOpenClusterManagementMulticloudIntegrationsPkgApisAppsV1beta1GitOpsClusterList, GitOpsClusterSpec githubComOpenClusterManagementMulticloudIntegrationsPkgApisAppsV1beta1GitOpsClusterSpec, GitOpsClusterStatus githubComOpenClusterManagementMulticloudIntegrationsPkgApisAppsV1beta1GitOpsClusterStatus, ClusterConditionFilter githubComOpenClusterManagementMulticloudOperatorsPlacementrulePkgApisAppsV1ClusterConditionFilter, GenericClusterReference githubComOpenClusterManagementMulticloudOperatorsPlacementrulePkgApisAppsV1GenericClusterReference, PlacementDecision githubComOpenClusterManagementMulticloudOperatorsPlacementrulePkgApisAppsV1PlacementDecision, PlacementRule githubComOpenClusterManagementMulticloudOperatorsPlacementrulePkgApisAppsV1PlacementRule, PlacementRuleList githubComOpenClusterManagementMulticloudOperatorsPlacementrulePkgApisAppsV1PlacementRuleList, PlacementRuleSpec githubComOpenClusterManagementMulticloudOperatorsPlacementrulePkgApisAppsV1PlacementRuleSpec, PlacementRuleStatus githubComOpenClusterManagementMulticloudOperatorsPlacementrulePkgApisAppsV1PlacementRuleStatus, ResourceHint githubComOpenClusterManagementMulticloudOperatorsPlacementrulePkgApisAppsV1ResourceHint) {
         super();
         this.githubComOpenClusterManagementMulticloudIntegrationsPkgApisAppsV1beta1ArgoServerSpec = githubComOpenClusterManagementMulticloudIntegrationsPkgApisAppsV1beta1ArgoServerSpec;

@@ -2,9 +2,10 @@
 package io.fabric8.openshift.api.model.installer.gcp.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -61,6 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class Platform implements KubernetesResource
 {
 
@@ -80,7 +82,7 @@ public class Platform implements KubernetesResource
     @JsonProperty("region")
     private String region;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -89,16 +91,6 @@ public class Platform implements KubernetesResource
     public Platform() {
     }
 
-    /**
-     * 
-     * @param licenses
-     * @param controlPlaneSubnet
-     * @param defaultMachinePlatform
-     * @param region
-     * @param computeSubnet
-     * @param projectID
-     * @param network
-     */
     public Platform(String computeSubnet, String controlPlaneSubnet, MachinePool defaultMachinePlatform, List<String> licenses, String network, String projectID, String region) {
         super();
         this.computeSubnet = computeSubnet;

@@ -1,8 +1,9 @@
 
 package io.fabric8.kubernetes.api.model;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -90,6 +91,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class KubeSchema {
 
     @JsonProperty("APIGroup")
@@ -151,7 +153,7 @@ public class KubeSchema {
     @JsonProperty("UpdateOptions")
     private UpdateOptions updateOptions;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -160,38 +162,6 @@ public class KubeSchema {
     public KubeSchema() {
     }
 
-    /**
-     * 
-     * @param deploymentRollback
-     * @param listOptions
-     * @param aPIGroupList
-     * @param ingressList
-     * @param baseKubernetesList
-     * @param updateOptions
-     * @param daemonSet
-     * @param daemonSetList
-     * @param patch
-     * @param rootPaths
-     * @param replicaSetList
-     * @param deployment
-     * @param info
-     * @param patchOptions
-     * @param deleteOptions
-     * @param quantity
-     * @param networkPolicyList
-     * @param networkPolicy
-     * @param deploymentList
-     * @param objectReference
-     * @param replicaSet
-     * @param createOptions
-     * @param aPIGroup
-     * @param ingress
-     * @param typeMeta
-     * @param objectMeta
-     * @param getOptions
-     * @param time
-     * @param status
-     */
     public KubeSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, KubernetesList baseKubernetesList, CreateOptions createOptions, DaemonSet daemonSet, DaemonSetList daemonSetList, DeleteOptions deleteOptions, Deployment deployment, DeploymentList deploymentList, DeploymentRollback deploymentRollback, GetOptions getOptions, Info info, Ingress ingress, IngressList ingressList, ListOptions listOptions, NetworkPolicy networkPolicy, NetworkPolicyList networkPolicyList, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, io.fabric8.kubernetes.api.model.ObjectReference objectReference, Patch patch, PatchOptions patchOptions, Quantity quantity, ReplicaSet replicaSet, ReplicaSetList replicaSetList, RootPaths rootPaths, Status status, String time, TypeMeta typeMeta, UpdateOptions updateOptions) {
         super();
         this.aPIGroup = aPIGroup;

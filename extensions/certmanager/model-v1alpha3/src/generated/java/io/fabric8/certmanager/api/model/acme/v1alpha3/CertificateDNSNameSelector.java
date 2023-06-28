@@ -2,10 +2,10 @@
 package io.fabric8.certmanager.api.model.acme.v1alpha3;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -66,6 +66,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class CertificateDNSNameSelector implements KubernetesResource
 {
 
@@ -79,7 +80,7 @@ public class CertificateDNSNameSelector implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> matchLabels = new LinkedHashMap<String, String>();
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -88,12 +89,6 @@ public class CertificateDNSNameSelector implements KubernetesResource
     public CertificateDNSNameSelector() {
     }
 
-    /**
-     * 
-     * @param matchLabels
-     * @param dnsNames
-     * @param dnsZones
-     */
     public CertificateDNSNameSelector(List<java.lang.String> dnsNames, List<java.lang.String> dnsZones, Map<String, String> matchLabels) {
         super();
         this.dnsNames = dnsNames;

@@ -2,9 +2,10 @@
 package io.fabric8.kubernetes.api.model.metrics.v1beta1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -66,6 +67,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1beta1")
 @Group("metrics.k8s.io")
+@Generated("jsonschema2pojo")
 public class NodeMetricsList implements KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.metrics.v1beta1.NodeMetrics>
 {
 
@@ -88,7 +90,7 @@ public class NodeMetricsList implements KubernetesResource, KubernetesResourceLi
     @JsonProperty("metadata")
     private ListMeta metadata;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -97,13 +99,6 @@ public class NodeMetricsList implements KubernetesResource, KubernetesResourceLi
     public NodeMetricsList() {
     }
 
-    /**
-     * 
-     * @param metadata
-     * @param apiVersion
-     * @param kind
-     * @param items
-     */
     public NodeMetricsList(String apiVersion, List<io.fabric8.kubernetes.api.model.metrics.v1beta1.NodeMetrics> items, String kind, ListMeta metadata) {
         super();
         this.apiVersion = apiVersion;

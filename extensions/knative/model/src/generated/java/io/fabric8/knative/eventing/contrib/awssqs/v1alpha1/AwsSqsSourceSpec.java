@@ -1,9 +1,9 @@
 
 package io.fabric8.knative.eventing.contrib.awssqs.v1alpha1;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -66,6 +66,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class AwsSqsSourceSpec implements KubernetesResource
 {
 
@@ -81,7 +82,7 @@ public class AwsSqsSourceSpec implements KubernetesResource
     @JsonProperty("sink")
     private io.fabric8.kubernetes.api.model.ObjectReference sink;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -90,14 +91,6 @@ public class AwsSqsSourceSpec implements KubernetesResource
     public AwsSqsSourceSpec() {
     }
 
-    /**
-     * 
-     * @param serviceAccountName
-     * @param sink
-     * @param awsCredsSecret
-     * @param annotations
-     * @param queueUrl
-     */
     public AwsSqsSourceSpec(Map<String, String> annotations, SecretKeySelector awsCredsSecret, java.lang.String queueUrl, java.lang.String serviceAccountName, io.fabric8.kubernetes.api.model.ObjectReference sink) {
         super();
         this.annotations = annotations;

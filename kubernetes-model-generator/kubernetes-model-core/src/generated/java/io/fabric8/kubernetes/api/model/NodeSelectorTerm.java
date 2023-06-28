@@ -2,9 +2,10 @@
 package io.fabric8.kubernetes.api.model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -35,6 +36,7 @@ import lombok.experimental.Accessors;
     ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
+@Generated("jsonschema2pojo")
 public class NodeSelectorTerm implements KubernetesResource
 {
 
@@ -45,7 +47,7 @@ public class NodeSelectorTerm implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<NodeSelectorRequirement> matchFields = new ArrayList<NodeSelectorRequirement>();
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -54,11 +56,6 @@ public class NodeSelectorTerm implements KubernetesResource
     public NodeSelectorTerm() {
     }
 
-    /**
-     * 
-     * @param matchExpressions
-     * @param matchFields
-     */
     public NodeSelectorTerm(List<NodeSelectorRequirement> matchExpressions, List<NodeSelectorRequirement> matchFields) {
         super();
         this.matchExpressions = matchExpressions;

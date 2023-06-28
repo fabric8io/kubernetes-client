@@ -1,9 +1,9 @@
 
 package io.fabric8.volcano.scheduling.v1beta1;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -66,6 +66,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class PodGroupSpec implements KubernetesResource
 {
 
@@ -79,7 +80,7 @@ public class PodGroupSpec implements KubernetesResource
     @JsonProperty("queue")
     private java.lang.String queue;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -88,13 +89,6 @@ public class PodGroupSpec implements KubernetesResource
     public PodGroupSpec() {
     }
 
-    /**
-     * 
-     * @param priorityClassName
-     * @param minResources
-     * @param queue
-     * @param minMember
-     */
     public PodGroupSpec(Integer minMember, Map<String, Quantity> minResources, java.lang.String priorityClassName, java.lang.String queue) {
         super();
         this.minMember = minMember;

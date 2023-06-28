@@ -2,9 +2,10 @@
 package io.fabric8.tekton.pipeline.v1beta1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -92,6 +93,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(io.fabric8.kubernetes.api.model.VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class Step implements KubernetesResource
 {
 
@@ -160,7 +162,7 @@ public class Step implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<WorkspaceUsage> workspaces = new ArrayList<WorkspaceUsage>();
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -169,37 +171,6 @@ public class Step implements KubernetesResource
     public Step() {
     }
 
-    /**
-     * 
-     * @param volumeDevices
-     * @param stdin
-     * @param terminationMessagePolicy
-     * @param stdoutConfig
-     * @param securityContext
-     * @param startupProbe
-     * @param stderrConfig
-     * @param ports
-     * @param timeout
-     * @param volumeMounts
-     * @param lifecycle
-     * @param readinessProbe
-     * @param workspaces
-     * @param envFrom
-     * @param image
-     * @param imagePullPolicy
-     * @param livenessProbe
-     * @param onError
-     * @param terminationMessagePath
-     * @param workingDir
-     * @param resources
-     * @param env
-     * @param command
-     * @param script
-     * @param args
-     * @param name
-     * @param tty
-     * @param stdinOnce
-     */
     public Step(List<String> args, List<String> command, List<io.fabric8.kubernetes.api.model.EnvVar> env, List<EnvFromSource> envFrom, String image, String imagePullPolicy, Lifecycle lifecycle, Probe livenessProbe, String name, String onError, List<io.fabric8.kubernetes.api.model.ContainerPort> ports, Probe readinessProbe, io.fabric8.kubernetes.api.model.ResourceRequirements resources, String script, SecurityContext securityContext, Probe startupProbe, StepOutputConfig stderrConfig, Boolean stdin, Boolean stdinOnce, StepOutputConfig stdoutConfig, String terminationMessagePath, String terminationMessagePolicy, Duration timeout, Boolean tty, List<VolumeDevice> volumeDevices, List<io.fabric8.kubernetes.api.model.VolumeMount> volumeMounts, String workingDir, List<WorkspaceUsage> workspaces) {
         super();
         this.args = args;

@@ -1,8 +1,9 @@
 
 package io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -62,6 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class PlacementSubject implements KubernetesResource
 {
 
@@ -72,7 +74,7 @@ public class PlacementSubject implements KubernetesResource
     @JsonProperty("name")
     private String name;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -81,12 +83,6 @@ public class PlacementSubject implements KubernetesResource
     public PlacementSubject() {
     }
 
-    /**
-     * 
-     * @param apiGroup
-     * @param kind
-     * @param name
-     */
     public PlacementSubject(String apiGroup, String kind, String name) {
         super();
         this.apiGroup = apiGroup;

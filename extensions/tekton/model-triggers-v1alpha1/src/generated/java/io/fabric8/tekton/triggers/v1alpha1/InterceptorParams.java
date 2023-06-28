@@ -1,8 +1,9 @@
 
 package io.fabric8.tekton.triggers.v1alpha1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -62,6 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class InterceptorParams implements KubernetesResource
 {
 
@@ -70,7 +72,7 @@ public class InterceptorParams implements KubernetesResource
     @JsonProperty("value")
     private Object value;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -79,11 +81,6 @@ public class InterceptorParams implements KubernetesResource
     public InterceptorParams() {
     }
 
-    /**
-     * 
-     * @param name
-     * @param value
-     */
     public InterceptorParams(String name, Object value) {
         super();
         this.name = name;

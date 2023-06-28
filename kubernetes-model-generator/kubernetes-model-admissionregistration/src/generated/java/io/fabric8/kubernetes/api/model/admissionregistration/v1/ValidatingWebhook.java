@@ -2,9 +2,10 @@
 package io.fabric8.kubernetes.api.model.admissionregistration.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -63,6 +64,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class ValidatingWebhook implements KubernetesResource
 {
 
@@ -88,7 +90,7 @@ public class ValidatingWebhook implements KubernetesResource
     @JsonProperty("timeoutSeconds")
     private Integer timeoutSeconds;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -97,19 +99,6 @@ public class ValidatingWebhook implements KubernetesResource
     public ValidatingWebhook() {
     }
 
-    /**
-     * 
-     * @param admissionReviewVersions
-     * @param matchPolicy
-     * @param name
-     * @param namespaceSelector
-     * @param timeoutSeconds
-     * @param rules
-     * @param clientConfig
-     * @param objectSelector
-     * @param failurePolicy
-     * @param sideEffects
-     */
     public ValidatingWebhook(List<String> admissionReviewVersions, WebhookClientConfig clientConfig, String failurePolicy, String matchPolicy, String name, io.fabric8.kubernetes.api.model.LabelSelector namespaceSelector, io.fabric8.kubernetes.api.model.LabelSelector objectSelector, List<RuleWithOperations> rules, String sideEffects, Integer timeoutSeconds) {
         super();
         this.admissionReviewVersions = admissionReviewVersions;

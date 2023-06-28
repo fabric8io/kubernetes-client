@@ -1,8 +1,9 @@
 
 package io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1beta1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -71,6 +72,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1beta1")
 @Group("policy.open-cluster-management.io")
+@Generated("jsonschema2pojo")
 public class PolicyAutomation implements HasMetadata, Namespaced
 {
 
@@ -95,7 +97,7 @@ public class PolicyAutomation implements HasMetadata, Namespaced
     @JsonProperty("status")
     private PolicyAutomationStatus status;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -104,14 +106,6 @@ public class PolicyAutomation implements HasMetadata, Namespaced
     public PolicyAutomation() {
     }
 
-    /**
-     * 
-     * @param metadata
-     * @param apiVersion
-     * @param kind
-     * @param spec
-     * @param status
-     */
     public PolicyAutomation(String apiVersion, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, PolicyAutomationSpec spec, PolicyAutomationStatus status) {
         super();
         this.apiVersion = apiVersion;

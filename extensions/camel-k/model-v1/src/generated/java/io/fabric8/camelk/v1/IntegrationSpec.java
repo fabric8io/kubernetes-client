@@ -2,10 +2,10 @@
 package io.fabric8.camelk.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -75,6 +75,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class IntegrationSpec implements KubernetesResource
 {
 
@@ -110,7 +111,7 @@ public class IntegrationSpec implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, TraitSpec> traits = new LinkedHashMap<String, TraitSpec>();
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -119,21 +120,6 @@ public class IntegrationSpec implements KubernetesResource
     public IntegrationSpec() {
     }
 
-    /**
-     * 
-     * @param template
-     * @param traits
-     * @param sources
-     * @param configuration
-     * @param flows
-     * @param repositories
-     * @param integrationKit
-     * @param replicas
-     * @param serviceAccountName
-     * @param profile
-     * @param resources
-     * @param dependencies
-     */
     public IntegrationSpec(List<ConfigurationSpec> configuration, List<java.lang.String> dependencies, List<JsonNode> flows, io.fabric8.kubernetes.api.model.ObjectReference integrationKit, java.lang.String profile, Integer replicas, List<java.lang.String> repositories, List<ResourceSpec> resources, java.lang.String serviceAccountName, List<SourceSpec> sources, PodSpecTemplate template, Map<String, TraitSpec> traits) {
         super();
         this.configuration = configuration;

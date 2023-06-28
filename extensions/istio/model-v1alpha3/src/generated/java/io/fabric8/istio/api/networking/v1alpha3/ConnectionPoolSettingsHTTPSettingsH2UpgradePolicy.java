@@ -3,8 +3,10 @@ package io.fabric8.istio.api.networking.v1alpha3;
 
 import java.util.HashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
+@Generated("jsonschema2pojo")
 public enum ConnectionPoolSettingsHTTPSettingsH2UpgradePolicy {
 
     DEFAULT(0),
@@ -23,7 +25,7 @@ public enum ConnectionPoolSettingsHTTPSettingsH2UpgradePolicy {
         }
     }
 
-    private ConnectionPoolSettingsHTTPSettingsH2UpgradePolicy(Integer value) {
+    ConnectionPoolSettingsHTTPSettingsH2UpgradePolicy(Integer value) {
         this.value = value;
     }
 

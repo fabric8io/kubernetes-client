@@ -1,8 +1,9 @@
 
 package io.fabric8.certmanager.api.model.acme.v1alpha2;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -69,6 +70,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class ACMEIssuerDNS01ProviderAzureDNS implements KubernetesResource
 {
 
@@ -89,7 +91,7 @@ public class ACMEIssuerDNS01ProviderAzureDNS implements KubernetesResource
     @JsonProperty("tenantID")
     private String tenantID;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -98,17 +100,6 @@ public class ACMEIssuerDNS01ProviderAzureDNS implements KubernetesResource
     public ACMEIssuerDNS01ProviderAzureDNS() {
     }
 
-    /**
-     * 
-     * @param managedIdentity
-     * @param environment
-     * @param clientID
-     * @param resourceGroupName
-     * @param clientSecretSecretRef
-     * @param tenantID
-     * @param subscriptionID
-     * @param hostedZoneName
-     */
     public ACMEIssuerDNS01ProviderAzureDNS(String clientID, SecretKeySelector clientSecretSecretRef, String environment, String hostedZoneName, AzureManagedIdentity managedIdentity, String resourceGroupName, String subscriptionID, String tenantID) {
         super();
         this.clientID = clientID;

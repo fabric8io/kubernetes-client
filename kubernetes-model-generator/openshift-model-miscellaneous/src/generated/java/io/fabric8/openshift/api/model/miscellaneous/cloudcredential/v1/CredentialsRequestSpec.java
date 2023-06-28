@@ -2,10 +2,10 @@
 package io.fabric8.openshift.api.model.miscellaneous.cloudcredential.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -57,6 +57,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class CredentialsRequestSpec implements KubernetesResource
 {
 
@@ -69,7 +70,7 @@ public class CredentialsRequestSpec implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<java.lang.String> serviceAccountNames = new ArrayList<java.lang.String>();
     @JsonIgnore
-    private Map<java.lang.String, java.lang.Object> additionalProperties = new HashMap<java.lang.String, java.lang.Object>();
+    private Map<java.lang.String, java.lang.Object> additionalProperties = new LinkedHashMap<java.lang.String, java.lang.Object>();
 
     /**
      * No args constructor for use in serialization
@@ -78,12 +79,6 @@ public class CredentialsRequestSpec implements KubernetesResource
     public CredentialsRequestSpec() {
     }
 
-    /**
-     * 
-     * @param secretRef
-     * @param providerSpec
-     * @param serviceAccountNames
-     */
     public CredentialsRequestSpec(Map<String, Object> providerSpec, io.fabric8.kubernetes.api.model.ObjectReference secretRef, List<java.lang.String> serviceAccountNames) {
         super();
         this.providerSpec = providerSpec;

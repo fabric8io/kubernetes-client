@@ -1,9 +1,9 @@
 
 package io.fabric8.openclustermanagement.api.model.multiclusterhub.operator.v1;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -73,6 +73,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class MultiClusterHubSpec implements KubernetesResource
 {
 
@@ -102,7 +103,7 @@ public class MultiClusterHubSpec implements KubernetesResource
     @JsonProperty("separateCertificateManagement")
     private Boolean separateCertificateManagement;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -111,21 +112,6 @@ public class MultiClusterHubSpec implements KubernetesResource
     public MultiClusterHubSpec() {
     }
 
-    /**
-     * 
-     * @param hive
-     * @param disableUpdateClusterImageSets
-     * @param imagePullSecret
-     * @param ingress
-     * @param enableClusterProxyAddon
-     * @param customCAConfigmap
-     * @param separateCertificateManagement
-     * @param enableClusterBackup
-     * @param availabilityConfig
-     * @param overrides
-     * @param disableHubSelfManagement
-     * @param nodeSelector
-     */
     public MultiClusterHubSpec(java.lang.String availabilityConfig, java.lang.String customCAConfigmap, Boolean disableHubSelfManagement, Boolean disableUpdateClusterImageSets, Boolean enableClusterBackup, Boolean enableClusterProxyAddon, HiveConfigSpec hive, java.lang.String imagePullSecret, IngressSpec ingress, Map<String, String> nodeSelector, Overrides overrides, Boolean separateCertificateManagement) {
         super();
         this.availabilityConfig = availabilityConfig;

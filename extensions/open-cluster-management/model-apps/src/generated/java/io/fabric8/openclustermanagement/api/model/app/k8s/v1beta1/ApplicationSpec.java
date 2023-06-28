@@ -2,9 +2,10 @@
 package io.fabric8.openclustermanagement.api.model.app.k8s.v1beta1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -68,6 +69,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class ApplicationSpec implements KubernetesResource
 {
 
@@ -86,7 +88,7 @@ public class ApplicationSpec implements KubernetesResource
     @JsonProperty("selector")
     private io.fabric8.kubernetes.api.model.LabelSelector selector;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -95,15 +97,6 @@ public class ApplicationSpec implements KubernetesResource
     public ApplicationSpec() {
     }
 
-    /**
-     * 
-     * @param assemblyPhase
-     * @param selector
-     * @param descriptor
-     * @param componentKinds
-     * @param addOwnerRef
-     * @param info
-     */
     public ApplicationSpec(Boolean addOwnerRef, String assemblyPhase, List<GroupKind> componentKinds, Descriptor descriptor, List<InfoItem> info, io.fabric8.kubernetes.api.model.LabelSelector selector) {
         super();
         this.addOwnerRef = addOwnerRef;

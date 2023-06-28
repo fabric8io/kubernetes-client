@@ -2,9 +2,10 @@
 package io.fabric8.openclustermanagement.api.model.operator.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -68,6 +69,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class KlusterletSpec implements KubernetesResource
 {
 
@@ -85,7 +87,7 @@ public class KlusterletSpec implements KubernetesResource
     @JsonProperty("workImagePullSpec")
     private String workImagePullSpec;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -94,15 +96,6 @@ public class KlusterletSpec implements KubernetesResource
     public KlusterletSpec() {
     }
 
-    /**
-     * 
-     * @param nodePlacement
-     * @param workImagePullSpec
-     * @param clusterName
-     * @param namespace
-     * @param registrationImagePullSpec
-     * @param externalServerURLs
-     */
     public KlusterletSpec(String clusterName, List<ServerURL> externalServerURLs, String namespace, NodePlacement nodePlacement, String registrationImagePullSpec, String workImagePullSpec) {
         super();
         this.clusterName = clusterName;

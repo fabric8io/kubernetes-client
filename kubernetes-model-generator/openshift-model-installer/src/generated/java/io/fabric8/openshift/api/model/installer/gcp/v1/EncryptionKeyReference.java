@@ -1,8 +1,9 @@
 
 package io.fabric8.openshift.api.model.installer.gcp.v1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -54,6 +55,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class EncryptionKeyReference implements KubernetesResource
 {
 
@@ -62,7 +64,7 @@ public class EncryptionKeyReference implements KubernetesResource
     @JsonProperty("kmsKeyServiceAccount")
     private String kmsKeyServiceAccount;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -71,11 +73,6 @@ public class EncryptionKeyReference implements KubernetesResource
     public EncryptionKeyReference() {
     }
 
-    /**
-     * 
-     * @param kmsKeyServiceAccount
-     * @param kmsKey
-     */
     public EncryptionKeyReference(KMSKeyReference kmsKey, String kmsKeyServiceAccount) {
         super();
         this.kmsKey = kmsKey;

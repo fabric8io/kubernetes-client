@@ -1,8 +1,9 @@
 
 package io.fabric8.openshift.api.model.monitoring.v1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -58,6 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class StorageSpec implements KubernetesResource
 {
 
@@ -70,7 +72,7 @@ public class StorageSpec implements KubernetesResource
     @JsonProperty("volumeClaimTemplate")
     private EmbeddedPersistentVolumeClaim volumeClaimTemplate;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -79,13 +81,6 @@ public class StorageSpec implements KubernetesResource
     public StorageSpec() {
     }
 
-    /**
-     * 
-     * @param emptyDir
-     * @param ephemeral
-     * @param volumeClaimTemplate
-     * @param disableMountSubPath
-     */
     public StorageSpec(Boolean disableMountSubPath, EmptyDirVolumeSource emptyDir, EphemeralVolumeSource ephemeral, EmbeddedPersistentVolumeClaim volumeClaimTemplate) {
         super();
         this.disableMountSubPath = disableMountSubPath;

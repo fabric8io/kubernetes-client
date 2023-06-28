@@ -2,9 +2,10 @@
 package io.fabric8.openshift.api.model.monitoring.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -64,6 +65,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class ServiceMonitorSpec implements KubernetesResource
 {
 
@@ -92,7 +94,7 @@ public class ServiceMonitorSpec implements KubernetesResource
     @JsonProperty("targetLimit")
     private Long targetLimit;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -101,20 +103,6 @@ public class ServiceMonitorSpec implements KubernetesResource
     public ServiceMonitorSpec() {
     }
 
-    /**
-     * 
-     * @param jobLabel
-     * @param podTargetLabels
-     * @param sampleLimit
-     * @param endpoints
-     * @param targetLabels
-     * @param targetLimit
-     * @param namespaceSelector
-     * @param labelLimit
-     * @param labelValueLengthLimit
-     * @param selector
-     * @param labelNameLengthLimit
-     */
     public ServiceMonitorSpec(List<Endpoint> endpoints, String jobLabel, Long labelLimit, Long labelNameLengthLimit, Long labelValueLengthLimit, NamespaceSelector namespaceSelector, List<String> podTargetLabels, Long sampleLimit, io.fabric8.kubernetes.api.model.LabelSelector selector, List<String> targetLabels, Long targetLimit) {
         super();
         this.endpoints = endpoints;

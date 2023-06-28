@@ -1,8 +1,9 @@
 
 package io.fabric8.kubernetes.api.model.node.v1alpha1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -55,6 +56,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class RuntimeClassSpec implements KubernetesResource
 {
 
@@ -65,7 +67,7 @@ public class RuntimeClassSpec implements KubernetesResource
     @JsonProperty("scheduling")
     private Scheduling scheduling;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -74,12 +76,6 @@ public class RuntimeClassSpec implements KubernetesResource
     public RuntimeClassSpec() {
     }
 
-    /**
-     * 
-     * @param overhead
-     * @param scheduling
-     * @param runtimeHandler
-     */
     public RuntimeClassSpec(Overhead overhead, String runtimeHandler, Scheduling scheduling) {
         super();
         this.overhead = overhead;

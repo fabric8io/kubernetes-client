@@ -1,9 +1,9 @@
 
 package io.fabric8.openshift.api.model.whereabouts.v1alpha1;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -55,6 +55,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class IPPoolSpec implements KubernetesResource
 {
 
@@ -64,7 +65,7 @@ public class IPPoolSpec implements KubernetesResource
     @JsonProperty("range")
     private java.lang.String range;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -73,11 +74,6 @@ public class IPPoolSpec implements KubernetesResource
     public IPPoolSpec() {
     }
 
-    /**
-     * 
-     * @param allocations
-     * @param range
-     */
     public IPPoolSpec(Map<String, IPAllocation> allocations, java.lang.String range) {
         super();
         this.allocations = allocations;

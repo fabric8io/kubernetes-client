@@ -1,8 +1,9 @@
 
 package io.fabric8.verticalpodautoscaler.api.model.v1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -67,6 +68,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class VerticalPodAutoscalerCheckpointStatus implements KubernetesResource
 {
 
@@ -85,7 +87,7 @@ public class VerticalPodAutoscalerCheckpointStatus implements KubernetesResource
     @JsonProperty("version")
     private String version;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -94,16 +96,6 @@ public class VerticalPodAutoscalerCheckpointStatus implements KubernetesResource
     public VerticalPodAutoscalerCheckpointStatus() {
     }
 
-    /**
-     * 
-     * @param memoryHistogram
-     * @param firstSampleStart
-     * @param lastSampleStart
-     * @param totalSamplesCount
-     * @param cpuHistogram
-     * @param version
-     * @param lastUpdateTime
-     */
     public VerticalPodAutoscalerCheckpointStatus(HistogramCheckpoint cpuHistogram, String firstSampleStart, String lastSampleStart, String lastUpdateTime, HistogramCheckpoint memoryHistogram, Integer totalSamplesCount, String version) {
         super();
         this.cpuHistogram = cpuHistogram;

@@ -1,8 +1,9 @@
 
 package io.fabric8.chaosmesh.v1alpha1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -68,6 +69,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class NetworkBandwidthSpec implements KubernetesResource
 {
 
@@ -88,7 +90,7 @@ public class NetworkBandwidthSpec implements KubernetesResource
     @JsonProperty("rate")
     private String rate;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -97,17 +99,6 @@ public class NetworkBandwidthSpec implements KubernetesResource
     public NetworkBandwidthSpec() {
     }
 
-    /**
-     * 
-     * @param minburst
-     * @param hostname
-     * @param rate
-     * @param peakrate
-     * @param ipAddress
-     * @param limit
-     * @param buffer
-     * @param device
-     */
     public NetworkBandwidthSpec(Integer buffer, String device, String hostname, String ipAddress, Integer limit, Long minburst, Long peakrate, String rate) {
         super();
         this.buffer = buffer;

@@ -2,9 +2,10 @@
 package io.fabric8.openshift.api.model.monitoring.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -58,6 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class RuleGroup implements KubernetesResource
 {
 
@@ -70,7 +72,7 @@ public class RuleGroup implements KubernetesResource
     @JsonProperty("rules")
     private List<Rule> rules = new ArrayList<Rule>();
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -79,13 +81,6 @@ public class RuleGroup implements KubernetesResource
     public RuleGroup() {
     }
 
-    /**
-     * 
-     * @param partialResponseStrategy
-     * @param name
-     * @param interval
-     * @param rules
-     */
     public RuleGroup(String interval, String name, String partialResponseStrategy, List<Rule> rules) {
         super();
         this.interval = interval;

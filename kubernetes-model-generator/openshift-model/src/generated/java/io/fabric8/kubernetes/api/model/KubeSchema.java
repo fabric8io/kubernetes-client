@@ -1,8 +1,9 @@
 
 package io.fabric8.kubernetes.api.model;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -241,6 +242,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class KubeSchema {
 
     @JsonProperty("APIGroup")
@@ -452,7 +454,7 @@ public class KubeSchema {
     @JsonProperty("UserOAuthAccessTokenList")
     private UserOAuthAccessTokenList userOAuthAccessTokenList;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -461,113 +463,6 @@ public class KubeSchema {
     public KubeSchema() {
     }
 
-    /**
-     * 
-     * @param listOptions
-     * @param aPIGroupList
-     * @param aggregationRule
-     * @param hostSubnetList
-     * @param openshiftClusterRole
-     * @param patch
-     * @param securityContextConstraintsList
-     * @param oAuthClientAuthorizationList
-     * @param templateInstance
-     * @param userList
-     * @param userIdentityMapping
-     * @param openshiftClusterRoleBindingList
-     * @param hostSubnet
-     * @param appliedClusterResourceQuota
-     * @param deleteOptions
-     * @param clusterResourceQuotaList
-     * @param helmChartRepository
-     * @param imageStreamImage
-     * @param groupList
-     * @param userOAuthAccessTokenList
-     * @param tagEvent
-     * @param imageTagList
-     * @param projectRequest
-     * @param clusterResourceQuota
-     * @param userOAuthAccessToken
-     * @param route
-     * @param tokenReview
-     * @param getOptions
-     * @param imageList
-     * @param status
-     * @param template
-     * @param buildRequest
-     * @param rangeAllocationList
-     * @param selfSubjectRulesReview
-     * @param baseKubernetesList
-     * @param subjectAccessReviewResponse
-     * @param clusterNetwork
-     * @param openshiftRoleBindingList
-     * @param subjectRulesReview
-     * @param egressNetworkPolicyList
-     * @param identity
-     * @param oAuthAccessTokenList
-     * @param buildList
-     * @param rootPaths
-     * @param oAuthClientList
-     * @param patchOptions
-     * @param oAuthAuthorizeTokenList
-     * @param imageStreamMapping
-     * @param openshiftRoleBindingRestrictionSpec
-     * @param rangeAllocation
-     * @param createOptions
-     * @param openshiftRoleBindingRestriction
-     * @param aPIGroup
-     * @param objectMeta
-     * @param oAuthClient
-     * @param config
-     * @param routeList
-     * @param securityContextConstraints
-     * @param resourceAccessReview
-     * @param openshiftRole
-     * @param netNamespaceList
-     * @param openshiftClusterRoleScopeRestriction
-     * @param project
-     * @param brokerTemplateInstanceList
-     * @param openShiftRoleBindingRestrictionList
-     * @param podSecurityPolicyReview
-     * @param deploymentConfig
-     * @param openshiftClusterRoleBinding
-     * @param egressNetworkPolicy
-     * @param group
-     * @param info
-     * @param projectList
-     * @param oAuthAccessToken
-     * @param openshiftClusterRoleList
-     * @param imageStreamImport
-     * @param imageStreamList
-     * @param oAuthClientAuthorization
-     * @param localResourceAccessReview
-     * @param imageStreamTagList
-     * @param resourceAccessReviewResponse
-     * @param openshiftRoleList
-     * @param buildConfigList
-     * @param identityList
-     * @param helmChartRepositoryList
-     * @param subjectAccessReview
-     * @param openshiftRoleBinding
-     * @param clusterNetworkList
-     * @param templateInstanceList
-     * @param podSecurityPolicySubjectReview
-     * @param updateOptions
-     * @param brokerTemplateInstance
-     * @param netNamespace
-     * @param oAuthAuthorizeToken
-     * @param appliedClusterResourceQuotaList
-     * @param localSubjectAccessReview
-     * @param imageSignature
-     * @param quantity
-     * @param templateList
-     * @param deploymentConfigList
-     * @param podSecurityPolicySelfSubjectReview
-     * @param typeMeta
-     * @param time
-     * @param imageTag
-     * @param user
-     */
     public KubeSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, AggregationRule aggregationRule, AppliedClusterResourceQuota appliedClusterResourceQuota, AppliedClusterResourceQuotaList appliedClusterResourceQuotaList, KubernetesList baseKubernetesList, BrokerTemplateInstance brokerTemplateInstance, BrokerTemplateInstanceList brokerTemplateInstanceList, BuildConfigList buildConfigList, BuildList buildList, BuildRequest buildRequest, ClusterNetwork clusterNetwork, ClusterNetworkList clusterNetworkList, ClusterResourceQuota clusterResourceQuota, ClusterResourceQuotaList clusterResourceQuotaList, Config config, CreateOptions createOptions, DeleteOptions deleteOptions, DeploymentConfig deploymentConfig, DeploymentConfigList deploymentConfigList, EgressNetworkPolicy egressNetworkPolicy, EgressNetworkPolicyList egressNetworkPolicyList, GetOptions getOptions, Group group, GroupList groupList, HelmChartRepository helmChartRepository, HelmChartRepositoryList helmChartRepositoryList, HostSubnet hostSubnet, HostSubnetList hostSubnetList, Identity identity, IdentityList identityList, ImageList imageList, ImageSignature imageSignature, ImageStreamImage imageStreamImage, ImageStreamImport imageStreamImport, ImageStreamList imageStreamList, ImageStreamMapping imageStreamMapping, ImageStreamTagList imageStreamTagList, ImageTag imageTag, ImageTagList imageTagList, Info info, ListOptions listOptions, LocalResourceAccessReview localResourceAccessReview, LocalSubjectAccessReview localSubjectAccessReview, NetNamespace netNamespace, NetNamespaceList netNamespaceList, OAuthAccessToken oAuthAccessToken, OAuthAccessTokenList oAuthAccessTokenList, OAuthAuthorizeToken oAuthAuthorizeToken, OAuthAuthorizeTokenList oAuthAuthorizeTokenList, OAuthClient oAuthClient, OAuthClientAuthorization oAuthClientAuthorization, OAuthClientAuthorizationList oAuthClientAuthorizationList, OAuthClientList oAuthClientList, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, RoleBindingRestrictionList openShiftRoleBindingRestrictionList, ClusterRole openshiftClusterRole, ClusterRoleBinding openshiftClusterRoleBinding, ClusterRoleBindingList openshiftClusterRoleBindingList, ClusterRoleList openshiftClusterRoleList, ClusterRoleScopeRestriction openshiftClusterRoleScopeRestriction, Role openshiftRole, RoleBinding openshiftRoleBinding, RoleBindingList openshiftRoleBindingList, RoleBindingRestriction openshiftRoleBindingRestriction, RoleBindingRestrictionSpec openshiftRoleBindingRestrictionSpec, RoleList openshiftRoleList, Patch patch, PatchOptions patchOptions, PodSecurityPolicyReview podSecurityPolicyReview, PodSecurityPolicySelfSubjectReview podSecurityPolicySelfSubjectReview, PodSecurityPolicySubjectReview podSecurityPolicySubjectReview, Project project, ProjectList projectList, ProjectRequest projectRequest, Quantity quantity, RangeAllocation rangeAllocation, RangeAllocationList rangeAllocationList, ResourceAccessReview resourceAccessReview, ResourceAccessReviewResponse resourceAccessReviewResponse, RootPaths rootPaths, Route route, RouteList routeList, SecurityContextConstraints securityContextConstraints, SecurityContextConstraintsList securityContextConstraintsList, SelfSubjectRulesReview selfSubjectRulesReview, Status status, SubjectAccessReview subjectAccessReview, SubjectAccessReviewResponse subjectAccessReviewResponse, SubjectRulesReview subjectRulesReview, TagEvent tagEvent, Template template, TemplateInstance templateInstance, TemplateInstanceList templateInstanceList, TemplateList templateList, String time, TokenReview tokenReview, TypeMeta typeMeta, UpdateOptions updateOptions, User user, UserIdentityMapping userIdentityMapping, UserList userList, UserOAuthAccessToken userOAuthAccessToken, UserOAuthAccessTokenList userOAuthAccessTokenList) {
         super();
         this.aPIGroup = aPIGroup;

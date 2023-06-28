@@ -1,8 +1,9 @@
 
 package io.fabric8.chaosmesh.v1alpha1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -64,6 +65,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class PodHttpChaosActions implements KubernetesResource
 {
 
@@ -76,7 +78,7 @@ public class PodHttpChaosActions implements KubernetesResource
     @JsonProperty("replace")
     private PodHttpChaosReplaceActions replace;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -85,13 +87,6 @@ public class PodHttpChaosActions implements KubernetesResource
     public PodHttpChaosActions() {
     }
 
-    /**
-     * 
-     * @param patch
-     * @param delay
-     * @param abort
-     * @param replace
-     */
     public PodHttpChaosActions(Boolean abort, String delay, PodHttpChaosPatchActions patch, PodHttpChaosReplaceActions replace) {
         super();
         this.abort = abort;

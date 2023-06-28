@@ -1,8 +1,9 @@
 
 package io.fabric8.kubernetes.api.model.kustomize.v1beta1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -37,6 +38,7 @@ import lombok.experimental.Accessors;
     ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
+@Generated("jsonschema2pojo")
 public class Image implements KubernetesResource
 {
 
@@ -51,7 +53,7 @@ public class Image implements KubernetesResource
     @JsonProperty("tagSuffix")
     private String tagSuffix;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -60,14 +62,6 @@ public class Image implements KubernetesResource
     public Image() {
     }
 
-    /**
-     * 
-     * @param newTag
-     * @param tagSuffix
-     * @param newName
-     * @param digest
-     * @param name
-     */
     public Image(String digest, String name, String newName, String newTag, String tagSuffix) {
         super();
         this.digest = digest;

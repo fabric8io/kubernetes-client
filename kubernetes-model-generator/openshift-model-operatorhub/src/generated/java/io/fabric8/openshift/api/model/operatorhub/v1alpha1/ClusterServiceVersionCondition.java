@@ -1,8 +1,9 @@
 
 package io.fabric8.openshift.api.model.operatorhub.v1alpha1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -57,6 +58,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class ClusterServiceVersionCondition implements KubernetesResource
 {
 
@@ -71,7 +73,7 @@ public class ClusterServiceVersionCondition implements KubernetesResource
     @JsonProperty("reason")
     private java.lang.String reason;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -80,14 +82,6 @@ public class ClusterServiceVersionCondition implements KubernetesResource
     public ClusterServiceVersionCondition() {
     }
 
-    /**
-     * 
-     * @param phase
-     * @param reason
-     * @param lastTransitionTime
-     * @param message
-     * @param lastUpdateTime
-     */
     public ClusterServiceVersionCondition(String lastTransitionTime, String lastUpdateTime, java.lang.String message, java.lang.String phase, java.lang.String reason) {
         super();
         this.lastTransitionTime = lastTransitionTime;

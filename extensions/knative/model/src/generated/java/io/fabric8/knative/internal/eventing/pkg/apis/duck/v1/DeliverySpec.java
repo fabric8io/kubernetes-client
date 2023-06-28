@@ -1,8 +1,9 @@
 
 package io.fabric8.knative.internal.eventing.pkg.apis.duck.v1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -67,6 +68,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class DeliverySpec implements KubernetesResource
 {
 
@@ -83,7 +85,7 @@ public class DeliverySpec implements KubernetesResource
     @JsonProperty("timeout")
     private String timeout;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -92,15 +94,6 @@ public class DeliverySpec implements KubernetesResource
     public DeliverySpec() {
     }
 
-    /**
-     * 
-     * @param deadLetterSink
-     * @param backoffPolicy
-     * @param retryAfterMax
-     * @param retry
-     * @param timeout
-     * @param backoffDelay
-     */
     public DeliverySpec(String backoffDelay, String backoffPolicy, Destination deadLetterSink, Integer retry, String retryAfterMax, String timeout) {
         super();
         this.backoffDelay = backoffDelay;

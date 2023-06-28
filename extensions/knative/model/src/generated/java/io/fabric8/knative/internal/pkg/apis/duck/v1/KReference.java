@@ -1,8 +1,9 @@
 
 package io.fabric8.knative.internal.pkg.apis.duck.v1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -63,6 +64,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class KReference implements KubernetesResource
 {
 
@@ -77,7 +79,7 @@ public class KReference implements KubernetesResource
     @JsonProperty("namespace")
     private String namespace;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -86,14 +88,6 @@ public class KReference implements KubernetesResource
     public KReference() {
     }
 
-    /**
-     * 
-     * @param apiVersion
-     * @param kind
-     * @param name
-     * @param namespace
-     * @param group
-     */
     public KReference(String apiVersion, String group, String kind, String name, String namespace) {
         super();
         this.apiVersion = apiVersion;

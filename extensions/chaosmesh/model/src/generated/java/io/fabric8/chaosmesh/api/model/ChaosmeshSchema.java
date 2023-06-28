@@ -1,6 +1,7 @@
 
 package io.fabric8.chaosmesh.api.model;
 
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -286,6 +287,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class ChaosmeshSchema {
 
     @JsonProperty("github_com_chaos-mesh_chaos-mesh_api_v1alpha1_AWSChaos")
@@ -528,125 +530,6 @@ public class ChaosmeshSchema {
     public ChaosmeshSchema() {
     }
 
-    /**
-     * 
-     * @param githubComChaosMeshChaosMeshApiV1alpha1PodHttpChaosActions
-     * @param githubComChaosMeshChaosMeshApiV1alpha1NetworkPartitionSpec
-     * @param githubComChaosMeshChaosMeshApiV1alpha1DNSChaos
-     * @param githubComChaosMeshChaosMeshApiV1alpha1KernelChaos
-     * @param githubComChaosMeshChaosMeshApiV1alpha1DiskFillSpec
-     * @param githubComChaosMeshChaosMeshApiV1alpha1PodHttpChaosPatchActions
-     * @param githubComChaosMeshChaosMeshApiV1alpha1TimeChaosSpec
-     * @param githubComChaosMeshChaosMeshApiV1alpha1CorruptSpec
-     * @param githubComChaosMeshChaosMeshApiV1alpha1PodChaosList
-     * @param githubComChaosMeshChaosMeshApiV1alpha1AWSChaosList
-     * @param githubComChaosMeshChaosMeshApiV1alpha1HTTPChaosStatus
-     * @param githubComChaosMeshChaosMeshApiV1alpha1Stressors
-     * @param githubComChaosMeshChaosMeshApiV1alpha1MistakeSpec
-     * @param githubComChaosMeshChaosMeshApiV1alpha1KernelChaosList
-     * @param githubComChaosMeshChaosMeshApiV1alpha1IOChaosAction
-     * @param githubComChaosMeshChaosMeshApiV1alpha1JVMGCSpec
-     * @param githubComChaosMeshChaosMeshApiV1alpha1GCPChaosStatus
-     * @param githubComChaosMeshChaosMeshApiV1alpha1PodIOChaosList
-     * @param githubComChaosMeshChaosMeshApiV1alpha1ExperimentStatus
-     * @param githubComChaosMeshChaosMeshApiV1alpha1NetworkChaosList
-     * @param githubComChaosMeshChaosMeshApiV1alpha1PodSelectorSpec
-     * @param githubComChaosMeshChaosMeshApiV1alpha1NetworkDuplicateSpec
-     * @param githubComChaosMeshChaosMeshApiV1alpha1JVMExceptionSpec
-     * @param githubComChaosMeshChaosMeshApiV1alpha1AWSChaosSpec
-     * @param githubComChaosMeshChaosMeshApiV1alpha1JVMChaosStatus
-     * @param githubComChaosMeshChaosMeshApiV1alpha1PhysicalMachineChaosSpec
-     * @param githubComChaosMeshChaosMeshApiV1alpha1DuplicateSpec
-     * @param githubComChaosMeshChaosMeshApiV1alpha1HTTPChaosSpec
-     * @param githubComChaosMeshChaosMeshApiV1alpha1PodChaosSpec
-     * @param githubComChaosMeshChaosMeshApiV1alpha1NetworkChaos
-     * @param githubComChaosMeshChaosMeshApiV1alpha1FailKernRequest
-     * @param githubComChaosMeshChaosMeshApiV1alpha1NetworkBandwidthSpec
-     * @param githubComChaosMeshChaosMeshApiV1alpha1PodHttpChaosList
-     * @param githubComChaosMeshChaosMeshApiV1alpha1Frame
-     * @param githubComChaosMeshChaosMeshApiV1alpha1IOChaosStatus
-     * @param githubComChaosMeshChaosMeshApiV1alpha1JVMChaos
-     * @param githubComChaosMeshChaosMeshApiV1alpha1RawIptables
-     * @param githubComChaosMeshChaosMeshApiV1alpha1IoFault
-     * @param githubComChaosMeshChaosMeshApiV1alpha1GCPChaos
-     * @param githubComChaosMeshChaosMeshApiV1alpha1Record
-     * @param githubComChaosMeshChaosMeshApiV1alpha1DNSChaosStatus
-     * @param githubComChaosMeshChaosMeshApiV1alpha1LossSpec
-     * @param githubComChaosMeshChaosMeshApiV1alpha1PhysicalMachineChaosList
-     * @param githubComChaosMeshChaosMeshApiV1alpha1PodSelector
-     * @param githubComChaosMeshChaosMeshApiV1alpha1PodChaos
-     * @param githubComChaosMeshChaosMeshApiV1alpha1PodHttpChaosSpec
-     * @param githubComChaosMeshChaosMeshApiV1alpha1PodHttpChaosStatus
-     * @param githubComChaosMeshChaosMeshApiV1alpha1BlockDelaySpec
-     * @param githubComChaosMeshChaosMeshApiV1alpha1TimeChaosList
-     * @param githubComChaosMeshChaosMeshApiV1alpha1AttrOverrideSpec
-     * @param githubComChaosMeshChaosMeshApiV1alpha1NetworkChaosSpec
-     * @param githubComChaosMeshChaosMeshApiV1alpha1PodNetworkChaos
-     * @param githubComChaosMeshChaosMeshApiV1alpha1BlockChaos
-     * @param githubComChaosMeshChaosMeshApiV1alpha1HTTPChaos
-     * @param githubComChaosMeshChaosMeshApiV1alpha1PodNetworkChaosStatus
-     * @param githubComChaosMeshChaosMeshApiV1alpha1KernelChaosSpec
-     * @param githubComChaosMeshChaosMeshApiV1alpha1BlockChaosList
-     * @param githubComChaosMeshChaosMeshApiV1alpha1StressCPUSpec
-     * @param githubComChaosMeshChaosMeshApiV1alpha1IOChaos
-     * @param githubComChaosMeshChaosMeshApiV1alpha1IOChaosSpec
-     * @param githubComChaosMeshChaosMeshApiV1alpha1BlockChaosStatus
-     * @param githubComChaosMeshChaosMeshApiV1alpha1TimeChaosStatus
-     * @param githubComChaosMeshChaosMeshApiV1alpha1StressChaosStatus
-     * @param githubComChaosMeshChaosMeshApiV1alpha1IOChaosList
-     * @param githubComChaosMeshChaosMeshApiV1alpha1StressInstance
-     * @param githubComChaosMeshChaosMeshApiV1alpha1ReorderSpec
-     * @param githubComChaosMeshChaosMeshApiV1alpha1NetworkDNSSpec
-     * @param githubComChaosMeshChaosMeshApiV1alpha1Timespec
-     * @param githubComChaosMeshChaosMeshApiV1alpha1RawIPSet
-     * @param githubComChaosMeshChaosMeshApiV1alpha1PodNetworkChaosList
-     * @param githubComChaosMeshChaosMeshApiV1alpha1PodIOChaos
-     * @param githubComChaosMeshChaosMeshApiV1alpha1PodHttpChaosRule
-     * @param githubComChaosMeshChaosMeshApiV1alpha1NetworkLossSpec
-     * @param githubComChaosMeshChaosMeshApiV1alpha1PhysicalMachineChaosStatus
-     * @param githubComChaosMeshChaosMeshApiV1alpha1DelaySpec
-     * @param githubComChaosMeshChaosMeshApiV1alpha1JVMRuleDataSpec
-     * @param githubComChaosMeshChaosMeshApiV1alpha1PhysicalMachineChaos
-     * @param githubComChaosMeshChaosMeshApiV1alpha1KernelChaosStatus
-     * @param githubComChaosMeshChaosMeshApiV1alpha1NetworkCorruptSpec
-     * @param githubComChaosMeshChaosMeshApiV1alpha1JVMReturnSpec
-     * @param githubComChaosMeshChaosMeshApiV1alpha1PodHttpChaos
-     * @param githubComChaosMeshChaosMeshApiV1alpha1AWSChaosStatus
-     * @param githubComChaosMeshChaosMeshApiV1alpha1PodHttpChaosReplaceActions
-     * @param githubComChaosMeshChaosMeshApiV1alpha1ProcessSpec
-     * @param githubComChaosMeshChaosMeshApiV1alpha1DiskPayloadSpec
-     * @param githubComChaosMeshChaosMeshApiV1alpha1JVMChaosSpec
-     * @param githubComChaosMeshChaosMeshApiV1alpha1MemoryStressor
-     * @param githubComChaosMeshChaosMeshApiV1alpha1TimeChaos
-     * @param githubComChaosMeshChaosMeshApiV1alpha1PodNetworkChaosSpec
-     * @param githubComChaosMeshChaosMeshApiV1alpha1RawTrafficControl
-     * @param githubComChaosMeshChaosMeshApiV1alpha1StressMemorySpec
-     * @param githubComChaosMeshChaosMeshApiV1alpha1PodHttpChaosPatchBodyAction
-     * @param githubComChaosMeshChaosMeshApiV1alpha1PhysicalMachineSelectorSpec
-     * @param githubComChaosMeshChaosMeshApiV1alpha1BandwidthSpec
-     * @param githubComChaosMeshChaosMeshApiV1alpha1NetworkDelaySpec
-     * @param githubComChaosMeshChaosMeshApiV1alpha1PodHttpChaosSelector
-     * @param githubComChaosMeshChaosMeshApiV1alpha1GCPChaosList
-     * @param githubComChaosMeshChaosMeshApiV1alpha1HTTPChaosList
-     * @param githubComChaosMeshChaosMeshApiV1alpha1JVMStressSpec
-     * @param githubComChaosMeshChaosMeshApiV1alpha1AWSChaos
-     * @param githubComChaosMeshChaosMeshApiV1alpha1DNSChaosSpec
-     * @param githubComChaosMeshChaosMeshApiV1alpha1NetworkChaosStatus
-     * @param githubComChaosMeshChaosMeshApiV1alpha1JVMChaosList
-     * @param githubComChaosMeshChaosMeshApiV1alpha1StressChaos
-     * @param githubComChaosMeshChaosMeshApiV1alpha1BlockChaosSpec
-     * @param githubComChaosMeshChaosMeshApiV1alpha1JVMLatencySpec
-     * @param githubComChaosMeshChaosMeshApiV1alpha1ClockSpec
-     * @param githubComChaosMeshChaosMeshApiV1alpha1StressChaosList
-     * @param githubComChaosMeshChaosMeshApiV1alpha1PodChaosStatus
-     * @param githubComChaosMeshChaosMeshApiV1alpha1CPUStressor
-     * @param githubComChaosMeshChaosMeshApiV1alpha1ChaosCondition
-     * @param githubComChaosMeshChaosMeshApiV1alpha1StressChaosSpec
-     * @param githubComChaosMeshChaosMeshApiV1alpha1PodIOChaosSpec
-     * @param githubComChaosMeshChaosMeshApiV1alpha1GCPChaosSpec
-     * @param githubComChaosMeshChaosMeshApiV1alpha1DNSChaosList
-     * @param githubComChaosMeshChaosMeshApiV1alpha1PodIOChaosStatus
-     */
     public ChaosmeshSchema(AWSChaos githubComChaosMeshChaosMeshApiV1alpha1AWSChaos, AWSChaosList githubComChaosMeshChaosMeshApiV1alpha1AWSChaosList, AWSChaosSpec githubComChaosMeshChaosMeshApiV1alpha1AWSChaosSpec, AWSChaosStatus githubComChaosMeshChaosMeshApiV1alpha1AWSChaosStatus, AttrOverrideSpec githubComChaosMeshChaosMeshApiV1alpha1AttrOverrideSpec, BandwidthSpec githubComChaosMeshChaosMeshApiV1alpha1BandwidthSpec, BlockChaos githubComChaosMeshChaosMeshApiV1alpha1BlockChaos, BlockChaosList githubComChaosMeshChaosMeshApiV1alpha1BlockChaosList, BlockChaosSpec githubComChaosMeshChaosMeshApiV1alpha1BlockChaosSpec, BlockChaosStatus githubComChaosMeshChaosMeshApiV1alpha1BlockChaosStatus, BlockDelaySpec githubComChaosMeshChaosMeshApiV1alpha1BlockDelaySpec, CPUStressor githubComChaosMeshChaosMeshApiV1alpha1CPUStressor, ChaosCondition githubComChaosMeshChaosMeshApiV1alpha1ChaosCondition, ClockSpec githubComChaosMeshChaosMeshApiV1alpha1ClockSpec, CorruptSpec githubComChaosMeshChaosMeshApiV1alpha1CorruptSpec, DNSChaos githubComChaosMeshChaosMeshApiV1alpha1DNSChaos, DNSChaosList githubComChaosMeshChaosMeshApiV1alpha1DNSChaosList, DNSChaosSpec githubComChaosMeshChaosMeshApiV1alpha1DNSChaosSpec, DNSChaosStatus githubComChaosMeshChaosMeshApiV1alpha1DNSChaosStatus, DelaySpec githubComChaosMeshChaosMeshApiV1alpha1DelaySpec, DiskFillSpec githubComChaosMeshChaosMeshApiV1alpha1DiskFillSpec, DiskPayloadSpec githubComChaosMeshChaosMeshApiV1alpha1DiskPayloadSpec, DuplicateSpec githubComChaosMeshChaosMeshApiV1alpha1DuplicateSpec, ExperimentStatus githubComChaosMeshChaosMeshApiV1alpha1ExperimentStatus, FailKernRequest githubComChaosMeshChaosMeshApiV1alpha1FailKernRequest, Frame githubComChaosMeshChaosMeshApiV1alpha1Frame, GCPChaos githubComChaosMeshChaosMeshApiV1alpha1GCPChaos, GCPChaosList githubComChaosMeshChaosMeshApiV1alpha1GCPChaosList, GCPChaosSpec githubComChaosMeshChaosMeshApiV1alpha1GCPChaosSpec, GCPChaosStatus githubComChaosMeshChaosMeshApiV1alpha1GCPChaosStatus, HTTPChaos githubComChaosMeshChaosMeshApiV1alpha1HTTPChaos, HTTPChaosList githubComChaosMeshChaosMeshApiV1alpha1HTTPChaosList, HTTPChaosSpec githubComChaosMeshChaosMeshApiV1alpha1HTTPChaosSpec, HTTPChaosStatus githubComChaosMeshChaosMeshApiV1alpha1HTTPChaosStatus, IOChaos githubComChaosMeshChaosMeshApiV1alpha1IOChaos, IOChaosAction githubComChaosMeshChaosMeshApiV1alpha1IOChaosAction, IOChaosList githubComChaosMeshChaosMeshApiV1alpha1IOChaosList, IOChaosSpec githubComChaosMeshChaosMeshApiV1alpha1IOChaosSpec, IOChaosStatus githubComChaosMeshChaosMeshApiV1alpha1IOChaosStatus, IoFault githubComChaosMeshChaosMeshApiV1alpha1IoFault, JVMChaos githubComChaosMeshChaosMeshApiV1alpha1JVMChaos, JVMChaosList githubComChaosMeshChaosMeshApiV1alpha1JVMChaosList, JVMChaosSpec githubComChaosMeshChaosMeshApiV1alpha1JVMChaosSpec, JVMChaosStatus githubComChaosMeshChaosMeshApiV1alpha1JVMChaosStatus, JVMExceptionSpec githubComChaosMeshChaosMeshApiV1alpha1JVMExceptionSpec, JVMGCSpec githubComChaosMeshChaosMeshApiV1alpha1JVMGCSpec, JVMLatencySpec githubComChaosMeshChaosMeshApiV1alpha1JVMLatencySpec, JVMReturnSpec githubComChaosMeshChaosMeshApiV1alpha1JVMReturnSpec, JVMRuleDataSpec githubComChaosMeshChaosMeshApiV1alpha1JVMRuleDataSpec, JVMStressSpec githubComChaosMeshChaosMeshApiV1alpha1JVMStressSpec, KernelChaos githubComChaosMeshChaosMeshApiV1alpha1KernelChaos, KernelChaosList githubComChaosMeshChaosMeshApiV1alpha1KernelChaosList, KernelChaosSpec githubComChaosMeshChaosMeshApiV1alpha1KernelChaosSpec, KernelChaosStatus githubComChaosMeshChaosMeshApiV1alpha1KernelChaosStatus, LossSpec githubComChaosMeshChaosMeshApiV1alpha1LossSpec, MemoryStressor githubComChaosMeshChaosMeshApiV1alpha1MemoryStressor, MistakeSpec githubComChaosMeshChaosMeshApiV1alpha1MistakeSpec, NetworkBandwidthSpec githubComChaosMeshChaosMeshApiV1alpha1NetworkBandwidthSpec, NetworkChaos githubComChaosMeshChaosMeshApiV1alpha1NetworkChaos, NetworkChaosList githubComChaosMeshChaosMeshApiV1alpha1NetworkChaosList, NetworkChaosSpec githubComChaosMeshChaosMeshApiV1alpha1NetworkChaosSpec, NetworkChaosStatus githubComChaosMeshChaosMeshApiV1alpha1NetworkChaosStatus, NetworkCorruptSpec githubComChaosMeshChaosMeshApiV1alpha1NetworkCorruptSpec, NetworkDNSSpec githubComChaosMeshChaosMeshApiV1alpha1NetworkDNSSpec, NetworkDelaySpec githubComChaosMeshChaosMeshApiV1alpha1NetworkDelaySpec, NetworkDuplicateSpec githubComChaosMeshChaosMeshApiV1alpha1NetworkDuplicateSpec, NetworkLossSpec githubComChaosMeshChaosMeshApiV1alpha1NetworkLossSpec, NetworkPartitionSpec githubComChaosMeshChaosMeshApiV1alpha1NetworkPartitionSpec, PhysicalMachineChaos githubComChaosMeshChaosMeshApiV1alpha1PhysicalMachineChaos, PhysicalMachineChaosList githubComChaosMeshChaosMeshApiV1alpha1PhysicalMachineChaosList, PhysicalMachineChaosSpec githubComChaosMeshChaosMeshApiV1alpha1PhysicalMachineChaosSpec, PhysicalMachineChaosStatus githubComChaosMeshChaosMeshApiV1alpha1PhysicalMachineChaosStatus, PhysicalMachineSelectorSpec githubComChaosMeshChaosMeshApiV1alpha1PhysicalMachineSelectorSpec, PodChaos githubComChaosMeshChaosMeshApiV1alpha1PodChaos, PodChaosList githubComChaosMeshChaosMeshApiV1alpha1PodChaosList, PodChaosSpec githubComChaosMeshChaosMeshApiV1alpha1PodChaosSpec, PodChaosStatus githubComChaosMeshChaosMeshApiV1alpha1PodChaosStatus, PodHttpChaos githubComChaosMeshChaosMeshApiV1alpha1PodHttpChaos, PodHttpChaosActions githubComChaosMeshChaosMeshApiV1alpha1PodHttpChaosActions, PodHttpChaosList githubComChaosMeshChaosMeshApiV1alpha1PodHttpChaosList, PodHttpChaosPatchActions githubComChaosMeshChaosMeshApiV1alpha1PodHttpChaosPatchActions, PodHttpChaosPatchBodyAction githubComChaosMeshChaosMeshApiV1alpha1PodHttpChaosPatchBodyAction, PodHttpChaosReplaceActions githubComChaosMeshChaosMeshApiV1alpha1PodHttpChaosReplaceActions, PodHttpChaosRule githubComChaosMeshChaosMeshApiV1alpha1PodHttpChaosRule, PodHttpChaosSelector githubComChaosMeshChaosMeshApiV1alpha1PodHttpChaosSelector, PodHttpChaosSpec githubComChaosMeshChaosMeshApiV1alpha1PodHttpChaosSpec, PodHttpChaosStatus githubComChaosMeshChaosMeshApiV1alpha1PodHttpChaosStatus, PodIOChaos githubComChaosMeshChaosMeshApiV1alpha1PodIOChaos, PodIOChaosList githubComChaosMeshChaosMeshApiV1alpha1PodIOChaosList, PodIOChaosSpec githubComChaosMeshChaosMeshApiV1alpha1PodIOChaosSpec, PodIOChaosStatus githubComChaosMeshChaosMeshApiV1alpha1PodIOChaosStatus, PodNetworkChaos githubComChaosMeshChaosMeshApiV1alpha1PodNetworkChaos, PodNetworkChaosList githubComChaosMeshChaosMeshApiV1alpha1PodNetworkChaosList, PodNetworkChaosSpec githubComChaosMeshChaosMeshApiV1alpha1PodNetworkChaosSpec, PodNetworkChaosStatus githubComChaosMeshChaosMeshApiV1alpha1PodNetworkChaosStatus, PodSelector githubComChaosMeshChaosMeshApiV1alpha1PodSelector, PodSelectorSpec githubComChaosMeshChaosMeshApiV1alpha1PodSelectorSpec, ProcessSpec githubComChaosMeshChaosMeshApiV1alpha1ProcessSpec, RawIPSet githubComChaosMeshChaosMeshApiV1alpha1RawIPSet, RawIptables githubComChaosMeshChaosMeshApiV1alpha1RawIptables, RawTrafficControl githubComChaosMeshChaosMeshApiV1alpha1RawTrafficControl, Record githubComChaosMeshChaosMeshApiV1alpha1Record, ReorderSpec githubComChaosMeshChaosMeshApiV1alpha1ReorderSpec, StressCPUSpec githubComChaosMeshChaosMeshApiV1alpha1StressCPUSpec, StressChaos githubComChaosMeshChaosMeshApiV1alpha1StressChaos, StressChaosList githubComChaosMeshChaosMeshApiV1alpha1StressChaosList, StressChaosSpec githubComChaosMeshChaosMeshApiV1alpha1StressChaosSpec, StressChaosStatus githubComChaosMeshChaosMeshApiV1alpha1StressChaosStatus, StressInstance githubComChaosMeshChaosMeshApiV1alpha1StressInstance, StressMemorySpec githubComChaosMeshChaosMeshApiV1alpha1StressMemorySpec, Stressors githubComChaosMeshChaosMeshApiV1alpha1Stressors, TimeChaos githubComChaosMeshChaosMeshApiV1alpha1TimeChaos, TimeChaosList githubComChaosMeshChaosMeshApiV1alpha1TimeChaosList, TimeChaosSpec githubComChaosMeshChaosMeshApiV1alpha1TimeChaosSpec, TimeChaosStatus githubComChaosMeshChaosMeshApiV1alpha1TimeChaosStatus, Timespec githubComChaosMeshChaosMeshApiV1alpha1Timespec) {
         super();
         this.githubComChaosMeshChaosMeshApiV1alpha1AWSChaos = githubComChaosMeshChaosMeshApiV1alpha1AWSChaos;

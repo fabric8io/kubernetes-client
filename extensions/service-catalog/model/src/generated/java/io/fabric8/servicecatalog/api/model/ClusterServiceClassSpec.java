@@ -2,10 +2,10 @@
 package io.fabric8.servicecatalog.api.model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -74,6 +74,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class ClusterServiceClassSpec implements KubernetesResource
 {
 
@@ -104,7 +105,7 @@ public class ClusterServiceClassSpec implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<java.lang.String> tags = new ArrayList<java.lang.String>();
     @JsonIgnore
-    private Map<java.lang.String, java.lang.Object> additionalProperties = new HashMap<java.lang.String, java.lang.Object>();
+    private Map<java.lang.String, java.lang.Object> additionalProperties = new LinkedHashMap<java.lang.String, java.lang.Object>();
 
     /**
      * No args constructor for use in serialization
@@ -113,20 +114,6 @@ public class ClusterServiceClassSpec implements KubernetesResource
     public ClusterServiceClassSpec() {
     }
 
-    /**
-     * 
-     * @param planUpdatable
-     * @param bindable
-     * @param bindingRetrievable
-     * @param externalName
-     * @param externalMetadata
-     * @param description
-     * @param externalID
-     * @param clusterServiceBrokerName
-     * @param defaultProvisionParameters
-     * @param requires
-     * @param tags
-     */
     public ClusterServiceClassSpec(Boolean bindable, Boolean bindingRetrievable, java.lang.String clusterServiceBrokerName, Map<String, Object> defaultProvisionParameters, java.lang.String description, java.lang.String externalID, Map<String, Object> externalMetadata, java.lang.String externalName, Boolean planUpdatable, List<java.lang.String> requires, List<java.lang.String> tags) {
         super();
         this.bindable = bindable;

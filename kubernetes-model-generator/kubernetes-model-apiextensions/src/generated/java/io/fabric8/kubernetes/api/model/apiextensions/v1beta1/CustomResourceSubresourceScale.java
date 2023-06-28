@@ -1,8 +1,9 @@
 
 package io.fabric8.kubernetes.api.model.apiextensions.v1beta1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -55,6 +56,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class CustomResourceSubresourceScale implements KubernetesResource
 {
 
@@ -65,7 +67,7 @@ public class CustomResourceSubresourceScale implements KubernetesResource
     @JsonProperty("statusReplicasPath")
     private String statusReplicasPath;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -74,12 +76,6 @@ public class CustomResourceSubresourceScale implements KubernetesResource
     public CustomResourceSubresourceScale() {
     }
 
-    /**
-     * 
-     * @param statusReplicasPath
-     * @param labelSelectorPath
-     * @param specReplicasPath
-     */
     public CustomResourceSubresourceScale(String labelSelectorPath, String specReplicasPath, String statusReplicasPath) {
         super();
         this.labelSelectorPath = labelSelectorPath;

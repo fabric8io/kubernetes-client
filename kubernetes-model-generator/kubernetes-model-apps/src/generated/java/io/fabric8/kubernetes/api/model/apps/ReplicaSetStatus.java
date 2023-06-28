@@ -2,9 +2,10 @@
 package io.fabric8.kubernetes.api.model.apps;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -60,6 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class ReplicaSetStatus implements KubernetesResource
 {
 
@@ -77,7 +79,7 @@ public class ReplicaSetStatus implements KubernetesResource
     @JsonProperty("replicas")
     private Integer replicas;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -86,15 +88,6 @@ public class ReplicaSetStatus implements KubernetesResource
     public ReplicaSetStatus() {
     }
 
-    /**
-     * 
-     * @param fullyLabeledReplicas
-     * @param replicas
-     * @param readyReplicas
-     * @param conditions
-     * @param availableReplicas
-     * @param observedGeneration
-     */
     public ReplicaSetStatus(Integer availableReplicas, List<ReplicaSetCondition> conditions, Integer fullyLabeledReplicas, Long observedGeneration, Integer readyReplicas, Integer replicas) {
         super();
         this.availableReplicas = availableReplicas;

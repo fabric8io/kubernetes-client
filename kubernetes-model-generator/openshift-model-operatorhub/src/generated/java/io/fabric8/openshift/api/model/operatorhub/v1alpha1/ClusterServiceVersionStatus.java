@@ -2,9 +2,10 @@
 package io.fabric8.openshift.api.model.operatorhub.v1alpha1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -64,6 +65,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class ClusterServiceVersionStatus implements KubernetesResource
 {
 
@@ -90,7 +92,7 @@ public class ClusterServiceVersionStatus implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<RequirementStatus> requirementStatus = new ArrayList<RequirementStatus>();
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -99,19 +101,6 @@ public class ClusterServiceVersionStatus implements KubernetesResource
     public ClusterServiceVersionStatus() {
     }
 
-    /**
-     * 
-     * @param phase
-     * @param reason
-     * @param cleanup
-     * @param certsRotateAt
-     * @param conditions
-     * @param lastTransitionTime
-     * @param message
-     * @param requirementStatus
-     * @param certsLastUpdated
-     * @param lastUpdateTime
-     */
     public ClusterServiceVersionStatus(String certsLastUpdated, String certsRotateAt, CleanupStatus cleanup, List<ClusterServiceVersionCondition> conditions, String lastTransitionTime, String lastUpdateTime, java.lang.String message, java.lang.String phase, java.lang.String reason, List<RequirementStatus> requirementStatus) {
         super();
         this.certsLastUpdated = certsLastUpdated;

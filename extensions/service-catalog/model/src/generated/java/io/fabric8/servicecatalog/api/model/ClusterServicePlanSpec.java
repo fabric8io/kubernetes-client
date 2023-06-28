@@ -1,9 +1,9 @@
 
 package io.fabric8.servicecatalog.api.model;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -74,6 +74,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class ClusterServicePlanSpec implements KubernetesResource
 {
 
@@ -110,7 +111,7 @@ public class ClusterServicePlanSpec implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, Object> serviceBindingCreateResponseSchema = new LinkedHashMap<String, Object>();
     @JsonIgnore
-    private Map<java.lang.String, java.lang.Object> additionalProperties = new HashMap<java.lang.String, java.lang.Object>();
+    private Map<java.lang.String, java.lang.Object> additionalProperties = new LinkedHashMap<java.lang.String, java.lang.Object>();
 
     /**
      * No args constructor for use in serialization
@@ -119,22 +120,6 @@ public class ClusterServicePlanSpec implements KubernetesResource
     public ClusterServicePlanSpec() {
     }
 
-    /**
-     * 
-     * @param externalMetadata
-     * @param description
-     * @param externalID
-     * @param serviceBindingCreateResponseSchema
-     * @param clusterServiceClassRef
-     * @param bindable
-     * @param externalName
-     * @param clusterServiceBrokerName
-     * @param instanceUpdateParameterSchema
-     * @param free
-     * @param defaultProvisionParameters
-     * @param instanceCreateParameterSchema
-     * @param serviceBindingCreateParameterSchema
-     */
     public ClusterServicePlanSpec(Boolean bindable, java.lang.String clusterServiceBrokerName, ClusterObjectReference clusterServiceClassRef, Map<String, Object> defaultProvisionParameters, java.lang.String description, java.lang.String externalID, Map<String, Object> externalMetadata, java.lang.String externalName, java.lang.Boolean free, Map<String, Object> instanceCreateParameterSchema, Map<String, Object> instanceUpdateParameterSchema, Map<String, Object> serviceBindingCreateParameterSchema, Map<String, Object> serviceBindingCreateResponseSchema) {
         super();
         this.bindable = bindable;

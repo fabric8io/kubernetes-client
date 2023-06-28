@@ -1,8 +1,9 @@
 
 package io.fabric8.kubernetes.api.model;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -36,6 +37,7 @@ import lombok.experimental.Accessors;
     ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
+@Generated("jsonschema2pojo")
 public class ContainerPort implements KubernetesResource
 {
 
@@ -50,7 +52,7 @@ public class ContainerPort implements KubernetesResource
     @JsonProperty("protocol")
     private String protocol;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -59,14 +61,6 @@ public class ContainerPort implements KubernetesResource
     public ContainerPort() {
     }
 
-    /**
-     * 
-     * @param protocol
-     * @param hostIP
-     * @param name
-     * @param containerPort
-     * @param hostPort
-     */
     public ContainerPort(Integer containerPort, String hostIP, Integer hostPort, String name, String protocol) {
         super();
         this.containerPort = containerPort;

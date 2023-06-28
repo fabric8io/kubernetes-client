@@ -1,8 +1,9 @@
 
 package io.fabric8.openclustermanagement.api.model.searchoperator.v1alpha1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -71,6 +72,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1alpha1")
 @Group("search.open-cluster-management.io")
+@Generated("jsonschema2pojo")
 public class SearchOperator implements HasMetadata, Namespaced
 {
 
@@ -95,7 +97,7 @@ public class SearchOperator implements HasMetadata, Namespaced
     @JsonProperty("status")
     private SearchOperatorStatus status;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -104,14 +106,6 @@ public class SearchOperator implements HasMetadata, Namespaced
     public SearchOperator() {
     }
 
-    /**
-     * 
-     * @param metadata
-     * @param apiVersion
-     * @param kind
-     * @param spec
-     * @param status
-     */
     public SearchOperator(String apiVersion, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, SearchOperatorSpec spec, SearchOperatorStatus status) {
         super();
         this.apiVersion = apiVersion;

@@ -1,8 +1,9 @@
 
 package io.fabric8.kubernetes.api.model;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -33,6 +34,7 @@ import lombok.experimental.Accessors;
     ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
+@Generated("jsonschema2pojo")
 public class PhotonPersistentDiskVolumeSource implements KubernetesResource
 {
 
@@ -41,7 +43,7 @@ public class PhotonPersistentDiskVolumeSource implements KubernetesResource
     @JsonProperty("pdID")
     private String pdID;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -50,11 +52,6 @@ public class PhotonPersistentDiskVolumeSource implements KubernetesResource
     public PhotonPersistentDiskVolumeSource() {
     }
 
-    /**
-     * 
-     * @param pdID
-     * @param fsType
-     */
     public PhotonPersistentDiskVolumeSource(String fsType, String pdID) {
         super();
         this.fsType = fsType;

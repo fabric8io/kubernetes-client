@@ -2,9 +2,10 @@
 package io.fabric8.kubernetes.api.model.discovery.v1beta1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -66,6 +67,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1beta1")
 @Group("discovery.k8s.io")
+@Generated("jsonschema2pojo")
 public class EndpointSlice implements HasMetadata, Namespaced
 {
 
@@ -92,7 +94,7 @@ public class EndpointSlice implements HasMetadata, Namespaced
     @JsonProperty("ports")
     private List<EndpointPort> ports = new ArrayList<EndpointPort>();
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -101,15 +103,6 @@ public class EndpointSlice implements HasMetadata, Namespaced
     public EndpointSlice() {
     }
 
-    /**
-     * 
-     * @param endpoints
-     * @param metadata
-     * @param apiVersion
-     * @param addressType
-     * @param kind
-     * @param ports
-     */
     public EndpointSlice(String addressType, String apiVersion, List<Endpoint> endpoints, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, List<EndpointPort> ports) {
         super();
         this.addressType = addressType;

@@ -2,9 +2,10 @@
 package io.fabric8.istio.api.networking.v1alpha3;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -65,6 +66,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class EnvoyFilterSpec implements KubernetesResource
 {
 
@@ -76,7 +78,7 @@ public class EnvoyFilterSpec implements KubernetesResource
     @JsonProperty("workloadSelector")
     private WorkloadSelector workloadSelector;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -85,12 +87,6 @@ public class EnvoyFilterSpec implements KubernetesResource
     public EnvoyFilterSpec() {
     }
 
-    /**
-     * 
-     * @param workloadSelector
-     * @param configPatches
-     * @param priority
-     */
     public EnvoyFilterSpec(List<EnvoyFilterEnvoyConfigObjectPatch> configPatches, Integer priority, WorkloadSelector workloadSelector) {
         super();
         this.configPatches = configPatches;

@@ -1,9 +1,9 @@
 
 package io.fabric8.openshift.api.model.hive.v1;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -68,6 +68,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(io.fabric8.kubernetes.api.model.LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class ClusterPoolSpec implements KubernetesResource
 {
 
@@ -104,7 +105,7 @@ public class ClusterPoolSpec implements KubernetesResource
     @JsonProperty("skipMachinePools")
     private Boolean skipMachinePools;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -113,24 +114,6 @@ public class ClusterPoolSpec implements KubernetesResource
     public ClusterPoolSpec() {
     }
 
-    /**
-     * 
-     * @param skipMachinePools
-     * @param maxConcurrent
-     * @param claimLifetime
-     * @param annotations
-     * @param pullSecretRef
-     * @param maxSize
-     * @param installAttemptsLimit
-     * @param platform
-     * @param labels
-     * @param size
-     * @param baseDomain
-     * @param installConfigSecretTemplateRef
-     * @param runningCount
-     * @param imageSetRef
-     * @param hibernateAfter
-     */
     public ClusterPoolSpec(Map<String, String> annotations, java.lang.String baseDomain, ClusterPoolClaimLifetime claimLifetime, Duration hibernateAfter, ClusterImageSetReference imageSetRef, Integer installAttemptsLimit, io.fabric8.kubernetes.api.model.LocalObjectReference installConfigSecretTemplateRef, Map<String, String> labels, Integer maxConcurrent, Integer maxSize, Platform platform, io.fabric8.kubernetes.api.model.LocalObjectReference pullSecretRef, Integer runningCount, Integer size, Boolean skipMachinePools) {
         super();
         this.annotations = annotations;

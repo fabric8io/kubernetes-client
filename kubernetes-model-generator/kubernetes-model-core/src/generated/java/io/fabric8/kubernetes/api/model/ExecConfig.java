@@ -2,9 +2,10 @@
 package io.fabric8.kubernetes.api.model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -39,6 +40,7 @@ import lombok.experimental.Accessors;
     ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
+@Generated("jsonschema2pojo")
 public class ExecConfig implements KubernetesResource
 {
 
@@ -57,7 +59,7 @@ public class ExecConfig implements KubernetesResource
     @JsonProperty("provideClusterInfo")
     private Boolean provideClusterInfo;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -66,16 +68,6 @@ public class ExecConfig implements KubernetesResource
     public ExecConfig() {
     }
 
-    /**
-     * 
-     * @param args
-     * @param apiVersion
-     * @param provideClusterInfo
-     * @param env
-     * @param installHint
-     * @param interactiveMode
-     * @param command
-     */
     public ExecConfig(String apiVersion, List<String> args, String command, List<ExecEnvVar> env, String installHint, String interactiveMode, Boolean provideClusterInfo) {
         super();
         this.apiVersion = apiVersion;

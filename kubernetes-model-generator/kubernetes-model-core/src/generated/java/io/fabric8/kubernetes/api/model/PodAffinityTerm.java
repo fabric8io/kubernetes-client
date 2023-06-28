@@ -2,9 +2,10 @@
 package io.fabric8.kubernetes.api.model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -37,6 +38,7 @@ import lombok.experimental.Accessors;
     ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
+@Generated("jsonschema2pojo")
 public class PodAffinityTerm implements KubernetesResource
 {
 
@@ -50,7 +52,7 @@ public class PodAffinityTerm implements KubernetesResource
     @JsonProperty("topologyKey")
     private String topologyKey;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -59,13 +61,6 @@ public class PodAffinityTerm implements KubernetesResource
     public PodAffinityTerm() {
     }
 
-    /**
-     * 
-     * @param labelSelector
-     * @param namespaceSelector
-     * @param topologyKey
-     * @param namespaces
-     */
     public PodAffinityTerm(LabelSelector labelSelector, LabelSelector namespaceSelector, List<String> namespaces, String topologyKey) {
         super();
         this.labelSelector = labelSelector;

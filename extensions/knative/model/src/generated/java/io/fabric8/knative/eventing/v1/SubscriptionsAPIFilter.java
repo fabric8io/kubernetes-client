@@ -2,10 +2,10 @@
 package io.fabric8.knative.eventing.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -70,6 +70,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class SubscriptionsAPIFilter implements KubernetesResource
 {
 
@@ -93,7 +94,7 @@ public class SubscriptionsAPIFilter implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> suffix = new LinkedHashMap<String, String>();
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -102,16 +103,6 @@ public class SubscriptionsAPIFilter implements KubernetesResource
     public SubscriptionsAPIFilter() {
     }
 
-    /**
-     * 
-     * @param all
-     * @param not
-     * @param prefix
-     * @param exact
-     * @param suffix
-     * @param any
-     * @param cesql
-     */
     public SubscriptionsAPIFilter(List<SubscriptionsAPIFilter> all, List<SubscriptionsAPIFilter> any, java.lang.String cesql, Map<String, String> exact, SubscriptionsAPIFilter not, Map<String, String> prefix, Map<String, String> suffix) {
         super();
         this.all = all;

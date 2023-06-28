@@ -1,8 +1,9 @@
 
 package io.fabric8.istio.api.security.v1beta1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -62,6 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class JWTHeader implements KubernetesResource
 {
 
@@ -70,7 +72,7 @@ public class JWTHeader implements KubernetesResource
     @JsonProperty("prefix")
     private String prefix;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -79,11 +81,6 @@ public class JWTHeader implements KubernetesResource
     public JWTHeader() {
     }
 
-    /**
-     * 
-     * @param prefix
-     * @param name
-     */
     public JWTHeader(String name, String prefix) {
         super();
         this.name = name;

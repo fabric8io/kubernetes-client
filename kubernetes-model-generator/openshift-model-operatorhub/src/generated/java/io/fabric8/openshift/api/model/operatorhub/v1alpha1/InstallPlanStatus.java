@@ -2,9 +2,10 @@
 package io.fabric8.openshift.api.model.operatorhub.v1alpha1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -61,6 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class InstallPlanStatus implements KubernetesResource
 {
 
@@ -84,7 +86,7 @@ public class InstallPlanStatus implements KubernetesResource
     @JsonProperty("startTime")
     private String startTime;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -93,17 +95,6 @@ public class InstallPlanStatus implements KubernetesResource
     public InstallPlanStatus() {
     }
 
-    /**
-     * 
-     * @param phase
-     * @param bundleLookups
-     * @param attenuatedServiceAccountRef
-     * @param catalogSources
-     * @param startTime
-     * @param conditions
-     * @param message
-     * @param plan
-     */
     public InstallPlanStatus(io.fabric8.kubernetes.api.model.ObjectReference attenuatedServiceAccountRef, List<BundleLookup> bundleLookups, List<java.lang.String> catalogSources, List<InstallPlanCondition> conditions, java.lang.String message, java.lang.String phase, List<Step> plan, String startTime) {
         super();
         this.attenuatedServiceAccountRef = attenuatedServiceAccountRef;

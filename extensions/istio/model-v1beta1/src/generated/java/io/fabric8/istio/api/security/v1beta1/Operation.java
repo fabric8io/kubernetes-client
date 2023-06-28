@@ -2,9 +2,10 @@
 package io.fabric8.istio.api.security.v1beta1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -70,6 +71,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class Operation implements KubernetesResource
 {
 
@@ -98,7 +100,7 @@ public class Operation implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> ports = new ArrayList<String>();
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -107,17 +109,6 @@ public class Operation implements KubernetesResource
     public Operation() {
     }
 
-    /**
-     * 
-     * @param notMethods
-     * @param hosts
-     * @param methods
-     * @param paths
-     * @param notPaths
-     * @param notHosts
-     * @param ports
-     * @param notPorts
-     */
     public Operation(List<String> hosts, List<String> methods, List<String> notHosts, List<String> notMethods, List<String> notPaths, List<String> notPorts, List<String> paths, List<String> ports) {
         super();
         this.hosts = hosts;

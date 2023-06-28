@@ -1,8 +1,9 @@
 
 package io.fabric8.openshift.api.model;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -55,6 +56,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(io.fabric8.kubernetes.api.model.LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class ImageImportSpec implements KubernetesResource
 {
 
@@ -69,7 +71,7 @@ public class ImageImportSpec implements KubernetesResource
     @JsonProperty("to")
     private io.fabric8.kubernetes.api.model.LocalObjectReference to;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -78,14 +80,6 @@ public class ImageImportSpec implements KubernetesResource
     public ImageImportSpec() {
     }
 
-    /**
-     * 
-     * @param importPolicy
-     * @param includeManifest
-     * @param referencePolicy
-     * @param from
-     * @param to
-     */
     public ImageImportSpec(io.fabric8.kubernetes.api.model.ObjectReference from, TagImportPolicy importPolicy, Boolean includeManifest, TagReferencePolicy referencePolicy, io.fabric8.kubernetes.api.model.LocalObjectReference to) {
         super();
         this.from = from;

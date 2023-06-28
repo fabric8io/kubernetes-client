@@ -1,9 +1,9 @@
 
 package io.fabric8.openshift.api.model.machine.v1beta1;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -54,6 +54,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class ProviderSpec implements KubernetesResource
 {
 
@@ -61,7 +62,7 @@ public class ProviderSpec implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, Object> value = new LinkedHashMap<String, Object>();
     @JsonIgnore
-    private Map<java.lang.String, java.lang.Object> additionalProperties = new HashMap<java.lang.String, java.lang.Object>();
+    private Map<java.lang.String, java.lang.Object> additionalProperties = new LinkedHashMap<java.lang.String, java.lang.Object>();
 
     /**
      * No args constructor for use in serialization
@@ -70,10 +71,6 @@ public class ProviderSpec implements KubernetesResource
     public ProviderSpec() {
     }
 
-    /**
-     * 
-     * @param value
-     */
     public ProviderSpec(Map<String, Object> value) {
         super();
         this.value = value;

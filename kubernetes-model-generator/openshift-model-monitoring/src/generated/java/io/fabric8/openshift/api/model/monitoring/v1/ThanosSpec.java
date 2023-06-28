@@ -2,9 +2,10 @@
 package io.fabric8.openshift.api.model.monitoring.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -72,6 +73,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class ThanosSpec implements KubernetesResource
 {
 
@@ -111,7 +113,7 @@ public class ThanosSpec implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<VolumeMount> volumeMounts = new ArrayList<VolumeMount>();
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -120,26 +122,6 @@ public class ThanosSpec implements KubernetesResource
     public ThanosSpec() {
     }
 
-    /**
-     * 
-     * @param image
-     * @param readyTimeout
-     * @param tracingConfig
-     * @param tracingConfigFile
-     * @param baseImage
-     * @param resources
-     * @param listenLocal
-     * @param grpcServerTlsConfig
-     * @param sha
-     * @param version
-     * @param volumeMounts
-     * @param logFormat
-     * @param objectStorageConfig
-     * @param logLevel
-     * @param minTime
-     * @param tag
-     * @param objectStorageConfigFile
-     */
     public ThanosSpec(String baseImage, TLSConfig grpcServerTlsConfig, String image, Boolean listenLocal, String logFormat, String logLevel, String minTime, SecretKeySelector objectStorageConfig, String objectStorageConfigFile, String readyTimeout, io.fabric8.kubernetes.api.model.ResourceRequirements resources, String sha, String tag, SecretKeySelector tracingConfig, String tracingConfigFile, String version, List<VolumeMount> volumeMounts) {
         super();
         this.baseImage = baseImage;

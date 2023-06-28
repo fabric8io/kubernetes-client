@@ -2,10 +2,10 @@
 package io.fabric8.openshift.api.model.operatorhub.lifecyclemanager.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -75,6 +75,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class CSVDescription implements KubernetesResource
 {
 
@@ -119,7 +120,7 @@ public class CSVDescription implements KubernetesResource
     @JsonProperty("version")
     private java.lang.String version;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -128,25 +129,6 @@ public class CSVDescription implements KubernetesResource
     public CSVDescription() {
     }
 
-    /**
-     * 
-     * @param maintainers
-     * @param customresourcedefinitions
-     * @param installModes
-     * @param keywords
-     * @param apiservicedefinitions
-     * @param maturity
-     * @param displayName
-     * @param relatedImages
-     * @param icon
-     * @param annotations
-     * @param description
-     * @param nativeApis
-     * @param version
-     * @param minKubeVersion
-     * @param provider
-     * @param links
-     */
     public CSVDescription(Map<String, String> annotations, APIServiceDefinitions apiservicedefinitions, CustomResourceDefinitions customresourcedefinitions, java.lang.String description, java.lang.String displayName, List<Icon> icon, List<InstallMode> installModes, List<java.lang.String> keywords, List<AppLink> links, List<Maintainer> maintainers, java.lang.String maturity, java.lang.String minKubeVersion, List<GroupVersionKind> nativeApis, AppLink provider, List<java.lang.String> relatedImages, java.lang.String version) {
         super();
         this.annotations = annotations;

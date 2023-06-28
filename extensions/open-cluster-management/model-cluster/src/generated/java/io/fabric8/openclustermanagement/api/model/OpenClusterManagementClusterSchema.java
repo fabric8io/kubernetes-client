@@ -1,6 +1,7 @@
 
 package io.fabric8.openclustermanagement.api.model;
 
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -108,6 +109,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class OpenClusterManagementClusterSchema {
 
     @JsonProperty("open-cluster-management_io_api_cluster_v1_ClientConfig")
@@ -172,36 +174,6 @@ public class OpenClusterManagementClusterSchema {
     public OpenClusterManagementClusterSchema() {
     }
 
-    /**
-     * 
-     * @param openClusterManagementIoApiClusterV1alpha1ClusterPredicate
-     * @param openClusterManagementIoApiClusterV1alpha1PlacementList
-     * @param openClusterManagementIoApiClusterV1ManagedClusterClaim
-     * @param openClusterManagementIoApiClusterV1ManagedClusterList
-     * @param openClusterManagementIoApiClusterV1beta1ManagedClusterSetSpec
-     * @param openClusterManagementIoApiClusterV1alpha1PlacementDecision
-     * @param openClusterManagementIoApiClusterV1beta1ManagedClusterSetBindingList
-     * @param openClusterManagementIoApiClusterV1alpha1ClusterSelector
-     * @param openClusterManagementIoApiClusterV1alpha1PrioritizerPolicy
-     * @param openClusterManagementIoApiClusterV1ClientConfig
-     * @param openClusterManagementIoApiClusterV1alpha1PlacementDecisionList
-     * @param openClusterManagementIoApiClusterV1alpha1PlacementDecisionStatus
-     * @param openClusterManagementIoApiClusterV1alpha1PlacementSpec
-     * @param openClusterManagementIoApiClusterV1ManagedCluster
-     * @param openClusterManagementIoApiClusterV1alpha1ClusterClaimSelector
-     * @param openClusterManagementIoApiClusterV1ManagedClusterStatus
-     * @param openClusterManagementIoApiClusterV1beta1ManagedClusterSetBinding
-     * @param openClusterManagementIoApiClusterV1alpha1Placement
-     * @param openClusterManagementIoApiClusterV1ManagedClusterSpec
-     * @param openClusterManagementIoApiClusterV1beta1ManagedClusterSet
-     * @param openClusterManagementIoApiClusterV1beta1ManagedClusterSetStatus
-     * @param openClusterManagementIoApiClusterV1beta1ManagedClusterSetList
-     * @param openClusterManagementIoApiClusterV1alpha1PlacementStatus
-     * @param openClusterManagementIoApiClusterV1alpha1PrioritizerConfig
-     * @param openClusterManagementIoApiClusterV1beta1ManagedClusterSetBindingSpec
-     * @param openClusterManagementIoApiClusterV1ManagedClusterVersion
-     * @param openClusterManagementIoApiClusterV1alpha1ClusterDecision
-     */
     public OpenClusterManagementClusterSchema(ClientConfig openClusterManagementIoApiClusterV1ClientConfig, ManagedCluster openClusterManagementIoApiClusterV1ManagedCluster, ManagedClusterClaim openClusterManagementIoApiClusterV1ManagedClusterClaim, ManagedClusterList openClusterManagementIoApiClusterV1ManagedClusterList, ManagedClusterSpec openClusterManagementIoApiClusterV1ManagedClusterSpec, ManagedClusterStatus openClusterManagementIoApiClusterV1ManagedClusterStatus, ManagedClusterVersion openClusterManagementIoApiClusterV1ManagedClusterVersion, ClusterClaimSelector openClusterManagementIoApiClusterV1alpha1ClusterClaimSelector, ClusterDecision openClusterManagementIoApiClusterV1alpha1ClusterDecision, ClusterPredicate openClusterManagementIoApiClusterV1alpha1ClusterPredicate, ClusterSelector openClusterManagementIoApiClusterV1alpha1ClusterSelector, Placement openClusterManagementIoApiClusterV1alpha1Placement, PlacementDecision openClusterManagementIoApiClusterV1alpha1PlacementDecision, PlacementDecisionList openClusterManagementIoApiClusterV1alpha1PlacementDecisionList, PlacementDecisionStatus openClusterManagementIoApiClusterV1alpha1PlacementDecisionStatus, PlacementList openClusterManagementIoApiClusterV1alpha1PlacementList, PlacementSpec openClusterManagementIoApiClusterV1alpha1PlacementSpec, PlacementStatus openClusterManagementIoApiClusterV1alpha1PlacementStatus, PrioritizerConfig openClusterManagementIoApiClusterV1alpha1PrioritizerConfig, PrioritizerPolicy openClusterManagementIoApiClusterV1alpha1PrioritizerPolicy, ManagedClusterSet openClusterManagementIoApiClusterV1beta1ManagedClusterSet, ManagedClusterSetBinding openClusterManagementIoApiClusterV1beta1ManagedClusterSetBinding, ManagedClusterSetBindingList openClusterManagementIoApiClusterV1beta1ManagedClusterSetBindingList, ManagedClusterSetBindingSpec openClusterManagementIoApiClusterV1beta1ManagedClusterSetBindingSpec, ManagedClusterSetList openClusterManagementIoApiClusterV1beta1ManagedClusterSetList, ManagedClusterSetSpec openClusterManagementIoApiClusterV1beta1ManagedClusterSetSpec, ManagedClusterSetStatus openClusterManagementIoApiClusterV1beta1ManagedClusterSetStatus) {
         super();
         this.openClusterManagementIoApiClusterV1ClientConfig = openClusterManagementIoApiClusterV1ClientConfig;

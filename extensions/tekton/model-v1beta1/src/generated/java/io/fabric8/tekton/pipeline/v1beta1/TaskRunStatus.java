@@ -2,10 +2,10 @@
 package io.fabric8.tekton.pipeline.v1beta1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -80,6 +80,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class TaskRunStatus implements KubernetesResource
 {
 
@@ -123,7 +124,7 @@ public class TaskRunStatus implements KubernetesResource
     @JsonProperty("taskSpec")
     private TaskSpec taskSpec;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -132,24 +133,6 @@ public class TaskRunStatus implements KubernetesResource
     public TaskRunStatus() {
     }
 
-    /**
-     * 
-     * @param sidecars
-     * @param taskResults
-     * @param annotations
-     * @param steps
-     * @param taskSpec
-     * @param cloudEvents
-     * @param completionTime
-     * @param provenance
-     * @param retriesStatus
-     * @param podName
-     * @param spanContext
-     * @param startTime
-     * @param conditions
-     * @param resourcesResult
-     * @param observedGeneration
-     */
     public TaskRunStatus(Map<String, String> annotations, List<CloudEventDelivery> cloudEvents, java.lang.String completionTime, List<Condition> conditions, Long observedGeneration, java.lang.String podName, Provenance provenance, List<RunResult> resourcesResult, List<TaskRunStatus> retriesStatus, List<SidecarState> sidecars, Map<String, String> spanContext, java.lang.String startTime, List<StepState> steps, List<TaskRunResult> taskResults, TaskSpec taskSpec) {
         super();
         this.annotations = annotations;

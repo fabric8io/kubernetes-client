@@ -1,8 +1,9 @@
 
 package io.fabric8.kubernetes.api.model;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -83,6 +84,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class ValidationSchema {
 
     @JsonProperty("GRPCRoute")
@@ -134,7 +136,7 @@ public class ValidationSchema {
     @JsonProperty("V1Beta1ReferenceGrantList")
     private io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.ReferenceGrantList v1Beta1ReferenceGrantList;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -143,33 +145,6 @@ public class ValidationSchema {
     public ValidationSchema() {
     }
 
-    /**
-     * 
-     * @param gatewayClassList
-     * @param v1Beta1HTTPRoute
-     * @param gRPCRoute
-     * @param v1Beta1ReferenceGrantList
-     * @param uDPRoute
-     * @param v1Beta1Gateway
-     * @param v1Beta1GatewayClassList
-     * @param gatewayList
-     * @param tLSRouteList
-     * @param tCPRoute
-     * @param v1Beta1HTTPRouteList
-     * @param hTTPRouteList
-     * @param v1Beta1ReferenceGrant
-     * @param gRPCRouteList
-     * @param tLSRoute
-     * @param v1Beta1GatewayClass
-     * @param uDPRouteList
-     * @param hTTPRoute
-     * @param referenceGrantList
-     * @param gatewayClass
-     * @param v1Beta1GatewayList
-     * @param referenceGrant
-     * @param gateway
-     * @param tCPRouteList
-     */
     public ValidationSchema(GRPCRoute gRPCRoute, GRPCRouteList gRPCRouteList, io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.Gateway gateway, io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.GatewayClass gatewayClass, io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.GatewayClassList gatewayClassList, io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.GatewayList gatewayList, io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.HTTPRoute hTTPRoute, io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.HTTPRouteList hTTPRouteList, io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.ReferenceGrant referenceGrant, io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.ReferenceGrantList referenceGrantList, TCPRoute tCPRoute, TCPRouteList tCPRouteList, TLSRoute tLSRoute, TLSRouteList tLSRouteList, UDPRoute uDPRoute, UDPRouteList uDPRouteList, io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.Gateway v1Beta1Gateway, io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.GatewayClass v1Beta1GatewayClass, io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.GatewayClassList v1Beta1GatewayClassList, io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.GatewayList v1Beta1GatewayList, io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.HTTPRoute v1Beta1HTTPRoute, io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.HTTPRouteList v1Beta1HTTPRouteList, io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.ReferenceGrant v1Beta1ReferenceGrant, io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.ReferenceGrantList v1Beta1ReferenceGrantList) {
         super();
         this.gRPCRoute = gRPCRoute;

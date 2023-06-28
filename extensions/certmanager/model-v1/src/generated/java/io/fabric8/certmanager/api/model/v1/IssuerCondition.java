@@ -1,8 +1,9 @@
 
 package io.fabric8.certmanager.api.model.v1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -66,6 +67,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class IssuerCondition implements KubernetesResource
 {
 
@@ -82,7 +84,7 @@ public class IssuerCondition implements KubernetesResource
     @JsonProperty("type")
     private String type;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -91,15 +93,6 @@ public class IssuerCondition implements KubernetesResource
     public IssuerCondition() {
     }
 
-    /**
-     * 
-     * @param reason
-     * @param lastTransitionTime
-     * @param message
-     * @param type
-     * @param observedGeneration
-     * @param status
-     */
     public IssuerCondition(String lastTransitionTime, String message, Long observedGeneration, String reason, String status, String type) {
         super();
         this.lastTransitionTime = lastTransitionTime;

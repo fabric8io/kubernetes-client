@@ -2,9 +2,10 @@
 package io.fabric8.camelk.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -79,6 +80,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class IntegrationStatus implements KubernetesResource
 {
 
@@ -125,7 +127,7 @@ public class IntegrationStatus implements KubernetesResource
     @JsonProperty("version")
     private String version;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -134,27 +136,6 @@ public class IntegrationStatus implements KubernetesResource
     public IntegrationStatus() {
     }
 
-    /**
-     * 
-     * @param phase
-     * @param image
-     * @param runtimeVersion
-     * @param capabilities
-     * @param configuration
-     * @param integrationKit
-     * @param replicas
-     * @param profile
-     * @param runtimeProvider
-     * @param version
-     * @param platform
-     * @param dependencies
-     * @param generatedResources
-     * @param lastInitTimestamp
-     * @param digest
-     * @param selector
-     * @param conditions
-     * @param generatedSources
-     */
     public IntegrationStatus(List<String> capabilities, List<IntegrationCondition> conditions, List<ConfigurationSpec> configuration, List<String> dependencies, String digest, List<ResourceSpec> generatedResources, List<SourceSpec> generatedSources, String image, io.fabric8.kubernetes.api.model.ObjectReference integrationKit, String lastInitTimestamp, String phase, String platform, String profile, Integer replicas, String runtimeProvider, String runtimeVersion, String selector, String version) {
         super();
         this.capabilities = capabilities;

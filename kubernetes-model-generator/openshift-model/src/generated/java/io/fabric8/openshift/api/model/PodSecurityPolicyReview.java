@@ -1,8 +1,9 @@
 
 package io.fabric8.openshift.api.model;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -64,6 +65,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1")
 @Group("security.openshift.io")
+@Generated("jsonschema2pojo")
 public class PodSecurityPolicyReview implements KubernetesResource, Namespaced
 {
 
@@ -86,7 +88,7 @@ public class PodSecurityPolicyReview implements KubernetesResource, Namespaced
     @JsonProperty("status")
     private PodSecurityPolicyReviewStatus status;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -95,13 +97,6 @@ public class PodSecurityPolicyReview implements KubernetesResource, Namespaced
     public PodSecurityPolicyReview() {
     }
 
-    /**
-     * 
-     * @param apiVersion
-     * @param kind
-     * @param spec
-     * @param status
-     */
     public PodSecurityPolicyReview(String apiVersion, String kind, PodSecurityPolicyReviewSpec spec, PodSecurityPolicyReviewStatus status) {
         super();
         this.apiVersion = apiVersion;

@@ -1,8 +1,9 @@
 
 package io.fabric8.tekton.v1beta1.internal.pipeline.pkg.apis.resource.v1alpha1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -63,6 +64,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class SecretParam implements KubernetesResource
 {
 
@@ -73,7 +75,7 @@ public class SecretParam implements KubernetesResource
     @JsonProperty("secretName")
     private String secretName;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -82,12 +84,6 @@ public class SecretParam implements KubernetesResource
     public SecretParam() {
     }
 
-    /**
-     * 
-     * @param secretName
-     * @param fieldName
-     * @param secretKey
-     */
     public SecretParam(String fieldName, String secretKey, String secretName) {
         super();
         this.fieldName = fieldName;

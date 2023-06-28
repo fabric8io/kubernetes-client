@@ -2,9 +2,10 @@
 package io.fabric8.kubernetes.api.model.flowcontrol.v1beta2;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -57,6 +58,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class PolicyRulesWithSubjects implements KubernetesResource
 {
 
@@ -69,7 +71,7 @@ public class PolicyRulesWithSubjects implements KubernetesResource
     @JsonProperty("subjects")
     private List<Subject> subjects = new ArrayList<Subject>();
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -78,12 +80,6 @@ public class PolicyRulesWithSubjects implements KubernetesResource
     public PolicyRulesWithSubjects() {
     }
 
-    /**
-     * 
-     * @param nonResourceRules
-     * @param resourceRules
-     * @param subjects
-     */
     public PolicyRulesWithSubjects(List<NonResourcePolicyRule> nonResourceRules, List<ResourcePolicyRule> resourceRules, List<Subject> subjects) {
         super();
         this.nonResourceRules = nonResourceRules;

@@ -1,8 +1,9 @@
 
 package io.fabric8.istio.api.analysis.v1alpha1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -63,6 +64,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class AnalysisMessageBase implements KubernetesResource
 {
 
@@ -73,7 +75,7 @@ public class AnalysisMessageBase implements KubernetesResource
     @JsonProperty("type")
     private AnalysisMessageBaseType type;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -82,12 +84,6 @@ public class AnalysisMessageBase implements KubernetesResource
     public AnalysisMessageBase() {
     }
 
-    /**
-     * 
-     * @param documentationUrl
-     * @param level
-     * @param type
-     */
     public AnalysisMessageBase(String documentationUrl, AnalysisMessageBaseLevel level, AnalysisMessageBaseType type) {
         super();
         this.documentationUrl = documentationUrl;

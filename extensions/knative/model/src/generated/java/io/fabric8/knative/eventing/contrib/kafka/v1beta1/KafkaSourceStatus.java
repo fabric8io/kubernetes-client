@@ -2,10 +2,10 @@
 package io.fabric8.knative.eventing.contrib.kafka.v1beta1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -76,6 +76,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class KafkaSourceStatus implements KubernetesResource
 {
 
@@ -104,7 +105,7 @@ public class KafkaSourceStatus implements KubernetesResource
     @JsonProperty("sinkUri")
     private java.lang.String sinkUri;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -113,19 +114,6 @@ public class KafkaSourceStatus implements KubernetesResource
     public KafkaSourceStatus() {
     }
 
-    /**
-     * 
-     * @param sinkUri
-     * @param ceAttributes
-     * @param claims
-     * @param annotations
-     * @param consumers
-     * @param placements
-     * @param selector
-     * @param conditions
-     * @param maxAllowedVReplicas
-     * @param observedGeneration
-     */
     public KafkaSourceStatus(Map<String, String> annotations, List<CloudEventAttributes> ceAttributes, java.lang.String claims, List<Condition> conditions, java.lang.Integer consumers, Integer maxAllowedVReplicas, Long observedGeneration, List<Placement> placements, java.lang.String selector, java.lang.String sinkUri) {
         super();
         this.annotations = annotations;

@@ -2,9 +2,10 @@
 package io.fabric8.openshift.api.model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -80,6 +81,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1")
 @Group("authorization.openshift.io")
+@Generated("jsonschema2pojo")
 public class LocalSubjectAccessReview implements KubernetesResource, Namespaced
 {
 
@@ -122,7 +124,7 @@ public class LocalSubjectAccessReview implements KubernetesResource, Namespaced
     @JsonProperty("verb")
     private String verb;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -131,23 +133,6 @@ public class LocalSubjectAccessReview implements KubernetesResource, Namespaced
     public LocalSubjectAccessReview() {
     }
 
-    /**
-     * 
-     * @param isNonResourceURL
-     * @param resource
-     * @param kind
-     * @param resourceAPIGroup
-     * @param verb
-     * @param groups
-     * @param resourceName
-     * @param content
-     * @param path
-     * @param apiVersion
-     * @param namespace
-     * @param resourceAPIVersion
-     * @param scopes
-     * @param user
-     */
     public LocalSubjectAccessReview(String apiVersion, KubernetesResource content, List<String> groups, Boolean isNonResourceURL, String kind, String namespace, String path, String resource, String resourceAPIGroup, String resourceAPIVersion, String resourceName, List<String> scopes, String user, String verb) {
         super();
         this.apiVersion = apiVersion;

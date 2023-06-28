@@ -1,6 +1,7 @@
 
 package io.fabric8.openclustermanagement.api.model;
 
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -74,6 +75,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class OpenClusterManagementSearchSchema {
 
     @JsonProperty("github_com_open-cluster-management_search-operator_api_v1alpha1_ImageOverrides")
@@ -104,19 +106,6 @@ public class OpenClusterManagementSearchSchema {
     public OpenClusterManagementSearchSchema() {
     }
 
-    /**
-     * 
-     * @param githubComOpenClusterManagementSearchOperatorApiV1alpha1PodResource
-     * @param githubComOpenClusterManagementSearchOperatorApiV1alpha1SearchCustomizationList
-     * @param githubComOpenClusterManagementSearchOperatorApiV1alpha1SearchCustomizationSpec
-     * @param githubComOpenClusterManagementSearchOperatorApiV1alpha1SearchCustomizationStatus
-     * @param githubComOpenClusterManagementSearchOperatorApiV1alpha1SearchOperatorList
-     * @param githubComOpenClusterManagementSearchOperatorApiV1alpha1SearchOperatorSpec
-     * @param githubComOpenClusterManagementSearchOperatorApiV1alpha1SearchOperatorStatus
-     * @param githubComOpenClusterManagementSearchOperatorApiV1alpha1ImageOverrides
-     * @param githubComOpenClusterManagementSearchOperatorApiV1alpha1SearchCustomization
-     * @param githubComOpenClusterManagementSearchOperatorApiV1alpha1SearchOperator
-     */
     public OpenClusterManagementSearchSchema(ImageOverrides githubComOpenClusterManagementSearchOperatorApiV1alpha1ImageOverrides, PodResource githubComOpenClusterManagementSearchOperatorApiV1alpha1PodResource, SearchCustomization githubComOpenClusterManagementSearchOperatorApiV1alpha1SearchCustomization, SearchCustomizationList githubComOpenClusterManagementSearchOperatorApiV1alpha1SearchCustomizationList, SearchCustomizationSpec githubComOpenClusterManagementSearchOperatorApiV1alpha1SearchCustomizationSpec, SearchCustomizationStatus githubComOpenClusterManagementSearchOperatorApiV1alpha1SearchCustomizationStatus, SearchOperator githubComOpenClusterManagementSearchOperatorApiV1alpha1SearchOperator, SearchOperatorList githubComOpenClusterManagementSearchOperatorApiV1alpha1SearchOperatorList, SearchOperatorSpec githubComOpenClusterManagementSearchOperatorApiV1alpha1SearchOperatorSpec, SearchOperatorStatus githubComOpenClusterManagementSearchOperatorApiV1alpha1SearchOperatorStatus) {
         super();
         this.githubComOpenClusterManagementSearchOperatorApiV1alpha1ImageOverrides = githubComOpenClusterManagementSearchOperatorApiV1alpha1ImageOverrides;

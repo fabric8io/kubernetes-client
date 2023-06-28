@@ -1,6 +1,7 @@
 
 package io.fabric8.volcano.api.model;
 
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -72,6 +73,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class VolcanoSchema {
 
     @JsonProperty("volcano_sh_apis_pkg_apis_scheduling_v1beta1_PodGroup")
@@ -100,18 +102,6 @@ public class VolcanoSchema {
     public VolcanoSchema() {
     }
 
-    /**
-     * 
-     * @param volcanoShApisPkgApisSchedulingV1beta1QueueSpec
-     * @param volcanoShApisPkgApisSchedulingV1beta1PodGroupCondition
-     * @param volcanoShApisPkgApisSchedulingV1beta1PodGroupList
-     * @param volcanoShApisPkgApisSchedulingV1beta1PodGroupStatus
-     * @param volcanoShApisPkgApisSchedulingV1beta1PodGroup
-     * @param volcanoShApisPkgApisSchedulingV1beta1PodGroupSpec
-     * @param volcanoShApisPkgApisSchedulingV1beta1Queue
-     * @param volcanoShApisPkgApisSchedulingV1beta1QueueStatus
-     * @param volcanoShApisPkgApisSchedulingV1beta1QueueList
-     */
     public VolcanoSchema(PodGroup volcanoShApisPkgApisSchedulingV1beta1PodGroup, PodGroupCondition volcanoShApisPkgApisSchedulingV1beta1PodGroupCondition, PodGroupList volcanoShApisPkgApisSchedulingV1beta1PodGroupList, PodGroupSpec volcanoShApisPkgApisSchedulingV1beta1PodGroupSpec, PodGroupStatus volcanoShApisPkgApisSchedulingV1beta1PodGroupStatus, Queue volcanoShApisPkgApisSchedulingV1beta1Queue, QueueList volcanoShApisPkgApisSchedulingV1beta1QueueList, QueueSpec volcanoShApisPkgApisSchedulingV1beta1QueueSpec, QueueStatus volcanoShApisPkgApisSchedulingV1beta1QueueStatus) {
         super();
         this.volcanoShApisPkgApisSchedulingV1beta1PodGroup = volcanoShApisPkgApisSchedulingV1beta1PodGroup;

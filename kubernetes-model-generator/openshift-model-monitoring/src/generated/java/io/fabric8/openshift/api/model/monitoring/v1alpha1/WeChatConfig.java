@@ -1,8 +1,9 @@
 
 package io.fabric8.openshift.api.model.monitoring.v1alpha1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -64,6 +65,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class WeChatConfig implements KubernetesResource
 {
 
@@ -90,7 +92,7 @@ public class WeChatConfig implements KubernetesResource
     @JsonProperty("toUser")
     private String toUser;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -99,20 +101,6 @@ public class WeChatConfig implements KubernetesResource
     public WeChatConfig() {
     }
 
-    /**
-     * 
-     * @param toUser
-     * @param agentID
-     * @param sendResolved
-     * @param apiURL
-     * @param corpID
-     * @param httpConfig
-     * @param messageType
-     * @param toTag
-     * @param apiSecret
-     * @param toParty
-     * @param message
-     */
     public WeChatConfig(String agentID, SecretKeySelector apiSecret, String apiURL, String corpID, HTTPConfig httpConfig, String message, String messageType, Boolean sendResolved, String toParty, String toTag, String toUser) {
         super();
         this.agentID = agentID;

@@ -1,8 +1,9 @@
 
 package io.fabric8.kubernetes.api.model.storage;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -55,6 +56,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class VolumeAttachmentSpec implements KubernetesResource
 {
 
@@ -65,7 +67,7 @@ public class VolumeAttachmentSpec implements KubernetesResource
     @JsonProperty("source")
     private VolumeAttachmentSource source;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -74,12 +76,6 @@ public class VolumeAttachmentSpec implements KubernetesResource
     public VolumeAttachmentSpec() {
     }
 
-    /**
-     * 
-     * @param nodeName
-     * @param source
-     * @param attacher
-     */
     public VolumeAttachmentSpec(String attacher, String nodeName, VolumeAttachmentSource source) {
         super();
         this.attacher = attacher;

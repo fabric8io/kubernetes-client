@@ -2,9 +2,10 @@
 package io.fabric8.openshift.api.model.operator.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -58,6 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class DeveloperConsoleCatalogCategory implements KubernetesResource
 {
 
@@ -72,7 +74,7 @@ public class DeveloperConsoleCatalogCategory implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> tags = new ArrayList<String>();
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -81,13 +83,6 @@ public class DeveloperConsoleCatalogCategory implements KubernetesResource
     public DeveloperConsoleCatalogCategory() {
     }
 
-    /**
-     * 
-     * @param id
-     * @param label
-     * @param subcategories
-     * @param tags
-     */
     public DeveloperConsoleCatalogCategory(String id, String label, List<DeveloperConsoleCatalogCategoryMeta> subcategories, List<String> tags) {
         super();
         this.id = id;

@@ -2,10 +2,10 @@
 package io.fabric8.camelk.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -70,6 +70,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class IntegrationPlatformSpec implements KubernetesResource
 {
 
@@ -90,7 +91,7 @@ public class IntegrationPlatformSpec implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, TraitSpec> traits = new LinkedHashMap<String, TraitSpec>();
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -99,16 +100,6 @@ public class IntegrationPlatformSpec implements KubernetesResource
     public IntegrationPlatformSpec() {
     }
 
-    /**
-     * 
-     * @param cluster
-     * @param traits
-     * @param build
-     * @param configuration
-     * @param profile
-     * @param resources
-     * @param kamelet
-     */
     public IntegrationPlatformSpec(IntegrationPlatformBuildSpec build, java.lang.String cluster, List<ConfigurationSpec> configuration, IntegrationPlatformKameletSpec kamelet, java.lang.String profile, IntegrationPlatformResourcesSpec resources, Map<String, TraitSpec> traits) {
         super();
         this.build = build;

@@ -1,8 +1,9 @@
 
 package io.fabric8.istio.api.networking.v1alpha3;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -64,6 +65,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class EnvoyFilterClusterMatch implements KubernetesResource
 {
 
@@ -76,7 +78,7 @@ public class EnvoyFilterClusterMatch implements KubernetesResource
     @JsonProperty("subset")
     private String subset;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -85,13 +87,6 @@ public class EnvoyFilterClusterMatch implements KubernetesResource
     public EnvoyFilterClusterMatch() {
     }
 
-    /**
-     * 
-     * @param service
-     * @param name
-     * @param portNumber
-     * @param subset
-     */
     public EnvoyFilterClusterMatch(String name, Integer portNumber, String service, String subset) {
         super();
         this.name = name;

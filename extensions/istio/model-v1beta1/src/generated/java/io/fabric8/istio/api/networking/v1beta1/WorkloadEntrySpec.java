@@ -1,9 +1,9 @@
 
 package io.fabric8.istio.api.networking.v1beta1;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -68,6 +68,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class WorkloadEntrySpec implements KubernetesResource
 {
 
@@ -88,7 +89,7 @@ public class WorkloadEntrySpec implements KubernetesResource
     @JsonProperty("weight")
     private Integer weight;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -97,16 +98,6 @@ public class WorkloadEntrySpec implements KubernetesResource
     public WorkloadEntrySpec() {
     }
 
-    /**
-     * 
-     * @param address
-     * @param locality
-     * @param weight
-     * @param serviceAccount
-     * @param ports
-     * @param labels
-     * @param network
-     */
     public WorkloadEntrySpec(java.lang.String address, Map<String, String> labels, java.lang.String locality, java.lang.String network, Map<String, Long> ports, java.lang.String serviceAccount, Integer weight) {
         super();
         this.address = address;

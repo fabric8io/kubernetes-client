@@ -2,9 +2,10 @@
 package io.fabric8.openshift.api.model.operatorhub.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -58,6 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class OperatorGroupStatus implements KubernetesResource
 {
 
@@ -72,7 +74,7 @@ public class OperatorGroupStatus implements KubernetesResource
     @JsonProperty("serviceAccountRef")
     private io.fabric8.kubernetes.api.model.ObjectReference serviceAccountRef;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -81,13 +83,6 @@ public class OperatorGroupStatus implements KubernetesResource
     public OperatorGroupStatus() {
     }
 
-    /**
-     * 
-     * @param lastUpdated
-     * @param conditions
-     * @param serviceAccountRef
-     * @param namespaces
-     */
     public OperatorGroupStatus(List<Condition> conditions, String lastUpdated, List<java.lang.String> namespaces, io.fabric8.kubernetes.api.model.ObjectReference serviceAccountRef) {
         super();
         this.conditions = conditions;

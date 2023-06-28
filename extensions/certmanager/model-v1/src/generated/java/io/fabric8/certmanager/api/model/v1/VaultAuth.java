@@ -1,8 +1,9 @@
 
 package io.fabric8.certmanager.api.model.v1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -64,6 +65,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class VaultAuth implements KubernetesResource
 {
 
@@ -74,7 +76,7 @@ public class VaultAuth implements KubernetesResource
     @JsonProperty("tokenSecretRef")
     private SecretKeySelector tokenSecretRef;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -83,12 +85,6 @@ public class VaultAuth implements KubernetesResource
     public VaultAuth() {
     }
 
-    /**
-     * 
-     * @param kubernetes
-     * @param appRole
-     * @param tokenSecretRef
-     */
     public VaultAuth(VaultAppRole appRole, VaultKubernetesAuth kubernetes, SecretKeySelector tokenSecretRef) {
         super();
         this.appRole = appRole;

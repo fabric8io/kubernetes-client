@@ -1,8 +1,9 @@
 
 package io.fabric8.openshift.api.model;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -64,6 +65,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1")
 @Group("image.openshift.io")
+@Generated("jsonschema2pojo")
 public class ImageTag implements HasMetadata, Namespaced
 {
 
@@ -90,7 +92,7 @@ public class ImageTag implements HasMetadata, Namespaced
     @JsonProperty("status")
     private NamedTagEventList status;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -99,15 +101,6 @@ public class ImageTag implements HasMetadata, Namespaced
     public ImageTag() {
     }
 
-    /**
-     * 
-     * @param image
-     * @param metadata
-     * @param apiVersion
-     * @param kind
-     * @param spec
-     * @param status
-     */
     public ImageTag(String apiVersion, Image image, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, TagReference spec, NamedTagEventList status) {
         super();
         this.apiVersion = apiVersion;

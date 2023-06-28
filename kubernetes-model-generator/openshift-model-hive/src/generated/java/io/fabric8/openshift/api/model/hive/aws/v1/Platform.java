@@ -1,9 +1,9 @@
 
 package io.fabric8.openshift.api.model.hive.aws.v1;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -57,6 +57,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(io.fabric8.kubernetes.api.model.LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class Platform implements KubernetesResource
 {
 
@@ -72,7 +73,7 @@ public class Platform implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> userTags = new LinkedHashMap<String, String>();
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -81,14 +82,6 @@ public class Platform implements KubernetesResource
     public Platform() {
     }
 
-    /**
-     * 
-     * @param credentialsSecretRef
-     * @param userTags
-     * @param region
-     * @param privateLink
-     * @param credentialsAssumeRole
-     */
     public Platform(AssumeRole credentialsAssumeRole, io.fabric8.kubernetes.api.model.LocalObjectReference credentialsSecretRef, PrivateLinkAccess privateLink, java.lang.String region, Map<String, String> userTags) {
         super();
         this.credentialsAssumeRole = credentialsAssumeRole;

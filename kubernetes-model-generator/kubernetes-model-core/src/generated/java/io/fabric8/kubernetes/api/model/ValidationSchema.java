@@ -1,8 +1,9 @@
 
 package io.fabric8.kubernetes.api.model;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -96,6 +97,7 @@ import lombok.experimental.Accessors;
     ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
+@Generated("jsonschema2pojo")
 public class ValidationSchema {
 
     @JsonProperty("APIGroup")
@@ -227,7 +229,7 @@ public class ValidationSchema {
     @JsonProperty("WatchEvent")
     private WatchEvent watchEvent;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -236,73 +238,6 @@ public class ValidationSchema {
     public ValidationSchema() {
     }
 
-    /**
-     * 
-     * @param listOptions
-     * @param aPIGroupList
-     * @param configMapList
-     * @param eventList
-     * @param binding
-     * @param namespaceList
-     * @param patch
-     * @param serviceAccountList
-     * @param persistentVolume
-     * @param resourceQuota
-     * @param watchEvent
-     * @param secretList
-     * @param info
-     * @param deleteOptions
-     * @param groupKind
-     * @param groupVersionResource
-     * @param limitRangeList
-     * @param toleration
-     * @param aPIResourceList
-     * @param nodeList
-     * @param groupVersionKind
-     * @param node
-     * @param condition
-     * @param configMap
-     * @param getOptions
-     * @param eventSeries
-     * @param persistentVolumeClaimList
-     * @param status
-     * @param replicationControllerList
-     * @param eventSource
-     * @param updateOptions
-     * @param componentStatus
-     * @param podList
-     * @param secret
-     * @param aPIService
-     * @param persistentVolumeList
-     * @param rootPaths
-     * @param event
-     * @param containerStatus
-     * @param aPIServiceList
-     * @param endpointsList
-     * @param patchOptions
-     * @param endpoints
-     * @param quantity
-     * @param envVar
-     * @param microTime
-     * @param podExecOptions
-     * @param serviceAccount
-     * @param aPIResource
-     * @param kubernetesList
-     * @param resourceQuotaList
-     * @param topologySelectorTerm
-     * @param createOptions
-     * @param podTemplateList
-     * @param aPIGroup
-     * @param typeMeta
-     * @param objectMeta
-     * @param namespace
-     * @param serviceList
-     * @param componentStatusList
-     * @param persistentVolumeClaim
-     * @param time
-     * @param endpointPort
-     * @param config
-     */
     public ValidationSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, APIResource aPIResource, APIResourceList aPIResourceList, APIService aPIService, APIServiceList aPIServiceList, Binding binding, ComponentStatus componentStatus, ComponentStatusList componentStatusList, Condition condition, Config config, ConfigMap configMap, ConfigMapList configMapList, ContainerStatus containerStatus, CreateOptions createOptions, DeleteOptions deleteOptions, EndpointPort endpointPort, Endpoints endpoints, EndpointsList endpointsList, EnvVar envVar, Event event, EventList eventList, EventSeries eventSeries, EventSource eventSource, GetOptions getOptions, GroupKind groupKind, GroupVersionKind groupVersionKind, GroupVersionResource groupVersionResource, Info info, KubernetesList kubernetesList, LimitRangeList limitRangeList, ListOptions listOptions, MicroTime microTime, Namespace namespace, NamespaceList namespaceList, Node node, NodeList nodeList, ObjectMeta objectMeta, Patch patch, PatchOptions patchOptions, PersistentVolume persistentVolume, PersistentVolumeClaim persistentVolumeClaim, PersistentVolumeClaimList persistentVolumeClaimList, PersistentVolumeList persistentVolumeList, PodExecOptions podExecOptions, PodList podList, PodTemplateList podTemplateList, Quantity quantity, ReplicationControllerList replicationControllerList, ResourceQuota resourceQuota, ResourceQuotaList resourceQuotaList, RootPaths rootPaths, Secret secret, SecretList secretList, ServiceAccount serviceAccount, ServiceAccountList serviceAccountList, ServiceList serviceList, Status status, String time, Toleration toleration, TopologySelectorTerm topologySelectorTerm, TypeMeta typeMeta, UpdateOptions updateOptions, WatchEvent watchEvent) {
         super();
         this.aPIGroup = aPIGroup;

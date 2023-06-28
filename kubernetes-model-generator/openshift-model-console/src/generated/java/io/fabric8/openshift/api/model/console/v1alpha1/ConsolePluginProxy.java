@@ -2,9 +2,10 @@
 package io.fabric8.openshift.api.model.console.v1alpha1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -55,13 +56,14 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class ConsolePluginProxy implements KubernetesResource
 {
 
     @JsonProperty("services")
     private List<ConsolePluginProxyService> services = new ArrayList<ConsolePluginProxyService>();
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -70,10 +72,6 @@ public class ConsolePluginProxy implements KubernetesResource
     public ConsolePluginProxy() {
     }
 
-    /**
-     * 
-     * @param services
-     */
     public ConsolePluginProxy(List<ConsolePluginProxyService> services) {
         super();
         this.services = services;

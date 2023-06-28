@@ -1,6 +1,7 @@
 
 package io.fabric8.verticalpodautoscaler.api.model;
 
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -84,6 +85,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class VerticalpodautoscalerSchema {
 
     @JsonProperty("k8s_io_autoscaler_vertical-pod-autoscaler_pkg_apis_autoscaling_k8s_io_v1_ContainerResourcePolicy")
@@ -124,24 +126,6 @@ public class VerticalpodautoscalerSchema {
     public VerticalpodautoscalerSchema() {
     }
 
-    /**
-     * 
-     * @param k8sIoAutoscalerVerticalPodAutoscalerPkgApisAutoscalingK8sIoV1VerticalPodAutoscalerCheckpointStatus
-     * @param k8sIoAutoscalerVerticalPodAutoscalerPkgApisAutoscalingK8sIoV1ContainerResourcePolicy
-     * @param k8sIoAutoscalerVerticalPodAutoscalerPkgApisAutoscalingK8sIoV1HistogramCheckpoint
-     * @param k8sIoAutoscalerVerticalPodAutoscalerPkgApisAutoscalingK8sIoV1VerticalPodAutoscalerList
-     * @param k8sIoAutoscalerVerticalPodAutoscalerPkgApisAutoscalingK8sIoV1VerticalPodAutoscalerCondition
-     * @param k8sIoAutoscalerVerticalPodAutoscalerPkgApisAutoscalingK8sIoV1RecommendedPodResources
-     * @param k8sIoAutoscalerVerticalPodAutoscalerPkgApisAutoscalingK8sIoV1VerticalPodAutoscalerSpec
-     * @param k8sIoAutoscalerVerticalPodAutoscalerPkgApisAutoscalingK8sIoV1PodUpdatePolicy
-     * @param k8sIoAutoscalerVerticalPodAutoscalerPkgApisAutoscalingK8sIoV1VerticalPodAutoscalerStatus
-     * @param k8sIoAutoscalerVerticalPodAutoscalerPkgApisAutoscalingK8sIoV1VerticalPodAutoscaler
-     * @param k8sIoAutoscalerVerticalPodAutoscalerPkgApisAutoscalingK8sIoV1VerticalPodAutoscalerCheckpointList
-     * @param k8sIoAutoscalerVerticalPodAutoscalerPkgApisAutoscalingK8sIoV1RecommendedContainerResources
-     * @param k8sIoAutoscalerVerticalPodAutoscalerPkgApisAutoscalingK8sIoV1VerticalPodAutoscalerCheckpointSpec
-     * @param k8sIoAutoscalerVerticalPodAutoscalerPkgApisAutoscalingK8sIoV1PodResourcePolicy
-     * @param k8sIoAutoscalerVerticalPodAutoscalerPkgApisAutoscalingK8sIoV1VerticalPodAutoscalerCheckpoint
-     */
     public VerticalpodautoscalerSchema(ContainerResourcePolicy k8sIoAutoscalerVerticalPodAutoscalerPkgApisAutoscalingK8sIoV1ContainerResourcePolicy, HistogramCheckpoint k8sIoAutoscalerVerticalPodAutoscalerPkgApisAutoscalingK8sIoV1HistogramCheckpoint, PodResourcePolicy k8sIoAutoscalerVerticalPodAutoscalerPkgApisAutoscalingK8sIoV1PodResourcePolicy, PodUpdatePolicy k8sIoAutoscalerVerticalPodAutoscalerPkgApisAutoscalingK8sIoV1PodUpdatePolicy, RecommendedContainerResources k8sIoAutoscalerVerticalPodAutoscalerPkgApisAutoscalingK8sIoV1RecommendedContainerResources, RecommendedPodResources k8sIoAutoscalerVerticalPodAutoscalerPkgApisAutoscalingK8sIoV1RecommendedPodResources, VerticalPodAutoscaler k8sIoAutoscalerVerticalPodAutoscalerPkgApisAutoscalingK8sIoV1VerticalPodAutoscaler, VerticalPodAutoscalerCheckpoint k8sIoAutoscalerVerticalPodAutoscalerPkgApisAutoscalingK8sIoV1VerticalPodAutoscalerCheckpoint, VerticalPodAutoscalerCheckpointList k8sIoAutoscalerVerticalPodAutoscalerPkgApisAutoscalingK8sIoV1VerticalPodAutoscalerCheckpointList, VerticalPodAutoscalerCheckpointSpec k8sIoAutoscalerVerticalPodAutoscalerPkgApisAutoscalingK8sIoV1VerticalPodAutoscalerCheckpointSpec, VerticalPodAutoscalerCheckpointStatus k8sIoAutoscalerVerticalPodAutoscalerPkgApisAutoscalingK8sIoV1VerticalPodAutoscalerCheckpointStatus, VerticalPodAutoscalerCondition k8sIoAutoscalerVerticalPodAutoscalerPkgApisAutoscalingK8sIoV1VerticalPodAutoscalerCondition, VerticalPodAutoscalerList k8sIoAutoscalerVerticalPodAutoscalerPkgApisAutoscalingK8sIoV1VerticalPodAutoscalerList, VerticalPodAutoscalerSpec k8sIoAutoscalerVerticalPodAutoscalerPkgApisAutoscalingK8sIoV1VerticalPodAutoscalerSpec, VerticalPodAutoscalerStatus k8sIoAutoscalerVerticalPodAutoscalerPkgApisAutoscalingK8sIoV1VerticalPodAutoscalerStatus) {
         super();
         this.k8sIoAutoscalerVerticalPodAutoscalerPkgApisAutoscalingK8sIoV1ContainerResourcePolicy = k8sIoAutoscalerVerticalPodAutoscalerPkgApisAutoscalingK8sIoV1ContainerResourcePolicy;

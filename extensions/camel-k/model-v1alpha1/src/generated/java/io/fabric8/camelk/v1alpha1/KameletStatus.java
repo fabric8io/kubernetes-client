@@ -2,9 +2,10 @@
 package io.fabric8.camelk.v1alpha1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -65,6 +66,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class KameletStatus implements KubernetesResource
 {
 
@@ -77,7 +79,7 @@ public class KameletStatus implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<KameletProperty> properties = new ArrayList<KameletProperty>();
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -86,12 +88,6 @@ public class KameletStatus implements KubernetesResource
     public KameletStatus() {
     }
 
-    /**
-     * 
-     * @param phase
-     * @param conditions
-     * @param properties
-     */
     public KameletStatus(List<KameletCondition> conditions, String phase, List<KameletProperty> properties) {
         super();
         this.conditions = conditions;

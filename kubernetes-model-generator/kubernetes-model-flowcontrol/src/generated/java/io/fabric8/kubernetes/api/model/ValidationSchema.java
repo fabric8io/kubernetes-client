@@ -1,8 +1,9 @@
 
 package io.fabric8.kubernetes.api.model;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -67,6 +68,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class ValidationSchema {
 
     @JsonProperty("V1alpha1FlowSchema")
@@ -102,7 +104,7 @@ public class ValidationSchema {
     @JsonProperty("V1beta3PriorityLevelConfigurationList")
     private io.fabric8.kubernetes.api.model.flowcontrol.v1beta3.PriorityLevelConfigurationList v1beta3PriorityLevelConfigurationList;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -111,25 +113,6 @@ public class ValidationSchema {
     public ValidationSchema() {
     }
 
-    /**
-     * 
-     * @param v1beta3FlowSchema
-     * @param v1beta1FlowSchemaList
-     * @param v1beta3PriorityLevelConfigurationList
-     * @param v1beta2FlowSchema
-     * @param v1alpha1PriorityLevelConfiguration
-     * @param v1beta1PriorityLevelConfiguration
-     * @param v1beta3PriorityLevelConfiguration
-     * @param v1beta2PriorityLevelConfigurationList
-     * @param v1alpha1FlowSchema
-     * @param v1alpha1FlowSchemaList
-     * @param v1alpha1PriorityLevelConfigurationList
-     * @param v1beta1PriorityLevelConfigurationList
-     * @param v1beta1FlowSchema
-     * @param v1beta2FlowSchemaList
-     * @param v1beta3FlowSchemaList
-     * @param v1beta2PriorityLevelConfiguration
-     */
     public ValidationSchema(io.fabric8.kubernetes.api.model.flowcontrol.v1alpha1.FlowSchema v1alpha1FlowSchema, io.fabric8.kubernetes.api.model.flowcontrol.v1alpha1.FlowSchemaList v1alpha1FlowSchemaList, io.fabric8.kubernetes.api.model.flowcontrol.v1alpha1.PriorityLevelConfiguration v1alpha1PriorityLevelConfiguration, io.fabric8.kubernetes.api.model.flowcontrol.v1alpha1.PriorityLevelConfigurationList v1alpha1PriorityLevelConfigurationList, io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.FlowSchema v1beta1FlowSchema, io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.FlowSchemaList v1beta1FlowSchemaList, io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.PriorityLevelConfiguration v1beta1PriorityLevelConfiguration, io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.PriorityLevelConfigurationList v1beta1PriorityLevelConfigurationList, io.fabric8.kubernetes.api.model.flowcontrol.v1beta2.FlowSchema v1beta2FlowSchema, io.fabric8.kubernetes.api.model.flowcontrol.v1beta2.FlowSchemaList v1beta2FlowSchemaList, io.fabric8.kubernetes.api.model.flowcontrol.v1beta2.PriorityLevelConfiguration v1beta2PriorityLevelConfiguration, io.fabric8.kubernetes.api.model.flowcontrol.v1beta2.PriorityLevelConfigurationList v1beta2PriorityLevelConfigurationList, io.fabric8.kubernetes.api.model.flowcontrol.v1beta3.FlowSchema v1beta3FlowSchema, io.fabric8.kubernetes.api.model.flowcontrol.v1beta3.FlowSchemaList v1beta3FlowSchemaList, io.fabric8.kubernetes.api.model.flowcontrol.v1beta3.PriorityLevelConfiguration v1beta3PriorityLevelConfiguration, io.fabric8.kubernetes.api.model.flowcontrol.v1beta3.PriorityLevelConfigurationList v1beta3PriorityLevelConfigurationList) {
         super();
         this.v1alpha1FlowSchema = v1alpha1FlowSchema;

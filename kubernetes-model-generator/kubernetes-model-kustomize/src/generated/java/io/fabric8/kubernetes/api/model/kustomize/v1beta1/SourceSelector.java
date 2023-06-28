@@ -1,8 +1,9 @@
 
 package io.fabric8.kubernetes.api.model.kustomize.v1beta1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -38,6 +39,7 @@ import lombok.experimental.Accessors;
     ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
+@Generated("jsonschema2pojo")
 public class SourceSelector implements KubernetesResource
 {
 
@@ -61,7 +63,7 @@ public class SourceSelector implements KubernetesResource
     @JsonProperty("version")
     private String version;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -70,16 +72,6 @@ public class SourceSelector implements KubernetesResource
     public SourceSelector() {
     }
 
-    /**
-     * 
-     * @param kind
-     * @param fieldPath
-     * @param name
-     * @param namespace
-     * @param options
-     * @param version
-     * @param group
-     */
     public SourceSelector(String fieldPath, String group, String kind, String name, String namespace, FieldOptions options, String version) {
         super();
         this.fieldPath = fieldPath;

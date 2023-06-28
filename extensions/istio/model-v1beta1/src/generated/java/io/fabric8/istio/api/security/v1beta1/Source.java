@@ -2,9 +2,10 @@
 package io.fabric8.istio.api.security.v1beta1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -72,6 +73,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class Source implements KubernetesResource
 {
 
@@ -106,7 +108,7 @@ public class Source implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> requestPrincipals = new ArrayList<String>();
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -115,19 +117,6 @@ public class Source implements KubernetesResource
     public Source() {
     }
 
-    /**
-     * 
-     * @param notRequestPrincipals
-     * @param notIpBlocks
-     * @param ipBlocks
-     * @param notNamespaces
-     * @param notRemoteIpBlocks
-     * @param principals
-     * @param notPrincipals
-     * @param remoteIpBlocks
-     * @param requestPrincipals
-     * @param namespaces
-     */
     public Source(List<String> ipBlocks, List<String> namespaces, List<String> notIpBlocks, List<String> notNamespaces, List<String> notPrincipals, List<String> notRemoteIpBlocks, List<String> notRequestPrincipals, List<String> principals, List<String> remoteIpBlocks, List<String> requestPrincipals) {
         super();
         this.ipBlocks = ipBlocks;

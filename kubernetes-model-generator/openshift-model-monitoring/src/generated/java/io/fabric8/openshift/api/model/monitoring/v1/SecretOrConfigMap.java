@@ -1,8 +1,9 @@
 
 package io.fabric8.openshift.api.model.monitoring.v1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -56,6 +57,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class SecretOrConfigMap implements KubernetesResource
 {
 
@@ -64,7 +66,7 @@ public class SecretOrConfigMap implements KubernetesResource
     @JsonProperty("secret")
     private SecretKeySelector secret;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -73,11 +75,6 @@ public class SecretOrConfigMap implements KubernetesResource
     public SecretOrConfigMap() {
     }
 
-    /**
-     * 
-     * @param configMap
-     * @param secret
-     */
     public SecretOrConfigMap(ConfigMapKeySelector configMap, SecretKeySelector secret) {
         super();
         this.configMap = configMap;

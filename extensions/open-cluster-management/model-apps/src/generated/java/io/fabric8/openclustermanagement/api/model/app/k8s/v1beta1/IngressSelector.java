@@ -1,8 +1,9 @@
 
 package io.fabric8.openclustermanagement.api.model.app.k8s.v1beta1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -68,6 +69,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class IngressSelector implements KubernetesResource
 {
 
@@ -92,7 +94,7 @@ public class IngressSelector implements KubernetesResource
     @JsonProperty("uid")
     private String uid;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -101,19 +103,6 @@ public class IngressSelector implements KubernetesResource
     public IngressSelector() {
     }
 
-    /**
-     * 
-     * @param path
-     * @param uid
-     * @param protocol
-     * @param apiVersion
-     * @param kind
-     * @param resourceVersion
-     * @param fieldPath
-     * @param host
-     * @param name
-     * @param namespace
-     */
     public IngressSelector(String apiVersion, String fieldPath, String host, String kind, String name, String namespace, String path, String protocol, String resourceVersion, String uid) {
         super();
         this.apiVersion = apiVersion;

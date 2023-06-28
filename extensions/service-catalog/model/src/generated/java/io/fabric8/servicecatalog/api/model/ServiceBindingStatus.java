@@ -2,9 +2,10 @@
 package io.fabric8.servicecatalog.api.model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -72,6 +73,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class ServiceBindingStatus implements KubernetesResource
 {
 
@@ -96,7 +98,7 @@ public class ServiceBindingStatus implements KubernetesResource
     @JsonProperty("unbindStatus")
     private java.lang.String unbindStatus;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -105,19 +107,6 @@ public class ServiceBindingStatus implements KubernetesResource
     public ServiceBindingStatus() {
     }
 
-    /**
-     * 
-     * @param operationStartTime
-     * @param currentOperation
-     * @param inProgressProperties
-     * @param asyncOpInProgress
-     * @param reconciledGeneration
-     * @param lastOperation
-     * @param orphanMitigationInProgress
-     * @param conditions
-     * @param externalProperties
-     * @param unbindStatus
-     */
     public ServiceBindingStatus(Boolean asyncOpInProgress, List<ServiceBindingCondition> conditions, java.lang.String currentOperation, ServiceBindingPropertiesState externalProperties, ServiceBindingPropertiesState inProgressProperties, String lastOperation, java.lang.String operationStartTime, Boolean orphanMitigationInProgress, Long reconciledGeneration, java.lang.String unbindStatus) {
         super();
         this.asyncOpInProgress = asyncOpInProgress;

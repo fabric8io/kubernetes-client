@@ -1,8 +1,9 @@
 
 package io.fabric8.openshift.api.model.config.v1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -64,6 +65,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class IdentityProvider implements KubernetesResource
 {
 
@@ -92,7 +94,7 @@ public class IdentityProvider implements KubernetesResource
     @JsonProperty("type")
     private String type;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -101,21 +103,6 @@ public class IdentityProvider implements KubernetesResource
     public IdentityProvider() {
     }
 
-    /**
-     * 
-     * @param github
-     * @param htpasswd
-     * @param ldap
-     * @param basicAuth
-     * @param openID
-     * @param mappingMethod
-     * @param name
-     * @param gitlab
-     * @param google
-     * @param requestHeader
-     * @param type
-     * @param keystone
-     */
     public IdentityProvider(BasicAuthIdentityProvider basicAuth, GitHubIdentityProvider github, GitLabIdentityProvider gitlab, GoogleIdentityProvider google, HTPasswdIdentityProvider htpasswd, KeystoneIdentityProvider keystone, LDAPIdentityProvider ldap, String mappingMethod, String name, OpenIDIdentityProvider openID, RequestHeaderIdentityProvider requestHeader, String type) {
         super();
         this.basicAuth = basicAuth;

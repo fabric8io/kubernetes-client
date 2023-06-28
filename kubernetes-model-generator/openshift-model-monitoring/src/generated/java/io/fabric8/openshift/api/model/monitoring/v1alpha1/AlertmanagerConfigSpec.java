@@ -2,9 +2,10 @@
 package io.fabric8.openshift.api.model.monitoring.v1alpha1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -57,6 +58,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class AlertmanagerConfigSpec implements KubernetesResource
 {
 
@@ -68,7 +70,7 @@ public class AlertmanagerConfigSpec implements KubernetesResource
     @JsonProperty("route")
     private Route route;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -77,12 +79,6 @@ public class AlertmanagerConfigSpec implements KubernetesResource
     public AlertmanagerConfigSpec() {
     }
 
-    /**
-     * 
-     * @param route
-     * @param receivers
-     * @param inhibitRules
-     */
     public AlertmanagerConfigSpec(List<InhibitRule> inhibitRules, List<Receiver> receivers, Route route) {
         super();
         this.inhibitRules = inhibitRules;

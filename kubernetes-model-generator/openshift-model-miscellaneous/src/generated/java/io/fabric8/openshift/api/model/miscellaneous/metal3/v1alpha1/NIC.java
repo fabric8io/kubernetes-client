@@ -2,9 +2,10 @@
 package io.fabric8.openshift.api.model.miscellaneous.metal3.v1alpha1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -62,6 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class NIC implements KubernetesResource
 {
 
@@ -83,7 +85,7 @@ public class NIC implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<VLAN> vlans = new ArrayList<VLAN>();
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -92,17 +94,6 @@ public class NIC implements KubernetesResource
     public NIC() {
     }
 
-    /**
-     * 
-     * @param vlans
-     * @param vlanId
-     * @param speedGbps
-     * @param ip
-     * @param name
-     * @param model
-     * @param pxe
-     * @param mac
-     */
     public NIC(String ip, String mac, String model, String name, Boolean pxe, Integer speedGbps, Integer vlanId, List<VLAN> vlans) {
         super();
         this.ip = ip;

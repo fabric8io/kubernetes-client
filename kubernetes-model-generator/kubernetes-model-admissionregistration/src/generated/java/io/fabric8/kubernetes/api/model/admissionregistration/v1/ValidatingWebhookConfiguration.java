@@ -2,9 +2,10 @@
 package io.fabric8.kubernetes.api.model.admissionregistration.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -63,6 +64,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1")
 @Group("admissionregistration.k8s.io")
+@Generated("jsonschema2pojo")
 public class ValidatingWebhookConfiguration implements HasMetadata
 {
 
@@ -86,7 +88,7 @@ public class ValidatingWebhookConfiguration implements HasMetadata
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ValidatingWebhook> webhooks = new ArrayList<ValidatingWebhook>();
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -95,13 +97,6 @@ public class ValidatingWebhookConfiguration implements HasMetadata
     public ValidatingWebhookConfiguration() {
     }
 
-    /**
-     * 
-     * @param metadata
-     * @param apiVersion
-     * @param webhooks
-     * @param kind
-     */
     public ValidatingWebhookConfiguration(String apiVersion, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, List<ValidatingWebhook> webhooks) {
         super();
         this.apiVersion = apiVersion;

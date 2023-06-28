@@ -1,8 +1,9 @@
 
 package io.fabric8.openshift.api.model.hive.v1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -55,6 +56,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(io.fabric8.kubernetes.api.model.LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class ClusterMetadata implements KubernetesResource
 {
 
@@ -67,7 +69,7 @@ public class ClusterMetadata implements KubernetesResource
     @JsonProperty("infraID")
     private String infraID;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -76,13 +78,6 @@ public class ClusterMetadata implements KubernetesResource
     public ClusterMetadata() {
     }
 
-    /**
-     * 
-     * @param clusterID
-     * @param adminKubeconfigSecretRef
-     * @param adminPasswordSecretRef
-     * @param infraID
-     */
     public ClusterMetadata(io.fabric8.kubernetes.api.model.LocalObjectReference adminKubeconfigSecretRef, io.fabric8.kubernetes.api.model.LocalObjectReference adminPasswordSecretRef, String clusterID, String infraID) {
         super();
         this.adminKubeconfigSecretRef = adminKubeconfigSecretRef;

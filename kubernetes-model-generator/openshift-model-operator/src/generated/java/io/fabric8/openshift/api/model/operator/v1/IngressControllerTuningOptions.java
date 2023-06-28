@@ -1,8 +1,9 @@
 
 package io.fabric8.openshift.api.model.operator.v1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -62,6 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class IngressControllerTuningOptions implements KubernetesResource
 {
 
@@ -84,7 +86,7 @@ public class IngressControllerTuningOptions implements KubernetesResource
     @JsonProperty("tunnelTimeout")
     private Duration tunnelTimeout;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -93,18 +95,6 @@ public class IngressControllerTuningOptions implements KubernetesResource
     public IngressControllerTuningOptions() {
     }
 
-    /**
-     * 
-     * @param tunnelTimeout
-     * @param headerBufferBytes
-     * @param serverFinTimeout
-     * @param clientFinTimeout
-     * @param threadCount
-     * @param clientTimeout
-     * @param headerBufferMaxRewriteBytes
-     * @param tlsInspectDelay
-     * @param serverTimeout
-     */
     public IngressControllerTuningOptions(Duration clientFinTimeout, Duration clientTimeout, Integer headerBufferBytes, Integer headerBufferMaxRewriteBytes, Duration serverFinTimeout, Duration serverTimeout, Integer threadCount, Duration tlsInspectDelay, Duration tunnelTimeout) {
         super();
         this.clientFinTimeout = clientFinTimeout;

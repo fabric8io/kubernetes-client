@@ -1,8 +1,9 @@
 
 package io.fabric8.tekton.v1beta1.internal.pipeline.pkg.result;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -64,6 +65,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class RunResult implements KubernetesResource
 {
 
@@ -76,7 +78,7 @@ public class RunResult implements KubernetesResource
     @JsonProperty("value")
     private String value;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -85,13 +87,6 @@ public class RunResult implements KubernetesResource
     public RunResult() {
     }
 
-    /**
-     * 
-     * @param resourceName
-     * @param type
-     * @param value
-     * @param key
-     */
     public RunResult(String key, String resourceName, Integer type, String value) {
         super();
         this.key = key;

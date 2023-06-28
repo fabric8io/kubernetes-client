@@ -1,8 +1,9 @@
 
 package io.fabric8.openclustermanagement.api.model.cluster.v1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -70,6 +71,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1")
 @Group("cluster.open-cluster-management.io")
+@Generated("jsonschema2pojo")
 public class ManagedCluster implements HasMetadata
 {
 
@@ -94,7 +96,7 @@ public class ManagedCluster implements HasMetadata
     @JsonProperty("status")
     private ManagedClusterStatus status;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -103,14 +105,6 @@ public class ManagedCluster implements HasMetadata
     public ManagedCluster() {
     }
 
-    /**
-     * 
-     * @param metadata
-     * @param apiVersion
-     * @param kind
-     * @param spec
-     * @param status
-     */
     public ManagedCluster(String apiVersion, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, ManagedClusterSpec spec, ManagedClusterStatus status) {
         super();
         this.apiVersion = apiVersion;

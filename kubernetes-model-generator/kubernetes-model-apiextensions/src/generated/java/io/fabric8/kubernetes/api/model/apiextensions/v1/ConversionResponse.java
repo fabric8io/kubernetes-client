@@ -2,9 +2,10 @@
 package io.fabric8.kubernetes.api.model.apiextensions.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -62,6 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(GenericKubernetesResource.class),
     @BuildableReference(RawExtension.class)
 })
+@Generated("jsonschema2pojo")
 public class ConversionResponse implements KubernetesResource
 {
 
@@ -72,7 +74,7 @@ public class ConversionResponse implements KubernetesResource
     @JsonProperty("uid")
     private String uid;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -81,12 +83,6 @@ public class ConversionResponse implements KubernetesResource
     public ConversionResponse() {
     }
 
-    /**
-     * 
-     * @param result
-     * @param uid
-     * @param convertedObjects
-     */
     public ConversionResponse(List<KubernetesResource> convertedObjects, Status result, String uid) {
         super();
         this.convertedObjects = convertedObjects;

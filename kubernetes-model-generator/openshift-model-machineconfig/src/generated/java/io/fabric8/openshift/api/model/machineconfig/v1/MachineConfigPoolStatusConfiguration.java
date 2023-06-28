@@ -2,9 +2,10 @@
 package io.fabric8.openshift.api.model.machineconfig.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -68,6 +69,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1")
 @Group("machineconfiguration.openshift.io")
+@Generated("jsonschema2pojo")
 public class MachineConfigPoolStatusConfiguration implements KubernetesResource
 {
 
@@ -99,7 +101,7 @@ public class MachineConfigPoolStatusConfiguration implements KubernetesResource
     @JsonProperty("uid")
     private String uid;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -108,17 +110,6 @@ public class MachineConfigPoolStatusConfiguration implements KubernetesResource
     public MachineConfigPoolStatusConfiguration() {
     }
 
-    /**
-     * 
-     * @param uid
-     * @param apiVersion
-     * @param kind
-     * @param resourceVersion
-     * @param fieldPath
-     * @param name
-     * @param namespace
-     * @param source
-     */
     public MachineConfigPoolStatusConfiguration(String apiVersion, String fieldPath, String kind, String name, String namespace, String resourceVersion, List<io.fabric8.kubernetes.api.model.ObjectReference> source, String uid) {
         super();
         this.apiVersion = apiVersion;

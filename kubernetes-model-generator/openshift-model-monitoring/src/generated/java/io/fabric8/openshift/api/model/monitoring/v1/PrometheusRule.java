@@ -1,8 +1,9 @@
 
 package io.fabric8.openshift.api.model.monitoring.v1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -62,6 +63,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1")
 @Group("monitoring.coreos.com")
+@Generated("jsonschema2pojo")
 public class PrometheusRule implements HasMetadata, Namespaced
 {
 
@@ -84,7 +86,7 @@ public class PrometheusRule implements HasMetadata, Namespaced
     @JsonProperty("spec")
     private PrometheusRuleSpec spec;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -93,13 +95,6 @@ public class PrometheusRule implements HasMetadata, Namespaced
     public PrometheusRule() {
     }
 
-    /**
-     * 
-     * @param metadata
-     * @param apiVersion
-     * @param kind
-     * @param spec
-     */
     public PrometheusRule(String apiVersion, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, PrometheusRuleSpec spec) {
         super();
         this.apiVersion = apiVersion;

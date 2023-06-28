@@ -2,9 +2,10 @@
 package io.fabric8.tekton.pipeline.v1beta1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -70,6 +71,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class PipelineSpec implements KubernetesResource
 {
 
@@ -96,7 +98,7 @@ public class PipelineSpec implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<PipelineWorkspaceDeclaration> workspaces = new ArrayList<PipelineWorkspaceDeclaration>();
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -105,17 +107,6 @@ public class PipelineSpec implements KubernetesResource
     public PipelineSpec() {
     }
 
-    /**
-     * 
-     * @param displayName
-     * @param _finally
-     * @param description
-     * @param resources
-     * @param workspaces
-     * @param params
-     * @param results
-     * @param tasks
-     */
     public PipelineSpec(String description, String displayName, List<PipelineTask> _finally, List<ParamSpec> params, List<PipelineDeclaredResource> resources, List<PipelineResult> results, List<PipelineTask> tasks, List<PipelineWorkspaceDeclaration> workspaces) {
         super();
         this.description = description;

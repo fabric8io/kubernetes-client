@@ -1,8 +1,9 @@
 
 package io.fabric8.openclustermanagement.api.model.searchoperator.v1alpha1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -63,6 +64,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class SearchCustomizationStatus implements KubernetesResource
 {
 
@@ -73,7 +75,7 @@ public class SearchCustomizationStatus implements KubernetesResource
     @JsonProperty("storageSize")
     private String storageSize;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -82,12 +84,6 @@ public class SearchCustomizationStatus implements KubernetesResource
     public SearchCustomizationStatus() {
     }
 
-    /**
-     * 
-     * @param storageClass
-     * @param storageSize
-     * @param persistence
-     */
     public SearchCustomizationStatus(Boolean persistence, String storageClass, String storageSize) {
         super();
         this.persistence = persistence;

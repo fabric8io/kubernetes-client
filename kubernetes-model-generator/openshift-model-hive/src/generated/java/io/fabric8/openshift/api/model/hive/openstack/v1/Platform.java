@@ -1,8 +1,9 @@
 
 package io.fabric8.openshift.api.model.hive.openstack.v1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -55,6 +56,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(io.fabric8.kubernetes.api.model.LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class Platform implements KubernetesResource
 {
 
@@ -67,7 +69,7 @@ public class Platform implements KubernetesResource
     @JsonProperty("trunkSupport")
     private Boolean trunkSupport;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -76,13 +78,6 @@ public class Platform implements KubernetesResource
     public Platform() {
     }
 
-    /**
-     * 
-     * @param cloud
-     * @param credentialsSecretRef
-     * @param certificatesSecretRef
-     * @param trunkSupport
-     */
     public Platform(io.fabric8.kubernetes.api.model.LocalObjectReference certificatesSecretRef, String cloud, io.fabric8.kubernetes.api.model.LocalObjectReference credentialsSecretRef, Boolean trunkSupport) {
         super();
         this.certificatesSecretRef = certificatesSecretRef;

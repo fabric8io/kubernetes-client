@@ -1,8 +1,9 @@
 
 package io.fabric8.kubernetes.api.model.extensions;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -54,6 +55,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class ReplicaSetSpec implements KubernetesResource
 {
 
@@ -66,7 +68,7 @@ public class ReplicaSetSpec implements KubernetesResource
     @JsonProperty("template")
     private io.fabric8.kubernetes.api.model.PodTemplateSpec template;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -75,13 +77,6 @@ public class ReplicaSetSpec implements KubernetesResource
     public ReplicaSetSpec() {
     }
 
-    /**
-     * 
-     * @param template
-     * @param replicas
-     * @param selector
-     * @param minReadySeconds
-     */
     public ReplicaSetSpec(Integer minReadySeconds, Integer replicas, io.fabric8.kubernetes.api.model.LabelSelector selector, io.fabric8.kubernetes.api.model.PodTemplateSpec template) {
         super();
         this.minReadySeconds = minReadySeconds;

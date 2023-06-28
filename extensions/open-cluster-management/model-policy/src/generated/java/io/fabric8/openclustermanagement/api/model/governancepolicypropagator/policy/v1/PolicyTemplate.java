@@ -1,9 +1,9 @@
 
 package io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -62,6 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class PolicyTemplate implements KubernetesResource
 {
 
@@ -69,7 +70,7 @@ public class PolicyTemplate implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, Object> objectDefinition = new LinkedHashMap<String, Object>();
     @JsonIgnore
-    private Map<java.lang.String, java.lang.Object> additionalProperties = new HashMap<java.lang.String, java.lang.Object>();
+    private Map<java.lang.String, java.lang.Object> additionalProperties = new LinkedHashMap<java.lang.String, java.lang.Object>();
 
     /**
      * No args constructor for use in serialization
@@ -78,10 +79,6 @@ public class PolicyTemplate implements KubernetesResource
     public PolicyTemplate() {
     }
 
-    /**
-     * 
-     * @param objectDefinition
-     */
     public PolicyTemplate(Map<String, Object> objectDefinition) {
         super();
         this.objectDefinition = objectDefinition;

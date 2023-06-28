@@ -1,8 +1,9 @@
 
 package io.fabric8.kubernetes.api.model;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -42,6 +43,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1")
 @Group("")
+@Generated("jsonschema2pojo")
 public class Node implements HasMetadata
 {
 
@@ -66,7 +68,7 @@ public class Node implements HasMetadata
     @JsonProperty("status")
     private NodeStatus status;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -75,14 +77,6 @@ public class Node implements HasMetadata
     public Node() {
     }
 
-    /**
-     * 
-     * @param metadata
-     * @param apiVersion
-     * @param kind
-     * @param spec
-     * @param status
-     */
     public Node(String apiVersion, String kind, ObjectMeta metadata, NodeSpec spec, NodeStatus status) {
         super();
         this.apiVersion = apiVersion;

@@ -1,9 +1,9 @@
 
 package io.fabric8.kubernetes.api.model.metrics.v1beta1;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -66,6 +66,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1beta1")
 @Group("metrics.k8s.io")
+@Generated("jsonschema2pojo")
 public class NodeMetrics implements HasMetadata
 {
 
@@ -93,7 +94,7 @@ public class NodeMetrics implements HasMetadata
     @JsonProperty("window")
     private Duration window;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -102,15 +103,6 @@ public class NodeMetrics implements HasMetadata
     public NodeMetrics() {
     }
 
-    /**
-     * 
-     * @param metadata
-     * @param apiVersion
-     * @param kind
-     * @param usage
-     * @param window
-     * @param timestamp
-     */
     public NodeMetrics(java.lang.String apiVersion, java.lang.String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, String timestamp, Map<String, Quantity> usage, Duration window) {
         super();
         this.apiVersion = apiVersion;

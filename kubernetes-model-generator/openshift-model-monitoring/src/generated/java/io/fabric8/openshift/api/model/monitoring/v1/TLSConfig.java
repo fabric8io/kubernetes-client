@@ -1,8 +1,9 @@
 
 package io.fabric8.openshift.api.model.monitoring.v1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -61,6 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class TLSConfig implements KubernetesResource
 {
 
@@ -81,7 +83,7 @@ public class TLSConfig implements KubernetesResource
     @JsonProperty("serverName")
     private String serverName;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -90,17 +92,6 @@ public class TLSConfig implements KubernetesResource
     public TLSConfig() {
     }
 
-    /**
-     * 
-     * @param caFile
-     * @param keyFile
-     * @param certFile
-     * @param insecureSkipVerify
-     * @param serverName
-     * @param cert
-     * @param keySecret
-     * @param ca
-     */
     public TLSConfig(SecretOrConfigMap ca, String caFile, SecretOrConfigMap cert, String certFile, Boolean insecureSkipVerify, String keyFile, SecretKeySelector keySecret, String serverName) {
         super();
         this.ca = ca;

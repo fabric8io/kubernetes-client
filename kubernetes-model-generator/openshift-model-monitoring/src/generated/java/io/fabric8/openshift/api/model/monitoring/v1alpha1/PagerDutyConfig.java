@@ -2,9 +2,10 @@
 package io.fabric8.openshift.api.model.monitoring.v1alpha1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -68,6 +69,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class PagerDutyConfig implements KubernetesResource
 {
 
@@ -99,7 +101,7 @@ public class PagerDutyConfig implements KubernetesResource
     @JsonProperty("url")
     private String url;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -108,22 +110,6 @@ public class PagerDutyConfig implements KubernetesResource
     public PagerDutyConfig() {
     }
 
-    /**
-     * 
-     * @param severity
-     * @param clientURL
-     * @param description
-     * @param className
-     * @param url
-     * @param component
-     * @param sendResolved
-     * @param httpConfig
-     * @param client
-     * @param details
-     * @param serviceKey
-     * @param routingKey
-     * @param group
-     */
     public PagerDutyConfig(String className, String client, String clientURL, String component, String description, List<KeyValue> details, String group, HTTPConfig httpConfig, SecretKeySelector routingKey, Boolean sendResolved, SecretKeySelector serviceKey, String severity, String url) {
         super();
         this.className = className;

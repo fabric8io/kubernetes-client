@@ -2,9 +2,10 @@
 package io.fabric8.tekton.pipeline.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -87,6 +88,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(io.fabric8.kubernetes.api.model.VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class Sidecar implements KubernetesResource
 {
 
@@ -147,7 +149,7 @@ public class Sidecar implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<WorkspaceUsage> workspaces = new ArrayList<WorkspaceUsage>();
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -156,33 +158,6 @@ public class Sidecar implements KubernetesResource
     public Sidecar() {
     }
 
-    /**
-     * 
-     * @param volumeDevices
-     * @param image
-     * @param imagePullPolicy
-     * @param livenessProbe
-     * @param stdin
-     * @param terminationMessagePolicy
-     * @param terminationMessagePath
-     * @param workingDir
-     * @param securityContext
-     * @param startupProbe
-     * @param env
-     * @param ports
-     * @param command
-     * @param script
-     * @param volumeMounts
-     * @param args
-     * @param lifecycle
-     * @param name
-     * @param tty
-     * @param computeResources
-     * @param readinessProbe
-     * @param workspaces
-     * @param stdinOnce
-     * @param envFrom
-     */
     public Sidecar(List<String> args, List<String> command, io.fabric8.kubernetes.api.model.ResourceRequirements computeResources, List<io.fabric8.kubernetes.api.model.EnvVar> env, List<EnvFromSource> envFrom, String image, String imagePullPolicy, Lifecycle lifecycle, Probe livenessProbe, String name, List<io.fabric8.kubernetes.api.model.ContainerPort> ports, Probe readinessProbe, String script, SecurityContext securityContext, Probe startupProbe, Boolean stdin, Boolean stdinOnce, String terminationMessagePath, String terminationMessagePolicy, Boolean tty, List<VolumeDevice> volumeDevices, List<io.fabric8.kubernetes.api.model.VolumeMount> volumeMounts, String workingDir, List<WorkspaceUsage> workspaces) {
         super();
         this.args = args;

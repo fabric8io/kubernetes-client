@@ -2,10 +2,10 @@
 package io.fabric8.knative.serving.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -110,6 +110,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(io.fabric8.kubernetes.api.model.Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class RevisionSpec implements KubernetesResource
 {
 
@@ -204,7 +205,7 @@ public class RevisionSpec implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.kubernetes.api.model.Volume> volumes = new ArrayList<io.fabric8.kubernetes.api.model.Volume>();
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -213,49 +214,6 @@ public class RevisionSpec implements KubernetesResource
     public RevisionSpec() {
     }
 
-    /**
-     * 
-     * @param dnsPolicy
-     * @param nodeName
-     * @param terminationGracePeriodSeconds
-     * @param dnsConfig
-     * @param hostNetwork
-     * @param readinessGates
-     * @param serviceAccountName
-     * @param imagePullSecrets
-     * @param priorityClassName
-     * @param hostAliases
-     * @param securityContext
-     * @param preemptionPolicy
-     * @param nodeSelector
-     * @param hostname
-     * @param runtimeClassName
-     * @param tolerations
-     * @param automountServiceAccountToken
-     * @param responseStartTimeoutSeconds
-     * @param schedulerName
-     * @param activeDeadlineSeconds
-     * @param os
-     * @param setHostnameAsFQDN
-     * @param enableServiceLinks
-     * @param overhead
-     * @param hostIPC
-     * @param topologySpreadConstraints
-     * @param volumes
-     * @param ephemeralContainers
-     * @param serviceAccount
-     * @param idleTimeoutSeconds
-     * @param priority
-     * @param restartPolicy
-     * @param shareProcessNamespace
-     * @param containerConcurrency
-     * @param subdomain
-     * @param timeoutSeconds
-     * @param containers
-     * @param initContainers
-     * @param affinity
-     * @param hostPID
-     */
     public RevisionSpec(Long activeDeadlineSeconds, Affinity affinity, Boolean automountServiceAccountToken, Long containerConcurrency, List<io.fabric8.kubernetes.api.model.Container> containers, PodDNSConfig dnsConfig, java.lang.String dnsPolicy, Boolean enableServiceLinks, List<EphemeralContainer> ephemeralContainers, List<HostAlias> hostAliases, java.lang.Boolean hostIPC, java.lang.Boolean hostNetwork, java.lang.Boolean hostPID, java.lang.String hostname, Long idleTimeoutSeconds, List<io.fabric8.kubernetes.api.model.LocalObjectReference> imagePullSecrets, List<io.fabric8.kubernetes.api.model.Container> initContainers, java.lang.String nodeName, Map<String, String> nodeSelector, PodOS os, Map<String, Quantity> overhead, String preemptionPolicy, Integer priority, java.lang.String priorityClassName, List<PodReadinessGate> readinessGates, Long responseStartTimeoutSeconds, java.lang.String restartPolicy, String runtimeClassName, java.lang.String schedulerName, PodSecurityContext securityContext, java.lang.String serviceAccount, java.lang.String serviceAccountName, Boolean setHostnameAsFQDN, Boolean shareProcessNamespace, java.lang.String subdomain, Long terminationGracePeriodSeconds, Long timeoutSeconds, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, List<io.fabric8.kubernetes.api.model.Volume> volumes) {
         super();
         this.activeDeadlineSeconds = activeDeadlineSeconds;

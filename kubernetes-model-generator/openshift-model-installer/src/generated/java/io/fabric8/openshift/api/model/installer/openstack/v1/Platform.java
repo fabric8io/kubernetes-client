@@ -2,10 +2,10 @@
 package io.fabric8.openshift.api.model.installer.openstack.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -71,6 +71,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class Platform implements KubernetesResource
 {
 
@@ -108,7 +109,7 @@ public class Platform implements KubernetesResource
     @JsonProperty("trunkSupport")
     private java.lang.String trunkSupport;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -117,25 +118,6 @@ public class Platform implements KubernetesResource
     public Platform() {
     }
 
-    /**
-     * 
-     * @param apiVIP
-     * @param ingressFloatingIP
-     * @param ingressVIP
-     * @param octaviaSupport
-     * @param externalNetwork
-     * @param apiFloatingIP
-     * @param trunkSupport
-     * @param cloud
-     * @param machinesSubnet
-     * @param clusterOSImage
-     * @param defaultMachinePlatform
-     * @param externalDNS
-     * @param region
-     * @param lbFloatingIP
-     * @param computeFlavor
-     * @param clusterOSImageProperties
-     */
     public Platform(java.lang.String apiFloatingIP, java.lang.String apiVIP, java.lang.String cloud, java.lang.String clusterOSImage, Map<String, String> clusterOSImageProperties, java.lang.String computeFlavor, MachinePool defaultMachinePlatform, List<java.lang.String> externalDNS, java.lang.String externalNetwork, java.lang.String ingressFloatingIP, java.lang.String ingressVIP, java.lang.String lbFloatingIP, java.lang.String machinesSubnet, java.lang.String octaviaSupport, java.lang.String region, java.lang.String trunkSupport) {
         super();
         this.apiFloatingIP = apiFloatingIP;

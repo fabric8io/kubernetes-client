@@ -1,8 +1,9 @@
 
 package io.fabric8.openshift.api.model.hive.v1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -58,6 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class MachinePoolPlatform implements KubernetesResource
 {
 
@@ -74,7 +76,7 @@ public class MachinePoolPlatform implements KubernetesResource
     @JsonProperty("vsphere")
     private io.fabric8.openshift.api.model.hive.vsphere.v1.MachinePool vsphere;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -83,15 +85,6 @@ public class MachinePoolPlatform implements KubernetesResource
     public MachinePoolPlatform() {
     }
 
-    /**
-     * 
-     * @param vsphere
-     * @param gcp
-     * @param ovirt
-     * @param openstack
-     * @param aws
-     * @param azure
-     */
     public MachinePoolPlatform(io.fabric8.openshift.api.model.hive.aws.v1.MachinePoolPlatform aws, io.fabric8.openshift.api.model.hive.azure.v1.MachinePool azure, io.fabric8.openshift.api.model.hive.gcp.v1.MachinePool gcp, io.fabric8.openshift.api.model.hive.openstack.v1.MachinePool openstack, io.fabric8.openshift.api.model.hive.ovirt.v1.MachinePool ovirt, io.fabric8.openshift.api.model.hive.vsphere.v1.MachinePool vsphere) {
         super();
         this.aws = aws;

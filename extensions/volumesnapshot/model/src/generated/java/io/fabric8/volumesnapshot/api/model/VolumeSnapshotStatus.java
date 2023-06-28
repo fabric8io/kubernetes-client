@@ -1,8 +1,9 @@
 
 package io.fabric8.volumesnapshot.api.model;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -66,6 +67,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class VolumeSnapshotStatus implements KubernetesResource
 {
 
@@ -80,7 +82,7 @@ public class VolumeSnapshotStatus implements KubernetesResource
     @JsonProperty("restoreSize")
     private Quantity restoreSize;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -89,14 +91,6 @@ public class VolumeSnapshotStatus implements KubernetesResource
     public VolumeSnapshotStatus() {
     }
 
-    /**
-     * 
-     * @param creationTime
-     * @param restoreSize
-     * @param readyToUse
-     * @param error
-     * @param boundVolumeSnapshotContentName
-     */
     public VolumeSnapshotStatus(String boundVolumeSnapshotContentName, java.lang.String creationTime, VolumeSnapshotError error, Boolean readyToUse, Quantity restoreSize) {
         super();
         this.boundVolumeSnapshotContentName = boundVolumeSnapshotContentName;

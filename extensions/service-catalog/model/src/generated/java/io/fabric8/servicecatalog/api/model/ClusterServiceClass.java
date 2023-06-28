@@ -1,8 +1,9 @@
 
 package io.fabric8.servicecatalog.api.model;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -70,6 +71,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1beta1")
 @Group("servicecatalog.k8s.io")
+@Generated("jsonschema2pojo")
 public class ClusterServiceClass implements HasMetadata
 {
 
@@ -94,7 +96,7 @@ public class ClusterServiceClass implements HasMetadata
     @JsonProperty("status")
     private ClusterServiceClassStatus status;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -103,14 +105,6 @@ public class ClusterServiceClass implements HasMetadata
     public ClusterServiceClass() {
     }
 
-    /**
-     * 
-     * @param metadata
-     * @param apiVersion
-     * @param kind
-     * @param spec
-     * @param status
-     */
     public ClusterServiceClass(String apiVersion, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, ClusterServiceClassSpec spec, ClusterServiceClassStatus status) {
         super();
         this.apiVersion = apiVersion;

@@ -1,8 +1,9 @@
 
 package io.fabric8.openshift.api.model.operator.controlplane.v1alpha1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -58,6 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class LogEntry implements KubernetesResource
 {
 
@@ -72,7 +74,7 @@ public class LogEntry implements KubernetesResource
     @JsonProperty("time")
     private String time;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -81,14 +83,6 @@ public class LogEntry implements KubernetesResource
     public LogEntry() {
     }
 
-    /**
-     * 
-     * @param reason
-     * @param success
-     * @param latency
-     * @param time
-     * @param message
-     */
     public LogEntry(Duration latency, java.lang.String message, java.lang.String reason, Boolean success, String time) {
         super();
         this.latency = latency;

@@ -1,8 +1,9 @@
 
 package io.fabric8.certmanager.api.model.acme.v1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -68,6 +69,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class ChallengeSpec implements KubernetesResource
 {
 
@@ -90,7 +92,7 @@ public class ChallengeSpec implements KubernetesResource
     @JsonProperty("wildcard")
     private Boolean wildcard;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -99,18 +101,6 @@ public class ChallengeSpec implements KubernetesResource
     public ChallengeSpec() {
     }
 
-    /**
-     * 
-     * @param authorizationURL
-     * @param dnsName
-     * @param issuerRef
-     * @param type
-     * @param key
-     * @param url
-     * @param solver
-     * @param token
-     * @param wildcard
-     */
     public ChallengeSpec(String authorizationURL, String dnsName, io.fabric8.certmanager.api.model.meta.v1.ObjectReference issuerRef, String key, ACMEChallengeSolver solver, String token, String type, String url, Boolean wildcard) {
         super();
         this.authorizationURL = authorizationURL;

@@ -2,9 +2,10 @@
 package io.fabric8.tekton.triggers.v1alpha1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -68,6 +69,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class EventListenerTrigger implements KubernetesResource
 {
 
@@ -86,7 +88,7 @@ public class EventListenerTrigger implements KubernetesResource
     @JsonProperty("triggerRef")
     private String triggerRef;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -95,15 +97,6 @@ public class EventListenerTrigger implements KubernetesResource
     public EventListenerTrigger() {
     }
 
-    /**
-     * 
-     * @param template
-     * @param serviceAccountName
-     * @param bindings
-     * @param name
-     * @param triggerRef
-     * @param interceptors
-     */
     public EventListenerTrigger(List<TriggerSpecBinding> bindings, List<TriggerInterceptor> interceptors, String name, String serviceAccountName, TriggerSpecTemplate template, String triggerRef) {
         super();
         this.bindings = bindings;

@@ -1,8 +1,9 @@
 
 package io.fabric8.camelk.v1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -62,6 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class KanikoTaskCache implements KubernetesResource
 {
 
@@ -70,7 +72,7 @@ public class KanikoTaskCache implements KubernetesResource
     @JsonProperty("persistentVolumeClaim")
     private String persistentVolumeClaim;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -79,11 +81,6 @@ public class KanikoTaskCache implements KubernetesResource
     public KanikoTaskCache() {
     }
 
-    /**
-     * 
-     * @param persistentVolumeClaim
-     * @param enabled
-     */
     public KanikoTaskCache(Boolean enabled, String persistentVolumeClaim) {
         super();
         this.enabled = enabled;

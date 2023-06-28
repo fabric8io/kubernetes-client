@@ -1,8 +1,9 @@
 
 package io.fabric8.kubernetes.api.model;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -54,6 +55,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1")
 @Group("")
+@Generated("jsonschema2pojo")
 public class Event implements HasMetadata, Namespaced
 {
 
@@ -102,7 +104,7 @@ public class Event implements HasMetadata, Namespaced
     @JsonProperty("type")
     private java.lang.String type;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -111,26 +113,6 @@ public class Event implements HasMetadata, Namespaced
     public Event() {
     }
 
-    /**
-     * 
-     * @param reason
-     * @param metadata
-     * @param involvedObject
-     * @param reportingInstance
-     * @param kind
-     * @param count
-     * @param source
-     * @param message
-     * @param type
-     * @param reportingComponent
-     * @param firstTimestamp
-     * @param apiVersion
-     * @param related
-     * @param lastTimestamp
-     * @param series
-     * @param eventTime
-     * @param action
-     */
     public Event(java.lang.String action, java.lang.String apiVersion, Integer count, MicroTime eventTime, String firstTimestamp, ObjectReference involvedObject, java.lang.String kind, String lastTimestamp, java.lang.String message, ObjectMeta metadata, java.lang.String reason, ObjectReference related, java.lang.String reportingComponent, java.lang.String reportingInstance, EventSeries series, EventSource source, java.lang.String type) {
         super();
         this.action = action;

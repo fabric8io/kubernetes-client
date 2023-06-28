@@ -2,9 +2,10 @@
 package io.fabric8.servicecatalog.api.model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -66,6 +67,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class ServiceBrokerStatus implements KubernetesResource
 {
 
@@ -78,7 +80,7 @@ public class ServiceBrokerStatus implements KubernetesResource
     @JsonProperty("reconciledGeneration")
     private Long reconciledGeneration;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -87,13 +89,6 @@ public class ServiceBrokerStatus implements KubernetesResource
     public ServiceBrokerStatus() {
     }
 
-    /**
-     * 
-     * @param operationStartTime
-     * @param lastCatalogRetrievalTime
-     * @param reconciledGeneration
-     * @param conditions
-     */
     public ServiceBrokerStatus(List<ServiceBrokerCondition> conditions, String lastCatalogRetrievalTime, String operationStartTime, Long reconciledGeneration) {
         super();
         this.conditions = conditions;

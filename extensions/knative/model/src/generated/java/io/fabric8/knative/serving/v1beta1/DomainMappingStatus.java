@@ -2,10 +2,10 @@
 package io.fabric8.knative.serving.v1beta1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -70,6 +70,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class DomainMappingStatus implements KubernetesResource
 {
 
@@ -86,7 +87,7 @@ public class DomainMappingStatus implements KubernetesResource
     @JsonProperty("url")
     private java.lang.String url;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -95,14 +96,6 @@ public class DomainMappingStatus implements KubernetesResource
     public DomainMappingStatus() {
     }
 
-    /**
-     * 
-     * @param address
-     * @param annotations
-     * @param conditions
-     * @param observedGeneration
-     * @param url
-     */
     public DomainMappingStatus(Addressable address, Map<String, String> annotations, List<Condition> conditions, Long observedGeneration, java.lang.String url) {
         super();
         this.address = address;

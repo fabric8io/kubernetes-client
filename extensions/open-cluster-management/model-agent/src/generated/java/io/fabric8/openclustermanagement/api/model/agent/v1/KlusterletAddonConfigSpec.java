@@ -1,9 +1,9 @@
 
 package io.fabric8.openclustermanagement.api.model.agent.v1;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -71,6 +71,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class KlusterletAddonConfigSpec implements KubernetesResource
 {
 
@@ -96,7 +97,7 @@ public class KlusterletAddonConfigSpec implements KubernetesResource
     @JsonProperty("version")
     private java.lang.String version;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -105,19 +106,6 @@ public class KlusterletAddonConfigSpec implements KubernetesResource
     public KlusterletAddonConfigSpec() {
     }
 
-    /**
-     * 
-     * @param policyController
-     * @param applicationManager
-     * @param certPolicyController
-     * @param proxyConfig
-     * @param clusterNamespace
-     * @param clusterName
-     * @param searchCollector
-     * @param clusterLabels
-     * @param iamPolicyController
-     * @param version
-     */
     public KlusterletAddonConfigSpec(KlusterletAddonAgentConfigSpec applicationManager, KlusterletAddonAgentConfigSpec certPolicyController, Map<String, String> clusterLabels, java.lang.String clusterName, java.lang.String clusterNamespace, KlusterletAddonAgentConfigSpec iamPolicyController, KlusterletAddonAgentConfigSpec policyController, ProxyConfig proxyConfig, KlusterletAddonAgentConfigSpec searchCollector, java.lang.String version) {
         super();
         this.applicationManager = applicationManager;

@@ -1,9 +1,9 @@
 
 package io.fabric8.camelk.v1;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -73,6 +73,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class IntegrationPlatformBuildSpec implements KubernetesResource
 {
 
@@ -100,7 +101,7 @@ public class IntegrationPlatformBuildSpec implements KubernetesResource
     @JsonProperty("timeout")
     private Duration timeout;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -109,20 +110,6 @@ public class IntegrationPlatformBuildSpec implements KubernetesResource
     public IntegrationPlatformBuildSpec() {
     }
 
-    /**
-     * 
-     * @param registry
-     * @param runtimeVersion
-     * @param buildStrategy
-     * @param maven
-     * @param runtimeProvider
-     * @param baseImage
-     * @param kanikoBuildCache
-     * @param publishStrategy
-     * @param persistentVolumeClaim
-     * @param publishStrategyOptions
-     * @param timeout
-     */
     public IntegrationPlatformBuildSpec(Map<String, String> publishStrategyOptions, java.lang.String baseImage, java.lang.String buildStrategy, Boolean kanikoBuildCache, MavenSpec maven, java.lang.String persistentVolumeClaim, java.lang.String publishStrategy, RegistrySpec registry, java.lang.String runtimeProvider, java.lang.String runtimeVersion, Duration timeout) {
         super();
         this.publishStrategyOptions = publishStrategyOptions;

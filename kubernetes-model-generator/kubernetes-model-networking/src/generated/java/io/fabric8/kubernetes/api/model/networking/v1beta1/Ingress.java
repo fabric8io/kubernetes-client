@@ -1,8 +1,9 @@
 
 package io.fabric8.kubernetes.api.model.networking.v1beta1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -63,6 +64,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1beta1")
 @Group("networking.k8s.io")
+@Generated("jsonschema2pojo")
 public class Ingress implements HasMetadata, Namespaced
 {
 
@@ -87,7 +89,7 @@ public class Ingress implements HasMetadata, Namespaced
     @JsonProperty("status")
     private IngressStatus status;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -96,14 +98,6 @@ public class Ingress implements HasMetadata, Namespaced
     public Ingress() {
     }
 
-    /**
-     * 
-     * @param metadata
-     * @param apiVersion
-     * @param kind
-     * @param spec
-     * @param status
-     */
     public Ingress(String apiVersion, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, IngressSpec spec, IngressStatus status) {
         super();
         this.apiVersion = apiVersion;

@@ -1,8 +1,9 @@
 
 package io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta2;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -68,6 +69,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class StorageConfig implements KubernetesResource
 {
 
@@ -86,7 +88,7 @@ public class StorageConfig implements KubernetesResource
     @JsonProperty("storeStorageSize")
     private String storeStorageSize;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -95,16 +97,6 @@ public class StorageConfig implements KubernetesResource
     public StorageConfig() {
     }
 
-    /**
-     * 
-     * @param metricObjectStorage
-     * @param storageClass
-     * @param receiveStorageSize
-     * @param ruleStorageSize
-     * @param alertmanagerStorageSize
-     * @param storeStorageSize
-     * @param compactStorageSize
-     */
     public StorageConfig(String alertmanagerStorageSize, String compactStorageSize, PreConfiguredStorage metricObjectStorage, String receiveStorageSize, String ruleStorageSize, String storageClass, String storeStorageSize) {
         super();
         this.alertmanagerStorageSize = alertmanagerStorageSize;

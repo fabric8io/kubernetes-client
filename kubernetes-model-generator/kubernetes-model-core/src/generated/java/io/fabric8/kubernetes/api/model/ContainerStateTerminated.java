@@ -1,8 +1,9 @@
 
 package io.fabric8.kubernetes.api.model;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -38,6 +39,7 @@ import lombok.experimental.Accessors;
     ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
+@Generated("jsonschema2pojo")
 public class ContainerStateTerminated implements KubernetesResource
 {
 
@@ -56,7 +58,7 @@ public class ContainerStateTerminated implements KubernetesResource
     @JsonProperty("startedAt")
     private String startedAt;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -65,16 +67,6 @@ public class ContainerStateTerminated implements KubernetesResource
     public ContainerStateTerminated() {
     }
 
-    /**
-     * 
-     * @param reason
-     * @param exitCode
-     * @param startedAt
-     * @param containerID
-     * @param message
-     * @param signal
-     * @param finishedAt
-     */
     public ContainerStateTerminated(java.lang.String containerID, Integer exitCode, String finishedAt, java.lang.String message, java.lang.String reason, Integer signal, String startedAt) {
         super();
         this.containerID = containerID;

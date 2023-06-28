@@ -1,8 +1,9 @@
 
 package io.fabric8.openshift.api.model.operator.v1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -60,6 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class KuryrConfig implements KubernetesResource
 {
 
@@ -80,7 +82,7 @@ public class KuryrConfig implements KubernetesResource
     @JsonProperty("poolMinPorts")
     private Integer poolMinPorts;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -89,17 +91,6 @@ public class KuryrConfig implements KubernetesResource
     public KuryrConfig() {
     }
 
-    /**
-     * 
-     * @param controllerProbesPort
-     * @param daemonProbesPort
-     * @param enablePortPoolsPrepopulation
-     * @param openStackServiceNetwork
-     * @param poolBatchPorts
-     * @param poolMaxPorts
-     * @param poolMinPorts
-     * @param mtu
-     */
     public KuryrConfig(Integer controllerProbesPort, Integer daemonProbesPort, Boolean enablePortPoolsPrepopulation, Integer mtu, String openStackServiceNetwork, Integer poolBatchPorts, Integer poolMaxPorts, Integer poolMinPorts) {
         super();
         this.controllerProbesPort = controllerProbesPort;

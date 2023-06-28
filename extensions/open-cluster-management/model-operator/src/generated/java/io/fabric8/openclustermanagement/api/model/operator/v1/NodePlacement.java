@@ -2,10 +2,10 @@
 package io.fabric8.openclustermanagement.api.model.operator.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -66,6 +66,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class NodePlacement implements KubernetesResource
 {
 
@@ -76,7 +77,7 @@ public class NodePlacement implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Toleration> tolerations = new ArrayList<Toleration>();
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -85,11 +86,6 @@ public class NodePlacement implements KubernetesResource
     public NodePlacement() {
     }
 
-    /**
-     * 
-     * @param tolerations
-     * @param nodeSelector
-     */
     public NodePlacement(Map<String, String> nodeSelector, List<Toleration> tolerations) {
         super();
         this.nodeSelector = nodeSelector;

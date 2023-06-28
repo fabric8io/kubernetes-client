@@ -2,10 +2,10 @@
 package io.fabric8.tekton.v1alpha1.internal.pipeline.pkg.apis.pipeline.v1beta1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -67,6 +67,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class ParamValue implements KubernetesResource
 {
 
@@ -80,7 +81,7 @@ public class ParamValue implements KubernetesResource
     @JsonProperty("Type")
     private java.lang.String type;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -89,13 +90,6 @@ public class ParamValue implements KubernetesResource
     public ParamValue() {
     }
 
-    /**
-     * 
-     * @param objectVal
-     * @param stringVal
-     * @param arrayVal
-     * @param type
-     */
     public ParamValue(List<java.lang.String> arrayVal, Map<String, String> objectVal, java.lang.String stringVal, java.lang.String type) {
         super();
         this.arrayVal = arrayVal;

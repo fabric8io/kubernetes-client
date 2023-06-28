@@ -2,9 +2,10 @@
 package io.fabric8.kubernetes.api.model.rbac;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -65,6 +66,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1")
 @Group("rbac.authorization.k8s.io")
+@Generated("jsonschema2pojo")
 public class RoleBinding implements HasMetadata, Namespaced
 {
 
@@ -90,7 +92,7 @@ public class RoleBinding implements HasMetadata, Namespaced
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Subject> subjects = new ArrayList<Subject>();
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -99,14 +101,6 @@ public class RoleBinding implements HasMetadata, Namespaced
     public RoleBinding() {
     }
 
-    /**
-     * 
-     * @param metadata
-     * @param apiVersion
-     * @param kind
-     * @param subjects
-     * @param roleRef
-     */
     public RoleBinding(String apiVersion, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, RoleRef roleRef, List<Subject> subjects) {
         super();
         this.apiVersion = apiVersion;

@@ -2,9 +2,10 @@
 package io.fabric8.openshift.api.model.installer.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -77,6 +78,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1")
 @Group("install.openshift.io")
+@Generated("jsonschema2pojo")
 public class InstallConfig implements HasMetadata, Namespaced
 {
 
@@ -127,7 +129,7 @@ public class InstallConfig implements HasMetadata, Namespaced
     @JsonProperty("sshKey")
     private String sshKey;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -136,26 +138,6 @@ public class InstallConfig implements HasMetadata, Namespaced
     public InstallConfig() {
     }
 
-    /**
-     * 
-     * @param metadata
-     * @param credentialsMode
-     * @param kind
-     * @param fips
-     * @param networking
-     * @param platform
-     * @param compute
-     * @param proxy
-     * @param apiVersion
-     * @param controlPlane
-     * @param imageContentSources
-     * @param baseDomain
-     * @param sshKey
-     * @param publish
-     * @param bootstrapInPlace
-     * @param additionalTrustBundle
-     * @param pullSecret
-     */
     public InstallConfig(String additionalTrustBundle, String apiVersion, String baseDomain, BootstrapInPlace bootstrapInPlace, List<MachinePool> compute, MachinePool controlPlane, String credentialsMode, Boolean fips, List<ImageContentSource> imageContentSources, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, Networking networking, Platform platform, Proxy proxy, String publish, String pullSecret, String sshKey) {
         super();
         this.additionalTrustBundle = additionalTrustBundle;

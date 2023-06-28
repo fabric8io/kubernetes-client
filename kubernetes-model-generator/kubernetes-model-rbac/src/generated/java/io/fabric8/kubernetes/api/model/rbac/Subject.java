@@ -1,8 +1,9 @@
 
 package io.fabric8.kubernetes.api.model.rbac;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -55,6 +56,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class Subject implements KubernetesResource
 {
 
@@ -67,7 +69,7 @@ public class Subject implements KubernetesResource
     @JsonProperty("namespace")
     private String namespace;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -76,13 +78,6 @@ public class Subject implements KubernetesResource
     public Subject() {
     }
 
-    /**
-     * 
-     * @param apiGroup
-     * @param kind
-     * @param name
-     * @param namespace
-     */
     public Subject(String apiGroup, String kind, String name, String namespace) {
         super();
         this.apiGroup = apiGroup;

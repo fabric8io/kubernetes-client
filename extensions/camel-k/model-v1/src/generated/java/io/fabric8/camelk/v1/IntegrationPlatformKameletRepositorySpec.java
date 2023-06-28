@@ -1,8 +1,9 @@
 
 package io.fabric8.camelk.v1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -61,13 +62,14 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class IntegrationPlatformKameletRepositorySpec implements KubernetesResource
 {
 
     @JsonProperty("uri")
     private String uri;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -76,10 +78,6 @@ public class IntegrationPlatformKameletRepositorySpec implements KubernetesResou
     public IntegrationPlatformKameletRepositorySpec() {
     }
 
-    /**
-     * 
-     * @param uri
-     */
     public IntegrationPlatformKameletRepositorySpec(String uri) {
         super();
         this.uri = uri;

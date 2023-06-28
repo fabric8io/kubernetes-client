@@ -2,10 +2,10 @@
 package io.fabric8.chaosmesh.v1alpha1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -70,6 +70,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class PhysicalMachineSelectorSpec implements KubernetesResource
 {
 
@@ -91,7 +92,7 @@ public class PhysicalMachineSelectorSpec implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, List<java.lang.String>> physicalMachines = new LinkedHashMap<String, List<java.lang.String>>();
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -100,15 +101,6 @@ public class PhysicalMachineSelectorSpec implements KubernetesResource
     public PhysicalMachineSelectorSpec() {
     }
 
-    /**
-     * 
-     * @param expressionSelectors
-     * @param fieldSelectors
-     * @param physicalMachines
-     * @param labelSelectors
-     * @param annotationSelectors
-     * @param namespaces
-     */
     public PhysicalMachineSelectorSpec(Map<String, String> annotationSelectors, List<LabelSelectorRequirement> expressionSelectors, Map<String, String> fieldSelectors, Map<String, String> labelSelectors, List<java.lang.String> namespaces, Map<String, List<java.lang.String>> physicalMachines) {
         super();
         this.annotationSelectors = annotationSelectors;

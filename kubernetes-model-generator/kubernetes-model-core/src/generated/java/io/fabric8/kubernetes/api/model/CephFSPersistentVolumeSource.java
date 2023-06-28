@@ -2,9 +2,10 @@
 package io.fabric8.kubernetes.api.model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -39,6 +40,7 @@ import lombok.experimental.Accessors;
     ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
+@Generated("jsonschema2pojo")
 public class CephFSPersistentVolumeSource implements KubernetesResource
 {
 
@@ -55,7 +57,7 @@ public class CephFSPersistentVolumeSource implements KubernetesResource
     @JsonProperty("user")
     private String user;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -64,15 +66,6 @@ public class CephFSPersistentVolumeSource implements KubernetesResource
     public CephFSPersistentVolumeSource() {
     }
 
-    /**
-     * 
-     * @param path
-     * @param secretRef
-     * @param secretFile
-     * @param readOnly
-     * @param user
-     * @param monitors
-     */
     public CephFSPersistentVolumeSource(List<String> monitors, String path, Boolean readOnly, String secretFile, SecretReference secretRef, String user) {
         super();
         this.monitors = monitors;

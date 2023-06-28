@@ -2,10 +2,10 @@
 package io.fabric8.kubernetes.api.model.admission.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -63,6 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class AdmissionResponse implements KubernetesResource
 {
 
@@ -83,7 +84,7 @@ public class AdmissionResponse implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<java.lang.String> warnings = new ArrayList<java.lang.String>();
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -92,16 +93,6 @@ public class AdmissionResponse implements KubernetesResource
     public AdmissionResponse() {
     }
 
-    /**
-     * 
-     * @param patch
-     * @param uid
-     * @param patchType
-     * @param allowed
-     * @param warnings
-     * @param auditAnnotations
-     * @param status
-     */
     public AdmissionResponse(Boolean allowed, Map<String, String> auditAnnotations, java.lang.String patch, java.lang.String patchType, Status status, java.lang.String uid, List<java.lang.String> warnings) {
         super();
         this.allowed = allowed;

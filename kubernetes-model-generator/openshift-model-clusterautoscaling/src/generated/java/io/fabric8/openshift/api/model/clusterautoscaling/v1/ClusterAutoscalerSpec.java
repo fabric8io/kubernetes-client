@@ -1,8 +1,9 @@
 
 package io.fabric8.openshift.api.model.clusterautoscaling.v1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -60,6 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class ClusterAutoscalerSpec implements KubernetesResource
 {
 
@@ -80,7 +82,7 @@ public class ClusterAutoscalerSpec implements KubernetesResource
     @JsonProperty("skipNodesWithLocalStorage")
     private Boolean skipNodesWithLocalStorage;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -89,17 +91,6 @@ public class ClusterAutoscalerSpec implements KubernetesResource
     public ClusterAutoscalerSpec() {
     }
 
-    /**
-     * 
-     * @param maxNodeProvisionTime
-     * @param scaleDown
-     * @param balanceSimilarNodeGroups
-     * @param skipNodesWithLocalStorage
-     * @param podPriorityThreshold
-     * @param resourceLimits
-     * @param ignoreDaemonsetsUtilization
-     * @param maxPodGracePeriod
-     */
     public ClusterAutoscalerSpec(Boolean balanceSimilarNodeGroups, Boolean ignoreDaemonsetsUtilization, String maxNodeProvisionTime, Integer maxPodGracePeriod, Integer podPriorityThreshold, ResourceLimits resourceLimits, ScaleDownConfig scaleDown, Boolean skipNodesWithLocalStorage) {
         super();
         this.balanceSimilarNodeGroups = balanceSimilarNodeGroups;

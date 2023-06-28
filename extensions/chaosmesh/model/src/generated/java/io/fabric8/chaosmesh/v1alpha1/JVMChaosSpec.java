@@ -2,9 +2,10 @@
 package io.fabric8.chaosmesh.v1alpha1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -77,6 +78,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class JVMChaosSpec implements KubernetesResource
 {
 
@@ -111,7 +113,7 @@ public class JVMChaosSpec implements KubernetesResource
     @JsonProperty("value")
     private java.lang.String value;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -120,24 +122,6 @@ public class JVMChaosSpec implements KubernetesResource
     public JVMChaosSpec() {
     }
 
-    /**
-     * 
-     * @param exception
-     * @param method
-     * @param latency
-     * @param memType
-     * @param className
-     * @param containerNames
-     * @param duration
-     * @param mode
-     * @param port
-     * @param name
-     * @param action
-     * @param selector
-     * @param ruleData
-     * @param value
-     * @param cpuCount
-     */
     public JVMChaosSpec(java.lang.String action, java.lang.String className, List<java.lang.String> containerNames, Integer cpuCount, String duration, java.lang.String exception, Integer latency, java.lang.String memType, java.lang.String method, java.lang.String mode, java.lang.String name, Integer port, java.lang.String ruleData, PodSelectorSpec selector, java.lang.String value) {
         super();
         this.action = action;

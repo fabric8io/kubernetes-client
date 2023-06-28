@@ -1,9 +1,9 @@
 
 package io.fabric8.tekton.pipeline.v1beta1;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -66,6 +66,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class ParamSpec implements KubernetesResource
 {
 
@@ -81,7 +82,7 @@ public class ParamSpec implements KubernetesResource
     @JsonProperty("type")
     private java.lang.String type;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -90,14 +91,6 @@ public class ParamSpec implements KubernetesResource
     public ParamSpec() {
     }
 
-    /**
-     * 
-     * @param _default
-     * @param name
-     * @param description
-     * @param type
-     * @param properties
-     */
     public ParamSpec(ParamValue _default, java.lang.String description, java.lang.String name, Map<String, PropertySpec> properties, java.lang.String type) {
         super();
         this._default = _default;

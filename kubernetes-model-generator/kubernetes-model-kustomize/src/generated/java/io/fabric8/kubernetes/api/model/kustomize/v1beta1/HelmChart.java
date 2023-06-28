@@ -2,10 +2,10 @@
 package io.fabric8.kubernetes.api.model.kustomize.v1beta1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -49,6 +49,7 @@ import lombok.experimental.Accessors;
     ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
+@Generated("jsonschema2pojo")
 public class HelmChart implements KubernetesResource
 {
 
@@ -84,7 +85,7 @@ public class HelmChart implements KubernetesResource
     @JsonProperty("version")
     private java.lang.String version;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -93,23 +94,6 @@ public class HelmChart implements KubernetesResource
     public HelmChart() {
     }
 
-    /**
-     * 
-     * @param skipHooks
-     * @param releaseName
-     * @param repo
-     * @param version
-     * @param valuesFile
-     * @param nameTemplate
-     * @param valuesMerge
-     * @param apiVersions
-     * @param includeCRDs
-     * @param name
-     * @param namespace
-     * @param valuesInline
-     * @param skipTests
-     * @param additionalValuesFiles
-     */
     public HelmChart(List<java.lang.String> additionalValuesFiles, List<java.lang.String> apiVersions, Boolean includeCRDs, java.lang.String name, java.lang.String nameTemplate, java.lang.String namespace, java.lang.String releaseName, java.lang.String repo, Boolean skipHooks, Boolean skipTests, java.lang.String valuesFile, Map<String, Object> valuesInline, java.lang.String valuesMerge, java.lang.String version) {
         super();
         this.additionalValuesFiles = additionalValuesFiles;

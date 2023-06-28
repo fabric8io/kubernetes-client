@@ -2,10 +2,10 @@
 package io.fabric8.knative.serving.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -72,6 +72,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class RevisionStatus implements KubernetesResource
 {
 
@@ -96,7 +97,7 @@ public class RevisionStatus implements KubernetesResource
     @JsonProperty("observedGeneration")
     private Long observedGeneration;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -105,17 +106,6 @@ public class RevisionStatus implements KubernetesResource
     public RevisionStatus() {
     }
 
-    /**
-     * 
-     * @param containerStatuses
-     * @param desiredReplicas
-     * @param annotations
-     * @param actualReplicas
-     * @param conditions
-     * @param logUrl
-     * @param initContainerStatuses
-     * @param observedGeneration
-     */
     public RevisionStatus(Integer actualReplicas, Map<String, String> annotations, List<Condition> conditions, List<ContainerStatus> containerStatuses, Integer desiredReplicas, List<ContainerStatus> initContainerStatuses, java.lang.String logUrl, Long observedGeneration) {
         super();
         this.actualReplicas = actualReplicas;

@@ -1,9 +1,9 @@
 
 package io.fabric8.openshift.api.model.hive.v1;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -64,6 +64,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(io.fabric8.kubernetes.api.model.LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class ClusterProvisionSpec implements KubernetesResource
 {
 
@@ -93,7 +94,7 @@ public class ClusterProvisionSpec implements KubernetesResource
     @JsonProperty("stage")
     private java.lang.String stage;
     @JsonIgnore
-    private Map<java.lang.String, java.lang.Object> additionalProperties = new HashMap<java.lang.String, java.lang.Object>();
+    private Map<java.lang.String, java.lang.Object> additionalProperties = new LinkedHashMap<java.lang.String, java.lang.Object>();
 
     /**
      * No args constructor for use in serialization
@@ -102,21 +103,6 @@ public class ClusterProvisionSpec implements KubernetesResource
     public ClusterProvisionSpec() {
     }
 
-    /**
-     * 
-     * @param prevClusterID
-     * @param installLog
-     * @param metadata
-     * @param prevInfraID
-     * @param stage
-     * @param clusterDeploymentRef
-     * @param clusterID
-     * @param adminKubeconfigSecretRef
-     * @param adminPasswordSecretRef
-     * @param podSpec
-     * @param attempt
-     * @param infraID
-     */
     public ClusterProvisionSpec(io.fabric8.kubernetes.api.model.LocalObjectReference adminKubeconfigSecretRef, io.fabric8.kubernetes.api.model.LocalObjectReference adminPasswordSecretRef, Integer attempt, io.fabric8.kubernetes.api.model.LocalObjectReference clusterDeploymentRef, java.lang.String clusterID, java.lang.String infraID, java.lang.String installLog, Map<String, Object> metadata, PodSpec podSpec, java.lang.String prevClusterID, java.lang.String prevInfraID, java.lang.String stage) {
         super();
         this.adminKubeconfigSecretRef = adminKubeconfigSecretRef;

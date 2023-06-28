@@ -2,10 +2,10 @@
 package io.fabric8.chaosmesh.v1alpha1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -66,6 +66,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class HTTPChaosStatus implements KubernetesResource
 {
 
@@ -78,7 +79,7 @@ public class HTTPChaosStatus implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, Long> instances = new LinkedHashMap<String, Long>();
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -87,12 +88,6 @@ public class HTTPChaosStatus implements KubernetesResource
     public HTTPChaosStatus() {
     }
 
-    /**
-     * 
-     * @param experiment
-     * @param instances
-     * @param conditions
-     */
     public HTTPChaosStatus(List<ChaosCondition> conditions, ExperimentStatus experiment, Map<String, Long> instances) {
         super();
         this.conditions = conditions;

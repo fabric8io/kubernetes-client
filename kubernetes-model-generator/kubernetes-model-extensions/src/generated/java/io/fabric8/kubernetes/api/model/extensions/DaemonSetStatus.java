@@ -2,9 +2,10 @@
 package io.fabric8.kubernetes.api.model.extensions;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -64,6 +65,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class DaemonSetStatus implements KubernetesResource
 {
 
@@ -89,7 +91,7 @@ public class DaemonSetStatus implements KubernetesResource
     @JsonProperty("updatedNumberScheduled")
     private Integer updatedNumberScheduled;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -98,19 +100,6 @@ public class DaemonSetStatus implements KubernetesResource
     public DaemonSetStatus() {
     }
 
-    /**
-     * 
-     * @param numberUnavailable
-     * @param updatedNumberScheduled
-     * @param numberAvailable
-     * @param numberMisscheduled
-     * @param numberReady
-     * @param currentNumberScheduled
-     * @param collisionCount
-     * @param desiredNumberScheduled
-     * @param conditions
-     * @param observedGeneration
-     */
     public DaemonSetStatus(Integer collisionCount, List<DaemonSetCondition> conditions, Integer currentNumberScheduled, Integer desiredNumberScheduled, Integer numberAvailable, Integer numberMisscheduled, Integer numberReady, Integer numberUnavailable, Long observedGeneration, Integer updatedNumberScheduled) {
         super();
         this.collisionCount = collisionCount;

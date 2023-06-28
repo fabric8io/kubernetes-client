@@ -1,9 +1,9 @@
 
 package io.fabric8.kubernetes.api.model;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -38,6 +38,7 @@ import lombok.experimental.Accessors;
     ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
+@Generated("jsonschema2pojo")
 public class LimitRangeItem implements KubernetesResource
 {
 
@@ -59,7 +60,7 @@ public class LimitRangeItem implements KubernetesResource
     @JsonProperty("type")
     private java.lang.String type;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -68,15 +69,6 @@ public class LimitRangeItem implements KubernetesResource
     public LimitRangeItem() {
     }
 
-    /**
-     * 
-     * @param _default
-     * @param min
-     * @param max
-     * @param maxLimitRequestRatio
-     * @param type
-     * @param defaultRequest
-     */
     public LimitRangeItem(Map<String, io.fabric8.kubernetes.api.model.Quantity> _default, Map<String, io.fabric8.kubernetes.api.model.Quantity> defaultRequest, Map<String, io.fabric8.kubernetes.api.model.Quantity> max, Map<String, io.fabric8.kubernetes.api.model.Quantity> maxLimitRequestRatio, Map<String, io.fabric8.kubernetes.api.model.Quantity> min, java.lang.String type) {
         super();
         this._default = _default;

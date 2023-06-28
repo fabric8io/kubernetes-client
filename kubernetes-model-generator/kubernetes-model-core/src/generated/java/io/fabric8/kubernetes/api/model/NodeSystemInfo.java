@@ -1,8 +1,9 @@
 
 package io.fabric8.kubernetes.api.model;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -41,6 +42,7 @@ import lombok.experimental.Accessors;
     ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
+@Generated("jsonschema2pojo")
 public class NodeSystemInfo implements KubernetesResource
 {
 
@@ -65,7 +67,7 @@ public class NodeSystemInfo implements KubernetesResource
     @JsonProperty("systemUUID")
     private String systemUUID;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -74,19 +76,6 @@ public class NodeSystemInfo implements KubernetesResource
     public NodeSystemInfo() {
     }
 
-    /**
-     * 
-     * @param machineID
-     * @param bootID
-     * @param containerRuntimeVersion
-     * @param kernelVersion
-     * @param kubeletVersion
-     * @param systemUUID
-     * @param kubeProxyVersion
-     * @param operatingSystem
-     * @param architecture
-     * @param osImage
-     */
     public NodeSystemInfo(String architecture, String bootID, String containerRuntimeVersion, String kernelVersion, String kubeProxyVersion, String kubeletVersion, String machineID, String operatingSystem, String osImage, String systemUUID) {
         super();
         this.architecture = architecture;

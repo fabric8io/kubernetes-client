@@ -1,8 +1,9 @@
 
 package io.fabric8.chaosmesh.v1alpha1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -69,6 +70,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class NetworkDelaySpec implements KubernetesResource
 {
 
@@ -91,7 +93,7 @@ public class NetworkDelaySpec implements KubernetesResource
     @JsonProperty("source-port")
     private String sourcePort;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -100,18 +102,6 @@ public class NetworkDelaySpec implements KubernetesResource
     public NetworkDelaySpec() {
     }
 
-    /**
-     * 
-     * @param hostname
-     * @param sourcePort
-     * @param egressPort
-     * @param jitter
-     * @param correlation
-     * @param latency
-     * @param ipAddress
-     * @param ipProtocol
-     * @param device
-     */
     public NetworkDelaySpec(String correlation, String device, String egressPort, String hostname, String ipAddress, String ipProtocol, String jitter, String latency, String sourcePort) {
         super();
         this.correlation = correlation;

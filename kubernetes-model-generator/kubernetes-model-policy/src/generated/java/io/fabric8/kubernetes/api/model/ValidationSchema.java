@@ -1,8 +1,9 @@
 
 package io.fabric8.kubernetes.api.model;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -80,6 +81,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class ValidationSchema {
 
     @JsonProperty("APIGroup")
@@ -137,7 +139,7 @@ public class ValidationSchema {
     @JsonProperty("V1PodDisruptionBudgetList")
     private io.fabric8.kubernetes.api.model.policy.v1.PodDisruptionBudgetList v1PodDisruptionBudgetList;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -146,36 +148,6 @@ public class ValidationSchema {
     public ValidationSchema() {
     }
 
-    /**
-     * 
-     * @param listOptions
-     * @param aPIGroupList
-     * @param podDisruptionBudgetList
-     * @param baseKubernetesList
-     * @param updateOptions
-     * @param kubernetesRunAsUserStrategyOptions
-     * @param patch
-     * @param eviction
-     * @param v1PodDisruptionBudget
-     * @param v1PodDisruptionBudgetList
-     * @param podDisruptionBudget
-     * @param rootPaths
-     * @param info
-     * @param v1Eviction
-     * @param patchOptions
-     * @param deleteOptions
-     * @param quantity
-     * @param objectReference
-     * @param createOptions
-     * @param aPIGroup
-     * @param typeMeta
-     * @param objectMeta
-     * @param getOptions
-     * @param time
-     * @param podSecurityPolicy
-     * @param podSecurityPolicyList
-     * @param status
-     */
     public ValidationSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, KubernetesList baseKubernetesList, CreateOptions createOptions, DeleteOptions deleteOptions, io.fabric8.kubernetes.api.model.policy.v1beta1.Eviction eviction, GetOptions getOptions, Info info, RunAsUserStrategyOptions kubernetesRunAsUserStrategyOptions, ListOptions listOptions, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, io.fabric8.kubernetes.api.model.ObjectReference objectReference, Patch patch, PatchOptions patchOptions, io.fabric8.kubernetes.api.model.policy.v1beta1.PodDisruptionBudget podDisruptionBudget, io.fabric8.kubernetes.api.model.policy.v1beta1.PodDisruptionBudgetList podDisruptionBudgetList, PodSecurityPolicy podSecurityPolicy, PodSecurityPolicyList podSecurityPolicyList, Quantity quantity, RootPaths rootPaths, Status status, String time, TypeMeta typeMeta, UpdateOptions updateOptions, io.fabric8.kubernetes.api.model.policy.v1.Eviction v1Eviction, io.fabric8.kubernetes.api.model.policy.v1.PodDisruptionBudget v1PodDisruptionBudget, io.fabric8.kubernetes.api.model.policy.v1.PodDisruptionBudgetList v1PodDisruptionBudgetList) {
         super();
         this.aPIGroup = aPIGroup;

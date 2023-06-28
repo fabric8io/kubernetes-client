@@ -2,10 +2,10 @@
 package io.fabric8.openclustermanagement.api.model.multiclusterhub.operator.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -68,6 +68,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class MultiClusterHubStatus implements KubernetesResource
 {
 
@@ -84,7 +85,7 @@ public class MultiClusterHubStatus implements KubernetesResource
     @JsonProperty("phase")
     private java.lang.String phase;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -93,14 +94,6 @@ public class MultiClusterHubStatus implements KubernetesResource
     public MultiClusterHubStatus() {
     }
 
-    /**
-     * 
-     * @param phase
-     * @param components
-     * @param desiredVersion
-     * @param conditions
-     * @param currentVersion
-     */
     public MultiClusterHubStatus(Map<String, StatusCondition> components, List<HubCondition> conditions, java.lang.String currentVersion, java.lang.String desiredVersion, java.lang.String phase) {
         super();
         this.components = components;

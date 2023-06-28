@@ -2,10 +2,10 @@
 package io.fabric8.istio.api.networking.v1beta1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -76,6 +76,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class HTTPMatchRequest implements KubernetesResource
 {
 
@@ -111,7 +112,7 @@ public class HTTPMatchRequest implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, io.fabric8.istio.api.networking.v1beta1.StringMatch> withoutHeaders = new LinkedHashMap<String, io.fabric8.istio.api.networking.v1beta1.StringMatch>();
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -120,22 +121,6 @@ public class HTTPMatchRequest implements KubernetesResource
     public HTTPMatchRequest() {
     }
 
-    /**
-     * 
-     * @param gateways
-     * @param headers
-     * @param method
-     * @param scheme
-     * @param queryParams
-     * @param sourceLabels
-     * @param uri
-     * @param ignoreUriCase
-     * @param port
-     * @param authority
-     * @param name
-     * @param sourceNamespace
-     * @param withoutHeaders
-     */
     public HTTPMatchRequest(io.fabric8.istio.api.networking.v1beta1.StringMatch authority, List<java.lang.String> gateways, Map<String, io.fabric8.istio.api.networking.v1beta1.StringMatch> headers, Boolean ignoreUriCase, io.fabric8.istio.api.networking.v1beta1.StringMatch method, java.lang.String name, Integer port, Map<String, io.fabric8.istio.api.networking.v1beta1.StringMatch> queryParams, io.fabric8.istio.api.networking.v1beta1.StringMatch scheme, Map<String, String> sourceLabels, java.lang.String sourceNamespace, io.fabric8.istio.api.networking.v1beta1.StringMatch uri, Map<String, io.fabric8.istio.api.networking.v1beta1.StringMatch> withoutHeaders) {
         super();
         this.authority = authority;

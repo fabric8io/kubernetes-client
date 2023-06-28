@@ -2,9 +2,10 @@
 package io.fabric8.tekton.pipeline.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -81,6 +82,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(io.fabric8.kubernetes.api.model.VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class Step implements KubernetesResource
 {
 
@@ -128,7 +130,7 @@ public class Step implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<WorkspaceUsage> workspaces = new ArrayList<WorkspaceUsage>();
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -137,27 +139,6 @@ public class Step implements KubernetesResource
     public Step() {
     }
 
-    /**
-     * 
-     * @param volumeDevices
-     * @param image
-     * @param imagePullPolicy
-     * @param onError
-     * @param stdoutConfig
-     * @param workingDir
-     * @param securityContext
-     * @param stderrConfig
-     * @param env
-     * @param command
-     * @param script
-     * @param timeout
-     * @param volumeMounts
-     * @param args
-     * @param name
-     * @param computeResources
-     * @param workspaces
-     * @param envFrom
-     */
     public Step(List<String> args, List<String> command, io.fabric8.kubernetes.api.model.ResourceRequirements computeResources, List<io.fabric8.kubernetes.api.model.EnvVar> env, List<EnvFromSource> envFrom, String image, String imagePullPolicy, String name, String onError, String script, SecurityContext securityContext, StepOutputConfig stderrConfig, StepOutputConfig stdoutConfig, Duration timeout, List<VolumeDevice> volumeDevices, List<io.fabric8.kubernetes.api.model.VolumeMount> volumeMounts, String workingDir, List<WorkspaceUsage> workspaces) {
         super();
         this.args = args;

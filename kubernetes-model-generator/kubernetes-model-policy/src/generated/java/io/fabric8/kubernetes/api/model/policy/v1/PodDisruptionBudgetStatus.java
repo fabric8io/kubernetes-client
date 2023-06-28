@@ -2,10 +2,10 @@
 package io.fabric8.kubernetes.api.model.policy.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -63,6 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class PodDisruptionBudgetStatus implements KubernetesResource
 {
 
@@ -83,7 +84,7 @@ public class PodDisruptionBudgetStatus implements KubernetesResource
     @JsonProperty("observedGeneration")
     private Long observedGeneration;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -92,16 +93,6 @@ public class PodDisruptionBudgetStatus implements KubernetesResource
     public PodDisruptionBudgetStatus() {
     }
 
-    /**
-     * 
-     * @param currentHealthy
-     * @param expectedPods
-     * @param disruptionsAllowed
-     * @param disruptedPods
-     * @param conditions
-     * @param observedGeneration
-     * @param desiredHealthy
-     */
     public PodDisruptionBudgetStatus(List<Condition> conditions, Integer currentHealthy, Integer desiredHealthy, Map<String, String> disruptedPods, Integer disruptionsAllowed, Integer expectedPods, Long observedGeneration) {
         super();
         this.conditions = conditions;

@@ -2,10 +2,10 @@
 package io.fabric8.openshift.api.model.operatorhub.v1alpha1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -66,6 +66,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class SubscriptionConfig implements KubernetesResource
 {
 
@@ -92,7 +93,7 @@ public class SubscriptionConfig implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Volume> volumes = new ArrayList<Volume>();
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -101,17 +102,6 @@ public class SubscriptionConfig implements KubernetesResource
     public SubscriptionConfig() {
     }
 
-    /**
-     * 
-     * @param tolerations
-     * @param volumes
-     * @param resources
-     * @param selector
-     * @param env
-     * @param envFrom
-     * @param nodeSelector
-     * @param volumeMounts
-     */
     public SubscriptionConfig(List<EnvVar> env, List<EnvFromSource> envFrom, Map<String, String> nodeSelector, io.fabric8.kubernetes.api.model.ResourceRequirements resources, io.fabric8.kubernetes.api.model.LabelSelector selector, List<Toleration> tolerations, List<VolumeMount> volumeMounts, List<Volume> volumes) {
         super();
         this.env = env;

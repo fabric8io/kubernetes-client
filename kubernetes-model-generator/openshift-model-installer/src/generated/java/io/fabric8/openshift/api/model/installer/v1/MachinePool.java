@@ -1,8 +1,9 @@
 
 package io.fabric8.openshift.api.model.installer.v1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -57,6 +58,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class MachinePool implements KubernetesResource
 {
 
@@ -71,7 +73,7 @@ public class MachinePool implements KubernetesResource
     @JsonProperty("replicas")
     private Long replicas;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -80,14 +82,6 @@ public class MachinePool implements KubernetesResource
     public MachinePool() {
     }
 
-    /**
-     * 
-     * @param replicas
-     * @param name
-     * @param hyperthreading
-     * @param platform
-     * @param architecture
-     */
     public MachinePool(String architecture, String hyperthreading, String name, MachinePoolPlatform platform, Long replicas) {
         super();
         this.architecture = architecture;

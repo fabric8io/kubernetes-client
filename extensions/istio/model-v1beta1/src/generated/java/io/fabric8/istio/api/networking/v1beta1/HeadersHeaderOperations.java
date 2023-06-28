@@ -2,10 +2,10 @@
 package io.fabric8.istio.api.networking.v1beta1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -66,6 +66,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class HeadersHeaderOperations implements KubernetesResource
 {
 
@@ -79,7 +80,7 @@ public class HeadersHeaderOperations implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> set = new LinkedHashMap<String, String>();
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -88,12 +89,6 @@ public class HeadersHeaderOperations implements KubernetesResource
     public HeadersHeaderOperations() {
     }
 
-    /**
-     * 
-     * @param add
-     * @param set
-     * @param remove
-     */
     public HeadersHeaderOperations(Map<String, String> add, List<java.lang.String> remove, Map<String, String> set) {
         super();
         this.add = add;

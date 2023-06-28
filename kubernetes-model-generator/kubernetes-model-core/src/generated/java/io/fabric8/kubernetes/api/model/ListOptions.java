@@ -1,8 +1,9 @@
 
 package io.fabric8.kubernetes.api.model;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -49,6 +50,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1")
 @Group("")
+@Generated("jsonschema2pojo")
 public class ListOptions implements KubernetesResource
 {
 
@@ -85,7 +87,7 @@ public class ListOptions implements KubernetesResource
     @JsonProperty("watch")
     private Boolean watch;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -94,20 +96,6 @@ public class ListOptions implements KubernetesResource
     public ListOptions() {
     }
 
-    /**
-     * 
-     * @param _continue
-     * @param resourceVersionMatch
-     * @param apiVersion
-     * @param watch
-     * @param kind
-     * @param resourceVersion
-     * @param labelSelector
-     * @param limit
-     * @param timeoutSeconds
-     * @param fieldSelector
-     * @param allowWatchBookmarks
-     */
     public ListOptions(Boolean allowWatchBookmarks, String apiVersion, String _continue, String fieldSelector, String kind, String labelSelector, Long limit, String resourceVersion, String resourceVersionMatch, Long timeoutSeconds, Boolean watch) {
         super();
         this.allowWatchBookmarks = allowWatchBookmarks;

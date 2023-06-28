@@ -1,8 +1,9 @@
 
 package io.fabric8.kubernetes.api.model;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -35,6 +36,7 @@ import lombok.experimental.Accessors;
     ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
+@Generated("jsonschema2pojo")
 public class EndpointPort implements KubernetesResource
 {
 
@@ -47,7 +49,7 @@ public class EndpointPort implements KubernetesResource
     @JsonProperty("protocol")
     private String protocol;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -56,13 +58,6 @@ public class EndpointPort implements KubernetesResource
     public EndpointPort() {
     }
 
-    /**
-     * 
-     * @param protocol
-     * @param port
-     * @param appProtocol
-     * @param name
-     */
     public EndpointPort(String appProtocol, String name, Integer port, String protocol) {
         super();
         this.appProtocol = appProtocol;

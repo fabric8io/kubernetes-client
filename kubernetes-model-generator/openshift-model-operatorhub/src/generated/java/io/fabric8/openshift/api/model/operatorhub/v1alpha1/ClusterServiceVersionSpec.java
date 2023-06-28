@@ -2,10 +2,10 @@
 package io.fabric8.openshift.api.model.operatorhub.v1alpha1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -78,6 +78,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class ClusterServiceVersionSpec implements KubernetesResource
 {
 
@@ -139,7 +140,7 @@ public class ClusterServiceVersionSpec implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<WebhookDescription> webhookdefinitions = new ArrayList<WebhookDescription>();
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -148,32 +149,6 @@ public class ClusterServiceVersionSpec implements KubernetesResource
     public ClusterServiceVersionSpec() {
     }
 
-    /**
-     * 
-     * @param maintainers
-     * @param customresourcedefinitions
-     * @param installModes
-     * @param keywords
-     * @param apiservicedefinitions
-     * @param maturity
-     * @param displayName
-     * @param relatedImages
-     * @param replaces
-     * @param icon
-     * @param annotations
-     * @param description
-     * @param nativeAPIs
-     * @param version
-     * @param labels
-     * @param webhookdefinitions
-     * @param minKubeVersion
-     * @param skips
-     * @param cleanup
-     * @param install
-     * @param provider
-     * @param links
-     * @param selector
-     */
     public ClusterServiceVersionSpec(Map<String, String> annotations, APIServiceDefinitions apiservicedefinitions, CleanupSpec cleanup, CustomResourceDefinitions customresourcedefinitions, java.lang.String description, java.lang.String displayName, List<Icon> icon, NamedInstallStrategy install, List<InstallMode> installModes, List<java.lang.String> keywords, Map<String, String> labels, List<AppLink> links, List<Maintainer> maintainers, java.lang.String maturity, java.lang.String minKubeVersion, List<GroupVersionKind> nativeAPIs, AppLink provider, List<RelatedImage> relatedImages, java.lang.String replaces, io.fabric8.kubernetes.api.model.LabelSelector selector, List<java.lang.String> skips, java.lang.String version, List<WebhookDescription> webhookdefinitions) {
         super();
         this.annotations = annotations;

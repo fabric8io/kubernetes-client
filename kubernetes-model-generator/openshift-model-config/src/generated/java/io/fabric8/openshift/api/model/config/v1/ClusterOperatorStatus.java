@@ -2,9 +2,10 @@
 package io.fabric8.openshift.api.model.config.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -58,6 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class ClusterOperatorStatus implements KubernetesResource
 {
 
@@ -73,7 +75,7 @@ public class ClusterOperatorStatus implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<OperandVersion> versions = new ArrayList<OperandVersion>();
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -82,13 +84,6 @@ public class ClusterOperatorStatus implements KubernetesResource
     public ClusterOperatorStatus() {
     }
 
-    /**
-     * 
-     * @param extension
-     * @param versions
-     * @param conditions
-     * @param relatedObjects
-     */
     public ClusterOperatorStatus(List<ClusterOperatorStatusCondition> conditions, RawExtension extension, List<io.fabric8.openshift.api.model.config.v1.ObjectReference> relatedObjects, List<OperandVersion> versions) {
         super();
         this.conditions = conditions;

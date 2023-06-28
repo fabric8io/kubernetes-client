@@ -1,8 +1,9 @@
 
 package io.fabric8.kubernetes.api.model;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -77,6 +78,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class KubeSchema {
 
     @JsonProperty("APIGroup")
@@ -128,7 +130,7 @@ public class KubeSchema {
     @JsonProperty("V1CronJobList")
     private io.fabric8.kubernetes.api.model.batch.v1.CronJobList v1CronJobList;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -137,33 +139,6 @@ public class KubeSchema {
     public KubeSchema() {
     }
 
-    /**
-     * 
-     * @param listOptions
-     * @param aPIGroupList
-     * @param patchOptions
-     * @param deleteOptions
-     * @param quantity
-     * @param baseKubernetesList
-     * @param updateOptions
-     * @param v1CronJob
-     * @param createOptions
-     * @param cronJob
-     * @param podTemplateList
-     * @param patch
-     * @param v1CronJobList
-     * @param aPIGroup
-     * @param typeMeta
-     * @param objectMeta
-     * @param rootPaths
-     * @param getOptions
-     * @param time
-     * @param job
-     * @param jobList
-     * @param cronJobList
-     * @param info
-     * @param status
-     */
     public KubeSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, KubernetesList baseKubernetesList, CreateOptions createOptions, io.fabric8.kubernetes.api.model.batch.v1beta1.CronJob cronJob, io.fabric8.kubernetes.api.model.batch.v1beta1.CronJobList cronJobList, DeleteOptions deleteOptions, GetOptions getOptions, Info info, Job job, JobList jobList, ListOptions listOptions, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, Patch patch, PatchOptions patchOptions, PodTemplate podTemplateList, Quantity quantity, RootPaths rootPaths, Status status, String time, TypeMeta typeMeta, UpdateOptions updateOptions, io.fabric8.kubernetes.api.model.batch.v1.CronJob v1CronJob, io.fabric8.kubernetes.api.model.batch.v1.CronJobList v1CronJobList) {
         super();
         this.aPIGroup = aPIGroup;

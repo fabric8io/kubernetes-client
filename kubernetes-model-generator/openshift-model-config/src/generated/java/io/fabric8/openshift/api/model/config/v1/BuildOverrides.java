@@ -2,10 +2,10 @@
 package io.fabric8.openshift.api.model.config.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -60,6 +60,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class BuildOverrides implements KubernetesResource
 {
 
@@ -75,7 +76,7 @@ public class BuildOverrides implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Toleration> tolerations = new ArrayList<Toleration>();
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -84,13 +85,6 @@ public class BuildOverrides implements KubernetesResource
     public BuildOverrides() {
     }
 
-    /**
-     * 
-     * @param forcePull
-     * @param tolerations
-     * @param imageLabels
-     * @param nodeSelector
-     */
     public BuildOverrides(Boolean forcePull, List<ImageLabel> imageLabels, Map<String, String> nodeSelector, List<Toleration> tolerations) {
         super();
         this.forcePull = forcePull;

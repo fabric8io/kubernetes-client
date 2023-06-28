@@ -2,10 +2,10 @@
 package io.fabric8.tekton.v1beta1.internal.pipeline.pkg.apis.run.v1beta1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -72,6 +72,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class CustomRunStatus implements KubernetesResource
 {
 
@@ -97,7 +98,7 @@ public class CustomRunStatus implements KubernetesResource
     @JsonProperty("startTime")
     private java.lang.String startTime;
     @JsonIgnore
-    private Map<java.lang.String, java.lang.Object> additionalProperties = new HashMap<java.lang.String, java.lang.Object>();
+    private Map<java.lang.String, java.lang.Object> additionalProperties = new LinkedHashMap<java.lang.String, java.lang.Object>();
 
     /**
      * No args constructor for use in serialization
@@ -106,17 +107,6 @@ public class CustomRunStatus implements KubernetesResource
     public CustomRunStatus() {
     }
 
-    /**
-     * 
-     * @param completionTime
-     * @param retriesStatus
-     * @param annotations
-     * @param startTime
-     * @param conditions
-     * @param results
-     * @param observedGeneration
-     * @param extraFields
-     */
     public CustomRunStatus(Map<String, String> annotations, java.lang.String completionTime, List<Condition> conditions, Map<String, Object> extraFields, Long observedGeneration, List<CustomRunResult> results, List<CustomRunStatus> retriesStatus, java.lang.String startTime) {
         super();
         this.annotations = annotations;

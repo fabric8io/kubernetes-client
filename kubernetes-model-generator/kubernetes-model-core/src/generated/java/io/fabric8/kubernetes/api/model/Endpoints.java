@@ -2,9 +2,10 @@
 package io.fabric8.kubernetes.api.model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -43,6 +44,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1")
 @Group("")
+@Generated("jsonschema2pojo")
 public class Endpoints implements HasMetadata, Namespaced
 {
 
@@ -66,7 +68,7 @@ public class Endpoints implements HasMetadata, Namespaced
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<EndpointSubset> subsets = new ArrayList<EndpointSubset>();
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -75,13 +77,6 @@ public class Endpoints implements HasMetadata, Namespaced
     public Endpoints() {
     }
 
-    /**
-     * 
-     * @param metadata
-     * @param apiVersion
-     * @param kind
-     * @param subsets
-     */
     public Endpoints(String apiVersion, String kind, ObjectMeta metadata, List<EndpointSubset> subsets) {
         super();
         this.apiVersion = apiVersion;

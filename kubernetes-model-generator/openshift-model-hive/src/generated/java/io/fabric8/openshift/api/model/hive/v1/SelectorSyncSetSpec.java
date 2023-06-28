@@ -2,9 +2,10 @@
 package io.fabric8.openshift.api.model.hive.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -59,6 +60,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class SelectorSyncSetSpec implements KubernetesResource
 {
 
@@ -78,7 +80,7 @@ public class SelectorSyncSetSpec implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<SecretMapping> secretMappings = new ArrayList<SecretMapping>();
     @JsonIgnore
-    private Map<java.lang.String, java.lang.Object> additionalProperties = new HashMap<java.lang.String, java.lang.Object>();
+    private Map<java.lang.String, java.lang.Object> additionalProperties = new LinkedHashMap<java.lang.String, java.lang.Object>();
 
     /**
      * No args constructor for use in serialization
@@ -87,15 +89,6 @@ public class SelectorSyncSetSpec implements KubernetesResource
     public SelectorSyncSetSpec() {
     }
 
-    /**
-     * 
-     * @param clusterDeploymentSelector
-     * @param patches
-     * @param resourceApplyMode
-     * @param applyBehavior
-     * @param resources
-     * @param secretMappings
-     */
     public SelectorSyncSetSpec(java.lang.String applyBehavior, io.fabric8.kubernetes.api.model.LabelSelector clusterDeploymentSelector, List<SyncObjectPatch> patches, java.lang.String resourceApplyMode, List<Map<String, Object>> resources, List<SecretMapping> secretMappings) {
         super();
         this.applyBehavior = applyBehavior;

@@ -1,8 +1,9 @@
 
 package io.fabric8.kubernetes.api.model;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -42,6 +43,7 @@ import lombok.experimental.Accessors;
     ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
+@Generated("jsonschema2pojo")
 public class SecurityContext implements KubernetesResource
 {
 
@@ -68,7 +70,7 @@ public class SecurityContext implements KubernetesResource
     @JsonProperty("windowsOptions")
     private WindowsSecurityContextOptions windowsOptions;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -77,20 +79,6 @@ public class SecurityContext implements KubernetesResource
     public SecurityContext() {
     }
 
-    /**
-     * 
-     * @param privileged
-     * @param runAsUser
-     * @param capabilities
-     * @param seLinuxOptions
-     * @param seccompProfile
-     * @param windowsOptions
-     * @param procMount
-     * @param allowPrivilegeEscalation
-     * @param runAsGroup
-     * @param runAsNonRoot
-     * @param readOnlyRootFilesystem
-     */
     public SecurityContext(Boolean allowPrivilegeEscalation, Capabilities capabilities, Boolean privileged, String procMount, Boolean readOnlyRootFilesystem, Long runAsGroup, Boolean runAsNonRoot, Long runAsUser, SELinuxOptions seLinuxOptions, SeccompProfile seccompProfile, WindowsSecurityContextOptions windowsOptions) {
         super();
         this.allowPrivilegeEscalation = allowPrivilegeEscalation;

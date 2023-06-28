@@ -1,8 +1,9 @@
 
 package io.fabric8.openshift.api.model;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -56,6 +57,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class TagEvent implements KubernetesResource
 {
 
@@ -68,7 +70,7 @@ public class TagEvent implements KubernetesResource
     @JsonProperty("image")
     private java.lang.String image;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -77,13 +79,6 @@ public class TagEvent implements KubernetesResource
     public TagEvent() {
     }
 
-    /**
-     * 
-     * @param generation
-     * @param image
-     * @param created
-     * @param dockerImageReference
-     */
     public TagEvent(String created, java.lang.String dockerImageReference, Long generation, java.lang.String image) {
         super();
         this.created = created;

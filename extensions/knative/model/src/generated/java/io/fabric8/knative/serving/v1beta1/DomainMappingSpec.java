@@ -1,8 +1,9 @@
 
 package io.fabric8.knative.serving.v1beta1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -63,6 +64,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class DomainMappingSpec implements KubernetesResource
 {
 
@@ -71,7 +73,7 @@ public class DomainMappingSpec implements KubernetesResource
     @JsonProperty("tls")
     private SecretTLS tls;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -80,11 +82,6 @@ public class DomainMappingSpec implements KubernetesResource
     public DomainMappingSpec() {
     }
 
-    /**
-     * 
-     * @param ref
-     * @param tls
-     */
     public DomainMappingSpec(KReference ref, SecretTLS tls) {
         super();
         this.ref = ref;

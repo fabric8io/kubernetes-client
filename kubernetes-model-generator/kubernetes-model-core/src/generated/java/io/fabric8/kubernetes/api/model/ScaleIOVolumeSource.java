@@ -1,8 +1,9 @@
 
 package io.fabric8.kubernetes.api.model;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -41,6 +42,7 @@ import lombok.experimental.Accessors;
     ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
+@Generated("jsonschema2pojo")
 public class ScaleIOVolumeSource implements KubernetesResource
 {
 
@@ -65,7 +67,7 @@ public class ScaleIOVolumeSource implements KubernetesResource
     @JsonProperty("volumeName")
     private String volumeName;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -74,19 +76,6 @@ public class ScaleIOVolumeSource implements KubernetesResource
     public ScaleIOVolumeSource() {
     }
 
-    /**
-     * 
-     * @param system
-     * @param protectionDomain
-     * @param sslEnabled
-     * @param storageMode
-     * @param volumeName
-     * @param secretRef
-     * @param readOnly
-     * @param fsType
-     * @param storagePool
-     * @param gateway
-     */
     public ScaleIOVolumeSource(String fsType, String gateway, String protectionDomain, Boolean readOnly, LocalObjectReference secretRef, Boolean sslEnabled, String storageMode, String storagePool, String system, String volumeName) {
         super();
         this.fsType = fsType;

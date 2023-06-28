@@ -2,10 +2,10 @@
 package io.fabric8.kubernetes.api.model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -64,6 +64,7 @@ import lombok.experimental.Accessors;
     ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
+@Generated("jsonschema2pojo")
 public class PersistentVolumeSpec implements KubernetesResource
 {
 
@@ -131,7 +132,7 @@ public class PersistentVolumeSpec implements KubernetesResource
     @JsonProperty("vsphereVolume")
     private VsphereVirtualDiskVolumeSource vsphereVolume;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -140,39 +141,6 @@ public class PersistentVolumeSpec implements KubernetesResource
     public PersistentVolumeSpec() {
     }
 
-    /**
-     * 
-     * @param claimRef
-     * @param quobyte
-     * @param azureFile
-     * @param flexVolume
-     * @param mountOptions
-     * @param local
-     * @param capacity
-     * @param cephfs
-     * @param scaleIO
-     * @param accessModes
-     * @param glusterfs
-     * @param gcePersistentDisk
-     * @param photonPersistentDisk
-     * @param azureDisk
-     * @param cinder
-     * @param awsElasticBlockStore
-     * @param nodeAffinity
-     * @param flocker
-     * @param volumeMode
-     * @param iscsi
-     * @param rbd
-     * @param storageClassName
-     * @param storageos
-     * @param csi
-     * @param nfs
-     * @param persistentVolumeReclaimPolicy
-     * @param portworxVolume
-     * @param vsphereVolume
-     * @param fc
-     * @param hostPath
-     */
     public PersistentVolumeSpec(List<java.lang.String> accessModes, AWSElasticBlockStoreVolumeSource awsElasticBlockStore, AzureDiskVolumeSource azureDisk, AzureFilePersistentVolumeSource azureFile, Map<String, Quantity> capacity, CephFSPersistentVolumeSource cephfs, CinderPersistentVolumeSource cinder, ObjectReference claimRef, CSIPersistentVolumeSource csi, FCVolumeSource fc, FlexPersistentVolumeSource flexVolume, FlockerVolumeSource flocker, GCEPersistentDiskVolumeSource gcePersistentDisk, GlusterfsPersistentVolumeSource glusterfs, HostPathVolumeSource hostPath, ISCSIPersistentVolumeSource iscsi, LocalVolumeSource local, List<java.lang.String> mountOptions, NFSVolumeSource nfs, VolumeNodeAffinity nodeAffinity, java.lang.String persistentVolumeReclaimPolicy, PhotonPersistentDiskVolumeSource photonPersistentDisk, PortworxVolumeSource portworxVolume, QuobyteVolumeSource quobyte, RBDPersistentVolumeSource rbd, ScaleIOPersistentVolumeSource scaleIO, java.lang.String storageClassName, StorageOSPersistentVolumeSource storageos, java.lang.String volumeMode, VsphereVirtualDiskVolumeSource vsphereVolume) {
         super();
         this.accessModes = accessModes;

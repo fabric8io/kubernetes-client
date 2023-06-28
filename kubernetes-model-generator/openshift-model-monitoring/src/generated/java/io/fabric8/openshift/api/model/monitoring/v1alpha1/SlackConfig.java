@@ -2,9 +2,10 @@
 package io.fabric8.openshift.api.model.monitoring.v1alpha1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -77,6 +78,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class SlackConfig implements KubernetesResource
 {
 
@@ -128,7 +130,7 @@ public class SlackConfig implements KubernetesResource
     @JsonProperty("username")
     private String username;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -137,31 +139,6 @@ public class SlackConfig implements KubernetesResource
     public SlackConfig() {
     }
 
-    /**
-     * 
-     * @param iconEmoji
-     * @param color
-     * @param footer
-     * @param channel
-     * @param title
-     * @param mrkdwnIn
-     * @param sendResolved
-     * @param apiURL
-     * @param httpConfig
-     * @param shortFields
-     * @param callbackId
-     * @param imageURL
-     * @param pretext
-     * @param linkNames
-     * @param iconURL
-     * @param text
-     * @param fields
-     * @param thumbURL
-     * @param actions
-     * @param fallback
-     * @param titleLink
-     * @param username
-     */
     public SlackConfig(List<SlackAction> actions, SecretKeySelector apiURL, String callbackId, String channel, String color, String fallback, List<SlackField> fields, String footer, HTTPConfig httpConfig, String iconEmoji, String iconURL, String imageURL, Boolean linkNames, List<String> mrkdwnIn, String pretext, Boolean sendResolved, Boolean shortFields, String text, String thumbURL, String title, String titleLink, String username) {
         super();
         this.actions = actions;

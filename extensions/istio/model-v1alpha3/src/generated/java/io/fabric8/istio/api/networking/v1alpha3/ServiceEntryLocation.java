@@ -3,8 +3,10 @@ package io.fabric8.istio.api.networking.v1alpha3;
 
 import java.util.HashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
+@Generated("jsonschema2pojo")
 public enum ServiceEntryLocation {
 
     MESH_EXTERNAL(0),
@@ -22,7 +24,7 @@ public enum ServiceEntryLocation {
         }
     }
 
-    private ServiceEntryLocation(Integer value) {
+    ServiceEntryLocation(Integer value) {
         this.value = value;
     }
 

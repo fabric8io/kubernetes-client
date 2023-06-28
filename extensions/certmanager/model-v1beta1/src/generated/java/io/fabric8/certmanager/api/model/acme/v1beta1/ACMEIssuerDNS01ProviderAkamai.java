@@ -1,8 +1,9 @@
 
 package io.fabric8.certmanager.api.model.acme.v1beta1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -65,6 +66,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class ACMEIssuerDNS01ProviderAkamai implements KubernetesResource
 {
 
@@ -77,7 +79,7 @@ public class ACMEIssuerDNS01ProviderAkamai implements KubernetesResource
     @JsonProperty("serviceConsumerDomain")
     private String serviceConsumerDomain;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -86,13 +88,6 @@ public class ACMEIssuerDNS01ProviderAkamai implements KubernetesResource
     public ACMEIssuerDNS01ProviderAkamai() {
     }
 
-    /**
-     * 
-     * @param clientTokenSecretRef
-     * @param clientSecretSecretRef
-     * @param serviceConsumerDomain
-     * @param accessTokenSecretRef
-     */
     public ACMEIssuerDNS01ProviderAkamai(SecretKeySelector accessTokenSecretRef, SecretKeySelector clientSecretSecretRef, SecretKeySelector clientTokenSecretRef, String serviceConsumerDomain) {
         super();
         this.accessTokenSecretRef = accessTokenSecretRef;

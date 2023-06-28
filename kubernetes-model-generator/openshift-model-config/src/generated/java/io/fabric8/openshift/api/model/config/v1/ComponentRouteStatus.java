@@ -2,9 +2,10 @@
 package io.fabric8.openshift.api.model.config.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -61,6 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class ComponentRouteStatus implements KubernetesResource
 {
 
@@ -82,7 +84,7 @@ public class ComponentRouteStatus implements KubernetesResource
     @JsonProperty("relatedObjects")
     private List<io.fabric8.openshift.api.model.config.v1.ObjectReference> relatedObjects = new ArrayList<io.fabric8.openshift.api.model.config.v1.ObjectReference>();
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -91,16 +93,6 @@ public class ComponentRouteStatus implements KubernetesResource
     public ComponentRouteStatus() {
     }
 
-    /**
-     * 
-     * @param consumingUsers
-     * @param name
-     * @param namespace
-     * @param conditions
-     * @param currentHostnames
-     * @param defaultHostname
-     * @param relatedObjects
-     */
     public ComponentRouteStatus(List<Condition> conditions, List<String> consumingUsers, List<String> currentHostnames, String defaultHostname, String name, String namespace, List<io.fabric8.openshift.api.model.config.v1.ObjectReference> relatedObjects) {
         super();
         this.conditions = conditions;

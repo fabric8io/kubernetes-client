@@ -2,10 +2,10 @@
 package io.fabric8.istio.api.networking.v1alpha3;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -65,6 +65,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class GatewaySpec implements KubernetesResource
 {
 
@@ -75,7 +76,7 @@ public class GatewaySpec implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Server> servers = new ArrayList<Server>();
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -84,11 +85,6 @@ public class GatewaySpec implements KubernetesResource
     public GatewaySpec() {
     }
 
-    /**
-     * 
-     * @param servers
-     * @param selector
-     */
     public GatewaySpec(Map<String, String> selector, List<Server> servers) {
         super();
         this.selector = selector;

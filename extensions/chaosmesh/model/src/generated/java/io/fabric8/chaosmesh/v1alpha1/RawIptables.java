@@ -2,9 +2,10 @@
 package io.fabric8.chaosmesh.v1alpha1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -67,6 +68,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class RawIptables implements KubernetesResource
 {
 
@@ -81,7 +83,7 @@ public class RawIptables implements KubernetesResource
     @JsonProperty("source")
     private String source;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -90,14 +92,6 @@ public class RawIptables implements KubernetesResource
     public RawIptables() {
     }
 
-    /**
-     * 
-     * @param ipsets
-     * @param name
-     * @param source
-     * @param device
-     * @param direction
-     */
     public RawIptables(String device, String direction, List<String> ipsets, String name, String source) {
         super();
         this.device = device;

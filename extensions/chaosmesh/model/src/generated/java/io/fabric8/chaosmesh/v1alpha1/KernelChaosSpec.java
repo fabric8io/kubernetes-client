@@ -1,8 +1,9 @@
 
 package io.fabric8.chaosmesh.v1alpha1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -65,6 +66,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class KernelChaosSpec implements KubernetesResource
 {
 
@@ -79,7 +81,7 @@ public class KernelChaosSpec implements KubernetesResource
     @JsonProperty("value")
     private java.lang.String value;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -88,14 +90,6 @@ public class KernelChaosSpec implements KubernetesResource
     public KernelChaosSpec() {
     }
 
-    /**
-     * 
-     * @param duration
-     * @param mode
-     * @param failKernRequest
-     * @param selector
-     * @param value
-     */
     public KernelChaosSpec(String duration, FailKernRequest failKernRequest, java.lang.String mode, PodSelectorSpec selector, java.lang.String value) {
         super();
         this.duration = duration;

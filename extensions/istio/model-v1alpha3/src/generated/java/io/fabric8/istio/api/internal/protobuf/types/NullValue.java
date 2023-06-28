@@ -3,8 +3,10 @@ package io.fabric8.istio.api.internal.protobuf.types;
 
 import java.util.HashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
+@Generated("jsonschema2pojo")
 public enum NullValue {
 
     NULL_VALUE(0);
@@ -21,7 +23,7 @@ public enum NullValue {
         }
     }
 
-    private NullValue(Integer value) {
+    NullValue(Integer value) {
         this.value = value;
     }
 

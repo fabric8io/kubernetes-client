@@ -2,9 +2,10 @@
 package io.fabric8.tekton.pipeline.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -65,6 +66,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class PipelineRef implements KubernetesResource
 {
 
@@ -78,7 +80,7 @@ public class PipelineRef implements KubernetesResource
     @JsonProperty("resolver")
     private String resolver;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -87,13 +89,6 @@ public class PipelineRef implements KubernetesResource
     public PipelineRef() {
     }
 
-    /**
-     * 
-     * @param resolver
-     * @param apiVersion
-     * @param name
-     * @param params
-     */
     public PipelineRef(String apiVersion, String name, List<Param> params, String resolver) {
         super();
         this.apiVersion = apiVersion;

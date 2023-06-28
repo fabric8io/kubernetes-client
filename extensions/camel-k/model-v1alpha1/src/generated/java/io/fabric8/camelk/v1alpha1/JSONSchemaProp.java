@@ -2,9 +2,10 @@
 package io.fabric8.camelk.v1alpha1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -86,6 +87,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class JSONSchemaProp implements KubernetesResource
 {
 
@@ -138,7 +140,7 @@ public class JSONSchemaProp implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<java.lang.String> xDescriptors = new ArrayList<java.lang.String>();
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -147,32 +149,6 @@ public class JSONSchemaProp implements KubernetesResource
     public JSONSchemaProp() {
     }
 
-    /**
-     * 
-     * @param multipleOf
-     * @param _default
-     * @param maxItems
-     * @param nullable
-     * @param minLength
-     * @param format
-     * @param pattern
-     * @param xDescriptors
-     * @param description
-     * @param _enum
-     * @param title
-     * @param type
-     * @param example
-     * @param minProperties
-     * @param exclusiveMaximum
-     * @param minItems
-     * @param uniqueItems
-     * @param maximum
-     * @param id
-     * @param maxProperties
-     * @param exclusiveMinimum
-     * @param minimum
-     * @param maxLength
-     */
     public JSONSchemaProp(JsonNode _default, java.lang.String description, List<JsonNode> _enum, JsonNode example, Boolean exclusiveMaximum, Boolean exclusiveMinimum, java.lang.String format, java.lang.String id, Long maxItems, Long maxLength, Long maxProperties, String maximum, Long minItems, Long minLength, Long minProperties, String minimum, String multipleOf, Boolean nullable, java.lang.String pattern, java.lang.String title, java.lang.String type, Boolean uniqueItems, List<java.lang.String> xDescriptors) {
         super();
         this._default = _default;

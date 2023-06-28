@@ -1,8 +1,9 @@
 
 package io.fabric8.tekton.pipeline.v1beta1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -72,6 +73,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1beta1")
 @Group("tekton.dev")
+@Generated("jsonschema2pojo")
 public class CustomRun implements HasMetadata, Namespaced
 {
 
@@ -96,7 +98,7 @@ public class CustomRun implements HasMetadata, Namespaced
     @JsonProperty("status")
     private CustomRunStatus status;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -105,14 +107,6 @@ public class CustomRun implements HasMetadata, Namespaced
     public CustomRun() {
     }
 
-    /**
-     * 
-     * @param metadata
-     * @param apiVersion
-     * @param kind
-     * @param spec
-     * @param status
-     */
     public CustomRun(String apiVersion, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, CustomRunSpec spec, CustomRunStatus status) {
         super();
         this.apiVersion = apiVersion;

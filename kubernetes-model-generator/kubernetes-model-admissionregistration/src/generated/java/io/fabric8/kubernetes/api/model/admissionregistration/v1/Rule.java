@@ -2,9 +2,10 @@
 package io.fabric8.kubernetes.api.model.admissionregistration.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -58,6 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class Rule implements KubernetesResource
 {
 
@@ -73,7 +75,7 @@ public class Rule implements KubernetesResource
     @JsonProperty("scope")
     private String scope;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -82,13 +84,6 @@ public class Rule implements KubernetesResource
     public Rule() {
     }
 
-    /**
-     * 
-     * @param apiVersions
-     * @param scope
-     * @param resources
-     * @param apiGroups
-     */
     public Rule(List<String> apiGroups, List<String> apiVersions, List<String> resources, String scope) {
         super();
         this.apiGroups = apiGroups;

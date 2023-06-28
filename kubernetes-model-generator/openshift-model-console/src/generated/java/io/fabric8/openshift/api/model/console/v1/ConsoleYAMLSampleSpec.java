@@ -1,8 +1,9 @@
 
 package io.fabric8.openshift.api.model.console.v1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -58,6 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class ConsoleYAMLSampleSpec implements KubernetesResource
 {
 
@@ -72,7 +74,7 @@ public class ConsoleYAMLSampleSpec implements KubernetesResource
     @JsonProperty("yaml")
     private String yaml;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -81,14 +83,6 @@ public class ConsoleYAMLSampleSpec implements KubernetesResource
     public ConsoleYAMLSampleSpec() {
     }
 
-    /**
-     * 
-     * @param snippet
-     * @param description
-     * @param targetResource
-     * @param title
-     * @param yaml
-     */
     public ConsoleYAMLSampleSpec(String description, Boolean snippet, TypeMeta targetResource, String title, String yaml) {
         super();
         this.description = description;

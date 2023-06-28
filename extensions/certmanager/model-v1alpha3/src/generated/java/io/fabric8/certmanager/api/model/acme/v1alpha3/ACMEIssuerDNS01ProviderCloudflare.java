@@ -1,8 +1,9 @@
 
 package io.fabric8.certmanager.api.model.acme.v1alpha3;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -64,6 +65,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class ACMEIssuerDNS01ProviderCloudflare implements KubernetesResource
 {
 
@@ -74,7 +76,7 @@ public class ACMEIssuerDNS01ProviderCloudflare implements KubernetesResource
     @JsonProperty("email")
     private String email;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -83,12 +85,6 @@ public class ACMEIssuerDNS01ProviderCloudflare implements KubernetesResource
     public ACMEIssuerDNS01ProviderCloudflare() {
     }
 
-    /**
-     * 
-     * @param apiKeySecretRef
-     * @param apiTokenSecretRef
-     * @param email
-     */
     public ACMEIssuerDNS01ProviderCloudflare(SecretKeySelector apiKeySecretRef, SecretKeySelector apiTokenSecretRef, String email) {
         super();
         this.apiKeySecretRef = apiKeySecretRef;

@@ -2,10 +2,10 @@
 package io.fabric8.knative.sources.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -70,6 +70,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class ContainerSourceStatus implements KubernetesResource
 {
 
@@ -87,7 +88,7 @@ public class ContainerSourceStatus implements KubernetesResource
     @JsonProperty("sinkUri")
     private java.lang.String sinkUri;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -96,14 +97,6 @@ public class ContainerSourceStatus implements KubernetesResource
     public ContainerSourceStatus() {
     }
 
-    /**
-     * 
-     * @param sinkUri
-     * @param ceAttributes
-     * @param annotations
-     * @param conditions
-     * @param observedGeneration
-     */
     public ContainerSourceStatus(Map<String, String> annotations, List<CloudEventAttributes> ceAttributes, List<Condition> conditions, Long observedGeneration, java.lang.String sinkUri) {
         super();
         this.annotations = annotations;

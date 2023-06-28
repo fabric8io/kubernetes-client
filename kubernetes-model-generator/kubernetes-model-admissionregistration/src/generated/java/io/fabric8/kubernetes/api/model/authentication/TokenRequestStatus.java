@@ -1,8 +1,9 @@
 
 package io.fabric8.kubernetes.api.model.authentication;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -54,6 +55,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class TokenRequestStatus implements KubernetesResource
 {
 
@@ -62,7 +64,7 @@ public class TokenRequestStatus implements KubernetesResource
     @JsonProperty("token")
     private java.lang.String token;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -71,11 +73,6 @@ public class TokenRequestStatus implements KubernetesResource
     public TokenRequestStatus() {
     }
 
-    /**
-     * 
-     * @param expirationTimestamp
-     * @param token
-     */
     public TokenRequestStatus(String expirationTimestamp, java.lang.String token) {
         super();
         this.expirationTimestamp = expirationTimestamp;

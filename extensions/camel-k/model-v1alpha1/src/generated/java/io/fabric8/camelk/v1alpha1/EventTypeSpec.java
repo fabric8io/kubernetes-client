@@ -1,8 +1,9 @@
 
 package io.fabric8.camelk.v1alpha1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -62,6 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class EventTypeSpec implements KubernetesResource
 {
 
@@ -70,7 +72,7 @@ public class EventTypeSpec implements KubernetesResource
     @JsonProperty("schema")
     private JSONSchemaProps schema;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -79,11 +81,6 @@ public class EventTypeSpec implements KubernetesResource
     public EventTypeSpec() {
     }
 
-    /**
-     * 
-     * @param schema
-     * @param mediaType
-     */
     public EventTypeSpec(String mediaType, JSONSchemaProps schema) {
         super();
         this.mediaType = mediaType;

@@ -2,9 +2,10 @@
 package io.fabric8.istio.api.networking.v1beta1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -68,6 +69,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class VirtualServiceSpec implements KubernetesResource
 {
 
@@ -90,7 +92,7 @@ public class VirtualServiceSpec implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<TLSRoute> tls = new ArrayList<TLSRoute>();
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -99,15 +101,6 @@ public class VirtualServiceSpec implements KubernetesResource
     public VirtualServiceSpec() {
     }
 
-    /**
-     * 
-     * @param tcp
-     * @param gateways
-     * @param hosts
-     * @param http
-     * @param tls
-     * @param exportTo
-     */
     public VirtualServiceSpec(List<String> exportTo, List<String> gateways, List<String> hosts, List<HTTPRoute> http, List<TCPRoute> tcp, List<TLSRoute> tls) {
         super();
         this.exportTo = exportTo;

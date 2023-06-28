@@ -1,8 +1,9 @@
 
 package io.fabric8.kubernetes.api.model.kustomize.v1beta1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -38,6 +39,7 @@ import lombok.experimental.Accessors;
     ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
+@Generated("jsonschema2pojo")
 public class Selector implements KubernetesResource
 {
 
@@ -61,7 +63,7 @@ public class Selector implements KubernetesResource
     @JsonProperty("version")
     private String version;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -70,16 +72,6 @@ public class Selector implements KubernetesResource
     public Selector() {
     }
 
-    /**
-     * 
-     * @param kind
-     * @param labelSelector
-     * @param name
-     * @param namespace
-     * @param annotationSelector
-     * @param version
-     * @param group
-     */
     public Selector(String annotationSelector, String group, String kind, String labelSelector, String name, String namespace, String version) {
         super();
         this.annotationSelector = annotationSelector;

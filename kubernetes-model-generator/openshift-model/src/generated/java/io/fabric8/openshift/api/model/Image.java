@@ -2,9 +2,10 @@
 package io.fabric8.openshift.api.model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -72,6 +73,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1")
 @Group("image.openshift.io")
+@Generated("jsonschema2pojo")
 public class Image implements HasMetadata
 {
 
@@ -112,7 +114,7 @@ public class Image implements HasMetadata
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ImageSignature> signatures = new ArrayList<ImageSignature>();
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -121,21 +123,6 @@ public class Image implements HasMetadata
     public Image() {
     }
 
-    /**
-     * 
-     * @param dockerImageLayers
-     * @param dockerImageMetadata
-     * @param metadata
-     * @param apiVersion
-     * @param dockerImageSignatures
-     * @param kind
-     * @param dockerImageReference
-     * @param dockerImageManifestMediaType
-     * @param dockerImageConfig
-     * @param dockerImageMetadataVersion
-     * @param dockerImageManifest
-     * @param signatures
-     */
     public Image(String apiVersion, String dockerImageConfig, List<ImageLayer> dockerImageLayers, String dockerImageManifest, String dockerImageManifestMediaType, RawExtension dockerImageMetadata, String dockerImageMetadataVersion, String dockerImageReference, List<String> dockerImageSignatures, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, List<ImageSignature> signatures) {
         super();
         this.apiVersion = apiVersion;

@@ -1,8 +1,9 @@
 
 package io.fabric8.kubernetes.api.model.autoscaling.v2beta2;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -57,6 +58,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class HorizontalPodAutoscalerCondition implements KubernetesResource
 {
 
@@ -71,7 +73,7 @@ public class HorizontalPodAutoscalerCondition implements KubernetesResource
     @JsonProperty("type")
     private java.lang.String type;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -80,14 +82,6 @@ public class HorizontalPodAutoscalerCondition implements KubernetesResource
     public HorizontalPodAutoscalerCondition() {
     }
 
-    /**
-     * 
-     * @param reason
-     * @param lastTransitionTime
-     * @param message
-     * @param type
-     * @param status
-     */
     public HorizontalPodAutoscalerCondition(String lastTransitionTime, java.lang.String message, java.lang.String reason, java.lang.String status, java.lang.String type) {
         super();
         this.lastTransitionTime = lastTransitionTime;

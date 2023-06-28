@@ -2,10 +2,10 @@
 package io.fabric8.verticalpodautoscaler.api.model.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -70,6 +70,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class ContainerResourcePolicy implements KubernetesResource
 {
 
@@ -89,7 +90,7 @@ public class ContainerResourcePolicy implements KubernetesResource
     @JsonProperty("mode")
     private String mode;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -98,15 +99,6 @@ public class ContainerResourcePolicy implements KubernetesResource
     public ContainerResourcePolicy() {
     }
 
-    /**
-     * 
-     * @param mode
-     * @param maxAllowed
-     * @param containerName
-     * @param controlledValues
-     * @param minAllowed
-     * @param controlledResources
-     */
     public ContainerResourcePolicy(java.lang.String containerName, List<java.lang.String> controlledResources, String controlledValues, Map<String, Quantity> maxAllowed, Map<String, Quantity> minAllowed, String mode) {
         super();
         this.containerName = containerName;

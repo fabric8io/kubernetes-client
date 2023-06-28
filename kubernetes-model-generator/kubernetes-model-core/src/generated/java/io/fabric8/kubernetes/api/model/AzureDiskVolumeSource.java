@@ -1,8 +1,9 @@
 
 package io.fabric8.kubernetes.api.model;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -36,6 +37,7 @@ import lombok.experimental.Accessors;
     ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
+@Generated("jsonschema2pojo")
 public class AzureDiskVolumeSource implements KubernetesResource
 {
 
@@ -52,7 +54,7 @@ public class AzureDiskVolumeSource implements KubernetesResource
     @JsonProperty("readOnly")
     private Boolean readOnly;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -61,15 +63,6 @@ public class AzureDiskVolumeSource implements KubernetesResource
     public AzureDiskVolumeSource() {
     }
 
-    /**
-     * 
-     * @param diskName
-     * @param kind
-     * @param readOnly
-     * @param cachingMode
-     * @param diskURI
-     * @param fsType
-     */
     public AzureDiskVolumeSource(String cachingMode, String diskName, String diskURI, String fsType, String kind, Boolean readOnly) {
         super();
         this.cachingMode = cachingMode;

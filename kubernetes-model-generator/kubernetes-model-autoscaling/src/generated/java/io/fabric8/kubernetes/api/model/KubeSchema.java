@@ -1,8 +1,9 @@
 
 package io.fabric8.kubernetes.api.model;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -78,6 +79,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class KubeSchema {
 
     @JsonProperty("APIGroup")
@@ -133,7 +135,7 @@ public class KubeSchema {
     @JsonProperty("V2beta2HorizontalPodAutoscalerList")
     private io.fabric8.kubernetes.api.model.autoscaling.v2beta2.HorizontalPodAutoscalerList v2beta2HorizontalPodAutoscalerList;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -142,35 +144,6 @@ public class KubeSchema {
     public KubeSchema() {
     }
 
-    /**
-     * 
-     * @param listOptions
-     * @param aPIGroupList
-     * @param baseKubernetesList
-     * @param scale
-     * @param updateOptions
-     * @param v1HorizontalPodAutoscaler
-     * @param patch
-     * @param v2beta1HorizontalPodAutoscalerList
-     * @param v2beta1HorizontalPodAutoscaler
-     * @param rootPaths
-     * @param info
-     * @param v1HorizontalPodAutoscalerList
-     * @param patchOptions
-     * @param deleteOptions
-     * @param quantity
-     * @param v2beta2HorizontalPodAutoscalerList
-     * @param v2HorizontalPodAutoscaler
-     * @param createOptions
-     * @param aPIGroup
-     * @param typeMeta
-     * @param v2beta2HorizontalPodAutoscaler
-     * @param v2HorizontalPodAutoscalerList
-     * @param objectMeta
-     * @param getOptions
-     * @param time
-     * @param status
-     */
     public KubeSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, KubernetesList baseKubernetesList, CreateOptions createOptions, DeleteOptions deleteOptions, GetOptions getOptions, Info info, ListOptions listOptions, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, Patch patch, PatchOptions patchOptions, Quantity quantity, RootPaths rootPaths, Scale scale, Status status, String time, TypeMeta typeMeta, UpdateOptions updateOptions, io.fabric8.kubernetes.api.model.autoscaling.v1.HorizontalPodAutoscaler v1HorizontalPodAutoscaler, io.fabric8.kubernetes.api.model.autoscaling.v1.HorizontalPodAutoscalerList v1HorizontalPodAutoscalerList, io.fabric8.kubernetes.api.model.autoscaling.v2.HorizontalPodAutoscaler v2HorizontalPodAutoscaler, io.fabric8.kubernetes.api.model.autoscaling.v2.HorizontalPodAutoscalerList v2HorizontalPodAutoscalerList, io.fabric8.kubernetes.api.model.autoscaling.v2beta1.HorizontalPodAutoscaler v2beta1HorizontalPodAutoscaler, io.fabric8.kubernetes.api.model.autoscaling.v2beta1.HorizontalPodAutoscalerList v2beta1HorizontalPodAutoscalerList, io.fabric8.kubernetes.api.model.autoscaling.v2beta2.HorizontalPodAutoscaler v2beta2HorizontalPodAutoscaler, io.fabric8.kubernetes.api.model.autoscaling.v2beta2.HorizontalPodAutoscalerList v2beta2HorizontalPodAutoscalerList) {
         super();
         this.aPIGroup = aPIGroup;

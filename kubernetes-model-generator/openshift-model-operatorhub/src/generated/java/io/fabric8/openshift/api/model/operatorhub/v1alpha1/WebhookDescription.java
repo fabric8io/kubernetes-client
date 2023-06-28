@@ -2,9 +2,10 @@
 package io.fabric8.openshift.api.model.operatorhub.v1alpha1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -68,6 +69,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class WebhookDescription implements KubernetesResource
 {
 
@@ -104,7 +106,7 @@ public class WebhookDescription implements KubernetesResource
     @JsonProperty("webhookPath")
     private String webhookPath;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -113,24 +115,6 @@ public class WebhookDescription implements KubernetesResource
     public WebhookDescription() {
     }
 
-    /**
-     * 
-     * @param conversionCRDs
-     * @param webhookPath
-     * @param reinvocationPolicy
-     * @param rules
-     * @param generateName
-     * @param type
-     * @param targetPort
-     * @param admissionReviewVersions
-     * @param matchPolicy
-     * @param containerPort
-     * @param timeoutSeconds
-     * @param deploymentName
-     * @param objectSelector
-     * @param failurePolicy
-     * @param sideEffects
-     */
     public WebhookDescription(List<String> admissionReviewVersions, Integer containerPort, List<String> conversionCRDs, String deploymentName, String failurePolicy, String generateName, String matchPolicy, io.fabric8.kubernetes.api.model.LabelSelector objectSelector, String reinvocationPolicy, List<RuleWithOperations> rules, String sideEffects, io.fabric8.kubernetes.api.model.IntOrString targetPort, Integer timeoutSeconds, String type, String webhookPath) {
         super();
         this.admissionReviewVersions = admissionReviewVersions;

@@ -1,8 +1,9 @@
 
 package io.fabric8.openshift.api.model.hive.v1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -54,6 +55,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(io.fabric8.kubernetes.api.model.LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class ManageDNSAzureConfig implements KubernetesResource
 {
 
@@ -64,7 +66,7 @@ public class ManageDNSAzureConfig implements KubernetesResource
     @JsonProperty("resourceGroupName")
     private String resourceGroupName;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -73,12 +75,6 @@ public class ManageDNSAzureConfig implements KubernetesResource
     public ManageDNSAzureConfig() {
     }
 
-    /**
-     * 
-     * @param credentialsSecretRef
-     * @param resourceGroupName
-     * @param cloudName
-     */
     public ManageDNSAzureConfig(String cloudName, io.fabric8.kubernetes.api.model.LocalObjectReference credentialsSecretRef, String resourceGroupName) {
         super();
         this.cloudName = cloudName;

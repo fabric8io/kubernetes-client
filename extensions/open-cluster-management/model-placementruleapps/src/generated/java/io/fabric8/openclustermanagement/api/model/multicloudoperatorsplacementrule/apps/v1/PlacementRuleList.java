@@ -2,9 +2,10 @@
 package io.fabric8.openclustermanagement.api.model.multicloudoperatorsplacementrule.apps.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -74,6 +75,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1")
 @Group("apps.open-cluster-management.io")
+@Generated("jsonschema2pojo")
 public class PlacementRuleList implements KubernetesResource, KubernetesResourceList<io.fabric8.openclustermanagement.api.model.multicloudoperatorsplacementrule.apps.v1.PlacementRule>
 {
 
@@ -96,7 +98,7 @@ public class PlacementRuleList implements KubernetesResource, KubernetesResource
     @JsonProperty("metadata")
     private ListMeta metadata;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -105,13 +107,6 @@ public class PlacementRuleList implements KubernetesResource, KubernetesResource
     public PlacementRuleList() {
     }
 
-    /**
-     * 
-     * @param metadata
-     * @param apiVersion
-     * @param kind
-     * @param items
-     */
     public PlacementRuleList(String apiVersion, List<io.fabric8.openclustermanagement.api.model.multicloudoperatorsplacementrule.apps.v1.PlacementRule> items, String kind, ListMeta metadata) {
         super();
         this.apiVersion = apiVersion;

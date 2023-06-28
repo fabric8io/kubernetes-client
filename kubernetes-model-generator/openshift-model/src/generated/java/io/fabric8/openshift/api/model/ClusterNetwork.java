@@ -2,9 +2,10 @@
 package io.fabric8.openshift.api.model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -69,6 +70,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1")
 @Group("network.openshift.io")
+@Generated("jsonschema2pojo")
 public class ClusterNetwork implements HasMetadata
 {
 
@@ -103,7 +105,7 @@ public class ClusterNetwork implements HasMetadata
     @JsonProperty("vxlanPort")
     private Integer vxlanPort;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -112,19 +114,6 @@ public class ClusterNetwork implements HasMetadata
     public ClusterNetwork() {
     }
 
-    /**
-     * 
-     * @param metadata
-     * @param apiVersion
-     * @param pluginName
-     * @param kind
-     * @param serviceNetwork
-     * @param vxlanPort
-     * @param clusterNetworks
-     * @param hostsubnetlength
-     * @param mtu
-     * @param network
-     */
     public ClusterNetwork(String apiVersion, List<ClusterNetworkEntry> clusterNetworks, Integer hostsubnetlength, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, Integer mtu, String network, String pluginName, String serviceNetwork, Integer vxlanPort) {
         super();
         this.apiVersion = apiVersion;

@@ -1,8 +1,9 @@
 
 package io.fabric8.tekton.pipeline.v1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -61,6 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class TaskRunSidecarSpec implements KubernetesResource
 {
 
@@ -69,7 +71,7 @@ public class TaskRunSidecarSpec implements KubernetesResource
     @JsonProperty("name")
     private String name;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -78,11 +80,6 @@ public class TaskRunSidecarSpec implements KubernetesResource
     public TaskRunSidecarSpec() {
     }
 
-    /**
-     * 
-     * @param name
-     * @param computeResources
-     */
     public TaskRunSidecarSpec(io.fabric8.kubernetes.api.model.ResourceRequirements computeResources, String name) {
         super();
         this.computeResources = computeResources;

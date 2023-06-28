@@ -1,8 +1,9 @@
 
 package io.fabric8.kubernetes.api.model.version;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -41,6 +42,7 @@ import lombok.experimental.Accessors;
     ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
+@Generated("jsonschema2pojo")
 public class Info implements KubernetesResource
 {
 
@@ -63,7 +65,7 @@ public class Info implements KubernetesResource
     @JsonProperty("platform")
     private String platform;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -72,18 +74,6 @@ public class Info implements KubernetesResource
     public Info() {
     }
 
-    /**
-     * 
-     * @param gitVersion
-     * @param gitCommit
-     * @param major
-     * @param minor
-     * @param goVersion
-     * @param buildDate
-     * @param compiler
-     * @param gitTreeState
-     * @param platform
-     */
     public Info(String buildDate, String compiler, String gitCommit, String gitTreeState, String gitVersion, String goVersion, String major, String minor, String platform) {
         super();
         this.buildDate = buildDate;

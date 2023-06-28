@@ -1,8 +1,9 @@
 
 package io.fabric8.certmanager.api.model.v1alpha3;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -71,6 +72,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1alpha3")
 @Group("cert-manager.io")
+@Generated("jsonschema2pojo")
 public class CertificateRequest implements HasMetadata, Namespaced
 {
 
@@ -95,7 +97,7 @@ public class CertificateRequest implements HasMetadata, Namespaced
     @JsonProperty("status")
     private CertificateRequestStatus status;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -104,14 +106,6 @@ public class CertificateRequest implements HasMetadata, Namespaced
     public CertificateRequest() {
     }
 
-    /**
-     * 
-     * @param metadata
-     * @param apiVersion
-     * @param kind
-     * @param spec
-     * @param status
-     */
     public CertificateRequest(String apiVersion, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, CertificateRequestSpec spec, CertificateRequestStatus status) {
         super();
         this.apiVersion = apiVersion;

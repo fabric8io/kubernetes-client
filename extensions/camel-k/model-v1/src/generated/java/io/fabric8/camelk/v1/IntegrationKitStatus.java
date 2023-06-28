@@ -2,9 +2,10 @@
 package io.fabric8.camelk.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -73,6 +74,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class IntegrationKitStatus implements KubernetesResource
 {
 
@@ -101,7 +103,7 @@ public class IntegrationKitStatus implements KubernetesResource
     @JsonProperty("version")
     private String version;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -110,20 +112,6 @@ public class IntegrationKitStatus implements KubernetesResource
     public IntegrationKitStatus() {
     }
 
-    /**
-     * 
-     * @param phase
-     * @param image
-     * @param runtimeVersion
-     * @param failure
-     * @param runtimeProvider
-     * @param baseImage
-     * @param digest
-     * @param conditions
-     * @param version
-     * @param platform
-     * @param artifacts
-     */
     public IntegrationKitStatus(List<Artifact> artifacts, String baseImage, List<IntegrationKitCondition> conditions, String digest, Failure failure, String image, String phase, String platform, String runtimeProvider, String runtimeVersion, String version) {
         super();
         this.artifacts = artifacts;

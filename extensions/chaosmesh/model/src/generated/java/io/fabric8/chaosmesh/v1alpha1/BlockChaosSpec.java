@@ -2,9 +2,10 @@
 package io.fabric8.chaosmesh.v1alpha1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -71,6 +72,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class BlockChaosSpec implements KubernetesResource
 {
 
@@ -93,7 +95,7 @@ public class BlockChaosSpec implements KubernetesResource
     @JsonProperty("volumeName")
     private java.lang.String volumeName;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -102,18 +104,6 @@ public class BlockChaosSpec implements KubernetesResource
     public BlockChaosSpec() {
     }
 
-    /**
-     * 
-     * @param duration
-     * @param mode
-     * @param delay
-     * @param volumeName
-     * @param iops
-     * @param action
-     * @param selector
-     * @param value
-     * @param containerNames
-     */
     public BlockChaosSpec(java.lang.String action, List<java.lang.String> containerNames, BlockDelaySpec delay, String duration, Integer iops, java.lang.String mode, PodSelectorSpec selector, java.lang.String value, java.lang.String volumeName) {
         super();
         this.action = action;

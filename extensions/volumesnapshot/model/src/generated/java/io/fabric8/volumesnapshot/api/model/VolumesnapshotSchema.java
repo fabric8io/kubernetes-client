@@ -1,6 +1,7 @@
 
 package io.fabric8.volumesnapshot.api.model;
 
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -67,6 +68,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class VolumesnapshotSchema {
 
     @JsonProperty("github_com_kubernetes-csi_external-snapshotter_client_v4_apis_volumesnapshot_v1_VolumeSnapshot")
@@ -103,22 +105,6 @@ public class VolumesnapshotSchema {
     public VolumesnapshotSchema() {
     }
 
-    /**
-     * 
-     * @param githubComKubernetesCsiExternalSnapshotterClientV4ApisVolumesnapshotV1VolumeSnapshotContentSource
-     * @param githubComKubernetesCsiExternalSnapshotterClientV4ApisVolumesnapshotV1VolumeSnapshotClassList
-     * @param githubComKubernetesCsiExternalSnapshotterClientV4ApisVolumesnapshotV1VolumeSnapshotSpec
-     * @param githubComKubernetesCsiExternalSnapshotterClientV4ApisVolumesnapshotV1VolumeSnapshotContentStatus
-     * @param githubComKubernetesCsiExternalSnapshotterClientV4ApisVolumesnapshotV1VolumeSnapshotContent
-     * @param githubComKubernetesCsiExternalSnapshotterClientV4ApisVolumesnapshotV1VolumeSnapshotSource
-     * @param githubComKubernetesCsiExternalSnapshotterClientV4ApisVolumesnapshotV1VolumeSnapshotClass
-     * @param githubComKubernetesCsiExternalSnapshotterClientV4ApisVolumesnapshotV1VolumeSnapshotStatus
-     * @param githubComKubernetesCsiExternalSnapshotterClientV4ApisVolumesnapshotV1VolumeSnapshot
-     * @param githubComKubernetesCsiExternalSnapshotterClientV4ApisVolumesnapshotV1VolumeSnapshotError
-     * @param githubComKubernetesCsiExternalSnapshotterClientV4ApisVolumesnapshotV1VolumeSnapshotList
-     * @param githubComKubernetesCsiExternalSnapshotterClientV4ApisVolumesnapshotV1VolumeSnapshotContentList
-     * @param githubComKubernetesCsiExternalSnapshotterClientV4ApisVolumesnapshotV1VolumeSnapshotContentSpec
-     */
     public VolumesnapshotSchema(VolumeSnapshot githubComKubernetesCsiExternalSnapshotterClientV4ApisVolumesnapshotV1VolumeSnapshot, VolumeSnapshotClass githubComKubernetesCsiExternalSnapshotterClientV4ApisVolumesnapshotV1VolumeSnapshotClass, VolumeSnapshotClassList githubComKubernetesCsiExternalSnapshotterClientV4ApisVolumesnapshotV1VolumeSnapshotClassList, VolumeSnapshotContent githubComKubernetesCsiExternalSnapshotterClientV4ApisVolumesnapshotV1VolumeSnapshotContent, VolumeSnapshotContentList githubComKubernetesCsiExternalSnapshotterClientV4ApisVolumesnapshotV1VolumeSnapshotContentList, VolumeSnapshotContentSource githubComKubernetesCsiExternalSnapshotterClientV4ApisVolumesnapshotV1VolumeSnapshotContentSource, VolumeSnapshotContentSpec githubComKubernetesCsiExternalSnapshotterClientV4ApisVolumesnapshotV1VolumeSnapshotContentSpec, VolumeSnapshotContentStatus githubComKubernetesCsiExternalSnapshotterClientV4ApisVolumesnapshotV1VolumeSnapshotContentStatus, VolumeSnapshotError githubComKubernetesCsiExternalSnapshotterClientV4ApisVolumesnapshotV1VolumeSnapshotError, VolumeSnapshotList githubComKubernetesCsiExternalSnapshotterClientV4ApisVolumesnapshotV1VolumeSnapshotList, VolumeSnapshotSource githubComKubernetesCsiExternalSnapshotterClientV4ApisVolumesnapshotV1VolumeSnapshotSource, VolumeSnapshotSpec githubComKubernetesCsiExternalSnapshotterClientV4ApisVolumesnapshotV1VolumeSnapshotSpec, VolumeSnapshotStatus githubComKubernetesCsiExternalSnapshotterClientV4ApisVolumesnapshotV1VolumeSnapshotStatus) {
         super();
         this.githubComKubernetesCsiExternalSnapshotterClientV4ApisVolumesnapshotV1VolumeSnapshot = githubComKubernetesCsiExternalSnapshotterClientV4ApisVolumesnapshotV1VolumeSnapshot;

@@ -1,8 +1,9 @@
 
 package io.fabric8.knative.flows.v1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -71,6 +72,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1")
 @Group("flows.knative.dev")
+@Generated("jsonschema2pojo")
 public class Sequence implements HasMetadata, Namespaced
 {
 
@@ -95,7 +97,7 @@ public class Sequence implements HasMetadata, Namespaced
     @JsonProperty("status")
     private SequenceStatus status;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -104,14 +106,6 @@ public class Sequence implements HasMetadata, Namespaced
     public Sequence() {
     }
 
-    /**
-     * 
-     * @param metadata
-     * @param apiVersion
-     * @param kind
-     * @param spec
-     * @param status
-     */
     public Sequence(String apiVersion, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, SequenceSpec spec, SequenceStatus status) {
         super();
         this.apiVersion = apiVersion;

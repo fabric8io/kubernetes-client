@@ -1,8 +1,9 @@
 
 package io.fabric8.kubernetes.api.model.networking.v1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -54,6 +55,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class IngressServiceBackend implements KubernetesResource
 {
 
@@ -62,7 +64,7 @@ public class IngressServiceBackend implements KubernetesResource
     @JsonProperty("port")
     private ServiceBackendPort port;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -71,11 +73,6 @@ public class IngressServiceBackend implements KubernetesResource
     public IngressServiceBackend() {
     }
 
-    /**
-     * 
-     * @param port
-     * @param name
-     */
     public IngressServiceBackend(String name, ServiceBackendPort port) {
         super();
         this.name = name;

@@ -2,9 +2,10 @@
 package io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -66,6 +67,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class TimeWindow implements KubernetesResource
 {
 
@@ -80,7 +82,7 @@ public class TimeWindow implements KubernetesResource
     @JsonProperty("windowtype")
     private String windowtype;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -89,13 +91,6 @@ public class TimeWindow implements KubernetesResource
     public TimeWindow() {
     }
 
-    /**
-     * 
-     * @param hours
-     * @param daysofweek
-     * @param windowtype
-     * @param location
-     */
     public TimeWindow(List<String> daysofweek, List<HourRange> hours, String location, String windowtype) {
         super();
         this.daysofweek = daysofweek;

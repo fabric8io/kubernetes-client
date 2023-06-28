@@ -1,8 +1,9 @@
 
 package io.fabric8.openshift.api.model.installer.v1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -63,6 +64,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class Platform implements KubernetesResource
 {
 
@@ -89,7 +91,7 @@ public class Platform implements KubernetesResource
     @JsonProperty("vsphere")
     private io.fabric8.openshift.api.model.installer.vsphere.v1.Platform vsphere;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -98,20 +100,6 @@ public class Platform implements KubernetesResource
     public Platform() {
     }
 
-    /**
-     * 
-     * @param libvirt
-     * @param baremetal
-     * @param alibabacloud
-     * @param vsphere
-     * @param gcp
-     * @param ibmcloud
-     * @param ovirt
-     * @param openstack
-     * @param none
-     * @param aws
-     * @param azure
-     */
     public Platform(io.fabric8.openshift.api.model.installer.alibabacloud.v1.Platform alibabacloud, io.fabric8.openshift.api.model.installer.aws.v1.Platform aws, io.fabric8.openshift.api.model.installer.azure.v1.Platform azure, io.fabric8.openshift.api.model.installer.baremetal.v1.Platform baremetal, io.fabric8.openshift.api.model.installer.gcp.v1.Platform gcp, io.fabric8.openshift.api.model.installer.ibmcloud.v1.Platform ibmcloud, io.fabric8.openshift.api.model.installer.libvirt.v1.Platform libvirt, io.fabric8.openshift.api.model.installer.none.v1.Platform none, io.fabric8.openshift.api.model.installer.openstack.v1.Platform openstack, io.fabric8.openshift.api.model.installer.ovirt.v1.Platform ovirt, io.fabric8.openshift.api.model.installer.vsphere.v1.Platform vsphere) {
         super();
         this.alibabacloud = alibabacloud;

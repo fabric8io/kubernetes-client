@@ -1,8 +1,9 @@
 
 package io.fabric8.openshift.api.model.hive.v1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -58,6 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class DNSZoneSpec implements KubernetesResource
 {
 
@@ -74,7 +76,7 @@ public class DNSZoneSpec implements KubernetesResource
     @JsonProperty("zone")
     private String zone;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -83,15 +85,6 @@ public class DNSZoneSpec implements KubernetesResource
     public DNSZoneSpec() {
     }
 
-    /**
-     * 
-     * @param gcp
-     * @param zone
-     * @param preserveOnDelete
-     * @param aws
-     * @param azure
-     * @param linkToParentDomain
-     */
     public DNSZoneSpec(AWSDNSZoneSpec aws, AzureDNSZoneSpec azure, GCPDNSZoneSpec gcp, Boolean linkToParentDomain, Boolean preserveOnDelete, String zone) {
         super();
         this.aws = aws;

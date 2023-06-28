@@ -2,9 +2,10 @@
 package io.fabric8.camelk.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -75,6 +76,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class SourceSpec implements KubernetesResource
 {
 
@@ -108,7 +110,7 @@ public class SourceSpec implements KubernetesResource
     @JsonProperty("type")
     private String type;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -117,22 +119,6 @@ public class SourceSpec implements KubernetesResource
     public SourceSpec() {
     }
 
-    /**
-     * 
-     * @param contentKey
-     * @param loader
-     * @param language
-     * @param type
-     * @param content
-     * @param rawContent
-     * @param path
-     * @param propertyNames
-     * @param name
-     * @param compression
-     * @param contentType
-     * @param contentRef
-     * @param interceptors
-     */
     public SourceSpec(Boolean compression, String content, String contentKey, String contentRef, String contentType, List<String> interceptors, String language, String loader, String name, String path, List<String> propertyNames, String rawContent, String type) {
         super();
         this.compression = compression;

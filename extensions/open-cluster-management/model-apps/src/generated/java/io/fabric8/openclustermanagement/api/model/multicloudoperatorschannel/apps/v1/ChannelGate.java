@@ -1,9 +1,9 @@
 
 package io.fabric8.openclustermanagement.api.model.multicloudoperatorschannel.apps.v1;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -63,6 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class ChannelGate implements KubernetesResource
 {
 
@@ -74,7 +75,7 @@ public class ChannelGate implements KubernetesResource
     @JsonProperty("name")
     private java.lang.String name;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -83,12 +84,6 @@ public class ChannelGate implements KubernetesResource
     public ChannelGate() {
     }
 
-    /**
-     * 
-     * @param labelSelector
-     * @param name
-     * @param annotations
-     */
     public ChannelGate(Map<String, String> annotations, io.fabric8.kubernetes.api.model.LabelSelector labelSelector, java.lang.String name) {
         super();
         this.annotations = annotations;

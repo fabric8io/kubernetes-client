@@ -2,10 +2,10 @@
 package io.fabric8.knative.eventing.contrib.kafka.v1beta1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -74,6 +74,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class KafkaChannelStatus implements KubernetesResource
 {
 
@@ -95,7 +96,7 @@ public class KafkaChannelStatus implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<SubscriberStatus> subscribers = new ArrayList<SubscriberStatus>();
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -104,16 +105,6 @@ public class KafkaChannelStatus implements KubernetesResource
     public KafkaChannelStatus() {
     }
 
-    /**
-     * 
-     * @param deadLetterChannel
-     * @param address
-     * @param deadLetterSinkUri
-     * @param subscribers
-     * @param annotations
-     * @param conditions
-     * @param observedGeneration
-     */
     public KafkaChannelStatus(Addressable address, Map<String, String> annotations, List<Condition> conditions, KReference deadLetterChannel, java.lang.String deadLetterSinkUri, Long observedGeneration, List<SubscriberStatus> subscribers) {
         super();
         this.address = address;

@@ -1,8 +1,9 @@
 
 package io.fabric8.kubernetes.api.model.storage;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -54,6 +55,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class VolumeError implements KubernetesResource
 {
 
@@ -62,7 +64,7 @@ public class VolumeError implements KubernetesResource
     @JsonProperty("time")
     private String time;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -71,11 +73,6 @@ public class VolumeError implements KubernetesResource
     public VolumeError() {
     }
 
-    /**
-     * 
-     * @param time
-     * @param message
-     */
     public VolumeError(java.lang.String message, String time) {
         super();
         this.message = message;

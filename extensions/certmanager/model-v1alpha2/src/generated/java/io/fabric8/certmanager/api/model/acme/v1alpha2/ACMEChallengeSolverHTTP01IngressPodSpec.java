@@ -2,10 +2,10 @@
 package io.fabric8.certmanager.api.model.acme.v1alpha2;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -70,6 +70,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class ACMEChallengeSolverHTTP01IngressPodSpec implements KubernetesResource
 {
 
@@ -86,7 +87,7 @@ public class ACMEChallengeSolverHTTP01IngressPodSpec implements KubernetesResour
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Toleration> tolerations = new ArrayList<Toleration>();
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -95,14 +96,6 @@ public class ACMEChallengeSolverHTTP01IngressPodSpec implements KubernetesResour
     public ACMEChallengeSolverHTTP01IngressPodSpec() {
     }
 
-    /**
-     * 
-     * @param tolerations
-     * @param serviceAccountName
-     * @param priorityClassName
-     * @param affinity
-     * @param nodeSelector
-     */
     public ACMEChallengeSolverHTTP01IngressPodSpec(Affinity affinity, Map<String, String> nodeSelector, java.lang.String priorityClassName, java.lang.String serviceAccountName, List<Toleration> tolerations) {
         super();
         this.affinity = affinity;

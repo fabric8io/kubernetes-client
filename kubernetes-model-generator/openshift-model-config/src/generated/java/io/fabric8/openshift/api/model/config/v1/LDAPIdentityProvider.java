@@ -1,8 +1,9 @@
 
 package io.fabric8.openshift.api.model.config.v1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -58,6 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class LDAPIdentityProvider implements KubernetesResource
 {
 
@@ -74,7 +76,7 @@ public class LDAPIdentityProvider implements KubernetesResource
     @JsonProperty("url")
     private String url;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -83,15 +85,6 @@ public class LDAPIdentityProvider implements KubernetesResource
     public LDAPIdentityProvider() {
     }
 
-    /**
-     * 
-     * @param bindDN
-     * @param bindPassword
-     * @param insecure
-     * @param attributes
-     * @param ca
-     * @param url
-     */
     public LDAPIdentityProvider(LDAPAttributeMapping attributes, String bindDN, SecretNameReference bindPassword, ConfigMapNameReference ca, Boolean insecure, String url) {
         super();
         this.attributes = attributes;

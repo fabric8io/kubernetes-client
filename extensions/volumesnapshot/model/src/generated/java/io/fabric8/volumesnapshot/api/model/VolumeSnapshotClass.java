@@ -1,9 +1,9 @@
 
 package io.fabric8.volumesnapshot.api.model;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -72,6 +72,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1")
 @Group("snapshot.storage.k8s.io")
+@Generated("jsonschema2pojo")
 public class VolumeSnapshotClass implements HasMetadata
 {
 
@@ -99,7 +100,7 @@ public class VolumeSnapshotClass implements HasMetadata
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> parameters = new LinkedHashMap<String, String>();
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -108,15 +109,6 @@ public class VolumeSnapshotClass implements HasMetadata
     public VolumeSnapshotClass() {
     }
 
-    /**
-     * 
-     * @param metadata
-     * @param apiVersion
-     * @param driver
-     * @param kind
-     * @param deletionPolicy
-     * @param parameters
-     */
     public VolumeSnapshotClass(java.lang.String apiVersion, java.lang.String deletionPolicy, java.lang.String driver, java.lang.String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, Map<String, String> parameters) {
         super();
         this.apiVersion = apiVersion;

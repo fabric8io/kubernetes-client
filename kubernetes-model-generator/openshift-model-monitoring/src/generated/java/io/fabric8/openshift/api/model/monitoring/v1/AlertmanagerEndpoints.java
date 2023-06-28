@@ -1,8 +1,9 @@
 
 package io.fabric8.openshift.api.model.monitoring.v1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -60,6 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class AlertmanagerEndpoints implements KubernetesResource
 {
 
@@ -84,7 +86,7 @@ public class AlertmanagerEndpoints implements KubernetesResource
     @JsonProperty("tlsConfig")
     private TLSConfig tlsConfig;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -93,19 +95,6 @@ public class AlertmanagerEndpoints implements KubernetesResource
     public AlertmanagerEndpoints() {
     }
 
-    /**
-     * 
-     * @param authorization
-     * @param apiVersion
-     * @param scheme
-     * @param port
-     * @param name
-     * @param namespace
-     * @param bearerTokenFile
-     * @param pathPrefix
-     * @param timeout
-     * @param tlsConfig
-     */
     public AlertmanagerEndpoints(String apiVersion, SafeAuthorization authorization, String bearerTokenFile, String name, String namespace, String pathPrefix, io.fabric8.kubernetes.api.model.IntOrString port, String scheme, String timeout, TLSConfig tlsConfig) {
         super();
         this.apiVersion = apiVersion;

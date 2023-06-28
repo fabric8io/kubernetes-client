@@ -1,8 +1,9 @@
 
 package io.fabric8.kubernetes.api.model;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -66,6 +67,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class ValidationSchema {
 
     @JsonProperty("PodScheduling")
@@ -85,7 +87,7 @@ public class ValidationSchema {
     @JsonProperty("ResourceClassList")
     private ResourceClassList resourceClassList;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -94,17 +96,6 @@ public class ValidationSchema {
     public ValidationSchema() {
     }
 
-    /**
-     * 
-     * @param podScheduling
-     * @param resourceClaimList
-     * @param resourceClaimTemplate
-     * @param resourceClassList
-     * @param resourceClaimTemplateList
-     * @param resourceClaim
-     * @param podSchedulingList
-     * @param resourceClass
-     */
     public ValidationSchema(PodScheduling podScheduling, PodSchedulingList podSchedulingList, ResourceClaim resourceClaim, ResourceClaimList resourceClaimList, ResourceClaimTemplate resourceClaimTemplate, ResourceClaimTemplateList resourceClaimTemplateList, ResourceClaim resourceClass, ResourceClassList resourceClassList) {
         super();
         this.podScheduling = podScheduling;

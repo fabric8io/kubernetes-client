@@ -1,8 +1,9 @@
 
 package io.fabric8.openshift.api.model.miscellaneous.metal3.v1alpha1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -64,6 +65,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class BareMetalHostStatus implements KubernetesResource
 {
 
@@ -92,7 +94,7 @@ public class BareMetalHostStatus implements KubernetesResource
     @JsonProperty("triedCredentials")
     private CredentialsStatus triedCredentials;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -101,21 +103,6 @@ public class BareMetalHostStatus implements KubernetesResource
     public BareMetalHostStatus() {
     }
 
-    /**
-     * 
-     * @param operationHistory
-     * @param operationalStatus
-     * @param lastUpdated
-     * @param poweredOn
-     * @param hardwareProfile
-     * @param errorType
-     * @param goodCredentials
-     * @param errorMessage
-     * @param provisioning
-     * @param triedCredentials
-     * @param errorCount
-     * @param hardware
-     */
     public BareMetalHostStatus(Integer errorCount, java.lang.String errorMessage, java.lang.String errorType, CredentialsStatus goodCredentials, HardwareDetails hardware, java.lang.String hardwareProfile, String lastUpdated, OperationHistory operationHistory, java.lang.String operationalStatus, Boolean poweredOn, ProvisionStatus provisioning, CredentialsStatus triedCredentials) {
         super();
         this.errorCount = errorCount;

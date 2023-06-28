@@ -1,8 +1,9 @@
 
 package io.fabric8.kubernetes.api.model;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -84,6 +85,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class KubeSchema {
 
     @JsonProperty("APIGroup")
@@ -147,7 +149,7 @@ public class KubeSchema {
     @JsonProperty("V1IngressList")
     private io.fabric8.kubernetes.api.model.networking.v1.IngressList v1IngressList;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -156,39 +158,6 @@ public class KubeSchema {
     public KubeSchema() {
     }
 
-    /**
-     * 
-     * @param listOptions
-     * @param aPIGroupList
-     * @param ingressList
-     * @param baseKubernetesList
-     * @param ingressClass
-     * @param updateOptions
-     * @param patch
-     * @param v1Alpha1ClusterCIDR
-     * @param ingressClassList
-     * @param rootPaths
-     * @param v1Ingress
-     * @param info
-     * @param patchOptions
-     * @param deleteOptions
-     * @param quantity
-     * @param networkPolicyList
-     * @param networkPolicy
-     * @param objectReference
-     * @param createOptions
-     * @param v1Alpha1ClusterCIDRList
-     * @param aPIGroup
-     * @param ingress
-     * @param typeMeta
-     * @param objectMeta
-     * @param getOptions
-     * @param time
-     * @param v1IngressClass
-     * @param v1IngressClassList
-     * @param v1IngressList
-     * @param status
-     */
     public KubeSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, KubernetesList baseKubernetesList, CreateOptions createOptions, DeleteOptions deleteOptions, GetOptions getOptions, Info info, io.fabric8.kubernetes.api.model.networking.v1beta1.Ingress ingress, io.fabric8.kubernetes.api.model.networking.v1beta1.IngressClass ingressClass, io.fabric8.kubernetes.api.model.networking.v1beta1.IngressClassList ingressClassList, io.fabric8.kubernetes.api.model.networking.v1beta1.IngressList ingressList, ListOptions listOptions, NetworkPolicy networkPolicy, NetworkPolicyList networkPolicyList, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, io.fabric8.kubernetes.api.model.ObjectReference objectReference, Patch patch, PatchOptions patchOptions, Quantity quantity, RootPaths rootPaths, Status status, String time, TypeMeta typeMeta, UpdateOptions updateOptions, ClusterCIDR v1Alpha1ClusterCIDR, ClusterCIDRList v1Alpha1ClusterCIDRList, io.fabric8.kubernetes.api.model.networking.v1.Ingress v1Ingress, io.fabric8.kubernetes.api.model.networking.v1.IngressClass v1IngressClass, io.fabric8.kubernetes.api.model.networking.v1.IngressClassList v1IngressClassList, io.fabric8.kubernetes.api.model.networking.v1.IngressList v1IngressList) {
         super();
         this.aPIGroup = aPIGroup;

@@ -2,10 +2,10 @@
 package io.fabric8.camelk.v1alpha1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -72,6 +72,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class KameletSpec implements KubernetesResource
 {
 
@@ -94,7 +95,7 @@ public class KameletSpec implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, EventTypeSpec> types = new LinkedHashMap<String, EventTypeSpec>();
     @JsonIgnore
-    private Map<java.lang.String, java.lang.Object> additionalProperties = new HashMap<java.lang.String, java.lang.Object>();
+    private Map<java.lang.String, java.lang.Object> additionalProperties = new LinkedHashMap<java.lang.String, java.lang.Object>();
 
     /**
      * No args constructor for use in serialization
@@ -103,16 +104,6 @@ public class KameletSpec implements KubernetesResource
     public KameletSpec() {
     }
 
-    /**
-     * 
-     * @param authorization
-     * @param template
-     * @param types
-     * @param sources
-     * @param definition
-     * @param flow
-     * @param dependencies
-     */
     public KameletSpec(AuthorizationSpec authorization, JSONSchemaProps definition, List<java.lang.String> dependencies, JsonNode flow, List<SourceSpec> sources, Map<String, Object> template, Map<String, EventTypeSpec> types) {
         super();
         this.authorization = authorization;

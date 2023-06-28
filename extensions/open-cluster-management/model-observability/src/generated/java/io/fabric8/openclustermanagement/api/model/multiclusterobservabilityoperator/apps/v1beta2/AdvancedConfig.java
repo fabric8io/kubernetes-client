@@ -1,8 +1,9 @@
 
 package io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta2;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -74,6 +75,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class AdvancedConfig implements KubernetesResource
 {
 
@@ -106,7 +108,7 @@ public class AdvancedConfig implements KubernetesResource
     @JsonProperty("storeMemcached")
     private CacheConfig storeMemcached;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -115,23 +117,6 @@ public class AdvancedConfig implements KubernetesResource
     public AdvancedConfig() {
     }
 
-    /**
-     * 
-     * @param receive
-     * @param compact
-     * @param query
-     * @param observatoriumConfig
-     * @param rule
-     * @param store
-     * @param queryFrontend
-     * @param grafana
-     * @param storeMemcached
-     * @param queryFrontendMemcached
-     * @param rbacQueryProxy
-     * @param retentionConfig
-     * @param alertmanager
-     * @param observatoriumAPI
-     */
     public AdvancedConfig(CommonSpec alertmanager, CompactSpec compact, CommonSpec grafana, CommonSpec observatoriumAPI, ObservatoriumConfig observatoriumConfig, CommonSpec query, CommonSpec queryFrontend, CacheConfig queryFrontendMemcached, CommonSpec rbacQueryProxy, CommonSpec receive, RetentionConfig retentionConfig, RuleSpec rule, CommonSpec store, CacheConfig storeMemcached) {
         super();
         this.alertmanager = alertmanager;

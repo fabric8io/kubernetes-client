@@ -1,8 +1,9 @@
 
 package io.fabric8.camelk.v1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -65,6 +66,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class Task implements KubernetesResource
 {
 
@@ -79,7 +81,7 @@ public class Task implements KubernetesResource
     @JsonProperty("spectrum")
     private SpectrumTask spectrum;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -88,14 +90,6 @@ public class Task implements KubernetesResource
     public Task() {
     }
 
-    /**
-     * 
-     * @param kaniko
-     * @param spectrum
-     * @param buildah
-     * @param builder
-     * @param s2i
-     */
     public Task(BuildahTask buildah, BuilderTask builder, KanikoTask kaniko, S2iTask s2i, SpectrumTask spectrum) {
         super();
         this.buildah = buildah;

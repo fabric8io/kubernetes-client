@@ -1,8 +1,9 @@
 
 package io.fabric8.openclustermanagement.api.model.app.k8s.v1beta1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -66,6 +67,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class ConfigMapKeySelector implements KubernetesResource
 {
 
@@ -86,7 +88,7 @@ public class ConfigMapKeySelector implements KubernetesResource
     @JsonProperty("uid")
     private String uid;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -95,17 +97,6 @@ public class ConfigMapKeySelector implements KubernetesResource
     public ConfigMapKeySelector() {
     }
 
-    /**
-     * 
-     * @param uid
-     * @param apiVersion
-     * @param kind
-     * @param resourceVersion
-     * @param fieldPath
-     * @param name
-     * @param namespace
-     * @param key
-     */
     public ConfigMapKeySelector(String apiVersion, String fieldPath, String key, String kind, String name, String namespace, String resourceVersion, String uid) {
         super();
         this.apiVersion = apiVersion;

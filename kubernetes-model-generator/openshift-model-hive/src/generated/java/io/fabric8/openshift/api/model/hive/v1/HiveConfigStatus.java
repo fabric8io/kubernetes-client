@@ -2,9 +2,10 @@
 package io.fabric8.openshift.api.model.hive.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -58,6 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class HiveConfigStatus implements KubernetesResource
 {
 
@@ -71,7 +73,7 @@ public class HiveConfigStatus implements KubernetesResource
     @JsonProperty("observedGeneration")
     private Long observedGeneration;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -80,13 +82,6 @@ public class HiveConfigStatus implements KubernetesResource
     public HiveConfigStatus() {
     }
 
-    /**
-     * 
-     * @param aggregatorClientCAHash
-     * @param conditions
-     * @param configApplied
-     * @param observedGeneration
-     */
     public HiveConfigStatus(String aggregatorClientCAHash, List<HiveConfigCondition> conditions, Boolean configApplied, Long observedGeneration) {
         super();
         this.aggregatorClientCAHash = aggregatorClientCAHash;

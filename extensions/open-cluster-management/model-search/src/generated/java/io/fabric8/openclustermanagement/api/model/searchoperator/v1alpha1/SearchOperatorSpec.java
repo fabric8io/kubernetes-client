@@ -1,9 +1,9 @@
 
 package io.fabric8.openclustermanagement.api.model.searchoperator.v1alpha1;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -66,6 +66,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class SearchOperatorSpec implements KubernetesResource
 {
 
@@ -81,7 +82,7 @@ public class SearchOperatorSpec implements KubernetesResource
     @JsonProperty("searchimageoverrides")
     private ImageOverrides searchimageoverrides;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -90,14 +91,6 @@ public class SearchOperatorSpec implements KubernetesResource
     public SearchOperatorSpec() {
     }
 
-    /**
-     * 
-     * @param pullpolicy
-     * @param redisgraphResource
-     * @param pullsecret
-     * @param searchimageoverrides
-     * @param nodeSelector
-     */
     public SearchOperatorSpec(Map<String, String> nodeSelector, java.lang.String pullpolicy, java.lang.String pullsecret, PodResource redisgraphResource, ImageOverrides searchimageoverrides) {
         super();
         this.nodeSelector = nodeSelector;

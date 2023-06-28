@@ -1,8 +1,9 @@
 
 package io.fabric8.openclustermanagement.api.model.discovery.v1alpha1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -71,6 +72,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class DiscoveredClusterSpec implements KubernetesResource
 {
 
@@ -99,7 +101,7 @@ public class DiscoveredClusterSpec implements KubernetesResource
     @JsonProperty("type")
     private String type;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -108,21 +110,6 @@ public class DiscoveredClusterSpec implements KubernetesResource
     public DiscoveredClusterSpec() {
     }
 
-    /**
-     * 
-     * @param console
-     * @param apiUrl
-     * @param credential
-     * @param displayName
-     * @param cloudProvider
-     * @param isManagedCluster
-     * @param creationTimestamp
-     * @param name
-     * @param activityTimestamp
-     * @param openshiftVersion
-     * @param type
-     * @param status
-     */
     public DiscoveredClusterSpec(String activityTimestamp, String apiUrl, String cloudProvider, String console, String creationTimestamp, io.fabric8.kubernetes.api.model.ObjectReference credential, String displayName, Boolean isManagedCluster, String name, String openshiftVersion, String status, String type) {
         super();
         this.activityTimestamp = activityTimestamp;

@@ -1,8 +1,9 @@
 
 package io.fabric8.istio.api.networking.v1alpha3;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -66,6 +67,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class EnvoyFilterListenerMatchFilterChainMatch implements KubernetesResource
 {
 
@@ -82,7 +84,7 @@ public class EnvoyFilterListenerMatchFilterChainMatch implements KubernetesResou
     @JsonProperty("transportProtocol")
     private String transportProtocol;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -91,15 +93,6 @@ public class EnvoyFilterListenerMatchFilterChainMatch implements KubernetesResou
     public EnvoyFilterListenerMatchFilterChainMatch() {
     }
 
-    /**
-     * 
-     * @param destinationPort
-     * @param filter
-     * @param applicationProtocols
-     * @param transportProtocol
-     * @param name
-     * @param sni
-     */
     public EnvoyFilterListenerMatchFilterChainMatch(String applicationProtocols, Integer destinationPort, EnvoyFilterListenerMatchFilterMatch filter, String name, String sni, String transportProtocol) {
         super();
         this.applicationProtocols = applicationProtocols;

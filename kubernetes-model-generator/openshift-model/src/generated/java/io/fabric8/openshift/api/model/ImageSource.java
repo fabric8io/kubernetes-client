@@ -2,9 +2,10 @@
 package io.fabric8.openshift.api.model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -56,6 +57,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(io.fabric8.kubernetes.api.model.LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class ImageSource implements KubernetesResource
 {
 
@@ -70,7 +72,7 @@ public class ImageSource implements KubernetesResource
     @JsonProperty("pullSecret")
     private io.fabric8.kubernetes.api.model.LocalObjectReference pullSecret;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -79,13 +81,6 @@ public class ImageSource implements KubernetesResource
     public ImageSource() {
     }
 
-    /**
-     * 
-     * @param as
-     * @param paths
-     * @param from
-     * @param pullSecret
-     */
     public ImageSource(List<String> as, io.fabric8.kubernetes.api.model.ObjectReference from, List<ImageSourcePath> paths, io.fabric8.kubernetes.api.model.LocalObjectReference pullSecret) {
         super();
         this.as = as;

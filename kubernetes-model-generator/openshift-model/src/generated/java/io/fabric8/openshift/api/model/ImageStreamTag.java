@@ -2,9 +2,10 @@
 package io.fabric8.openshift.api.model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -68,6 +69,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1")
 @Group("image.openshift.io")
+@Generated("jsonschema2pojo")
 public class ImageStreamTag implements HasMetadata, Namespaced
 {
 
@@ -99,7 +101,7 @@ public class ImageStreamTag implements HasMetadata, Namespaced
     @JsonProperty("tag")
     private TagReference tag;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -108,17 +110,6 @@ public class ImageStreamTag implements HasMetadata, Namespaced
     public ImageStreamTag() {
     }
 
-    /**
-     * 
-     * @param generation
-     * @param image
-     * @param metadata
-     * @param apiVersion
-     * @param kind
-     * @param tag
-     * @param conditions
-     * @param lookupPolicy
-     */
     public ImageStreamTag(String apiVersion, List<TagEventCondition> conditions, Long generation, Image image, String kind, ImageLookupPolicy lookupPolicy, io.fabric8.kubernetes.api.model.ObjectMeta metadata, TagReference tag) {
         super();
         this.apiVersion = apiVersion;

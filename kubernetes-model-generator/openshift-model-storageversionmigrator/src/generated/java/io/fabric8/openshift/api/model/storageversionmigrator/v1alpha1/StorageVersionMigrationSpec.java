@@ -1,8 +1,9 @@
 
 package io.fabric8.openshift.api.model.storageversionmigrator.v1alpha1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -54,6 +55,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class StorageVersionMigrationSpec implements KubernetesResource
 {
 
@@ -62,7 +64,7 @@ public class StorageVersionMigrationSpec implements KubernetesResource
     @JsonProperty("resource")
     private GroupVersionResource resource;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -71,11 +73,6 @@ public class StorageVersionMigrationSpec implements KubernetesResource
     public StorageVersionMigrationSpec() {
     }
 
-    /**
-     * 
-     * @param continueToken
-     * @param resource
-     */
     public StorageVersionMigrationSpec(String continueToken, GroupVersionResource resource) {
         super();
         this.continueToken = continueToken;

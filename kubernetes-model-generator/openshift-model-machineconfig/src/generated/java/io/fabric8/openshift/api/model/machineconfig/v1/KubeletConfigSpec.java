@@ -1,9 +1,9 @@
 
 package io.fabric8.openshift.api.model.machineconfig.v1;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -58,6 +58,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class KubeletConfigSpec implements KubernetesResource
 {
 
@@ -73,7 +74,7 @@ public class KubeletConfigSpec implements KubernetesResource
     @JsonProperty("tlsSecurityProfile")
     private TLSSecurityProfile tlsSecurityProfile;
     @JsonIgnore
-    private Map<java.lang.String, java.lang.Object> additionalProperties = new HashMap<java.lang.String, java.lang.Object>();
+    private Map<java.lang.String, java.lang.Object> additionalProperties = new LinkedHashMap<java.lang.String, java.lang.Object>();
 
     /**
      * No args constructor for use in serialization
@@ -82,14 +83,6 @@ public class KubeletConfigSpec implements KubernetesResource
     public KubeletConfigSpec() {
     }
 
-    /**
-     * 
-     * @param logLevel
-     * @param autoSizingReserved
-     * @param kubeletConfig
-     * @param tlsSecurityProfile
-     * @param machineConfigPoolSelector
-     */
     public KubeletConfigSpec(Boolean autoSizingReserved, Map<String, Object> kubeletConfig, Integer logLevel, io.fabric8.kubernetes.api.model.LabelSelector machineConfigPoolSelector, TLSSecurityProfile tlsSecurityProfile) {
         super();
         this.autoSizingReserved = autoSizingReserved;

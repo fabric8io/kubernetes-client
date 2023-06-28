@@ -2,9 +2,10 @@
 package io.fabric8.kubernetes.api.model.rbac;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -59,6 +60,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class PolicyRule implements KubernetesResource
 {
 
@@ -77,7 +79,7 @@ public class PolicyRule implements KubernetesResource
     @JsonProperty("verbs")
     private List<String> verbs = new ArrayList<String>();
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -86,14 +88,6 @@ public class PolicyRule implements KubernetesResource
     public PolicyRule() {
     }
 
-    /**
-     * 
-     * @param resourceNames
-     * @param resources
-     * @param verbs
-     * @param apiGroups
-     * @param nonResourceURLs
-     */
     public PolicyRule(List<String> apiGroups, List<String> nonResourceURLs, List<String> resourceNames, List<String> resources, List<String> verbs) {
         super();
         this.apiGroups = apiGroups;

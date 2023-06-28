@@ -1,9 +1,9 @@
 
 package io.fabric8.openshift.api.model.config.v1;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -55,6 +55,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class DNSZone implements KubernetesResource
 {
 
@@ -64,7 +65,7 @@ public class DNSZone implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> tags = new LinkedHashMap<String, String>();
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -73,11 +74,6 @@ public class DNSZone implements KubernetesResource
     public DNSZone() {
     }
 
-    /**
-     * 
-     * @param id
-     * @param tags
-     */
     public DNSZone(java.lang.String id, Map<String, String> tags) {
         super();
         this.id = id;

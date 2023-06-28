@@ -1,8 +1,9 @@
 
 package io.fabric8.openshift.api.model;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -59,6 +60,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class Parameter implements KubernetesResource
 {
 
@@ -77,7 +79,7 @@ public class Parameter implements KubernetesResource
     @JsonProperty("value")
     private String value;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -86,16 +88,6 @@ public class Parameter implements KubernetesResource
     public Parameter() {
     }
 
-    /**
-     * 
-     * @param displayName
-     * @param name
-     * @param description
-     * @param from
-     * @param generate
-     * @param value
-     * @param required
-     */
     public Parameter(String description, String displayName, String from, String generate, String name, Boolean required, String value) {
         super();
         this.description = description;

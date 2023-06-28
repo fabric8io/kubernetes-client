@@ -2,10 +2,10 @@
 package io.fabric8.camelk.v1alpha1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -73,6 +73,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class JSONSchemaProps implements KubernetesResource
 {
 
@@ -97,7 +98,7 @@ public class JSONSchemaProps implements KubernetesResource
     @JsonProperty("type")
     private java.lang.String type;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -106,18 +107,6 @@ public class JSONSchemaProps implements KubernetesResource
     public JSONSchemaProps() {
     }
 
-    /**
-     * 
-     * @param $schema
-     * @param description
-     * @param externalDocs
-     * @param id
-     * @param title
-     * @param type
-     * @param properties
-     * @param required
-     * @param example
-     */
     public JSONSchemaProps(java.lang.String $schema, java.lang.String description, JsonNode example, ExternalDocumentation externalDocs, java.lang.String id, Map<String, JSONSchemaProp> properties, List<java.lang.String> required, java.lang.String title, java.lang.String type) {
         super();
         this.$schema = $schema;

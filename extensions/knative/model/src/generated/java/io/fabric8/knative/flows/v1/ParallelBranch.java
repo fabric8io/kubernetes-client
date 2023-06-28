@@ -1,8 +1,9 @@
 
 package io.fabric8.knative.flows.v1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -66,6 +67,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class ParallelBranch implements KubernetesResource
 {
 
@@ -78,7 +80,7 @@ public class ParallelBranch implements KubernetesResource
     @JsonProperty("subscriber")
     private Destination subscriber;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -87,13 +89,6 @@ public class ParallelBranch implements KubernetesResource
     public ParallelBranch() {
     }
 
-    /**
-     * 
-     * @param filter
-     * @param delivery
-     * @param subscriber
-     * @param reply
-     */
     public ParallelBranch(DeliverySpec delivery, Destination filter, Destination reply, Destination subscriber) {
         super();
         this.delivery = delivery;

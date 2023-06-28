@@ -2,9 +2,10 @@
 package io.fabric8.certmanager.api.model.v1beta1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -69,6 +70,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class CertificateStatus implements KubernetesResource
 {
 
@@ -88,7 +90,7 @@ public class CertificateStatus implements KubernetesResource
     @JsonProperty("revision")
     private Integer revision;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -97,16 +99,6 @@ public class CertificateStatus implements KubernetesResource
     public CertificateStatus() {
     }
 
-    /**
-     * 
-     * @param renewalTime
-     * @param notAfter
-     * @param nextPrivateKeySecretName
-     * @param lastFailureTime
-     * @param conditions
-     * @param notBefore
-     * @param revision
-     */
     public CertificateStatus(List<CertificateCondition> conditions, java.lang.String lastFailureTime, String nextPrivateKeySecretName, java.lang.String notAfter, java.lang.String notBefore, java.lang.String renewalTime, Integer revision) {
         super();
         this.conditions = conditions;

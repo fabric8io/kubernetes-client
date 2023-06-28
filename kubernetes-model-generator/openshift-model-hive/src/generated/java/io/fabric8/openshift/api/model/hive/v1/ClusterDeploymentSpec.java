@@ -2,9 +2,10 @@
 package io.fabric8.openshift.api.model.hive.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -72,6 +73,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(io.fabric8.kubernetes.api.model.LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class ClusterDeploymentSpec implements KubernetesResource
 {
 
@@ -114,7 +116,7 @@ public class ClusterDeploymentSpec implements KubernetesResource
     @JsonProperty("pullSecretRef")
     private io.fabric8.kubernetes.api.model.LocalObjectReference pullSecretRef;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -123,27 +125,6 @@ public class ClusterDeploymentSpec implements KubernetesResource
     public ClusterDeploymentSpec() {
     }
 
-    /**
-     * 
-     * @param installed
-     * @param manageDNS
-     * @param pullSecretRef
-     * @param certificateBundles
-     * @param controlPlaneConfig
-     * @param clusterPoolRef
-     * @param installAttemptsLimit
-     * @param platform
-     * @param ingress
-     * @param boundServiceAccountSigningKeySecretRef
-     * @param powerState
-     * @param baseDomain
-     * @param preserveOnDelete
-     * @param clusterName
-     * @param provisioning
-     * @param hibernateAfter
-     * @param clusterInstallRef
-     * @param clusterMetadata
-     */
     public ClusterDeploymentSpec(String baseDomain, io.fabric8.kubernetes.api.model.LocalObjectReference boundServiceAccountSigningKeySecretRef, List<CertificateBundleSpec> certificateBundles, ClusterInstallLocalReference clusterInstallRef, ClusterMetadata clusterMetadata, String clusterName, ClusterPoolReference clusterPoolRef, ControlPlaneConfigSpec controlPlaneConfig, Duration hibernateAfter, List<ClusterIngress> ingress, Integer installAttemptsLimit, Boolean installed, Boolean manageDNS, Platform platform, String powerState, Boolean preserveOnDelete, Provisioning provisioning, io.fabric8.kubernetes.api.model.LocalObjectReference pullSecretRef) {
         super();
         this.baseDomain = baseDomain;

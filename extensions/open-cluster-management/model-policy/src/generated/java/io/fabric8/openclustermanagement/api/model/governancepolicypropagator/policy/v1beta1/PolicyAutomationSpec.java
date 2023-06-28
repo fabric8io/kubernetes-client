@@ -1,8 +1,9 @@
 
 package io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1beta1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -65,6 +66,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class PolicyAutomationSpec implements KubernetesResource
 {
 
@@ -79,7 +81,7 @@ public class PolicyAutomationSpec implements KubernetesResource
     @JsonProperty("rescanAfter")
     private String rescanAfter;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -88,14 +90,6 @@ public class PolicyAutomationSpec implements KubernetesResource
     public PolicyAutomationSpec() {
     }
 
-    /**
-     * 
-     * @param mode
-     * @param eventHook
-     * @param rescanAfter
-     * @param automationDef
-     * @param policyRef
-     */
     public PolicyAutomationSpec(AutomationDef automationDef, String eventHook, String mode, String policyRef, String rescanAfter) {
         super();
         this.automationDef = automationDef;

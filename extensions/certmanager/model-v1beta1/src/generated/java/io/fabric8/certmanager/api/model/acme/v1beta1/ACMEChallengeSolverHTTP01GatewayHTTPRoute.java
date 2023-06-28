@@ -1,9 +1,9 @@
 
 package io.fabric8.certmanager.api.model.acme.v1beta1;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -63,6 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class ACMEChallengeSolverHTTP01GatewayHTTPRoute implements KubernetesResource
 {
 
@@ -72,7 +73,7 @@ public class ACMEChallengeSolverHTTP01GatewayHTTPRoute implements KubernetesReso
     @JsonProperty("serviceType")
     private java.lang.String serviceType;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -81,11 +82,6 @@ public class ACMEChallengeSolverHTTP01GatewayHTTPRoute implements KubernetesReso
     public ACMEChallengeSolverHTTP01GatewayHTTPRoute() {
     }
 
-    /**
-     * 
-     * @param serviceType
-     * @param labels
-     */
     public ACMEChallengeSolverHTTP01GatewayHTTPRoute(Map<String, String> labels, java.lang.String serviceType) {
         super();
         this.labels = labels;

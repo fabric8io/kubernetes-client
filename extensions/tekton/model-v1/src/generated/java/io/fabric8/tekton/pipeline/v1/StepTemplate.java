@@ -2,9 +2,10 @@
 package io.fabric8.tekton.pipeline.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -73,6 +74,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(io.fabric8.kubernetes.api.model.VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class StepTemplate implements KubernetesResource
 {
 
@@ -105,7 +107,7 @@ public class StepTemplate implements KubernetesResource
     @JsonProperty("workingDir")
     private String workingDir;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -114,20 +116,6 @@ public class StepTemplate implements KubernetesResource
     public StepTemplate() {
     }
 
-    /**
-     * 
-     * @param args
-     * @param volumeDevices
-     * @param image
-     * @param imagePullPolicy
-     * @param workingDir
-     * @param computeResources
-     * @param securityContext
-     * @param env
-     * @param envFrom
-     * @param command
-     * @param volumeMounts
-     */
     public StepTemplate(List<String> args, List<String> command, io.fabric8.kubernetes.api.model.ResourceRequirements computeResources, List<io.fabric8.kubernetes.api.model.EnvVar> env, List<EnvFromSource> envFrom, String image, String imagePullPolicy, SecurityContext securityContext, List<VolumeDevice> volumeDevices, List<io.fabric8.kubernetes.api.model.VolumeMount> volumeMounts, String workingDir) {
         super();
         this.args = args;

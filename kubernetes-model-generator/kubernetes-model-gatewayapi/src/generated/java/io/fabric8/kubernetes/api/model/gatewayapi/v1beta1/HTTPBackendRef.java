@@ -2,9 +2,10 @@
 package io.fabric8.kubernetes.api.model.gatewayapi.v1beta1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -60,6 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class HTTPBackendRef implements KubernetesResource
 {
 
@@ -84,7 +86,7 @@ public class HTTPBackendRef implements KubernetesResource
     @JsonProperty("weight")
     private Integer weight;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -93,16 +95,6 @@ public class HTTPBackendRef implements KubernetesResource
     public HTTPBackendRef() {
     }
 
-    /**
-     * 
-     * @param port
-     * @param kind
-     * @param name
-     * @param namespace
-     * @param weight
-     * @param filters
-     * @param group
-     */
     public HTTPBackendRef(List<HTTPRouteFilter> filters, String group, String kind, String name, String namespace, Integer port, Integer weight) {
         super();
         this.filters = filters;

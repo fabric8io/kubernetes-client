@@ -2,9 +2,10 @@
 package io.fabric8.kubernetes.api.model.gatewayapi.v1beta1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -56,6 +57,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class ReferenceGrantSpec implements KubernetesResource
 {
 
@@ -64,7 +66,7 @@ public class ReferenceGrantSpec implements KubernetesResource
     @JsonProperty("to")
     private List<ReferenceGrantTo> to = new ArrayList<ReferenceGrantTo>();
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -73,11 +75,6 @@ public class ReferenceGrantSpec implements KubernetesResource
     public ReferenceGrantSpec() {
     }
 
-    /**
-     * 
-     * @param from
-     * @param to
-     */
     public ReferenceGrantSpec(List<ReferenceGrantFrom> from, List<ReferenceGrantTo> to) {
         super();
         this.from = from;

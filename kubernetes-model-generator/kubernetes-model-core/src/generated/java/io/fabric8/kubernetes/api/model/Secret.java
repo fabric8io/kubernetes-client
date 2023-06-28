@@ -1,9 +1,9 @@
 
 package io.fabric8.kubernetes.api.model;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -45,6 +45,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1")
 @Group("")
+@Generated("jsonschema2pojo")
 public class Secret implements HasMetadata, Namespaced
 {
 
@@ -75,7 +76,7 @@ public class Secret implements HasMetadata, Namespaced
     @JsonProperty("type")
     private java.lang.String type;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -84,16 +85,6 @@ public class Secret implements HasMetadata, Namespaced
     public Secret() {
     }
 
-    /**
-     * 
-     * @param immutable
-     * @param metadata
-     * @param apiVersion
-     * @param data
-     * @param kind
-     * @param type
-     * @param stringData
-     */
     public Secret(java.lang.String apiVersion, Map<String, String> data, Boolean immutable, java.lang.String kind, ObjectMeta metadata, Map<String, String> stringData, java.lang.String type) {
         super();
         this.apiVersion = apiVersion;

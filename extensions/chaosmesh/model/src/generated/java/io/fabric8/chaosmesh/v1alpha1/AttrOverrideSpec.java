@@ -1,8 +1,9 @@
 
 package io.fabric8.chaosmesh.v1alpha1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -71,6 +72,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class AttrOverrideSpec implements KubernetesResource
 {
 
@@ -99,7 +101,7 @@ public class AttrOverrideSpec implements KubernetesResource
     @JsonProperty("uid")
     private Long uid;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -108,21 +110,6 @@ public class AttrOverrideSpec implements KubernetesResource
     public AttrOverrideSpec() {
     }
 
-    /**
-     * 
-     * @param uid
-     * @param atime
-     * @param gid
-     * @param perm
-     * @param size
-     * @param blocks
-     * @param kind
-     * @param rdev
-     * @param nlink
-     * @param ctime
-     * @param ino
-     * @param mtime
-     */
     public AttrOverrideSpec(Timespec atime, Long blocks, Timespec ctime, Long gid, Long ino, String kind, Timespec mtime, Long nlink, Integer perm, Long rdev, Long size, Long uid) {
         super();
         this.atime = atime;

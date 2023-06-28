@@ -1,8 +1,9 @@
 
 package io.fabric8.camelk.v1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -70,6 +71,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class ResourceSpec implements KubernetesResource
 {
 
@@ -95,7 +97,7 @@ public class ResourceSpec implements KubernetesResource
     @JsonProperty("type")
     private String type;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -104,19 +106,6 @@ public class ResourceSpec implements KubernetesResource
     public ResourceSpec() {
     }
 
-    /**
-     * 
-     * @param path
-     * @param contentKey
-     * @param mountPath
-     * @param name
-     * @param compression
-     * @param type
-     * @param contentType
-     * @param content
-     * @param contentRef
-     * @param rawContent
-     */
     public ResourceSpec(Boolean compression, String content, String contentKey, String contentRef, String contentType, String mountPath, String name, String path, String rawContent, String type) {
         super();
         this.compression = compression;

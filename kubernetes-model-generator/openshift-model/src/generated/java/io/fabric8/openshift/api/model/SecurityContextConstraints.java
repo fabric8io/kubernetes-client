@@ -2,9 +2,10 @@
 package io.fabric8.openshift.api.model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -86,6 +87,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1")
 @Group("security.openshift.io")
+@Generated("jsonschema2pojo")
 public class SecurityContextConstraints implements HasMetadata
 {
 
@@ -158,7 +160,7 @@ public class SecurityContextConstraints implements HasMetadata
     @JsonProperty("volumes")
     private List<String> volumes = new ArrayList<String>();
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -167,36 +169,6 @@ public class SecurityContextConstraints implements HasMetadata
     public SecurityContextConstraints() {
     }
 
-    /**
-     * 
-     * @param defaultAddCapabilities
-     * @param metadata
-     * @param seccompProfiles
-     * @param allowHostNetwork
-     * @param readOnlyRootFilesystem
-     * @param apiVersion
-     * @param allowPrivilegedContainer
-     * @param allowHostIPC
-     * @param supplementalGroups
-     * @param allowPrivilegeEscalation
-     * @param allowedFlexVolumes
-     * @param seLinuxContext
-     * @param fsGroup
-     * @param kind
-     * @param volumes
-     * @param allowHostPID
-     * @param groups
-     * @param requiredDropCapabilities
-     * @param allowHostDirVolumePlugin
-     * @param allowHostPorts
-     * @param priority
-     * @param users
-     * @param allowedCapabilities
-     * @param runAsUser
-     * @param forbiddenSysctls
-     * @param defaultAllowPrivilegeEscalation
-     * @param allowedUnsafeSysctls
-     */
     public SecurityContextConstraints(Boolean allowHostDirVolumePlugin, Boolean allowHostIPC, Boolean allowHostNetwork, Boolean allowHostPID, Boolean allowHostPorts, Boolean allowPrivilegeEscalation, Boolean allowPrivilegedContainer, List<String> allowedCapabilities, List<AllowedFlexVolume> allowedFlexVolumes, List<String> allowedUnsafeSysctls, String apiVersion, List<String> defaultAddCapabilities, Boolean defaultAllowPrivilegeEscalation, List<String> forbiddenSysctls, FSGroupStrategyOptions fsGroup, List<String> groups, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, Integer priority, Boolean readOnlyRootFilesystem, List<String> requiredDropCapabilities, RunAsUserStrategyOptions runAsUser, SELinuxContextStrategyOptions seLinuxContext, List<String> seccompProfiles, SupplementalGroupsStrategyOptions supplementalGroups, List<String> users, List<String> volumes) {
         super();
         this.allowHostDirVolumePlugin = allowHostDirVolumePlugin;

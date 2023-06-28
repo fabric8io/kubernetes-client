@@ -2,9 +2,10 @@
 package io.fabric8.certmanager.api.model.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -81,6 +82,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class CertificateSpec implements KubernetesResource
 {
 
@@ -129,7 +131,7 @@ public class CertificateSpec implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> usages = new ArrayList<String>();
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -138,28 +140,6 @@ public class CertificateSpec implements KubernetesResource
     public CertificateSpec() {
     }
 
-    /**
-     * 
-     * @param commonName
-     * @param secretName
-     * @param secretTemplate
-     * @param dnsNames
-     * @param keystores
-     * @param subject
-     * @param issuerRef
-     * @param encodeUsagesInRequest
-     * @param additionalOutputFormats
-     * @param duration
-     * @param literalSubject
-     * @param privateKey
-     * @param uris
-     * @param emailAddresses
-     * @param renewBefore
-     * @param isCA
-     * @param ipAddresses
-     * @param revisionHistoryLimit
-     * @param usages
-     */
     public CertificateSpec(List<CertificateAdditionalOutputFormat> additionalOutputFormats, String commonName, List<String> dnsNames, Duration duration, List<String> emailAddresses, Boolean encodeUsagesInRequest, List<String> ipAddresses, java.lang.Boolean isCA, io.fabric8.certmanager.api.model.meta.v1.ObjectReference issuerRef, CertificateKeystores keystores, String literalSubject, CertificatePrivateKey privateKey, Duration renewBefore, Integer revisionHistoryLimit, String secretName, CertificateSecretTemplate secretTemplate, X509Subject subject, List<String> uris, List<String> usages) {
         super();
         this.additionalOutputFormats = additionalOutputFormats;

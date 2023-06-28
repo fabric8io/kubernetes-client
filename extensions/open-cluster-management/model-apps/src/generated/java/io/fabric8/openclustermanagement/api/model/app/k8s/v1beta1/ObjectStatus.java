@@ -1,8 +1,9 @@
 
 package io.fabric8.openclustermanagement.api.model.app.k8s.v1beta1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -64,6 +65,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class ObjectStatus implements KubernetesResource
 {
 
@@ -78,7 +80,7 @@ public class ObjectStatus implements KubernetesResource
     @JsonProperty("status")
     private String status;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -87,14 +89,6 @@ public class ObjectStatus implements KubernetesResource
     public ObjectStatus() {
     }
 
-    /**
-     * 
-     * @param kind
-     * @param link
-     * @param name
-     * @param group
-     * @param status
-     */
     public ObjectStatus(String group, String kind, String link, String name, String status) {
         super();
         this.group = group;

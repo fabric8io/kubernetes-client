@@ -2,9 +2,10 @@
 package io.fabric8.camelk.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -71,6 +72,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class BuilderTask implements KubernetesResource
 {
 
@@ -97,7 +99,7 @@ public class BuilderTask implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> steps = new ArrayList<String>();
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -106,18 +108,6 @@ public class BuilderTask implements KubernetesResource
     public BuilderTask() {
     }
 
-    /**
-     * 
-     * @param sources
-     * @param buildDir
-     * @param maven
-     * @param baseImage
-     * @param name
-     * @param resources
-     * @param runtime
-     * @param steps
-     * @param dependencies
-     */
     public BuilderTask(String baseImage, String buildDir, List<String> dependencies, MavenBuildSpec maven, String name, List<ResourceSpec> resources, RuntimeSpec runtime, List<SourceSpec> sources, List<String> steps) {
         super();
         this.baseImage = baseImage;

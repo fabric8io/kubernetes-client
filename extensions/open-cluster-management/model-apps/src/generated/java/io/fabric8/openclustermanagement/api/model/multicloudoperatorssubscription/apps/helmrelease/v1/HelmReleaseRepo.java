@@ -1,8 +1,9 @@
 
 package io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.helmrelease.v1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -67,6 +68,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class HelmReleaseRepo implements KubernetesResource
 {
 
@@ -87,7 +89,7 @@ public class HelmReleaseRepo implements KubernetesResource
     @JsonProperty("version")
     private String version;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -96,17 +98,6 @@ public class HelmReleaseRepo implements KubernetesResource
     public HelmReleaseRepo() {
     }
 
-    /**
-     * 
-     * @param altSource
-     * @param chartName
-     * @param configMapRef
-     * @param digest
-     * @param insecureSkipVerify
-     * @param secretRef
-     * @param source
-     * @param version
-     */
     public HelmReleaseRepo(AltSource altSource, String chartName, io.fabric8.kubernetes.api.model.ObjectReference configMapRef, String digest, Boolean insecureSkipVerify, io.fabric8.kubernetes.api.model.ObjectReference secretRef, Source source, String version) {
         super();
         this.altSource = altSource;

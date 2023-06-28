@@ -2,10 +2,10 @@
 package io.fabric8.istio.api.networking.v1beta1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -69,6 +69,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class TLSMatchAttributes implements KubernetesResource
 {
 
@@ -89,7 +90,7 @@ public class TLSMatchAttributes implements KubernetesResource
     @JsonProperty("sourceNamespace")
     private java.lang.String sourceNamespace;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -98,15 +99,6 @@ public class TLSMatchAttributes implements KubernetesResource
     public TLSMatchAttributes() {
     }
 
-    /**
-     * 
-     * @param gateways
-     * @param sniHosts
-     * @param destinationSubnets
-     * @param port
-     * @param sourceLabels
-     * @param sourceNamespace
-     */
     public TLSMatchAttributes(List<java.lang.String> destinationSubnets, List<java.lang.String> gateways, Integer port, List<java.lang.String> sniHosts, Map<String, String> sourceLabels, java.lang.String sourceNamespace) {
         super();
         this.destinationSubnets = destinationSubnets;

@@ -1,8 +1,9 @@
 
 package io.fabric8.kubernetes.api.model.batch.v1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -61,6 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class JobSpec implements KubernetesResource
 {
 
@@ -87,7 +89,7 @@ public class JobSpec implements KubernetesResource
     @JsonProperty("ttlSecondsAfterFinished")
     private Integer ttlSecondsAfterFinished;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -96,20 +98,6 @@ public class JobSpec implements KubernetesResource
     public JobSpec() {
     }
 
-    /**
-     * 
-     * @param suspend
-     * @param template
-     * @param backoffLimit
-     * @param manualSelector
-     * @param parallelism
-     * @param completions
-     * @param completionMode
-     * @param selector
-     * @param activeDeadlineSeconds
-     * @param podFailurePolicy
-     * @param ttlSecondsAfterFinished
-     */
     public JobSpec(Long activeDeadlineSeconds, Integer backoffLimit, String completionMode, Integer completions, Boolean manualSelector, Integer parallelism, PodFailurePolicy podFailurePolicy, io.fabric8.kubernetes.api.model.LabelSelector selector, Boolean suspend, io.fabric8.kubernetes.api.model.PodTemplateSpec template, Integer ttlSecondsAfterFinished) {
         super();
         this.activeDeadlineSeconds = activeDeadlineSeconds;

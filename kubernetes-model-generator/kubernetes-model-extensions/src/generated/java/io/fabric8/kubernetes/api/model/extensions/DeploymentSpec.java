@@ -1,8 +1,9 @@
 
 package io.fabric8.kubernetes.api.model.extensions;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -59,6 +60,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class DeploymentSpec implements KubernetesResource
 {
 
@@ -81,7 +83,7 @@ public class DeploymentSpec implements KubernetesResource
     @JsonProperty("template")
     private io.fabric8.kubernetes.api.model.PodTemplateSpec template;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -90,18 +92,6 @@ public class DeploymentSpec implements KubernetesResource
     public DeploymentSpec() {
     }
 
-    /**
-     * 
-     * @param template
-     * @param paused
-     * @param replicas
-     * @param revisionHistoryLimit
-     * @param selector
-     * @param minReadySeconds
-     * @param strategy
-     * @param progressDeadlineSeconds
-     * @param rollbackTo
-     */
     public DeploymentSpec(Integer minReadySeconds, Boolean paused, Integer progressDeadlineSeconds, Integer replicas, Integer revisionHistoryLimit, RollbackConfig rollbackTo, io.fabric8.kubernetes.api.model.LabelSelector selector, DeploymentStrategy strategy, io.fabric8.kubernetes.api.model.PodTemplateSpec template) {
         super();
         this.minReadySeconds = minReadySeconds;

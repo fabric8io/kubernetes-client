@@ -1,9 +1,9 @@
 
 package io.fabric8.camelk.v1;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -65,6 +65,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class Server implements KubernetesResource
 {
 
@@ -78,7 +79,7 @@ public class Server implements KubernetesResource
     @JsonProperty("username")
     private java.lang.String username;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -87,13 +88,6 @@ public class Server implements KubernetesResource
     public Server() {
     }
 
-    /**
-     * 
-     * @param password
-     * @param configuration
-     * @param id
-     * @param username
-     */
     public Server(Map<String, String> configuration, java.lang.String id, java.lang.String password, java.lang.String username) {
         super();
         this.configuration = configuration;

@@ -2,10 +2,10 @@
 package io.fabric8.servicecatalog.api.model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -69,6 +69,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class ServiceBindingSpec implements KubernetesResource
 {
 
@@ -90,7 +91,7 @@ public class ServiceBindingSpec implements KubernetesResource
     @JsonProperty("userInfo")
     private UserInfo userInfo;
     @JsonIgnore
-    private Map<java.lang.String, java.lang.Object> additionalProperties = new HashMap<java.lang.String, java.lang.Object>();
+    private Map<java.lang.String, java.lang.Object> additionalProperties = new LinkedHashMap<java.lang.String, java.lang.Object>();
 
     /**
      * No args constructor for use in serialization
@@ -99,16 +100,6 @@ public class ServiceBindingSpec implements KubernetesResource
     public ServiceBindingSpec() {
     }
 
-    /**
-     * 
-     * @param userInfo
-     * @param secretName
-     * @param parametersFrom
-     * @param externalID
-     * @param secretTransforms
-     * @param instanceRef
-     * @param parameters
-     */
     public ServiceBindingSpec(java.lang.String externalID, io.fabric8.servicecatalog.api.model.LocalObjectReference instanceRef, Map<String, Object> parameters, List<ParametersFromSource> parametersFrom, java.lang.String secretName, List<SecretTransform> secretTransforms, UserInfo userInfo) {
         super();
         this.externalID = externalID;

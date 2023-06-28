@@ -2,10 +2,10 @@
 package io.fabric8.openshift.api.model.monitoring.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -100,6 +100,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(io.fabric8.kubernetes.api.model.LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class ThanosRulerSpec implements KubernetesResource
 {
 
@@ -202,7 +203,7 @@ public class ThanosRulerSpec implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Volume> volumes = new ArrayList<Volume>();
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -211,52 +212,6 @@ public class ThanosRulerSpec implements KubernetesResource
     public ThanosRulerSpec() {
     }
 
-    /**
-     * 
-     * @param paused
-     * @param ruleNamespaceSelector
-     * @param ruleSelector
-     * @param serviceAccountName
-     * @param tracingConfig
-     * @param imagePullSecrets
-     * @param priorityClassName
-     * @param prometheusRulesExcludedFromEnforce
-     * @param portName
-     * @param securityContext
-     * @param storage
-     * @param grpcServerTlsConfig
-     * @param alertRelabelConfigFile
-     * @param nodeSelector
-     * @param alertmanagersConfig
-     * @param externalPrefix
-     * @param objectStorageConfig
-     * @param tolerations
-     * @param logLevel
-     * @param queryConfig
-     * @param alertRelabelConfigs
-     * @param alertQueryUrl
-     * @param objectStorageConfigFile
-     * @param alertmanagersUrl
-     * @param retention
-     * @param image
-     * @param alertDropLabels
-     * @param replicas
-     * @param topologySpreadConstraints
-     * @param volumes
-     * @param resources
-     * @param listenLocal
-     * @param enforcedNamespaceLabel
-     * @param queryEndpoints
-     * @param labels
-     * @param logFormat
-     * @param routePrefix
-     * @param evaluationInterval
-     * @param containers
-     * @param minReadySeconds
-     * @param podMetadata
-     * @param initContainers
-     * @param affinity
-     */
     public ThanosRulerSpec(Affinity affinity, List<java.lang.String> alertDropLabels, java.lang.String alertQueryUrl, java.lang.String alertRelabelConfigFile, SecretKeySelector alertRelabelConfigs, SecretKeySelector alertmanagersConfig, List<java.lang.String> alertmanagersUrl, List<io.fabric8.kubernetes.api.model.Container> containers, java.lang.String enforcedNamespaceLabel, java.lang.String evaluationInterval, java.lang.String externalPrefix, TLSConfig grpcServerTlsConfig, java.lang.String image, List<io.fabric8.kubernetes.api.model.LocalObjectReference> imagePullSecrets, List<io.fabric8.kubernetes.api.model.Container> initContainers, Map<String, String> labels, Boolean listenLocal, java.lang.String logFormat, java.lang.String logLevel, Integer minReadySeconds, Map<String, String> nodeSelector, SecretKeySelector objectStorageConfig, java.lang.String objectStorageConfigFile, Boolean paused, EmbeddedObjectMetadata podMetadata, java.lang.String portName, java.lang.String priorityClassName, List<PrometheusRuleExcludeConfig> prometheusRulesExcludedFromEnforce, SecretKeySelector queryConfig, List<java.lang.String> queryEndpoints, Integer replicas, io.fabric8.kubernetes.api.model.ResourceRequirements resources, java.lang.String retention, java.lang.String routePrefix, io.fabric8.kubernetes.api.model.LabelSelector ruleNamespaceSelector, io.fabric8.kubernetes.api.model.LabelSelector ruleSelector, PodSecurityContext securityContext, java.lang.String serviceAccountName, StorageSpec storage, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, SecretKeySelector tracingConfig, List<Volume> volumes) {
         super();
         this.affinity = affinity;

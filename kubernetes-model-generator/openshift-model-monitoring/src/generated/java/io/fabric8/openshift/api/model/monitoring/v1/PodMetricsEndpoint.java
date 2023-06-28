@@ -2,10 +2,10 @@
 package io.fabric8.openshift.api.model.monitoring.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -72,6 +72,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class PodMetricsEndpoint implements KubernetesResource
 {
 
@@ -113,7 +114,7 @@ public class PodMetricsEndpoint implements KubernetesResource
     @JsonProperty("tlsConfig")
     private PodMetricsEndpointTLSConfig tlsConfig;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -122,26 +123,6 @@ public class PodMetricsEndpoint implements KubernetesResource
     public PodMetricsEndpoint() {
     }
 
-    /**
-     * 
-     * @param bearerTokenSecret
-     * @param honorTimestamps
-     * @param scheme
-     * @param scrapeTimeout
-     * @param basicAuth
-     * @param proxyUrl
-     * @param metricRelabelings
-     * @param oauth2
-     * @param params
-     * @param targetPort
-     * @param honorLabels
-     * @param tlsConfig
-     * @param authorization
-     * @param path
-     * @param relabelings
-     * @param port
-     * @param interval
-     */
     public PodMetricsEndpoint(SafeAuthorization authorization, BasicAuth basicAuth, SecretKeySelector bearerTokenSecret, Boolean honorLabels, Boolean honorTimestamps, java.lang.String interval, List<RelabelConfig> metricRelabelings, OAuth2 oauth2, Map<String, ArrayList<String>> params, java.lang.String path, java.lang.String port, java.lang.String proxyUrl, List<RelabelConfig> relabelings, java.lang.String scheme, java.lang.String scrapeTimeout, io.fabric8.kubernetes.api.model.IntOrString targetPort, PodMetricsEndpointTLSConfig tlsConfig) {
         super();
         this.authorization = authorization;

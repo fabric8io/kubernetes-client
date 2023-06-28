@@ -1,8 +1,9 @@
 
 package io.fabric8.kubernetes.api.model.resource.v1alpha1;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -56,6 +57,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class AllocationResult implements KubernetesResource
 {
 
@@ -66,7 +68,7 @@ public class AllocationResult implements KubernetesResource
     @JsonProperty("shareable")
     private Boolean shareable;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -75,12 +77,6 @@ public class AllocationResult implements KubernetesResource
     public AllocationResult() {
     }
 
-    /**
-     * 
-     * @param shareable
-     * @param resourceHandle
-     * @param availableOnNodes
-     */
     public AllocationResult(NodeSelector availableOnNodes, String resourceHandle, Boolean shareable) {
         super();
         this.availableOnNodes = availableOnNodes;

@@ -2,9 +2,10 @@
 package io.fabric8.istio.api.security.v1beta1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -70,6 +71,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class JWTRule implements KubernetesResource
 {
 
@@ -93,7 +95,7 @@ public class JWTRule implements KubernetesResource
     @JsonProperty("outputPayloadToHeader")
     private String outputPayloadToHeader;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -102,17 +104,6 @@ public class JWTRule implements KubernetesResource
     public JWTRule() {
     }
 
-    /**
-     * 
-     * @param fromHeaders
-     * @param jwks
-     * @param fromParams
-     * @param audiences
-     * @param jwksUri
-     * @param outputPayloadToHeader
-     * @param forwardOriginalToken
-     * @param issuer
-     */
     public JWTRule(List<String> audiences, Boolean forwardOriginalToken, List<JWTHeader> fromHeaders, List<String> fromParams, String issuer, String jwks, String jwksUri, String outputPayloadToHeader) {
         super();
         this.audiences = audiences;

@@ -1,9 +1,9 @@
 
 package io.fabric8.servicecatalog.api.model;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -64,6 +64,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Generated("jsonschema2pojo")
 public class ServiceBindingPropertiesState implements KubernetesResource
 {
 
@@ -75,7 +76,7 @@ public class ServiceBindingPropertiesState implements KubernetesResource
     @JsonProperty("userInfo")
     private UserInfo userInfo;
     @JsonIgnore
-    private Map<java.lang.String, java.lang.Object> additionalProperties = new HashMap<java.lang.String, java.lang.Object>();
+    private Map<java.lang.String, java.lang.Object> additionalProperties = new LinkedHashMap<java.lang.String, java.lang.Object>();
 
     /**
      * No args constructor for use in serialization
@@ -84,12 +85,6 @@ public class ServiceBindingPropertiesState implements KubernetesResource
     public ServiceBindingPropertiesState() {
     }
 
-    /**
-     * 
-     * @param userInfo
-     * @param parameterChecksum
-     * @param parameters
-     */
     public ServiceBindingPropertiesState(java.lang.String parameterChecksum, Map<String, Object> parameters, UserInfo userInfo) {
         super();
         this.parameterChecksum = parameterChecksum;

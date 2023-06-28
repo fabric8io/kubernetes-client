@@ -2,9 +2,10 @@
 package io.fabric8.openshift.api.model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -70,6 +71,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1")
 @Group("oauth.openshift.io")
+@Generated("jsonschema2pojo")
 public class OAuthClient implements HasMetadata
 {
 
@@ -109,7 +111,7 @@ public class OAuthClient implements HasMetadata
     @JsonProperty("secret")
     private String secret;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -118,20 +120,6 @@ public class OAuthClient implements HasMetadata
     public OAuthClient() {
     }
 
-    /**
-     * 
-     * @param additionalSecrets
-     * @param metadata
-     * @param respondWithChallenges
-     * @param apiVersion
-     * @param scopeRestrictions
-     * @param kind
-     * @param accessTokenInactivityTimeoutSeconds
-     * @param grantMethod
-     * @param accessTokenMaxAgeSeconds
-     * @param secret
-     * @param redirectURIs
-     */
     public OAuthClient(Integer accessTokenInactivityTimeoutSeconds, Integer accessTokenMaxAgeSeconds, List<String> additionalSecrets, String apiVersion, String grantMethod, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, List<String> redirectURIs, Boolean respondWithChallenges, List<ScopeRestriction> scopeRestrictions, String secret) {
         super();
         this.accessTokenInactivityTimeoutSeconds = accessTokenInactivityTimeoutSeconds;

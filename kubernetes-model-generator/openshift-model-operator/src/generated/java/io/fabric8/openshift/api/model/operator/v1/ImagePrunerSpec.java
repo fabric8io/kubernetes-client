@@ -2,10 +2,10 @@
 package io.fabric8.openshift.api.model.operator.v1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -70,6 +70,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@Generated("jsonschema2pojo")
 public class ImagePrunerSpec implements KubernetesResource
 {
 
@@ -102,7 +103,7 @@ public class ImagePrunerSpec implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Toleration> tolerations = new ArrayList<Toleration>();
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -111,22 +112,6 @@ public class ImagePrunerSpec implements KubernetesResource
     public ImagePrunerSpec() {
     }
 
-    /**
-     * 
-     * @param suspend
-     * @param ignoreInvalidImageReferences
-     * @param resources
-     * @param keepYoungerThan
-     * @param keepYoungerThanDuration
-     * @param keepTagRevisions
-     * @param successfulJobsHistoryLimit
-     * @param nodeSelector
-     * @param schedule
-     * @param tolerations
-     * @param logLevel
-     * @param failedJobsHistoryLimit
-     * @param affinity
-     */
     public ImagePrunerSpec(Affinity affinity, Integer failedJobsHistoryLimit, Boolean ignoreInvalidImageReferences, Integer keepTagRevisions, Long keepYoungerThan, Duration keepYoungerThanDuration, java.lang.String logLevel, Map<String, String> nodeSelector, io.fabric8.kubernetes.api.model.ResourceRequirements resources, java.lang.String schedule, Integer successfulJobsHistoryLimit, Boolean suspend, List<Toleration> tolerations) {
         super();
         this.affinity = affinity;
