@@ -54,6 +54,7 @@ hs_err_pid*
 # .idea/uiDesigner.xml
 
 # Gradle:
+.gradle
 # .idea/gradle.xml
 # .idea/libraries
 
