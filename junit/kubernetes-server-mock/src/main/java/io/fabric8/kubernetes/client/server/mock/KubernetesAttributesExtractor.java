@@ -319,7 +319,7 @@ public class KubernetesAttributesExtractor implements AttributeExtractor {
     if (Utils.isNullOrEmpty(s)) {
       return null;
     }
-    HasMetadata result = Serialization.unmarshal(s);
+    HasMetadata result = Serialization.unmarshal(s, GenericKubernetesResource.class);
     if (result == null) {
       throw new IllegalArgumentException("Required value: kind is required");
     }

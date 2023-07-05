@@ -16,7 +16,7 @@
 package io.fabric8.kubernetes.client.server.mock;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import io.fabric8.kubernetes.api.model.KubernetesResource;
+import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.WatchEvent;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.utils.Serialization;
@@ -98,7 +98,7 @@ class WatchEventsListener extends WebSocketListener {
 
   public void sendWebSocketResponse(String object, Watcher.Action action) {
     WebSocketMessage message = toWebSocketMessage(context,
-        new WatchEvent(Serialization.unmarshal(object, KubernetesResource.class), action.name()));
+        new WatchEvent(Serialization.unmarshal(object, GenericKubernetesResource.class), action.name()));
     executor.schedule(() -> webSocketRef.get().send(message.getBody()), message.getDelay(), TimeUnit.SECONDS);
   }
 

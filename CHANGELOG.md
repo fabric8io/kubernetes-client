@@ -4,6 +4,7 @@
 
 #### Bugs
 * Fix #5281: Ensure the KubernetesCrudDispatcher's backing map is accessed w/lock
+* Fix #5293: Ensured the mock server uses only generic or JsonNode parsing
 
 #### Improvements
 * Fix #5166: Remove opinionated messages from Config's `errorMessages` and deprecate it
