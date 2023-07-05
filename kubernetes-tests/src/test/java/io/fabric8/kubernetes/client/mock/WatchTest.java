@@ -323,7 +323,7 @@ class WatchTest {
 
   private static WatchEvent outdatedEvent() {
     return new WatchEventBuilder().withType(Watcher.Action.ERROR.name())
-        .withStatusObject(
+        .withObject(
             new StatusBuilder().withCode(HttpURLConnection.HTTP_GONE)
                 .withMessage(
                     "410: The event in requested index is outdated and cleared (the requested history has been cleared [3/1]) [2]")
