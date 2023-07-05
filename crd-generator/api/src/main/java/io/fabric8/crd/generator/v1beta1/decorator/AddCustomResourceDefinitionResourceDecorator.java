@@ -49,7 +49,7 @@ public class AddCustomResourceDefinitionResourceDecorator extends ResourceProvid
 
   @Override
   public void visit(KubernetesListBuilder list) {
-    boolean exists = list.getItems().stream().anyMatch(i -> i.getKind().equals("CustomResourceDefinition")
+    boolean exists = list.buildItems().stream().anyMatch(i -> i.getKind().equals("CustomResourceDefinition")
         && i.getMetadata().getName().equals(name)
         && ApiVersionUtil.trimVersion(i.getApiVersion()).equals("v1beta1"));
 

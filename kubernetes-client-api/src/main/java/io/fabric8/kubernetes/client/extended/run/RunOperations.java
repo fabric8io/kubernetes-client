@@ -22,19 +22,12 @@ import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
 
 public class RunOperations {
 
-  public interface RunConfigNested extends RunConfigFluent<RunConfigNested> {
+  public class RunConfigNested extends RunConfigFluent<RunConfigNested> {
 
-    Pod done();
-
-  }
-
-  private class RunConfigNestedImpl extends RunConfigFluentImpl<RunConfigNested> implements RunConfigNested {
-
-    RunConfigNestedImpl() {
+    RunConfigNested() {
       super(runConfig); // copy the existing properties
     }
 
-    @Override
     public Pod done() {
       RunConfig runConfig = new RunConfigBuilder(this).build();
       return withRunConfig(runConfig).done();
@@ -102,7 +95,7 @@ public class RunOperations {
    * @return
    */
   public RunConfigNested withNewRunConfig() {
-    return new RunConfigNestedImpl();
+    return new RunConfigNested();
   }
 
   /**

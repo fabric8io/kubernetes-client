@@ -90,7 +90,7 @@ class DefaultSharedIndexInformerTest {
           "410: The event in requested index is outdated and cleared (the requested history has been cleared [3/1]) [2]")
       .build();
   static final WatchEvent outdatedEvent = new WatchEventBuilder().withType(Watcher.Action.ERROR.name())
-      .withStatusObject(outdatedStatus)
+      .withObject(outdatedStatus)
       .build();
   static final Long WATCH_EVENT_EMIT_TIME = 1L;
   static final Long OUTDATED_WATCH_EVENT_EMIT_TIME = 1L;
