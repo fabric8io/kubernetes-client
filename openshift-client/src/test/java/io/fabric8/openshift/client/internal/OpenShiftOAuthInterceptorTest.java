@@ -42,7 +42,6 @@ import static java.net.HttpURLConnection.HTTP_OK;
 import static java.net.HttpURLConnection.HTTP_UNAUTHORIZED;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Answers.RETURNS_SELF;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -69,7 +68,7 @@ class OpenShiftOAuthInterceptorTest {
 
     interceptor.before(builder, builder.build(), null);
 
-    assertTrue(builder.build().headers(TokenRefreshInterceptor.AUTHORIZATION).isEmpty());
+    assertEquals("Bearer invalid", builder.build().header(TokenRefreshInterceptor.AUTHORIZATION));
   }
 
   @Test

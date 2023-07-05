@@ -3,6 +3,7 @@
 ### 6.8-SNAPSHOT
 
 #### Bugs
+* Fix #5298: Prevent requests needing authentication from causing a 403 response
 * Fix #5281: Ensure the KubernetesCrudDispatcher's backing map is accessed w/lock
 
 #### Improvements
