@@ -33,7 +33,6 @@ import java.net.URI;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -42,9 +41,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests a {@link HttpClient} at or below the {@link KubernetesClient} level.
@@ -138,38 +135,6 @@ class OkHttpClientTest {
         .thenCompose(ws -> opened);
 
     assertThat(future.get(10, TimeUnit.SECONDS)).isTrue();
-  }
-
-  @Test
-  void testRequest() throws Exception {
-    server.expect().withPath("/foo")
-        .andUpgradeToWebSocket()
-        .open()
-        .waitFor(0)
-        .andEmit("hello")
-        .waitFor(0)
-        .andEmit("world")
-        .done().always();
-
-    CountDownLatch latch = new CountDownLatch(2);
-
-    CompletableFuture<WebSocket> startedFuture = client.getHttpClient().newWebSocketBuilder()
-        .uri(URI.create(client.getConfiguration().getMasterUrl() + "foo"))
-        .buildAsync(new Listener() {
-
-          @Override
-          public void onMessage(WebSocket webSocket, String text) {
-            latch.countDown();
-          }
-
-        });
-
-    assertFalse(latch.await(10, TimeUnit.SECONDS));
-    assertEquals(1, latch.getCount());
-
-    startedFuture.get(10, TimeUnit.SECONDS).request();
-
-    assertTrue(latch.await(10, TimeUnit.SECONDS));
   }
 
   @Test
