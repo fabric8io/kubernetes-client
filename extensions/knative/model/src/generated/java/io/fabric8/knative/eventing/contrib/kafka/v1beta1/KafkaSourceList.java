@@ -87,6 +87,7 @@ public class KafkaSourceList implements KubernetesResource, KubernetesResourceLi
     @JsonProperty("apiVersion")
     private String apiVersion = "sources.knative.dev/v1beta1";
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.knative.eventing.contrib.kafka.v1beta1.KafkaSource> items = new ArrayList<io.fabric8.knative.eventing.contrib.kafka.v1beta1.KafkaSource>();
     /**
      * 

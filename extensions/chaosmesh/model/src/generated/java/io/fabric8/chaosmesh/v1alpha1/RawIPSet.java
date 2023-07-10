@@ -71,6 +71,7 @@ public class RawIPSet implements KubernetesResource
 {
 
     @JsonProperty("cidrs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> cidrs = new ArrayList<String>();
     @JsonProperty("name")
     private String name;

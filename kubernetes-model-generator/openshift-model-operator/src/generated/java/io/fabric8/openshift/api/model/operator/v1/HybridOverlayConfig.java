@@ -62,6 +62,7 @@ public class HybridOverlayConfig implements KubernetesResource
 {
 
     @JsonProperty("hybridClusterNetwork")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ClusterNetworkEntry> hybridClusterNetwork = new ArrayList<ClusterNetworkEntry>();
     @JsonProperty("hybridOverlayVXLANPort")
     private Integer hybridOverlayVXLANPort;

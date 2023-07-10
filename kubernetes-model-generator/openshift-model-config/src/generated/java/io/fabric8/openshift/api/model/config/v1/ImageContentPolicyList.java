@@ -79,6 +79,7 @@ public class ImageContentPolicyList implements KubernetesResource, KubernetesRes
     @JsonProperty("apiVersion")
     private String apiVersion = "config.openshift.io/v1";
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.openshift.api.model.config.v1.ImageContentPolicy> items = new ArrayList<io.fabric8.openshift.api.model.config.v1.ImageContentPolicy>();
     /**
      * 

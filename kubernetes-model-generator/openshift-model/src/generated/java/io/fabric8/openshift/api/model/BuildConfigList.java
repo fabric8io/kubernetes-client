@@ -79,6 +79,7 @@ public class BuildConfigList implements KubernetesResource, KubernetesResourceLi
     @JsonProperty("apiVersion")
     private String apiVersion = "build.openshift.io/v1";
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.openshift.api.model.BuildConfig> items = new ArrayList<io.fabric8.openshift.api.model.BuildConfig>();
     /**
      * 

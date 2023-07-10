@@ -87,6 +87,7 @@ public class SubscriptionList implements KubernetesResource, KubernetesResourceL
     @JsonProperty("apiVersion")
     private String apiVersion = "messaging.knative.dev/v1";
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.knative.messaging.v1.Subscription> items = new ArrayList<io.fabric8.knative.messaging.v1.Subscription>();
     /**
      * 

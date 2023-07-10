@@ -78,6 +78,7 @@ public class KafkaSourceSpec implements KubernetesResource
 {
 
     @JsonProperty("bootstrapServers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> bootstrapServers = new ArrayList<String>();
     @JsonProperty("ceOverrides")
     private CloudEventOverrides ceOverrides;
@@ -92,6 +93,7 @@ public class KafkaSourceSpec implements KubernetesResource
     @JsonProperty("sink")
     private Destination sink;
     @JsonProperty("topics")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> topics = new ArrayList<String>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();

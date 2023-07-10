@@ -63,6 +63,7 @@ public class StrategyDeploymentPermissions implements KubernetesResource
 {
 
     @JsonProperty("rules")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<PolicyRule> rules = new ArrayList<PolicyRule>();
     @JsonProperty("serviceAccountName")
     private String serviceAccountName;

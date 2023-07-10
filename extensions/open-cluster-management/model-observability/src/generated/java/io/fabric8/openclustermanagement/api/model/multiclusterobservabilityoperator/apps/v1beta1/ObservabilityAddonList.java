@@ -87,6 +87,7 @@ public class ObservabilityAddonList implements KubernetesResource, KubernetesRes
     @JsonProperty("apiVersion")
     private String apiVersion = "observability.open-cluster-management.io/v1beta1";
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta1.ObservabilityAddon> items = new ArrayList<io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta1.ObservabilityAddon>();
     /**
      * 

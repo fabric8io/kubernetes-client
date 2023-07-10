@@ -72,6 +72,7 @@ public class KafkaBindingSpec implements KubernetesResource
 {
 
     @JsonProperty("bootstrapServers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> bootstrapServers = new ArrayList<String>();
     @JsonProperty("net")
     private KafkaNetSpec net;

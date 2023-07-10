@@ -70,6 +70,7 @@ public class ValidatingWebhook implements KubernetesResource
 {
 
     @JsonProperty("admissionReviewVersions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> admissionReviewVersions = new ArrayList<String>();
     @JsonProperty("clientConfig")
     private WebhookClientConfig clientConfig;

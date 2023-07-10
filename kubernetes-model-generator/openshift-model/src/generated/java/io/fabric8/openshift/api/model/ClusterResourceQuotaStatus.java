@@ -63,6 +63,7 @@ public class ClusterResourceQuotaStatus implements KubernetesResource
 {
 
     @JsonProperty("namespaces")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ResourceQuotaStatusByNamespace> namespaces = new ArrayList<ResourceQuotaStatusByNamespace>();
     @JsonProperty("total")
     private ResourceQuotaStatus total;

@@ -84,6 +84,7 @@ public class PodSpec implements KubernetesResource
     @JsonProperty("automountServiceAccountToken")
     private Boolean automountServiceAccountToken;
     @JsonProperty("containers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Container> containers = new ArrayList<Container>();
     @JsonProperty("dnsConfig")
     private PodDNSConfig dnsConfig;

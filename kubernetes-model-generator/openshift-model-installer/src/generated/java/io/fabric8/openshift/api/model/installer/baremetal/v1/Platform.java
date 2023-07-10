@@ -108,6 +108,7 @@ public class Platform implements KubernetesResource
     @JsonProperty("externalMACAddress")
     private String externalMACAddress;
     @JsonProperty("hosts")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Host> hosts = new ArrayList<Host>();
     @JsonProperty("ingressVIP")
     private String ingressVIP;

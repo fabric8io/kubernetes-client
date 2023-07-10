@@ -61,6 +61,7 @@ public class ImageContentSourcePolicySpec implements KubernetesResource
 {
 
     @JsonProperty("repositoryDigestMirrors")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<RepositoryDigestMirrors> repositoryDigestMirrors = new ArrayList<RepositoryDigestMirrors>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();

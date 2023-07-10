@@ -43,6 +43,7 @@ public class TopologySelectorLabelRequirement implements KubernetesResource
     @JsonProperty("key")
     private String key;
     @JsonProperty("values")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> values = new ArrayList<String>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();

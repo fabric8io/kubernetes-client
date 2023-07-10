@@ -87,6 +87,7 @@ public class VolumeSnapshotList implements KubernetesResource, KubernetesResourc
     @JsonProperty("apiVersion")
     private String apiVersion = "snapshot.storage.k8s.io/v1";
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.volumesnapshot.api.model.VolumeSnapshot> items = new ArrayList<io.fabric8.volumesnapshot.api.model.VolumeSnapshot>();
     /**
      * 

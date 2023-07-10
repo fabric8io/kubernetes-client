@@ -87,6 +87,7 @@ public class OrderList implements KubernetesResource, KubernetesResourceList<io.
     @JsonProperty("apiVersion")
     private String apiVersion = "cert-manager.io/v1alpha3";
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.certmanager.api.model.acme.v1alpha3.Order> items = new ArrayList<io.fabric8.certmanager.api.model.acme.v1alpha3.Order>();
     /**
      * 

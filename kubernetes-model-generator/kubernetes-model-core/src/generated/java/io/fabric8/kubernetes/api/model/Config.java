@@ -47,8 +47,10 @@ public class Config implements KubernetesResource
     @JsonProperty("apiVersion")
     private String apiVersion;
     @JsonProperty("clusters")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<NamedCluster> clusters = new ArrayList<NamedCluster>();
     @JsonProperty("contexts")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<NamedContext> contexts = new ArrayList<NamedContext>();
     @JsonProperty("current-context")
     private String currentContext;
@@ -60,6 +62,7 @@ public class Config implements KubernetesResource
     @JsonProperty("preferences")
     private Preferences preferences;
     @JsonProperty("users")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<NamedAuthInfo> users = new ArrayList<NamedAuthInfo>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();

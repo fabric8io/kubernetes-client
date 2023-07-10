@@ -76,6 +76,7 @@ public class CustomResourceDefinitionSpec implements KubernetesResource
     @JsonProperty("scope")
     private String scope;
     @JsonProperty("versions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<CustomResourceDefinitionVersion> versions = new ArrayList<CustomResourceDefinitionVersion>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();

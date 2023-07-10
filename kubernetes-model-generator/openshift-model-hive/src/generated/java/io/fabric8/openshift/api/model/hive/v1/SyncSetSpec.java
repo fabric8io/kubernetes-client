@@ -67,6 +67,7 @@ public class SyncSetSpec implements KubernetesResource
     @JsonProperty("applyBehavior")
     private java.lang.String applyBehavior;
     @JsonProperty("clusterDeploymentRefs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.kubernetes.api.model.LocalObjectReference> clusterDeploymentRefs = new ArrayList<io.fabric8.kubernetes.api.model.LocalObjectReference>();
     @JsonProperty("patches")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)

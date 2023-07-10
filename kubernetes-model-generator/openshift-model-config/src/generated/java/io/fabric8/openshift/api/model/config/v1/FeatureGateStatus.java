@@ -66,6 +66,7 @@ public class FeatureGateStatus implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Condition> conditions = new ArrayList<Condition>();
     @JsonProperty("featureGates")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<FeatureGateDetails> featureGates = new ArrayList<FeatureGateDetails>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();

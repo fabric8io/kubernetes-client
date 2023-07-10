@@ -86,6 +86,7 @@ public class IOChaosSpec implements KubernetesResource
     @JsonProperty("attr")
     private AttrOverrideSpec attr;
     @JsonProperty("containerNames")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<java.lang.String> containerNames = new ArrayList<java.lang.String>();
     @JsonProperty("delay")
     private java.lang.String delay;

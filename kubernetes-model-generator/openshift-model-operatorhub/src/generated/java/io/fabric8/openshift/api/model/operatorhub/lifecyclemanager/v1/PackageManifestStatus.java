@@ -76,6 +76,7 @@ public class PackageManifestStatus implements KubernetesResource
     @JsonProperty("catalogSourcePublisher")
     private String catalogSourcePublisher;
     @JsonProperty("channels")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<PackageChannel> channels = new ArrayList<PackageChannel>();
     @JsonProperty("defaultChannel")
     private String defaultChannel;

@@ -73,6 +73,7 @@ public class TriggerSpec implements KubernetesResource
 {
 
     @JsonProperty("bindings")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<TriggerSpecBinding> bindings = new ArrayList<TriggerSpecBinding>();
     @JsonProperty("interceptors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)

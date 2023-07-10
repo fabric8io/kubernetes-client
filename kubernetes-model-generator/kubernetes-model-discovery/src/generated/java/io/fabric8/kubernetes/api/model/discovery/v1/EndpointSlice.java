@@ -81,6 +81,7 @@ public class EndpointSlice implements HasMetadata, Namespaced
     @JsonProperty("apiVersion")
     private String apiVersion = "discovery.k8s.io/v1";
     @JsonProperty("endpoints")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Endpoint> endpoints = new ArrayList<Endpoint>();
     /**
      * 
@@ -92,6 +93,7 @@ public class EndpointSlice implements HasMetadata, Namespaced
     @JsonProperty("metadata")
     private io.fabric8.kubernetes.api.model.ObjectMeta metadata;
     @JsonProperty("ports")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<EndpointPort> ports = new ArrayList<EndpointPort>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();

@@ -71,6 +71,7 @@ public class GCPChaosStatus implements KubernetesResource
 {
 
     @JsonProperty("attachedDiskStrings")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> attachedDiskStrings = new ArrayList<String>();
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)

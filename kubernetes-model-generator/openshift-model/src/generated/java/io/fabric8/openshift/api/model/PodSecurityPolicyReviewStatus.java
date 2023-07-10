@@ -61,6 +61,7 @@ public class PodSecurityPolicyReviewStatus implements KubernetesResource
 {
 
     @JsonProperty("allowedServiceAccounts")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ServiceAccountPodSecurityPolicyReviewStatus> allowedServiceAccounts = new ArrayList<ServiceAccountPodSecurityPolicyReviewStatus>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();

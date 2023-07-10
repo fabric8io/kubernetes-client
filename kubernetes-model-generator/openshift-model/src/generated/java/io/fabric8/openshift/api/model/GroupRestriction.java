@@ -61,8 +61,10 @@ public class GroupRestriction implements KubernetesResource
 {
 
     @JsonProperty("groups")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> groups = new ArrayList<String>();
     @JsonProperty("labels")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.kubernetes.api.model.LabelSelector> labels = new ArrayList<io.fabric8.kubernetes.api.model.LabelSelector>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();

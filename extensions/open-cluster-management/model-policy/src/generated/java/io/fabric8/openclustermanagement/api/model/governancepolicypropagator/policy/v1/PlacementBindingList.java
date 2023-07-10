@@ -87,6 +87,7 @@ public class PlacementBindingList implements KubernetesResource, KubernetesResou
     @JsonProperty("apiVersion")
     private String apiVersion = "policy.open-cluster-management.io/v1";
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1.PlacementBinding> items = new ArrayList<io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1.PlacementBinding>();
     /**
      * 

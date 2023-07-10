@@ -53,6 +53,7 @@ public class RBDVolumeSource implements KubernetesResource
     @JsonProperty("keyring")
     private String keyring;
     @JsonProperty("monitors")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> monitors = new ArrayList<String>();
     @JsonProperty("pool")
     private String pool;

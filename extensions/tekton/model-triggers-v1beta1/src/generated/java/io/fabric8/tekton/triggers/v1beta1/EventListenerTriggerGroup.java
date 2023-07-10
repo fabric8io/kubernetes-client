@@ -71,6 +71,7 @@ public class EventListenerTriggerGroup implements KubernetesResource
 {
 
     @JsonProperty("interceptors")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<TriggerInterceptor> interceptors = new ArrayList<TriggerInterceptor>();
     @JsonProperty("name")
     private String name;

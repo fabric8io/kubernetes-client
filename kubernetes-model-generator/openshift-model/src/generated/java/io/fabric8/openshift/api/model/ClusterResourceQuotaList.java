@@ -79,6 +79,7 @@ public class ClusterResourceQuotaList implements KubernetesResource, KubernetesR
     @JsonProperty("apiVersion")
     private String apiVersion = "quota.openshift.io/v1";
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.openshift.api.model.ClusterResourceQuota> items = new ArrayList<io.fabric8.openshift.api.model.ClusterResourceQuota>();
     /**
      * 

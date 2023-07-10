@@ -79,6 +79,7 @@ public class DNSList implements KubernetesResource, KubernetesResourceList<io.fa
     @JsonProperty("apiVersion")
     private String apiVersion = "config.openshift.io/v1";
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.openshift.api.model.config.v1.DNS> items = new ArrayList<io.fabric8.openshift.api.model.config.v1.DNS>();
     /**
      * 

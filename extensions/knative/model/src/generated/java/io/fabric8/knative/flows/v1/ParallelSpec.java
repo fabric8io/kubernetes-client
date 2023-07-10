@@ -73,6 +73,7 @@ public class ParallelSpec implements KubernetesResource
 {
 
     @JsonProperty("branches")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ParallelBranch> branches = new ArrayList<ParallelBranch>();
     @JsonProperty("channelTemplate")
     private ChannelTemplateSpec channelTemplate;

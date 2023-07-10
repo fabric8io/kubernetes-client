@@ -64,6 +64,7 @@ public class JSONSchemaPropsOrStringArray implements KubernetesResource
 {
 
     @JsonProperty("Property")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> property = new ArrayList<String>();
     @JsonProperty("Schema")
     private JSONSchemaProps schema;

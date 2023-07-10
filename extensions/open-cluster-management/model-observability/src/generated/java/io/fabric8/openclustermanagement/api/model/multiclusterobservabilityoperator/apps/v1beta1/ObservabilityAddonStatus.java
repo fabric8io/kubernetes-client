@@ -69,6 +69,7 @@ public class ObservabilityAddonStatus implements KubernetesResource
 {
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<StatusCondition> conditions = new ArrayList<StatusCondition>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();

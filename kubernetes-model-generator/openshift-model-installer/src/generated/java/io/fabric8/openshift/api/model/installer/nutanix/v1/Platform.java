@@ -89,8 +89,10 @@ public class Platform implements KubernetesResource
     @JsonProperty("prismCentral")
     private PrismCentral prismCentral;
     @JsonProperty("prismElements")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<PrismElement> prismElements = new ArrayList<PrismElement>();
     @JsonProperty("subnetUUIDs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> subnetUUIDs = new ArrayList<String>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();

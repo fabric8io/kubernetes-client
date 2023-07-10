@@ -87,6 +87,7 @@ public class VirtualServiceList implements KubernetesResource, KubernetesResourc
     @JsonProperty("apiVersion")
     private String apiVersion = "networking.istio.io/v1beta1";
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.istio.api.networking.v1beta1.VirtualService> items = new ArrayList<io.fabric8.istio.api.networking.v1beta1.VirtualService>();
     /**
      * 

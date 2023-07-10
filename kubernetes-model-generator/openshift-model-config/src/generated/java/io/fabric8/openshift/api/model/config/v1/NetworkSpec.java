@@ -65,12 +65,14 @@ public class NetworkSpec implements KubernetesResource
 {
 
     @JsonProperty("clusterNetwork")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ClusterNetworkEntry> clusterNetwork = new ArrayList<ClusterNetworkEntry>();
     @JsonProperty("externalIP")
     private ExternalIPConfig externalIP;
     @JsonProperty("networkType")
     private String networkType;
     @JsonProperty("serviceNetwork")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> serviceNetwork = new ArrayList<String>();
     @JsonProperty("serviceNodePortRange")
     private String serviceNodePortRange;

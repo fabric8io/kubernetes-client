@@ -87,6 +87,7 @@ public class TriggerTemplateList implements KubernetesResource, KubernetesResour
     @JsonProperty("apiVersion")
     private String apiVersion = "triggers.tekton.dev/v1alpha1";
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.tekton.triggers.v1alpha1.TriggerTemplate> items = new ArrayList<io.fabric8.tekton.triggers.v1alpha1.TriggerTemplate>();
     /**
      * 

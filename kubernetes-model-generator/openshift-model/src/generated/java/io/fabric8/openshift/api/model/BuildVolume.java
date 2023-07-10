@@ -63,6 +63,7 @@ public class BuildVolume implements KubernetesResource
 {
 
     @JsonProperty("mounts")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<BuildVolumeMount> mounts = new ArrayList<BuildVolumeMount>();
     @JsonProperty("name")
     private String name;

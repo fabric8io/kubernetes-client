@@ -62,6 +62,7 @@ public class PerResourceAPIRequestLog implements KubernetesResource
 {
 
     @JsonProperty("byNode")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<PerNodeAPIRequestLog> byNode = new ArrayList<PerNodeAPIRequestLog>();
     @JsonProperty("requestCount")
     private Long requestCount;

@@ -83,6 +83,7 @@ public class GitHubSourceSpec implements KubernetesResource
     @JsonProperty("ceOverrides")
     private CloudEventOverrides ceOverrides;
     @JsonProperty("eventTypes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> eventTypes = new ArrayList<String>();
     @JsonProperty("githubAPIURL")
     private String githubAPIURL;

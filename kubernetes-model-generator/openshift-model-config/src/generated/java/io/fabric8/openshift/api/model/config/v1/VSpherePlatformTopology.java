@@ -74,6 +74,7 @@ public class VSpherePlatformTopology implements KubernetesResource
     @JsonProperty("folder")
     private String folder;
     @JsonProperty("networks")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> networks = new ArrayList<String>();
     @JsonProperty("resourcePool")
     private String resourcePool;

@@ -65,6 +65,7 @@ public class VCenter implements KubernetesResource
 {
 
     @JsonProperty("datacenters")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> datacenters = new ArrayList<String>();
     @JsonProperty("password")
     private String password;

@@ -106,6 +106,7 @@ public class SecurityContextConstraints implements HasMetadata
     @JsonProperty("allowPrivilegedContainer")
     private Boolean allowPrivilegedContainer;
     @JsonProperty("allowedCapabilities")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> allowedCapabilities = new ArrayList<String>();
     @JsonProperty("allowedFlexVolumes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -121,6 +122,7 @@ public class SecurityContextConstraints implements HasMetadata
     @JsonProperty("apiVersion")
     private String apiVersion = "security.openshift.io/v1";
     @JsonProperty("defaultAddCapabilities")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> defaultAddCapabilities = new ArrayList<String>();
     @JsonProperty("defaultAllowPrivilegeEscalation")
     private Boolean defaultAllowPrivilegeEscalation;
@@ -130,6 +132,7 @@ public class SecurityContextConstraints implements HasMetadata
     @JsonProperty("fsGroup")
     private FSGroupStrategyOptions fsGroup;
     @JsonProperty("groups")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> groups = new ArrayList<String>();
     /**
      * 
@@ -145,6 +148,7 @@ public class SecurityContextConstraints implements HasMetadata
     @JsonProperty("readOnlyRootFilesystem")
     private Boolean readOnlyRootFilesystem;
     @JsonProperty("requiredDropCapabilities")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> requiredDropCapabilities = new ArrayList<String>();
     @JsonProperty("runAsUser")
     private RunAsUserStrategyOptions runAsUser;
@@ -156,8 +160,10 @@ public class SecurityContextConstraints implements HasMetadata
     @JsonProperty("supplementalGroups")
     private SupplementalGroupsStrategyOptions supplementalGroups;
     @JsonProperty("users")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> users = new ArrayList<String>();
     @JsonProperty("volumes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> volumes = new ArrayList<String>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();

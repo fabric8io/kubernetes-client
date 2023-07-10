@@ -73,6 +73,7 @@ public class DNSRecordSpec implements KubernetesResource
     @JsonProperty("recordType")
     private String recordType;
     @JsonProperty("targets")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> targets = new ArrayList<String>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();

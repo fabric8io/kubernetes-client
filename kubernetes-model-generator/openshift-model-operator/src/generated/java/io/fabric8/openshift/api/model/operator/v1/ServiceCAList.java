@@ -79,6 +79,7 @@ public class ServiceCAList implements KubernetesResource, KubernetesResourceList
     @JsonProperty("apiVersion")
     private String apiVersion = "operator.openshift.io/v1";
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.openshift.api.model.operator.v1.ServiceCA> items = new ArrayList<io.fabric8.openshift.api.model.operator.v1.ServiceCA>();
     /**
      * 

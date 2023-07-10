@@ -79,6 +79,7 @@ public class FlowSchemaList implements KubernetesResource, KubernetesResourceLis
     @JsonProperty("apiVersion")
     private String apiVersion = "flowcontrol.apiserver.k8s.io/v1alpha1";
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.kubernetes.api.model.flowcontrol.v1alpha1.FlowSchema> items = new ArrayList<io.fabric8.kubernetes.api.model.flowcontrol.v1alpha1.FlowSchema>();
     /**
      * 

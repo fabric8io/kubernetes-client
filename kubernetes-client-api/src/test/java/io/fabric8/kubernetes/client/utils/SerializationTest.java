@@ -384,13 +384,10 @@ class SerializationTest {
 
     // ensure that the extenion is preserved
     assertThat(Serialization.asYaml(config)).isEqualTo("---\n"
-        + "clusters: []\n"
-        + "contexts: []\n"
         + "extensions:\n"
         + "- extension:\n"
         + "    not: \"kubernetesresource\"\n"
-        + "  name: \"foo\"\n"
-        + "users: []\n");
+        + "  name: \"foo\"\n");
   }
 
   @JsonTypeResolver(io.fabric8.kubernetes.model.jackson.UnwrappedTypeResolverBuilder.class)

@@ -79,6 +79,7 @@ public class EndpointSliceList implements KubernetesResource, KubernetesResource
     @JsonProperty("apiVersion")
     private String apiVersion = "discovery.k8s.io/v1beta1";
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.kubernetes.api.model.discovery.v1beta1.EndpointSlice> items = new ArrayList<io.fabric8.kubernetes.api.model.discovery.v1beta1.EndpointSlice>();
     /**
      * 

@@ -70,6 +70,7 @@ public class HelmAppStatus implements KubernetesResource
 {
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<HelmAppCondition> conditions = new ArrayList<HelmAppCondition>();
     @JsonProperty("deployedRelease")
     private HelmAppRelease deployedRelease;

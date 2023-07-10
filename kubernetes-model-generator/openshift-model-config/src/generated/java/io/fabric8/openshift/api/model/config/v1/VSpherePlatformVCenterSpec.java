@@ -63,6 +63,7 @@ public class VSpherePlatformVCenterSpec implements KubernetesResource
 {
 
     @JsonProperty("datacenters")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> datacenters = new ArrayList<String>();
     @JsonProperty("port")
     private Integer port;

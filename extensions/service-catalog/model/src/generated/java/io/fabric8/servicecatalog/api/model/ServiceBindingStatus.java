@@ -80,6 +80,7 @@ public class ServiceBindingStatus implements KubernetesResource
     @JsonProperty("asyncOpInProgress")
     private Boolean asyncOpInProgress;
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ServiceBindingCondition> conditions = new ArrayList<ServiceBindingCondition>();
     @JsonProperty("currentOperation")
     private java.lang.String currentOperation;

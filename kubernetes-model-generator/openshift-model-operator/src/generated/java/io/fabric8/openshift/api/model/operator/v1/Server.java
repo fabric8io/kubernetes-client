@@ -67,6 +67,7 @@ public class Server implements KubernetesResource
     @JsonProperty("name")
     private String name;
     @JsonProperty("zones")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> zones = new ArrayList<String>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();

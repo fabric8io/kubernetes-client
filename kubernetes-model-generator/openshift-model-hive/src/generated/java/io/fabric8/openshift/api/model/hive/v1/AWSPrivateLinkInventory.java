@@ -65,6 +65,7 @@ public class AWSPrivateLinkInventory implements KubernetesResource
     @JsonProperty("region")
     private String region;
     @JsonProperty("subnets")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<AWSPrivateLinkSubnet> subnets = new ArrayList<AWSPrivateLinkSubnet>();
     @JsonProperty("vpcID")
     private String vpcID;

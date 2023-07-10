@@ -62,6 +62,7 @@ public class ControllerConfigStatus implements KubernetesResource
 {
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ControllerConfigStatusCondition> conditions = new ArrayList<ControllerConfigStatusCondition>();
     @JsonProperty("observedGeneration")
     private Long observedGeneration;

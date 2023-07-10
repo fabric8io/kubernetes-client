@@ -63,6 +63,7 @@ public class TokenRequestSpec implements KubernetesResource
 {
 
     @JsonProperty("audiences")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> audiences = new ArrayList<String>();
     @JsonProperty("boundObjectRef")
     private BoundObjectReference boundObjectRef;

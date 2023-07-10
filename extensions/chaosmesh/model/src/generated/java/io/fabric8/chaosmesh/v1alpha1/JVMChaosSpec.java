@@ -87,6 +87,7 @@ public class JVMChaosSpec implements KubernetesResource
     @JsonProperty("class")
     private java.lang.String className;
     @JsonProperty("containerNames")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<java.lang.String> containerNames = new ArrayList<java.lang.String>();
     @JsonProperty("cpuCount")
     private Integer cpuCount;

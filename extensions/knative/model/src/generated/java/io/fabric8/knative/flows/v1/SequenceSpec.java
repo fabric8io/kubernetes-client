@@ -77,6 +77,7 @@ public class SequenceSpec implements KubernetesResource
     @JsonProperty("reply")
     private Destination reply;
     @JsonProperty("steps")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<SequenceStep> steps = new ArrayList<SequenceStep>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();

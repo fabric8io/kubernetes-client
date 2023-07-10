@@ -70,6 +70,7 @@ public class ForwardPlugin implements KubernetesResource
     @JsonProperty("transportConfig")
     private DNSTransportConfig transportConfig;
     @JsonProperty("upstreams")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> upstreams = new ArrayList<String>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();

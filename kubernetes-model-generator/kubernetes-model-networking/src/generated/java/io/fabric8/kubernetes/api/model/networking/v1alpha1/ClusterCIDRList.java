@@ -79,6 +79,7 @@ public class ClusterCIDRList implements KubernetesResource, KubernetesResourceLi
     @JsonProperty("apiVersion")
     private String apiVersion = "networking.k8s.io/v1alpha1";
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.kubernetes.api.model.networking.v1alpha1.ClusterCIDR> items = new ArrayList<io.fabric8.kubernetes.api.model.networking.v1alpha1.ClusterCIDR>();
     /**
      * 

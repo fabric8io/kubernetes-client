@@ -79,6 +79,7 @@ public class CSINodeList implements KubernetesResource, KubernetesResourceList<i
     @JsonProperty("apiVersion")
     private String apiVersion = "storage.k8s.io/v1beta1";
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.kubernetes.api.model.storage.v1beta1.CSINode> items = new ArrayList<io.fabric8.kubernetes.api.model.storage.v1beta1.CSINode>();
     /**
      * 

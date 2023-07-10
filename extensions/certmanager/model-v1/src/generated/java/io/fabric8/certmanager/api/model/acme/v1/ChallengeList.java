@@ -87,6 +87,7 @@ public class ChallengeList implements KubernetesResource, KubernetesResourceList
     @JsonProperty("apiVersion")
     private String apiVersion = "acme.cert-manager.io/v1";
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.certmanager.api.model.acme.v1.Challenge> items = new ArrayList<io.fabric8.certmanager.api.model.acme.v1.Challenge>();
     /**
      * 

@@ -72,6 +72,7 @@ public class InstallPlanStatus implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<BundleLookup> bundleLookups = new ArrayList<BundleLookup>();
     @JsonProperty("catalogSources")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<java.lang.String> catalogSources = new ArrayList<java.lang.String>();
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)

@@ -62,6 +62,7 @@ public class RuntimeClassStrategyOptions implements KubernetesResource
 {
 
     @JsonProperty("allowedRuntimeClassNames")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> allowedRuntimeClassNames = new ArrayList<String>();
     @JsonProperty("defaultRuntimeClassName")
     private String defaultRuntimeClassName;

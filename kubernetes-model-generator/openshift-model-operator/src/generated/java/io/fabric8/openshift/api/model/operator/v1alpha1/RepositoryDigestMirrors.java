@@ -62,6 +62,7 @@ public class RepositoryDigestMirrors implements KubernetesResource
 {
 
     @JsonProperty("mirrors")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> mirrors = new ArrayList<String>();
     @JsonProperty("source")
     private String source;

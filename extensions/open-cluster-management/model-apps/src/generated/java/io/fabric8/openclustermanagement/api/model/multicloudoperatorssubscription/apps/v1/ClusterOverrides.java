@@ -72,6 +72,7 @@ public class ClusterOverrides implements KubernetesResource
     @JsonProperty("clusterName")
     private String clusterName;
     @JsonProperty("clusterOverrides")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ClusterOverride> clusterOverrides = new ArrayList<ClusterOverride>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();

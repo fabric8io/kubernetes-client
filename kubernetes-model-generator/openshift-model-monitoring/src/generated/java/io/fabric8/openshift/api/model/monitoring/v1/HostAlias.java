@@ -62,6 +62,7 @@ public class HostAlias implements KubernetesResource
 {
 
     @JsonProperty("hostnames")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> hostnames = new ArrayList<String>();
     @JsonProperty("ip")
     private String ip;

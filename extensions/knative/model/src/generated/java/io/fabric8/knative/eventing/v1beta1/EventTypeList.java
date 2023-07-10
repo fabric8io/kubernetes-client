@@ -87,6 +87,7 @@ public class EventTypeList implements KubernetesResource, KubernetesResourceList
     @JsonProperty("apiVersion")
     private String apiVersion = "eventing.knative.dev/v1beta1";
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.knative.eventing.v1beta1.EventType> items = new ArrayList<io.fabric8.knative.eventing.v1beta1.EventType>();
     /**
      * 

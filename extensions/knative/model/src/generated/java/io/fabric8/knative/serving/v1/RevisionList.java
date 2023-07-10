@@ -87,6 +87,7 @@ public class RevisionList implements KubernetesResource, KubernetesResourceList<
     @JsonProperty("apiVersion")
     private String apiVersion = "serving.knative.dev/v1";
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.knative.serving.v1.Revision> items = new ArrayList<io.fabric8.knative.serving.v1.Revision>();
     /**
      * 

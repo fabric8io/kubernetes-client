@@ -70,6 +70,7 @@ public class AlertmanagerConfigSpec implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<MuteTimeInterval> muteTimeIntervals = new ArrayList<MuteTimeInterval>();
     @JsonProperty("receivers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Receiver> receivers = new ArrayList<Receiver>();
     @JsonProperty("route")
     private Route route;

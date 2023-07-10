@@ -70,6 +70,7 @@ public class TLSRouteSpec implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ParentReference> parentRefs = new ArrayList<ParentReference>();
     @JsonProperty("rules")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<TLSRouteRule> rules = new ArrayList<TLSRouteRule>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();

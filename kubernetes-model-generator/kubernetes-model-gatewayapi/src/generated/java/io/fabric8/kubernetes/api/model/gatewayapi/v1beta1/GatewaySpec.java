@@ -68,6 +68,7 @@ public class GatewaySpec implements KubernetesResource
     @JsonProperty("gatewayClassName")
     private String gatewayClassName;
     @JsonProperty("listeners")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Listener> listeners = new ArrayList<Listener>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();

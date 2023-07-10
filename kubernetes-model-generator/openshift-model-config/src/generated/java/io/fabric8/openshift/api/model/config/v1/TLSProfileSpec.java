@@ -62,6 +62,7 @@ public class TLSProfileSpec implements KubernetesResource
 {
 
     @JsonProperty("ciphers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> ciphers = new ArrayList<String>();
     @JsonProperty("minTLSVersion")
     private String minTLSVersion;

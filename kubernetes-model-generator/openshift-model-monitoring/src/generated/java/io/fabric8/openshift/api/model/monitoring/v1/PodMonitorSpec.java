@@ -82,6 +82,7 @@ public class PodMonitorSpec implements KubernetesResource
     @JsonProperty("namespaceSelector")
     private NamespaceSelector namespaceSelector;
     @JsonProperty("podMetricsEndpoints")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<PodMetricsEndpoint> podMetricsEndpoints = new ArrayList<PodMetricsEndpoint>();
     @JsonProperty("podTargetLabels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)

@@ -85,6 +85,7 @@ public class DeploymentConfigSpec implements KubernetesResource
     @JsonProperty("test")
     private Boolean test;
     @JsonProperty("triggers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<DeploymentTriggerPolicy> triggers = new ArrayList<DeploymentTriggerPolicy>();
     @JsonIgnore
     private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
