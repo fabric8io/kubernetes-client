@@ -110,5 +110,7 @@ public class AnnotatedSpec {
     public String getAbbreviation() {
       return abbreviation;
     }
+
+    public static AnnotatedEnum SIM = es;
   }
 }
