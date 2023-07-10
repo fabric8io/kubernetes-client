@@ -37,6 +37,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -823,5 +824,18 @@ class ConfigTest {
     assertThat(updatedConfig)
         .isSameAs(config)
         .hasFieldOrPropertyWithValue("oauthToken", "token-from-user");
+  }
+
+  @Test
+  void givenEmptyKubeConfig_whenConfigCreated_thenShouldNotProduceNPE() throws URISyntaxException {
+    // Given
+    System.setProperty(Config.KUBERNETES_KUBECONFIG_FILE,
+        new File(Objects.requireNonNull(getClass().getResource("/test-empty-kubeconfig")).toURI()).getAbsolutePath());
+
+    // When
+    Config config = new ConfigBuilder().build();
+
+    // Then
+    assertThat(config).isNotNull();
   }
 }

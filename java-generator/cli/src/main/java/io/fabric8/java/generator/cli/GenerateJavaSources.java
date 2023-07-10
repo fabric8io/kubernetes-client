@@ -67,6 +67,10 @@ public class GenerateJavaSources implements Runnable {
       "--package-overrides" }, description = "Apply the overrides to the package names", required = false)
   Map<String, String> packageOverrides = null;
 
+  @Option(names = { "-files-suffixes",
+      "--files-suffixes" }, description = "Filter the source files with the specific suffixes", required = false)
+  List<String> filesSuffixes = null;
+
   @Override
   public void run() {
     final Boolean noGeneratedAnnotations = (skipGeneratedAnnotations != null) ? skipGeneratedAnnotations : false;
@@ -74,7 +78,8 @@ public class GenerateJavaSources implements Runnable {
         uppercaseEnum,
         addExtraAnnotations,
         !noGeneratedAnnotations,
-        packageOverrides);
+        packageOverrides,
+        filesSuffixes);
 
     List<JavaGenerator> runners = new ArrayList<>();
 

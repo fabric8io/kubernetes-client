@@ -4,13 +4,17 @@
 
 #### Bugs
 * Fix #5298: Prevent requests needing authentication from causing a 403 response
+* Fix #5221: Empty kube config file causes NPE
 * Fix #5281: Ensure the KubernetesCrudDispatcher's backing map is accessed w/lock
+* Fix #5293: Ensured the mock server uses only generic or JsonNode parsing
 
 #### Improvements
 * Fix #5166: Remove opinionated messages from Config's `errorMessages` and deprecate it
 * Fix #5233: Generalized SchemaSwap to allow for cycle expansion
+* Fix #5287: Add an option to filter the files processed by the java-generator, based on a suffix allowlist
 
 #### Dependency Upgrade
+* Fix #5308: sundrio was updated to the latest version.  FluentImpl classes were removed, along with methods that had been previously deprecated.  Some seldom used builder methods dealing manipulating buildable fields as a subtype such as withXXXField were removed in favor of using more general methods such as withField.
 
 #### New Features
 * Fix #5133: Support for using TokenRequest for existing ServiceAccount
