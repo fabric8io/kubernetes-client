@@ -692,7 +692,6 @@ public abstract class AbstractJsonSchema<T, B> {
           if (def.isEnum()) {
             final JsonNode[] enumValues = def.getProperties().stream()
                 .filter(property -> property.isEnumConstant() && !property.isSynthetic() &&
-                    property.isStatic() && property.isPublic() &&
                     def.getFullyQualifiedName().equals(property.getTypeRef().toString()))
                 .map(this::extractUpdatedNameFromJacksonPropertyIfPresent)
                 .filter(n -> !n.startsWith("$"))
