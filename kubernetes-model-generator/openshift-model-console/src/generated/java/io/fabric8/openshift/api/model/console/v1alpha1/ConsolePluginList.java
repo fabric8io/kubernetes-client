@@ -79,6 +79,7 @@ public class ConsolePluginList implements KubernetesResource, KubernetesResource
     @JsonProperty("apiVersion")
     private String apiVersion = "console.openshift.io/v1alpha1";
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.openshift.api.model.console.v1alpha1.ConsolePlugin> items = new ArrayList<io.fabric8.openshift.api.model.console.v1alpha1.ConsolePlugin>();
     /**
      * 

@@ -79,6 +79,7 @@ public class ReferenceGrantList implements KubernetesResource, KubernetesResourc
     @JsonProperty("apiVersion")
     private String apiVersion = "gateway.networking.k8s.io/v1beta1";
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.ReferenceGrant> items = new ArrayList<io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.ReferenceGrant>();
     /**
      * 

@@ -70,6 +70,7 @@ public class UpstreamResolvers implements KubernetesResource
     @JsonProperty("transportConfig")
     private DNSTransportConfig transportConfig;
     @JsonProperty("upstreams")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Upstream> upstreams = new ArrayList<Upstream>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();

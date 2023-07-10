@@ -47,10 +47,12 @@ public class ExecConfig implements KubernetesResource
     @JsonProperty("apiVersion")
     private String apiVersion;
     @JsonProperty("args")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> args = new ArrayList<String>();
     @JsonProperty("command")
     private String command;
     @JsonProperty("env")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ExecEnvVar> env = new ArrayList<ExecEnvVar>();
     @JsonProperty("installHint")
     private String installHint;

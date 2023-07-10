@@ -79,6 +79,7 @@ public class GatewayList implements KubernetesResource, KubernetesResourceList<i
     @JsonProperty("apiVersion")
     private String apiVersion = "gateway.networking.k8s.io/v1alpha2";
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.Gateway> items = new ArrayList<io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.Gateway>();
     /**
      * 

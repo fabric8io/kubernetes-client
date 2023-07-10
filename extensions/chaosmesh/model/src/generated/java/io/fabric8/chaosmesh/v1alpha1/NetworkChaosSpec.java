@@ -99,6 +99,7 @@ public class NetworkChaosSpec implements KubernetesResource
     @JsonProperty("duration")
     private String duration;
     @JsonProperty("externalTargets")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<java.lang.String> externalTargets = new ArrayList<java.lang.String>();
     @JsonProperty("loss")
     private LossSpec loss;

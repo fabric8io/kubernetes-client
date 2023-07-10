@@ -61,6 +61,7 @@ public class PodFailurePolicy implements KubernetesResource
 {
 
     @JsonProperty("rules")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<PodFailurePolicyRule> rules = new ArrayList<PodFailurePolicyRule>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();

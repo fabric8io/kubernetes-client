@@ -79,6 +79,7 @@ public class SecurityContextConstraintsList implements KubernetesResource, Kuber
     @JsonProperty("apiVersion")
     private String apiVersion = "security.openshift.io/v1";
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.openshift.api.model.SecurityContextConstraints> items = new ArrayList<io.fabric8.openshift.api.model.SecurityContextConstraints>();
     /**
      * 

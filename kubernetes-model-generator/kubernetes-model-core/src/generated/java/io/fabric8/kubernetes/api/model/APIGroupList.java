@@ -56,6 +56,7 @@ public class APIGroupList implements KubernetesResource
     @JsonProperty("apiVersion")
     private String apiVersion = "v1";
     @JsonProperty("groups")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<APIGroup> groups = new ArrayList<APIGroup>();
     /**
      * 

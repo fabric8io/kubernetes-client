@@ -84,6 +84,7 @@ public class ManagedClusterStatus implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ManagedClusterClaim> clusterClaims = new ArrayList<ManagedClusterClaim>();
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Condition> conditions = new ArrayList<Condition>();
     @JsonProperty("version")
     private ManagedClusterVersion version;

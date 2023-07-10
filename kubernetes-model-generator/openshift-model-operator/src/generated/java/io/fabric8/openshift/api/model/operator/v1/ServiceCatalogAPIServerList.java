@@ -79,6 +79,7 @@ public class ServiceCatalogAPIServerList implements KubernetesResource, Kubernet
     @JsonProperty("apiVersion")
     private String apiVersion = "operator.openshift.io/v1";
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.openshift.api.model.operator.v1.ServiceCatalogAPIServer> items = new ArrayList<io.fabric8.openshift.api.model.operator.v1.ServiceCatalogAPIServer>();
     /**
      * 

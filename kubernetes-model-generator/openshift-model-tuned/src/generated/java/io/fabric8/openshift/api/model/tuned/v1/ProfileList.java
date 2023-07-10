@@ -79,6 +79,7 @@ public class ProfileList implements KubernetesResource, KubernetesResourceList<i
     @JsonProperty("apiVersion")
     private String apiVersion = "tuned.openshift.io/v1";
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.openshift.api.model.tuned.v1.Profile> items = new ArrayList<io.fabric8.openshift.api.model.tuned.v1.Profile>();
     /**
      * 

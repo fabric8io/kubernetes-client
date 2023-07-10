@@ -79,6 +79,7 @@ public class SyncSetList implements KubernetesResource, KubernetesResourceList<i
     @JsonProperty("apiVersion")
     private String apiVersion = "hive.openshift.io/v1";
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.openshift.api.model.hive.v1.SyncSet> items = new ArrayList<io.fabric8.openshift.api.model.hive.v1.SyncSet>();
     /**
      * 

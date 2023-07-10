@@ -68,6 +68,7 @@ public class MachineConfigPoolStatus implements KubernetesResource
 {
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<MachineConfigPoolCondition> conditions = new ArrayList<MachineConfigPoolCondition>();
     @JsonProperty("configuration")
     private MachineConfigPoolStatusConfiguration configuration;

@@ -79,6 +79,7 @@ public class ServiceMonitorList implements KubernetesResource, KubernetesResourc
     @JsonProperty("apiVersion")
     private String apiVersion = "monitoring.coreos.com/v1";
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.openshift.api.model.monitoring.v1.ServiceMonitor> items = new ArrayList<io.fabric8.openshift.api.model.monitoring.v1.ServiceMonitor>();
     /**
      * 

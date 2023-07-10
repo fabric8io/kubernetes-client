@@ -63,8 +63,10 @@ public class FeatureGateDetails implements KubernetesResource
 {
 
     @JsonProperty("disabled")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<FeatureGateAttributes> disabled = new ArrayList<FeatureGateAttributes>();
     @JsonProperty("enabled")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<FeatureGateAttributes> enabled = new ArrayList<FeatureGateAttributes>();
     @JsonProperty("version")
     private String version;

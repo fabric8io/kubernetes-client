@@ -67,6 +67,7 @@ public class PodFailurePolicyOnExitCodesRequirement implements KubernetesResourc
     @JsonProperty("operator")
     private String operator;
     @JsonProperty("values")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Integer> values = new ArrayList<Integer>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();

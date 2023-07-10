@@ -64,6 +64,7 @@ public class NutanixPlatformSpec implements KubernetesResource
     @JsonProperty("prismCentral")
     private NutanixPrismEndpoint prismCentral;
     @JsonProperty("prismElements")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<NutanixPrismElementEndpoint> prismElements = new ArrayList<NutanixPrismElementEndpoint>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();

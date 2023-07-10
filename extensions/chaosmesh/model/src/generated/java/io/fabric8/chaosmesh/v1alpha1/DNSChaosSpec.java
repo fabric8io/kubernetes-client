@@ -77,12 +77,14 @@ public class DNSChaosSpec implements KubernetesResource
     @JsonProperty("action")
     private java.lang.String action;
     @JsonProperty("containerNames")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<java.lang.String> containerNames = new ArrayList<java.lang.String>();
     @JsonProperty("duration")
     private String duration;
     @JsonProperty("mode")
     private java.lang.String mode;
     @JsonProperty("patterns")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<java.lang.String> patterns = new ArrayList<java.lang.String>();
     @JsonProperty("selector")
     private PodSelectorSpec selector;

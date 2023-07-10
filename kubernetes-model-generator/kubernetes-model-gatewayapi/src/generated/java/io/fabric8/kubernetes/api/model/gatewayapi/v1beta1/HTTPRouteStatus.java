@@ -61,6 +61,7 @@ public class HTTPRouteStatus implements KubernetesResource
 {
 
     @JsonProperty("parents")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<RouteParentStatus> parents = new ArrayList<RouteParentStatus>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();

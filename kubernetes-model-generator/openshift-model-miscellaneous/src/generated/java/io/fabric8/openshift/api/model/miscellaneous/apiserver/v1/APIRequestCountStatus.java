@@ -66,10 +66,12 @@ public class APIRequestCountStatus implements KubernetesResource
 {
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Condition> conditions = new ArrayList<Condition>();
     @JsonProperty("currentHour")
     private PerResourceAPIRequestLog currentHour;
     @JsonProperty("last24h")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<PerResourceAPIRequestLog> last24h = new ArrayList<PerResourceAPIRequestLog>();
     @JsonProperty("removedInRelease")
     private String removedInRelease;

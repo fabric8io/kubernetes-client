@@ -87,6 +87,7 @@ public class GitHubSourceList implements KubernetesResource, KubernetesResourceL
     @JsonProperty("apiVersion")
     private String apiVersion = "sources.knative.dev/v1alpha1";
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.knative.eventing.contrib.github.v1alpha1.GitHubSource> items = new ArrayList<io.fabric8.knative.eventing.contrib.github.v1alpha1.GitHubSource>();
     /**
      * 

@@ -64,6 +64,7 @@ public class PerUserAPIRequestCount implements KubernetesResource
 {
 
     @JsonProperty("byVerb")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<PerVerbAPIRequestCount> byVerb = new ArrayList<PerVerbAPIRequestCount>();
     @JsonProperty("requestCount")
     private Long requestCount;

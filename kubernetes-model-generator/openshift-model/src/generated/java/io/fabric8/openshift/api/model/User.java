@@ -80,6 +80,7 @@ public class User implements HasMetadata
     @JsonProperty("fullName")
     private String fullName;
     @JsonProperty("groups")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> groups = new ArrayList<String>();
     @JsonProperty("identities")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)

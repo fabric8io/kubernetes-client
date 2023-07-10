@@ -72,6 +72,7 @@ public class ServiceBrokerStatus implements KubernetesResource
 {
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ServiceBrokerCondition> conditions = new ArrayList<ServiceBrokerCondition>();
     @JsonProperty("lastCatalogRetrievalTime")
     private String lastCatalogRetrievalTime;

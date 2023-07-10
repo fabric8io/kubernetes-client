@@ -87,6 +87,7 @@ public class TriggerList implements KubernetesResource, KubernetesResourceList<i
     @JsonProperty("apiVersion")
     private String apiVersion = "triggers.tekton.dev/v1alpha1";
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.tekton.triggers.v1alpha1.Trigger> items = new ArrayList<io.fabric8.tekton.triggers.v1alpha1.Trigger>();
     /**
      * 

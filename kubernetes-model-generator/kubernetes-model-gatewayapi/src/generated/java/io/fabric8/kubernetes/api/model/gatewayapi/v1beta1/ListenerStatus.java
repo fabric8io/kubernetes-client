@@ -67,10 +67,12 @@ public class ListenerStatus implements KubernetesResource
     @JsonProperty("attachedRoutes")
     private Integer attachedRoutes;
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Condition> conditions = new ArrayList<Condition>();
     @JsonProperty("name")
     private String name;
     @JsonProperty("supportedKinds")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<RouteGroupKind> supportedKinds = new ArrayList<RouteGroupKind>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();

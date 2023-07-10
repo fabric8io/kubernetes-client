@@ -79,6 +79,7 @@ public class ValidatingWebhookConfigurationList implements KubernetesResource, K
     @JsonProperty("apiVersion")
     private String apiVersion = "admissionregistration.k8s.io/v1beta1";
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.ValidatingWebhookConfiguration> items = new ArrayList<io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.ValidatingWebhookConfiguration>();
     /**
      * 

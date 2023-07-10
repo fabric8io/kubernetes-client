@@ -62,6 +62,7 @@ public class APIResourceList implements KubernetesResource
     @JsonProperty("kind")
     private String kind = "APIResourceList";
     @JsonProperty("resources")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<APIResource> resources = new ArrayList<APIResource>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();

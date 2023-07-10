@@ -87,6 +87,7 @@ public class ApplicationList implements KubernetesResource, KubernetesResourceLi
     @JsonProperty("apiVersion")
     private String apiVersion = "app.k8s.io/v1beta1";
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.openclustermanagement.api.model.app.k8s.v1beta1.Application> items = new ArrayList<io.fabric8.openclustermanagement.api.model.app.k8s.v1beta1.Application>();
     /**
      * 

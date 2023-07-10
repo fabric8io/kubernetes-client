@@ -65,14 +65,18 @@ public class ResourcePolicyRule implements KubernetesResource
 {
 
     @JsonProperty("apiGroups")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> apiGroups = new ArrayList<String>();
     @JsonProperty("clusterScope")
     private Boolean clusterScope;
     @JsonProperty("namespaces")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> namespaces = new ArrayList<String>();
     @JsonProperty("resources")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> resources = new ArrayList<String>();
     @JsonProperty("verbs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> verbs = new ArrayList<String>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();

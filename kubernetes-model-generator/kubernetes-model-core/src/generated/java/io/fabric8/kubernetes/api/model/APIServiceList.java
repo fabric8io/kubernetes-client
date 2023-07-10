@@ -56,6 +56,7 @@ public class APIServiceList implements KubernetesResource, KubernetesResourceLis
     @JsonProperty("apiVersion")
     private String apiVersion = "apiregistration.k8s.io/v1";
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.kubernetes.api.model.APIService> items = new ArrayList<io.fabric8.kubernetes.api.model.APIService>();
     /**
      * 

@@ -75,14 +75,18 @@ public class RequestHeaderIdentityProvider implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> clientCommonNames = new ArrayList<String>();
     @JsonProperty("emailHeaders")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> emailHeaders = new ArrayList<String>();
     @JsonProperty("headers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> headers = new ArrayList<String>();
     @JsonProperty("loginURL")
     private String loginURL;
     @JsonProperty("nameHeaders")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> nameHeaders = new ArrayList<String>();
     @JsonProperty("preferredUsernameHeaders")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> preferredUsernameHeaders = new ArrayList<String>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();

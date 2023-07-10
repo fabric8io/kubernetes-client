@@ -61,6 +61,7 @@ public class AlertingSpec implements KubernetesResource
 {
 
     @JsonProperty("alertmanagers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<AlertmanagerEndpoints> alertmanagers = new ArrayList<AlertmanagerEndpoints>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();

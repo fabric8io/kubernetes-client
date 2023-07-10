@@ -79,6 +79,7 @@ public class PackageManifestList implements KubernetesResource, KubernetesResour
     @JsonProperty("apiVersion")
     private String apiVersion = "packages.operators.coreos.com/v1";
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.openshift.api.model.operatorhub.lifecyclemanager.v1.PackageManifest> items = new ArrayList<io.fabric8.openshift.api.model.operatorhub.lifecyclemanager.v1.PackageManifest>();
     /**
      * 

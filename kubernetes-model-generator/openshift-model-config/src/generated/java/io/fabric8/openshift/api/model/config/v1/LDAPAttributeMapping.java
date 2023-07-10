@@ -67,6 +67,7 @@ public class LDAPAttributeMapping implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> email = new ArrayList<String>();
     @JsonProperty("id")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> id = new ArrayList<String>();
     @JsonProperty("name")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)

@@ -87,6 +87,7 @@ public class ServicePlanList implements KubernetesResource, KubernetesResourceLi
     @JsonProperty("apiVersion")
     private String apiVersion = "servicecatalog.k8s.io/v1beta1";
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.servicecatalog.api.model.ServicePlan> items = new ArrayList<io.fabric8.servicecatalog.api.model.ServicePlan>();
     /**
      * 

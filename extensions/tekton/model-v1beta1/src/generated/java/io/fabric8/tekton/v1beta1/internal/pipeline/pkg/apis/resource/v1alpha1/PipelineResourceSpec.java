@@ -74,6 +74,7 @@ public class PipelineResourceSpec implements KubernetesResource
     @JsonProperty("description")
     private String description;
     @JsonProperty("params")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ResourceParam> params = new ArrayList<ResourceParam>();
     @JsonProperty("secrets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)

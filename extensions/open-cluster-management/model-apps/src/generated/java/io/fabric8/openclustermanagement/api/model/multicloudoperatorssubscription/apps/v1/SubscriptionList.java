@@ -87,6 +87,7 @@ public class SubscriptionList implements KubernetesResource, KubernetesResourceL
     @JsonProperty("apiVersion")
     private String apiVersion = "apps.open-cluster-management.io/v1";
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.v1.Subscription> items = new ArrayList<io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.v1.Subscription>();
     /**
      * 

@@ -98,6 +98,7 @@ public class Platform implements KubernetesResource
     @JsonProperty("defaultMachinePlatform")
     private MachinePool defaultMachinePlatform;
     @JsonProperty("externalDNS")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<java.lang.String> externalDNS = new ArrayList<java.lang.String>();
     @JsonProperty("externalNetwork")
     private java.lang.String externalNetwork;

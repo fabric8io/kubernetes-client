@@ -87,6 +87,7 @@ public class CertificateRequestList implements KubernetesResource, KubernetesRes
     @JsonProperty("apiVersion")
     private String apiVersion = "cert-manager.io/v1beta1";
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.certmanager.api.model.v1beta1.CertificateRequest> items = new ArrayList<io.fabric8.certmanager.api.model.v1beta1.CertificateRequest>();
     /**
      * 

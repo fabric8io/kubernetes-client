@@ -78,6 +78,7 @@ public class ClusterRoleBinding implements HasMetadata
     @JsonProperty("apiVersion")
     private String apiVersion = "authorization.openshift.io/v1";
     @JsonProperty("groupNames")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> groupNames = new ArrayList<String>();
     /**
      * 
@@ -91,8 +92,10 @@ public class ClusterRoleBinding implements HasMetadata
     @JsonProperty("roleRef")
     private io.fabric8.kubernetes.api.model.ObjectReference roleRef;
     @JsonProperty("subjects")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.kubernetes.api.model.ObjectReference> subjects = new ArrayList<io.fabric8.kubernetes.api.model.ObjectReference>();
     @JsonProperty("userNames")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> userNames = new ArrayList<String>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();

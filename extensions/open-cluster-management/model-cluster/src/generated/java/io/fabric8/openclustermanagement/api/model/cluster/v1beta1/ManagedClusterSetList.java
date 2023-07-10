@@ -87,6 +87,7 @@ public class ManagedClusterSetList implements KubernetesResource, KubernetesReso
     @JsonProperty("apiVersion")
     private String apiVersion = "cluster.open-cluster-management.io/v1beta1";
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.openclustermanagement.api.model.cluster.v1beta1.ManagedClusterSet> items = new ArrayList<io.fabric8.openclustermanagement.api.model.cluster.v1beta1.ManagedClusterSet>();
     /**
      * 

@@ -71,6 +71,7 @@ public class MachineHealthCheckSpec implements KubernetesResource
     @JsonProperty("selector")
     private io.fabric8.kubernetes.api.model.LabelSelector selector;
     @JsonProperty("unhealthyConditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<UnhealthyCondition> unhealthyConditions = new ArrayList<UnhealthyCondition>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();

@@ -79,6 +79,7 @@ public class MachineHealthCheckList implements KubernetesResource, KubernetesRes
     @JsonProperty("apiVersion")
     private String apiVersion = "machine.openshift.io/v1beta1";
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.openshift.api.model.machine.v1beta1.MachineHealthCheck> items = new ArrayList<io.fabric8.openshift.api.model.machine.v1beta1.MachineHealthCheck>();
     /**
      * 

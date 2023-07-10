@@ -68,6 +68,7 @@ public class ManageDNSConfig implements KubernetesResource
     @JsonProperty("azure")
     private ManageDNSAzureConfig azure;
     @JsonProperty("domains")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> domains = new ArrayList<String>();
     @JsonProperty("gcp")
     private ManageDNSGCPConfig gcp;

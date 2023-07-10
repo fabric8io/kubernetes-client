@@ -87,6 +87,7 @@ public class PolicyList implements KubernetesResource, KubernetesResourceList<io
     @JsonProperty("apiVersion")
     private String apiVersion = "policy.open-cluster-management.io/v1";
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1.Policy> items = new ArrayList<io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1.Policy>();
     /**
      * 

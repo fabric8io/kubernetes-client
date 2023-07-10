@@ -68,6 +68,7 @@ public class ConversionResponse implements KubernetesResource
 {
 
     @JsonProperty("convertedObjects")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<KubernetesResource> convertedObjects = new ArrayList<KubernetesResource>();
     @JsonProperty("result")
     private Status result;

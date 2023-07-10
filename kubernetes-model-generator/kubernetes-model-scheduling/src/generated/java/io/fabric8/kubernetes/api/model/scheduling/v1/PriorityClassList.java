@@ -79,6 +79,7 @@ public class PriorityClassList implements KubernetesResource, KubernetesResource
     @JsonProperty("apiVersion")
     private String apiVersion = "scheduling.k8s.io/v1";
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.kubernetes.api.model.scheduling.v1.PriorityClass> items = new ArrayList<io.fabric8.kubernetes.api.model.scheduling.v1.PriorityClass>();
     /**
      * 

@@ -82,6 +82,7 @@ public class ClusterNetwork implements HasMetadata
     @JsonProperty("apiVersion")
     private String apiVersion = "network.openshift.io/v1";
     @JsonProperty("clusterNetworks")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ClusterNetworkEntry> clusterNetworks = new ArrayList<ClusterNetworkEntry>();
     @JsonProperty("hostsubnetlength")
     private Integer hostsubnetlength;

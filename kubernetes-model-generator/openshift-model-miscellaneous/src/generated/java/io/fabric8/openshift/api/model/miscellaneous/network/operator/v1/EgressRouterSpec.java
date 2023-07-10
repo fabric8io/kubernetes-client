@@ -64,6 +64,7 @@ public class EgressRouterSpec implements KubernetesResource
 {
 
     @JsonProperty("addresses")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<EgressRouterAddress> addresses = new ArrayList<EgressRouterAddress>();
     @JsonProperty("mode")
     private String mode;

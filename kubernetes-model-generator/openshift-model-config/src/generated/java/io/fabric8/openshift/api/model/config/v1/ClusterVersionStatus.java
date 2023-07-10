@@ -68,6 +68,7 @@ public class ClusterVersionStatus implements KubernetesResource
 {
 
     @JsonProperty("availableUpdates")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Release> availableUpdates = new ArrayList<Release>();
     @JsonProperty("capabilities")
     private ClusterVersionCapabilitiesStatus capabilities;

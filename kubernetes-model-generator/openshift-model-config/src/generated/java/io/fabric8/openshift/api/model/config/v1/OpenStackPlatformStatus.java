@@ -69,12 +69,14 @@ public class OpenStackPlatformStatus implements KubernetesResource
     @JsonProperty("apiServerInternalIP")
     private String apiServerInternalIP;
     @JsonProperty("apiServerInternalIPs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> apiServerInternalIPs = new ArrayList<String>();
     @JsonProperty("cloudName")
     private String cloudName;
     @JsonProperty("ingressIP")
     private String ingressIP;
     @JsonProperty("ingressIPs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> ingressIPs = new ArrayList<String>();
     @JsonProperty("loadBalancer")
     private OpenStackPlatformLoadBalancer loadBalancer;

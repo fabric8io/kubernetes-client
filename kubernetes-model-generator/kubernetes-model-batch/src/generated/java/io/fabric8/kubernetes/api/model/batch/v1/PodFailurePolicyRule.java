@@ -67,6 +67,7 @@ public class PodFailurePolicyRule implements KubernetesResource
     @JsonProperty("onExitCodes")
     private PodFailurePolicyOnExitCodesRequirement onExitCodes;
     @JsonProperty("onPodConditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<PodFailurePolicyOnPodConditionsPattern> onPodConditions = new ArrayList<PodFailurePolicyOnPodConditionsPattern>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();

@@ -40,6 +40,7 @@ public class LimitRangeSpec implements KubernetesResource
 {
 
     @JsonProperty("limits")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<LimitRangeItem> limits = new ArrayList<LimitRangeItem>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();

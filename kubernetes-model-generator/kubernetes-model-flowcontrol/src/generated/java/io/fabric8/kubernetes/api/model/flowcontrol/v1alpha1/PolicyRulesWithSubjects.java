@@ -69,6 +69,7 @@ public class PolicyRulesWithSubjects implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ResourcePolicyRule> resourceRules = new ArrayList<ResourcePolicyRule>();
     @JsonProperty("subjects")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Subject> subjects = new ArrayList<Subject>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();

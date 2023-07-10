@@ -77,6 +77,7 @@ public class PodChaosSpec implements KubernetesResource
     @JsonProperty("action")
     private java.lang.String action;
     @JsonProperty("containerNames")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<java.lang.String> containerNames = new ArrayList<java.lang.String>();
     @JsonProperty("duration")
     private String duration;

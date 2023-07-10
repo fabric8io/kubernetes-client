@@ -87,6 +87,7 @@ public class PodGroupList implements KubernetesResource, KubernetesResourceList<
     @JsonProperty("apiVersion")
     private String apiVersion = "scheduling.volcano.sh/v1beta1";
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.volcano.scheduling.v1beta1.PodGroup> items = new ArrayList<io.fabric8.volcano.scheduling.v1beta1.PodGroup>();
     /**
      * 

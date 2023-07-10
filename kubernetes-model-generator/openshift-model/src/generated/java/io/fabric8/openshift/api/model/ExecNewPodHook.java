@@ -65,6 +65,7 @@ public class ExecNewPodHook implements KubernetesResource
 {
 
     @JsonProperty("command")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> command = new ArrayList<String>();
     @JsonProperty("containerName")
     private String containerName;

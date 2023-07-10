@@ -87,6 +87,7 @@ public class GitOpsClusterList implements KubernetesResource, KubernetesResource
     @JsonProperty("apiVersion")
     private String apiVersion = "apps.open-cluster-management.io/v1beta1";
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.openclustermanagement.api.model.multicloudintegration.apps.v1beta1.GitOpsCluster> items = new ArrayList<io.fabric8.openclustermanagement.api.model.multicloudintegration.apps.v1beta1.GitOpsCluster>();
     /**
      * 

@@ -45,6 +45,7 @@ public class CephFSPersistentVolumeSource implements KubernetesResource
 {
 
     @JsonProperty("monitors")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> monitors = new ArrayList<String>();
     @JsonProperty("path")
     private String path;

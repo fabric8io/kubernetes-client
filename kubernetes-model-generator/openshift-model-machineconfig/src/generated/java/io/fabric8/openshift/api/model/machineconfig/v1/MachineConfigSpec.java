@@ -69,10 +69,12 @@ public class MachineConfigSpec implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, Object> config = new LinkedHashMap<String, Object>();
     @JsonProperty("extensions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<java.lang.String> extensions = new ArrayList<java.lang.String>();
     @JsonProperty("fips")
     private Boolean fips;
     @JsonProperty("kernelArguments")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<java.lang.String> kernelArguments = new ArrayList<java.lang.String>();
     @JsonProperty("kernelType")
     private java.lang.String kernelType;

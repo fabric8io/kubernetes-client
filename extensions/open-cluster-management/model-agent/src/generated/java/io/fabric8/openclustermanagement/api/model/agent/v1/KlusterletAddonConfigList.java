@@ -87,6 +87,7 @@ public class KlusterletAddonConfigList implements KubernetesResource, Kubernetes
     @JsonProperty("apiVersion")
     private String apiVersion = "agent.open-cluster-management.io/v1";
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.openclustermanagement.api.model.agent.v1.KlusterletAddonConfig> items = new ArrayList<io.fabric8.openclustermanagement.api.model.agent.v1.KlusterletAddonConfig>();
     /**
      * 

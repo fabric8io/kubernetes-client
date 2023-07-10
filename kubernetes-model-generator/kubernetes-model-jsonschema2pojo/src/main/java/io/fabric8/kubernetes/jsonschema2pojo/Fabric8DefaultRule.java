@@ -27,6 +27,7 @@ import org.jsonschema2pojo.rules.DefaultRule;
 import org.jsonschema2pojo.rules.RuleFactory;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -46,16 +47,24 @@ public class Fabric8DefaultRule extends DefaultRule {
     JType fieldType = field.type();
     String fieldTypeName = fieldType.fullName();
 
-    if (ruleFactory.getGenerationConfig().isInitializeCollections() && fieldTypeName.startsWith(Map.class.getName())
-        && (node == null || node.asText() == null || node.asText().isEmpty())) {
-      JClass keyGenericType = ((JClass) fieldType).getTypeParameters().get(0);
-      JClass valueGenericType = ((JClass) fieldType).getTypeParameters().get(1);
+    if (ruleFactory.getGenerationConfig().isInitializeCollections()) {
+      // add a default for maps if missing, rejected upstream https://github.com/joelittlejohn/jsonschema2pojo/issues/955
+      if (fieldTypeName.startsWith(Map.class.getName()) && (node == null || node.asText() == null || node.asText().isEmpty())) {
+        JClass keyGenericType = ((JClass) fieldType).getTypeParameters().get(0);
+        JClass valueGenericType = ((JClass) fieldType).getTypeParameters().get(1);
 
-      JClass mapImplClass = fieldType.owner().ref(LinkedHashMap.class);
-      mapImplClass = mapImplClass.narrow(keyGenericType, valueGenericType);
-      // maps are not marked as omitJavaEmpty - it's simplest to just add the annotation here, rather than updating the generator
-      field.annotate(JsonInclude.class).param(KubernetesCoreTypeAnnotator.ANNOTATION_VALUE, JsonInclude.Include.NON_EMPTY);
-      field.init(JExpr._new(mapImplClass));
+        JClass mapImplClass = fieldType.owner().ref(LinkedHashMap.class);
+        mapImplClass = mapImplClass.narrow(keyGenericType, valueGenericType);
+        field.init(JExpr._new(mapImplClass));
+      }
+
+      // maps and some lists are not marked as omitJavaEmpty - it's simplest to just add the annotation here, rather than updating the generator
+      JClass jsonInclude = fieldType.owner().ref(JsonInclude.class);
+      if ((fieldTypeName.startsWith(Map.class.getName()) || fieldTypeName.startsWith(List.class.getName()))
+          && field.annotations().stream()
+              .noneMatch(annotation -> annotation.getAnnotationClass().isAssignableFrom(jsonInclude))) {
+        field.annotate(jsonInclude).param(KubernetesCoreTypeAnnotator.ANNOTATION_VALUE, JsonInclude.Include.NON_EMPTY);
+      }
     }
 
     return super.apply(nodeName, node, parent, field, currentSchema);

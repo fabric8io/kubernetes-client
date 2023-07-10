@@ -62,6 +62,7 @@ public class DeploymentDetails implements KubernetesResource
 {
 
     @JsonProperty("causes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<DeploymentCause> causes = new ArrayList<DeploymentCause>();
     @JsonProperty("message")
     private String message;

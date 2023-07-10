@@ -82,6 +82,7 @@ public class ComponentRouteStatus implements KubernetesResource
     @JsonProperty("namespace")
     private String namespace;
     @JsonProperty("relatedObjects")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.openshift.api.model.config.v1.ObjectReference> relatedObjects = new ArrayList<io.fabric8.openshift.api.model.config.v1.ObjectReference>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();

@@ -72,6 +72,7 @@ public class Platform implements KubernetesResource
 {
 
     @JsonProperty("affinityGroups")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<AffinityGroup> affinityGroups = new ArrayList<AffinityGroup>();
     @JsonProperty("api_vip")
     private String apiVip;

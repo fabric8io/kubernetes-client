@@ -64,6 +64,7 @@ public class ConditionalUpdateRisk implements KubernetesResource
 {
 
     @JsonProperty("matchingRules")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ClusterCondition> matchingRules = new ArrayList<ClusterCondition>();
     @JsonProperty("message")
     private String message;

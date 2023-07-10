@@ -40,6 +40,7 @@ public class NodeSelector implements KubernetesResource
 {
 
     @JsonProperty("nodeSelectorTerms")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<NodeSelectorTerm> nodeSelectorTerms = new ArrayList<NodeSelectorTerm>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();

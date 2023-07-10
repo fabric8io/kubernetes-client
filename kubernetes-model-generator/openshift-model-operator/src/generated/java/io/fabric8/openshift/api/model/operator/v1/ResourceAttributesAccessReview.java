@@ -63,8 +63,10 @@ public class ResourceAttributesAccessReview implements KubernetesResource
 {
 
     @JsonProperty("missing")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ResourceAttributes> missing = new ArrayList<ResourceAttributes>();
     @JsonProperty("required")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ResourceAttributes> required = new ArrayList<ResourceAttributes>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();

@@ -79,6 +79,7 @@ public class StorageVersionList implements KubernetesResource, KubernetesResourc
     @JsonProperty("apiVersion")
     private String apiVersion = "internal.apiserver.k8s.io/v1alpha1";
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.kubernetes.api.model.internal.apiserver.v1alpha1.StorageVersion> items = new ArrayList<io.fabric8.kubernetes.api.model.internal.apiserver.v1alpha1.StorageVersion>();
     /**
      * 

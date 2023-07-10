@@ -74,6 +74,7 @@ public class WebhookDescription implements KubernetesResource
 {
 
     @JsonProperty("admissionReviewVersions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> admissionReviewVersions = new ArrayList<String>();
     @JsonProperty("containerPort")
     private Integer containerPort;

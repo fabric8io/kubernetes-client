@@ -67,10 +67,12 @@ public class NutanixPlatformStatus implements KubernetesResource
     @JsonProperty("apiServerInternalIP")
     private String apiServerInternalIP;
     @JsonProperty("apiServerInternalIPs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> apiServerInternalIPs = new ArrayList<String>();
     @JsonProperty("ingressIP")
     private String ingressIP;
     @JsonProperty("ingressIPs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> ingressIPs = new ArrayList<String>();
     @JsonProperty("loadBalancer")
     private NutanixPlatformLoadBalancer loadBalancer;

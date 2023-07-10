@@ -61,6 +61,7 @@ public class HTTPIngressRuleValue implements KubernetesResource
 {
 
     @JsonProperty("paths")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<HTTPIngressPath> paths = new ArrayList<HTTPIngressPath>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();

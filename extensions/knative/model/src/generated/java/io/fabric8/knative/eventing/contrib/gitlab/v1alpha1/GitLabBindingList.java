@@ -87,6 +87,7 @@ public class GitLabBindingList implements KubernetesResource, KubernetesResource
     @JsonProperty("apiVersion")
     private String apiVersion = "bindings.knative.dev/v1alpha1";
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.knative.eventing.contrib.gitlab.v1alpha1.GitLabBinding> items = new ArrayList<io.fabric8.knative.eventing.contrib.gitlab.v1alpha1.GitLabBinding>();
     /**
      * 

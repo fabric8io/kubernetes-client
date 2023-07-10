@@ -42,8 +42,10 @@ public class LegacySortOptions implements KubernetesResource
 {
 
     @JsonProperty("orderFirst")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> orderFirst = new ArrayList<String>();
     @JsonProperty("orderLast")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> orderLast = new ArrayList<String>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();

@@ -65,6 +65,7 @@ public class FailureDomain implements KubernetesResource
     @JsonProperty("computeAvailabilityZone")
     private String computeAvailabilityZone;
     @JsonProperty("portTargets")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<NamedPortTarget> portTargets = new ArrayList<NamedPortTarget>();
     @JsonProperty("storageAvailabilityZone")
     private String storageAvailabilityZone;

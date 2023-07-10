@@ -61,6 +61,7 @@ public class EgressNetworkPolicySpec implements KubernetesResource
 {
 
     @JsonProperty("egress")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<EgressNetworkPolicyRule> egress = new ArrayList<EgressNetworkPolicyRule>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();

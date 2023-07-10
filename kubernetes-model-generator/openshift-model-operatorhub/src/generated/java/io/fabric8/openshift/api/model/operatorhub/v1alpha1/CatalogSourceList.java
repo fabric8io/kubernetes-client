@@ -79,6 +79,7 @@ public class CatalogSourceList implements KubernetesResource, KubernetesResource
     @JsonProperty("apiVersion")
     private String apiVersion = "operators.coreos.com/v1alpha1";
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.openshift.api.model.operatorhub.v1alpha1.CatalogSource> items = new ArrayList<io.fabric8.openshift.api.model.operatorhub.v1alpha1.CatalogSource>();
     /**
      * 

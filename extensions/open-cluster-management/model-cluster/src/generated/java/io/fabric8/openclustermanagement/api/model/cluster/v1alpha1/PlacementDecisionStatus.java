@@ -69,6 +69,7 @@ public class PlacementDecisionStatus implements KubernetesResource
 {
 
     @JsonProperty("decisions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ClusterDecision> decisions = new ArrayList<ClusterDecision>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();

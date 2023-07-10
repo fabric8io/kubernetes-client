@@ -64,6 +64,7 @@ public class SubjectRulesReviewStatus implements KubernetesResource
     @JsonProperty("evaluationError")
     private String evaluationError;
     @JsonProperty("rules")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<PolicyRule> rules = new ArrayList<PolicyRule>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();

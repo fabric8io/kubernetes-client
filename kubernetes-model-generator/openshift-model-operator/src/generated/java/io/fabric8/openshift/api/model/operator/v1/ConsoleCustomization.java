@@ -82,6 +82,7 @@ public class ConsoleCustomization implements KubernetesResource
     @JsonProperty("documentationBaseURL")
     private String documentationBaseURL;
     @JsonProperty("perspectives")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Perspective> perspectives = new ArrayList<Perspective>();
     @JsonProperty("projectAccess")
     private ProjectAccess projectAccess;

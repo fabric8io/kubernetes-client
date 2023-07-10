@@ -71,6 +71,7 @@ public class MachinePool implements KubernetesResource
 {
 
     @JsonProperty("affinityGroupsNames")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> affinityGroupsNames = new ArrayList<String>();
     @JsonProperty("autoPinningPolicy")
     private String autoPinningPolicy;
