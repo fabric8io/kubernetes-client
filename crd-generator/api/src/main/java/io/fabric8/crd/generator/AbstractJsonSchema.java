@@ -45,6 +45,7 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
@@ -584,7 +585,7 @@ public abstract class AbstractJsonSchema<T, B> {
         .anyMatch(a -> a.getClassRef().getFullyQualifiedName().equals(ANNOTATION_JSON_IGNORE));
 
     if (ignored) {
-      return "$" + property.getName();
+      return null;
     } else {
       return property.getAnnotations().stream()
           // only consider JsonProperty annotation
@@ -691,9 +692,9 @@ public abstract class AbstractJsonSchema<T, B> {
           // check if we're dealing with an enum
           if (def.isEnum()) {
             final JsonNode[] enumValues = def.getProperties().stream()
-                .filter(property -> property.isEnumConstant() && !property.isSynthetic())
+                .filter(Property::isEnumConstant)
                 .map(this::extractUpdatedNameFromJacksonPropertyIfPresent)
-                .filter(n -> !n.startsWith("$"))
+                .filter(Objects::nonNull)
                 .map(JsonNodeFactory.instance::textNode)
                 .toArray(JsonNode[]::new);
             return enumProperty(enumValues);
