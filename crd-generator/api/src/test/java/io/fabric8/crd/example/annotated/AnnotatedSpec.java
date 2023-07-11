@@ -112,5 +112,19 @@ public class AnnotatedSpec {
     }
 
     public static AnnotatedEnum SIM = es;
+
+    public AnotherEnum one = AnotherEnum.ONE;
+
+    public AnotherEnum getOne() {
+      return one;
+    }
+
+    public void setOne(AnotherEnum one) {
+      this.one = one;
+    }
+  }
+
+  public enum AnotherEnum {
+    ONE
   }
 }
