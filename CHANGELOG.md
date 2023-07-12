@@ -8,6 +8,7 @@
 * Fix #5281: Ensure the KubernetesCrudDispatcher's backing map is accessed w/lock
 * Fix #5293: Ensured the mock server uses only generic or JsonNode parsing
 * Fix #4225: [crd-generator] Principled generation of enum values instead of considering more properties
+* Fix #5327: Ensured that the informer reconnect task terminates after client close
 
 #### Improvements
 * Fix #5166: Remove opinionated messages from Config's `errorMessages` and deprecate it

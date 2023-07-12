@@ -30,8 +30,12 @@ import org.mockito.exceptions.verification.TooFewActualInvocations;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
+import java.util.concurrent.Executor;
+import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -134,7 +138,13 @@ class ReflectorTest {
     PodList list = new PodListBuilder().withNewMetadata().withResourceVersion("1").endMetadata().build();
     Mockito.when(mock.submitList(Mockito.any())).thenReturn(CompletableFuture.completedFuture(list));
 
-    Reflector<Pod, PodList> reflector = new Reflector<>(mock, Mockito.mock(SyncableStore.class));
+    Executor ex = Mockito.mock(Executor.class);
+    Mockito.doAnswer(invocation -> {
+      ((Runnable) invocation.getArgument(0)).run();
+      return null;
+    }).when(ex).execute(Mockito.any(Runnable.class));
+
+    Reflector<Pod, PodList> reflector = new Reflector<>(mock, Mockito.mock(SyncableStore.class), ex);
     reflector.setMinTimeout(1);
 
     AbstractWatchManager manager = Mockito.mock(AbstractWatchManager.class);
@@ -153,6 +163,24 @@ class ReflectorTest {
         return false;
       }
       return true;
+    });
+
+    // simulate an abrupt client close
+    AtomicInteger rejected = new AtomicInteger();
+    Mockito.doAnswer(invocation -> {
+      rejected.incrementAndGet();
+      throw new RejectedExecutionException();
+    }).when(ex).execute(Mockito.any(Runnable.class));
+
+    // make sure the reconnect is rejected
+    Awaitility.await().atMost(10, TimeUnit.SECONDS).until(() -> {
+      return rejected.get() > 0;
+    });
+
+    long start = System.currentTimeMillis();
+    Awaitility.await().atMost(10, TimeUnit.SECONDS).until(() -> {
+      assertEquals(1, rejected.get());
+      return System.currentTimeMillis() - start > 5000;
     });
   }
 

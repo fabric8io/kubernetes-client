@@ -159,7 +159,8 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
     if (state != null && state.closed.compareAndSet(false, true)) {
       logger.debug("Closing the current watch");
       closeCurrentRequest();
-      CompletableFuture<Void> future = Utils.schedule(Runnable::run, () -> failSafeReconnect(state), watchEndCheckMs,
+      CompletableFuture<Void> future = Utils.schedule(baseOperation.getOperationContext().getExecutor(),
+          () -> failSafeReconnect(state), watchEndCheckMs,
           TimeUnit.MILLISECONDS);
       state.ended.whenComplete((v, t) -> future.cancel(true));
     }
