@@ -34,6 +34,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentSkipListSet;
+import java.util.concurrent.Executor;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.function.LongSupplier;
@@ -54,6 +55,7 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
   private final CompletableFuture<Void> startFuture = new CompletableFuture<>();
   private final CompletableFuture<Void> stopFuture = new CompletableFuture<>();
   private final ExponentialBackoffIntervalCalculator retryIntervalCalculator;
+  private final Executor executor;
   //default behavior - retry if started and it's not a watcherexception
   private volatile ExceptionHandler handler = (b, t) -> b && !(t instanceof WatcherException);
   private long minTimeout = MIN_TIMEOUT;
@@ -63,11 +65,16 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
   private boolean cachedListing = true;
 
   public Reflector(ListerWatcher<T, L> listerWatcher, SyncableStore<T> store) {
+    this(listerWatcher, store, Runnable::run);
+  }
+
+  public Reflector(ListerWatcher<T, L> listerWatcher, SyncableStore<T> store, Executor executor) {
     this.listerWatcher = listerWatcher;
     this.store = store;
     this.watcher = new ReflectorWatcher();
     this.retryIntervalCalculator = new ExponentialBackoffIntervalCalculator(listerWatcher.getWatchReconnectInterval(),
         ExponentialBackoffIntervalCalculator.UNLIMITED_RETRIES);
+    this.executor = executor;
   }
 
   public CompletableFuture<Void> start() {
@@ -160,9 +167,7 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
     if (isStopped()) {
       return;
     }
-    // this can be run in the scheduler thread because
-    // any further operations will happen on the io thread
-    reconnectFuture = Utils.schedule(Runnable::run, this::listSyncAndWatch,
+    reconnectFuture = Utils.schedule(executor, this::listSyncAndWatch,
         retryIntervalCalculator.nextReconnectInterval(), TimeUnit.MILLISECONDS);
   }
 
@@ -222,7 +227,7 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
       timeoutFuture.cancel(true);
     }
     timeoutFuture = new CompletableFuture<>();
-    Utils.scheduleWithVariableRate(timeoutFuture, Runnable::run,
+    Utils.scheduleWithVariableRate(timeoutFuture, executor,
         () -> future.thenAccept(AbstractWatchManager::closeRequest), timeout.getAsLong(), timeout, TimeUnit.SECONDS);
     watchFuture = future;
     return watchFuture;
