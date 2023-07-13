@@ -53,10 +53,6 @@
       <artifactId>lombok</artifactId>
       <scope>provided</scope>
     </dependency>
-    <dependency>
-      <groupId>io.fabric8</groupId>
-      <artifactId>camel-k-client</artifactId>
-    </dependency>
     <!-- test -->
     <dependency>
       <groupId>org.junit.jupiter</groupId>
