@@ -19,7 +19,8 @@
 * Fix #5133: Support for using TokenRequest for existing ServiceAccount
 
 #### _**Note**_: Breaking changes
-* Fix #2718: KubernetesResourceUtil.isResourceReady was deprecated.  Use
+* Fix #2718: KubernetesResourceUtil.isResourceReady was deprecated.  Use `client.resource(item).isReady()` or `Readiness.getInstance().isReady(item)` instead.
+* Fix #5171: Removed Camel-K extension, use [`org.apache.camel.k:camel-k-crds`](https://central.sonatype.com/artifact/org.apache.camel.k/camel-k-crds) instead.
 * Fix #5279: (java-generator) Add native support for `date-time` fields, they are now mapped to native `java.time.ZonedDateTime`
 
 ### 6.7.2 (2023-06-15)
