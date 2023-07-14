@@ -195,6 +195,7 @@
     <module>kubernetes-client-api</module>
     <module>kubernetes-client</module>
     <module>junit/kubernetes-junit-jupiter</module>
+    <module>junit/kubernetes-junit-jupiter-autodetected</module>
     <module>junit/kubernetes-server-mock</module>
     <module>openshift-client-api</module>
     <module>openshift-client</module>
@@ -474,6 +475,11 @@
       <dependency>
         <groupId>io.fabric8</groupId>
         <artifactId>kubernetes-junit-jupiter</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>kubernetes-junit-jupiter-autodetected</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
