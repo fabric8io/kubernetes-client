@@ -70,6 +70,7 @@ public class RuleGroup implements KubernetesResource
     @JsonProperty("partial_response_strategy")
     private String partialResponseStrategy;
     @JsonProperty("rules")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Rule> rules = new ArrayList<Rule>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();

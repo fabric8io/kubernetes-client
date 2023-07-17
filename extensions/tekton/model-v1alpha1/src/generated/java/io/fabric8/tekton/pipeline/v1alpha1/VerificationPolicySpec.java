@@ -71,10 +71,12 @@ public class VerificationPolicySpec implements KubernetesResource
 {
 
     @JsonProperty("authorities")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Authority> authorities = new ArrayList<Authority>();
     @JsonProperty("mode")
     private String mode;
     @JsonProperty("resources")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ResourcePattern> resources = new ArrayList<ResourcePattern>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();

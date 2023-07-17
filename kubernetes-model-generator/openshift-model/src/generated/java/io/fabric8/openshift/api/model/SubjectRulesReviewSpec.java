@@ -63,8 +63,10 @@ public class SubjectRulesReviewSpec implements KubernetesResource
 {
 
     @JsonProperty("groups")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> groups = new ArrayList<String>();
     @JsonProperty("scopes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> scopes = new ArrayList<String>();
     @JsonProperty("user")
     private String user;

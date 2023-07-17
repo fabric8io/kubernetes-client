@@ -56,6 +56,7 @@ public class EventList implements KubernetesResource, KubernetesResourceList<io.
     @JsonProperty("apiVersion")
     private String apiVersion = "v1";
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.kubernetes.api.model.Event> items = new ArrayList<io.fabric8.kubernetes.api.model.Event>();
     /**
      * 

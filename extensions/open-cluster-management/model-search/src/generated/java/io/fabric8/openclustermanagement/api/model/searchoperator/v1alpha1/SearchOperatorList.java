@@ -87,6 +87,7 @@ public class SearchOperatorList implements KubernetesResource, KubernetesResourc
     @JsonProperty("apiVersion")
     private String apiVersion = "search.open-cluster-management.io/v1alpha1";
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.openclustermanagement.api.model.searchoperator.v1alpha1.SearchOperator> items = new ArrayList<io.fabric8.openclustermanagement.api.model.searchoperator.v1alpha1.SearchOperator>();
     /**
      * 

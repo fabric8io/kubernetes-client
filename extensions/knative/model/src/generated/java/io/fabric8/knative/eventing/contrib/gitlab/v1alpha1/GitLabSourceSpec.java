@@ -82,6 +82,7 @@ public class GitLabSourceSpec implements KubernetesResource
     @JsonProperty("ceOverrides")
     private CloudEventOverrides ceOverrides;
     @JsonProperty("eventTypes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> eventTypes = new ArrayList<String>();
     @JsonProperty("projectUrl")
     private String projectUrl;

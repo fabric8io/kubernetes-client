@@ -100,6 +100,7 @@ public class PlacementBinding implements HasMetadata, Namespaced
     @JsonProperty("status")
     private PlacementBindingStatus status;
     @JsonProperty("subjects")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Subject> subjects = new ArrayList<Subject>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();

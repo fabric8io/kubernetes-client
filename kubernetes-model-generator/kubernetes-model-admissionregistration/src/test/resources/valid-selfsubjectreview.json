@@ -1,0 +1,21 @@
+{
+  "kind": "SelfSubjectReview",
+  "apiVersion": "authentication.k8s.io/v1beta1",
+  "metadata": {
+    "name": "test-selfsubjectreview"
+  },
+  "status": {
+    "userInfo": {
+      "username": "kubernetes-admin",
+      "uid": "some-user-id",
+      "groups": [
+        "system:masters", "system:authenticated"
+      ],
+      "extra": {
+        "extraKey": [
+          "extraValue"
+        ]
+      }
+    }
+  }
+}

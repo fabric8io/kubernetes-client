@@ -78,6 +78,7 @@ public class FailKernRequest implements KubernetesResource
     @JsonProperty("failtype")
     private Integer failtype;
     @JsonProperty("headers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> headers = new ArrayList<String>();
     @JsonProperty("probability")
     private Integer probability;

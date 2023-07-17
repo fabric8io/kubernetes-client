@@ -34,6 +34,7 @@ import lombok.experimental.Accessors;
     "limit",
     "resourceVersion",
     "resourceVersionMatch",
+    "sendInitialEvents",
     "timeoutSeconds",
     "watch"
 })
@@ -82,6 +83,8 @@ public class ListOptions implements KubernetesResource
     private String resourceVersion;
     @JsonProperty("resourceVersionMatch")
     private String resourceVersionMatch;
+    @JsonProperty("sendInitialEvents")
+    private Boolean sendInitialEvents;
     @JsonProperty("timeoutSeconds")
     private Long timeoutSeconds;
     @JsonProperty("watch")
@@ -96,7 +99,7 @@ public class ListOptions implements KubernetesResource
     public ListOptions() {
     }
 
-    public ListOptions(Boolean allowWatchBookmarks, String apiVersion, String _continue, String fieldSelector, String kind, String labelSelector, Long limit, String resourceVersion, String resourceVersionMatch, Long timeoutSeconds, Boolean watch) {
+    public ListOptions(Boolean allowWatchBookmarks, String apiVersion, String _continue, String fieldSelector, String kind, String labelSelector, Long limit, String resourceVersion, String resourceVersionMatch, Boolean sendInitialEvents, Long timeoutSeconds, Boolean watch) {
         super();
         this.allowWatchBookmarks = allowWatchBookmarks;
         this.apiVersion = apiVersion;
@@ -107,6 +110,7 @@ public class ListOptions implements KubernetesResource
         this.limit = limit;
         this.resourceVersion = resourceVersion;
         this.resourceVersionMatch = resourceVersionMatch;
+        this.sendInitialEvents = sendInitialEvents;
         this.timeoutSeconds = timeoutSeconds;
         this.watch = watch;
     }
@@ -219,6 +223,16 @@ public class ListOptions implements KubernetesResource
     @JsonProperty("resourceVersionMatch")
     public void setResourceVersionMatch(String resourceVersionMatch) {
         this.resourceVersionMatch = resourceVersionMatch;
+    }
+
+    @JsonProperty("sendInitialEvents")
+    public Boolean getSendInitialEvents() {
+        return sendInitialEvents;
+    }
+
+    @JsonProperty("sendInitialEvents")
+    public void setSendInitialEvents(Boolean sendInitialEvents) {
+        this.sendInitialEvents = sendInitialEvents;
     }
 
     @JsonProperty("timeoutSeconds")

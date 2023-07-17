@@ -64,6 +64,7 @@ public class WebhookConversion implements KubernetesResource
     @JsonProperty("clientConfig")
     private WebhookClientConfig clientConfig;
     @JsonProperty("conversionReviewVersions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> conversionReviewVersions = new ArrayList<String>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();

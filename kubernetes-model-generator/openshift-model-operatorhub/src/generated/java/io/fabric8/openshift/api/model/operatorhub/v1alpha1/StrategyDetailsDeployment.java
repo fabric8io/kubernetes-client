@@ -66,6 +66,7 @@ public class StrategyDetailsDeployment implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<StrategyDeploymentPermissions> clusterPermissions = new ArrayList<StrategyDeploymentPermissions>();
     @JsonProperty("deployments")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<StrategyDeploymentSpec> deployments = new ArrayList<StrategyDeploymentSpec>();
     @JsonProperty("permissions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)

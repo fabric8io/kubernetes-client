@@ -70,6 +70,7 @@ public class InstallPlanSpec implements KubernetesResource
     @JsonProperty("approved")
     private Boolean approved;
     @JsonProperty("clusterServiceVersionNames")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> clusterServiceVersionNames = new ArrayList<String>();
     @JsonProperty("generation")
     private Integer generation;

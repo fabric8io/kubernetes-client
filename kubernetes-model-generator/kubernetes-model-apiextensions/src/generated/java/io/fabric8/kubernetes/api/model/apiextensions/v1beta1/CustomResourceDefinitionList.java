@@ -79,6 +79,7 @@ public class CustomResourceDefinitionList implements KubernetesResource, Kuberne
     @JsonProperty("apiVersion")
     private String apiVersion = "apiextensions.k8s.io/v1beta1";
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition> items = new ArrayList<io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition>();
     /**
      * 

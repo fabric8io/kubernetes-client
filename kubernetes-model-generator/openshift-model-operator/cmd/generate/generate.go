@@ -32,6 +32,7 @@ import (
   operatorv1alpha1 "github.com/openshift/api/operator/v1alpha1"
   operatoringressv1 "github.com/openshift/api/operatoringress/v1"
   operatorcontrolpanev1alpha1 "github.com/openshift/api/operatorcontrolplane/v1alpha1"
+  authorizationv1 "k8s.io/api/authorization/v1"
 
   "os"
 
@@ -124,7 +125,10 @@ func main() {
     reflect.TypeOf(time.Time{}): reflect.TypeOf(""),
     reflect.TypeOf(struct{}{}):  reflect.TypeOf(""),
   }
-  schema, err := schemagen.GenerateSchema(reflect.TypeOf(Schema{}), packages, typeMap, map[reflect.Type]string{},"operator")
+  manualTypeMap := map[reflect.Type]string {
+    reflect.TypeOf(authorizationv1.ResourceAttributes{}): "io.fabric8.kubernetes.api.model.authorization.v1.ResourceAttributes",
+  }
+  schema, err := schemagen.GenerateSchema(reflect.TypeOf(Schema{}), packages, typeMap, manualTypeMap,"operator")
   if err != nil {
     fmt.Fprintf(os.Stderr, "An error occurred: %v", err)
     return

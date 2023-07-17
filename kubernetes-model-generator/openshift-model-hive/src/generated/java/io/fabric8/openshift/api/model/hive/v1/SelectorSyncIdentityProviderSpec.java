@@ -64,6 +64,7 @@ public class SelectorSyncIdentityProviderSpec implements KubernetesResource
     @JsonProperty("clusterDeploymentSelector")
     private io.fabric8.kubernetes.api.model.LabelSelector clusterDeploymentSelector;
     @JsonProperty("identityProviders")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<IdentityProvider> identityProviders = new ArrayList<IdentityProvider>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();

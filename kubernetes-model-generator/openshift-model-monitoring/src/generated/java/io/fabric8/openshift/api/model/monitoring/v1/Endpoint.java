@@ -40,6 +40,7 @@ import lombok.experimental.Accessors;
     "basicAuth",
     "bearerTokenFile",
     "bearerTokenSecret",
+    "followRedirects",
     "honorLabels",
     "honorTimestamps",
     "interval",
@@ -85,6 +86,8 @@ public class Endpoint implements KubernetesResource
     private java.lang.String bearerTokenFile;
     @JsonProperty("bearerTokenSecret")
     private SecretKeySelector bearerTokenSecret;
+    @JsonProperty("followRedirects")
+    private Boolean followRedirects;
     @JsonProperty("honorLabels")
     private Boolean honorLabels;
     @JsonProperty("honorTimestamps")
@@ -126,12 +129,13 @@ public class Endpoint implements KubernetesResource
     public Endpoint() {
     }
 
-    public Endpoint(SafeAuthorization authorization, BasicAuth basicAuth, java.lang.String bearerTokenFile, SecretKeySelector bearerTokenSecret, Boolean honorLabels, Boolean honorTimestamps, java.lang.String interval, List<RelabelConfig> metricRelabelings, OAuth2 oauth2, Map<String, ArrayList<String>> params, java.lang.String path, java.lang.String port, java.lang.String proxyUrl, List<RelabelConfig> relabelings, java.lang.String scheme, java.lang.String scrapeTimeout, io.fabric8.kubernetes.api.model.IntOrString targetPort, TLSConfig tlsConfig) {
+    public Endpoint(SafeAuthorization authorization, BasicAuth basicAuth, java.lang.String bearerTokenFile, SecretKeySelector bearerTokenSecret, Boolean followRedirects, Boolean honorLabels, Boolean honorTimestamps, java.lang.String interval, List<RelabelConfig> metricRelabelings, OAuth2 oauth2, Map<String, ArrayList<String>> params, java.lang.String path, java.lang.String port, java.lang.String proxyUrl, List<RelabelConfig> relabelings, java.lang.String scheme, java.lang.String scrapeTimeout, io.fabric8.kubernetes.api.model.IntOrString targetPort, TLSConfig tlsConfig) {
         super();
         this.authorization = authorization;
         this.basicAuth = basicAuth;
         this.bearerTokenFile = bearerTokenFile;
         this.bearerTokenSecret = bearerTokenSecret;
+        this.followRedirects = followRedirects;
         this.honorLabels = honorLabels;
         this.honorTimestamps = honorTimestamps;
         this.interval = interval;
@@ -186,6 +190,16 @@ public class Endpoint implements KubernetesResource
     @JsonProperty("bearerTokenSecret")
     public void setBearerTokenSecret(SecretKeySelector bearerTokenSecret) {
         this.bearerTokenSecret = bearerTokenSecret;
+    }
+
+    @JsonProperty("followRedirects")
+    public Boolean getFollowRedirects() {
+        return followRedirects;
+    }
+
+    @JsonProperty("followRedirects")
+    public void setFollowRedirects(Boolean followRedirects) {
+        this.followRedirects = followRedirects;
     }
 
     @JsonProperty("honorLabels")

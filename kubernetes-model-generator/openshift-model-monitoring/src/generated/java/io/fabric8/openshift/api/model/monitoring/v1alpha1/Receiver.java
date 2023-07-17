@@ -42,6 +42,8 @@ import lombok.experimental.Accessors;
     "pagerdutyConfigs",
     "pushoverConfigs",
     "slackConfigs",
+    "snsConfigs",
+    "telegramConfigs",
     "victoropsConfigs",
     "webhookConfigs",
     "wechatConfigs"
@@ -85,6 +87,12 @@ public class Receiver implements KubernetesResource
     @JsonProperty("slackConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<SlackConfig> slackConfigs = new ArrayList<SlackConfig>();
+    @JsonProperty("snsConfigs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<SNSConfig> snsConfigs = new ArrayList<SNSConfig>();
+    @JsonProperty("telegramConfigs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<TelegramConfig> telegramConfigs = new ArrayList<TelegramConfig>();
     @JsonProperty("victoropsConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<VictorOpsConfig> victoropsConfigs = new ArrayList<VictorOpsConfig>();
@@ -104,7 +112,7 @@ public class Receiver implements KubernetesResource
     public Receiver() {
     }
 
-    public Receiver(List<EmailConfig> emailConfigs, String name, List<OpsGenieConfig> opsgenieConfigs, List<PagerDutyConfig> pagerdutyConfigs, List<PushoverConfig> pushoverConfigs, List<SlackConfig> slackConfigs, List<VictorOpsConfig> victoropsConfigs, List<WebhookConfig> webhookConfigs, List<WeChatConfig> wechatConfigs) {
+    public Receiver(List<EmailConfig> emailConfigs, String name, List<OpsGenieConfig> opsgenieConfigs, List<PagerDutyConfig> pagerdutyConfigs, List<PushoverConfig> pushoverConfigs, List<SlackConfig> slackConfigs, List<SNSConfig> snsConfigs, List<TelegramConfig> telegramConfigs, List<VictorOpsConfig> victoropsConfigs, List<WebhookConfig> webhookConfigs, List<WeChatConfig> wechatConfigs) {
         super();
         this.emailConfigs = emailConfigs;
         this.name = name;
@@ -112,6 +120,8 @@ public class Receiver implements KubernetesResource
         this.pagerdutyConfigs = pagerdutyConfigs;
         this.pushoverConfigs = pushoverConfigs;
         this.slackConfigs = slackConfigs;
+        this.snsConfigs = snsConfigs;
+        this.telegramConfigs = telegramConfigs;
         this.victoropsConfigs = victoropsConfigs;
         this.webhookConfigs = webhookConfigs;
         this.wechatConfigs = wechatConfigs;
@@ -175,6 +185,26 @@ public class Receiver implements KubernetesResource
     @JsonProperty("slackConfigs")
     public void setSlackConfigs(List<SlackConfig> slackConfigs) {
         this.slackConfigs = slackConfigs;
+    }
+
+    @JsonProperty("snsConfigs")
+    public List<SNSConfig> getSnsConfigs() {
+        return snsConfigs;
+    }
+
+    @JsonProperty("snsConfigs")
+    public void setSnsConfigs(List<SNSConfig> snsConfigs) {
+        this.snsConfigs = snsConfigs;
+    }
+
+    @JsonProperty("telegramConfigs")
+    public List<TelegramConfig> getTelegramConfigs() {
+        return telegramConfigs;
+    }
+
+    @JsonProperty("telegramConfigs")
+    public void setTelegramConfigs(List<TelegramConfig> telegramConfigs) {
+        this.telegramConfigs = telegramConfigs;
     }
 
     @JsonProperty("victoropsConfigs")

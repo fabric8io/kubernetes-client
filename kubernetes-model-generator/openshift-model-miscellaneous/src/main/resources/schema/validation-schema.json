@@ -1077,6 +1077,45 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "kubernetes_core_TopologySpreadConstraint": {
+      "type": "object",
+      "properties": {
+        "labelSelector": {
+          "$ref": "#/definitions/kubernetes_apimachinery_LabelSelector",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.LabelSelector"
+        },
+        "matchLabelKeys": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "maxSkew": {
+          "type": "integer"
+        },
+        "minDomains": {
+          "type": "integer"
+        },
+        "nodeAffinityPolicy": {
+          "type": "string"
+        },
+        "nodeTaintsPolicy": {
+          "type": "string"
+        },
+        "topologyKey": {
+          "type": "string"
+        },
+        "whenUnsatisfiable": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "existingJavaType": "io.fabric8.kubernetes.api.model.TopologySpreadConstraint",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "kubernetes_core_WeightedPodAffinityTerm": {
       "type": "object",
       "properties": {
@@ -1603,6 +1642,23 @@
         "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.openshift.api.model.miscellaneous.imageregistry.operator.v1.Config\u003e"
       ]
     },
+    "os_imageregistry_v1_EncryptionAlibaba": {
+      "type": "object",
+      "properties": {
+        "kms": {
+          "$ref": "#/definitions/os_imageregistry_v1_KMSEncryptionAlibaba",
+          "existingJavaType": "io.fabric8.openshift.api.model.miscellaneous.imageregistry.operator.v1.KMSEncryptionAlibaba"
+        },
+        "method": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.miscellaneous.imageregistry.operator.v1.EncryptionAlibaba",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "os_imageregistry_v1_ImageRegistryConfigProxy": {
       "type": "object",
       "properties": {
@@ -1701,6 +1757,10 @@
         "managementState": {
           "type": "string"
         },
+        "oss": {
+          "$ref": "#/definitions/os_imageregistry_v1_ImageRegistryConfigStorageAlibabaOSS",
+          "existingJavaType": "io.fabric8.openshift.api.model.miscellaneous.imageregistry.operator.v1.ImageRegistryConfigStorageAlibabaOSS"
+        },
         "pvc": {
           "$ref": "#/definitions/os_imageregistry_v1_ImageRegistryConfigStoragePVC",
           "existingJavaType": "io.fabric8.openshift.api.model.miscellaneous.imageregistry.operator.v1.ImageRegistryConfigStoragePVC"
@@ -1716,6 +1776,29 @@
       },
       "additionalProperties": true,
       "javaType": "io.fabric8.openshift.api.model.miscellaneous.imageregistry.operator.v1.ImageRegistryConfigStorage",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_imageregistry_v1_ImageRegistryConfigStorageAlibabaOSS": {
+      "type": "object",
+      "properties": {
+        "bucket": {
+          "type": "string"
+        },
+        "encryption": {
+          "$ref": "#/definitions/os_imageregistry_v1_EncryptionAlibaba",
+          "existingJavaType": "io.fabric8.openshift.api.model.miscellaneous.imageregistry.operator.v1.EncryptionAlibaba"
+        },
+        "endpointAccessibility": {
+          "type": "string"
+        },
+        "region": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.miscellaneous.imageregistry.operator.v1.ImageRegistryConfigStorageAlibabaOSS",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -1828,6 +1911,10 @@
         },
         "regionEndpoint": {
           "type": "string"
+        },
+        "trustedCA": {
+          "$ref": "#/definitions/os_imageregistry_v1_S3TrustedCASource",
+          "existingJavaType": "io.fabric8.openshift.api.model.miscellaneous.imageregistry.operator.v1.S3TrustedCASource"
         },
         "virtualHostedStyle": {
           "type": "boolean"
@@ -1978,6 +2065,14 @@
             "existingJavaType": "io.fabric8.kubernetes.api.model.Toleration"
           }
         },
+        "topologySpreadConstraints": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_core_TopologySpreadConstraint",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.TopologySpreadConstraint"
+          }
+        },
         "unsupportedConfigOverrides": {
           "$ref": "#/definitions/kubernetes_apimachinery_pkg_runtime_RawExtension",
           "existingJavaType": "java.util.Map\u003cString, Object\u003e"
@@ -2028,6 +2123,32 @@
       },
       "additionalProperties": true,
       "javaType": "io.fabric8.openshift.api.model.miscellaneous.imageregistry.operator.v1.ImageRegistryStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_imageregistry_v1_KMSEncryptionAlibaba": {
+      "type": "object",
+      "properties": {
+        "keyID": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.miscellaneous.imageregistry.operator.v1.KMSEncryptionAlibaba",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_imageregistry_v1_S3TrustedCASource": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.miscellaneous.imageregistry.operator.v1.S3TrustedCASource",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -2408,6 +2529,9 @@
     "os_metal3_v1alpha1_HardwareRAIDVolume": {
       "type": "object",
       "properties": {
+        "controller": {
+          "type": "string"
+        },
         "level": {
           "type": "string"
         },
@@ -2416,6 +2540,13 @@
         },
         "numberOfPhysicalDisks": {
           "type": "integer"
+        },
+        "physicalDisks": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
         },
         "rotational": {
           "type": "boolean"
@@ -3936,6 +4067,18 @@
       },
       "additionalProperties": true
     },
+    "encryptionalibaba": {
+      "properties": {
+        "kms": {
+          "$ref": "#/definitions/os_imageregistry_v1_KMSEncryptionAlibaba",
+          "existingJavaType": "io.fabric8.openshift.api.model.miscellaneous.imageregistry.operator.v1.KMSEncryptionAlibaba"
+        },
+        "method": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
     "fieldsv1": {
       "additionalProperties": true
     },
@@ -4038,6 +4181,9 @@
     },
     "hardwareraidvolume": {
       "properties": {
+        "controller": {
+          "type": "string"
+        },
         "level": {
           "type": "string"
         },
@@ -4046,6 +4192,13 @@
         },
         "numberOfPhysicalDisks": {
           "type": "integer"
+        },
+        "physicalDisks": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
         },
         "rotational": {
           "type": "boolean"
@@ -4164,6 +4317,10 @@
         "managementState": {
           "type": "string"
         },
+        "oss": {
+          "$ref": "#/definitions/os_imageregistry_v1_ImageRegistryConfigStorageAlibabaOSS",
+          "existingJavaType": "io.fabric8.openshift.api.model.miscellaneous.imageregistry.operator.v1.ImageRegistryConfigStorageAlibabaOSS"
+        },
         "pvc": {
           "$ref": "#/definitions/os_imageregistry_v1_ImageRegistryConfigStoragePVC",
           "existingJavaType": "io.fabric8.openshift.api.model.miscellaneous.imageregistry.operator.v1.ImageRegistryConfigStoragePVC"
@@ -4175,6 +4332,24 @@
         "swift": {
           "$ref": "#/definitions/os_imageregistry_v1_ImageRegistryConfigStorageSwift",
           "existingJavaType": "io.fabric8.openshift.api.model.miscellaneous.imageregistry.operator.v1.ImageRegistryConfigStorageSwift"
+        }
+      },
+      "additionalProperties": true
+    },
+    "imageregistryconfigstoragealibabaoss": {
+      "properties": {
+        "bucket": {
+          "type": "string"
+        },
+        "encryption": {
+          "$ref": "#/definitions/os_imageregistry_v1_EncryptionAlibaba",
+          "existingJavaType": "io.fabric8.openshift.api.model.miscellaneous.imageregistry.operator.v1.EncryptionAlibaba"
+        },
+        "endpointAccessibility": {
+          "type": "string"
+        },
+        "region": {
+          "type": "string"
         }
       },
       "additionalProperties": true
@@ -4261,6 +4436,10 @@
         },
         "regionEndpoint": {
           "type": "string"
+        },
+        "trustedCA": {
+          "$ref": "#/definitions/os_imageregistry_v1_S3TrustedCASource",
+          "existingJavaType": "io.fabric8.openshift.api.model.miscellaneous.imageregistry.operator.v1.S3TrustedCASource"
         },
         "virtualHostedStyle": {
           "type": "boolean"
@@ -4396,6 +4575,14 @@
             "existingJavaType": "io.fabric8.kubernetes.api.model.Toleration"
           }
         },
+        "topologySpreadConstraints": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_core_TopologySpreadConstraint",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.TopologySpreadConstraint"
+          }
+        },
         "unsupportedConfigOverrides": {
           "$ref": "#/definitions/kubernetes_apimachinery_pkg_runtime_RawExtension",
           "existingJavaType": "java.util.Map\u003cString, Object\u003e"
@@ -4468,6 +4655,14 @@
           "type": "string"
         },
         "platform": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "kmsencryptionalibaba": {
+      "properties": {
+        "keyID": {
           "type": "string"
         }
       },
@@ -5379,6 +5574,14 @@
       },
       "additionalProperties": true
     },
+    "s3trustedcasource": {
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
     "secretkeyselector": {
       "properties": {
         "key": {
@@ -5592,6 +5795,40 @@
           "existingJavaType": "Long"
         },
         "value": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "topologyspreadconstraint": {
+      "properties": {
+        "labelSelector": {
+          "$ref": "#/definitions/kubernetes_apimachinery_LabelSelector",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.LabelSelector"
+        },
+        "matchLabelKeys": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "maxSkew": {
+          "type": "integer"
+        },
+        "minDomains": {
+          "type": "integer"
+        },
+        "nodeAffinityPolicy": {
+          "type": "string"
+        },
+        "nodeTaintsPolicy": {
+          "type": "string"
+        },
+        "topologyKey": {
+          "type": "string"
+        },
+        "whenUnsatisfiable": {
           "type": "string"
         }
       },

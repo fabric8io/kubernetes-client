@@ -62,6 +62,7 @@ public class ContainerRuntimeConfigStatus implements KubernetesResource
 {
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ContainerRuntimeConfigCondition> conditions = new ArrayList<ContainerRuntimeConfigCondition>();
     @JsonProperty("observedGeneration")
     private Long observedGeneration;

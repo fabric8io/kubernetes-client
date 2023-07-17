@@ -73,6 +73,7 @@ public class PolicySpec implements KubernetesResource
     @JsonProperty("disabled")
     private Boolean disabled;
     @JsonProperty("policy-templates")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<PolicyTemplate> policyTemplates = new ArrayList<PolicyTemplate>();
     @JsonProperty("remediationAction")
     private String remediationAction;

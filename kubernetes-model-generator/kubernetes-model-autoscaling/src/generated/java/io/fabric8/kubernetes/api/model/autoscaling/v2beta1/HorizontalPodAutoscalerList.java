@@ -79,6 +79,7 @@ public class HorizontalPodAutoscalerList implements KubernetesResource, Kubernet
     @JsonProperty("apiVersion")
     private String apiVersion = "autoscaling/v2beta1";
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.kubernetes.api.model.autoscaling.v2beta1.HorizontalPodAutoscaler> items = new ArrayList<io.fabric8.kubernetes.api.model.autoscaling.v2beta1.HorizontalPodAutoscaler>();
     /**
      * 

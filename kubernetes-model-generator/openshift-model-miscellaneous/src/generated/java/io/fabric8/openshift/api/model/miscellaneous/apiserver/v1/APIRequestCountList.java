@@ -79,6 +79,7 @@ public class APIRequestCountList implements KubernetesResource, KubernetesResour
     @JsonProperty("apiVersion")
     private String apiVersion = "apiserver.openshift.io/v1";
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.openshift.api.model.miscellaneous.apiserver.v1.APIRequestCount> items = new ArrayList<io.fabric8.openshift.api.model.miscellaneous.apiserver.v1.APIRequestCount>();
     /**
      * 

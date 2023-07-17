@@ -79,6 +79,7 @@ public class BlockChaosSpec implements KubernetesResource
     @JsonProperty("action")
     private java.lang.String action;
     @JsonProperty("containerNames")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<java.lang.String> containerNames = new ArrayList<java.lang.String>();
     @JsonProperty("delay")
     private BlockDelaySpec delay;

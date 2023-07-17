@@ -97,6 +97,7 @@ public class PhysicalMachineChaosSpec implements KubernetesResource
     @JsonProperty("action")
     private java.lang.String action;
     @JsonProperty("address")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<java.lang.String> address = new ArrayList<java.lang.String>();
     @JsonProperty("clock")
     private ClockSpec clock;

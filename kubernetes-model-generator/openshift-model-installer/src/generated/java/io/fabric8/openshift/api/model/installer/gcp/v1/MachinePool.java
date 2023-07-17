@@ -36,7 +36,11 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
+    "confidentialCompute",
+    "onHostMaintenance",
     "osDisk",
+    "secureBoot",
+    "tags",
     "type",
     "zones"
 })
@@ -62,8 +66,17 @@ import lombok.experimental.Accessors;
 public class MachinePool implements KubernetesResource
 {
 
+    @JsonProperty("confidentialCompute")
+    private String confidentialCompute;
+    @JsonProperty("onHostMaintenance")
+    private String onHostMaintenance;
     @JsonProperty("osDisk")
     private OSDisk osDisk;
+    @JsonProperty("secureBoot")
+    private String secureBoot;
+    @JsonProperty("tags")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> tags = new ArrayList<String>();
     @JsonProperty("type")
     private String type;
     @JsonProperty("zones")
@@ -79,11 +92,35 @@ public class MachinePool implements KubernetesResource
     public MachinePool() {
     }
 
-    public MachinePool(OSDisk osDisk, String type, List<String> zones) {
+    public MachinePool(String confidentialCompute, String onHostMaintenance, OSDisk osDisk, String secureBoot, List<String> tags, String type, List<String> zones) {
         super();
+        this.confidentialCompute = confidentialCompute;
+        this.onHostMaintenance = onHostMaintenance;
         this.osDisk = osDisk;
+        this.secureBoot = secureBoot;
+        this.tags = tags;
         this.type = type;
         this.zones = zones;
+    }
+
+    @JsonProperty("confidentialCompute")
+    public String getConfidentialCompute() {
+        return confidentialCompute;
+    }
+
+    @JsonProperty("confidentialCompute")
+    public void setConfidentialCompute(String confidentialCompute) {
+        this.confidentialCompute = confidentialCompute;
+    }
+
+    @JsonProperty("onHostMaintenance")
+    public String getOnHostMaintenance() {
+        return onHostMaintenance;
+    }
+
+    @JsonProperty("onHostMaintenance")
+    public void setOnHostMaintenance(String onHostMaintenance) {
+        this.onHostMaintenance = onHostMaintenance;
     }
 
     @JsonProperty("osDisk")
@@ -94,6 +131,26 @@ public class MachinePool implements KubernetesResource
     @JsonProperty("osDisk")
     public void setOsDisk(OSDisk osDisk) {
         this.osDisk = osDisk;
+    }
+
+    @JsonProperty("secureBoot")
+    public String getSecureBoot() {
+        return secureBoot;
+    }
+
+    @JsonProperty("secureBoot")
+    public void setSecureBoot(String secureBoot) {
+        this.secureBoot = secureBoot;
+    }
+
+    @JsonProperty("tags")
+    public List<String> getTags() {
+        return tags;
+    }
+
+    @JsonProperty("tags")
+    public void setTags(List<String> tags) {
+        this.tags = tags;
     }
 
     @JsonProperty("type")

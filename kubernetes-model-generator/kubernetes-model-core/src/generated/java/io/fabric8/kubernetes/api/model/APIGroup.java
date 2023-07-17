@@ -73,6 +73,7 @@ public class APIGroup implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ServerAddressByClientCIDR> serverAddressByClientCIDRs = new ArrayList<ServerAddressByClientCIDR>();
     @JsonProperty("versions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<GroupVersionForDiscovery> versions = new ArrayList<GroupVersionForDiscovery>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();

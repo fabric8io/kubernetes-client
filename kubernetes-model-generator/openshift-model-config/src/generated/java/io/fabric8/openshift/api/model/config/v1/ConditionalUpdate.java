@@ -69,6 +69,7 @@ public class ConditionalUpdate implements KubernetesResource
     @JsonProperty("release")
     private Release release;
     @JsonProperty("risks")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ConditionalUpdateRisk> risks = new ArrayList<ConditionalUpdateRisk>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();

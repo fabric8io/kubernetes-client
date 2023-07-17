@@ -87,6 +87,7 @@ public class PhysicalMachineSelectorSpec implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> labelSelectors = new LinkedHashMap<String, String>();
     @JsonProperty("namespaces")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<java.lang.String> namespaces = new ArrayList<java.lang.String>();
     @JsonProperty("physicalMachines")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)

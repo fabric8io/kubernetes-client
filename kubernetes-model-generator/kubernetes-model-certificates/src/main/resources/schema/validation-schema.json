@@ -296,6 +296,9 @@
         "resourceVersionMatch": {
           "type": "string"
         },
+        "sendInitialEvents": {
+          "type": "boolean"
+        },
         "timeoutSeconds": {
           "type": "integer",
           "existingJavaType": "Long"
@@ -909,6 +912,82 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "kubernetes_certificates_v1alpha1_ClusterTrustBundle": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "certificates.k8s.io/v1alpha1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "ClusterTrustBundle",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/kubernetes_certificates_v1alpha1_ClusterTrustBundleSpec",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.certificates.v1alpha1.ClusterTrustBundleSpec"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.certificates.v1alpha1.ClusterTrustBundle",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata"
+      ]
+    },
+    "kubernetes_certificates_v1alpha1_ClusterTrustBundleList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "certificates.k8s.io/v1alpha1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/kubernetes_certificates_v1alpha1_ClusterTrustBundle",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.certificates.v1alpha1.ClusterTrustBundle"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "ClusterTrustBundleList",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ListMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.certificates.v1alpha1.ClusterTrustBundleList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kubernetes.api.model.certificates.v1alpha1.ClusterTrustBundle\u003e"
+      ]
+    },
+    "kubernetes_certificates_v1alpha1_ClusterTrustBundleSpec": {
+      "type": "object",
+      "properties": {
+        "signerName": {
+          "type": "string"
+        },
+        "trustBundle": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.certificates.v1alpha1.ClusterTrustBundleSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "kubernetes_certificates_v1beta1_CertificateSigningRequest": {
       "type": "object",
       "properties": {
@@ -1164,6 +1243,14 @@
       "$ref": "#/definitions/kubernetes_apimachinery_UpdateOptions",
       "existingJavaType": "io.fabric8.kubernetes.api.model.UpdateOptions"
     },
+    "V1Alpha1ClusterTrustBundle": {
+      "$ref": "#/definitions/kubernetes_certificates_v1alpha1_ClusterTrustBundle",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.certificates.v1alpha1.ClusterTrustBundle"
+    },
+    "V1Alpha1ClusterTrustBundleList": {
+      "$ref": "#/definitions/kubernetes_certificates_v1alpha1_ClusterTrustBundleList",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.certificates.v1alpha1.ClusterTrustBundleList"
+    },
     "V1Beta1CertificateSigningRequest": {
       "$ref": "#/definitions/kubernetes_certificates_v1beta1_CertificateSigningRequest",
       "existingJavaType": "io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequest"
@@ -1302,14 +1389,14 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "certificates.k8s.io/v1",
+          "default": "certificates.k8s.io/v1beta1",
           "required": true
         },
         "items": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/kubernetes_certificates_v1_CertificateSigningRequest",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequest"
+            "$ref": "#/definitions/kubernetes_certificates_v1beta1_CertificateSigningRequest",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequest"
           }
         },
         "kind": {
@@ -1377,9 +1464,69 @@
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/kubernetes_certificates_v1_CertificateSigningRequestCondition",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequestCondition"
+            "$ref": "#/definitions/kubernetes_certificates_v1beta1_CertificateSigningRequestCondition",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequestCondition"
           }
+        }
+      },
+      "additionalProperties": true
+    },
+    "clustertrustbundle": {
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "certificates.k8s.io/v1alpha1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "ClusterTrustBundle",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/kubernetes_certificates_v1alpha1_ClusterTrustBundleSpec",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.certificates.v1alpha1.ClusterTrustBundleSpec"
+        }
+      },
+      "additionalProperties": true
+    },
+    "clustertrustbundlelist": {
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "certificates.k8s.io/v1alpha1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/kubernetes_certificates_v1alpha1_ClusterTrustBundle",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.certificates.v1alpha1.ClusterTrustBundle"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "ClusterTrustBundleList",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ListMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "additionalProperties": true
+    },
+    "clustertrustbundlespec": {
+      "properties": {
+        "signerName": {
+          "type": "string"
+        },
+        "trustBundle": {
+          "type": "string"
         }
       },
       "additionalProperties": true
@@ -1589,6 +1736,9 @@
         },
         "resourceVersionMatch": {
           "type": "string"
+        },
+        "sendInitialEvents": {
+          "type": "boolean"
         },
         "timeoutSeconds": {
           "type": "integer",

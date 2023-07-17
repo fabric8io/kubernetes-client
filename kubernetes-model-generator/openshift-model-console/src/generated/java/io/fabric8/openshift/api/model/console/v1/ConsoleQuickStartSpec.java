@@ -96,6 +96,7 @@ public class ConsoleQuickStartSpec implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> tags = new ArrayList<String>();
     @JsonProperty("tasks")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ConsoleQuickStartTask> tasks = new ArrayList<ConsoleQuickStartTask>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();

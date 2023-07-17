@@ -64,6 +64,7 @@ public class ResourceList implements KubernetesResource
     @JsonProperty("group")
     private String group;
     @JsonProperty("instances")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ResourceInstance> instances = new ArrayList<ResourceInstance>();
     @JsonProperty("kind")
     private String kind;

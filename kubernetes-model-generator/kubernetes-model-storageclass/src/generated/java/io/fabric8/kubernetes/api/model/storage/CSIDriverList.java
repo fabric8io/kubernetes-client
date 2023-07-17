@@ -79,6 +79,7 @@ public class CSIDriverList implements KubernetesResource, KubernetesResourceList
     @JsonProperty("apiVersion")
     private String apiVersion = "storage.k8s.io/v1";
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.kubernetes.api.model.storage.CSIDriver> items = new ArrayList<io.fabric8.kubernetes.api.model.storage.CSIDriver>();
     /**
      * 

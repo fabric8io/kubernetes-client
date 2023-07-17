@@ -42,7 +42,7 @@
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>
-      <artifactId>kubernetes-junit-jupiter</artifactId>
+      <artifactId>kubernetes-junit-jupiter-autodetected</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>

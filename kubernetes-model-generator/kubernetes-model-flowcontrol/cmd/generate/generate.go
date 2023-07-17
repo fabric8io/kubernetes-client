@@ -24,6 +24,7 @@ import (
   flowcontrolv1beta1 "k8s.io/api/flowcontrol/v1beta1"
   flowcontrolv1beta2 "k8s.io/api/flowcontrol/v1beta2"
   flowcontrolv1beta3 "k8s.io/api/flowcontrol/v1beta3"
+  apiserverinternalv1alpha1 "k8s.io/api/apiserverinternal/v1alpha1"
 
 
   "log"
@@ -53,6 +54,8 @@ type Schema struct {
   V1beta3FlowSchemaList                    flowcontrolv1beta3.FlowSchemaList
   V1beta3PriorityLevelConfiguration        flowcontrolv1beta3.PriorityLevelConfiguration
   V1beta3PriorityLevelConfigurationList    flowcontrolv1beta3.PriorityLevelConfigurationList
+  V1Alpha1StorageVersion                   apiserverinternalv1alpha1.StorageVersion
+  V1Alpha1StorageVersionList               apiserverinternalv1alpha1.StorageVersionList
 }
 
 func main() {
@@ -66,6 +69,7 @@ func main() {
     {"k8s.io/api/flowcontrol/v1beta1", "flowcontrol.apiserver.k8s.io", "io.fabric8.kubernetes.api.model.flowcontrol.v1beta1", "kubernetes_flowcontrol_v1beta1_", true},
     {"k8s.io/api/flowcontrol/v1beta2", "flowcontrol.apiserver.k8s.io", "io.fabric8.kubernetes.api.model.flowcontrol.v1beta2", "kubernetes_flowcontrol_v1beta2_", true},
     {"k8s.io/api/flowcontrol/v1beta3", "flowcontrol.apiserver.k8s.io", "io.fabric8.kubernetes.api.model.flowcontrol.v1beta3", "kubernetes_flowcontrol_v1beta3_", true},
+    {"k8s.io/api/apiserverinternal/v1alpha1", "internal.apiserver.k8s.io", "io.fabric8.kubernetes.api.model.internal.apiserver.v1alpha1", "kubernetes_internal_apiserver_v1alpha1_", true},
   }
 
   typeMap := map[reflect.Type]reflect.Type{

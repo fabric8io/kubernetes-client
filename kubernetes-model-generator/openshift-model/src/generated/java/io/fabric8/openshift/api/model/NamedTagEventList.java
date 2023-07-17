@@ -66,6 +66,7 @@ public class NamedTagEventList implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<TagEventCondition> conditions = new ArrayList<TagEventCondition>();
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<TagEvent> items = new ArrayList<TagEvent>();
     @JsonProperty("tag")
     private String tag;

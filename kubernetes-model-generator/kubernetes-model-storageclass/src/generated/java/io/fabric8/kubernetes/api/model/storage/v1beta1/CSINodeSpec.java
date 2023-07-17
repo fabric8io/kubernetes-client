@@ -61,6 +61,7 @@ public class CSINodeSpec implements KubernetesResource
 {
 
     @JsonProperty("drivers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<CSINodeDriver> drivers = new ArrayList<CSINodeDriver>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();

@@ -45,6 +45,7 @@ import lombok.experimental.Accessors;
     "outboundType",
     "region",
     "resourceGroupName",
+    "userTags",
     "virtualNetwork"
 })
 @ToString
@@ -70,31 +71,34 @@ public class Platform implements KubernetesResource
 {
 
     @JsonProperty("armEndpoint")
-    private String armEndpoint;
+    private java.lang.String armEndpoint;
     @JsonProperty("baseDomainResourceGroupName")
-    private String baseDomainResourceGroupName;
+    private java.lang.String baseDomainResourceGroupName;
     @JsonProperty("cloudName")
-    private String cloudName;
+    private java.lang.String cloudName;
     @JsonProperty("clusterOSImage")
-    private String clusterOSImage;
+    private java.lang.String clusterOSImage;
     @JsonProperty("computeSubnet")
-    private String computeSubnet;
+    private java.lang.String computeSubnet;
     @JsonProperty("controlPlaneSubnet")
-    private String controlPlaneSubnet;
+    private java.lang.String controlPlaneSubnet;
     @JsonProperty("defaultMachinePlatform")
     private MachinePool defaultMachinePlatform;
     @JsonProperty("networkResourceGroupName")
-    private String networkResourceGroupName;
+    private java.lang.String networkResourceGroupName;
     @JsonProperty("outboundType")
-    private String outboundType;
+    private java.lang.String outboundType;
     @JsonProperty("region")
-    private String region;
+    private java.lang.String region;
     @JsonProperty("resourceGroupName")
-    private String resourceGroupName;
+    private java.lang.String resourceGroupName;
+    @JsonProperty("userTags")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, String> userTags = new LinkedHashMap<String, String>();
     @JsonProperty("virtualNetwork")
-    private String virtualNetwork;
+    private java.lang.String virtualNetwork;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -103,7 +107,7 @@ public class Platform implements KubernetesResource
     public Platform() {
     }
 
-    public Platform(String armEndpoint, String baseDomainResourceGroupName, String cloudName, String clusterOSImage, String computeSubnet, String controlPlaneSubnet, MachinePool defaultMachinePlatform, String networkResourceGroupName, String outboundType, String region, String resourceGroupName, String virtualNetwork) {
+    public Platform(java.lang.String armEndpoint, java.lang.String baseDomainResourceGroupName, java.lang.String cloudName, java.lang.String clusterOSImage, java.lang.String computeSubnet, java.lang.String controlPlaneSubnet, MachinePool defaultMachinePlatform, java.lang.String networkResourceGroupName, java.lang.String outboundType, java.lang.String region, java.lang.String resourceGroupName, Map<String, String> userTags, java.lang.String virtualNetwork) {
         super();
         this.armEndpoint = armEndpoint;
         this.baseDomainResourceGroupName = baseDomainResourceGroupName;
@@ -116,66 +120,67 @@ public class Platform implements KubernetesResource
         this.outboundType = outboundType;
         this.region = region;
         this.resourceGroupName = resourceGroupName;
+        this.userTags = userTags;
         this.virtualNetwork = virtualNetwork;
     }
 
     @JsonProperty("armEndpoint")
-    public String getArmEndpoint() {
+    public java.lang.String getArmEndpoint() {
         return armEndpoint;
     }
 
     @JsonProperty("armEndpoint")
-    public void setArmEndpoint(String armEndpoint) {
+    public void setArmEndpoint(java.lang.String armEndpoint) {
         this.armEndpoint = armEndpoint;
     }
 
     @JsonProperty("baseDomainResourceGroupName")
-    public String getBaseDomainResourceGroupName() {
+    public java.lang.String getBaseDomainResourceGroupName() {
         return baseDomainResourceGroupName;
     }
 
     @JsonProperty("baseDomainResourceGroupName")
-    public void setBaseDomainResourceGroupName(String baseDomainResourceGroupName) {
+    public void setBaseDomainResourceGroupName(java.lang.String baseDomainResourceGroupName) {
         this.baseDomainResourceGroupName = baseDomainResourceGroupName;
     }
 
     @JsonProperty("cloudName")
-    public String getCloudName() {
+    public java.lang.String getCloudName() {
         return cloudName;
     }
 
     @JsonProperty("cloudName")
-    public void setCloudName(String cloudName) {
+    public void setCloudName(java.lang.String cloudName) {
         this.cloudName = cloudName;
     }
 
     @JsonProperty("clusterOSImage")
-    public String getClusterOSImage() {
+    public java.lang.String getClusterOSImage() {
         return clusterOSImage;
     }
 
     @JsonProperty("clusterOSImage")
-    public void setClusterOSImage(String clusterOSImage) {
+    public void setClusterOSImage(java.lang.String clusterOSImage) {
         this.clusterOSImage = clusterOSImage;
     }
 
     @JsonProperty("computeSubnet")
-    public String getComputeSubnet() {
+    public java.lang.String getComputeSubnet() {
         return computeSubnet;
     }
 
     @JsonProperty("computeSubnet")
-    public void setComputeSubnet(String computeSubnet) {
+    public void setComputeSubnet(java.lang.String computeSubnet) {
         this.computeSubnet = computeSubnet;
     }
 
     @JsonProperty("controlPlaneSubnet")
-    public String getControlPlaneSubnet() {
+    public java.lang.String getControlPlaneSubnet() {
         return controlPlaneSubnet;
     }
 
     @JsonProperty("controlPlaneSubnet")
-    public void setControlPlaneSubnet(String controlPlaneSubnet) {
+    public void setControlPlaneSubnet(java.lang.String controlPlaneSubnet) {
         this.controlPlaneSubnet = controlPlaneSubnet;
     }
 
@@ -190,62 +195,72 @@ public class Platform implements KubernetesResource
     }
 
     @JsonProperty("networkResourceGroupName")
-    public String getNetworkResourceGroupName() {
+    public java.lang.String getNetworkResourceGroupName() {
         return networkResourceGroupName;
     }
 
     @JsonProperty("networkResourceGroupName")
-    public void setNetworkResourceGroupName(String networkResourceGroupName) {
+    public void setNetworkResourceGroupName(java.lang.String networkResourceGroupName) {
         this.networkResourceGroupName = networkResourceGroupName;
     }
 
     @JsonProperty("outboundType")
-    public String getOutboundType() {
+    public java.lang.String getOutboundType() {
         return outboundType;
     }
 
     @JsonProperty("outboundType")
-    public void setOutboundType(String outboundType) {
+    public void setOutboundType(java.lang.String outboundType) {
         this.outboundType = outboundType;
     }
 
     @JsonProperty("region")
-    public String getRegion() {
+    public java.lang.String getRegion() {
         return region;
     }
 
     @JsonProperty("region")
-    public void setRegion(String region) {
+    public void setRegion(java.lang.String region) {
         this.region = region;
     }
 
     @JsonProperty("resourceGroupName")
-    public String getResourceGroupName() {
+    public java.lang.String getResourceGroupName() {
         return resourceGroupName;
     }
 
     @JsonProperty("resourceGroupName")
-    public void setResourceGroupName(String resourceGroupName) {
+    public void setResourceGroupName(java.lang.String resourceGroupName) {
         this.resourceGroupName = resourceGroupName;
     }
 
+    @JsonProperty("userTags")
+    public Map<String, String> getUserTags() {
+        return userTags;
+    }
+
+    @JsonProperty("userTags")
+    public void setUserTags(Map<String, String> userTags) {
+        this.userTags = userTags;
+    }
+
     @JsonProperty("virtualNetwork")
-    public String getVirtualNetwork() {
+    public java.lang.String getVirtualNetwork() {
         return virtualNetwork;
     }
 
     @JsonProperty("virtualNetwork")
-    public void setVirtualNetwork(String virtualNetwork) {
+    public void setVirtualNetwork(java.lang.String virtualNetwork) {
         this.virtualNetwork = virtualNetwork;
     }
 
     @JsonAnyGetter
-    public Map<String, Object> getAdditionalProperties() {
+    public Map<java.lang.String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(String name, Object value) {
+    public void setAdditionalProperty(java.lang.String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 

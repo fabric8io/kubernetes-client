@@ -87,6 +87,7 @@ public class PlacementList implements KubernetesResource, KubernetesResourceList
     @JsonProperty("apiVersion")
     private String apiVersion = "cluster.open-cluster-management.io/v1alpha1";
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.openclustermanagement.api.model.cluster.v1alpha1.Placement> items = new ArrayList<io.fabric8.openclustermanagement.api.model.cluster.v1alpha1.Placement>();
     /**
      * 

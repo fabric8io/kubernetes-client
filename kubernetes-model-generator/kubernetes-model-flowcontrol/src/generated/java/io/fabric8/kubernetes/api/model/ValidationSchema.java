@@ -20,6 +20,8 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
+import io.fabric8.kubernetes.api.model.internal.apiserver.v1alpha1.StorageVersion;
+import io.fabric8.kubernetes.api.model.internal.apiserver.v1alpha1.StorageVersionList;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -33,6 +35,8 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
+    "V1Alpha1StorageVersion",
+    "V1Alpha1StorageVersionList",
     "V1alpha1FlowSchema",
     "V1alpha1FlowSchemaList",
     "V1alpha1PriorityLevelConfiguration",
@@ -71,6 +75,10 @@ import lombok.experimental.Accessors;
 @Generated("jsonschema2pojo")
 public class ValidationSchema {
 
+    @JsonProperty("V1Alpha1StorageVersion")
+    private StorageVersion v1Alpha1StorageVersion;
+    @JsonProperty("V1Alpha1StorageVersionList")
+    private StorageVersionList v1Alpha1StorageVersionList;
     @JsonProperty("V1alpha1FlowSchema")
     private io.fabric8.kubernetes.api.model.flowcontrol.v1alpha1.FlowSchema v1alpha1FlowSchema;
     @JsonProperty("V1alpha1FlowSchemaList")
@@ -113,8 +121,10 @@ public class ValidationSchema {
     public ValidationSchema() {
     }
 
-    public ValidationSchema(io.fabric8.kubernetes.api.model.flowcontrol.v1alpha1.FlowSchema v1alpha1FlowSchema, io.fabric8.kubernetes.api.model.flowcontrol.v1alpha1.FlowSchemaList v1alpha1FlowSchemaList, io.fabric8.kubernetes.api.model.flowcontrol.v1alpha1.PriorityLevelConfiguration v1alpha1PriorityLevelConfiguration, io.fabric8.kubernetes.api.model.flowcontrol.v1alpha1.PriorityLevelConfigurationList v1alpha1PriorityLevelConfigurationList, io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.FlowSchema v1beta1FlowSchema, io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.FlowSchemaList v1beta1FlowSchemaList, io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.PriorityLevelConfiguration v1beta1PriorityLevelConfiguration, io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.PriorityLevelConfigurationList v1beta1PriorityLevelConfigurationList, io.fabric8.kubernetes.api.model.flowcontrol.v1beta2.FlowSchema v1beta2FlowSchema, io.fabric8.kubernetes.api.model.flowcontrol.v1beta2.FlowSchemaList v1beta2FlowSchemaList, io.fabric8.kubernetes.api.model.flowcontrol.v1beta2.PriorityLevelConfiguration v1beta2PriorityLevelConfiguration, io.fabric8.kubernetes.api.model.flowcontrol.v1beta2.PriorityLevelConfigurationList v1beta2PriorityLevelConfigurationList, io.fabric8.kubernetes.api.model.flowcontrol.v1beta3.FlowSchema v1beta3FlowSchema, io.fabric8.kubernetes.api.model.flowcontrol.v1beta3.FlowSchemaList v1beta3FlowSchemaList, io.fabric8.kubernetes.api.model.flowcontrol.v1beta3.PriorityLevelConfiguration v1beta3PriorityLevelConfiguration, io.fabric8.kubernetes.api.model.flowcontrol.v1beta3.PriorityLevelConfigurationList v1beta3PriorityLevelConfigurationList) {
+    public ValidationSchema(StorageVersion v1Alpha1StorageVersion, StorageVersionList v1Alpha1StorageVersionList, io.fabric8.kubernetes.api.model.flowcontrol.v1alpha1.FlowSchema v1alpha1FlowSchema, io.fabric8.kubernetes.api.model.flowcontrol.v1alpha1.FlowSchemaList v1alpha1FlowSchemaList, io.fabric8.kubernetes.api.model.flowcontrol.v1alpha1.PriorityLevelConfiguration v1alpha1PriorityLevelConfiguration, io.fabric8.kubernetes.api.model.flowcontrol.v1alpha1.PriorityLevelConfigurationList v1alpha1PriorityLevelConfigurationList, io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.FlowSchema v1beta1FlowSchema, io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.FlowSchemaList v1beta1FlowSchemaList, io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.PriorityLevelConfiguration v1beta1PriorityLevelConfiguration, io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.PriorityLevelConfigurationList v1beta1PriorityLevelConfigurationList, io.fabric8.kubernetes.api.model.flowcontrol.v1beta2.FlowSchema v1beta2FlowSchema, io.fabric8.kubernetes.api.model.flowcontrol.v1beta2.FlowSchemaList v1beta2FlowSchemaList, io.fabric8.kubernetes.api.model.flowcontrol.v1beta2.PriorityLevelConfiguration v1beta2PriorityLevelConfiguration, io.fabric8.kubernetes.api.model.flowcontrol.v1beta2.PriorityLevelConfigurationList v1beta2PriorityLevelConfigurationList, io.fabric8.kubernetes.api.model.flowcontrol.v1beta3.FlowSchema v1beta3FlowSchema, io.fabric8.kubernetes.api.model.flowcontrol.v1beta3.FlowSchemaList v1beta3FlowSchemaList, io.fabric8.kubernetes.api.model.flowcontrol.v1beta3.PriorityLevelConfiguration v1beta3PriorityLevelConfiguration, io.fabric8.kubernetes.api.model.flowcontrol.v1beta3.PriorityLevelConfigurationList v1beta3PriorityLevelConfigurationList) {
         super();
+        this.v1Alpha1StorageVersion = v1Alpha1StorageVersion;
+        this.v1Alpha1StorageVersionList = v1Alpha1StorageVersionList;
         this.v1alpha1FlowSchema = v1alpha1FlowSchema;
         this.v1alpha1FlowSchemaList = v1alpha1FlowSchemaList;
         this.v1alpha1PriorityLevelConfiguration = v1alpha1PriorityLevelConfiguration;
@@ -131,6 +141,26 @@ public class ValidationSchema {
         this.v1beta3FlowSchemaList = v1beta3FlowSchemaList;
         this.v1beta3PriorityLevelConfiguration = v1beta3PriorityLevelConfiguration;
         this.v1beta3PriorityLevelConfigurationList = v1beta3PriorityLevelConfigurationList;
+    }
+
+    @JsonProperty("V1Alpha1StorageVersion")
+    public StorageVersion getV1Alpha1StorageVersion() {
+        return v1Alpha1StorageVersion;
+    }
+
+    @JsonProperty("V1Alpha1StorageVersion")
+    public void setV1Alpha1StorageVersion(StorageVersion v1Alpha1StorageVersion) {
+        this.v1Alpha1StorageVersion = v1Alpha1StorageVersion;
+    }
+
+    @JsonProperty("V1Alpha1StorageVersionList")
+    public StorageVersionList getV1Alpha1StorageVersionList() {
+        return v1Alpha1StorageVersionList;
+    }
+
+    @JsonProperty("V1Alpha1StorageVersionList")
+    public void setV1Alpha1StorageVersionList(StorageVersionList v1Alpha1StorageVersionList) {
+        this.v1Alpha1StorageVersionList = v1Alpha1StorageVersionList;
     }
 
     @JsonProperty("V1alpha1FlowSchema")

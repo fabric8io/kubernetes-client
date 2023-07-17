@@ -36,10 +36,12 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
+    "driverConfig",
     "logLevel",
     "managementState",
     "observedConfig",
     "operatorLogLevel",
+    "storageClassState",
     "unsupportedConfigOverrides"
 })
 @ToString
@@ -66,6 +68,8 @@ import lombok.experimental.Accessors;
 public class ClusterCSIDriverSpec implements KubernetesResource
 {
 
+    @JsonProperty("driverConfig")
+    private CSIDriverConfigSpec driverConfig;
     @JsonProperty("logLevel")
     private String logLevel;
     @JsonProperty("managementState")
@@ -74,6 +78,8 @@ public class ClusterCSIDriverSpec implements KubernetesResource
     private KubernetesResource observedConfig;
     @JsonProperty("operatorLogLevel")
     private String operatorLogLevel;
+    @JsonProperty("storageClassState")
+    private String storageClassState;
     @JsonProperty("unsupportedConfigOverrides")
     private KubernetesResource unsupportedConfigOverrides;
     @JsonIgnore
@@ -86,13 +92,25 @@ public class ClusterCSIDriverSpec implements KubernetesResource
     public ClusterCSIDriverSpec() {
     }
 
-    public ClusterCSIDriverSpec(String logLevel, String managementState, KubernetesResource observedConfig, String operatorLogLevel, KubernetesResource unsupportedConfigOverrides) {
+    public ClusterCSIDriverSpec(CSIDriverConfigSpec driverConfig, String logLevel, String managementState, KubernetesResource observedConfig, String operatorLogLevel, String storageClassState, KubernetesResource unsupportedConfigOverrides) {
         super();
+        this.driverConfig = driverConfig;
         this.logLevel = logLevel;
         this.managementState = managementState;
         this.observedConfig = observedConfig;
         this.operatorLogLevel = operatorLogLevel;
+        this.storageClassState = storageClassState;
         this.unsupportedConfigOverrides = unsupportedConfigOverrides;
+    }
+
+    @JsonProperty("driverConfig")
+    public CSIDriverConfigSpec getDriverConfig() {
+        return driverConfig;
+    }
+
+    @JsonProperty("driverConfig")
+    public void setDriverConfig(CSIDriverConfigSpec driverConfig) {
+        this.driverConfig = driverConfig;
     }
 
     @JsonProperty("logLevel")
@@ -133,6 +151,16 @@ public class ClusterCSIDriverSpec implements KubernetesResource
     @JsonProperty("operatorLogLevel")
     public void setOperatorLogLevel(String operatorLogLevel) {
         this.operatorLogLevel = operatorLogLevel;
+    }
+
+    @JsonProperty("storageClassState")
+    public String getStorageClassState() {
+        return storageClassState;
+    }
+
+    @JsonProperty("storageClassState")
+    public void setStorageClassState(String storageClassState) {
+        this.storageClassState = storageClassState;
     }
 
     @JsonProperty("unsupportedConfigOverrides")

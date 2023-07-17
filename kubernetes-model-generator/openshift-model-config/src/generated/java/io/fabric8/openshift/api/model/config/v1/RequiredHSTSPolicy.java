@@ -64,6 +64,7 @@ public class RequiredHSTSPolicy implements KubernetesResource
 {
 
     @JsonProperty("domainPatterns")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> domainPatterns = new ArrayList<String>();
     @JsonProperty("includeSubDomainsPolicy")
     private String includeSubDomainsPolicy;

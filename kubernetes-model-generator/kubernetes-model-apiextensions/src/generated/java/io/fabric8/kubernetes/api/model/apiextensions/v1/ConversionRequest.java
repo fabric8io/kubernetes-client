@@ -69,6 +69,7 @@ public class ConversionRequest implements KubernetesResource
     @JsonProperty("desiredAPIVersion")
     private String desiredAPIVersion;
     @JsonProperty("objects")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<KubernetesResource> objects = new ArrayList<KubernetesResource>();
     @JsonProperty("uid")
     private String uid;

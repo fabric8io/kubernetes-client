@@ -79,6 +79,7 @@ public class EgressNetworkPolicyList implements KubernetesResource, KubernetesRe
     @JsonProperty("apiVersion")
     private String apiVersion = "network.openshift.io/v1";
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.openshift.api.model.EgressNetworkPolicy> items = new ArrayList<io.fabric8.openshift.api.model.EgressNetworkPolicy>();
     /**
      * 

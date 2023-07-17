@@ -35,6 +35,7 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
+    "attachMetadata",
     "jobLabel",
     "labelLimit",
     "labelNameLengthLimit",
@@ -68,6 +69,8 @@ import lombok.experimental.Accessors;
 public class PodMonitorSpec implements KubernetesResource
 {
 
+    @JsonProperty("attachMetadata")
+    private AttachMetadata attachMetadata;
     @JsonProperty("jobLabel")
     private String jobLabel;
     @JsonProperty("labelLimit")
@@ -79,6 +82,7 @@ public class PodMonitorSpec implements KubernetesResource
     @JsonProperty("namespaceSelector")
     private NamespaceSelector namespaceSelector;
     @JsonProperty("podMetricsEndpoints")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<PodMetricsEndpoint> podMetricsEndpoints = new ArrayList<PodMetricsEndpoint>();
     @JsonProperty("podTargetLabels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -99,8 +103,9 @@ public class PodMonitorSpec implements KubernetesResource
     public PodMonitorSpec() {
     }
 
-    public PodMonitorSpec(String jobLabel, Long labelLimit, Long labelNameLengthLimit, Long labelValueLengthLimit, NamespaceSelector namespaceSelector, List<PodMetricsEndpoint> podMetricsEndpoints, List<String> podTargetLabels, Long sampleLimit, io.fabric8.kubernetes.api.model.LabelSelector selector, Long targetLimit) {
+    public PodMonitorSpec(AttachMetadata attachMetadata, String jobLabel, Long labelLimit, Long labelNameLengthLimit, Long labelValueLengthLimit, NamespaceSelector namespaceSelector, List<PodMetricsEndpoint> podMetricsEndpoints, List<String> podTargetLabels, Long sampleLimit, io.fabric8.kubernetes.api.model.LabelSelector selector, Long targetLimit) {
         super();
+        this.attachMetadata = attachMetadata;
         this.jobLabel = jobLabel;
         this.labelLimit = labelLimit;
         this.labelNameLengthLimit = labelNameLengthLimit;
@@ -111,6 +116,16 @@ public class PodMonitorSpec implements KubernetesResource
         this.sampleLimit = sampleLimit;
         this.selector = selector;
         this.targetLimit = targetLimit;
+    }
+
+    @JsonProperty("attachMetadata")
+    public AttachMetadata getAttachMetadata() {
+        return attachMetadata;
+    }
+
+    @JsonProperty("attachMetadata")
+    public void setAttachMetadata(AttachMetadata attachMetadata) {
+        this.attachMetadata = attachMetadata;
     }
 
     @JsonProperty("jobLabel")

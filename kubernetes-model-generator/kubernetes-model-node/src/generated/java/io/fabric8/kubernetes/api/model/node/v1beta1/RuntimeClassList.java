@@ -79,6 +79,7 @@ public class RuntimeClassList implements KubernetesResource, KubernetesResourceL
     @JsonProperty("apiVersion")
     private String apiVersion = "node.k8s.io/v1beta1";
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.kubernetes.api.model.node.v1beta1.RuntimeClass> items = new ArrayList<io.fabric8.kubernetes.api.model.node.v1beta1.RuntimeClass>();
     /**
      * 

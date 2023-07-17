@@ -37,6 +37,8 @@ import lombok.experimental.Accessors;
     "kind",
     "metadata",
     "policy",
+    "protocolStrategy",
+    "transportConfig",
     "upstreams"
 })
 @ToString
@@ -63,7 +65,12 @@ public class UpstreamResolvers implements KubernetesResource
 
     @JsonProperty("policy")
     private String policy;
+    @JsonProperty("protocolStrategy")
+    private String protocolStrategy;
+    @JsonProperty("transportConfig")
+    private DNSTransportConfig transportConfig;
     @JsonProperty("upstreams")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Upstream> upstreams = new ArrayList<Upstream>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
@@ -75,9 +82,11 @@ public class UpstreamResolvers implements KubernetesResource
     public UpstreamResolvers() {
     }
 
-    public UpstreamResolvers(String policy, List<Upstream> upstreams) {
+    public UpstreamResolvers(String policy, String protocolStrategy, DNSTransportConfig transportConfig, List<Upstream> upstreams) {
         super();
         this.policy = policy;
+        this.protocolStrategy = protocolStrategy;
+        this.transportConfig = transportConfig;
         this.upstreams = upstreams;
     }
 
@@ -89,6 +98,26 @@ public class UpstreamResolvers implements KubernetesResource
     @JsonProperty("policy")
     public void setPolicy(String policy) {
         this.policy = policy;
+    }
+
+    @JsonProperty("protocolStrategy")
+    public String getProtocolStrategy() {
+        return protocolStrategy;
+    }
+
+    @JsonProperty("protocolStrategy")
+    public void setProtocolStrategy(String protocolStrategy) {
+        this.protocolStrategy = protocolStrategy;
+    }
+
+    @JsonProperty("transportConfig")
+    public DNSTransportConfig getTransportConfig() {
+        return transportConfig;
+    }
+
+    @JsonProperty("transportConfig")
+    public void setTransportConfig(DNSTransportConfig transportConfig) {
+        this.transportConfig = transportConfig;
     }
 
     @JsonProperty("upstreams")

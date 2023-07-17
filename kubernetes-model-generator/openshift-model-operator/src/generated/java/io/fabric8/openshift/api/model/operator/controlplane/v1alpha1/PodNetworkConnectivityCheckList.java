@@ -79,6 +79,7 @@ public class PodNetworkConnectivityCheckList implements KubernetesResource, Kube
     @JsonProperty("apiVersion")
     private String apiVersion = "controlplane.operator.openshift.io/v1alpha1";
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.openshift.api.model.operator.controlplane.v1alpha1.PodNetworkConnectivityCheck> items = new ArrayList<io.fabric8.openshift.api.model.operator.controlplane.v1alpha1.PodNetworkConnectivityCheck>();
     /**
      * 

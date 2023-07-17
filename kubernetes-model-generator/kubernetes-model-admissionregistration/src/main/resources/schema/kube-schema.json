@@ -278,6 +278,22 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "kubernetes_admissionregistration_v1_MatchCondition": {
+      "type": "object",
+      "properties": {
+        "expression": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1.MatchCondition",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "kubernetes_admissionregistration_v1_MutatingWebhook": {
       "type": "object",
       "properties": {
@@ -293,6 +309,14 @@
         },
         "failurePolicy": {
           "type": "string"
+        },
+        "matchConditions": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_admissionregistration_v1_MatchCondition",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1.MatchCondition"
+          }
         },
         "matchPolicy": {
           "type": "string"
@@ -509,6 +533,14 @@
         "failurePolicy": {
           "type": "string"
         },
+        "matchConditions": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_admissionregistration_v1_MatchCondition",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1.MatchCondition"
+          }
+        },
         "matchPolicy": {
           "type": "string"
         },
@@ -624,6 +656,54 @@
       },
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1.WebhookClientConfig",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_admissionregistration_v1alpha1_AuditAnnotation": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string"
+        },
+        "valueExpression": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1alpha1.AuditAnnotation",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_admissionregistration_v1alpha1_ExpressionWarning": {
+      "type": "object",
+      "properties": {
+        "fieldRef": {
+          "type": "string"
+        },
+        "warning": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1alpha1.ExpressionWarning",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_admissionregistration_v1alpha1_MatchCondition": {
+      "type": "object",
+      "properties": {
+        "expression": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1alpha1.MatchCondition",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -745,6 +825,24 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "kubernetes_admissionregistration_v1alpha1_TypeChecking": {
+      "type": "object",
+      "properties": {
+        "expressionWarnings": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_admissionregistration_v1alpha1_ExpressionWarning",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1alpha1.ExpressionWarning"
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1alpha1.TypeChecking",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "kubernetes_admissionregistration_v1alpha1_ValidatingAdmissionPolicy": {
       "type": "object",
       "properties": {
@@ -765,6 +863,10 @@
         "spec": {
           "$ref": "#/definitions/kubernetes_admissionregistration_v1alpha1_ValidatingAdmissionPolicySpec",
           "existingJavaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1alpha1.ValidatingAdmissionPolicySpec"
+        },
+        "status": {
+          "$ref": "#/definitions/kubernetes_admissionregistration_v1alpha1_ValidatingAdmissionPolicyStatus",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1alpha1.ValidatingAdmissionPolicyStatus"
         }
       },
       "additionalProperties": true,
@@ -847,6 +949,13 @@
         },
         "policyName": {
           "type": "string"
+        },
+        "validationActions": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
         }
       },
       "additionalProperties": true,
@@ -891,8 +1000,24 @@
     "kubernetes_admissionregistration_v1alpha1_ValidatingAdmissionPolicySpec": {
       "type": "object",
       "properties": {
+        "auditAnnotations": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_admissionregistration_v1alpha1_AuditAnnotation",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1alpha1.AuditAnnotation"
+          }
+        },
         "failurePolicy": {
           "type": "string"
+        },
+        "matchConditions": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_admissionregistration_v1alpha1_MatchCondition",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1alpha1.MatchCondition"
+          }
         },
         "matchConstraints": {
           "$ref": "#/definitions/kubernetes_admissionregistration_v1alpha1_MatchResources",
@@ -904,6 +1029,7 @@
         },
         "validations": {
           "type": "array",
+          "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/kubernetes_admissionregistration_v1alpha1_Validation",
             "existingJavaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1alpha1.Validation"
@@ -912,6 +1038,32 @@
       },
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1alpha1.ValidatingAdmissionPolicySpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_admissionregistration_v1alpha1_ValidatingAdmissionPolicyStatus": {
+      "type": "object",
+      "properties": {
+        "conditions": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_apimachinery_Condition",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.Condition"
+          }
+        },
+        "observedGeneration": {
+          "type": "integer",
+          "existingJavaType": "Long"
+        },
+        "typeChecking": {
+          "$ref": "#/definitions/kubernetes_admissionregistration_v1alpha1_TypeChecking",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1alpha1.TypeChecking"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1alpha1.ValidatingAdmissionPolicyStatus",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -925,12 +1077,31 @@
         "message": {
           "type": "string"
         },
+        "messageExpression": {
+          "type": "string"
+        },
         "reason": {
           "type": "string"
         }
       },
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1alpha1.Validation",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_admissionregistration_v1beta1_MatchCondition": {
+      "type": "object",
+      "properties": {
+        "expression": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.MatchCondition",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -951,6 +1122,14 @@
         },
         "failurePolicy": {
           "type": "string"
+        },
+        "matchConditions": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_admissionregistration_v1beta1_MatchCondition",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.MatchCondition"
+          }
         },
         "matchPolicy": {
           "type": "string"
@@ -1092,6 +1271,14 @@
         },
         "failurePolicy": {
           "type": "string"
+        },
+        "matchConditions": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_admissionregistration_v1beta1_MatchCondition",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.MatchCondition"
+          }
         },
         "matchPolicy": {
           "type": "string"
@@ -1277,6 +1464,36 @@
       },
       "additionalProperties": true,
       "existingJavaType": "io.fabric8.kubernetes.api.model.APIGroupList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_apimachinery_Condition": {
+      "type": "object",
+      "properties": {
+        "lastTransitionTime": {
+          "$ref": "#/definitions/kubernetes_apimachinery_Time",
+          "existingJavaType": "String"
+        },
+        "message": {
+          "type": "string"
+        },
+        "observedGeneration": {
+          "type": "integer",
+          "existingJavaType": "Long"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "existingJavaType": "io.fabric8.kubernetes.api.model.Condition",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -1577,6 +1794,9 @@
         },
         "resourceVersionMatch": {
           "type": "string"
+        },
+        "sendInitialEvents": {
+          "type": "boolean"
         },
         "timeoutSeconds": {
           "type": "integer",
@@ -2273,6 +2493,48 @@
       },
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.authentication.v1alpha1.SelfSubjectReviewStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_authentication_v1beta1_SelfSubjectReview": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "authentication.k8s.io/v1beta1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "SelfSubjectReview",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "status": {
+          "$ref": "#/definitions/kubernetes_authentication_v1beta1_SelfSubjectReviewStatus",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.authentication.v1beta1.SelfSubjectReviewStatus"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.authentication.v1beta1.SelfSubjectReview",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata"
+      ]
+    },
+    "kubernetes_authentication_v1beta1_SelfSubjectReviewStatus": {
+      "type": "object",
+      "properties": {
+        "userInfo": {
+          "$ref": "#/definitions/kubernetes_authentication_UserInfo",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.authentication.UserInfo"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.authentication.v1beta1.SelfSubjectReviewStatus",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -3145,6 +3407,10 @@
     },
     "V1Beta1PatchType": {
       "type": "string"
+    },
+    "V1Beta1SelfSubjectReview": {
+      "$ref": "#/definitions/kubernetes_authentication_v1beta1_SelfSubjectReview",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.authentication.v1beta1.SelfSubjectReview"
     },
     "V1MutatingWebhookConfiguration": {
       "$ref": "#/definitions/kubernetes_admissionregistration_v1_MutatingWebhookConfiguration",

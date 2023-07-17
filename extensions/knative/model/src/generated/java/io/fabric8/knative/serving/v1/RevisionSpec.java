@@ -123,6 +123,7 @@ public class RevisionSpec implements KubernetesResource
     @JsonProperty("containerConcurrency")
     private Long containerConcurrency;
     @JsonProperty("containers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.kubernetes.api.model.Container> containers = new ArrayList<io.fabric8.kubernetes.api.model.Container>();
     @JsonProperty("dnsConfig")
     private PodDNSConfig dnsConfig;

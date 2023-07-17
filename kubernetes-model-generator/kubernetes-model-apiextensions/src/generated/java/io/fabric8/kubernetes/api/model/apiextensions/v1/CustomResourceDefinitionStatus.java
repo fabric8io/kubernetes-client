@@ -65,8 +65,10 @@ public class CustomResourceDefinitionStatus implements KubernetesResource
     @JsonProperty("acceptedNames")
     private CustomResourceDefinitionNames acceptedNames;
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<CustomResourceDefinitionCondition> conditions = new ArrayList<CustomResourceDefinitionCondition>();
     @JsonProperty("storedVersions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> storedVersions = new ArrayList<String>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();

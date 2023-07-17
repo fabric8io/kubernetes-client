@@ -95,6 +95,7 @@ public class LocalSubjectAccessReview implements KubernetesResource, Namespaced
     @JsonProperty("content")
     private KubernetesResource content;
     @JsonProperty("groups")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> groups = new ArrayList<String>();
     @JsonProperty("isNonResourceURL")
     private Boolean isNonResourceURL;
@@ -118,6 +119,7 @@ public class LocalSubjectAccessReview implements KubernetesResource, Namespaced
     @JsonProperty("resourceName")
     private String resourceName;
     @JsonProperty("scopes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> scopes = new ArrayList<String>();
     @JsonProperty("user")
     private String user;

@@ -79,6 +79,7 @@ public class VolumeAttachmentList implements KubernetesResource, KubernetesResou
     @JsonProperty("apiVersion")
     private String apiVersion = "storage.k8s.io/v1";
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.kubernetes.api.model.storage.VolumeAttachment> items = new ArrayList<io.fabric8.kubernetes.api.model.storage.VolumeAttachment>();
     /**
      * 

@@ -87,6 +87,7 @@ public class ClusterTriggerBindingList implements KubernetesResource, Kubernetes
     @JsonProperty("apiVersion")
     private String apiVersion = "triggers.tekton.dev/v1beta1";
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.tekton.triggers.v1beta1.ClusterTriggerBinding> items = new ArrayList<io.fabric8.tekton.triggers.v1beta1.ClusterTriggerBinding>();
     /**
      * 

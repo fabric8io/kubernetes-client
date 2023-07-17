@@ -66,6 +66,7 @@ public class APIResource implements KubernetesResource
     @JsonProperty("storageVersionHash")
     private String storageVersionHash;
     @JsonProperty("verbs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> verbs = new ArrayList<String>();
     @JsonProperty("version")
     private String version;

@@ -39,6 +39,7 @@ import lombok.experimental.Accessors;
     "gcs",
     "ibmcos",
     "managementState",
+    "oss",
     "pvc",
     "s3",
     "swift"
@@ -75,6 +76,8 @@ public class ImageRegistryConfigStorage implements KubernetesResource
     private ImageRegistryConfigStorageIBMCOS ibmcos;
     @JsonProperty("managementState")
     private String managementState;
+    @JsonProperty("oss")
+    private ImageRegistryConfigStorageAlibabaOSS oss;
     @JsonProperty("pvc")
     private ImageRegistryConfigStoragePVC pvc;
     @JsonProperty("s3")
@@ -91,13 +94,14 @@ public class ImageRegistryConfigStorage implements KubernetesResource
     public ImageRegistryConfigStorage() {
     }
 
-    public ImageRegistryConfigStorage(ImageRegistryConfigStorageAzure azure, ImageRegistryConfigStorageEmptyDir emptyDir, ImageRegistryConfigStorageGCS gcs, ImageRegistryConfigStorageIBMCOS ibmcos, String managementState, ImageRegistryConfigStoragePVC pvc, ImageRegistryConfigStorageS3 s3, ImageRegistryConfigStorageSwift swift) {
+    public ImageRegistryConfigStorage(ImageRegistryConfigStorageAzure azure, ImageRegistryConfigStorageEmptyDir emptyDir, ImageRegistryConfigStorageGCS gcs, ImageRegistryConfigStorageIBMCOS ibmcos, String managementState, ImageRegistryConfigStorageAlibabaOSS oss, ImageRegistryConfigStoragePVC pvc, ImageRegistryConfigStorageS3 s3, ImageRegistryConfigStorageSwift swift) {
         super();
         this.azure = azure;
         this.emptyDir = emptyDir;
         this.gcs = gcs;
         this.ibmcos = ibmcos;
         this.managementState = managementState;
+        this.oss = oss;
         this.pvc = pvc;
         this.s3 = s3;
         this.swift = swift;
@@ -151,6 +155,16 @@ public class ImageRegistryConfigStorage implements KubernetesResource
     @JsonProperty("managementState")
     public void setManagementState(String managementState) {
         this.managementState = managementState;
+    }
+
+    @JsonProperty("oss")
+    public ImageRegistryConfigStorageAlibabaOSS getOss() {
+        return oss;
+    }
+
+    @JsonProperty("oss")
+    public void setOss(ImageRegistryConfigStorageAlibabaOSS oss) {
+        this.oss = oss;
     }
 
     @JsonProperty("pvc")

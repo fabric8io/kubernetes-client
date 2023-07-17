@@ -87,6 +87,7 @@ public class ParallelList implements KubernetesResource, KubernetesResourceList<
     @JsonProperty("apiVersion")
     private String apiVersion = "flows.knative.dev/v1";
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.knative.flows.v1.Parallel> items = new ArrayList<io.fabric8.knative.flows.v1.Parallel>();
     /**
      * 

@@ -34,6 +34,7 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
+    "importMode",
     "insecure",
     "scheduled"
 })
@@ -59,6 +60,8 @@ import lombok.experimental.Accessors;
 public class TagImportPolicy implements KubernetesResource
 {
 
+    @JsonProperty("importMode")
+    private String importMode;
     @JsonProperty("insecure")
     private Boolean insecure;
     @JsonProperty("scheduled")
@@ -73,10 +76,21 @@ public class TagImportPolicy implements KubernetesResource
     public TagImportPolicy() {
     }
 
-    public TagImportPolicy(Boolean insecure, Boolean scheduled) {
+    public TagImportPolicy(String importMode, Boolean insecure, Boolean scheduled) {
         super();
+        this.importMode = importMode;
         this.insecure = insecure;
         this.scheduled = scheduled;
+    }
+
+    @JsonProperty("importMode")
+    public String getImportMode() {
+        return importMode;
+    }
+
+    @JsonProperty("importMode")
+    public void setImportMode(String importMode) {
+        this.importMode = importMode;
     }
 
     @JsonProperty("insecure")

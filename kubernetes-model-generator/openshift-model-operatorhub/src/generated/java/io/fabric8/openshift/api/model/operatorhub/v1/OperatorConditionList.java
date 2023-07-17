@@ -79,6 +79,7 @@ public class OperatorConditionList implements KubernetesResource, KubernetesReso
     @JsonProperty("apiVersion")
     private String apiVersion = "operators.coreos.com/v1";
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.openshift.api.model.operatorhub.v1.OperatorCondition> items = new ArrayList<io.fabric8.openshift.api.model.operatorhub.v1.OperatorCondition>();
     /**
      * 

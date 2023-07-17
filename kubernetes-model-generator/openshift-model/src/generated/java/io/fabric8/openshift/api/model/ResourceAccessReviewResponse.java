@@ -82,6 +82,7 @@ public class ResourceAccessReviewResponse implements KubernetesResource
     @JsonProperty("evalutionError")
     private String evalutionError;
     @JsonProperty("groups")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> groups = new ArrayList<String>();
     /**
      * 
@@ -93,6 +94,7 @@ public class ResourceAccessReviewResponse implements KubernetesResource
     @JsonProperty("namespace")
     private String namespace;
     @JsonProperty("users")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> users = new ArrayList<String>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();

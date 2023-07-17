@@ -66,8 +66,10 @@ public class HorizontalPodAutoscalerStatus implements KubernetesResource
 {
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<HorizontalPodAutoscalerCondition> conditions = new ArrayList<HorizontalPodAutoscalerCondition>();
     @JsonProperty("currentMetrics")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<MetricStatus> currentMetrics = new ArrayList<MetricStatus>();
     @JsonProperty("currentReplicas")
     private Integer currentReplicas;

@@ -36,6 +36,7 @@ import lombok.experimental.Accessors;
     "name",
     "ports",
     "readinessProbe",
+    "resizePolicy",
     "resources",
     "securityContext",
     "startupProbe",
@@ -88,6 +89,9 @@ public class EphemeralContainer implements KubernetesResource
     private List<ContainerPort> ports = new ArrayList<ContainerPort>();
     @JsonProperty("readinessProbe")
     private Probe readinessProbe;
+    @JsonProperty("resizePolicy")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<ContainerResizePolicy> resizePolicy = new ArrayList<ContainerResizePolicy>();
     @JsonProperty("resources")
     private ResourceRequirements resources;
     @JsonProperty("securityContext")
@@ -124,7 +128,7 @@ public class EphemeralContainer implements KubernetesResource
     public EphemeralContainer() {
     }
 
-    public EphemeralContainer(List<String> args, List<String> command, List<EnvVar> env, List<EnvFromSource> envFrom, String image, String imagePullPolicy, Lifecycle lifecycle, Probe livenessProbe, String name, List<ContainerPort> ports, Probe readinessProbe, ResourceRequirements resources, SecurityContext securityContext, Probe startupProbe, Boolean stdin, Boolean stdinOnce, String targetContainerName, String terminationMessagePath, String terminationMessagePolicy, Boolean tty, List<VolumeDevice> volumeDevices, List<VolumeMount> volumeMounts, String workingDir) {
+    public EphemeralContainer(List<String> args, List<String> command, List<EnvVar> env, List<EnvFromSource> envFrom, String image, String imagePullPolicy, Lifecycle lifecycle, Probe livenessProbe, String name, List<ContainerPort> ports, Probe readinessProbe, List<ContainerResizePolicy> resizePolicy, ResourceRequirements resources, SecurityContext securityContext, Probe startupProbe, Boolean stdin, Boolean stdinOnce, String targetContainerName, String terminationMessagePath, String terminationMessagePolicy, Boolean tty, List<VolumeDevice> volumeDevices, List<VolumeMount> volumeMounts, String workingDir) {
         super();
         this.args = args;
         this.command = command;
@@ -137,6 +141,7 @@ public class EphemeralContainer implements KubernetesResource
         this.name = name;
         this.ports = ports;
         this.readinessProbe = readinessProbe;
+        this.resizePolicy = resizePolicy;
         this.resources = resources;
         this.securityContext = securityContext;
         this.startupProbe = startupProbe;
@@ -259,6 +264,16 @@ public class EphemeralContainer implements KubernetesResource
     @JsonProperty("readinessProbe")
     public void setReadinessProbe(Probe readinessProbe) {
         this.readinessProbe = readinessProbe;
+    }
+
+    @JsonProperty("resizePolicy")
+    public List<ContainerResizePolicy> getResizePolicy() {
+        return resizePolicy;
+    }
+
+    @JsonProperty("resizePolicy")
+    public void setResizePolicy(List<ContainerResizePolicy> resizePolicy) {
+        this.resizePolicy = resizePolicy;
     }
 
     @JsonProperty("resources")

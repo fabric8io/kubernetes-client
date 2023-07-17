@@ -23,12 +23,14 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
+    "allocatedResources",
     "containerID",
     "image",
     "imageID",
     "lastState",
     "name",
     "ready",
+    "resources",
     "restartCount",
     "started",
     "state"
@@ -45,18 +47,23 @@ import lombok.experimental.Accessors;
 public class ContainerStatus implements KubernetesResource
 {
 
+    @JsonProperty("allocatedResources")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, Quantity> allocatedResources = new LinkedHashMap<String, Quantity>();
     @JsonProperty("containerID")
-    private String containerID;
+    private java.lang.String containerID;
     @JsonProperty("image")
-    private String image;
+    private java.lang.String image;
     @JsonProperty("imageID")
-    private String imageID;
+    private java.lang.String imageID;
     @JsonProperty("lastState")
     private ContainerState lastState;
     @JsonProperty("name")
-    private String name;
+    private java.lang.String name;
     @JsonProperty("ready")
     private Boolean ready;
+    @JsonProperty("resources")
+    private ResourceRequirements resources;
     @JsonProperty("restartCount")
     private Integer restartCount;
     @JsonProperty("started")
@@ -64,7 +71,7 @@ public class ContainerStatus implements KubernetesResource
     @JsonProperty("state")
     private ContainerState state;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -73,46 +80,58 @@ public class ContainerStatus implements KubernetesResource
     public ContainerStatus() {
     }
 
-    public ContainerStatus(String containerID, String image, String imageID, ContainerState lastState, String name, Boolean ready, Integer restartCount, Boolean started, ContainerState state) {
+    public ContainerStatus(Map<String, Quantity> allocatedResources, java.lang.String containerID, java.lang.String image, java.lang.String imageID, ContainerState lastState, java.lang.String name, Boolean ready, ResourceRequirements resources, Integer restartCount, Boolean started, ContainerState state) {
         super();
+        this.allocatedResources = allocatedResources;
         this.containerID = containerID;
         this.image = image;
         this.imageID = imageID;
         this.lastState = lastState;
         this.name = name;
         this.ready = ready;
+        this.resources = resources;
         this.restartCount = restartCount;
         this.started = started;
         this.state = state;
     }
 
+    @JsonProperty("allocatedResources")
+    public Map<String, Quantity> getAllocatedResources() {
+        return allocatedResources;
+    }
+
+    @JsonProperty("allocatedResources")
+    public void setAllocatedResources(Map<String, Quantity> allocatedResources) {
+        this.allocatedResources = allocatedResources;
+    }
+
     @JsonProperty("containerID")
-    public String getContainerID() {
+    public java.lang.String getContainerID() {
         return containerID;
     }
 
     @JsonProperty("containerID")
-    public void setContainerID(String containerID) {
+    public void setContainerID(java.lang.String containerID) {
         this.containerID = containerID;
     }
 
     @JsonProperty("image")
-    public String getImage() {
+    public java.lang.String getImage() {
         return image;
     }
 
     @JsonProperty("image")
-    public void setImage(String image) {
+    public void setImage(java.lang.String image) {
         this.image = image;
     }
 
     @JsonProperty("imageID")
-    public String getImageID() {
+    public java.lang.String getImageID() {
         return imageID;
     }
 
     @JsonProperty("imageID")
-    public void setImageID(String imageID) {
+    public void setImageID(java.lang.String imageID) {
         this.imageID = imageID;
     }
 
@@ -127,12 +146,12 @@ public class ContainerStatus implements KubernetesResource
     }
 
     @JsonProperty("name")
-    public String getName() {
+    public java.lang.String getName() {
         return name;
     }
 
     @JsonProperty("name")
-    public void setName(String name) {
+    public void setName(java.lang.String name) {
         this.name = name;
     }
 
@@ -144,6 +163,16 @@ public class ContainerStatus implements KubernetesResource
     @JsonProperty("ready")
     public void setReady(Boolean ready) {
         this.ready = ready;
+    }
+
+    @JsonProperty("resources")
+    public ResourceRequirements getResources() {
+        return resources;
+    }
+
+    @JsonProperty("resources")
+    public void setResources(ResourceRequirements resources) {
+        this.resources = resources;
     }
 
     @JsonProperty("restartCount")
@@ -177,12 +206,12 @@ public class ContainerStatus implements KubernetesResource
     }
 
     @JsonAnyGetter
-    public Map<String, Object> getAdditionalProperties() {
+    public Map<java.lang.String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(String name, Object value) {
+    public void setAdditionalProperty(java.lang.String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 

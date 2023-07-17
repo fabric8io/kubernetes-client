@@ -79,6 +79,7 @@ public class IngressList implements KubernetesResource, KubernetesResourceList<i
     @JsonProperty("apiVersion")
     private String apiVersion = "extensions/v1beta1";
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.kubernetes.api.model.extensions.Ingress> items = new ArrayList<io.fabric8.kubernetes.api.model.extensions.Ingress>();
     /**
      * 

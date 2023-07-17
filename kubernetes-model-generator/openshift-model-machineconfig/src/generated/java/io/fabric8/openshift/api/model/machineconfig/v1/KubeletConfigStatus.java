@@ -62,6 +62,7 @@ public class KubeletConfigStatus implements KubernetesResource
 {
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<KubeletConfigCondition> conditions = new ArrayList<KubeletConfigCondition>();
     @JsonProperty("observedGeneration")
     private Long observedGeneration;

@@ -62,8 +62,10 @@ public class ReferenceGrantSpec implements KubernetesResource
 {
 
     @JsonProperty("from")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ReferenceGrantFrom> from = new ArrayList<ReferenceGrantFrom>();
     @JsonProperty("to")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ReferenceGrantTo> to = new ArrayList<ReferenceGrantTo>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();

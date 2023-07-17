@@ -79,6 +79,7 @@ public class ImageTagList implements KubernetesResource, KubernetesResourceList<
     @JsonProperty("apiVersion")
     private String apiVersion = "image.openshift.io/v1";
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.openshift.api.model.ImageTag> items = new ArrayList<io.fabric8.openshift.api.model.ImageTag>();
     /**
      * 

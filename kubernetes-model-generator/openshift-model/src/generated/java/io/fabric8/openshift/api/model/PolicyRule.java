@@ -81,8 +81,10 @@ public class PolicyRule implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> resourceNames = new ArrayList<String>();
     @JsonProperty("resources")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> resources = new ArrayList<String>();
     @JsonProperty("verbs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> verbs = new ArrayList<String>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();

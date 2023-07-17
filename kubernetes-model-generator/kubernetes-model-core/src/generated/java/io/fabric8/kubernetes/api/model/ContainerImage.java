@@ -41,6 +41,7 @@ public class ContainerImage implements KubernetesResource
 {
 
     @JsonProperty("names")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> names = new ArrayList<String>();
     @JsonProperty("sizeBytes")
     private Long sizeBytes;

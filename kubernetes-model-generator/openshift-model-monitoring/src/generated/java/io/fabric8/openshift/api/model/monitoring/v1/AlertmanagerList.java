@@ -79,6 +79,7 @@ public class AlertmanagerList implements KubernetesResource, KubernetesResourceL
     @JsonProperty("apiVersion")
     private String apiVersion = "monitoring.coreos.com/v1";
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.openshift.api.model.monitoring.v1.Alertmanager> items = new ArrayList<io.fabric8.openshift.api.model.monitoring.v1.Alertmanager>();
     /**
      * 

@@ -70,6 +70,7 @@ public class ServiceMonitorSpec implements KubernetesResource
 {
 
     @JsonProperty("endpoints")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Endpoint> endpoints = new ArrayList<Endpoint>();
     @JsonProperty("jobLabel")
     private String jobLabel;

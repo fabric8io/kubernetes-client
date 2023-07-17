@@ -43,6 +43,7 @@ import lombok.experimental.Accessors;
     "nodeStatuses",
     "observedGeneration",
     "readyReplicas",
+    "serviceAccountIssuers",
     "version"
 })
 @ToString
@@ -84,6 +85,9 @@ public class KubeAPIServerStatus implements KubernetesResource
     private Long observedGeneration;
     @JsonProperty("readyReplicas")
     private Integer readyReplicas;
+    @JsonProperty("serviceAccountIssuers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<ServiceAccountIssuerStatus> serviceAccountIssuers = new ArrayList<ServiceAccountIssuerStatus>();
     @JsonProperty("version")
     private String version;
     @JsonIgnore
@@ -96,7 +100,7 @@ public class KubeAPIServerStatus implements KubernetesResource
     public KubeAPIServerStatus() {
     }
 
-    public KubeAPIServerStatus(List<OperatorCondition> conditions, List<GenerationStatus> generations, Integer latestAvailableRevision, String latestAvailableRevisionReason, List<NodeStatus> nodeStatuses, Long observedGeneration, Integer readyReplicas, String version) {
+    public KubeAPIServerStatus(List<OperatorCondition> conditions, List<GenerationStatus> generations, Integer latestAvailableRevision, String latestAvailableRevisionReason, List<NodeStatus> nodeStatuses, Long observedGeneration, Integer readyReplicas, List<ServiceAccountIssuerStatus> serviceAccountIssuers, String version) {
         super();
         this.conditions = conditions;
         this.generations = generations;
@@ -105,6 +109,7 @@ public class KubeAPIServerStatus implements KubernetesResource
         this.nodeStatuses = nodeStatuses;
         this.observedGeneration = observedGeneration;
         this.readyReplicas = readyReplicas;
+        this.serviceAccountIssuers = serviceAccountIssuers;
         this.version = version;
     }
 
@@ -176,6 +181,16 @@ public class KubeAPIServerStatus implements KubernetesResource
     @JsonProperty("readyReplicas")
     public void setReadyReplicas(Integer readyReplicas) {
         this.readyReplicas = readyReplicas;
+    }
+
+    @JsonProperty("serviceAccountIssuers")
+    public List<ServiceAccountIssuerStatus> getServiceAccountIssuers() {
+        return serviceAccountIssuers;
+    }
+
+    @JsonProperty("serviceAccountIssuers")
+    public void setServiceAccountIssuers(List<ServiceAccountIssuerStatus> serviceAccountIssuers) {
+        this.serviceAccountIssuers = serviceAccountIssuers;
     }
 
     @JsonProperty("version")

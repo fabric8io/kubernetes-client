@@ -79,6 +79,7 @@ public class MachineAutoscalerList implements KubernetesResource, KubernetesReso
     @JsonProperty("apiVersion")
     private String apiVersion = "autoscaling.openshift.io/v1beta1";
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.openshift.api.model.clusterautoscaling.v1beta1.MachineAutoscaler> items = new ArrayList<io.fabric8.openshift.api.model.clusterautoscaling.v1beta1.MachineAutoscaler>();
     /**
      * 

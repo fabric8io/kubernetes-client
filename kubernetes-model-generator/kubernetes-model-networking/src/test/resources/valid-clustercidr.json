@@ -1,0 +1,36 @@
+{
+  "kind": "ClusterCIDR",
+  "apiVersion": "networking.k8s.io/v1alpha1",
+  "metadata": {
+    "name": "test-clustercidr"
+  },
+  "spec": {
+    "nodeSelector": {
+      "nodeSelectorTerms": [
+        {
+          "matchExpressions": [
+            {
+              "key": "metadata.name",
+              "operator": "In",
+              "values": [
+                "test-name"
+              ]
+            }
+          ],
+          "matchFields": [
+            {
+              "key": "metadata.name",
+              "operator": "In",
+              "values": [
+                "test-name"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "perNodeHostBits": 4,
+    "ipv4": "10.0.0.0/8",
+    "ipv6": "2001:db8::/64"
+  }
+}

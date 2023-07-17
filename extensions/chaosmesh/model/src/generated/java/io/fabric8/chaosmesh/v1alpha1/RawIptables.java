@@ -77,6 +77,7 @@ public class RawIptables implements KubernetesResource
     @JsonProperty("direction")
     private String direction;
     @JsonProperty("ipsets")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> ipsets = new ArrayList<String>();
     @JsonProperty("name")
     private String name;

@@ -67,6 +67,7 @@ public class ConsoleCLIDownloadSpec implements KubernetesResource
     @JsonProperty("displayName")
     private String displayName;
     @JsonProperty("links")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<CLIDownloadLink> links = new ArrayList<CLIDownloadLink>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();

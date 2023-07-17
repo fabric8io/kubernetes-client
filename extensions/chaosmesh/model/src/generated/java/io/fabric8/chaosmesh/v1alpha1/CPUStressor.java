@@ -73,6 +73,7 @@ public class CPUStressor implements KubernetesResource
     @JsonProperty("load")
     private Integer load;
     @JsonProperty("options")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> options = new ArrayList<String>();
     @JsonProperty("workers")
     private java.lang.Integer workers;

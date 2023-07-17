@@ -1,7 +1,9 @@
 
 package io.fabric8.openshift.api.model.installer.vsphere.v1;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -21,6 +23,7 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
+import io.fabric8.openshift.api.model.config.v1.VSpherePlatformLoadBalancer;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -35,19 +38,24 @@ import lombok.experimental.Accessors;
     "kind",
     "metadata",
     "apiVIP",
+    "apiVIPs",
     "cluster",
     "clusterOSImage",
     "datacenter",
     "defaultDatastore",
     "defaultMachinePlatform",
     "diskType",
+    "failureDomains",
     "folder",
     "ingressVIP",
+    "ingressVIPs",
+    "loadBalancer",
     "network",
     "password",
     "resourcePool",
     "username",
-    "vCenter"
+    "vCenter",
+    "vcenters"
 })
 @ToString
 @EqualsAndHashCode
@@ -73,6 +81,9 @@ public class Platform implements KubernetesResource
 
     @JsonProperty("apiVIP")
     private String apiVIP;
+    @JsonProperty("apiVIPs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> apiVIPs = new ArrayList<String>();
     @JsonProperty("cluster")
     private String cluster;
     @JsonProperty("clusterOSImage")
@@ -85,10 +96,18 @@ public class Platform implements KubernetesResource
     private MachinePool defaultMachinePlatform;
     @JsonProperty("diskType")
     private String diskType;
+    @JsonProperty("failureDomains")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<FailureDomain> failureDomains = new ArrayList<FailureDomain>();
     @JsonProperty("folder")
     private String folder;
     @JsonProperty("ingressVIP")
     private String ingressVIP;
+    @JsonProperty("ingressVIPs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> ingressVIPs = new ArrayList<String>();
+    @JsonProperty("loadBalancer")
+    private VSpherePlatformLoadBalancer loadBalancer;
     @JsonProperty("network")
     private String network;
     @JsonProperty("password")
@@ -99,6 +118,9 @@ public class Platform implements KubernetesResource
     private String username;
     @JsonProperty("vCenter")
     private String vCenter;
+    @JsonProperty("vcenters")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<VCenter> vcenters = new ArrayList<VCenter>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -109,22 +131,27 @@ public class Platform implements KubernetesResource
     public Platform() {
     }
 
-    public Platform(String apiVIP, String cluster, String clusterOSImage, String datacenter, String defaultDatastore, MachinePool defaultMachinePlatform, String diskType, String folder, String ingressVIP, String network, String password, String resourcePool, String username, String vCenter) {
+    public Platform(String apiVIP, List<String> apiVIPs, String cluster, String clusterOSImage, String datacenter, String defaultDatastore, MachinePool defaultMachinePlatform, String diskType, List<FailureDomain> failureDomains, String folder, String ingressVIP, List<String> ingressVIPs, VSpherePlatformLoadBalancer loadBalancer, String network, String password, String resourcePool, String username, String vCenter, List<VCenter> vcenters) {
         super();
         this.apiVIP = apiVIP;
+        this.apiVIPs = apiVIPs;
         this.cluster = cluster;
         this.clusterOSImage = clusterOSImage;
         this.datacenter = datacenter;
         this.defaultDatastore = defaultDatastore;
         this.defaultMachinePlatform = defaultMachinePlatform;
         this.diskType = diskType;
+        this.failureDomains = failureDomains;
         this.folder = folder;
         this.ingressVIP = ingressVIP;
+        this.ingressVIPs = ingressVIPs;
+        this.loadBalancer = loadBalancer;
         this.network = network;
         this.password = password;
         this.resourcePool = resourcePool;
         this.username = username;
         this.vCenter = vCenter;
+        this.vcenters = vcenters;
     }
 
     @JsonProperty("apiVIP")
@@ -135,6 +162,16 @@ public class Platform implements KubernetesResource
     @JsonProperty("apiVIP")
     public void setApiVIP(String apiVIP) {
         this.apiVIP = apiVIP;
+    }
+
+    @JsonProperty("apiVIPs")
+    public List<String> getApiVIPs() {
+        return apiVIPs;
+    }
+
+    @JsonProperty("apiVIPs")
+    public void setApiVIPs(List<String> apiVIPs) {
+        this.apiVIPs = apiVIPs;
     }
 
     @JsonProperty("cluster")
@@ -197,6 +234,16 @@ public class Platform implements KubernetesResource
         this.diskType = diskType;
     }
 
+    @JsonProperty("failureDomains")
+    public List<FailureDomain> getFailureDomains() {
+        return failureDomains;
+    }
+
+    @JsonProperty("failureDomains")
+    public void setFailureDomains(List<FailureDomain> failureDomains) {
+        this.failureDomains = failureDomains;
+    }
+
     @JsonProperty("folder")
     public String getFolder() {
         return folder;
@@ -215,6 +262,26 @@ public class Platform implements KubernetesResource
     @JsonProperty("ingressVIP")
     public void setIngressVIP(String ingressVIP) {
         this.ingressVIP = ingressVIP;
+    }
+
+    @JsonProperty("ingressVIPs")
+    public List<String> getIngressVIPs() {
+        return ingressVIPs;
+    }
+
+    @JsonProperty("ingressVIPs")
+    public void setIngressVIPs(List<String> ingressVIPs) {
+        this.ingressVIPs = ingressVIPs;
+    }
+
+    @JsonProperty("loadBalancer")
+    public VSpherePlatformLoadBalancer getLoadBalancer() {
+        return loadBalancer;
+    }
+
+    @JsonProperty("loadBalancer")
+    public void setLoadBalancer(VSpherePlatformLoadBalancer loadBalancer) {
+        this.loadBalancer = loadBalancer;
     }
 
     @JsonProperty("network")
@@ -265,6 +332,16 @@ public class Platform implements KubernetesResource
     @JsonProperty("vCenter")
     public void setVCenter(String vCenter) {
         this.vCenter = vCenter;
+    }
+
+    @JsonProperty("vcenters")
+    public List<VCenter> getVcenters() {
+        return vcenters;
+    }
+
+    @JsonProperty("vcenters")
+    public void setVcenters(List<VCenter> vcenters) {
+        this.vcenters = vcenters;
     }
 
     @JsonAnyGetter

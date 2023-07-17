@@ -62,8 +62,10 @@ public class ServiceAccountRestriction implements KubernetesResource
 {
 
     @JsonProperty("namespaces")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> namespaces = new ArrayList<String>();
     @JsonProperty("serviceaccounts")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ServiceAccountReference> serviceaccounts = new ArrayList<ServiceAccountReference>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();

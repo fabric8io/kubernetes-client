@@ -41,7 +41,8 @@ import lombok.experimental.Accessors;
     "maxSamplesPerSend",
     "maxShards",
     "minBackoff",
-    "minShards"
+    "minShards",
+    "retryOnRateLimit"
 })
 @ToString
 @EqualsAndHashCode
@@ -81,6 +82,8 @@ public class QueueConfig implements KubernetesResource
     private String minBackoff;
     @JsonProperty("minShards")
     private Integer minShards;
+    @JsonProperty("retryOnRateLimit")
+    private Boolean retryOnRateLimit;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -91,7 +94,7 @@ public class QueueConfig implements KubernetesResource
     public QueueConfig() {
     }
 
-    public QueueConfig(String batchSendDeadline, Integer capacity, String maxBackoff, Integer maxRetries, Integer maxSamplesPerSend, Integer maxShards, String minBackoff, Integer minShards) {
+    public QueueConfig(String batchSendDeadline, Integer capacity, String maxBackoff, Integer maxRetries, Integer maxSamplesPerSend, Integer maxShards, String minBackoff, Integer minShards, Boolean retryOnRateLimit) {
         super();
         this.batchSendDeadline = batchSendDeadline;
         this.capacity = capacity;
@@ -101,6 +104,7 @@ public class QueueConfig implements KubernetesResource
         this.maxShards = maxShards;
         this.minBackoff = minBackoff;
         this.minShards = minShards;
+        this.retryOnRateLimit = retryOnRateLimit;
     }
 
     @JsonProperty("batchSendDeadline")
@@ -181,6 +185,16 @@ public class QueueConfig implements KubernetesResource
     @JsonProperty("minShards")
     public void setMinShards(Integer minShards) {
         this.minShards = minShards;
+    }
+
+    @JsonProperty("retryOnRateLimit")
+    public Boolean getRetryOnRateLimit() {
+        return retryOnRateLimit;
+    }
+
+    @JsonProperty("retryOnRateLimit")
+    public void setRetryOnRateLimit(Boolean retryOnRateLimit) {
+        this.retryOnRateLimit = retryOnRateLimit;
     }
 
     @JsonAnyGetter

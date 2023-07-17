@@ -79,6 +79,7 @@ public class PodMonitorList implements KubernetesResource, KubernetesResourceLis
     @JsonProperty("apiVersion")
     private String apiVersion = "monitoring.coreos.com/v1";
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.openshift.api.model.monitoring.v1.PodMonitor> items = new ArrayList<io.fabric8.openshift.api.model.monitoring.v1.PodMonitor>();
     /**
      * 

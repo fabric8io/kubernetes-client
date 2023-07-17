@@ -43,6 +43,7 @@ public class ProjectedVolumeSource implements KubernetesResource
     @JsonProperty("defaultMode")
     private Integer defaultMode;
     @JsonProperty("sources")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<VolumeProjection> sources = new ArrayList<VolumeProjection>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();

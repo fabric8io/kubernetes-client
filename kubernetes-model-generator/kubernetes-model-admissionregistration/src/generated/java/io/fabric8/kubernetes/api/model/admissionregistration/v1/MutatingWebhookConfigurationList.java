@@ -79,6 +79,7 @@ public class MutatingWebhookConfigurationList implements KubernetesResource, Kub
     @JsonProperty("apiVersion")
     private String apiVersion = "admissionregistration.k8s.io/v1";
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.kubernetes.api.model.admissionregistration.v1.MutatingWebhookConfiguration> items = new ArrayList<io.fabric8.kubernetes.api.model.admissionregistration.v1.MutatingWebhookConfiguration>();
     /**
      * 

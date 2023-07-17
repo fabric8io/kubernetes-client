@@ -72,6 +72,7 @@ public class ParamValue implements KubernetesResource
 {
 
     @JsonProperty("ArrayVal")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<java.lang.String> arrayVal = new ArrayList<java.lang.String>();
     @JsonProperty("ObjectVal")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)

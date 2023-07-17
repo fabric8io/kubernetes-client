@@ -75,6 +75,7 @@ public class WhenExpression implements KubernetesResource
     @JsonProperty("operator")
     private String operator;
     @JsonProperty("values")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> values = new ArrayList<String>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();

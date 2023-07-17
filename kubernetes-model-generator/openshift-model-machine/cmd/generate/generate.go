@@ -27,6 +27,8 @@ import (
   "strings"
   "time"
   machineapi "github.com/openshift/api/machine/v1beta1"
+  v1machineapi "github.com/openshift/api/machine/v1"
+  v1alpha1machineapi "github.com/openshift/api/machine/v1alpha1"
 
   "os"
 
@@ -49,6 +51,9 @@ type Schema struct {
   MachineList                              machineapi.MachineList
   MachineSet                               machineapi.MachineSet
   MachineSetList                           machineapi.MachineSetList
+  V1NutanixCategory                        v1machineapi.NutanixCategory
+  V1NutanixResourceIdentifier              v1machineapi.NutanixResourceIdentifier
+  V1Alpha1SubnetFilter                     v1alpha1machineapi.SubnetFilter
 }
 
 func main() {
@@ -63,6 +68,8 @@ func main() {
     {"k8s.io/kubernetes/pkg/api/unversioned", "", "io.fabric8.kubernetes.api.model", "api_", false},
     {"k8s.io/apimachinery/pkg/apis/meta/v1", "", "io.fabric8.kubernetes.api.model", "kubernetes_apimachinery_", false},
     {"github.com/openshift/api/machine/v1beta1", "", "io.fabric8.openshift.api.model.machine.v1beta1", "os_machine_v1beta1_", true},
+    {"github.com/openshift/api/machine/v1alpha1", "", "io.fabric8.openshift.api.model.machine.v1alpha1", "os_machine_v1alpha1_", true},
+    {"github.com/openshift/api/machine/v1", "", "io.fabric8.openshift.api.model.machine.v1", "os_machine_v1_", true},
   }
 
   typeMap := map[reflect.Type]reflect.Type{

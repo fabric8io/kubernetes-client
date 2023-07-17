@@ -81,6 +81,7 @@ public class ParallelStatus implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> annotations = new LinkedHashMap<String, String>();
     @JsonProperty("branchStatuses")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ParallelBranchStatus> branchStatuses = new ArrayList<ParallelBranchStatus>();
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)

@@ -83,6 +83,7 @@ public class NetworkSpec implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<AdditionalNetworkDefinition> additionalNetworks = new ArrayList<AdditionalNetworkDefinition>();
     @JsonProperty("clusterNetwork")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ClusterNetworkEntry> clusterNetwork = new ArrayList<ClusterNetworkEntry>();
     @JsonProperty("defaultNetwork")
     private DefaultNetworkDefinition defaultNetwork;
@@ -107,6 +108,7 @@ public class NetworkSpec implements KubernetesResource
     @JsonProperty("operatorLogLevel")
     private String operatorLogLevel;
     @JsonProperty("serviceNetwork")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> serviceNetwork = new ArrayList<String>();
     @JsonProperty("unsupportedConfigOverrides")
     private KubernetesResource unsupportedConfigOverrides;

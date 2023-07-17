@@ -296,6 +296,9 @@
         "resourceVersionMatch": {
           "type": "string"
         },
+        "sendInitialEvents": {
+          "type": "boolean"
+        },
         "timeoutSeconds": {
           "type": "integer",
           "existingJavaType": "Long"
@@ -1534,6 +1537,9 @@
         },
         "resourceVersionMatch": {
           "type": "string"
+        },
+        "sendInitialEvents": {
+          "type": "boolean"
         },
         "timeoutSeconds": {
           "type": "integer",

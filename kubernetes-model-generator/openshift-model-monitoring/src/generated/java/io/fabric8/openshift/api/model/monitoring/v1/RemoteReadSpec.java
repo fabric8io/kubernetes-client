@@ -38,6 +38,7 @@ import lombok.experimental.Accessors;
     "basicAuth",
     "bearerToken",
     "bearerTokenFile",
+    "headers",
     "name",
     "oauth2",
     "proxyUrl",
@@ -77,6 +78,9 @@ public class RemoteReadSpec implements KubernetesResource
     private java.lang.String bearerToken;
     @JsonProperty("bearerTokenFile")
     private java.lang.String bearerTokenFile;
+    @JsonProperty("headers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, String> headers = new LinkedHashMap<String, String>();
     @JsonProperty("name")
     private java.lang.String name;
     @JsonProperty("oauth2")
@@ -104,12 +108,13 @@ public class RemoteReadSpec implements KubernetesResource
     public RemoteReadSpec() {
     }
 
-    public RemoteReadSpec(Authorization authorization, BasicAuth basicAuth, java.lang.String bearerToken, java.lang.String bearerTokenFile, java.lang.String name, OAuth2 oauth2, java.lang.String proxyUrl, Boolean readRecent, java.lang.String remoteTimeout, Map<String, String> requiredMatchers, TLSConfig tlsConfig, java.lang.String url) {
+    public RemoteReadSpec(Authorization authorization, BasicAuth basicAuth, java.lang.String bearerToken, java.lang.String bearerTokenFile, Map<String, String> headers, java.lang.String name, OAuth2 oauth2, java.lang.String proxyUrl, Boolean readRecent, java.lang.String remoteTimeout, Map<String, String> requiredMatchers, TLSConfig tlsConfig, java.lang.String url) {
         super();
         this.authorization = authorization;
         this.basicAuth = basicAuth;
         this.bearerToken = bearerToken;
         this.bearerTokenFile = bearerTokenFile;
+        this.headers = headers;
         this.name = name;
         this.oauth2 = oauth2;
         this.proxyUrl = proxyUrl;
@@ -158,6 +163,16 @@ public class RemoteReadSpec implements KubernetesResource
     @JsonProperty("bearerTokenFile")
     public void setBearerTokenFile(java.lang.String bearerTokenFile) {
         this.bearerTokenFile = bearerTokenFile;
+    }
+
+    @JsonProperty("headers")
+    public Map<String, String> getHeaders() {
+        return headers;
+    }
+
+    @JsonProperty("headers")
+    public void setHeaders(Map<String, String> headers) {
+        this.headers = headers;
     }
 
     @JsonProperty("name")

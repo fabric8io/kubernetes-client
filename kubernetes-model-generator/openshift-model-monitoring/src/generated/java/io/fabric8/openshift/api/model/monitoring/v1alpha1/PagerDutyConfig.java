@@ -45,6 +45,8 @@ import lombok.experimental.Accessors;
     "details",
     "group",
     "httpConfig",
+    "pagerDutyImageConfigs",
+    "pagerDutyLinkConfigs",
     "routingKey",
     "sendResolved",
     "serviceKey",
@@ -90,6 +92,12 @@ public class PagerDutyConfig implements KubernetesResource
     private String group;
     @JsonProperty("httpConfig")
     private HTTPConfig httpConfig;
+    @JsonProperty("pagerDutyImageConfigs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<PagerDutyImageConfig> pagerDutyImageConfigs = new ArrayList<PagerDutyImageConfig>();
+    @JsonProperty("pagerDutyLinkConfigs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<PagerDutyLinkConfig> pagerDutyLinkConfigs = new ArrayList<PagerDutyLinkConfig>();
     @JsonProperty("routingKey")
     private SecretKeySelector routingKey;
     @JsonProperty("sendResolved")
@@ -110,7 +118,7 @@ public class PagerDutyConfig implements KubernetesResource
     public PagerDutyConfig() {
     }
 
-    public PagerDutyConfig(String className, String client, String clientURL, String component, String description, List<KeyValue> details, String group, HTTPConfig httpConfig, SecretKeySelector routingKey, Boolean sendResolved, SecretKeySelector serviceKey, String severity, String url) {
+    public PagerDutyConfig(String className, String client, String clientURL, String component, String description, List<KeyValue> details, String group, HTTPConfig httpConfig, List<PagerDutyImageConfig> pagerDutyImageConfigs, List<PagerDutyLinkConfig> pagerDutyLinkConfigs, SecretKeySelector routingKey, Boolean sendResolved, SecretKeySelector serviceKey, String severity, String url) {
         super();
         this.className = className;
         this.client = client;
@@ -120,6 +128,8 @@ public class PagerDutyConfig implements KubernetesResource
         this.details = details;
         this.group = group;
         this.httpConfig = httpConfig;
+        this.pagerDutyImageConfigs = pagerDutyImageConfigs;
+        this.pagerDutyLinkConfigs = pagerDutyLinkConfigs;
         this.routingKey = routingKey;
         this.sendResolved = sendResolved;
         this.serviceKey = serviceKey;
@@ -205,6 +215,26 @@ public class PagerDutyConfig implements KubernetesResource
     @JsonProperty("httpConfig")
     public void setHttpConfig(HTTPConfig httpConfig) {
         this.httpConfig = httpConfig;
+    }
+
+    @JsonProperty("pagerDutyImageConfigs")
+    public List<PagerDutyImageConfig> getPagerDutyImageConfigs() {
+        return pagerDutyImageConfigs;
+    }
+
+    @JsonProperty("pagerDutyImageConfigs")
+    public void setPagerDutyImageConfigs(List<PagerDutyImageConfig> pagerDutyImageConfigs) {
+        this.pagerDutyImageConfigs = pagerDutyImageConfigs;
+    }
+
+    @JsonProperty("pagerDutyLinkConfigs")
+    public List<PagerDutyLinkConfig> getPagerDutyLinkConfigs() {
+        return pagerDutyLinkConfigs;
+    }
+
+    @JsonProperty("pagerDutyLinkConfigs")
+    public void setPagerDutyLinkConfigs(List<PagerDutyLinkConfig> pagerDutyLinkConfigs) {
+        this.pagerDutyLinkConfigs = pagerDutyLinkConfigs;
     }
 
     @JsonProperty("routingKey")

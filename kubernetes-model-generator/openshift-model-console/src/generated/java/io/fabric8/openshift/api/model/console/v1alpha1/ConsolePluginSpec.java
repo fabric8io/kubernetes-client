@@ -1,7 +1,9 @@
 
 package io.fabric8.openshift.api.model.console.v1alpha1;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -63,7 +65,8 @@ public class ConsolePluginSpec implements KubernetesResource
     @JsonProperty("displayName")
     private String displayName;
     @JsonProperty("proxy")
-    private ConsolePluginProxy proxy;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<ConsolePluginProxy> proxy = new ArrayList<ConsolePluginProxy>();
     @JsonProperty("service")
     private ConsolePluginService service;
     @JsonIgnore
@@ -76,7 +79,7 @@ public class ConsolePluginSpec implements KubernetesResource
     public ConsolePluginSpec() {
     }
 
-    public ConsolePluginSpec(String displayName, ConsolePluginProxy proxy, ConsolePluginService service) {
+    public ConsolePluginSpec(String displayName, List<ConsolePluginProxy> proxy, ConsolePluginService service) {
         super();
         this.displayName = displayName;
         this.proxy = proxy;
@@ -94,12 +97,12 @@ public class ConsolePluginSpec implements KubernetesResource
     }
 
     @JsonProperty("proxy")
-    public ConsolePluginProxy getProxy() {
+    public List<ConsolePluginProxy> getProxy() {
         return proxy;
     }
 
     @JsonProperty("proxy")
-    public void setProxy(ConsolePluginProxy proxy) {
+    public void setProxy(List<ConsolePluginProxy> proxy) {
         this.proxy = proxy;
     }
 

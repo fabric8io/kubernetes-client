@@ -80,6 +80,7 @@ public class EventListenerSpec implements KubernetesResource
     @JsonProperty("serviceAccountName")
     private String serviceAccountName;
     @JsonProperty("triggers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<EventListenerTrigger> triggers = new ArrayList<EventListenerTrigger>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();

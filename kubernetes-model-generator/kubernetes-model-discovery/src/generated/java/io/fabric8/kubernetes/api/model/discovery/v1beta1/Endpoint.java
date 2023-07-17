@@ -66,6 +66,7 @@ public class Endpoint implements KubernetesResource
 {
 
     @JsonProperty("addresses")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<java.lang.String> addresses = new ArrayList<java.lang.String>();
     @JsonProperty("conditions")
     private EndpointConditions conditions;

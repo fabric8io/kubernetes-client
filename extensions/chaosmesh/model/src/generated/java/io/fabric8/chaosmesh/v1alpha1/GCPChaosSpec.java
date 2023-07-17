@@ -77,6 +77,7 @@ public class GCPChaosSpec implements KubernetesResource
     @JsonProperty("action")
     private java.lang.String action;
     @JsonProperty("deviceNames")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<java.lang.String> deviceNames = new ArrayList<java.lang.String>();
     @JsonProperty("duration")
     private String duration;

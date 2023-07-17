@@ -61,6 +61,7 @@ public class PodExecOptions implements KubernetesResource
     @JsonProperty("apiVersion")
     private String apiVersion = "v1";
     @JsonProperty("command")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> command = new ArrayList<String>();
     @JsonProperty("container")
     private String container;

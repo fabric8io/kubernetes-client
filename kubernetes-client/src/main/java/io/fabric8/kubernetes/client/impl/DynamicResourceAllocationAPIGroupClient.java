@@ -15,7 +15,7 @@
  */
 package io.fabric8.kubernetes.client.impl;
 
-import io.fabric8.kubernetes.client.V1Alpha1DynamicResourceAllocationAPIGroupDSL;
+import io.fabric8.kubernetes.client.V1Alpha2DynamicResourceAllocationAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.DynamicResourceAllocationAPIGroupDSL;
 import io.fabric8.kubernetes.client.extension.ClientAdapter;
 
@@ -27,7 +27,7 @@ public class DynamicResourceAllocationAPIGroupClient extends ClientAdapter<Dynam
   }
 
   @Override
-  public V1Alpha1DynamicResourceAllocationAPIGroupDSL v1alpha1() {
-    return adapt(V1Alpha1DynamicResourceAllocationAPIGroupClient.class);
+  public V1Alpha2DynamicResourceAllocationAPIGroupDSL v1alpha2() {
+    return adapt(V1Alpha2DynamicResourceAllocationAPIGroupClient.class);
   }
 }

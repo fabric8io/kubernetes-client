@@ -66,6 +66,7 @@ public class TCPRouteSpec implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ParentReference> parentRefs = new ArrayList<ParentReference>();
     @JsonProperty("rules")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<TCPRouteRule> rules = new ArrayList<TCPRouteRule>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();

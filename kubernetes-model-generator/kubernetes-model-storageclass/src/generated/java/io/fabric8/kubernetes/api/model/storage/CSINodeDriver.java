@@ -70,6 +70,7 @@ public class CSINodeDriver implements KubernetesResource
     @JsonProperty("nodeID")
     private String nodeID;
     @JsonProperty("topologyKeys")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> topologyKeys = new ArrayList<String>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
