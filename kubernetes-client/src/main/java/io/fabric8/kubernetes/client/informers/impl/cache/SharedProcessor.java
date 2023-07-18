@@ -36,7 +36,7 @@ import java.util.function.Supplier;
  * notifications.
  *
  * This has been taken from official-client:
- * https://github.com/kubernetes-client/java/blob/master/util/src/main/java/io/kubernetes/client/informer/cache/SharedProcessor.java
+ * https://github.com/kubernetes-client/java/blob/main/util/src/main/java/io/kubernetes/client/informer/cache/SharedProcessor.java
  *
  * <br>
  * Modified to simplify threading

@@ -39,7 +39,7 @@ import java.util.concurrent.Future;
  * SharedInformerFactory class constructs and caches informers for api types.
  *
  * This has been taken from
- * https://github.com/kubernetes-client/java/blob/master/util/src/main/java/io/kubernetes/client/informer/SharedInformerFactory.java
+ * https://github.com/kubernetes-client/java/blob/main/util/src/main/java/io/kubernetes/client/informer/SharedInformerFactory.java
  * which is ported from official go client https://github.com/kubernetes/client-go/blob/master/informers/factory.go
  */
 public class SharedInformerFactoryImpl implements SharedInformerFactory {

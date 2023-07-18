@@ -19,7 +19,7 @@ name: Go Build
 on:
   push:
     branches:
-      - master
+      - main
   pull_request:
     paths-ignore:
       - 'doc/**'

@@ -68,7 +68,7 @@ mvn -Pitests -pl kubernetes-itests verify  -Dtest="io.fabric8.openshift.**"
 ```
 
 #### Other Requirements
- * If adding a new feature or fixing some bug, please update the [CHANGELOG.md](https://github.com/fabric8io/kubernetes-client/blob/master/CHANGELOG.md),
+ * If adding a new feature or fixing some bug, please update the [CHANGELOG.md](https://github.com/fabric8io/kubernetes-client/blob/main/CHANGELOG.md),
  * Make sure you add the license headers at top of every new source file you add while implementing the feature. You can do so by hitting `mvn -N license:format` command.
 
 #### Commit your work

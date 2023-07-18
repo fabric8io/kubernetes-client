@@ -1378,7 +1378,7 @@ _**Note**_:
     ```
     public class Animals extends CustomResource implements Namespaced { ... }
     ```
-    You can also checkout an example in our test suite for this: [PodSet.java](https://github.com/fabric8io/kubernetes-client/blob/master/kubernetes-tests/src/test/java/io/fabric8/kubernetes/client/mock/crd/PodSet.java#L22)
+    You can also checkout an example in our test suite for this: [PodSet.java](https://github.com/fabric8io/kubernetes-client/blob/main/kubernetes-tests/src/test/java/io/fabric8/kubernetes/client/mock/crd/PodSet.java#L22)
 
 ### 4.10.1 (2020-05-06)
 #### Bugs

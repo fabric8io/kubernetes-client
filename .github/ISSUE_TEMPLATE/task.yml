@@ -29,8 +29,8 @@ body:
 
         Useful Links:
 
-          - 📄  Documentation: https://github.com/fabric8io/kubernetes-client/blob/master/doc/CHEATSHEET.md
-          - 📝  Contributing: https://github.com/fabric8io/kubernetes-client/blob/master/CONTRIBUTING.md
+          - 📄  Documentation: https://github.com/fabric8io/kubernetes-client/blob/main/doc/CHEATSHEET.md
+          - 📝  Contributing: https://github.com/fabric8io/kubernetes-client/blob/main/CONTRIBUTING.md
 
 
   - type: textarea

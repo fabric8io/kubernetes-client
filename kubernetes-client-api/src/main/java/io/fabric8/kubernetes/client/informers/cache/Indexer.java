@@ -23,7 +23,7 @@ import java.util.function.Function;
  * Indexer extends Store interface and add index/de-index methods.
  *
  * This implementation has been taken from official client:
- * https://github.com/kubernetes-client/java/blob/master/util/src/main/java/io/kubernetes/client/informer/cache/Indexer.java
+ * https://github.com/kubernetes-client/java/blob/main/util/src/main/java/io/kubernetes/client/informer/cache/Indexer.java
  * which has been ported from official go client: https://github.com/kubernetes/client-go/blob/master/tools/cache/index.go
  *
  * @param <T> resource
