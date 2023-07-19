@@ -21,7 +21,9 @@ import org.opentest4j.AssertionFailedError;
 
 import java.net.URI;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -123,6 +125,26 @@ public class TestStandardHttpClient
   public final TestStandardHttpClient wsExpect(String pathRegex, WsFutureProvider wsFuture) {
     final Expectation expectation = expectations.compute(pathRegex, (k, v) -> v == null ? new Expectation() : v);
     expectation.wsFutures.add(wsFuture);
+    return this;
+  }
+
+  public final TestStandardHttpClient expect(String pathRegex, int statusCode) {
+    return expect(pathRegex, statusCode, (byte[]) null);
+  }
+
+  public final TestStandardHttpClient expect(String pathRegex, int statusCode, String body) {
+    return expect(pathRegex, statusCode, body.getBytes(StandardCharsets.UTF_8));
+  }
+
+  public final TestStandardHttpClient expect(String pathRegex, int statusCode, byte[] body) {
+    final Expectation expectation = expectations.compute(pathRegex, (k, v) -> v == null ? new Expectation() : v);
+    expectation.futures.add((r, c) -> {
+      final AsyncBody asyncBody = new TestAsyncBody();
+      if (body != null) {
+        c.consume(Collections.singletonList(ByteBuffer.wrap(body)), asyncBody);
+      }
+      return CompletableFuture.completedFuture(new TestHttpResponse<AsyncBody>().withCode(statusCode).withBody(asyncBody));
+    });
     return this;
   }
 

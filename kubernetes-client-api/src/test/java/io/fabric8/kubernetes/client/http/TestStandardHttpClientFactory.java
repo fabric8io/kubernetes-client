@@ -18,6 +18,8 @@ package io.fabric8.kubernetes.client.http;
 import lombok.Getter;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 public class TestStandardHttpClientFactory implements HttpClient.Factory {
 
@@ -32,4 +34,21 @@ public class TestStandardHttpClientFactory implements HttpClient.Factory {
   public final TestStandardHttpClient getInstance(int index) {
     return instances.toArray(new TestStandardHttpClient[0])[index];
   }
+
+  public final Stream<TestStandardHttpClientFactory> times(int iterations) {
+    return IntStream.range(0, iterations).mapToObj(i -> this);
+  }
+
+  public final void expect(String pathRegex, int statusCode) {
+    instances.forEach(c -> c.expect(pathRegex, statusCode));
+  }
+
+  public final void expect(String pathRegex, int statusCode, String body) {
+    instances.forEach(c -> c.expect(pathRegex, statusCode, body));
+  }
+
+  public final void expect(String pathRegex, int statusCode, byte[] body) {
+    instances.forEach(c -> c.expect(pathRegex, statusCode, body));
+  }
+
 }

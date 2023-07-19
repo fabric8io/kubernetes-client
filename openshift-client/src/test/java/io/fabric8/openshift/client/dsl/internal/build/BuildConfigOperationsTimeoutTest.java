@@ -17,9 +17,6 @@
 package io.fabric8.openshift.client.dsl.internal.build;
 
 import io.fabric8.kubernetes.client.KubernetesClientBuilder;
-import io.fabric8.kubernetes.client.http.AsyncBody;
-import io.fabric8.kubernetes.client.http.TestAsyncBody;
-import io.fabric8.kubernetes.client.http.TestHttpResponse;
 import io.fabric8.kubernetes.client.http.TestStandardHttpClient;
 import io.fabric8.kubernetes.client.http.TestStandardHttpClientFactory;
 import io.fabric8.openshift.client.OpenShiftClient;
@@ -29,10 +26,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
-import java.util.Collections;
-import java.util.concurrent.CompletableFuture;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -51,14 +45,8 @@ class BuildConfigOperationsTimeoutTest {
   @Test
   void buildConfigHasZeroTimeout() {
     // Given
-    factory.getInstance(1)
-        .expect("/apis/build.openshift.io/v1/namespaces/.+/buildconfigs/foo/instantiatebinary", (r, c) -> {
-          final AsyncBody body = new TestAsyncBody();
-          c.consume(
-              Collections.singletonList(ByteBuffer.wrap(("{\"metadata\": {},\"items\":[]}").getBytes(StandardCharsets.UTF_8))),
-              body);
-          return CompletableFuture.completedFuture(new TestHttpResponse<AsyncBody>().withCode(200).withBody(body));
-        });
+    factory.expect("/apis/build.openshift.io/v1/namespaces/.+/buildconfigs/foo/instantiatebinary",
+        200, "{\"metadata\": {},\"items\":[]}");
     // When
     client.buildConfigs().inNamespace("default").withName("foo").instantiateBinary()
         .fromInputStream(new ByteArrayInputStream("bar".getBytes(StandardCharsets.UTF_8)));
@@ -73,6 +61,5 @@ class BuildConfigOperationsTimeoutTest {
         .extracting("timeout")
         .asInstanceOf(InstanceOfAssertFactories.DURATION)
         .hasSeconds(0);
-    ;
   }
 }
