@@ -122,6 +122,7 @@ public class AddAdditionPrinterColumnDecorator extends
 
   @Override
   public String toString() {
-    return getClass().getName() + " [name:" + getName() + ", version:" + getVersion() + "column:" + columnName + "priority:" + priority + "]";
+    return getClass().getName() + " [name:" + getName() + ", version:" + getVersion() + "column:" + columnName + "priority:"
+        + priority + "]";
   }
 }
