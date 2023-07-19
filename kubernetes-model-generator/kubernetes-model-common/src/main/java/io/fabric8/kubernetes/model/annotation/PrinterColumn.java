@@ -38,4 +38,11 @@ public @interface PrinterColumn {
    * @return the format or empty string if no format is specified.
    */
   String format() default "";
+
+  /**
+   * The printer column priority.
+   *
+   * @return the priority or 0 if no priority is specified.
+   */
+  int priority() default 0;
 }

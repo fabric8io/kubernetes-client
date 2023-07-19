@@ -29,9 +29,9 @@ public class ResourcesTest {
     Resources r = new Resources();
 
     AddAdditionPrinterColumnDecorator dec1 = new AddAdditionPrinterColumnDecorator("resource", "v1", "string", "replicas",
-        ".replicas", null, null);
+        ".replicas", null, null, 0);
     AddAdditionPrinterColumnDecorator dec2 = new AddAdditionPrinterColumnDecorator("resource", "v1", "boolean", "enabled",
-        ".replicas", null, null);
+        ".replicas", null, null, 0);
 
     r.decorate(dec1);
     r.decorate(dec2);
