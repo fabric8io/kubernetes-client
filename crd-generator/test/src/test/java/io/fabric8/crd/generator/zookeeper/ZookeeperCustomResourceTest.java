@@ -15,6 +15,7 @@
  */
 package io.fabric8.crd.generator.zookeeper;
 
+import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceColumnDefinition;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionVersion;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaProps;
@@ -76,6 +77,11 @@ class ZookeeperCustomResourceTest {
       assertTrue(required.contains("version"));
     });
 
+    List<CustomResourceColumnDefinition> printerColumns = d.getSpec().getVersions().get(0).getAdditionalPrinterColumns();
+    assertEquals("SIZE", printerColumns.get(0).getName());
+    assertEquals(1, printerColumns.get(0).getPriority());
+    assertEquals("UPTIME", printerColumns.get(1).getName());
+    assertEquals(0, printerColumns.get(1).getPriority());
   }
 
   @Test
@@ -90,5 +96,11 @@ class ZookeeperCustomResourceTest {
     assertEquals("3", d.getMetadata().getLabels().get("three"));
     assertEquals("4=4", d.getMetadata().getLabels().get("four"));
     assertEquals("====>", d.getMetadata().getLabels().get("five"));
+
+    List<CustomResourceColumnDefinition> printerColumns = d.getSpec().getVersions().get(0).getAdditionalPrinterColumns();
+    assertEquals("SIZE", printerColumns.get(0).getName());
+    assertEquals(1, printerColumns.get(0).getPriority());
+    assertEquals("UPTIME", printerColumns.get(1).getName());
+    assertEquals(0, printerColumns.get(1).getPriority());
   }
 }

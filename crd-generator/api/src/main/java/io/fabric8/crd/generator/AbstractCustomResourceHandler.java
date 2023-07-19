@@ -92,7 +92,7 @@ public abstract class AbstractCustomResourceHandler {
       String description = property.getComments().stream().filter(l -> !l.trim().startsWith("@"))
           .collect(Collectors.joining(" ")).trim();
       String format = (String) parameters.get("format");
-      int priority = (int) parameters.get("priority");
+      int priority = (int) parameters.getOrDefault("priority", 0);
 
       resources.decorate(
           getPrinterColumnDecorator(name, version, path, type, column, description, format, priority));

@@ -23,7 +23,7 @@ import java.util.Map;
 
 public class ZookeeperStatus {
 
-  @PrinterColumn
+  @PrinterColumn(priority = 1)
   @StatusReplicas
   private int size;
 
