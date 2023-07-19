@@ -22,9 +22,6 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.ServiceAccountResource;
-import io.fabric8.kubernetes.client.http.AsyncBody;
-import io.fabric8.kubernetes.client.http.TestAsyncBody;
-import io.fabric8.kubernetes.client.http.TestHttpResponse;
 import io.fabric8.kubernetes.client.http.TestStandardHttpClient;
 import io.fabric8.kubernetes.client.http.TestStandardHttpClientFactory;
 import org.assertj.core.api.Assertions;
@@ -32,10 +29,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.net.URISyntaxException;
-import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
-import java.util.Collections;
-import java.util.concurrent.CompletableFuture;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
@@ -56,12 +49,8 @@ class ServiceAccountOperationsImplTest {
     // Given
     final String responseFromServer = "{\"kind\":\"TokenRequest\",\"apiVersion\":\"authentication.k8s.io/v1\"," +
         "\"status\":{\"token\":\"my.secret.token\",\"expirationTimestamp\":\"2023-06-14T18:42:15Z\"}}";
-    factory.getInstances().iterator().next()
-        .expect("/api/v1/namespaces/test/serviceaccounts/my-serviceaccount/token", (r, c) -> {
-          final AsyncBody body = new TestAsyncBody();
-          c.consume(Collections.singletonList(ByteBuffer.wrap((responseFromServer).getBytes(StandardCharsets.UTF_8))), body);
-          return CompletableFuture.completedFuture(new TestHttpResponse<AsyncBody>().withCode(200).withBody(body));
-        });
+    factory.expect("/api/v1/namespaces/test/serviceaccounts/my-serviceaccount/token",
+        200, responseFromServer);
     TokenRequest tokenRequest = new TokenRequestBuilder()
         .withNewSpec()
         .withAudiences("http://example.svc")
@@ -89,12 +78,8 @@ class ServiceAccountOperationsImplTest {
   void tokenRequest_whenApiServerRequestFailure_thenThrowException() {
     // Given
     final String responseFromServer = "{\"kind\":\"Status\",\"apiVersion\":\"v1\",\"status\":\"Failure\",\"message\":\"serviceaccount my-serviceaccount not found\",\"reason\":\"NotFound\",\"details\":{\"name\":\"my-service-account\",\"kind\":\"serviceaccounts\"},\"code\":404}";
-    factory.getInstances().iterator().next()
-        .expect("/api/v1/namespaces/test/serviceaccounts/my-serviceaccount/token", (r, c) -> {
-          final AsyncBody body = new TestAsyncBody();
-          c.consume(Collections.singletonList(ByteBuffer.wrap((responseFromServer).getBytes(StandardCharsets.UTF_8))), body);
-          return CompletableFuture.completedFuture(new TestHttpResponse<AsyncBody>().withCode(404).withBody(body));
-        });
+    factory.expect("/api/v1/namespaces/test/serviceaccounts/my-serviceaccount/token",
+        404, responseFromServer);
     ServiceAccountResource serviceAccountResource = client.serviceAccounts()
         .inNamespace("test").withName("my-serviceaccount");
     // When - Then

@@ -16,15 +16,14 @@
 
 package io.fabric8.kubernetes.client.behavior;
 
+import io.fabric8.kubernetes.api.model.PodList;
+import io.fabric8.kubernetes.api.model.PodListBuilder;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
 import io.fabric8.kubernetes.client.RequestConfigBuilder;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
-import io.fabric8.kubernetes.client.http.AsyncBody;
-import io.fabric8.kubernetes.client.http.TestAsyncBody;
-import io.fabric8.kubernetes.client.http.TestHttpResponse;
 import io.fabric8.kubernetes.client.http.TestStandardHttpClient;
 import io.fabric8.kubernetes.client.http.TestStandardHttpClientFactory;
 import io.fabric8.kubernetes.client.http.WebSocket;
@@ -36,12 +35,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.Collections;
 import java.util.concurrent.CompletableFuture;
-import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -65,8 +61,7 @@ class RequestTimeoutTest {
   @Test
   void standardOperationsHaveDefaultTimeout() {
     // Given
-    factory.getInstances().iterator().next()
-        .expect("/api/v1/namespaces/.+/pods.+", new TestHttpResponse<AsyncBody>().withCode(200).withBody(new TestAsyncBody()));
+    factory.expect("/api/v1/namespaces/.+/pods.+", 200);
     // When
     client.pods().inNamespace("default").withName("foo").get();
     // Then
@@ -88,8 +83,7 @@ class RequestTimeoutTest {
     // Given
     final KubernetesClient derivedClient = (KubernetesClient) client
         .newClient(new RequestConfigBuilder().withRequestTimeout(1337000).build());
-    factory.getInstance(1)
-        .expect("/api/v1/namespaces/.+/pods.+", new TestHttpResponse<AsyncBody>().withCode(200).withBody(new TestAsyncBody()));
+    factory.getInstance(1).expect("/api/v1/namespaces/.+/pods.+", 200);
     // When
     derivedClient.pods().inNamespace("default").withName("foo").get();
     // Then
@@ -113,8 +107,7 @@ class RequestTimeoutTest {
         .withHttpClientFactory(factory)
         .withConfig(new ConfigBuilder(client.getConfiguration()).withRequestTimeout(1337000).build())
         .build();
-    factory.getInstance(1)
-        .expect("/api/v1/namespaces/.+/pods.+", new TestHttpResponse<AsyncBody>().withCode(200).withBody(new TestAsyncBody()));
+    factory.getInstance(1).expect("/api/v1/namespaces/.+/pods.+", 200);
     // When
     derivedClient.pods().inNamespace("default").withName("foo").get();
     // Then
@@ -136,8 +129,7 @@ class RequestTimeoutTest {
   @Test
   void standardOperationsHaveOverriddenTimeoutInConfig() {
     // Given
-    factory.getInstances().iterator().next()
-        .expect("/api/v1/namespaces/.+/pods.+", new TestHttpResponse<AsyncBody>().withCode(200).withBody(new TestAsyncBody()));
+    factory.expect("/api/v1/namespaces/.+/pods.+", 200);
     // When
     client.getConfiguration().getRequestConfig().setRequestTimeout(1337000);
     client.pods().inNamespace("default").withName("foo").get();
@@ -161,9 +153,7 @@ class RequestTimeoutTest {
     client.adapt(NamespacedKubernetesClient.class)
         .withRequestConfig(new RequestConfigBuilder().withRequestTimeout(3000).build())
         .call(c -> {
-          factory.getInstance(1)
-              .expect("/api/v1/namespaces/.+/pods.+",
-                  new TestHttpResponse<AsyncBody>().withCode(200).withBody(new TestAsyncBody()));
+          factory.getInstance(1).expect("/api/v1/namespaces/.+/pods.+", 200);
           return c.pods().inNamespace("default").withName("foo").get();
         });
     // Then
@@ -186,9 +176,8 @@ class RequestTimeoutTest {
   @Test
   void httpLogNoFollowOperationsDefaultTimeout() {
     // Given
-    informPodReady("foo")
-        .expect("/api/v1/namespaces/.+/pods/foo/log",
-            new TestHttpResponse<AsyncBody>().withCode(200).withBody(new TestAsyncBody()));
+    informPodReady("foo");
+    factory.expect("/api/v1/namespaces/.+/pods/foo/log", 200);
     // When
     client.pods().inNamespace("default").withName("foo").getLog();
     // Then
@@ -209,9 +198,8 @@ class RequestTimeoutTest {
   @Test
   void httpLogFollowOperationsNoTimeout() {
     // Given
-    informPodReady("foo")
-        .expect("/api/v1/namespaces/.+/pods/foo/log",
-            new TestHttpResponse<AsyncBody>().withCode(200).withBody(new TestAsyncBody()));
+    informPodReady("foo");
+    factory.expect("/api/v1/namespaces/.+/pods/foo/log", 200);
     // When
     try (LogWatch ignore = client.pods().inNamespace("default").withName("foo").watchLog()) {
       // Then
@@ -231,16 +219,9 @@ class RequestTimeoutTest {
   @Test
   void scaleHasDefaultTimeout() {
     // Given
-    final TestStandardHttpClient httpClient = factory.getInstances().iterator().next();
-    final TestStandardHttpClient.FutureProvider future = (r, c) -> {
-      final AsyncBody body = new TestAsyncBody();
-      c.consume(Collections.singletonList(
-          ByteBuffer.wrap(("{\"spec\":{\"replicas\":0}}").getBytes(StandardCharsets.UTF_8))), body);
-      return CompletableFuture.completedFuture(new TestHttpResponse<AsyncBody>().withCode(200).withBody(body));
-    };
-    IntStream.range(0, 2).forEach(i -> httpClient.expect("/apis/apps/v1/namespaces/.+/deployments/foo/scale", future));
-    httpClient.expect("/apis/apps/v1/namespaces/.+/deployments/foo",
-        new TestHttpResponse<AsyncBody>().withCode(200).withBody(new TestAsyncBody()));
+    factory.times(2).forEach(f -> f.expect("/apis/apps/v1/namespaces/.+/deployments/foo/scale",
+        200, "{\"spec\":{\"replicas\":0}}"));
+    factory.expect("/apis/apps/v1/namespaces/.+/deployments/foo", 200);
     // When
     client.apps().deployments().inNamespace("default").withName("foo").scale(1);
     // Then
@@ -257,9 +238,7 @@ class RequestTimeoutTest {
   @Test
   void deleteHasDefaultTimeout() {
     // Given
-    factory.getInstances().iterator().next()
-        .expect("/api/v1/namespaces/.+/pods/foo",
-            new TestHttpResponse<AsyncBody>().withCode(200).withBody(new TestAsyncBody()));
+    factory.expect("/api/v1/namespaces/.+/pods/foo", 200);
     // When
     client.pods().inNamespace("default").withName("foo").delete();
     // Then
@@ -286,8 +265,9 @@ class RequestTimeoutTest {
       l.onClose(webSocket, 0, "done");
       return CompletableFuture.completedFuture(new WebSocketResponse(new WebSocketUpgradeResponse(null), webSocket));
     };
-    IntStream.range(0, 2).forEach(i -> {
-      informPodReady("bar")
+    factory.times(2).forEach(i -> {
+      informPodReady("bar");
+      factory.getInstances().iterator().next()
           .wsExpect("/api/v1/namespaces/.+/pods/bar/exec", future);
     });
     // When
@@ -305,21 +285,15 @@ class RequestTimeoutTest {
         .allMatch(d -> d.equals(Duration.ofSeconds(10)));
   }
 
-  private TestStandardHttpClient informPodReady(String podName) {
-    return factory.getInstances().iterator().next()
-        .expect("/api/v1/namespaces/.+/pods", (r, c) -> {
-          final AsyncBody body = new TestAsyncBody();
-          c.consume(Collections.singletonList(
-              ByteBuffer.wrap(("{" +
-                  "\"metadata\": {}," +
-                  "\"items\":[{" +
-                  "\"metadata\":{\"name\":\"" + podName + "\"}," +
-                  "\"spec\":{\"containers\":[{\"name\":\"" + podName + "\"}]}," +
-                  "\"status\":{\"conditions\":[{\"type\":\"Ready\",\"status\":true}]}" +
-                  "}]" +
-                  "}").getBytes(StandardCharsets.UTF_8))),
-              body);
-          return CompletableFuture.completedFuture(new TestHttpResponse<AsyncBody>().withCode(200).withBody(body));
-        });
+  private void informPodReady(String podName) {
+    final PodList podReadyList = new PodListBuilder()
+        .withNewMetadata().endMetadata()
+        .addNewItem()
+        .withNewMetadata().withName(podName).endMetadata()
+        .withNewSpec().addNewContainer().withName(podName).endContainer().endSpec()
+        .withNewStatus().addNewCondition().withType("Ready").withStatus("True").endCondition().endStatus()
+        .endItem()
+        .build();
+    factory.expect("/api/v1/namespaces/.+/pods", 200, client.getKubernetesSerialization().asJson(podReadyList));
   }
 }
