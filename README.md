@@ -38,7 +38,7 @@ This client provides access to the full [Kubernetes](http://kubernetes.io/) &
 - [Mocking Kubernetes](#mocking-kubernetes)
 - [Who Uses Fabric8 Kubernetes Client?](#who-uses-kubernetes--openshift-java-client)
 - [Kubernetes Operators in Java Written using Fabric8 Kubernetes Client](./doc/KubernetesOperatorsInJavaWrittenUsingFabric8.md)
-- [Kubernetes and Red Hat OpenShift Compatibility Matrix](#compatibility-matrix)
+- [Kubernetes and Red Hat OpenShift Compatibility](#compatibility)
 - [Kubernetes Client CHEAT SHEET](https://github.com/fabric8io/kubernetes-client/blob/main/doc/CHEATSHEET.md)
 - [Kubectl Java Equivalents](#kubectl-java-equivalents)
 - [FAQs](doc/FAQ.md) - which includes details about project dependencies.
@@ -399,211 +399,20 @@ class ExampleTest {
     }
 }
 ```
-## Compatibility Matrix
+## Compatibility
 
-### Kubernetes Compatibility Matrix:
+### Kubernetes
 
- `✓` means All Kubernetes resources provided by this specific release are supported. In other cases, KubernetesClient would work for standard resources (Pod, Deployment, Service, etc.) but won't guarantee support for all api resources provided by this specific
- version of Kubernetes implementation.
+Starting from v5.5, the Kubernetes Client should be compatible with **any** supported Kubernetes cluster version.
+We provide DSL methods (for example `client.pods()`, `client.namespaces()`, and so on) for the most commonly used Kubernetes resources. If the resource you're looking for is not available through the DSL, you can always use the generic `client.resource()` method to interact with it. You can also open a [new issue](https://github.com/fabric8io/kubernetes-client/issues/new/choose) to request the addition of a new resource to the DSL.
 
+We provide Kubernetes Java model types (for example `Pod`) and their corresponding builders (for example `PodBuilder`) for every vanilla Kubernetes resource (and some extensions). If you don't find a specific resource, and you think that it should be part of the Kubernetes Client, please open a [new issue](https://github.com/fabric8io/kubernetes-client/issues/new/choose).
 
-|                          | K8s 1.26.0 | K8s 1.25.3 | K8s 1.24.7 | K8s 1.23.13 | K8s 1.22.1 | K8s 1.21.1 | K8s 1.20.2 | K8s 1.19.1 | K8s 1.18.0 | K8s 1.17.0 | K8s 1.16.0 | K8s 1.15.3 | K8s 1.14.2 | K8s 1.12.0 | K8s 1.11.0 | K8s 1.10.0 | K8s 1.9.0 |
-|--------------------------|------------|------------|------------|-------------|------------|------------|------------|------------|------------|------------|------------|------------|------------|------------|------------|------------|-----------|
-| HEAD                     | ✓          | ✓          | ✓          | ✓           | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | -         |
-| kubernetes-client 6.7.2  |            | ✓          | ✓          | ✓           | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | -         |
-| kubernetes-client 6.7.1  |            | ✓          | ✓          | ✓           | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | -         |
-| kubernetes-client 6.7.0  |            | ✓          | ✓          | ✓           | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | -         |
-| kubernetes-client 6.6.2  |            | ✓          | ✓          | ✓           | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | -         |
-| kubernetes-client 6.6.1  |            | ✓          | ✓          | ✓           | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | -         |
-| kubernetes-client 6.6.0  |            | ✓          | ✓          | ✓           | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | -         |
-| kubernetes-client 6.5.1  |            | ✓          | ✓          | ✓           | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | -         |
-| kubernetes-client 6.5.0  |            | ✓          | ✓          | ✓           | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | -         |
-| kubernetes-client 6.4.1  |            | ✓          | ✓          | ✓           | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | -         |
-| kubernetes-client 6.4.0  |            | ✓          | ✓          | ✓           | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | -         |
-| kubernetes-client 6.3.1  |            | ✓          | ✓          | ✓           | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | -         |
-| kubernetes-client 6.3.0  |            | ✓          | ✓          | ✓           | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | -         |
-| kubernetes-client 6.2.0  |            | ✓          | ✓          | ✓           | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | -         |
-| kubernetes-client 6.1.1  |            | ✓          | ✓          | ✓           | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | -          | -         |
-| kubernetes-client 6.0.0  |            | ✓          | ✓          | ✓           | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | -          | -         |
-| kubernetes-client 5.12.4 |            |            |            | ✓           | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | -         |
-| kubernetes-client 5.12.3 |            |            |            | ✓           | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | -         |
-| kubernetes-client 5.12.2 |            |            |            | ✓           | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | -         |
-| kubernetes-client 5.12.1 |            |            |            | ✓           | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | -         |
-| kubernetes-client 5.12.0 |            |            |            | ✓           | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | -         |
-| kubernetes-client 5.11.2 |            |            |            |             | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | -         |
-| kubernetes-client 5.11.1 |            |            |            |             | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | -         |
-| kubernetes-client 5.11.0 |            |            |            |             | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | -         |
-| kubernetes-client 5.10.2 |            |            |            |             | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | -         |
-| kubernetes-client 5.10.1 |            |            |            |             | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | -         |
-| kubernetes-client 5.10.0 |            |            |            |             | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | -         |
-| kubernetes-client 5.9.0  |            |            |            |             | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | -         |
-| kubernetes-client 5.8.1  |            |            |            |             | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | -         |
-| kubernetes-client 5.8.0  |            |            |            |             | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | -         |
-| kubernetes-client 5.7.4  |            |            |            |             | -          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓         |
-| kubernetes-client 5.7.3  |            |            |            |             | -          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓         |
-| kubernetes-client 5.7.2  |            |            |            |             | -          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓         |
-| kubernetes-client 5.7.1  |            |            |            |             | -          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓         |
-| kubernetes-client 5.7.0  |            |            |            |             | -          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓         |
-| kubernetes-client 5.6.0  |            |            |            |             | -          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓         |
-| kubernetes-client 5.5.0  |            |            |            |             | -          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓         |
-| kubernetes-client 5.4.2  |            |            |            |             | -          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓         |
-| kubernetes-client 5.4.1  |            |            |            |             | -          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓         |
-| kubernetes-client 5.4.0  |            |            |            |             | -          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓         |
-| kubernetes-client 5.3.2  |            |            |            |             | -          | -          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓         |
-| kubernetes-client 5.3.1  |            |            |            |             | -          | -          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓         |
-| kubernetes-client 5.3.0  |            |            |            |             | -          | -          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓         |
-| kubernetes-client 5.2.1  |            |            |            |             | -          | -          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓         |
-| kubernetes-client 5.2.0  |            |            |            |             | -          | -          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓         |
-| kubernetes-client 5.1.2  |            |            |            |             | -          | -          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓         |
-| kubernetes-client 5.1.1  |            |            |            |             | -          | -          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓         |
-| kubernetes-client 5.1.0  |            |            |            |             | -          | -          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓         |
-| kubernetes-client 5.0.3  |            |            |            |             | -          | -          | -          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓         |
-| kubernetes-client 5.0.2  |            |            |            |             | -          | -          | -          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓         |
-| kubernetes-client 5.0.1  |            |            |            |             | -          | -          | -          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓         |
-| kubernetes-client 5.0.0  |            |            |            |             | -          | -          | -          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓         |
-| kubernetes-client 4.13.3 |            |            |            |             | -          | -          | -          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓         |
-| kubernetes-client 4.13.2 |            |            |            |             | -          | -          | -          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓         |
-| kubernetes-client 4.13.1 |            |            |            |             | -          | -          | -          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓         |
-| kubernetes-client 4.13.0 |            |            |            |             | -          | -          | -          | -          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓         |
-| kubernetes-client 4.12.0 |            |            |            |             | -          | -          | -          | -          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓         |
-| kubernetes-client 4.11.2 |            |            |            |             | -          | -          | -          | -          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓         |
-| kubernetes-client 4.11.1 |            |            |            |             | -          | -          | -          | -          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓         |
-| kubernetes-client 4.11.0 |            |            |            |             | -          | -          | -          | -          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓         |
-| kubernetes-client 4.10.3 |            |            |            |             | -          | -          | -          | -          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓         |
-| kubernetes-client 4.10.2 |            |            |            |             | -          | -          | -          | -          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓         |
-| kubernetes-client 4.10.1 |            |            |            |             | -          | -          | -          | -          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓         |
-| kubernetes-client 4.10.0 |            |            |            |             | -          | -          | -          | -          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓         |
-| kubernetes-client 4.9.2  |            |            |            |             | -          | -          | -          | -          | -          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓         |
-| kubernetes-client 4.9.1  |            |            |            |             | -          | -          | -          | -          | -          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓         |
-| kubernetes-client 4.9.0  |            |            |            |             | -          | -          | -          | -          | -          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓         |
-| kubernetes-client 4.8.0  |            |            |            |             | -          | -          | -          | -          | -          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓         |
-| kubernetes-client 4.7.2  |            |            |            |             | -          | -          | -          | -          | -          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓         |
-| kubernetes-client 4.7.1  |            |            |            |             | -          | -          | -          | -          | -          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓         |
-| kubernetes-client 4.7.0  |            |            |            |             | -          | -          | -          | -          | -          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓         |
-| kubernetes-client 4.6.4  |            |            |            |             | -          | -          | -          | -          | -          | -          | -          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓         |
-| kubernetes-client 4.6.3  |            |            |            |             | -          | -          | -          | -          | -          | -          | -          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓         |
-| kubernetes-client 4.6.2  |            |            |            |             | -          | -          | -          | -          | -          | -          | -          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓         |
-| kubernetes-client 4.6.1  |            |            |            |             | -          | -          | -          | -          | -          | -          | -          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓         |
-| kubernetes-client 4.6.0  |            |            |            |             | -          | -          | -          | -          | -          | -          | -          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓         |
-| kubernetes-client 4.5.2  |            |            |            |             | -          | -          | -          | -          | -          | -          | -          | -          | ✓          | ✓          | ✓          | ✓          | ✓         |
-| kubernetes-client 4.5.1  |            |            |            |             | -          | -          | -          | -          | -          | -          | -          | -          | ✓          | ✓          | ✓          | ✓          | ✓         |
-| kubernetes-client 4.5.0  |            |            |            |             | -          | -          | -          | -          | -          | -          | -          | -          | ✓          | ✓          | ✓          | ✓          | ✓         |
-| kubernetes-client 4.4.2  |            |            |            |             | -          | -          | -          | -          | -          | -          | -          | -          | ✓          | ✓          | ✓          | ✓          | ✓         |
-| kubernetes-client 4.4.1  |            |            |            |             | -          | -          | -          | -          | -          | -          | -          | -          | ✓          | ✓          | ✓          | ✓          | ✓         |
-| kubernetes-client 4.4.0  |            |            |            |             | -          | -          | -          | -          | -          | -          | -          | -          | ✓          | ✓          | ✓          | ✓          | ✓         |
-| kubernetes-client 4.3.1  |            |            |            |             | -          | -          | -          | -          | -          | -          | -          | -          | ✓          | ✓          | ✓          | ✓          | ✓         |
-| kubernetes-client 4.3.0  |            |            |            |             | -          | -          | -          | -          | -          | -          | -          | -          | ✓          | ✓          | ✓          | ✓          | ✓         |
-| kubernetes-client 4.2.2  |            |            |            |             | -          | -          | -          | -          | -          | -          | -          | -          | -          | ✓          | ✓          | ✓          | ✓         |
-| kubernetes-client 4.2.1  |            |            |            |             | -          | -          | -          | -          | -          | -          | -          | -          | -          | ✓          | ✓          | ✓          | ✓         |
-| kubernetes-client 4.2.0  |            |            |            |             | -          | -          | -          | -          | -          | -          | -          | -          | -          | ✓          | ✓          | ✓          | ✓         |
-| kubernetes-client 4.1.3  |            |            |            |             | -          | -          | -          | -          | -          | -          | -          | -          | -          | ✓          | ✓          | ✓          | ✓         |
-| kubernetes-client 4.1.2  |            |            |            |             | -          | -          | -          | -          | -          | -          | -          | -          | -          | ✓          | ✓          | ✓          | ✓         |
-| kubernetes-client 4.1.1  |            |            |            |             | -          | -          | -          | -          | -          | -          | -          | -          | -          | ✓          | ✓          | ✓          | ✓         |
-| kubernetes-client 4.1.0  |            |            |            |             | -          | -          | -          | -          | -          | -          | -          | -          | -          | -          | -          | -          | ✓         |
-| kubernetes-client 4.0.0  |            |            |            |             | -          | -          | -          | -          | -          | -          | -          | -          | -          | -          | -          | -          | ✓         |
-| kubernetes-client 3.2.0  |            |            |            |             | -          | -          | -          | -          | -          | -          | -          | -          | -          | -          | -          | -          | ✓         |
+### OpenShift
 
+Starting from v5.5, the OpenShift Client should be compatible with **any** OpenShift cluster version currently supported by Red Hat.
+The Fabric8 Kubernetes Client is one of the few Kubernetes Java clients that provides full support for any supported OpenShift cluster version. If you find any incompatibility or something missing, please open a [new issue](https://github.com/fabric8io/kubernetes-client/issues/new/choose).
 
-### OpenShift Compatibility Matrix:
- 
- `✓` means All OpenShift resources provided by this specific release are supported. In other cases, OpenShiftClient would work for standard resources (Pod, Deployment, Service, etc.) but won't guarantee support for all api resources provided by this specific
- version of OpenShift implementation.
-**Note**: This matrix is prepared by running our integration tests on different versions of OpenShift.
-
-|                         | OCP 4.9.8 | OCP 4.5.14 | OCP 4.2.0 | OCP 4.1.0 | OCP 3.11.0 | OCP 3.10.0 | OCP 3.9.0 | OCP 3.7.0 | OCP 3.6.0 |
-|-------------------------|-----------|------------|-----------|-----------|------------|------------|-----------|-----------|-----------|
-| HEAD                    | ✓         | ✓          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 6.7.2  | ✓         | ✓          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 6.7.1  | ✓         | ✓          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 6.7.0  | ✓         | ✓          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 6.6.2  | ✓         | ✓          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 6.6.1  | ✓         | ✓          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 6.6.0  | ✓         | ✓          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 6.5.1  | ✓         | ✓          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 6.5.0  | ✓         | ✓          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 6.4.1  | ✓         | ✓          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 6.4.0  | ✓         | ✓          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 6.3.1  | ✓         | ✓          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 6.3.0  | ✓         | ✓          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 6.2.0  | ✓         | ✓          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 6.1.1  | ✓         | ✓          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 6.0.0  | ✓         | ✓          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 5.12.4 | ✓         | ✓          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 5.12.3 | ✓         | ✓          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 5.12.1 | ✓         | ✓          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 5.12.0 | ✓         | ✓          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 5.11.2 | ✓         | ✓          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 5.11.1 | ✓         | ✓          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 5.11.0 | ✓         | ✓          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 5.10.2 | ✓         | ✓          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 5.10.1 | ✓         | ✓          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 5.10.0 | ✓         | ✓          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 5.9.0  | ✓         | ✓          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 5.8.1  | ✓         | ✓          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 5.8.0  | ✓         | ✓          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 5.7.4  | ✓         | ✓          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 5.7.3  | ✓         | ✓          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 5.7.2  | ✓         | ✓          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 5.7.1  | ✓         | ✓          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 5.7.0  | ✓         | ✓          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 5.6.0  | ✓         | ✓          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 5.5.0  | ✓         | ✓          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 5.4.2  | ✓         | ✓          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 5.4.1  | ✓         | ✓          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 5.4.0  | ✓         | ✓          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 5.3.2  | ✓         | ✓          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 5.3.1  | ✓         | ✓          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 5.3.0  | ✓         | ✓          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 5.2.1  | ✓         | ✓          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 5.2.0  | ✓         | ✓          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 5.1.2  | ✓         | ✓          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 5.1.1  | ✓         | ✓          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 5.1.0  | ✓         | ✓          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 5.0.3  | ✓         | ✓          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 5.0.2  | ✓         | ✓          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 5.0.1  | ✓         | ✓          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 5.0.0  | ✓         | ✓          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 4.13.3 | ✓         | ✓          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 4.13.2 | ✓         | ✓          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 4.13.1 | ✓         | ✓          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 4.13.0 | ✓         | ✓          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 4.12.0 | ✓         | ✓          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 4.11.2 | ✓         | ✓          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 4.11.1 | ✓         | ✓          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 4.11.0 | ✓         | ✓          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 4.10.3 | ✓         | ✓          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 4.10.2 | ✓         | ✓          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 4.10.1 | ✓         | ✓          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 4.10.0 | ✓         | ✓          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 4.9.2  | -         | -          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 4.9.1  | -         | -          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 4.9.0  | -         | -          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 4.8.0  | -         | -          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 4.7.2  | -         | -          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 4.7.1  | -         | -          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 4.7.0  | -         | -          | ✓         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 4.6.4  | -         | -          | -         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 4.6.3  | -         | -          | -         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 4.6.2  | -         | -          | -         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 4.6.1  | -         | -          | -         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 4.6.0  | -         | -          | -         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 4.5.2  | -         | -          | -         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 4.5.1  | -         | -          | -         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 4.5.0  | -         | -          | -         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 4.4.2  | -         | -          | -         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 4.4.1  | -         | -          | -         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 4.4.0  | -         | -          | -         | ✓         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 4.3.1  | -         | -          | -         | -         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 4.3.0  | -         | -          | -         | -         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 4.2.2  | -         | -          | -         | -         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 4.2.1  | -         | -          | -         | -         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 4.2.0  | -         | -          | -         | -         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 4.1.3  | -         | -          | -         | -         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 4.1.2  | -         | -          | -         | -         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 4.1.1  | -         | -          | -         | -         | ✓          | ✓          | ✓         | -         | -         |
-| openshift-client 4.1.0  | -         | -          | -         | -         | -          | ✓          | ✓         | ✓         | -         |
-| openshift-client 4.0.0  | -         | -          | -         | -         | -          | -          | ✓         | ✓         | ✓         |
-| openshift-client 3.2.0  | -         | -          | -         | -         | -          | -          | ✓         | ✓         | ✓         |
 
 ## Major Changes in Kubernetes Client 4.0.0
 All the resource objects used here will be according to OpenShift 3.9.0  and Kubernetes 1.9.0. All the resource objects will give all the fields according to OpenShift 3.9.0 and Kubernetes 1.9.0
