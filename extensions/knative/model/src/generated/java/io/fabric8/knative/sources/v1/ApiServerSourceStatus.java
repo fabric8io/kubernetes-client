@@ -45,7 +45,9 @@ import lombok.experimental.Accessors;
     "annotations",
     "ceAttributes",
     "conditions",
+    "namespaces",
     "observedGeneration",
+    "sinkCACerts",
     "sinkUri"
 })
 @ToString
@@ -83,8 +85,13 @@ public class ApiServerSourceStatus implements KubernetesResource
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Condition> conditions = new ArrayList<Condition>();
+    @JsonProperty("namespaces")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<java.lang.String> namespaces = new ArrayList<java.lang.String>();
     @JsonProperty("observedGeneration")
     private Long observedGeneration;
+    @JsonProperty("sinkCACerts")
+    private String sinkCACerts;
     @JsonProperty("sinkUri")
     private java.lang.String sinkUri;
     @JsonIgnore
@@ -97,12 +104,14 @@ public class ApiServerSourceStatus implements KubernetesResource
     public ApiServerSourceStatus() {
     }
 
-    public ApiServerSourceStatus(Map<String, String> annotations, List<CloudEventAttributes> ceAttributes, List<Condition> conditions, Long observedGeneration, java.lang.String sinkUri) {
+    public ApiServerSourceStatus(Map<String, String> annotations, List<CloudEventAttributes> ceAttributes, List<Condition> conditions, List<java.lang.String> namespaces, Long observedGeneration, String sinkCACerts, java.lang.String sinkUri) {
         super();
         this.annotations = annotations;
         this.ceAttributes = ceAttributes;
         this.conditions = conditions;
+        this.namespaces = namespaces;
         this.observedGeneration = observedGeneration;
+        this.sinkCACerts = sinkCACerts;
         this.sinkUri = sinkUri;
     }
 
@@ -136,6 +145,16 @@ public class ApiServerSourceStatus implements KubernetesResource
         this.conditions = conditions;
     }
 
+    @JsonProperty("namespaces")
+    public List<java.lang.String> getNamespaces() {
+        return namespaces;
+    }
+
+    @JsonProperty("namespaces")
+    public void setNamespaces(List<java.lang.String> namespaces) {
+        this.namespaces = namespaces;
+    }
+
     @JsonProperty("observedGeneration")
     public Long getObservedGeneration() {
         return observedGeneration;
@@ -144,6 +163,16 @@ public class ApiServerSourceStatus implements KubernetesResource
     @JsonProperty("observedGeneration")
     public void setObservedGeneration(Long observedGeneration) {
         this.observedGeneration = observedGeneration;
+    }
+
+    @JsonProperty("sinkCACerts")
+    public String getSinkCACerts() {
+        return sinkCACerts;
+    }
+
+    @JsonProperty("sinkCACerts")
+    public void setSinkCACerts(String sinkCACerts) {
+        this.sinkCACerts = sinkCACerts;
     }
 
     @JsonProperty("sinkUri")

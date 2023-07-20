@@ -46,6 +46,7 @@ import lombok.experimental.Accessors;
     "ceAttributes",
     "conditions",
     "observedGeneration",
+    "sinkCACerts",
     "sinkUri",
     "webhookIDKey"
 })
@@ -86,6 +87,8 @@ public class GitHubSourceStatus implements KubernetesResource
     private List<Condition> conditions = new ArrayList<Condition>();
     @JsonProperty("observedGeneration")
     private Long observedGeneration;
+    @JsonProperty("sinkCACerts")
+    private String sinkCACerts;
     @JsonProperty("sinkUri")
     private java.lang.String sinkUri;
     @JsonProperty("webhookIDKey")
@@ -100,12 +103,13 @@ public class GitHubSourceStatus implements KubernetesResource
     public GitHubSourceStatus() {
     }
 
-    public GitHubSourceStatus(Map<String, String> annotations, List<CloudEventAttributes> ceAttributes, List<Condition> conditions, Long observedGeneration, java.lang.String sinkUri, java.lang.String webhookIDKey) {
+    public GitHubSourceStatus(Map<String, String> annotations, List<CloudEventAttributes> ceAttributes, List<Condition> conditions, Long observedGeneration, String sinkCACerts, java.lang.String sinkUri, java.lang.String webhookIDKey) {
         super();
         this.annotations = annotations;
         this.ceAttributes = ceAttributes;
         this.conditions = conditions;
         this.observedGeneration = observedGeneration;
+        this.sinkCACerts = sinkCACerts;
         this.sinkUri = sinkUri;
         this.webhookIDKey = webhookIDKey;
     }
@@ -148,6 +152,16 @@ public class GitHubSourceStatus implements KubernetesResource
     @JsonProperty("observedGeneration")
     public void setObservedGeneration(Long observedGeneration) {
         this.observedGeneration = observedGeneration;
+    }
+
+    @JsonProperty("sinkCACerts")
+    public String getSinkCACerts() {
+        return sinkCACerts;
+    }
+
+    @JsonProperty("sinkCACerts")
+    public void setSinkCACerts(String sinkCACerts) {
+        this.sinkCACerts = sinkCACerts;
     }
 
     @JsonProperty("sinkUri")

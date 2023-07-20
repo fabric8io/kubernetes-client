@@ -22,6 +22,7 @@
 #### Dependency Upgrade
 * Fix #5056: Update Kubernetes Model to v1.27.3
 * Fix #5308: sundrio was updated to the latest version.  FluentImpl classes were removed, along with methods that had been previously deprecated.  Some seldom used builder methods dealing manipulating buildable fields as a subtype such as withXXXField were removed in favor of using more general methods such as withField.
+* Fix #5140: Upgrade Fabric8 Knative Extension Model to v0.37.1
 
 #### New Features
 * Fix #5133: Support for using TokenRequest for existing ServiceAccount

@@ -43,6 +43,7 @@ import lombok.experimental.Accessors;
     "kind",
     "metadata",
     "address",
+    "addresses",
     "annotations",
     "conditions",
     "deadLetterSinkUri",
@@ -76,6 +77,9 @@ public class BrokerStatus implements KubernetesResource
 
     @JsonProperty("address")
     private Addressable address;
+    @JsonProperty("addresses")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<Addressable> addresses = new ArrayList<Addressable>();
     @JsonProperty("annotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> annotations = new LinkedHashMap<String, String>();
@@ -96,9 +100,10 @@ public class BrokerStatus implements KubernetesResource
     public BrokerStatus() {
     }
 
-    public BrokerStatus(Addressable address, Map<String, String> annotations, List<Condition> conditions, java.lang.String deadLetterSinkUri, Long observedGeneration) {
+    public BrokerStatus(Addressable address, List<Addressable> addresses, Map<String, String> annotations, List<Condition> conditions, java.lang.String deadLetterSinkUri, Long observedGeneration) {
         super();
         this.address = address;
+        this.addresses = addresses;
         this.annotations = annotations;
         this.conditions = conditions;
         this.deadLetterSinkUri = deadLetterSinkUri;
@@ -113,6 +118,16 @@ public class BrokerStatus implements KubernetesResource
     @JsonProperty("address")
     public void setAddress(Addressable address) {
         this.address = address;
+    }
+
+    @JsonProperty("addresses")
+    public List<Addressable> getAddresses() {
+        return addresses;
+    }
+
+    @JsonProperty("addresses")
+    public void setAddresses(List<Addressable> addresses) {
+        this.addresses = addresses;
     }
 
     @JsonProperty("annotations")

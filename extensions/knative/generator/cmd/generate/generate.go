@@ -19,15 +19,17 @@ import (
 	"fmt"
 	"github.com/fabric8io/kubernetes-client/generator/pkg/schemagen"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/util/intstr"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	awssqs_source "knative.dev/eventing-awssqs/pkg/apis/sources/v1alpha1"
 	couchdb_source "knative.dev/eventing-couchdb/source/pkg/apis/sources/v1alpha1"
 	github_binding "knative.dev/eventing-github/pkg/apis/bindings/v1alpha1"
 	github_source "knative.dev/eventing-github/pkg/apis/sources/v1alpha1"
 	gitlab_binding "knative.dev/eventing-gitlab/pkg/apis/bindings/v1alpha1"
 	gitlab_source "knative.dev/eventing-gitlab/pkg/apis/sources/v1alpha1"
-	kafka_binding "knative.dev/eventing-kafka/pkg/apis/bindings/v1beta1"
-	kafka_channel "knative.dev/eventing-kafka/pkg/apis/messaging/v1beta1"
-	kafka_source "knative.dev/eventing-kafka/pkg/apis/sources/v1beta1"
+	kafka_binding "knative.dev/eventing-kafka-broker/control-plane/pkg/apis/bindings/v1beta1"
+	kafka_channel "knative.dev/eventing-kafka-broker/control-plane/pkg/apis/messaging/v1beta1"
+	kafka_source "knative.dev/eventing-kafka-broker/control-plane/pkg/apis/sources/v1beta1"
 	prometheus_source "knative.dev/eventing-prometheus/pkg/apis/sources/v1alpha1"
 	eventing_v1 "knative.dev/eventing/pkg/apis/eventing/v1"
 	eventing_v1beta1 "knative.dev/eventing/pkg/apis/eventing/v1beta1"
@@ -35,8 +37,14 @@ import (
 	messaging_v1 "knative.dev/eventing/pkg/apis/messaging/v1"
 	source_v1 "knative.dev/eventing/pkg/apis/sources/v1"
 	"knative.dev/pkg/apis"
+	duck_v1 "knative.dev/pkg/apis/duck/v1"
+	duck_v1alpha1 "knative.dev/pkg/apis/duck/v1alpha1"
+	duck_v1beta1 "knative.dev/pkg/apis/duck/v1beta1"
 	serving_v1 "knative.dev/serving/pkg/apis/serving/v1"
 	serving_v1beta1 "knative.dev/serving/pkg/apis/serving/v1beta1"
+	autoscaling_v1alpha1 "knative.dev/serving/pkg/apis/autoscaling/v1alpha1"
+	caching_v1alpha1 "knative.dev/caching/pkg/apis/caching/v1alpha1"
+	networking_v1alpha1 "knative.dev/networking/pkg/apis/networking/v1alpha1"
 	"reflect"
 )
 
@@ -51,6 +59,10 @@ func main() {
 		reflect.TypeOf(serving_v1.RevisionList{}):           schemagen.Namespaced,
 		reflect.TypeOf(serving_v1.ConfigurationList{}):      schemagen.Namespaced,
 		reflect.TypeOf(serving_v1beta1.DomainMappingList{}): schemagen.Namespaced,
+
+		// serving autoscaling v1alpha1
+		reflect.TypeOf(autoscaling_v1alpha1.MetricList{}): schemagen.Namespaced,
+		reflect.TypeOf(autoscaling_v1alpha1.PodAutoscalerList{}): schemagen.Namespaced,
 
 		// eventing v1
 		reflect.TypeOf(eventing_v1.BrokerList{}):  schemagen.Namespaced,
@@ -85,6 +97,33 @@ func main() {
 		// flows v1
 		reflect.TypeOf(flows_v1.SequenceList{}): schemagen.Namespaced,
 		reflect.TypeOf(flows_v1.ParallelList{}): schemagen.Namespaced,
+
+		reflect.TypeOf(caching_v1alpha1.ImageList{}): schemagen.Namespaced,
+		reflect.TypeOf(networking_v1alpha1.CertificateList{}): schemagen.Namespaced,
+		reflect.TypeOf(networking_v1alpha1.ClusterDomainClaimList{}): schemagen.Cluster,
+		reflect.TypeOf(networking_v1alpha1.IngressList{}): schemagen.Namespaced,
+		reflect.TypeOf(networking_v1alpha1.ServerlessServiceList{}): schemagen.Namespaced,
+
+		// duck v1
+		reflect.TypeOf(duck_v1.AddressableTypeList{}): schemagen.Cluster,
+		reflect.TypeOf(duck_v1.BindingList{}): schemagen.Cluster,
+		reflect.TypeOf(duck_v1.CronJobList{}): schemagen.Cluster,
+		reflect.TypeOf(duck_v1.KResourceList{}): schemagen.Cluster,
+		reflect.TypeOf(duck_v1.WithPodList{}): schemagen.Cluster,
+		reflect.TypeOf(duck_v1.PodList{}): schemagen.Cluster,
+		reflect.TypeOf(duck_v1.SourceList{}): schemagen.Cluster,
+
+		// duck v1alpha1
+		reflect.TypeOf(duck_v1alpha1.AddressableTypeList{}): schemagen.Cluster,
+		reflect.TypeOf(duck_v1alpha1.BindingList{}): schemagen.Cluster,
+		reflect.TypeOf(duck_v1alpha1.LegacyTargetList{}): schemagen.Cluster,
+		reflect.TypeOf(duck_v1alpha1.TargetList{}): schemagen.Cluster,
+
+		// duck v1beta1
+		reflect.TypeOf(duck_v1beta1.AddressableTypeList{}): schemagen.Cluster,
+		reflect.TypeOf(duck_v1beta1.BindingList{}): schemagen.Cluster,
+		reflect.TypeOf(duck_v1beta1.SourceList{}): schemagen.Cluster,
+		reflect.TypeOf(duck_v1beta1.KResourceList{}): schemagen.Cluster,
 	}
 
 	// constraints and patterns for fields
@@ -97,6 +136,7 @@ func main() {
 	providedPackages := map[string]string{
 		// external
 		"k8s.io/api/core/v1":                   "io.fabric8.kubernetes.api.model",
+		"k8s.io/api/batch/v1":                  "io.fabric8.kubernetes.api.model.batch.v1",
 		"k8s.io/apimachinery/pkg/apis/meta/v1": "io.fabric8.kubernetes.api.model",
 		"k8s.io/apimachinery/pkg/api/resource": "io.fabric8.kubernetes.api.model",
 		"k8s.io/apimachinery/pkg/runtime":      "io.fabric8.kubernetes.api.model.runtime",
@@ -112,9 +152,9 @@ func main() {
 		"knative.dev/eventing/pkg/apis/messaging/v1":                    {JavaPackage: "io.fabric8.knative.messaging.v1", ApiGroup: "messaging.knative.dev", ApiVersion: "v1"},
 		"knative.dev/eventing/pkg/apis/flows/v1":                        {JavaPackage: "io.fabric8.knative.flows.v1", ApiGroup: "flows.knative.dev", ApiVersion: "v1"},
 		"knative.dev/eventing/pkg/apis/sources/v1":                      {JavaPackage: "io.fabric8.knative.sources.v1", ApiGroup: "sources.knative.dev", ApiVersion: "v1"},
-		"knative.dev/eventing-kafka/pkg/apis/messaging/v1beta1":         {JavaPackage: "io.fabric8.knative.eventing.contrib.kafka.v1beta1", ApiGroup: "messaging.knative.dev", ApiVersion: "v1beta1"},
-		"knative.dev/eventing-kafka/pkg/apis/sources/v1beta1":           {JavaPackage: "io.fabric8.knative.eventing.contrib.kafka.v1beta1", ApiGroup: "sources.knative.dev", ApiVersion: "v1beta1"},
-		"knative.dev/eventing-kafka/pkg/apis/bindings/v1beta1":          {JavaPackage: "io.fabric8.knative.eventing.contrib.kafka.v1beta1", ApiGroup: "bindings.knative.dev", ApiVersion: "v1beta1"},
+		"knative.dev/eventing-kafka-broker/control-plane/pkg/apis/messaging/v1beta1":         {JavaPackage: "io.fabric8.knative.eventing.contrib.kafka.v1beta1", ApiGroup: "messaging.knative.dev", ApiVersion: "v1beta1"},
+		"knative.dev/eventing-kafka-broker/control-plane/pkg/apis/sources/v1beta1":           {JavaPackage: "io.fabric8.knative.eventing.contrib.kafka.v1beta1", ApiGroup: "sources.knative.dev", ApiVersion: "v1beta1"},
+		"knative.dev/eventing-kafka-broker/control-plane/pkg/apis/bindings/v1beta1":          {JavaPackage: "io.fabric8.knative.eventing.contrib.kafka.v1beta1", ApiGroup: "bindings.knative.dev", ApiVersion: "v1beta1"},
 		"knative.dev/eventing-awssqs/pkg/apis/sources/v1alpha1":         {JavaPackage: "io.fabric8.knative.eventing.contrib.awssqs.v1alpha1", ApiGroup: "sources.knative.dev", ApiVersion: "v1alpha1"},
 		"knative.dev/eventing-couchdb/source/pkg/apis/sources/v1alpha1": {JavaPackage: "io.fabric8.knative.eventing.contrib.couchdb.v1alpha1", ApiGroup: "sources.knative.dev", ApiVersion: "v1alpha1"},
 		"knative.dev/eventing-github/pkg/apis/sources/v1alpha1":         {JavaPackage: "io.fabric8.knative.eventing.contrib.github.v1alpha1", ApiGroup: "sources.knative.dev", ApiVersion: "v1alpha1"},
@@ -122,6 +162,12 @@ func main() {
 		"knative.dev/eventing-gitlab/pkg/apis/sources/v1alpha1":         {JavaPackage: "io.fabric8.knative.eventing.contrib.gitlab.v1alpha1", ApiGroup: "sources.knative.dev", ApiVersion: "v1alpha1"},
 		"knative.dev/eventing-gitlab/pkg/apis/bindings/v1alpha1":        {JavaPackage: "io.fabric8.knative.eventing.contrib.gitlab.v1alpha1", ApiGroup: "bindings.knative.dev", ApiVersion: "v1alpha1"},
 		"knative.dev/eventing-prometheus/pkg/apis/sources/v1alpha1":     {JavaPackage: "io.fabric8.knative.eventing.contrib.prometheus.v1alpha1", ApiGroup: "sources.knative.dev", ApiVersion: "v1alpha1"},
+		"knative.dev/serving/pkg/apis/autoscaling/v1alpha1":             {JavaPackage: "io.fabric8.knative.internal.autoscaling.v1alpha1", ApiGroup: "autoscaling.internal.knative.dev", ApiVersion: "v1alpha1"},
+		"knative.dev/caching/pkg/apis/caching/v1alpha1":                 {JavaPackage: "io.fabric8.knative.internal.caching.v1alpha1", ApiGroup: "caching.internal.knative.dev", ApiVersion: "v1alpha1"},
+		"knative.dev/networking/pkg/apis/networking/v1alpha1":           {JavaPackage: "io.fabric8.knative.internal.networking.v1alpha1", ApiGroup: "networking.internal.knative.dev", ApiVersion: "v1alpha1"},
+		"knative.dev/pkg/apis/duck/v1":                                  {JavaPackage: "io.fabric8.knative.internal.pkg.apis.duck.v1", ApiGroup: "duck.knative.dev", ApiVersion: "v1"},
+		"knative.dev/pkg/apis/duck/v1beta1":                             {JavaPackage: "io.fabric8.knative.internal.pkg.apis.duck.v1beta1", ApiGroup: "duck.knative.dev", ApiVersion: "v1beta1"},
+		"knative.dev/pkg/apis/duck/v1alpha1":                            {JavaPackage: "io.fabric8.knative.internal.pkg.apis.duck.v1alpha1", ApiGroup: "duck.knative.dev", ApiVersion: "v1alpha1"},
 	}
 
 	// converts all packages starting with <key> to a java package using an automated scheme:
@@ -137,6 +183,8 @@ func main() {
 		reflect.TypeOf(apis.URL{}):             "java.lang.String",
 		reflect.TypeOf(apis.VolatileTime{}):    "java.lang.String",
 		reflect.TypeOf(runtime.RawExtension{}): "java.util.Map<String, Object>",
+		reflect.TypeOf(metav1.Time{}):          "java.lang.String",
+		reflect.TypeOf(intstr.IntOrString{}):   "io.fabric8.kubernetes.api.model.IntOrString",
 	}
 
 	json := schemagen.GenerateSchema("http://fabric8.io/knative/KnativeSchema#", crdLists, providedPackages, manualTypeMap, packageMapping, mappingSchema, providedTypes, constraints, "io.fabric8")

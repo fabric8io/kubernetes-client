@@ -20,7 +20,6 @@ import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
-import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
@@ -44,6 +43,7 @@ import lombok.experimental.Accessors;
     "metadata",
     "ceOverrides",
     "mode",
+    "namespaceSelector",
     "owner",
     "resources",
     "serviceAccountName",
@@ -58,7 +58,7 @@ import lombok.experimental.Accessors;
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
-    @BuildableReference(LabelSelector.class),
+    @BuildableReference(io.fabric8.kubernetes.api.model.LabelSelector.class),
     @BuildableReference(Container.class),
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
@@ -79,6 +79,8 @@ public class ApiServerSourceSpec implements KubernetesResource
     private CloudEventOverrides ceOverrides;
     @JsonProperty("mode")
     private String mode;
+    @JsonProperty("namespaceSelector")
+    private io.fabric8.kubernetes.api.model.LabelSelector namespaceSelector;
     @JsonProperty("owner")
     private APIVersionKind owner;
     @JsonProperty("resources")
@@ -98,10 +100,11 @@ public class ApiServerSourceSpec implements KubernetesResource
     public ApiServerSourceSpec() {
     }
 
-    public ApiServerSourceSpec(CloudEventOverrides ceOverrides, String mode, APIVersionKind owner, List<APIVersionKindSelector> resources, String serviceAccountName, Destination sink) {
+    public ApiServerSourceSpec(CloudEventOverrides ceOverrides, String mode, io.fabric8.kubernetes.api.model.LabelSelector namespaceSelector, APIVersionKind owner, List<APIVersionKindSelector> resources, String serviceAccountName, Destination sink) {
         super();
         this.ceOverrides = ceOverrides;
         this.mode = mode;
+        this.namespaceSelector = namespaceSelector;
         this.owner = owner;
         this.resources = resources;
         this.serviceAccountName = serviceAccountName;
@@ -126,6 +129,16 @@ public class ApiServerSourceSpec implements KubernetesResource
     @JsonProperty("mode")
     public void setMode(String mode) {
         this.mode = mode;
+    }
+
+    @JsonProperty("namespaceSelector")
+    public io.fabric8.kubernetes.api.model.LabelSelector getNamespaceSelector() {
+        return namespaceSelector;
+    }
+
+    @JsonProperty("namespaceSelector")
+    public void setNamespaceSelector(io.fabric8.kubernetes.api.model.LabelSelector namespaceSelector) {
+        this.namespaceSelector = namespaceSelector;
     }
 
     @JsonProperty("owner")

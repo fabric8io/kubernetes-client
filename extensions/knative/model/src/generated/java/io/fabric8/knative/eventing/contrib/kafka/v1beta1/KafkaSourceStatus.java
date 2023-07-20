@@ -52,6 +52,7 @@ import lombok.experimental.Accessors;
     "observedGeneration",
     "placements",
     "selector",
+    "sinkCACerts",
     "sinkUri"
 })
 @ToString
@@ -102,6 +103,8 @@ public class KafkaSourceStatus implements KubernetesResource
     private List<Placement> placements = new ArrayList<Placement>();
     @JsonProperty("selector")
     private java.lang.String selector;
+    @JsonProperty("sinkCACerts")
+    private String sinkCACerts;
     @JsonProperty("sinkUri")
     private java.lang.String sinkUri;
     @JsonIgnore
@@ -114,7 +117,7 @@ public class KafkaSourceStatus implements KubernetesResource
     public KafkaSourceStatus() {
     }
 
-    public KafkaSourceStatus(Map<String, String> annotations, List<CloudEventAttributes> ceAttributes, java.lang.String claims, List<Condition> conditions, java.lang.Integer consumers, Integer maxAllowedVReplicas, Long observedGeneration, List<Placement> placements, java.lang.String selector, java.lang.String sinkUri) {
+    public KafkaSourceStatus(Map<String, String> annotations, List<CloudEventAttributes> ceAttributes, java.lang.String claims, List<Condition> conditions, java.lang.Integer consumers, Integer maxAllowedVReplicas, Long observedGeneration, List<Placement> placements, java.lang.String selector, String sinkCACerts, java.lang.String sinkUri) {
         super();
         this.annotations = annotations;
         this.ceAttributes = ceAttributes;
@@ -125,6 +128,7 @@ public class KafkaSourceStatus implements KubernetesResource
         this.observedGeneration = observedGeneration;
         this.placements = placements;
         this.selector = selector;
+        this.sinkCACerts = sinkCACerts;
         this.sinkUri = sinkUri;
     }
 
@@ -216,6 +220,16 @@ public class KafkaSourceStatus implements KubernetesResource
     @JsonProperty("selector")
     public void setSelector(java.lang.String selector) {
         this.selector = selector;
+    }
+
+    @JsonProperty("sinkCACerts")
+    public String getSinkCACerts() {
+        return sinkCACerts;
+    }
+
+    @JsonProperty("sinkCACerts")
+    public void setSinkCACerts(String sinkCACerts) {
+        this.sinkCACerts = sinkCACerts;
     }
 
     @JsonProperty("sinkUri")

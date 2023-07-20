@@ -45,10 +45,10 @@ import lombok.experimental.Accessors;
     "kind",
     "metadata",
     "address",
+    "addresses",
     "annotations",
     "channel",
     "conditions",
-    "deadLetterChannel",
     "deadLetterSinkUri",
     "observedGeneration",
     "subscribers"
@@ -81,6 +81,9 @@ public class ChannelStatus implements KubernetesResource
 
     @JsonProperty("address")
     private Addressable address;
+    @JsonProperty("addresses")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<Addressable> addresses = new ArrayList<Addressable>();
     @JsonProperty("annotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> annotations = new LinkedHashMap<String, String>();
@@ -89,8 +92,6 @@ public class ChannelStatus implements KubernetesResource
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Condition> conditions = new ArrayList<Condition>();
-    @JsonProperty("deadLetterChannel")
-    private KReference deadLetterChannel;
     @JsonProperty("deadLetterSinkUri")
     private java.lang.String deadLetterSinkUri;
     @JsonProperty("observedGeneration")
@@ -108,13 +109,13 @@ public class ChannelStatus implements KubernetesResource
     public ChannelStatus() {
     }
 
-    public ChannelStatus(Addressable address, Map<String, String> annotations, KReference channel, List<Condition> conditions, KReference deadLetterChannel, java.lang.String deadLetterSinkUri, Long observedGeneration, List<SubscriberStatus> subscribers) {
+    public ChannelStatus(Addressable address, List<Addressable> addresses, Map<String, String> annotations, KReference channel, List<Condition> conditions, java.lang.String deadLetterSinkUri, Long observedGeneration, List<SubscriberStatus> subscribers) {
         super();
         this.address = address;
+        this.addresses = addresses;
         this.annotations = annotations;
         this.channel = channel;
         this.conditions = conditions;
-        this.deadLetterChannel = deadLetterChannel;
         this.deadLetterSinkUri = deadLetterSinkUri;
         this.observedGeneration = observedGeneration;
         this.subscribers = subscribers;
@@ -128,6 +129,16 @@ public class ChannelStatus implements KubernetesResource
     @JsonProperty("address")
     public void setAddress(Addressable address) {
         this.address = address;
+    }
+
+    @JsonProperty("addresses")
+    public List<Addressable> getAddresses() {
+        return addresses;
+    }
+
+    @JsonProperty("addresses")
+    public void setAddresses(List<Addressable> addresses) {
+        this.addresses = addresses;
     }
 
     @JsonProperty("annotations")
@@ -158,16 +169,6 @@ public class ChannelStatus implements KubernetesResource
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;
-    }
-
-    @JsonProperty("deadLetterChannel")
-    public KReference getDeadLetterChannel() {
-        return deadLetterChannel;
-    }
-
-    @JsonProperty("deadLetterChannel")
-    public void setDeadLetterChannel(KReference deadLetterChannel) {
-        this.deadLetterChannel = deadLetterChannel;
     }
 
     @JsonProperty("deadLetterSinkUri")

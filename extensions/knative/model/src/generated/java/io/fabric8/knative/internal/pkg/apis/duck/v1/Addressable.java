@@ -38,6 +38,8 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
+    "CACerts",
+    "name",
     "url"
 })
 @ToString
@@ -66,10 +68,14 @@ import lombok.experimental.Accessors;
 public class Addressable implements KubernetesResource
 {
 
+    @JsonProperty("CACerts")
+    private String cACerts;
+    @JsonProperty("name")
+    private String name;
     @JsonProperty("url")
-    private String url;
+    private java.lang.String url;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -78,28 +84,50 @@ public class Addressable implements KubernetesResource
     public Addressable() {
     }
 
-    public Addressable(String url) {
+    public Addressable(String cACerts, String name, java.lang.String url) {
         super();
+        this.cACerts = cACerts;
+        this.name = name;
         this.url = url;
     }
 
+    @JsonProperty("CACerts")
+    public String getCACerts() {
+        return cACerts;
+    }
+
+    @JsonProperty("CACerts")
+    public void setCACerts(String cACerts) {
+        this.cACerts = cACerts;
+    }
+
+    @JsonProperty("name")
+    public String getName() {
+        return name;
+    }
+
+    @JsonProperty("name")
+    public void setName(String name) {
+        this.name = name;
+    }
+
     @JsonProperty("url")
-    public String getUrl() {
+    public java.lang.String getUrl() {
         return url;
     }
 
     @JsonProperty("url")
-    public void setUrl(String url) {
+    public void setUrl(java.lang.String url) {
         this.url = url;
     }
 
     @JsonAnyGetter
-    public Map<String, Object> getAdditionalProperties() {
+    public Map<java.lang.String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(String name, Object value) {
+    public void setAdditionalProperty(java.lang.String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
