@@ -38,7 +38,7 @@
     </osgi.import>
     <osgi.export>
       io.fabric8.tekton.triggers.v1beta1.*,
-      io.fabric8.tekton.triggers.internal.knative.pkg.apis.*
+      io.fabric8.knative.internal.pkg.apis.*
     </osgi.export>
   </properties>
 

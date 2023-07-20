@@ -49,6 +49,10 @@ func main() {
 		"k8s.io/api/core/v1":                                     "io.fabric8.kubernetes.api.model",
 		"k8s.io/apimachinery/pkg/apis/meta/v1":                   "io.fabric8.kubernetes.api.model",
 		"github.com/tektoncd/pipeline/pkg/apis/pipeline/v1beta1": "io.fabric8.tekton.pipeline.v1beta1",
+		"knative.dev/pkg/apis/duck/v1":                           "io.fabric8.knative.internal.pkg.apis.duck.v1",
+		"knative.dev/pkg/apis/duck/v1alpha1":                     "io.fabric8.knative.internal.pkg.apis.duck.v1alpha1",
+		"knative.dev/pkg/apis/duck/v1beta1":                      "io.fabric8.knative.internal.pkg.apis.duck.v1beta1",
+		"knative.dev/pkg/apis":                                   "io.fabric8.knative.internal.pkg.apis",
 	}
 
 	// mapping of go packages of this module to the resulting java package
@@ -61,9 +65,7 @@ func main() {
 	//  - replace <key> with <value> aka "package prefix"
 	//  - replace '/' with '.' for a valid java package name
 	// e.g. github.com/tektoncd/pipeline/pkg/apis/pipeline/pod/Template is mapped to "io.fabric8.tekton.internal.pipeline.pkg.apis.pipeline.pod.Template"
-	mappingSchema := map[string]string{
-		"knative.dev": "io.fabric8.tekton.triggers.internal.knative",
-	}
+	mappingSchema := map[string]string{}
 
 	// overwriting some types
 	manualTypeMap := map[reflect.Type]string{

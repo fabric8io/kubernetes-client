@@ -10,6 +10,7 @@
 * Fix #5293: Ensured the mock server uses only generic or JsonNode parsing
 * Fix #5298: Prevent requests needing authentication from causing a 403 response
 * Fix #5327: Ensured that the informer reconnect task terminates after client close
+* Fix #5113: Clashing package names in trigger model dependencies
 
 #### Improvements
 * Fix #5166: Remove opinionated messages from Config's `errorMessages` and deprecate it
