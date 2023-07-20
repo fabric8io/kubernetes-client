@@ -13,32 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.model.annotation;
+package io.fabric8.crd.generator.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-/**
- * @deprecated: use io.fabric8.crd.generator.annotation.PrinterColumn instead
- */
 @Target({ ElementType.FIELD })
 @Retention(RetentionPolicy.RUNTIME)
-@Deprecated
 public @interface PrinterColumn {
 
   /**
    * The name of the column.
    * An empty column name implies the use of the property name
-   * 
+   *
    * @return the column name, or empty string if the annotated property name should be used.
    */
   String name() default "";
 
   /**
    * The printer column format.
-   * 
+   *
    * @return the format or empty string if no format is specified.
    */
   String format() default "";

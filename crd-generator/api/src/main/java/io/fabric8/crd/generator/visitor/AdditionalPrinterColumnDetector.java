@@ -15,7 +15,7 @@
  */
 package io.fabric8.crd.generator.visitor;
 
-import io.fabric8.kubernetes.model.annotation.PrinterColumn;
+import io.fabric8.crd.generator.annotation.PrinterColumn;
 
 import java.util.ArrayList;
 

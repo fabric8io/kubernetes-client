@@ -26,6 +26,9 @@
 #### New Features
 * Fix #5133: Support for using TokenRequest for existing ServiceAccount
 
+#### Deprecations
+* Deprecating `io.fabric8.kubernetes.model.annotation.PrinterColumn` in favor of: `io.fabric8.crd.generator.annotation.PrinterColumn`
+
 #### _**Note**_: Breaking changes
 * Fix #2718: KubernetesResourceUtil.isResourceReady was deprecated.  Use `client.resource(item).isReady()` or `Readiness.getInstance().isReady(item)` instead.
 * Fix #5171: Removed Camel-K extension, use [`org.apache.camel.k:camel-k-crds`](https://central.sonatype.com/artifact/org.apache.camel.k/camel-k-crds) instead.
