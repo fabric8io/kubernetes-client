@@ -52,6 +52,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Queue;
+import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
 public class KubernetesMockServer extends DefaultMockServer implements Resetable, CustomResourceAware {
@@ -120,15 +121,21 @@ public class KubernetesMockServer extends DefaultMockServer implements Resetable
   }
 
   public NamespacedKubernetesClient createClient() {
-    return createClient(null);
+    return createClient(ignored -> {
+    });
   }
 
-  public NamespacedKubernetesClient createClient(HttpClient.Factory factory) {
-    KubernetesClient client = new KubernetesClientBuilder().withConfig(getMockConfiguration()).withHttpClientFactory(factory)
-        .build();
+  public NamespacedKubernetesClient createClient(Consumer<KubernetesClientBuilder> customizer) {
+    KubernetesClientBuilder builder = new KubernetesClientBuilder().withConfig(getMockConfiguration());
+    customizer.accept(builder);
+    KubernetesClient client = builder.build();
     client.adapt(BaseClient.class)
         .setMatchingGroupPredicate(s -> unsupportedPatterns.stream().noneMatch(p -> p.matcher(s).find()));
     return client.adapt(NamespacedKubernetesClient.class);
+  }
+
+  public NamespacedKubernetesClient createClient(HttpClient.Factory factory) {
+    return createClient(builder -> builder.withHttpClientFactory(factory));
   }
 
   /**
