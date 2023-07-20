@@ -154,8 +154,7 @@
       "type": "object",
       "properties": {
         "address": {
-          "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_Addressable",
-          "existingJavaType": "io.fabric8.tekton.triggers.internal.knative.pkg.apis.duck.v1.Addressable"
+          "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.Addressable"
         },
         "annotations": {
           "type": "object",
@@ -165,8 +164,7 @@
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/knative_dev_pkg_apis_Condition",
-            "existingJavaType": "io.fabric8.tekton.triggers.internal.knative.pkg.apis.Condition"
+            "existingJavaType": "io.fabric8.knative.internal.pkg.apis.Condition"
           }
         },
         "observedGeneration": {
@@ -346,8 +344,7 @@
       "type": "object",
       "properties": {
         "address": {
-          "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1alpha1_Addressable",
-          "existingJavaType": "io.fabric8.tekton.triggers.internal.knative.pkg.apis.duck.v1alpha1.Addressable"
+          "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1alpha1.Addressable"
         },
         "annotations": {
           "type": "object",
@@ -357,8 +354,7 @@
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/knative_dev_pkg_apis_Condition",
-            "existingJavaType": "io.fabric8.tekton.triggers.internal.knative.pkg.apis.Condition"
+            "existingJavaType": "io.fabric8.knative.internal.pkg.apis.Condition"
           }
         },
         "configuration": {
@@ -564,8 +560,7 @@
       "type": "object",
       "properties": {
         "address": {
-          "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_Addressable",
-          "existingJavaType": "io.fabric8.tekton.triggers.internal.knative.pkg.apis.duck.v1.Addressable"
+          "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.Addressable"
         },
         "annotations": {
           "type": "object",
@@ -575,8 +570,7 @@
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/knative_dev_pkg_apis_Condition",
-            "existingJavaType": "io.fabric8.tekton.triggers.internal.knative.pkg.apis.Condition"
+            "existingJavaType": "io.fabric8.knative.internal.pkg.apis.Condition"
           }
         },
         "observedGeneration": {
@@ -600,8 +594,7 @@
           "type": "string"
         },
         "spec": {
-          "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_WithPodSpec",
-          "existingJavaType": "io.fabric8.tekton.triggers.internal.knative.pkg.apis.duck.v1.WithPodSpec"
+          "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.WithPodSpec"
         }
       },
       "javaType": "io.fabric8.tekton.triggers.v1alpha1.KubernetesResource",
@@ -1091,93 +1084,6 @@
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
-    },
-    "knative_dev_pkg_apis_Condition": {
-      "type": "object",
-      "properties": {
-        "lastTransitionTime": {
-          "existingJavaType": "java.lang.String"
-        },
-        "message": {
-          "type": "string",
-          "description": "human-readable message indicating details about last transition"
-        },
-        "reason": {
-          "type": "string",
-          "description": "one-word CamelCase reason for the condition's last transition"
-        },
-        "severity": {
-          "type": "string",
-          "description": "how to interpret failures of this condition"
-        },
-        "status": {
-          "type": "string",
-          "description": "status of the condition"
-        },
-        "type": {
-          "type": "string",
-          "description": "type of status condition"
-        }
-      },
-      "javaType": "io.fabric8.tekton.triggers.internal.knative.pkg.apis.Condition",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "knative_dev_pkg_apis_duck_v1_Addressable": {
-      "type": "object",
-      "properties": {
-        "url": {
-          "existingJavaType": "java.lang.String"
-        }
-      },
-      "javaType": "io.fabric8.tekton.triggers.internal.knative.pkg.apis.duck.v1.Addressable",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "knative_dev_pkg_apis_duck_v1_PodSpecable": {
-      "type": "object",
-      "properties": {
-        "metadata": {
-          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
-        },
-        "spec": {
-          "existingJavaType": "io.fabric8.kubernetes.api.model.PodSpec"
-        }
-      },
-      "javaType": "io.fabric8.tekton.triggers.internal.knative.pkg.apis.duck.v1.PodSpecable",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "knative_dev_pkg_apis_duck_v1_WithPodSpec": {
-      "type": "object",
-      "properties": {
-        "template": {
-          "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_PodSpecable",
-          "existingJavaType": "io.fabric8.tekton.triggers.internal.knative.pkg.apis.duck.v1.PodSpecable"
-        }
-      },
-      "javaType": "io.fabric8.tekton.triggers.internal.knative.pkg.apis.duck.v1.WithPodSpec",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "knative_dev_pkg_apis_duck_v1alpha1_Addressable": {
-      "type": "object",
-      "properties": {
-        "hostname": {
-          "type": "string"
-        },
-        "url": {
-          "existingJavaType": "java.lang.String"
-        }
-      },
-      "javaType": "io.fabric8.tekton.triggers.internal.knative.pkg.apis.duck.v1alpha1.Addressable",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
     }
   },
   "type": "object",
@@ -1365,26 +1271,6 @@
     "github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_WebhookInterceptor": {
       "$ref": "#/definitions/github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_WebhookInterceptor",
       "existingJavaType": "io.fabric8.tekton.triggers.v1alpha1.WebhookInterceptor"
-    },
-    "knative_dev_pkg_apis_Condition": {
-      "$ref": "#/definitions/knative_dev_pkg_apis_Condition",
-      "existingJavaType": "io.fabric8.tekton.triggers.internal.knative.pkg.apis.Condition"
-    },
-    "knative_dev_pkg_apis_duck_v1_Addressable": {
-      "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_Addressable",
-      "existingJavaType": "io.fabric8.tekton.triggers.internal.knative.pkg.apis.duck.v1.Addressable"
-    },
-    "knative_dev_pkg_apis_duck_v1_PodSpecable": {
-      "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_PodSpecable",
-      "existingJavaType": "io.fabric8.tekton.triggers.internal.knative.pkg.apis.duck.v1.PodSpecable"
-    },
-    "knative_dev_pkg_apis_duck_v1_WithPodSpec": {
-      "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_WithPodSpec",
-      "existingJavaType": "io.fabric8.tekton.triggers.internal.knative.pkg.apis.duck.v1.WithPodSpec"
-    },
-    "knative_dev_pkg_apis_duck_v1alpha1_Addressable": {
-      "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1alpha1_Addressable",
-      "existingJavaType": "io.fabric8.tekton.triggers.internal.knative.pkg.apis.duck.v1alpha1.Addressable"
     }
   },
   "additionalProperties": false
