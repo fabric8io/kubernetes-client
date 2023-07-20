@@ -358,14 +358,17 @@ class CRDGeneratorTest {
       assertEquals("string", columnDefinition.getType());
       assertEquals(".spec.category", columnDefinition.getJsonPath());
       assertEquals("jokeCategory", columnDefinition.getName());
+      assertEquals(1, columnDefinition.getPriority());
       columnDefinition = printerColumns.get(1);
       assertEquals("string", columnDefinition.getType());
       assertEquals(".spec.excluded", columnDefinition.getJsonPath());
       assertEquals("excludedTopics", columnDefinition.getName());
+      assertEquals(0, columnDefinition.getPriority());
       columnDefinition = printerColumns.get(2);
       assertEquals("string", columnDefinition.getType());
       assertEquals(".status.category", columnDefinition.getJsonPath());
       assertEquals("jokeCategory", columnDefinition.getName());
+      assertEquals(0, columnDefinition.getPriority());
       CustomResourceValidation schema = version.getSchema();
       assertNotNull(schema);
       Map<String, JSONSchemaProps> properties = schema.getOpenAPIV3Schema().getProperties();

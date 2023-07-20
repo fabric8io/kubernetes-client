@@ -62,6 +62,10 @@ class ZookeeperCustomResourceTest {
       JSONSchemaProps props = (JSONSchemaProps) spec;
       List<String> required = props.getRequired();
       assertTrue(required.contains("version"));
+      assertEquals("SIZE", v.getAdditionalPrinterColumns().get(0).getName());
+      assertEquals(1, v.getAdditionalPrinterColumns().get(0).getPriority());
+      assertEquals("UPTIME", v.getAdditionalPrinterColumns().get(1).getName());
+      assertEquals(0, v.getAdditionalPrinterColumns().get(1).getPriority());
     });
 
     Optional<CustomResourceDefinitionVersion> v1alpha1 = d.getSpec().getVersions().stream()
@@ -84,6 +88,16 @@ class ZookeeperCustomResourceTest {
         getClass().getClassLoader().getResourceAsStream("META-INF/fabric8/zookeepers.io.zookeeper-v1.yml"),
         CustomResourceDefinition.class);
     assertNotNull(d);
+
+    Optional<CustomResourceDefinitionVersion> v1 = d.getSpec().getVersions().stream().filter(v -> v.getName().equals("v1"))
+        .findFirst();
+    assertTrue(v1.isPresent());
+    v1.ifPresent(v -> {
+      assertEquals("SIZE", v.getAdditionalPrinterColumns().get(0).getName());
+      assertEquals(1, v.getAdditionalPrinterColumns().get(0).getPriority());
+      assertEquals("UPTIME", v.getAdditionalPrinterColumns().get(1).getName());
+      assertEquals(0, v.getAdditionalPrinterColumns().get(1).getPriority());
+    });
 
     assertEquals("1", d.getMetadata().getAnnotations().get("one"));
     assertEquals("2", d.getMetadata().getAnnotations().get("two"));

@@ -271,6 +271,27 @@ The field will be marked as `required` in the generated CRD, such as:
             type: object
 ```
 
+### io.fabric8.kubernetes.model.annotation.PrinterColumn
+
+If a field or one of its accessors is annotated with `io.fabric8.kubernetes.model.annotation.PrinterColumn`
+
+```java
+public class ExampleSpec { 
+  @PrinterColumn(name = "SOME_VALUE", priority = 1)
+  int someValue;
+}
+```
+
+The CRD generator will customize columns shown by the `kubectl get` command. Above example adds the `SOME_VALUE` column.
+
+```yaml
+          - additionalPrinterColumns:
+            - jsonPath: .spec.someValue
+              name: SOME_VALUE
+              type: int
+              priority: 1
+```
+
 ### io.fabric8.crd.generator.annotation.SchemaFrom
 
 If a field or one of its accessors is annotated with `io.fabric8.crd.generator.annotation.SchemaFrom`
@@ -444,6 +465,7 @@ The CRD generator will add the additional `labels`:
 | `io.fabric8.crd.generator.annotation.SchemaSwap`             | Similar to SchemaFrom, but can be applied at any point in the class hierarchy            |
 | `io.fabric8.crd.generator.annotation.Annotations`            | Additional `annotations` in `metadata`                                                |
 | `io.fabric8.crd.generator.annotation.Labels`                 | Additional `labels` in `metadata`                                                     |
+| `io.fabric8.kubernetes.model.annotation.PrinterColumn`       | Customize columns shown by the `kubectl get` command                                  |
 
 A field of type `com.fasterxml.jackson.databind.JsonNode` is encoded as an empty object with `x-kubernetes-preserve-unknown-fields: true` defined.
 

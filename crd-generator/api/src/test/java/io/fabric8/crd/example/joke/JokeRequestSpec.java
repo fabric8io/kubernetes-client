@@ -39,7 +39,7 @@ public class JokeRequestSpec {
     explicit
   }
 
-  @PrinterColumn(name = "jokeCategory")
+  @PrinterColumn(name = "jokeCategory", priority = 1)
   @JsonPropertyDescription("category-description")
   private Category category = Category.Any;
   @PrinterColumn(name = "excludedTopics")

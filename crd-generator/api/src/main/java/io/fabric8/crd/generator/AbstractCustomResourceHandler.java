@@ -92,9 +92,10 @@ public abstract class AbstractCustomResourceHandler {
       String description = property.getComments().stream().filter(l -> !l.trim().startsWith("@"))
           .collect(Collectors.joining(" ")).trim();
       String format = (String) parameters.get("format");
+      int priority = (int) parameters.getOrDefault("priority", 0);
 
       resources.decorate(
-          getPrinterColumnDecorator(name, version, path, type, column, description, format));
+          getPrinterColumnDecorator(name, version, path, type, column, description, format, priority));
     });
   }
 
@@ -159,7 +160,7 @@ public abstract class AbstractCustomResourceHandler {
    * @return the concrete decorator implementing the addition of a printer column to the currently built CRD
    */
   protected abstract Decorator getPrinterColumnDecorator(String name, String version, String path,
-      String type, String column, String description, String format);
+      String type, String column, String description, String format, int priority);
 
   /**
    * Adds all the necessary decorators to build the specific CRD version. For optional paths, see

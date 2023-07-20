@@ -29,15 +29,17 @@ public class AddAdditionPrinterColumnDecorator extends
   private final String path;
   private final String format;
   private final String description;
+  private int priority;
 
   public AddAdditionPrinterColumnDecorator(String resourceName, String resourceVersion, String type,
-      String columnName, String path, String format, String description) {
+      String columnName, String path, String format, String description, int priority) {
     super(resourceName, resourceVersion);
     this.type = type;
     this.columnName = columnName;
     this.path = path;
     this.format = format;
     this.description = description;
+    this.priority = priority;
   }
 
   @Override
@@ -52,6 +54,7 @@ public class AddAdditionPrinterColumnDecorator extends
         .withJSONPath(path)
         .withFormat(Utils.isNotNullOrEmpty(format) ? format : null)
         .withDescription(Utils.isNotNullOrEmpty(description) ? description : null)
+        .withPriority(priority)
         .endAdditionalPrinterColumn();
   }
 
@@ -66,6 +69,7 @@ public class AddAdditionPrinterColumnDecorator extends
     result = prime * result + ((path == null) ? 0 : path.hashCode());
     result = prime * result + ((format == null) ? 0 : format.hashCode());
     result = prime * result + ((description == null) ? 0 : description.hashCode());
+    result = prime * result + priority;
     return result;
   }
 
@@ -113,11 +117,12 @@ public class AddAdditionPrinterColumnDecorator extends
         return false;
     } else if (!type.equals(other.type))
       return false;
-    return true;
+    return priority == other.priority;
   }
 
   @Override
   public String toString() {
-    return getClass().getName() + " [name:" + getName() + ", version:" + getVersion() + "column:" + columnName + "]";
+    return getClass().getName() + " [name:" + getName() + ", version:" + getVersion() + "column:" + columnName + "priority:"
+        + priority + "]";
   }
 }
