@@ -38,6 +38,7 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
+    "CACerts",
     "ref",
     "uri"
 })
@@ -67,12 +68,14 @@ import lombok.experimental.Accessors;
 public class Destination implements KubernetesResource
 {
 
+    @JsonProperty("CACerts")
+    private String cACerts;
     @JsonProperty("ref")
     private KReference ref;
     @JsonProperty("uri")
-    private String uri;
+    private java.lang.String uri;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -81,10 +84,21 @@ public class Destination implements KubernetesResource
     public Destination() {
     }
 
-    public Destination(KReference ref, String uri) {
+    public Destination(String cACerts, KReference ref, java.lang.String uri) {
         super();
+        this.cACerts = cACerts;
         this.ref = ref;
         this.uri = uri;
+    }
+
+    @JsonProperty("CACerts")
+    public String getCACerts() {
+        return cACerts;
+    }
+
+    @JsonProperty("CACerts")
+    public void setCACerts(String cACerts) {
+        this.cACerts = cACerts;
     }
 
     @JsonProperty("ref")
@@ -98,22 +112,22 @@ public class Destination implements KubernetesResource
     }
 
     @JsonProperty("uri")
-    public String getUri() {
+    public java.lang.String getUri() {
         return uri;
     }
 
     @JsonProperty("uri")
-    public void setUri(String uri) {
+    public void setUri(java.lang.String uri) {
         this.uri = uri;
     }
 
     @JsonAnyGetter
-    public Map<String, Object> getAdditionalProperties() {
+    public Map<java.lang.String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(String name, Object value) {
+    public void setAdditionalProperty(java.lang.String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 

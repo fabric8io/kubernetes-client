@@ -46,6 +46,7 @@ import lombok.experimental.Accessors;
     "ceAttributes",
     "conditions",
     "observedGeneration",
+    "sinkCACerts",
     "sinkUri"
 })
 @ToString
@@ -85,6 +86,8 @@ public class ContainerSourceStatus implements KubernetesResource
     private List<Condition> conditions = new ArrayList<Condition>();
     @JsonProperty("observedGeneration")
     private Long observedGeneration;
+    @JsonProperty("sinkCACerts")
+    private String sinkCACerts;
     @JsonProperty("sinkUri")
     private java.lang.String sinkUri;
     @JsonIgnore
@@ -97,12 +100,13 @@ public class ContainerSourceStatus implements KubernetesResource
     public ContainerSourceStatus() {
     }
 
-    public ContainerSourceStatus(Map<String, String> annotations, List<CloudEventAttributes> ceAttributes, List<Condition> conditions, Long observedGeneration, java.lang.String sinkUri) {
+    public ContainerSourceStatus(Map<String, String> annotations, List<CloudEventAttributes> ceAttributes, List<Condition> conditions, Long observedGeneration, String sinkCACerts, java.lang.String sinkUri) {
         super();
         this.annotations = annotations;
         this.ceAttributes = ceAttributes;
         this.conditions = conditions;
         this.observedGeneration = observedGeneration;
+        this.sinkCACerts = sinkCACerts;
         this.sinkUri = sinkUri;
     }
 
@@ -144,6 +148,16 @@ public class ContainerSourceStatus implements KubernetesResource
     @JsonProperty("observedGeneration")
     public void setObservedGeneration(Long observedGeneration) {
         this.observedGeneration = observedGeneration;
+    }
+
+    @JsonProperty("sinkCACerts")
+    public String getSinkCACerts() {
+        return sinkCACerts;
+    }
+
+    @JsonProperty("sinkCACerts")
+    public void setSinkCACerts(String sinkCACerts) {
+        this.sinkCACerts = sinkCACerts;
     }
 
     @JsonProperty("sinkUri")

@@ -27,6 +27,8 @@ import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodDNSConfig;
 import io.fabric8.kubernetes.api.model.PodOS;
 import io.fabric8.kubernetes.api.model.PodReadinessGate;
+import io.fabric8.kubernetes.api.model.PodResourceClaim;
+import io.fabric8.kubernetes.api.model.PodSchedulingGate;
 import io.fabric8.kubernetes.api.model.PodSecurityContext;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.Quantity;
@@ -60,6 +62,7 @@ import lombok.experimental.Accessors;
     "hostIPC",
     "hostNetwork",
     "hostPID",
+    "hostUsers",
     "hostname",
     "idleTimeoutSeconds",
     "imagePullSecrets",
@@ -72,10 +75,12 @@ import lombok.experimental.Accessors;
     "priority",
     "priorityClassName",
     "readinessGates",
+    "resourceClaims",
     "responseStartTimeoutSeconds",
     "restartPolicy",
     "runtimeClassName",
     "schedulerName",
+    "schedulingGates",
     "securityContext",
     "serviceAccount",
     "serviceAccountName",
@@ -143,6 +148,8 @@ public class RevisionSpec implements KubernetesResource
     private java.lang.Boolean hostNetwork;
     @JsonProperty("hostPID")
     private java.lang.Boolean hostPID;
+    @JsonProperty("hostUsers")
+    private Boolean hostUsers;
     @JsonProperty("hostname")
     private java.lang.String hostname;
     @JsonProperty("idleTimeoutSeconds")
@@ -172,6 +179,9 @@ public class RevisionSpec implements KubernetesResource
     @JsonProperty("readinessGates")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<PodReadinessGate> readinessGates = new ArrayList<PodReadinessGate>();
+    @JsonProperty("resourceClaims")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<PodResourceClaim> resourceClaims = new ArrayList<PodResourceClaim>();
     @JsonProperty("responseStartTimeoutSeconds")
     private Long responseStartTimeoutSeconds;
     @JsonProperty("restartPolicy")
@@ -180,6 +190,9 @@ public class RevisionSpec implements KubernetesResource
     private String runtimeClassName;
     @JsonProperty("schedulerName")
     private java.lang.String schedulerName;
+    @JsonProperty("schedulingGates")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<PodSchedulingGate> schedulingGates = new ArrayList<PodSchedulingGate>();
     @JsonProperty("securityContext")
     private PodSecurityContext securityContext;
     @JsonProperty("serviceAccount")
@@ -215,7 +228,7 @@ public class RevisionSpec implements KubernetesResource
     public RevisionSpec() {
     }
 
-    public RevisionSpec(Long activeDeadlineSeconds, Affinity affinity, Boolean automountServiceAccountToken, Long containerConcurrency, List<io.fabric8.kubernetes.api.model.Container> containers, PodDNSConfig dnsConfig, java.lang.String dnsPolicy, Boolean enableServiceLinks, List<EphemeralContainer> ephemeralContainers, List<HostAlias> hostAliases, java.lang.Boolean hostIPC, java.lang.Boolean hostNetwork, java.lang.Boolean hostPID, java.lang.String hostname, Long idleTimeoutSeconds, List<io.fabric8.kubernetes.api.model.LocalObjectReference> imagePullSecrets, List<io.fabric8.kubernetes.api.model.Container> initContainers, java.lang.String nodeName, Map<String, String> nodeSelector, PodOS os, Map<String, Quantity> overhead, String preemptionPolicy, Integer priority, java.lang.String priorityClassName, List<PodReadinessGate> readinessGates, Long responseStartTimeoutSeconds, java.lang.String restartPolicy, String runtimeClassName, java.lang.String schedulerName, PodSecurityContext securityContext, java.lang.String serviceAccount, java.lang.String serviceAccountName, Boolean setHostnameAsFQDN, Boolean shareProcessNamespace, java.lang.String subdomain, Long terminationGracePeriodSeconds, Long timeoutSeconds, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, List<io.fabric8.kubernetes.api.model.Volume> volumes) {
+    public RevisionSpec(Long activeDeadlineSeconds, Affinity affinity, Boolean automountServiceAccountToken, Long containerConcurrency, List<io.fabric8.kubernetes.api.model.Container> containers, PodDNSConfig dnsConfig, java.lang.String dnsPolicy, Boolean enableServiceLinks, List<EphemeralContainer> ephemeralContainers, List<HostAlias> hostAliases, java.lang.Boolean hostIPC, java.lang.Boolean hostNetwork, java.lang.Boolean hostPID, Boolean hostUsers, java.lang.String hostname, Long idleTimeoutSeconds, List<io.fabric8.kubernetes.api.model.LocalObjectReference> imagePullSecrets, List<io.fabric8.kubernetes.api.model.Container> initContainers, java.lang.String nodeName, Map<String, String> nodeSelector, PodOS os, Map<String, Quantity> overhead, String preemptionPolicy, Integer priority, java.lang.String priorityClassName, List<PodReadinessGate> readinessGates, List<PodResourceClaim> resourceClaims, Long responseStartTimeoutSeconds, java.lang.String restartPolicy, String runtimeClassName, java.lang.String schedulerName, List<PodSchedulingGate> schedulingGates, PodSecurityContext securityContext, java.lang.String serviceAccount, java.lang.String serviceAccountName, Boolean setHostnameAsFQDN, Boolean shareProcessNamespace, java.lang.String subdomain, Long terminationGracePeriodSeconds, Long timeoutSeconds, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, List<io.fabric8.kubernetes.api.model.Volume> volumes) {
         super();
         this.activeDeadlineSeconds = activeDeadlineSeconds;
         this.affinity = affinity;
@@ -230,6 +243,7 @@ public class RevisionSpec implements KubernetesResource
         this.hostIPC = hostIPC;
         this.hostNetwork = hostNetwork;
         this.hostPID = hostPID;
+        this.hostUsers = hostUsers;
         this.hostname = hostname;
         this.idleTimeoutSeconds = idleTimeoutSeconds;
         this.imagePullSecrets = imagePullSecrets;
@@ -242,10 +256,12 @@ public class RevisionSpec implements KubernetesResource
         this.priority = priority;
         this.priorityClassName = priorityClassName;
         this.readinessGates = readinessGates;
+        this.resourceClaims = resourceClaims;
         this.responseStartTimeoutSeconds = responseStartTimeoutSeconds;
         this.restartPolicy = restartPolicy;
         this.runtimeClassName = runtimeClassName;
         this.schedulerName = schedulerName;
+        this.schedulingGates = schedulingGates;
         this.securityContext = securityContext;
         this.serviceAccount = serviceAccount;
         this.serviceAccountName = serviceAccountName;
@@ -389,6 +405,16 @@ public class RevisionSpec implements KubernetesResource
         this.hostPID = hostPID;
     }
 
+    @JsonProperty("hostUsers")
+    public Boolean getHostUsers() {
+        return hostUsers;
+    }
+
+    @JsonProperty("hostUsers")
+    public void setHostUsers(Boolean hostUsers) {
+        this.hostUsers = hostUsers;
+    }
+
     @JsonProperty("hostname")
     public java.lang.String getHostname() {
         return hostname;
@@ -509,6 +535,16 @@ public class RevisionSpec implements KubernetesResource
         this.readinessGates = readinessGates;
     }
 
+    @JsonProperty("resourceClaims")
+    public List<PodResourceClaim> getResourceClaims() {
+        return resourceClaims;
+    }
+
+    @JsonProperty("resourceClaims")
+    public void setResourceClaims(List<PodResourceClaim> resourceClaims) {
+        this.resourceClaims = resourceClaims;
+    }
+
     @JsonProperty("responseStartTimeoutSeconds")
     public Long getResponseStartTimeoutSeconds() {
         return responseStartTimeoutSeconds;
@@ -547,6 +583,16 @@ public class RevisionSpec implements KubernetesResource
     @JsonProperty("schedulerName")
     public void setSchedulerName(java.lang.String schedulerName) {
         this.schedulerName = schedulerName;
+    }
+
+    @JsonProperty("schedulingGates")
+    public List<PodSchedulingGate> getSchedulingGates() {
+        return schedulingGates;
+    }
+
+    @JsonProperty("schedulingGates")
+    public void setSchedulingGates(List<PodSchedulingGate> schedulingGates) {
+        this.schedulingGates = schedulingGates;
     }
 
     @JsonProperty("securityContext")

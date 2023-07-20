@@ -38,6 +38,7 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
+    "address",
     "group",
     "name",
     "namespace"
@@ -68,18 +69,20 @@ import lombok.experimental.Accessors;
 public class KReference implements KubernetesResource
 {
 
+    @JsonProperty("address")
+    private String address;
     @JsonProperty("apiVersion")
-    private String apiVersion;
+    private java.lang.String apiVersion;
     @JsonProperty("group")
-    private String group;
+    private java.lang.String group;
     @JsonProperty("kind")
-    private String kind;
+    private java.lang.String kind;
     @JsonProperty("name")
-    private String name;
+    private java.lang.String name;
     @JsonProperty("namespace")
-    private String namespace;
+    private java.lang.String namespace;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -88,8 +91,9 @@ public class KReference implements KubernetesResource
     public KReference() {
     }
 
-    public KReference(String apiVersion, String group, String kind, String name, String namespace) {
+    public KReference(String address, java.lang.String apiVersion, java.lang.String group, java.lang.String kind, java.lang.String name, java.lang.String namespace) {
         super();
+        this.address = address;
         this.apiVersion = apiVersion;
         this.group = group;
         this.kind = kind;
@@ -97,63 +101,73 @@ public class KReference implements KubernetesResource
         this.namespace = namespace;
     }
 
+    @JsonProperty("address")
+    public String getAddress() {
+        return address;
+    }
+
+    @JsonProperty("address")
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
     @JsonProperty("apiVersion")
-    public String getApiVersion() {
+    public java.lang.String getApiVersion() {
         return apiVersion;
     }
 
     @JsonProperty("apiVersion")
-    public void setApiVersion(String apiVersion) {
+    public void setApiVersion(java.lang.String apiVersion) {
         this.apiVersion = apiVersion;
     }
 
     @JsonProperty("group")
-    public String getGroup() {
+    public java.lang.String getGroup() {
         return group;
     }
 
     @JsonProperty("group")
-    public void setGroup(String group) {
+    public void setGroup(java.lang.String group) {
         this.group = group;
     }
 
     @JsonProperty("kind")
-    public String getKind() {
+    public java.lang.String getKind() {
         return kind;
     }
 
     @JsonProperty("kind")
-    public void setKind(String kind) {
+    public void setKind(java.lang.String kind) {
         this.kind = kind;
     }
 
     @JsonProperty("name")
-    public String getName() {
+    public java.lang.String getName() {
         return name;
     }
 
     @JsonProperty("name")
-    public void setName(String name) {
+    public void setName(java.lang.String name) {
         this.name = name;
     }
 
     @JsonProperty("namespace")
-    public String getNamespace() {
+    public java.lang.String getNamespace() {
         return namespace;
     }
 
     @JsonProperty("namespace")
-    public void setNamespace(String namespace) {
+    public void setNamespace(java.lang.String namespace) {
         this.namespace = namespace;
     }
 
     @JsonAnyGetter
-    public Map<String, Object> getAdditionalProperties() {
+    public Map<java.lang.String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(String name, Object value) {
+    public void setAdditionalProperty(java.lang.String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 

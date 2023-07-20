@@ -2,6 +2,114 @@
   "id": "http://fabric8.io/knative/KnativeSchema#",
   "$schema": "http://json-schema.org/draft-07/schema#",
   "definitions": {
+    "knative_dev_caching_pkg_apis_caching_v1alpha1_Image": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "caching.internal.knative.dev/v1alpha1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "Image",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/knative_dev_caching_pkg_apis_caching_v1alpha1_ImageSpec",
+          "existingJavaType": "io.fabric8.knative.internal.caching.v1alpha1.ImageSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/knative_dev_caching_pkg_apis_caching_v1alpha1_ImageStatus",
+          "existingJavaType": "io.fabric8.knative.internal.caching.v1alpha1.ImageStatus"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.caching.v1alpha1.Image",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
+      ]
+    },
+    "knative_dev_caching_pkg_apis_caching_v1alpha1_ImageList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "caching.internal.knative.dev/v1alpha1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/knative_dev_caching_pkg_apis_caching_v1alpha1_Image",
+            "existingJavaType": "io.fabric8.knative.internal.caching.v1alpha1.Image"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "ImageList",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.caching.v1alpha1.ImageList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.knative.internal.caching.v1alpha1.Image\u003e"
+      ]
+    },
+    "knative_dev_caching_pkg_apis_caching_v1alpha1_ImageSpec": {
+      "type": "object",
+      "properties": {
+        "image": {
+          "type": "string"
+        },
+        "imagePullSecrets": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "existingJavaType": "io.fabric8.kubernetes.api.model.LocalObjectReference"
+          }
+        },
+        "serviceAccountName": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.caching.v1alpha1.ImageSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_dev_caching_pkg_apis_caching_v1alpha1_ImageStatus": {
+      "type": "object",
+      "properties": {
+        "annotations": {
+          "type": "object",
+          "existingJavaType": "java.util.Map\u003cString,String\u003e"
+        },
+        "conditions": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/knative_dev_pkg_apis_Condition",
+            "existingJavaType": "io.fabric8.knative.internal.pkg.apis.Condition"
+          }
+        },
+        "observedGeneration": {
+          "type": "integer",
+          "existingJavaType": "Long"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.caching.v1alpha1.ImageStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "knative_dev_eventing-awssqs_pkg_apis_sources_v1alpha1_AwsSqsSource": {
       "type": "object",
       "properties": {
@@ -114,6 +222,10 @@
         "observedGeneration": {
           "type": "integer",
           "existingJavaType": "Long"
+        },
+        "sinkCACerts": {
+          "type": "string",
+          "existingJavaType": "String"
         },
         "sinkUri": {
           "existingJavaType": "java.lang.String"
@@ -237,6 +349,10 @@
           "type": "integer",
           "existingJavaType": "Long"
         },
+        "sinkCACerts": {
+          "type": "string",
+          "existingJavaType": "String"
+        },
         "sinkUri": {
           "existingJavaType": "java.lang.String"
         }
@@ -350,6 +466,10 @@
         "observedGeneration": {
           "type": "integer",
           "existingJavaType": "Long"
+        },
+        "sinkCACerts": {
+          "type": "string",
+          "existingJavaType": "String"
         },
         "sinkUri": {
           "existingJavaType": "java.lang.String"
@@ -504,6 +624,10 @@
           "type": "integer",
           "existingJavaType": "Long"
         },
+        "sinkCACerts": {
+          "type": "string",
+          "existingJavaType": "String"
+        },
         "sinkUri": {
           "existingJavaType": "java.lang.String"
         },
@@ -632,6 +756,10 @@
         "observedGeneration": {
           "type": "integer",
           "existingJavaType": "Long"
+        },
+        "sinkCACerts": {
+          "type": "string",
+          "existingJavaType": "String"
         },
         "sinkUri": {
           "existingJavaType": "java.lang.String"
@@ -782,6 +910,10 @@
           "type": "integer",
           "existingJavaType": "Long"
         },
+        "sinkCACerts": {
+          "type": "string",
+          "existingJavaType": "String"
+        },
         "sinkUri": {
           "existingJavaType": "java.lang.String"
         },
@@ -807,7 +939,7 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "knative_dev_eventing-kafka_pkg_apis_bindings_v1beta1_KafkaBinding": {
+    "knative_dev_eventing-kafka-broker_control-plane_pkg_apis_bindings_v1beta1_KafkaBinding": {
       "type": "object",
       "properties": {
         "apiVersion": {
@@ -824,11 +956,11 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
-          "$ref": "#/definitions/knative_dev_eventing-kafka_pkg_apis_bindings_v1beta1_KafkaBindingSpec",
+          "$ref": "#/definitions/knative_dev_eventing-kafka-broker_control-plane_pkg_apis_bindings_v1beta1_KafkaBindingSpec",
           "existingJavaType": "io.fabric8.knative.eventing.contrib.kafka.v1beta1.KafkaBindingSpec"
         },
         "status": {
-          "$ref": "#/definitions/knative_dev_eventing-kafka_pkg_apis_bindings_v1beta1_KafkaBindingStatus",
+          "$ref": "#/definitions/knative_dev_eventing-kafka-broker_control-plane_pkg_apis_bindings_v1beta1_KafkaBindingStatus",
           "existingJavaType": "io.fabric8.knative.eventing.contrib.kafka.v1beta1.KafkaBindingStatus"
         }
       },
@@ -838,7 +970,7 @@
         "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
-    "knative_dev_eventing-kafka_pkg_apis_bindings_v1beta1_KafkaBindingList": {
+    "knative_dev_eventing-kafka-broker_control-plane_pkg_apis_bindings_v1beta1_KafkaBindingList": {
       "type": "object",
       "properties": {
         "apiVersion": {
@@ -849,7 +981,7 @@
         "items": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/knative_dev_eventing-kafka_pkg_apis_bindings_v1beta1_KafkaBinding",
+            "$ref": "#/definitions/knative_dev_eventing-kafka-broker_control-plane_pkg_apis_bindings_v1beta1_KafkaBinding",
             "existingJavaType": "io.fabric8.knative.eventing.contrib.kafka.v1beta1.KafkaBinding"
           }
         },
@@ -868,7 +1000,7 @@
         "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.knative.eventing.contrib.kafka.v1beta1.KafkaBinding\u003e"
       ]
     },
-    "knative_dev_eventing-kafka_pkg_apis_bindings_v1beta1_KafkaBindingSpec": {
+    "knative_dev_eventing-kafka-broker_control-plane_pkg_apis_bindings_v1beta1_KafkaBindingSpec": {
       "type": "object",
       "properties": {
         "bootstrapServers": {
@@ -878,7 +1010,7 @@
           }
         },
         "net": {
-          "$ref": "#/definitions/knative_dev_eventing-kafka_pkg_apis_bindings_v1beta1_KafkaNetSpec",
+          "$ref": "#/definitions/knative_dev_eventing-kafka-broker_control-plane_pkg_apis_bindings_v1beta1_KafkaNetSpec",
           "existingJavaType": "io.fabric8.knative.eventing.contrib.kafka.v1beta1.KafkaNetSpec"
         },
         "subject": {
@@ -891,7 +1023,7 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "knative_dev_eventing-kafka_pkg_apis_bindings_v1beta1_KafkaBindingStatus": {
+    "knative_dev_eventing-kafka-broker_control-plane_pkg_apis_bindings_v1beta1_KafkaBindingStatus": {
       "type": "object",
       "properties": {
         "annotations": {
@@ -916,15 +1048,15 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "knative_dev_eventing-kafka_pkg_apis_bindings_v1beta1_KafkaNetSpec": {
+    "knative_dev_eventing-kafka-broker_control-plane_pkg_apis_bindings_v1beta1_KafkaNetSpec": {
       "type": "object",
       "properties": {
         "sasl": {
-          "$ref": "#/definitions/knative_dev_eventing-kafka_pkg_apis_bindings_v1beta1_KafkaSASLSpec",
+          "$ref": "#/definitions/knative_dev_eventing-kafka-broker_control-plane_pkg_apis_bindings_v1beta1_KafkaSASLSpec",
           "existingJavaType": "io.fabric8.knative.eventing.contrib.kafka.v1beta1.KafkaSASLSpec"
         },
         "tls": {
-          "$ref": "#/definitions/knative_dev_eventing-kafka_pkg_apis_bindings_v1beta1_KafkaTLSSpec",
+          "$ref": "#/definitions/knative_dev_eventing-kafka-broker_control-plane_pkg_apis_bindings_v1beta1_KafkaTLSSpec",
           "existingJavaType": "io.fabric8.knative.eventing.contrib.kafka.v1beta1.KafkaTLSSpec"
         }
       },
@@ -933,22 +1065,22 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "knative_dev_eventing-kafka_pkg_apis_bindings_v1beta1_KafkaSASLSpec": {
+    "knative_dev_eventing-kafka-broker_control-plane_pkg_apis_bindings_v1beta1_KafkaSASLSpec": {
       "type": "object",
       "properties": {
         "enable": {
           "type": "boolean"
         },
         "password": {
-          "$ref": "#/definitions/knative_dev_eventing-kafka_pkg_apis_bindings_v1beta1_SecretValueFromSource",
+          "$ref": "#/definitions/knative_dev_eventing-kafka-broker_control-plane_pkg_apis_bindings_v1beta1_SecretValueFromSource",
           "existingJavaType": "io.fabric8.knative.eventing.contrib.kafka.v1beta1.SecretValueFromSource"
         },
         "type": {
-          "$ref": "#/definitions/knative_dev_eventing-kafka_pkg_apis_bindings_v1beta1_SecretValueFromSource",
+          "$ref": "#/definitions/knative_dev_eventing-kafka-broker_control-plane_pkg_apis_bindings_v1beta1_SecretValueFromSource",
           "existingJavaType": "io.fabric8.knative.eventing.contrib.kafka.v1beta1.SecretValueFromSource"
         },
         "user": {
-          "$ref": "#/definitions/knative_dev_eventing-kafka_pkg_apis_bindings_v1beta1_SecretValueFromSource",
+          "$ref": "#/definitions/knative_dev_eventing-kafka-broker_control-plane_pkg_apis_bindings_v1beta1_SecretValueFromSource",
           "existingJavaType": "io.fabric8.knative.eventing.contrib.kafka.v1beta1.SecretValueFromSource"
         }
       },
@@ -957,22 +1089,22 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "knative_dev_eventing-kafka_pkg_apis_bindings_v1beta1_KafkaTLSSpec": {
+    "knative_dev_eventing-kafka-broker_control-plane_pkg_apis_bindings_v1beta1_KafkaTLSSpec": {
       "type": "object",
       "properties": {
         "caCert": {
-          "$ref": "#/definitions/knative_dev_eventing-kafka_pkg_apis_bindings_v1beta1_SecretValueFromSource",
+          "$ref": "#/definitions/knative_dev_eventing-kafka-broker_control-plane_pkg_apis_bindings_v1beta1_SecretValueFromSource",
           "existingJavaType": "io.fabric8.knative.eventing.contrib.kafka.v1beta1.SecretValueFromSource"
         },
         "cert": {
-          "$ref": "#/definitions/knative_dev_eventing-kafka_pkg_apis_bindings_v1beta1_SecretValueFromSource",
+          "$ref": "#/definitions/knative_dev_eventing-kafka-broker_control-plane_pkg_apis_bindings_v1beta1_SecretValueFromSource",
           "existingJavaType": "io.fabric8.knative.eventing.contrib.kafka.v1beta1.SecretValueFromSource"
         },
         "enable": {
           "type": "boolean"
         },
         "key": {
-          "$ref": "#/definitions/knative_dev_eventing-kafka_pkg_apis_bindings_v1beta1_SecretValueFromSource",
+          "$ref": "#/definitions/knative_dev_eventing-kafka-broker_control-plane_pkg_apis_bindings_v1beta1_SecretValueFromSource",
           "existingJavaType": "io.fabric8.knative.eventing.contrib.kafka.v1beta1.SecretValueFromSource"
         }
       },
@@ -981,7 +1113,7 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "knative_dev_eventing-kafka_pkg_apis_bindings_v1beta1_SecretValueFromSource": {
+    "knative_dev_eventing-kafka-broker_control-plane_pkg_apis_bindings_v1beta1_SecretValueFromSource": {
       "type": "object",
       "properties": {
         "secretKeyRef": {
@@ -993,7 +1125,7 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "knative_dev_eventing-kafka_pkg_apis_messaging_v1beta1_KafkaChannel": {
+    "knative_dev_eventing-kafka-broker_control-plane_pkg_apis_messaging_v1beta1_KafkaChannel": {
       "type": "object",
       "properties": {
         "apiVersion": {
@@ -1010,11 +1142,11 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
-          "$ref": "#/definitions/knative_dev_eventing-kafka_pkg_apis_messaging_v1beta1_KafkaChannelSpec",
+          "$ref": "#/definitions/knative_dev_eventing-kafka-broker_control-plane_pkg_apis_messaging_v1beta1_KafkaChannelSpec",
           "existingJavaType": "io.fabric8.knative.eventing.contrib.kafka.v1beta1.KafkaChannelSpec"
         },
         "status": {
-          "$ref": "#/definitions/knative_dev_eventing-kafka_pkg_apis_messaging_v1beta1_KafkaChannelStatus",
+          "$ref": "#/definitions/knative_dev_eventing-kafka-broker_control-plane_pkg_apis_messaging_v1beta1_KafkaChannelStatus",
           "existingJavaType": "io.fabric8.knative.eventing.contrib.kafka.v1beta1.KafkaChannelStatus"
         }
       },
@@ -1024,7 +1156,7 @@
         "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
-    "knative_dev_eventing-kafka_pkg_apis_messaging_v1beta1_KafkaChannelList": {
+    "knative_dev_eventing-kafka-broker_control-plane_pkg_apis_messaging_v1beta1_KafkaChannelList": {
       "type": "object",
       "properties": {
         "apiVersion": {
@@ -1035,7 +1167,7 @@
         "items": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/knative_dev_eventing-kafka_pkg_apis_messaging_v1beta1_KafkaChannel",
+            "$ref": "#/definitions/knative_dev_eventing-kafka-broker_control-plane_pkg_apis_messaging_v1beta1_KafkaChannel",
             "existingJavaType": "io.fabric8.knative.eventing.contrib.kafka.v1beta1.KafkaChannel"
           }
         },
@@ -1054,7 +1186,7 @@
         "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.knative.eventing.contrib.kafka.v1beta1.KafkaChannel\u003e"
       ]
     },
-    "knative_dev_eventing-kafka_pkg_apis_messaging_v1beta1_KafkaChannelSpec": {
+    "knative_dev_eventing-kafka-broker_control-plane_pkg_apis_messaging_v1beta1_KafkaChannelSpec": {
       "type": "object",
       "properties": {
         "delivery": {
@@ -1084,12 +1216,20 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "knative_dev_eventing-kafka_pkg_apis_messaging_v1beta1_KafkaChannelStatus": {
+    "knative_dev_eventing-kafka-broker_control-plane_pkg_apis_messaging_v1beta1_KafkaChannelStatus": {
       "type": "object",
       "properties": {
         "address": {
           "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_Addressable",
           "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.Addressable"
+        },
+        "addresses": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_Addressable",
+            "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.Addressable"
+          }
         },
         "annotations": {
           "type": "object",
@@ -1102,10 +1242,6 @@
             "$ref": "#/definitions/knative_dev_pkg_apis_Condition",
             "existingJavaType": "io.fabric8.knative.internal.pkg.apis.Condition"
           }
-        },
-        "deadLetterChannel": {
-          "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_KReference",
-          "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.KReference"
         },
         "deadLetterSinkUri": {
           "existingJavaType": "java.lang.String"
@@ -1128,7 +1264,7 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "knative_dev_eventing-kafka_pkg_apis_sources_v1beta1_KafkaSource": {
+    "knative_dev_eventing-kafka-broker_control-plane_pkg_apis_sources_v1beta1_KafkaSource": {
       "type": "object",
       "properties": {
         "apiVersion": {
@@ -1145,11 +1281,11 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
-          "$ref": "#/definitions/knative_dev_eventing-kafka_pkg_apis_sources_v1beta1_KafkaSourceSpec",
+          "$ref": "#/definitions/knative_dev_eventing-kafka-broker_control-plane_pkg_apis_sources_v1beta1_KafkaSourceSpec",
           "existingJavaType": "io.fabric8.knative.eventing.contrib.kafka.v1beta1.KafkaSourceSpec"
         },
         "status": {
-          "$ref": "#/definitions/knative_dev_eventing-kafka_pkg_apis_sources_v1beta1_KafkaSourceStatus",
+          "$ref": "#/definitions/knative_dev_eventing-kafka-broker_control-plane_pkg_apis_sources_v1beta1_KafkaSourceStatus",
           "existingJavaType": "io.fabric8.knative.eventing.contrib.kafka.v1beta1.KafkaSourceStatus"
         }
       },
@@ -1159,7 +1295,7 @@
         "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
-    "knative_dev_eventing-kafka_pkg_apis_sources_v1beta1_KafkaSourceList": {
+    "knative_dev_eventing-kafka-broker_control-plane_pkg_apis_sources_v1beta1_KafkaSourceList": {
       "type": "object",
       "properties": {
         "apiVersion": {
@@ -1170,7 +1306,7 @@
         "items": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/knative_dev_eventing-kafka_pkg_apis_sources_v1beta1_KafkaSource",
+            "$ref": "#/definitions/knative_dev_eventing-kafka-broker_control-plane_pkg_apis_sources_v1beta1_KafkaSource",
             "existingJavaType": "io.fabric8.knative.eventing.contrib.kafka.v1beta1.KafkaSource"
           }
         },
@@ -1189,7 +1325,7 @@
         "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.knative.eventing.contrib.kafka.v1beta1.KafkaSource\u003e"
       ]
     },
-    "knative_dev_eventing-kafka_pkg_apis_sources_v1beta1_KafkaSourceSpec": {
+    "knative_dev_eventing-kafka-broker_control-plane_pkg_apis_sources_v1beta1_KafkaSourceSpec": {
       "type": "object",
       "properties": {
         "bootstrapServers": {
@@ -1209,11 +1345,15 @@
           "type": "integer",
           "existingJavaType": "Integer"
         },
+        "delivery": {
+          "$ref": "#/definitions/knative_dev_eventing_pkg_apis_duck_v1_DeliverySpec",
+          "existingJavaType": "io.fabric8.knative.internal.eventing.pkg.apis.duck.v1.DeliverySpec"
+        },
         "initialOffset": {
           "type": "string"
         },
         "net": {
-          "$ref": "#/definitions/knative_dev_eventing-kafka_pkg_apis_bindings_v1beta1_KafkaNetSpec",
+          "$ref": "#/definitions/knative_dev_eventing-kafka-broker_control-plane_pkg_apis_bindings_v1beta1_KafkaNetSpec",
           "existingJavaType": "io.fabric8.knative.eventing.contrib.kafka.v1beta1.KafkaNetSpec"
         },
         "sink": {
@@ -1232,7 +1372,7 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "knative_dev_eventing-kafka_pkg_apis_sources_v1beta1_KafkaSourceStatus": {
+    "knative_dev_eventing-kafka-broker_control-plane_pkg_apis_sources_v1beta1_KafkaSourceStatus": {
       "type": "object",
       "properties": {
         "annotations": {
@@ -1279,6 +1419,10 @@
         },
         "selector": {
           "type": "string"
+        },
+        "sinkCACerts": {
+          "type": "string",
+          "existingJavaType": "String"
         },
         "sinkUri": {
           "existingJavaType": "java.lang.String"
@@ -1410,6 +1554,10 @@
         "observedGeneration": {
           "type": "integer",
           "existingJavaType": "Long"
+        },
+        "sinkCACerts": {
+          "type": "string",
+          "existingJavaType": "String"
         },
         "sinkUri": {
           "existingJavaType": "java.lang.String"
@@ -1600,6 +1748,14 @@
         "address": {
           "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_Addressable",
           "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.Addressable"
+        },
+        "addresses": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_Addressable",
+            "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.Addressable"
+          }
         },
         "annotations": {
           "type": "object",
@@ -2074,6 +2230,14 @@
           "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_Addressable",
           "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.Addressable"
         },
+        "addresses": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_Addressable",
+            "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.Addressable"
+          }
+        },
         "annotations": {
           "type": "object",
           "existingJavaType": "java.util.Map\u003cString,String\u003e"
@@ -2272,6 +2436,10 @@
     "knative_dev_eventing_pkg_apis_flows_v1_SequenceStep": {
       "type": "object",
       "properties": {
+        "CACerts": {
+          "type": "string",
+          "existingJavaType": "String"
+        },
         "delivery": {
           "$ref": "#/definitions/knative_dev_eventing_pkg_apis_duck_v1_DeliverySpec",
           "existingJavaType": "io.fabric8.knative.internal.eventing.pkg.apis.duck.v1.DeliverySpec"
@@ -2398,6 +2566,14 @@
           "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_Addressable",
           "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.Addressable"
         },
+        "addresses": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_Addressable",
+            "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.Addressable"
+          }
+        },
         "annotations": {
           "type": "object",
           "existingJavaType": "java.util.Map\u003cString,String\u003e"
@@ -2413,10 +2589,6 @@
             "$ref": "#/definitions/knative_dev_pkg_apis_Condition",
             "existingJavaType": "io.fabric8.knative.internal.pkg.apis.Condition"
           }
-        },
-        "deadLetterChannel": {
-          "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_KReference",
-          "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.KReference"
         },
         "deadLetterSinkUri": {
           "existingJavaType": "java.lang.String"
@@ -2546,6 +2718,14 @@
           "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_Addressable",
           "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.Addressable"
         },
+        "addresses": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_Addressable",
+            "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.Addressable"
+          }
+        },
         "annotations": {
           "type": "object",
           "existingJavaType": "java.util.Map\u003cString,String\u003e"
@@ -2557,10 +2737,6 @@
             "$ref": "#/definitions/knative_dev_pkg_apis_Condition",
             "existingJavaType": "io.fabric8.knative.internal.pkg.apis.Condition"
           }
-        },
-        "deadLetterChannel": {
-          "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_KReference",
-          "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.KReference"
         },
         "deadLetterSinkUri": {
           "existingJavaType": "java.lang.String"
@@ -2820,6 +2996,9 @@
         "mode": {
           "type": "string"
         },
+        "namespaceSelector": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.LabelSelector"
+        },
         "owner": {
           "$ref": "#/definitions/knative_dev_eventing_pkg_apis_sources_v1_APIVersionKind",
           "existingJavaType": "io.fabric8.knative.sources.v1.APIVersionKind"
@@ -2868,9 +3047,19 @@
             "existingJavaType": "io.fabric8.knative.internal.pkg.apis.Condition"
           }
         },
+        "namespaces": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
         "observedGeneration": {
           "type": "integer",
           "existingJavaType": "Long"
+        },
+        "sinkCACerts": {
+          "type": "string",
+          "existingJavaType": "String"
         },
         "sinkUri": {
           "existingJavaType": "java.lang.String"
@@ -2988,6 +3177,10 @@
         "observedGeneration": {
           "type": "integer",
           "existingJavaType": "Long"
+        },
+        "sinkCACerts": {
+          "type": "string",
+          "existingJavaType": "String"
         },
         "sinkUri": {
           "existingJavaType": "java.lang.String"
@@ -3118,6 +3311,10 @@
           "type": "integer",
           "existingJavaType": "Long"
         },
+        "sinkCACerts": {
+          "type": "string",
+          "existingJavaType": "String"
+        },
         "sinkUri": {
           "existingJavaType": "java.lang.String"
         }
@@ -3236,11 +3433,623 @@
           "type": "integer",
           "existingJavaType": "Long"
         },
+        "sinkCACerts": {
+          "type": "string",
+          "existingJavaType": "String"
+        },
         "sinkUri": {
           "existingJavaType": "java.lang.String"
         }
       },
       "javaType": "io.fabric8.knative.sources.v1.SinkBindingStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_dev_networking_pkg_apis_networking_v1alpha1_Certificate": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "networking.internal.knative.dev/v1alpha1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "Certificate",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/knative_dev_networking_pkg_apis_networking_v1alpha1_CertificateSpec",
+          "existingJavaType": "io.fabric8.knative.internal.networking.v1alpha1.CertificateSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/knative_dev_networking_pkg_apis_networking_v1alpha1_CertificateStatus",
+          "existingJavaType": "io.fabric8.knative.internal.networking.v1alpha1.CertificateStatus"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.networking.v1alpha1.Certificate",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
+      ]
+    },
+    "knative_dev_networking_pkg_apis_networking_v1alpha1_CertificateList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "networking.internal.knative.dev/v1alpha1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/knative_dev_networking_pkg_apis_networking_v1alpha1_Certificate",
+            "existingJavaType": "io.fabric8.knative.internal.networking.v1alpha1.Certificate"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "CertificateList",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.networking.v1alpha1.CertificateList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.knative.internal.networking.v1alpha1.Certificate\u003e"
+      ]
+    },
+    "knative_dev_networking_pkg_apis_networking_v1alpha1_CertificateSpec": {
+      "type": "object",
+      "properties": {
+        "dnsNames": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "domain": {
+          "type": "string"
+        },
+        "secretName": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.networking.v1alpha1.CertificateSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_dev_networking_pkg_apis_networking_v1alpha1_CertificateStatus": {
+      "type": "object",
+      "properties": {
+        "annotations": {
+          "type": "object",
+          "existingJavaType": "java.util.Map\u003cString,String\u003e"
+        },
+        "conditions": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/knative_dev_pkg_apis_Condition",
+            "existingJavaType": "io.fabric8.knative.internal.pkg.apis.Condition"
+          }
+        },
+        "http01Challenges": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/knative_dev_networking_pkg_apis_networking_v1alpha1_HTTP01Challenge",
+            "existingJavaType": "io.fabric8.knative.internal.networking.v1alpha1.HTTP01Challenge"
+          }
+        },
+        "notAfter": {
+          "existingJavaType": "java.lang.String"
+        },
+        "observedGeneration": {
+          "type": "integer",
+          "existingJavaType": "Long"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.networking.v1alpha1.CertificateStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_dev_networking_pkg_apis_networking_v1alpha1_ClusterDomainClaim": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "networking.internal.knative.dev/v1alpha1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "ClusterDomainClaim",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/knative_dev_networking_pkg_apis_networking_v1alpha1_ClusterDomainClaimSpec",
+          "existingJavaType": "io.fabric8.knative.internal.networking.v1alpha1.ClusterDomainClaimSpec"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.networking.v1alpha1.ClusterDomainClaim",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata"
+      ]
+    },
+    "knative_dev_networking_pkg_apis_networking_v1alpha1_ClusterDomainClaimList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "networking.internal.knative.dev/v1alpha1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/knative_dev_networking_pkg_apis_networking_v1alpha1_ClusterDomainClaim",
+            "existingJavaType": "io.fabric8.knative.internal.networking.v1alpha1.ClusterDomainClaim"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "ClusterDomainClaimList",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.networking.v1alpha1.ClusterDomainClaimList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.knative.internal.networking.v1alpha1.ClusterDomainClaim\u003e"
+      ]
+    },
+    "knative_dev_networking_pkg_apis_networking_v1alpha1_ClusterDomainClaimSpec": {
+      "type": "object",
+      "properties": {
+        "namespace": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.networking.v1alpha1.ClusterDomainClaimSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_dev_networking_pkg_apis_networking_v1alpha1_HTTP01Challenge": {
+      "type": "object",
+      "properties": {
+        "serviceName": {
+          "type": "string"
+        },
+        "serviceNamespace": {
+          "type": "string"
+        },
+        "servicePort": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.IntOrString"
+        },
+        "url": {
+          "existingJavaType": "java.lang.String"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.networking.v1alpha1.HTTP01Challenge",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_dev_networking_pkg_apis_networking_v1alpha1_HTTPIngressPath": {
+      "type": "object",
+      "properties": {
+        "appendHeaders": {
+          "type": "object",
+          "existingJavaType": "java.util.Map\u003cString,String\u003e"
+        },
+        "headers": {
+          "type": "object",
+          "existingJavaType": "java.util.Map\u003cString,io.fabric8.knative.internal.networking.v1alpha1.HeaderMatch\u003e"
+        },
+        "path": {
+          "type": "string"
+        },
+        "rewriteHost": {
+          "type": "string"
+        },
+        "splits": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/knative_dev_networking_pkg_apis_networking_v1alpha1_IngressBackendSplit",
+            "existingJavaType": "io.fabric8.knative.internal.networking.v1alpha1.IngressBackendSplit"
+          }
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.networking.v1alpha1.HTTPIngressPath",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_dev_networking_pkg_apis_networking_v1alpha1_HTTPIngressRuleValue": {
+      "type": "object",
+      "properties": {
+        "paths": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/knative_dev_networking_pkg_apis_networking_v1alpha1_HTTPIngressPath",
+            "existingJavaType": "io.fabric8.knative.internal.networking.v1alpha1.HTTPIngressPath"
+          }
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.networking.v1alpha1.HTTPIngressRuleValue",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_dev_networking_pkg_apis_networking_v1alpha1_HeaderMatch": {
+      "type": "object",
+      "properties": {
+        "exact": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.networking.v1alpha1.HeaderMatch",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_dev_networking_pkg_apis_networking_v1alpha1_Ingress": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "networking.internal.knative.dev/v1alpha1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "Ingress",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/knative_dev_networking_pkg_apis_networking_v1alpha1_IngressSpec",
+          "existingJavaType": "io.fabric8.knative.internal.networking.v1alpha1.IngressSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/knative_dev_networking_pkg_apis_networking_v1alpha1_IngressStatus",
+          "existingJavaType": "io.fabric8.knative.internal.networking.v1alpha1.IngressStatus"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.networking.v1alpha1.Ingress",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
+      ]
+    },
+    "knative_dev_networking_pkg_apis_networking_v1alpha1_IngressBackendSplit": {
+      "type": "object",
+      "properties": {
+        "appendHeaders": {
+          "type": "object",
+          "existingJavaType": "java.util.Map\u003cString,String\u003e"
+        },
+        "percent": {
+          "type": "integer"
+        },
+        "serviceName": {
+          "type": "string"
+        },
+        "serviceNamespace": {
+          "type": "string"
+        },
+        "servicePort": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.IntOrString"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.networking.v1alpha1.IngressBackendSplit",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_dev_networking_pkg_apis_networking_v1alpha1_IngressList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "networking.internal.knative.dev/v1alpha1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/knative_dev_networking_pkg_apis_networking_v1alpha1_Ingress",
+            "existingJavaType": "io.fabric8.knative.internal.networking.v1alpha1.Ingress"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "IngressList",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.networking.v1alpha1.IngressList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.knative.internal.networking.v1alpha1.Ingress\u003e"
+      ]
+    },
+    "knative_dev_networking_pkg_apis_networking_v1alpha1_IngressRule": {
+      "type": "object",
+      "properties": {
+        "hosts": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "http": {
+          "$ref": "#/definitions/knative_dev_networking_pkg_apis_networking_v1alpha1_HTTPIngressRuleValue",
+          "existingJavaType": "io.fabric8.knative.internal.networking.v1alpha1.HTTPIngressRuleValue"
+        },
+        "visibility": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.networking.v1alpha1.IngressRule",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_dev_networking_pkg_apis_networking_v1alpha1_IngressSpec": {
+      "type": "object",
+      "properties": {
+        "httpOption": {
+          "type": "string"
+        },
+        "rules": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/knative_dev_networking_pkg_apis_networking_v1alpha1_IngressRule",
+            "existingJavaType": "io.fabric8.knative.internal.networking.v1alpha1.IngressRule"
+          }
+        },
+        "tls": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/knative_dev_networking_pkg_apis_networking_v1alpha1_IngressTLS",
+            "existingJavaType": "io.fabric8.knative.internal.networking.v1alpha1.IngressTLS"
+          }
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.networking.v1alpha1.IngressSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_dev_networking_pkg_apis_networking_v1alpha1_IngressStatus": {
+      "type": "object",
+      "properties": {
+        "annotations": {
+          "type": "object",
+          "existingJavaType": "java.util.Map\u003cString,String\u003e"
+        },
+        "conditions": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/knative_dev_pkg_apis_Condition",
+            "existingJavaType": "io.fabric8.knative.internal.pkg.apis.Condition"
+          }
+        },
+        "observedGeneration": {
+          "type": "integer",
+          "existingJavaType": "Long"
+        },
+        "privateLoadBalancer": {
+          "$ref": "#/definitions/knative_dev_networking_pkg_apis_networking_v1alpha1_LoadBalancerStatus",
+          "existingJavaType": "io.fabric8.knative.internal.networking.v1alpha1.LoadBalancerStatus"
+        },
+        "publicLoadBalancer": {
+          "$ref": "#/definitions/knative_dev_networking_pkg_apis_networking_v1alpha1_LoadBalancerStatus",
+          "existingJavaType": "io.fabric8.knative.internal.networking.v1alpha1.LoadBalancerStatus"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.networking.v1alpha1.IngressStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_dev_networking_pkg_apis_networking_v1alpha1_IngressTLS": {
+      "type": "object",
+      "properties": {
+        "hosts": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "secretName": {
+          "type": "string"
+        },
+        "secretNamespace": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.networking.v1alpha1.IngressTLS",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_dev_networking_pkg_apis_networking_v1alpha1_LoadBalancerIngressStatus": {
+      "type": "object",
+      "properties": {
+        "domain": {
+          "type": "string"
+        },
+        "domainInternal": {
+          "type": "string"
+        },
+        "ip": {
+          "type": "string"
+        },
+        "meshOnly": {
+          "type": "boolean"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.networking.v1alpha1.LoadBalancerIngressStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_dev_networking_pkg_apis_networking_v1alpha1_LoadBalancerStatus": {
+      "type": "object",
+      "properties": {
+        "ingress": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/knative_dev_networking_pkg_apis_networking_v1alpha1_LoadBalancerIngressStatus",
+            "existingJavaType": "io.fabric8.knative.internal.networking.v1alpha1.LoadBalancerIngressStatus"
+          }
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.networking.v1alpha1.LoadBalancerStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_dev_networking_pkg_apis_networking_v1alpha1_ServerlessService": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "networking.internal.knative.dev/v1alpha1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "ServerlessService",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/knative_dev_networking_pkg_apis_networking_v1alpha1_ServerlessServiceSpec",
+          "existingJavaType": "io.fabric8.knative.internal.networking.v1alpha1.ServerlessServiceSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/knative_dev_networking_pkg_apis_networking_v1alpha1_ServerlessServiceStatus",
+          "existingJavaType": "io.fabric8.knative.internal.networking.v1alpha1.ServerlessServiceStatus"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.networking.v1alpha1.ServerlessService",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
+      ]
+    },
+    "knative_dev_networking_pkg_apis_networking_v1alpha1_ServerlessServiceList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "networking.internal.knative.dev/v1alpha1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/knative_dev_networking_pkg_apis_networking_v1alpha1_ServerlessService",
+            "existingJavaType": "io.fabric8.knative.internal.networking.v1alpha1.ServerlessService"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "ServerlessServiceList",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.networking.v1alpha1.ServerlessServiceList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.knative.internal.networking.v1alpha1.ServerlessService\u003e"
+      ]
+    },
+    "knative_dev_networking_pkg_apis_networking_v1alpha1_ServerlessServiceSpec": {
+      "type": "object",
+      "properties": {
+        "mode": {
+          "type": "string"
+        },
+        "numActivators": {
+          "type": "integer"
+        },
+        "objectRef": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectReference"
+        },
+        "protocolType": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.networking.v1alpha1.ServerlessServiceSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_dev_networking_pkg_apis_networking_v1alpha1_ServerlessServiceStatus": {
+      "type": "object",
+      "properties": {
+        "annotations": {
+          "type": "object",
+          "existingJavaType": "java.util.Map\u003cString,String\u003e"
+        },
+        "conditions": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/knative_dev_pkg_apis_Condition",
+            "existingJavaType": "io.fabric8.knative.internal.pkg.apis.Condition"
+          }
+        },
+        "observedGeneration": {
+          "type": "integer",
+          "existingJavaType": "Long"
+        },
+        "privateServiceName": {
+          "type": "string"
+        },
+        "serviceName": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.networking.v1alpha1.ServerlessServiceStatus",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -3277,14 +4086,168 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "knative_dev_pkg_apis_duck_v1_AddressStatus": {
+      "type": "object",
+      "properties": {
+        "address": {
+          "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_Addressable",
+          "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.Addressable"
+        },
+        "addresses": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_Addressable",
+            "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.Addressable"
+          }
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.AddressStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "knative_dev_pkg_apis_duck_v1_Addressable": {
       "type": "object",
       "properties": {
+        "CACerts": {
+          "type": "string",
+          "existingJavaType": "String"
+        },
+        "name": {
+          "type": "string",
+          "existingJavaType": "String"
+        },
         "url": {
           "existingJavaType": "java.lang.String"
         }
       },
       "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.Addressable",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_dev_pkg_apis_duck_v1_AddressableType": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "duck.knative.dev/v1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "AddressableType",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "status": {
+          "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_AddressStatus",
+          "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.AddressStatus"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.AddressableType",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata"
+      ]
+    },
+    "knative_dev_pkg_apis_duck_v1_AddressableTypeList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "duck.knative.dev/v1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_AddressableType",
+            "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.AddressableType"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "AddressableTypeList",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.AddressableTypeList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.knative.internal.pkg.apis.duck.v1.AddressableType\u003e"
+      ]
+    },
+    "knative_dev_pkg_apis_duck_v1_Binding": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "duck.knative.dev/v1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "Binding",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_BindingSpec",
+          "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.BindingSpec"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.Binding",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata"
+      ]
+    },
+    "knative_dev_pkg_apis_duck_v1_BindingList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "duck.knative.dev/v1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_Binding",
+            "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.Binding"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "BindingList",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.BindingList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.knative.internal.pkg.apis.duck.v1.Binding\u003e"
+      ]
+    },
+    "knative_dev_pkg_apis_duck_v1_BindingSpec": {
+      "type": "object",
+      "properties": {
+        "subject": {
+          "$ref": "#/definitions/knative_dev_pkg_tracker_Reference",
+          "existingJavaType": "io.fabric8.knative.internal.pkg.tracker.Reference"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.BindingSpec",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -3317,9 +4280,68 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "knative_dev_pkg_apis_duck_v1_CronJob": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "duck.knative.dev/v1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "CronJob",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.batch.v1.CronJobSpec"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.CronJob",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata"
+      ]
+    },
+    "knative_dev_pkg_apis_duck_v1_CronJobList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "duck.knative.dev/v1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_CronJob",
+            "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.CronJob"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "CronJobList",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.CronJobList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.knative.internal.pkg.apis.duck.v1.CronJob\u003e"
+      ]
+    },
     "knative_dev_pkg_apis_duck_v1_Destination": {
       "type": "object",
       "properties": {
+        "CACerts": {
+          "type": "string",
+          "existingJavaType": "String"
+        },
         "ref": {
           "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_KReference",
           "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.KReference"
@@ -3336,6 +4358,10 @@
     "knative_dev_pkg_apis_duck_v1_KReference": {
       "type": "object",
       "properties": {
+        "address": {
+          "type": "string",
+          "existingJavaType": "String"
+        },
         "apiVersion": {
           "type": "string"
         },
@@ -3353,6 +4379,1032 @@
         }
       },
       "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.KReference",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_dev_pkg_apis_duck_v1_KResource": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "duck.knative.dev/v1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "KResource",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "status": {
+          "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_Status",
+          "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.Status"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.KResource",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata"
+      ]
+    },
+    "knative_dev_pkg_apis_duck_v1_KResourceList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "duck.knative.dev/v1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_KResource",
+            "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.KResource"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "KResourceList",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.KResourceList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.knative.internal.pkg.apis.duck.v1.KResource\u003e"
+      ]
+    },
+    "knative_dev_pkg_apis_duck_v1_PodList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "duck.knative.dev/v1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_WithPod",
+            "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.WithPod"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "PodList",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.PodList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.knative.internal.pkg.apis.duck.v1.WithPod\u003e"
+      ]
+    },
+    "knative_dev_pkg_apis_duck_v1_PodSpecable": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.PodSpec"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.PodSpecable",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_dev_pkg_apis_duck_v1_Source": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "duck.knative.dev/v1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "Source",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_SourceSpec",
+          "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.SourceSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_SourceStatus",
+          "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.SourceStatus"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.Source",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata"
+      ]
+    },
+    "knative_dev_pkg_apis_duck_v1_SourceList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "duck.knative.dev/v1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_Source",
+            "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.Source"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "SourceList",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.SourceList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.knative.internal.pkg.apis.duck.v1.Source\u003e"
+      ]
+    },
+    "knative_dev_pkg_apis_duck_v1_SourceSpec": {
+      "type": "object",
+      "properties": {
+        "ceOverrides": {
+          "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_CloudEventOverrides",
+          "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.CloudEventOverrides"
+        },
+        "sink": {
+          "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_Destination",
+          "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.Destination"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.SourceSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_dev_pkg_apis_duck_v1_SourceStatus": {
+      "type": "object",
+      "properties": {
+        "annotations": {
+          "type": "object",
+          "existingJavaType": "java.util.Map\u003cString,String\u003e"
+        },
+        "ceAttributes": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_CloudEventAttributes",
+            "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.CloudEventAttributes"
+          }
+        },
+        "conditions": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/knative_dev_pkg_apis_Condition",
+            "existingJavaType": "io.fabric8.knative.internal.pkg.apis.Condition"
+          }
+        },
+        "observedGeneration": {
+          "type": "integer",
+          "existingJavaType": "Long"
+        },
+        "sinkCACerts": {
+          "type": "string",
+          "existingJavaType": "String"
+        },
+        "sinkUri": {
+          "existingJavaType": "java.lang.String"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.SourceStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_dev_pkg_apis_duck_v1_Status": {
+      "type": "object",
+      "properties": {
+        "annotations": {
+          "type": "object",
+          "existingJavaType": "java.util.Map\u003cString,String\u003e"
+        },
+        "conditions": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/knative_dev_pkg_apis_Condition",
+            "existingJavaType": "io.fabric8.knative.internal.pkg.apis.Condition"
+          }
+        },
+        "observedGeneration": {
+          "type": "integer",
+          "existingJavaType": "Long"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.Status",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_dev_pkg_apis_duck_v1_WithPod": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "duck.knative.dev/v1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "WithPod",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_WithPodSpec",
+          "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.WithPodSpec"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.WithPod",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata"
+      ]
+    },
+    "knative_dev_pkg_apis_duck_v1_WithPodList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "duck.knative.dev/v1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_WithPod",
+            "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.WithPod"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "WithPodList",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.WithPodList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.knative.internal.pkg.apis.duck.v1.WithPod\u003e"
+      ]
+    },
+    "knative_dev_pkg_apis_duck_v1_WithPodSpec": {
+      "type": "object",
+      "properties": {
+        "template": {
+          "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_PodSpecable",
+          "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.PodSpecable"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.WithPodSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_dev_pkg_apis_duck_v1alpha1_AddressStatus": {
+      "type": "object",
+      "properties": {
+        "address": {
+          "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1alpha1_Addressable",
+          "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1alpha1.Addressable"
+        },
+        "addresses": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1alpha1_Addressable",
+            "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1alpha1.Addressable"
+          }
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1alpha1.AddressStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_dev_pkg_apis_duck_v1alpha1_Addressable": {
+      "type": "object",
+      "properties": {
+        "CACerts": {
+          "type": "string",
+          "existingJavaType": "String"
+        },
+        "hostname": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string",
+          "existingJavaType": "String"
+        },
+        "url": {
+          "existingJavaType": "java.lang.String"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1alpha1.Addressable",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_dev_pkg_apis_duck_v1alpha1_AddressableType": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "duck.knative.dev/v1alpha1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "AddressableType",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "status": {
+          "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1alpha1_AddressStatus",
+          "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1alpha1.AddressStatus"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1alpha1.AddressableType",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata"
+      ]
+    },
+    "knative_dev_pkg_apis_duck_v1alpha1_AddressableTypeList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "duck.knative.dev/v1alpha1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1alpha1_AddressableType",
+            "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1alpha1.AddressableType"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "AddressableTypeList",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1alpha1.AddressableTypeList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.knative.internal.pkg.apis.duck.v1alpha1.AddressableType\u003e"
+      ]
+    },
+    "knative_dev_pkg_apis_duck_v1alpha1_Binding": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "duck.knative.dev/v1alpha1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "Binding",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1alpha1_BindingSpec",
+          "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1alpha1.BindingSpec"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1alpha1.Binding",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata"
+      ]
+    },
+    "knative_dev_pkg_apis_duck_v1alpha1_BindingList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "duck.knative.dev/v1alpha1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1alpha1_Binding",
+            "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1alpha1.Binding"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "BindingList",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1alpha1.BindingList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.knative.internal.pkg.apis.duck.v1alpha1.Binding\u003e"
+      ]
+    },
+    "knative_dev_pkg_apis_duck_v1alpha1_BindingSpec": {
+      "type": "object",
+      "properties": {
+        "subject": {
+          "$ref": "#/definitions/knative_dev_pkg_tracker_Reference",
+          "existingJavaType": "io.fabric8.knative.internal.pkg.tracker.Reference"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1alpha1.BindingSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_dev_pkg_apis_duck_v1alpha1_LegacyTarget": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "duck.knative.dev/v1alpha1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "LegacyTarget",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "status": {
+          "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1alpha1_LegacyTargetable",
+          "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1alpha1.LegacyTargetable"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1alpha1.LegacyTarget",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata"
+      ]
+    },
+    "knative_dev_pkg_apis_duck_v1alpha1_LegacyTargetList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "duck.knative.dev/v1alpha1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1alpha1_LegacyTarget",
+            "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1alpha1.LegacyTarget"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "LegacyTargetList",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1alpha1.LegacyTargetList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.knative.internal.pkg.apis.duck.v1alpha1.LegacyTarget\u003e"
+      ]
+    },
+    "knative_dev_pkg_apis_duck_v1alpha1_LegacyTargetable": {
+      "type": "object",
+      "properties": {
+        "domainInternal": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1alpha1.LegacyTargetable",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_dev_pkg_apis_duck_v1alpha1_Target": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "duck.knative.dev/v1alpha1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "Target",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "status": {
+          "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1alpha1_TargetStatus",
+          "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1alpha1.TargetStatus"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1alpha1.Target",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata"
+      ]
+    },
+    "knative_dev_pkg_apis_duck_v1alpha1_TargetList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "duck.knative.dev/v1alpha1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1alpha1_Target",
+            "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1alpha1.Target"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "TargetList",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1alpha1.TargetList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.knative.internal.pkg.apis.duck.v1alpha1.Target\u003e"
+      ]
+    },
+    "knative_dev_pkg_apis_duck_v1alpha1_TargetStatus": {
+      "type": "object",
+      "properties": {
+        "targetable": {
+          "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1alpha1_Targetable",
+          "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1alpha1.Targetable"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1alpha1.TargetStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_dev_pkg_apis_duck_v1alpha1_Targetable": {
+      "type": "object",
+      "properties": {
+        "domainInternal": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1alpha1.Targetable",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_dev_pkg_apis_duck_v1beta1_AddressStatus": {
+      "type": "object",
+      "properties": {
+        "address": {
+          "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1beta1_Addressable",
+          "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1beta1.Addressable"
+        },
+        "addresses": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1beta1_Addressable",
+            "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1beta1.Addressable"
+          }
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1beta1.AddressStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_dev_pkg_apis_duck_v1beta1_Addressable": {
+      "type": "object",
+      "properties": {
+        "CACerts": {
+          "type": "string",
+          "existingJavaType": "String"
+        },
+        "name": {
+          "type": "string",
+          "existingJavaType": "String"
+        },
+        "url": {
+          "existingJavaType": "java.lang.String"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1beta1.Addressable",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_dev_pkg_apis_duck_v1beta1_AddressableType": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "duck.knative.dev/v1beta1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "AddressableType",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "status": {
+          "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1beta1_AddressStatus",
+          "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1beta1.AddressStatus"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1beta1.AddressableType",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata"
+      ]
+    },
+    "knative_dev_pkg_apis_duck_v1beta1_AddressableTypeList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "duck.knative.dev/v1beta1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1beta1_AddressableType",
+            "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1beta1.AddressableType"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "AddressableTypeList",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1beta1.AddressableTypeList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.knative.internal.pkg.apis.duck.v1beta1.AddressableType\u003e"
+      ]
+    },
+    "knative_dev_pkg_apis_duck_v1beta1_Binding": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "duck.knative.dev/v1beta1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "Binding",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1beta1_BindingSpec",
+          "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1beta1.BindingSpec"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1beta1.Binding",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata"
+      ]
+    },
+    "knative_dev_pkg_apis_duck_v1beta1_BindingList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "duck.knative.dev/v1beta1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1beta1_Binding",
+            "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1beta1.Binding"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "BindingList",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1beta1.BindingList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.knative.internal.pkg.apis.duck.v1beta1.Binding\u003e"
+      ]
+    },
+    "knative_dev_pkg_apis_duck_v1beta1_BindingSpec": {
+      "type": "object",
+      "properties": {
+        "subject": {
+          "$ref": "#/definitions/knative_dev_pkg_tracker_Reference",
+          "existingJavaType": "io.fabric8.knative.internal.pkg.tracker.Reference"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1beta1.BindingSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_dev_pkg_apis_duck_v1beta1_CloudEventOverrides": {
+      "type": "object",
+      "properties": {
+        "extensions": {
+          "type": "object",
+          "existingJavaType": "java.util.Map\u003cString,String\u003e"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1beta1.CloudEventOverrides",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_dev_pkg_apis_duck_v1beta1_Destination": {
+      "type": "object",
+      "properties": {
+        "CACerts": {
+          "type": "string",
+          "existingJavaType": "String"
+        },
+        "apiVersion": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "namespace": {
+          "type": "string"
+        },
+        "ref": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectReference"
+        },
+        "uri": {
+          "existingJavaType": "java.lang.String"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1beta1.Destination",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_dev_pkg_apis_duck_v1beta1_KResource": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "duck.knative.dev/v1beta1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "KResource",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "status": {
+          "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1beta1_Status",
+          "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1beta1.Status"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1beta1.KResource",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata"
+      ]
+    },
+    "knative_dev_pkg_apis_duck_v1beta1_KResourceList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "duck.knative.dev/v1beta1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1beta1_KResource",
+            "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1beta1.KResource"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "KResourceList",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1beta1.KResourceList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.knative.internal.pkg.apis.duck.v1beta1.KResource\u003e"
+      ]
+    },
+    "knative_dev_pkg_apis_duck_v1beta1_Source": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "duck.knative.dev/v1beta1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "Source",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1beta1_SourceSpec",
+          "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1beta1.SourceSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1beta1_SourceStatus",
+          "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1beta1.SourceStatus"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1beta1.Source",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata"
+      ]
+    },
+    "knative_dev_pkg_apis_duck_v1beta1_SourceList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "duck.knative.dev/v1beta1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1beta1_Source",
+            "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1beta1.Source"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "SourceList",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1beta1.SourceList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.knative.internal.pkg.apis.duck.v1beta1.Source\u003e"
+      ]
+    },
+    "knative_dev_pkg_apis_duck_v1beta1_SourceSpec": {
+      "type": "object",
+      "properties": {
+        "ceOverrides": {
+          "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1beta1_CloudEventOverrides",
+          "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1beta1.CloudEventOverrides"
+        },
+        "sink": {
+          "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1beta1_Destination",
+          "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1beta1.Destination"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1beta1.SourceSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_dev_pkg_apis_duck_v1beta1_SourceStatus": {
+      "type": "object",
+      "properties": {
+        "annotations": {
+          "type": "object",
+          "existingJavaType": "java.util.Map\u003cString,String\u003e"
+        },
+        "conditions": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/knative_dev_pkg_apis_Condition",
+            "existingJavaType": "io.fabric8.knative.internal.pkg.apis.Condition"
+          }
+        },
+        "observedGeneration": {
+          "type": "integer",
+          "existingJavaType": "Long"
+        },
+        "sinkUri": {
+          "existingJavaType": "java.lang.String"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1beta1.SourceStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_dev_pkg_apis_duck_v1beta1_Status": {
+      "type": "object",
+      "properties": {
+        "annotations": {
+          "type": "object",
+          "existingJavaType": "java.util.Map\u003cString,String\u003e"
+        },
+        "conditions": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/knative_dev_pkg_apis_Condition",
+            "existingJavaType": "io.fabric8.knative.internal.pkg.apis.Condition"
+          }
+        },
+        "observedGeneration": {
+          "type": "integer",
+          "existingJavaType": "Long"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1beta1.Status",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -3377,6 +5429,234 @@
         }
       },
       "javaType": "io.fabric8.knative.internal.pkg.tracker.Reference",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_dev_serving_pkg_apis_autoscaling_v1alpha1_Metric": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "autoscaling.internal.knative.dev/v1alpha1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "Metric",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/knative_dev_serving_pkg_apis_autoscaling_v1alpha1_MetricSpec",
+          "existingJavaType": "io.fabric8.knative.internal.autoscaling.v1alpha1.MetricSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/knative_dev_serving_pkg_apis_autoscaling_v1alpha1_MetricStatus",
+          "existingJavaType": "io.fabric8.knative.internal.autoscaling.v1alpha1.MetricStatus"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.autoscaling.v1alpha1.Metric",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
+      ]
+    },
+    "knative_dev_serving_pkg_apis_autoscaling_v1alpha1_MetricList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "autoscaling.internal.knative.dev/v1alpha1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/knative_dev_serving_pkg_apis_autoscaling_v1alpha1_Metric",
+            "existingJavaType": "io.fabric8.knative.internal.autoscaling.v1alpha1.Metric"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "MetricList",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.autoscaling.v1alpha1.MetricList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.knative.internal.autoscaling.v1alpha1.Metric\u003e"
+      ]
+    },
+    "knative_dev_serving_pkg_apis_autoscaling_v1alpha1_MetricSpec": {
+      "type": "object",
+      "properties": {
+        "panicWindow": {
+          "type": "integer",
+          "existingJavaType": "Long"
+        },
+        "scrapeTarget": {
+          "type": "string"
+        },
+        "stableWindow": {
+          "type": "integer",
+          "existingJavaType": "Long"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.autoscaling.v1alpha1.MetricSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_dev_serving_pkg_apis_autoscaling_v1alpha1_MetricStatus": {
+      "type": "object",
+      "properties": {
+        "annotations": {
+          "type": "object",
+          "existingJavaType": "java.util.Map\u003cString,String\u003e"
+        },
+        "conditions": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/knative_dev_pkg_apis_Condition",
+            "existingJavaType": "io.fabric8.knative.internal.pkg.apis.Condition"
+          }
+        },
+        "observedGeneration": {
+          "type": "integer",
+          "existingJavaType": "Long"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.autoscaling.v1alpha1.MetricStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_dev_serving_pkg_apis_autoscaling_v1alpha1_PodAutoscaler": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "autoscaling.internal.knative.dev/v1alpha1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "PodAutoscaler",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/knative_dev_serving_pkg_apis_autoscaling_v1alpha1_PodAutoscalerSpec",
+          "existingJavaType": "io.fabric8.knative.internal.autoscaling.v1alpha1.PodAutoscalerSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/knative_dev_serving_pkg_apis_autoscaling_v1alpha1_PodAutoscalerStatus",
+          "existingJavaType": "io.fabric8.knative.internal.autoscaling.v1alpha1.PodAutoscalerStatus"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.autoscaling.v1alpha1.PodAutoscaler",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
+      ]
+    },
+    "knative_dev_serving_pkg_apis_autoscaling_v1alpha1_PodAutoscalerList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "autoscaling.internal.knative.dev/v1alpha1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/knative_dev_serving_pkg_apis_autoscaling_v1alpha1_PodAutoscaler",
+            "existingJavaType": "io.fabric8.knative.internal.autoscaling.v1alpha1.PodAutoscaler"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "PodAutoscalerList",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.autoscaling.v1alpha1.PodAutoscalerList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.knative.internal.autoscaling.v1alpha1.PodAutoscaler\u003e"
+      ]
+    },
+    "knative_dev_serving_pkg_apis_autoscaling_v1alpha1_PodAutoscalerSpec": {
+      "type": "object",
+      "properties": {
+        "containerConcurrency": {
+          "type": "integer",
+          "existingJavaType": "Long"
+        },
+        "protocolType": {
+          "type": "string"
+        },
+        "reachability": {
+          "type": "string"
+        },
+        "scaleTargetRef": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectReference"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.autoscaling.v1alpha1.PodAutoscalerSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "knative_dev_serving_pkg_apis_autoscaling_v1alpha1_PodAutoscalerStatus": {
+      "type": "object",
+      "properties": {
+        "actualScale": {
+          "type": "integer",
+          "existingJavaType": "Integer"
+        },
+        "annotations": {
+          "type": "object",
+          "existingJavaType": "java.util.Map\u003cString,String\u003e"
+        },
+        "conditions": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/knative_dev_pkg_apis_Condition",
+            "existingJavaType": "io.fabric8.knative.internal.pkg.apis.Condition"
+          }
+        },
+        "desiredScale": {
+          "type": "integer",
+          "existingJavaType": "Integer"
+        },
+        "metricsServiceName": {
+          "type": "string"
+        },
+        "observedGeneration": {
+          "type": "integer",
+          "existingJavaType": "Long"
+        },
+        "serviceName": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.autoscaling.v1alpha1.PodAutoscalerStatus",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -3619,6 +5899,10 @@
         "hostPID": {
           "type": "boolean"
         },
+        "hostUsers": {
+          "type": "boolean",
+          "existingJavaType": "Boolean"
+        },
         "hostname": {
           "type": "string"
         },
@@ -3672,6 +5956,13 @@
             "existingJavaType": "io.fabric8.kubernetes.api.model.PodReadinessGate"
           }
         },
+        "resourceClaims": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "existingJavaType": "io.fabric8.kubernetes.api.model.PodResourceClaim"
+          }
+        },
         "responseStartTimeoutSeconds": {
           "type": "integer",
           "existingJavaType": "Long"
@@ -3685,6 +5976,13 @@
         },
         "schedulerName": {
           "type": "string"
+        },
+        "schedulingGates": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "existingJavaType": "io.fabric8.kubernetes.api.model.PodSchedulingGate"
+          }
         },
         "securityContext": {
           "existingJavaType": "io.fabric8.kubernetes.api.model.PodSecurityContext"
@@ -4209,6 +6507,22 @@
   },
   "type": "object",
   "properties": {
+    "knative_dev_caching_pkg_apis_caching_v1alpha1_Image": {
+      "$ref": "#/definitions/knative_dev_caching_pkg_apis_caching_v1alpha1_Image",
+      "existingJavaType": "io.fabric8.knative.internal.caching.v1alpha1.Image"
+    },
+    "knative_dev_caching_pkg_apis_caching_v1alpha1_ImageList": {
+      "$ref": "#/definitions/knative_dev_caching_pkg_apis_caching_v1alpha1_ImageList",
+      "existingJavaType": "io.fabric8.knative.internal.caching.v1alpha1.ImageList"
+    },
+    "knative_dev_caching_pkg_apis_caching_v1alpha1_ImageSpec": {
+      "$ref": "#/definitions/knative_dev_caching_pkg_apis_caching_v1alpha1_ImageSpec",
+      "existingJavaType": "io.fabric8.knative.internal.caching.v1alpha1.ImageSpec"
+    },
+    "knative_dev_caching_pkg_apis_caching_v1alpha1_ImageStatus": {
+      "$ref": "#/definitions/knative_dev_caching_pkg_apis_caching_v1alpha1_ImageStatus",
+      "existingJavaType": "io.fabric8.knative.internal.caching.v1alpha1.ImageStatus"
+    },
     "knative_dev_eventing-awssqs_pkg_apis_sources_v1alpha1_AwsSqsSource": {
       "$ref": "#/definitions/knative_dev_eventing-awssqs_pkg_apis_sources_v1alpha1_AwsSqsSource",
       "existingJavaType": "io.fabric8.knative.eventing.contrib.awssqs.v1alpha1.AwsSqsSource"
@@ -4321,68 +6635,68 @@
       "$ref": "#/definitions/knative_dev_eventing-gitlab_pkg_apis_sources_v1alpha1_SecretValueFromSource",
       "existingJavaType": "io.fabric8.knative.eventing.contrib.gitlab.v1alpha1.SecretValueFromSource"
     },
-    "knative_dev_eventing-kafka_pkg_apis_bindings_v1beta1_KafkaBinding": {
-      "$ref": "#/definitions/knative_dev_eventing-kafka_pkg_apis_bindings_v1beta1_KafkaBinding",
+    "knative_dev_eventing-kafka-broker_control-plane_pkg_apis_bindings_v1beta1_KafkaBinding": {
+      "$ref": "#/definitions/knative_dev_eventing-kafka-broker_control-plane_pkg_apis_bindings_v1beta1_KafkaBinding",
       "existingJavaType": "io.fabric8.knative.eventing.contrib.kafka.v1beta1.KafkaBinding"
     },
-    "knative_dev_eventing-kafka_pkg_apis_bindings_v1beta1_KafkaBindingList": {
-      "$ref": "#/definitions/knative_dev_eventing-kafka_pkg_apis_bindings_v1beta1_KafkaBindingList",
+    "knative_dev_eventing-kafka-broker_control-plane_pkg_apis_bindings_v1beta1_KafkaBindingList": {
+      "$ref": "#/definitions/knative_dev_eventing-kafka-broker_control-plane_pkg_apis_bindings_v1beta1_KafkaBindingList",
       "existingJavaType": "io.fabric8.knative.eventing.contrib.kafka.v1beta1.KafkaBindingList"
     },
-    "knative_dev_eventing-kafka_pkg_apis_bindings_v1beta1_KafkaBindingSpec": {
-      "$ref": "#/definitions/knative_dev_eventing-kafka_pkg_apis_bindings_v1beta1_KafkaBindingSpec",
+    "knative_dev_eventing-kafka-broker_control-plane_pkg_apis_bindings_v1beta1_KafkaBindingSpec": {
+      "$ref": "#/definitions/knative_dev_eventing-kafka-broker_control-plane_pkg_apis_bindings_v1beta1_KafkaBindingSpec",
       "existingJavaType": "io.fabric8.knative.eventing.contrib.kafka.v1beta1.KafkaBindingSpec"
     },
-    "knative_dev_eventing-kafka_pkg_apis_bindings_v1beta1_KafkaBindingStatus": {
-      "$ref": "#/definitions/knative_dev_eventing-kafka_pkg_apis_bindings_v1beta1_KafkaBindingStatus",
+    "knative_dev_eventing-kafka-broker_control-plane_pkg_apis_bindings_v1beta1_KafkaBindingStatus": {
+      "$ref": "#/definitions/knative_dev_eventing-kafka-broker_control-plane_pkg_apis_bindings_v1beta1_KafkaBindingStatus",
       "existingJavaType": "io.fabric8.knative.eventing.contrib.kafka.v1beta1.KafkaBindingStatus"
     },
-    "knative_dev_eventing-kafka_pkg_apis_bindings_v1beta1_KafkaNetSpec": {
-      "$ref": "#/definitions/knative_dev_eventing-kafka_pkg_apis_bindings_v1beta1_KafkaNetSpec",
+    "knative_dev_eventing-kafka-broker_control-plane_pkg_apis_bindings_v1beta1_KafkaNetSpec": {
+      "$ref": "#/definitions/knative_dev_eventing-kafka-broker_control-plane_pkg_apis_bindings_v1beta1_KafkaNetSpec",
       "existingJavaType": "io.fabric8.knative.eventing.contrib.kafka.v1beta1.KafkaNetSpec"
     },
-    "knative_dev_eventing-kafka_pkg_apis_bindings_v1beta1_KafkaSASLSpec": {
-      "$ref": "#/definitions/knative_dev_eventing-kafka_pkg_apis_bindings_v1beta1_KafkaSASLSpec",
+    "knative_dev_eventing-kafka-broker_control-plane_pkg_apis_bindings_v1beta1_KafkaSASLSpec": {
+      "$ref": "#/definitions/knative_dev_eventing-kafka-broker_control-plane_pkg_apis_bindings_v1beta1_KafkaSASLSpec",
       "existingJavaType": "io.fabric8.knative.eventing.contrib.kafka.v1beta1.KafkaSASLSpec"
     },
-    "knative_dev_eventing-kafka_pkg_apis_bindings_v1beta1_KafkaTLSSpec": {
-      "$ref": "#/definitions/knative_dev_eventing-kafka_pkg_apis_bindings_v1beta1_KafkaTLSSpec",
+    "knative_dev_eventing-kafka-broker_control-plane_pkg_apis_bindings_v1beta1_KafkaTLSSpec": {
+      "$ref": "#/definitions/knative_dev_eventing-kafka-broker_control-plane_pkg_apis_bindings_v1beta1_KafkaTLSSpec",
       "existingJavaType": "io.fabric8.knative.eventing.contrib.kafka.v1beta1.KafkaTLSSpec"
     },
-    "knative_dev_eventing-kafka_pkg_apis_bindings_v1beta1_SecretValueFromSource": {
-      "$ref": "#/definitions/knative_dev_eventing-kafka_pkg_apis_bindings_v1beta1_SecretValueFromSource",
+    "knative_dev_eventing-kafka-broker_control-plane_pkg_apis_bindings_v1beta1_SecretValueFromSource": {
+      "$ref": "#/definitions/knative_dev_eventing-kafka-broker_control-plane_pkg_apis_bindings_v1beta1_SecretValueFromSource",
       "existingJavaType": "io.fabric8.knative.eventing.contrib.kafka.v1beta1.SecretValueFromSource"
     },
-    "knative_dev_eventing-kafka_pkg_apis_messaging_v1beta1_KafkaChannel": {
-      "$ref": "#/definitions/knative_dev_eventing-kafka_pkg_apis_messaging_v1beta1_KafkaChannel",
+    "knative_dev_eventing-kafka-broker_control-plane_pkg_apis_messaging_v1beta1_KafkaChannel": {
+      "$ref": "#/definitions/knative_dev_eventing-kafka-broker_control-plane_pkg_apis_messaging_v1beta1_KafkaChannel",
       "existingJavaType": "io.fabric8.knative.eventing.contrib.kafka.v1beta1.KafkaChannel"
     },
-    "knative_dev_eventing-kafka_pkg_apis_messaging_v1beta1_KafkaChannelList": {
-      "$ref": "#/definitions/knative_dev_eventing-kafka_pkg_apis_messaging_v1beta1_KafkaChannelList",
+    "knative_dev_eventing-kafka-broker_control-plane_pkg_apis_messaging_v1beta1_KafkaChannelList": {
+      "$ref": "#/definitions/knative_dev_eventing-kafka-broker_control-plane_pkg_apis_messaging_v1beta1_KafkaChannelList",
       "existingJavaType": "io.fabric8.knative.eventing.contrib.kafka.v1beta1.KafkaChannelList"
     },
-    "knative_dev_eventing-kafka_pkg_apis_messaging_v1beta1_KafkaChannelSpec": {
-      "$ref": "#/definitions/knative_dev_eventing-kafka_pkg_apis_messaging_v1beta1_KafkaChannelSpec",
+    "knative_dev_eventing-kafka-broker_control-plane_pkg_apis_messaging_v1beta1_KafkaChannelSpec": {
+      "$ref": "#/definitions/knative_dev_eventing-kafka-broker_control-plane_pkg_apis_messaging_v1beta1_KafkaChannelSpec",
       "existingJavaType": "io.fabric8.knative.eventing.contrib.kafka.v1beta1.KafkaChannelSpec"
     },
-    "knative_dev_eventing-kafka_pkg_apis_messaging_v1beta1_KafkaChannelStatus": {
-      "$ref": "#/definitions/knative_dev_eventing-kafka_pkg_apis_messaging_v1beta1_KafkaChannelStatus",
+    "knative_dev_eventing-kafka-broker_control-plane_pkg_apis_messaging_v1beta1_KafkaChannelStatus": {
+      "$ref": "#/definitions/knative_dev_eventing-kafka-broker_control-plane_pkg_apis_messaging_v1beta1_KafkaChannelStatus",
       "existingJavaType": "io.fabric8.knative.eventing.contrib.kafka.v1beta1.KafkaChannelStatus"
     },
-    "knative_dev_eventing-kafka_pkg_apis_sources_v1beta1_KafkaSource": {
-      "$ref": "#/definitions/knative_dev_eventing-kafka_pkg_apis_sources_v1beta1_KafkaSource",
+    "knative_dev_eventing-kafka-broker_control-plane_pkg_apis_sources_v1beta1_KafkaSource": {
+      "$ref": "#/definitions/knative_dev_eventing-kafka-broker_control-plane_pkg_apis_sources_v1beta1_KafkaSource",
       "existingJavaType": "io.fabric8.knative.eventing.contrib.kafka.v1beta1.KafkaSource"
     },
-    "knative_dev_eventing-kafka_pkg_apis_sources_v1beta1_KafkaSourceList": {
-      "$ref": "#/definitions/knative_dev_eventing-kafka_pkg_apis_sources_v1beta1_KafkaSourceList",
+    "knative_dev_eventing-kafka-broker_control-plane_pkg_apis_sources_v1beta1_KafkaSourceList": {
+      "$ref": "#/definitions/knative_dev_eventing-kafka-broker_control-plane_pkg_apis_sources_v1beta1_KafkaSourceList",
       "existingJavaType": "io.fabric8.knative.eventing.contrib.kafka.v1beta1.KafkaSourceList"
     },
-    "knative_dev_eventing-kafka_pkg_apis_sources_v1beta1_KafkaSourceSpec": {
-      "$ref": "#/definitions/knative_dev_eventing-kafka_pkg_apis_sources_v1beta1_KafkaSourceSpec",
+    "knative_dev_eventing-kafka-broker_control-plane_pkg_apis_sources_v1beta1_KafkaSourceSpec": {
+      "$ref": "#/definitions/knative_dev_eventing-kafka-broker_control-plane_pkg_apis_sources_v1beta1_KafkaSourceSpec",
       "existingJavaType": "io.fabric8.knative.eventing.contrib.kafka.v1beta1.KafkaSourceSpec"
     },
-    "knative_dev_eventing-kafka_pkg_apis_sources_v1beta1_KafkaSourceStatus": {
-      "$ref": "#/definitions/knative_dev_eventing-kafka_pkg_apis_sources_v1beta1_KafkaSourceStatus",
+    "knative_dev_eventing-kafka-broker_control-plane_pkg_apis_sources_v1beta1_KafkaSourceStatus": {
+      "$ref": "#/definitions/knative_dev_eventing-kafka-broker_control-plane_pkg_apis_sources_v1beta1_KafkaSourceStatus",
       "existingJavaType": "io.fabric8.knative.eventing.contrib.kafka.v1beta1.KafkaSourceStatus"
     },
     "knative_dev_eventing-prometheus_pkg_apis_sources_v1alpha1_PrometheusSource": {
@@ -4661,13 +6975,133 @@
       "$ref": "#/definitions/knative_dev_eventing_pkg_apis_sources_v1_SinkBindingStatus",
       "existingJavaType": "io.fabric8.knative.sources.v1.SinkBindingStatus"
     },
+    "knative_dev_networking_pkg_apis_networking_v1alpha1_Certificate": {
+      "$ref": "#/definitions/knative_dev_networking_pkg_apis_networking_v1alpha1_Certificate",
+      "existingJavaType": "io.fabric8.knative.internal.networking.v1alpha1.Certificate"
+    },
+    "knative_dev_networking_pkg_apis_networking_v1alpha1_CertificateList": {
+      "$ref": "#/definitions/knative_dev_networking_pkg_apis_networking_v1alpha1_CertificateList",
+      "existingJavaType": "io.fabric8.knative.internal.networking.v1alpha1.CertificateList"
+    },
+    "knative_dev_networking_pkg_apis_networking_v1alpha1_CertificateSpec": {
+      "$ref": "#/definitions/knative_dev_networking_pkg_apis_networking_v1alpha1_CertificateSpec",
+      "existingJavaType": "io.fabric8.knative.internal.networking.v1alpha1.CertificateSpec"
+    },
+    "knative_dev_networking_pkg_apis_networking_v1alpha1_CertificateStatus": {
+      "$ref": "#/definitions/knative_dev_networking_pkg_apis_networking_v1alpha1_CertificateStatus",
+      "existingJavaType": "io.fabric8.knative.internal.networking.v1alpha1.CertificateStatus"
+    },
+    "knative_dev_networking_pkg_apis_networking_v1alpha1_ClusterDomainClaim": {
+      "$ref": "#/definitions/knative_dev_networking_pkg_apis_networking_v1alpha1_ClusterDomainClaim",
+      "existingJavaType": "io.fabric8.knative.internal.networking.v1alpha1.ClusterDomainClaim"
+    },
+    "knative_dev_networking_pkg_apis_networking_v1alpha1_ClusterDomainClaimList": {
+      "$ref": "#/definitions/knative_dev_networking_pkg_apis_networking_v1alpha1_ClusterDomainClaimList",
+      "existingJavaType": "io.fabric8.knative.internal.networking.v1alpha1.ClusterDomainClaimList"
+    },
+    "knative_dev_networking_pkg_apis_networking_v1alpha1_ClusterDomainClaimSpec": {
+      "$ref": "#/definitions/knative_dev_networking_pkg_apis_networking_v1alpha1_ClusterDomainClaimSpec",
+      "existingJavaType": "io.fabric8.knative.internal.networking.v1alpha1.ClusterDomainClaimSpec"
+    },
+    "knative_dev_networking_pkg_apis_networking_v1alpha1_HTTP01Challenge": {
+      "$ref": "#/definitions/knative_dev_networking_pkg_apis_networking_v1alpha1_HTTP01Challenge",
+      "existingJavaType": "io.fabric8.knative.internal.networking.v1alpha1.HTTP01Challenge"
+    },
+    "knative_dev_networking_pkg_apis_networking_v1alpha1_HTTPIngressPath": {
+      "$ref": "#/definitions/knative_dev_networking_pkg_apis_networking_v1alpha1_HTTPIngressPath",
+      "existingJavaType": "io.fabric8.knative.internal.networking.v1alpha1.HTTPIngressPath"
+    },
+    "knative_dev_networking_pkg_apis_networking_v1alpha1_HTTPIngressRuleValue": {
+      "$ref": "#/definitions/knative_dev_networking_pkg_apis_networking_v1alpha1_HTTPIngressRuleValue",
+      "existingJavaType": "io.fabric8.knative.internal.networking.v1alpha1.HTTPIngressRuleValue"
+    },
+    "knative_dev_networking_pkg_apis_networking_v1alpha1_HeaderMatch": {
+      "$ref": "#/definitions/knative_dev_networking_pkg_apis_networking_v1alpha1_HeaderMatch",
+      "existingJavaType": "io.fabric8.knative.internal.networking.v1alpha1.HeaderMatch"
+    },
+    "knative_dev_networking_pkg_apis_networking_v1alpha1_Ingress": {
+      "$ref": "#/definitions/knative_dev_networking_pkg_apis_networking_v1alpha1_Ingress",
+      "existingJavaType": "io.fabric8.knative.internal.networking.v1alpha1.Ingress"
+    },
+    "knative_dev_networking_pkg_apis_networking_v1alpha1_IngressBackendSplit": {
+      "$ref": "#/definitions/knative_dev_networking_pkg_apis_networking_v1alpha1_IngressBackendSplit",
+      "existingJavaType": "io.fabric8.knative.internal.networking.v1alpha1.IngressBackendSplit"
+    },
+    "knative_dev_networking_pkg_apis_networking_v1alpha1_IngressList": {
+      "$ref": "#/definitions/knative_dev_networking_pkg_apis_networking_v1alpha1_IngressList",
+      "existingJavaType": "io.fabric8.knative.internal.networking.v1alpha1.IngressList"
+    },
+    "knative_dev_networking_pkg_apis_networking_v1alpha1_IngressRule": {
+      "$ref": "#/definitions/knative_dev_networking_pkg_apis_networking_v1alpha1_IngressRule",
+      "existingJavaType": "io.fabric8.knative.internal.networking.v1alpha1.IngressRule"
+    },
+    "knative_dev_networking_pkg_apis_networking_v1alpha1_IngressSpec": {
+      "$ref": "#/definitions/knative_dev_networking_pkg_apis_networking_v1alpha1_IngressSpec",
+      "existingJavaType": "io.fabric8.knative.internal.networking.v1alpha1.IngressSpec"
+    },
+    "knative_dev_networking_pkg_apis_networking_v1alpha1_IngressStatus": {
+      "$ref": "#/definitions/knative_dev_networking_pkg_apis_networking_v1alpha1_IngressStatus",
+      "existingJavaType": "io.fabric8.knative.internal.networking.v1alpha1.IngressStatus"
+    },
+    "knative_dev_networking_pkg_apis_networking_v1alpha1_IngressTLS": {
+      "$ref": "#/definitions/knative_dev_networking_pkg_apis_networking_v1alpha1_IngressTLS",
+      "existingJavaType": "io.fabric8.knative.internal.networking.v1alpha1.IngressTLS"
+    },
+    "knative_dev_networking_pkg_apis_networking_v1alpha1_LoadBalancerIngressStatus": {
+      "$ref": "#/definitions/knative_dev_networking_pkg_apis_networking_v1alpha1_LoadBalancerIngressStatus",
+      "existingJavaType": "io.fabric8.knative.internal.networking.v1alpha1.LoadBalancerIngressStatus"
+    },
+    "knative_dev_networking_pkg_apis_networking_v1alpha1_LoadBalancerStatus": {
+      "$ref": "#/definitions/knative_dev_networking_pkg_apis_networking_v1alpha1_LoadBalancerStatus",
+      "existingJavaType": "io.fabric8.knative.internal.networking.v1alpha1.LoadBalancerStatus"
+    },
+    "knative_dev_networking_pkg_apis_networking_v1alpha1_ServerlessService": {
+      "$ref": "#/definitions/knative_dev_networking_pkg_apis_networking_v1alpha1_ServerlessService",
+      "existingJavaType": "io.fabric8.knative.internal.networking.v1alpha1.ServerlessService"
+    },
+    "knative_dev_networking_pkg_apis_networking_v1alpha1_ServerlessServiceList": {
+      "$ref": "#/definitions/knative_dev_networking_pkg_apis_networking_v1alpha1_ServerlessServiceList",
+      "existingJavaType": "io.fabric8.knative.internal.networking.v1alpha1.ServerlessServiceList"
+    },
+    "knative_dev_networking_pkg_apis_networking_v1alpha1_ServerlessServiceSpec": {
+      "$ref": "#/definitions/knative_dev_networking_pkg_apis_networking_v1alpha1_ServerlessServiceSpec",
+      "existingJavaType": "io.fabric8.knative.internal.networking.v1alpha1.ServerlessServiceSpec"
+    },
+    "knative_dev_networking_pkg_apis_networking_v1alpha1_ServerlessServiceStatus": {
+      "$ref": "#/definitions/knative_dev_networking_pkg_apis_networking_v1alpha1_ServerlessServiceStatus",
+      "existingJavaType": "io.fabric8.knative.internal.networking.v1alpha1.ServerlessServiceStatus"
+    },
     "knative_dev_pkg_apis_Condition": {
       "$ref": "#/definitions/knative_dev_pkg_apis_Condition",
       "existingJavaType": "io.fabric8.knative.internal.pkg.apis.Condition"
     },
+    "knative_dev_pkg_apis_duck_v1_AddressStatus": {
+      "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_AddressStatus",
+      "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.AddressStatus"
+    },
     "knative_dev_pkg_apis_duck_v1_Addressable": {
       "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_Addressable",
       "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.Addressable"
+    },
+    "knative_dev_pkg_apis_duck_v1_AddressableType": {
+      "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_AddressableType",
+      "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.AddressableType"
+    },
+    "knative_dev_pkg_apis_duck_v1_AddressableTypeList": {
+      "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_AddressableTypeList",
+      "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.AddressableTypeList"
+    },
+    "knative_dev_pkg_apis_duck_v1_Binding": {
+      "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_Binding",
+      "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.Binding"
+    },
+    "knative_dev_pkg_apis_duck_v1_BindingList": {
+      "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_BindingList",
+      "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.BindingList"
+    },
+    "knative_dev_pkg_apis_duck_v1_BindingSpec": {
+      "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_BindingSpec",
+      "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.BindingSpec"
     },
     "knative_dev_pkg_apis_duck_v1_CloudEventAttributes": {
       "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_CloudEventAttributes",
@@ -4677,6 +7111,14 @@
       "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_CloudEventOverrides",
       "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.CloudEventOverrides"
     },
+    "knative_dev_pkg_apis_duck_v1_CronJob": {
+      "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_CronJob",
+      "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.CronJob"
+    },
+    "knative_dev_pkg_apis_duck_v1_CronJobList": {
+      "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_CronJobList",
+      "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.CronJobList"
+    },
     "knative_dev_pkg_apis_duck_v1_Destination": {
       "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_Destination",
       "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.Destination"
@@ -4685,9 +7127,209 @@
       "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_KReference",
       "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.KReference"
     },
+    "knative_dev_pkg_apis_duck_v1_KResource": {
+      "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_KResource",
+      "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.KResource"
+    },
+    "knative_dev_pkg_apis_duck_v1_KResourceList": {
+      "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_KResourceList",
+      "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.KResourceList"
+    },
+    "knative_dev_pkg_apis_duck_v1_PodList": {
+      "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_PodList",
+      "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.PodList"
+    },
+    "knative_dev_pkg_apis_duck_v1_PodSpecable": {
+      "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_PodSpecable",
+      "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.PodSpecable"
+    },
+    "knative_dev_pkg_apis_duck_v1_Source": {
+      "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_Source",
+      "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.Source"
+    },
+    "knative_dev_pkg_apis_duck_v1_SourceList": {
+      "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_SourceList",
+      "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.SourceList"
+    },
+    "knative_dev_pkg_apis_duck_v1_SourceSpec": {
+      "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_SourceSpec",
+      "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.SourceSpec"
+    },
+    "knative_dev_pkg_apis_duck_v1_SourceStatus": {
+      "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_SourceStatus",
+      "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.SourceStatus"
+    },
+    "knative_dev_pkg_apis_duck_v1_Status": {
+      "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_Status",
+      "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.Status"
+    },
+    "knative_dev_pkg_apis_duck_v1_WithPod": {
+      "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_WithPod",
+      "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.WithPod"
+    },
+    "knative_dev_pkg_apis_duck_v1_WithPodList": {
+      "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_WithPodList",
+      "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.WithPodList"
+    },
+    "knative_dev_pkg_apis_duck_v1_WithPodSpec": {
+      "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_WithPodSpec",
+      "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.WithPodSpec"
+    },
+    "knative_dev_pkg_apis_duck_v1alpha1_AddressStatus": {
+      "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1alpha1_AddressStatus",
+      "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1alpha1.AddressStatus"
+    },
+    "knative_dev_pkg_apis_duck_v1alpha1_Addressable": {
+      "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1alpha1_Addressable",
+      "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1alpha1.Addressable"
+    },
+    "knative_dev_pkg_apis_duck_v1alpha1_AddressableType": {
+      "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1alpha1_AddressableType",
+      "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1alpha1.AddressableType"
+    },
+    "knative_dev_pkg_apis_duck_v1alpha1_AddressableTypeList": {
+      "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1alpha1_AddressableTypeList",
+      "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1alpha1.AddressableTypeList"
+    },
+    "knative_dev_pkg_apis_duck_v1alpha1_Binding": {
+      "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1alpha1_Binding",
+      "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1alpha1.Binding"
+    },
+    "knative_dev_pkg_apis_duck_v1alpha1_BindingList": {
+      "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1alpha1_BindingList",
+      "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1alpha1.BindingList"
+    },
+    "knative_dev_pkg_apis_duck_v1alpha1_BindingSpec": {
+      "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1alpha1_BindingSpec",
+      "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1alpha1.BindingSpec"
+    },
+    "knative_dev_pkg_apis_duck_v1alpha1_LegacyTarget": {
+      "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1alpha1_LegacyTarget",
+      "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1alpha1.LegacyTarget"
+    },
+    "knative_dev_pkg_apis_duck_v1alpha1_LegacyTargetList": {
+      "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1alpha1_LegacyTargetList",
+      "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1alpha1.LegacyTargetList"
+    },
+    "knative_dev_pkg_apis_duck_v1alpha1_LegacyTargetable": {
+      "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1alpha1_LegacyTargetable",
+      "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1alpha1.LegacyTargetable"
+    },
+    "knative_dev_pkg_apis_duck_v1alpha1_Target": {
+      "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1alpha1_Target",
+      "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1alpha1.Target"
+    },
+    "knative_dev_pkg_apis_duck_v1alpha1_TargetList": {
+      "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1alpha1_TargetList",
+      "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1alpha1.TargetList"
+    },
+    "knative_dev_pkg_apis_duck_v1alpha1_TargetStatus": {
+      "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1alpha1_TargetStatus",
+      "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1alpha1.TargetStatus"
+    },
+    "knative_dev_pkg_apis_duck_v1alpha1_Targetable": {
+      "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1alpha1_Targetable",
+      "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1alpha1.Targetable"
+    },
+    "knative_dev_pkg_apis_duck_v1beta1_AddressStatus": {
+      "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1beta1_AddressStatus",
+      "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1beta1.AddressStatus"
+    },
+    "knative_dev_pkg_apis_duck_v1beta1_Addressable": {
+      "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1beta1_Addressable",
+      "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1beta1.Addressable"
+    },
+    "knative_dev_pkg_apis_duck_v1beta1_AddressableType": {
+      "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1beta1_AddressableType",
+      "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1beta1.AddressableType"
+    },
+    "knative_dev_pkg_apis_duck_v1beta1_AddressableTypeList": {
+      "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1beta1_AddressableTypeList",
+      "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1beta1.AddressableTypeList"
+    },
+    "knative_dev_pkg_apis_duck_v1beta1_Binding": {
+      "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1beta1_Binding",
+      "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1beta1.Binding"
+    },
+    "knative_dev_pkg_apis_duck_v1beta1_BindingList": {
+      "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1beta1_BindingList",
+      "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1beta1.BindingList"
+    },
+    "knative_dev_pkg_apis_duck_v1beta1_BindingSpec": {
+      "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1beta1_BindingSpec",
+      "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1beta1.BindingSpec"
+    },
+    "knative_dev_pkg_apis_duck_v1beta1_CloudEventOverrides": {
+      "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1beta1_CloudEventOverrides",
+      "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1beta1.CloudEventOverrides"
+    },
+    "knative_dev_pkg_apis_duck_v1beta1_Destination": {
+      "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1beta1_Destination",
+      "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1beta1.Destination"
+    },
+    "knative_dev_pkg_apis_duck_v1beta1_KResource": {
+      "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1beta1_KResource",
+      "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1beta1.KResource"
+    },
+    "knative_dev_pkg_apis_duck_v1beta1_KResourceList": {
+      "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1beta1_KResourceList",
+      "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1beta1.KResourceList"
+    },
+    "knative_dev_pkg_apis_duck_v1beta1_Source": {
+      "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1beta1_Source",
+      "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1beta1.Source"
+    },
+    "knative_dev_pkg_apis_duck_v1beta1_SourceList": {
+      "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1beta1_SourceList",
+      "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1beta1.SourceList"
+    },
+    "knative_dev_pkg_apis_duck_v1beta1_SourceSpec": {
+      "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1beta1_SourceSpec",
+      "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1beta1.SourceSpec"
+    },
+    "knative_dev_pkg_apis_duck_v1beta1_SourceStatus": {
+      "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1beta1_SourceStatus",
+      "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1beta1.SourceStatus"
+    },
+    "knative_dev_pkg_apis_duck_v1beta1_Status": {
+      "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1beta1_Status",
+      "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1beta1.Status"
+    },
     "knative_dev_pkg_tracker_Reference": {
       "$ref": "#/definitions/knative_dev_pkg_tracker_Reference",
       "existingJavaType": "io.fabric8.knative.internal.pkg.tracker.Reference"
+    },
+    "knative_dev_serving_pkg_apis_autoscaling_v1alpha1_Metric": {
+      "$ref": "#/definitions/knative_dev_serving_pkg_apis_autoscaling_v1alpha1_Metric",
+      "existingJavaType": "io.fabric8.knative.internal.autoscaling.v1alpha1.Metric"
+    },
+    "knative_dev_serving_pkg_apis_autoscaling_v1alpha1_MetricList": {
+      "$ref": "#/definitions/knative_dev_serving_pkg_apis_autoscaling_v1alpha1_MetricList",
+      "existingJavaType": "io.fabric8.knative.internal.autoscaling.v1alpha1.MetricList"
+    },
+    "knative_dev_serving_pkg_apis_autoscaling_v1alpha1_MetricSpec": {
+      "$ref": "#/definitions/knative_dev_serving_pkg_apis_autoscaling_v1alpha1_MetricSpec",
+      "existingJavaType": "io.fabric8.knative.internal.autoscaling.v1alpha1.MetricSpec"
+    },
+    "knative_dev_serving_pkg_apis_autoscaling_v1alpha1_MetricStatus": {
+      "$ref": "#/definitions/knative_dev_serving_pkg_apis_autoscaling_v1alpha1_MetricStatus",
+      "existingJavaType": "io.fabric8.knative.internal.autoscaling.v1alpha1.MetricStatus"
+    },
+    "knative_dev_serving_pkg_apis_autoscaling_v1alpha1_PodAutoscaler": {
+      "$ref": "#/definitions/knative_dev_serving_pkg_apis_autoscaling_v1alpha1_PodAutoscaler",
+      "existingJavaType": "io.fabric8.knative.internal.autoscaling.v1alpha1.PodAutoscaler"
+    },
+    "knative_dev_serving_pkg_apis_autoscaling_v1alpha1_PodAutoscalerList": {
+      "$ref": "#/definitions/knative_dev_serving_pkg_apis_autoscaling_v1alpha1_PodAutoscalerList",
+      "existingJavaType": "io.fabric8.knative.internal.autoscaling.v1alpha1.PodAutoscalerList"
+    },
+    "knative_dev_serving_pkg_apis_autoscaling_v1alpha1_PodAutoscalerSpec": {
+      "$ref": "#/definitions/knative_dev_serving_pkg_apis_autoscaling_v1alpha1_PodAutoscalerSpec",
+      "existingJavaType": "io.fabric8.knative.internal.autoscaling.v1alpha1.PodAutoscalerSpec"
+    },
+    "knative_dev_serving_pkg_apis_autoscaling_v1alpha1_PodAutoscalerStatus": {
+      "$ref": "#/definitions/knative_dev_serving_pkg_apis_autoscaling_v1alpha1_PodAutoscalerStatus",
+      "existingJavaType": "io.fabric8.knative.internal.autoscaling.v1alpha1.PodAutoscalerStatus"
     },
     "knative_dev_serving_pkg_apis_serving_v1_Configuration": {
       "$ref": "#/definitions/knative_dev_serving_pkg_apis_serving_v1_Configuration",

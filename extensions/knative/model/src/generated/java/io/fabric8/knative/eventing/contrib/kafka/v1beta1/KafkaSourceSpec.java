@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.knative.internal.eventing.pkg.apis.duck.v1.DeliverySpec;
 import io.fabric8.knative.internal.pkg.apis.duck.v1.CloudEventOverrides;
 import io.fabric8.knative.internal.pkg.apis.duck.v1.Destination;
 import io.fabric8.kubernetes.api.model.Container;
@@ -46,6 +47,7 @@ import lombok.experimental.Accessors;
     "ceOverrides",
     "consumerGroup",
     "consumers",
+    "delivery",
     "initialOffset",
     "net",
     "sink",
@@ -86,6 +88,8 @@ public class KafkaSourceSpec implements KubernetesResource
     private String consumerGroup;
     @JsonProperty("consumers")
     private Integer consumers;
+    @JsonProperty("delivery")
+    private DeliverySpec delivery;
     @JsonProperty("initialOffset")
     private String initialOffset;
     @JsonProperty("net")
@@ -105,12 +109,13 @@ public class KafkaSourceSpec implements KubernetesResource
     public KafkaSourceSpec() {
     }
 
-    public KafkaSourceSpec(List<String> bootstrapServers, CloudEventOverrides ceOverrides, String consumerGroup, Integer consumers, String initialOffset, KafkaNetSpec net, Destination sink, List<String> topics) {
+    public KafkaSourceSpec(List<String> bootstrapServers, CloudEventOverrides ceOverrides, String consumerGroup, Integer consumers, DeliverySpec delivery, String initialOffset, KafkaNetSpec net, Destination sink, List<String> topics) {
         super();
         this.bootstrapServers = bootstrapServers;
         this.ceOverrides = ceOverrides;
         this.consumerGroup = consumerGroup;
         this.consumers = consumers;
+        this.delivery = delivery;
         this.initialOffset = initialOffset;
         this.net = net;
         this.sink = sink;
@@ -155,6 +160,16 @@ public class KafkaSourceSpec implements KubernetesResource
     @JsonProperty("consumers")
     public void setConsumers(Integer consumers) {
         this.consumers = consumers;
+    }
+
+    @JsonProperty("delivery")
+    public DeliverySpec getDelivery() {
+        return delivery;
+    }
+
+    @JsonProperty("delivery")
+    public void setDelivery(DeliverySpec delivery) {
+        this.delivery = delivery;
     }
 
     @JsonProperty("initialOffset")

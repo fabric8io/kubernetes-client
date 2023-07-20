@@ -67,7 +67,7 @@ class ServiceCrudTest {
     assertNotNull(serviceList);
     assertEquals(1, serviceList.getItems().size());
 
-    created.setStatus(new ServiceStatusBuilder().withNewAddress("http://my-service").build());
+    created.setStatus(new ServiceStatusBuilder().withNewAddress().withUrl("http://my-service").endAddress().build());
 
     assertNotNull(client.services().inNamespace("ns2").withName("service").updateStatus(created).getStatus());
   }
