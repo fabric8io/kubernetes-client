@@ -43,6 +43,7 @@ import org.mockito.ArgumentCaptor;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -59,6 +60,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -163,9 +165,10 @@ class UploadTest {
         executorService.schedule(() -> l.onMessage(webSocket, exitZeroEvent()), 100, TimeUnit.MILLISECONDS);
         return CompletableFuture.completedFuture(new WebSocketResponse(new WebSocketUpgradeResponse(null), webSocket));
       };
-      // Upload
-      // Word Count
-      // Extract Tar
+      // 3 Operations:
+      // - Upload (tar or file)
+      // - Word Count
+      // - Extract Tar (only for files and directories)
       factory.times(3).forEach(i -> {
         informPodReady("success-pod");
         httpClient.wsExpect("/api/v1/namespaces/.+/pods/success-pod/exec", future);
@@ -298,7 +301,7 @@ class UploadTest {
         void bigNumbersSupported(@TempDir Path tempDir) throws Exception {
           // When
           final Path toUploadWithModifiedDate = Files.copy(toUpload, tempDir.resolve("upload-sample.txt"));
-          toUploadWithModifiedDate.toFile().setLastModified(9999999999999L); // Would trigger IllegalArgumentException: last modification time '9999999999' is too big ( > 8589934591 ).
+          assertTrue(toUploadWithModifiedDate.toFile().setLastModified(9999999999999L)); // Would trigger IllegalArgumentException: last modification time '9999999999' is too big ( > 8589934591 ).
           client.pods().inNamespace("default").withName("success-pod").file("/target-dir/file-name.txt")
               .upload(toUploadWithModifiedDate);
           // Then
@@ -384,6 +387,60 @@ class UploadTest {
                 ".+command=mkdir -p '/target-dir/location'; tar -C '/target-dir/location' -xmf /tmp/fabric8-.+\\.tar; e=\\$\\?; rm /tmp/fabric8-.+");
       }
 
+    }
+
+    @Nested
+    @DisplayName("Input stream")
+    class Stream {
+
+      private InputStream toUploadIs;
+
+      @BeforeEach
+      void setUp() {
+        toUploadIs = PodUpload.class.getResourceAsStream("/upload/upload-sample.txt");
+      }
+
+      @Test
+      @DisplayName("upload, returns true")
+      void uploadReturnsTrue() {
+        // When
+        final boolean result = client.pods().inNamespace("default").withName("success-pod").file("/target/location")
+            .upload(toUploadIs);
+        // Then
+        assertThat(result).isTrue();
+      }
+
+      @Test
+      @DisplayName("creates target directory and pipes compressed file in server")
+      void createsTempDirectoryAndPipesFileInServer() {
+        // When
+        client.pods().inNamespace("default").withName("success-pod").file("/target/location")
+            .upload(toUploadIs);
+        // Then
+        assertThat(httpClient.getRecordedBuildWebSocketDirects())
+            .element(0)
+            .extracting(TestStandardHttpClient.RecordedBuildWebSocketDirect::getStandardWebSocketBuilder)
+            .extracting(StandardWebSocketBuilder::asHttpRequest)
+            .extracting(StandardHttpRequest::uri)
+            .extracting(URI::getQuery).asString()
+            .contains("command=mkdir -p '/target' && cat - > '/target/location");
+      }
+
+      @Test
+      @DisplayName("verifies uploaded file size in server")
+      void verifiesUploadedTarSize() {
+        // When
+        client.pods().inNamespace("default").withName("success-pod").file("/target/location")
+            .upload(toUploadIs);
+        // Then
+        assertThat(httpClient.getRecordedBuildWebSocketDirects())
+            .element(1)
+            .extracting(TestStandardHttpClient.RecordedBuildWebSocketDirect::getStandardWebSocketBuilder)
+            .extracting(StandardWebSocketBuilder::asHttpRequest)
+            .extracting(StandardHttpRequest::uri)
+            .extracting(URI::getQuery).asString()
+            .contains("command=wc -c < '/target/location");
+      }
     }
 
   }
