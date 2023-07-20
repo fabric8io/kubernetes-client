@@ -3,12 +3,12 @@
 ### 6.8-SNAPSHOT
 
 #### Bugs
+* Fix #4225: [crd-generator] Principled generation of enum values instead of considering more properties
 * Fix #5186: Support for Pod uploads with big numbers
-* Fix #5298: Prevent requests needing authentication from causing a 403 response
 * Fix #5221: Empty kube config file causes NPE
 * Fix #5281: Ensure the KubernetesCrudDispatcher's backing map is accessed w/lock
 * Fix #5293: Ensured the mock server uses only generic or JsonNode parsing
-* Fix #4225: [crd-generator] Principled generation of enum values instead of considering more properties
+* Fix #5298: Prevent requests needing authentication from causing a 403 response
 * Fix #5327: Ensured that the informer reconnect task terminates after client close
 
 #### Improvements
@@ -17,10 +17,11 @@
 * Fix #5262: all built-in collections will omit empty in their serialized form.
 * Fix #5287: Add an option to filter the files processed by the java-generator, based on a suffix allowlist
 * Fix #5315: Introduced `kubernetes-junit-jupiter-autodetect` to use with [automatic extension registration](https://junit.org/junit5/docs/current/user-guide/#extensions-registration-automatic)
+* Fix #5339: `@PrinterColumn` annotation has configuration field for priority
 
 #### Dependency Upgrade
-* Fix #5308: sundrio was updated to the latest version.  FluentImpl classes were removed, along with methods that had been previously deprecated.  Some seldom used builder methods dealing manipulating buildable fields as a subtype such as withXXXField were removed in favor of using more general methods such as withField.
 * Fix #5056: Update Kubernetes Model to v1.27.3
+* Fix #5308: sundrio was updated to the latest version.  FluentImpl classes were removed, along with methods that had been previously deprecated.  Some seldom used builder methods dealing manipulating buildable fields as a subtype such as withXXXField were removed in favor of using more general methods such as withField.
 
 #### New Features
 * Fix #5133: Support for using TokenRequest for existing ServiceAccount
