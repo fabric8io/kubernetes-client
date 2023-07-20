@@ -117,7 +117,7 @@ public class AddAdditionPrinterColumnDecorator extends
         return false;
     } else if (!type.equals(other.type))
       return false;
-    return priority != other.priority;
+    return priority == other.priority;
   }
 
   @Override
