@@ -23,6 +23,8 @@ import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.mockwebserver.Context;
 import io.fabric8.mockwebserver.ServerRequest;
 import io.fabric8.mockwebserver.ServerResponse;
+import io.fabric8.mockwebserver.internal.MockDispatcher;
+import okhttp3.mockwebserver.Dispatcher;
 import okhttp3.mockwebserver.MockWebServer;
 import org.junit.jupiter.api.extension.AfterAllCallback;
 import org.junit.jupiter.api.extension.AfterEachCallback;
@@ -98,13 +100,20 @@ public class KubernetesMockServerExtension
   protected void initializeKubernetesClientAndMockServer(Class<?> testClass) {
     EnableKubernetesMockClient a = testClass.getAnnotation(EnableKubernetesMockClient.class);
     final Map<ServerRequest, Queue<ServerResponse>> responses = new HashMap<>();
-    mock = a.crud()
-        ? new KubernetesMockServer(new Context(Serialization.jsonMapper()), new MockWebServer(), responses,
-            new KubernetesMixedDispatcher(responses),
-            a.https())
-        : new KubernetesMockServer(a.https());
+    final Dispatcher dispatcher;
+    if (a.crud()) {
+      dispatcher = new KubernetesMixedDispatcher(responses);
+    } else {
+      dispatcher = new MockDispatcher(responses);
+    }
+    mock = new KubernetesMockServer(new Context(Serialization.jsonMapper()), new MockWebServer(), responses, dispatcher,
+        a.https());
     mock.init();
-    client = mock.createClient();
+    try {
+      client = mock.createClient(a.kubernetesClientBuilder().getConstructor().newInstance());
+    } catch (Exception e) {
+      throw new IllegalArgumentException("The provided kubernetesClientBuilder is invalid", e);
+    }
   }
 
   protected void destroy() {
