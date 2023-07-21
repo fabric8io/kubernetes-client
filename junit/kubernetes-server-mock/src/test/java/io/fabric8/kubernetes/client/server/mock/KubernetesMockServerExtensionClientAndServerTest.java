@@ -20,9 +20,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 @EnableKubernetesMockClient
-class KubernetesMockServerExtensionClientAndServerStaticTests {
-  static KubernetesMockServer mockServer;
-  static KubernetesClient client;
+class KubernetesMockServerExtensionClientAndServerTest {
+  KubernetesMockServer mockServer;
+  KubernetesClient client;
 
   @Test
   void testExample() {
