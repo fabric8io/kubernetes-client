@@ -21,12 +21,15 @@ import io.fabric8.kubernetes.api.model.APIResourceList;
 import io.fabric8.kubernetes.api.model.APIResourceListBuilder;
 import io.fabric8.kubernetes.api.model.RootPathsBuilder;
 import io.fabric8.kubernetes.client.Client;
+import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
 import io.fabric8.kubernetes.client.VersionInfo;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.http.HttpClient;
+import io.fabric8.kubernetes.client.http.TlsVersion;
 import io.fabric8.kubernetes.client.impl.BaseClient;
 import io.fabric8.kubernetes.client.utils.ApiVersionUtil;
 import io.fabric8.kubernetes.client.utils.Serialization;
@@ -49,7 +52,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Queue;
-import java.util.function.Function;
+import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
 public class KubernetesMockServer extends DefaultMockServer implements Resetable, CustomResourceAware {
@@ -118,15 +121,38 @@ public class KubernetesMockServer extends DefaultMockServer implements Resetable
   }
 
   public NamespacedKubernetesClient createClient() {
-    return createClient(new KubernetesMockClientKubernetesClientBuilder());
+    return createClient(new KubernetesClientBuilderCustomizer());
   }
 
   public NamespacedKubernetesClient createClient(HttpClient.Factory factory) {
-    return createClient(url -> new KubernetesMockClientKubernetesClientBuilder().apply(url).withHttpClientFactory(factory));
+    return createClient(b -> b.withHttpClientFactory(factory));
   }
 
-  public NamespacedKubernetesClient createClient(Function<String, KubernetesClientBuilder> kubernetesClientBuilder) {
-    final BaseClient client = kubernetesClientBuilder.apply(url("/")).build().adapt(BaseClient.class);
+  /**
+   * Creates a client using the cusotmized {@link KubernetesClientBuilder} provided in the {@link Consumer} parameter.
+   * <p>
+   * The function is invoked using an initial {@link Config} instance that is initialized with the mock server's
+   * URL and the {@link TlsVersion} to use.
+   * <p>
+   * The following snippet shows how you can use this method in your tests:
+   * <pre>
+   *   &#64;BeforeEach
+   *   void setUp() {
+   *     server = new KubernetesMockServer();
+   *     server.start();
+   *     client = server.createClient(b -&gt; {&#47;* customize builder *&#47;}));
+   *   }
+   * }</pre>
+   *
+   * @param kubernetesClientBuilderCustomizer Consumer function to enable further customization of the provided
+   *        KubernetesClientBuilder.
+   * @return a NamespacedKubernetesClient instance from the provided configuration.
+   */
+  public NamespacedKubernetesClient createClient(Consumer<KubernetesClientBuilder> kubernetesClientBuilderCustomizer) {
+    final KubernetesClientBuilder kubernetesClientBuilder = new KubernetesClientBuilder().withConfig(initConfig());
+    kubernetesClientBuilderCustomizer.accept(kubernetesClientBuilder);
+
+    final BaseClient client = kubernetesClientBuilder.build().adapt(BaseClient.class);
     client.setMatchingGroupPredicate(s -> unsupportedPatterns.stream().noneMatch(p -> p.matcher(s).find()));
     return client.adapt(NamespacedKubernetesClient.class);
   }
@@ -176,6 +202,16 @@ public class KubernetesMockServer extends DefaultMockServer implements Resetable
    */
   public void clearExpectations() {
     responses.clear();
+  }
+
+  protected Config initConfig() {
+    return new ConfigBuilder(Config.empty())
+        .withMasterUrl(url("/"))
+        .withTrustCerts(true)
+        .withTlsVersions(TlsVersion.TLS_1_2)
+        .withNamespace("test")
+        .withHttp2Disable(true)
+        .build();
   }
 
   /**

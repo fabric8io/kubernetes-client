@@ -53,6 +53,7 @@ public class OpenShiftMockServer extends KubernetesMockServer {
     return new String[] { "/api", "/oapi" };
   }
 
+  @SuppressWarnings("java:S2095")
   public NamespacedOpenShiftClient createOpenShiftClient() {
     final NamespacedOpenShiftClient client = createClient().adapt(NamespacedOpenShiftClient.class);
     ((OpenShiftConfig) client.getConfiguration()).setDisableApiGroupCheck(disableApiGroupCheck);

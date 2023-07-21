@@ -21,7 +21,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
-import java.util.function.Function;
+import java.util.function.Consumer;
 
 import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
 import static java.lang.annotation.ElementType.METHOD;
@@ -43,11 +43,12 @@ public @interface EnableKubernetesMockClient {
   boolean crud() default false;
 
   /**
-   * No-arg constructor class implementing {@link Function} interface that returns {@link KubernetesClientBuilder} instance.
+   * No-arg constructor class implementing {@link Consumer} interface that accepts the {@link KubernetesClientBuilder} instance
+   * used by the KubernetesMockServerExtension for further customization.
    * <p>
    * Enables the customization of the automatically bootstrapped and injected
    * {@link io.fabric8.kubernetes.client.KubernetesClient} instance.
    */
-  Class<? extends Function<String, KubernetesClientBuilder>> kubernetesClientBuilder() default KubernetesMockClientKubernetesClientBuilder.class;
+  Class<? extends Consumer<KubernetesClientBuilder>> kubernetesClientBuilderCustomizer() default KubernetesClientBuilderCustomizer.class;
 
 }

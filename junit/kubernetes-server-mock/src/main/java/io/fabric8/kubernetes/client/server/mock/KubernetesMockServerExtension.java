@@ -110,7 +110,7 @@ public class KubernetesMockServerExtension
         a.https());
     mock.init();
     try {
-      client = mock.createClient(a.kubernetesClientBuilder().getConstructor().newInstance());
+      client = mock.createClient(a.kubernetesClientBuilderCustomizer().getConstructor().newInstance());
     } catch (Exception e) {
       throw new IllegalArgumentException("The provided kubernetesClientBuilder is invalid", e);
     }

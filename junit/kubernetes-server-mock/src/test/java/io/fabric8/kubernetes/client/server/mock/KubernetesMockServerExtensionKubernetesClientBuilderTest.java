@@ -30,10 +30,11 @@ import io.fabric8.kubernetes.client.utils.KubernetesSerialization;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.util.function.Consumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@EnableKubernetesMockClient(crud = true, kubernetesClientBuilder = KubernetesMockServerExtensionKubernetesClientBuilderTest.CustomSerialization.class)
+@EnableKubernetesMockClient(crud = true, kubernetesClientBuilderCustomizer = KubernetesMockServerExtensionKubernetesClientBuilderTest.CustomSerialization.class)
 class KubernetesMockServerExtensionKubernetesClientBuilderTest {
 
   KubernetesClient client;
@@ -51,14 +52,13 @@ class KubernetesMockServerExtensionKubernetesClientBuilderTest {
         .isNotNull();
   }
 
-  public static final class CustomSerialization extends KubernetesMockClientKubernetesClientBuilder {
+  public static final class CustomSerialization implements Consumer<KubernetesClientBuilder> {
+
     @Override
-    public KubernetesClientBuilder apply(String url) {
-      final KubernetesClientBuilder kubernetesClientBuilder = super.apply(url);
+    public void accept(KubernetesClientBuilder builder) {
       final ObjectMapper customMapper = new ObjectMapper();
       customMapper.addMixIn(ObjectMeta.class, ObjectMetaMixin.class);
-      kubernetesClientBuilder.withKubernetesSerialization(new KubernetesSerialization(customMapper, true));
-      return kubernetesClientBuilder;
+      builder.withKubernetesSerialization(new KubernetesSerialization(customMapper, true));
     }
 
     private static final class ObjectMetaMixin {

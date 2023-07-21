@@ -15,27 +15,14 @@
  */
 package io.fabric8.kubernetes.client.server.mock;
 
-import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientBuilder;
-import io.fabric8.kubernetes.client.http.TlsVersion;
 
-import java.util.function.Function;
+import java.util.function.Consumer;
 
-public class KubernetesMockClientKubernetesClientBuilder implements Function<String, KubernetesClientBuilder> {
+public class KubernetesClientBuilderCustomizer implements Consumer<KubernetesClientBuilder> {
 
   @Override
-  public KubernetesClientBuilder apply(String url) {
-    return new KubernetesClientBuilder().withConfig(initConfig(url));
-  }
-
-  protected Config initConfig(String url) {
-    return new ConfigBuilder(Config.empty())
-        .withMasterUrl(url)
-        .withTrustCerts(true)
-        .withTlsVersions(TlsVersion.TLS_1_2)
-        .withNamespace("test")
-        .withHttp2Disable(true)
-        .build();
+  public void accept(KubernetesClientBuilder kubernetesClientBuilder) {
+    // NO-OP
   }
 }
