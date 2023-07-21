@@ -24,7 +24,7 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @EnableKubernetesMockClient(crud = true)
-class KubernetesMockServerExtensionTests {
+class KubernetesMockServerExtensionTest {
 
   KubernetesClient client;
 
