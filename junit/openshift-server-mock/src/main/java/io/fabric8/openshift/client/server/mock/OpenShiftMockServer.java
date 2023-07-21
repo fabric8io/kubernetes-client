@@ -20,7 +20,6 @@ import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.mockwebserver.Context;
 import io.fabric8.mockwebserver.ServerRequest;
 import io.fabric8.mockwebserver.ServerResponse;
-import io.fabric8.openshift.client.DefaultOpenShiftClient;
 import io.fabric8.openshift.client.NamespacedOpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftConfig;
 import okhttp3.mockwebserver.Dispatcher;
@@ -55,9 +54,9 @@ public class OpenShiftMockServer extends KubernetesMockServer {
   }
 
   public NamespacedOpenShiftClient createOpenShiftClient() {
-    OpenShiftConfig config = OpenShiftConfig.wrap(getMockConfiguration());
-    config.setDisableApiGroupCheck(disableApiGroupCheck);
-    return new DefaultOpenShiftClient(config);
+    final NamespacedOpenShiftClient client = createClient().adapt(NamespacedOpenShiftClient.class);
+    ((OpenShiftConfig) client.getConfiguration()).setDisableApiGroupCheck(disableApiGroupCheck);
+    return client;
   }
 
   public boolean isDisableApiGroupCheck() {

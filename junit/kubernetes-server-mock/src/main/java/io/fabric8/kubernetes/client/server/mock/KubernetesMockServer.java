@@ -21,15 +21,12 @@ import io.fabric8.kubernetes.api.model.APIResourceList;
 import io.fabric8.kubernetes.api.model.APIResourceListBuilder;
 import io.fabric8.kubernetes.api.model.RootPathsBuilder;
 import io.fabric8.kubernetes.client.Client;
-import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
 import io.fabric8.kubernetes.client.VersionInfo;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.http.HttpClient;
-import io.fabric8.kubernetes.client.http.TlsVersion;
 import io.fabric8.kubernetes.client.impl.BaseClient;
 import io.fabric8.kubernetes.client.utils.ApiVersionUtil;
 import io.fabric8.kubernetes.client.utils.Serialization;
@@ -52,7 +49,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Queue;
-import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.regex.Pattern;
 
 public class KubernetesMockServer extends DefaultMockServer implements Resetable, CustomResourceAware {
@@ -121,21 +118,17 @@ public class KubernetesMockServer extends DefaultMockServer implements Resetable
   }
 
   public NamespacedKubernetesClient createClient() {
-    return createClient(ignored -> {
-    });
-  }
-
-  public NamespacedKubernetesClient createClient(Consumer<KubernetesClientBuilder> customizer) {
-    KubernetesClientBuilder builder = new KubernetesClientBuilder().withConfig(getMockConfiguration());
-    customizer.accept(builder);
-    KubernetesClient client = builder.build();
-    client.adapt(BaseClient.class)
-        .setMatchingGroupPredicate(s -> unsupportedPatterns.stream().noneMatch(p -> p.matcher(s).find()));
-    return client.adapt(NamespacedKubernetesClient.class);
+    return createClient(new KubernetesMockClientKubernetesClientBuilder());
   }
 
   public NamespacedKubernetesClient createClient(HttpClient.Factory factory) {
-    return createClient(builder -> builder.withHttpClientFactory(factory));
+    return createClient(url -> new KubernetesMockClientKubernetesClientBuilder().apply(url).withHttpClientFactory(factory));
+  }
+
+  public NamespacedKubernetesClient createClient(Function<String, KubernetesClientBuilder> kubernetesClientBuilder) {
+    final BaseClient client = kubernetesClientBuilder.apply(url("/")).build().adapt(BaseClient.class);
+    client.setMatchingGroupPredicate(s -> unsupportedPatterns.stream().noneMatch(p -> p.matcher(s).find()));
+    return client.adapt(NamespacedKubernetesClient.class);
   }
 
   /**
@@ -185,19 +178,13 @@ public class KubernetesMockServer extends DefaultMockServer implements Resetable
     responses.clear();
   }
 
-  protected Config getMockConfiguration() {
-    return new ConfigBuilder(Config.empty())
-        .withMasterUrl(url("/"))
-        .withTrustCerts(true)
-        .withTlsVersions(TlsVersion.TLS_1_2)
-        .withNamespace("test")
-        .withHttp2Disable(true)
-        .build();
-  }
-
+  /**
+   * @deprecated Use {@code client.adapt(NamespacedServiceCatalogClient.class)} instead.
+   * @return A {@link NamespacedServiceCatalogClient} instance.
+   */
+  @Deprecated
   public NamespacedServiceCatalogClient createServiceCatalog() {
-    Config config = this.getMockConfiguration();
-    return new DefaultServiceCatalogClient(config);
+    return new DefaultServiceCatalogClient(createClient());
   }
 
   @Override

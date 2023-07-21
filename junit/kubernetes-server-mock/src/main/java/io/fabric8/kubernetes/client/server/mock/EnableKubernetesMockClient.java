@@ -16,10 +16,12 @@
 
 package io.fabric8.kubernetes.client.server.mock;
 
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
+import java.util.function.Function;
 
 import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
 import static java.lang.annotation.ElementType.METHOD;
@@ -39,5 +41,13 @@ public @interface EnableKubernetesMockClient {
   boolean https() default true;
 
   boolean crud() default false;
+
+  /**
+   * No-arg constructor class implementing {@link Function} interface that returns {@link KubernetesClientBuilder} instance.
+   * <p>
+   * Enables the customization of the automatically bootstrapped and injected
+   * {@link io.fabric8.kubernetes.client.KubernetesClient} instance.
+   */
+  Class<? extends Function<String, KubernetesClientBuilder>> kubernetesClientBuilder() default KubernetesMockClientKubernetesClientBuilder.class;
 
 }
