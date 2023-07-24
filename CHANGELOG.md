@@ -1,6 +1,6 @@
 ## CHANGELOG
 
-### 6.8-SNAPSHOT
+### 6.8.0 (2023-07-24)
 
 #### Bugs
 * Fix #4225: \[crd-generator\] Principled generation of enum values instead of considering more properties
