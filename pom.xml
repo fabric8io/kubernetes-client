@@ -106,7 +106,7 @@
     <jsr305.version>3.0.2</jsr305.version>
 
     <!-- Testing versions -->
-    <junit.version>5.9.3</junit.version>
+    <junit.version>5.10.0</junit.version>
     <assertj.core.version>3.24.2</assertj.core.version>
     <awaitility.version>4.2.0</awaitility.version>
     <approvaltests.version>18.7.1</approvaltests.version>
