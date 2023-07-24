@@ -42,7 +42,7 @@ public class JokeRequestSpec {
   @PrinterColumn(name = "jokeCategory", priority = 1)
   @JsonPropertyDescription("category-description")
   private Category category = Category.Any;
-  @io.fabric8.kubernetes.model.annotation.PrinterColumn(name = "excludedTopics")
+  @PrinterColumn(name = "excludedTopics")
   private ExcludedTopic[] excluded = new ExcludedTopic[] { ExcludedTopic.nsfw, ExcludedTopic.racist,
       ExcludedTopic.sexist };
   private boolean safe;

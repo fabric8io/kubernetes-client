@@ -18,6 +18,7 @@
 #### New Features
 
 #### _**Note**_: Breaking changes
+* Fix #5343: Removed `io.fabric8.kubernetes.model.annotation.PrinterColumn`, use `io.fabric8.crd.generator.annotation.PrinterColumn`
 * Fix #5368: ListOptions parameter ordering is now alphabetical.  If you are using non-crud mocking for lists with options, you may need to update your parameter order.
 * Fix #5391: Removed the vertx-uri-template dependency from the vertx client, if you need that for your application, then introduce your own dependency.
 
