@@ -368,8 +368,8 @@ public class KubernetesSerialization {
     return mapper.convertValue(value, type);
   }
 
-  public Type constructParametricType(Class<?> parameterizedClass, Class<?> parameterType) {
-    return mapper.getTypeFactory().constructParametricType(parameterizedClass, parameterType);
+  public Type constructParametricType(Class<?> parameterizedClass, Class<?>... parameterClasses) {
+    return mapper.getTypeFactory().constructParametricType(parameterizedClass, parameterClasses);
   }
 
   public Class<? extends KubernetesResource> getRegisteredKubernetesResource(String apiVersion, String kind) {
