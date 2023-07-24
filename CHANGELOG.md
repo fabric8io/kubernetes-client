@@ -3,13 +3,13 @@
 ### 6.8-SNAPSHOT
 
 #### Bugs
-* Fix #4225: [crd-generator] Principled generation of enum values instead of considering more properties
+* Fix #4225: \[crd-generator\] Principled generation of enum values instead of considering more properties
+* Fix #5113: Clashing package names in trigger model dependencies
 * Fix #5186: Support for Pod uploads with big numbers
 * Fix #5221: Empty kube config file causes NPE
 * Fix #5281: Ensure the KubernetesCrudDispatcher's backing map is accessed w/lock
 * Fix #5298: Prevent requests needing authentication from causing a 403 response
 * Fix #5327: Ensured that the informer reconnect task terminates after client close
-* Fix #5113: Clashing package names in trigger model dependencies
 
 #### Improvements
 * Fix #5166: Remove opinionated messages from Config's `errorMessages` and deprecate it
@@ -22,8 +22,8 @@
 
 #### Dependency Upgrade
 * Fix #5056: Update Kubernetes Model to v1.27.3
-* Fix #5308: sundrio was updated to the latest version.  FluentImpl classes were removed, along with methods that had been previously deprecated.  Some seldom used builder methods dealing manipulating buildable fields as a subtype such as withXXXField were removed in favor of using more general methods such as withField.
 * Fix #5140: Upgrade Fabric8 Knative Extension Model to v0.37.1
+* Fix #5308: sundrio was updated to the latest version.  FluentImpl classes were removed, along with methods that had been previously deprecated.  Some seldom used builder methods dealing manipulating buildable fields as a subtype such as withXXXField were removed in favor of using more general methods such as withField.
 
 #### New Features
 * Fix #5133: Support for using TokenRequest for existing ServiceAccount
@@ -69,9 +69,9 @@
 * Fix #5117: corrected the trace httpclient logging of large response bodies
 * Fix #5125: TLS 1.3 only should be supported
 * Fix #5126: fallback to changeit only if null/empty does not work
-* Fix #5145: [java-generator] handle `additionalProperties: true` emitting a field of type `AnyType`
+* Fix #5145: \[java-generator\] handle `additionalProperties: true` emitting a field of type `AnyType`
 * Fix #5152: preventing JDK WebSocket errors from terminating watches and improving watch termination and its logging
-* Fix #5164: [java-generator] handle more special characters in field names
+* Fix #5164: \[java-generator\] handle more special characters in field names
 
 #### Improvements
 * Fix #1335: HttpClient Factory additionalConfig consistently applied for all client types
@@ -261,7 +261,7 @@ Fix #5121: RequestConfig is propagated to derived HttpClient instances
 * Fix #4637: all pod operations that require a ready / succeeded pod may use withReadyWaitTimeout, which supersedes withLogWaitTimeout.
 * Fix #4654: Fix GatewayClass to not implement Namespaced interface
 * Fix #4670: the initial informer listing will use a resourceVersion of 0 to utilize the watch cache if possible.  This means that the initial cache state when the informer is returned, or the start future is completed, may not be as fresh as the previous behavior which forced the latest version.  It will of course become more consistent as the watch will already have been established.
-* Fix #4694: [java-generator] Option to override the package name of the generated code.
+* Fix #4694: \[java-generator\] Option to override the package name of the generated code.
 * Fix #4698: changes were made to improve authentication logic.  If a username and password are specified and you are using a base KuberentesClient, then that will always be used as a basic auth header value.  If a username and password are specified and you are using an OpenShiftClient, then a token will still be used if present, but upon an auth failure the username and password will be used to obtain a fresh token.  If a new token is obtained it will be saved in the kubeconfig if one were used to create the Config.
 * Fix #4720: interceptors close any response body if the response is not a 2xx response.
 * Fix #4734: @KubernetesTest annotation can be used in base test classes
@@ -316,7 +316,7 @@ Fix #5121: RequestConfig is propagated to derived HttpClient instances
 #### New Features
 * Fix #4136: added support for fieldValidation as a dsl method for POST/PUT/PATCH operations
 * Fix #3896: added dsl support for server side apply
-* Fix #4582: updated [client.secrets] createOrReplace document
+* Fix #4582: updated client.secrets createOrReplace document
 * Fix #4516: added support for blocking delete operations using the withTimeout methods: op.withTimeout(1, TimeUnit.MINUTE).delete() - will wait for up to 1 minute for the resources to be fully deleted. This makes for a more concise replacement of the deletingExisting method.
 
 #### _**Note**_: Breaking changes
