@@ -1,5 +1,17 @@
 ## CHANGELOG
 
+### 6.9-SNAPSHOT
+
+#### Bugs
+
+#### Improvements
+
+#### Dependency Upgrade
+
+#### New Features
+
+#### _**Note**_: Breaking changes
+
 ### 6.8.0 (2023-07-24)
 
 #### Bugs
@@ -28,15 +40,13 @@
 #### New Features
 * Fix #5133: Support for using TokenRequest for existing ServiceAccount
 
-#### Deprecations
-* Deprecating `io.fabric8.kubernetes.model.annotation.PrinterColumn` in favor of: `io.fabric8.crd.generator.annotation.PrinterColumn`
-
 #### _**Note**_: Breaking changes
 * Fix #2718: KubernetesResourceUtil.isResourceReady was deprecated.  Use `client.resource(item).isReady()` or `Readiness.getInstance().isReady(item)` instead.
 * Fix #5171: Removed Camel-K extension, use [`org.apache.camel.k:camel-k-crds`](https://central.sonatype.com/artifact/org.apache.camel.k/camel-k-crds) instead.
 * Fix #5262: Built-in resources were in-consistent with respect to their serialization or empty collections.  In many circumstances this was confusing behavior.  In order to be consistent all built-in resources will omit empty collections by default.  This is a breaking change if you are relying on an empty collection in a json merge or a strategic merge where the list has a patchStrategy of atomic.  In these circumstances the empty collection will no longer be serialized.  You may instead use a json patch, server side apply instead, or modify the serialized form of the patch.
 * Fix #5279: (java-generator) Add native support for `date-time` fields, they are now mapped to native `java.time.ZonedDateTime`
 * Fix #5315: kubernetes-junit-jupiter no longer registers the NamespaceExtension and KubernetesExtension extensions to be used in combination with junit-platform.properties>`junit.jupiter.extensions.autodetection.enabled=true`configuration. If you wish to use these extensions and autodetect them, change your dependency to `kubernetes-junit-jupiter-autodetect`.
+* Deprecating `io.fabric8.kubernetes.model.annotation.PrinterColumn` in favor of: `io.fabric8.crd.generator.annotation.PrinterColumn`
 * Resource classes in `resource.k8s.io/v1alpha1` have been moved to `resource.k8s.io/v1alpha2` apiGroup in Kubernetes 1.27. Users are required to change package of the following classes:
   - `io.fabric8.kubernetes.api.model.resource.v1alpha1.PodSchedulingContext` -> - `io.fabric8.kubernetes.api.model.resource.v1alpha2.PodSchedulingContext`
   - `io.fabric8.kubernetes.api.model.resource.v1alpha1.ResourceClaim` -> - `io.fabric8.kubernetes.api.model.resource.v1alpha2.ResourceClaim`
