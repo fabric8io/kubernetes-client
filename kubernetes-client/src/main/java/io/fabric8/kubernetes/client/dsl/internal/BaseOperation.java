@@ -78,6 +78,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.Executor;
@@ -1015,41 +1016,17 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     return informer;
   }
 
-  public static URL appendListOptionParams(URL base, ListOptions listOptions) {
+  public URL appendListOptionParams(URL base, ListOptions listOptions) {
     if (listOptions == null) {
       return base;
     }
     URLBuilder urlBuilder = new URLBuilder(base);
-    if (listOptions.getLimit() != null) {
-      urlBuilder.addQueryParameter("limit", listOptions.getLimit().toString());
-    }
-    if (listOptions.getContinue() != null) {
-      urlBuilder.addQueryParameter("continue", listOptions.getContinue());
-    }
 
-    if (listOptions.getFieldSelector() != null) {
-      urlBuilder.addQueryParameter("fieldSelector", listOptions.getFieldSelector());
-    }
+    Map<String, ?> values = getKubernetesSerialization().convertValue(listOptions, TreeMap.class);
+    values.remove("apiVersion");
+    values.remove("kind");
+    values.forEach((k, v) -> urlBuilder.addQueryParameter(k, v.toString()));
 
-    if (listOptions.getLabelSelector() != null) {
-      urlBuilder.addQueryParameter("labelSelector", listOptions.getLabelSelector());
-    }
-
-    if (listOptions.getResourceVersion() != null) {
-      urlBuilder.addQueryParameter("resourceVersion", listOptions.getResourceVersion());
-    }
-
-    if (listOptions.getTimeoutSeconds() != null) {
-      urlBuilder.addQueryParameter("timeoutSeconds", listOptions.getTimeoutSeconds().toString());
-    }
-
-    if (listOptions.getAllowWatchBookmarks() != null) {
-      urlBuilder.addQueryParameter("allowWatchBookmarks", listOptions.getAllowWatchBookmarks().toString());
-    }
-
-    if (listOptions.getWatch() != null) {
-      urlBuilder.addQueryParameter(WATCH, listOptions.getWatch().toString());
-    }
     return urlBuilder.build();
   }
 

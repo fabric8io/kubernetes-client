@@ -22,6 +22,7 @@ import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.WatcherException;
 import io.fabric8.kubernetes.client.dsl.internal.AbstractWatchManager.WatchRequestState;
 import io.fabric8.kubernetes.client.utils.CommonThreadPool;
+import io.fabric8.kubernetes.client.utils.KubernetesSerialization;
 import io.fabric8.kubernetes.client.utils.Utils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -285,6 +286,8 @@ class AbstractWatchManagerTest {
   static BaseOperation mockOperation() {
     BaseOperation operation = mock(BaseOperation.class, Mockito.RETURNS_DEEP_STUBS);
     Mockito.when(operation.getOperationContext().getExecutor()).thenReturn(Runnable::run);
+    Mockito.when(operation.getKubernetesSerialization()).thenReturn(new KubernetesSerialization());
+    Mockito.when(operation.appendListOptionParams(Mockito.any(), Mockito.any())).thenCallRealMethod();
     return operation;
   }
 

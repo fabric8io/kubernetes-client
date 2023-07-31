@@ -430,8 +430,8 @@ class CustomResourceTest {
   void testWatchSingleResource() throws IOException, InterruptedException {
     // Given
     server.expect()
-        .withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos" + "?fieldSelector="
-            + Utils.toUrlEncoded("metadata.name=example-hello") + "&allowWatchBookmarks=true&watch=true")
+        .withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos" + "?allowWatchBookmarks=true&fieldSelector="
+            + Utils.toUrlEncoded("metadata.name=example-hello") + "&watch=true")
         .andUpgradeToWebSocket()
         .open()
         .waitFor(WATCH_EVENT_PERIOD)
@@ -464,8 +464,8 @@ class CustomResourceTest {
   void testWatchWithLabels() throws IOException, InterruptedException {
     // Given
     server.expect()
-        .withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos?labelSelector=" + Utils.toUrlEncoded("foo=bar")
-            + "&allowWatchBookmarks=true&watch=true")
+        .withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos?allowWatchBookmarks=true&labelSelector="
+            + Utils.toUrlEncoded("foo=bar") + "&watch=true")
         .andUpgradeToWebSocket()
         .open()
         .waitFor(WATCH_EVENT_PERIOD)
@@ -498,8 +498,9 @@ class CustomResourceTest {
     // Given
     String watchResourceVersion = "1001";
     server.expect()
-        .withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos?resourceVersion=" + watchResourceVersion
-            + "&allowWatchBookmarks=true&watch=true")
+        .withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos?allowWatchBookmarks=true&resourceVersion="
+            + watchResourceVersion
+            + "&watch=true")
         .andUpgradeToWebSocket()
         .open()
         .waitFor(WATCH_EVENT_PERIOD)
@@ -533,7 +534,7 @@ class CustomResourceTest {
   void testWatchWithListOptions() throws IOException, InterruptedException {
     // Given
     server.expect().withPath(
-        "/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos?resourceVersion=1003&timeoutSeconds=30&allowWatchBookmarks=true&watch=true")
+        "/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos?allowWatchBookmarks=true&resourceVersion=1003&timeoutSeconds=30&watch=true")
         .andUpgradeToWebSocket()
         .open()
         .waitFor(WATCH_EVENT_PERIOD)
@@ -570,7 +571,7 @@ class CustomResourceTest {
   void testWatchWithNamespaceAndListOptions() throws IOException, InterruptedException {
     // Given
     server.expect().withPath(
-        "/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos?resourceVersion=1003&timeoutSeconds=30&allowWatchBookmarks=true&watch=true")
+        "/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos?allowWatchBookmarks=true&resourceVersion=1003&timeoutSeconds=30&watch=true")
         .andUpgradeToWebSocket()
         .open()
         .waitFor(WATCH_EVENT_PERIOD)

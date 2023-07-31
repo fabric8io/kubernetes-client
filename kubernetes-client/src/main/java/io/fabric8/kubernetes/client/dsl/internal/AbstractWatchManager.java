@@ -301,7 +301,7 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
    */
   protected void startWatch() {
     listOptions.setResourceVersion(resourceVersion.get());
-    URL url = BaseOperation.appendListOptionParams(requestUrl, listOptions);
+    URL url = this.baseOperation.appendListOptionParams(requestUrl, listOptions);
 
     String origin = requestUrl.getProtocol() + "://" + requestUrl.getHost();
     if (requestUrl.getPort() != -1) {
