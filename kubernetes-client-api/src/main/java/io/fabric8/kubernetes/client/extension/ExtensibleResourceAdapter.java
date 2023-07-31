@@ -127,4 +127,9 @@ public abstract class ExtensibleResourceAdapter<T> extends ResourceAdapter<T> im
     return withTimeout(timeoutInMillis, TimeUnit.MILLISECONDS);
   }
 
+  @Override
+  public ExtensibleResource<T> unlock() {
+    return newInstance().init(resource.unlock(), client);
+  }
+
 }

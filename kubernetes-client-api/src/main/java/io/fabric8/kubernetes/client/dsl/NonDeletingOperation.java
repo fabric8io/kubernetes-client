@@ -15,10 +15,33 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
+import java.util.function.Function;
+
 public interface NonDeletingOperation<T> extends
     CreateOrReplaceable<T>,
     EditReplacePatchable<T>,
     Replaceable<T>, ItemReplacable<T>,
     ItemWritableOperation<T>,
     ServerSideApplicable<T> {
+
+  /**
+   * Alternative to {@link CreateOrReplaceable#createOrReplace()}.
+   * <p>
+   * Will attempt a create, and if that fails will perform the conflictAction.
+   * <p>
+   * Most commonly the conflictAction will be NonDeletingOperation::update or NonDeletingOperation::patch,
+   * but you are free to provide whatever Function suits your needs.
+   *
+   * @param conflictAction to be performed it the create fails with a conflict
+   * @return
+   */
+  T createOr(Function<NonDeletingOperation<T>, T> conflictAction);
+
+  /**
+   * Removes the resource version from the current item. If the operation context was
+   * created by name, and without an item, this will fetch the item from the api server first.
+   *
+   * @return NonDeletingOperation that may act on the unlocked item
+   */
+  NonDeletingOperation<T> unlock();
 }

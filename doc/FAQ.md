@@ -151,14 +151,26 @@ When the resourceVersion is null for a patch the server will always attempt to p
 
 ### Alternatives to createOrReplace and replace
 
-createOrReplace was introduced as an alternative to the kubectl apply operation.  Over the years there were quite a few issues highlighting where the behavior was different, and there were only limited workarounds and improvements offered.  Given the additional complexity of matching the kubectl client side apply behavior, that was never offered as an option.  Now that there is first class support for serverSideApply it can be use, but it comes with a couple of caveats:
+createOrReplace was introduced as an alternative to the kubectl apply operation.  Over the years there were quite a few issues highlighting where the behavior was different, and there were only limited workarounds and improvements offered.  Given the additional complexity of matching the kubectl client side apply behavior, that was never offered as an option.  Now that there is first class support for serverSideApply it can be used, but it comes with a couple of caveats:
 
 - you will want to use forceConficts - resource.forceConflicts().serverSideApply() - this is especially true when acting as a controller updating a resource that [manages](https://kubernetes.io/docs/reference/using-api/server-side-apply/#using-server-side-apply-in-a-controller)
 
 - for some resource types serverSideApply may cause vacuous revisions - see https://github.com/kubernetes/kubernetes/issues/118519 - if you are being informed of modifications on those resources you must either filter those out, don't perform the serverSideApply, or use the [java-operator-sdk](https://github.com/java-operator-sdk/java-operator-sdk) that should handle that possibility already.
 
-- a common pattern for createOrReplace was obtaining the current resource from the api server (possibly via an informer cache), making modifications, then calling createOrReplace.  Doing something similar with serverSideApply will fail as the managedFields will be populated.  While you may be tempted to simply clear the managedFields and the resourceVersion, this is generally not what you should be doing unless you want your logic to assume ownership of every field on the resource.  Instead you should re-organize your code to apply only the desired state that you wish to apply.  If you have a more involved situation please read the [upstream server side apply documentation](https://kubernetes.io/docs/reference/using-api/server-side-apply/) to understand topics like transferring ownership and partial patches.
+- Keep in mind that serverSideApply is not the same as client side apply.  In particular serverSideApply does not treat list merging the same, which may lead to unexpected behavior when list item merge keys are modified by actors other than the manager of that field.  See the upstream issue: https://github.com/kubernetes/kubernetes/issues/118725
 
-The alternative to replace is either serverSideApply - with the same caveats as above - or to use update, but with resourceVersion set to null.
+- a common pattern for createOrReplace was obtaining the current resource from the api server (possibly via an informer cache), making modifications, then calling createOrReplace.  Doing something similar with serverSideApply will fail as the managedFields will be populated.  While you may be tempted to simply clear the managedFields and the resourceVersion, this is generally not what you should be doing unless you want your logic to assume ownership of every field on the resource.  Instead you should reorganize your code to apply only the desired state that you wish to apply.  If you have a more involved situation please read the [upstream server side apply documentation](https://kubernetes.io/docs/reference/using-api/server-side-apply/) to understand topics like transferring ownership and partial patches.
 
-**Note:** that when using informers - do not make modifications to the resources obtained from the cache - especially to the resourceVersion.
+If the limitations / changes necessary to use serverSideApply are too much, you may also use the createOr method.  Instead of 
+```
+resource.createOrReplace()
+```
+you would use 
+```
+resource.unlock().createOr(NonDeletingOperation::update)
+```
+Or NonDeletingOperation::patch.  The use of the unlock function is optional and is only needed if you are starting with a item that has the resourceVersion populated.  If you have any concern over replacing concurrent changes you should omit the usage of the unlock function.
+
+The alternative to replace is either serverSideApply - with the same caveats as above - or to use update, but with resourceVersion set to null or usage of the unlock function.
+
+**Note:** that when using informers - do not make modifications to the resources obtained from the cache - especially to the resourceVersion.  If you use the unlock function it will make changes to a copy of your item.

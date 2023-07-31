@@ -91,6 +91,9 @@ public interface ExtensibleResource<T> extends Resource<T>, TimeoutableScalable<
   ExtensibleResource<T> withTimeout(long timeout, TimeUnit unit);
 
   @Override
+  ExtensibleResource<T> unlock();
+
+  @Override
   default ExtensibleResource<T> withTimeoutInMillis(long timeoutInMillis) {
     return withTimeout(timeoutInMillis, TimeUnit.MILLISECONDS);
   }

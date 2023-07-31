@@ -370,4 +370,14 @@ public class ResourceAdapter<T> implements Resource<T> {
     return resource.scale(scale);
   }
 
+  @Override
+  public T createOr(Function<NonDeletingOperation<T>, T> conflictAction) {
+    return resource.createOr(conflictAction);
+  }
+
+  @Override
+  public NonDeletingOperation<T> unlock() {
+    return resource.unlock();
+  }
+
 }

@@ -44,6 +44,7 @@ import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.FilterNested;
 import io.fabric8.kubernetes.client.dsl.FilterWatchListDeletable;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
+import io.fabric8.kubernetes.client.dsl.NonDeletingOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.Waitable;
 import io.fabric8.kubernetes.client.dsl.base.PatchContext;
@@ -305,6 +306,29 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
         m -> resource.fromServer().get(), this.getKubernetesSerialization());
 
     return createOrReplaceHelper.createOrReplace(item);
+  }
+
+  @Override
+  public T createOr(Function<NonDeletingOperation<T>, T> conflictAction) {
+    try {
+      return create();
+    } catch (KubernetesClientException e) {
+      if (e.getCode() == HttpURLConnection.HTTP_CONFLICT) {
+        return conflictAction.apply(this);
+      }
+      throw e;
+    }
+  }
+
+  @Override
+  public ExtensibleResource<T> unlock() {
+    // this could be done lazily and tracked via the context,
+    // but it's easier to just modify the item
+    T current = getItemOrRequireFromServer();
+    if (current.getMetadata() != null) {
+      current.getMetadata().setResourceVersion(null);
+    }
+    return newInstance(context.withItem(current));
   }
 
   @Override
