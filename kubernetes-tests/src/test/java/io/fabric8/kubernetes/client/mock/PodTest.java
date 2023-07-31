@@ -628,7 +628,7 @@ class PodTest {
             .build())
         .once();
     server.expect()
-        .withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&allowWatchBookmarks=true&watch=true")
+        .withPath("/api/v1/namespaces/test/pods?allowWatchBookmarks=true&fieldSelector=metadata.name%3Dpod1&watch=true")
         .andUpgradeToWebSocket()
         .open()
         .waitFor(50)
@@ -708,7 +708,7 @@ class PodTest {
     server.expect()
         .get()
         .withPath(
-            "/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&timeoutSeconds=600&allowWatchBookmarks=true&watch=true")
+            "/api/v1/namespaces/test/pods?allowWatchBookmarks=true&fieldSelector=metadata.name%3Dpod1&resourceVersion=1&timeoutSeconds=600&watch=true")
         .andUpgradeToWebSocket()
         .open()
         .waitFor(50)

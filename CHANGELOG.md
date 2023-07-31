@@ -5,12 +5,14 @@
 #### Bugs
 
 #### Improvements
+* Fix #5368: added support for additional ListOptions fields
 
 #### Dependency Upgrade
 
 #### New Features
 
 #### _**Note**_: Breaking changes
+* Fix #5368: ListOptions parameter ordering is now alphabetical.  If you are using non-crud mocking for lists with options, you may need to update your parameter order.
 
 ### 6.8.0 (2023-07-24)
 

@@ -74,7 +74,7 @@ class PodMetricsTest {
     // Given
     server.expect().withPath("/apis/metrics.k8s.io/v1beta1/pods?resourceVersion=0").andReturn(HTTP_OK,
         new PodMetricsListBuilder().withMetadata(new ListMeta()).build()).once();
-    server.expect().withPath("/apis/metrics.k8s.io/v1beta1/pods?timeoutSeconds=600&allowWatchBookmarks=true&watch=true")
+    server.expect().withPath("/apis/metrics.k8s.io/v1beta1/pods?allowWatchBookmarks=true&timeoutSeconds=600&watch=true")
         .andUpgradeToWebSocket()
         .open()
         .done()
