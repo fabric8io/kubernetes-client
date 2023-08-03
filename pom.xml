@@ -98,7 +98,7 @@
     <jackson.version>2.15.2</jackson.version>
     <jetty.version>11.0.15</jetty.version>
     <mockwebserver.version>0.2.2</mockwebserver.version>
-    <maven-core.version>3.9.3</maven-core.version>
+    <maven-core.version>3.9.4</maven-core.version>
     <maven-plugin-annotations.version>3.9.0</maven-plugin-annotations.version>
     <vertx.version>4.4.4</vertx.version>
 
