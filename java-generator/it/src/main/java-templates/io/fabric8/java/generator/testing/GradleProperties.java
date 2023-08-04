@@ -17,7 +17,7 @@ package io.fabric8.java.generator.testing;
 
 public final class GradleProperties {
   public static String binariesVersion() {
-    return "${gradle-binaries.version}";
+    return "${gradle-api.version}";
   }
 
   private GradleProperties() {

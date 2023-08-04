@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class SimpleIT {
 
   @RegisterExtension
-  private final ITGradleRunnerExtension gradleRunner = new ITGradleRunnerExtension();
+  final ITGradleRunnerExtension gradleRunner = new ITGradleRunnerExtension();
 
   /**
    * Verify that the {@code crd2java} Gradle task is available

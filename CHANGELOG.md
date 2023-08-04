@@ -8,6 +8,7 @@
 * Fix #5368: added support for additional ListOptions fields
 
 #### Dependency Upgrade
+* Fix #5373: Gradle base API based on v8.2.1
 
 #### New Features
 

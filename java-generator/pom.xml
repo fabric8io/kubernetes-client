@@ -40,11 +40,7 @@
   </modules>
 
   <properties>
-    <gradle-binaries.version>8.1</gradle-binaries.version>
-    <gradle-api.version>6.1.1</gradle-api.version>
-    <groovy-api.version>2.4.21</groovy-api.version>
     <javax.inject.version>1</javax.inject.version>
-    <commons-io.version>2.13.0</commons-io.version>
   </properties>
 
   <repositories>
@@ -82,98 +78,27 @@
         <version>${project.version}</version>
       </dependency>
       <dependency>
-        <groupId>org.codehaus.groovy</groupId>
+        <groupId>org.apache.groovy</groupId>
         <artifactId>groovy-all</artifactId>
         <version>${groovy-api.version}</version>
+        <type>pom</type>
         <scope>provided</scope>
       </dependency>
       <dependency>
         <groupId>org.gradle</groupId>
-        <artifactId>gradle-base-services</artifactId>
+        <artifactId>gradle-all</artifactId>
         <version>${gradle-api.version}</version>
         <scope>provided</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.gradle</groupId>
-        <artifactId>gradle-core</artifactId>
-        <version>${gradle-api.version}</version>
-        <scope>provided</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.gradle</groupId>
-        <artifactId>gradle-core-api</artifactId>
-        <version>${gradle-api.version}</version>
-        <scope>provided</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.gradle</groupId>
-        <artifactId>gradle-logging</artifactId>
-        <version>${gradle-api.version}</version>
-        <scope>provided</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.gradle</groupId>
-        <artifactId>gradle-plugins</artifactId>
-        <version>${gradle-api.version}</version>
-        <scope>provided</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.gradle</groupId>
-        <artifactId>gradle-model-core</artifactId>
-        <version>${gradle-api.version}</version>
-        <scope>provided</scope>
-      </dependency>
-      <!-- Gradle plugin test-->
-      <dependency>
-        <groupId>org.gradle</groupId>
-        <artifactId>gradle-base-services-groovy</artifactId>
-        <version>${gradle-api.version}</version>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.gradle</groupId>
-        <artifactId>gradle-messaging</artifactId>
-        <version>${gradle-api.version}</version>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.gradle</groupId>
-        <artifactId>gradle-native</artifactId>
-        <version>${gradle-api.version}</version>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.gradle</groupId>
-        <artifactId>gradle-platform-jvm</artifactId>
-        <version>${gradle-api.version}</version>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.gradle</groupId>
-        <artifactId>gradle-process-services</artifactId>
-        <version>${gradle-api.version}</version>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.gradle</groupId>
-        <artifactId>gradle-test-kit</artifactId>
-        <version>${gradle-api.version}</version>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.gradle</groupId>
-        <artifactId>gradle-tooling-api</artifactId>
-        <version>${gradle-api.version}</version>
-        <scope>test</scope>
-      </dependency>
-      <!-- Gradle test execution will need these on the classpath -->
-      <dependency>
-        <groupId>commons-io</groupId>
-        <artifactId>commons-io</artifactId>
-        <version>${commons-io.version}</version>
-        <scope>test</scope>
       </dependency>
     </dependencies>
   </dependencyManagement>
 
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>com.marcnuri.plugins</groupId>
+        <artifactId>gradle-api-maven-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </build>
 </project>

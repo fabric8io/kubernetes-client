@@ -69,36 +69,21 @@
     <!-- Gradle plugin test -->
     <dependency>
       <groupId>org.gradle</groupId>
-      <artifactId>gradle-base-services-groovy</artifactId>
+      <artifactId>gradle-all</artifactId>
+      <scope>test</scope>
     </dependency>
+    <!-- Gradle needs these on the classpath -->
     <dependency>
-      <groupId>org.gradle</groupId>
-      <artifactId>gradle-messaging</artifactId>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>${guava.version}</version>
+      <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>org.gradle</groupId>
-      <artifactId>gradle-native</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.gradle</groupId>
-      <artifactId>gradle-platform-jvm</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.gradle</groupId>
-      <artifactId>gradle-process-services</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.gradle</groupId>
-      <artifactId>gradle-tooling-api</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.gradle</groupId>
-      <artifactId>gradle-test-kit</artifactId>
-    </dependency>
-    <!-- Gradle execution will need these on the classpath -->
     <dependency>
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
+      <version>${commons-io.version}</version>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 
