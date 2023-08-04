@@ -28,18 +28,18 @@
 
   <name>Fabric8 :: Kubernetes :: Project</name>
   <description>Java client for Kubernetes and OpenShift</description>
-  <url>http://fabric8.io/</url>
+  <url>https://github.com/fabric8io/kubernetes-client</url>
   <inceptionYear>2015</inceptionYear>
 
   <organization>
     <name>Red Hat</name>
-    <url>http://redhat.com</url>
+    <url>https://redhat.com</url>
   </organization>
 
   <licenses>
     <license>
       <name>Apache License, Version 2.0</name>
-      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
       <distribution>repo</distribution>
     </license>
   </licenses>
@@ -51,14 +51,14 @@
       <id>geeks</id>
       <name>Fabric8 Development Team</name>
       <organization>fabric8</organization>
-      <organizationUrl>http://fabric8.io/</organizationUrl>
+      <organizationUrl>https://github.com/fabric8io/kubernetes-client</organizationUrl>
     </developer>
   </developers>
 
   <scm>
     <connection>scm:git:git@github.com:fabric8io/kubernetes-client.git</connection>
     <developerConnection>scm:git:git@github.com:fabric8io/kubernetes-client.git</developerConnection>
-    <url>http://github.com/fabric8io/kubernetes-client/</url>
+    <url>https://github.com/fabric8io/kubernetes-client/</url>
     <tag>${project.version}</tag>
   </scm>
 
@@ -104,6 +104,8 @@
 
     <!-- API versions -->
     <jsr305.version>3.0.2</jsr305.version>
+    <gradle-api.version>8.2.1</gradle-api.version>
+    <groovy-api.version>4.0.13</groovy-api.version>
 
     <!-- Testing versions -->
     <junit.version>5.10.0</junit.version>
@@ -126,6 +128,8 @@
     <snakeyaml.bundle.version>2.0</snakeyaml.bundle.version> <!-- Transitive Jackson -->
     <bouncycastle.version>1.76</bouncycastle.version>
     <commons-compress.version>1.23.0</commons-compress.version>
+    <commons-io.version>2.13.0</commons-io.version> <!-- Required by Gradle Testing Toolkit -->
+    <guava.version>32.1.2-jre</guava.version> <!-- Required by Gradle Testing Toolkit -->
     <scr.annotations.version>1.12.0</scr.annotations.version>
     <jsonschema2pojo.version>1.2.1</jsonschema2pojo.version>
     <properties.maven.plugin.version>1.0.0</properties.maven.plugin.version>
@@ -151,6 +155,7 @@
     <maven.install.plugin.version>3.1.1</maven.install.plugin.version>
     <maven.invoker.plugin.version>3.6.0</maven.invoker.plugin.version>
     <maven.plugin.plugin.version>3.9.0</maven.plugin.plugin.version>
+    <gradle-api-maven-plugin.version>0.0.2</gradle-api-maven-plugin.version>
     <jandex.plugin.version>1.2.3</jandex.plugin.version>
     <jandex.version>2.4.3.Final</jandex.version>
     <jacoco-maven-plugin.version>0.8.10</jacoco-maven-plugin.version>
@@ -161,11 +166,13 @@
     <!-- Other options -->
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
+    <skipTests>false</skipTests>
     <svc.version>1.1.1</svc.version>
     <generate.targetDirectory>${project.basedir}/src/generated/java</generate.targetDirectory>
 
     <exec.master>https://localhost:8443</exec.master>
 
+    <javadoc.doclint/>
     <javadoc.include.deps>false</javadoc.include.deps>
     <javadoc.source.includes />
     <javadoc.package.excludes />
@@ -262,6 +269,7 @@
       </dependency>
       <dependency>
         <groupId>io.fabric8</groupId>
+
         <artifactId>kubernetes-model-autoscaling</artifactId>
         <version>${project.version}</version>
       </dependency>
@@ -892,10 +900,12 @@
           </configuration>
         </plugin>
         <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-jar-plugin</artifactId>
           <version>${maven.jar.plugin.version}</version>
         </plugin>
         <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-javadoc-plugin</artifactId>
           <version>${maven.javadoc.plugin.version}</version>
           <executions>
@@ -908,6 +918,7 @@
           </executions>
         </plugin>
         <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-source-plugin</artifactId>
           <version>${maven.source.plugin.version}</version>
           <executions>
@@ -940,10 +951,12 @@
           <version>${maven.gpg.plugin.version}</version>
         </plugin>
         <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-deploy-plugin</artifactId>
           <version>${maven.deploy.plugin.version}</version>
         </plugin>
         <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-resources-plugin</artifactId>
           <version>${maven.resources.plugin.version}</version>
         </plugin>
@@ -1043,6 +1056,12 @@
               <version>${project.version}</version>
             </dependency>
           </dependencies>
+        </plugin>
+        <plugin>
+          <groupId>com.marcnuri.plugins</groupId>
+          <artifactId>gradle-api-maven-plugin</artifactId>
+          <version>${gradle-api-maven-plugin.version}</version>
+          <extensions>true</extensions>
         </plugin>
       </plugins>
     </pluginManagement>
@@ -1275,7 +1294,7 @@
                   <goal>jar</goal>
                 </goals>
                 <configuration>
-                  <additionalparam>${javadoc.opts}</additionalparam>
+                  <doclint>${javadoc.doclint}</doclint>
                 </configuration>
               </execution>
             </executions>
@@ -1324,7 +1343,7 @@
         <jdk>[1.8,)</jdk>
       </activation>
       <properties>
-        <javadoc.opts>-Xdoclint:none</javadoc.opts>
+        <javadoc.doclint>none</javadoc.doclint>
       </properties>
     </profile>
     <profile>
@@ -1475,7 +1494,7 @@
                   <goal>jar</goal>
                 </goals>
                 <configuration>
-                  <additionalparam>${javadoc.opts}</additionalparam>
+                  <doclint>${javadoc.doclint}</doclint>
                 </configuration>
               </execution>
             </executions>
