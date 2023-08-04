@@ -1,0 +1,74 @@
+
+Java Generator Options and Examples:
+
+Option: setPackageName(String packageName)
+
+Description: Sets the package name for the generated Java code.
+Example:
+java
+Copy code
+JavaGenerator generator = new JavaGenerator();
+generator.setPackageName("com.example.generated");
+The output will have the following package declaration:
+
+java
+Copy code
+package com.example.generated;
+Option: setClassName(String className)
+
+Description: Sets the name of the main class in the generated Java code.
+Example:
+java
+Copy code
+JavaGenerator generator = new JavaGenerator();
+generator.setClassName("MyGeneratedClass");
+The output will have the following class declaration:
+
+java
+Copy code
+public class MyGeneratedClass {
+// ... (class contents)
+}
+Option: setClassModifiers(List modifiers)
+
+Description: Sets the modifiers (e.g., "public," "final," "abstract") for the main class.
+Example:
+java
+Copy code
+JavaGenerator generator = new JavaGenerator();
+generator.setClassModifiers(Arrays.asList("public", "final"));
+The output will have the following class declaration:
+
+java
+Copy code
+public final class MainClass {
+// ... (class contents)
+}
+Option: addField(String fieldDeclaration)
+
+Description: Adds a field declaration to the main class.
+Example:
+java
+Copy code
+JavaGenerator generator = new JavaGenerator();
+generator.addField("private int age;");
+The output will include the following field declaration inside the class:
+
+java
+Copy code
+private int age;
+Option: addMethod(String methodDeclaration)
+
+Description: Adds a method declaration to the main class.
+Example:
+java
+Copy code
+JavaGenerator generator = new JavaGenerator();
+generator.addMethod("public void printMessage() { System.out.println("Hello!"); }");
+The output will include the following method declaration inside the class:
+
+java
+Copy code
+public void printMessage() {
+System.out.println("Hello!");
+}
