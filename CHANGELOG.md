@@ -4,6 +4,7 @@
 
 #### Bugs
 * Fix #5382: [java-generator] Allow to deserialize more valid RFC3339 date-time and make the format customizable
+* Fix #5380: [java-generator] Avoid to emit Java Keywords as package names
 
 #### Improvements
 * Fix #5368: added support for additional ListOptions fields

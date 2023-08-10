@@ -43,6 +43,14 @@ spec:
                   type: string
                 five/slash:
                   type: string
+                package:
+                  type: object
+                  properties:
+                    foo:
+                      type: object
+                      properties:
+                        bar:
+                          type: string
   scope: Namespaced
   names:
     plural: dummies

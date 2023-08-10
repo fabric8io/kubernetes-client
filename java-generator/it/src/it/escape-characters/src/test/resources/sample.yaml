@@ -25,3 +25,6 @@ spec:
   three'quote: "3"
   four"doublequote: "4"
   five/slash: "5"
+  package:
+    foo:
+      bar: "6"
