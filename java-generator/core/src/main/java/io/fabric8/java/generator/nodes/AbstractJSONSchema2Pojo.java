@@ -80,6 +80,11 @@ public abstract class AbstractJSONSchema2Pojo {
     if (pkg.equals(str)) { // avoid package/class name clash
       pkg = "_" + pkg;
     }
+    // https://docs.oracle.com/javase/tutorial/java/package/namingpkgs.html
+    // if the package name contains a reserved Java keyword ... the suggested convention is to add an underscore
+    if (JAVA_KEYWORDS.contains(pkg)) {
+      pkg = pkg + "_";
+    }
     return pkg;
   }
 
