@@ -74,14 +74,6 @@ public class JavaGeneratorMojo extends AbstractMojo {
   Boolean enumUppercase = null;
 
   /**
-   * *DEPRECATED* Always inject additional properties in the generated classes
-   *
-   */
-  @Deprecated
-  @Parameter(property = "fabric8.java-generator.always-preserve-unknown", required = false)
-  Boolean alwaysPreserveUnknown = null;
-
-  /**
    * Generate Extra annotation for lombok and sundrio integration
    *
    */
@@ -109,6 +101,20 @@ public class JavaGeneratorMojo extends AbstractMojo {
   @Parameter(property = "fabric8.java-generator.files-suffixes", required = false)
   List<String> filesSuffixes = null;
 
+  /**
+   * DateTime format used for Serialization of fields of type `date-time`
+   *
+   */
+  @Parameter(property = "fabric8.java-generator.datetime-serialization-format", required = false)
+  String datetimeSerializationFormat = null;
+
+  /**
+   * DateTime format used for Deserialization of fields of type `date-time`
+   *
+   */
+  @Parameter(property = "fabric8.java-generator.datetime-deserialization-format", required = false)
+  String datetimeDeserializationFormat = null;
+
   @Override
   public void execute() throws MojoExecutionException {
     final Config config = Config.builder()
@@ -117,6 +123,8 @@ public class JavaGeneratorMojo extends AbstractMojo {
         .generatedAnnotations(generatedAnnotations)
         .packageOverrides(packageOverrides)
         .filesSuffixes(filesSuffixes)
+        .serDatetimeFormat(datetimeSerializationFormat)
+        .deserDatetimeFormat(datetimeDeserializationFormat)
         .build();
 
     List<JavaGenerator> runners = new ArrayList<>();

@@ -17,39 +17,46 @@ package io.fabric8.java.generator;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.HashMap;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 class ConfigTest {
 
   @Test
   void defaultValuesWithAllArgsConstructor() {
-    final Config result = new Config(null, null, null, null);
+    final Config result = new Config(null, null, null, null, null, null, null);
     assertThat(result)
-        .returns(true, Config::isUppercaseEnums)
-        .returns(false, Config::isObjectExtraAnnotations)
-        .returns(true, Config::isGeneratedAnnotations)
-        .returns(new HashMap<>(), Config::getPackageOverrides);
+        .returns(Config.DEFAULT_UPPERCASE_ENUM, Config::isUppercaseEnums)
+        .returns(Config.DEFAULT_ADD_EXTRA_ANNOTATIONS, Config::isObjectExtraAnnotations)
+        .returns(Config.DEFAULT_ADD_GENERATED_ANNOTATIONS, Config::isGeneratedAnnotations)
+        .returns(Config.DEFAULT_PACKAGE_OVERRIDES, Config::getPackageOverrides)
+        .returns(Config.DEFAULT_FILES_SUFFIXES, Config::getFilesSuffixes)
+        .returns(Config.DEFAULT_SER_DATETIME_FORMAT, Config::getSerDatetimeFormat)
+        .returns(Config.DEFAULT_DESER_DATETIME_FORMAT, Config::getDeserDatetimeFormat);
   }
 
   @Test
   void defaultValuesWithNoArgsConstructor() {
     final Config result = new Config();
     assertThat(result)
-        .returns(true, Config::isUppercaseEnums)
-        .returns(false, Config::isObjectExtraAnnotations)
-        .returns(true, Config::isGeneratedAnnotations)
-        .returns(new HashMap<>(), Config::getPackageOverrides);
+        .returns(Config.DEFAULT_UPPERCASE_ENUM, Config::isUppercaseEnums)
+        .returns(Config.DEFAULT_ADD_EXTRA_ANNOTATIONS, Config::isObjectExtraAnnotations)
+        .returns(Config.DEFAULT_ADD_GENERATED_ANNOTATIONS, Config::isGeneratedAnnotations)
+        .returns(Config.DEFAULT_PACKAGE_OVERRIDES, Config::getPackageOverrides)
+        .returns(Config.DEFAULT_FILES_SUFFIXES, Config::getFilesSuffixes)
+        .returns(Config.DEFAULT_SER_DATETIME_FORMAT, Config::getSerDatetimeFormat)
+        .returns(Config.DEFAULT_DESER_DATETIME_FORMAT, Config::getDeserDatetimeFormat);
   }
 
   @Test
   void defaultValuesWithBuilder() {
     final Config result = Config.builder().build();
     assertThat(result)
-        .returns(true, Config::isUppercaseEnums)
-        .returns(false, Config::isObjectExtraAnnotations)
-        .returns(true, Config::isGeneratedAnnotations)
-        .returns(new HashMap<>(), Config::getPackageOverrides);
+        .returns(Config.DEFAULT_UPPERCASE_ENUM, Config::isUppercaseEnums)
+        .returns(Config.DEFAULT_ADD_EXTRA_ANNOTATIONS, Config::isObjectExtraAnnotations)
+        .returns(Config.DEFAULT_ADD_GENERATED_ANNOTATIONS, Config::isGeneratedAnnotations)
+        .returns(Config.DEFAULT_PACKAGE_OVERRIDES, Config::getPackageOverrides)
+        .returns(Config.DEFAULT_FILES_SUFFIXES, Config::getFilesSuffixes)
+        .returns(Config.DEFAULT_SER_DATETIME_FORMAT, Config::getSerDatetimeFormat)
+        .returns(Config.DEFAULT_DESER_DATETIME_FORMAT, Config::getDeserDatetimeFormat);
   }
 }

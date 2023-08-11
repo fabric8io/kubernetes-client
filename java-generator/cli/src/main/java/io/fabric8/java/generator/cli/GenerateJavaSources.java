@@ -71,6 +71,14 @@ public class GenerateJavaSources implements Runnable {
       "--files-suffixes" }, description = "Filter the source files with the specific suffixes", required = false)
   List<String> filesSuffixes = null;
 
+  @Option(names = { "-serialization-datetime-format",
+      "--serialization-datetime-format" }, description = "DateTime format used for Serialization of fields of type `date-time`", required = false)
+  String serializationDateTimeFormat = null;
+
+  @Option(names = { "-deserialization-datetime-format",
+      "--deserialization-datetime-format" }, description = "DateTime format used for Deserialization of fields of type `date-time`", required = false)
+  String deserializationDateTimeFormat = null;
+
   @Override
   public void run() {
     final Boolean noGeneratedAnnotations = (skipGeneratedAnnotations != null) ? skipGeneratedAnnotations : false;
@@ -79,7 +87,9 @@ public class GenerateJavaSources implements Runnable {
         addExtraAnnotations,
         !noGeneratedAnnotations,
         packageOverrides,
-        filesSuffixes);
+        filesSuffixes,
+        serializationDateTimeFormat,
+        deserializationDateTimeFormat);
 
     List<JavaGenerator> runners = new ArrayList<>();
 

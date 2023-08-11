@@ -217,10 +217,16 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
                 new Name("com.fasterxml.jackson.annotation.JsonProperty"),
                 new StringLiteralExpr(originalFieldName)));
 
+        MethodDeclaration fieldGetter = objField.createGetter();
+        MethodDeclaration fieldSetter = objField.createSetter();
+
         if (prop.getClassType().equals(DATETIME_NAME)) {
-          objField.addAnnotation(new SingleMemberAnnotationExpr(
+          fieldGetter.addAnnotation(new SingleMemberAnnotationExpr(
               new Name("com.fasterxml.jackson.annotation.JsonFormat"),
-              new NameExpr("timezone = \"UTC\", pattern = \"" + DATETIME_FORMAT + "\"")));
+              new NameExpr("pattern = \"" + config.getSerDatetimeFormat() + "\"")));
+          fieldSetter.addAnnotation(new SingleMemberAnnotationExpr(
+              new Name("com.fasterxml.jackson.annotation.JsonFormat"),
+              new NameExpr("pattern = \"" + config.getDeserDatetimeFormat() + "\"")));
         }
 
         if (isRequired) {
@@ -244,9 +250,6 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
                   new Name("io.fabric8.generator.annotation.Pattern"),
                   new StringLiteralExpr(StringEscapeUtils.escapeJava(prop.getPattern()))));
         }
-
-        objField.createGetter();
-        objField.createSetter();
 
         if (Utils.isNotNullOrEmpty(prop.getDescription())) {
           objField.setJavadocComment(prop.getDescription().replace("*/", "&#042;&#047;"));
@@ -357,7 +360,7 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
         return new BooleanLiteralExpr(prop.getDefaultValue().booleanValue());
       } else if (prop.getClassType().equals(DATETIME_NAME) && prop.getDefaultValue().isTextual()) {
         return new NameExpr(DATETIME_NAME + ".parse(" + prop.getDefaultValue()
-            + ", java.time.format.DateTimeFormatter.ofPattern(\"" + DATETIME_FORMAT + "\"))");
+            + ", java.time.format.DateTimeFormatter.ofPattern(\"" + config.getDeserDatetimeFormat() + "\"))");
       } else {
         return new NameExpr(value);
       }
