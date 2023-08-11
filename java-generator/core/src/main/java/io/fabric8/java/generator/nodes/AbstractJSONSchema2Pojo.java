@@ -49,9 +49,6 @@ public abstract class AbstractJSONSchema2Pojo {
         new StringLiteralExpr("io.fabric8.java.generator.CRGeneratorRunner"));
   }
 
-  // RFC 3339 - from: https://swagger.io/docs/specification/data-models/data-types/
-  public static final String DATETIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ssX";
-
   protected final String description;
   protected final Config config;
   protected final boolean isNullable;

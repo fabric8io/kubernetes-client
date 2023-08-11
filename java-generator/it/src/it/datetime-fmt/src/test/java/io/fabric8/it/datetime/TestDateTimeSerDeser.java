@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.it.certmanager;
+package io.fabric8.it.datetime;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import io.cert_manager.v1.CertificateRequest;
-import io.cert_manager.v1.CertificateRequestSpec;
+import com.example.v1.Dummy;
+import com.example.v1.DummySpec;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import org.junit.jupiter.api.Test;
 import io.fabric8.java.generator.testing.KubernetesResourceDiff;
@@ -31,36 +31,30 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class TestEnumSerialization {
+class TestSerialization {
 
   DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssX");
+  ZonedDateTime datetimeValue = ZonedDateTime.parse("2017-07-21T17:32:28Z", formatter);
 
   @Test
   void testDeserialization() {
     // Arrange
-    CertificateRequest sample =
-      Serialization.unmarshal(getClass().getResourceAsStream("/sample1.yaml"), CertificateRequest.class);
+    Dummy sample =
+      Serialization.unmarshal(getClass().getResourceAsStream("/sample.yaml"), Dummy.class);
 
     // Act
-    List<CertificateRequestSpec.Usages> usagesList = sample.getSpec().getUsages();
+    ZonedDateTime datetime = sample.getSpec().getMydatetime();
 
     // Assert
-    assertEquals(5, usagesList.size());
-    assertEquals(CertificateRequestSpec.Usages._EMPTY, usagesList.get(0));
-    assertEquals(CertificateRequestSpec.Usages.SIGNING, usagesList.get(1));
-    assertEquals(CertificateRequestSpec.Usages.DIGITAL_SIGNATURE, usagesList.get(2));
-    assertEquals(CertificateRequestSpec.Usages.SERVER_AUTH, usagesList.get(3));
-    assertEquals(CertificateRequestSpec.Usages.S_MIME, usagesList.get(4));
-
-    assertEquals(ZonedDateTime.parse("2017-07-21T17:32:28Z", formatter), sample.getSpec().getDatetime());
+    assertEquals(datetimeValue, datetime);
   }
 
   @Test
   void testSerialization() throws Exception {
     // Arrange
-    Path resPath = Paths.get(getClass().getResource("/sample1.yaml").toURI());
+    Path resPath = Paths.get(getClass().getResource("/sample.yaml").toURI());
     String yamlContent = new String(Files.readAllBytes(resPath), "UTF8");
-    CertificateRequest sample = Serialization.unmarshal(yamlContent, CertificateRequest.class);
+    Dummy sample = Serialization.unmarshal(yamlContent, Dummy.class);
     KubernetesResourceDiff diff = new KubernetesResourceDiff(yamlContent, Serialization.asYaml(sample));
 
     // Act

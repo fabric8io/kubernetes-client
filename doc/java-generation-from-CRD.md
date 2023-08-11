@@ -80,12 +80,18 @@ The full list of options of the CLI is (output of `--help`):
 
 ```
 Usage: java-gen [-hV] [-add-extra-annotations] [-enum-uppercase]
-                [-dt=<downloadTarget>] [-s=<source>]
-                [-suffix-strategy=<suffixStrategy>] -t=<target>
+                [-deserialization-datetime-format=<deserializationDateTimeFormat
+                >] [-dt=<downloadTarget>] [-s=<source>]
+                [-serialization-datetime-format=<serializationDateTimeFormat>]
+                -t=<target> [-files-suffixes=<filesSuffixes>]...
                 [-package-overrides=<String=String>]... [-u=<urls>]...
       -add-extra-annotations, --add-extra-annotations
                           Add extra lombok and sundrio annotation to the
                             generated classes
+      -deserialization-datetime-format, 
+        --deserialization-datetime-format=<deserializationDateTimeFormat>
+                          DateTime format used for Deserialization of fields of
+                            type `date-time`
       -dt, --download-target=<downloadTarget>
                           The folder to be used as a target for the downloaded
                             crds
@@ -98,6 +104,10 @@ Usage: java-gen [-hV] [-add-extra-annotations] [-enum-uppercase]
                           Apply the overrides to the package names
   -s, --source=<source>   The source(file or folder) with the
                             CustomResourceDefinition(s) to use
+      -serialization-datetime-format, 
+        --serialization-datetime-format=<serializationDateTimeFormat>
+                          DateTime format used for Serialization of fields of
+                            type `date-time`
   -t, --target=<target>   The folder to write the generated sources
   -u, --urls=<urls>       The source urls with the CustomResourceDefinition(s)
                             to use
@@ -107,6 +117,13 @@ Usage: java-gen [-hV] [-add-extra-annotations] [-enum-uppercase]
 And the corresponding configurations of the Maven plugin are (output of `mvn help:describe -DgroupId=io.fabric8 -DartifactId=java-generator-maven-plugin -Dversion=<version> -Ddetail`):
 
 ```
+    datetimeDeserializationFormat
+      User property: fabric8.java-generator.datetime-deserialization-format
+      DateTime format used for Deserialization of fields of type `date-time`
+
+    datetimeSerializationFormat
+      User property: fabric8.java-generator.datetime-serialization-format
+      DateTime format used for Serialization of fields of type `date-time`
 
     downloadTarget (Default: ${basedir}/target/manifests)
       User property: fabric8.java-generator.download-target

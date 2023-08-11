@@ -20,7 +20,7 @@
 
   <modelVersion>4.0.0</modelVersion>
 
-  <artifactId>cert-manager-enum-ser-deser</artifactId>
+  <artifactId>date-time-config</artifactId>
   <groupId>io.fabric8.it</groupId>
   <version>0.0-SNAPSHOT</version>
   <packaging>jar</packaging>
@@ -87,8 +87,10 @@
           </execution>
         </executions>
         <configuration>
-          <source>src/test/resources/cert-manager.crds.1.7.1.yaml</source>
+          <source>src/test/resources/dummy-crd.yml</source>
           <generatedAnnotations>false</generatedAnnotations>
+          <datetimeSerializationFormat>'MY'yyyy-MM-dd'T'HH:mm:ssXXX</datetimeSerializationFormat>
+          <datetimeDeserializationFormat>'MY'yyyy-MM-dd'T'HH:mm:ssXXX</datetimeDeserializationFormat>
         </configuration>
       </plugin>
       <plugin>
