@@ -101,7 +101,9 @@ public abstract class JavaGeneratorPluginExtension {
         javaGeneratorConfig.isObjectExtraAnnotations(),
         javaGeneratorConfig.isGeneratedAnnotations(),
         javaGeneratorConfig.getPackageOverrides(),
-        javaGeneratorConfig.getFilesSuffixes());
+        javaGeneratorConfig.getFilesSuffixes(),
+        javaGeneratorConfig.getSerDatetimeFormat(),
+        javaGeneratorConfig.getDeserDatetimeFormat());
   }
 
   /**
@@ -117,7 +119,9 @@ public abstract class JavaGeneratorPluginExtension {
         isExtraAnnotations,
         javaGeneratorConfig.isGeneratedAnnotations(),
         javaGeneratorConfig.getPackageOverrides(),
-        javaGeneratorConfig.getFilesSuffixes());
+        javaGeneratorConfig.getFilesSuffixes(),
+        javaGeneratorConfig.getSerDatetimeFormat(),
+        javaGeneratorConfig.getDeserDatetimeFormat());
   }
 
   /**
@@ -133,7 +137,9 @@ public abstract class JavaGeneratorPluginExtension {
         javaGeneratorConfig.isObjectExtraAnnotations(),
         isGeneratedAnnotations,
         javaGeneratorConfig.getPackageOverrides(),
-        javaGeneratorConfig.getFilesSuffixes());
+        javaGeneratorConfig.getFilesSuffixes(),
+        javaGeneratorConfig.getSerDatetimeFormat(),
+        javaGeneratorConfig.getDeserDatetimeFormat());
   }
 
   /**
@@ -149,7 +155,9 @@ public abstract class JavaGeneratorPluginExtension {
         javaGeneratorConfig.isObjectExtraAnnotations(),
         javaGeneratorConfig.isGeneratedAnnotations(),
         packageOverrides,
-        javaGeneratorConfig.getFilesSuffixes());
+        javaGeneratorConfig.getFilesSuffixes(),
+        javaGeneratorConfig.getSerDatetimeFormat(),
+        javaGeneratorConfig.getDeserDatetimeFormat());
   }
 
   /**
@@ -165,6 +173,44 @@ public abstract class JavaGeneratorPluginExtension {
         javaGeneratorConfig.isObjectExtraAnnotations(),
         javaGeneratorConfig.isGeneratedAnnotations(),
         javaGeneratorConfig.getPackageOverrides(),
-        filesSuffixes);
+        filesSuffixes,
+        javaGeneratorConfig.getSerDatetimeFormat(),
+        javaGeneratorConfig.getDeserDatetimeFormat());
+  }
+
+  /**
+   * DateTime format used for Serialization of fields of type `date-time`
+   *
+   */
+  public String getSerializationDatetimeFormat() {
+    return javaGeneratorConfig.getSerDatetimeFormat();
+  }
+
+  public void setSerializationDatetimeFormat(final String serDatetimeFmt) {
+    javaGeneratorConfig = new Config(javaGeneratorConfig.isUppercaseEnums(),
+        javaGeneratorConfig.isObjectExtraAnnotations(),
+        javaGeneratorConfig.isGeneratedAnnotations(),
+        javaGeneratorConfig.getPackageOverrides(),
+        javaGeneratorConfig.getFilesSuffixes(),
+        serDatetimeFmt,
+        javaGeneratorConfig.getDeserDatetimeFormat());
+  }
+
+  /**
+   * DateTime format used for Deserialization of fields of type `date-time`
+   *
+   */
+  public String getDeserializationDatetimeFormat() {
+    return javaGeneratorConfig.getDeserDatetimeFormat();
+  }
+
+  public void setDeserializationDatetimeFormat(final String deserDatetimeFmt) {
+    javaGeneratorConfig = new Config(javaGeneratorConfig.isUppercaseEnums(),
+        javaGeneratorConfig.isObjectExtraAnnotations(),
+        javaGeneratorConfig.isGeneratedAnnotations(),
+        javaGeneratorConfig.getPackageOverrides(),
+        javaGeneratorConfig.getFilesSuffixes(),
+        javaGeneratorConfig.getSerDatetimeFormat(),
+        deserDatetimeFmt);
   }
 }
