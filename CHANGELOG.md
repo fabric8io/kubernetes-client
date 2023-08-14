@@ -17,6 +17,12 @@
 #### _**Note**_: Breaking changes
 * Fix #5368: ListOptions parameter ordering is now alphabetical.  If you are using non-crud mocking for lists with options, you may need to update your parameter order.
 
+### 6.8.1 (2023-08-14)
+
+#### Bugs
+* Fix #5382: (java-generator) Allow to deserialize more valid RFC3339 date-time and make the format customizable
+* Fix #5380: (java-generator) Avoid to emit Java Keywords as package names
+
 ### 6.8.0 (2023-07-24)
 
 #### Bugs
