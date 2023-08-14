@@ -120,7 +120,10 @@ public class CRDGenerator {
     return handlers;
   }
 
-  public CRDGenerator customResourceClasses(Class<? extends CustomResource<?, ?>>... crClasses) {
+  // this is public API, so we cannot change the signature, so there is no way to prevent the possible heap pollution
+  // (we also cannot use @SafeVarargs, because that requires the method to be final, which is another signature change)
+  @SuppressWarnings("unchecked")
+  public final CRDGenerator customResourceClasses(Class<? extends CustomResource<?, ?>>... crClasses) {
     return customResources(Stream.of(crClasses).map(CustomResourceInfo::fromClass).toArray(CustomResourceInfo[]::new));
   }
 
