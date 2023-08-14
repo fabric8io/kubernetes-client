@@ -45,8 +45,8 @@ public class CustomResourceInfo {
   private final Scope scope;
   private final TypeDef definition;
   private final String crClassName;
-  private final Optional<String> specClassName;
-  private final Optional<String> statusClassName;
+  private final String specClassName;
+  private final String statusClassName;
   private final String id;
   private final int hash;
 
@@ -68,8 +68,8 @@ public class CustomResourceInfo {
     this.scope = scope;
     this.definition = definition;
     this.crClassName = crClassName;
-    this.specClassName = Optional.ofNullable(specClassName);
-    this.statusClassName = Optional.ofNullable(statusClassName);
+    this.specClassName = specClassName;
+    this.statusClassName = statusClassName;
     this.id = crdName() + "/" + version;
     this.hash = id.hashCode();
     this.annotations = annotations;
@@ -125,11 +125,11 @@ public class CustomResourceInfo {
   }
 
   public Optional<String> specClassName() {
-    return specClassName;
+    return Optional.ofNullable(specClassName);
   }
 
   public Optional<String> statusClassName() {
-    return statusClassName;
+    return Optional.ofNullable(statusClassName);
   }
 
   public TypeDef definition() {
@@ -144,9 +144,9 @@ public class CustomResourceInfo {
     return labels;
   }
 
-  public static CustomResourceInfo fromClass(Class<? extends CustomResource> customResource) {
+  public static CustomResourceInfo fromClass(Class<? extends CustomResource<?, ?>> customResource) {
     try {
-      final CustomResource instance = customResource.getDeclaredConstructor().newInstance();
+      final CustomResource<?, ?> instance = customResource.getDeclaredConstructor().newInstance();
 
       final String[] shortNames = CustomResource.getShortNames(customResource);
 

@@ -45,7 +45,7 @@ public class CustomResourceHandler extends AbstractCustomResourceHandler {
   }
 
   @Override
-  protected Decorator getPrinterColumnDecorator(
+  protected Decorator<?> getPrinterColumnDecorator(
       String name, String version, String path, String type, String column,
       String description, String format, int priority) {
     return new AddAdditionPrinterColumnDecorator(name, version, type, column, path, format,
