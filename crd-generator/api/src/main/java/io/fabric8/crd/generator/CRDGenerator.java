@@ -15,11 +15,12 @@
  */
 package io.fabric8.crd.generator;
 
+import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
-import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator.Feature;
 import io.fabric8.crd.generator.utils.Types;
 import io.fabric8.crd.generator.v1.CustomResourceHandler;
 import io.fabric8.kubernetes.api.model.HasMetadata;
@@ -28,10 +29,25 @@ import io.fabric8.kubernetes.client.utils.ApiVersionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.*;
+import java.io.Closeable;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.net.URI;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Stream;
+
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
+import static com.fasterxml.jackson.annotation.JsonInclude.Value.construct;
 
 public class CRDGenerator {
 
@@ -42,17 +58,16 @@ public class CRDGenerator {
   private boolean parallel;
   private Map<String, CustomResourceInfo> infos;
 
-  private static final ObjectMapper YAML_MAPPER = new ObjectMapper(
-      new YAMLFactory()
-          .enable(Feature.MINIMIZE_QUOTES)
-          .enable(Feature.ALWAYS_QUOTE_NUMBERS_AS_STRINGS)
-          .disable(YAMLGenerator.Feature.WRITE_DOC_START_MARKER));
-
-  static {
-    YAML_MAPPER.configure(SerializationFeature.INDENT_OUTPUT, true);
-    YAML_MAPPER.configure(SerializationFeature.WRITE_NULL_MAP_VALUES, false);
-    YAML_MAPPER.configure(SerializationFeature.WRITE_EMPTY_JSON_ARRAYS, false);
-  }
+  private static final ObjectMapper YAML_MAPPER = JsonMapper.builder(new YAMLFactory()
+      .enable(YAMLGenerator.Feature.MINIMIZE_QUOTES)
+      .enable(YAMLGenerator.Feature.ALWAYS_QUOTE_NUMBERS_AS_STRINGS)
+      .disable(YAMLGenerator.Feature.WRITE_DOC_START_MARKER))
+      .configure(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY, true)
+      .configure(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS, true)
+      .configure(SerializationFeature.INDENT_OUTPUT, true)
+      .withConfigOverride(Map.class, configOverride -> configOverride.setInclude(construct(NON_NULL, NON_NULL)))
+      .serializationInclusion(NON_EMPTY)
+      .build();
 
   public CRDGenerator() {
     resources = new Resources();
@@ -105,7 +120,7 @@ public class CRDGenerator {
     return handlers;
   }
 
-  public CRDGenerator customResourceClasses(Class<? extends CustomResource>... crClasses) {
+  public CRDGenerator customResourceClasses(Class<? extends CustomResource<?, ?>>... crClasses) {
     return customResources(Stream.of(crClasses).map(CustomResourceInfo::fromClass).toArray(CustomResourceInfo[]::new));
   }
 
