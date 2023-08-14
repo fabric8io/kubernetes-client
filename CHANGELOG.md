@@ -8,6 +8,7 @@
 
 #### Improvements
 * Fix #5368: added support for additional ListOptions fields
+* Fix #5388: [crd-generator] Generate deterministic CRDs
 
 #### Dependency Upgrade
 * Fix #5373: Gradle base API based on v8.2.1

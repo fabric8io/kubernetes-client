@@ -695,6 +695,7 @@ public abstract class AbstractJsonSchema<T, B> {
                 .filter(Property::isEnumConstant)
                 .map(this::extractUpdatedNameFromJacksonPropertyIfPresent)
                 .filter(Objects::nonNull)
+                .sorted()
                 .map(JsonNodeFactory.instance::textNode)
                 .toArray(JsonNode[]::new);
             return enumProperty(enumValues);
