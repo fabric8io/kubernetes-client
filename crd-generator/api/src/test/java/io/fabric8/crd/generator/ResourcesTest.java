@@ -42,14 +42,13 @@ public class ResourcesTest {
   }
 
   @Test
-  public void shouldSupportMultipleSortPrinterColums() {
+  public void shouldSupportMultipleSortPrinterColumns() {
     Resources r = new Resources();
     SortPrinterColumnsDecorator dec1 = new SortPrinterColumnsDecorator("my-crd", "v1");
     SortPrinterColumnsDecorator dec2 = new SortPrinterColumnsDecorator("my-crd", "v2");
     r.decorate(dec1);
     r.decorate(dec2);
     assertEquals(2, r.getDecorators().size());
-    r.getDecorators().stream().forEach(d -> System.out.println(d));
     assertTrue(r.getDecorators().contains(dec1));
     assertTrue(r.getDecorators().contains(dec2));
   }

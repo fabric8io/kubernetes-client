@@ -31,11 +31,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class CustomResourceInfoTest {
 
   public static class Spec {
-
   }
 
   public static class Status {
-
   }
 
   private static final String GROUP = "sample.fabric8.io";
@@ -45,13 +43,11 @@ public class CustomResourceInfoTest {
   @Version(VERSION)
   @ShortNames("s")
   public static class ClusteredCR extends CustomResource<Spec, Status> {
-
   }
 
   @Group(GROUP)
   @Version(VERSION)
   public static class NamespacedCR extends CustomResource<Spec, Status> implements Namespaced {
-
   }
 
   @Test
@@ -68,12 +64,13 @@ public class CustomResourceInfoTest {
   }
 
   @Test
-  void shouldProperlyCreateCustomResourceInfo() throws Exception {
+  void shouldProperlyCreateCustomResourceInfo() {
     CustomResourceInfo info = CustomResourceInfo.fromClass(ClusteredCR.class);
     assertEquals(GROUP, info.group());
     assertEquals(VERSION, info.version());
     assertEquals(Scope.CLUSTER, info.scope());
     assertEquals(ClusteredCR.class.getCanonicalName(), info.crClassName()); // todo: should we actually use the type name here?
+    assertTrue(info.specClassName().isPresent());
     String specClassName = info.specClassName().get();
     assertEquals(Spec.class.getCanonicalName(), specClassName);
     // todo: check that we can load and instantiate class from the returned class name
@@ -82,6 +79,7 @@ public class CustomResourceInfoTest {
      * Object o = specClass.getDeclaredConstructor().newInstance();
      * assertNotNull(o);
      */
+    assertTrue(info.statusClassName().isPresent());
     assertEquals(Status.class.getCanonicalName(), info.statusClassName().get());
     assertEquals(HasMetadata.getSingular(ClusteredCR.class), info.singular());
     assertEquals(HasMetadata.getPlural(ClusteredCR.class), info.plural());
