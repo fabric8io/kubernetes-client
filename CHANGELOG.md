@@ -3,8 +3,8 @@
 ### 6.8.1 (2023-08-14)
 
 #### Bugs
-* Fix #5382: [java-generator] Allow to deserialize more valid RFC3339 date-time and make the format customizable
-* Fix #5380: [java-generator] Avoid to emit Java Keywords as package names
+* Fix #5382: (java-generator) Allow to deserialize more valid RFC3339 date-time and make the format customizable
+* Fix #5380: (java-generator) Avoid to emit Java Keywords as package names
 
 ### 6.8.0 (2023-07-24)
 
