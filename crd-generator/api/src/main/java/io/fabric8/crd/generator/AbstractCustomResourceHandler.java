@@ -159,7 +159,7 @@ public abstract class AbstractCustomResourceHandler {
    * @param format the format of the printer column
    * @return the concrete decorator implementing the addition of a printer column to the currently built CRD
    */
-  protected abstract Decorator getPrinterColumnDecorator(String name, String version, String path,
+  protected abstract Decorator<?> getPrinterColumnDecorator(String name, String version, String path,
       String type, String column, String description, String format, int priority);
 
   /**

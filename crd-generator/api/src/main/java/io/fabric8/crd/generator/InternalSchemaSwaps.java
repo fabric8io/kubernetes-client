@@ -50,8 +50,7 @@ public class InternalSchemaSwaps {
   public InternalSchemaSwaps branchAnnotations() {
     Map<Key, Value> combined = new HashMap<>(swaps);
     combined.putAll(parentSwaps);
-    InternalSchemaSwaps result = new InternalSchemaSwaps(new HashMap<>(), this.swapDepths, combined);
-    return result;
+    return new InternalSchemaSwaps(new HashMap<>(), this.swapDepths, combined);
   }
 
   public void registerSwap(ClassRef definitionType, ClassRef originalType, String fieldName, ClassRef targetType,

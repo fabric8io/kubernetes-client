@@ -213,7 +213,7 @@ public abstract class AbstractJsonSchema<T, B> {
       if (type instanceof ClassRef) {
         return (ClassRef) type;
       } else if (type instanceof Class) {
-        return Types.typeDefFrom((Class) type).toReference();
+        return Types.typeDefFrom((Class<?>) type).toReference();
       } else {
         throw new IllegalArgumentException("Unmanaged type passed to the annotation " + type);
       }
@@ -564,7 +564,7 @@ public abstract class AbstractJsonSchema<T, B> {
       String finalName = renamedTo != null ? renamedTo : original.getName();
 
       return new Property(original.getAnnotations(), typeRef, finalName,
-          original.getComments(), original.getModifiers(), original.getAttributes());
+          original.getComments(), false, false, original.getModifiers(), original.getAttributes());
     }
   }
 
@@ -653,6 +653,7 @@ public abstract class AbstractJsonSchema<T, B> {
     // Note that ordering of the checks here is meaningful: we need to check for complex types last
     // in case some "complex" types are handled specifically
     if (typeRef.getDimensions() > 0 || io.sundr.model.utils.Collections.isCollection(typeRef)) { // Handle Collections & Arrays
+      //noinspection unchecked
       final TypeRef collectionType = TypeAs.combine(TypeAs.UNWRAP_ARRAY_OF, TypeAs.UNWRAP_COLLECTION_OF)
           .apply(typeRef);
       final T schema = internalFromImpl(name, collectionType, visited, schemaSwaps);
