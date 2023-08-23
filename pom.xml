@@ -797,6 +797,12 @@
         <groupId>io.vertx</groupId>
         <artifactId>vertx-web-client</artifactId>
         <version>${vertx.version}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-uri-template</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
 
       <!-- Testing and Mocking -->
