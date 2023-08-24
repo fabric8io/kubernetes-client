@@ -30,7 +30,7 @@
   <name>Fabric8 :: Java generator :: Benchmarks</name>
 
   <properties>
-    <jmh.version>1.36</jmh.version>
+    <jmh.version>1.37</jmh.version>
   </properties>
 
   <dependencies>
