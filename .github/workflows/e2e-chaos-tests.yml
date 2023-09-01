@@ -14,12 +14,12 @@
 # limitations under the License.
 #
 
-name: E2E HTTPClient Tests
+name: E2E Chaos Tests
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 5 * * *' # Every day at 5am
+    - cron: '0 6 * * *' # Every day at 6am
 
 concurrency:
   # Only run once for latest commit per ref and cancel other (previous) runs.
@@ -27,19 +27,23 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  IT_MODULE: kubernetes-itests
+  CHAOS_MESH_VERSION: 2.6.0
+  CHAOS_TESTS_MODULE: chaos-tests
   MAVEN_ARGS: -B -C -V -ntp -Dhttp.keepAlive=false -e
 
 jobs:
-  minikube:
-    name: K8S
+  chaos-tests:
+    name: K8S Chaos Test
     runs-on: ubuntu-latest
+    timeout-minutes: 45
     if: github.repository == 'fabric8io/kubernetes-client'
     strategy:
       fail-fast: false
       matrix:
-        kubernetes: [v1.25.0,v1.24.0]
-        httpclient: [jdk,jetty,vertx]
+        kubernetes: [v1.25.0]
+        java-version: [11,17]
+        http-client: [okhttp,jdk,jetty,vertx]
+        chaos-test: ["network-delay.yaml", "network-loss.yaml", "network-duplicate.yaml"]
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -49,38 +53,23 @@ jobs:
           minikube version: v1.28.0
           kubernetes version: ${{ matrix.kubernetes }}
           github token: ${{ secrets.GITHUB_TOKEN }}
-          start args: '--force'
-      - name: Setup Java 17
+      - name: Setup Java ${{ matrix.java-version }}
         uses: actions/setup-java@v3
         with:
-          java-version: '17'
-          distribution: 'temurin'
-      - name: Run Integration Tests
+          java-version: "${{ matrix.java-version }}"
+          distribution: "temurin"
+          cache: maven
+      - name: Install Chaos Mesh
         run: |
-          ./mvnw ${MAVEN_ARGS} -P"httpclient-${{ matrix.httpclient }}" -Pitests -pl $IT_MODULE test -Dtest="io.fabric8.kubernetes.**"
-
-  openshift:
-    name: OpenShift
-    runs-on: ubuntu-20.04
-    if: github.repository == 'fabric8io/kubernetes-client'
-    strategy:
-      fail-fast: false
-      matrix:
-        openshift: [v3.11.0, v3.10.0]
-        httpclient: [jdk,jetty,vertx]
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Setup OpenShift
-        uses: manusa/actions-setup-openshift@v1.1.5
-        with:
-          oc version: ${{ matrix.openshift }}
-          github token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Setup Java 17
-        uses: actions/setup-java@v3
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-      - name: Run Integration Tests
+          curl -sSL https://mirrors.chaos-mesh.org/v${CHAOS_MESH_VERSION}/install.sh | bash
+          kubectl wait --for=condition=Ready pods --all-namespaces --all --timeout=600s
+      - name: Build the Support apps containers
         run: |
-          ./mvnw ${MAVEN_ARGS} -P"httpclient-${{ matrix.httpclient }}" -Pitests -pl $IT_MODULE verify
+          # eval $(minikube -p minikube docker-env) -> check if needed in CI
+          ./mvnw ${MAVEN_ARGS} -U -Pitests -P"httpclient-${{ matrix.http-client }}" -Pchecker clean package k8s:build -pl $CHAOS_TESTS_MODULE -DskipTests
+          ./mvnw ${MAVEN_ARGS} -U -Pitests -P"httpclient-${{ matrix.http-client }}" -Pcontrol clean package k8s:build -pl $CHAOS_TESTS_MODULE -DskipTests
+      - name: Run Chaos Tests
+        env:
+          CHAOS_TEST: ${{ matrix.chaos-test }}
+        run: |
+          ./mvnw ${MAVEN_ARGS} -Pitests verify -pl chaos-tests
