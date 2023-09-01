@@ -19,18 +19,18 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <artifactId>kubernetes-client-project</artifactId>
     <groupId>io.fabric8</groupId>
-    <version>6.8-SNAPSHOT</version>
+    <artifactId>kubernetes-client-project</artifactId>
+    <version>6.9-SNAPSHOT</version>
   </parent>
 
   <artifactId>chaos-tests</artifactId>
-  <packaging>jar</packaging>
   <name>Fabric8 :: Chaos Tests</name>
 
   <properties>
-    <jkube.version>1.13.1</jkube.version>
-    <picocli.version>4.7.4</picocli.version>
+    <app-name/>
+    <main-class/>
+    <jkube.generator.name>chaos-test-${app-name}:latest</jkube.generator.name>
   </properties>
 
   <repositories>
@@ -47,7 +47,6 @@
     <dependency>
       <groupId>info.picocli</groupId>
       <artifactId>picocli</artifactId>
-      <version>${picocli.version}</version>
     </dependency>
 
     <dependency>
@@ -71,96 +70,46 @@
         <artifactId>slf4j-simple</artifactId>
         <scope>compile</scope>
     </dependency>
-
     <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>kubernetes-junit-jupiter</artifactId>
       <scope>test</scope>
     </dependency>
-
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
       <scope>test</scope>
     </dependency>
-
     <dependency>
       <groupId>org.awaitility</groupId>
       <artifactId>awaitility</artifactId>
     </dependency>
-
   </dependencies>
 
   <build>
     <plugins>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <configuration>
-          <!-- We cleanup system properties an env vars, so that we can test in a predictable env -->
-          <environmentVariables>
-            <KUBERNETES_MASTER />
-            <KUBERNETES_API_VERSION />
-            <KUBERNETES_TRUST_CERTIFICATES />
-            <KUBERNETES_CERTS_CA_FILE />
-            <KUBERNETES_CERTS_CA_DATA />
-            <KUBERNETES_CERTS_CLIENT_FILE />
-            <KUBERNETES_CERTS_CLIENT_DATA />
-            <KUBERNETES_CERTS_CLIENT_KEY_FILE />
-            <KUBERNETES_CERTS_CLIENT_KEY_DATA />
-            <KUBERNETES_CERTS_CLIENT_KEY_ALGO />
-            <KUBERNETES_CERTS_CLIENT_KEY_PASSPHRASE />
-            <KUBERNETES_AUTH_BASIC_USERNAME />
-            <KUBERNETES_AUTH_BASIC_PASSWORD />
-            <KUBERNETES_AUTH_TRYKUBECONFIG />
-            <KUBERNETES_AUTH_TRYSERVICEACCOUNT />
-            <KUBERNETES_AUTH_TOKEN />
-            <KUBERNETES_WATCH_RECONNECTINTERVAL />
-            <KUBERNETES_WATCH_RECONNECTLIMIT />
-            <KUBERNETES_REQUEST_TIMEOUT />
-            <KUBERNETES_NAMESPACE />
-            <KUBERNETES_TLS_VERSIONS>TLSv1.2,TLSv1.1,TLSv1</KUBERNETES_TLS_VERSIONS>
-          </environmentVariables>
-        </configuration>
+        <groupId>org.eclipse.jkube</groupId>
+        <artifactId>kubernetes-maven-plugin</artifactId>
+        <version>${jkube.version}</version>
       </plugin>
-
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
         <executions>
-            <execution>
-                <phase>package</phase>
-                <goals>
-                    <goal>shade</goal>
-                </goals>
-            </execution>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+          </execution>
         </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.eclipse.jkube</groupId>
-        <artifactId>kubernetes-maven-plugin</artifactId>
-        <version>${jkube.version}</version>
         <configuration>
-          <images>
-            <image>
-              <name>chaos-test-${app-name}:latest</name>
-              <build>
-                <from>openjdk:latest</from>
-                <cmd>java -jar /maven/${project.artifactId}-${project.version}.jar</cmd>
-              </build>
-            </image>
-          </images>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <configuration>
-          <archive>
-            <manifest>
+          <transformers>
+            <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
               <mainClass>${main-class}</mainClass>
-            </manifest>
-          </archive>
+            </transformer>
+          </transformers>
         </configuration>
       </plugin>
     </plugins>
