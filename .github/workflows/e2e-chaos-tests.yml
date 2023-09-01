@@ -59,6 +59,10 @@ jobs:
           java-version: "${{ matrix.java-version }}"
           distribution: "temurin"
           cache: maven
+      - name: Setup Kubectl # Chaos-Mesh setup requires a functional kubectl version for all cluster versiones
+        uses: azure/setup-kubectl@v3
+        with:
+          version: ${{ matrix.kubernetes }}
       - name: Install Chaos Mesh
         run: |
           curl -sSL https://mirrors.chaos-mesh.org/v${CHAOS_MESH_VERSION}/install.sh | bash
