@@ -22,18 +22,11 @@ Wait for the pods to be all ready:
 kubectl wait --for=condition=Ready pods -n chaos-mesh --all --timeout=600s
 ```
 
-Build the control and checker Docker images in the minikube docker-env:
+Build the control and checker Docker images in the minikube docker-env and run the test:
 
 ```bash
 eval $(minikube -p minikube docker-env)
-mvn -Pitests -Phttpclient-jdk -Pchecker clean package k8s:build -pl chaos-tests -DskipTests
-mvn -Pitests -Phttpclient-jdk -Pcontrol clean package k8s:build -pl chaos-tests -DskipTests
-```
-
-and finally run the test:
-
-```bash
-mvn -Pitests verify -pl chaos-tests
+mvn -pl chaos-tests -Pitests -Phttpclient-jdk verify
 ```
 
 ### Glossary

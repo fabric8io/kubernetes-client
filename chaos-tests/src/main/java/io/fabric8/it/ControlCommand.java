@@ -56,7 +56,7 @@ public class ControlCommand implements Runnable {
 
   @Override
   public void run() {
-    System.out.println("Running Control App");
+    System.out.printf("Running Control App%n - num: %s%n - namespace: %s%n", num, namespace);
     KubernetesClient client = new KubernetesClientBuilder().build();
 
     Map<String, String> labels = new HashMap<>();
