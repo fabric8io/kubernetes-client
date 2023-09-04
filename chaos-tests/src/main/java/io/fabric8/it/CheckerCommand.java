@@ -56,7 +56,7 @@ public class CheckerCommand implements Runnable {
 
   @Override
   public void run() {
-    System.out.println("Running Checker App");
+    System.out.printf("Running Checker App%n - num: %s%n - namespace: %s%n", num, namespace);
     KubernetesClient client = new KubernetesClientBuilder().build();
 
     CountDownLatch latch = new CountDownLatch(1);

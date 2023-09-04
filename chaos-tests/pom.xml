@@ -27,12 +27,6 @@
   <artifactId>chaos-tests</artifactId>
   <name>Fabric8 :: Chaos Tests</name>
 
-  <properties>
-    <app-name/>
-    <main-class/>
-    <jkube.generator.name>chaos-test-${app-name}:latest</jkube.generator.name>
-  </properties>
-
   <repositories>
     <repository>
       <id>sonatype-snapshots</id>
@@ -89,11 +83,6 @@
   <build>
     <plugins>
       <plugin>
-        <groupId>org.eclipse.jkube</groupId>
-        <artifactId>kubernetes-maven-plugin</artifactId>
-        <version>${jkube.version}</version>
-      </plugin>
-      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
         <executions>
@@ -106,11 +95,51 @@
         </executions>
         <configuration>
           <transformers>
-            <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-              <mainClass>${main-class}</mainClass>
-            </transformer>
+            <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer" />
+            <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
           </transformers>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.eclipse.jkube</groupId>
+        <artifactId>kubernetes-maven-plugin</artifactId>
+        <version>${jkube.version}</version>
+        <executions>
+          <execution>
+            <id>checker</id>
+            <goals>
+              <goal>build</goal>
+            </goals>
+            <phase>package</phase>
+            <configuration>
+              <generator>
+                <config>
+                  <java-exec>
+                    <name>chaos-test-checker:latest</name>
+                    <mainClass>io.fabric8.it.CheckerCommand</mainClass>
+                  </java-exec>
+                </config>
+              </generator>
+            </configuration>
+          </execution>
+          <execution>
+            <id>control</id>
+            <goals>
+              <goal>build</goal>
+            </goals>
+            <phase>package</phase>
+            <configuration>
+              <generator>
+                <config>
+                  <java-exec>
+                    <name>chaos-test-control:latest</name>
+                    <mainClass>io.fabric8.it.ControlCommand</mainClass>
+                  </java-exec>
+                </config>
+              </generator>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
@@ -152,22 +181,6 @@
             <artifactId>kubernetes-httpclient-jetty</artifactId>
           </dependency>
         </dependencies>
-      </profile>
-
-      <!-- Support Apps container configuration -->
-      <profile>
-        <id>checker</id>
-        <properties>
-          <app-name>checker</app-name>
-          <main-class>io.fabric8.it.CheckerCommand</main-class>
-        </properties>
-      </profile>
-      <profile>
-        <id>control</id>
-        <properties>
-          <app-name>control</app-name>
-          <main-class>io.fabric8.it.ControlCommand</main-class>
-        </properties>
       </profile>
     </profiles>
 

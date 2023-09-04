@@ -16,11 +16,11 @@
  */
 import io.fabric8.junit.jupiter.api.KubernetesTest;
 import io.fabric8.junit.jupiter.api.LoadKubernetesManifests;
+import io.fabric8.kubernetes.api.model.EnvVarBuilder;
 import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodSpecBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.Version;
 import io.fabric8.kubernetes.client.dsl.PodResource;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -126,8 +126,11 @@ class ChaosIT {
             .withName(name)
             .withImagePullPolicy("Never")
             .withImage(image)
-            .addToCommand("java", "-jar", "/deployments/chaos-tests-" + Version.clientVersion() + ".jar",
-                "--namespace", namespace, "--num", Integer.toString(TOTAL_COUNT))
+            .addToEnv(
+                new EnvVarBuilder()
+                    .withName("JAVA_ARGS")
+                    .withValue("--num " + TOTAL_COUNT + " --namespace " + namespace)
+                    .build())
             .endContainer()
             .withRestartPolicy("Never")
             .withServiceAccount("chaos-test-" + name + "-sa")

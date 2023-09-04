@@ -67,13 +67,8 @@ jobs:
         run: |
           curl -sSL https://mirrors.chaos-mesh.org/v${CHAOS_MESH_VERSION}/install.sh | bash
           kubectl wait --for=condition=Ready pods --all-namespaces --all --timeout=600s
-      - name: Build the Support apps containers
-        run: |
-          # eval $(minikube -p minikube docker-env) -> check if needed in CI
-          ./mvnw ${MAVEN_ARGS} -U -Pitests -P"httpclient-${{ matrix.http-client }}" -Pchecker clean package k8s:build -pl $CHAOS_TESTS_MODULE -DskipTests
-          ./mvnw ${MAVEN_ARGS} -U -Pitests -P"httpclient-${{ matrix.http-client }}" -Pcontrol clean package k8s:build -pl $CHAOS_TESTS_MODULE -DskipTests
       - name: Run Chaos Tests
         env:
           CHAOS_TEST: ${{ matrix.chaos-test }}
         run: |
-          ./mvnw ${MAVEN_ARGS} -Pitests verify -pl chaos-tests
+          ./mvnw ${MAVEN_ARGS} -Pitests -P"httpclient-${{ matrix.http-client }}" verify -pl chaos-tests
