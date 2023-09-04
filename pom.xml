@@ -132,7 +132,7 @@
     <guava.version>32.1.2-jre</guava.version> <!-- Required by Gradle Testing Toolkit -->
     <scr.annotations.version>1.12.0</scr.annotations.version>
     <jsonschema2pojo.version>1.2.1</jsonschema2pojo.version>
-    <picocli.version>4.7.4</picocli.version>
+    <picocli.version>4.7.5</picocli.version>
     <properties.maven.plugin.version>1.0.0</properties.maven.plugin.version>
 
     <!-- Maven plugin versions -->
