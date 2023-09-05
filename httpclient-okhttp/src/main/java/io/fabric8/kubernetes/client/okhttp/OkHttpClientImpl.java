@@ -43,6 +43,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 import okhttp3.internal.Internal;
+import okhttp3.internal.http.HttpMethod;
 import okio.Buffer;
 import okio.BufferedSink;
 import okio.BufferedSource;
@@ -400,13 +401,16 @@ public class OkHttpClientImpl extends StandardHttpClient<OkHttpClientImpl, OkHtt
           }
 
           @Override
-          public long contentLength() throws IOException {
+          public long contentLength() {
             return bodyContent.getLength();
           }
         });
       } else {
         throw new AssertionError("Unsupported body content");
       }
+    } else if (Utils.isNotNullOrEmpty(request.method())) {
+      requestBuilder.method(request.method(),
+          HttpMethod.requiresRequestBody(request.method()) ? RequestBody.create(null, new byte[0]) : null);
     }
 
     request.headers().entrySet().stream()
