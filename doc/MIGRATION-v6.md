@@ -21,6 +21,12 @@
 - [Stream Changes](#stream-changes)
 - [OpenShift Config Model Changes](#openshift-config-model-changes)
 
+> [!NOTE]
+> If you encounter any problems with the following "Migration from 5.x to 6.x" instructions, please let us know by creating an issue in our [GitHub repository](https://github.com/fabric8io/kubernetes-client/issues).
+>
+> We value your feedback and will work to address your issue promptly.
+> Your contribution is essential to improving our documentation, making our migration process smoother for everyone!
+
 ## API/Impl split
 
 This release introduces `kubernetes-client-api` and `openshift-client-api` modules.  You may use them as **compile** dependencies in your application with the respective `kubernetes-client` and `openshift-client` as **runtime** dependencies.  This will keep your compile classpath cleaner of classes and libraries that are not intentionally exposed by the Fabric8 Kubernetes Client.

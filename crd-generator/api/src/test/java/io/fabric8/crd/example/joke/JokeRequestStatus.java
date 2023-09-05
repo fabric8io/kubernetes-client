@@ -15,7 +15,7 @@
  */
 package io.fabric8.crd.example.joke;
 
-import io.fabric8.kubernetes.model.annotation.PrinterColumn;
+import io.fabric8.crd.generator.annotation.PrinterColumn;
 
 public class JokeRequestStatus {
   public enum State {
