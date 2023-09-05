@@ -38,7 +38,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @EnableKubernetesMockClient(crud = true)
-public class KubernetesAttributesExtractorTest {
+class KubernetesAttributesExtractorTest {
 
   KubernetesClient client;
 
