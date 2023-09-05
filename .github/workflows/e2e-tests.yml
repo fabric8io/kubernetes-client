@@ -46,7 +46,7 @@ jobs:
     if: github.repository == 'fabric8io/kubernetes-client'
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Cache .m2 registry
         uses: actions/cache@v3
         with:
@@ -71,7 +71,7 @@ jobs:
         kubernetes: [v1.25.0, v1.24.0, v1.23.3, v1.22.6, v1.20.15, v1.19.16]
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Setup Minikube-Kubernetes
         uses: manusa/actions-setup-minikube@v2.7.2
         with:
@@ -104,7 +104,7 @@ jobs:
         kubernetes: [v1.27.3, v1.26.0]
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Setup Minikube-Kubernetes
         uses: manusa/actions-setup-minikube@v2.7.2
         with:
@@ -137,7 +137,7 @@ jobs:
       fail-fast: false
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Setup Minikube-Kubernetes
         uses: manusa/actions-setup-minikube@v2.7.2
         with:
@@ -170,7 +170,7 @@ jobs:
         openshift: [v3.11.0, v3.10.0]
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Setup OpenShift
         uses: manusa/actions-setup-openshift@v1.1.5
         with:
