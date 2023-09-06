@@ -18,21 +18,13 @@ package io.fabric8.kubernetes.client.server.mock;
 
 import io.fabric8.mockwebserver.internal.WebSocketMessage;
 
-import java.nio.charset.StandardCharsets;
+import static io.fabric8.kubernetes.client.server.mock.OutputStreamMessage.getBodyBytes;
 
-public class OutputStreamMessage extends WebSocketMessage {
+public class ErrorStreamMessage extends WebSocketMessage {
 
-  static final byte OUT_STREAM_ID = 1;
+  static final byte ERR_STREAM_ID = 2;
 
-  public OutputStreamMessage(String body) {
-    super(0L, getBodyBytes(OUT_STREAM_ID, body), true, true);
-  }
-
-  static byte[] getBodyBytes(byte prefix, String body) {
-    byte[] original = body.getBytes(StandardCharsets.UTF_8);
-    byte[] prefixed = new byte[original.length + 1];
-    prefixed[0] = prefix;
-    System.arraycopy(original, 0, prefixed, 1, original.length);
-    return prefixed;
+  public ErrorStreamMessage(String body) {
+    super(0L, getBodyBytes(ERR_STREAM_ID, body), true, true);
   }
 }
