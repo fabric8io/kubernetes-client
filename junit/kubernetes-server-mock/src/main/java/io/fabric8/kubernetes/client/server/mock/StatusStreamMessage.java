@@ -25,7 +25,7 @@ import static io.fabric8.kubernetes.client.server.mock.OutputStreamMessage.getBo
 
 public class StatusStreamMessage extends WebSocketMessage {
 
-  static final byte ERROR_CHANNEL_STREAM_ID = 3;
+  private static final byte ERROR_CHANNEL_STREAM_ID = 3;
 
   public StatusStreamMessage(final int exitCode) {
     super(0L, getBodyBytes(ERROR_CHANNEL_STREAM_ID, getStatusBody(exitCode)), true, true);

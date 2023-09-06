@@ -16,18 +16,37 @@
 
 package io.fabric8.kubernetes.client.server.mock;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 class ErrorStreamMessageTest {
 
+  private ErrorStreamMessage message;
+
+  @BeforeEach
+  void setUp() {
+    message = new ErrorStreamMessage("foobar");
+  }
+
   @Test
-  void testMessageEncoding() {
-    final ErrorStreamMessage message = new ErrorStreamMessage("foobar");
+  void isBinaryReturnsTrue() {
     assertThat(message.isBinary()).isTrue();
+  }
+
+  @Test
+  void isToBeRemovedReturnsTrue() {
     assertThat(message.isToBeRemoved()).isTrue();
-    assertThat(message.getBytes()).startsWith(ErrorStreamMessage.ERR_STREAM_ID);
+  }
+
+  @Test
+  void bodyStartsWithErrStreamId() {
+    assertThat(message.getBytes()).startsWith(2);
+  }
+
+  @Test
+  void bodyContainsMessage() {
     assertThat(message.getBody().substring(1)).isEqualTo("foobar");
   }
 }

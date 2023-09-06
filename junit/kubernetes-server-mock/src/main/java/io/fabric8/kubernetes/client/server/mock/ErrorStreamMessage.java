@@ -22,7 +22,7 @@ import static io.fabric8.kubernetes.client.server.mock.OutputStreamMessage.getBo
 
 public class ErrorStreamMessage extends WebSocketMessage {
 
-  static final byte ERR_STREAM_ID = 2;
+  private static final byte ERR_STREAM_ID = 2;
 
   public ErrorStreamMessage(String body) {
     super(0L, getBodyBytes(ERR_STREAM_ID, body), true, true);

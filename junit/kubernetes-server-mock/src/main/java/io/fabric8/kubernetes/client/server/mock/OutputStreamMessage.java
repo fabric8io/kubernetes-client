@@ -22,7 +22,7 @@ import java.nio.charset.StandardCharsets;
 
 public class OutputStreamMessage extends WebSocketMessage {
 
-  static final byte OUT_STREAM_ID = 1;
+  private static final byte OUT_STREAM_ID = 1;
 
   public OutputStreamMessage(String body) {
     super(0L, getBodyBytes(OUT_STREAM_ID, body), true, true);

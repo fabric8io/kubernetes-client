@@ -18,50 +18,65 @@ package io.fabric8.kubernetes.client.server.mock;
 
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.StatusBuilder;
-import io.fabric8.kubernetes.client.utils.Serialization;
+import io.fabric8.kubernetes.client.utils.KubernetesSerialization;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 class StatusStreamMessageTest {
 
-  @Test
-  void testMessageEncoding_withExitCode0() {
-    final StatusStreamMessage message = new StatusStreamMessage(0);
-    assertThat(message.isBinary()).isTrue();
-    assertThat(message.isToBeRemoved()).isTrue();
-    assertThat(message.getBytes()).startsWith(StatusStreamMessage.ERROR_CHANNEL_STREAM_ID);
+  private StatusStreamMessage message;
 
-    final Status status = new StatusBuilder() //
-        .withStatus("Success")
-        .withReason("ExitCode")
-        .withNewDetails()
-        .addNewCause()
-        .withReason("ExitCode")
-        .withMessage(String.valueOf(0))
-        .endCause()
-        .endDetails()
-        .build();
-    assertThat(message.getBody().substring(1)).isEqualTo(Serialization.asJson(status));
+  @BeforeEach
+  void setUp() {
+    message = new StatusStreamMessage(1);
   }
 
   @Test
-  void testMessageEncoding_withExitCode1() {
-    final StatusStreamMessage message = new StatusStreamMessage(1);
+  void isBinaryReturnsTrue() {
     assertThat(message.isBinary()).isTrue();
-    assertThat(message.isToBeRemoved()).isTrue();
-    assertThat(message.getBytes()).startsWith(StatusStreamMessage.ERROR_CHANNEL_STREAM_ID);
+  }
 
-    final Status status = new StatusBuilder() //
-        .withStatus("Failure")
-        .withReason("NonZeroExitCode")
-        .withNewDetails()
-        .addNewCause()
-        .withReason("ExitCode")
-        .withMessage(String.valueOf(1))
-        .endCause()
-        .endDetails()
-        .build();
-    assertThat(message.getBody().substring(1)).isEqualTo(Serialization.asJson(status));
+  @Test
+  void isToBeRemovedReturnsTrue() {
+    assertThat(message.isToBeRemoved()).isTrue();
+  }
+
+  @Test
+  void bodyStartsWithErrorStreamId() {
+    assertThat(message.getBytes()).startsWith(3);
+  }
+
+  @Test
+  void withExitCode0_bodyContainsSuccessStatusObject() {
+    message = new StatusStreamMessage(0);
+    assertThat(new KubernetesSerialization().unmarshal(message.getBody().substring(1), Status.class))
+        .isEqualTo(new StatusBuilder()
+            .withStatus("Success")
+            .withReason("ExitCode")
+            .withNewDetails()
+            .addNewCause()
+            .withReason("ExitCode")
+            .withMessage(String.valueOf(0))
+            .endCause()
+            .endDetails()
+            .build());
+  }
+
+  @Test
+  void withExitCode1_bodyContainsFailureStatusObject() {
+    message = new StatusStreamMessage(1);
+    assertThat(new KubernetesSerialization().unmarshal(message.getBody().substring(1), Status.class))
+        .isEqualTo(new StatusBuilder()
+            .withStatus("Failure")
+            .withReason("NonZeroExitCode")
+            .withNewDetails()
+            .addNewCause()
+            .withReason("ExitCode")
+            .withMessage(String.valueOf(1))
+            .endCause()
+            .endDetails()
+            .build());
   }
 }
