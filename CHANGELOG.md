@@ -9,6 +9,7 @@
 
 #### Improvements
 * Fix #5432: [java-generator] Add the possibility to always emit `additionalProperties` on generated POJOs
+* Fix #5410: [crd-generator] added support for `default`
 * Fix #5368: added support for additional ListOptions fields
 * Fix #5377: added a createOr and unlock function to provide a straight-forward replacement for createOrReplace.
 * Fix #5388: [crd-generator] Generate deterministic CRDs
