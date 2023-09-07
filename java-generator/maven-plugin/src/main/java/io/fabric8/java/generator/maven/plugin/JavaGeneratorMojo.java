@@ -88,6 +88,13 @@ public class JavaGeneratorMojo extends AbstractMojo {
   Boolean generatedAnnotations = null;
 
   /**
+   * Always preserve unknown fields in the generated classes by emitting an additionalProperties field
+   *
+   */
+  @Parameter(property = "fabric8.java-generator.always-preserve-unknown", required = false)
+  Boolean alwaysPreserveUnknown = null;
+
+  /**
    * Package names to be substituted
    *
    */
@@ -121,6 +128,7 @@ public class JavaGeneratorMojo extends AbstractMojo {
         .uppercaseEnums(enumUppercase)
         .objectExtraAnnotations(extraAnnotations)
         .generatedAnnotations(generatedAnnotations)
+        .alwaysPreserveUnknown(alwaysPreserveUnknown)
         .packageOverrides(packageOverrides)
         .filesSuffixes(filesSuffixes)
         .serDatetimeFormat(datetimeSerializationFormat)

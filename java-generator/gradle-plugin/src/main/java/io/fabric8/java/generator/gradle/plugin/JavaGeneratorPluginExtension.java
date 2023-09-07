@@ -100,6 +100,7 @@ public abstract class JavaGeneratorPluginExtension {
     javaGeneratorConfig = new Config(isEnumUppercase,
         javaGeneratorConfig.isObjectExtraAnnotations(),
         javaGeneratorConfig.isGeneratedAnnotations(),
+        javaGeneratorConfig.isAlwaysPreserveUnknown(),
         javaGeneratorConfig.getPackageOverrides(),
         javaGeneratorConfig.getFilesSuffixes(),
         javaGeneratorConfig.getSerDatetimeFormat(),
@@ -118,6 +119,7 @@ public abstract class JavaGeneratorPluginExtension {
     javaGeneratorConfig = new Config(javaGeneratorConfig.isUppercaseEnums(),
         isExtraAnnotations,
         javaGeneratorConfig.isGeneratedAnnotations(),
+        javaGeneratorConfig.isAlwaysPreserveUnknown(),
         javaGeneratorConfig.getPackageOverrides(),
         javaGeneratorConfig.getFilesSuffixes(),
         javaGeneratorConfig.getSerDatetimeFormat(),
@@ -136,6 +138,26 @@ public abstract class JavaGeneratorPluginExtension {
     javaGeneratorConfig = new Config(javaGeneratorConfig.isUppercaseEnums(),
         javaGeneratorConfig.isObjectExtraAnnotations(),
         isGeneratedAnnotations,
+        javaGeneratorConfig.isAlwaysPreserveUnknown(),
+        javaGeneratorConfig.getPackageOverrides(),
+        javaGeneratorConfig.getFilesSuffixes(),
+        javaGeneratorConfig.getSerDatetimeFormat(),
+        javaGeneratorConfig.getDeserDatetimeFormat());
+  }
+
+  /**
+   * Always preserve unknown fields in the generated classes by emitting an additionalProperties field
+   *
+   */
+  public Boolean getAlwaysPreserveUnknown() {
+    return javaGeneratorConfig.isAlwaysPreserveUnknown();
+  }
+
+  public void setAlwaysPreserveUnknown(final Boolean isAlwaysPreserveUnknown) {
+    javaGeneratorConfig = new Config(javaGeneratorConfig.isUppercaseEnums(),
+        javaGeneratorConfig.isObjectExtraAnnotations(),
+        javaGeneratorConfig.isGeneratedAnnotations(),
+        isAlwaysPreserveUnknown,
         javaGeneratorConfig.getPackageOverrides(),
         javaGeneratorConfig.getFilesSuffixes(),
         javaGeneratorConfig.getSerDatetimeFormat(),
@@ -154,6 +176,7 @@ public abstract class JavaGeneratorPluginExtension {
     javaGeneratorConfig = new Config(javaGeneratorConfig.isUppercaseEnums(),
         javaGeneratorConfig.isObjectExtraAnnotations(),
         javaGeneratorConfig.isGeneratedAnnotations(),
+        javaGeneratorConfig.isAlwaysPreserveUnknown(),
         packageOverrides,
         javaGeneratorConfig.getFilesSuffixes(),
         javaGeneratorConfig.getSerDatetimeFormat(),
@@ -172,6 +195,7 @@ public abstract class JavaGeneratorPluginExtension {
     javaGeneratorConfig = new Config(javaGeneratorConfig.isUppercaseEnums(),
         javaGeneratorConfig.isObjectExtraAnnotations(),
         javaGeneratorConfig.isGeneratedAnnotations(),
+        javaGeneratorConfig.isAlwaysPreserveUnknown(),
         javaGeneratorConfig.getPackageOverrides(),
         filesSuffixes,
         javaGeneratorConfig.getSerDatetimeFormat(),
@@ -190,6 +214,7 @@ public abstract class JavaGeneratorPluginExtension {
     javaGeneratorConfig = new Config(javaGeneratorConfig.isUppercaseEnums(),
         javaGeneratorConfig.isObjectExtraAnnotations(),
         javaGeneratorConfig.isGeneratedAnnotations(),
+        javaGeneratorConfig.isAlwaysPreserveUnknown(),
         javaGeneratorConfig.getPackageOverrides(),
         javaGeneratorConfig.getFilesSuffixes(),
         serDatetimeFmt,
@@ -208,6 +233,7 @@ public abstract class JavaGeneratorPluginExtension {
     javaGeneratorConfig = new Config(javaGeneratorConfig.isUppercaseEnums(),
         javaGeneratorConfig.isObjectExtraAnnotations(),
         javaGeneratorConfig.isGeneratedAnnotations(),
+        javaGeneratorConfig.isAlwaysPreserveUnknown(),
         javaGeneratorConfig.getPackageOverrides(),
         javaGeneratorConfig.getFilesSuffixes(),
         javaGeneratorConfig.getSerDatetimeFormat(),

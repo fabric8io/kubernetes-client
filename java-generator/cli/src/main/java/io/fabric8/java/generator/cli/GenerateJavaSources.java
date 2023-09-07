@@ -63,6 +63,10 @@ public class GenerateJavaSources implements Runnable {
       "--skip-generated-annotations" }, description = "Skip emitting the @javax.annotation.processing.Generated annotation on the generated sources", required = false, hidden = true)
   Boolean skipGeneratedAnnotations = null;
 
+  @Option(names = { "-always-preserve-unknown",
+      "--always-preserve-unknown" }, description = "Always preserve unknown fields in the generated classes by emitting an additionalProperties field", required = false, hidden = false)
+  Boolean alwaysPreserveUnkown = null;
+
   @Option(names = { "-package-overrides",
       "--package-overrides" }, description = "Apply the overrides to the package names", required = false)
   Map<String, String> packageOverrides = null;
@@ -86,6 +90,7 @@ public class GenerateJavaSources implements Runnable {
         uppercaseEnum,
         addExtraAnnotations,
         !noGeneratedAnnotations,
+        alwaysPreserveUnkown,
         packageOverrides,
         filesSuffixes,
         serializationDateTimeFormat,
