@@ -12,6 +12,7 @@
 * Fix #5377: added a createOr and unlock function to provide a straight-forward replacement for createOrReplace.
 * Fix #5388: [crd-generator] Generate deterministic CRDs
 * Fix #5257: Add ErrorStreamMessage and StatusStreamMessage to ease mocking of pods/exec requests
+* Fix #5220: refinements and clarifications to the validation of names
 
 #### Dependency Upgrade
 * Fix #5373: Gradle base API based on v8.2.1
@@ -22,6 +23,7 @@
 * Fix #5343: Removed `io.fabric8.kubernetes.model.annotation.PrinterColumn`, use `io.fabric8.crd.generator.annotation.PrinterColumn`
 * Fix #5368: ListOptions parameter ordering is now alphabetical.  If you are using non-crud mocking for lists with options, you may need to update your parameter order.
 * Fix #5391: Removed the vertx-uri-template dependency from the vertx client, if you need that for your application, then introduce your own dependency.
+* Fix #5220: KubernetesResourceUtil.isValidLabelOrAnnotation has been deprecated because the rules for labels and annotations are different
 
 ### 6.8.1 (2023-08-14)
 
