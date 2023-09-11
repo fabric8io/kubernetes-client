@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
@@ -67,7 +68,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("authorization.openshift.io")
 @Generated("jsonschema2pojo")
-public class ClusterRoleBinding implements HasMetadata
+public class ClusterRoleBinding implements Editable<ClusterRoleBindingBuilder> , HasMetadata
 {
 
     /**
@@ -206,6 +207,16 @@ public class ClusterRoleBinding implements HasMetadata
     @JsonProperty("userNames")
     public void setUserNames(List<String> userNames) {
         this.userNames = userNames;
+    }
+
+    @JsonIgnore
+    public ClusterRoleBindingBuilder edit() {
+        return new ClusterRoleBindingBuilder(this);
+    }
+
+    @JsonIgnore
+    public ClusterRoleBindingBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

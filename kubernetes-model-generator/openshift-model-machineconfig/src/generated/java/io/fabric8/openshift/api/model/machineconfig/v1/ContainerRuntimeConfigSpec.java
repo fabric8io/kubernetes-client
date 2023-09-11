@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -55,7 +56,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ContainerRuntimeConfigSpec implements KubernetesResource
+public class ContainerRuntimeConfigSpec implements Editable<ContainerRuntimeConfigSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("containerRuntimeConfig")
@@ -96,6 +97,16 @@ public class ContainerRuntimeConfigSpec implements KubernetesResource
     @JsonProperty("machineConfigPoolSelector")
     public void setMachineConfigPoolSelector(io.fabric8.kubernetes.api.model.LabelSelector machineConfigPoolSelector) {
         this.machineConfigPoolSelector = machineConfigPoolSelector;
+    }
+
+    @JsonIgnore
+    public ContainerRuntimeConfigSpecBuilder edit() {
+        return new ContainerRuntimeConfigSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public ContainerRuntimeConfigSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

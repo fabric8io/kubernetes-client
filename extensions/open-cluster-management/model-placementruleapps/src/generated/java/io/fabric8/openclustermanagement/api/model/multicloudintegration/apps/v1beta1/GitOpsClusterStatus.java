@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -65,7 +66,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class GitOpsClusterStatus implements KubernetesResource
+public class GitOpsClusterStatus implements Editable<GitOpsClusterStatusBuilder> , KubernetesResource
 {
 
     @JsonProperty("lastUpdateTime")
@@ -119,6 +120,16 @@ public class GitOpsClusterStatus implements KubernetesResource
     @JsonProperty("phase")
     public void setPhase(String phase) {
         this.phase = phase;
+    }
+
+    @JsonIgnore
+    public GitOpsClusterStatusBuilder edit() {
+        return new GitOpsClusterStatusBuilder(this);
+    }
+
+    @JsonIgnore
+    public GitOpsClusterStatusBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
@@ -56,7 +57,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class PodDisruptionBudgetSpec implements KubernetesResource
+public class PodDisruptionBudgetSpec implements Editable<PodDisruptionBudgetSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("maxUnavailable")
@@ -123,6 +124,16 @@ public class PodDisruptionBudgetSpec implements KubernetesResource
     @JsonProperty("unhealthyPodEvictionPolicy")
     public void setUnhealthyPodEvictionPolicy(String unhealthyPodEvictionPolicy) {
         this.unhealthyPodEvictionPolicy = unhealthyPodEvictionPolicy;
+    }
+
+    @JsonIgnore
+    public PodDisruptionBudgetSpecBuilder edit() {
+        return new PodDisruptionBudgetSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public PodDisruptionBudgetSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.kustomize.v1beta1.Kustomization;
 import io.sundr.builder.annotations.Buildable;
 import lombok.EqualsAndHashCode;
@@ -33,9 +34,10 @@ import lombok.experimental.Accessors;
     "_",
     ""
 })
-@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
+@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("jsonschema2pojo")
-public class ValidationSchema {
+public class ValidationSchema implements Editable<ValidationSchemaBuilder>
+{
 
     @JsonProperty("Kustomization")
     private Kustomization kustomization;
@@ -62,6 +64,16 @@ public class ValidationSchema {
     @JsonProperty("Kustomization")
     public void setKustomization(Kustomization kustomization) {
         this.kustomization = kustomization;
+    }
+
+    @JsonIgnore
+    public ValidationSchemaBuilder edit() {
+        return new ValidationSchemaBuilder(this);
+    }
+
+    @JsonIgnore
+    public ValidationSchemaBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

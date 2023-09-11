@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.sundr.builder.annotations.Buildable;
 import lombok.EqualsAndHashCode;
 import lombok.Setter;
@@ -32,9 +33,9 @@ import lombok.experimental.Accessors;
     "_",
     ""
 })
-@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
+@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("jsonschema2pojo")
-public class EphemeralVolumeSource implements KubernetesResource
+public class EphemeralVolumeSource implements Editable<EphemeralVolumeSourceBuilder> , KubernetesResource
 {
 
     @JsonProperty("volumeClaimTemplate")
@@ -62,6 +63,16 @@ public class EphemeralVolumeSource implements KubernetesResource
     @JsonProperty("volumeClaimTemplate")
     public void setVolumeClaimTemplate(PersistentVolumeClaimTemplate volumeClaimTemplate) {
         this.volumeClaimTemplate = volumeClaimTemplate;
+    }
+
+    @JsonIgnore
+    public EphemeralVolumeSourceBuilder edit() {
+        return new EphemeralVolumeSourceBuilder(this);
+    }
+
+    @JsonIgnore
+    public EphemeralVolumeSourceBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

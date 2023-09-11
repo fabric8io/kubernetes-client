@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -67,7 +68,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("monitoring.coreos.com")
 @Generated("jsonschema2pojo")
-public class EmbeddedPersistentVolumeClaim implements KubernetesResource
+public class EmbeddedPersistentVolumeClaim implements Editable<EmbeddedPersistentVolumeClaimBuilder> , KubernetesResource
 {
 
     /**
@@ -177,6 +178,16 @@ public class EmbeddedPersistentVolumeClaim implements KubernetesResource
     @JsonProperty("status")
     public void setStatus(PersistentVolumeClaimStatus status) {
         this.status = status;
+    }
+
+    @JsonIgnore
+    public EmbeddedPersistentVolumeClaimBuilder edit() {
+        return new EmbeddedPersistentVolumeClaimBuilder(this);
+    }
+
+    @JsonIgnore
+    public EmbeddedPersistentVolumeClaimBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

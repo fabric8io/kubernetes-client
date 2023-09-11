@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -67,7 +68,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class KeyRef implements KubernetesResource
+public class KeyRef implements Editable<KeyRefBuilder> , KubernetesResource
 {
 
     @JsonProperty("data")
@@ -134,6 +135,16 @@ public class KeyRef implements KubernetesResource
     @JsonProperty("secretRef")
     public void setSecretRef(SecretReference secretRef) {
         this.secretRef = secretRef;
+    }
+
+    @JsonIgnore
+    public KeyRefBuilder edit() {
+        return new KeyRefBuilder(this);
+    }
+
+    @JsonIgnore
+    public KeyRefBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

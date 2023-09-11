@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -57,7 +58,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class FirmwareConfig implements KubernetesResource
+public class FirmwareConfig implements Editable<FirmwareConfigBuilder> , KubernetesResource
 {
 
     @JsonProperty("simultaneousMultithreadingEnabled")
@@ -111,6 +112,16 @@ public class FirmwareConfig implements KubernetesResource
     @JsonProperty("virtualizationEnabled")
     public void setVirtualizationEnabled(Boolean virtualizationEnabled) {
         this.virtualizationEnabled = virtualizationEnabled;
+    }
+
+    @JsonIgnore
+    public FirmwareConfigBuilder edit() {
+        return new FirmwareConfigBuilder(this);
+    }
+
+    @JsonIgnore
+    public FirmwareConfigBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Condition;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
@@ -60,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ValidatingAdmissionPolicyStatus implements KubernetesResource
+public class ValidatingAdmissionPolicyStatus implements Editable<ValidatingAdmissionPolicyStatusBuilder> , KubernetesResource
 {
 
     @JsonProperty("conditions")
@@ -115,6 +116,16 @@ public class ValidatingAdmissionPolicyStatus implements KubernetesResource
     @JsonProperty("typeChecking")
     public void setTypeChecking(TypeChecking typeChecking) {
         this.typeChecking = typeChecking;
+    }
+
+    @JsonIgnore
+    public ValidatingAdmissionPolicyStatusBuilder edit() {
+        return new ValidatingAdmissionPolicyStatusBuilder(this);
+    }
+
+    @JsonIgnore
+    public ValidatingAdmissionPolicyStatusBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

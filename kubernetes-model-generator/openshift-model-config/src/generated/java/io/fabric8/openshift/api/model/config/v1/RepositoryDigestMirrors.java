@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -59,7 +60,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class RepositoryDigestMirrors implements KubernetesResource
+public class RepositoryDigestMirrors implements Editable<RepositoryDigestMirrorsBuilder> , KubernetesResource
 {
 
     @JsonProperty("allowMirrorByTags")
@@ -114,6 +115,16 @@ public class RepositoryDigestMirrors implements KubernetesResource
     @JsonProperty("source")
     public void setSource(String source) {
         this.source = source;
+    }
+
+    @JsonIgnore
+    public RepositoryDigestMirrorsBuilder edit() {
+        return new RepositoryDigestMirrorsBuilder(this);
+    }
+
+    @JsonIgnore
+    public RepositoryDigestMirrorsBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

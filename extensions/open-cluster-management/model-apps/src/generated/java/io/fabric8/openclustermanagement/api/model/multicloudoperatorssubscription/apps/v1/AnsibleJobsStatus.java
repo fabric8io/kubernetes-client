@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -68,7 +69,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class AnsibleJobsStatus implements KubernetesResource
+public class AnsibleJobsStatus implements Editable<AnsibleJobsStatusBuilder> , KubernetesResource
 {
 
     @JsonProperty("lastposthookjob")
@@ -137,6 +138,16 @@ public class AnsibleJobsStatus implements KubernetesResource
     @JsonProperty("prehookjobshistory")
     public void setPrehookjobshistory(List<String> prehookjobshistory) {
         this.prehookjobshistory = prehookjobshistory;
+    }
+
+    @JsonIgnore
+    public AnsibleJobsStatusBuilder edit() {
+        return new AnsibleJobsStatusBuilder(this);
+    }
+
+    @JsonIgnore
+    public AnsibleJobsStatusBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

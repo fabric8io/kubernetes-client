@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -66,7 +67,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class EnvoyFilterEnvoyConfigObjectMatch implements KubernetesResource
+public class EnvoyFilterEnvoyConfigObjectMatch implements Editable<EnvoyFilterEnvoyConfigObjectMatchBuilder> , KubernetesResource
 {
 
     @JsonProperty("ObjectTypes")
@@ -121,6 +122,16 @@ public class EnvoyFilterEnvoyConfigObjectMatch implements KubernetesResource
     @JsonProperty("proxy")
     public void setProxy(EnvoyFilterProxyMatch proxy) {
         this.proxy = proxy;
+    }
+
+    @JsonIgnore
+    public EnvoyFilterEnvoyConfigObjectMatchBuilder edit() {
+        return new EnvoyFilterEnvoyConfigObjectMatchBuilder(this);
+    }
+
+    @JsonIgnore
+    public EnvoyFilterEnvoyConfigObjectMatchBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

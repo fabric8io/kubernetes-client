@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -61,7 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ClusterDeprovisionPlatform implements KubernetesResource
+public class ClusterDeprovisionPlatform implements Editable<ClusterDeprovisionPlatformBuilder> , KubernetesResource
 {
 
     @JsonProperty("aws")
@@ -167,6 +168,16 @@ public class ClusterDeprovisionPlatform implements KubernetesResource
     @JsonProperty("vsphere")
     public void setVsphere(VSphereClusterDeprovision vsphere) {
         this.vsphere = vsphere;
+    }
+
+    @JsonIgnore
+    public ClusterDeprovisionPlatformBuilder edit() {
+        return new ClusterDeprovisionPlatformBuilder(this);
+    }
+
+    @JsonIgnore
+    public ClusterDeprovisionPlatformBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

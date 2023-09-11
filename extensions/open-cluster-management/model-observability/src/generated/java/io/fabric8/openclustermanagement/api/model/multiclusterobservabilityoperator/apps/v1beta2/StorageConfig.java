@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -70,7 +71,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class StorageConfig implements KubernetesResource
+public class StorageConfig implements Editable<StorageConfigBuilder> , KubernetesResource
 {
 
     @JsonProperty("alertmanagerStorageSize")
@@ -176,6 +177,16 @@ public class StorageConfig implements KubernetesResource
     @JsonProperty("storeStorageSize")
     public void setStoreStorageSize(String storeStorageSize) {
         this.storeStorageSize = storeStorageSize;
+    }
+
+    @JsonIgnore
+    public StorageConfigBuilder edit() {
+        return new StorageConfigBuilder(this);
+    }
+
+    @JsonIgnore
+    public StorageConfigBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

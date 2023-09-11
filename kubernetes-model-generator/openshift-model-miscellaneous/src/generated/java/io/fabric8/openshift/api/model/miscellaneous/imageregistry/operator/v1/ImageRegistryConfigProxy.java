@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -57,7 +58,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ImageRegistryConfigProxy implements KubernetesResource
+public class ImageRegistryConfigProxy implements Editable<ImageRegistryConfigProxyBuilder> , KubernetesResource
 {
 
     @JsonProperty("http")
@@ -111,6 +112,16 @@ public class ImageRegistryConfigProxy implements KubernetesResource
     @JsonProperty("noProxy")
     public void setNoProxy(String noProxy) {
         this.noProxy = noProxy;
+    }
+
+    @JsonIgnore
+    public ImageRegistryConfigProxyBuilder edit() {
+        return new ImageRegistryConfigProxyBuilder(this);
+    }
+
+    @JsonIgnore
+    public ImageRegistryConfigProxyBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

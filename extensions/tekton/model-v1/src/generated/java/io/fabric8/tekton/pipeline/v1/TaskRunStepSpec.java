@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -63,7 +64,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class TaskRunStepSpec implements KubernetesResource
+public class TaskRunStepSpec implements Editable<TaskRunStepSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("computeResources")
@@ -104,6 +105,16 @@ public class TaskRunStepSpec implements KubernetesResource
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
+    }
+
+    @JsonIgnore
+    public TaskRunStepSpecBuilder edit() {
+        return new TaskRunStepSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public TaskRunStepSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

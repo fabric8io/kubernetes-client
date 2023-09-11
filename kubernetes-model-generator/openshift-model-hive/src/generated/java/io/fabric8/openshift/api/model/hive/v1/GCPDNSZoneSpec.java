@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -54,7 +55,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class GCPDNSZoneSpec implements KubernetesResource
+public class GCPDNSZoneSpec implements Editable<GCPDNSZoneSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("credentialsSecretRef")
@@ -82,6 +83,16 @@ public class GCPDNSZoneSpec implements KubernetesResource
     @JsonProperty("credentialsSecretRef")
     public void setCredentialsSecretRef(io.fabric8.kubernetes.api.model.LocalObjectReference credentialsSecretRef) {
         this.credentialsSecretRef = credentialsSecretRef;
+    }
+
+    @JsonIgnore
+    public GCPDNSZoneSpecBuilder edit() {
+        return new GCPDNSZoneSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public GCPDNSZoneSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

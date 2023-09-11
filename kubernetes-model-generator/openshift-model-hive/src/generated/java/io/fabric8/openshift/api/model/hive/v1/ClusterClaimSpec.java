@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.Duration;
 import io.fabric8.kubernetes.api.model.IntOrString;
@@ -62,7 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ClusterClaimSpec implements KubernetesResource
+public class ClusterClaimSpec implements Editable<ClusterClaimSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("clusterPoolName")
@@ -130,6 +131,16 @@ public class ClusterClaimSpec implements KubernetesResource
     @JsonProperty("subjects")
     public void setSubjects(List<Subject> subjects) {
         this.subjects = subjects;
+    }
+
+    @JsonIgnore
+    public ClusterClaimSpecBuilder edit() {
+        return new ClusterClaimSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public ClusterClaimSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

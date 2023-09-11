@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -56,7 +57,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class TokenRequest implements KubernetesResource
+public class TokenRequest implements Editable<TokenRequestBuilder> , KubernetesResource
 {
 
     @JsonProperty("audience")
@@ -97,6 +98,16 @@ public class TokenRequest implements KubernetesResource
     @JsonProperty("expirationSeconds")
     public void setExpirationSeconds(Long expirationSeconds) {
         this.expirationSeconds = expirationSeconds;
+    }
+
+    @JsonIgnore
+    public TokenRequestBuilder edit() {
+        return new TokenRequestBuilder(this);
+    }
+
+    @JsonIgnore
+    public TokenRequestBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

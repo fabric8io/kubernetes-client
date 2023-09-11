@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -76,7 +77,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha1")
 @Group("networking.internal.knative.dev")
 @Generated("jsonschema2pojo")
-public class CertificateList implements KubernetesResource, KubernetesResourceList<io.fabric8.knative.internal.networking.v1alpha1.Certificate>
+public class CertificateList implements Editable<CertificateListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.knative.internal.networking.v1alpha1.Certificate>
 {
 
     /**
@@ -174,6 +175,16 @@ public class CertificateList implements KubernetesResource, KubernetesResourceLi
     @JsonProperty("metadata")
     public void setMetadata(ListMeta metadata) {
         this.metadata = metadata;
+    }
+
+    @JsonIgnore
+    public CertificateListBuilder edit() {
+        return new CertificateListBuilder(this);
+    }
+
+    @JsonIgnore
+    public CertificateListBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

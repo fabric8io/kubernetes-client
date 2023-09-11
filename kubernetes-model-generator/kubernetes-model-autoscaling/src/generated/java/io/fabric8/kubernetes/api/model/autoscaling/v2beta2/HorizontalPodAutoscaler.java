@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
@@ -65,7 +66,7 @@ import lombok.experimental.Accessors;
 @Version("v2beta2")
 @Group("autoscaling")
 @Generated("jsonschema2pojo")
-public class HorizontalPodAutoscaler implements HasMetadata, Namespaced
+public class HorizontalPodAutoscaler implements Editable<HorizontalPodAutoscalerBuilder> , HasMetadata, Namespaced
 {
 
     /**
@@ -175,6 +176,16 @@ public class HorizontalPodAutoscaler implements HasMetadata, Namespaced
     @JsonProperty("status")
     public void setStatus(HorizontalPodAutoscalerStatus status) {
         this.status = status;
+    }
+
+    @JsonIgnore
+    public HorizontalPodAutoscalerBuilder edit() {
+        return new HorizontalPodAutoscalerBuilder(this);
+    }
+
+    @JsonIgnore
+    public HorizontalPodAutoscalerBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

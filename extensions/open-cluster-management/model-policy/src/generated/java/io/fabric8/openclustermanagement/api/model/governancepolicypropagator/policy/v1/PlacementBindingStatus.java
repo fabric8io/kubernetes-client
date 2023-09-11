@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -61,11 +62,21 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class PlacementBindingStatus implements KubernetesResource
+public class PlacementBindingStatus implements Editable<PlacementBindingStatusBuilder> , KubernetesResource
 {
 
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
+
+    @JsonIgnore
+    public PlacementBindingStatusBuilder edit() {
+        return new PlacementBindingStatusBuilder(this);
+    }
+
+    @JsonIgnore
+    public PlacementBindingStatusBuilder toBuilder() {
+        return edit();
+    }
 
     @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {

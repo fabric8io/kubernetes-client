@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.ConfigMapKeySelector;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
@@ -58,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class SecretOrConfigMap implements KubernetesResource
+public class SecretOrConfigMap implements Editable<SecretOrConfigMapBuilder> , KubernetesResource
 {
 
     @JsonProperty("configMap")
@@ -99,6 +100,16 @@ public class SecretOrConfigMap implements KubernetesResource
     @JsonProperty("secret")
     public void setSecret(SecretKeySelector secret) {
         this.secret = secret;
+    }
+
+    @JsonIgnore
+    public SecretOrConfigMapBuilder edit() {
+        return new SecretOrConfigMapBuilder(this);
+    }
+
+    @JsonIgnore
+    public SecretOrConfigMapBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.sundr.builder.annotations.Buildable;
 import lombok.EqualsAndHashCode;
@@ -36,9 +37,9 @@ import lombok.experimental.Accessors;
     "_",
     ""
 })
-@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
+@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("jsonschema2pojo")
-public class LegacySortOptions implements KubernetesResource
+public class LegacySortOptions implements Editable<LegacySortOptionsBuilder> , KubernetesResource
 {
 
     @JsonProperty("orderFirst")
@@ -81,6 +82,16 @@ public class LegacySortOptions implements KubernetesResource
     @JsonProperty("orderLast")
     public void setOrderLast(List<String> orderLast) {
         this.orderLast = orderLast;
+    }
+
+    @JsonIgnore
+    public LegacySortOptionsBuilder edit() {
+        return new LegacySortOptionsBuilder(this);
+    }
+
+    @JsonIgnore
+    public LegacySortOptionsBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

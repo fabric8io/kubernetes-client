@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.sundr.builder.annotations.Buildable;
 import lombok.EqualsAndHashCode;
 import lombok.Setter;
@@ -34,9 +35,9 @@ import lombok.experimental.Accessors;
     "_",
     ""
 })
-@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
+@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("jsonschema2pojo")
-public class TopologySelectorTerm implements KubernetesResource
+public class TopologySelectorTerm implements Editable<TopologySelectorTermBuilder> , KubernetesResource
 {
 
     @JsonProperty("matchLabelExpressions")
@@ -65,6 +66,16 @@ public class TopologySelectorTerm implements KubernetesResource
     @JsonProperty("matchLabelExpressions")
     public void setMatchLabelExpressions(List<TopologySelectorLabelRequirement> matchLabelExpressions) {
         this.matchLabelExpressions = matchLabelExpressions;
+    }
+
+    @JsonIgnore
+    public TopologySelectorTermBuilder edit() {
+        return new TopologySelectorTermBuilder(this);
+    }
+
+    @JsonIgnore
+    public TopologySelectorTermBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -70,7 +71,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class TLSMatchAttributes implements KubernetesResource
+public class TLSMatchAttributes implements Editable<TLSMatchAttributesBuilder> , KubernetesResource
 {
 
     @JsonProperty("destinationSubnets")
@@ -167,6 +168,16 @@ public class TLSMatchAttributes implements KubernetesResource
     @JsonProperty("sourceNamespace")
     public void setSourceNamespace(java.lang.String sourceNamespace) {
         this.sourceNamespace = sourceNamespace;
+    }
+
+    @JsonIgnore
+    public TLSMatchAttributesBuilder edit() {
+        return new TLSMatchAttributesBuilder(this);
+    }
+
+    @JsonIgnore
+    public TLSMatchAttributesBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

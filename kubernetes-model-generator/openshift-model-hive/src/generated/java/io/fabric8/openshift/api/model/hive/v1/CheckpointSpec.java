@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -57,7 +58,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class CheckpointSpec implements KubernetesResource
+public class CheckpointSpec implements Editable<CheckpointSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("lastBackupChecksum")
@@ -111,6 +112,16 @@ public class CheckpointSpec implements KubernetesResource
     @JsonProperty("lastBackupTime")
     public void setLastBackupTime(String lastBackupTime) {
         this.lastBackupTime = lastBackupTime;
+    }
+
+    @JsonIgnore
+    public CheckpointSpecBuilder edit() {
+        return new CheckpointSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public CheckpointSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

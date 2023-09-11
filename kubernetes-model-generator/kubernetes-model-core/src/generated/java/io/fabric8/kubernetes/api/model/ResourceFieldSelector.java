@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.sundr.builder.annotations.Buildable;
 import lombok.EqualsAndHashCode;
 import lombok.Setter;
@@ -34,9 +35,9 @@ import lombok.experimental.Accessors;
     "_",
     ""
 })
-@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
+@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("jsonschema2pojo")
-public class ResourceFieldSelector implements KubernetesResource
+public class ResourceFieldSelector implements Editable<ResourceFieldSelectorBuilder> , KubernetesResource
 {
 
     @JsonProperty("containerName")
@@ -90,6 +91,16 @@ public class ResourceFieldSelector implements KubernetesResource
     @JsonProperty("resource")
     public void setResource(String resource) {
         this.resource = resource;
+    }
+
+    @JsonIgnore
+    public ResourceFieldSelectorBuilder edit() {
+        return new ResourceFieldSelectorBuilder(this);
+    }
+
+    @JsonIgnore
+    public ResourceFieldSelectorBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

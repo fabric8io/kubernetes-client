@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.istio.api.meta.v1alpha1.IstioStatus;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -74,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha3")
 @Group("networking.istio.io")
 @Generated("jsonschema2pojo")
-public class WorkloadEntry implements HasMetadata, Namespaced
+public class WorkloadEntry implements Editable<WorkloadEntryBuilder> , HasMetadata, Namespaced
 {
 
     /**
@@ -184,6 +185,16 @@ public class WorkloadEntry implements HasMetadata, Namespaced
     @JsonProperty("status")
     public void setStatus(IstioStatus status) {
         this.status = status;
+    }
+
+    @JsonIgnore
+    public WorkloadEntryBuilder edit() {
+        return new WorkloadEntryBuilder(this);
+    }
+
+    @JsonIgnore
+    public WorkloadEntryBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

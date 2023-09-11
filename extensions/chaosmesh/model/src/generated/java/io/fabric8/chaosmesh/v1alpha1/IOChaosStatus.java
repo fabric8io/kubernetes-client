@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -67,7 +68,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class IOChaosStatus implements KubernetesResource
+public class IOChaosStatus implements Editable<IOChaosStatusBuilder> , KubernetesResource
 {
 
     @JsonProperty("conditions")
@@ -123,6 +124,16 @@ public class IOChaosStatus implements KubernetesResource
     @JsonProperty("instances")
     public void setInstances(Map<String, Long> instances) {
         this.instances = instances;
+    }
+
+    @JsonIgnore
+    public IOChaosStatusBuilder edit() {
+        return new IOChaosStatusBuilder(this);
+    }
+
+    @JsonIgnore
+    public IOChaosStatusBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.EnvVar;
 import io.fabric8.kubernetes.api.model.IntOrString;
@@ -64,7 +65,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class Provisioning implements KubernetesResource
+public class Provisioning implements Editable<ProvisioningBuilder> , KubernetesResource
 {
 
     @JsonProperty("imageSetRef")
@@ -185,6 +186,16 @@ public class Provisioning implements KubernetesResource
     @JsonProperty("sshPrivateKeySecretRef")
     public void setSshPrivateKeySecretRef(io.fabric8.kubernetes.api.model.LocalObjectReference sshPrivateKeySecretRef) {
         this.sshPrivateKeySecretRef = sshPrivateKeySecretRef;
+    }
+
+    @JsonIgnore
+    public ProvisioningBuilder edit() {
+        return new ProvisioningBuilder(this);
+    }
+
+    @JsonIgnore
+    public ProvisioningBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

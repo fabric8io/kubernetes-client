@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -68,7 +69,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class ConfigMapKeySelector implements KubernetesResource
+public class ConfigMapKeySelector implements Editable<ConfigMapKeySelectorBuilder> , KubernetesResource
 {
 
     @JsonProperty("apiVersion")
@@ -187,6 +188,16 @@ public class ConfigMapKeySelector implements KubernetesResource
     @JsonProperty("uid")
     public void setUid(String uid) {
         this.uid = uid;
+    }
+
+    @JsonIgnore
+    public ConfigMapKeySelectorBuilder edit() {
+        return new ConfigMapKeySelectorBuilder(this);
+    }
+
+    @JsonIgnore
+    public ConfigMapKeySelectorBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

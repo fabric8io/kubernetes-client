@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -68,7 +69,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha2")
 @Group("gateway.networking.k8s.io")
 @Generated("jsonschema2pojo")
-public class TCPRouteList implements KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.TCPRoute>
+public class TCPRouteList implements Editable<TCPRouteListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.TCPRoute>
 {
 
     /**
@@ -166,6 +167,16 @@ public class TCPRouteList implements KubernetesResource, KubernetesResourceList<
     @JsonProperty("metadata")
     public void setMetadata(ListMeta metadata) {
         this.metadata = metadata;
+    }
+
+    @JsonIgnore
+    public TCPRouteListBuilder edit() {
+        return new TCPRouteListBuilder(this);
+    }
+
+    @JsonIgnore
+    public TCPRouteListBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

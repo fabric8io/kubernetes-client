@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -76,7 +77,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("eventing.knative.dev")
 @Generated("jsonschema2pojo")
-public class TriggerList implements KubernetesResource, KubernetesResourceList<io.fabric8.knative.eventing.v1.Trigger>
+public class TriggerList implements Editable<TriggerListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.knative.eventing.v1.Trigger>
 {
 
     /**
@@ -174,6 +175,16 @@ public class TriggerList implements KubernetesResource, KubernetesResourceList<i
     @JsonProperty("metadata")
     public void setMetadata(ListMeta metadata) {
         this.metadata = metadata;
+    }
+
+    @JsonIgnore
+    public TriggerListBuilder edit() {
+        return new TriggerListBuilder(this);
+    }
+
+    @JsonIgnore
+    public TriggerListBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

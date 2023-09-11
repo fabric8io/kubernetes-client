@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Condition;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
@@ -58,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class NetworkPolicyStatus implements KubernetesResource
+public class NetworkPolicyStatus implements Editable<NetworkPolicyStatusBuilder> , KubernetesResource
 {
 
     @JsonProperty("conditions")
@@ -87,6 +88,16 @@ public class NetworkPolicyStatus implements KubernetesResource
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;
+    }
+
+    @JsonIgnore
+    public NetworkPolicyStatusBuilder edit() {
+        return new NetworkPolicyStatusBuilder(this);
+    }
+
+    @JsonIgnore
+    public NetworkPolicyStatusBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

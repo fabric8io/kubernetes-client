@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -63,7 +64,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class Host implements KubernetesResource
+public class Host implements Editable<HostBuilder> , KubernetesResource
 {
 
     @JsonProperty("bmc")
@@ -182,6 +183,16 @@ public class Host implements KubernetesResource
     @JsonProperty("rootDeviceHints")
     public void setRootDeviceHints(RootDeviceHints rootDeviceHints) {
         this.rootDeviceHints = rootDeviceHints;
+    }
+
+    @JsonIgnore
+    public HostBuilder edit() {
+        return new HostBuilder(this);
+    }
+
+    @JsonIgnore
+    public HostBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

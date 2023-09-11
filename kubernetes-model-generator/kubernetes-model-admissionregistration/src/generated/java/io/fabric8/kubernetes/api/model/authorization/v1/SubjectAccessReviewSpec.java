@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -62,7 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class SubjectAccessReviewSpec implements KubernetesResource
+public class SubjectAccessReviewSpec implements Editable<SubjectAccessReviewSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("extra")
@@ -157,6 +158,16 @@ public class SubjectAccessReviewSpec implements KubernetesResource
     @JsonProperty("user")
     public void setUser(java.lang.String user) {
         this.user = user;
+    }
+
+    @JsonIgnore
+    public SubjectAccessReviewSpecBuilder edit() {
+        return new SubjectAccessReviewSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public SubjectAccessReviewSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

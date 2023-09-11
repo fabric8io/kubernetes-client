@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -55,7 +56,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class DeprecatedWebhookTokenAuthenticator implements KubernetesResource
+public class DeprecatedWebhookTokenAuthenticator implements Editable<DeprecatedWebhookTokenAuthenticatorBuilder> , KubernetesResource
 {
 
     @JsonProperty("kubeConfig")
@@ -83,6 +84,16 @@ public class DeprecatedWebhookTokenAuthenticator implements KubernetesResource
     @JsonProperty("kubeConfig")
     public void setKubeConfig(SecretNameReference kubeConfig) {
         this.kubeConfig = kubeConfig;
+    }
+
+    @JsonIgnore
+    public DeprecatedWebhookTokenAuthenticatorBuilder edit() {
+        return new DeprecatedWebhookTokenAuthenticatorBuilder(this);
+    }
+
+    @JsonIgnore
+    public DeprecatedWebhookTokenAuthenticatorBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

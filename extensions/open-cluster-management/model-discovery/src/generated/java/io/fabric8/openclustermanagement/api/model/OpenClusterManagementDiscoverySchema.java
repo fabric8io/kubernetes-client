@@ -2,10 +2,12 @@
 package io.fabric8.openclustermanagement.api.model;
 
 import javax.annotation.Generated;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -74,7 +76,8 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class OpenClusterManagementDiscoverySchema {
+public class OpenClusterManagementDiscoverySchema implements Editable<OpenClusterManagementDiscoverySchemaBuilder>
+{
 
     @JsonProperty("github_com_open-cluster-management_discovery_api_v1alpha1_DiscoveredCluster")
     private DiscoveredCluster githubComOpenClusterManagementDiscoveryApiV1alpha1DiscoveredCluster;
@@ -203,6 +206,16 @@ public class OpenClusterManagementDiscoverySchema {
     @JsonProperty("github_com_open-cluster-management_discovery_api_v1alpha1_Filter")
     public void setGithubComOpenClusterManagementDiscoveryApiV1alpha1Filter(Filter githubComOpenClusterManagementDiscoveryApiV1alpha1Filter) {
         this.githubComOpenClusterManagementDiscoveryApiV1alpha1Filter = githubComOpenClusterManagementDiscoveryApiV1alpha1Filter;
+    }
+
+    @JsonIgnore
+    public OpenClusterManagementDiscoverySchemaBuilder edit() {
+        return new OpenClusterManagementDiscoverySchemaBuilder(this);
+    }
+
+    @JsonIgnore
+    public OpenClusterManagementDiscoverySchemaBuilder toBuilder() {
+        return edit();
     }
 
 }

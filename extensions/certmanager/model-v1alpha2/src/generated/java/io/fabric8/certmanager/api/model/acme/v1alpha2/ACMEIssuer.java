@@ -14,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.certmanager.api.model.meta.v1.SecretKeySelector;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -74,7 +75,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class ACMEIssuer implements KubernetesResource
+public class ACMEIssuer implements Editable<ACMEIssuerBuilder> , KubernetesResource
 {
 
     @JsonProperty("disableAccountKeyGeneration")
@@ -207,6 +208,16 @@ public class ACMEIssuer implements KubernetesResource
     @JsonProperty("solvers")
     public void setSolvers(List<ACMEChallengeSolver> solvers) {
         this.solvers = solvers;
+    }
+
+    @JsonIgnore
+    public ACMEIssuerBuilder edit() {
+        return new ACMEIssuerBuilder(this);
+    }
+
+    @JsonIgnore
+    public ACMEIssuerBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

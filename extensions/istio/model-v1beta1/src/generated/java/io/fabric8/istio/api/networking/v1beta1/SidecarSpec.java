@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -68,7 +69,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class SidecarSpec implements KubernetesResource
+public class SidecarSpec implements Editable<SidecarSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("egress")
@@ -137,6 +138,16 @@ public class SidecarSpec implements KubernetesResource
     @JsonProperty("workloadSelector")
     public void setWorkloadSelector(WorkloadSelector workloadSelector) {
         this.workloadSelector = workloadSelector;
+    }
+
+    @JsonIgnore
+    public SidecarSpecBuilder edit() {
+        return new SidecarSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public SidecarSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

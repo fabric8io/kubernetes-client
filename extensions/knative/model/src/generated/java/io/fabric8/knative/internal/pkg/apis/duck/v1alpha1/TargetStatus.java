@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -63,7 +64,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class TargetStatus implements KubernetesResource
+public class TargetStatus implements Editable<TargetStatusBuilder> , KubernetesResource
 {
 
     @JsonProperty("targetable")
@@ -91,6 +92,16 @@ public class TargetStatus implements KubernetesResource
     @JsonProperty("targetable")
     public void setTargetable(Targetable targetable) {
         this.targetable = targetable;
+    }
+
+    @JsonIgnore
+    public TargetStatusBuilder edit() {
+        return new TargetStatusBuilder(this);
+    }
+
+    @JsonIgnore
+    public TargetStatusBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

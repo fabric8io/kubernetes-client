@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -56,7 +57,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class IngressClassSpec implements KubernetesResource
+public class IngressClassSpec implements Editable<IngressClassSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("controller")
@@ -97,6 +98,16 @@ public class IngressClassSpec implements KubernetesResource
     @JsonProperty("parameters")
     public void setParameters(IngressClassParametersReference parameters) {
         this.parameters = parameters;
+    }
+
+    @JsonIgnore
+    public IngressClassSpecBuilder edit() {
+        return new IngressClassSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public IngressClassSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
@@ -75,7 +76,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class Endpoint implements KubernetesResource
+public class Endpoint implements Editable<EndpointBuilder> , KubernetesResource
 {
 
     @JsonProperty("authorization")
@@ -340,6 +341,16 @@ public class Endpoint implements KubernetesResource
     @JsonProperty("tlsConfig")
     public void setTlsConfig(TLSConfig tlsConfig) {
         this.tlsConfig = tlsConfig;
+    }
+
+    @JsonIgnore
+    public EndpointBuilder edit() {
+        return new EndpointBuilder(this);
+    }
+
+    @JsonIgnore
+    public EndpointBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

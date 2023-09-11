@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -59,7 +60,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class Perspective implements KubernetesResource
+public class Perspective implements Editable<PerspectiveBuilder> , KubernetesResource
 {
 
     @JsonProperty("id")
@@ -114,6 +115,16 @@ public class Perspective implements KubernetesResource
     @JsonProperty("visibility")
     public void setVisibility(PerspectiveVisibility visibility) {
         this.visibility = visibility;
+    }
+
+    @JsonIgnore
+    public PerspectiveBuilder edit() {
+        return new PerspectiveBuilder(this);
+    }
+
+    @JsonIgnore
+    public PerspectiveBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

@@ -2,10 +2,12 @@
 package io.fabric8.volumesnapshot.api.model;
 
 import javax.annotation.Generated;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -69,7 +71,8 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class VolumesnapshotSchema {
+public class VolumesnapshotSchema implements Editable<VolumesnapshotSchemaBuilder>
+{
 
     @JsonProperty("github_com_kubernetes-csi_external-snapshotter_client_v4_apis_volumesnapshot_v1_VolumeSnapshot")
     private VolumeSnapshot githubComKubernetesCsiExternalSnapshotterClientV4ApisVolumesnapshotV1VolumeSnapshot;
@@ -250,6 +253,16 @@ public class VolumesnapshotSchema {
     @JsonProperty("github_com_kubernetes-csi_external-snapshotter_client_v4_apis_volumesnapshot_v1_VolumeSnapshotStatus")
     public void setGithubComKubernetesCsiExternalSnapshotterClientV4ApisVolumesnapshotV1VolumeSnapshotStatus(VolumeSnapshotStatus githubComKubernetesCsiExternalSnapshotterClientV4ApisVolumesnapshotV1VolumeSnapshotStatus) {
         this.githubComKubernetesCsiExternalSnapshotterClientV4ApisVolumesnapshotV1VolumeSnapshotStatus = githubComKubernetesCsiExternalSnapshotterClientV4ApisVolumesnapshotV1VolumeSnapshotStatus;
+    }
+
+    @JsonIgnore
+    public VolumesnapshotSchemaBuilder edit() {
+        return new VolumesnapshotSchemaBuilder(this);
+    }
+
+    @JsonIgnore
+    public VolumesnapshotSchemaBuilder toBuilder() {
+        return edit();
     }
 
 }

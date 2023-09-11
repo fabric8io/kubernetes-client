@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.istio.api.meta.v1alpha1.IstioStatus;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -74,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1beta1")
 @Group("networking.istio.io")
 @Generated("jsonschema2pojo")
-public class ServiceEntry implements HasMetadata, Namespaced
+public class ServiceEntry implements Editable<ServiceEntryBuilder> , HasMetadata, Namespaced
 {
 
     /**
@@ -184,6 +185,16 @@ public class ServiceEntry implements HasMetadata, Namespaced
     @JsonProperty("status")
     public void setStatus(IstioStatus status) {
         this.status = status;
+    }
+
+    @JsonIgnore
+    public ServiceEntryBuilder edit() {
+        return new ServiceEntryBuilder(this);
+    }
+
+    @JsonIgnore
+    public ServiceEntryBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

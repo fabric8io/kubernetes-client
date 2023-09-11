@@ -15,6 +15,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.knative.internal.pkg.apis.Condition;
 import io.fabric8.knative.internal.pkg.apis.duck.v1.CloudEventAttributes;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -73,7 +74,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class ApiServerSourceStatus implements KubernetesResource
+public class ApiServerSourceStatus implements Editable<ApiServerSourceStatusBuilder> , KubernetesResource
 {
 
     @JsonProperty("annotations")
@@ -183,6 +184,16 @@ public class ApiServerSourceStatus implements KubernetesResource
     @JsonProperty("sinkUri")
     public void setSinkUri(java.lang.String sinkUri) {
         this.sinkUri = sinkUri;
+    }
+
+    @JsonIgnore
+    public ApiServerSourceStatusBuilder edit() {
+        return new ApiServerSourceStatusBuilder(this);
+    }
+
+    @JsonIgnore
+    public ApiServerSourceStatusBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

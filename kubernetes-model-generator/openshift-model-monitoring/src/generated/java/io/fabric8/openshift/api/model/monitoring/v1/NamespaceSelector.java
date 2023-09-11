@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -58,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class NamespaceSelector implements KubernetesResource
+public class NamespaceSelector implements Editable<NamespaceSelectorBuilder> , KubernetesResource
 {
 
     @JsonProperty("any")
@@ -100,6 +101,16 @@ public class NamespaceSelector implements KubernetesResource
     @JsonProperty("matchNames")
     public void setMatchNames(List<String> matchNames) {
         this.matchNames = matchNames;
+    }
+
+    @JsonIgnore
+    public NamespaceSelectorBuilder edit() {
+        return new NamespaceSelectorBuilder(this);
+    }
+
+    @JsonIgnore
+    public NamespaceSelectorBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

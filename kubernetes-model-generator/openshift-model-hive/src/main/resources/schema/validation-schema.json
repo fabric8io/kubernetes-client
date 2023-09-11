@@ -12139,12 +12139,19 @@
     },
     "machinepool": {
       "properties": {
-        "flavor": {
-          "type": "string"
+        "coresPerSocket": {
+          "type": "integer"
         },
-        "rootVolume": {
-          "$ref": "#/definitions/os_hive_openstack_v1_RootVolume",
-          "existingJavaType": "io.fabric8.openshift.api.model.hive.openstack.v1.RootVolume"
+        "cpus": {
+          "type": "integer"
+        },
+        "memoryMB": {
+          "type": "integer",
+          "existingJavaType": "Long"
+        },
+        "osDisk": {
+          "$ref": "#/definitions/os_hive_vsphere_v1_OSDisk",
+          "existingJavaType": "io.fabric8.openshift.api.model.hive.vsphere.v1.OSDisk"
         }
       },
       "additionalProperties": true
@@ -12272,30 +12279,33 @@
     },
     "machinepoolplatform": {
       "properties": {
-        "rootVolume": {
-          "$ref": "#/definitions/os_hive_aws_v1_EC2RootVolume",
-          "existingJavaType": "io.fabric8.openshift.api.model.hive.aws.v1.EC2RootVolume"
+        "aws": {
+          "$ref": "#/definitions/os_hive_aws_v1_MachinePoolPlatform",
+          "existingJavaType": "io.fabric8.openshift.api.model.hive.aws.v1.MachinePoolPlatform"
         },
-        "spotMarketOptions": {
-          "$ref": "#/definitions/os_hive_aws_v1_SpotMarketOptions",
-          "existingJavaType": "io.fabric8.openshift.api.model.hive.aws.v1.SpotMarketOptions"
+        "azure": {
+          "$ref": "#/definitions/os_hive_azure_v1_MachinePool",
+          "existingJavaType": "io.fabric8.openshift.api.model.hive.azure.v1.MachinePool"
         },
-        "subnets": {
-          "type": "array",
-          "javaOmitEmpty": true,
-          "items": {
-            "type": "string"
-          }
+        "gcp": {
+          "$ref": "#/definitions/os_hive_gcp_v1_MachinePool",
+          "existingJavaType": "io.fabric8.openshift.api.model.hive.gcp.v1.MachinePool"
         },
-        "type": {
-          "type": "string"
+        "ibmcloud": {
+          "$ref": "#/definitions/os_hive_ibmcloud_v1_MachinePool",
+          "existingJavaType": "io.fabric8.openshift.api.model.hive.ibmcloud.v1.MachinePool"
         },
-        "zones": {
-          "type": "array",
-          "javaOmitEmpty": true,
-          "items": {
-            "type": "string"
-          }
+        "openstack": {
+          "$ref": "#/definitions/os_hive_openstack_v1_MachinePool",
+          "existingJavaType": "io.fabric8.openshift.api.model.hive.openstack.v1.MachinePool"
+        },
+        "ovirt": {
+          "$ref": "#/definitions/os_hive_ovirt_v1_MachinePool",
+          "existingJavaType": "io.fabric8.openshift.api.model.hive.ovirt.v1.MachinePool"
+        },
+        "vsphere": {
+          "$ref": "#/definitions/os_hive_vsphere_v1_MachinePool",
+          "existingJavaType": "io.fabric8.openshift.api.model.hive.vsphere.v1.MachinePool"
         }
       },
       "additionalProperties": true
@@ -12877,36 +12887,31 @@
     },
     "platform": {
       "properties": {
-        "credentialsAssumeRole": {
-          "$ref": "#/definitions/os_hive_aws_v1_AssumeRole",
-          "existingJavaType": "io.fabric8.openshift.api.model.hive.aws.v1.AssumeRole"
+        "certificatesSecretRef": {
+          "$ref": "#/definitions/kubernetes_core_LocalObjectReference",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.LocalObjectReference"
         },
         "credentialsSecretRef": {
           "$ref": "#/definitions/kubernetes_core_LocalObjectReference",
           "existingJavaType": "io.fabric8.kubernetes.api.model.LocalObjectReference"
         },
-        "privateLink": {
-          "$ref": "#/definitions/os_hive_aws_v1_PrivateLinkAccess",
-          "existingJavaType": "io.fabric8.openshift.api.model.hive.aws.v1.PrivateLinkAccess"
-        },
-        "region": {
+        "ovirt_cluster_id": {
           "type": "string"
         },
-        "userTags": {
-          "type": "object",
-          "additionalProperties": {
-            "type": "string"
-          },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+        "ovirt_network_name": {
+          "type": "string"
+        },
+        "storage_domain_id": {
+          "type": "string"
         }
       },
       "additionalProperties": true
     },
     "platformstatus": {
       "properties": {
-        "aws": {
-          "$ref": "#/definitions/os_hive_aws_v1_PlatformStatus",
-          "existingJavaType": "io.fabric8.openshift.api.model.hive.aws.v1.PlatformStatus"
+        "privateLink": {
+          "$ref": "#/definitions/os_hive_aws_v1_PrivateLinkAccessStatus",
+          "existingJavaType": "io.fabric8.openshift.api.model.hive.aws.v1.PrivateLinkAccessStatus"
         }
       },
       "additionalProperties": true

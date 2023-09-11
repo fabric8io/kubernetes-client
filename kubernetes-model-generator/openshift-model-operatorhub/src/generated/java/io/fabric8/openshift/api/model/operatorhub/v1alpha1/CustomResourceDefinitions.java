@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -58,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class CustomResourceDefinitions implements KubernetesResource
+public class CustomResourceDefinitions implements Editable<CustomResourceDefinitionsBuilder> , KubernetesResource
 {
 
     @JsonProperty("owned")
@@ -101,6 +102,16 @@ public class CustomResourceDefinitions implements KubernetesResource
     @JsonProperty("required")
     public void setRequired(List<CRDDescription> required) {
         this.required = required;
+    }
+
+    @JsonIgnore
+    public CustomResourceDefinitionsBuilder edit() {
+        return new CustomResourceDefinitionsBuilder(this);
+    }
+
+    @JsonIgnore
+    public CustomResourceDefinitionsBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
@@ -45,14 +46,14 @@ import lombok.experimental.Accessors;
     "_",
     ""
 })
-@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
+@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @TemplateTransformations({
     @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true)
 })
 @Version("v1")
 @Group("")
 @Generated("jsonschema2pojo")
-public class ListOptions implements KubernetesResource
+public class ListOptions implements Editable<ListOptionsBuilder> , KubernetesResource
 {
 
     @JsonProperty("allowWatchBookmarks")
@@ -253,6 +254,16 @@ public class ListOptions implements KubernetesResource
     @JsonProperty("watch")
     public void setWatch(Boolean watch) {
         this.watch = watch;
+    }
+
+    @JsonIgnore
+    public ListOptionsBuilder edit() {
+        return new ListOptionsBuilder(this);
+    }
+
+    @JsonIgnore
+    public ListOptionsBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

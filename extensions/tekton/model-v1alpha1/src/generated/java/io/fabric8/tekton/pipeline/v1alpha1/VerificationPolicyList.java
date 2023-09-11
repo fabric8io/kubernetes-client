@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -76,7 +77,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha1")
 @Group("tekton.dev")
 @Generated("jsonschema2pojo")
-public class VerificationPolicyList implements KubernetesResource, KubernetesResourceList<io.fabric8.tekton.pipeline.v1alpha1.VerificationPolicy>
+public class VerificationPolicyList implements Editable<VerificationPolicyListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.tekton.pipeline.v1alpha1.VerificationPolicy>
 {
 
     /**
@@ -174,6 +175,16 @@ public class VerificationPolicyList implements KubernetesResource, KubernetesRes
     @JsonProperty("metadata")
     public void setMetadata(ListMeta metadata) {
         this.metadata = metadata;
+    }
+
+    @JsonIgnore
+    public VerificationPolicyListBuilder edit() {
+        return new VerificationPolicyListBuilder(this);
+    }
+
+    @JsonIgnore
+    public VerificationPolicyListBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

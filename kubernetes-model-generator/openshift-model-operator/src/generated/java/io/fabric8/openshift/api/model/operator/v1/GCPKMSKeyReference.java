@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -58,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class GCPKMSKeyReference implements KubernetesResource
+public class GCPKMSKeyReference implements Editable<GCPKMSKeyReferenceBuilder> , KubernetesResource
 {
 
     @JsonProperty("keyRing")
@@ -125,6 +126,16 @@ public class GCPKMSKeyReference implements KubernetesResource
     @JsonProperty("projectID")
     public void setProjectID(String projectID) {
         this.projectID = projectID;
+    }
+
+    @JsonIgnore
+    public GCPKMSKeyReferenceBuilder edit() {
+        return new GCPKMSKeyReferenceBuilder(this);
+    }
+
+    @JsonIgnore
+    public GCPKMSKeyReferenceBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

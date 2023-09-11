@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -76,7 +77,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha1")
 @Group("sources.knative.dev")
 @Generated("jsonschema2pojo")
-public class GitLabSourceList implements KubernetesResource, KubernetesResourceList<io.fabric8.knative.eventing.contrib.gitlab.v1alpha1.GitLabSource>
+public class GitLabSourceList implements Editable<GitLabSourceListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.knative.eventing.contrib.gitlab.v1alpha1.GitLabSource>
 {
 
     /**
@@ -174,6 +175,16 @@ public class GitLabSourceList implements KubernetesResource, KubernetesResourceL
     @JsonProperty("metadata")
     public void setMetadata(ListMeta metadata) {
         this.metadata = metadata;
+    }
+
+    @JsonIgnore
+    public GitLabSourceListBuilder edit() {
+        return new GitLabSourceListBuilder(this);
+    }
+
+    @JsonIgnore
+    public GitLabSourceListBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

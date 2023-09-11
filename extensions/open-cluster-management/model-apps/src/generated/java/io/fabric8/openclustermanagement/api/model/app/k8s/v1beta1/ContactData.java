@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -65,7 +66,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class ContactData implements KubernetesResource
+public class ContactData implements Editable<ContactDataBuilder> , KubernetesResource
 {
 
     @JsonProperty("email")
@@ -119,6 +120,16 @@ public class ContactData implements KubernetesResource
     @JsonProperty("url")
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    @JsonIgnore
+    public ContactDataBuilder edit() {
+        return new ContactDataBuilder(this);
+    }
+
+    @JsonIgnore
+    public ContactDataBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

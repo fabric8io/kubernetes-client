@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -62,7 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ClusterAutoscalerSpec implements KubernetesResource
+public class ClusterAutoscalerSpec implements Editable<ClusterAutoscalerSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("balanceSimilarNodeGroups")
@@ -181,6 +182,16 @@ public class ClusterAutoscalerSpec implements KubernetesResource
     @JsonProperty("skipNodesWithLocalStorage")
     public void setSkipNodesWithLocalStorage(Boolean skipNodesWithLocalStorage) {
         this.skipNodesWithLocalStorage = skipNodesWithLocalStorage;
+    }
+
+    @JsonIgnore
+    public ClusterAutoscalerSpecBuilder edit() {
+        return new ClusterAutoscalerSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public ClusterAutoscalerSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

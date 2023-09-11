@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -73,7 +74,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha1")
 @Group("discovery.open-cluster-management.io")
 @Generated("jsonschema2pojo")
-public class DiscoveryConfig implements HasMetadata, Namespaced
+public class DiscoveryConfig implements Editable<DiscoveryConfigBuilder> , HasMetadata, Namespaced
 {
 
     /**
@@ -183,6 +184,16 @@ public class DiscoveryConfig implements HasMetadata, Namespaced
     @JsonProperty("status")
     public void setStatus(DiscoveryConfigStatus status) {
         this.status = status;
+    }
+
+    @JsonIgnore
+    public DiscoveryConfigBuilder edit() {
+        return new DiscoveryConfigBuilder(this);
+    }
+
+    @JsonIgnore
+    public DiscoveryConfigBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

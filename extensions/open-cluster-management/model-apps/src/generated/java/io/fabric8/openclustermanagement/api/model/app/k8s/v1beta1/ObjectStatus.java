@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -66,7 +67,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class ObjectStatus implements KubernetesResource
+public class ObjectStatus implements Editable<ObjectStatusBuilder> , KubernetesResource
 {
 
     @JsonProperty("group")
@@ -146,6 +147,16 @@ public class ObjectStatus implements KubernetesResource
     @JsonProperty("status")
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    @JsonIgnore
+    public ObjectStatusBuilder edit() {
+        return new ObjectStatusBuilder(this);
+    }
+
+    @JsonIgnore
+    public ObjectStatusBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

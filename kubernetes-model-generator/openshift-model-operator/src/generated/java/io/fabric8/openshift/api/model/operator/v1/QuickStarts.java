@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -57,7 +58,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class QuickStarts implements KubernetesResource
+public class QuickStarts implements Editable<QuickStartsBuilder> , KubernetesResource
 {
 
     @JsonProperty("disabled")
@@ -86,6 +87,16 @@ public class QuickStarts implements KubernetesResource
     @JsonProperty("disabled")
     public void setDisabled(List<String> disabled) {
         this.disabled = disabled;
+    }
+
+    @JsonIgnore
+    public QuickStartsBuilder edit() {
+        return new QuickStartsBuilder(this);
+    }
+
+    @JsonIgnore
+    public QuickStartsBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

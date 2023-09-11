@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -73,7 +74,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class AttrOverrideSpec implements KubernetesResource
+public class AttrOverrideSpec implements Editable<AttrOverrideSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("atime")
@@ -244,6 +245,16 @@ public class AttrOverrideSpec implements KubernetesResource
     @JsonProperty("uid")
     public void setUid(Long uid) {
         this.uid = uid;
+    }
+
+    @JsonIgnore
+    public AttrOverrideSpecBuilder edit() {
+        return new AttrOverrideSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public AttrOverrideSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

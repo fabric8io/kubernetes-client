@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
@@ -70,7 +71,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class WebhookDescription implements KubernetesResource
+public class WebhookDescription implements Editable<WebhookDescriptionBuilder> , KubernetesResource
 {
 
     @JsonProperty("admissionReviewVersions")
@@ -283,6 +284,16 @@ public class WebhookDescription implements KubernetesResource
     @JsonProperty("webhookPath")
     public void setWebhookPath(String webhookPath) {
         this.webhookPath = webhookPath;
+    }
+
+    @JsonIgnore
+    public WebhookDescriptionBuilder edit() {
+        return new WebhookDescriptionBuilder(this);
+    }
+
+    @JsonIgnore
+    public WebhookDescriptionBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

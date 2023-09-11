@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -62,7 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class AuthorizationPolicyProvider implements IsAuthorizationPolicyActionDetail
+public class AuthorizationPolicyProvider implements IsAuthorizationPolicyActionDetail, Editable<AuthorizationPolicyProviderBuilder>
 {
 
     @JsonProperty("provider")
@@ -90,6 +91,16 @@ public class AuthorizationPolicyProvider implements IsAuthorizationPolicyActionD
     @JsonProperty("provider")
     public void setProvider(AuthorizationPolicyExtensionProvider provider) {
         this.provider = provider;
+    }
+
+    @JsonIgnore
+    public AuthorizationPolicyProviderBuilder edit() {
+        return new AuthorizationPolicyProviderBuilder(this);
+    }
+
+    @JsonIgnore
+    public AuthorizationPolicyProviderBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

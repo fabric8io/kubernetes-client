@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -69,7 +70,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class TrafficPolicy implements KubernetesResource
+public class TrafficPolicy implements Editable<TrafficPolicyBuilder> , KubernetesResource
 {
 
     @JsonProperty("connectionPool")
@@ -150,6 +151,16 @@ public class TrafficPolicy implements KubernetesResource
     @JsonProperty("tls")
     public void setTls(ClientTLSSettings tls) {
         this.tls = tls;
+    }
+
+    @JsonIgnore
+    public TrafficPolicyBuilder edit() {
+        return new TrafficPolicyBuilder(this);
+    }
+
+    @JsonIgnore
+    public TrafficPolicyBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

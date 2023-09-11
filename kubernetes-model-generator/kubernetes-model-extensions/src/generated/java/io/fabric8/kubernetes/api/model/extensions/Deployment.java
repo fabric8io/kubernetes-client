@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
@@ -65,7 +66,7 @@ import lombok.experimental.Accessors;
 @Version("v1beta1")
 @Group("extensions")
 @Generated("jsonschema2pojo")
-public class Deployment implements HasMetadata, Namespaced
+public class Deployment implements Editable<DeploymentBuilder> , HasMetadata, Namespaced
 {
 
     /**
@@ -175,6 +176,16 @@ public class Deployment implements HasMetadata, Namespaced
     @JsonProperty("status")
     public void setStatus(DeploymentStatus status) {
         this.status = status;
+    }
+
+    @JsonIgnore
+    public DeploymentBuilder edit() {
+        return new DeploymentBuilder(this);
+    }
+
+    @JsonIgnore
+    public DeploymentBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

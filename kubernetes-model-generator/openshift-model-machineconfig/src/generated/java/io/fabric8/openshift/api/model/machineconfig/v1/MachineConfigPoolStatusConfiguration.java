@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -70,7 +71,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("machineconfiguration.openshift.io")
 @Generated("jsonschema2pojo")
-public class MachineConfigPoolStatusConfiguration implements KubernetesResource
+public class MachineConfigPoolStatusConfiguration implements Editable<MachineConfigPoolStatusConfigurationBuilder> , KubernetesResource
 {
 
     /**
@@ -220,6 +221,16 @@ public class MachineConfigPoolStatusConfiguration implements KubernetesResource
     @JsonProperty("uid")
     public void setUid(String uid) {
         this.uid = uid;
+    }
+
+    @JsonIgnore
+    public MachineConfigPoolStatusConfigurationBuilder edit() {
+        return new MachineConfigPoolStatusConfigurationBuilder(this);
+    }
+
+    @JsonIgnore
+    public MachineConfigPoolStatusConfigurationBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

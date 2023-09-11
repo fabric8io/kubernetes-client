@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.IntOrString;
@@ -67,7 +68,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(RawExtension.class)
 })
 @Generated("jsonschema2pojo")
-public class KubeControllerManagerSpec implements KubernetesResource
+public class KubeControllerManagerSpec implements Editable<KubeControllerManagerSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("failedRevisionLimit")
@@ -199,6 +200,16 @@ public class KubeControllerManagerSpec implements KubernetesResource
     @JsonProperty("useMoreSecureServiceCA")
     public void setUseMoreSecureServiceCA(Boolean useMoreSecureServiceCA) {
         this.useMoreSecureServiceCA = useMoreSecureServiceCA;
+    }
+
+    @JsonIgnore
+    public KubeControllerManagerSpecBuilder edit() {
+        return new KubeControllerManagerSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public KubeControllerManagerSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

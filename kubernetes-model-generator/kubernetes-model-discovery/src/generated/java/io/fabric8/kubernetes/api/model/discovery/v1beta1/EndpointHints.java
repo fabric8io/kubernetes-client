@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -57,7 +58,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class EndpointHints implements KubernetesResource
+public class EndpointHints implements Editable<EndpointHintsBuilder> , KubernetesResource
 {
 
     @JsonProperty("forZones")
@@ -86,6 +87,16 @@ public class EndpointHints implements KubernetesResource
     @JsonProperty("forZones")
     public void setForZones(List<ForZone> forZones) {
         this.forZones = forZones;
+    }
+
+    @JsonIgnore
+    public EndpointHintsBuilder edit() {
+        return new EndpointHintsBuilder(this);
+    }
+
+    @JsonIgnore
+    public EndpointHintsBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

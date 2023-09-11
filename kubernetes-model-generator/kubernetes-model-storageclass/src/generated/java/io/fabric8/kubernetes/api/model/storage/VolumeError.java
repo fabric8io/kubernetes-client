@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -56,7 +57,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class VolumeError implements KubernetesResource
+public class VolumeError implements Editable<VolumeErrorBuilder> , KubernetesResource
 {
 
     @JsonProperty("message")
@@ -97,6 +98,16 @@ public class VolumeError implements KubernetesResource
     @JsonProperty("time")
     public void setTime(String time) {
         this.time = time;
+    }
+
+    @JsonIgnore
+    public VolumeErrorBuilder edit() {
+        return new VolumeErrorBuilder(this);
+    }
+
+    @JsonIgnore
+    public VolumeErrorBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -67,7 +68,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class CAIssuer implements KubernetesResource
+public class CAIssuer implements Editable<CAIssuerBuilder> , KubernetesResource
 {
 
     @JsonProperty("crlDistributionPoints")
@@ -123,6 +124,16 @@ public class CAIssuer implements KubernetesResource
     @JsonProperty("secretName")
     public void setSecretName(String secretName) {
         this.secretName = secretName;
+    }
+
+    @JsonIgnore
+    public CAIssuerBuilder edit() {
+        return new CAIssuerBuilder(this);
+    }
+
+    @JsonIgnore
+    public CAIssuerBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

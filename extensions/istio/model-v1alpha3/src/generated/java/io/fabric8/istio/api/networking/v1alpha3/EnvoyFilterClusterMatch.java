@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -66,7 +67,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class EnvoyFilterClusterMatch implements KubernetesResource
+public class EnvoyFilterClusterMatch implements Editable<EnvoyFilterClusterMatchBuilder> , KubernetesResource
 {
 
     @JsonProperty("name")
@@ -133,6 +134,16 @@ public class EnvoyFilterClusterMatch implements KubernetesResource
     @JsonProperty("subset")
     public void setSubset(String subset) {
         this.subset = subset;
+    }
+
+    @JsonIgnore
+    public EnvoyFilterClusterMatchBuilder edit() {
+        return new EnvoyFilterClusterMatchBuilder(this);
+    }
+
+    @JsonIgnore
+    public EnvoyFilterClusterMatchBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

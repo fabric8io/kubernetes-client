@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
@@ -66,7 +67,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha2")
 @Group("resource.k8s.io")
 @Generated("jsonschema2pojo")
-public class ResourceClass implements HasMetadata
+public class ResourceClass implements Editable<ResourceClassBuilder> , HasMetadata
 {
 
     /**
@@ -189,6 +190,16 @@ public class ResourceClass implements HasMetadata
     @JsonProperty("suitableNodes")
     public void setSuitableNodes(NodeSelector suitableNodes) {
         this.suitableNodes = suitableNodes;
+    }
+
+    @JsonIgnore
+    public ResourceClassBuilder edit() {
+        return new ResourceClassBuilder(this);
+    }
+
+    @JsonIgnore
+    public ResourceClassBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

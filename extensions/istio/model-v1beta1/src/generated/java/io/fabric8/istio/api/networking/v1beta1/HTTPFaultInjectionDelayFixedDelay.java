@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -62,7 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class HTTPFaultInjectionDelayFixedDelay implements IsHTTPFaultInjectionDelayHttpDelayType
+public class HTTPFaultInjectionDelayFixedDelay implements IsHTTPFaultInjectionDelayHttpDelayType, Editable<HTTPFaultInjectionDelayFixedDelayBuilder>
 {
 
     @JsonProperty("fixedDelay")
@@ -90,6 +91,16 @@ public class HTTPFaultInjectionDelayFixedDelay implements IsHTTPFaultInjectionDe
     @JsonProperty("fixedDelay")
     public void setFixedDelay(String fixedDelay) {
         this.fixedDelay = fixedDelay;
+    }
+
+    @JsonIgnore
+    public HTTPFaultInjectionDelayFixedDelayBuilder edit() {
+        return new HTTPFaultInjectionDelayFixedDelayBuilder(this);
+    }
+
+    @JsonIgnore
+    public HTTPFaultInjectionDelayFixedDelayBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

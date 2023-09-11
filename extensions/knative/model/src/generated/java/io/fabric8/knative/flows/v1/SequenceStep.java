@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.knative.internal.eventing.pkg.apis.duck.v1.DeliverySpec;
 import io.fabric8.knative.internal.pkg.apis.duck.v1.KReference;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -68,7 +69,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class SequenceStep implements KubernetesResource
+public class SequenceStep implements Editable<SequenceStepBuilder> , KubernetesResource
 {
 
     @JsonProperty("CACerts")
@@ -135,6 +136,16 @@ public class SequenceStep implements KubernetesResource
     @JsonProperty("uri")
     public void setUri(java.lang.String uri) {
         this.uri = uri;
+    }
+
+    @JsonIgnore
+    public SequenceStepBuilder edit() {
+        return new SequenceStepBuilder(this);
+    }
+
+    @JsonIgnore
+    public SequenceStepBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

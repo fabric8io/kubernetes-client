@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -63,7 +64,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class InterceptorSpec implements KubernetesResource
+public class InterceptorSpec implements Editable<InterceptorSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("clientConfig")
@@ -91,6 +92,16 @@ public class InterceptorSpec implements KubernetesResource
     @JsonProperty("clientConfig")
     public void setClientConfig(ClientConfig clientConfig) {
         this.clientConfig = clientConfig;
+    }
+
+    @JsonIgnore
+    public InterceptorSpecBuilder edit() {
+        return new InterceptorSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public InterceptorSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

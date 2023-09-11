@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -60,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class EgressRouterSpec implements KubernetesResource
+public class EgressRouterSpec implements Editable<EgressRouterSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("addresses")
@@ -128,6 +129,16 @@ public class EgressRouterSpec implements KubernetesResource
     @JsonProperty("redirect")
     public void setRedirect(RedirectConfig redirect) {
         this.redirect = redirect;
+    }
+
+    @JsonIgnore
+    public EgressRouterSpecBuilder edit() {
+        return new EgressRouterSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public EgressRouterSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

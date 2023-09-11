@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -71,7 +72,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha1")
 @Group("networking.internal.knative.dev")
 @Generated("jsonschema2pojo")
-public class ClusterDomainClaim implements HasMetadata
+public class ClusterDomainClaim implements Editable<ClusterDomainClaimBuilder> , HasMetadata
 {
 
     /**
@@ -168,6 +169,16 @@ public class ClusterDomainClaim implements HasMetadata
     @JsonProperty("spec")
     public void setSpec(ClusterDomainClaimSpec spec) {
         this.spec = spec;
+    }
+
+    @JsonIgnore
+    public ClusterDomainClaimBuilder edit() {
+        return new ClusterDomainClaimBuilder(this);
+    }
+
+    @JsonIgnore
+    public ClusterDomainClaimBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

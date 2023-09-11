@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -57,7 +58,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ConsoleExternalLogLinkSpec implements KubernetesResource
+public class ConsoleExternalLogLinkSpec implements Editable<ConsoleExternalLogLinkSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("hrefTemplate")
@@ -111,6 +112,16 @@ public class ConsoleExternalLogLinkSpec implements KubernetesResource
     @JsonProperty("text")
     public void setText(String text) {
         this.text = text;
+    }
+
+    @JsonIgnore
+    public ConsoleExternalLogLinkSpecBuilder edit() {
+        return new ConsoleExternalLogLinkSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public ConsoleExternalLogLinkSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

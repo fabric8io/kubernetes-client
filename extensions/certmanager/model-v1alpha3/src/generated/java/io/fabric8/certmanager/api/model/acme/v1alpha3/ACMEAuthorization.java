@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -69,7 +70,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class ACMEAuthorization implements KubernetesResource
+public class ACMEAuthorization implements Editable<ACMEAuthorizationBuilder> , KubernetesResource
 {
 
     @JsonProperty("challenges")
@@ -150,6 +151,16 @@ public class ACMEAuthorization implements KubernetesResource
     @JsonProperty("wildcard")
     public void setWildcard(Boolean wildcard) {
         this.wildcard = wildcard;
+    }
+
+    @JsonIgnore
+    public ACMEAuthorizationBuilder edit() {
+        return new ACMEAuthorizationBuilder(this);
+    }
+
+    @JsonIgnore
+    public ACMEAuthorizationBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

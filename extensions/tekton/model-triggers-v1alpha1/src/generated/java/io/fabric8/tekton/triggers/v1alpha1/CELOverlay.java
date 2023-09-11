@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -64,7 +65,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class CELOverlay implements KubernetesResource
+public class CELOverlay implements Editable<CELOverlayBuilder> , KubernetesResource
 {
 
     @JsonProperty("expression")
@@ -105,6 +106,16 @@ public class CELOverlay implements KubernetesResource
     @JsonProperty("key")
     public void setKey(String key) {
         this.key = key;
+    }
+
+    @JsonIgnore
+    public CELOverlayBuilder edit() {
+        return new CELOverlayBuilder(this);
+    }
+
+    @JsonIgnore
+    public CELOverlayBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

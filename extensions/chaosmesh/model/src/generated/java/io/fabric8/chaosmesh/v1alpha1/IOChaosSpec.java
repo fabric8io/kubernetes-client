@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -78,7 +79,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class IOChaosSpec implements KubernetesResource
+public class IOChaosSpec implements Editable<IOChaosSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("action")
@@ -277,6 +278,16 @@ public class IOChaosSpec implements KubernetesResource
     @JsonProperty("volumePath")
     public void setVolumePath(java.lang.String volumePath) {
         this.volumePath = volumePath;
+    }
+
+    @JsonIgnore
+    public IOChaosSpecBuilder edit() {
+        return new IOChaosSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public IOChaosSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

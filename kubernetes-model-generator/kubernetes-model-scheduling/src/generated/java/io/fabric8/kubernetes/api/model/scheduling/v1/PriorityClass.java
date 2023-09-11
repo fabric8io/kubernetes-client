@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
@@ -66,7 +67,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("scheduling.k8s.io")
 @Generated("jsonschema2pojo")
-public class PriorityClass implements HasMetadata
+public class PriorityClass implements Editable<PriorityClassBuilder> , HasMetadata
 {
 
     /**
@@ -202,6 +203,16 @@ public class PriorityClass implements HasMetadata
     @JsonProperty("value")
     public void setValue(Integer value) {
         this.value = value;
+    }
+
+    @JsonIgnore
+    public PriorityClassBuilder edit() {
+        return new PriorityClassBuilder(this);
+    }
+
+    @JsonIgnore
+    public PriorityClassBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

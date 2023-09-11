@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -63,7 +64,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class PolicyTemplate implements KubernetesResource
+public class PolicyTemplate implements Editable<PolicyTemplateBuilder> , KubernetesResource
 {
 
     @JsonProperty("objectDefinition")
@@ -92,6 +93,16 @@ public class PolicyTemplate implements KubernetesResource
     @JsonProperty("objectDefinition")
     public void setObjectDefinition(Map<String, Object> objectDefinition) {
         this.objectDefinition = objectDefinition;
+    }
+
+    @JsonIgnore
+    public PolicyTemplateBuilder edit() {
+        return new PolicyTemplateBuilder(this);
+    }
+
+    @JsonIgnore
+    public PolicyTemplateBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

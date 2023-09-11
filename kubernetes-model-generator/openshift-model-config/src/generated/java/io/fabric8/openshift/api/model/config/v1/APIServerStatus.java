@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -53,11 +54,21 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class APIServerStatus implements KubernetesResource
+public class APIServerStatus implements Editable<APIServerStatusBuilder> , KubernetesResource
 {
 
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
+
+    @JsonIgnore
+    public APIServerStatusBuilder edit() {
+        return new APIServerStatusBuilder(this);
+    }
+
+    @JsonIgnore
+    public APIServerStatusBuilder toBuilder() {
+        return edit();
+    }
 
     @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {

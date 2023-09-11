@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -69,7 +70,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class HTTPHealthCheckConfig implements KubernetesResource
+public class HTTPHealthCheckConfig implements Editable<HTTPHealthCheckConfigBuilder> , KubernetesResource
 {
 
     @JsonProperty("host")
@@ -150,6 +151,16 @@ public class HTTPHealthCheckConfig implements KubernetesResource
     @JsonProperty("scheme")
     public void setScheme(String scheme) {
         this.scheme = scheme;
+    }
+
+    @JsonIgnore
+    public HTTPHealthCheckConfigBuilder edit() {
+        return new HTTPHealthCheckConfigBuilder(this);
+    }
+
+    @JsonIgnore
+    public HTTPHealthCheckConfigBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

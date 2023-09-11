@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -68,7 +69,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class LocalityLoadBalancerSetting implements KubernetesResource
+public class LocalityLoadBalancerSetting implements Editable<LocalityLoadBalancerSettingBuilder> , KubernetesResource
 {
 
     @JsonProperty("distribute")
@@ -138,6 +139,16 @@ public class LocalityLoadBalancerSetting implements KubernetesResource
     @JsonProperty("failoverPriority")
     public void setFailoverPriority(List<String> failoverPriority) {
         this.failoverPriority = failoverPriority;
+    }
+
+    @JsonIgnore
+    public LocalityLoadBalancerSettingBuilder edit() {
+        return new LocalityLoadBalancerSettingBuilder(this);
+    }
+
+    @JsonIgnore
+    public LocalityLoadBalancerSettingBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

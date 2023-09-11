@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.EnvVar;
 import io.fabric8.kubernetes.api.model.IntOrString;
@@ -60,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class CustomDeploymentStrategyParams implements KubernetesResource
+public class CustomDeploymentStrategyParams implements Editable<CustomDeploymentStrategyParamsBuilder> , KubernetesResource
 {
 
     @JsonProperty("command")
@@ -116,6 +117,16 @@ public class CustomDeploymentStrategyParams implements KubernetesResource
     @JsonProperty("image")
     public void setImage(String image) {
         this.image = image;
+    }
+
+    @JsonIgnore
+    public CustomDeploymentStrategyParamsBuilder edit() {
+        return new CustomDeploymentStrategyParamsBuilder(this);
+    }
+
+    @JsonIgnore
+    public CustomDeploymentStrategyParamsBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

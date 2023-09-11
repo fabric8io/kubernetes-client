@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
@@ -65,7 +66,7 @@ import lombok.experimental.Accessors;
 @Version("v1beta1")
 @Group("node.k8s.io")
 @Generated("jsonschema2pojo")
-public class RuntimeClass implements HasMetadata
+public class RuntimeClass implements Editable<RuntimeClassBuilder> , HasMetadata
 {
 
     /**
@@ -188,6 +189,16 @@ public class RuntimeClass implements HasMetadata
     @JsonProperty("scheduling")
     public void setScheduling(Scheduling scheduling) {
         this.scheduling = scheduling;
+    }
+
+    @JsonIgnore
+    public RuntimeClassBuilder edit() {
+        return new RuntimeClassBuilder(this);
+    }
+
+    @JsonIgnore
+    public RuntimeClassBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

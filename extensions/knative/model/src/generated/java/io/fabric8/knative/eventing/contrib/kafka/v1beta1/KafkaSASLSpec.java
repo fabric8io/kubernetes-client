@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -66,7 +67,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class KafkaSASLSpec implements KubernetesResource
+public class KafkaSASLSpec implements Editable<KafkaSASLSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("enable")
@@ -133,6 +134,16 @@ public class KafkaSASLSpec implements KubernetesResource
     @JsonProperty("user")
     public void setUser(SecretValueFromSource user) {
         this.user = user;
+    }
+
+    @JsonIgnore
+    public KafkaSASLSpecBuilder edit() {
+        return new KafkaSASLSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public KafkaSASLSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

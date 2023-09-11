@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -72,7 +73,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class ClientTLSSettings implements KubernetesResource
+public class ClientTLSSettings implements Editable<ClientTLSSettingsBuilder> , KubernetesResource
 {
 
     @JsonProperty("caCertificates")
@@ -192,6 +193,16 @@ public class ClientTLSSettings implements KubernetesResource
     @JsonProperty("subjectAltNames")
     public void setSubjectAltNames(List<String> subjectAltNames) {
         this.subjectAltNames = subjectAltNames;
+    }
+
+    @JsonIgnore
+    public ClientTLSSettingsBuilder edit() {
+        return new ClientTLSSettingsBuilder(this);
+    }
+
+    @JsonIgnore
+    public ClientTLSSettingsBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

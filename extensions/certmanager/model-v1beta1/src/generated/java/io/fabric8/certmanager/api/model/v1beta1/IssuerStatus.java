@@ -14,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.certmanager.api.model.acme.v1beta1.ACMEIssuerStatus;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -67,7 +68,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class IssuerStatus implements KubernetesResource
+public class IssuerStatus implements Editable<IssuerStatusBuilder> , KubernetesResource
 {
 
     @JsonProperty("acme")
@@ -109,6 +110,16 @@ public class IssuerStatus implements KubernetesResource
     @JsonProperty("conditions")
     public void setConditions(List<IssuerCondition> conditions) {
         this.conditions = conditions;
+    }
+
+    @JsonIgnore
+    public IssuerStatusBuilder edit() {
+        return new IssuerStatusBuilder(this);
+    }
+
+    @JsonIgnore
+    public IssuerStatusBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -58,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ProbeTargetIngress implements KubernetesResource
+public class ProbeTargetIngress implements Editable<ProbeTargetIngressBuilder> , KubernetesResource
 {
 
     @JsonProperty("namespaceSelector")
@@ -113,6 +114,16 @@ public class ProbeTargetIngress implements KubernetesResource
     @JsonProperty("selector")
     public void setSelector(io.fabric8.kubernetes.api.model.LabelSelector selector) {
         this.selector = selector;
+    }
+
+    @JsonIgnore
+    public ProbeTargetIngressBuilder edit() {
+        return new ProbeTargetIngressBuilder(this);
+    }
+
+    @JsonIgnore
+    public ProbeTargetIngressBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

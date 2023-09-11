@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -64,7 +65,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class RequestHeaderIdentityProvider implements KubernetesResource
+public class RequestHeaderIdentityProvider implements Editable<RequestHeaderIdentityProviderBuilder> , KubernetesResource
 {
 
     @JsonProperty("ca")
@@ -188,6 +189,16 @@ public class RequestHeaderIdentityProvider implements KubernetesResource
     @JsonProperty("preferredUsernameHeaders")
     public void setPreferredUsernameHeaders(List<String> preferredUsernameHeaders) {
         this.preferredUsernameHeaders = preferredUsernameHeaders;
+    }
+
+    @JsonIgnore
+    public RequestHeaderIdentityProviderBuilder edit() {
+        return new RequestHeaderIdentityProviderBuilder(this);
+    }
+
+    @JsonIgnore
+    public RequestHeaderIdentityProviderBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -60,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class UpstreamResolvers implements KubernetesResource
+public class UpstreamResolvers implements Editable<UpstreamResolversBuilder> , KubernetesResource
 {
 
     @JsonProperty("policy")
@@ -128,6 +129,16 @@ public class UpstreamResolvers implements KubernetesResource
     @JsonProperty("upstreams")
     public void setUpstreams(List<Upstream> upstreams) {
         this.upstreams = upstreams;
+    }
+
+    @JsonIgnore
+    public UpstreamResolversBuilder edit() {
+        return new UpstreamResolversBuilder(this);
+    }
+
+    @JsonIgnore
+    public UpstreamResolversBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

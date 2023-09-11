@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
@@ -60,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class RollingDeploymentStrategyParams implements KubernetesResource
+public class RollingDeploymentStrategyParams implements Editable<RollingDeploymentStrategyParamsBuilder> , KubernetesResource
 {
 
     @JsonProperty("intervalSeconds")
@@ -166,6 +167,16 @@ public class RollingDeploymentStrategyParams implements KubernetesResource
     @JsonProperty("updatePeriodSeconds")
     public void setUpdatePeriodSeconds(Long updatePeriodSeconds) {
         this.updatePeriodSeconds = updatePeriodSeconds;
+    }
+
+    @JsonIgnore
+    public RollingDeploymentStrategyParamsBuilder edit() {
+        return new RollingDeploymentStrategyParamsBuilder(this);
+    }
+
+    @JsonIgnore
+    public RollingDeploymentStrategyParamsBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

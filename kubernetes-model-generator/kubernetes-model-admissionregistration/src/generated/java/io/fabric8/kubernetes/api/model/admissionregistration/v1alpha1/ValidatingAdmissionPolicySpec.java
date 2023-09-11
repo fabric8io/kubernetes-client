@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -62,7 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ValidatingAdmissionPolicySpec implements KubernetesResource
+public class ValidatingAdmissionPolicySpec implements Editable<ValidatingAdmissionPolicySpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("auditAnnotations")
@@ -158,6 +159,16 @@ public class ValidatingAdmissionPolicySpec implements KubernetesResource
     @JsonProperty("validations")
     public void setValidations(List<Validation> validations) {
         this.validations = validations;
+    }
+
+    @JsonIgnore
+    public ValidatingAdmissionPolicySpecBuilder edit() {
+        return new ValidatingAdmissionPolicySpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public ValidatingAdmissionPolicySpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

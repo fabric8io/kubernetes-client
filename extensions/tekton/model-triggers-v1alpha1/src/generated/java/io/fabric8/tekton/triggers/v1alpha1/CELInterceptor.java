@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -66,7 +67,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class CELInterceptor implements KubernetesResource
+public class CELInterceptor implements Editable<CELInterceptorBuilder> , KubernetesResource
 {
 
     @JsonProperty("filter")
@@ -108,6 +109,16 @@ public class CELInterceptor implements KubernetesResource
     @JsonProperty("overlays")
     public void setOverlays(List<CELOverlay> overlays) {
         this.overlays = overlays;
+    }
+
+    @JsonIgnore
+    public CELInterceptorBuilder edit() {
+        return new CELInterceptorBuilder(this);
+    }
+
+    @JsonIgnore
+    public CELInterceptorBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -64,7 +65,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class RouteDestination implements KubernetesResource
+public class RouteDestination implements Editable<RouteDestinationBuilder> , KubernetesResource
 {
 
     @JsonProperty("destination")
@@ -105,6 +106,16 @@ public class RouteDestination implements KubernetesResource
     @JsonProperty("weight")
     public void setWeight(Integer weight) {
         this.weight = weight;
+    }
+
+    @JsonIgnore
+    public RouteDestinationBuilder edit() {
+        return new RouteDestinationBuilder(this);
+    }
+
+    @JsonIgnore
+    public RouteDestinationBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

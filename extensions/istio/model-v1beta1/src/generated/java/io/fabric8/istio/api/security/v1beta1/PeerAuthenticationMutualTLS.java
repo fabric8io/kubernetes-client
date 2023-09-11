@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -63,7 +64,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class PeerAuthenticationMutualTLS implements KubernetesResource
+public class PeerAuthenticationMutualTLS implements Editable<PeerAuthenticationMutualTLSBuilder> , KubernetesResource
 {
 
     @JsonProperty("mode")
@@ -91,6 +92,16 @@ public class PeerAuthenticationMutualTLS implements KubernetesResource
     @JsonProperty("mode")
     public void setMode(PeerAuthenticationMutualTLSMode mode) {
         this.mode = mode;
+    }
+
+    @JsonIgnore
+    public PeerAuthenticationMutualTLSBuilder edit() {
+        return new PeerAuthenticationMutualTLSBuilder(this);
+    }
+
+    @JsonIgnore
+    public PeerAuthenticationMutualTLSBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

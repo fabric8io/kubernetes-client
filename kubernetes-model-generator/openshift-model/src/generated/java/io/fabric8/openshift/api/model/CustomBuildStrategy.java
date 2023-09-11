@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.EnvVar;
 import io.fabric8.kubernetes.api.model.IntOrString;
@@ -62,7 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class CustomBuildStrategy implements KubernetesResource
+public class CustomBuildStrategy implements Editable<CustomBuildStrategyBuilder> , KubernetesResource
 {
 
     @JsonProperty("buildAPIVersion")
@@ -170,6 +171,16 @@ public class CustomBuildStrategy implements KubernetesResource
     @JsonProperty("secrets")
     public void setSecrets(List<SecretSpec> secrets) {
         this.secrets = secrets;
+    }
+
+    @JsonIgnore
+    public CustomBuildStrategyBuilder edit() {
+        return new CustomBuildStrategyBuilder(this);
+    }
+
+    @JsonIgnore
+    public CustomBuildStrategyBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

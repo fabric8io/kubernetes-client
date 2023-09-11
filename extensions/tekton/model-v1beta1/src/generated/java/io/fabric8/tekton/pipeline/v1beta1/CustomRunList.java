@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -76,7 +77,7 @@ import lombok.experimental.Accessors;
 @Version("v1beta1")
 @Group("tekton.dev")
 @Generated("jsonschema2pojo")
-public class CustomRunList implements KubernetesResource, KubernetesResourceList<io.fabric8.tekton.pipeline.v1beta1.CustomRun>
+public class CustomRunList implements Editable<CustomRunListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.tekton.pipeline.v1beta1.CustomRun>
 {
 
     /**
@@ -174,6 +175,16 @@ public class CustomRunList implements KubernetesResource, KubernetesResourceList
     @JsonProperty("metadata")
     public void setMetadata(ListMeta metadata) {
         this.metadata = metadata;
+    }
+
+    @JsonIgnore
+    public CustomRunListBuilder edit() {
+        return new CustomRunListBuilder(this);
+    }
+
+    @JsonIgnore
+    public CustomRunListBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

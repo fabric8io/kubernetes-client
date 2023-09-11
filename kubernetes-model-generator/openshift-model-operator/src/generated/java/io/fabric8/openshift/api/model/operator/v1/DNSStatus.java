@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -59,7 +60,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class DNSStatus implements KubernetesResource
+public class DNSStatus implements Editable<DNSStatusBuilder> , KubernetesResource
 {
 
     @JsonProperty("clusterDomain")
@@ -114,6 +115,16 @@ public class DNSStatus implements KubernetesResource
     @JsonProperty("conditions")
     public void setConditions(List<OperatorCondition> conditions) {
         this.conditions = conditions;
+    }
+
+    @JsonIgnore
+    public DNSStatusBuilder edit() {
+        return new DNSStatusBuilder(this);
+    }
+
+    @JsonIgnore
+    public DNSStatusBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

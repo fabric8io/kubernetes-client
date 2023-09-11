@@ -14,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -66,7 +67,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class Route implements KubernetesResource
+public class Route implements Editable<RouteBuilder> , KubernetesResource
 {
 
     @JsonProperty("continue")
@@ -202,6 +203,16 @@ public class Route implements KubernetesResource
     @JsonProperty("routes")
     public void setRoutes(List<JsonNode> routes) {
         this.routes = routes;
+    }
+
+    @JsonIgnore
+    public RouteBuilder edit() {
+        return new RouteBuilder(this);
+    }
+
+    @JsonIgnore
+    public RouteBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

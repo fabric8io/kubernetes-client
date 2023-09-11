@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.ContainerStateRunning;
@@ -71,7 +72,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class SidecarState implements KubernetesResource
+public class SidecarState implements Editable<SidecarStateBuilder> , KubernetesResource
 {
 
     @JsonProperty("container")
@@ -164,6 +165,16 @@ public class SidecarState implements KubernetesResource
     @JsonProperty("waiting")
     public void setWaiting(ContainerStateWaiting waiting) {
         this.waiting = waiting;
+    }
+
+    @JsonIgnore
+    public SidecarStateBuilder edit() {
+        return new SidecarStateBuilder(this);
+    }
+
+    @JsonIgnore
+    public SidecarStateBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

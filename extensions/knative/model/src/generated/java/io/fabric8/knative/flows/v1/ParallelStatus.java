@@ -15,6 +15,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.knative.internal.pkg.apis.Condition;
 import io.fabric8.knative.internal.pkg.apis.duck.v1.Addressable;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -73,7 +74,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class ParallelStatus implements KubernetesResource
+public class ParallelStatus implements Editable<ParallelStatusBuilder> , KubernetesResource
 {
 
     @JsonProperty("address")
@@ -183,6 +184,16 @@ public class ParallelStatus implements KubernetesResource
     @JsonProperty("observedGeneration")
     public void setObservedGeneration(Long observedGeneration) {
         this.observedGeneration = observedGeneration;
+    }
+
+    @JsonIgnore
+    public ParallelStatusBuilder edit() {
+        return new ParallelStatusBuilder(this);
+    }
+
+    @JsonIgnore
+    public ParallelStatusBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

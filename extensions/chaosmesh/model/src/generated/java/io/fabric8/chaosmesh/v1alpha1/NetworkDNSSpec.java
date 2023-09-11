@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -65,7 +66,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class NetworkDNSSpec implements KubernetesResource
+public class NetworkDNSSpec implements Editable<NetworkDNSSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("dns-domain-name")
@@ -119,6 +120,16 @@ public class NetworkDNSSpec implements KubernetesResource
     @JsonProperty("dns-server")
     public void setDnsServer(String dnsServer) {
         this.dnsServer = dnsServer;
+    }
+
+    @JsonIgnore
+    public NetworkDNSSpecBuilder edit() {
+        return new NetworkDNSSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public NetworkDNSSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

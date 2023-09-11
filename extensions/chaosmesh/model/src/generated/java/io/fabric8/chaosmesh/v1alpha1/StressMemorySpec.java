@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -64,7 +65,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class StressMemorySpec implements KubernetesResource
+public class StressMemorySpec implements Editable<StressMemorySpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("options")
@@ -105,6 +106,16 @@ public class StressMemorySpec implements KubernetesResource
     @JsonProperty("size")
     public void setSize(String size) {
         this.size = size;
+    }
+
+    @JsonIgnore
+    public StressMemorySpecBuilder edit() {
+        return new StressMemorySpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public StressMemorySpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

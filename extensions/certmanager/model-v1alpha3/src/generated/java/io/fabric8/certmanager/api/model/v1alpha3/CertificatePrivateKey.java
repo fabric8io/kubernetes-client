@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -63,7 +64,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class CertificatePrivateKey implements KubernetesResource
+public class CertificatePrivateKey implements Editable<CertificatePrivateKeyBuilder> , KubernetesResource
 {
 
     @JsonProperty("rotationPolicy")
@@ -91,6 +92,16 @@ public class CertificatePrivateKey implements KubernetesResource
     @JsonProperty("rotationPolicy")
     public void setRotationPolicy(String rotationPolicy) {
         this.rotationPolicy = rotationPolicy;
+    }
+
+    @JsonIgnore
+    public CertificatePrivateKeyBuilder edit() {
+        return new CertificatePrivateKeyBuilder(this);
+    }
+
+    @JsonIgnore
+    public CertificatePrivateKeyBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

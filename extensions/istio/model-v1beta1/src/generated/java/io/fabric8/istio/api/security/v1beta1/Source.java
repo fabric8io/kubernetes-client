@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -74,7 +75,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class Source implements KubernetesResource
+public class Source implements Editable<SourceBuilder> , KubernetesResource
 {
 
     @JsonProperty("ipBlocks")
@@ -229,6 +230,16 @@ public class Source implements KubernetesResource
     @JsonProperty("requestPrincipals")
     public void setRequestPrincipals(List<String> requestPrincipals) {
         this.requestPrincipals = requestPrincipals;
+    }
+
+    @JsonIgnore
+    public SourceBuilder edit() {
+        return new SourceBuilder(this);
+    }
+
+    @JsonIgnore
+    public SourceBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -60,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class BuildTriggerCause implements KubernetesResource
+public class BuildTriggerCause implements Editable<BuildTriggerCauseBuilder> , KubernetesResource
 {
 
     @JsonProperty("bitbucketWebHook")
@@ -153,6 +154,16 @@ public class BuildTriggerCause implements KubernetesResource
     @JsonProperty("message")
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    @JsonIgnore
+    public BuildTriggerCauseBuilder edit() {
+        return new BuildTriggerCauseBuilder(this);
+    }
+
+    @JsonIgnore
+    public BuildTriggerCauseBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

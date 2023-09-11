@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.Duration;
 import io.fabric8.kubernetes.api.model.EnvFromSource;
@@ -94,7 +95,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(io.fabric8.kubernetes.api.model.VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class Step implements KubernetesResource
+public class Step implements Editable<StepBuilder> , KubernetesResource
 {
 
     @JsonProperty("args")
@@ -481,6 +482,16 @@ public class Step implements KubernetesResource
     @JsonProperty("workspaces")
     public void setWorkspaces(List<WorkspaceUsage> workspaces) {
         this.workspaces = workspaces;
+    }
+
+    @JsonIgnore
+    public StepBuilder edit() {
+        return new StepBuilder(this);
+    }
+
+    @JsonIgnore
+    public StepBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

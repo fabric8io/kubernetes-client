@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -68,7 +69,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha1")
 @Group("networking.k8s.io")
 @Generated("jsonschema2pojo")
-public class ClusterCIDRList implements KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.networking.v1alpha1.ClusterCIDR>
+public class ClusterCIDRList implements Editable<ClusterCIDRListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.networking.v1alpha1.ClusterCIDR>
 {
 
     /**
@@ -166,6 +167,16 @@ public class ClusterCIDRList implements KubernetesResource, KubernetesResourceLi
     @JsonProperty("metadata")
     public void setMetadata(ListMeta metadata) {
         this.metadata = metadata;
+    }
+
+    @JsonIgnore
+    public ClusterCIDRListBuilder edit() {
+        return new ClusterCIDRListBuilder(this);
+    }
+
+    @JsonIgnore
+    public ClusterCIDRListBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

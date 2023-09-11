@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -60,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class DeploymentSpec implements KubernetesResource
+public class DeploymentSpec implements Editable<DeploymentSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("minReadySeconds")
@@ -179,6 +180,16 @@ public class DeploymentSpec implements KubernetesResource
     @JsonProperty("template")
     public void setTemplate(io.fabric8.kubernetes.api.model.PodTemplateSpec template) {
         this.template = template;
+    }
+
+    @JsonIgnore
+    public DeploymentSpecBuilder edit() {
+        return new DeploymentSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public DeploymentSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

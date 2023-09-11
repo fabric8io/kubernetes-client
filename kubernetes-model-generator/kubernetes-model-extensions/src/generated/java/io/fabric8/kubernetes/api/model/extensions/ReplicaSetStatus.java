@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -62,7 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ReplicaSetStatus implements KubernetesResource
+public class ReplicaSetStatus implements Editable<ReplicaSetStatusBuilder> , KubernetesResource
 {
 
     @JsonProperty("availableReplicas")
@@ -156,6 +157,16 @@ public class ReplicaSetStatus implements KubernetesResource
     @JsonProperty("replicas")
     public void setReplicas(Integer replicas) {
         this.replicas = replicas;
+    }
+
+    @JsonIgnore
+    public ReplicaSetStatusBuilder edit() {
+        return new ReplicaSetStatusBuilder(this);
+    }
+
+    @JsonIgnore
+    public ReplicaSetStatusBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

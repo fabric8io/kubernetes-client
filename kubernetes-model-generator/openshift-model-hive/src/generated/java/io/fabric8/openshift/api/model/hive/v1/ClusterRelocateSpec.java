@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -55,7 +56,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ClusterRelocateSpec implements KubernetesResource
+public class ClusterRelocateSpec implements Editable<ClusterRelocateSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("clusterDeploymentSelector")
@@ -96,6 +97,16 @@ public class ClusterRelocateSpec implements KubernetesResource
     @JsonProperty("kubeconfigSecretRef")
     public void setKubeconfigSecretRef(KubeconfigSecretReference kubeconfigSecretRef) {
         this.kubeconfigSecretRef = kubeconfigSecretRef;
+    }
+
+    @JsonIgnore
+    public ClusterRelocateSpecBuilder edit() {
+        return new ClusterRelocateSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public ClusterRelocateSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

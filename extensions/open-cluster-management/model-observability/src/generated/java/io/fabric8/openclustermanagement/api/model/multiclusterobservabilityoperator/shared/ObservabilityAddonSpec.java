@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -64,7 +65,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class ObservabilityAddonSpec implements KubernetesResource
+public class ObservabilityAddonSpec implements Editable<ObservabilityAddonSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("enableMetrics")
@@ -118,6 +119,16 @@ public class ObservabilityAddonSpec implements KubernetesResource
     @JsonProperty("resources")
     public void setResources(io.fabric8.kubernetes.api.model.ResourceRequirements resources) {
         this.resources = resources;
+    }
+
+    @JsonIgnore
+    public ObservabilityAddonSpecBuilder edit() {
+        return new ObservabilityAddonSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public ObservabilityAddonSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
@@ -64,7 +65,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha1")
 @Group("migration.k8s.io")
 @Generated("jsonschema2pojo")
-public class StorageVersionMigration implements HasMetadata
+public class StorageVersionMigration implements Editable<StorageVersionMigrationBuilder> , HasMetadata
 {
 
     /**
@@ -174,6 +175,16 @@ public class StorageVersionMigration implements HasMetadata
     @JsonProperty("status")
     public void setStatus(StorageVersionMigrationStatus status) {
         this.status = status;
+    }
+
+    @JsonIgnore
+    public StorageVersionMigrationBuilder edit() {
+        return new StorageVersionMigrationBuilder(this);
+    }
+
+    @JsonIgnore
+    public StorageVersionMigrationBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
@@ -63,7 +64,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha1")
 @Group("certificates.k8s.io")
 @Generated("jsonschema2pojo")
-public class ClusterTrustBundle implements HasMetadata
+public class ClusterTrustBundle implements Editable<ClusterTrustBundleBuilder> , HasMetadata
 {
 
     /**
@@ -160,6 +161,16 @@ public class ClusterTrustBundle implements HasMetadata
     @JsonProperty("spec")
     public void setSpec(ClusterTrustBundleSpec spec) {
         this.spec = spec;
+    }
+
+    @JsonIgnore
+    public ClusterTrustBundleBuilder edit() {
+        return new ClusterTrustBundleBuilder(this);
+    }
+
+    @JsonIgnore
+    public ClusterTrustBundleBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

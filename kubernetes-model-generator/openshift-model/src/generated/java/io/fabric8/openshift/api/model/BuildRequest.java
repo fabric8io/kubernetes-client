@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.EnvVar;
 import io.fabric8.kubernetes.api.model.HasMetadata;
@@ -74,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("build.openshift.io")
 @Generated("jsonschema2pojo")
-public class BuildRequest implements HasMetadata, Namespaced
+public class BuildRequest implements Editable<BuildRequestBuilder> , HasMetadata, Namespaced
 {
 
     /**
@@ -277,6 +278,16 @@ public class BuildRequest implements HasMetadata, Namespaced
     @JsonProperty("triggeredByImage")
     public void setTriggeredByImage(io.fabric8.kubernetes.api.model.ObjectReference triggeredByImage) {
         this.triggeredByImage = triggeredByImage;
+    }
+
+    @JsonIgnore
+    public BuildRequestBuilder edit() {
+        return new BuildRequestBuilder(this);
+    }
+
+    @JsonIgnore
+    public BuildRequestBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

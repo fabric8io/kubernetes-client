@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -76,7 +77,7 @@ import lombok.experimental.Accessors;
 @Version("v1beta1")
 @Group("cert-manager.io")
 @Generated("jsonschema2pojo")
-public class ChallengeList implements KubernetesResource, KubernetesResourceList<io.fabric8.certmanager.api.model.acme.v1beta1.Challenge>
+public class ChallengeList implements Editable<ChallengeListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.certmanager.api.model.acme.v1beta1.Challenge>
 {
 
     /**
@@ -174,6 +175,16 @@ public class ChallengeList implements KubernetesResource, KubernetesResourceList
     @JsonProperty("metadata")
     public void setMetadata(ListMeta metadata) {
         this.metadata = metadata;
+    }
+
+    @JsonIgnore
+    public ChallengeListBuilder edit() {
+        return new ChallengeListBuilder(this);
+    }
+
+    @JsonIgnore
+    public ChallengeListBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -69,7 +70,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class Condition implements KubernetesResource
+public class Condition implements Editable<ConditionBuilder> , KubernetesResource
 {
 
     @JsonProperty("lastTransitionTime")
@@ -240,6 +241,16 @@ public class Condition implements KubernetesResource
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;
+    }
+
+    @JsonIgnore
+    public ConditionBuilder edit() {
+        return new ConditionBuilder(this);
+    }
+
+    @JsonIgnore
+    public ConditionBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

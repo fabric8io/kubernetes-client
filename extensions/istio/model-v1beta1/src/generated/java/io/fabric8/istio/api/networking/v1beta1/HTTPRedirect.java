@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -68,7 +69,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class HTTPRedirect implements KubernetesResource
+public class HTTPRedirect implements Editable<HTTPRedirectBuilder> , KubernetesResource
 {
 
     @JsonProperty("RedirectPort")
@@ -149,6 +150,16 @@ public class HTTPRedirect implements KubernetesResource
     @JsonProperty("uri")
     public void setUri(String uri) {
         this.uri = uri;
+    }
+
+    @JsonIgnore
+    public HTTPRedirectBuilder edit() {
+        return new HTTPRedirectBuilder(this);
+    }
+
+    @JsonIgnore
+    public HTTPRedirectBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

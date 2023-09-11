@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -67,7 +68,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class SubscriptionUnitStatus implements KubernetesResource
+public class SubscriptionUnitStatus implements Editable<SubscriptionUnitStatusBuilder> , KubernetesResource
 {
 
     @JsonProperty("lastUpdateTime")
@@ -148,6 +149,16 @@ public class SubscriptionUnitStatus implements KubernetesResource
     @JsonProperty("resourceStatus")
     public void setResourceStatus(Map<String, Object> resourceStatus) {
         this.resourceStatus = resourceStatus;
+    }
+
+    @JsonIgnore
+    public SubscriptionUnitStatusBuilder edit() {
+        return new SubscriptionUnitStatusBuilder(this);
+    }
+
+    @JsonIgnore
+    public SubscriptionUnitStatusBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

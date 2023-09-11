@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -65,7 +66,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class Subset implements KubernetesResource
+public class Subset implements Editable<SubsetBuilder> , KubernetesResource
 {
 
     @JsonProperty("labels")
@@ -120,6 +121,16 @@ public class Subset implements KubernetesResource
     @JsonProperty("trafficPolicy")
     public void setTrafficPolicy(TrafficPolicy trafficPolicy) {
         this.trafficPolicy = trafficPolicy;
+    }
+
+    @JsonIgnore
+    public SubsetBuilder edit() {
+        return new SubsetBuilder(this);
+    }
+
+    @JsonIgnore
+    public SubsetBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

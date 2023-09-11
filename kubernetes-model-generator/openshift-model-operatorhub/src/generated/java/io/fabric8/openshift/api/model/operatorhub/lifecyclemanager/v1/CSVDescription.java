@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.GroupVersionKind;
 import io.fabric8.kubernetes.api.model.IntOrString;
@@ -76,7 +77,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class CSVDescription implements KubernetesResource
+public class CSVDescription implements Editable<CSVDescriptionBuilder> , KubernetesResource
 {
 
     @JsonProperty("annotations")
@@ -307,6 +308,16 @@ public class CSVDescription implements KubernetesResource
     @JsonProperty("version")
     public void setVersion(java.lang.String version) {
         this.version = version;
+    }
+
+    @JsonIgnore
+    public CSVDescriptionBuilder edit() {
+        return new CSVDescriptionBuilder(this);
+    }
+
+    @JsonIgnore
+    public CSVDescriptionBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

@@ -14,6 +14,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.knative.internal.eventing.pkg.apis.duck.v1.DeliverySpec;
 import io.fabric8.knative.internal.pkg.apis.duck.v1.Destination;
 import io.fabric8.knative.internal.pkg.apis.duck.v1.KReference;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -69,7 +70,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class SubscriptionSpec implements KubernetesResource
+public class SubscriptionSpec implements Editable<SubscriptionSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("channel")
@@ -136,6 +137,16 @@ public class SubscriptionSpec implements KubernetesResource
     @JsonProperty("subscriber")
     public void setSubscriber(Destination subscriber) {
         this.subscriber = subscriber;
+    }
+
+    @JsonIgnore
+    public SubscriptionSpecBuilder edit() {
+        return new SubscriptionSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public SubscriptionSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

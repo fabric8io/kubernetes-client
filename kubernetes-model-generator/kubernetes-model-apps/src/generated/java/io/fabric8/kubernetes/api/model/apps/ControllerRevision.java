@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.HasMetadata;
@@ -70,7 +71,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("apps")
 @Generated("jsonschema2pojo")
-public class ControllerRevision implements HasMetadata, Namespaced
+public class ControllerRevision implements Editable<ControllerRevisionBuilder> , HasMetadata, Namespaced
 {
 
     /**
@@ -180,6 +181,16 @@ public class ControllerRevision implements HasMetadata, Namespaced
     @JsonProperty("revision")
     public void setRevision(Long revision) {
         this.revision = revision;
+    }
+
+    @JsonIgnore
+    public ControllerRevisionBuilder edit() {
+        return new ControllerRevisionBuilder(this);
+    }
+
+    @JsonIgnore
+    public ControllerRevisionBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

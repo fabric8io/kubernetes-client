@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
@@ -57,7 +58,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class MachineConfigPoolSpec implements KubernetesResource
+public class MachineConfigPoolSpec implements Editable<MachineConfigPoolSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("configuration")
@@ -137,6 +138,16 @@ public class MachineConfigPoolSpec implements KubernetesResource
     @JsonProperty("paused")
     public void setPaused(Boolean paused) {
         this.paused = paused;
+    }
+
+    @JsonIgnore
+    public MachineConfigPoolSpecBuilder edit() {
+        return new MachineConfigPoolSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public MachineConfigPoolSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

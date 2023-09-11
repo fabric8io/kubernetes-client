@@ -15,6 +15,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.knative.internal.pkg.apis.duck.v1.Destination;
 import io.fabric8.knative.messaging.v1.ChannelTemplateSpec;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -69,7 +70,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class SequenceSpec implements KubernetesResource
+public class SequenceSpec implements Editable<SequenceSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("channelTemplate")
@@ -124,6 +125,16 @@ public class SequenceSpec implements KubernetesResource
     @JsonProperty("steps")
     public void setSteps(List<SequenceStep> steps) {
         this.steps = steps;
+    }
+
+    @JsonIgnore
+    public SequenceSpecBuilder edit() {
+        return new SequenceSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public SequenceSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

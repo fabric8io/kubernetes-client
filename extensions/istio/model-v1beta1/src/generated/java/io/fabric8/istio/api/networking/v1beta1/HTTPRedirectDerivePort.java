@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -62,7 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class HTTPRedirectDerivePort implements IsHTTPRedirectRedirectPort
+public class HTTPRedirectDerivePort implements IsHTTPRedirectRedirectPort, Editable<HTTPRedirectDerivePortBuilder>
 {
 
     @JsonProperty("derivePort")
@@ -90,6 +91,16 @@ public class HTTPRedirectDerivePort implements IsHTTPRedirectRedirectPort
     @JsonProperty("derivePort")
     public void setDerivePort(HTTPRedirectRedirectPortSelection derivePort) {
         this.derivePort = derivePort;
+    }
+
+    @JsonIgnore
+    public HTTPRedirectDerivePortBuilder edit() {
+        return new HTTPRedirectDerivePortBuilder(this);
+    }
+
+    @JsonIgnore
+    public HTTPRedirectDerivePortBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

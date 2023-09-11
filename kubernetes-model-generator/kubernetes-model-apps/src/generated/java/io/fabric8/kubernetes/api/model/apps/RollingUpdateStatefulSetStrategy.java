@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
@@ -55,7 +56,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class RollingUpdateStatefulSetStrategy implements KubernetesResource
+public class RollingUpdateStatefulSetStrategy implements Editable<RollingUpdateStatefulSetStrategyBuilder> , KubernetesResource
 {
 
     @JsonProperty("maxUnavailable")
@@ -96,6 +97,16 @@ public class RollingUpdateStatefulSetStrategy implements KubernetesResource
     @JsonProperty("partition")
     public void setPartition(Integer partition) {
         this.partition = partition;
+    }
+
+    @JsonIgnore
+    public RollingUpdateStatefulSetStrategyBuilder edit() {
+        return new RollingUpdateStatefulSetStrategyBuilder(this);
+    }
+
+    @JsonIgnore
+    public RollingUpdateStatefulSetStrategyBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

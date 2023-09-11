@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -67,7 +68,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class RawIPSet implements KubernetesResource
+public class RawIPSet implements Editable<RawIPSetBuilder> , KubernetesResource
 {
 
     @JsonProperty("cidrs")
@@ -122,6 +123,16 @@ public class RawIPSet implements KubernetesResource
     @JsonProperty("source")
     public void setSource(String source) {
         this.source = source;
+    }
+
+    @JsonIgnore
+    public RawIPSetBuilder edit() {
+        return new RawIPSetBuilder(this);
+    }
+
+    @JsonIgnore
+    public RawIPSetBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

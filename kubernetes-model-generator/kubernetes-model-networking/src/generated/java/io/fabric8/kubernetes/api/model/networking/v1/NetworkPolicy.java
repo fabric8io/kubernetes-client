@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
@@ -65,7 +66,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("networking.k8s.io")
 @Generated("jsonschema2pojo")
-public class NetworkPolicy implements HasMetadata, Namespaced
+public class NetworkPolicy implements Editable<NetworkPolicyBuilder> , HasMetadata, Namespaced
 {
 
     /**
@@ -175,6 +176,16 @@ public class NetworkPolicy implements HasMetadata, Namespaced
     @JsonProperty("status")
     public void setStatus(NetworkPolicyStatus status) {
         this.status = status;
+    }
+
+    @JsonIgnore
+    public NetworkPolicyBuilder edit() {
+        return new NetworkPolicyBuilder(this);
+    }
+
+    @JsonIgnore
+    public NetworkPolicyBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

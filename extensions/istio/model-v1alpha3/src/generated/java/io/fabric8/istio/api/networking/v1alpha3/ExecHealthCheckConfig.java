@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -65,7 +66,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class ExecHealthCheckConfig implements KubernetesResource
+public class ExecHealthCheckConfig implements Editable<ExecHealthCheckConfigBuilder> , KubernetesResource
 {
 
     @JsonProperty("command")
@@ -94,6 +95,16 @@ public class ExecHealthCheckConfig implements KubernetesResource
     @JsonProperty("command")
     public void setCommand(List<String> command) {
         this.command = command;
+    }
+
+    @JsonIgnore
+    public ExecHealthCheckConfigBuilder edit() {
+        return new ExecHealthCheckConfigBuilder(this);
+    }
+
+    @JsonIgnore
+    public ExecHealthCheckConfigBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

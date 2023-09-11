@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.sundr.builder.annotations.Buildable;
 import lombok.EqualsAndHashCode;
 import lombok.Setter;
@@ -33,9 +34,9 @@ import lombok.experimental.Accessors;
     "_",
     ""
 })
-@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
+@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("jsonschema2pojo")
-public class ResourceQuotaStatus implements KubernetesResource
+public class ResourceQuotaStatus implements Editable<ResourceQuotaStatusBuilder> , KubernetesResource
 {
 
     @JsonProperty("hard")
@@ -78,6 +79,16 @@ public class ResourceQuotaStatus implements KubernetesResource
     @JsonProperty("used")
     public void setUsed(Map<String, io.fabric8.kubernetes.api.model.Quantity> used) {
         this.used = used;
+    }
+
+    @JsonIgnore
+    public ResourceQuotaStatusBuilder edit() {
+        return new ResourceQuotaStatusBuilder(this);
+    }
+
+    @JsonIgnore
+    public ResourceQuotaStatusBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

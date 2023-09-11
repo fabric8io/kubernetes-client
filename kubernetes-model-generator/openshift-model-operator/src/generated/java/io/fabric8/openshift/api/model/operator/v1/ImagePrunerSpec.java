@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Affinity;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.Duration;
@@ -71,7 +72,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ImagePrunerSpec implements KubernetesResource
+public class ImagePrunerSpec implements Editable<ImagePrunerSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("affinity")
@@ -257,6 +258,16 @@ public class ImagePrunerSpec implements KubernetesResource
     @JsonProperty("tolerations")
     public void setTolerations(List<Toleration> tolerations) {
         this.tolerations = tolerations;
+    }
+
+    @JsonIgnore
+    public ImagePrunerSpecBuilder edit() {
+        return new ImagePrunerSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public ImagePrunerSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -69,7 +70,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class TaskResourceBinding implements KubernetesResource
+public class TaskResourceBinding implements Editable<TaskResourceBindingBuilder> , KubernetesResource
 {
 
     @JsonProperty("name")
@@ -137,6 +138,16 @@ public class TaskResourceBinding implements KubernetesResource
     @JsonProperty("resourceSpec")
     public void setResourceSpec(PipelineResourceSpec resourceSpec) {
         this.resourceSpec = resourceSpec;
+    }
+
+    @JsonIgnore
+    public TaskResourceBindingBuilder edit() {
+        return new TaskResourceBindingBuilder(this);
+    }
+
+    @JsonIgnore
+    public TaskResourceBindingBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

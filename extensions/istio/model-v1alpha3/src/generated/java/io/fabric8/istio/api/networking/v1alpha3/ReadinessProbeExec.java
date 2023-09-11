@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -62,7 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class ReadinessProbeExec implements IsReadinessProbeHealthCheckMethod
+public class ReadinessProbeExec implements IsReadinessProbeHealthCheckMethod, Editable<ReadinessProbeExecBuilder>
 {
 
     @JsonProperty("exec")
@@ -90,6 +91,16 @@ public class ReadinessProbeExec implements IsReadinessProbeHealthCheckMethod
     @JsonProperty("exec")
     public void setExec(ExecHealthCheckConfig exec) {
         this.exec = exec;
+    }
+
+    @JsonIgnore
+    public ReadinessProbeExecBuilder edit() {
+        return new ReadinessProbeExecBuilder(this);
+    }
+
+    @JsonIgnore
+    public ReadinessProbeExecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

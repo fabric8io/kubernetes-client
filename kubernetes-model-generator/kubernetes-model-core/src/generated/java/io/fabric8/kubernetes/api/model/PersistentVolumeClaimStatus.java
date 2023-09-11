@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.sundr.builder.annotations.Buildable;
 import lombok.EqualsAndHashCode;
 import lombok.Setter;
@@ -39,9 +40,9 @@ import lombok.experimental.Accessors;
     "_",
     ""
 })
-@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
+@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("jsonschema2pojo")
-public class PersistentVolumeClaimStatus implements KubernetesResource
+public class PersistentVolumeClaimStatus implements Editable<PersistentVolumeClaimStatusBuilder> , KubernetesResource
 {
 
     @JsonProperty("accessModes")
@@ -138,6 +139,16 @@ public class PersistentVolumeClaimStatus implements KubernetesResource
     @JsonProperty("resizeStatus")
     public void setResizeStatus(java.lang.String resizeStatus) {
         this.resizeStatus = resizeStatus;
+    }
+
+    @JsonIgnore
+    public PersistentVolumeClaimStatusBuilder edit() {
+        return new PersistentVolumeClaimStatusBuilder(this);
+    }
+
+    @JsonIgnore
+    public PersistentVolumeClaimStatusBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter
