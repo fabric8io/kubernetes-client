@@ -149,11 +149,11 @@ public class KubernetesCoreTypeAnnotator extends Jackson2Annotator {
     JClass builderType = clazz.owner().ref(clazz.fullName() + "Builder");
     JClass editableType = clazz.owner().ref(Editable.class).narrow(builderType);
     clazz._implements(editableType);
-    JMethod editMethod = clazz.method(JMod.PUBLIC , builderType, "edit");
+    JMethod editMethod = clazz.method(JMod.PUBLIC, builderType, "edit");
     editMethod.annotate(JsonIgnore.class);
     JInvocation newBuilder = JExpr._new(builderType).arg(JExpr._this());
     editMethod.body()._return(newBuilder);
-    JMethod toBuilderMethod = clazz.method(JMod.PUBLIC , builderType, "toBuilder");
+    JMethod toBuilderMethod = clazz.method(JMod.PUBLIC, builderType, "toBuilder");
     toBuilderMethod.annotate(JsonIgnore.class);
     toBuilderMethod.body()._return(JExpr.invoke("edit"));
   }
