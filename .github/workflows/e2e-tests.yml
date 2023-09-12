@@ -68,14 +68,14 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        kubernetes: [v1.25.0, v1.24.0, v1.23.3, v1.22.6, v1.20.15, v1.19.16]
+        kubernetes: [v1.27.5, v1.26.8, v1.25.13, v1.20.15, v1.19.16]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Setup Minikube-Kubernetes
-        uses: manusa/actions-setup-minikube@v2.7.2
+        uses: manusa/actions-setup-minikube@v2.8.0
         with:
-          minikube version: v1.28.0
+          minikube version: v1.30.1
           kubernetes version: ${{ matrix.kubernetes }}
           github token: ${{ secrets.GITHUB_TOKEN }}
           start args: '--force'
@@ -101,12 +101,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        kubernetes: [v1.27.3, v1.26.0]
+        kubernetes: [v1.27.5, v1.26.8]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Setup Minikube-Kubernetes
-        uses: manusa/actions-setup-minikube@v2.7.2
+        uses: manusa/actions-setup-minikube@v2.8.0
         with:
           minikube version: v1.30.1
           driver: docker
@@ -139,9 +139,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Setup Minikube-Kubernetes
-        uses: manusa/actions-setup-minikube@v2.7.2
+        uses: manusa/actions-setup-minikube@v2.8.0
         with:
-          minikube version: v1.28.0
+          minikube version: v1.30.1
           kubernetes version: v1.12.10
           github token: ${{ secrets.GITHUB_TOKEN }}
           start args: '--force'
