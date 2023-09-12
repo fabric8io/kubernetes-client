@@ -31,10 +31,10 @@ public class Utils {
   }
 
   public static Map<String, Quantity> buildDefaultResourceMap() {
-    Quantity cpu = new QuantityBuilder(false)
+    Quantity cpu = new QuantityBuilder()
         .withAmount("1")
         .build();
-    Quantity memory = new QuantityBuilder(false)
+    Quantity memory = new QuantityBuilder()
         .withAmount("1024")
         .build();
     Map<String, Quantity> resourceMap = new HashMap<>();
