@@ -111,7 +111,7 @@
     <junit.version>5.10.0</junit.version>
     <assertj.core.version>3.24.2</assertj.core.version>
     <awaitility.version>4.2.0</awaitility.version>
-    <approvaltests.version>18.7.1</approvaltests.version>
+    <approvaltests.version>19.0.0</approvaltests.version>
     <mockito.version>4.11.0</mockito.version>
 
     <conscrypt-openjdk-uber.bundle.version>1.4.2_1</conscrypt-openjdk-uber.bundle.version>
