@@ -55,9 +55,7 @@ import org.slf4j.LoggerFactory;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InterruptedIOException;
-import java.io.PrintWriter;
 import java.io.Reader;
-import java.io.StringWriter;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.nio.ByteBuffer;
@@ -250,15 +248,6 @@ public class OkHttpClientImpl extends StandardHttpClient<OkHttpClientImpl, OkHtt
 
   @Override
   public void close() {
-    if (LOG.isDebugEnabled()) {
-      StringWriter writer = new StringWriter();
-      PrintWriter printWriter = new PrintWriter(writer);
-      new Exception().printStackTrace(printWriter);
-      printWriter.close();
-      String stack = writer.toString();
-      stack = stack.substring(stack.indexOf("\n"));
-      LOG.debug("Shutting down dispatcher {} at the following call stack: {}", this.httpClient.dispatcher(), stack);
-    }
     ConnectionPool connectionPool = httpClient.connectionPool();
 
     Dispatcher dispatcher = httpClient.dispatcher();

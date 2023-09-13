@@ -51,6 +51,7 @@ import io.fabric8.kubernetes.client.dsl.base.PatchContext;
 import io.fabric8.kubernetes.client.dsl.base.PatchType;
 import io.fabric8.kubernetes.client.extension.ExtensibleResource;
 import io.fabric8.kubernetes.client.http.HttpRequest;
+import io.fabric8.kubernetes.client.impl.BaseClient;
 import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
 import io.fabric8.kubernetes.client.informers.SharedIndexInformer;
 import io.fabric8.kubernetes.client.informers.impl.DefaultSharedIndexInformer;
@@ -1037,6 +1038,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     if (indexers != null) {
       informer.addIndexers(indexers);
     }
+    this.context.getClient().adapt(BaseClient.class).getClosed().whenComplete((closed, ignored) -> informer.stop());
     return informer;
   }
 

@@ -41,17 +41,22 @@ import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.utils.ApiVersionUtil;
 import io.fabric8.kubernetes.client.utils.KubernetesSerialization;
 import io.fabric8.kubernetes.client.utils.Utils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Predicate;
 
 public abstract class BaseClient implements Client {
+
+  public static final Logger logger = LoggerFactory.getLogger(BaseClient.class);
 
   /**
    * An {@link ExecutorSupplier} that provides an unlimited thread pool {@link Executor} per client.
@@ -84,10 +89,12 @@ public abstract class BaseClient implements Client {
   private ExecutorSupplier executorSupplier;
   private Executor executor;
   protected KubernetesSerialization kubernetesSerialization;
+  private CompletableFuture<Void> closed;
 
   private OperationContext operationContext;
 
   BaseClient(BaseClient baseClient) {
+    this.closed = baseClient.closed;
     this.config = baseClient.config;
     this.httpClient = baseClient.httpClient;
     this.adapters = baseClient.adapters;
@@ -104,6 +111,7 @@ public abstract class BaseClient implements Client {
 
   BaseClient(final HttpClient httpClient, Config config, ExecutorSupplier executorSupplier,
       KubernetesSerialization kubernetesSerialization) {
+    this.closed = new CompletableFuture<>();
     this.config = config;
     this.httpClient = httpClient;
     this.handlers = new Handlers();
@@ -136,11 +144,20 @@ public abstract class BaseClient implements Client {
 
   @Override
   public synchronized void close() {
+    if (closed.complete(null) && logger.isDebugEnabled()) {
+      logger.debug(
+          "The client and associated httpclient {} have been closed, the usage of this or any client using the httpclient will not work after this",
+          httpClient.getClass().getName());
+    }
     httpClient.close();
     if (this.executorSupplier != null) {
       this.executorSupplier.onClose(executor);
       this.executorSupplier = null;
     }
+  }
+
+  public CompletableFuture<Void> getClosed() {
+    return closed;
   }
 
   @Override
