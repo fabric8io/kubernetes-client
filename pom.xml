@@ -111,7 +111,7 @@
     <junit.version>5.10.0</junit.version>
     <assertj.core.version>3.24.2</assertj.core.version>
     <awaitility.version>4.2.0</awaitility.version>
-    <approvaltests.version>18.7.1</approvaltests.version>
+    <approvaltests.version>19.0.0</approvaltests.version>
     <mockito.version>4.11.0</mockito.version>
 
     <conscrypt-openjdk-uber.bundle.version>1.4.2_1</conscrypt-openjdk-uber.bundle.version>
@@ -127,7 +127,7 @@
     <snakeyaml.version>2.7</snakeyaml.version>
     <snakeyaml.bundle.version>2.0</snakeyaml.bundle.version> <!-- Transitive Jackson -->
     <bouncycastle.version>1.76</bouncycastle.version>
-    <commons-compress.version>1.23.0</commons-compress.version>
+    <commons-compress.version>1.24.0</commons-compress.version>
     <commons-io.version>2.13.0</commons-io.version> <!-- Required by Gradle Testing Toolkit -->
     <guava.version>32.1.2-jre</guava.version> <!-- Required by Gradle Testing Toolkit -->
     <scr.annotations.version>1.12.0</scr.annotations.version>
@@ -147,7 +147,7 @@
     <maven.release.plugin.version>3.0.1</maven.release.plugin.version>
     <maven.javadoc.plugin.version>3.5.0</maven.javadoc.plugin.version>
     <maven.source.plugin.version>3.3.0</maven.source.plugin.version>
-    <maven.enforcer.plugin.version>3.4.0</maven.enforcer.plugin.version>
+    <maven.enforcer.plugin.version>3.4.1</maven.enforcer.plugin.version>
     <maven.deploy.plugin.version>3.1.1</maven.deploy.plugin.version>
     <maven.gpg.plugin.version>3.1.0</maven.gpg.plugin.version>
     <maven.antrun.plugin.version>3.1.0</maven.antrun.plugin.version>
