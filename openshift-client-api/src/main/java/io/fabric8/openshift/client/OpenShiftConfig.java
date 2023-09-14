@@ -86,7 +86,7 @@ public class OpenShiftConfig extends Config {
       String trustStorePassphrase, String keyStoreFile, String keyStorePassphrase, String impersonateUsername,
       String[] impersonateGroups, Map<String, List<String>> impersonateExtras, OAuthTokenProvider oauthTokenProvider,
       Map<String, String> customHeaders, int requestRetryBackoffLimit, int requestRetryBackoffInterval,
-      int uploadRequestTimeout, long buildTimeout,
+      int uploadRequestTimeout, boolean onlyHttpWatches, long buildTimeout,
       boolean disableApiGroupCheck) {
     super(masterUrl, apiVersion, namespace, trustCerts, disableHostnameVerification, caCertFile, caCertData,
         clientCertFile,
@@ -100,7 +100,7 @@ public class OpenShiftConfig extends Config {
         impersonateExtras, oauthTokenProvider, customHeaders,
         requestRetryBackoffLimit,
         requestRetryBackoffInterval,
-        uploadRequestTimeout);
+        uploadRequestTimeout, onlyHttpWatches);
     this.setOapiVersion(oapiVersion);
     this.setBuildTimeout(buildTimeout);
     this.setDisableApiGroupCheck(disableApiGroupCheck);
@@ -141,6 +141,7 @@ public class OpenShiftConfig extends Config {
         kubernetesConfig.getOauthTokenProvider(), kubernetesConfig.getCustomHeaders(),
         kubernetesConfig.getRequestRetryBackoffLimit(), kubernetesConfig.getRequestRetryBackoffInterval(),
         kubernetesConfig.getUploadRequestTimeout(),
+        kubernetesConfig.isOnlyHttpWatches(),
         buildTimeout,
         false);
   }

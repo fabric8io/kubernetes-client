@@ -500,6 +500,39 @@ class WatchTest {
   }
 
   @Test
+  void testOnlyHttpWatch() throws InterruptedException {
+    // Given
+
+    String dummyEvent = Serialization.asJson(new WatchEventBuilder().withType("MODIFIED")
+        .withObject(new PodBuilder().withNewMetadata().endMetadata().build())
+        .build()) + "\n";
+
+    server.expect()
+        .withPath("/api/v1/namespaces/test/pods?allowWatchBookmarks=true&watch=true")
+        .andReturn(200, dummyEvent)
+        .once();
+
+    CountDownLatch latch = new CountDownLatch(1);
+
+    client.getConfiguration().setOnlyHttpWatches(true);
+
+    client.pods().watch(new Watcher<Pod>() {
+
+      @Override
+      public void eventReceived(Action action, Pod resource) {
+        latch.countDown();
+      }
+
+      @Override
+      public void onClose(WatcherException cause) {
+      }
+    });
+
+    // ensure that the exception does not inhibit further message processing
+    assertTrue(latch.await(10, TimeUnit.SECONDS));
+  }
+
+  @Test
   void testErrorAfterReady() throws InterruptedException {
     // Given
 
