@@ -220,6 +220,8 @@ public class Config {
   private String userAgent = "fabric8-kubernetes-client/" + Version.clientVersion();
   private TlsVersion[] tlsVersions = new TlsVersion[] { TlsVersion.TLS_1_3, TlsVersion.TLS_1_2 };
 
+  private boolean onlyHttpWatches;
+
   /**
    * @deprecated Use Kubernetes Status directly for extracting error messages.
    */
@@ -337,7 +339,7 @@ public class Config {
         errorMessages, userAgent, tlsVersions, websocketPingInterval, proxyUsername, proxyPassword,
         trustStoreFile, trustStorePassphrase, keyStoreFile, keyStorePassphrase, impersonateUsername, impersonateGroups,
         impersonateExtras, null, null, DEFAULT_REQUEST_RETRY_BACKOFFLIMIT, DEFAULT_REQUEST_RETRY_BACKOFFINTERVAL,
-        DEFAULT_UPLOAD_REQUEST_TIMEOUT);
+        DEFAULT_UPLOAD_REQUEST_TIMEOUT, false);
   }
 
   @Buildable(builderPackage = "io.fabric8.kubernetes.api.builder", editableEnabled = false)
@@ -352,7 +354,7 @@ public class Config {
       String proxyPassword, String trustStoreFile, String trustStorePassphrase, String keyStoreFile, String keyStorePassphrase,
       String impersonateUsername, String[] impersonateGroups, Map<String, List<String>> impersonateExtras,
       OAuthTokenProvider oauthTokenProvider, Map<String, String> customHeaders, int requestRetryBackoffLimit,
-      int requestRetryBackoffInterval, int uploadRequestTimeout) {
+      int requestRetryBackoffInterval, int uploadRequestTimeout, boolean onlyHttpWatches) {
     this.apiVersion = apiVersion;
     this.namespace = namespace;
     this.trustCerts = trustCerts;
@@ -401,6 +403,7 @@ public class Config {
     this.maxConcurrentRequests = maxConcurrentRequests;
     this.maxConcurrentRequestsPerHost = maxConcurrentRequestsPerHost;
     this.autoOAuthToken = autoOAuthToken;
+    this.onlyHttpWatches = onlyHttpWatches;
   }
 
   public static void configFromSysPropsOrEnvVars(Config config) {
@@ -1507,6 +1510,14 @@ public class Config {
 
   public void setAutoOAuthToken(String autoOAuthToken) {
     this.autoOAuthToken = autoOAuthToken;
+  }
+
+  public boolean isOnlyHttpWatches() {
+    return onlyHttpWatches;
+  }
+
+  public void setOnlyHttpWatches(boolean onlyHttpWatches) {
+    this.onlyHttpWatches = onlyHttpWatches;
   }
 
 }
