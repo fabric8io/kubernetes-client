@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -56,7 +57,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class PriorityLevelConfigurationSpec implements KubernetesResource
+public class PriorityLevelConfigurationSpec implements Editable<PriorityLevelConfigurationSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("limited")
@@ -97,6 +98,16 @@ public class PriorityLevelConfigurationSpec implements KubernetesResource
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;
+    }
+
+    @JsonIgnore
+    public PriorityLevelConfigurationSpecBuilder edit() {
+        return new PriorityLevelConfigurationSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public PriorityLevelConfigurationSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

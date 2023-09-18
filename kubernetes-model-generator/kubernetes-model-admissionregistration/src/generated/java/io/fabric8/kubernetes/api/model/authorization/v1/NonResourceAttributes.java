@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -56,7 +57,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class NonResourceAttributes implements KubernetesResource
+public class NonResourceAttributes implements Editable<NonResourceAttributesBuilder> , KubernetesResource
 {
 
     @JsonProperty("path")
@@ -97,6 +98,16 @@ public class NonResourceAttributes implements KubernetesResource
     @JsonProperty("verb")
     public void setVerb(String verb) {
         this.verb = verb;
+    }
+
+    @JsonIgnore
+    public NonResourceAttributesBuilder edit() {
+        return new NonResourceAttributesBuilder(this);
+    }
+
+    @JsonIgnore
+    public NonResourceAttributesBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

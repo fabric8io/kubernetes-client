@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -58,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class BuildConfigStatus implements KubernetesResource
+public class BuildConfigStatus implements Editable<BuildConfigStatusBuilder> , KubernetesResource
 {
 
     @JsonProperty("imageChangeTriggers")
@@ -100,6 +101,16 @@ public class BuildConfigStatus implements KubernetesResource
     @JsonProperty("lastVersion")
     public void setLastVersion(Long lastVersion) {
         this.lastVersion = lastVersion;
+    }
+
+    @JsonIgnore
+    public BuildConfigStatusBuilder edit() {
+        return new BuildConfigStatusBuilder(this);
+    }
+
+    @JsonIgnore
+    public BuildConfigStatusBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -55,7 +56,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class CleanupSpec implements KubernetesResource
+public class CleanupSpec implements Editable<CleanupSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("enabled")
@@ -83,6 +84,16 @@ public class CleanupSpec implements KubernetesResource
     @JsonProperty("enabled")
     public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
+    }
+
+    @JsonIgnore
+    public CleanupSpecBuilder edit() {
+        return new CleanupSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public CleanupSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

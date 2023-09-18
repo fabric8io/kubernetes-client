@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.sundr.builder.annotations.Buildable;
 import lombok.EqualsAndHashCode;
 import lombok.Setter;
@@ -33,9 +34,9 @@ import lombok.experimental.Accessors;
     "_",
     ""
 })
-@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
+@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("jsonschema2pojo")
-public class WatchEvent implements io.fabric8.kubernetes.api.model.KubernetesResource
+public class WatchEvent implements Editable<WatchEventBuilder> , io.fabric8.kubernetes.api.model.KubernetesResource
 {
 
     @JsonProperty("object")
@@ -76,6 +77,16 @@ public class WatchEvent implements io.fabric8.kubernetes.api.model.KubernetesRes
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;
+    }
+
+    @JsonIgnore
+    public WatchEventBuilder edit() {
+        return new WatchEventBuilder(this);
+    }
+
+    @JsonIgnore
+    public WatchEventBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

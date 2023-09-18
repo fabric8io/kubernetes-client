@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.knative.internal.pkg.apis.duck.v1.CloudEventOverrides;
 import io.fabric8.knative.internal.pkg.apis.duck.v1.Destination;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -66,7 +67,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class ContainerSourceSpec implements KubernetesResource
+public class ContainerSourceSpec implements Editable<ContainerSourceSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("ceOverrides")
@@ -120,6 +121,16 @@ public class ContainerSourceSpec implements KubernetesResource
     @JsonProperty("template")
     public void setTemplate(io.fabric8.kubernetes.api.model.PodTemplateSpec template) {
         this.template = template;
+    }
+
+    @JsonIgnore
+    public ContainerSourceSpecBuilder edit() {
+        return new ContainerSourceSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public ContainerSourceSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

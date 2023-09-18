@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -58,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ResourceMetricSource implements KubernetesResource
+public class ResourceMetricSource implements Editable<ResourceMetricSourceBuilder> , KubernetesResource
 {
 
     @JsonProperty("name")
@@ -112,6 +113,16 @@ public class ResourceMetricSource implements KubernetesResource
     @JsonProperty("targetAverageValue")
     public void setTargetAverageValue(Quantity targetAverageValue) {
         this.targetAverageValue = targetAverageValue;
+    }
+
+    @JsonIgnore
+    public ResourceMetricSourceBuilder edit() {
+        return new ResourceMetricSourceBuilder(this);
+    }
+
+    @JsonIgnore
+    public ResourceMetricSourceBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

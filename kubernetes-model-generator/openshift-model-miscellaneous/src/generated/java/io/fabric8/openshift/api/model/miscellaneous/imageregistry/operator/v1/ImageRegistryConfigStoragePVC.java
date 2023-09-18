@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -55,7 +56,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ImageRegistryConfigStoragePVC implements KubernetesResource
+public class ImageRegistryConfigStoragePVC implements Editable<ImageRegistryConfigStoragePVCBuilder> , KubernetesResource
 {
 
     @JsonProperty("claim")
@@ -83,6 +84,16 @@ public class ImageRegistryConfigStoragePVC implements KubernetesResource
     @JsonProperty("claim")
     public void setClaim(String claim) {
         this.claim = claim;
+    }
+
+    @JsonIgnore
+    public ImageRegistryConfigStoragePVCBuilder edit() {
+        return new ImageRegistryConfigStoragePVCBuilder(this);
+    }
+
+    @JsonIgnore
+    public ImageRegistryConfigStoragePVCBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

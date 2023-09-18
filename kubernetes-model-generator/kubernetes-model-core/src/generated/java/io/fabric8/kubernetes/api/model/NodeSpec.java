@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.sundr.builder.annotations.Buildable;
 import lombok.EqualsAndHashCode;
 import lombok.Setter;
@@ -40,9 +41,9 @@ import lombok.experimental.Accessors;
     "_",
     ""
 })
-@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
+@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("jsonschema2pojo")
-public class NodeSpec implements KubernetesResource
+public class NodeSpec implements Editable<NodeSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("configSource")
@@ -150,6 +151,16 @@ public class NodeSpec implements KubernetesResource
     @JsonProperty("unschedulable")
     public void setUnschedulable(Boolean unschedulable) {
         this.unschedulable = unschedulable;
+    }
+
+    @JsonIgnore
+    public NodeSpecBuilder edit() {
+        return new NodeSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public NodeSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

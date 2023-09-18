@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -68,7 +69,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("operator.openshift.io")
 @Generated("jsonschema2pojo")
-public class ConfigList implements KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.operator.v1.Config>
+public class ConfigList implements Editable<ConfigListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.operator.v1.Config>
 {
 
     /**
@@ -166,6 +167,16 @@ public class ConfigList implements KubernetesResource, KubernetesResourceList<io
     @JsonProperty("metadata")
     public void setMetadata(ListMeta metadata) {
         this.metadata = metadata;
+    }
+
+    @JsonIgnore
+    public ConfigListBuilder edit() {
+        return new ConfigListBuilder(this);
+    }
+
+    @JsonIgnore
+    public ConfigListBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

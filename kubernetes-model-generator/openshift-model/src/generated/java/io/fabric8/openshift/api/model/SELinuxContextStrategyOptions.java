@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -57,7 +58,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class SELinuxContextStrategyOptions implements KubernetesResource
+public class SELinuxContextStrategyOptions implements Editable<SELinuxContextStrategyOptionsBuilder> , KubernetesResource
 {
 
     @JsonProperty("seLinuxOptions")
@@ -98,6 +99,16 @@ public class SELinuxContextStrategyOptions implements KubernetesResource
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;
+    }
+
+    @JsonIgnore
+    public SELinuxContextStrategyOptionsBuilder edit() {
+        return new SELinuxContextStrategyOptionsBuilder(this);
+    }
+
+    @JsonIgnore
+    public SELinuxContextStrategyOptionsBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

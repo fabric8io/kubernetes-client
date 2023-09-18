@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
@@ -65,7 +66,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("operators.coreos.com")
 @Generated("jsonschema2pojo")
-public class OperatorCondition implements HasMetadata, Namespaced
+public class OperatorCondition implements Editable<OperatorConditionBuilder> , HasMetadata, Namespaced
 {
 
     /**
@@ -175,6 +176,16 @@ public class OperatorCondition implements HasMetadata, Namespaced
     @JsonProperty("status")
     public void setStatus(OperatorConditionStatus status) {
         this.status = status;
+    }
+
+    @JsonIgnore
+    public OperatorConditionBuilder edit() {
+        return new OperatorConditionBuilder(this);
+    }
+
+    @JsonIgnore
+    public OperatorConditionBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

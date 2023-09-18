@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -59,7 +60,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class FailureDomain implements KubernetesResource
+public class FailureDomain implements Editable<FailureDomainBuilder> , KubernetesResource
 {
 
     @JsonProperty("name")
@@ -139,6 +140,16 @@ public class FailureDomain implements KubernetesResource
     @JsonProperty("zone")
     public void setZone(String zone) {
         this.zone = zone;
+    }
+
+    @JsonIgnore
+    public FailureDomainBuilder edit() {
+        return new FailureDomainBuilder(this);
+    }
+
+    @JsonIgnore
+    public FailureDomainBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

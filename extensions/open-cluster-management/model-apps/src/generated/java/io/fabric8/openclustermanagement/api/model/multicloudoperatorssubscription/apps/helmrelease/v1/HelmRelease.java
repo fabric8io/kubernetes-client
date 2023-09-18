@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -74,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("apps.open-cluster-management.io")
 @Generated("jsonschema2pojo")
-public class HelmRelease implements HasMetadata, Namespaced
+public class HelmRelease implements Editable<HelmReleaseBuilder> , HasMetadata, Namespaced
 {
 
     /**
@@ -198,6 +199,16 @@ public class HelmRelease implements HasMetadata, Namespaced
     @JsonProperty("status")
     public void setStatus(HelmAppStatus status) {
         this.status = status;
+    }
+
+    @JsonIgnore
+    public HelmReleaseBuilder edit() {
+        return new HelmReleaseBuilder(this);
+    }
+
+    @JsonIgnore
+    public HelmReleaseBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

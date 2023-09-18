@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -66,7 +67,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class HelmAppStatus implements KubernetesResource
+public class HelmAppStatus implements Editable<HelmAppStatusBuilder> , KubernetesResource
 {
 
     @JsonProperty("conditions")
@@ -108,6 +109,16 @@ public class HelmAppStatus implements KubernetesResource
     @JsonProperty("deployedRelease")
     public void setDeployedRelease(HelmAppRelease deployedRelease) {
         this.deployedRelease = deployedRelease;
+    }
+
+    @JsonIgnore
+    public HelmAppStatusBuilder edit() {
+        return new HelmAppStatusBuilder(this);
+    }
+
+    @JsonIgnore
+    public HelmAppStatusBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

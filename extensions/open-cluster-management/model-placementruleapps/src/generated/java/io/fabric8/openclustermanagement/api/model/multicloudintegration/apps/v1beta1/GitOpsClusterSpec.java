@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -63,7 +64,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class GitOpsClusterSpec implements KubernetesResource
+public class GitOpsClusterSpec implements Editable<GitOpsClusterSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("argoServer")
@@ -104,6 +105,16 @@ public class GitOpsClusterSpec implements KubernetesResource
     @JsonProperty("placementRef")
     public void setPlacementRef(io.fabric8.kubernetes.api.model.ObjectReference placementRef) {
         this.placementRef = placementRef;
+    }
+
+    @JsonIgnore
+    public GitOpsClusterSpecBuilder edit() {
+        return new GitOpsClusterSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public GitOpsClusterSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

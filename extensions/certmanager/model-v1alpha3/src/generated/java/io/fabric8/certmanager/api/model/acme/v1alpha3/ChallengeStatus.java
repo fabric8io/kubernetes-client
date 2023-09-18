@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -66,7 +67,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class ChallengeStatus implements KubernetesResource
+public class ChallengeStatus implements Editable<ChallengeStatusBuilder> , KubernetesResource
 {
 
     @JsonProperty("presented")
@@ -133,6 +134,16 @@ public class ChallengeStatus implements KubernetesResource
     @JsonProperty("state")
     public void setState(String state) {
         this.state = state;
+    }
+
+    @JsonIgnore
+    public ChallengeStatusBuilder edit() {
+        return new ChallengeStatusBuilder(this);
+    }
+
+    @JsonIgnore
+    public ChallengeStatusBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Affinity;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -116,7 +117,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class RevisionSpec implements KubernetesResource
+public class RevisionSpec implements Editable<RevisionSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("activeDeadlineSeconds")
@@ -703,6 +704,16 @@ public class RevisionSpec implements KubernetesResource
     @JsonProperty("volumes")
     public void setVolumes(List<io.fabric8.kubernetes.api.model.Volume> volumes) {
         this.volumes = volumes;
+    }
+
+    @JsonIgnore
+    public RevisionSpecBuilder edit() {
+        return new RevisionSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public RevisionSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

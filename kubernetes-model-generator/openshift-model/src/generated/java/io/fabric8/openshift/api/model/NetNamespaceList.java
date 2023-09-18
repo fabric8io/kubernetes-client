@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -68,7 +69,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("network.openshift.io")
 @Generated("jsonschema2pojo")
-public class NetNamespaceList implements KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.NetNamespace>
+public class NetNamespaceList implements Editable<NetNamespaceListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.NetNamespace>
 {
 
     /**
@@ -166,6 +167,16 @@ public class NetNamespaceList implements KubernetesResource, KubernetesResourceL
     @JsonProperty("metadata")
     public void setMetadata(ListMeta metadata) {
         this.metadata = metadata;
+    }
+
+    @JsonIgnore
+    public NetNamespaceListBuilder edit() {
+        return new NetNamespaceListBuilder(this);
+    }
+
+    @JsonIgnore
+    public NetNamespaceListBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

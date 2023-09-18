@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -58,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class NutanixPlatformSpec implements KubernetesResource
+public class NutanixPlatformSpec implements Editable<NutanixPlatformSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("prismCentral")
@@ -100,6 +101,16 @@ public class NutanixPlatformSpec implements KubernetesResource
     @JsonProperty("prismElements")
     public void setPrismElements(List<NutanixPrismElementEndpoint> prismElements) {
         this.prismElements = prismElements;
+    }
+
+    @JsonIgnore
+    public NutanixPlatformSpecBuilder edit() {
+        return new NutanixPlatformSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public NutanixPlatformSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

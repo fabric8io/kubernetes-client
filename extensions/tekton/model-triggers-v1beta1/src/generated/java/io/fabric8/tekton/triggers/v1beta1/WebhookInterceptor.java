@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -67,7 +68,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class WebhookInterceptor implements KubernetesResource
+public class WebhookInterceptor implements Editable<WebhookInterceptorBuilder> , KubernetesResource
 {
 
     @JsonProperty("header")
@@ -122,6 +123,16 @@ public class WebhookInterceptor implements KubernetesResource
     @JsonProperty("url")
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    @JsonIgnore
+    public WebhookInterceptorBuilder edit() {
+        return new WebhookInterceptorBuilder(this);
+    }
+
+    @JsonIgnore
+    public WebhookInterceptorBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

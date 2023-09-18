@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -57,7 +58,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class BuildOutput implements KubernetesResource
+public class BuildOutput implements Editable<BuildOutputBuilder> , KubernetesResource
 {
 
     @JsonProperty("imageLabels")
@@ -112,6 +113,16 @@ public class BuildOutput implements KubernetesResource
     @JsonProperty("to")
     public void setTo(io.fabric8.kubernetes.api.model.ObjectReference to) {
         this.to = to;
+    }
+
+    @JsonIgnore
+    public BuildOutputBuilder edit() {
+        return new BuildOutputBuilder(this);
+    }
+
+    @JsonIgnore
+    public BuildOutputBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

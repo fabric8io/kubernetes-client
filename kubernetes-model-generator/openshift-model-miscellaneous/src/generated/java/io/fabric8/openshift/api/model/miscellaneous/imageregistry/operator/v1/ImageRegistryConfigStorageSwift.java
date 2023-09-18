@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -62,7 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ImageRegistryConfigStorageSwift implements KubernetesResource
+public class ImageRegistryConfigStorageSwift implements Editable<ImageRegistryConfigStorageSwiftBuilder> , KubernetesResource
 {
 
     @JsonProperty("authURL")
@@ -181,6 +182,16 @@ public class ImageRegistryConfigStorageSwift implements KubernetesResource
     @JsonProperty("tenantID")
     public void setTenantID(String tenantID) {
         this.tenantID = tenantID;
+    }
+
+    @JsonIgnore
+    public ImageRegistryConfigStorageSwiftBuilder edit() {
+        return new ImageRegistryConfigStorageSwiftBuilder(this);
+    }
+
+    @JsonIgnore
+    public ImageRegistryConfigStorageSwiftBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

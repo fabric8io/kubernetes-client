@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -69,7 +70,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class TriggerSpec implements KubernetesResource
+public class TriggerSpec implements Editable<TriggerSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("bindings")
@@ -151,6 +152,16 @@ public class TriggerSpec implements KubernetesResource
     @JsonProperty("template")
     public void setTemplate(TriggerSpecTemplate template) {
         this.template = template;
+    }
+
+    @JsonIgnore
+    public TriggerSpecBuilder edit() {
+        return new TriggerSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public TriggerSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

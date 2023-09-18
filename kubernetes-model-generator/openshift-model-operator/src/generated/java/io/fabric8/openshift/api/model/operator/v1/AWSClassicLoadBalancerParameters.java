@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.Duration;
 import io.fabric8.kubernetes.api.model.IntOrString;
@@ -56,7 +57,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class AWSClassicLoadBalancerParameters implements KubernetesResource
+public class AWSClassicLoadBalancerParameters implements Editable<AWSClassicLoadBalancerParametersBuilder> , KubernetesResource
 {
 
     @JsonProperty("connectionIdleTimeout")
@@ -84,6 +85,16 @@ public class AWSClassicLoadBalancerParameters implements KubernetesResource
     @JsonProperty("connectionIdleTimeout")
     public void setConnectionIdleTimeout(Duration connectionIdleTimeout) {
         this.connectionIdleTimeout = connectionIdleTimeout;
+    }
+
+    @JsonIgnore
+    public AWSClassicLoadBalancerParametersBuilder edit() {
+        return new AWSClassicLoadBalancerParametersBuilder(this);
+    }
+
+    @JsonIgnore
+    public AWSClassicLoadBalancerParametersBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

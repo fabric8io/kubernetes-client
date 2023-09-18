@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -60,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class AllocationResult implements KubernetesResource
+public class AllocationResult implements Editable<AllocationResultBuilder> , KubernetesResource
 {
 
     @JsonProperty("availableOnNodes")
@@ -115,6 +116,16 @@ public class AllocationResult implements KubernetesResource
     @JsonProperty("shareable")
     public void setShareable(Boolean shareable) {
         this.shareable = shareable;
+    }
+
+    @JsonIgnore
+    public AllocationResultBuilder edit() {
+        return new AllocationResultBuilder(this);
+    }
+
+    @JsonIgnore
+    public AllocationResultBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

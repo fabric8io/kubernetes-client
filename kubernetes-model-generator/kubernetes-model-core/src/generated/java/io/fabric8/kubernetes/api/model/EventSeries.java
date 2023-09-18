@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.sundr.builder.annotations.Buildable;
 import lombok.EqualsAndHashCode;
 import lombok.Setter;
@@ -33,9 +34,9 @@ import lombok.experimental.Accessors;
     "_",
     ""
 })
-@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
+@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("jsonschema2pojo")
-public class EventSeries implements KubernetesResource
+public class EventSeries implements Editable<EventSeriesBuilder> , KubernetesResource
 {
 
     @JsonProperty("count")
@@ -76,6 +77,16 @@ public class EventSeries implements KubernetesResource
     @JsonProperty("lastObservedTime")
     public void setLastObservedTime(MicroTime lastObservedTime) {
         this.lastObservedTime = lastObservedTime;
+    }
+
+    @JsonIgnore
+    public EventSeriesBuilder edit() {
+        return new EventSeriesBuilder(this);
+    }
+
+    @JsonIgnore
+    public EventSeriesBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

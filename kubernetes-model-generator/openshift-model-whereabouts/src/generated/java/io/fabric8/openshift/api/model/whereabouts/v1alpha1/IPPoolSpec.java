@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -56,7 +57,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class IPPoolSpec implements KubernetesResource
+public class IPPoolSpec implements Editable<IPPoolSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("allocations")
@@ -98,6 +99,16 @@ public class IPPoolSpec implements KubernetesResource
     @JsonProperty("range")
     public void setRange(java.lang.String range) {
         this.range = range;
+    }
+
+    @JsonIgnore
+    public IPPoolSpecBuilder edit() {
+        return new IPPoolSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public IPPoolSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

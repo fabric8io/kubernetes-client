@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -70,7 +71,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class KlusterletSpec implements KubernetesResource
+public class KlusterletSpec implements Editable<KlusterletSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("clusterName")
@@ -164,6 +165,16 @@ public class KlusterletSpec implements KubernetesResource
     @JsonProperty("workImagePullSpec")
     public void setWorkImagePullSpec(String workImagePullSpec) {
         this.workImagePullSpec = workImagePullSpec;
+    }
+
+    @JsonIgnore
+    public KlusterletSpecBuilder edit() {
+        return new KlusterletSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public KlusterletSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

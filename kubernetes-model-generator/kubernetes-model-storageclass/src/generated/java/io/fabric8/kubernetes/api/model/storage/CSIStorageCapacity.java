@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
@@ -67,7 +68,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("storage.k8s.io")
 @Generated("jsonschema2pojo")
-public class CSIStorageCapacity implements HasMetadata, Namespaced
+public class CSIStorageCapacity implements Editable<CSIStorageCapacityBuilder> , HasMetadata, Namespaced
 {
 
     /**
@@ -203,6 +204,16 @@ public class CSIStorageCapacity implements HasMetadata, Namespaced
     @JsonProperty("storageClassName")
     public void setStorageClassName(String storageClassName) {
         this.storageClassName = storageClassName;
+    }
+
+    @JsonIgnore
+    public CSIStorageCapacityBuilder edit() {
+        return new CSIStorageCapacityBuilder(this);
+    }
+
+    @JsonIgnore
+    public CSIStorageCapacityBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

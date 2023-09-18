@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.Duration;
@@ -84,7 +85,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class CertificateSpec implements KubernetesResource
+public class CertificateSpec implements Editable<CertificateSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("commonName")
@@ -364,6 +365,16 @@ public class CertificateSpec implements KubernetesResource
     @JsonProperty("usages")
     public void setUsages(List<String> usages) {
         this.usages = usages;
+    }
+
+    @JsonIgnore
+    public CertificateSpecBuilder edit() {
+        return new CertificateSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public CertificateSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

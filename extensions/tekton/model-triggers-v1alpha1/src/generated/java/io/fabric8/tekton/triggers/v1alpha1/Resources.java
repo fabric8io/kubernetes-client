@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -68,7 +69,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class Resources implements io.fabric8.kubernetes.api.model.KubernetesResource
+public class Resources implements Editable<ResourcesBuilder> , io.fabric8.kubernetes.api.model.KubernetesResource
 {
 
     @JsonProperty("customResource")
@@ -109,6 +110,16 @@ public class Resources implements io.fabric8.kubernetes.api.model.KubernetesReso
     @JsonProperty("kubernetesResource")
     public void setKubernetesResource(io.fabric8.tekton.triggers.v1alpha1.KubernetesResource kubernetesResource) {
         this.kubernetesResource = kubernetesResource;
+    }
+
+    @JsonIgnore
+    public ResourcesBuilder edit() {
+        return new ResourcesBuilder(this);
+    }
+
+    @JsonIgnore
+    public ResourcesBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

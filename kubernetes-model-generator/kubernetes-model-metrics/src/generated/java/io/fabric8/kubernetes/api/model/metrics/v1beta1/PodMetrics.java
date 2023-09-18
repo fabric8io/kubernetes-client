@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.Duration;
 import io.fabric8.kubernetes.api.model.HasMetadata;
@@ -69,7 +70,7 @@ import lombok.experimental.Accessors;
 @Version("v1beta1")
 @Group("metrics.k8s.io")
 @Generated("jsonschema2pojo")
-public class PodMetrics implements HasMetadata, Namespaced
+public class PodMetrics implements Editable<PodMetricsBuilder> , HasMetadata, Namespaced
 {
 
     /**
@@ -193,6 +194,16 @@ public class PodMetrics implements HasMetadata, Namespaced
     @JsonProperty("window")
     public void setWindow(Duration window) {
         this.window = window;
+    }
+
+    @JsonIgnore
+    public PodMetricsBuilder edit() {
+        return new PodMetricsBuilder(this);
+    }
+
+    @JsonIgnore
+    public PodMetricsBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

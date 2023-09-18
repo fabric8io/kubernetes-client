@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.HasMetadata;
@@ -73,7 +74,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("template.openshift.io")
 @Generated("jsonschema2pojo")
-public class Template implements HasMetadata, Namespaced
+public class Template implements Editable<TemplateBuilder> , HasMetadata, Namespaced
 {
 
     /**
@@ -212,6 +213,16 @@ public class Template implements HasMetadata, Namespaced
     @JsonProperty("parameters")
     public void setParameters(List<Parameter> parameters) {
         this.parameters = parameters;
+    }
+
+    @JsonIgnore
+    public TemplateBuilder edit() {
+        return new TemplateBuilder(this);
+    }
+
+    @JsonIgnore
+    public TemplateBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

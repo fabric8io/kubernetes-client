@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -68,7 +69,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha1")
 @Group("operators.coreos.com")
 @Generated("jsonschema2pojo")
-public class CatalogSourceList implements KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.operatorhub.v1alpha1.CatalogSource>
+public class CatalogSourceList implements Editable<CatalogSourceListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.operatorhub.v1alpha1.CatalogSource>
 {
 
     /**
@@ -166,6 +167,16 @@ public class CatalogSourceList implements KubernetesResource, KubernetesResource
     @JsonProperty("metadata")
     public void setMetadata(ListMeta metadata) {
         this.metadata = metadata;
+    }
+
+    @JsonIgnore
+    public CatalogSourceListBuilder edit() {
+        return new CatalogSourceListBuilder(this);
+    }
+
+    @JsonIgnore
+    public CatalogSourceListBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

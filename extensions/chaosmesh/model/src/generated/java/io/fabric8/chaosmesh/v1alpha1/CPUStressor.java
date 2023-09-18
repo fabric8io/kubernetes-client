@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -67,7 +68,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class CPUStressor implements KubernetesResource
+public class CPUStressor implements Editable<CPUStressorBuilder> , KubernetesResource
 {
 
     @JsonProperty("load")
@@ -122,6 +123,16 @@ public class CPUStressor implements KubernetesResource
     @JsonProperty("workers")
     public void setWorkers(java.lang.Integer workers) {
         this.workers = workers;
+    }
+
+    @JsonIgnore
+    public CPUStressorBuilder edit() {
+        return new CPUStressorBuilder(this);
+    }
+
+    @JsonIgnore
+    public CPUStressorBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

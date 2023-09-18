@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -67,7 +68,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class ManagedClusterSpec implements KubernetesResource
+public class ManagedClusterSpec implements Editable<ManagedClusterSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("hubAcceptsClient")
@@ -122,6 +123,16 @@ public class ManagedClusterSpec implements KubernetesResource
     @JsonProperty("managedClusterClientConfigs")
     public void setManagedClusterClientConfigs(List<ClientConfig> managedClusterClientConfigs) {
         this.managedClusterClientConfigs = managedClusterClientConfigs;
+    }
+
+    @JsonIgnore
+    public ManagedClusterSpecBuilder edit() {
+        return new ManagedClusterSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public ManagedClusterSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

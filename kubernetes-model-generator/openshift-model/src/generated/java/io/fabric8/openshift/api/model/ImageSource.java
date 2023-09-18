@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -58,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ImageSource implements KubernetesResource
+public class ImageSource implements Editable<ImageSourceBuilder> , KubernetesResource
 {
 
     @JsonProperty("as")
@@ -127,6 +128,16 @@ public class ImageSource implements KubernetesResource
     @JsonProperty("pullSecret")
     public void setPullSecret(io.fabric8.kubernetes.api.model.LocalObjectReference pullSecret) {
         this.pullSecret = pullSecret;
+    }
+
+    @JsonIgnore
+    public ImageSourceBuilder edit() {
+        return new ImageSourceBuilder(this);
+    }
+
+    @JsonIgnore
+    public ImageSourceBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

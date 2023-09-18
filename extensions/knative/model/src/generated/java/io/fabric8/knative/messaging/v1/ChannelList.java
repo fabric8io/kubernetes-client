@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -76,7 +77,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("messaging.knative.dev")
 @Generated("jsonschema2pojo")
-public class ChannelList implements KubernetesResource, KubernetesResourceList<io.fabric8.knative.messaging.v1.Channel>
+public class ChannelList implements Editable<ChannelListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.knative.messaging.v1.Channel>
 {
 
     /**
@@ -174,6 +175,16 @@ public class ChannelList implements KubernetesResource, KubernetesResourceList<i
     @JsonProperty("metadata")
     public void setMetadata(ListMeta metadata) {
         this.metadata = metadata;
+    }
+
+    @JsonIgnore
+    public ChannelListBuilder edit() {
+        return new ChannelListBuilder(this);
+    }
+
+    @JsonIgnore
+    public ChannelListBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

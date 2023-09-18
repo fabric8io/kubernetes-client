@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -72,7 +73,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha2")
 @Group("cert-manager.io")
 @Generated("jsonschema2pojo")
-public class ClusterIssuer implements HasMetadata
+public class ClusterIssuer implements Editable<ClusterIssuerBuilder> , HasMetadata
 {
 
     /**
@@ -182,6 +183,16 @@ public class ClusterIssuer implements HasMetadata
     @JsonProperty("status")
     public void setStatus(IssuerStatus status) {
         this.status = status;
+    }
+
+    @JsonIgnore
+    public ClusterIssuerBuilder edit() {
+        return new ClusterIssuerBuilder(this);
+    }
+
+    @JsonIgnore
+    public ClusterIssuerBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

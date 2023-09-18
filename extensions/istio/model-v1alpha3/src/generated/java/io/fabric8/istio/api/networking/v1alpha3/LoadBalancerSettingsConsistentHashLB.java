@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -65,7 +66,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class LoadBalancerSettingsConsistentHashLB implements KubernetesResource
+public class LoadBalancerSettingsConsistentHashLB implements Editable<LoadBalancerSettingsConsistentHashLBBuilder> , KubernetesResource
 {
 
     @JsonProperty("HashKey")
@@ -107,6 +108,16 @@ public class LoadBalancerSettingsConsistentHashLB implements KubernetesResource
     @JsonProperty("minimumRingSize")
     public void setMinimumRingSize(Integer minimumRingSize) {
         this.minimumRingSize = minimumRingSize;
+    }
+
+    @JsonIgnore
+    public LoadBalancerSettingsConsistentHashLBBuilder edit() {
+        return new LoadBalancerSettingsConsistentHashLBBuilder(this);
+    }
+
+    @JsonIgnore
+    public LoadBalancerSettingsConsistentHashLBBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

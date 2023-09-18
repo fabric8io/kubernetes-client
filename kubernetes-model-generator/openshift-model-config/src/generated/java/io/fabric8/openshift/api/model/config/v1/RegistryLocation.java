@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -56,7 +57,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class RegistryLocation implements KubernetesResource
+public class RegistryLocation implements Editable<RegistryLocationBuilder> , KubernetesResource
 {
 
     @JsonProperty("domainName")
@@ -97,6 +98,16 @@ public class RegistryLocation implements KubernetesResource
     @JsonProperty("insecure")
     public void setInsecure(Boolean insecure) {
         this.insecure = insecure;
+    }
+
+    @JsonIgnore
+    public RegistryLocationBuilder edit() {
+        return new RegistryLocationBuilder(this);
+    }
+
+    @JsonIgnore
+    public RegistryLocationBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

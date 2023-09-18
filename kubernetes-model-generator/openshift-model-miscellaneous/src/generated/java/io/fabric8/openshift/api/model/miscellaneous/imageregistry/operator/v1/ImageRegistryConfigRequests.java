@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -56,7 +57,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ImageRegistryConfigRequests implements KubernetesResource
+public class ImageRegistryConfigRequests implements Editable<ImageRegistryConfigRequestsBuilder> , KubernetesResource
 {
 
     @JsonProperty("read")
@@ -97,6 +98,16 @@ public class ImageRegistryConfigRequests implements KubernetesResource
     @JsonProperty("write")
     public void setWrite(ImageRegistryConfigRequestsLimits write) {
         this.write = write;
+    }
+
+    @JsonIgnore
+    public ImageRegistryConfigRequestsBuilder edit() {
+        return new ImageRegistryConfigRequestsBuilder(this);
+    }
+
+    @JsonIgnore
+    public ImageRegistryConfigRequestsBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

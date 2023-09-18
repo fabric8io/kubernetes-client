@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -67,7 +68,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class EnvoyFilterSpec implements KubernetesResource
+public class EnvoyFilterSpec implements Editable<EnvoyFilterSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("configPatches")
@@ -122,6 +123,16 @@ public class EnvoyFilterSpec implements KubernetesResource
     @JsonProperty("workloadSelector")
     public void setWorkloadSelector(WorkloadSelector workloadSelector) {
         this.workloadSelector = workloadSelector;
+    }
+
+    @JsonIgnore
+    public EnvoyFilterSpecBuilder edit() {
+        return new EnvoyFilterSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public EnvoyFilterSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

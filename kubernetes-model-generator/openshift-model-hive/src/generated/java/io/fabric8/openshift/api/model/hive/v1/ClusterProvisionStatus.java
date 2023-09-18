@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -57,7 +58,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ClusterProvisionStatus implements KubernetesResource
+public class ClusterProvisionStatus implements Editable<ClusterProvisionStatusBuilder> , KubernetesResource
 {
 
     @JsonProperty("conditions")
@@ -99,6 +100,16 @@ public class ClusterProvisionStatus implements KubernetesResource
     @JsonProperty("jobRef")
     public void setJobRef(io.fabric8.kubernetes.api.model.LocalObjectReference jobRef) {
         this.jobRef = jobRef;
+    }
+
+    @JsonIgnore
+    public ClusterProvisionStatusBuilder edit() {
+        return new ClusterProvisionStatusBuilder(this);
+    }
+
+    @JsonIgnore
+    public ClusterProvisionStatusBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

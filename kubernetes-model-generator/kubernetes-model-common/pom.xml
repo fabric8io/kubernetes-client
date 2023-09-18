@@ -67,10 +67,35 @@
             <Bundle-SymbolicName>${project.groupId}.${project.artifactId}</Bundle-SymbolicName>
             <Import-Package>*</Import-Package>
             <Export-Package>
-              io.fabric8.kubernetes.model**
+              io.fabric8.kubernetes.model**,
+              io.fabric8.kubernetes.api.builder**
             </Export-Package>
           </instructions>
         </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <configuration>
+              <target>
+                <echo>Removing Unneeded Classes</echo>
+                <delete
+                      file="target/classes/io/fabric8/kubernetes/model/util/Dummy.class"
+                      verbose="true" />
+                <delete verbose="true">
+                  <fileset dir="target/generated-sources/annotations/io/fabric8/kubernetes/model/util">
+                    <include name="*.java" />
+                  </fileset>
+                </delete>
+              </target>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>

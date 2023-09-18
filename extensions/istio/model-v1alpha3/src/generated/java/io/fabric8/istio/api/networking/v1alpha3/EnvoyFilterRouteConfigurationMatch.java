@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -67,7 +68,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class EnvoyFilterRouteConfigurationMatch implements KubernetesResource
+public class EnvoyFilterRouteConfigurationMatch implements Editable<EnvoyFilterRouteConfigurationMatchBuilder> , KubernetesResource
 {
 
     @JsonProperty("gateway")
@@ -147,6 +148,16 @@ public class EnvoyFilterRouteConfigurationMatch implements KubernetesResource
     @JsonProperty("vhost")
     public void setVhost(EnvoyFilterRouteConfigurationMatchVirtualHostMatch vhost) {
         this.vhost = vhost;
+    }
+
+    @JsonIgnore
+    public EnvoyFilterRouteConfigurationMatchBuilder edit() {
+        return new EnvoyFilterRouteConfigurationMatchBuilder(this);
+    }
+
+    @JsonIgnore
+    public EnvoyFilterRouteConfigurationMatchBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

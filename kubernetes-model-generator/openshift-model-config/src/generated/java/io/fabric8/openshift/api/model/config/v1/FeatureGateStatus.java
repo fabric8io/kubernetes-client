@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Condition;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
@@ -59,7 +60,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class FeatureGateStatus implements KubernetesResource
+public class FeatureGateStatus implements Editable<FeatureGateStatusBuilder> , KubernetesResource
 {
 
     @JsonProperty("conditions")
@@ -102,6 +103,16 @@ public class FeatureGateStatus implements KubernetesResource
     @JsonProperty("featureGates")
     public void setFeatureGates(List<FeatureGateDetails> featureGates) {
         this.featureGates = featureGates;
+    }
+
+    @JsonIgnore
+    public FeatureGateStatusBuilder edit() {
+        return new FeatureGateStatusBuilder(this);
+    }
+
+    @JsonIgnore
+    public FeatureGateStatusBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

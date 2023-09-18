@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.Duration;
 import io.fabric8.kubernetes.api.model.IntOrString;
@@ -60,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ImageRegistryConfigStorageS3CloudFront implements KubernetesResource
+public class ImageRegistryConfigStorageS3CloudFront implements Editable<ImageRegistryConfigStorageS3CloudFrontBuilder> , KubernetesResource
 {
 
     @JsonProperty("baseURL")
@@ -127,6 +128,16 @@ public class ImageRegistryConfigStorageS3CloudFront implements KubernetesResourc
     @JsonProperty("privateKey")
     public void setPrivateKey(SecretKeySelector privateKey) {
         this.privateKey = privateKey;
+    }
+
+    @JsonIgnore
+    public ImageRegistryConfigStorageS3CloudFrontBuilder edit() {
+        return new ImageRegistryConfigStorageS3CloudFrontBuilder(this);
+    }
+
+    @JsonIgnore
+    public ImageRegistryConfigStorageS3CloudFrontBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

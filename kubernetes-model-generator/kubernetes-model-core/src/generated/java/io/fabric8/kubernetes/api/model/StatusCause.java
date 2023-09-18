@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.sundr.builder.annotations.Buildable;
 import lombok.EqualsAndHashCode;
 import lombok.Setter;
@@ -34,9 +35,9 @@ import lombok.experimental.Accessors;
     "_",
     ""
 })
-@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
+@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("jsonschema2pojo")
-public class StatusCause implements KubernetesResource
+public class StatusCause implements Editable<StatusCauseBuilder> , KubernetesResource
 {
 
     @JsonProperty("field")
@@ -90,6 +91,16 @@ public class StatusCause implements KubernetesResource
     @JsonProperty("reason")
     public void setReason(String reason) {
         this.reason = reason;
+    }
+
+    @JsonIgnore
+    public StatusCauseBuilder edit() {
+        return new StatusCauseBuilder(this);
+    }
+
+    @JsonIgnore
+    public StatusCauseBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

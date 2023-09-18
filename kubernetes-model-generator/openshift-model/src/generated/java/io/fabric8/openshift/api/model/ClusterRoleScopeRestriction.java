@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -59,7 +60,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ClusterRoleScopeRestriction implements KubernetesResource
+public class ClusterRoleScopeRestriction implements Editable<ClusterRoleScopeRestrictionBuilder> , KubernetesResource
 {
 
     @JsonProperty("allowEscalation")
@@ -115,6 +116,16 @@ public class ClusterRoleScopeRestriction implements KubernetesResource
     @JsonProperty("roleNames")
     public void setRoleNames(List<String> roleNames) {
         this.roleNames = roleNames;
+    }
+
+    @JsonIgnore
+    public ClusterRoleScopeRestrictionBuilder edit() {
+        return new ClusterRoleScopeRestrictionBuilder(this);
+    }
+
+    @JsonIgnore
+    public ClusterRoleScopeRestrictionBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

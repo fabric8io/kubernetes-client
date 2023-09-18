@@ -16,6 +16,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.knative.internal.eventing.pkg.apis.duck.v1.SubscriberStatus;
 import io.fabric8.knative.internal.pkg.apis.Condition;
 import io.fabric8.knative.internal.pkg.apis.duck.v1.Addressable;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -74,7 +75,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class KafkaChannelStatus implements KubernetesResource
+public class KafkaChannelStatus implements Editable<KafkaChannelStatusBuilder> , KubernetesResource
 {
 
     @JsonProperty("address")
@@ -184,6 +185,16 @@ public class KafkaChannelStatus implements KubernetesResource
     @JsonProperty("subscribers")
     public void setSubscribers(List<SubscriberStatus> subscribers) {
         this.subscribers = subscribers;
+    }
+
+    @JsonIgnore
+    public KafkaChannelStatusBuilder edit() {
+        return new KafkaChannelStatusBuilder(this);
+    }
+
+    @JsonIgnore
+    public KafkaChannelStatusBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

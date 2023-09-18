@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -63,7 +64,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class JobSpec implements KubernetesResource
+public class JobSpec implements Editable<JobSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("activeDeadlineSeconds")
@@ -221,6 +222,16 @@ public class JobSpec implements KubernetesResource
     @JsonProperty("ttlSecondsAfterFinished")
     public void setTtlSecondsAfterFinished(Integer ttlSecondsAfterFinished) {
         this.ttlSecondsAfterFinished = ttlSecondsAfterFinished;
+    }
+
+    @JsonIgnore
+    public JobSpecBuilder edit() {
+        return new JobSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public JobSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

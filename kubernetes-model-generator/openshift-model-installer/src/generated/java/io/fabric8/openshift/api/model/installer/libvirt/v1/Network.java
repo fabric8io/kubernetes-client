@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -58,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class Network implements KubernetesResource
+public class Network implements Editable<NetworkBuilder> , KubernetesResource
 {
 
     @JsonProperty("dnsmasqOptions")
@@ -100,6 +101,16 @@ public class Network implements KubernetesResource
     @JsonProperty("if")
     public void setIf(String _if) {
         this._if = _if;
+    }
+
+    @JsonIgnore
+    public NetworkBuilder edit() {
+        return new NetworkBuilder(this);
+    }
+
+    @JsonIgnore
+    public NetworkBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.knative.internal.pkg.apis.duck.v1.Destination;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -69,7 +70,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class DeliverySpec implements KubernetesResource
+public class DeliverySpec implements Editable<DeliverySpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("backoffDelay")
@@ -162,6 +163,16 @@ public class DeliverySpec implements KubernetesResource
     @JsonProperty("timeout")
     public void setTimeout(String timeout) {
         this.timeout = timeout;
+    }
+
+    @JsonIgnore
+    public DeliverySpecBuilder edit() {
+        return new DeliverySpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public DeliverySpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

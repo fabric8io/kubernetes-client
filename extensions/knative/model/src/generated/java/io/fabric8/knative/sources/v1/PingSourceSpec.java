@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.knative.internal.pkg.apis.duck.v1.CloudEventOverrides;
 import io.fabric8.knative.internal.pkg.apis.duck.v1.Destination;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -71,7 +72,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class PingSourceSpec implements KubernetesResource
+public class PingSourceSpec implements Editable<PingSourceSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("ceOverrides")
@@ -177,6 +178,16 @@ public class PingSourceSpec implements KubernetesResource
     @JsonProperty("timezone")
     public void setTimezone(String timezone) {
         this.timezone = timezone;
+    }
+
+    @JsonIgnore
+    public PingSourceSpecBuilder edit() {
+        return new PingSourceSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public PingSourceSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -65,7 +66,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class ConnectionPoolSettingsTCPSettings implements KubernetesResource
+public class ConnectionPoolSettingsTCPSettings implements Editable<ConnectionPoolSettingsTCPSettingsBuilder> , KubernetesResource
 {
 
     @JsonProperty("connectTimeout")
@@ -119,6 +120,16 @@ public class ConnectionPoolSettingsTCPSettings implements KubernetesResource
     @JsonProperty("tcpKeepalive")
     public void setTcpKeepalive(ConnectionPoolSettingsTCPSettingsTcpKeepalive tcpKeepalive) {
         this.tcpKeepalive = tcpKeepalive;
+    }
+
+    @JsonIgnore
+    public ConnectionPoolSettingsTCPSettingsBuilder edit() {
+        return new ConnectionPoolSettingsTCPSettingsBuilder(this);
+    }
+
+    @JsonIgnore
+    public ConnectionPoolSettingsTCPSettingsBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

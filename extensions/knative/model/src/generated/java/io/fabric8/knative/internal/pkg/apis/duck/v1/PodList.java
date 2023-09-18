@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -72,7 +73,7 @@ import lombok.experimental.Accessors;
     @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true)
 })
 @Generated("jsonschema2pojo")
-public class PodList implements KubernetesResource, KubernetesResourceList<io.fabric8.knative.internal.pkg.apis.duck.v1.WithPod>
+public class PodList implements Editable<PodListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.knative.internal.pkg.apis.duck.v1.WithPod>
 {
 
     /**
@@ -170,6 +171,16 @@ public class PodList implements KubernetesResource, KubernetesResourceList<io.fa
     @JsonProperty("metadata")
     public void setMetadata(ListMeta metadata) {
         this.metadata = metadata;
+    }
+
+    @JsonIgnore
+    public PodListBuilder edit() {
+        return new PodListBuilder(this);
+    }
+
+    @JsonIgnore
+    public PodListBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -55,7 +56,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class CertSpec implements KubernetesResource
+public class CertSpec implements Editable<CertSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("commonName")
@@ -83,6 +84,16 @@ public class CertSpec implements KubernetesResource
     @JsonProperty("commonName")
     public void setCommonName(String commonName) {
         this.commonName = commonName;
+    }
+
+    @JsonIgnore
+    public CertSpecBuilder edit() {
+        return new CertSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public CertSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

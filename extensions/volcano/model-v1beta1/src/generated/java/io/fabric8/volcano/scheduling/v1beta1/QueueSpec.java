@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -66,7 +67,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class QueueSpec implements KubernetesResource
+public class QueueSpec implements Editable<QueueSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("capability")
@@ -121,6 +122,16 @@ public class QueueSpec implements KubernetesResource
     @JsonProperty("weight")
     public void setWeight(Integer weight) {
         this.weight = weight;
+    }
+
+    @JsonIgnore
+    public QueueSpecBuilder edit() {
+        return new QueueSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public QueueSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -58,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class RedirectConfig implements KubernetesResource
+public class RedirectConfig implements Editable<RedirectConfigBuilder> , KubernetesResource
 {
 
     @JsonProperty("fallbackIP")
@@ -100,6 +101,16 @@ public class RedirectConfig implements KubernetesResource
     @JsonProperty("redirectRules")
     public void setRedirectRules(List<L4RedirectRule> redirectRules) {
         this.redirectRules = redirectRules;
+    }
+
+    @JsonIgnore
+    public RedirectConfigBuilder edit() {
+        return new RedirectConfigBuilder(this);
+    }
+
+    @JsonIgnore
+    public RedirectConfigBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

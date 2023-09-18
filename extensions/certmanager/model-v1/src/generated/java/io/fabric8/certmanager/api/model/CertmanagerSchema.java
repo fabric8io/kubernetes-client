@@ -2,6 +2,7 @@
 package io.fabric8.certmanager.api.model;
 
 import javax.annotation.Generated;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -74,6 +75,7 @@ import io.fabric8.certmanager.api.model.v1.VenafiCloud;
 import io.fabric8.certmanager.api.model.v1.VenafiIssuer;
 import io.fabric8.certmanager.api.model.v1.VenafiTPP;
 import io.fabric8.certmanager.api.model.v1.X509Subject;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -192,7 +194,8 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class CertmanagerSchema {
+public class CertmanagerSchema implements Editable<CertmanagerSchemaBuilder>
+{
 
     @JsonProperty("github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEAuthorization")
     private ACMEAuthorization githubComCertManagerCertManagerPkgApisAcmeV1ACMEAuthorization;
@@ -1114,6 +1117,16 @@ public class CertmanagerSchema {
     @JsonProperty("github_com_cert-manager_cert-manager_pkg_apis_meta_v1_SecretKeySelector")
     public void setGithubComCertManagerCertManagerPkgApisMetaV1SecretKeySelector(SecretKeySelector githubComCertManagerCertManagerPkgApisMetaV1SecretKeySelector) {
         this.githubComCertManagerCertManagerPkgApisMetaV1SecretKeySelector = githubComCertManagerCertManagerPkgApisMetaV1SecretKeySelector;
+    }
+
+    @JsonIgnore
+    public CertmanagerSchemaBuilder edit() {
+        return new CertmanagerSchemaBuilder(this);
+    }
+
+    @JsonIgnore
+    public CertmanagerSchemaBuilder toBuilder() {
+        return edit();
     }
 
 }

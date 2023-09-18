@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -57,7 +58,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class OAuthTemplates implements KubernetesResource
+public class OAuthTemplates implements Editable<OAuthTemplatesBuilder> , KubernetesResource
 {
 
     @JsonProperty("error")
@@ -111,6 +112,16 @@ public class OAuthTemplates implements KubernetesResource
     @JsonProperty("providerSelection")
     public void setProviderSelection(SecretNameReference providerSelection) {
         this.providerSelection = providerSelection;
+    }
+
+    @JsonIgnore
+    public OAuthTemplatesBuilder edit() {
+        return new OAuthTemplatesBuilder(this);
+    }
+
+    @JsonIgnore
+    public OAuthTemplatesBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

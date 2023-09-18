@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -66,7 +67,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class PodResource implements KubernetesResource
+public class PodResource implements Editable<PodResourceBuilder> , KubernetesResource
 {
 
     @JsonProperty("limit_cpu")
@@ -133,6 +134,16 @@ public class PodResource implements KubernetesResource
     @JsonProperty("request_memory")
     public void setRequestMemory(String requestMemory) {
         this.requestMemory = requestMemory;
+    }
+
+    @JsonIgnore
+    public PodResourceBuilder edit() {
+        return new PodResourceBuilder(this);
+    }
+
+    @JsonIgnore
+    public PodResourceBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

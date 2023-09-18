@@ -6,11 +6,13 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -98,7 +100,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class JSONSchemaProps implements KubernetesResource
+public class JSONSchemaProps implements Editable<JSONSchemaPropsBuilder> , KubernetesResource
 {
 
     @JsonProperty("$ref")
@@ -694,6 +696,16 @@ public class JSONSchemaProps implements KubernetesResource
     @JsonProperty("x-kubernetes-validations")
     public void setXKubernetesValidations(List<ValidationRule> xKubernetesValidations) {
         this.xKubernetesValidations = xKubernetesValidations;
+    }
+
+    @JsonIgnore
+    public JSONSchemaPropsBuilder edit() {
+        return new JSONSchemaPropsBuilder(this);
+    }
+
+    @JsonIgnore
+    public JSONSchemaPropsBuilder toBuilder() {
+        return edit();
     }
 
 }

@@ -2,10 +2,12 @@
 package io.fabric8.servicecatalog.api.model;
 
 import javax.annotation.Generated;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -109,7 +111,8 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class ServicecatalogSchema {
+public class ServicecatalogSchema implements Editable<ServicecatalogSchemaBuilder>
+{
 
     @JsonProperty("github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_AddKeyTransform")
     private AddKeyTransform githubComKubernetesSigsServiceCatalogPkgApisServicecatalogV1beta1AddKeyTransform;
@@ -836,6 +839,16 @@ public class ServicecatalogSchema {
     @JsonProperty("github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_UserInfo")
     public void setGithubComKubernetesSigsServiceCatalogPkgApisServicecatalogV1beta1UserInfo(UserInfo githubComKubernetesSigsServiceCatalogPkgApisServicecatalogV1beta1UserInfo) {
         this.githubComKubernetesSigsServiceCatalogPkgApisServicecatalogV1beta1UserInfo = githubComKubernetesSigsServiceCatalogPkgApisServicecatalogV1beta1UserInfo;
+    }
+
+    @JsonIgnore
+    public ServicecatalogSchemaBuilder edit() {
+        return new ServicecatalogSchemaBuilder(this);
+    }
+
+    @JsonIgnore
+    public ServicecatalogSchemaBuilder toBuilder() {
+        return edit();
     }
 
 }

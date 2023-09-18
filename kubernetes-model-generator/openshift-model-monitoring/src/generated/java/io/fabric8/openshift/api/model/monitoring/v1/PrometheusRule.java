@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
@@ -64,7 +65,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("monitoring.coreos.com")
 @Generated("jsonschema2pojo")
-public class PrometheusRule implements HasMetadata, Namespaced
+public class PrometheusRule implements Editable<PrometheusRuleBuilder> , HasMetadata, Namespaced
 {
 
     /**
@@ -161,6 +162,16 @@ public class PrometheusRule implements HasMetadata, Namespaced
     @JsonProperty("spec")
     public void setSpec(PrometheusRuleSpec spec) {
         this.spec = spec;
+    }
+
+    @JsonIgnore
+    public PrometheusRuleBuilder edit() {
+        return new PrometheusRuleBuilder(this);
+    }
+
+    @JsonIgnore
+    public PrometheusRuleBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

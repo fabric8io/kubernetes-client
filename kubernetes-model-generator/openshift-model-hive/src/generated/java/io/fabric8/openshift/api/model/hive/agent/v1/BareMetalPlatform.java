@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -54,7 +55,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class BareMetalPlatform implements KubernetesResource
+public class BareMetalPlatform implements Editable<BareMetalPlatformBuilder> , KubernetesResource
 {
 
     @JsonProperty("agentSelector")
@@ -82,6 +83,16 @@ public class BareMetalPlatform implements KubernetesResource
     @JsonProperty("agentSelector")
     public void setAgentSelector(io.fabric8.kubernetes.api.model.LabelSelector agentSelector) {
         this.agentSelector = agentSelector;
+    }
+
+    @JsonIgnore
+    public BareMetalPlatformBuilder edit() {
+        return new BareMetalPlatformBuilder(this);
+    }
+
+    @JsonIgnore
+    public BareMetalPlatformBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

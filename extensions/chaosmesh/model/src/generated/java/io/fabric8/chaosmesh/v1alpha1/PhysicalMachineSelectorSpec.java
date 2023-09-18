@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -71,7 +72,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class PhysicalMachineSelectorSpec implements KubernetesResource
+public class PhysicalMachineSelectorSpec implements Editable<PhysicalMachineSelectorSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("annotationSelectors")
@@ -170,6 +171,16 @@ public class PhysicalMachineSelectorSpec implements KubernetesResource
     @JsonProperty("physicalMachines")
     public void setPhysicalMachines(Map<String, List<java.lang.String>> physicalMachines) {
         this.physicalMachines = physicalMachines;
+    }
+
+    @JsonIgnore
+    public PhysicalMachineSelectorSpecBuilder edit() {
+        return new PhysicalMachineSelectorSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public PhysicalMachineSelectorSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

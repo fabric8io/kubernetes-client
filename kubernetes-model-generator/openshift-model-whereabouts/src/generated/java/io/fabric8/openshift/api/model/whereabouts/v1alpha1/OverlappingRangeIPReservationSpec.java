@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -56,7 +57,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class OverlappingRangeIPReservationSpec implements KubernetesResource
+public class OverlappingRangeIPReservationSpec implements Editable<OverlappingRangeIPReservationSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("containerid")
@@ -97,6 +98,16 @@ public class OverlappingRangeIPReservationSpec implements KubernetesResource
     @JsonProperty("podref")
     public void setPodref(String podref) {
         this.podref = podref;
+    }
+
+    @JsonIgnore
+    public OverlappingRangeIPReservationSpecBuilder edit() {
+        return new OverlappingRangeIPReservationSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public OverlappingRangeIPReservationSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

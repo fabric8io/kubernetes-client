@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -74,7 +75,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ThanosSpec implements KubernetesResource
+public class ThanosSpec implements Editable<ThanosSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("baseImage")
@@ -311,6 +312,16 @@ public class ThanosSpec implements KubernetesResource
     @JsonProperty("volumeMounts")
     public void setVolumeMounts(List<VolumeMount> volumeMounts) {
         this.volumeMounts = volumeMounts;
+    }
+
+    @JsonIgnore
+    public ThanosSpecBuilder edit() {
+        return new ThanosSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public ThanosSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

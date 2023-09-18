@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -55,7 +56,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class Firmware implements KubernetesResource
+public class Firmware implements Editable<FirmwareBuilder> , KubernetesResource
 {
 
     @JsonProperty("bios")
@@ -83,6 +84,16 @@ public class Firmware implements KubernetesResource
     @JsonProperty("bios")
     public void setBios(BIOS bios) {
         this.bios = bios;
+    }
+
+    @JsonIgnore
+    public FirmwareBuilder edit() {
+        return new FirmwareBuilder(this);
+    }
+
+    @JsonIgnore
+    public FirmwareBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

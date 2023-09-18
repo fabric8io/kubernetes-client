@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -64,7 +65,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class Delegate implements KubernetesResource
+public class Delegate implements Editable<DelegateBuilder> , KubernetesResource
 {
 
     @JsonProperty("name")
@@ -105,6 +106,16 @@ public class Delegate implements KubernetesResource
     @JsonProperty("namespace")
     public void setNamespace(String namespace) {
         this.namespace = namespace;
+    }
+
+    @JsonIgnore
+    public DelegateBuilder edit() {
+        return new DelegateBuilder(this);
+    }
+
+    @JsonIgnore
+    public DelegateBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

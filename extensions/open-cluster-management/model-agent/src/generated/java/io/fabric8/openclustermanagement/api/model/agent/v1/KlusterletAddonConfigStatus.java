@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Condition;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -67,7 +68,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class KlusterletAddonConfigStatus implements KubernetesResource
+public class KlusterletAddonConfigStatus implements Editable<KlusterletAddonConfigStatusBuilder> , KubernetesResource
 {
 
     @JsonProperty("conditions")
@@ -109,6 +110,16 @@ public class KlusterletAddonConfigStatus implements KubernetesResource
     @JsonProperty("ocpGlobalProxy")
     public void setOcpGlobalProxy(ProxyConfig ocpGlobalProxy) {
         this.ocpGlobalProxy = ocpGlobalProxy;
+    }
+
+    @JsonIgnore
+    public KlusterletAddonConfigStatusBuilder edit() {
+        return new KlusterletAddonConfigStatusBuilder(this);
+    }
+
+    @JsonIgnore
+    public KlusterletAddonConfigStatusBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -57,7 +58,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class PrismElement implements KubernetesResource
+public class PrismElement implements Editable<PrismElementBuilder> , KubernetesResource
 {
 
     @JsonProperty("endpoint")
@@ -111,6 +112,16 @@ public class PrismElement implements KubernetesResource
     @JsonProperty("uuid")
     public void setUuid(String uuid) {
         this.uuid = uuid;
+    }
+
+    @JsonIgnore
+    public PrismElementBuilder edit() {
+        return new PrismElementBuilder(this);
+    }
+
+    @JsonIgnore
+    public PrismElementBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

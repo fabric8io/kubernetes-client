@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.knative.internal.pkg.apis.duck.v1.Destination;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -71,7 +72,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class PrometheusSourceSpec implements KubernetesResource
+public class PrometheusSourceSpec implements Editable<PrometheusSourceSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("authTokenFile")
@@ -190,6 +191,16 @@ public class PrometheusSourceSpec implements KubernetesResource
     @JsonProperty("step")
     public void setStep(String step) {
         this.step = step;
+    }
+
+    @JsonIgnore
+    public PrometheusSourceSpecBuilder edit() {
+        return new PrometheusSourceSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public PrometheusSourceSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

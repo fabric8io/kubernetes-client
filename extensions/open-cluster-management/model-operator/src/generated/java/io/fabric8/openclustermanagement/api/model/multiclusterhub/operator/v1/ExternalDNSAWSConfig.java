@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -62,7 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class ExternalDNSAWSConfig implements KubernetesResource
+public class ExternalDNSAWSConfig implements Editable<ExternalDNSAWSConfigBuilder> , KubernetesResource
 {
 
     @JsonProperty("credentials")
@@ -90,6 +91,16 @@ public class ExternalDNSAWSConfig implements KubernetesResource
     @JsonProperty("credentials")
     public void setCredentials(io.fabric8.kubernetes.api.model.LocalObjectReference credentials) {
         this.credentials = credentials;
+    }
+
+    @JsonIgnore
+    public ExternalDNSAWSConfigBuilder edit() {
+        return new ExternalDNSAWSConfigBuilder(this);
+    }
+
+    @JsonIgnore
+    public ExternalDNSAWSConfigBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

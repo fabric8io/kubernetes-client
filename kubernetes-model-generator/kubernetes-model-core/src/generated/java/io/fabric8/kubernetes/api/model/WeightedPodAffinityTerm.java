@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.sundr.builder.annotations.Buildable;
 import lombok.EqualsAndHashCode;
 import lombok.Setter;
@@ -33,9 +34,9 @@ import lombok.experimental.Accessors;
     "_",
     ""
 })
-@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
+@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("jsonschema2pojo")
-public class WeightedPodAffinityTerm implements KubernetesResource
+public class WeightedPodAffinityTerm implements Editable<WeightedPodAffinityTermBuilder> , KubernetesResource
 {
 
     @JsonProperty("podAffinityTerm")
@@ -76,6 +77,16 @@ public class WeightedPodAffinityTerm implements KubernetesResource
     @JsonProperty("weight")
     public void setWeight(Integer weight) {
         this.weight = weight;
+    }
+
+    @JsonIgnore
+    public WeightedPodAffinityTermBuilder edit() {
+        return new WeightedPodAffinityTermBuilder(this);
+    }
+
+    @JsonIgnore
+    public WeightedPodAffinityTermBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

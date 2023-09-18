@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -61,11 +62,21 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class DiscoveredClusterStatus implements KubernetesResource
+public class DiscoveredClusterStatus implements Editable<DiscoveredClusterStatusBuilder> , KubernetesResource
 {
 
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
+
+    @JsonIgnore
+    public DiscoveredClusterStatusBuilder edit() {
+        return new DiscoveredClusterStatusBuilder(this);
+    }
+
+    @JsonIgnore
+    public DiscoveredClusterStatusBuilder toBuilder() {
+        return edit();
+    }
 
     @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {

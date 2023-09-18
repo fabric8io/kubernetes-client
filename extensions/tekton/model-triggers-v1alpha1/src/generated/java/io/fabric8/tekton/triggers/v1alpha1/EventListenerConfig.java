@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -63,7 +64,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class EventListenerConfig implements KubernetesResource
+public class EventListenerConfig implements Editable<EventListenerConfigBuilder> , KubernetesResource
 {
 
     @JsonProperty("generatedName")
@@ -91,6 +92,16 @@ public class EventListenerConfig implements KubernetesResource
     @JsonProperty("generatedName")
     public void setGeneratedName(String generatedName) {
         this.generatedName = generatedName;
+    }
+
+    @JsonIgnore
+    public EventListenerConfigBuilder edit() {
+        return new EventListenerConfigBuilder(this);
+    }
+
+    @JsonIgnore
+    public EventListenerConfigBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

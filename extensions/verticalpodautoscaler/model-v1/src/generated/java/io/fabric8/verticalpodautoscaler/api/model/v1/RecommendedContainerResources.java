@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -68,7 +69,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class RecommendedContainerResources implements KubernetesResource
+public class RecommendedContainerResources implements Editable<RecommendedContainerResourcesBuilder> , KubernetesResource
 {
 
     @JsonProperty("containerName")
@@ -152,6 +153,16 @@ public class RecommendedContainerResources implements KubernetesResource
     @JsonProperty("upperBound")
     public void setUpperBound(Map<String, Quantity> upperBound) {
         this.upperBound = upperBound;
+    }
+
+    @JsonIgnore
+    public RecommendedContainerResourcesBuilder edit() {
+        return new RecommendedContainerResourcesBuilder(this);
+    }
+
+    @JsonIgnore
+    public RecommendedContainerResourcesBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

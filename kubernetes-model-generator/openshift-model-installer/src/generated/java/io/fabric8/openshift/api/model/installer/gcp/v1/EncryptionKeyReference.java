@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -56,7 +57,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class EncryptionKeyReference implements KubernetesResource
+public class EncryptionKeyReference implements Editable<EncryptionKeyReferenceBuilder> , KubernetesResource
 {
 
     @JsonProperty("kmsKey")
@@ -97,6 +98,16 @@ public class EncryptionKeyReference implements KubernetesResource
     @JsonProperty("kmsKeyServiceAccount")
     public void setKmsKeyServiceAccount(String kmsKeyServiceAccount) {
         this.kmsKeyServiceAccount = kmsKeyServiceAccount;
+    }
+
+    @JsonIgnore
+    public EncryptionKeyReferenceBuilder edit() {
+        return new EncryptionKeyReferenceBuilder(this);
+    }
+
+    @JsonIgnore
+    public EncryptionKeyReferenceBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

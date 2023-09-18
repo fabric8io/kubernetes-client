@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -62,7 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ImageRegistryConfigStorageS3 implements KubernetesResource
+public class ImageRegistryConfigStorageS3 implements Editable<ImageRegistryConfigStorageS3Builder> , KubernetesResource
 {
 
     @JsonProperty("bucket")
@@ -181,6 +182,16 @@ public class ImageRegistryConfigStorageS3 implements KubernetesResource
     @JsonProperty("virtualHostedStyle")
     public void setVirtualHostedStyle(Boolean virtualHostedStyle) {
         this.virtualHostedStyle = virtualHostedStyle;
+    }
+
+    @JsonIgnore
+    public ImageRegistryConfigStorageS3Builder edit() {
+        return new ImageRegistryConfigStorageS3Builder(this);
+    }
+
+    @JsonIgnore
+    public ImageRegistryConfigStorageS3Builder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

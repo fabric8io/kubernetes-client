@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -56,7 +57,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class TimeRange implements KubernetesResource
+public class TimeRange implements Editable<TimeRangeBuilder> , KubernetesResource
 {
 
     @JsonProperty("endTime")
@@ -97,6 +98,16 @@ public class TimeRange implements KubernetesResource
     @JsonProperty("startTime")
     public void setStartTime(String startTime) {
         this.startTime = startTime;
+    }
+
+    @JsonIgnore
+    public TimeRangeBuilder edit() {
+        return new TimeRangeBuilder(this);
+    }
+
+    @JsonIgnore
+    public TimeRangeBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

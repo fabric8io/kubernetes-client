@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -66,7 +67,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class EnvoyFilterListenerMatch implements KubernetesResource
+public class EnvoyFilterListenerMatch implements Editable<EnvoyFilterListenerMatchBuilder> , KubernetesResource
 {
 
     @JsonProperty("filterChain")
@@ -133,6 +134,16 @@ public class EnvoyFilterListenerMatch implements KubernetesResource
     @JsonProperty("portNumber")
     public void setPortNumber(Integer portNumber) {
         this.portNumber = portNumber;
+    }
+
+    @JsonIgnore
+    public EnvoyFilterListenerMatchBuilder edit() {
+        return new EnvoyFilterListenerMatchBuilder(this);
+    }
+
+    @JsonIgnore
+    public EnvoyFilterListenerMatchBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -63,7 +64,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class TriggerFilter implements KubernetesResource
+public class TriggerFilter implements Editable<TriggerFilterBuilder> , KubernetesResource
 {
 
     @JsonProperty("attributes")
@@ -92,6 +93,16 @@ public class TriggerFilter implements KubernetesResource
     @JsonProperty("attributes")
     public void setAttributes(Map<String, String> attributes) {
         this.attributes = attributes;
+    }
+
+    @JsonIgnore
+    public TriggerFilterBuilder edit() {
+        return new TriggerFilterBuilder(this);
+    }
+
+    @JsonIgnore
+    public TriggerFilterBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

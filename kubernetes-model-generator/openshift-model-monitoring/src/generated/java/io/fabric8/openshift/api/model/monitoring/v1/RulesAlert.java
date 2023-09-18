@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -57,7 +58,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class RulesAlert implements KubernetesResource
+public class RulesAlert implements Editable<RulesAlertBuilder> , KubernetesResource
 {
 
     @JsonProperty("forGracePeriod")
@@ -111,6 +112,16 @@ public class RulesAlert implements KubernetesResource
     @JsonProperty("resendDelay")
     public void setResendDelay(String resendDelay) {
         this.resendDelay = resendDelay;
+    }
+
+    @JsonIgnore
+    public RulesAlertBuilder edit() {
+        return new RulesAlertBuilder(this);
+    }
+
+    @JsonIgnore
+    public RulesAlertBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

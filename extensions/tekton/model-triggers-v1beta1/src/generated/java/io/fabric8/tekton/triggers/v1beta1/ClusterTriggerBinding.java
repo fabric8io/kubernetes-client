@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -72,7 +73,7 @@ import lombok.experimental.Accessors;
 @Version("v1beta1")
 @Group("triggers.tekton.dev")
 @Generated("jsonschema2pojo")
-public class ClusterTriggerBinding implements HasMetadata
+public class ClusterTriggerBinding implements Editable<ClusterTriggerBindingBuilder> , HasMetadata
 {
 
     /**
@@ -182,6 +183,16 @@ public class ClusterTriggerBinding implements HasMetadata
     @JsonProperty("status")
     public void setStatus(TriggerBindingStatus status) {
         this.status = status;
+    }
+
+    @JsonIgnore
+    public ClusterTriggerBindingBuilder edit() {
+        return new ClusterTriggerBindingBuilder(this);
+    }
+
+    @JsonIgnore
+    public ClusterTriggerBindingBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -60,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class DeveloperConsoleCatalogCategory implements KubernetesResource
+public class DeveloperConsoleCatalogCategory implements Editable<DeveloperConsoleCatalogCategoryBuilder> , KubernetesResource
 {
 
     @JsonProperty("id")
@@ -129,6 +130,16 @@ public class DeveloperConsoleCatalogCategory implements KubernetesResource
     @JsonProperty("tags")
     public void setTags(List<String> tags) {
         this.tags = tags;
+    }
+
+    @JsonIgnore
+    public DeveloperConsoleCatalogCategoryBuilder edit() {
+        return new DeveloperConsoleCatalogCategoryBuilder(this);
+    }
+
+    @JsonIgnore
+    public DeveloperConsoleCatalogCategoryBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

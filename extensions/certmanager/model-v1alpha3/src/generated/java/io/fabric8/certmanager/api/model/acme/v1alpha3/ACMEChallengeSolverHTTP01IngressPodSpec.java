@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Affinity;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -71,7 +72,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class ACMEChallengeSolverHTTP01IngressPodSpec implements KubernetesResource
+public class ACMEChallengeSolverHTTP01IngressPodSpec implements Editable<ACMEChallengeSolverHTTP01IngressPodSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("affinity")
@@ -153,6 +154,16 @@ public class ACMEChallengeSolverHTTP01IngressPodSpec implements KubernetesResour
     @JsonProperty("tolerations")
     public void setTolerations(List<Toleration> tolerations) {
         this.tolerations = tolerations;
+    }
+
+    @JsonIgnore
+    public ACMEChallengeSolverHTTP01IngressPodSpecBuilder edit() {
+        return new ACMEChallengeSolverHTTP01IngressPodSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public ACMEChallengeSolverHTTP01IngressPodSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -59,7 +60,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class VSpherePlatformNodeNetworkingSpec implements KubernetesResource
+public class VSpherePlatformNodeNetworkingSpec implements Editable<VSpherePlatformNodeNetworkingSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("excludeNetworkSubnetCidr")
@@ -115,6 +116,16 @@ public class VSpherePlatformNodeNetworkingSpec implements KubernetesResource
     @JsonProperty("networkSubnetCidr")
     public void setNetworkSubnetCidr(List<String> networkSubnetCidr) {
         this.networkSubnetCidr = networkSubnetCidr;
+    }
+
+    @JsonIgnore
+    public VSpherePlatformNodeNetworkingSpecBuilder edit() {
+        return new VSpherePlatformNodeNetworkingSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public VSpherePlatformNodeNetworkingSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

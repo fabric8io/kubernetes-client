@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.istio.api.type.v1beta1.WorkloadSelector;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -66,7 +67,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class PeerAuthenticationSpec implements KubernetesResource
+public class PeerAuthenticationSpec implements Editable<PeerAuthenticationSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("mtls")
@@ -121,6 +122,16 @@ public class PeerAuthenticationSpec implements KubernetesResource
     @JsonProperty("selector")
     public void setSelector(WorkloadSelector selector) {
         this.selector = selector;
+    }
+
+    @JsonIgnore
+    public PeerAuthenticationSpecBuilder edit() {
+        return new PeerAuthenticationSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public PeerAuthenticationSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

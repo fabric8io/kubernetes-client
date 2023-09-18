@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.certmanager.api.model.meta.v1.SecretKeySelector;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -64,7 +65,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class ACMEIssuerDNS01ProviderDigitalOcean implements KubernetesResource
+public class ACMEIssuerDNS01ProviderDigitalOcean implements Editable<ACMEIssuerDNS01ProviderDigitalOceanBuilder> , KubernetesResource
 {
 
     @JsonProperty("tokenSecretRef")
@@ -92,6 +93,16 @@ public class ACMEIssuerDNS01ProviderDigitalOcean implements KubernetesResource
     @JsonProperty("tokenSecretRef")
     public void setTokenSecretRef(SecretKeySelector tokenSecretRef) {
         this.tokenSecretRef = tokenSecretRef;
+    }
+
+    @JsonIgnore
+    public ACMEIssuerDNS01ProviderDigitalOceanBuilder edit() {
+        return new ACMEIssuerDNS01ProviderDigitalOceanBuilder(this);
+    }
+
+    @JsonIgnore
+    public ACMEIssuerDNS01ProviderDigitalOceanBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

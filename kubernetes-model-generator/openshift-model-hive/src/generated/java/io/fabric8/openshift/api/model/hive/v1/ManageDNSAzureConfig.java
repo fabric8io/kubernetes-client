@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -56,7 +57,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ManageDNSAzureConfig implements KubernetesResource
+public class ManageDNSAzureConfig implements Editable<ManageDNSAzureConfigBuilder> , KubernetesResource
 {
 
     @JsonProperty("cloudName")
@@ -110,6 +111,16 @@ public class ManageDNSAzureConfig implements KubernetesResource
     @JsonProperty("resourceGroupName")
     public void setResourceGroupName(String resourceGroupName) {
         this.resourceGroupName = resourceGroupName;
+    }
+
+    @JsonIgnore
+    public ManageDNSAzureConfigBuilder edit() {
+        return new ManageDNSAzureConfigBuilder(this);
+    }
+
+    @JsonIgnore
+    public ManageDNSAzureConfigBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

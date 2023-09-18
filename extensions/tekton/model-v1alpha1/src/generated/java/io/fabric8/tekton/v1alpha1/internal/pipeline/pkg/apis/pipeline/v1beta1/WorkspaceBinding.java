@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.CSIVolumeSource;
 import io.fabric8.kubernetes.api.model.ConfigMapVolumeSource;
 import io.fabric8.kubernetes.api.model.Container;
@@ -76,7 +77,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class WorkspaceBinding implements KubernetesResource
+public class WorkspaceBinding implements Editable<WorkspaceBindingBuilder> , KubernetesResource
 {
 
     @JsonProperty("configMap")
@@ -208,6 +209,16 @@ public class WorkspaceBinding implements KubernetesResource
     @JsonProperty("volumeClaimTemplate")
     public void setVolumeClaimTemplate(io.fabric8.kubernetes.api.model.PersistentVolumeClaim volumeClaimTemplate) {
         this.volumeClaimTemplate = volumeClaimTemplate;
+    }
+
+    @JsonIgnore
+    public WorkspaceBindingBuilder edit() {
+        return new WorkspaceBindingBuilder(this);
+    }
+
+    @JsonIgnore
+    public WorkspaceBindingBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -67,7 +68,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class CatalogSourceSpec implements KubernetesResource
+public class CatalogSourceSpec implements Editable<CatalogSourceSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("address")
@@ -226,6 +227,16 @@ public class CatalogSourceSpec implements KubernetesResource
     @JsonProperty("updateStrategy")
     public void setUpdateStrategy(UpdateStrategy updateStrategy) {
         this.updateStrategy = updateStrategy;
+    }
+
+    @JsonIgnore
+    public CatalogSourceSpecBuilder edit() {
+        return new CatalogSourceSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public CatalogSourceSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

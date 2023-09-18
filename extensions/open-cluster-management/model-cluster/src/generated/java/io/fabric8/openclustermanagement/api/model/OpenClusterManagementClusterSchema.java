@@ -2,10 +2,12 @@
 package io.fabric8.openclustermanagement.api.model;
 
 import javax.annotation.Generated;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -110,7 +112,8 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class OpenClusterManagementClusterSchema {
+public class OpenClusterManagementClusterSchema implements Editable<OpenClusterManagementClusterSchemaBuilder>
+{
 
     @JsonProperty("open-cluster-management_io_api_cluster_v1_ClientConfig")
     private ClientConfig openClusterManagementIoApiClusterV1ClientConfig;
@@ -473,6 +476,16 @@ public class OpenClusterManagementClusterSchema {
     @JsonProperty("open-cluster-management_io_api_cluster_v1beta1_ManagedClusterSetStatus")
     public void setOpenClusterManagementIoApiClusterV1beta1ManagedClusterSetStatus(ManagedClusterSetStatus openClusterManagementIoApiClusterV1beta1ManagedClusterSetStatus) {
         this.openClusterManagementIoApiClusterV1beta1ManagedClusterSetStatus = openClusterManagementIoApiClusterV1beta1ManagedClusterSetStatus;
+    }
+
+    @JsonIgnore
+    public OpenClusterManagementClusterSchemaBuilder edit() {
+        return new OpenClusterManagementClusterSchemaBuilder(this);
+    }
+
+    @JsonIgnore
+    public OpenClusterManagementClusterSchemaBuilder toBuilder() {
+        return edit();
     }
 
 }

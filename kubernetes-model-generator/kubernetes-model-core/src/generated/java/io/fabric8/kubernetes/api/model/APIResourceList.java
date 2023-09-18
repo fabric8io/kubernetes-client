@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.transform.annotations.TemplateTransformation;
 import io.sundr.transform.annotations.TemplateTransformations;
@@ -37,12 +38,12 @@ import lombok.experimental.Accessors;
     "_",
     ""
 })
-@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
+@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @TemplateTransformations({
     @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true)
 })
 @Generated("jsonschema2pojo")
-public class APIResourceList implements KubernetesResource
+public class APIResourceList implements Editable<APIResourceListBuilder> , KubernetesResource
 {
 
     /**
@@ -140,6 +141,16 @@ public class APIResourceList implements KubernetesResource
     @JsonProperty("resources")
     public void setResources(List<APIResource> resources) {
         this.resources = resources;
+    }
+
+    @JsonIgnore
+    public APIResourceListBuilder edit() {
+        return new APIResourceListBuilder(this);
+    }
+
+    @JsonIgnore
+    public APIResourceListBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

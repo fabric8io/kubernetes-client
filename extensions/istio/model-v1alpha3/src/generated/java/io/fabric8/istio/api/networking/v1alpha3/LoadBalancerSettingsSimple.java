@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -62,7 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class LoadBalancerSettingsSimple implements IsLoadBalancerSettingsLbPolicy
+public class LoadBalancerSettingsSimple implements IsLoadBalancerSettingsLbPolicy, Editable<LoadBalancerSettingsSimpleBuilder>
 {
 
     @JsonProperty("simple")
@@ -90,6 +91,16 @@ public class LoadBalancerSettingsSimple implements IsLoadBalancerSettingsLbPolic
     @JsonProperty("simple")
     public void setSimple(LoadBalancerSettingsSimpleLB simple) {
         this.simple = simple;
+    }
+
+    @JsonIgnore
+    public LoadBalancerSettingsSimpleBuilder edit() {
+        return new LoadBalancerSettingsSimpleBuilder(this);
+    }
+
+    @JsonIgnore
+    public LoadBalancerSettingsSimpleBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

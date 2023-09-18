@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.certmanager.api.model.meta.v1.SecretKeySelector;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -69,7 +70,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class VaultIssuer implements KubernetesResource
+public class VaultIssuer implements Editable<VaultIssuerBuilder> , KubernetesResource
 {
 
     @JsonProperty("auth")
@@ -163,6 +164,16 @@ public class VaultIssuer implements KubernetesResource
     @JsonProperty("server")
     public void setServer(String server) {
         this.server = server;
+    }
+
+    @JsonIgnore
+    public VaultIssuerBuilder edit() {
+        return new VaultIssuerBuilder(this);
+    }
+
+    @JsonIgnore
+    public VaultIssuerBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

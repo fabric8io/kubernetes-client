@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -67,7 +68,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class PodNetworkChaosSpec implements KubernetesResource
+public class PodNetworkChaosSpec implements Editable<PodNetworkChaosSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("ipsets")
@@ -124,6 +125,16 @@ public class PodNetworkChaosSpec implements KubernetesResource
     @JsonProperty("tcs")
     public void setTcs(List<RawTrafficControl> tcs) {
         this.tcs = tcs;
+    }
+
+    @JsonIgnore
+    public PodNetworkChaosSpecBuilder edit() {
+        return new PodNetworkChaosSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public PodNetworkChaosSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

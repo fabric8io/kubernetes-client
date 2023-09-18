@@ -2,10 +2,12 @@
 package io.fabric8.volcano.api.model;
 
 import javax.annotation.Generated;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -74,7 +76,8 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class VolcanoSchema {
+public class VolcanoSchema implements Editable<VolcanoSchemaBuilder>
+{
 
     @JsonProperty("volcano_sh_apis_pkg_apis_scheduling_v1beta1_PodGroup")
     private PodGroup volcanoShApisPkgApisSchedulingV1beta1PodGroup;
@@ -203,6 +206,16 @@ public class VolcanoSchema {
     @JsonProperty("volcano_sh_apis_pkg_apis_scheduling_v1beta1_QueueStatus")
     public void setVolcanoShApisPkgApisSchedulingV1beta1QueueStatus(QueueStatus volcanoShApisPkgApisSchedulingV1beta1QueueStatus) {
         this.volcanoShApisPkgApisSchedulingV1beta1QueueStatus = volcanoShApisPkgApisSchedulingV1beta1QueueStatus;
+    }
+
+    @JsonIgnore
+    public VolcanoSchemaBuilder edit() {
+        return new VolcanoSchemaBuilder(this);
+    }
+
+    @JsonIgnore
+    public VolcanoSchemaBuilder toBuilder() {
+        return edit();
     }
 
 }

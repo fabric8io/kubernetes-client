@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -66,7 +67,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class ServiceSpec implements KubernetesResource
+public class ServiceSpec implements Editable<ServiceSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("template")
@@ -108,6 +109,16 @@ public class ServiceSpec implements KubernetesResource
     @JsonProperty("traffic")
     public void setTraffic(List<TrafficTarget> traffic) {
         this.traffic = traffic;
+    }
+
+    @JsonIgnore
+    public ServiceSpecBuilder edit() {
+        return new ServiceSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public ServiceSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

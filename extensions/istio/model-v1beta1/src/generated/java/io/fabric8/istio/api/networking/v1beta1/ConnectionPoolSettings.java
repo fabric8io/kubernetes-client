@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -64,7 +65,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class ConnectionPoolSettings implements KubernetesResource
+public class ConnectionPoolSettings implements Editable<ConnectionPoolSettingsBuilder> , KubernetesResource
 {
 
     @JsonProperty("http")
@@ -105,6 +106,16 @@ public class ConnectionPoolSettings implements KubernetesResource
     @JsonProperty("tcp")
     public void setTcp(ConnectionPoolSettingsTCPSettings tcp) {
         this.tcp = tcp;
+    }
+
+    @JsonIgnore
+    public ConnectionPoolSettingsBuilder edit() {
+        return new ConnectionPoolSettingsBuilder(this);
+    }
+
+    @JsonIgnore
+    public ConnectionPoolSettingsBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

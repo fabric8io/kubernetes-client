@@ -3134,17 +3134,20 @@
     },
     "failuredomain": {
       "properties": {
-        "computeAvailabilityZone": {
+        "name": {
           "type": "string"
         },
-        "portTargets": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/os_installer_openstack_v1_NamedPortTarget",
-            "existingJavaType": "io.fabric8.openshift.api.model.installer.openstack.v1.NamedPortTarget"
-          }
+        "region": {
+          "type": "string"
         },
-        "storageAvailabilityZone": {
+        "server": {
+          "type": "string"
+        },
+        "topology": {
+          "$ref": "#/definitions/os_installer_vsphere_v1_Topology",
+          "existingJavaType": "io.fabric8.openshift.api.model.installer.vsphere.v1.Topology"
+        },
+        "zone": {
           "type": "string"
         }
       },
@@ -3398,20 +3401,17 @@
     },
     "machinepool": {
       "properties": {
-        "bootVolume": {
-          "$ref": "#/definitions/os_installer_ibmcloud_v1_BootVolume",
-          "existingJavaType": "io.fabric8.openshift.api.model.installer.ibmcloud.v1.BootVolume"
-        },
-        "dedicatedHosts": {
-          "type": "array",
-          "javaOmitEmpty": true,
-          "items": {
-            "$ref": "#/definitions/os_installer_ibmcloud_v1_DedicatedHost",
-            "existingJavaType": "io.fabric8.openshift.api.model.installer.ibmcloud.v1.DedicatedHost"
-          }
-        },
-        "type": {
+        "imageID": {
           "type": "string"
+        },
+        "instanceType": {
+          "type": "string"
+        },
+        "systemDiskCategory": {
+          "type": "string"
+        },
+        "systemDiskSize": {
+          "type": "integer"
         },
         "zones": {
           "type": "array",
@@ -3779,19 +3779,6 @@
       "additionalProperties": true
     },
     "platform": {
-      "properties": {
-        "URI": {
-          "type": "string"
-        },
-        "defaultMachinePlatform": {
-          "$ref": "#/definitions/os_installer_libvirt_v1_MachinePool",
-          "existingJavaType": "io.fabric8.openshift.api.model.installer.libvirt.v1.MachinePool"
-        },
-        "network": {
-          "$ref": "#/definitions/os_installer_libvirt_v1_Network",
-          "existingJavaType": "io.fabric8.openshift.api.model.installer.libvirt.v1.Network"
-        }
-      },
       "additionalProperties": true
     },
     "porttarget": {

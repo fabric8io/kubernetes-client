@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -65,7 +66,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class PodAutoscalerSpec implements KubernetesResource
+public class PodAutoscalerSpec implements Editable<PodAutoscalerSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("containerConcurrency")
@@ -132,6 +133,16 @@ public class PodAutoscalerSpec implements KubernetesResource
     @JsonProperty("scaleTargetRef")
     public void setScaleTargetRef(io.fabric8.kubernetes.api.model.ObjectReference scaleTargetRef) {
         this.scaleTargetRef = scaleTargetRef;
+    }
+
+    @JsonIgnore
+    public PodAutoscalerSpecBuilder edit() {
+        return new PodAutoscalerSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public PodAutoscalerSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

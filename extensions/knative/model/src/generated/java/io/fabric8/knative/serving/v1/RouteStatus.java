@@ -15,6 +15,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.knative.internal.pkg.apis.Condition;
 import io.fabric8.knative.internal.pkg.apis.duck.v1.Addressable;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -72,7 +73,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class RouteStatus implements KubernetesResource
+public class RouteStatus implements Editable<RouteStatusBuilder> , KubernetesResource
 {
 
     @JsonProperty("address")
@@ -168,6 +169,16 @@ public class RouteStatus implements KubernetesResource
     @JsonProperty("url")
     public void setUrl(java.lang.String url) {
         this.url = url;
+    }
+
+    @JsonIgnore
+    public RouteStatusBuilder edit() {
+        return new RouteStatusBuilder(this);
+    }
+
+    @JsonIgnore
+    public RouteStatusBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

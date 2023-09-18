@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -76,7 +77,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha1")
 @Group("search.open-cluster-management.io")
 @Generated("jsonschema2pojo")
-public class SearchCustomizationList implements KubernetesResource, KubernetesResourceList<io.fabric8.openclustermanagement.api.model.searchoperator.v1alpha1.SearchCustomization>
+public class SearchCustomizationList implements Editable<SearchCustomizationListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.openclustermanagement.api.model.searchoperator.v1alpha1.SearchCustomization>
 {
 
     /**
@@ -174,6 +175,16 @@ public class SearchCustomizationList implements KubernetesResource, KubernetesRe
     @JsonProperty("metadata")
     public void setMetadata(ListMeta metadata) {
         this.metadata = metadata;
+    }
+
+    @JsonIgnore
+    public SearchCustomizationListBuilder edit() {
+        return new SearchCustomizationListBuilder(this);
+    }
+
+    @JsonIgnore
+    public SearchCustomizationListBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -68,7 +69,7 @@ import lombok.experimental.Accessors;
 @Version("v1beta1")
 @Group("extensions")
 @Generated("jsonschema2pojo")
-public class ReplicaSetList implements KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.extensions.ReplicaSet>
+public class ReplicaSetList implements Editable<ReplicaSetListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.extensions.ReplicaSet>
 {
 
     /**
@@ -166,6 +167,16 @@ public class ReplicaSetList implements KubernetesResource, KubernetesResourceLis
     @JsonProperty("metadata")
     public void setMetadata(ListMeta metadata) {
         this.metadata = metadata;
+    }
+
+    @JsonIgnore
+    public ReplicaSetListBuilder edit() {
+        return new ReplicaSetListBuilder(this);
+    }
+
+    @JsonIgnore
+    public ReplicaSetListBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

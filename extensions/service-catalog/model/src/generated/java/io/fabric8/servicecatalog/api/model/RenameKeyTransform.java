@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -64,7 +65,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class RenameKeyTransform implements KubernetesResource
+public class RenameKeyTransform implements Editable<RenameKeyTransformBuilder> , KubernetesResource
 {
 
     @JsonProperty("from")
@@ -105,6 +106,16 @@ public class RenameKeyTransform implements KubernetesResource
     @JsonProperty("to")
     public void setTo(String to) {
         this.to = to;
+    }
+
+    @JsonIgnore
+    public RenameKeyTransformBuilder edit() {
+        return new RenameKeyTransformBuilder(this);
+    }
+
+    @JsonIgnore
+    public RenameKeyTransformBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

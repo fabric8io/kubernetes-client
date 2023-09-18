@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -64,7 +65,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class JVMGCSpec implements KubernetesResource
+public class JVMGCSpec implements Editable<JVMGCSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("pid")
@@ -105,6 +106,16 @@ public class JVMGCSpec implements KubernetesResource
     @JsonProperty("port")
     public void setPort(Integer port) {
         this.port = port;
+    }
+
+    @JsonIgnore
+    public JVMGCSpecBuilder edit() {
+        return new JVMGCSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public JVMGCSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

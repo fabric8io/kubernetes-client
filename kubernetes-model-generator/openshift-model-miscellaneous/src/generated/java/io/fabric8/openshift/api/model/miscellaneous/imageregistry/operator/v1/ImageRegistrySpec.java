@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Affinity;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
@@ -79,7 +80,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ImageRegistrySpec implements KubernetesResource
+public class ImageRegistrySpec implements Editable<ImageRegistrySpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("affinity")
@@ -373,6 +374,16 @@ public class ImageRegistrySpec implements KubernetesResource
     @JsonProperty("unsupportedConfigOverrides")
     public void setUnsupportedConfigOverrides(Map<String, Object> unsupportedConfigOverrides) {
         this.unsupportedConfigOverrides = unsupportedConfigOverrides;
+    }
+
+    @JsonIgnore
+    public ImageRegistrySpecBuilder edit() {
+        return new ImageRegistrySpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public ImageRegistrySpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

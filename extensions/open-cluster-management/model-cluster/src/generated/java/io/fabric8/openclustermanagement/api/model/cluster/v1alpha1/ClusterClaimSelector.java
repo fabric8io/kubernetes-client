@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -66,7 +67,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class ClusterClaimSelector implements KubernetesResource
+public class ClusterClaimSelector implements Editable<ClusterClaimSelectorBuilder> , KubernetesResource
 {
 
     @JsonProperty("matchExpressions")
@@ -95,6 +96,16 @@ public class ClusterClaimSelector implements KubernetesResource
     @JsonProperty("matchExpressions")
     public void setMatchExpressions(List<LabelSelectorRequirement> matchExpressions) {
         this.matchExpressions = matchExpressions;
+    }
+
+    @JsonIgnore
+    public ClusterClaimSelectorBuilder edit() {
+        return new ClusterClaimSelectorBuilder(this);
+    }
+
+    @JsonIgnore
+    public ClusterClaimSelectorBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

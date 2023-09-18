@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -65,7 +66,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class LoadBalancerSettingsConsistentHashLBHttpCookieValue implements KubernetesResource
+public class LoadBalancerSettingsConsistentHashLBHttpCookieValue implements Editable<LoadBalancerSettingsConsistentHashLBHttpCookieValueBuilder> , KubernetesResource
 {
 
     @JsonProperty("name")
@@ -119,6 +120,16 @@ public class LoadBalancerSettingsConsistentHashLBHttpCookieValue implements Kube
     @JsonProperty("ttl")
     public void setTtl(String ttl) {
         this.ttl = ttl;
+    }
+
+    @JsonIgnore
+    public LoadBalancerSettingsConsistentHashLBHttpCookieValueBuilder edit() {
+        return new LoadBalancerSettingsConsistentHashLBHttpCookieValueBuilder(this);
+    }
+
+    @JsonIgnore
+    public LoadBalancerSettingsConsistentHashLBHttpCookieValueBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -73,7 +74,7 @@ import lombok.experimental.Accessors;
 @Version("v1beta1")
 @Group("triggers.tekton.dev")
 @Generated("jsonschema2pojo")
-public class TriggerTemplate implements HasMetadata, Namespaced
+public class TriggerTemplate implements Editable<TriggerTemplateBuilder> , HasMetadata, Namespaced
 {
 
     /**
@@ -183,6 +184,16 @@ public class TriggerTemplate implements HasMetadata, Namespaced
     @JsonProperty("status")
     public void setStatus(TriggerTemplateStatus status) {
         this.status = status;
+    }
+
+    @JsonIgnore
+    public TriggerTemplateBuilder edit() {
+        return new TriggerTemplateBuilder(this);
+    }
+
+    @JsonIgnore
+    public TriggerTemplateBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

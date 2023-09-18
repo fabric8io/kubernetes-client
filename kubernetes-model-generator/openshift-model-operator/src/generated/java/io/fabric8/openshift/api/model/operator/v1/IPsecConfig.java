@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -53,11 +54,21 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class IPsecConfig implements KubernetesResource
+public class IPsecConfig implements Editable<IPsecConfigBuilder> , KubernetesResource
 {
 
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
+
+    @JsonIgnore
+    public IPsecConfigBuilder edit() {
+        return new IPsecConfigBuilder(this);
+    }
+
+    @JsonIgnore
+    public IPsecConfigBuilder toBuilder() {
+        return edit();
+    }
 
     @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {

@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -67,7 +68,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class HeadersHeaderOperations implements KubernetesResource
+public class HeadersHeaderOperations implements Editable<HeadersHeaderOperationsBuilder> , KubernetesResource
 {
 
     @JsonProperty("add")
@@ -124,6 +125,16 @@ public class HeadersHeaderOperations implements KubernetesResource
     @JsonProperty("set")
     public void setSet(Map<String, String> set) {
         this.set = set;
+    }
+
+    @JsonIgnore
+    public HeadersHeaderOperationsBuilder edit() {
+        return new HeadersHeaderOperationsBuilder(this);
+    }
+
+    @JsonIgnore
+    public HeadersHeaderOperationsBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

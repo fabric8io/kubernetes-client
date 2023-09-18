@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -58,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class TLSRouteRule implements KubernetesResource
+public class TLSRouteRule implements Editable<TLSRouteRuleBuilder> , KubernetesResource
 {
 
     @JsonProperty("backendRefs")
@@ -87,6 +88,16 @@ public class TLSRouteRule implements KubernetesResource
     @JsonProperty("backendRefs")
     public void setBackendRefs(List<BackendRef> backendRefs) {
         this.backendRefs = backendRefs;
+    }
+
+    @JsonIgnore
+    public TLSRouteRuleBuilder edit() {
+        return new TLSRouteRuleBuilder(this);
+    }
+
+    @JsonIgnore
+    public TLSRouteRuleBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

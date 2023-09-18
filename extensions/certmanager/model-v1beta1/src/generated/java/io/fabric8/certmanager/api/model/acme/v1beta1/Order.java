@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -73,7 +74,7 @@ import lombok.experimental.Accessors;
 @Version("v1beta1")
 @Group("cert-manager.io")
 @Generated("jsonschema2pojo")
-public class Order implements HasMetadata, Namespaced
+public class Order implements Editable<OrderBuilder> , HasMetadata, Namespaced
 {
 
     /**
@@ -183,6 +184,16 @@ public class Order implements HasMetadata, Namespaced
     @JsonProperty("status")
     public void setStatus(OrderStatus status) {
         this.status = status;
+    }
+
+    @JsonIgnore
+    public OrderBuilder edit() {
+        return new OrderBuilder(this);
+    }
+
+    @JsonIgnore
+    public OrderBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

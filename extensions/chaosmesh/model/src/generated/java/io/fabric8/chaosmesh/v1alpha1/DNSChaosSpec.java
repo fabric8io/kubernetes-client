@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -71,7 +72,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class DNSChaosSpec implements KubernetesResource
+public class DNSChaosSpec implements Editable<DNSChaosSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("action")
@@ -179,6 +180,16 @@ public class DNSChaosSpec implements KubernetesResource
     @JsonProperty("value")
     public void setValue(java.lang.String value) {
         this.value = value;
+    }
+
+    @JsonIgnore
+    public DNSChaosSpecBuilder edit() {
+        return new DNSChaosSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public DNSChaosSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

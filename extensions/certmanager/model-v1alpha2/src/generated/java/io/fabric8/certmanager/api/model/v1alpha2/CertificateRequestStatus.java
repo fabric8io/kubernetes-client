@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -68,7 +69,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class CertificateRequestStatus implements KubernetesResource
+public class CertificateRequestStatus implements Editable<CertificateRequestStatusBuilder> , KubernetesResource
 {
 
     @JsonProperty("ca")
@@ -138,6 +139,16 @@ public class CertificateRequestStatus implements KubernetesResource
     @JsonProperty("failureTime")
     public void setFailureTime(String failureTime) {
         this.failureTime = failureTime;
+    }
+
+    @JsonIgnore
+    public CertificateRequestStatusBuilder edit() {
+        return new CertificateRequestStatusBuilder(this);
+    }
+
+    @JsonIgnore
+    public CertificateRequestStatusBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

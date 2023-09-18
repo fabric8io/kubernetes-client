@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -56,7 +57,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ScaleStatus implements KubernetesResource
+public class ScaleStatus implements Editable<ScaleStatusBuilder> , KubernetesResource
 {
 
     @JsonProperty("replicas")
@@ -97,6 +98,16 @@ public class ScaleStatus implements KubernetesResource
     @JsonProperty("selector")
     public void setSelector(String selector) {
         this.selector = selector;
+    }
+
+    @JsonIgnore
+    public ScaleStatusBuilder edit() {
+        return new ScaleStatusBuilder(this);
+    }
+
+    @JsonIgnore
+    public ScaleStatusBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

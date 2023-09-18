@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -64,7 +65,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class VolumeSnapshotContentSource implements KubernetesResource
+public class VolumeSnapshotContentSource implements Editable<VolumeSnapshotContentSourceBuilder> , KubernetesResource
 {
 
     @JsonProperty("snapshotHandle")
@@ -105,6 +106,16 @@ public class VolumeSnapshotContentSource implements KubernetesResource
     @JsonProperty("volumeHandle")
     public void setVolumeHandle(String volumeHandle) {
         this.volumeHandle = volumeHandle;
+    }
+
+    @JsonIgnore
+    public VolumeSnapshotContentSourceBuilder edit() {
+        return new VolumeSnapshotContentSourceBuilder(this);
+    }
+
+    @JsonIgnore
+    public VolumeSnapshotContentSourceBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

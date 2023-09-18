@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Affinity;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -101,7 +102,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class AlertmanagerSpec implements KubernetesResource
+public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("additionalPeers")
@@ -687,6 +688,16 @@ public class AlertmanagerSpec implements KubernetesResource
     @JsonProperty("volumes")
     public void setVolumes(List<Volume> volumes) {
         this.volumes = volumes;
+    }
+
+    @JsonIgnore
+    public AlertmanagerSpecBuilder edit() {
+        return new AlertmanagerSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public AlertmanagerSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

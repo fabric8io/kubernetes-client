@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -64,7 +65,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class ProcessSpec implements KubernetesResource
+public class ProcessSpec implements Editable<ProcessSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("process")
@@ -105,6 +106,16 @@ public class ProcessSpec implements KubernetesResource
     @JsonProperty("signal")
     public void setSignal(Integer signal) {
         this.signal = signal;
+    }
+
+    @JsonIgnore
+    public ProcessSpecBuilder edit() {
+        return new ProcessSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public ProcessSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

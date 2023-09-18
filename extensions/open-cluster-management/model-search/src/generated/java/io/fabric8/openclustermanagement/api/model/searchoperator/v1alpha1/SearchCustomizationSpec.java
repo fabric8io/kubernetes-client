@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -65,7 +66,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class SearchCustomizationSpec implements KubernetesResource
+public class SearchCustomizationSpec implements Editable<SearchCustomizationSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("persistence")
@@ -119,6 +120,16 @@ public class SearchCustomizationSpec implements KubernetesResource
     @JsonProperty("storageSize")
     public void setStorageSize(String storageSize) {
         this.storageSize = storageSize;
+    }
+
+    @JsonIgnore
+    public SearchCustomizationSpecBuilder edit() {
+        return new SearchCustomizationSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public SearchCustomizationSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

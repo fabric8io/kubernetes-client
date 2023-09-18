@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -59,7 +60,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class GatewaySpec implements KubernetesResource
+public class GatewaySpec implements Editable<GatewaySpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("addresses")
@@ -115,6 +116,16 @@ public class GatewaySpec implements KubernetesResource
     @JsonProperty("listeners")
     public void setListeners(List<Listener> listeners) {
         this.listeners = listeners;
+    }
+
+    @JsonIgnore
+    public GatewaySpecBuilder edit() {
+        return new GatewaySpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public GatewaySpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

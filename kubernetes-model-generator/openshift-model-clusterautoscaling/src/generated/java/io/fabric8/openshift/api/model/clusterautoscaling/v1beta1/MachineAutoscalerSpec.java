@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -57,7 +58,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class MachineAutoscalerSpec implements KubernetesResource
+public class MachineAutoscalerSpec implements Editable<MachineAutoscalerSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("maxReplicas")
@@ -111,6 +112,16 @@ public class MachineAutoscalerSpec implements KubernetesResource
     @JsonProperty("scaleTargetRef")
     public void setScaleTargetRef(CrossVersionObjectReference scaleTargetRef) {
         this.scaleTargetRef = scaleTargetRef;
+    }
+
+    @JsonIgnore
+    public MachineAutoscalerSpecBuilder edit() {
+        return new MachineAutoscalerSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public MachineAutoscalerSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

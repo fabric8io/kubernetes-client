@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -65,7 +66,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class Record implements KubernetesResource
+public class Record implements Editable<RecordBuilder> , KubernetesResource
 {
 
     @JsonProperty("id")
@@ -119,6 +120,16 @@ public class Record implements KubernetesResource
     @JsonProperty("selectorKey")
     public void setSelectorKey(String selectorKey) {
         this.selectorKey = selectorKey;
+    }
+
+    @JsonIgnore
+    public RecordBuilder edit() {
+        return new RecordBuilder(this);
+    }
+
+    @JsonIgnore
+    public RecordBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -55,7 +56,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class PrivateStrategy implements KubernetesResource
+public class PrivateStrategy implements Editable<PrivateStrategyBuilder> , KubernetesResource
 {
 
     @JsonProperty("protocol")
@@ -83,6 +84,16 @@ public class PrivateStrategy implements KubernetesResource
     @JsonProperty("protocol")
     public void setProtocol(String protocol) {
         this.protocol = protocol;
+    }
+
+    @JsonIgnore
+    public PrivateStrategyBuilder edit() {
+        return new PrivateStrategyBuilder(this);
+    }
+
+    @JsonIgnore
+    public PrivateStrategyBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

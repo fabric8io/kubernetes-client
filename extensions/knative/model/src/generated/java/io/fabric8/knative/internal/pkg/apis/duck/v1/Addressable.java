@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -65,7 +66,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class Addressable implements KubernetesResource
+public class Addressable implements Editable<AddressableBuilder> , KubernetesResource
 {
 
     @JsonProperty("CACerts")
@@ -119,6 +120,16 @@ public class Addressable implements KubernetesResource
     @JsonProperty("url")
     public void setUrl(java.lang.String url) {
         this.url = url;
+    }
+
+    @JsonIgnore
+    public AddressableBuilder edit() {
+        return new AddressableBuilder(this);
+    }
+
+    @JsonIgnore
+    public AddressableBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

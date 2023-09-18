@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -64,7 +65,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class CertificateKeystores implements KubernetesResource
+public class CertificateKeystores implements Editable<CertificateKeystoresBuilder> , KubernetesResource
 {
 
     @JsonProperty("jks")
@@ -105,6 +106,16 @@ public class CertificateKeystores implements KubernetesResource
     @JsonProperty("pkcs12")
     public void setPkcs12(PKCS12Keystore pkcs12) {
         this.pkcs12 = pkcs12;
+    }
+
+    @JsonIgnore
+    public CertificateKeystoresBuilder edit() {
+        return new CertificateKeystoresBuilder(this);
+    }
+
+    @JsonIgnore
+    public CertificateKeystoresBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

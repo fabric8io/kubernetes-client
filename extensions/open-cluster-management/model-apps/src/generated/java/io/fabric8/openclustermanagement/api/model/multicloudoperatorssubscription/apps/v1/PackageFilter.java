@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -64,7 +65,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class PackageFilter implements KubernetesResource
+public class PackageFilter implements Editable<PackageFilterBuilder> , KubernetesResource
 {
 
     @JsonProperty("annotations")
@@ -132,6 +133,16 @@ public class PackageFilter implements KubernetesResource
     @JsonProperty("version")
     public void setVersion(java.lang.String version) {
         this.version = version;
+    }
+
+    @JsonIgnore
+    public PackageFilterBuilder edit() {
+        return new PackageFilterBuilder(this);
+    }
+
+    @JsonIgnore
+    public PackageFilterBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.sundr.builder.annotations.Buildable;
 import lombok.EqualsAndHashCode;
 import lombok.Setter;
@@ -32,9 +33,9 @@ import lombok.experimental.Accessors;
     "_",
     ""
 })
-@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
+@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("jsonschema2pojo")
-public class VolumeNodeAffinity implements KubernetesResource
+public class VolumeNodeAffinity implements Editable<VolumeNodeAffinityBuilder> , KubernetesResource
 {
 
     @JsonProperty("required")
@@ -62,6 +63,16 @@ public class VolumeNodeAffinity implements KubernetesResource
     @JsonProperty("required")
     public void setRequired(NodeSelector required) {
         this.required = required;
+    }
+
+    @JsonIgnore
+    public VolumeNodeAffinityBuilder edit() {
+        return new VolumeNodeAffinityBuilder(this);
+    }
+
+    @JsonIgnore
+    public VolumeNodeAffinityBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

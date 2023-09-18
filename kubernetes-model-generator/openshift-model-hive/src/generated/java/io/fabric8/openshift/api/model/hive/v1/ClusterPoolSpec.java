@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.Duration;
 import io.fabric8.kubernetes.api.model.IntOrString;
@@ -70,7 +71,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ClusterPoolSpec implements KubernetesResource
+public class ClusterPoolSpec implements Editable<ClusterPoolSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("annotations")
@@ -295,6 +296,16 @@ public class ClusterPoolSpec implements KubernetesResource
     @JsonProperty("skipMachinePools")
     public void setSkipMachinePools(Boolean skipMachinePools) {
         this.skipMachinePools = skipMachinePools;
+    }
+
+    @JsonIgnore
+    public ClusterPoolSpecBuilder edit() {
+        return new ClusterPoolSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public ClusterPoolSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

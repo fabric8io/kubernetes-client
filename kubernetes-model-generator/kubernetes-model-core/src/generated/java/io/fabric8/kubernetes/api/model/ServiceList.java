@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
@@ -38,14 +39,14 @@ import lombok.experimental.Accessors;
     "_",
     ""
 })
-@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
+@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @TemplateTransformations({
     @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true)
 })
 @Version("v1")
 @Group("")
 @Generated("jsonschema2pojo")
-public class ServiceList implements KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.Service>
+public class ServiceList implements Editable<ServiceListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.Service>
 {
 
     /**
@@ -143,6 +144,16 @@ public class ServiceList implements KubernetesResource, KubernetesResourceList<i
     @JsonProperty("metadata")
     public void setMetadata(ListMeta metadata) {
         this.metadata = metadata;
+    }
+
+    @JsonIgnore
+    public ServiceListBuilder edit() {
+        return new ServiceListBuilder(this);
+    }
+
+    @JsonIgnore
+    public ServiceListBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

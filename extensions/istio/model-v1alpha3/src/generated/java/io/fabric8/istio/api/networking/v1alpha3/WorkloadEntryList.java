@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -76,7 +77,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha3")
 @Group("networking.istio.io")
 @Generated("jsonschema2pojo")
-public class WorkloadEntryList implements KubernetesResource, KubernetesResourceList<io.fabric8.istio.api.networking.v1alpha3.WorkloadEntry>
+public class WorkloadEntryList implements Editable<WorkloadEntryListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.istio.api.networking.v1alpha3.WorkloadEntry>
 {
 
     /**
@@ -174,6 +175,16 @@ public class WorkloadEntryList implements KubernetesResource, KubernetesResource
     @JsonProperty("metadata")
     public void setMetadata(ListMeta metadata) {
         this.metadata = metadata;
+    }
+
+    @JsonIgnore
+    public WorkloadEntryListBuilder edit() {
+        return new WorkloadEntryListBuilder(this);
+    }
+
+    @JsonIgnore
+    public WorkloadEntryListBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

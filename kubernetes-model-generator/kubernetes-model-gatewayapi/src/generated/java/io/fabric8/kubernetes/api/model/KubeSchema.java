@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.LabelSelector;
@@ -85,7 +86,8 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class KubeSchema {
+public class KubeSchema implements Editable<KubeSchemaBuilder>
+{
 
     @JsonProperty("GRPCRoute")
     private GRPCRoute gRPCRoute;
@@ -411,6 +413,16 @@ public class KubeSchema {
     @JsonProperty("V1Beta1ReferenceGrantList")
     public void setV1Beta1ReferenceGrantList(io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.ReferenceGrantList v1Beta1ReferenceGrantList) {
         this.v1Beta1ReferenceGrantList = v1Beta1ReferenceGrantList;
+    }
+
+    @JsonIgnore
+    public KubeSchemaBuilder edit() {
+        return new KubeSchemaBuilder(this);
+    }
+
+    @JsonIgnore
+    public KubeSchemaBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

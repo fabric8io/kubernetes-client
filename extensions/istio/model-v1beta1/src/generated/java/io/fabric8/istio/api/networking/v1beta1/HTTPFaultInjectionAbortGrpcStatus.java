@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -62,7 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class HTTPFaultInjectionAbortGrpcStatus implements IsHTTPFaultInjectionAbortErrorType
+public class HTTPFaultInjectionAbortGrpcStatus implements IsHTTPFaultInjectionAbortErrorType, Editable<HTTPFaultInjectionAbortGrpcStatusBuilder>
 {
 
     @JsonProperty("grpcStatus")
@@ -90,6 +91,16 @@ public class HTTPFaultInjectionAbortGrpcStatus implements IsHTTPFaultInjectionAb
     @JsonProperty("grpcStatus")
     public void setGrpcStatus(String grpcStatus) {
         this.grpcStatus = grpcStatus;
+    }
+
+    @JsonIgnore
+    public HTTPFaultInjectionAbortGrpcStatusBuilder edit() {
+        return new HTTPFaultInjectionAbortGrpcStatusBuilder(this);
+    }
+
+    @JsonIgnore
+    public HTTPFaultInjectionAbortGrpcStatusBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

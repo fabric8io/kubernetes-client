@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.IntOrString;
@@ -82,7 +83,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("authorization.openshift.io")
 @Generated("jsonschema2pojo")
-public class LocalSubjectAccessReview implements KubernetesResource, Namespaced
+public class LocalSubjectAccessReview implements Editable<LocalSubjectAccessReviewBuilder> , KubernetesResource, Namespaced
 {
 
     /**
@@ -311,6 +312,16 @@ public class LocalSubjectAccessReview implements KubernetesResource, Namespaced
     @JsonProperty("verb")
     public void setVerb(String verb) {
         this.verb = verb;
+    }
+
+    @JsonIgnore
+    public LocalSubjectAccessReviewBuilder edit() {
+        return new LocalSubjectAccessReviewBuilder(this);
+    }
+
+    @JsonIgnore
+    public LocalSubjectAccessReviewBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -58,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class DaemonSetSpec implements KubernetesResource
+public class DaemonSetSpec implements Editable<DaemonSetSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("minReadySeconds")
@@ -151,6 +152,16 @@ public class DaemonSetSpec implements KubernetesResource
     @JsonProperty("updateStrategy")
     public void setUpdateStrategy(DaemonSetUpdateStrategy updateStrategy) {
         this.updateStrategy = updateStrategy;
+    }
+
+    @JsonIgnore
+    public DaemonSetSpecBuilder edit() {
+        return new DaemonSetSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public DaemonSetSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

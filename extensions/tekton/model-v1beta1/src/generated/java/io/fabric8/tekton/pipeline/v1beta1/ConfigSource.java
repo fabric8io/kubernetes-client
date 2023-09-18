@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -65,7 +66,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class ConfigSource implements KubernetesResource
+public class ConfigSource implements Editable<ConfigSourceBuilder> , KubernetesResource
 {
 
     @JsonProperty("digest")
@@ -120,6 +121,16 @@ public class ConfigSource implements KubernetesResource
     @JsonProperty("uri")
     public void setUri(java.lang.String uri) {
         this.uri = uri;
+    }
+
+    @JsonIgnore
+    public ConfigSourceBuilder edit() {
+        return new ConfigSourceBuilder(this);
+    }
+
+    @JsonIgnore
+    public ConfigSourceBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

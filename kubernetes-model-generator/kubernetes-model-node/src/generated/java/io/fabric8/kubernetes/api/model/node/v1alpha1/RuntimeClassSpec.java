@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -57,7 +58,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class RuntimeClassSpec implements KubernetesResource
+public class RuntimeClassSpec implements Editable<RuntimeClassSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("overhead")
@@ -111,6 +112,16 @@ public class RuntimeClassSpec implements KubernetesResource
     @JsonProperty("scheduling")
     public void setScheduling(Scheduling scheduling) {
         this.scheduling = scheduling;
+    }
+
+    @JsonIgnore
+    public RuntimeClassSpecBuilder edit() {
+        return new RuntimeClassSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public RuntimeClassSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

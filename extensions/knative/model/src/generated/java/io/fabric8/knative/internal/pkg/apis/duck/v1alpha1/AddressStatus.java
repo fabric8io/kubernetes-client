@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -66,7 +67,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class AddressStatus implements KubernetesResource
+public class AddressStatus implements Editable<AddressStatusBuilder> , KubernetesResource
 {
 
     @JsonProperty("address")
@@ -108,6 +109,16 @@ public class AddressStatus implements KubernetesResource
     @JsonProperty("addresses")
     public void setAddresses(List<Addressable> addresses) {
         this.addresses = addresses;
+    }
+
+    @JsonIgnore
+    public AddressStatusBuilder edit() {
+        return new AddressStatusBuilder(this);
+    }
+
+    @JsonIgnore
+    public AddressStatusBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

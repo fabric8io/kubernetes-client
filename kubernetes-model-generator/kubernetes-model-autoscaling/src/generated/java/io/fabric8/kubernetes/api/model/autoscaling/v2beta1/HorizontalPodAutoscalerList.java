@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -68,7 +69,7 @@ import lombok.experimental.Accessors;
 @Version("v2beta1")
 @Group("autoscaling")
 @Generated("jsonschema2pojo")
-public class HorizontalPodAutoscalerList implements KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.autoscaling.v2beta1.HorizontalPodAutoscaler>
+public class HorizontalPodAutoscalerList implements Editable<HorizontalPodAutoscalerListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.autoscaling.v2beta1.HorizontalPodAutoscaler>
 {
 
     /**
@@ -166,6 +167,16 @@ public class HorizontalPodAutoscalerList implements KubernetesResource, Kubernet
     @JsonProperty("metadata")
     public void setMetadata(ListMeta metadata) {
         this.metadata = metadata;
+    }
+
+    @JsonIgnore
+    public HorizontalPodAutoscalerListBuilder edit() {
+        return new HorizontalPodAutoscalerListBuilder(this);
+    }
+
+    @JsonIgnore
+    public HorizontalPodAutoscalerListBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

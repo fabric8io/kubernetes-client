@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -56,7 +57,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class EgressNetworkPolicyPeer implements KubernetesResource
+public class EgressNetworkPolicyPeer implements Editable<EgressNetworkPolicyPeerBuilder> , KubernetesResource
 {
 
     @JsonProperty("cidrSelector")
@@ -97,6 +98,16 @@ public class EgressNetworkPolicyPeer implements KubernetesResource
     @JsonProperty("dnsName")
     public void setDnsName(String dnsName) {
         this.dnsName = dnsName;
+    }
+
+    @JsonIgnore
+    public EgressNetworkPolicyPeerBuilder edit() {
+        return new EgressNetworkPolicyPeerBuilder(this);
+    }
+
+    @JsonIgnore
+    public EgressNetworkPolicyPeerBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

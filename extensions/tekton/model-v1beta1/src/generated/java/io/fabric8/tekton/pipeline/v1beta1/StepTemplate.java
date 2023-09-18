@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.EnvFromSource;
 import io.fabric8.kubernetes.api.model.IntOrString;
@@ -87,7 +88,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(io.fabric8.kubernetes.api.model.VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class StepTemplate implements KubernetesResource
+public class StepTemplate implements Editable<StepTemplateBuilder> , KubernetesResource
 {
 
     @JsonProperty("args")
@@ -395,6 +396,16 @@ public class StepTemplate implements KubernetesResource
     @JsonProperty("workingDir")
     public void setWorkingDir(String workingDir) {
         this.workingDir = workingDir;
+    }
+
+    @JsonIgnore
+    public StepTemplateBuilder edit() {
+        return new StepTemplateBuilder(this);
+    }
+
+    @JsonIgnore
+    public StepTemplateBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

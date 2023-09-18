@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
@@ -59,7 +60,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class Rule implements KubernetesResource
+public class Rule implements Editable<RuleBuilder> , KubernetesResource
 {
 
     @JsonProperty("alert")
@@ -154,6 +155,16 @@ public class Rule implements KubernetesResource
     @JsonProperty("record")
     public void setRecord(java.lang.String record) {
         this.record = record;
+    }
+
+    @JsonIgnore
+    public RuleBuilder edit() {
+        return new RuleBuilder(this);
+    }
+
+    @JsonIgnore
+    public RuleBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

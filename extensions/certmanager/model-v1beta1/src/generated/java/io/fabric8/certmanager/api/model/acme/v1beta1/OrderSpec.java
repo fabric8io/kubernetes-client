@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.Duration;
@@ -70,7 +71,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class OrderSpec implements KubernetesResource
+public class OrderSpec implements Editable<OrderSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("commonName")
@@ -165,6 +166,16 @@ public class OrderSpec implements KubernetesResource
     @JsonProperty("request")
     public void setRequest(String request) {
         this.request = request;
+    }
+
+    @JsonIgnore
+    public OrderSpecBuilder edit() {
+        return new OrderSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public OrderSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

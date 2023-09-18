@@ -14,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.knative.internal.pkg.apis.Condition;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -81,7 +82,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class TaskRunStatus implements KubernetesResource
+public class TaskRunStatus implements Editable<TaskRunStatusBuilder> , KubernetesResource
 {
 
     @JsonProperty("annotations")
@@ -300,6 +301,16 @@ public class TaskRunStatus implements KubernetesResource
     @JsonProperty("taskSpec")
     public void setTaskSpec(TaskSpec taskSpec) {
         this.taskSpec = taskSpec;
+    }
+
+    @JsonIgnore
+    public TaskRunStatusBuilder edit() {
+        return new TaskRunStatusBuilder(this);
+    }
+
+    @JsonIgnore
+    public TaskRunStatusBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

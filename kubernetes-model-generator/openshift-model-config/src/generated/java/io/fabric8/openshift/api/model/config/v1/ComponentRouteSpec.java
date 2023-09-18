@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -58,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ComponentRouteSpec implements KubernetesResource
+public class ComponentRouteSpec implements Editable<ComponentRouteSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("hostname")
@@ -125,6 +126,16 @@ public class ComponentRouteSpec implements KubernetesResource
     @JsonProperty("servingCertKeyPairSecret")
     public void setServingCertKeyPairSecret(SecretNameReference servingCertKeyPairSecret) {
         this.servingCertKeyPairSecret = servingCertKeyPairSecret;
+    }
+
+    @JsonIgnore
+    public ComponentRouteSpecBuilder edit() {
+        return new ComponentRouteSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public ComponentRouteSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter
