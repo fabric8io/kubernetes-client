@@ -29,6 +29,7 @@ public class Config {
   public static final boolean DEFAULT_UPPERCASE_ENUM = true;
   public static final boolean DEFAULT_ADD_EXTRA_ANNOTATIONS = false;
   public static final boolean DEFAULT_ADD_GENERATED_ANNOTATIONS = true;
+  public static final boolean DEFAULT_ALWAYS_PRESERVE_UNKNOWN = false;
   public static final Map<String, String> DEFAULT_PACKAGE_OVERRIDES = new HashMap<>();
   public static final List<String> DEFAULT_FILES_SUFFIXES = Arrays.asList(".yaml", ".yml", ".json");
   // RFC 3339 - from: https://swagger.io/docs/specification/data-models/data-types/
@@ -38,6 +39,7 @@ public class Config {
   private Boolean uppercaseEnums = DEFAULT_UPPERCASE_ENUM;
   private Boolean objectExtraAnnotations = DEFAULT_ADD_EXTRA_ANNOTATIONS;
   private Boolean generatedAnnotations = DEFAULT_ADD_GENERATED_ANNOTATIONS;
+  private Boolean alwaysPreserveUnknown = DEFAULT_ALWAYS_PRESERVE_UNKNOWN;
   private Map<String, String> packageOverrides = DEFAULT_PACKAGE_OVERRIDES;
   private List<String> filesSuffixes = DEFAULT_FILES_SUFFIXES;
   private String serDatetimeFormat = DEFAULT_SER_DATETIME_FORMAT;
@@ -116,6 +118,41 @@ public class Config {
     }
   }
 
+  public Config(
+      Boolean uppercaseEnums,
+      Boolean objectExtraAnnotations,
+      Boolean generatedAnnotations,
+      Boolean alwaysPreserveUnknown,
+      Map<String, String> packageOverrides,
+      List<String> filesSuffixes,
+      String serDatetimeFormat,
+      String deserDatetimeFormat) {
+    if (uppercaseEnums != null) {
+      this.uppercaseEnums = uppercaseEnums;
+    }
+    if (objectExtraAnnotations != null) {
+      this.objectExtraAnnotations = objectExtraAnnotations;
+    }
+    if (generatedAnnotations != null) {
+      this.generatedAnnotations = generatedAnnotations;
+    }
+    if (alwaysPreserveUnknown != null) {
+      this.alwaysPreserveUnknown = alwaysPreserveUnknown;
+    }
+    if (packageOverrides != null) {
+      this.packageOverrides = packageOverrides;
+    }
+    if (filesSuffixes != null) {
+      this.filesSuffixes = filesSuffixes;
+    }
+    if (serDatetimeFormat != null) {
+      this.serDatetimeFormat = serDatetimeFormat;
+    }
+    if (deserDatetimeFormat != null) {
+      this.deserDatetimeFormat = deserDatetimeFormat;
+    }
+  }
+
   public boolean isUppercaseEnums() {
     return (uppercaseEnums == null) ? DEFAULT_UPPERCASE_ENUM : uppercaseEnums;
   }
@@ -130,6 +167,12 @@ public class Config {
     return (generatedAnnotations == null)
         ? DEFAULT_ADD_GENERATED_ANNOTATIONS
         : generatedAnnotations;
+  }
+
+  public boolean isAlwaysPreserveUnknown() {
+    return (alwaysPreserveUnknown == null)
+        ? DEFAULT_ALWAYS_PRESERVE_UNKNOWN
+        : alwaysPreserveUnknown;
   }
 
   public Map<String, String> getPackageOverrides() {

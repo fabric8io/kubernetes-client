@@ -23,11 +23,12 @@ class ConfigTest {
 
   @Test
   void defaultValuesWithAllArgsConstructor() {
-    final Config result = new Config(null, null, null, null, null, null, null);
+    final Config result = new Config(null, null, null, null, null, null, null, null);
     assertThat(result)
         .returns(Config.DEFAULT_UPPERCASE_ENUM, Config::isUppercaseEnums)
         .returns(Config.DEFAULT_ADD_EXTRA_ANNOTATIONS, Config::isObjectExtraAnnotations)
         .returns(Config.DEFAULT_ADD_GENERATED_ANNOTATIONS, Config::isGeneratedAnnotations)
+        .returns(Config.DEFAULT_ALWAYS_PRESERVE_UNKNOWN, Config::isAlwaysPreserveUnknown)
         .returns(Config.DEFAULT_PACKAGE_OVERRIDES, Config::getPackageOverrides)
         .returns(Config.DEFAULT_FILES_SUFFIXES, Config::getFilesSuffixes)
         .returns(Config.DEFAULT_SER_DATETIME_FORMAT, Config::getSerDatetimeFormat)
@@ -41,6 +42,7 @@ class ConfigTest {
         .returns(Config.DEFAULT_UPPERCASE_ENUM, Config::isUppercaseEnums)
         .returns(Config.DEFAULT_ADD_EXTRA_ANNOTATIONS, Config::isObjectExtraAnnotations)
         .returns(Config.DEFAULT_ADD_GENERATED_ANNOTATIONS, Config::isGeneratedAnnotations)
+        .returns(Config.DEFAULT_ALWAYS_PRESERVE_UNKNOWN, Config::isAlwaysPreserveUnknown)
         .returns(Config.DEFAULT_PACKAGE_OVERRIDES, Config::getPackageOverrides)
         .returns(Config.DEFAULT_FILES_SUFFIXES, Config::getFilesSuffixes)
         .returns(Config.DEFAULT_SER_DATETIME_FORMAT, Config::getSerDatetimeFormat)
@@ -54,6 +56,7 @@ class ConfigTest {
         .returns(Config.DEFAULT_UPPERCASE_ENUM, Config::isUppercaseEnums)
         .returns(Config.DEFAULT_ADD_EXTRA_ANNOTATIONS, Config::isObjectExtraAnnotations)
         .returns(Config.DEFAULT_ADD_GENERATED_ANNOTATIONS, Config::isGeneratedAnnotations)
+        .returns(Config.DEFAULT_ALWAYS_PRESERVE_UNKNOWN, Config::isAlwaysPreserveUnknown)
         .returns(Config.DEFAULT_PACKAGE_OVERRIDES, Config::getPackageOverrides)
         .returns(Config.DEFAULT_FILES_SUFFIXES, Config::getFilesSuffixes)
         .returns(Config.DEFAULT_SER_DATETIME_FORMAT, Config::getSerDatetimeFormat)

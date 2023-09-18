@@ -307,7 +307,7 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
       }
     }
 
-    if (this.preserveUnknownFields) {
+    if (this.preserveUnknownFields || config.isAlwaysPreserveUnknown()) {
       ClassOrInterfaceType mapType = new ClassOrInterfaceType()
           .setName(Keywords.JAVA_UTIL_MAP)
           .setTypeArguments(

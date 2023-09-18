@@ -88,6 +88,9 @@ Usage: java-gen [-hV] [-add-extra-annotations] [-enum-uppercase]
       -add-extra-annotations, --add-extra-annotations
                           Add extra lombok and sundrio annotation to the
                             generated classes
+      -always-preserve-unknown, --always-preserve-unknown
+                          Always preserve unknown fields in the generated
+                            classes
       -deserialization-datetime-format, 
         --deserialization-datetime-format=<deserializationDateTimeFormat>
                           DateTime format used for Deserialization of fields of
@@ -117,6 +120,11 @@ Usage: java-gen [-hV] [-add-extra-annotations] [-enum-uppercase]
 And the corresponding configurations of the Maven plugin are (output of `mvn help:describe -DgroupId=io.fabric8 -DartifactId=java-generator-maven-plugin -Dversion=<version> -Ddetail`):
 
 ```
+    alwaysPreserveUnknown
+      User property: fabric8.java-generator.always-preserve-unknown
+      Always preserve unknown fields in the generated classes by emitting an
+      additionalProperties field
+
     datetimeDeserializationFormat
       User property: fabric8.java-generator.datetime-deserialization-format
       DateTime format used for Deserialization of fields of type `date-time`
