@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
+import static io.fabric8.java.generator.nodes.Keywords.JAVA_LANG_LONG;
 import static io.fabric8.java.generator.nodes.Keywords.JAVA_LANG_STRING;
 
 public class JEnum extends AbstractJSONSchema2Pojo {
@@ -37,14 +38,16 @@ public class JEnum extends AbstractJSONSchema2Pojo {
   private static final String VALUE = "value";
 
   private final String type;
-  // TODO: handle number enum
+  private final String underlyingType;
   private final List<String> values;
 
-  public JEnum(String type, List<JsonNode> values, Config config, String description, final boolean isNullable,
+  public JEnum(String type, String underlyingType, List<JsonNode> values, Config config, String description,
+      final boolean isNullable,
       JsonNode defaultValue) {
     super(config, description, isNullable, defaultValue, null);
     this.type = AbstractJSONSchema2Pojo.sanitizeString(
         type.substring(0, 1).toUpperCase() + type.substring(1));
+    this.underlyingType = underlyingType;
     this.values = values.stream().map(JsonNode::asText).collect(Collectors.toList());
   }
 
@@ -70,9 +73,9 @@ public class JEnum extends AbstractJSONSchema2Pojo {
     CompilationUnit cu = new CompilationUnit();
     EnumDeclaration en = cu.addEnum(this.type);
 
-    en.addField(JAVA_LANG_STRING, VALUE);
+    en.addField(underlyingType, VALUE);
     ConstructorDeclaration cd = en.addConstructor();
-    cd.addParameter(JAVA_LANG_STRING, VALUE);
+    cd.addParameter(underlyingType, VALUE);
     cd.createBody();
 
     cd.setBody(
@@ -85,7 +88,7 @@ public class JEnum extends AbstractJSONSchema2Pojo {
 
     MethodDeclaration getValue = en
         .addMethod("getValue", Modifier.Keyword.PUBLIC);
-    getValue.setType(JAVA_LANG_STRING);
+    getValue.setType(underlyingType);
     getValue
         .setBody(new BlockStmt().addStatement(new ReturnStmt(VALUE)));
     getValue.addAnnotation("com.fasterxml.jackson.annotation.JsonValue");
@@ -101,6 +104,14 @@ public class JEnum extends AbstractJSONSchema2Pojo {
         constantName = sanitizeEnumEntry(sanitizeString(k));
       }
       String originalName = AbstractJSONSchema2Pojo.escapeQuotes(k);
+      Expression valueArgument = new StringLiteralExpr(originalName);
+      if (!underlyingType.equals(JAVA_LANG_STRING)) {
+        if (underlyingType.equals(JAVA_LANG_LONG) && !originalName.endsWith("L")) {
+          valueArgument = new IntegerLiteralExpr(originalName + "L");
+        } else {
+          valueArgument = new IntegerLiteralExpr(originalName);
+        }
+      }
 
       EnumConstantDeclaration decl = new EnumConstantDeclaration();
       decl.addAnnotation(
@@ -108,7 +119,7 @@ public class JEnum extends AbstractJSONSchema2Pojo {
               new Name("com.fasterxml.jackson.annotation.JsonProperty"),
               new StringLiteralExpr(originalName)));
       decl.setName(constantName);
-      decl.addArgument(new StringLiteralExpr(originalName));
+      decl.addArgument(valueArgument);
       en.addEntry(decl);
     }
 

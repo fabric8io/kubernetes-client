@@ -51,6 +51,7 @@ class TestDefaultValues {
     Ten ten = cr.getSpec().getTen();
     Eleven eleven = cr.getSpec().getEleven();
     ZonedDateTime twelve = cr.getSpec().getTwelve();
+    Thirteen thirteen = cr.getSpec().getThirteen();
 
     // Assert
     assertEquals("one", one);
@@ -68,5 +69,7 @@ class TestDefaultValues {
     assertEquals("tentwo", ten.getTenTwo());
     assertEquals(Eleven.BAZ, eleven);
     assertEquals(ZonedDateTime.parse("2017-07-21T17:32:28Z", formatter), twelve);
+    assertEquals(Thirteen.V__302, thirteen);
+    assertEquals(302L, thirteen.getValue());
   }
 }

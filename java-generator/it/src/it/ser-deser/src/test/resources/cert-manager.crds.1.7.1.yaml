@@ -136,6 +136,21 @@ spec:
                 uid:
                   description: UID contains the uid of the user that created the CertificateRequest. Populated by the cert-manager webhook on creation and immutable.
                   type: string
+                longEnum:
+                  type: integer
+                  enum:
+                    - 101
+                    - 102
+                    - 103
+                    - 104
+                intEnum:
+                  type: integer
+                  format: int32
+                  enum:
+                    - 201
+                    - 202
+                    - 203
+                    - 204
                 usages:
                   description: Usages is the set of x509 usages that are requested for the certificate. If usages are set they SHOULD be encoded inside the CSR spec Defaults to `digital signature` and `key encipherment` if not specified.
                   type: array
