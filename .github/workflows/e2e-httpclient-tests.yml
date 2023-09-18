@@ -38,15 +38,15 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        kubernetes: [v1.25.0,v1.24.0]
+        kubernetes: [v1.28.1,v1.27.5]
         httpclient: [jdk,jetty,vertx]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Setup Minikube-Kubernetes
-        uses: manusa/actions-setup-minikube@v2.7.2
+        uses: manusa/actions-setup-minikube@v2.9.0
         with:
-          minikube version: v1.28.0
+          minikube version: v1.31.2
           kubernetes version: ${{ matrix.kubernetes }}
           github token: ${{ secrets.GITHUB_TOKEN }}
           start args: '--force'
