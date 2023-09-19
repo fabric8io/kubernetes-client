@@ -5,6 +5,7 @@
 #### Bugs
 * Fix #5382: [java-generator] Allow to deserialize more valid RFC3339 date-time and make the format customizable
 * Fix #5380: [java-generator] Avoid to emit Java Keywords as package names
+* Fix #5463: ensures that onStopLeading is called with releaseOnCancel even when leadership is already lost
 * Fix #5423: OkHttpClientImpl supports setting request method for empty payload requests
 
 #### Improvements
