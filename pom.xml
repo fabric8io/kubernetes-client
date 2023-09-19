@@ -97,10 +97,10 @@
     <okio.bundle.version>1.15.0_1</okio.bundle.version>
     <jackson.version>2.15.2</jackson.version>
     <jetty.version>11.0.16</jetty.version>
-    <mockwebserver.version>0.2.2</mockwebserver.version>
     <maven-core.version>3.9.4</maven-core.version>
     <maven-plugin-annotations.version>3.9.0</maven-plugin-annotations.version>
     <vertx.version>4.4.5</vertx.version>
+    <zjsonpatch.version>0.3.0</zjsonpatch.version>
 
     <!-- API versions -->
     <jsr305.version>3.0.2</jsr305.version>
@@ -113,6 +113,7 @@
     <awaitility.version>4.2.0</awaitility.version>
     <approvaltests.version>19.0.0</approvaltests.version>
     <mockito.version>4.11.0</mockito.version>
+    <spock.version>2.3-groovy-3.0</spock.version>
 
     <conscrypt-openjdk-uber.bundle.version>1.4.2_1</conscrypt-openjdk-uber.bundle.version>
     <generex.version>1.0.2</generex.version>
@@ -156,6 +157,7 @@
     <maven.install.plugin.version>3.1.1</maven.install.plugin.version>
     <maven.invoker.plugin.version>3.6.0</maven.invoker.plugin.version>
     <maven.plugin.plugin.version>3.9.0</maven.plugin.plugin.version>
+    <gmavenplus-plugin.version>3.0.0</gmavenplus-plugin.version>
     <gradle-api-maven-plugin.version>0.0.3</gradle-api-maven-plugin.version>
     <jandex.plugin.version>1.2.3</jandex.plugin.version>
     <jandex.version>2.4.3.Final</jandex.version>
@@ -203,6 +205,7 @@
     <module>kubernetes-model-generator</module>
     <module>kubernetes-client-api</module>
     <module>kubernetes-client</module>
+    <module>junit/mockwebserver</module>
     <module>junit/kubernetes-junit-jupiter</module>
     <module>junit/kubernetes-junit-jupiter-autodetected</module>
     <module>junit/kubernetes-server-mock</module>
@@ -271,7 +274,6 @@
       </dependency>
       <dependency>
         <groupId>io.fabric8</groupId>
-
         <artifactId>kubernetes-model-autoscaling</artifactId>
         <version>${project.version}</version>
       </dependency>
@@ -448,11 +450,6 @@
         <version>${project.version}</version>
       </dependency>
       <dependency>
-        <groupId>com.squareup.okhttp3</groupId>
-        <artifactId>okhttp</artifactId>
-        <version>${okhttp.version}</version>
-      </dependency>
-      <dependency>
         <groupId>io.fabric8</groupId>
         <artifactId>kubernetes-httpclient-jdk</artifactId>
         <version>${project.version}</version>
@@ -480,6 +477,11 @@
       <dependency>
         <groupId>io.fabric8</groupId>
         <artifactId>openshift-client</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>mockwebserver</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
@@ -731,6 +733,16 @@
         <scope>provided</scope>
       </dependency>
       <dependency>
+        <groupId>com.squareup.okhttp3</groupId>
+        <artifactId>okhttp</artifactId>
+        <version>${okhttp.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.squareup.okhttp3</groupId>
+        <artifactId>mockwebserver</artifactId>
+        <version>${okhttp.version}</version>
+      </dependency>
+      <dependency>
         <groupId>org.apache.commons</groupId>
         <artifactId>commons-compress</artifactId>
         <version>${commons-compress.version}</version>
@@ -815,16 +827,9 @@
       <!-- Testing and Mocking -->
       <dependency>
         <groupId>io.fabric8</groupId>
-        <artifactId>mockwebserver</artifactId>
-        <version>${mockwebserver.version}</version>
-        <exclusions>
-          <exclusion>
-            <groupId>com.sun</groupId>
-            <artifactId>tools</artifactId>
-          </exclusion>
-        </exclusions>
+        <artifactId>zjsonpatch</artifactId>
+        <version>${zjsonpatch.version}</version>
       </dependency>
-
       <dependency>
         <groupId>org.mockito</groupId>
         <artifactId>mockito-core</artifactId>
@@ -869,6 +874,13 @@
         <groupId>org.awaitility</groupId>
         <artifactId>awaitility</artifactId>
         <version>${awaitility.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>org.spockframework</groupId>
+        <artifactId>spock-core</artifactId>
+        <version>${spock.version}</version>
         <scope>test</scope>
       </dependency>
 
