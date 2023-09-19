@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.client.extended.leaderelection;
 
+import io.fabric8.kubernetes.api.model.StatusBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
 import io.fabric8.kubernetes.client.extended.leaderelection.resourcelock.LeaderElectionRecord;
@@ -26,6 +27,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Answers;
 import org.mockito.Mockito;
 
+import java.net.HttpURLConnection;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneOffset;
@@ -142,6 +144,36 @@ class LeaderElectorTest {
 
     // there should be a transition
     assertEquals(1, activeLer.get().getLeaderTransitions());
+  }
+
+  @Test
+  void shouldStopOnReleaseWhenCanceled() throws Exception {
+    // Given
+    AtomicReference<LeaderElectionRecord> activeLer = new AtomicReference<>();
+    final LeaderElectionConfig lec = mockLeaderElectionConfiguration(activeLer);
+    final CountDownLatch signal = new CountDownLatch(1);
+    final Lock mockedLock = lec.getLock();
+    when(lec.isReleaseOnCancel()).thenReturn(true);
+    AtomicInteger count = new AtomicInteger();
+    doAnswer(invocation -> {
+      if (count.addAndGet(1) == 2) {
+        // simulate that we've already lost election
+        throw new KubernetesClientException(new StatusBuilder().withCode(HttpURLConnection.HTTP_CONFLICT).build());
+      }
+      LeaderElectionRecord leaderRecord = invocation.getArgument(1, LeaderElectionRecord.class);
+      activeLer.set(leaderRecord);
+      signal.countDown();
+      return null;
+    }).when(mockedLock).update(any(), any());
+
+    // When
+    LeaderElector leaderElector = new LeaderElector(mock(NamespacedKubernetesClient.class), lec, CommonThreadPool.get());
+    CompletableFuture<?> started = leaderElector.start();
+    assertTrue(signal.await(10, TimeUnit.SECONDS));
+    started.cancel(true);
+
+    // Then
+    verify(lec.getLeaderCallbacks(), times(1)).onStopLeading();
   }
 
   @Test
