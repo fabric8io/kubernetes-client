@@ -52,7 +52,7 @@ public interface KubernetesCrudDispatcherHandler {
   default void validatePath(AttributeSet query, JsonNode updatedResource) throws KubernetesCrudDispatcherException {
     // metadata.name
     final String updatedName = updatedResource.path(METADATA).path(NAME).asText();
-    final String pathName = query.getAttribute(NAME).getValue().toString();
+    final String pathName = query.getAttribute(NAME).getValues().iterator().next().toString();
     if (!updatedName.isEmpty() && !pathName.equals(updatedName)) {
       throw new KubernetesCrudDispatcherException(
           "the name of the object (" + updatedName + ") does not match the name on the URL (" + pathName + ")",
@@ -62,7 +62,7 @@ public interface KubernetesCrudDispatcherHandler {
     // metadata.namespace
     if (query.getAttribute(NAMESPACE) != null) {
       final String updatedNamespace = updatedResource.path(METADATA).path(NAMESPACE).asText();
-      final String pathNamespace = query.getAttribute(NAMESPACE).getValue().toString();
+      final String pathNamespace = query.getAttribute(NAMESPACE).getValues().iterator().next().toString();
       if (!updatedNamespace.isEmpty() && !updatedNamespace.equals(pathNamespace)) {
         throw new KubernetesCrudDispatcherException(
             "the namespace of the object (" + updatedNamespace + ") does not match the namespace on the URL ("

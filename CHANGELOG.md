@@ -25,6 +25,7 @@
 * Fix #5373: Gradle base API based on v8.2.1
 
 #### New Features
+* Fix #5430: Mock Web Server migrated to this repository
 
 #### _**Note**_: Breaking changes
 * Fix #5343: Removed `io.fabric8.kubernetes.model.annotation.PrinterColumn`, use `io.fabric8.crd.generator.annotation.PrinterColumn`
