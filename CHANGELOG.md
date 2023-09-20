@@ -3,6 +3,7 @@
 ### 6.9-SNAPSHOT
 
 #### Bugs
+* Fix #5466: OperationSupport should not fail trying to parse Status
 * Fix #5382: [java-generator] Allow to deserialize more valid RFC3339 date-time and make the format customizable
 * Fix #5380: [java-generator] Avoid to emit Java Keywords as package names
 * Fix #5463: ensures that onStopLeading is called with releaseOnCancel even when leadership is already lost
