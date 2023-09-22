@@ -921,6 +921,9 @@
           "$ref": "#/definitions/kubernetes_core_ResourceRequirements",
           "existingJavaType": "io.fabric8.kubernetes.api.model.ResourceRequirements"
         },
+        "restartPolicy": {
+          "type": "string"
+        },
         "securityContext": {
           "$ref": "#/definitions/kubernetes_core_SecurityContext",
           "existingJavaType": "io.fabric8.kubernetes.api.model.SecurityContext"
@@ -1235,6 +1238,9 @@
           "$ref": "#/definitions/kubernetes_core_ResourceRequirements",
           "existingJavaType": "io.fabric8.kubernetes.api.model.ResourceRequirements"
         },
+        "restartPolicy": {
+          "type": "string"
+        },
         "securityContext": {
           "$ref": "#/definitions/kubernetes_core_SecurityContext",
           "existingJavaType": "io.fabric8.kubernetes.api.model.SecurityContext"
@@ -1360,6 +1366,9 @@
         "resources": {
           "$ref": "#/definitions/kubernetes_core_ResourceRequirements",
           "existingJavaType": "io.fabric8.kubernetes.api.model.ResourceRequirements"
+        },
+        "restartPolicy": {
+          "type": "string"
         },
         "securityContext": {
           "$ref": "#/definitions/kubernetes_core_SecurityContext",
@@ -10392,6 +10401,9 @@
           "$ref": "#/definitions/kubernetes_core_ResourceRequirements",
           "existingJavaType": "io.fabric8.kubernetes.api.model.ResourceRequirements"
         },
+        "restartPolicy": {
+          "type": "string"
+        },
         "securityContext": {
           "$ref": "#/definitions/kubernetes_core_SecurityContext",
           "existingJavaType": "io.fabric8.kubernetes.api.model.SecurityContext"
@@ -10973,6 +10985,9 @@
           "$ref": "#/definitions/kubernetes_core_ResourceRequirements",
           "existingJavaType": "io.fabric8.kubernetes.api.model.ResourceRequirements"
         },
+        "restartPolicy": {
+          "type": "string"
+        },
         "securityContext": {
           "$ref": "#/definitions/kubernetes_core_SecurityContext",
           "existingJavaType": "io.fabric8.kubernetes.api.model.SecurityContext"
@@ -11093,6 +11108,9 @@
         "resources": {
           "$ref": "#/definitions/kubernetes_core_ResourceRequirements",
           "existingJavaType": "io.fabric8.kubernetes.api.model.ResourceRequirements"
+        },
+        "restartPolicy": {
+          "type": "string"
         },
         "securityContext": {
           "$ref": "#/definitions/kubernetes_core_SecurityContext",
@@ -12139,19 +12157,19 @@
     },
     "machinepool": {
       "properties": {
-        "coresPerSocket": {
-          "type": "integer"
-        },
-        "cpus": {
-          "type": "integer"
+        "cpu": {
+          "$ref": "#/definitions/os_hive_ovirt_v1_CPU",
+          "existingJavaType": "io.fabric8.openshift.api.model.hive.ovirt.v1.CPU"
         },
         "memoryMB": {
-          "type": "integer",
-          "existingJavaType": "Long"
+          "type": "integer"
         },
         "osDisk": {
-          "$ref": "#/definitions/os_hive_vsphere_v1_OSDisk",
-          "existingJavaType": "io.fabric8.openshift.api.model.hive.vsphere.v1.OSDisk"
+          "$ref": "#/definitions/os_hive_ovirt_v1_Disk",
+          "existingJavaType": "io.fabric8.openshift.api.model.hive.ovirt.v1.Disk"
+        },
+        "vmType": {
+          "type": "string"
         }
       },
       "additionalProperties": true
@@ -12766,7 +12784,15 @@
     "osdisk": {
       "properties": {
         "diskSizeGB": {
-          "type": "integer"
+          "type": "integer",
+          "existingJavaType": "Long"
+        },
+        "diskType": {
+          "type": "string"
+        },
+        "encryptionKey": {
+          "$ref": "#/definitions/os_hive_gcp_v1_EncryptionKeyReference",
+          "existingJavaType": "io.fabric8.openshift.api.model.hive.gcp.v1.EncryptionKeyReference"
         }
       },
       "additionalProperties": true
@@ -12891,18 +12917,15 @@
           "$ref": "#/definitions/kubernetes_core_LocalObjectReference",
           "existingJavaType": "io.fabric8.kubernetes.api.model.LocalObjectReference"
         },
+        "cloud": {
+          "type": "string"
+        },
         "credentialsSecretRef": {
           "$ref": "#/definitions/kubernetes_core_LocalObjectReference",
           "existingJavaType": "io.fabric8.kubernetes.api.model.LocalObjectReference"
         },
-        "ovirt_cluster_id": {
-          "type": "string"
-        },
-        "ovirt_network_name": {
-          "type": "string"
-        },
-        "storage_domain_id": {
-          "type": "string"
+        "trunkSupport": {
+          "type": "boolean"
         }
       },
       "additionalProperties": true

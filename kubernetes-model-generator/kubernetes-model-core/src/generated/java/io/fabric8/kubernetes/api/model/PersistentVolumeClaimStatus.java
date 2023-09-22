@@ -27,11 +27,11 @@ import lombok.experimental.Accessors;
     "kind",
     "metadata",
     "accessModes",
+    "allocatedResourceStatuses",
     "allocatedResources",
     "capacity",
     "conditions",
-    "phase",
-    "resizeStatus"
+    "phase"
 })
 @ToString
 @EqualsAndHashCode
@@ -48,6 +48,9 @@ public class PersistentVolumeClaimStatus implements Editable<PersistentVolumeCla
     @JsonProperty("accessModes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<java.lang.String> accessModes = new ArrayList<java.lang.String>();
+    @JsonProperty("allocatedResourceStatuses")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, String> allocatedResourceStatuses = new LinkedHashMap<String, String>();
     @JsonProperty("allocatedResources")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, io.fabric8.kubernetes.api.model.Quantity> allocatedResources = new LinkedHashMap<String, io.fabric8.kubernetes.api.model.Quantity>();
@@ -59,8 +62,6 @@ public class PersistentVolumeClaimStatus implements Editable<PersistentVolumeCla
     private List<PersistentVolumeClaimCondition> conditions = new ArrayList<PersistentVolumeClaimCondition>();
     @JsonProperty("phase")
     private java.lang.String phase;
-    @JsonProperty("resizeStatus")
-    private java.lang.String resizeStatus;
     @JsonIgnore
     private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
@@ -71,14 +72,14 @@ public class PersistentVolumeClaimStatus implements Editable<PersistentVolumeCla
     public PersistentVolumeClaimStatus() {
     }
 
-    public PersistentVolumeClaimStatus(List<java.lang.String> accessModes, Map<String, io.fabric8.kubernetes.api.model.Quantity> allocatedResources, Map<String, io.fabric8.kubernetes.api.model.Quantity> capacity, List<PersistentVolumeClaimCondition> conditions, java.lang.String phase, java.lang.String resizeStatus) {
+    public PersistentVolumeClaimStatus(List<java.lang.String> accessModes, Map<String, String> allocatedResourceStatuses, Map<String, io.fabric8.kubernetes.api.model.Quantity> allocatedResources, Map<String, io.fabric8.kubernetes.api.model.Quantity> capacity, List<PersistentVolumeClaimCondition> conditions, java.lang.String phase) {
         super();
         this.accessModes = accessModes;
+        this.allocatedResourceStatuses = allocatedResourceStatuses;
         this.allocatedResources = allocatedResources;
         this.capacity = capacity;
         this.conditions = conditions;
         this.phase = phase;
-        this.resizeStatus = resizeStatus;
     }
 
     @JsonProperty("accessModes")
@@ -89,6 +90,16 @@ public class PersistentVolumeClaimStatus implements Editable<PersistentVolumeCla
     @JsonProperty("accessModes")
     public void setAccessModes(List<java.lang.String> accessModes) {
         this.accessModes = accessModes;
+    }
+
+    @JsonProperty("allocatedResourceStatuses")
+    public Map<String, String> getAllocatedResourceStatuses() {
+        return allocatedResourceStatuses;
+    }
+
+    @JsonProperty("allocatedResourceStatuses")
+    public void setAllocatedResourceStatuses(Map<String, String> allocatedResourceStatuses) {
+        this.allocatedResourceStatuses = allocatedResourceStatuses;
     }
 
     @JsonProperty("allocatedResources")
@@ -129,16 +140,6 @@ public class PersistentVolumeClaimStatus implements Editable<PersistentVolumeCla
     @JsonProperty("phase")
     public void setPhase(java.lang.String phase) {
         this.phase = phase;
-    }
-
-    @JsonProperty("resizeStatus")
-    public java.lang.String getResizeStatus() {
-        return resizeStatus;
-    }
-
-    @JsonProperty("resizeStatus")
-    public void setResizeStatus(java.lang.String resizeStatus) {
-        this.resizeStatus = resizeStatus;
     }
 
     @JsonIgnore

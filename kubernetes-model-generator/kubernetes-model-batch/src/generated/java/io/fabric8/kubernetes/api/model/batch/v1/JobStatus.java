@@ -42,9 +42,11 @@ import lombok.experimental.Accessors;
     "completionTime",
     "conditions",
     "failed",
+    "failedIndexes",
     "ready",
     "startTime",
     "succeeded",
+    "terminating",
     "uncountedTerminatedPods"
 })
 @ToString
@@ -80,12 +82,16 @@ public class JobStatus implements Editable<JobStatusBuilder> , KubernetesResourc
     private List<JobCondition> conditions = new ArrayList<JobCondition>();
     @JsonProperty("failed")
     private Integer failed;
+    @JsonProperty("failedIndexes")
+    private java.lang.String failedIndexes;
     @JsonProperty("ready")
     private Integer ready;
     @JsonProperty("startTime")
     private String startTime;
     @JsonProperty("succeeded")
     private Integer succeeded;
+    @JsonProperty("terminating")
+    private Integer terminating;
     @JsonProperty("uncountedTerminatedPods")
     private UncountedTerminatedPods uncountedTerminatedPods;
     @JsonIgnore
@@ -98,16 +104,18 @@ public class JobStatus implements Editable<JobStatusBuilder> , KubernetesResourc
     public JobStatus() {
     }
 
-    public JobStatus(Integer active, java.lang.String completedIndexes, String completionTime, List<JobCondition> conditions, Integer failed, Integer ready, String startTime, Integer succeeded, UncountedTerminatedPods uncountedTerminatedPods) {
+    public JobStatus(Integer active, java.lang.String completedIndexes, String completionTime, List<JobCondition> conditions, Integer failed, java.lang.String failedIndexes, Integer ready, String startTime, Integer succeeded, Integer terminating, UncountedTerminatedPods uncountedTerminatedPods) {
         super();
         this.active = active;
         this.completedIndexes = completedIndexes;
         this.completionTime = completionTime;
         this.conditions = conditions;
         this.failed = failed;
+        this.failedIndexes = failedIndexes;
         this.ready = ready;
         this.startTime = startTime;
         this.succeeded = succeeded;
+        this.terminating = terminating;
         this.uncountedTerminatedPods = uncountedTerminatedPods;
     }
 
@@ -161,6 +169,16 @@ public class JobStatus implements Editable<JobStatusBuilder> , KubernetesResourc
         this.failed = failed;
     }
 
+    @JsonProperty("failedIndexes")
+    public java.lang.String getFailedIndexes() {
+        return failedIndexes;
+    }
+
+    @JsonProperty("failedIndexes")
+    public void setFailedIndexes(java.lang.String failedIndexes) {
+        this.failedIndexes = failedIndexes;
+    }
+
     @JsonProperty("ready")
     public Integer getReady() {
         return ready;
@@ -189,6 +207,16 @@ public class JobStatus implements Editable<JobStatusBuilder> , KubernetesResourc
     @JsonProperty("succeeded")
     public void setSucceeded(Integer succeeded) {
         this.succeeded = succeeded;
+    }
+
+    @JsonProperty("terminating")
+    public Integer getTerminating() {
+        return terminating;
+    }
+
+    @JsonProperty("terminating")
+    public void setTerminating(Integer terminating) {
+        this.terminating = terminating;
     }
 
     @JsonProperty("uncountedTerminatedPods")

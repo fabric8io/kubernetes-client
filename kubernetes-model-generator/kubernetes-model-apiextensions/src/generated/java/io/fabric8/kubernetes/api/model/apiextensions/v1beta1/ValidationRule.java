@@ -35,8 +35,10 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
+    "fieldPath",
     "message",
     "messageExpression",
+    "reason",
     "rule"
 })
 @ToString
@@ -61,10 +63,14 @@ import lombok.experimental.Accessors;
 public class ValidationRule implements Editable<ValidationRuleBuilder> , KubernetesResource
 {
 
+    @JsonProperty("fieldPath")
+    private String fieldPath;
     @JsonProperty("message")
     private String message;
     @JsonProperty("messageExpression")
     private String messageExpression;
+    @JsonProperty("reason")
+    private String reason;
     @JsonProperty("rule")
     private String rule;
     @JsonIgnore
@@ -77,11 +83,23 @@ public class ValidationRule implements Editable<ValidationRuleBuilder> , Kuberne
     public ValidationRule() {
     }
 
-    public ValidationRule(String message, String messageExpression, String rule) {
+    public ValidationRule(String fieldPath, String message, String messageExpression, String reason, String rule) {
         super();
+        this.fieldPath = fieldPath;
         this.message = message;
         this.messageExpression = messageExpression;
+        this.reason = reason;
         this.rule = rule;
+    }
+
+    @JsonProperty("fieldPath")
+    public String getFieldPath() {
+        return fieldPath;
+    }
+
+    @JsonProperty("fieldPath")
+    public void setFieldPath(String fieldPath) {
+        this.fieldPath = fieldPath;
     }
 
     @JsonProperty("message")
@@ -102,6 +120,16 @@ public class ValidationRule implements Editable<ValidationRuleBuilder> , Kuberne
     @JsonProperty("messageExpression")
     public void setMessageExpression(String messageExpression) {
         this.messageExpression = messageExpression;
+    }
+
+    @JsonProperty("reason")
+    public String getReason() {
+        return reason;
+    }
+
+    @JsonProperty("reason")
+    public void setReason(String reason) {
+        this.reason = reason;
     }
 
     @JsonProperty("rule")

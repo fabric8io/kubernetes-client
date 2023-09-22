@@ -35,6 +35,7 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
+    "exempt",
     "limited",
     "type"
 })
@@ -60,6 +61,8 @@ import lombok.experimental.Accessors;
 public class PriorityLevelConfigurationSpec implements Editable<PriorityLevelConfigurationSpecBuilder> , KubernetesResource
 {
 
+    @JsonProperty("exempt")
+    private ExemptPriorityLevelConfiguration exempt;
     @JsonProperty("limited")
     private LimitedPriorityLevelConfiguration limited;
     @JsonProperty("type")
@@ -74,10 +77,21 @@ public class PriorityLevelConfigurationSpec implements Editable<PriorityLevelCon
     public PriorityLevelConfigurationSpec() {
     }
 
-    public PriorityLevelConfigurationSpec(LimitedPriorityLevelConfiguration limited, String type) {
+    public PriorityLevelConfigurationSpec(ExemptPriorityLevelConfiguration exempt, LimitedPriorityLevelConfiguration limited, String type) {
         super();
+        this.exempt = exempt;
         this.limited = limited;
         this.type = type;
+    }
+
+    @JsonProperty("exempt")
+    public ExemptPriorityLevelConfiguration getExempt() {
+        return exempt;
+    }
+
+    @JsonProperty("exempt")
+    public void setExempt(ExemptPriorityLevelConfiguration exempt) {
+        this.exempt = exempt;
     }
 
     @JsonProperty("limited")
