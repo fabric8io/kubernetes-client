@@ -1244,6 +1244,9 @@
           "$ref": "#/definitions/kubernetes_core_ResourceRequirements",
           "existingJavaType": "io.fabric8.kubernetes.api.model.ResourceRequirements"
         },
+        "restartPolicy": {
+          "type": "string"
+        },
         "securityContext": {
           "$ref": "#/definitions/kubernetes_core_SecurityContext",
           "existingJavaType": "io.fabric8.kubernetes.api.model.SecurityContext"
@@ -1558,6 +1561,9 @@
           "$ref": "#/definitions/kubernetes_core_ResourceRequirements",
           "existingJavaType": "io.fabric8.kubernetes.api.model.ResourceRequirements"
         },
+        "restartPolicy": {
+          "type": "string"
+        },
         "securityContext": {
           "$ref": "#/definitions/kubernetes_core_SecurityContext",
           "existingJavaType": "io.fabric8.kubernetes.api.model.SecurityContext"
@@ -1683,6 +1689,9 @@
         "resources": {
           "$ref": "#/definitions/kubernetes_core_ResourceRequirements",
           "existingJavaType": "io.fabric8.kubernetes.api.model.ResourceRequirements"
+        },
+        "restartPolicy": {
+          "type": "string"
         },
         "securityContext": {
           "$ref": "#/definitions/kubernetes_core_SecurityContext",

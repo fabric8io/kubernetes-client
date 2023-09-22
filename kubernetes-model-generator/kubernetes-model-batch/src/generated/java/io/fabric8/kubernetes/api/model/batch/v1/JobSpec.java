@@ -35,11 +35,14 @@ import lombok.experimental.Accessors;
     "metadata",
     "activeDeadlineSeconds",
     "backoffLimit",
+    "backoffLimitPerIndex",
     "completionMode",
     "completions",
     "manualSelector",
+    "maxFailedIndexes",
     "parallelism",
     "podFailurePolicy",
+    "podReplacementPolicy",
     "selector",
     "suspend",
     "template",
@@ -71,16 +74,22 @@ public class JobSpec implements Editable<JobSpecBuilder> , KubernetesResource
     private Long activeDeadlineSeconds;
     @JsonProperty("backoffLimit")
     private Integer backoffLimit;
+    @JsonProperty("backoffLimitPerIndex")
+    private Integer backoffLimitPerIndex;
     @JsonProperty("completionMode")
     private String completionMode;
     @JsonProperty("completions")
     private Integer completions;
     @JsonProperty("manualSelector")
     private Boolean manualSelector;
+    @JsonProperty("maxFailedIndexes")
+    private Integer maxFailedIndexes;
     @JsonProperty("parallelism")
     private Integer parallelism;
     @JsonProperty("podFailurePolicy")
     private PodFailurePolicy podFailurePolicy;
+    @JsonProperty("podReplacementPolicy")
+    private String podReplacementPolicy;
     @JsonProperty("selector")
     private io.fabric8.kubernetes.api.model.LabelSelector selector;
     @JsonProperty("suspend")
@@ -99,15 +108,18 @@ public class JobSpec implements Editable<JobSpecBuilder> , KubernetesResource
     public JobSpec() {
     }
 
-    public JobSpec(Long activeDeadlineSeconds, Integer backoffLimit, String completionMode, Integer completions, Boolean manualSelector, Integer parallelism, PodFailurePolicy podFailurePolicy, io.fabric8.kubernetes.api.model.LabelSelector selector, Boolean suspend, io.fabric8.kubernetes.api.model.PodTemplateSpec template, Integer ttlSecondsAfterFinished) {
+    public JobSpec(Long activeDeadlineSeconds, Integer backoffLimit, Integer backoffLimitPerIndex, String completionMode, Integer completions, Boolean manualSelector, Integer maxFailedIndexes, Integer parallelism, PodFailurePolicy podFailurePolicy, String podReplacementPolicy, io.fabric8.kubernetes.api.model.LabelSelector selector, Boolean suspend, io.fabric8.kubernetes.api.model.PodTemplateSpec template, Integer ttlSecondsAfterFinished) {
         super();
         this.activeDeadlineSeconds = activeDeadlineSeconds;
         this.backoffLimit = backoffLimit;
+        this.backoffLimitPerIndex = backoffLimitPerIndex;
         this.completionMode = completionMode;
         this.completions = completions;
         this.manualSelector = manualSelector;
+        this.maxFailedIndexes = maxFailedIndexes;
         this.parallelism = parallelism;
         this.podFailurePolicy = podFailurePolicy;
+        this.podReplacementPolicy = podReplacementPolicy;
         this.selector = selector;
         this.suspend = suspend;
         this.template = template;
@@ -132,6 +144,16 @@ public class JobSpec implements Editable<JobSpecBuilder> , KubernetesResource
     @JsonProperty("backoffLimit")
     public void setBackoffLimit(Integer backoffLimit) {
         this.backoffLimit = backoffLimit;
+    }
+
+    @JsonProperty("backoffLimitPerIndex")
+    public Integer getBackoffLimitPerIndex() {
+        return backoffLimitPerIndex;
+    }
+
+    @JsonProperty("backoffLimitPerIndex")
+    public void setBackoffLimitPerIndex(Integer backoffLimitPerIndex) {
+        this.backoffLimitPerIndex = backoffLimitPerIndex;
     }
 
     @JsonProperty("completionMode")
@@ -164,6 +186,16 @@ public class JobSpec implements Editable<JobSpecBuilder> , KubernetesResource
         this.manualSelector = manualSelector;
     }
 
+    @JsonProperty("maxFailedIndexes")
+    public Integer getMaxFailedIndexes() {
+        return maxFailedIndexes;
+    }
+
+    @JsonProperty("maxFailedIndexes")
+    public void setMaxFailedIndexes(Integer maxFailedIndexes) {
+        this.maxFailedIndexes = maxFailedIndexes;
+    }
+
     @JsonProperty("parallelism")
     public Integer getParallelism() {
         return parallelism;
@@ -182,6 +214,16 @@ public class JobSpec implements Editable<JobSpecBuilder> , KubernetesResource
     @JsonProperty("podFailurePolicy")
     public void setPodFailurePolicy(PodFailurePolicy podFailurePolicy) {
         this.podFailurePolicy = podFailurePolicy;
+    }
+
+    @JsonProperty("podReplacementPolicy")
+    public String getPodReplacementPolicy() {
+        return podReplacementPolicy;
+    }
+
+    @JsonProperty("podReplacementPolicy")
+    public void setPodReplacementPolicy(String podReplacementPolicy) {
+        this.podReplacementPolicy = podReplacementPolicy;
     }
 
     @JsonProperty("selector")

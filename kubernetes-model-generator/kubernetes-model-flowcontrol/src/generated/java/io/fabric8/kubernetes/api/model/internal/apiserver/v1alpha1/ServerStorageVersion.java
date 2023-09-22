@@ -39,7 +39,8 @@ import lombok.experimental.Accessors;
     "metadata",
     "apiServerID",
     "decodableVersions",
-    "encodingVersion"
+    "encodingVersion",
+    "servedVersions"
 })
 @ToString
 @EqualsAndHashCode
@@ -70,6 +71,9 @@ public class ServerStorageVersion implements Editable<ServerStorageVersionBuilde
     private List<String> decodableVersions = new ArrayList<String>();
     @JsonProperty("encodingVersion")
     private String encodingVersion;
+    @JsonProperty("servedVersions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> servedVersions = new ArrayList<String>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -80,11 +84,12 @@ public class ServerStorageVersion implements Editable<ServerStorageVersionBuilde
     public ServerStorageVersion() {
     }
 
-    public ServerStorageVersion(String apiServerID, List<String> decodableVersions, String encodingVersion) {
+    public ServerStorageVersion(String apiServerID, List<String> decodableVersions, String encodingVersion, List<String> servedVersions) {
         super();
         this.apiServerID = apiServerID;
         this.decodableVersions = decodableVersions;
         this.encodingVersion = encodingVersion;
+        this.servedVersions = servedVersions;
     }
 
     @JsonProperty("apiServerID")
@@ -115,6 +120,16 @@ public class ServerStorageVersion implements Editable<ServerStorageVersionBuilde
     @JsonProperty("encodingVersion")
     public void setEncodingVersion(String encodingVersion) {
         this.encodingVersion = encodingVersion;
+    }
+
+    @JsonProperty("servedVersions")
+    public List<String> getServedVersions() {
+        return servedVersions;
+    }
+
+    @JsonProperty("servedVersions")
+    public void setServedVersions(List<String> servedVersions) {
+        this.servedVersions = servedVersions;
     }
 
     @JsonIgnore

@@ -3401,24 +3401,22 @@
     },
     "machinepool": {
       "properties": {
-        "imageID": {
+        "architecture": {
           "type": "string"
         },
-        "instanceType": {
+        "hyperthreading": {
           "type": "string"
         },
-        "systemDiskCategory": {
+        "name": {
           "type": "string"
         },
-        "systemDiskSize": {
-          "type": "integer"
+        "platform": {
+          "$ref": "#/definitions/os_installer_v1_MachinePoolPlatform",
+          "existingJavaType": "io.fabric8.openshift.api.model.installer.v1.MachinePoolPlatform"
         },
-        "zones": {
-          "type": "array",
-          "javaOmitEmpty": true,
-          "items": {
-            "type": "string"
-          }
+        "replicas": {
+          "type": "integer",
+          "existingJavaType": "Long"
         }
       },
       "additionalProperties": true
@@ -3720,9 +3718,15 @@
     },
     "osdisk": {
       "properties": {
-        "diskSizeGiB": {
-          "type": "integer",
-          "existingJavaType": "Long"
+        "diskEncryptionSet": {
+          "$ref": "#/definitions/os_installer_azure_v1_DiskEncryptionSet",
+          "existingJavaType": "io.fabric8.openshift.api.model.installer.azure.v1.DiskEncryptionSet"
+        },
+        "diskSizeGB": {
+          "type": "integer"
+        },
+        "diskType": {
+          "type": "string"
         }
       },
       "additionalProperties": true
@@ -3779,6 +3783,85 @@
       "additionalProperties": true
     },
     "platform": {
+      "properties": {
+        "apiVIP": {
+          "type": "string"
+        },
+        "apiVIPs": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "cluster": {
+          "type": "string"
+        },
+        "clusterOSImage": {
+          "type": "string"
+        },
+        "datacenter": {
+          "type": "string"
+        },
+        "defaultDatastore": {
+          "type": "string"
+        },
+        "defaultMachinePlatform": {
+          "$ref": "#/definitions/os_installer_vsphere_v1_MachinePool",
+          "existingJavaType": "io.fabric8.openshift.api.model.installer.vsphere.v1.MachinePool"
+        },
+        "diskType": {
+          "type": "string"
+        },
+        "failureDomains": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/os_installer_vsphere_v1_FailureDomain",
+            "existingJavaType": "io.fabric8.openshift.api.model.installer.vsphere.v1.FailureDomain"
+          }
+        },
+        "folder": {
+          "type": "string"
+        },
+        "ingressVIP": {
+          "type": "string"
+        },
+        "ingressVIPs": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "loadBalancer": {
+          "$ref": "#/definitions/os_config_v1_VSpherePlatformLoadBalancer",
+          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.VSpherePlatformLoadBalancer"
+        },
+        "network": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "resourcePool": {
+          "type": "string"
+        },
+        "username": {
+          "type": "string"
+        },
+        "vCenter": {
+          "type": "string"
+        },
+        "vcenters": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/os_installer_vsphere_v1_VCenter",
+            "existingJavaType": "io.fabric8.openshift.api.model.installer.vsphere.v1.VCenter"
+          }
+        }
+      },
       "additionalProperties": true
     },
     "porttarget": {

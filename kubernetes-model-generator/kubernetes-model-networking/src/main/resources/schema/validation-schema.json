@@ -85,36 +85,6 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "kubernetes_apimachinery_Condition": {
-      "type": "object",
-      "properties": {
-        "lastTransitionTime": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
-        },
-        "message": {
-          "type": "string"
-        },
-        "observedGeneration": {
-          "type": "integer",
-          "existingJavaType": "Long"
-        },
-        "reason": {
-          "type": "string"
-        },
-        "status": {
-          "type": "string"
-        },
-        "type": {
-          "type": "string"
-        }
-      },
-      "additionalProperties": true,
-      "existingJavaType": "io.fabric8.kubernetes.api.model.Condition",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
     "kubernetes_apimachinery_CreateOptions": {
       "type": "object",
       "properties": {
@@ -1400,10 +1370,6 @@
         "spec": {
           "$ref": "#/definitions/kubernetes_networking_v1_NetworkPolicySpec",
           "existingJavaType": "io.fabric8.kubernetes.api.model.networking.v1.NetworkPolicySpec"
-        },
-        "status": {
-          "$ref": "#/definitions/kubernetes_networking_v1_NetworkPolicyStatus",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.networking.v1.NetworkPolicyStatus"
         }
       },
       "additionalProperties": true,
@@ -1572,24 +1538,6 @@
       },
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.networking.v1.NetworkPolicySpec",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "kubernetes_networking_v1_NetworkPolicyStatus": {
-      "type": "object",
-      "properties": {
-        "conditions": {
-          "type": "array",
-          "javaOmitEmpty": true,
-          "items": {
-            "$ref": "#/definitions/kubernetes_apimachinery_Condition",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.Condition"
-          }
-        }
-      },
-      "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.networking.v1.NetworkPolicyStatus",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -2436,31 +2384,6 @@
       },
       "additionalProperties": true
     },
-    "condition": {
-      "properties": {
-        "lastTransitionTime": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
-        },
-        "message": {
-          "type": "string"
-        },
-        "observedGeneration": {
-          "type": "integer",
-          "existingJavaType": "Long"
-        },
-        "reason": {
-          "type": "string"
-        },
-        "status": {
-          "type": "string"
-        },
-        "type": {
-          "type": "string"
-        }
-      },
-      "additionalProperties": true
-    },
     "createoptions": {
       "properties": {
         "apiVersion": {
@@ -2560,8 +2483,8 @@
     "httpingresspath": {
       "properties": {
         "backend": {
-          "$ref": "#/definitions/kubernetes_networking_v1_IngressBackend",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.networking.v1.IngressBackend"
+          "$ref": "#/definitions/kubernetes_networking_v1beta1_IngressBackend",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.networking.v1beta1.IngressBackend"
         },
         "path": {
           "type": "string"
@@ -2686,14 +2609,14 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "networking.k8s.io/v1",
+          "default": "networking.k8s.io/v1beta1",
           "required": true
         },
         "items": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/kubernetes_networking_v1_IngressClass",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.networking.v1.IngressClass"
+            "$ref": "#/definitions/kubernetes_networking_v1beta1_IngressClass",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.networking.v1beta1.IngressClass"
           }
         },
         "kind": {
@@ -2791,8 +2714,8 @@
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/kubernetes_networking_v1_IngressLoadBalancerIngress",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.networking.v1.IngressLoadBalancerIngress"
+            "$ref": "#/definitions/kubernetes_networking_v1beta1_IngressLoadBalancerIngress",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.networking.v1beta1.IngressLoadBalancerIngress"
           }
         }
       },
@@ -2847,9 +2770,9 @@
     },
     "ingressspec": {
       "properties": {
-        "backend": {
-          "$ref": "#/definitions/kubernetes_networking_v1beta1_IngressBackend",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.networking.v1beta1.IngressBackend"
+        "defaultBackend": {
+          "$ref": "#/definitions/kubernetes_networking_v1_IngressBackend",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.networking.v1.IngressBackend"
         },
         "ingressClassName": {
           "type": "string"
@@ -2858,16 +2781,16 @@
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/kubernetes_networking_v1beta1_IngressRule",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.networking.v1beta1.IngressRule"
+            "$ref": "#/definitions/kubernetes_networking_v1_IngressRule",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.networking.v1.IngressRule"
           }
         },
         "tls": {
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/kubernetes_networking_v1beta1_IngressTLS",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.networking.v1beta1.IngressTLS"
+            "$ref": "#/definitions/kubernetes_networking_v1_IngressTLS",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.networking.v1.IngressTLS"
           }
         }
       },
@@ -3161,10 +3084,6 @@
         "spec": {
           "$ref": "#/definitions/kubernetes_networking_v1_NetworkPolicySpec",
           "existingJavaType": "io.fabric8.kubernetes.api.model.networking.v1.NetworkPolicySpec"
-        },
-        "status": {
-          "$ref": "#/definitions/kubernetes_networking_v1_NetworkPolicyStatus",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.networking.v1.NetworkPolicyStatus"
         }
       },
       "additionalProperties": true
@@ -3296,19 +3215,6 @@
           "javaOmitEmpty": true,
           "items": {
             "type": "string"
-          }
-        }
-      },
-      "additionalProperties": true
-    },
-    "networkpolicystatus": {
-      "properties": {
-        "conditions": {
-          "type": "array",
-          "javaOmitEmpty": true,
-          "items": {
-            "$ref": "#/definitions/kubernetes_apimachinery_Condition",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.Condition"
           }
         }
       },

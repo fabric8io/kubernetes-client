@@ -178,7 +178,7 @@ func (g *schemaGenerator) javaType(t reflect.Type) string {
 		case "Time":
 			return "String"
 		case "RawExtension":
-			return "io.fabric8.kubernetes.api.model.KubernetesResource"			
+			return "io.fabric8.kubernetes.api.model.KubernetesResource"
 		case "List":
 			return pkgDesc.JavaPackage + ".KubernetesList"
 		default:
@@ -194,7 +194,7 @@ func (g *schemaGenerator) javaType(t reflect.Type) string {
 	case reflect.Bool:
 		return "bool"
 	case reflect.Uint8:
-	  return "Byte"
+		return "Byte"
 	case reflect.Int, reflect.Int8, reflect.Int16,
 		reflect.Int32, reflect.Uint,
 		reflect.Uint16, reflect.Uint32:
@@ -211,10 +211,10 @@ func (g *schemaGenerator) javaType(t reflect.Type) string {
 	case reflect.Map:
 		return "java.util.Map<String," + g.javaTypeWrapPrimitive(t.Elem()) + ">"
 	default:
-	    if t.Name() == "RawExtension" {
-	        return "io.fabric8.kubernetes.api.model.KubernetesResource"
-	    }
-	    if t.Name() == "Time" {
+		if t.Name() == "RawExtension" {
+			return "io.fabric8.kubernetes.api.model.KubernetesResource"
+		}
+		if t.Name() == "Time" {
 			return "String"
 		}
 		if len(t.Name()) == 0 && t.NumField() == 0 {
@@ -301,7 +301,7 @@ func (g *schemaGenerator) generate(t reflect.Type, moduleName string) (*JSONSche
 					ExistingJavaType: javaType,
 				}
 			}
-			
+
 			s.Definitions[name] = value
 			s.Resources[resource] = v
 		}
@@ -557,14 +557,14 @@ func (g *schemaGenerator) isNamespaceScopedResource(t reflect.Type) bool {
 }
 
 func (g *schemaGenerator) isSubresourceContainingMetadata(t reflect.Type) bool {
-  subResourcesContainingMetadataList := []string{
-    "JobTemplateSpec",
-    "PodTemplateSpec",
-    "PersistentVolumeClaimTemplate",
-    "MachineSpec",
-    "MachineTemplateSpec",
-    "ResourceClaimTemplateSpec",
-  }
+	subResourcesContainingMetadataList := []string{
+		"JobTemplateSpec",
+		"PodTemplateSpec",
+		"PersistentVolumeClaimTemplate",
+		"MachineSpec",
+		"MachineTemplateSpec",
+		"ResourceClaimTemplateSpec",
+	}
 	return Contains(subResourcesContainingMetadataList, t.Name())
 }
 
@@ -578,9 +578,12 @@ func (g *schemaGenerator) isClusterScopedResource(t reflect.Type) bool {
 		"k8s.io/api/authentication/v1/TokenReview",
 		"k8s.io/api/authentication/v1alpha1/SelfSubjectReview",
 		"k8s.io/api/authentication/v1beta1/SelfSubjectReview",
+		"k8s.io/api/authentication/v1/SelfSubjectReview",
 		"k8s.io/api/admissionregistration/v1beta1/MutatingWebhookConfiguration",
 		"k8s.io/api/admissionregistration/v1alpha1/ValidatingAdmissionPolicy",
+		"k8s.io/api/admissionregistration/v1beta1/ValidatingAdmissionPolicy",
 		"k8s.io/api/admissionregistration/v1alpha1/ValidatingAdmissionPolicyBinding",
+		"k8s.io/api/admissionregistration/v1beta1/ValidatingAdmissionPolicyBinding",
 		"k8s.io/api/authorization/v1/SelfSubjectRulesReview",
 		"k8s.io/api/authorization/v1beta1/SubjectAccessReview",
 		"k8s.io/api/admissionregistration/v1beta1/ValidatingWebhookConfiguration",
@@ -703,14 +706,14 @@ func (g *schemaGenerator) isClusterScopedResource(t reflect.Type) bool {
 		"github.com/openshift/machine-config-operator/pkg/apis/machineconfiguration.openshift.io/v1/MachineConfigPool",
 		"github.com/openshift/machine-config-operator/pkg/apis/machineconfiguration.openshift.io/v1/MachineConfig",
 		"github.com/openshift/cluster-autoscaler-operator/pkg/apis/autoscaling/v1/ClusterAutoscaler",
-                "github.com/openshift/hive/apis/hive/v1/ClusterImageSet",
-                "github.com/openshift/hive/apis/hive/v1/SelectorSyncIdentityProvider",
-                "github.com/openshift/hive/apis/hive/v1/SelectorSyncSet",
-                "github.com/openshift/hive/apis/hive/v1/HiveConfig",
+		"github.com/openshift/hive/apis/hive/v1/ClusterImageSet",
+		"github.com/openshift/hive/apis/hive/v1/SelectorSyncIdentityProvider",
+		"github.com/openshift/hive/apis/hive/v1/SelectorSyncSet",
+		"github.com/openshift/hive/apis/hive/v1/HiveConfig",
 		"sigs.k8s.io/kube-storage-version-migrator/pkg/apis/migration/v1alpha1/StorageState",
 		"sigs.k8s.io/kube-storage-version-migrator/pkg/apis/migration/v1alpha1/StorageVersionMigration",
-                "sigs.k8s.io/gateway-api/apis/v1alpha2/GatewayClass",
-                "sigs.k8s.io/gateway-api/apis/v1beta1/GatewayClass",
+		"sigs.k8s.io/gateway-api/apis/v1alpha2/GatewayClass",
+		"sigs.k8s.io/gateway-api/apis/v1beta1/GatewayClass",
 	}
 
 	return Contains(clusterScopedResourcesList, t.PkgPath()+"/"+t.Name())

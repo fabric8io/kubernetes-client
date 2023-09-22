@@ -42,7 +42,8 @@ import lombok.experimental.Accessors;
     "matchConditions",
     "matchConstraints",
     "paramKind",
-    "validations"
+    "validations",
+    "variables"
 })
 @ToString
 @EqualsAndHashCode
@@ -81,6 +82,9 @@ public class ValidatingAdmissionPolicySpec implements Editable<ValidatingAdmissi
     @JsonProperty("validations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Validation> validations = new ArrayList<Validation>();
+    @JsonProperty("variables")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<Variable> variables = new ArrayList<Variable>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -91,7 +95,7 @@ public class ValidatingAdmissionPolicySpec implements Editable<ValidatingAdmissi
     public ValidatingAdmissionPolicySpec() {
     }
 
-    public ValidatingAdmissionPolicySpec(List<AuditAnnotation> auditAnnotations, String failurePolicy, List<MatchCondition> matchConditions, MatchResources matchConstraints, ParamKind paramKind, List<Validation> validations) {
+    public ValidatingAdmissionPolicySpec(List<AuditAnnotation> auditAnnotations, String failurePolicy, List<MatchCondition> matchConditions, MatchResources matchConstraints, ParamKind paramKind, List<Validation> validations, List<Variable> variables) {
         super();
         this.auditAnnotations = auditAnnotations;
         this.failurePolicy = failurePolicy;
@@ -99,6 +103,7 @@ public class ValidatingAdmissionPolicySpec implements Editable<ValidatingAdmissi
         this.matchConstraints = matchConstraints;
         this.paramKind = paramKind;
         this.validations = validations;
+        this.variables = variables;
     }
 
     @JsonProperty("auditAnnotations")
@@ -159,6 +164,16 @@ public class ValidatingAdmissionPolicySpec implements Editable<ValidatingAdmissi
     @JsonProperty("validations")
     public void setValidations(List<Validation> validations) {
         this.validations = validations;
+    }
+
+    @JsonProperty("variables")
+    public List<Variable> getVariables() {
+        return variables;
+    }
+
+    @JsonProperty("variables")
+    public void setVariables(List<Variable> variables) {
+        this.variables = variables;
     }
 
     @JsonIgnore
