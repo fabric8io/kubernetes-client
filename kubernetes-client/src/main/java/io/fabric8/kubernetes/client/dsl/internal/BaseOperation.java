@@ -990,6 +990,13 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
         future.completeExceptionally(t);
       }
     });
+    informer.stopped().whenComplete((v, t) -> {
+      if (t != null) {
+        future.completeExceptionally(t);
+      } else {
+        future.completeExceptionally(new KubernetesClientException("Informer was stopped"));
+      }
+    });
     return future;
   }
 
