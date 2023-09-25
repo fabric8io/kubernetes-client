@@ -153,7 +153,7 @@
     <maven.gpg.plugin.version>3.1.0</maven.gpg.plugin.version>
     <maven.antrun.plugin.version>3.1.0</maven.antrun.plugin.version>
     <maven.dependency.plugin.version>3.6.0</maven.dependency.plugin.version>
-    <maven.shade.plugin.version>3.5.0</maven.shade.plugin.version>
+    <maven.shade.plugin.version>3.5.1</maven.shade.plugin.version>
     <maven.install.plugin.version>3.1.1</maven.install.plugin.version>
     <maven.invoker.plugin.version>3.6.0</maven.invoker.plugin.version>
     <maven.plugin.plugin.version>3.9.0</maven.plugin.plugin.version>
