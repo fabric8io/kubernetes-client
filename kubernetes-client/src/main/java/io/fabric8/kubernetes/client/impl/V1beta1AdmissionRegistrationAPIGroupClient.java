@@ -17,6 +17,10 @@ package io.fabric8.kubernetes.client.impl;
 
 import io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.MutatingWebhookConfiguration;
 import io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.MutatingWebhookConfigurationList;
+import io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.ValidatingAdmissionPolicy;
+import io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.ValidatingAdmissionPolicyBinding;
+import io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.ValidatingAdmissionPolicyBindingList;
+import io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.ValidatingAdmissionPolicyList;
 import io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.ValidatingWebhookConfiguration;
 import io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.ValidatingWebhookConfigurationList;
 import io.fabric8.kubernetes.client.V1beta1AdmissionRegistrationAPIGroupDSL;
@@ -36,6 +40,16 @@ public class V1beta1AdmissionRegistrationAPIGroupClient extends ClientAdapter<V1
   @Override
   public NonNamespaceOperation<MutatingWebhookConfiguration, MutatingWebhookConfigurationList, Resource<MutatingWebhookConfiguration>> mutatingWebhookConfigurations() {
     return resources(MutatingWebhookConfiguration.class, MutatingWebhookConfigurationList.class);
+  }
+
+  @Override
+  public NonNamespaceOperation<ValidatingAdmissionPolicy, ValidatingAdmissionPolicyList, Resource<io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.ValidatingAdmissionPolicy>> validatingAdmissionPolicies() {
+    return resources(ValidatingAdmissionPolicy.class, ValidatingAdmissionPolicyList.class);
+  }
+
+  @Override
+  public NonNamespaceOperation<ValidatingAdmissionPolicyBinding, ValidatingAdmissionPolicyBindingList, Resource<ValidatingAdmissionPolicyBinding>> validatingAdmissionPolicyBindings() {
+    return resources(ValidatingAdmissionPolicyBinding.class, ValidatingAdmissionPolicyBindingList.class);
   }
 
   @Override

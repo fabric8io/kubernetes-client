@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.client.impl;
 
+import io.fabric8.kubernetes.api.model.authentication.SelfSubjectReview;
 import io.fabric8.kubernetes.api.model.authentication.TokenReview;
 import io.fabric8.kubernetes.client.V1AuthenticationAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.InOutCreateable;
@@ -25,6 +26,11 @@ public class V1AuthenticationAPIGroupClient extends ClientAdapter<V1Authenticati
   @Override
   public InOutCreateable<TokenReview, TokenReview> tokenReviews() {
     return getClient().adapt(BaseClient.class).getHandlers().getNonListingOperation(TokenReview.class, this);
+  }
+
+  @Override
+  public InOutCreateable<SelfSubjectReview, SelfSubjectReview> selfSubjectReviews() {
+    return getClient().adapt(BaseClient.class).getHandlers().getNonListingOperation(SelfSubjectReview.class, this);
   }
 
   @Override
