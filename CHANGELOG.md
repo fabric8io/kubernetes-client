@@ -23,6 +23,7 @@
 
 #### Dependency Upgrade
 * Fix #5373: Gradle base API based on v8.2.1
+* Fix #5401: Upgrade Fabric8 Kubernetes Model to Kubernetes v1.28.2
 
 #### New Features
 * Fix #5430: Mock Web Server migrated to this repository
