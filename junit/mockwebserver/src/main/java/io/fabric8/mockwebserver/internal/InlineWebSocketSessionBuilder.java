@@ -18,11 +18,9 @@ package io.fabric8.mockwebserver.internal;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.fabric8.mockwebserver.Context;
 import io.fabric8.mockwebserver.MockServerException;
 import io.fabric8.mockwebserver.dsl.Emitable;
 import io.fabric8.mockwebserver.dsl.EventDoneable;
-import io.fabric8.mockwebserver.dsl.Function;
 import io.fabric8.mockwebserver.dsl.TimesOrOnceable;
 import io.fabric8.mockwebserver.dsl.WebSocketSessionBuilder;
 
@@ -31,17 +29,16 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Queue;
+import java.util.function.Function;
 
 public class InlineWebSocketSessionBuilder<T> implements WebSocketSessionBuilder<T>, EventDoneable<T> {
 
   private static final ObjectMapper MAPPER = new ObjectMapper();
 
-  private final Context context;
   private final Function<WebSocketSession, T> function;
   private WebSocketSession session;
 
-  public InlineWebSocketSessionBuilder(Context context, Function<WebSocketSession, T> function) {
-    this.context = context;
+  public InlineWebSocketSessionBuilder(Function<WebSocketSession, T> function) {
     this.function = function;
   }
 
