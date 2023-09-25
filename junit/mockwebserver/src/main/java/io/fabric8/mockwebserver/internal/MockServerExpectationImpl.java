@@ -22,7 +22,6 @@ import io.fabric8.mockwebserver.MockServerException;
 import io.fabric8.mockwebserver.ServerRequest;
 import io.fabric8.mockwebserver.ServerResponse;
 import io.fabric8.mockwebserver.dsl.DelayPathable;
-import io.fabric8.mockwebserver.dsl.Function;
 import io.fabric8.mockwebserver.dsl.HttpMethod;
 import io.fabric8.mockwebserver.dsl.MockServerExpectation;
 import io.fabric8.mockwebserver.dsl.Pathable;
@@ -43,6 +42,7 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -193,7 +193,7 @@ public class MockServerExpectationImpl implements MockServerExpectation {
 
   @Override
   public WebSocketSessionBuilder<TimesOnceableOrHttpHeaderable<Void>> andUpgradeToWebSocket() {
-    return new InlineWebSocketSessionBuilder<>(context, new WebSocketSessionConverter(this));
+    return new InlineWebSocketSessionBuilder<>(new WebSocketSessionConverter(this));
   }
 
   /**
@@ -201,7 +201,7 @@ public class MockServerExpectationImpl implements MockServerExpectation {
    */
   @Override
   public WebSocketSessionBuilder<TimesOnceableOrHttpHeaderable<Void>> andUpgradeToWebSocket(ScheduledExecutorService executor) {
-    return new InlineWebSocketSessionBuilder<>(context, new WebSocketSessionConverter(this));
+    return new InlineWebSocketSessionBuilder<>(new WebSocketSessionConverter(this));
   }
 
   @Override
