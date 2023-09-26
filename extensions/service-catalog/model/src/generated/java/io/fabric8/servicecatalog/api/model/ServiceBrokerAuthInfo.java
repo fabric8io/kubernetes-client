@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -64,7 +65,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class ServiceBrokerAuthInfo implements KubernetesResource
+public class ServiceBrokerAuthInfo implements Editable<ServiceBrokerAuthInfoBuilder> , KubernetesResource
 {
 
     @JsonProperty("basic")
@@ -105,6 +106,16 @@ public class ServiceBrokerAuthInfo implements KubernetesResource
     @JsonProperty("bearer")
     public void setBearer(BearerTokenAuthConfig bearer) {
         this.bearer = bearer;
+    }
+
+    @JsonIgnore
+    public ServiceBrokerAuthInfoBuilder edit() {
+        return new ServiceBrokerAuthInfoBuilder(this);
+    }
+
+    @JsonIgnore
+    public ServiceBrokerAuthInfoBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

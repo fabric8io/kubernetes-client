@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -59,7 +60,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ParentReference implements KubernetesResource
+public class ParentReference implements Editable<ParentReferenceBuilder> , KubernetesResource
 {
 
     @JsonProperty("group")
@@ -152,6 +153,16 @@ public class ParentReference implements KubernetesResource
     @JsonProperty("sectionName")
     public void setSectionName(String sectionName) {
         this.sectionName = sectionName;
+    }
+
+    @JsonIgnore
+    public ParentReferenceBuilder edit() {
+        return new ParentReferenceBuilder(this);
+    }
+
+    @JsonIgnore
+    public ParentReferenceBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -62,7 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class ValueNullValue implements IsValueKind
+public class ValueNullValue implements IsValueKind, Editable<ValueNullValueBuilder>
 {
 
     @JsonProperty("nullValue")
@@ -90,6 +91,16 @@ public class ValueNullValue implements IsValueKind
     @JsonProperty("nullValue")
     public void setNullValue(NullValue nullValue) {
         this.nullValue = nullValue;
+    }
+
+    @JsonIgnore
+    public ValueNullValueBuilder edit() {
+        return new ValueNullValueBuilder(this);
+    }
+
+    @JsonIgnore
+    public ValueNullValueBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

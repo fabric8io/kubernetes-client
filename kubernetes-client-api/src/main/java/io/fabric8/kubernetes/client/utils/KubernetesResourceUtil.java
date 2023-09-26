@@ -60,7 +60,12 @@ public class KubernetesResourceUtil {
   private KubernetesResourceUtil() {
   }
 
+  public static final Pattern KUBERNETES_SUBDOMAIN_REGEX = Pattern
+      .compile("[a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*");
   public static final Pattern KUBERNETES_DNS1123_LABEL_REGEX = Pattern.compile("[a-z0-9]([-a-z0-9]{0,61}[a-z0-9])?");
+  public static final Pattern KUBERNETES_KEY_REGEX = Pattern
+      .compile("(" + KUBERNETES_SUBDOMAIN_REGEX.toString() + "/)?[a-z0-9]([-_.a-z0-9]{0,61}[a-z0-9])?");
+
   private static final Pattern INVALID_LABEL_CHARS_PATTERN = Pattern.compile("[^-A-Za-z0-9]+");
   private static final String DEFAULT_CONTAINER_IMAGE_REGISTRY_SECRET_NAME = "container-image-registry-secret";
 
@@ -249,7 +254,11 @@ public class KubernetesResourceUtil {
   }
 
   /**
-   * Returns an identifier from the given string that can be used as resource name.
+   * Returns an identifier from the given string that can be used as resource, label key/value, or annotation key
+   * in accordance to RFC 1123 Label Names.
+   * <p>
+   * Note that this is more restrictive than necessary for most resources and label/annotation keys. It will truncate the name
+   * if necessary, which may affect uniqueness.
    *
    * @param name which needs to be sanitized
    * @return sanitized name
@@ -324,7 +333,15 @@ public class KubernetesResourceUtil {
   }
 
   /**
-   * Validates name of Kubernetes Resource name, label or annotation based on Kubernetes regex
+   * Validates name of a Kubernetes Resource name, label key/value or annotation key based on RFC 1123 Label Names.
+   * <p>
+   * Note: this is more restrictive than what is allowed for annotation names or most resource names, however some resource
+   * types have additional restrictions on their names.
+   * <p>
+   * Refer to <a href="https://kubernetes.io/docs/concepts/overview/working-with-objects/names/">Kubernetes Naming
+   * Conventions</a>
+   * <p>
+   * See also {@link #isValidKey(String)} and {@link #isValidSubdomainName(String)}
    *
    * @param name Name of resource/label/annotation
    * @return returns a boolean value indicating whether it's valid or not
@@ -334,18 +351,61 @@ public class KubernetesResourceUtil {
   }
 
   /**
+   * Validates annotation or label key.
+   *
+   * @param key the annotation or label key
+   * @return returns a boolean value indicating whether it's valid or not
+   */
+  public static boolean isValidKey(String key) {
+    return Utils.isNotNullOrEmpty(key) && key.length() < 254 && KUBERNETES_KEY_REGEX.matcher(key).matches();
+  }
+
+  /**
+   * Validates name of an resource according to DNS Subdomain rules.
+   * <p>
+   * Refer to <a href="https://kubernetes.io/docs/concepts/overview/working-with-objects/names/">Kubernetes Naming
+   * Conventions</a>
+   *
+   * @param name Name of annotation
+   * @return returns a boolean value indicating whether it's valid or not
+   */
+  public static boolean isValidSubdomainName(String name) {
+    return Utils.isNotNullOrEmpty(name) && name.length() < 254 && KUBERNETES_SUBDOMAIN_REGEX.matcher(name).matches();
+  }
+
+  /**
    * Validates labels/annotations of Kubernetes resources
    *
    * @param map Label/Annotation of resource
    * @return returns a boolean value indicating whether it's valid or not
+   *
+   * @see #areLabelsValid(Map) {@link #areAnnotationsValid(Map)}
+   *
+   * @deprecated the rules are different for label and annotation values
    */
+  @Deprecated
   public static boolean isValidLabelOrAnnotation(Map<String, String> map) {
-    for (Map.Entry<String, String> entry : map.entrySet()) {
-      if (!(isValidName(entry.getKey()) && isValidName(entry.getValue()))) {
-        return false;
-      }
-    }
-    return true;
+    return areLabelsValid(map);
+  }
+
+  /**
+   * Checks the given map keys and values for validity as labels.
+   *
+   * @param map labels
+   * @return returns a boolean value indicating whether it's valid or not
+   */
+  public static boolean areLabelsValid(Map<String, String> map) {
+    return map.entrySet().stream().allMatch(e -> isValidKey(e.getKey()) && isValidName(e.getValue()));
+  }
+
+  /**
+   * Checks the given map keys validity as annotations.
+   *
+   * @param map annotations
+   * @return returns a boolean value indicating whether it's valid or not
+   */
+  public static boolean areAnnotationsValid(Map<String, String> map) {
+    return map.keySet().stream().allMatch(KubernetesResourceUtil::isValidKey);
   }
 
   /**

@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -57,7 +58,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class HTTPHeaderMatch implements KubernetesResource
+public class HTTPHeaderMatch implements Editable<HTTPHeaderMatchBuilder> , KubernetesResource
 {
 
     @JsonProperty("name")
@@ -111,6 +112,16 @@ public class HTTPHeaderMatch implements KubernetesResource
     @JsonProperty("value")
     public void setValue(String value) {
         this.value = value;
+    }
+
+    @JsonIgnore
+    public HTTPHeaderMatchBuilder edit() {
+        return new HTTPHeaderMatchBuilder(this);
+    }
+
+    @JsonIgnore
+    public HTTPHeaderMatchBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

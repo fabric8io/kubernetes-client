@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -72,7 +73,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class EmailConfig implements KubernetesResource
+public class EmailConfig implements Editable<EmailConfigBuilder> , KubernetesResource
 {
 
     @JsonProperty("authIdentity")
@@ -270,6 +271,16 @@ public class EmailConfig implements KubernetesResource
     @JsonProperty("to")
     public void setTo(String to) {
         this.to = to;
+    }
+
+    @JsonIgnore
+    public EmailConfigBuilder edit() {
+        return new EmailConfigBuilder(this);
+    }
+
+    @JsonIgnore
+    public EmailConfigBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

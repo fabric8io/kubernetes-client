@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.version.Info;
 import io.sundr.builder.annotations.Buildable;
 import lombok.EqualsAndHashCode;
@@ -96,9 +97,10 @@ import lombok.experimental.Accessors;
     "_",
     ""
 })
-@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
+@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("jsonschema2pojo")
-public class KubeSchema {
+public class KubeSchema implements Editable<KubeSchemaBuilder>
+{
 
     @JsonProperty("APIGroup")
     private APIGroup aPIGroup;
@@ -944,6 +946,16 @@ public class KubeSchema {
     @JsonProperty("WatchEvent")
     public void setWatchEvent(WatchEvent watchEvent) {
         this.watchEvent = watchEvent;
+    }
+
+    @JsonIgnore
+    public KubeSchemaBuilder edit() {
+        return new KubeSchemaBuilder(this);
+    }
+
+    @JsonIgnore
+    public KubeSchemaBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

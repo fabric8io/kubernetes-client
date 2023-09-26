@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.EventSource;
 import io.fabric8.kubernetes.api.model.HasMetadata;
@@ -78,7 +79,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("events.k8s.io")
 @Generated("jsonschema2pojo")
-public class Event implements HasMetadata, Namespaced
+public class Event implements Editable<EventBuilder> , HasMetadata, Namespaced
 {
 
     @JsonProperty("action")
@@ -344,6 +345,16 @@ public class Event implements HasMetadata, Namespaced
     @JsonProperty("type")
     public void setType(java.lang.String type) {
         this.type = type;
+    }
+
+    @JsonIgnore
+    public EventBuilder edit() {
+        return new EventBuilder(this);
+    }
+
+    @JsonIgnore
+    public EventBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

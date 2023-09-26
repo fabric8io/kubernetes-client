@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -66,7 +67,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class DetailsPerTemplate implements KubernetesResource
+public class DetailsPerTemplate implements Editable<DetailsPerTemplateBuilder> , KubernetesResource
 {
 
     @JsonProperty("compliant")
@@ -121,6 +122,16 @@ public class DetailsPerTemplate implements KubernetesResource
     @JsonProperty("templateMeta")
     public void setTemplateMeta(io.fabric8.kubernetes.api.model.ObjectMeta templateMeta) {
         this.templateMeta = templateMeta;
+    }
+
+    @JsonIgnore
+    public DetailsPerTemplateBuilder edit() {
+        return new DetailsPerTemplateBuilder(this);
+    }
+
+    @JsonIgnore
+    public DetailsPerTemplateBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

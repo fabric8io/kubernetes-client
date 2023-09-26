@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -55,7 +56,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class OperatorPKISpec implements KubernetesResource
+public class OperatorPKISpec implements Editable<OperatorPKISpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("targetCert")
@@ -83,6 +84,16 @@ public class OperatorPKISpec implements KubernetesResource
     @JsonProperty("targetCert")
     public void setTargetCert(CertSpec targetCert) {
         this.targetCert = targetCert;
+    }
+
+    @JsonIgnore
+    public OperatorPKISpecBuilder edit() {
+        return new OperatorPKISpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public OperatorPKISpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

@@ -2,10 +2,12 @@
 package io.fabric8.openclustermanagement.api.model;
 
 import javax.annotation.Generated;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -152,7 +154,8 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class OpenClusterManagementAppsSchema {
+public class OpenClusterManagementAppsSchema implements Editable<OpenClusterManagementAppsSchemaBuilder>
+{
 
     @JsonProperty("open-cluster-management_io_multicloud-operators-channel_pkg_apis_apps_v1_Channel")
     private Channel openClusterManagementIoMulticloudOperatorsChannelPkgApisAppsV1Channel;
@@ -788,6 +791,16 @@ public class OpenClusterManagementAppsSchema {
     @JsonProperty("sigs_k8s_io_application_api_v1beta1_ServiceSelector")
     public void setSigsK8sIoApplicationApiV1beta1ServiceSelector(ServiceSelector sigsK8sIoApplicationApiV1beta1ServiceSelector) {
         this.sigsK8sIoApplicationApiV1beta1ServiceSelector = sigsK8sIoApplicationApiV1beta1ServiceSelector;
+    }
+
+    @JsonIgnore
+    public OpenClusterManagementAppsSchemaBuilder edit() {
+        return new OpenClusterManagementAppsSchemaBuilder(this);
+    }
+
+    @JsonIgnore
+    public OpenClusterManagementAppsSchemaBuilder toBuilder() {
+        return edit();
     }
 
 }

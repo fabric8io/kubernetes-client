@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -67,7 +68,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class GCPChaosStatus implements KubernetesResource
+public class GCPChaosStatus implements Editable<GCPChaosStatusBuilder> , KubernetesResource
 {
 
     @JsonProperty("attachedDiskStrings")
@@ -123,6 +124,16 @@ public class GCPChaosStatus implements KubernetesResource
     @JsonProperty("experiment")
     public void setExperiment(ExperimentStatus experiment) {
         this.experiment = experiment;
+    }
+
+    @JsonIgnore
+    public GCPChaosStatusBuilder edit() {
+        return new GCPChaosStatusBuilder(this);
+    }
+
+    @JsonIgnore
+    public GCPChaosStatusBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

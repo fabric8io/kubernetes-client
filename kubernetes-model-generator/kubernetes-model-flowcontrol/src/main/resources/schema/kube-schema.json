@@ -207,6 +207,22 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "kubernetes_flowcontrol_v1alpha1_ExemptPriorityLevelConfiguration": {
+      "type": "object",
+      "properties": {
+        "lendablePercent": {
+          "type": "integer"
+        },
+        "nominalConcurrencyShares": {
+          "type": "integer"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1alpha1.ExemptPriorityLevelConfiguration",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "kubernetes_flowcontrol_v1alpha1_FlowDistinguisherMethod": {
       "type": "object",
       "properties": {
@@ -573,6 +589,10 @@
     "kubernetes_flowcontrol_v1alpha1_PriorityLevelConfigurationSpec": {
       "type": "object",
       "properties": {
+        "exempt": {
+          "$ref": "#/definitions/kubernetes_flowcontrol_v1alpha1_ExemptPriorityLevelConfiguration",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1alpha1.ExemptPriorityLevelConfiguration"
+        },
         "limited": {
           "$ref": "#/definitions/kubernetes_flowcontrol_v1alpha1_LimitedPriorityLevelConfiguration",
           "existingJavaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1alpha1.LimitedPriorityLevelConfiguration"
@@ -711,6 +731,22 @@
       },
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1alpha1.UserSubject",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_flowcontrol_v1beta1_ExemptPriorityLevelConfiguration": {
+      "type": "object",
+      "properties": {
+        "lendablePercent": {
+          "type": "integer"
+        },
+        "nominalConcurrencyShares": {
+          "type": "integer"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.ExemptPriorityLevelConfiguration",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -1079,6 +1115,10 @@
     "kubernetes_flowcontrol_v1beta1_PriorityLevelConfigurationSpec": {
       "type": "object",
       "properties": {
+        "exempt": {
+          "$ref": "#/definitions/kubernetes_flowcontrol_v1beta1_ExemptPriorityLevelConfiguration",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.ExemptPriorityLevelConfiguration"
+        },
         "limited": {
           "$ref": "#/definitions/kubernetes_flowcontrol_v1beta1_LimitedPriorityLevelConfiguration",
           "existingJavaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.LimitedPriorityLevelConfiguration"
@@ -1217,6 +1257,22 @@
       },
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.UserSubject",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_flowcontrol_v1beta2_ExemptPriorityLevelConfiguration": {
+      "type": "object",
+      "properties": {
+        "lendablePercent": {
+          "type": "integer"
+        },
+        "nominalConcurrencyShares": {
+          "type": "integer"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta2.ExemptPriorityLevelConfiguration",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -1585,6 +1641,10 @@
     "kubernetes_flowcontrol_v1beta2_PriorityLevelConfigurationSpec": {
       "type": "object",
       "properties": {
+        "exempt": {
+          "$ref": "#/definitions/kubernetes_flowcontrol_v1beta2_ExemptPriorityLevelConfiguration",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta2.ExemptPriorityLevelConfiguration"
+        },
         "limited": {
           "$ref": "#/definitions/kubernetes_flowcontrol_v1beta2_LimitedPriorityLevelConfiguration",
           "existingJavaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta2.LimitedPriorityLevelConfiguration"
@@ -1723,6 +1783,22 @@
       },
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta2.UserSubject",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_flowcontrol_v1beta3_ExemptPriorityLevelConfiguration": {
+      "type": "object",
+      "properties": {
+        "lendablePercent": {
+          "type": "integer"
+        },
+        "nominalConcurrencyShares": {
+          "type": "integer"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta3.ExemptPriorityLevelConfiguration",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -2091,6 +2167,10 @@
     "kubernetes_flowcontrol_v1beta3_PriorityLevelConfigurationSpec": {
       "type": "object",
       "properties": {
+        "exempt": {
+          "$ref": "#/definitions/kubernetes_flowcontrol_v1beta3_ExemptPriorityLevelConfiguration",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta3.ExemptPriorityLevelConfiguration"
+        },
         "limited": {
           "$ref": "#/definitions/kubernetes_flowcontrol_v1beta3_LimitedPriorityLevelConfiguration",
           "existingJavaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta3.LimitedPriorityLevelConfiguration"
@@ -2248,6 +2328,13 @@
         },
         "encodingVersion": {
           "type": "string"
+        },
+        "servedVersions": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
         }
       },
       "additionalProperties": true,

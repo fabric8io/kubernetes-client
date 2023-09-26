@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -63,7 +64,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class EnvoyFilterProxyMatch implements KubernetesResource
+public class EnvoyFilterProxyMatch implements Editable<EnvoyFilterProxyMatchBuilder> , KubernetesResource
 {
 
     @JsonProperty("metadata")
@@ -105,6 +106,16 @@ public class EnvoyFilterProxyMatch implements KubernetesResource
     @JsonProperty("proxyVersion")
     public void setProxyVersion(java.lang.String proxyVersion) {
         this.proxyVersion = proxyVersion;
+    }
+
+    @JsonIgnore
+    public EnvoyFilterProxyMatchBuilder edit() {
+        return new EnvoyFilterProxyMatchBuilder(this);
+    }
+
+    @JsonIgnore
+    public EnvoyFilterProxyMatchBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

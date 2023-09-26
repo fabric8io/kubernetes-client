@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -68,7 +69,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("hive.openshift.io")
 @Generated("jsonschema2pojo")
-public class ClusterClaimList implements KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.hive.v1.ClusterClaim>
+public class ClusterClaimList implements Editable<ClusterClaimListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.hive.v1.ClusterClaim>
 {
 
     /**
@@ -166,6 +167,16 @@ public class ClusterClaimList implements KubernetesResource, KubernetesResourceL
     @JsonProperty("metadata")
     public void setMetadata(ListMeta metadata) {
         this.metadata = metadata;
+    }
+
+    @JsonIgnore
+    public ClusterClaimListBuilder edit() {
+        return new ClusterClaimListBuilder(this);
+    }
+
+    @JsonIgnore
+    public ClusterClaimListBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

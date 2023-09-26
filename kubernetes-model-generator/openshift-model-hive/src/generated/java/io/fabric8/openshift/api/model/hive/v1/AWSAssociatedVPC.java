@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -56,7 +57,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class AWSAssociatedVPC implements KubernetesResource
+public class AWSAssociatedVPC implements Editable<AWSAssociatedVPCBuilder> , KubernetesResource
 {
 
     @JsonProperty("credentialsSecretRef")
@@ -110,6 +111,16 @@ public class AWSAssociatedVPC implements KubernetesResource
     @JsonProperty("vpcID")
     public void setVpcID(String vpcID) {
         this.vpcID = vpcID;
+    }
+
+    @JsonIgnore
+    public AWSAssociatedVPCBuilder edit() {
+        return new AWSAssociatedVPCBuilder(this);
+    }
+
+    @JsonIgnore
+    public AWSAssociatedVPCBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

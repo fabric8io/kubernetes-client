@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -67,7 +68,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class ChildStatusReference implements KubernetesResource
+public class ChildStatusReference implements Editable<ChildStatusReferenceBuilder> , KubernetesResource
 {
 
     @JsonProperty("apiVersion")
@@ -148,6 +149,16 @@ public class ChildStatusReference implements KubernetesResource
     @JsonProperty("whenExpressions")
     public void setWhenExpressions(List<WhenExpression> whenExpressions) {
         this.whenExpressions = whenExpressions;
+    }
+
+    @JsonIgnore
+    public ChildStatusReferenceBuilder edit() {
+        return new ChildStatusReferenceBuilder(this);
+    }
+
+    @JsonIgnore
+    public ChildStatusReferenceBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

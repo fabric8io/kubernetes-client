@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -58,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class RunAsUserStrategyOptions implements KubernetesResource
+public class RunAsUserStrategyOptions implements Editable<RunAsUserStrategyOptionsBuilder> , KubernetesResource
 {
 
     @JsonProperty("type")
@@ -125,6 +126,16 @@ public class RunAsUserStrategyOptions implements KubernetesResource
     @JsonProperty("uidRangeMin")
     public void setUidRangeMin(Long uidRangeMin) {
         this.uidRangeMin = uidRangeMin;
+    }
+
+    @JsonIgnore
+    public RunAsUserStrategyOptionsBuilder edit() {
+        return new RunAsUserStrategyOptionsBuilder(this);
+    }
+
+    @JsonIgnore
+    public RunAsUserStrategyOptionsBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

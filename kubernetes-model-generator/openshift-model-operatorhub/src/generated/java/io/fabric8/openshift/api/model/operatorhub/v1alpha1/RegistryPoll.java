@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.Duration;
 import io.fabric8.kubernetes.api.model.IntOrString;
@@ -56,7 +57,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class RegistryPoll implements KubernetesResource
+public class RegistryPoll implements Editable<RegistryPollBuilder> , KubernetesResource
 {
 
     @JsonProperty("interval")
@@ -84,6 +85,16 @@ public class RegistryPoll implements KubernetesResource
     @JsonProperty("interval")
     public void setInterval(Duration interval) {
         this.interval = interval;
+    }
+
+    @JsonIgnore
+    public RegistryPollBuilder edit() {
+        return new RegistryPollBuilder(this);
+    }
+
+    @JsonIgnore
+    public RegistryPollBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

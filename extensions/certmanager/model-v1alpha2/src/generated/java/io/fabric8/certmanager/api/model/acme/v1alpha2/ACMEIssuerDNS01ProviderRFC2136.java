@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.certmanager.api.model.meta.v1.SecretKeySelector;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -67,7 +68,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class ACMEIssuerDNS01ProviderRFC2136 implements KubernetesResource
+public class ACMEIssuerDNS01ProviderRFC2136 implements Editable<ACMEIssuerDNS01ProviderRFC2136Builder> , KubernetesResource
 {
 
     @JsonProperty("nameserver")
@@ -134,6 +135,16 @@ public class ACMEIssuerDNS01ProviderRFC2136 implements KubernetesResource
     @JsonProperty("tsigSecretSecretRef")
     public void setTsigSecretSecretRef(SecretKeySelector tsigSecretSecretRef) {
         this.tsigSecretSecretRef = tsigSecretSecretRef;
+    }
+
+    @JsonIgnore
+    public ACMEIssuerDNS01ProviderRFC2136Builder edit() {
+        return new ACMEIssuerDNS01ProviderRFC2136Builder(this);
+    }
+
+    @JsonIgnore
+    public ACMEIssuerDNS01ProviderRFC2136Builder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.sundr.builder.annotations.Buildable;
 import lombok.EqualsAndHashCode;
 import lombok.Setter;
@@ -35,9 +36,9 @@ import lombok.experimental.Accessors;
     "_",
     ""
 })
-@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
+@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("jsonschema2pojo")
-public class LabelSelector implements KubernetesResource
+public class LabelSelector implements Editable<LabelSelectorBuilder> , KubernetesResource
 {
 
     @JsonProperty("matchExpressions")
@@ -80,6 +81,16 @@ public class LabelSelector implements KubernetesResource
     @JsonProperty("matchLabels")
     public void setMatchLabels(Map<String, String> matchLabels) {
         this.matchLabels = matchLabels;
+    }
+
+    @JsonIgnore
+    public LabelSelectorBuilder edit() {
+        return new LabelSelectorBuilder(this);
+    }
+
+    @JsonIgnore
+    public LabelSelectorBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

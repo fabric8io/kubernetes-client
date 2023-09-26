@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -66,7 +67,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class KafkaTLSSpec implements KubernetesResource
+public class KafkaTLSSpec implements Editable<KafkaTLSSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("caCert")
@@ -133,6 +134,16 @@ public class KafkaTLSSpec implements KubernetesResource
     @JsonProperty("key")
     public void setKey(SecretValueFromSource key) {
         this.key = key;
+    }
+
+    @JsonIgnore
+    public KafkaTLSSpecBuilder edit() {
+        return new KafkaTLSSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public KafkaTLSSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

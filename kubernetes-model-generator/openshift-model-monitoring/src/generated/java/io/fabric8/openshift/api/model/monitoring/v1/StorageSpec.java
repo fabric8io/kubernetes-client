@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.EmptyDirVolumeSource;
 import io.fabric8.kubernetes.api.model.EphemeralVolumeSource;
@@ -60,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class StorageSpec implements KubernetesResource
+public class StorageSpec implements Editable<StorageSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("disableMountSubPath")
@@ -127,6 +128,16 @@ public class StorageSpec implements KubernetesResource
     @JsonProperty("volumeClaimTemplate")
     public void setVolumeClaimTemplate(EmbeddedPersistentVolumeClaim volumeClaimTemplate) {
         this.volumeClaimTemplate = volumeClaimTemplate;
+    }
+
+    @JsonIgnore
+    public StorageSpecBuilder edit() {
+        return new StorageSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public StorageSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

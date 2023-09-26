@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.IntOrString;
@@ -65,7 +66,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(RawExtension.class)
 })
 @Generated("jsonschema2pojo")
-public class ClusterCSIDriverSpec implements KubernetesResource
+public class ClusterCSIDriverSpec implements Editable<ClusterCSIDriverSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("driverConfig")
@@ -171,6 +172,16 @@ public class ClusterCSIDriverSpec implements KubernetesResource
     @JsonProperty("unsupportedConfigOverrides")
     public void setUnsupportedConfigOverrides(KubernetesResource unsupportedConfigOverrides) {
         this.unsupportedConfigOverrides = unsupportedConfigOverrides;
+    }
+
+    @JsonIgnore
+    public ClusterCSIDriverSpecBuilder edit() {
+        return new ClusterCSIDriverSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public ClusterCSIDriverSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

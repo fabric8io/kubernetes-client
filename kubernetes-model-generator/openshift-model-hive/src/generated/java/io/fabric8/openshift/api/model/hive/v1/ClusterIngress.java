@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -58,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ClusterIngress implements KubernetesResource
+public class ClusterIngress implements Editable<ClusterIngressBuilder> , KubernetesResource
 {
 
     @JsonProperty("domain")
@@ -138,6 +139,16 @@ public class ClusterIngress implements KubernetesResource
     @JsonProperty("servingCertificate")
     public void setServingCertificate(String servingCertificate) {
         this.servingCertificate = servingCertificate;
+    }
+
+    @JsonIgnore
+    public ClusterIngressBuilder edit() {
+        return new ClusterIngressBuilder(this);
+    }
+
+    @JsonIgnore
+    public ClusterIngressBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

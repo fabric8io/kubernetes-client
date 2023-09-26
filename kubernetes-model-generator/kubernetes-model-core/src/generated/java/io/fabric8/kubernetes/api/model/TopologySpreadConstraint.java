@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.sundr.builder.annotations.Buildable;
 import lombok.EqualsAndHashCode;
 import lombok.Setter;
@@ -41,9 +42,9 @@ import lombok.experimental.Accessors;
     "_",
     ""
 })
-@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
+@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("jsonschema2pojo")
-public class TopologySpreadConstraint implements KubernetesResource
+public class TopologySpreadConstraint implements Editable<TopologySpreadConstraintBuilder> , KubernetesResource
 {
 
     @JsonProperty("labelSelector")
@@ -163,6 +164,16 @@ public class TopologySpreadConstraint implements KubernetesResource
     @JsonProperty("whenUnsatisfiable")
     public void setWhenUnsatisfiable(String whenUnsatisfiable) {
         this.whenUnsatisfiable = whenUnsatisfiable;
+    }
+
+    @JsonIgnore
+    public TopologySpreadConstraintBuilder edit() {
+        return new TopologySpreadConstraintBuilder(this);
+    }
+
+    @JsonIgnore
+    public TopologySpreadConstraintBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

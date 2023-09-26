@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.sundr.builder.annotations.Buildable;
 import lombok.EqualsAndHashCode;
 import lombok.Setter;
@@ -38,6 +39,7 @@ import lombok.experimental.Accessors;
     "readinessProbe",
     "resizePolicy",
     "resources",
+    "restartPolicy",
     "securityContext",
     "startupProbe",
     "stdin",
@@ -57,9 +59,9 @@ import lombok.experimental.Accessors;
     "_",
     ""
 })
-@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
+@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("jsonschema2pojo")
-public class EphemeralContainer implements KubernetesResource
+public class EphemeralContainer implements Editable<EphemeralContainerBuilder> , KubernetesResource
 {
 
     @JsonProperty("args")
@@ -94,6 +96,8 @@ public class EphemeralContainer implements KubernetesResource
     private List<ContainerResizePolicy> resizePolicy = new ArrayList<ContainerResizePolicy>();
     @JsonProperty("resources")
     private ResourceRequirements resources;
+    @JsonProperty("restartPolicy")
+    private String restartPolicy;
     @JsonProperty("securityContext")
     private SecurityContext securityContext;
     @JsonProperty("startupProbe")
@@ -128,7 +132,7 @@ public class EphemeralContainer implements KubernetesResource
     public EphemeralContainer() {
     }
 
-    public EphemeralContainer(List<String> args, List<String> command, List<EnvVar> env, List<EnvFromSource> envFrom, String image, String imagePullPolicy, Lifecycle lifecycle, Probe livenessProbe, String name, List<ContainerPort> ports, Probe readinessProbe, List<ContainerResizePolicy> resizePolicy, ResourceRequirements resources, SecurityContext securityContext, Probe startupProbe, Boolean stdin, Boolean stdinOnce, String targetContainerName, String terminationMessagePath, String terminationMessagePolicy, Boolean tty, List<VolumeDevice> volumeDevices, List<VolumeMount> volumeMounts, String workingDir) {
+    public EphemeralContainer(List<String> args, List<String> command, List<EnvVar> env, List<EnvFromSource> envFrom, String image, String imagePullPolicy, Lifecycle lifecycle, Probe livenessProbe, String name, List<ContainerPort> ports, Probe readinessProbe, List<ContainerResizePolicy> resizePolicy, ResourceRequirements resources, String restartPolicy, SecurityContext securityContext, Probe startupProbe, Boolean stdin, Boolean stdinOnce, String targetContainerName, String terminationMessagePath, String terminationMessagePolicy, Boolean tty, List<VolumeDevice> volumeDevices, List<VolumeMount> volumeMounts, String workingDir) {
         super();
         this.args = args;
         this.command = command;
@@ -143,6 +147,7 @@ public class EphemeralContainer implements KubernetesResource
         this.readinessProbe = readinessProbe;
         this.resizePolicy = resizePolicy;
         this.resources = resources;
+        this.restartPolicy = restartPolicy;
         this.securityContext = securityContext;
         this.startupProbe = startupProbe;
         this.stdin = stdin;
@@ -286,6 +291,16 @@ public class EphemeralContainer implements KubernetesResource
         this.resources = resources;
     }
 
+    @JsonProperty("restartPolicy")
+    public String getRestartPolicy() {
+        return restartPolicy;
+    }
+
+    @JsonProperty("restartPolicy")
+    public void setRestartPolicy(String restartPolicy) {
+        this.restartPolicy = restartPolicy;
+    }
+
     @JsonProperty("securityContext")
     public SecurityContext getSecurityContext() {
         return securityContext;
@@ -394,6 +409,16 @@ public class EphemeralContainer implements KubernetesResource
     @JsonProperty("workingDir")
     public void setWorkingDir(String workingDir) {
         this.workingDir = workingDir;
+    }
+
+    @JsonIgnore
+    public EphemeralContainerBuilder edit() {
+        return new EphemeralContainerBuilder(this);
+    }
+
+    @JsonIgnore
+    public EphemeralContainerBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

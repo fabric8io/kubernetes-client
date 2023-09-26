@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -71,7 +72,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha1")
 @Group("duck.knative.dev")
 @Generated("jsonschema2pojo")
-public class AddressableType implements HasMetadata
+public class AddressableType implements Editable<AddressableTypeBuilder> , HasMetadata
 {
 
     /**
@@ -168,6 +169,16 @@ public class AddressableType implements HasMetadata
     @JsonProperty("status")
     public void setStatus(AddressStatus status) {
         this.status = status;
+    }
+
+    @JsonIgnore
+    public AddressableTypeBuilder edit() {
+        return new AddressableTypeBuilder(this);
+    }
+
+    @JsonIgnore
+    public AddressableTypeBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

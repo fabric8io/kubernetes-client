@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -67,7 +68,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class BandwidthSpec implements KubernetesResource
+public class BandwidthSpec implements Editable<BandwidthSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("buffer")
@@ -147,6 +148,16 @@ public class BandwidthSpec implements KubernetesResource
     @JsonProperty("rate")
     public void setRate(String rate) {
         this.rate = rate;
+    }
+
+    @JsonIgnore
+    public BandwidthSpecBuilder edit() {
+        return new BandwidthSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public BandwidthSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -73,7 +74,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class EmbeddedTask implements KubernetesResource
+public class EmbeddedTask implements Editable<EmbeddedTaskBuilder> , KubernetesResource
 {
 
     @JsonProperty("apiVersion")
@@ -264,6 +265,16 @@ public class EmbeddedTask implements KubernetesResource
     @JsonProperty("workspaces")
     public void setWorkspaces(List<WorkspaceDeclaration> workspaces) {
         this.workspaces = workspaces;
+    }
+
+    @JsonIgnore
+    public EmbeddedTaskBuilder edit() {
+        return new EmbeddedTaskBuilder(this);
+    }
+
+    @JsonIgnore
+    public EmbeddedTaskBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

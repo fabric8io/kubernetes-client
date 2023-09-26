@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -56,7 +57,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ImageSourcePath implements KubernetesResource
+public class ImageSourcePath implements Editable<ImageSourcePathBuilder> , KubernetesResource
 {
 
     @JsonProperty("destinationDir")
@@ -97,6 +98,16 @@ public class ImageSourcePath implements KubernetesResource
     @JsonProperty("sourcePath")
     public void setSourcePath(String sourcePath) {
         this.sourcePath = sourcePath;
+    }
+
+    @JsonIgnore
+    public ImageSourcePathBuilder edit() {
+        return new ImageSourcePathBuilder(this);
+    }
+
+    @JsonIgnore
+    public ImageSourcePathBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

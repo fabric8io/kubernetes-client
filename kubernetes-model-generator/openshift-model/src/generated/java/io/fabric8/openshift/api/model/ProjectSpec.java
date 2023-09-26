@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -57,7 +58,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ProjectSpec implements KubernetesResource
+public class ProjectSpec implements Editable<ProjectSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("finalizers")
@@ -86,6 +87,16 @@ public class ProjectSpec implements KubernetesResource
     @JsonProperty("finalizers")
     public void setFinalizers(List<String> finalizers) {
         this.finalizers = finalizers;
+    }
+
+    @JsonIgnore
+    public ProjectSpecBuilder edit() {
+        return new ProjectSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public ProjectSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

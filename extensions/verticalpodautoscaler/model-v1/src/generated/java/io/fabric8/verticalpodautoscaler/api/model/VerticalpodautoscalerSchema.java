@@ -2,10 +2,12 @@
 package io.fabric8.verticalpodautoscaler.api.model;
 
 import javax.annotation.Generated;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -86,7 +88,8 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class VerticalpodautoscalerSchema {
+public class VerticalpodautoscalerSchema implements Editable<VerticalpodautoscalerSchemaBuilder>
+{
 
     @JsonProperty("k8s_io_autoscaler_vertical-pod-autoscaler_pkg_apis_autoscaling_k8s_io_v1_ContainerResourcePolicy")
     private ContainerResourcePolicy k8sIoAutoscalerVerticalPodAutoscalerPkgApisAutoscalingK8sIoV1ContainerResourcePolicy;
@@ -293,6 +296,16 @@ public class VerticalpodautoscalerSchema {
     @JsonProperty("k8s_io_autoscaler_vertical-pod-autoscaler_pkg_apis_autoscaling_k8s_io_v1_VerticalPodAutoscalerStatus")
     public void setK8sIoAutoscalerVerticalPodAutoscalerPkgApisAutoscalingK8sIoV1VerticalPodAutoscalerStatus(VerticalPodAutoscalerStatus k8sIoAutoscalerVerticalPodAutoscalerPkgApisAutoscalingK8sIoV1VerticalPodAutoscalerStatus) {
         this.k8sIoAutoscalerVerticalPodAutoscalerPkgApisAutoscalingK8sIoV1VerticalPodAutoscalerStatus = k8sIoAutoscalerVerticalPodAutoscalerPkgApisAutoscalingK8sIoV1VerticalPodAutoscalerStatus;
+    }
+
+    @JsonIgnore
+    public VerticalpodautoscalerSchemaBuilder edit() {
+        return new VerticalpodautoscalerSchemaBuilder(this);
+    }
+
+    @JsonIgnore
+    public VerticalpodautoscalerSchemaBuilder toBuilder() {
+        return edit();
     }
 
 }

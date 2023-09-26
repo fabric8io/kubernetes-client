@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -68,7 +69,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("monitoring.coreos.com")
 @Generated("jsonschema2pojo")
-public class AlertmanagerList implements KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.monitoring.v1.Alertmanager>
+public class AlertmanagerList implements Editable<AlertmanagerListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.monitoring.v1.Alertmanager>
 {
 
     /**
@@ -166,6 +167,16 @@ public class AlertmanagerList implements KubernetesResource, KubernetesResourceL
     @JsonProperty("metadata")
     public void setMetadata(ListMeta metadata) {
         this.metadata = metadata;
+    }
+
+    @JsonIgnore
+    public AlertmanagerListBuilder edit() {
+        return new AlertmanagerListBuilder(this);
+    }
+
+    @JsonIgnore
+    public AlertmanagerListBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

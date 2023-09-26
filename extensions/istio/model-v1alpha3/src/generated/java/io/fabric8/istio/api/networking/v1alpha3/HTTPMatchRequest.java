@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -77,7 +78,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class HTTPMatchRequest implements KubernetesResource
+public class HTTPMatchRequest implements Editable<HTTPMatchRequestBuilder> , KubernetesResource
 {
 
     @JsonProperty("authority")
@@ -266,6 +267,16 @@ public class HTTPMatchRequest implements KubernetesResource
     @JsonProperty("withoutHeaders")
     public void setWithoutHeaders(Map<String, io.fabric8.istio.api.networking.v1alpha3.StringMatch> withoutHeaders) {
         this.withoutHeaders = withoutHeaders;
+    }
+
+    @JsonIgnore
+    public HTTPMatchRequestBuilder edit() {
+        return new HTTPMatchRequestBuilder(this);
+    }
+
+    @JsonIgnore
+    public HTTPMatchRequestBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

@@ -44,10 +44,10 @@ class VolcanoTest {
   @Test
   void testPodGroupWithMetaAndSpec() {
 
-    Quantity cpu = new QuantityBuilder(false)
+    Quantity cpu = new QuantityBuilder()
         .withAmount("1")
         .build();
-    Quantity memory = new QuantityBuilder(false)
+    Quantity memory = new QuantityBuilder()
         .withAmount(TEST_MEMORY + "Mi")
         .build();
     Map<String, Quantity> resourceMap = new HashMap<>();

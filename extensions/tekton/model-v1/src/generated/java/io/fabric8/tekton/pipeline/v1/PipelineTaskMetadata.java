@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -64,7 +65,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class PipelineTaskMetadata implements KubernetesResource
+public class PipelineTaskMetadata implements Editable<PipelineTaskMetadataBuilder> , KubernetesResource
 {
 
     @JsonProperty("annotations")
@@ -107,6 +108,16 @@ public class PipelineTaskMetadata implements KubernetesResource
     @JsonProperty("labels")
     public void setLabels(Map<String, String> labels) {
         this.labels = labels;
+    }
+
+    @JsonIgnore
+    public PipelineTaskMetadataBuilder edit() {
+        return new PipelineTaskMetadataBuilder(this);
+    }
+
+    @JsonIgnore
+    public PipelineTaskMetadataBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -56,7 +57,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class MaxAgePolicy implements KubernetesResource
+public class MaxAgePolicy implements Editable<MaxAgePolicyBuilder> , KubernetesResource
 {
 
     @JsonProperty("largestMaxAge")
@@ -97,6 +98,16 @@ public class MaxAgePolicy implements KubernetesResource
     @JsonProperty("smallestMaxAge")
     public void setSmallestMaxAge(Integer smallestMaxAge) {
         this.smallestMaxAge = smallestMaxAge;
+    }
+
+    @JsonIgnore
+    public MaxAgePolicyBuilder edit() {
+        return new MaxAgePolicyBuilder(this);
+    }
+
+    @JsonIgnore
+    public MaxAgePolicyBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

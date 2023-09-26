@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -55,7 +56,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class APIRequestCountSpec implements KubernetesResource
+public class APIRequestCountSpec implements Editable<APIRequestCountSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("numberOfUsersToReport")
@@ -83,6 +84,16 @@ public class APIRequestCountSpec implements KubernetesResource
     @JsonProperty("numberOfUsersToReport")
     public void setNumberOfUsersToReport(Long numberOfUsersToReport) {
         this.numberOfUsersToReport = numberOfUsersToReport;
+    }
+
+    @JsonIgnore
+    public APIRequestCountSpecBuilder edit() {
+        return new APIRequestCountSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public APIRequestCountSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

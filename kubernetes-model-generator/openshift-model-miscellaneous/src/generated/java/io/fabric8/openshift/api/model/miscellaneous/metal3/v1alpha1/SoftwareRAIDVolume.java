@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -59,7 +60,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class SoftwareRAIDVolume implements KubernetesResource
+public class SoftwareRAIDVolume implements Editable<SoftwareRAIDVolumeBuilder> , KubernetesResource
 {
 
     @JsonProperty("level")
@@ -114,6 +115,16 @@ public class SoftwareRAIDVolume implements KubernetesResource
     @JsonProperty("sizeGibibytes")
     public void setSizeGibibytes(Integer sizeGibibytes) {
         this.sizeGibibytes = sizeGibibytes;
+    }
+
+    @JsonIgnore
+    public SoftwareRAIDVolumeBuilder edit() {
+        return new SoftwareRAIDVolumeBuilder(this);
+    }
+
+    @JsonIgnore
+    public SoftwareRAIDVolumeBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

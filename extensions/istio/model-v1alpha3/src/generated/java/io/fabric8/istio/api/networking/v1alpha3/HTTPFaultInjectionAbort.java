@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -65,7 +66,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class HTTPFaultInjectionAbort implements KubernetesResource
+public class HTTPFaultInjectionAbort implements Editable<HTTPFaultInjectionAbortBuilder> , KubernetesResource
 {
 
     @JsonProperty("ErrorType")
@@ -107,6 +108,16 @@ public class HTTPFaultInjectionAbort implements KubernetesResource
     @JsonProperty("percentage")
     public void setPercentage(Percent percentage) {
         this.percentage = percentage;
+    }
+
+    @JsonIgnore
+    public HTTPFaultInjectionAbortBuilder edit() {
+        return new HTTPFaultInjectionAbortBuilder(this);
+    }
+
+    @JsonIgnore
+    public HTTPFaultInjectionAbortBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

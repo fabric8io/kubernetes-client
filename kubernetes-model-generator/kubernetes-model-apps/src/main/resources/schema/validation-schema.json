@@ -2467,6 +2467,9 @@
           "$ref": "#/definitions/kubernetes_core_ResourceRequirements",
           "existingJavaType": "io.fabric8.kubernetes.api.model.ResourceRequirements"
         },
+        "restartPolicy": {
+          "type": "string"
+        },
         "securityContext": {
           "$ref": "#/definitions/kubernetes_core_SecurityContext",
           "existingJavaType": "io.fabric8.kubernetes.api.model.SecurityContext"
@@ -3098,6 +3101,9 @@
           "$ref": "#/definitions/kubernetes_core_ResourceRequirements",
           "existingJavaType": "io.fabric8.kubernetes.api.model.ResourceRequirements"
         },
+        "restartPolicy": {
+          "type": "string"
+        },
         "securityContext": {
           "$ref": "#/definitions/kubernetes_core_SecurityContext",
           "existingJavaType": "io.fabric8.kubernetes.api.model.SecurityContext"
@@ -3223,6 +3229,9 @@
         "resources": {
           "$ref": "#/definitions/kubernetes_core_ResourceRequirements",
           "existingJavaType": "io.fabric8.kubernetes.api.model.ResourceRequirements"
+        },
+        "restartPolicy": {
+          "type": "string"
         },
         "securityContext": {
           "$ref": "#/definitions/kubernetes_core_SecurityContext",
@@ -3574,6 +3583,19 @@
       },
       "additionalProperties": true,
       "existingJavaType": "io.fabric8.kubernetes.api.model.HostAlias",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_core_HostIP": {
+      "type": "object",
+      "properties": {
+        "ip": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "existingJavaType": "io.fabric8.kubernetes.api.model.HostIP",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -4736,6 +4758,13 @@
             "type": "string"
           }
         },
+        "allocatedResourceStatuses": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+        },
         "allocatedResources": {
           "type": "object",
           "additionalProperties": {
@@ -4761,9 +4790,6 @@
           }
         },
         "phase": {
-          "type": "string"
-        },
-        "resizeStatus": {
           "type": "string"
         }
       },
@@ -5077,6 +5103,10 @@
     "kubernetes_core_PersistentVolumeStatus": {
       "type": "object",
       "properties": {
+        "lastPhaseTransitionTime": {
+          "$ref": "#/definitions/kubernetes_apimachinery_Time",
+          "existingJavaType": "String"
+        },
         "message": {
           "type": "string"
         },
@@ -5388,6 +5418,22 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "kubernetes_core_PodResourceClaimStatus": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "resourceClaimName": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "existingJavaType": "io.fabric8.kubernetes.api.model.PodResourceClaimStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "kubernetes_core_PodSchedulingGate": {
       "type": "object",
       "properties": {
@@ -5683,6 +5729,14 @@
         "hostIP": {
           "type": "string"
         },
+        "hostIPs": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_core_HostIP",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.HostIP"
+          }
+        },
         "initContainerStatuses": {
           "type": "array",
           "javaOmitEmpty": true,
@@ -5719,6 +5773,14 @@
         },
         "resize": {
           "type": "string"
+        },
+        "resourceClaimStatuses": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_core_PodResourceClaimStatus",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.PodResourceClaimStatus"
+          }
         },
         "startTime": {
           "$ref": "#/definitions/kubernetes_apimachinery_Time",
@@ -8582,6 +8644,9 @@
           "$ref": "#/definitions/kubernetes_core_ResourceRequirements",
           "existingJavaType": "io.fabric8.kubernetes.api.model.ResourceRequirements"
         },
+        "restartPolicy": {
+          "type": "string"
+        },
         "securityContext": {
           "$ref": "#/definitions/kubernetes_core_SecurityContext",
           "existingJavaType": "io.fabric8.kubernetes.api.model.SecurityContext"
@@ -9594,6 +9659,9 @@
           "$ref": "#/definitions/kubernetes_core_ResourceRequirements",
           "existingJavaType": "io.fabric8.kubernetes.api.model.ResourceRequirements"
         },
+        "restartPolicy": {
+          "type": "string"
+        },
         "securityContext": {
           "$ref": "#/definitions/kubernetes_core_SecurityContext",
           "existingJavaType": "io.fabric8.kubernetes.api.model.SecurityContext"
@@ -9714,6 +9782,9 @@
         "resources": {
           "$ref": "#/definitions/kubernetes_core_ResourceRequirements",
           "existingJavaType": "io.fabric8.kubernetes.api.model.ResourceRequirements"
+        },
+        "restartPolicy": {
+          "type": "string"
         },
         "securityContext": {
           "$ref": "#/definitions/kubernetes_core_SecurityContext",
@@ -9984,6 +10055,14 @@
             "type": "string"
           }
         },
+        "ip": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "hostip": {
+      "properties": {
         "ip": {
           "type": "string"
         }
@@ -11312,6 +11391,13 @@
             "type": "string"
           }
         },
+        "allocatedResourceStatuses": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+        },
         "allocatedResources": {
           "type": "object",
           "additionalProperties": {
@@ -11337,9 +11423,6 @@
           }
         },
         "phase": {
-          "type": "string"
-        },
-        "resizeStatus": {
           "type": "string"
         }
       },
@@ -11622,6 +11705,10 @@
     },
     "persistentvolumestatus": {
       "properties": {
+        "lastPhaseTransitionTime": {
+          "$ref": "#/definitions/kubernetes_apimachinery_Time",
+          "existingJavaType": "String"
+        },
         "message": {
           "type": "string"
         },
@@ -11858,6 +11945,17 @@
         "source": {
           "$ref": "#/definitions/kubernetes_core_ClaimSource",
           "existingJavaType": "io.fabric8.kubernetes.api.model.ClaimSource"
+        }
+      },
+      "additionalProperties": true
+    },
+    "podresourceclaimstatus": {
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "resourceClaimName": {
+          "type": "string"
         }
       },
       "additionalProperties": true
@@ -12141,6 +12239,14 @@
         "hostIP": {
           "type": "string"
         },
+        "hostIPs": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_core_HostIP",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.HostIP"
+          }
+        },
         "initContainerStatuses": {
           "type": "array",
           "javaOmitEmpty": true,
@@ -12177,6 +12283,14 @@
         },
         "resize": {
           "type": "string"
+        },
+        "resourceClaimStatuses": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_core_PodResourceClaimStatus",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.PodResourceClaimStatus"
+          }
         },
         "startTime": {
           "$ref": "#/definitions/kubernetes_apimachinery_Time",

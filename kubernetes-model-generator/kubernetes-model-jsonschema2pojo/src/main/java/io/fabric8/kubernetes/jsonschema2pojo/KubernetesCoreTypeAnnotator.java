@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.jsonschema2pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
@@ -24,12 +25,18 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.sun.codemodel.JAnnotationArrayMember;
 import com.sun.codemodel.JAnnotationUse;
+import com.sun.codemodel.JClass;
 import com.sun.codemodel.JClassAlreadyExistsException;
 import com.sun.codemodel.JCodeModel;
 import com.sun.codemodel.JDefinedClass;
+import com.sun.codemodel.JExpr;
 import com.sun.codemodel.JExpressionImpl;
 import com.sun.codemodel.JFieldVar;
 import com.sun.codemodel.JFormatter;
+import com.sun.codemodel.JInvocation;
+import com.sun.codemodel.JMethod;
+import com.sun.codemodel.JMod;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.fabric8.kubernetes.model.jackson.JsonUnwrappedDeserializer;
@@ -54,6 +61,8 @@ import java.util.Map;
 import java.util.Set;
 
 public class KubernetesCoreTypeAnnotator extends Jackson2Annotator {
+
+  private static final String BUILDER_PACKAGE = "io.fabric8.kubernetes.api.builder";
 
   public static final String BUILDABLE_REFERENCE_VALUE = "value";
 
@@ -97,6 +106,7 @@ public class KubernetesCoreTypeAnnotator extends Jackson2Annotator {
     clazz.annotate(EqualsAndHashCode.class);
     clazz.annotate(Setter.class);
     clazz.annotate(Accessors.class).paramArray("prefix").param("_").param("");
+    makeEditable(clazz);
     processBuildable(clazz);
 
     final Map<String, JFieldVar> fields = clazz.fields();
@@ -133,6 +143,19 @@ public class KubernetesCoreTypeAnnotator extends Jackson2Annotator {
         }
       }
     }
+  }
+
+  private void makeEditable(JDefinedClass clazz) {
+    JClass builderType = clazz.owner().ref(clazz.fullName() + "Builder");
+    JClass editableType = clazz.owner().ref(Editable.class).narrow(builderType);
+    clazz._implements(editableType);
+    JMethod editMethod = clazz.method(JMod.PUBLIC, builderType, "edit");
+    editMethod.annotate(JsonIgnore.class);
+    JInvocation newBuilder = JExpr._new(builderType).arg(JExpr._this());
+    editMethod.body()._return(newBuilder);
+    JMethod toBuilderMethod = clazz.method(JMod.PUBLIC, builderType, "toBuilder");
+    toBuilderMethod.annotate(JsonIgnore.class);
+    toBuilderMethod.body()._return(JExpr.invoke("edit"));
   }
 
   private void annotate(JDefinedClass clazz, String apiVersion, String apiGroup) {
@@ -199,7 +222,7 @@ public class KubernetesCoreTypeAnnotator extends Jackson2Annotator {
         .param("validationEnabled", false)
         .param("generateBuilderPackage", generateBuilderPackage())
         .param("lazyCollectionInitEnabled", false)
-        .param("builderPackage", "io.fabric8.kubernetes.api.builder");
+        .param("builderPackage", BUILDER_PACKAGE);
 
     List<String> types = new ArrayList<>();
     addBuildableTypes(clazz, types);
@@ -217,7 +240,7 @@ public class KubernetesCoreTypeAnnotator extends Jackson2Annotator {
   }
 
   protected boolean generateBuilderPackage() {
-    return true;
+    return false;
   }
 
   protected void addBuildableTypes(JDefinedClass clazz, List<String> types) {

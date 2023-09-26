@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -76,7 +77,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha1")
 @Group("chaos-mesh.org")
 @Generated("jsonschema2pojo")
-public class BlockChaosList implements KubernetesResource, KubernetesResourceList<io.fabric8.chaosmesh.v1alpha1.BlockChaos>
+public class BlockChaosList implements Editable<BlockChaosListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.chaosmesh.v1alpha1.BlockChaos>
 {
 
     /**
@@ -174,6 +175,16 @@ public class BlockChaosList implements KubernetesResource, KubernetesResourceLis
     @JsonProperty("metadata")
     public void setMetadata(ListMeta metadata) {
         this.metadata = metadata;
+    }
+
+    @JsonIgnore
+    public BlockChaosListBuilder edit() {
+        return new BlockChaosListBuilder(this);
+    }
+
+    @JsonIgnore
+    public BlockChaosListBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

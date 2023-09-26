@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -63,7 +64,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class FailedProvisionConfig implements KubernetesResource
+public class FailedProvisionConfig implements Editable<FailedProvisionConfigBuilder> , KubernetesResource
 {
 
     @JsonProperty("skipGatherLogs")
@@ -91,6 +92,16 @@ public class FailedProvisionConfig implements KubernetesResource
     @JsonProperty("skipGatherLogs")
     public void setSkipGatherLogs(Boolean skipGatherLogs) {
         this.skipGatherLogs = skipGatherLogs;
+    }
+
+    @JsonIgnore
+    public FailedProvisionConfigBuilder edit() {
+        return new FailedProvisionConfigBuilder(this);
+    }
+
+    @JsonIgnore
+    public FailedProvisionConfigBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

@@ -2,6 +2,7 @@
 package io.fabric8.chaosmesh.api.model;
 
 import javax.annotation.Generated;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -122,6 +123,7 @@ import io.fabric8.chaosmesh.v1alpha1.TimeChaosList;
 import io.fabric8.chaosmesh.v1alpha1.TimeChaosSpec;
 import io.fabric8.chaosmesh.v1alpha1.TimeChaosStatus;
 import io.fabric8.chaosmesh.v1alpha1.Timespec;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -288,7 +290,8 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class ChaosmeshSchema {
+public class ChaosmeshSchema implements Editable<ChaosmeshSchemaBuilder>
+{
 
     @JsonProperty("github_com_chaos-mesh_chaos-mesh_api_v1alpha1_AWSChaos")
     private AWSChaos githubComChaosMeshChaosMeshApiV1alpha1AWSChaos;
@@ -1808,6 +1811,16 @@ public class ChaosmeshSchema {
     @JsonProperty("github_com_chaos-mesh_chaos-mesh_api_v1alpha1_Timespec")
     public void setGithubComChaosMeshChaosMeshApiV1alpha1Timespec(Timespec githubComChaosMeshChaosMeshApiV1alpha1Timespec) {
         this.githubComChaosMeshChaosMeshApiV1alpha1Timespec = githubComChaosMeshChaosMeshApiV1alpha1Timespec;
+    }
+
+    @JsonIgnore
+    public ChaosmeshSchemaBuilder edit() {
+        return new ChaosmeshSchemaBuilder(this);
+    }
+
+    @JsonIgnore
+    public ChaosmeshSchemaBuilder toBuilder() {
+        return edit();
     }
 
 }

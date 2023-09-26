@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -41,7 +42,8 @@ import lombok.experimental.Accessors;
     "matchConditions",
     "matchConstraints",
     "paramKind",
-    "validations"
+    "validations",
+    "variables"
 })
 @ToString
 @EqualsAndHashCode
@@ -62,7 +64,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ValidatingAdmissionPolicySpec implements KubernetesResource
+public class ValidatingAdmissionPolicySpec implements Editable<ValidatingAdmissionPolicySpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("auditAnnotations")
@@ -80,6 +82,9 @@ public class ValidatingAdmissionPolicySpec implements KubernetesResource
     @JsonProperty("validations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Validation> validations = new ArrayList<Validation>();
+    @JsonProperty("variables")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<Variable> variables = new ArrayList<Variable>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -90,7 +95,7 @@ public class ValidatingAdmissionPolicySpec implements KubernetesResource
     public ValidatingAdmissionPolicySpec() {
     }
 
-    public ValidatingAdmissionPolicySpec(List<AuditAnnotation> auditAnnotations, String failurePolicy, List<MatchCondition> matchConditions, MatchResources matchConstraints, ParamKind paramKind, List<Validation> validations) {
+    public ValidatingAdmissionPolicySpec(List<AuditAnnotation> auditAnnotations, String failurePolicy, List<MatchCondition> matchConditions, MatchResources matchConstraints, ParamKind paramKind, List<Validation> validations, List<Variable> variables) {
         super();
         this.auditAnnotations = auditAnnotations;
         this.failurePolicy = failurePolicy;
@@ -98,6 +103,7 @@ public class ValidatingAdmissionPolicySpec implements KubernetesResource
         this.matchConstraints = matchConstraints;
         this.paramKind = paramKind;
         this.validations = validations;
+        this.variables = variables;
     }
 
     @JsonProperty("auditAnnotations")
@@ -158,6 +164,26 @@ public class ValidatingAdmissionPolicySpec implements KubernetesResource
     @JsonProperty("validations")
     public void setValidations(List<Validation> validations) {
         this.validations = validations;
+    }
+
+    @JsonProperty("variables")
+    public List<Variable> getVariables() {
+        return variables;
+    }
+
+    @JsonProperty("variables")
+    public void setVariables(List<Variable> variables) {
+        this.variables = variables;
+    }
+
+    @JsonIgnore
+    public ValidatingAdmissionPolicySpecBuilder edit() {
+        return new ValidatingAdmissionPolicySpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public ValidatingAdmissionPolicySpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

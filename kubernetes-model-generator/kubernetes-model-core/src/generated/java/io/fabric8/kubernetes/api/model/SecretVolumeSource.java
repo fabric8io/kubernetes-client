@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.sundr.builder.annotations.Buildable;
 import lombok.EqualsAndHashCode;
 import lombok.Setter;
@@ -37,9 +38,9 @@ import lombok.experimental.Accessors;
     "_",
     ""
 })
-@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
+@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("jsonschema2pojo")
-public class SecretVolumeSource implements KubernetesResource
+public class SecretVolumeSource implements Editable<SecretVolumeSourceBuilder> , KubernetesResource
 {
 
     @JsonProperty("defaultMode")
@@ -107,6 +108,16 @@ public class SecretVolumeSource implements KubernetesResource
     @JsonProperty("secretName")
     public void setSecretName(String secretName) {
         this.secretName = secretName;
+    }
+
+    @JsonIgnore
+    public SecretVolumeSourceBuilder edit() {
+        return new SecretVolumeSourceBuilder(this);
+    }
+
+    @JsonIgnore
+    public SecretVolumeSourceBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

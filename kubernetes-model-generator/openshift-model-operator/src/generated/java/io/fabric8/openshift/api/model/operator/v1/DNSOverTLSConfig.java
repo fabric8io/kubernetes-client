@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -57,7 +58,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class DNSOverTLSConfig implements KubernetesResource
+public class DNSOverTLSConfig implements Editable<DNSOverTLSConfigBuilder> , KubernetesResource
 {
 
     @JsonProperty("caBundle")
@@ -98,6 +99,16 @@ public class DNSOverTLSConfig implements KubernetesResource
     @JsonProperty("serverName")
     public void setServerName(String serverName) {
         this.serverName = serverName;
+    }
+
+    @JsonIgnore
+    public DNSOverTLSConfigBuilder edit() {
+        return new DNSOverTLSConfigBuilder(this);
+    }
+
+    @JsonIgnore
+    public DNSOverTLSConfigBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

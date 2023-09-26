@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -64,7 +65,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class ACMEChallengeSolverHTTP01 implements KubernetesResource
+public class ACMEChallengeSolverHTTP01 implements Editable<ACMEChallengeSolverHTTP01Builder> , KubernetesResource
 {
 
     @JsonProperty("gatewayHTTPRoute")
@@ -105,6 +106,16 @@ public class ACMEChallengeSolverHTTP01 implements KubernetesResource
     @JsonProperty("ingress")
     public void setIngress(ACMEChallengeSolverHTTP01Ingress ingress) {
         this.ingress = ingress;
+    }
+
+    @JsonIgnore
+    public ACMEChallengeSolverHTTP01Builder edit() {
+        return new ACMEChallengeSolverHTTP01Builder(this);
+    }
+
+    @JsonIgnore
+    public ACMEChallengeSolverHTTP01Builder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

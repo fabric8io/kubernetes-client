@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -76,7 +77,7 @@ import lombok.experimental.Accessors;
 @Version("v1beta1")
 @Group("servicecatalog.k8s.io")
 @Generated("jsonschema2pojo")
-public class ServiceClassList implements KubernetesResource, KubernetesResourceList<io.fabric8.servicecatalog.api.model.ServiceClass>
+public class ServiceClassList implements Editable<ServiceClassListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.servicecatalog.api.model.ServiceClass>
 {
 
     /**
@@ -174,6 +175,16 @@ public class ServiceClassList implements KubernetesResource, KubernetesResourceL
     @JsonProperty("metadata")
     public void setMetadata(ListMeta metadata) {
         this.metadata = metadata;
+    }
+
+    @JsonIgnore
+    public ServiceClassListBuilder edit() {
+        return new ServiceClassListBuilder(this);
+    }
+
+    @JsonIgnore
+    public ServiceClassListBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

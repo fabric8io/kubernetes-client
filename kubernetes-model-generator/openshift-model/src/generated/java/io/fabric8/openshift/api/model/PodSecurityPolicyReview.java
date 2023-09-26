@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -66,7 +67,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("security.openshift.io")
 @Generated("jsonschema2pojo")
-public class PodSecurityPolicyReview implements KubernetesResource, Namespaced
+public class PodSecurityPolicyReview implements Editable<PodSecurityPolicyReviewBuilder> , KubernetesResource, Namespaced
 {
 
     /**
@@ -163,6 +164,16 @@ public class PodSecurityPolicyReview implements KubernetesResource, Namespaced
     @JsonProperty("status")
     public void setStatus(PodSecurityPolicyReviewStatus status) {
         this.status = status;
+    }
+
+    @JsonIgnore
+    public PodSecurityPolicyReviewBuilder edit() {
+        return new PodSecurityPolicyReviewBuilder(this);
+    }
+
+    @JsonIgnore
+    public PodSecurityPolicyReviewBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

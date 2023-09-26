@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.DeleteOptions;
 import io.fabric8.kubernetes.api.model.HasMetadata;
@@ -65,7 +66,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("policy")
 @Generated("jsonschema2pojo")
-public class Eviction implements HasMetadata, Namespaced
+public class Eviction implements Editable<EvictionBuilder> , HasMetadata, Namespaced
 {
 
     /**
@@ -162,6 +163,16 @@ public class Eviction implements HasMetadata, Namespaced
     @JsonProperty("metadata")
     public void setMetadata(io.fabric8.kubernetes.api.model.ObjectMeta metadata) {
         this.metadata = metadata;
+    }
+
+    @JsonIgnore
+    public EvictionBuilder edit() {
+        return new EvictionBuilder(this);
+    }
+
+    @JsonIgnore
+    public EvictionBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

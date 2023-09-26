@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -68,7 +69,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("coordination.k8s.io")
 @Generated("jsonschema2pojo")
-public class LeaseList implements KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.coordination.v1.Lease>
+public class LeaseList implements Editable<LeaseListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.coordination.v1.Lease>
 {
 
     /**
@@ -166,6 +167,16 @@ public class LeaseList implements KubernetesResource, KubernetesResourceList<io.
     @JsonProperty("metadata")
     public void setMetadata(ListMeta metadata) {
         this.metadata = metadata;
+    }
+
+    @JsonIgnore
+    public LeaseListBuilder edit() {
+        return new LeaseListBuilder(this);
+    }
+
+    @JsonIgnore
+    public LeaseListBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

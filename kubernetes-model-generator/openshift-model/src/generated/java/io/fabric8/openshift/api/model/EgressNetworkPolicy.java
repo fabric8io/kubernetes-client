@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
@@ -64,7 +65,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("network.openshift.io")
 @Generated("jsonschema2pojo")
-public class EgressNetworkPolicy implements HasMetadata, Namespaced
+public class EgressNetworkPolicy implements Editable<EgressNetworkPolicyBuilder> , HasMetadata, Namespaced
 {
 
     /**
@@ -161,6 +162,16 @@ public class EgressNetworkPolicy implements HasMetadata, Namespaced
     @JsonProperty("spec")
     public void setSpec(EgressNetworkPolicySpec spec) {
         this.spec = spec;
+    }
+
+    @JsonIgnore
+    public EgressNetworkPolicyBuilder edit() {
+        return new EgressNetworkPolicyBuilder(this);
+    }
+
+    @JsonIgnore
+    public EgressNetworkPolicyBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

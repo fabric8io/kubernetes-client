@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.sundr.builder.annotations.Buildable;
 import lombok.EqualsAndHashCode;
@@ -41,9 +42,9 @@ import lombok.experimental.Accessors;
     "_",
     ""
 })
-@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
+@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("jsonschema2pojo")
-public class Info implements KubernetesResource
+public class Info implements Editable<InfoBuilder> , KubernetesResource
 {
 
     @JsonProperty("buildDate")
@@ -175,6 +176,16 @@ public class Info implements KubernetesResource
     @JsonProperty("platform")
     public void setPlatform(String platform) {
         this.platform = platform;
+    }
+
+    @JsonIgnore
+    public InfoBuilder edit() {
+        return new InfoBuilder(this);
+    }
+
+    @JsonIgnore
+    public InfoBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

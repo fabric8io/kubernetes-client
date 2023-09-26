@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -58,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class MuteTimeInterval implements KubernetesResource
+public class MuteTimeInterval implements Editable<MuteTimeIntervalBuilder> , KubernetesResource
 {
 
     @JsonProperty("name")
@@ -100,6 +101,16 @@ public class MuteTimeInterval implements KubernetesResource
     @JsonProperty("timeIntervals")
     public void setTimeIntervals(List<TimeInterval> timeIntervals) {
         this.timeIntervals = timeIntervals;
+    }
+
+    @JsonIgnore
+    public MuteTimeIntervalBuilder edit() {
+        return new MuteTimeIntervalBuilder(this);
+    }
+
+    @JsonIgnore
+    public MuteTimeIntervalBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

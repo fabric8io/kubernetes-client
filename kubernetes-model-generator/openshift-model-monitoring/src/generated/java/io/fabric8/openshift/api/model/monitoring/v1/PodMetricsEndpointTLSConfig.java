@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -60,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class PodMetricsEndpointTLSConfig implements KubernetesResource
+public class PodMetricsEndpointTLSConfig implements Editable<PodMetricsEndpointTLSConfigBuilder> , KubernetesResource
 {
 
     @JsonProperty("ca")
@@ -140,6 +141,16 @@ public class PodMetricsEndpointTLSConfig implements KubernetesResource
     @JsonProperty("serverName")
     public void setServerName(String serverName) {
         this.serverName = serverName;
+    }
+
+    @JsonIgnore
+    public PodMetricsEndpointTLSConfigBuilder edit() {
+        return new PodMetricsEndpointTLSConfigBuilder(this);
+    }
+
+    @JsonIgnore
+    public PodMetricsEndpointTLSConfigBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.sundr.builder.annotations.Buildable;
 import lombok.EqualsAndHashCode;
 import lombok.Setter;
@@ -35,9 +36,9 @@ import lombok.experimental.Accessors;
     "_",
     ""
 })
-@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
+@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("jsonschema2pojo")
-public class ProjectedVolumeSource implements KubernetesResource
+public class ProjectedVolumeSource implements Editable<ProjectedVolumeSourceBuilder> , KubernetesResource
 {
 
     @JsonProperty("defaultMode")
@@ -79,6 +80,16 @@ public class ProjectedVolumeSource implements KubernetesResource
     @JsonProperty("sources")
     public void setSources(List<VolumeProjection> sources) {
         this.sources = sources;
+    }
+
+    @JsonIgnore
+    public ProjectedVolumeSourceBuilder edit() {
+        return new ProjectedVolumeSourceBuilder(this);
+    }
+
+    @JsonIgnore
+    public ProjectedVolumeSourceBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

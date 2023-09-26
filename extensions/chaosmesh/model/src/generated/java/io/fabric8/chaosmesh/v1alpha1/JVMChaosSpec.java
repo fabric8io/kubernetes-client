@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -79,7 +80,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class JVMChaosSpec implements KubernetesResource
+public class JVMChaosSpec implements Editable<JVMChaosSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("action")
@@ -290,6 +291,16 @@ public class JVMChaosSpec implements KubernetesResource
     @JsonProperty("value")
     public void setValue(java.lang.String value) {
         this.value = value;
+    }
+
+    @JsonIgnore
+    public JVMChaosSpecBuilder edit() {
+        return new JVMChaosSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public JVMChaosSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

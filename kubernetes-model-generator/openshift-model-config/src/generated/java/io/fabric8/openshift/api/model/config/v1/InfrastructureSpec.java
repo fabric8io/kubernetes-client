@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -56,7 +57,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class InfrastructureSpec implements KubernetesResource
+public class InfrastructureSpec implements Editable<InfrastructureSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("cloudConfig")
@@ -97,6 +98,16 @@ public class InfrastructureSpec implements KubernetesResource
     @JsonProperty("platformSpec")
     public void setPlatformSpec(PlatformSpec platformSpec) {
         this.platformSpec = platformSpec;
+    }
+
+    @JsonIgnore
+    public InfrastructureSpecBuilder edit() {
+        return new InfrastructureSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public InfrastructureSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -59,7 +60,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class HPAScalingRules implements KubernetesResource
+public class HPAScalingRules implements Editable<HPAScalingRulesBuilder> , KubernetesResource
 {
 
     @JsonProperty("policies")
@@ -114,6 +115,16 @@ public class HPAScalingRules implements KubernetesResource
     @JsonProperty("stabilizationWindowSeconds")
     public void setStabilizationWindowSeconds(Integer stabilizationWindowSeconds) {
         this.stabilizationWindowSeconds = stabilizationWindowSeconds;
+    }
+
+    @JsonIgnore
+    public HPAScalingRulesBuilder edit() {
+        return new HPAScalingRulesBuilder(this);
+    }
+
+    @JsonIgnore
+    public HPAScalingRulesBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

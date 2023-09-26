@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -71,7 +72,7 @@ import lombok.experimental.Accessors;
 @Version("v1beta1")
 @Group("tekton.dev")
 @Generated("jsonschema2pojo")
-public class ClusterTask implements HasMetadata
+public class ClusterTask implements Editable<ClusterTaskBuilder> , HasMetadata
 {
 
     /**
@@ -168,6 +169,16 @@ public class ClusterTask implements HasMetadata
     @JsonProperty("spec")
     public void setSpec(TaskSpec spec) {
         this.spec = spec;
+    }
+
+    @JsonIgnore
+    public ClusterTaskBuilder edit() {
+        return new ClusterTaskBuilder(this);
+    }
+
+    @JsonIgnore
+    public ClusterTaskBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

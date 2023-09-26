@@ -2,10 +2,12 @@
 package io.fabric8.openclustermanagement.api.model;
 
 import javax.annotation.Generated;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -96,7 +98,8 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class OpenClusterManagementPolicySchema {
+public class OpenClusterManagementPolicySchema implements Editable<OpenClusterManagementPolicySchemaBuilder>
+{
 
     @JsonProperty("github_com_open-cluster-management_governance-policy-propagator_api_v1_ComplianceHistory")
     private ComplianceHistory githubComOpenClusterManagementGovernancePolicyPropagatorApiV1ComplianceHistory;
@@ -368,6 +371,16 @@ public class OpenClusterManagementPolicySchema {
     @JsonProperty("github_com_open-cluster-management_multicloud-operators-placementrule_pkg_apis_apps_v1_PlacementDecision")
     public void setGithubComOpenClusterManagementMulticloudOperatorsPlacementrulePkgApisAppsV1PlacementDecision(PlacementDecision githubComOpenClusterManagementMulticloudOperatorsPlacementrulePkgApisAppsV1PlacementDecision) {
         this.githubComOpenClusterManagementMulticloudOperatorsPlacementrulePkgApisAppsV1PlacementDecision = githubComOpenClusterManagementMulticloudOperatorsPlacementrulePkgApisAppsV1PlacementDecision;
+    }
+
+    @JsonIgnore
+    public OpenClusterManagementPolicySchemaBuilder edit() {
+        return new OpenClusterManagementPolicySchemaBuilder(this);
+    }
+
+    @JsonIgnore
+    public OpenClusterManagementPolicySchemaBuilder toBuilder() {
+        return edit();
     }
 
 }

@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -70,7 +71,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class EventListenerSpec implements KubernetesResource
+public class EventListenerSpec implements Editable<EventListenerSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("cloudEventURI")
@@ -178,6 +179,16 @@ public class EventListenerSpec implements KubernetesResource
     @JsonProperty("triggers")
     public void setTriggers(List<EventListenerTrigger> triggers) {
         this.triggers = triggers;
+    }
+
+    @JsonIgnore
+    public EventListenerSpecBuilder edit() {
+        return new EventListenerSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public EventListenerSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

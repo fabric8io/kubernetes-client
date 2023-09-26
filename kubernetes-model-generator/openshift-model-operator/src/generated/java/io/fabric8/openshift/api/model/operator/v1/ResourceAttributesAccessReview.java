@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -59,7 +60,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ResourceAttributesAccessReview implements KubernetesResource
+public class ResourceAttributesAccessReview implements Editable<ResourceAttributesAccessReviewBuilder> , KubernetesResource
 {
 
     @JsonProperty("missing")
@@ -102,6 +103,16 @@ public class ResourceAttributesAccessReview implements KubernetesResource
     @JsonProperty("required")
     public void setRequired(List<ResourceAttributes> required) {
         this.required = required;
+    }
+
+    @JsonIgnore
+    public ResourceAttributesAccessReviewBuilder edit() {
+        return new ResourceAttributesAccessReviewBuilder(this);
+    }
+
+    @JsonIgnore
+    public ResourceAttributesAccessReviewBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

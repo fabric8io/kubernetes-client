@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -62,7 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class GitHubIdentityProvider implements KubernetesResource
+public class GitHubIdentityProvider implements Editable<GitHubIdentityProviderBuilder> , KubernetesResource
 {
 
     @JsonProperty("ca")
@@ -157,6 +158,16 @@ public class GitHubIdentityProvider implements KubernetesResource
     @JsonProperty("teams")
     public void setTeams(List<String> teams) {
         this.teams = teams;
+    }
+
+    @JsonIgnore
+    public GitHubIdentityProviderBuilder edit() {
+        return new GitHubIdentityProviderBuilder(this);
+    }
+
+    @JsonIgnore
+    public GitHubIdentityProviderBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

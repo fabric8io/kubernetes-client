@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.certmanager.api.model.meta.v1.SecretKeySelector;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -71,7 +72,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class ACMEIssuerDNS01ProviderAzureDNS implements KubernetesResource
+public class ACMEIssuerDNS01ProviderAzureDNS implements Editable<ACMEIssuerDNS01ProviderAzureDNSBuilder> , KubernetesResource
 {
 
     @JsonProperty("clientID")
@@ -190,6 +191,16 @@ public class ACMEIssuerDNS01ProviderAzureDNS implements KubernetesResource
     @JsonProperty("tenantID")
     public void setTenantID(String tenantID) {
         this.tenantID = tenantID;
+    }
+
+    @JsonIgnore
+    public ACMEIssuerDNS01ProviderAzureDNSBuilder edit() {
+        return new ACMEIssuerDNS01ProviderAzureDNSBuilder(this);
+    }
+
+    @JsonIgnore
+    public ACMEIssuerDNS01ProviderAzureDNSBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

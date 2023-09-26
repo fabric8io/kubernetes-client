@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.IntOrString;
@@ -63,7 +64,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(RawExtension.class)
 })
 @Generated("jsonschema2pojo")
-public class ConversionRequest implements KubernetesResource
+public class ConversionRequest implements Editable<ConversionRequestBuilder> , KubernetesResource
 {
 
     @JsonProperty("desiredAPIVersion")
@@ -118,6 +119,16 @@ public class ConversionRequest implements KubernetesResource
     @JsonProperty("uid")
     public void setUid(String uid) {
         this.uid = uid;
+    }
+
+    @JsonIgnore
+    public ConversionRequestBuilder edit() {
+        return new ConversionRequestBuilder(this);
+    }
+
+    @JsonIgnore
+    public ConversionRequestBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

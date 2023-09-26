@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -69,7 +70,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class ReadinessProbe implements KubernetesResource
+public class ReadinessProbe implements Editable<ReadinessProbeBuilder> , KubernetesResource
 {
 
     @JsonProperty("HealthCheckMethod")
@@ -163,6 +164,16 @@ public class ReadinessProbe implements KubernetesResource
     @JsonProperty("timeoutSeconds")
     public void setTimeoutSeconds(Integer timeoutSeconds) {
         this.timeoutSeconds = timeoutSeconds;
+    }
+
+    @JsonIgnore
+    public ReadinessProbeBuilder edit() {
+        return new ReadinessProbeBuilder(this);
+    }
+
+    @JsonIgnore
+    public ReadinessProbeBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

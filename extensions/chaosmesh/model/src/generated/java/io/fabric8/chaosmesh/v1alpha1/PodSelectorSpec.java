@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -74,7 +75,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class PodSelectorSpec implements KubernetesResource
+public class PodSelectorSpec implements Editable<PodSelectorSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("annotationSelectors")
@@ -215,6 +216,16 @@ public class PodSelectorSpec implements KubernetesResource
     @JsonProperty("pods")
     public void setPods(Map<String, List<java.lang.String>> pods) {
         this.pods = pods;
+    }
+
+    @JsonIgnore
+    public PodSelectorSpecBuilder edit() {
+        return new PodSelectorSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public PodSelectorSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

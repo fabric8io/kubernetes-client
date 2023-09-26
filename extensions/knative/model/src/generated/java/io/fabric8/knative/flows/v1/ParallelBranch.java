@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.knative.internal.eventing.pkg.apis.duck.v1.DeliverySpec;
 import io.fabric8.knative.internal.pkg.apis.duck.v1.Destination;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -68,7 +69,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class ParallelBranch implements KubernetesResource
+public class ParallelBranch implements Editable<ParallelBranchBuilder> , KubernetesResource
 {
 
     @JsonProperty("delivery")
@@ -135,6 +136,16 @@ public class ParallelBranch implements KubernetesResource
     @JsonProperty("subscriber")
     public void setSubscriber(Destination subscriber) {
         this.subscriber = subscriber;
+    }
+
+    @JsonIgnore
+    public ParallelBranchBuilder edit() {
+        return new ParallelBranchBuilder(this);
+    }
+
+    @JsonIgnore
+    public ParallelBranchBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

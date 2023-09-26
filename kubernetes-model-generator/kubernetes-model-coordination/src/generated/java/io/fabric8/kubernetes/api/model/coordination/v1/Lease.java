@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
@@ -64,7 +65,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("coordination.k8s.io")
 @Generated("jsonschema2pojo")
-public class Lease implements HasMetadata, Namespaced
+public class Lease implements Editable<LeaseBuilder> , HasMetadata, Namespaced
 {
 
     /**
@@ -161,6 +162,16 @@ public class Lease implements HasMetadata, Namespaced
     @JsonProperty("spec")
     public void setSpec(LeaseSpec spec) {
         this.spec = spec;
+    }
+
+    @JsonIgnore
+    public LeaseBuilder edit() {
+        return new LeaseBuilder(this);
+    }
+
+    @JsonIgnore
+    public LeaseBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

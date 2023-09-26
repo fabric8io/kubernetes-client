@@ -1048,6 +1048,9 @@
         "backoffLimit": {
           "type": "integer"
         },
+        "backoffLimitPerIndex": {
+          "type": "integer"
+        },
         "completionMode": {
           "type": "string"
         },
@@ -1057,12 +1060,18 @@
         "manualSelector": {
           "type": "boolean"
         },
+        "maxFailedIndexes": {
+          "type": "integer"
+        },
         "parallelism": {
           "type": "integer"
         },
         "podFailurePolicy": {
           "$ref": "#/definitions/kubernetes_batch_v1_PodFailurePolicy",
           "existingJavaType": "io.fabric8.kubernetes.api.model.batch.v1.PodFailurePolicy"
+        },
+        "podReplacementPolicy": {
+          "type": "string"
         },
         "selector": {
           "$ref": "#/definitions/kubernetes_apimachinery_LabelSelector",
@@ -1109,6 +1118,9 @@
         "failed": {
           "type": "integer"
         },
+        "failedIndexes": {
+          "type": "string"
+        },
         "ready": {
           "type": "integer"
         },
@@ -1117,6 +1129,9 @@
           "existingJavaType": "String"
         },
         "succeeded": {
+          "type": "integer"
+        },
+        "terminating": {
           "type": "integer"
         },
         "uncountedTerminatedPods": {
@@ -1774,6 +1789,9 @@
           "$ref": "#/definitions/kubernetes_core_ResourceRequirements",
           "existingJavaType": "io.fabric8.kubernetes.api.model.ResourceRequirements"
         },
+        "restartPolicy": {
+          "type": "string"
+        },
         "securityContext": {
           "$ref": "#/definitions/kubernetes_core_SecurityContext",
           "existingJavaType": "io.fabric8.kubernetes.api.model.SecurityContext"
@@ -2088,6 +2106,9 @@
           "$ref": "#/definitions/kubernetes_core_ResourceRequirements",
           "existingJavaType": "io.fabric8.kubernetes.api.model.ResourceRequirements"
         },
+        "restartPolicy": {
+          "type": "string"
+        },
         "securityContext": {
           "$ref": "#/definitions/kubernetes_core_SecurityContext",
           "existingJavaType": "io.fabric8.kubernetes.api.model.SecurityContext"
@@ -2213,6 +2234,9 @@
         "resources": {
           "$ref": "#/definitions/kubernetes_core_ResourceRequirements",
           "existingJavaType": "io.fabric8.kubernetes.api.model.ResourceRequirements"
+        },
+        "restartPolicy": {
+          "type": "string"
         },
         "securityContext": {
           "$ref": "#/definitions/kubernetes_core_SecurityContext",
@@ -4876,6 +4900,9 @@
           "$ref": "#/definitions/kubernetes_core_ResourceRequirements",
           "existingJavaType": "io.fabric8.kubernetes.api.model.ResourceRequirements"
         },
+        "restartPolicy": {
+          "type": "string"
+        },
         "securityContext": {
           "$ref": "#/definitions/kubernetes_core_SecurityContext",
           "existingJavaType": "io.fabric8.kubernetes.api.model.SecurityContext"
@@ -4986,7 +5013,7 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "batch/v1",
+          "default": "batch/v1beta1",
           "required": true
         },
         "kind": {
@@ -4999,12 +5026,12 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
-          "$ref": "#/definitions/kubernetes_batch_v1_CronJobSpec",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.batch.v1.CronJobSpec"
+          "$ref": "#/definitions/kubernetes_batch_v1beta1_CronJobSpec",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.batch.v1beta1.CronJobSpec"
         },
         "status": {
-          "$ref": "#/definitions/kubernetes_batch_v1_CronJobStatus",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.batch.v1.CronJobStatus"
+          "$ref": "#/definitions/kubernetes_batch_v1beta1_CronJobStatus",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.batch.v1beta1.CronJobStatus"
         }
       },
       "additionalProperties": true
@@ -5044,8 +5071,8 @@
           "type": "integer"
         },
         "jobTemplate": {
-          "$ref": "#/definitions/kubernetes_batch_v1beta1_JobTemplateSpec",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.batch.v1beta1.JobTemplateSpec"
+          "$ref": "#/definitions/kubernetes_batch_v1_JobTemplateSpec",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.batch.v1.JobTemplateSpec"
         },
         "schedule": {
           "type": "string"
@@ -5334,6 +5361,9 @@
           "$ref": "#/definitions/kubernetes_core_ResourceRequirements",
           "existingJavaType": "io.fabric8.kubernetes.api.model.ResourceRequirements"
         },
+        "restartPolicy": {
+          "type": "string"
+        },
         "securityContext": {
           "$ref": "#/definitions/kubernetes_core_SecurityContext",
           "existingJavaType": "io.fabric8.kubernetes.api.model.SecurityContext"
@@ -5454,6 +5484,9 @@
         "resources": {
           "$ref": "#/definitions/kubernetes_core_ResourceRequirements",
           "existingJavaType": "io.fabric8.kubernetes.api.model.ResourceRequirements"
+        },
+        "restartPolicy": {
+          "type": "string"
         },
         "securityContext": {
           "$ref": "#/definitions/kubernetes_core_SecurityContext",
@@ -5913,6 +5946,9 @@
         "backoffLimit": {
           "type": "integer"
         },
+        "backoffLimitPerIndex": {
+          "type": "integer"
+        },
         "completionMode": {
           "type": "string"
         },
@@ -5922,12 +5958,18 @@
         "manualSelector": {
           "type": "boolean"
         },
+        "maxFailedIndexes": {
+          "type": "integer"
+        },
         "parallelism": {
           "type": "integer"
         },
         "podFailurePolicy": {
           "$ref": "#/definitions/kubernetes_batch_v1_PodFailurePolicy",
           "existingJavaType": "io.fabric8.kubernetes.api.model.batch.v1.PodFailurePolicy"
+        },
+        "podReplacementPolicy": {
+          "type": "string"
         },
         "selector": {
           "$ref": "#/definitions/kubernetes_apimachinery_LabelSelector",
@@ -5969,6 +6011,9 @@
         "failed": {
           "type": "integer"
         },
+        "failedIndexes": {
+          "type": "string"
+        },
         "ready": {
           "type": "integer"
         },
@@ -5977,6 +6022,9 @@
           "existingJavaType": "String"
         },
         "succeeded": {
+          "type": "integer"
+        },
+        "terminating": {
           "type": "integer"
         },
         "uncountedTerminatedPods": {

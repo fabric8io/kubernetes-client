@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
@@ -42,14 +43,14 @@ import lombok.experimental.Accessors;
     "_",
     ""
 })
-@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
+@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @TemplateTransformations({
     @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true)
 })
 @Version("v1")
 @Group("")
 @Generated("jsonschema2pojo")
-public class DeleteOptions implements KubernetesResource
+public class DeleteOptions implements Editable<DeleteOptionsBuilder> , KubernetesResource
 {
 
     /**
@@ -186,6 +187,16 @@ public class DeleteOptions implements KubernetesResource
     @JsonProperty("propagationPolicy")
     public void setPropagationPolicy(String propagationPolicy) {
         this.propagationPolicy = propagationPolicy;
+    }
+
+    @JsonIgnore
+    public DeleteOptionsBuilder edit() {
+        return new DeleteOptionsBuilder(this);
+    }
+
+    @JsonIgnore
+    public DeleteOptionsBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -68,7 +69,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("security.openshift.io")
 @Generated("jsonschema2pojo")
-public class RangeAllocationList implements KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.RangeAllocation>
+public class RangeAllocationList implements Editable<RangeAllocationListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.RangeAllocation>
 {
 
     /**
@@ -166,6 +167,16 @@ public class RangeAllocationList implements KubernetesResource, KubernetesResour
     @JsonProperty("metadata")
     public void setMetadata(ListMeta metadata) {
         this.metadata = metadata;
+    }
+
+    @JsonIgnore
+    public RangeAllocationListBuilder edit() {
+        return new RangeAllocationListBuilder(this);
+    }
+
+    @JsonIgnore
+    public RangeAllocationListBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

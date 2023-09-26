@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.sundr.builder.annotations.Buildable;
 import lombok.EqualsAndHashCode;
 import lombok.Setter;
@@ -34,9 +35,9 @@ import lombok.experimental.Accessors;
     "_",
     ""
 })
-@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
+@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("jsonschema2pojo")
-public class EnvFromSource implements KubernetesResource
+public class EnvFromSource implements Editable<EnvFromSourceBuilder> , KubernetesResource
 {
 
     @JsonProperty("configMapRef")
@@ -90,6 +91,16 @@ public class EnvFromSource implements KubernetesResource
     @JsonProperty("secretRef")
     public void setSecretRef(SecretEnvSource secretRef) {
         this.secretRef = secretRef;
+    }
+
+    @JsonIgnore
+    public EnvFromSourceBuilder edit() {
+        return new EnvFromSourceBuilder(this);
+    }
+
+    @JsonIgnore
+    public EnvFromSourceBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

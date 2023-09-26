@@ -16,6 +16,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.knative.internal.eventing.pkg.apis.duck.v1.DeliverySpec;
 import io.fabric8.knative.internal.pkg.apis.duck.v1.CloudEventOverrides;
 import io.fabric8.knative.internal.pkg.apis.duck.v1.Destination;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -76,7 +77,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class KafkaSourceSpec implements KubernetesResource
+public class KafkaSourceSpec implements Editable<KafkaSourceSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("bootstrapServers")
@@ -210,6 +211,16 @@ public class KafkaSourceSpec implements KubernetesResource
     @JsonProperty("topics")
     public void setTopics(List<String> topics) {
         this.topics = topics;
+    }
+
+    @JsonIgnore
+    public KafkaSourceSpecBuilder edit() {
+        return new KafkaSourceSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public KafkaSourceSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

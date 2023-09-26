@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -58,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class SchedulerSpec implements KubernetesResource
+public class SchedulerSpec implements Editable<SchedulerSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("defaultNodeSelector")
@@ -125,6 +126,16 @@ public class SchedulerSpec implements KubernetesResource
     @JsonProperty("profile")
     public void setProfile(String profile) {
         this.profile = profile;
+    }
+
+    @JsonIgnore
+    public SchedulerSpecBuilder edit() {
+        return new SchedulerSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public SchedulerSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

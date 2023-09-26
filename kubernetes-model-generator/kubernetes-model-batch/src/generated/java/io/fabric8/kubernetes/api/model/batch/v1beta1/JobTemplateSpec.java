@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -55,7 +56,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class JobTemplateSpec implements KubernetesResource
+public class JobTemplateSpec implements Editable<JobTemplateSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("metadata")
@@ -96,6 +97,16 @@ public class JobTemplateSpec implements KubernetesResource
     @JsonProperty("spec")
     public void setSpec(JobSpec spec) {
         this.spec = spec;
+    }
+
+    @JsonIgnore
+    public JobTemplateSpecBuilder edit() {
+        return new JobTemplateSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public JobTemplateSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

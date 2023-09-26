@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
@@ -38,8 +39,7 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "spec",
-    "status"
+    "spec"
 })
 @ToString
 @EqualsAndHashCode
@@ -65,7 +65,7 @@ import lombok.experimental.Accessors;
 @Version("v1beta1")
 @Group("extensions")
 @Generated("jsonschema2pojo")
-public class NetworkPolicy implements HasMetadata, Namespaced
+public class NetworkPolicy implements Editable<NetworkPolicyBuilder> , HasMetadata, Namespaced
 {
 
     /**
@@ -86,8 +86,6 @@ public class NetworkPolicy implements HasMetadata, Namespaced
     private io.fabric8.kubernetes.api.model.ObjectMeta metadata;
     @JsonProperty("spec")
     private NetworkPolicySpec spec;
-    @JsonProperty("status")
-    private NetworkPolicyStatus status;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -98,13 +96,12 @@ public class NetworkPolicy implements HasMetadata, Namespaced
     public NetworkPolicy() {
     }
 
-    public NetworkPolicy(String apiVersion, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, NetworkPolicySpec spec, NetworkPolicyStatus status) {
+    public NetworkPolicy(String apiVersion, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, NetworkPolicySpec spec) {
         super();
         this.apiVersion = apiVersion;
         this.kind = kind;
         this.metadata = metadata;
         this.spec = spec;
-        this.status = status;
     }
 
     /**
@@ -167,14 +164,14 @@ public class NetworkPolicy implements HasMetadata, Namespaced
         this.spec = spec;
     }
 
-    @JsonProperty("status")
-    public NetworkPolicyStatus getStatus() {
-        return status;
+    @JsonIgnore
+    public NetworkPolicyBuilder edit() {
+        return new NetworkPolicyBuilder(this);
     }
 
-    @JsonProperty("status")
-    public void setStatus(NetworkPolicyStatus status) {
-        this.status = status;
+    @JsonIgnore
+    public NetworkPolicyBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

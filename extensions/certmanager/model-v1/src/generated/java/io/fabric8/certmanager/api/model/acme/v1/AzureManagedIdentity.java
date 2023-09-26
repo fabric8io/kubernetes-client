@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -64,7 +65,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class AzureManagedIdentity implements KubernetesResource
+public class AzureManagedIdentity implements Editable<AzureManagedIdentityBuilder> , KubernetesResource
 {
 
     @JsonProperty("clientID")
@@ -105,6 +106,16 @@ public class AzureManagedIdentity implements KubernetesResource
     @JsonProperty("resourceID")
     public void setResourceID(String resourceID) {
         this.resourceID = resourceID;
+    }
+
+    @JsonIgnore
+    public AzureManagedIdentityBuilder edit() {
+        return new AzureManagedIdentityBuilder(this);
+    }
+
+    @JsonIgnore
+    public AzureManagedIdentityBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

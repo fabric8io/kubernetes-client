@@ -617,8 +617,8 @@ public class OperationSupport {
             return status;
           }
         }
-      } catch (IOException | KubernetesClientException | IllegalArgumentException e) {
-        // ignored
+      } catch (IOException | RuntimeException e) {
+        LOG.debug("Exception convertion response to Status", e);
       }
       if (response.message() != null) {
         statusMessage = response.message();

@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Affinity;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -138,7 +139,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class PrometheusSpec implements KubernetesResource
+public class PrometheusSpec implements Editable<PrometheusSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("additionalAlertManagerConfigs")
@@ -1210,6 +1211,16 @@ public class PrometheusSpec implements KubernetesResource
     @JsonProperty("web")
     public void setWeb(WebSpec web) {
         this.web = web;
+    }
+
+    @JsonIgnore
+    public PrometheusSpecBuilder edit() {
+        return new PrometheusSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public PrometheusSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

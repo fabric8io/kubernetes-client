@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -58,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class DNSSpec implements KubernetesResource
+public class DNSSpec implements Editable<DNSSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("baseDomain")
@@ -125,6 +126,16 @@ public class DNSSpec implements KubernetesResource
     @JsonProperty("publicZone")
     public void setPublicZone(DNSZone publicZone) {
         this.publicZone = publicZone;
+    }
+
+    @JsonIgnore
+    public DNSSpecBuilder edit() {
+        return new DNSSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public DNSSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

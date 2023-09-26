@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -64,7 +65,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class RuleSpec implements KubernetesResource
+public class RuleSpec implements Editable<RuleSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("evalInterval")
@@ -118,6 +119,16 @@ public class RuleSpec implements KubernetesResource
     @JsonProperty("resources")
     public void setResources(io.fabric8.kubernetes.api.model.ResourceRequirements resources) {
         this.resources = resources;
+    }
+
+    @JsonIgnore
+    public RuleSpecBuilder edit() {
+        return new RuleSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public RuleSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

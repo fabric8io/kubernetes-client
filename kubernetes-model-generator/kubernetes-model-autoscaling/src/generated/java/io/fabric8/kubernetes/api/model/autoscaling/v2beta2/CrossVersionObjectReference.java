@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -55,7 +56,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class CrossVersionObjectReference implements KubernetesResource
+public class CrossVersionObjectReference implements Editable<CrossVersionObjectReferenceBuilder> , KubernetesResource
 {
 
     @JsonProperty("apiVersion")
@@ -109,6 +110,16 @@ public class CrossVersionObjectReference implements KubernetesResource
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
+    }
+
+    @JsonIgnore
+    public CrossVersionObjectReferenceBuilder edit() {
+        return new CrossVersionObjectReferenceBuilder(this);
+    }
+
+    @JsonIgnore
+    public CrossVersionObjectReferenceBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

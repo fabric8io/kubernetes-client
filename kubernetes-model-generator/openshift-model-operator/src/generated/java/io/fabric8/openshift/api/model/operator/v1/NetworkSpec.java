@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.IntOrString;
@@ -76,7 +77,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(RawExtension.class)
 })
 @Generated("jsonschema2pojo")
-public class NetworkSpec implements KubernetesResource
+public class NetworkSpec implements Editable<NetworkSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("additionalNetworks")
@@ -302,6 +303,16 @@ public class NetworkSpec implements KubernetesResource
     @JsonProperty("useMultiNetworkPolicy")
     public void setUseMultiNetworkPolicy(Boolean useMultiNetworkPolicy) {
         this.useMultiNetworkPolicy = useMultiNetworkPolicy;
+    }
+
+    @JsonIgnore
+    public NetworkSpecBuilder edit() {
+        return new NetworkSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public NetworkSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

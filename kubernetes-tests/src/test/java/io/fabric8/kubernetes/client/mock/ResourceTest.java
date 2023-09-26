@@ -39,6 +39,7 @@ import io.fabric8.kubernetes.client.readiness.Readiness;
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.kubernetes.client.utils.Serialization;
+import io.fabric8.kubernetes.client.utils.Utils;
 import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -47,6 +48,7 @@ import org.junit.jupiter.api.Test;
 import java.net.HttpURLConnection;
 import java.util.Objects;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 import static java.net.HttpURLConnection.HTTP_GONE;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
@@ -445,6 +447,42 @@ class ResourceTest {
     assertThat(p.getStatus().getConditions())
         .extracting("type", "status")
         .containsExactly(tuple("Ready", "True"), tuple("Dummy", "True"));
+  }
+
+  @Test
+  void testWaitUntilConditionClosedClient() throws InterruptedException {
+    Pod pod1 = new PodBuilder().withNewMetadata()
+        .withName("pod1")
+        .withResourceVersion("1")
+        .withNamespace("test")
+        .and()
+        .build();
+
+    Pod noReady = createReadyFrom(pod1, "False", "1");
+    list(noReady);
+
+    server.expect()
+        .get()
+        .withPath(
+            "/api/v1/namespaces/test/pods?allowWatchBookmarks=true&fieldSelector=metadata.name%3Dpod1&resourceVersion=1&timeoutSeconds=600&watch=true")
+        .andUpgradeToWebSocket()
+        .open()
+        .waitFor(4000)
+        .andEmit(new WatchEvent(noReady, "DELETED"))
+        .done()
+        .always();
+
+    Utils.schedule(Runnable::run, client::close, 2, TimeUnit.SECONDS);
+
+    PodResource podResource = client.pods().withName("pod1");
+    KubernetesClientException exception = assertThrows(KubernetesClientException.class, () -> podResource.waitUntilCondition(
+        r -> r.getStatus()
+            .getConditions()
+            .stream()
+            .anyMatch(c -> "Dummy".equals(c.getType()) && "True".equals(c.getStatus())),
+        10, SECONDS));
+    assertEquals("Informer was stopped", exception.getMessage());
+
   }
 
   @Test

@@ -2,10 +2,12 @@
 package io.fabric8.openclustermanagement.api.model;
 
 import javax.annotation.Generated;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -94,7 +96,8 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class OpenClusterManagementObservabilitySchema {
+public class OpenClusterManagementObservabilitySchema implements Editable<OpenClusterManagementObservabilitySchemaBuilder>
+{
 
     @JsonProperty("github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_shared_Condition")
     private Condition githubComOpenClusterManagementMulticlusterObservabilityOperatorOperatorsMulticlusterobservabilityApiSharedCondition;
@@ -353,6 +356,16 @@ public class OpenClusterManagementObservabilitySchema {
     @JsonProperty("github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_v1beta2_StorageConfig")
     public void setGithubComOpenClusterManagementMulticlusterObservabilityOperatorOperatorsMulticlusterobservabilityApiV1beta2StorageConfig(StorageConfig githubComOpenClusterManagementMulticlusterObservabilityOperatorOperatorsMulticlusterobservabilityApiV1beta2StorageConfig) {
         this.githubComOpenClusterManagementMulticlusterObservabilityOperatorOperatorsMulticlusterobservabilityApiV1beta2StorageConfig = githubComOpenClusterManagementMulticlusterObservabilityOperatorOperatorsMulticlusterobservabilityApiV1beta2StorageConfig;
+    }
+
+    @JsonIgnore
+    public OpenClusterManagementObservabilitySchemaBuilder edit() {
+        return new OpenClusterManagementObservabilitySchemaBuilder(this);
+    }
+
+    @JsonIgnore
+    public OpenClusterManagementObservabilitySchemaBuilder toBuilder() {
+        return edit();
     }
 
 }

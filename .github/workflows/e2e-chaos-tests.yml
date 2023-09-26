@@ -23,7 +23,7 @@ on:
 
 concurrency:
   # Only run once for latest commit per ref and cancel other (previous) runs.
-  group: ci-e2e-http-client-tests-${{ github.ref }}
+  group: ci-e2e-chaos-tests-${{ github.ref }}
   cancel-in-progress: true
 
 env:

@@ -14,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.knative.internal.pkg.apis.Condition;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -70,7 +71,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class IngressStatus implements KubernetesResource
+public class IngressStatus implements Editable<IngressStatusBuilder> , KubernetesResource
 {
 
     @JsonProperty("annotations")
@@ -152,6 +153,16 @@ public class IngressStatus implements KubernetesResource
     @JsonProperty("publicLoadBalancer")
     public void setPublicLoadBalancer(LoadBalancerStatus publicLoadBalancer) {
         this.publicLoadBalancer = publicLoadBalancer;
+    }
+
+    @JsonIgnore
+    public IngressStatusBuilder edit() {
+        return new IngressStatusBuilder(this);
+    }
+
+    @JsonIgnore
+    public IngressStatusBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

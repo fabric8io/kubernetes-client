@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -69,7 +70,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class Placement implements KubernetesResource
+public class Placement implements Editable<PlacementBuilder> , KubernetesResource
 {
 
     @JsonProperty("decisions")
@@ -137,6 +138,16 @@ public class Placement implements KubernetesResource
     @JsonProperty("placementRule")
     public void setPlacementRule(String placementRule) {
         this.placementRule = placementRule;
+    }
+
+    @JsonIgnore
+    public PlacementBuilder edit() {
+        return new PlacementBuilder(this);
+    }
+
+    @JsonIgnore
+    public PlacementBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

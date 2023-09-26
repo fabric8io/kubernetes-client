@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -55,7 +56,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class LoadBalancer implements KubernetesResource
+public class LoadBalancer implements Editable<LoadBalancerBuilder> , KubernetesResource
 {
 
     @JsonProperty("platform")
@@ -83,6 +84,16 @@ public class LoadBalancer implements KubernetesResource
     @JsonProperty("platform")
     public void setPlatform(IngressPlatformSpec platform) {
         this.platform = platform;
+    }
+
+    @JsonIgnore
+    public LoadBalancerBuilder edit() {
+        return new LoadBalancerBuilder(this);
+    }
+
+    @JsonIgnore
+    public LoadBalancerBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

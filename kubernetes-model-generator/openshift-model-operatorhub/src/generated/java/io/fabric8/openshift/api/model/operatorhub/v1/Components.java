@@ -14,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -58,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class Components implements KubernetesResource
+public class Components implements Editable<ComponentsBuilder> , KubernetesResource
 {
 
     @JsonProperty("labelSelector")
@@ -100,6 +101,16 @@ public class Components implements KubernetesResource
     @JsonProperty("refs")
     public void setRefs(List<JsonNode> refs) {
         this.refs = refs;
+    }
+
+    @JsonIgnore
+    public ComponentsBuilder edit() {
+        return new ComponentsBuilder(this);
+    }
+
+    @JsonIgnore
+    public ComponentsBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

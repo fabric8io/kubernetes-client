@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.sundr.builder.annotations.Buildable;
 import lombok.EqualsAndHashCode;
 import lombok.Setter;
@@ -29,6 +30,7 @@ import lombok.experimental.Accessors;
     "containerStatuses",
     "ephemeralContainerStatuses",
     "hostIP",
+    "hostIPs",
     "initContainerStatuses",
     "message",
     "nominatedNodeName",
@@ -38,6 +40,7 @@ import lombok.experimental.Accessors;
     "qosClass",
     "reason",
     "resize",
+    "resourceClaimStatuses",
     "startTime"
 })
 @ToString
@@ -47,9 +50,9 @@ import lombok.experimental.Accessors;
     "_",
     ""
 })
-@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
+@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("jsonschema2pojo")
-public class PodStatus implements KubernetesResource
+public class PodStatus implements Editable<PodStatusBuilder> , KubernetesResource
 {
 
     @JsonProperty("conditions")
@@ -63,6 +66,9 @@ public class PodStatus implements KubernetesResource
     private List<ContainerStatus> ephemeralContainerStatuses = new ArrayList<ContainerStatus>();
     @JsonProperty("hostIP")
     private java.lang.String hostIP;
+    @JsonProperty("hostIPs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<HostIP> hostIPs = new ArrayList<HostIP>();
     @JsonProperty("initContainerStatuses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ContainerStatus> initContainerStatuses = new ArrayList<ContainerStatus>();
@@ -83,6 +89,9 @@ public class PodStatus implements KubernetesResource
     private java.lang.String reason;
     @JsonProperty("resize")
     private java.lang.String resize;
+    @JsonProperty("resourceClaimStatuses")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<PodResourceClaimStatus> resourceClaimStatuses = new ArrayList<PodResourceClaimStatus>();
     @JsonProperty("startTime")
     private String startTime;
     @JsonIgnore
@@ -95,12 +104,13 @@ public class PodStatus implements KubernetesResource
     public PodStatus() {
     }
 
-    public PodStatus(List<PodCondition> conditions, List<ContainerStatus> containerStatuses, List<ContainerStatus> ephemeralContainerStatuses, java.lang.String hostIP, List<ContainerStatus> initContainerStatuses, java.lang.String message, java.lang.String nominatedNodeName, java.lang.String phase, java.lang.String podIP, List<PodIP> podIPs, java.lang.String qosClass, java.lang.String reason, java.lang.String resize, String startTime) {
+    public PodStatus(List<PodCondition> conditions, List<ContainerStatus> containerStatuses, List<ContainerStatus> ephemeralContainerStatuses, java.lang.String hostIP, List<HostIP> hostIPs, List<ContainerStatus> initContainerStatuses, java.lang.String message, java.lang.String nominatedNodeName, java.lang.String phase, java.lang.String podIP, List<PodIP> podIPs, java.lang.String qosClass, java.lang.String reason, java.lang.String resize, List<PodResourceClaimStatus> resourceClaimStatuses, String startTime) {
         super();
         this.conditions = conditions;
         this.containerStatuses = containerStatuses;
         this.ephemeralContainerStatuses = ephemeralContainerStatuses;
         this.hostIP = hostIP;
+        this.hostIPs = hostIPs;
         this.initContainerStatuses = initContainerStatuses;
         this.message = message;
         this.nominatedNodeName = nominatedNodeName;
@@ -110,6 +120,7 @@ public class PodStatus implements KubernetesResource
         this.qosClass = qosClass;
         this.reason = reason;
         this.resize = resize;
+        this.resourceClaimStatuses = resourceClaimStatuses;
         this.startTime = startTime;
     }
 
@@ -151,6 +162,16 @@ public class PodStatus implements KubernetesResource
     @JsonProperty("hostIP")
     public void setHostIP(java.lang.String hostIP) {
         this.hostIP = hostIP;
+    }
+
+    @JsonProperty("hostIPs")
+    public List<HostIP> getHostIPs() {
+        return hostIPs;
+    }
+
+    @JsonProperty("hostIPs")
+    public void setHostIPs(List<HostIP> hostIPs) {
+        this.hostIPs = hostIPs;
     }
 
     @JsonProperty("initContainerStatuses")
@@ -243,6 +264,16 @@ public class PodStatus implements KubernetesResource
         this.resize = resize;
     }
 
+    @JsonProperty("resourceClaimStatuses")
+    public List<PodResourceClaimStatus> getResourceClaimStatuses() {
+        return resourceClaimStatuses;
+    }
+
+    @JsonProperty("resourceClaimStatuses")
+    public void setResourceClaimStatuses(List<PodResourceClaimStatus> resourceClaimStatuses) {
+        this.resourceClaimStatuses = resourceClaimStatuses;
+    }
+
     @JsonProperty("startTime")
     public String getStartTime() {
         return startTime;
@@ -251,6 +282,16 @@ public class PodStatus implements KubernetesResource
     @JsonProperty("startTime")
     public void setStartTime(String startTime) {
         this.startTime = startTime;
+    }
+
+    @JsonIgnore
+    public PodStatusBuilder edit() {
+        return new PodStatusBuilder(this);
+    }
+
+    @JsonIgnore
+    public PodStatusBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

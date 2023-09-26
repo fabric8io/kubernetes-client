@@ -14,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -60,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class JSONSchemaPropsOrStringArray implements KubernetesResource
+public class JSONSchemaPropsOrStringArray implements Editable<JSONSchemaPropsOrStringArrayBuilder> , KubernetesResource
 {
 
     @JsonProperty("Property")
@@ -102,6 +103,16 @@ public class JSONSchemaPropsOrStringArray implements KubernetesResource
     @JsonProperty("Schema")
     public void setSchema(JSONSchemaProps schema) {
         this.schema = schema;
+    }
+
+    @JsonIgnore
+    public JSONSchemaPropsOrStringArrayBuilder edit() {
+        return new JSONSchemaPropsOrStringArrayBuilder(this);
+    }
+
+    @JsonIgnore
+    public JSONSchemaPropsOrStringArrayBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

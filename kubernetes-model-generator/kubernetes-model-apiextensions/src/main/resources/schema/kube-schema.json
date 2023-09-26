@@ -744,10 +744,16 @@
     "kubernetes_apiextensions_v1_ValidationRule": {
       "type": "object",
       "properties": {
+        "fieldPath": {
+          "type": "string"
+        },
         "message": {
           "type": "string"
         },
         "messageExpression": {
+          "type": "string"
+        },
+        "reason": {
           "type": "string"
         },
         "rule": {
@@ -1480,10 +1486,16 @@
     "kubernetes_apiextensions_v1beta1_ValidationRule": {
       "type": "object",
       "properties": {
+        "fieldPath": {
+          "type": "string"
+        },
         "message": {
           "type": "string"
         },
         "messageExpression": {
+          "type": "string"
+        },
+        "reason": {
           "type": "string"
         },
         "rule": {

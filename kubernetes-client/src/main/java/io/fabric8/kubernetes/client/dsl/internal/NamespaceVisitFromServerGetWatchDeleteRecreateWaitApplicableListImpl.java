@@ -33,8 +33,6 @@ import io.fabric8.kubernetes.client.dsl.NamespaceListVisitFromServerGetDeleteRec
 import io.fabric8.kubernetes.client.dsl.NamespaceableResource;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.Waitable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -55,8 +53,6 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImp
     implements NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata>,
     Waitable<List<HasMetadata>, HasMetadata> {
 
-  private static final Logger LOGGER = LoggerFactory
-      .getLogger(NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl.class);
   protected static final String EXPRESSION = "expression";
 
   private OperationContext context;
@@ -133,24 +129,26 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImp
 
     long finish = System.nanoTime() + timeUnit.toNanos(amount);
 
-    for (int i = 0; i < items.size(); i++) {
-      final HasMetadata meta = items.get(i);
-      CompletableFuture<List<HasMetadata>> future = futures.get(i);
-      try {
-        results.add(future.thenApply(l -> l.isEmpty() ? null : l.get(0)).get(Math.max(0, finish - System.nanoTime()),
-            TimeUnit.NANOSECONDS));
-      } catch (TimeoutException e) {
-        itemsWithConditionNotMatched.add(meta);
-        logAsNotReady(e, meta);
-      } catch (ExecutionException e) {
-        itemsWithConditionNotMatched.add(meta);
-        logAsNotReady(e.getCause(), meta);
-      } catch (InterruptedException e) {
-        Thread.currentThread().interrupt();
-        throw KubernetesClientException.launderThrowable(e);
-      } finally {
-        future.cancel(true);
+    try {
+      for (int i = 0; i < items.size(); i++) {
+        final HasMetadata meta = items.get(i);
+        CompletableFuture<List<HasMetadata>> future = futures.get(i);
+        try {
+          results.add(future.thenApply(l -> l.isEmpty() ? null : l.get(0)).get(Math.max(0, finish - System.nanoTime()),
+              TimeUnit.NANOSECONDS));
+        } catch (TimeoutException e) {
+          itemsWithConditionNotMatched.add(meta);
+        } catch (ExecutionException e) {
+          throw KubernetesClientException.launderThrowable(e.getCause());
+        } catch (InterruptedException e) {
+          Thread.currentThread().interrupt();
+          throw KubernetesClientException.launderThrowable(e);
+        } finally {
+          future.cancel(true);
+        }
       }
+    } finally {
+      futures.forEach(f -> f.cancel(true));
     }
 
     if (!itemsWithConditionNotMatched.isEmpty()) {
@@ -158,13 +156,6 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImp
     }
 
     return results;
-  }
-
-  private static void logAsNotReady(Throwable t, HasMetadata meta) {
-    LOGGER.warn(
-        "Error while waiting for: [{}] with name: [{}] in namespace: [{}]: {}. The resource will be considered not ready.",
-        meta.getKind(), meta.getMetadata().getName(), meta.getMetadata().getNamespace(), t.getMessage());
-    LOGGER.debug("The error stack trace:", t);
   }
 
   @Override

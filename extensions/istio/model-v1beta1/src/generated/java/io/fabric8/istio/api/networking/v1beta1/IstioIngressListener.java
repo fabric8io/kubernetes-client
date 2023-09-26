@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -66,7 +67,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class IstioIngressListener implements KubernetesResource
+public class IstioIngressListener implements Editable<IstioIngressListenerBuilder> , KubernetesResource
 {
 
     @JsonProperty("bind")
@@ -133,6 +134,16 @@ public class IstioIngressListener implements KubernetesResource
     @JsonProperty("port")
     public void setPort(Port port) {
         this.port = port;
+    }
+
+    @JsonIgnore
+    public IstioIngressListenerBuilder edit() {
+        return new IstioIngressListenerBuilder(this);
+    }
+
+    @JsonIgnore
+    public IstioIngressListenerBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

@@ -27,7 +27,7 @@ import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps;
 import java.util.Locale;
 import java.util.function.Function;
 
-import static io.fabric8.java.generator.nodes.Keywords.JAVA_KEYWORDS;
+import static io.fabric8.java.generator.nodes.Keywords.*;
 
 public abstract class AbstractJSONSchema2Pojo {
 
@@ -151,6 +151,37 @@ public abstract class AbstractJSONSchema2Pojo {
     return str.replace("\"", "\\\"").replace("\'", "\\\'");
   }
 
+  private static String getRefinedIntegerType(String format) {
+    if (format == null || format.equals(INT64_CRD_TYPE)) {
+      return INT64_CRD_TYPE;
+    } else if (format.equals(INT32_CRD_TYPE)) {
+      return INT32_CRD_TYPE;
+    } else {
+      throw new JavaGeneratorException("Unsupported format for integer found " + format);
+    }
+  }
+
+  private static String getRefinedNumberType(String format) {
+    if (format == null || format.equals(DOUBLE_CRD_TYPE)) {
+      return DOUBLE_CRD_TYPE;
+    } else if (format.equals(FLOAT_CRD_TYPE)) {
+      return FLOAT_CRD_TYPE;
+    } else {
+      throw new JavaGeneratorException("Unsupported format for number found " + format);
+    }
+  }
+
+  private static String getRefinedStringType(String format) {
+    if (format == null || format.equals(STRING_CRD_TYPE)) {
+      return STRING_CRD_TYPE;
+    } else if (format.equals(DATETIME_CRD_TYPE)) {
+      return DATETIME_CRD_TYPE;
+    } else {
+      // TODO: there are more string format to support: byte, date etc.
+      return STRING_CRD_TYPE;
+    }
+  }
+
   public static AbstractJSONSchema2Pojo fromJsonSchema(
       String key,
       JSONSchemaProps prop,
@@ -179,11 +210,7 @@ public abstract class AbstractJSONSchema2Pojo {
         case BOOLEAN_CRD_TYPE:
           return fromJsonSchema.apply(JPrimitiveNameAndType.BOOL);
         case INTEGER_CRD_TYPE:
-          String intFormat = prop.getFormat();
-          if (intFormat == null)
-            intFormat = INT64_CRD_TYPE;
-
-          switch (intFormat) {
+          switch (getRefinedIntegerType(prop.getFormat())) {
             case INT32_CRD_TYPE:
               return fromJsonSchema.apply(JPrimitiveNameAndType.INTEGER);
             case INT64_CRD_TYPE:
@@ -191,11 +218,7 @@ public abstract class AbstractJSONSchema2Pojo {
               return fromJsonSchema.apply(JPrimitiveNameAndType.LONG);
           }
         case NUMBER_CRD_TYPE:
-          String numberFormat = prop.getFormat();
-          if (numberFormat == null)
-            numberFormat = DOUBLE_CRD_TYPE;
-
-          switch (numberFormat) {
+          switch (getRefinedNumberType(prop.getFormat())) {
             case FLOAT_CRD_TYPE:
               return fromJsonSchema.apply(JPrimitiveNameAndType.FLOAT);
             case DOUBLE_CRD_TYPE:
@@ -203,11 +226,7 @@ public abstract class AbstractJSONSchema2Pojo {
               return fromJsonSchema.apply(JPrimitiveNameAndType.DOUBLE);
           }
         case STRING_CRD_TYPE:
-          String stringFormat = prop.getFormat();
-          if (stringFormat == null)
-            stringFormat = STRING_CRD_TYPE;
-
-          switch (stringFormat) {
+          switch (getRefinedStringType(prop.getFormat())) {
             case DATETIME_CRD_TYPE:
               return fromJsonSchema.apply(JPrimitiveNameAndType.DATETIME);
             case STRING_CRD_TYPE:
@@ -286,8 +305,27 @@ public abstract class AbstractJSONSchema2Pojo {
             isNullable,
             prop.getDefault());
       case ENUM:
+        String enumType = JAVA_LANG_STRING;
+        switch (prop.getType()) {
+          case INTEGER_CRD_TYPE:
+            switch (getRefinedIntegerType(prop.getFormat())) {
+              case INT32_CRD_TYPE:
+                enumType = JAVA_LANG_INTEGER;
+                break;
+              case INT64_CRD_TYPE:
+              default:
+                enumType = JAVA_LANG_LONG;
+                break;
+            }
+            break;
+          case STRING_CRD_TYPE:
+            break;
+          default:
+            throw new JavaGeneratorException("Unsupported enumeration type/format" + prop.getType() + "/" + prop.getFormat());
+        }
         return new JEnum(
             key,
+            enumType,
             prop.getEnum(),
             config,
             prop.getDescription(),

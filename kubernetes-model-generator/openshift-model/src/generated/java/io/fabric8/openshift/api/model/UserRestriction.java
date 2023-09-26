@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -58,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class UserRestriction implements KubernetesResource
+public class UserRestriction implements Editable<UserRestrictionBuilder> , KubernetesResource
 {
 
     @JsonProperty("groups")
@@ -115,6 +116,16 @@ public class UserRestriction implements KubernetesResource
     @JsonProperty("users")
     public void setUsers(List<String> users) {
         this.users = users;
+    }
+
+    @JsonIgnore
+    public UserRestrictionBuilder edit() {
+        return new UserRestrictionBuilder(this);
+    }
+
+    @JsonIgnore
+    public UserRestrictionBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

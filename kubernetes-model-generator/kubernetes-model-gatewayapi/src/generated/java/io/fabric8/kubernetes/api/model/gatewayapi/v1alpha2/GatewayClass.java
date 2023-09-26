@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
@@ -66,7 +67,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha2")
 @Group("gateway.networking.k8s.io")
 @Generated("jsonschema2pojo")
-public class GatewayClass implements HasMetadata
+public class GatewayClass implements Editable<GatewayClassBuilder> , HasMetadata
 {
 
     /**
@@ -176,6 +177,16 @@ public class GatewayClass implements HasMetadata
     @JsonProperty("status")
     public void setStatus(GatewayClassStatus status) {
         this.status = status;
+    }
+
+    @JsonIgnore
+    public GatewayClassBuilder edit() {
+        return new GatewayClassBuilder(this);
+    }
+
+    @JsonIgnore
+    public GatewayClassBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

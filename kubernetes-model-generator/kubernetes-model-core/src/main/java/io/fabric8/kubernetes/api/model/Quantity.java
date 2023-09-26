@@ -53,7 +53,7 @@ import java.util.Map;
     "_",
     ""
 })
-@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, builderPackage = "io.fabric8.kubernetes.api.builder")
+@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 public class Quantity implements Serializable {
   private String amount;
   private String format = "";
@@ -156,7 +156,7 @@ public class Quantity implements Serializable {
   /**
    * Constructs a new Quantity from the provided amountInBytes. This amount is converted
    * to a value with the unit provided in desiredFormat.
-   * 
+   *
    * @param amountInBytes
    * @param desiredFormat
    * @see #getNumericalAmount()

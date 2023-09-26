@@ -14,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.istio.api.analysis.v1alpha1.AnalysisMessageBase;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -68,7 +69,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class IstioStatus implements KubernetesResource
+public class IstioStatus implements Editable<IstioStatusBuilder> , KubernetesResource
 {
 
     @JsonProperty("conditions")
@@ -124,6 +125,16 @@ public class IstioStatus implements KubernetesResource
     @JsonProperty("validationMessages")
     public void setValidationMessages(List<AnalysisMessageBase> validationMessages) {
         this.validationMessages = validationMessages;
+    }
+
+    @JsonIgnore
+    public IstioStatusBuilder edit() {
+        return new IstioStatusBuilder(this);
+    }
+
+    @JsonIgnore
+    public IstioStatusBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -64,7 +65,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class WorkloadGroupObjectMeta implements KubernetesResource
+public class WorkloadGroupObjectMeta implements Editable<WorkloadGroupObjectMetaBuilder> , KubernetesResource
 {
 
     @JsonProperty("annotations")
@@ -107,6 +108,16 @@ public class WorkloadGroupObjectMeta implements KubernetesResource
     @JsonProperty("labels")
     public void setLabels(Map<String, String> labels) {
         this.labels = labels;
+    }
+
+    @JsonIgnore
+    public WorkloadGroupObjectMetaBuilder edit() {
+        return new WorkloadGroupObjectMetaBuilder(this);
+    }
+
+    @JsonIgnore
+    public WorkloadGroupObjectMetaBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

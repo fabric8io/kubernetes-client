@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
@@ -63,7 +64,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha1")
 @Group("admissionregistration.k8s.io")
 @Generated("jsonschema2pojo")
-public class ValidatingAdmissionPolicyBinding implements HasMetadata
+public class ValidatingAdmissionPolicyBinding implements Editable<ValidatingAdmissionPolicyBindingBuilder> , HasMetadata
 {
 
     /**
@@ -160,6 +161,16 @@ public class ValidatingAdmissionPolicyBinding implements HasMetadata
     @JsonProperty("spec")
     public void setSpec(ValidatingAdmissionPolicyBindingSpec spec) {
         this.spec = spec;
+    }
+
+    @JsonIgnore
+    public ValidatingAdmissionPolicyBindingBuilder edit() {
+        return new ValidatingAdmissionPolicyBindingBuilder(this);
+    }
+
+    @JsonIgnore
+    public ValidatingAdmissionPolicyBindingBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

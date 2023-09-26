@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.EnvVar;
 import io.fabric8.kubernetes.api.model.IntOrString;
@@ -61,7 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class BuildDefaults implements KubernetesResource
+public class BuildDefaults implements Editable<BuildDefaultsBuilder> , KubernetesResource
 {
 
     @JsonProperty("defaultProxy")
@@ -143,6 +144,16 @@ public class BuildDefaults implements KubernetesResource
     @JsonProperty("resources")
     public void setResources(io.fabric8.kubernetes.api.model.ResourceRequirements resources) {
         this.resources = resources;
+    }
+
+    @JsonIgnore
+    public BuildDefaultsBuilder edit() {
+        return new BuildDefaultsBuilder(this);
+    }
+
+    @JsonIgnore
+    public BuildDefaultsBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -76,7 +77,7 @@ import lombok.experimental.Accessors;
 @Version("v1beta1")
 @Group("cert-manager.io")
 @Generated("jsonschema2pojo")
-public class CertificateRequestList implements KubernetesResource, KubernetesResourceList<io.fabric8.certmanager.api.model.v1beta1.CertificateRequest>
+public class CertificateRequestList implements Editable<CertificateRequestListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.certmanager.api.model.v1beta1.CertificateRequest>
 {
 
     /**
@@ -174,6 +175,16 @@ public class CertificateRequestList implements KubernetesResource, KubernetesRes
     @JsonProperty("metadata")
     public void setMetadata(ListMeta metadata) {
         this.metadata = metadata;
+    }
+
+    @JsonIgnore
+    public CertificateRequestListBuilder edit() {
+        return new CertificateRequestListBuilder(this);
+    }
+
+    @JsonIgnore
+    public CertificateRequestListBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

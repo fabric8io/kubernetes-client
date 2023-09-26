@@ -15,6 +15,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.knative.internal.pkg.apis.duck.v1.CloudEventOverrides;
 import io.fabric8.knative.internal.pkg.apis.duck.v1.Destination;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -74,7 +75,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class GitLabSourceSpec implements KubernetesResource
+public class GitLabSourceSpec implements Editable<GitLabSourceSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("accessToken")
@@ -194,6 +195,16 @@ public class GitLabSourceSpec implements KubernetesResource
     @JsonProperty("sslverify")
     public void setSslverify(Boolean sslverify) {
         this.sslverify = sslverify;
+    }
+
+    @JsonIgnore
+    public GitLabSourceSpecBuilder edit() {
+        return new GitLabSourceSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public GitLabSourceSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

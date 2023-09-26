@@ -18,6 +18,8 @@ package io.fabric8.it.certmanager;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.cert_manager.v1.CertificateRequest;
 import io.cert_manager.v1.CertificateRequestSpec;
+import io.cert_manager.v1.CertificateRequestSpec.IntEnum;
+import io.cert_manager.v1.CertificateRequestSpec.LongEnum;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import org.junit.jupiter.api.Test;
 import io.fabric8.java.generator.testing.KubernetesResourceDiff;
@@ -77,6 +79,38 @@ class TestSerialization {
     assertEquals(datetimeValue, datetime2);
     assertEquals(datetimeValue, datetime3);
     assertEquals(datetimeValue, datetime4);
+  }
+
+  @Test
+  void testNumericEnum() {
+    // Arrange
+    CertificateRequest sample8 =
+      Serialization.unmarshal(getClass().getResourceAsStream("/sample8.yaml"), CertificateRequest.class);
+
+    // Act
+    LongEnum longValue = sample8.getSpec().getLongEnum();
+    IntEnum intValue = sample8.getSpec().getIntEnum();
+
+    // Assert
+    assertEquals(LongEnum.V__102, longValue);
+    assertEquals(IntEnum.V__203, intValue);
+    assertEquals(102L, longValue.getValue());
+    assertEquals(203, intValue.getValue());
+  }
+
+    @Test
+  void testIntEnumSerDeser() throws Exception {
+    // Arrange
+    Path resPath = Paths.get(getClass().getResource("/sample8.yaml").toURI());
+    String yamlContent = new String(Files.readAllBytes(resPath), "UTF8");
+    CertificateRequest sample = Serialization.unmarshal(yamlContent, CertificateRequest.class);
+    KubernetesResourceDiff diff = new KubernetesResourceDiff(yamlContent, Serialization.asYaml(sample));
+
+    // Act
+    List<JsonNode> aggregatedDiffs = diff.getListOfDiffs();
+
+    // Assert
+    assertEquals(0, aggregatedDiffs.size());
   }
 
   @Test

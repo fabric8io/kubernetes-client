@@ -11,10 +11,10 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
-import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
@@ -35,7 +35,9 @@ import lombok.experimental.Accessors;
     "kind",
     "metadata",
     "name",
-    "namespace"
+    "namespace",
+    "parameterNotFoundAction",
+    "selector"
 })
 @ToString
 @EqualsAndHashCode
@@ -46,7 +48,7 @@ import lombok.experimental.Accessors;
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
-    @BuildableReference(LabelSelector.class),
+    @BuildableReference(io.fabric8.kubernetes.api.model.LabelSelector.class),
     @BuildableReference(Container.class),
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
@@ -56,13 +58,17 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ParamRef implements KubernetesResource
+public class ParamRef implements Editable<ParamRefBuilder> , KubernetesResource
 {
 
     @JsonProperty("name")
     private String name;
     @JsonProperty("namespace")
     private String namespace;
+    @JsonProperty("parameterNotFoundAction")
+    private String parameterNotFoundAction;
+    @JsonProperty("selector")
+    private io.fabric8.kubernetes.api.model.LabelSelector selector;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -73,10 +79,12 @@ public class ParamRef implements KubernetesResource
     public ParamRef() {
     }
 
-    public ParamRef(String name, String namespace) {
+    public ParamRef(String name, String namespace, String parameterNotFoundAction, io.fabric8.kubernetes.api.model.LabelSelector selector) {
         super();
         this.name = name;
         this.namespace = namespace;
+        this.parameterNotFoundAction = parameterNotFoundAction;
+        this.selector = selector;
     }
 
     @JsonProperty("name")
@@ -97,6 +105,36 @@ public class ParamRef implements KubernetesResource
     @JsonProperty("namespace")
     public void setNamespace(String namespace) {
         this.namespace = namespace;
+    }
+
+    @JsonProperty("parameterNotFoundAction")
+    public String getParameterNotFoundAction() {
+        return parameterNotFoundAction;
+    }
+
+    @JsonProperty("parameterNotFoundAction")
+    public void setParameterNotFoundAction(String parameterNotFoundAction) {
+        this.parameterNotFoundAction = parameterNotFoundAction;
+    }
+
+    @JsonProperty("selector")
+    public io.fabric8.kubernetes.api.model.LabelSelector getSelector() {
+        return selector;
+    }
+
+    @JsonProperty("selector")
+    public void setSelector(io.fabric8.kubernetes.api.model.LabelSelector selector) {
+        this.selector = selector;
+    }
+
+    @JsonIgnore
+    public ParamRefBuilder edit() {
+        return new ParamRefBuilder(this);
+    }
+
+    @JsonIgnore
+    public ParamRefBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

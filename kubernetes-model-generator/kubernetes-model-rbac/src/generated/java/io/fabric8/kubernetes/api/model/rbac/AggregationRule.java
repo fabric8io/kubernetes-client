@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -56,7 +57,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class AggregationRule implements KubernetesResource
+public class AggregationRule implements Editable<AggregationRuleBuilder> , KubernetesResource
 {
 
     @JsonProperty("clusterRoleSelectors")
@@ -85,6 +86,16 @@ public class AggregationRule implements KubernetesResource
     @JsonProperty("clusterRoleSelectors")
     public void setClusterRoleSelectors(List<io.fabric8.kubernetes.api.model.LabelSelector> clusterRoleSelectors) {
         this.clusterRoleSelectors = clusterRoleSelectors;
+    }
+
+    @JsonIgnore
+    public AggregationRuleBuilder edit() {
+        return new AggregationRuleBuilder(this);
+    }
+
+    @JsonIgnore
+    public AggregationRuleBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

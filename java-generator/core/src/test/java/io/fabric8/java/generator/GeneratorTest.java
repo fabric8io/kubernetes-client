@@ -35,6 +35,7 @@ import org.junit.jupiter.api.Test;
 import java.util.*;
 
 import static io.fabric8.java.generator.CRGeneratorRunner.groupToPackage;
+import static io.fabric8.java.generator.nodes.Keywords.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class GeneratorTest {
@@ -439,6 +440,7 @@ class GeneratorTest {
     props.put("e1", newEnum);
     JEnum enu = new JEnum(
         "t",
+        JAVA_LANG_STRING,
         enumValues,
         defaultConfig,
         null,
@@ -462,6 +464,85 @@ class GeneratorTest {
   }
 
   @Test
+  void testLongEnum() {
+    // Arrange
+    Map<String, JSONSchemaProps> props = new HashMap<>();
+    JSONSchemaProps newEnum = new JSONSchemaProps();
+    newEnum.setType("integer");
+    List<JsonNode> enumValues = new ArrayList<>();
+    enumValues.add(new TextNode("1"));
+    enumValues.add(new TextNode("2"));
+    enumValues.add(new TextNode("3"));
+    props.put("e1", newEnum);
+    JEnum enu = new JEnum(
+        "t",
+        JAVA_LANG_LONG,
+        enumValues,
+        defaultConfig,
+        null,
+        Boolean.FALSE,
+        null);
+
+    // Act
+    GeneratorResult res = enu.generateJava();
+
+    // Assert
+    assertEquals("T", enu.getType());
+    assertEquals(1, res.getInnerClasses().size());
+    assertEquals("T", res.getInnerClasses().get(0).getName());
+
+    Optional<EnumDeclaration> en = res.getInnerClasses().get(0).getEnumByName("T");
+    assertTrue(en.isPresent());
+    assertEquals(3, en.get().getEntries().size());
+    assertEquals("V__1", en.get().getEntries().get(0).getName().asString());
+    assertEquals("V__2", en.get().getEntries().get(1).getName().asString());
+    assertEquals("V__3", en.get().getEntries().get(2).getName().asString());
+    assertEquals("1L", en.get().getEntries().get(0).getArgument(0).toString());
+    assertEquals("2L", en.get().getEntries().get(1).getArgument(0).toString());
+    assertEquals("3L", en.get().getEntries().get(2).getArgument(0).toString());
+  }
+
+  @Test
+  void testIntEnum() {
+    // Arrange
+    Map<String, JSONSchemaProps> props = new HashMap<>();
+    JSONSchemaProps newEnum = new JSONSchemaProps();
+    newEnum.setType("integer");
+    newEnum.setFormat("int32");
+    List<JsonNode> enumValues = new ArrayList<>();
+    enumValues.add(new TextNode("1"));
+    enumValues.add(new TextNode("2"));
+    enumValues.add(new TextNode("3"));
+    props.put("e1", newEnum);
+    JEnum enu = new JEnum(
+        "t",
+        JAVA_LANG_INTEGER,
+        enumValues,
+        defaultConfig,
+        null,
+        Boolean.FALSE,
+        null);
+
+    // Act
+    GeneratorResult res = enu.generateJava();
+
+    // Assert
+    assertEquals("T", enu.getType());
+    assertEquals(1, res.getInnerClasses().size());
+    assertEquals("T", res.getInnerClasses().get(0).getName());
+
+    Optional<EnumDeclaration> en = res.getInnerClasses().get(0).getEnumByName("T");
+    assertTrue(en.isPresent());
+    assertEquals(3, en.get().getEntries().size());
+    assertEquals("V__1", en.get().getEntries().get(0).getName().asString());
+    assertEquals("V__2", en.get().getEntries().get(1).getName().asString());
+    assertEquals("V__3", en.get().getEntries().get(2).getName().asString());
+    assertEquals("1", en.get().getEntries().get(0).getArgument(0).toString());
+    assertEquals("2", en.get().getEntries().get(1).getArgument(0).toString());
+    assertEquals("3", en.get().getEntries().get(2).getArgument(0).toString());
+  }
+
+  @Test
   void testNotUppercaseEnum() {
     // Arrange
     CompilationUnit cu = new CompilationUnit();
@@ -475,6 +556,7 @@ class GeneratorTest {
     props.put("e1", newEnum);
     JEnum enu = new JEnum(
         "t",
+        JAVA_LANG_STRING,
         enumValues,
         new Config(false, null, null, new HashMap<>()),
         null,

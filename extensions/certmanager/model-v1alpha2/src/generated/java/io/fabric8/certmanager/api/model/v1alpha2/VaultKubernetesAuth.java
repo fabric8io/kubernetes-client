@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.certmanager.api.model.meta.v1.SecretKeySelector;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -66,7 +67,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class VaultKubernetesAuth implements KubernetesResource
+public class VaultKubernetesAuth implements Editable<VaultKubernetesAuthBuilder> , KubernetesResource
 {
 
     @JsonProperty("mountPath")
@@ -120,6 +121,16 @@ public class VaultKubernetesAuth implements KubernetesResource
     @JsonProperty("secretRef")
     public void setSecretRef(SecretKeySelector secretRef) {
         this.secretRef = secretRef;
+    }
+
+    @JsonIgnore
+    public VaultKubernetesAuthBuilder edit() {
+        return new VaultKubernetesAuthBuilder(this);
+    }
+
+    @JsonIgnore
+    public VaultKubernetesAuthBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

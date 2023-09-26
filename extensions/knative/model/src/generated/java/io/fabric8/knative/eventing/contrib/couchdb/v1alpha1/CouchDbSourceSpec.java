@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.knative.internal.pkg.apis.duck.v1.Destination;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -67,7 +68,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class CouchDbSourceSpec implements KubernetesResource
+public class CouchDbSourceSpec implements Editable<CouchDbSourceSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("credentials")
@@ -147,6 +148,16 @@ public class CouchDbSourceSpec implements KubernetesResource
     @JsonProperty("sink")
     public void setSink(Destination sink) {
         this.sink = sink;
+    }
+
+    @JsonIgnore
+    public CouchDbSourceSpecBuilder edit() {
+        return new CouchDbSourceSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public CouchDbSourceSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

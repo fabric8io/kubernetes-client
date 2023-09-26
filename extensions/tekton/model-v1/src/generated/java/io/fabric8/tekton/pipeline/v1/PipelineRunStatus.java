@@ -14,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.knative.internal.pkg.apis.Condition;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -77,7 +78,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class PipelineRunStatus implements KubernetesResource
+public class PipelineRunStatus implements Editable<PipelineRunStatusBuilder> , KubernetesResource
 {
 
     @JsonProperty("annotations")
@@ -254,6 +255,16 @@ public class PipelineRunStatus implements KubernetesResource
     @JsonProperty("startTime")
     public void setStartTime(java.lang.String startTime) {
         this.startTime = startTime;
+    }
+
+    @JsonIgnore
+    public PipelineRunStatusBuilder edit() {
+        return new PipelineRunStatusBuilder(this);
+    }
+
+    @JsonIgnore
+    public PipelineRunStatusBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

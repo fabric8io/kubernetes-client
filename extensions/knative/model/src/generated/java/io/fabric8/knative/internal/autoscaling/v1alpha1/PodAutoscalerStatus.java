@@ -14,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.knative.internal.pkg.apis.Condition;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -72,7 +73,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class PodAutoscalerStatus implements KubernetesResource
+public class PodAutoscalerStatus implements Editable<PodAutoscalerStatusBuilder> , KubernetesResource
 {
 
     @JsonProperty("actualScale")
@@ -180,6 +181,16 @@ public class PodAutoscalerStatus implements KubernetesResource
     @JsonProperty("serviceName")
     public void setServiceName(java.lang.String serviceName) {
         this.serviceName = serviceName;
+    }
+
+    @JsonIgnore
+    public PodAutoscalerStatusBuilder edit() {
+        return new PodAutoscalerStatusBuilder(this);
+    }
+
+    @JsonIgnore
+    public PodAutoscalerStatusBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

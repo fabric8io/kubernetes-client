@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -68,7 +69,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class RetentionConfig implements KubernetesResource
+public class RetentionConfig implements Editable<RetentionConfigBuilder> , KubernetesResource
 {
 
     @JsonProperty("blockDuration")
@@ -161,6 +162,16 @@ public class RetentionConfig implements KubernetesResource
     @JsonProperty("retentionResolutionRaw")
     public void setRetentionResolutionRaw(String retentionResolutionRaw) {
         this.retentionResolutionRaw = retentionResolutionRaw;
+    }
+
+    @JsonIgnore
+    public RetentionConfigBuilder edit() {
+        return new RetentionConfigBuilder(this);
+    }
+
+    @JsonIgnore
+    public RetentionConfigBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

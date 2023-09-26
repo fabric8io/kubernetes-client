@@ -51,6 +51,7 @@ import io.fabric8.kubernetes.client.dsl.base.PatchContext;
 import io.fabric8.kubernetes.client.dsl.base.PatchType;
 import io.fabric8.kubernetes.client.extension.ExtensibleResource;
 import io.fabric8.kubernetes.client.http.HttpRequest;
+import io.fabric8.kubernetes.client.impl.BaseClient;
 import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
 import io.fabric8.kubernetes.client.informers.SharedIndexInformer;
 import io.fabric8.kubernetes.client.informers.impl.DefaultSharedIndexInformer;
@@ -63,6 +64,8 @@ import io.fabric8.kubernetes.client.utils.URLUtils.URLBuilder;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.kubernetes.client.utils.internal.CreateOrReplaceHelper;
 import io.fabric8.kubernetes.client.utils.internal.WatcherToggle;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -98,6 +101,8 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     MixedOperation<T, L, R>,
     ExtensibleResource<T>,
     ListerWatcher<T, L> {
+
+  static final Logger LOGGER = LoggerFactory.getLogger(BaseOperation.class);
 
   private static final String WATCH = "watch";
   private static final String READ_ONLY_UPDATE_EXCEPTION_MESSAGE = "Cannot update read-only resources";
@@ -639,9 +644,12 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   @Override
   public CompletableFuture<AbstractWatchManager<T>> submitWatch(ListOptions options, final Watcher<T> watcher) {
-    WatcherToggle<T> watcherToggle = new WatcherToggle<>(watcher, true);
     ListOptions optionsToUse = defaultListOptions(options, true);
     WatchConnectionManager<T, L> watch;
+    if (this.getConfig().isOnlyHttpWatches()) {
+      return CompletableFuture.completedFuture(httpWatch(watcher, optionsToUse));
+    }
+    WatcherToggle<T> watcherToggle = new WatcherToggle<>(watcher, true);
     try {
       watch = new WatchConnectionManager<>(
           httpClient,
@@ -660,29 +668,32 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
           if (t instanceof CompletionException) {
             t = t.getCause();
           }
+          boolean httpWatch = false;
           if (t instanceof KubernetesClientException) {
             KubernetesClientException ke = (KubernetesClientException) t;
+            // 503 will initially trigger re-tries, if it's "expected", we may need to short-circuit that
             List<Integer> furtherProcessedCodes = Arrays.asList(200, 503);
             if (furtherProcessedCodes.contains(ke.getCode())) {
-              //release the watch after disabling the watcher (to avoid premature call to onClose)
-              watcherToggle.disable();
-
               // If the HTTP return code is 200 or 503, we retry the watch again using a persistent hanging
               // HTTP GET. This is meant to handle cases like kubectl local proxy which does not support
               // websockets. Issue: https://github.com/kubernetes/kubernetes/issues/25126
-              try {
-                return new WatchHTTPManager<>(
-                    httpClient,
-                    this,
-                    optionsToUse,
-                    watcher,
-                    getRequestConfig().getWatchReconnectInterval(),
-                    getRequestConfig().getWatchReconnectLimit());
-              } catch (MalformedURLException e) {
-                throw KubernetesClientException.launderThrowable(forOperationType(WATCH), e);
-              }
+              LOGGER.debug(
+                  "Websocket hanshake failed with code {}, but an httpwatch may be possible.  Use Config.onlyHttpWatches to disable websocket watches.",
+                  ke.getCode());
+              httpWatch = true;
             }
+          } else {
+            LOGGER.debug(
+                "Failed to establish a websocket watch, will try regular http instead.  Use Config.onlyHttpWatches to disable websocket watches.",
+                t);
+            httpWatch = true;
           }
+          if (httpWatch) {
+            //release the watch after disabling the watcher (to avoid premature call to onClose)
+            watcherToggle.disable();
+            return httpWatch(watcher, optionsToUse);
+          }
+
           throw KubernetesClientException.launderThrowable(t);
         } finally {
           watch.close();
@@ -691,6 +702,20 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
       return watch;
     });
 
+  }
+
+  private AbstractWatchManager<T> httpWatch(final Watcher<T> watcher, ListOptions optionsToUse) {
+    try {
+      return new WatchHTTPManager<>(
+          httpClient,
+          this,
+          optionsToUse,
+          watcher,
+          getRequestConfig().getWatchReconnectInterval(),
+          getRequestConfig().getWatchReconnectLimit());
+    } catch (MalformedURLException e) {
+      throw KubernetesClientException.launderThrowable(forOperationType(WATCH), e);
+    }
   }
 
   @Override
@@ -965,6 +990,13 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
         future.completeExceptionally(t);
       }
     });
+    informer.stopped().whenComplete((v, t) -> {
+      if (t != null) {
+        future.completeExceptionally(t);
+      } else {
+        future.completeExceptionally(new KubernetesClientException("Informer was stopped"));
+      }
+    });
     return future;
   }
 
@@ -1037,6 +1069,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     if (indexers != null) {
       informer.addIndexers(indexers);
     }
+    this.context.getClient().adapt(BaseClient.class).getClosed().whenComplete((closed, ignored) -> informer.stop());
     return informer;
   }
 

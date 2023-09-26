@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.LabelSelector;
@@ -73,7 +74,8 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class KubeSchema {
+public class KubeSchema implements Editable<KubeSchemaBuilder>
+{
 
     @JsonProperty("V1Alpha1StorageVersion")
     private StorageVersion v1Alpha1StorageVersion;
@@ -321,6 +323,16 @@ public class KubeSchema {
     @JsonProperty("V1beta3PriorityLevelConfigurationList")
     public void setV1beta3PriorityLevelConfigurationList(io.fabric8.kubernetes.api.model.flowcontrol.v1beta3.PriorityLevelConfigurationList v1beta3PriorityLevelConfigurationList) {
         this.v1beta3PriorityLevelConfigurationList = v1beta3PriorityLevelConfigurationList;
+    }
+
+    @JsonIgnore
+    public KubeSchemaBuilder edit() {
+        return new KubeSchemaBuilder(this);
+    }
+
+    @JsonIgnore
+    public KubeSchemaBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

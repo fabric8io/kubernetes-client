@@ -2,10 +2,12 @@
 package io.fabric8.openclustermanagement.api.model;
 
 import javax.annotation.Generated;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -76,7 +78,8 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class OpenClusterManagementSearchSchema {
+public class OpenClusterManagementSearchSchema implements Editable<OpenClusterManagementSearchSchemaBuilder>
+{
 
     @JsonProperty("github_com_open-cluster-management_search-operator_api_v1alpha1_ImageOverrides")
     private ImageOverrides githubComOpenClusterManagementSearchOperatorApiV1alpha1ImageOverrides;
@@ -218,6 +221,16 @@ public class OpenClusterManagementSearchSchema {
     @JsonProperty("github_com_open-cluster-management_search-operator_api_v1alpha1_SearchOperatorStatus")
     public void setGithubComOpenClusterManagementSearchOperatorApiV1alpha1SearchOperatorStatus(SearchOperatorStatus githubComOpenClusterManagementSearchOperatorApiV1alpha1SearchOperatorStatus) {
         this.githubComOpenClusterManagementSearchOperatorApiV1alpha1SearchOperatorStatus = githubComOpenClusterManagementSearchOperatorApiV1alpha1SearchOperatorStatus;
+    }
+
+    @JsonIgnore
+    public OpenClusterManagementSearchSchemaBuilder edit() {
+        return new OpenClusterManagementSearchSchemaBuilder(this);
+    }
+
+    @JsonIgnore
+    public OpenClusterManagementSearchSchemaBuilder toBuilder() {
+        return edit();
     }
 
 }

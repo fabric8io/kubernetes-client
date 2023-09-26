@@ -23,6 +23,7 @@ import io.fabric8.kubernetes.client.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.net.HttpURLConnection;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -121,36 +122,44 @@ public class LeaderElector {
       return; // not leading
     }
     if (leaderElectionConfig.isReleaseOnCancel()) {
-      release();
-    } else {
-      leaderElectionConfig.getLeaderCallbacks().onStopLeading();
+      try {
+        if (release()) {
+          return;
+        }
+      } catch (KubernetesClientException e) {
+        final String lockDescription = leaderElectionConfig.getLock().describe();
+        if (e.getCode() != HttpURLConnection.HTTP_CONFLICT) {
+          LOGGER.error("Exception occurred while releasing lock '{}' on cancel", lockDescription, e);
+        } else {
+          LOGGER.debug("Leadership was likely already lost '{}'", lockDescription, e);
+        }
+      }
     }
+    leaderElectionConfig.getLeaderCallbacks().onStopLeading();
   }
 
   /**
    * Release the leadership if currently held. If not cancelled, the elector will
    * continue to try and re-acquire the lock.
+   *
+   * @return true if the lock was successfully released. false if there is no lock, or this is not the leader
    */
-  public synchronized void release() {
+  public synchronized boolean release() {
     LeaderElectionRecord current = leaderElectionConfig.getLock().get(kubernetesClient);
     if (current == null || !isLeader(current)) {
-      return; // lost leadership already
+      return false; // lost leadership already
     }
-    try {
-      ZonedDateTime now = now();
-      final LeaderElectionRecord newLeaderElectionRecord = new LeaderElectionRecord(
-          "",
-          Duration.ofSeconds(1),
-          now,
-          now,
-          current.getLeaderTransitions());
+    ZonedDateTime now = now();
+    final LeaderElectionRecord newLeaderElectionRecord = new LeaderElectionRecord(
+        "",
+        Duration.ofSeconds(1),
+        now,
+        now,
+        current.getLeaderTransitions());
 
-      leaderElectionConfig.getLock().update(kubernetesClient, newLeaderElectionRecord);
-      updateObserved(newLeaderElectionRecord);
-    } catch (KubernetesClientException e) {
-      final String lockDescription = leaderElectionConfig.getLock().describe();
-      LOGGER.error("Exception occurred while releasing lock '{}'", lockDescription, e);
-    }
+    leaderElectionConfig.getLock().update(kubernetesClient, newLeaderElectionRecord);
+    updateObserved(newLeaderElectionRecord);
+    return true;
   }
 
   private CompletableFuture<Void> acquire() {

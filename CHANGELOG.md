@@ -3,27 +3,38 @@
 ### 6.9-SNAPSHOT
 
 #### Bugs
+* Fix #5466: OperationSupport should not fail trying to parse Status
 * Fix #5382: [java-generator] Allow to deserialize more valid RFC3339 date-time and make the format customizable
 * Fix #5380: [java-generator] Avoid to emit Java Keywords as package names
+* Fix #5457: [java-generator] Correctly handle numeric enums
+* Fix #5379: ensuring informOnCondition and waitUntilCondition commple with exception when the client closes
+* Fix #5463: ensures that onStopLeading is called with releaseOnCancel even when leadership is already lost
 * Fix #5423: OkHttpClientImpl supports setting request method for empty payload requests
 
 #### Improvements
+* Fix #5327: added proactive shutdown of informers on client close
 * Fix #5432: [java-generator] Add the possibility to always emit `additionalProperties` on generated POJOs
 * Fix #5410: [crd-generator] added support for `default`
 * Fix #5368: added support for additional ListOptions fields
 * Fix #5377: added a createOr and unlock function to provide a straight-forward replacement for createOrReplace.
+* Fix #4624: added Config.onlyHttpWatches to control whether watches should only use regular HTTP requests, and not attempt WebSocket connections.
 * Fix #5388: [crd-generator] Generate deterministic CRDs
+* Fix #5135: added per instance methods to create a builder - instead on new PodBuilder(pod), you may use pod.toBuilder()
 * Fix #5257: Add ErrorStreamMessage and StatusStreamMessage to ease mocking of pods/exec requests
+* Fix #5220: refinements and clarifications to the validation of names
 
 #### Dependency Upgrade
 * Fix #5373: Gradle base API based on v8.2.1
+* Fix #5401: Upgrade Fabric8 Kubernetes Model to Kubernetes v1.28.2
 
 #### New Features
+* Fix #5430: Mock Web Server migrated to this repository
 
 #### _**Note**_: Breaking changes
 * Fix #5343: Removed `io.fabric8.kubernetes.model.annotation.PrinterColumn`, use `io.fabric8.crd.generator.annotation.PrinterColumn`
 * Fix #5368: ListOptions parameter ordering is now alphabetical.  If you are using non-crud mocking for lists with options, you may need to update your parameter order.
 * Fix #5391: Removed the vertx-uri-template dependency from the vertx client, if you need that for your application, then introduce your own dependency.
+* Fix #5220: KubernetesResourceUtil.isValidLabelOrAnnotation has been deprecated because the rules for labels and annotations are different
 
 ### 6.8.1 (2023-08-14)
 

@@ -1,9 +1,7 @@
 
-package io.fabric8.kubernetes.api.model.networking.v1;
+package io.fabric8.kubernetes.api.model.admissionregistration.v1beta1;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -13,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import io.fabric8.kubernetes.api.model.Condition;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -37,7 +35,10 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "conditions"
+    "expression",
+    "message",
+    "messageExpression",
+    "reason"
 })
 @ToString
 @EqualsAndHashCode
@@ -58,12 +59,17 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class NetworkPolicyStatus implements KubernetesResource
+public class Validation implements Editable<ValidationBuilder> , KubernetesResource
 {
 
-    @JsonProperty("conditions")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Condition> conditions = new ArrayList<Condition>();
+    @JsonProperty("expression")
+    private String expression;
+    @JsonProperty("message")
+    private String message;
+    @JsonProperty("messageExpression")
+    private String messageExpression;
+    @JsonProperty("reason")
+    private String reason;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -71,22 +77,65 @@ public class NetworkPolicyStatus implements KubernetesResource
      * No args constructor for use in serialization
      * 
      */
-    public NetworkPolicyStatus() {
+    public Validation() {
     }
 
-    public NetworkPolicyStatus(List<Condition> conditions) {
+    public Validation(String expression, String message, String messageExpression, String reason) {
         super();
-        this.conditions = conditions;
+        this.expression = expression;
+        this.message = message;
+        this.messageExpression = messageExpression;
+        this.reason = reason;
     }
 
-    @JsonProperty("conditions")
-    public List<Condition> getConditions() {
-        return conditions;
+    @JsonProperty("expression")
+    public String getExpression() {
+        return expression;
     }
 
-    @JsonProperty("conditions")
-    public void setConditions(List<Condition> conditions) {
-        this.conditions = conditions;
+    @JsonProperty("expression")
+    public void setExpression(String expression) {
+        this.expression = expression;
+    }
+
+    @JsonProperty("message")
+    public String getMessage() {
+        return message;
+    }
+
+    @JsonProperty("message")
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    @JsonProperty("messageExpression")
+    public String getMessageExpression() {
+        return messageExpression;
+    }
+
+    @JsonProperty("messageExpression")
+    public void setMessageExpression(String messageExpression) {
+        this.messageExpression = messageExpression;
+    }
+
+    @JsonProperty("reason")
+    public String getReason() {
+        return reason;
+    }
+
+    @JsonProperty("reason")
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+
+    @JsonIgnore
+    public ValidationBuilder edit() {
+        return new ValidationBuilder(this);
+    }
+
+    @JsonIgnore
+    public ValidationBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

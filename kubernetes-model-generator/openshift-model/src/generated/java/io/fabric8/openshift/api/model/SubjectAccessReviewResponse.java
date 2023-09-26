@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -67,7 +68,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("authorization.openshift.io")
 @Generated("jsonschema2pojo")
-public class SubjectAccessReviewResponse implements KubernetesResource
+public class SubjectAccessReviewResponse implements Editable<SubjectAccessReviewResponseBuilder> , KubernetesResource
 {
 
     @JsonProperty("allowed")
@@ -190,6 +191,16 @@ public class SubjectAccessReviewResponse implements KubernetesResource
     @JsonProperty("reason")
     public void setReason(String reason) {
         this.reason = reason;
+    }
+
+    @JsonIgnore
+    public SubjectAccessReviewResponseBuilder edit() {
+        return new SubjectAccessReviewResponseBuilder(this);
+    }
+
+    @JsonIgnore
+    public SubjectAccessReviewResponseBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

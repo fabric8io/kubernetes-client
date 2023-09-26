@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -65,7 +66,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class ACMEChallengeSolver implements KubernetesResource
+public class ACMEChallengeSolver implements Editable<ACMEChallengeSolverBuilder> , KubernetesResource
 {
 
     @JsonProperty("dns01")
@@ -119,6 +120,16 @@ public class ACMEChallengeSolver implements KubernetesResource
     @JsonProperty("selector")
     public void setSelector(CertificateDNSNameSelector selector) {
         this.selector = selector;
+    }
+
+    @JsonIgnore
+    public ACMEChallengeSolverBuilder edit() {
+        return new ACMEChallengeSolverBuilder(this);
+    }
+
+    @JsonIgnore
+    public ACMEChallengeSolverBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

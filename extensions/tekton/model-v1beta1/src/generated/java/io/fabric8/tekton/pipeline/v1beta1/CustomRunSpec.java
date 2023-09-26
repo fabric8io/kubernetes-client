@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.Duration;
@@ -74,7 +75,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class CustomRunSpec implements KubernetesResource
+public class CustomRunSpec implements Editable<CustomRunSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("customRef")
@@ -208,6 +209,16 @@ public class CustomRunSpec implements KubernetesResource
     @JsonProperty("workspaces")
     public void setWorkspaces(List<WorkspaceBinding> workspaces) {
         this.workspaces = workspaces;
+    }
+
+    @JsonIgnore
+    public CustomRunSpecBuilder edit() {
+        return new CustomRunSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public CustomRunSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

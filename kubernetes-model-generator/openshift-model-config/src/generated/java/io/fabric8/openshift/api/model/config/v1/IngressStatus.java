@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -58,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class IngressStatus implements KubernetesResource
+public class IngressStatus implements Editable<IngressStatusBuilder> , KubernetesResource
 {
 
     @JsonProperty("componentRoutes")
@@ -100,6 +101,16 @@ public class IngressStatus implements KubernetesResource
     @JsonProperty("defaultPlacement")
     public void setDefaultPlacement(String defaultPlacement) {
         this.defaultPlacement = defaultPlacement;
+    }
+
+    @JsonIgnore
+    public IngressStatusBuilder edit() {
+        return new IngressStatusBuilder(this);
+    }
+
+    @JsonIgnore
+    public IngressStatusBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

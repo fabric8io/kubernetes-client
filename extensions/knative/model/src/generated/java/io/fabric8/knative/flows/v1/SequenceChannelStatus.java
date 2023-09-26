@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.knative.internal.pkg.apis.Condition;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -64,7 +65,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class SequenceChannelStatus implements KubernetesResource
+public class SequenceChannelStatus implements Editable<SequenceChannelStatusBuilder> , KubernetesResource
 {
 
     @JsonProperty("channel")
@@ -105,6 +106,16 @@ public class SequenceChannelStatus implements KubernetesResource
     @JsonProperty("ready")
     public void setReady(Condition ready) {
         this.ready = ready;
+    }
+
+    @JsonIgnore
+    public SequenceChannelStatusBuilder edit() {
+        return new SequenceChannelStatusBuilder(this);
+    }
+
+    @JsonIgnore
+    public SequenceChannelStatusBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

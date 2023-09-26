@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -66,7 +67,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class TimeChaosStatus implements KubernetesResource
+public class TimeChaosStatus implements Editable<TimeChaosStatusBuilder> , KubernetesResource
 {
 
     @JsonProperty("conditions")
@@ -108,6 +109,16 @@ public class TimeChaosStatus implements KubernetesResource
     @JsonProperty("experiment")
     public void setExperiment(ExperimentStatus experiment) {
         this.experiment = experiment;
+    }
+
+    @JsonIgnore
+    public TimeChaosStatusBuilder edit() {
+        return new TimeChaosStatusBuilder(this);
+    }
+
+    @JsonIgnore
+    public TimeChaosStatusBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -76,7 +77,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("cluster.open-cluster-management.io")
 @Generated("jsonschema2pojo")
-public class ManagedClusterList implements KubernetesResource, KubernetesResourceList<io.fabric8.openclustermanagement.api.model.cluster.v1.ManagedCluster>
+public class ManagedClusterList implements Editable<ManagedClusterListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.openclustermanagement.api.model.cluster.v1.ManagedCluster>
 {
 
     /**
@@ -174,6 +175,16 @@ public class ManagedClusterList implements KubernetesResource, KubernetesResourc
     @JsonProperty("metadata")
     public void setMetadata(ListMeta metadata) {
         this.metadata = metadata;
+    }
+
+    @JsonIgnore
+    public ManagedClusterListBuilder edit() {
+        return new ManagedClusterListBuilder(this);
+    }
+
+    @JsonIgnore
+    public ManagedClusterListBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

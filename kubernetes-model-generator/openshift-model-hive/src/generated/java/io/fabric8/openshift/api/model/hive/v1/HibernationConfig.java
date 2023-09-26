@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.Duration;
 import io.fabric8.kubernetes.api.model.IntOrString;
@@ -56,7 +57,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class HibernationConfig implements KubernetesResource
+public class HibernationConfig implements Editable<HibernationConfigBuilder> , KubernetesResource
 {
 
     @JsonProperty("resumeTimeout")
@@ -84,6 +85,16 @@ public class HibernationConfig implements KubernetesResource
     @JsonProperty("resumeTimeout")
     public void setResumeTimeout(Duration resumeTimeout) {
         this.resumeTimeout = resumeTimeout;
+    }
+
+    @JsonIgnore
+    public HibernationConfigBuilder edit() {
+        return new HibernationConfigBuilder(this);
+    }
+
+    @JsonIgnore
+    public HibernationConfigBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -66,7 +67,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class IngressBackendSplit implements KubernetesResource
+public class IngressBackendSplit implements Editable<IngressBackendSplitBuilder> , KubernetesResource
 {
 
     @JsonProperty("appendHeaders")
@@ -147,6 +148,16 @@ public class IngressBackendSplit implements KubernetesResource
     @JsonProperty("servicePort")
     public void setServicePort(io.fabric8.kubernetes.api.model.IntOrString servicePort) {
         this.servicePort = servicePort;
+    }
+
+    @JsonIgnore
+    public IngressBackendSplitBuilder edit() {
+        return new IngressBackendSplitBuilder(this);
+    }
+
+    @JsonIgnore
+    public IngressBackendSplitBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

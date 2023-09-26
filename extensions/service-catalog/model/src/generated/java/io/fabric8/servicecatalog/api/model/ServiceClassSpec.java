@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -75,7 +76,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class ServiceClassSpec implements KubernetesResource
+public class ServiceClassSpec implements Editable<ServiceClassSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("bindable")
@@ -237,6 +238,16 @@ public class ServiceClassSpec implements KubernetesResource
     @JsonProperty("tags")
     public void setTags(List<java.lang.String> tags) {
         this.tags = tags;
+    }
+
+    @JsonIgnore
+    public ServiceClassSpecBuilder edit() {
+        return new ServiceClassSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public ServiceClassSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

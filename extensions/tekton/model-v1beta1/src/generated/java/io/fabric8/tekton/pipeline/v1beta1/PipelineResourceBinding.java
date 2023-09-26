@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -66,7 +67,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class PipelineResourceBinding implements KubernetesResource
+public class PipelineResourceBinding implements Editable<PipelineResourceBindingBuilder> , KubernetesResource
 {
 
     @JsonProperty("name")
@@ -120,6 +121,16 @@ public class PipelineResourceBinding implements KubernetesResource
     @JsonProperty("resourceSpec")
     public void setResourceSpec(PipelineResourceSpec resourceSpec) {
         this.resourceSpec = resourceSpec;
+    }
+
+    @JsonIgnore
+    public PipelineResourceBindingBuilder edit() {
+        return new PipelineResourceBindingBuilder(this);
+    }
+
+    @JsonIgnore
+    public PipelineResourceBindingBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

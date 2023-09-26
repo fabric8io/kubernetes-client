@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
@@ -57,7 +58,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class IngressBackend implements KubernetesResource
+public class IngressBackend implements Editable<IngressBackendBuilder> , KubernetesResource
 {
 
     @JsonProperty("resource")
@@ -111,6 +112,16 @@ public class IngressBackend implements KubernetesResource
     @JsonProperty("servicePort")
     public void setServicePort(io.fabric8.kubernetes.api.model.IntOrString servicePort) {
         this.servicePort = servicePort;
+    }
+
+    @JsonIgnore
+    public IngressBackendBuilder edit() {
+        return new IngressBackendBuilder(this);
+    }
+
+    @JsonIgnore
+    public IngressBackendBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

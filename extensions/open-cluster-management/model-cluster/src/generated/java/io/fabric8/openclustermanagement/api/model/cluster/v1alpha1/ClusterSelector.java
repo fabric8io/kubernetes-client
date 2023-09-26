@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -63,7 +64,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class ClusterSelector implements KubernetesResource
+public class ClusterSelector implements Editable<ClusterSelectorBuilder> , KubernetesResource
 {
 
     @JsonProperty("claimSelector")
@@ -104,6 +105,16 @@ public class ClusterSelector implements KubernetesResource
     @JsonProperty("labelSelector")
     public void setLabelSelector(io.fabric8.kubernetes.api.model.LabelSelector labelSelector) {
         this.labelSelector = labelSelector;
+    }
+
+    @JsonIgnore
+    public ClusterSelectorBuilder edit() {
+        return new ClusterSelectorBuilder(this);
+    }
+
+    @JsonIgnore
+    public ClusterSelectorBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

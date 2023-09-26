@@ -122,14 +122,32 @@ class KubernetesResourceUtilTest {
   void testNames() {
     assertTrue(KubernetesResourceUtil.isValidName(KubernetesResourceUtil.getName(configMap1)));
     assertFalse(KubernetesResourceUtil.isValidName("test.invalid.name"));
-    assertTrue(KubernetesResourceUtil.isValidLabelOrAnnotation(KubernetesResourceUtil.getOrCreateAnnotations(configMap1)));
+    assertTrue(KubernetesResourceUtil.areLabelsValid(KubernetesResourceUtil.getOrCreateAnnotations(configMap1)));
     assertFalse(KubernetesResourceUtil
-        .isValidLabelOrAnnotation(Collections.singletonMap("NoUppercaseOrSpecialCharsLike=Equals", "bar")));
+        .areLabelsValid(Collections.singletonMap("NoUppercaseOrSpecialCharsLike=Equals", "bar")));
 
     assertTrue(KubernetesResourceUtil.isValidName(KubernetesResourceUtil.sanitizeName("test.invalid.name")));
     assertTrue(KubernetesResourceUtil.isValidName(KubernetesResourceUtil.sanitizeName("90notcool-n@me")));
     assertTrue(KubernetesResourceUtil.isValidName(
         KubernetesResourceUtil.sanitizeName("90notcool-n@me_______waytoooooooooolooooooooongand should be shorten for sure")));
+  }
+
+  @Test
+  void testSubdomainValidation() {
+    assertTrue(KubernetesResourceUtil.isValidSubdomainName("a.b"));
+    assertFalse(KubernetesResourceUtil.isValidSubdomainName("a..b"));
+  }
+
+  @Test
+  void testKeyValidation() {
+    assertTrue(KubernetesResourceUtil.isValidKey("domain.prefix.io/label.key"));
+    assertFalse(KubernetesResourceUtil.isValidKey("domain.prefix.io?label.key"));
+  }
+
+  @Test
+  void testAnnotationValidation() {
+    assertTrue(
+        KubernetesResourceUtil.areAnnotationsValid(Collections.singletonMap("simple-key", "Something not valid for a label!")));
   }
 
   @Test

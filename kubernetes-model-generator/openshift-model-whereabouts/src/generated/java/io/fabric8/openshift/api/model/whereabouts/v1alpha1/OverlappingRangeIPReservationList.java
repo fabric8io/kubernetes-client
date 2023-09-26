@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -68,7 +69,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha1")
 @Group("whereabouts.cni.cncf.io")
 @Generated("jsonschema2pojo")
-public class OverlappingRangeIPReservationList implements KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.whereabouts.v1alpha1.OverlappingRangeIPReservation>
+public class OverlappingRangeIPReservationList implements Editable<OverlappingRangeIPReservationListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.whereabouts.v1alpha1.OverlappingRangeIPReservation>
 {
 
     /**
@@ -166,6 +167,16 @@ public class OverlappingRangeIPReservationList implements KubernetesResource, Ku
     @JsonProperty("metadata")
     public void setMetadata(ListMeta metadata) {
         this.metadata = metadata;
+    }
+
+    @JsonIgnore
+    public OverlappingRangeIPReservationListBuilder edit() {
+        return new OverlappingRangeIPReservationListBuilder(this);
+    }
+
+    @JsonIgnore
+    public OverlappingRangeIPReservationListBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

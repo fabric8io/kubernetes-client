@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.Duration;
 import io.fabric8.kubernetes.api.model.IntOrString;
@@ -74,7 +75,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ClusterDeploymentSpec implements KubernetesResource
+public class ClusterDeploymentSpec implements Editable<ClusterDeploymentSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("baseDomain")
@@ -325,6 +326,16 @@ public class ClusterDeploymentSpec implements KubernetesResource
     @JsonProperty("pullSecretRef")
     public void setPullSecretRef(io.fabric8.kubernetes.api.model.LocalObjectReference pullSecretRef) {
         this.pullSecretRef = pullSecretRef;
+    }
+
+    @JsonIgnore
+    public ClusterDeploymentSpecBuilder edit() {
+        return new ClusterDeploymentSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public ClusterDeploymentSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

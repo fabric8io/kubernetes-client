@@ -15,6 +15,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.knative.internal.pkg.apis.duck.v1.CloudEventOverrides;
 import io.fabric8.knative.internal.pkg.apis.duck.v1.Destination;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -75,7 +76,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class GitHubSourceSpec implements KubernetesResource
+public class GitHubSourceSpec implements Editable<GitHubSourceSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("accessToken")
@@ -208,6 +209,16 @@ public class GitHubSourceSpec implements KubernetesResource
     @JsonProperty("sink")
     public void setSink(Destination sink) {
         this.sink = sink;
+    }
+
+    @JsonIgnore
+    public GitHubSourceSpecBuilder edit() {
+        return new GitHubSourceSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public GitHubSourceSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

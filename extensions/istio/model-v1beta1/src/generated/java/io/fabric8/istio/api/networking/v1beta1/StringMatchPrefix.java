@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -62,7 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class StringMatchPrefix implements IsStringMatchMatchType
+public class StringMatchPrefix implements IsStringMatchMatchType, Editable<StringMatchPrefixBuilder>
 {
 
     @JsonProperty("prefix")
@@ -90,6 +91,16 @@ public class StringMatchPrefix implements IsStringMatchMatchType
     @JsonProperty("prefix")
     public void setPrefix(String prefix) {
         this.prefix = prefix;
+    }
+
+    @JsonIgnore
+    public StringMatchPrefixBuilder edit() {
+        return new StringMatchPrefixBuilder(this);
+    }
+
+    @JsonIgnore
+    public StringMatchPrefixBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

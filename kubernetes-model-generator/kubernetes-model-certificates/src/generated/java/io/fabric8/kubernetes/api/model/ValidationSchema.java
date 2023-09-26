@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.LabelSelector;
@@ -84,7 +85,8 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ValidationSchema {
+public class ValidationSchema implements Editable<ValidationSchemaBuilder>
+{
 
     @JsonProperty("APIGroup")
     private APIGroup aPIGroup;
@@ -475,6 +477,16 @@ public class ValidationSchema {
     @JsonProperty("V1Beta1CertificateSigningRequestStatus")
     public void setV1Beta1CertificateSigningRequestStatus(io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequestStatus v1Beta1CertificateSigningRequestStatus) {
         this.v1Beta1CertificateSigningRequestStatus = v1Beta1CertificateSigningRequestStatus;
+    }
+
+    @JsonIgnore
+    public ValidationSchemaBuilder edit() {
+        return new ValidationSchemaBuilder(this);
+    }
+
+    @JsonIgnore
+    public ValidationSchemaBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

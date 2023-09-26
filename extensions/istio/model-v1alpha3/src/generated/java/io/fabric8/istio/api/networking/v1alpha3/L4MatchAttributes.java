@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -70,7 +71,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class L4MatchAttributes implements KubernetesResource
+public class L4MatchAttributes implements Editable<L4MatchAttributesBuilder> , KubernetesResource
 {
 
     @JsonProperty("destinationSubnets")
@@ -166,6 +167,16 @@ public class L4MatchAttributes implements KubernetesResource
     @JsonProperty("sourceSubnet")
     public void setSourceSubnet(java.lang.String sourceSubnet) {
         this.sourceSubnet = sourceSubnet;
+    }
+
+    @JsonIgnore
+    public L4MatchAttributesBuilder edit() {
+        return new L4MatchAttributesBuilder(this);
+    }
+
+    @JsonIgnore
+    public L4MatchAttributesBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

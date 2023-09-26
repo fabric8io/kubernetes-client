@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.sundr.builder.annotations.Buildable;
 import lombok.EqualsAndHashCode;
 import lombok.Setter;
@@ -42,9 +43,9 @@ import lombok.experimental.Accessors;
     "_",
     ""
 })
-@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
+@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("jsonschema2pojo")
-public class APIResource implements KubernetesResource
+public class APIResource implements Editable<APIResourceBuilder> , KubernetesResource
 {
 
     @JsonProperty("categories")
@@ -192,6 +193,16 @@ public class APIResource implements KubernetesResource
     @JsonProperty("version")
     public void setVersion(String version) {
         this.version = version;
+    }
+
+    @JsonIgnore
+    public APIResourceBuilder edit() {
+        return new APIResourceBuilder(this);
+    }
+
+    @JsonIgnore
+    public APIResourceBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Condition;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
@@ -63,7 +64,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ComponentRouteStatus implements KubernetesResource
+public class ComponentRouteStatus implements Editable<ComponentRouteStatusBuilder> , KubernetesResource
 {
 
     @JsonProperty("conditions")
@@ -173,6 +174,16 @@ public class ComponentRouteStatus implements KubernetesResource
     @JsonProperty("relatedObjects")
     public void setRelatedObjects(List<io.fabric8.openshift.api.model.config.v1.ObjectReference> relatedObjects) {
         this.relatedObjects = relatedObjects;
+    }
+
+    @JsonIgnore
+    public ComponentRouteStatusBuilder edit() {
+        return new ComponentRouteStatusBuilder(this);
+    }
+
+    @JsonIgnore
+    public ComponentRouteStatusBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

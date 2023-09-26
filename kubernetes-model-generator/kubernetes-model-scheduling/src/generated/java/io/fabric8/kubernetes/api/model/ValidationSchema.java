@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.LabelSelector;
@@ -74,7 +75,8 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ValidationSchema {
+public class ValidationSchema implements Editable<ValidationSchemaBuilder>
+{
 
     @JsonProperty("APIGroup")
     private APIGroup aPIGroup;
@@ -374,6 +376,16 @@ public class ValidationSchema {
     @JsonProperty("V1PriorityClassList")
     public void setV1PriorityClassList(io.fabric8.kubernetes.api.model.scheduling.v1.PriorityClassList v1PriorityClassList) {
         this.v1PriorityClassList = v1PriorityClassList;
+    }
+
+    @JsonIgnore
+    public ValidationSchemaBuilder edit() {
+        return new ValidationSchemaBuilder(this);
+    }
+
+    @JsonIgnore
+    public ValidationSchemaBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

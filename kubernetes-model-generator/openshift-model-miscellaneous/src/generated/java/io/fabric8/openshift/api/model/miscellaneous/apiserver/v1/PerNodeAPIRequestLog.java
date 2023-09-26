@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -59,7 +60,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class PerNodeAPIRequestLog implements KubernetesResource
+public class PerNodeAPIRequestLog implements Editable<PerNodeAPIRequestLogBuilder> , KubernetesResource
 {
 
     @JsonProperty("byUser")
@@ -114,6 +115,16 @@ public class PerNodeAPIRequestLog implements KubernetesResource
     @JsonProperty("requestCount")
     public void setRequestCount(Long requestCount) {
         this.requestCount = requestCount;
+    }
+
+    @JsonIgnore
+    public PerNodeAPIRequestLogBuilder edit() {
+        return new PerNodeAPIRequestLogBuilder(this);
+    }
+
+    @JsonIgnore
+    public PerNodeAPIRequestLogBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

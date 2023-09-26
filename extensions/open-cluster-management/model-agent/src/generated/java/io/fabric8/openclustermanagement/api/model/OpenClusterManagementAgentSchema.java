@@ -2,10 +2,12 @@
 package io.fabric8.openclustermanagement.api.model;
 
 import javax.annotation.Generated;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -68,7 +70,8 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class OpenClusterManagementAgentSchema {
+public class OpenClusterManagementAgentSchema implements Editable<OpenClusterManagementAgentSchemaBuilder>
+{
 
     @JsonProperty("github_com_open-cluster-management_klusterlet-addon-controller_pkg_apis_agent_v1_KlusterletAddonAgentConfigSpec")
     private KlusterletAddonAgentConfigSpec githubComOpenClusterManagementKlusterletAddonControllerPkgApisAgentV1KlusterletAddonAgentConfigSpec;
@@ -158,6 +161,16 @@ public class OpenClusterManagementAgentSchema {
     @JsonProperty("github_com_open-cluster-management_klusterlet-addon-controller_pkg_apis_agent_v1_ProxyConfig")
     public void setGithubComOpenClusterManagementKlusterletAddonControllerPkgApisAgentV1ProxyConfig(ProxyConfig githubComOpenClusterManagementKlusterletAddonControllerPkgApisAgentV1ProxyConfig) {
         this.githubComOpenClusterManagementKlusterletAddonControllerPkgApisAgentV1ProxyConfig = githubComOpenClusterManagementKlusterletAddonControllerPkgApisAgentV1ProxyConfig;
+    }
+
+    @JsonIgnore
+    public OpenClusterManagementAgentSchemaBuilder edit() {
+        return new OpenClusterManagementAgentSchemaBuilder(this);
+    }
+
+    @JsonIgnore
+    public OpenClusterManagementAgentSchemaBuilder toBuilder() {
+        return edit();
     }
 
 }

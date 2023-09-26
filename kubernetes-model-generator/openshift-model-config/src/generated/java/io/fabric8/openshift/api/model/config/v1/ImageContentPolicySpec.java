@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -57,7 +58,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ImageContentPolicySpec implements KubernetesResource
+public class ImageContentPolicySpec implements Editable<ImageContentPolicySpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("repositoryDigestMirrors")
@@ -86,6 +87,16 @@ public class ImageContentPolicySpec implements KubernetesResource
     @JsonProperty("repositoryDigestMirrors")
     public void setRepositoryDigestMirrors(List<RepositoryDigestMirrors> repositoryDigestMirrors) {
         this.repositoryDigestMirrors = repositoryDigestMirrors;
+    }
+
+    @JsonIgnore
+    public ImageContentPolicySpecBuilder edit() {
+        return new ImageContentPolicySpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public ImageContentPolicySpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

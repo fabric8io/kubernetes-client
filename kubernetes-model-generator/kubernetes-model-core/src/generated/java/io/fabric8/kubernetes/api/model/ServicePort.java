@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.sundr.builder.annotations.Buildable;
 import lombok.EqualsAndHashCode;
 import lombok.Setter;
@@ -37,9 +38,9 @@ import lombok.experimental.Accessors;
     "_",
     ""
 })
-@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
+@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("jsonschema2pojo")
-public class ServicePort implements KubernetesResource
+public class ServicePort implements Editable<ServicePortBuilder> , KubernetesResource
 {
 
     @JsonProperty("appProtocol")
@@ -132,6 +133,16 @@ public class ServicePort implements KubernetesResource
     @JsonProperty("targetPort")
     public void setTargetPort(IntOrString targetPort) {
         this.targetPort = targetPort;
+    }
+
+    @JsonIgnore
+    public ServicePortBuilder edit() {
+        return new ServicePortBuilder(this);
+    }
+
+    @JsonIgnore
+    public ServicePortBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -38,7 +39,8 @@ import lombok.experimental.Accessors;
     "metadata",
     "apiServerID",
     "decodableVersions",
-    "encodingVersion"
+    "encodingVersion",
+    "servedVersions"
 })
 @ToString
 @EqualsAndHashCode
@@ -59,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ServerStorageVersion implements KubernetesResource
+public class ServerStorageVersion implements Editable<ServerStorageVersionBuilder> , KubernetesResource
 {
 
     @JsonProperty("apiServerID")
@@ -69,6 +71,9 @@ public class ServerStorageVersion implements KubernetesResource
     private List<String> decodableVersions = new ArrayList<String>();
     @JsonProperty("encodingVersion")
     private String encodingVersion;
+    @JsonProperty("servedVersions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> servedVersions = new ArrayList<String>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -79,11 +84,12 @@ public class ServerStorageVersion implements KubernetesResource
     public ServerStorageVersion() {
     }
 
-    public ServerStorageVersion(String apiServerID, List<String> decodableVersions, String encodingVersion) {
+    public ServerStorageVersion(String apiServerID, List<String> decodableVersions, String encodingVersion, List<String> servedVersions) {
         super();
         this.apiServerID = apiServerID;
         this.decodableVersions = decodableVersions;
         this.encodingVersion = encodingVersion;
+        this.servedVersions = servedVersions;
     }
 
     @JsonProperty("apiServerID")
@@ -114,6 +120,26 @@ public class ServerStorageVersion implements KubernetesResource
     @JsonProperty("encodingVersion")
     public void setEncodingVersion(String encodingVersion) {
         this.encodingVersion = encodingVersion;
+    }
+
+    @JsonProperty("servedVersions")
+    public List<String> getServedVersions() {
+        return servedVersions;
+    }
+
+    @JsonProperty("servedVersions")
+    public void setServedVersions(List<String> servedVersions) {
+        this.servedVersions = servedVersions;
+    }
+
+    @JsonIgnore
+    public ServerStorageVersionBuilder edit() {
+        return new ServerStorageVersionBuilder(this);
+    }
+
+    @JsonIgnore
+    public ServerStorageVersionBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

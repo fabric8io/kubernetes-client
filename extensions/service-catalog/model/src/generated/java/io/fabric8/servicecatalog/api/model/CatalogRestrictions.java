@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -66,7 +67,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class CatalogRestrictions implements KubernetesResource
+public class CatalogRestrictions implements Editable<CatalogRestrictionsBuilder> , KubernetesResource
 {
 
     @JsonProperty("serviceClass")
@@ -109,6 +110,16 @@ public class CatalogRestrictions implements KubernetesResource
     @JsonProperty("servicePlan")
     public void setServicePlan(List<String> servicePlan) {
         this.servicePlan = servicePlan;
+    }
+
+    @JsonIgnore
+    public CatalogRestrictionsBuilder edit() {
+        return new CatalogRestrictionsBuilder(this);
+    }
+
+    @JsonIgnore
+    public CatalogRestrictionsBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

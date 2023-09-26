@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.knative.internal.pkg.tracker.Reference;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -65,7 +66,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class GitHubBindingSpec implements KubernetesResource
+public class GitHubBindingSpec implements Editable<GitHubBindingSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("accessToken")
@@ -106,6 +107,16 @@ public class GitHubBindingSpec implements KubernetesResource
     @JsonProperty("subject")
     public void setSubject(Reference subject) {
         this.subject = subject;
+    }
+
+    @JsonIgnore
+    public GitHubBindingSpecBuilder edit() {
+        return new GitHubBindingSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public GitHubBindingSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

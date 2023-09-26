@@ -2,10 +2,12 @@
 package io.fabric8.openclustermanagement.api.model;
 
 import javax.annotation.Generated;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -82,7 +84,8 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class OpenClusterManagementPlacementruleappsSchema {
+public class OpenClusterManagementPlacementruleappsSchema implements Editable<OpenClusterManagementPlacementruleappsSchemaBuilder>
+{
 
     @JsonProperty("github_com_open-cluster-management_multicloud-integrations_pkg_apis_apps_v1beta1_ArgoServerSpec")
     private ArgoServerSpec githubComOpenClusterManagementMulticloudIntegrationsPkgApisAppsV1beta1ArgoServerSpec;
@@ -263,6 +266,16 @@ public class OpenClusterManagementPlacementruleappsSchema {
     @JsonProperty("github_com_open-cluster-management_multicloud-operators-placementrule_pkg_apis_apps_v1_ResourceHint")
     public void setGithubComOpenClusterManagementMulticloudOperatorsPlacementrulePkgApisAppsV1ResourceHint(ResourceHint githubComOpenClusterManagementMulticloudOperatorsPlacementrulePkgApisAppsV1ResourceHint) {
         this.githubComOpenClusterManagementMulticloudOperatorsPlacementrulePkgApisAppsV1ResourceHint = githubComOpenClusterManagementMulticloudOperatorsPlacementrulePkgApisAppsV1ResourceHint;
+    }
+
+    @JsonIgnore
+    public OpenClusterManagementPlacementruleappsSchemaBuilder edit() {
+        return new OpenClusterManagementPlacementruleappsSchemaBuilder(this);
+    }
+
+    @JsonIgnore
+    public OpenClusterManagementPlacementruleappsSchemaBuilder toBuilder() {
+        return edit();
     }
 
 }

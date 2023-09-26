@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -62,7 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class HTTPFaultInjectionAbortHttp2Error implements IsHTTPFaultInjectionAbortErrorType
+public class HTTPFaultInjectionAbortHttp2Error implements IsHTTPFaultInjectionAbortErrorType, Editable<HTTPFaultInjectionAbortHttp2ErrorBuilder>
 {
 
     @JsonProperty("http2Error")
@@ -90,6 +91,16 @@ public class HTTPFaultInjectionAbortHttp2Error implements IsHTTPFaultInjectionAb
     @JsonProperty("http2Error")
     public void setHttp2Error(String http2Error) {
         this.http2Error = http2Error;
+    }
+
+    @JsonIgnore
+    public HTTPFaultInjectionAbortHttp2ErrorBuilder edit() {
+        return new HTTPFaultInjectionAbortHttp2ErrorBuilder(this);
+    }
+
+    @JsonIgnore
+    public HTTPFaultInjectionAbortHttp2ErrorBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

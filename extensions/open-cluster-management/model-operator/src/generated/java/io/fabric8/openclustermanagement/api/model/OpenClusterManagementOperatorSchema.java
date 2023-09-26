@@ -2,10 +2,12 @@
 package io.fabric8.openclustermanagement.api.model;
 
 import javax.annotation.Generated;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -110,7 +112,8 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class OpenClusterManagementOperatorSchema {
+public class OpenClusterManagementOperatorSchema implements Editable<OpenClusterManagementOperatorSchemaBuilder>
+{
 
     @JsonProperty("github_com_open-cluster-management_multiclusterhub-operator_api_v1_BackupConfig")
     private BackupConfig githubComOpenClusterManagementMulticlusterhubOperatorApiV1BackupConfig;
@@ -473,6 +476,16 @@ public class OpenClusterManagementOperatorSchema {
     @JsonProperty("open-cluster-management_io_api_operator_v1_ServerURL")
     public void setOpenClusterManagementIoApiOperatorV1ServerURL(ServerURL openClusterManagementIoApiOperatorV1ServerURL) {
         this.openClusterManagementIoApiOperatorV1ServerURL = openClusterManagementIoApiOperatorV1ServerURL;
+    }
+
+    @JsonIgnore
+    public OpenClusterManagementOperatorSchemaBuilder edit() {
+        return new OpenClusterManagementOperatorSchemaBuilder(this);
+    }
+
+    @JsonIgnore
+    public OpenClusterManagementOperatorSchemaBuilder toBuilder() {
+        return edit();
     }
 
 }

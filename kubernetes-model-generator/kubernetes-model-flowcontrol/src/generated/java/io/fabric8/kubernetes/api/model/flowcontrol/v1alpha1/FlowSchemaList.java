@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -68,7 +69,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha1")
 @Group("flowcontrol.apiserver.k8s.io")
 @Generated("jsonschema2pojo")
-public class FlowSchemaList implements KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.flowcontrol.v1alpha1.FlowSchema>
+public class FlowSchemaList implements Editable<FlowSchemaListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.flowcontrol.v1alpha1.FlowSchema>
 {
 
     /**
@@ -166,6 +167,16 @@ public class FlowSchemaList implements KubernetesResource, KubernetesResourceLis
     @JsonProperty("metadata")
     public void setMetadata(ListMeta metadata) {
         this.metadata = metadata;
+    }
+
+    @JsonIgnore
+    public FlowSchemaListBuilder edit() {
+        return new FlowSchemaListBuilder(this);
+    }
+
+    @JsonIgnore
+    public FlowSchemaListBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

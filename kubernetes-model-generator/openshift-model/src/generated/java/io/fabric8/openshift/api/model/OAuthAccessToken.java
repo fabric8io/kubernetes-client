@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
@@ -73,7 +74,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("oauth.openshift.io")
 @Generated("jsonschema2pojo")
-public class OAuthAccessToken implements HasMetadata
+public class OAuthAccessToken implements Editable<OAuthAccessTokenBuilder> , HasMetadata
 {
 
     /**
@@ -275,6 +276,16 @@ public class OAuthAccessToken implements HasMetadata
     @JsonProperty("userUID")
     public void setUserUID(String userUID) {
         this.userUID = userUID;
+    }
+
+    @JsonIgnore
+    public OAuthAccessTokenBuilder edit() {
+        return new OAuthAccessTokenBuilder(this);
+    }
+
+    @JsonIgnore
+    public OAuthAccessTokenBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -68,7 +69,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ConsoleQuickStartSpec implements KubernetesResource
+public class ConsoleQuickStartSpec implements Editable<ConsoleQuickStartSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("accessReviewResources")
@@ -231,6 +232,16 @@ public class ConsoleQuickStartSpec implements KubernetesResource
     @JsonProperty("tasks")
     public void setTasks(List<ConsoleQuickStartTask> tasks) {
         this.tasks = tasks;
+    }
+
+    @JsonIgnore
+    public ConsoleQuickStartSpecBuilder edit() {
+        return new ConsoleQuickStartSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public ConsoleQuickStartSpecBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter

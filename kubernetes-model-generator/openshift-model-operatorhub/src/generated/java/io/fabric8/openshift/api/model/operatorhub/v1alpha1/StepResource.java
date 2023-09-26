@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -60,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class StepResource implements KubernetesResource
+public class StepResource implements Editable<StepResourceBuilder> , KubernetesResource
 {
 
     @JsonProperty("group")
@@ -166,6 +167,16 @@ public class StepResource implements KubernetesResource
     @JsonProperty("version")
     public void setVersion(String version) {
         this.version = version;
+    }
+
+    @JsonIgnore
+    public StepResourceBuilder edit() {
+        return new StepResourceBuilder(this);
+    }
+
+    @JsonIgnore
+    public StepResourceBuilder toBuilder() {
+        return edit();
     }
 
     @JsonAnyGetter
