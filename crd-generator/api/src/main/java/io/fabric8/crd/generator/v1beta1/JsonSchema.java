@@ -15,6 +15,7 @@
  */
 package io.fabric8.crd.generator.v1beta1;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.fabric8.crd.generator.AbstractJsonSchema;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaProps;
@@ -24,6 +25,8 @@ import io.sundr.model.TypeDef;
 import io.sundr.model.TypeRef;
 
 import java.util.List;
+
+import static io.fabric8.crd.generator.CRDGenerator.YAML_MAPPER;
 
 public class JsonSchema extends AbstractJsonSchema<JSONSchemaProps, JSONSchemaPropsBuilder> {
 
@@ -64,6 +67,13 @@ public class JsonSchema extends AbstractJsonSchema<JSONSchemaProps, JSONSchemaPr
   public void addProperty(Property property, JSONSchemaPropsBuilder builder,
       JSONSchemaProps schema, SchemaPropsOptions options) {
     if (schema != null) {
+      options.getDefault().ifPresent(s -> {
+        try {
+          schema.setDefault(YAML_MAPPER.readTree(s));
+        } catch (JsonProcessingException e) {
+          throw new IllegalArgumentException("Cannot parse default value: '" + s + "' as valid YAML.");
+        }
+      });
       options.getMin().ifPresent(schema::setMinimum);
       options.getMax().ifPresent(schema::setMaximum);
       options.getPattern().ifPresent(schema::setPattern);

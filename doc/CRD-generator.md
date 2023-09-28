@@ -158,6 +158,30 @@ If a field or one of its accessors is annotated with `io.fabric8.generator.annot
 
 ```java
 public class ExampleSpec {
+  @Default("foo")
+  String someValue;
+}
+```
+
+The field will have the `default` property in the generated CRD, such as:
+
+```yaml
+          spec:
+            properties:
+              someValue:
+                default: foo
+                type: string
+            required:
+            - someValue
+            type: object
+```
+
+### io.fabric8.generator.annotation.Min
+
+If a field or one of its accessors is annotated with `io.fabric8.generator.annotation.Min`
+
+```java
+public class ExampleSpec {
   @Min(-1)
   int someValue;
 }
