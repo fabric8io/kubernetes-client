@@ -3098,6 +3098,118 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "os_config_v1_ImageDigestMirrorSet": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "config.openshift.io/v1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "ImageDigestMirrorSet",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/os_config_v1_ImageDigestMirrorSetSpec",
+          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.ImageDigestMirrorSetSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/os_config_v1_ImageDigestMirrorSetStatus",
+          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.ImageDigestMirrorSetStatus"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.config.v1.ImageDigestMirrorSet",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata"
+      ]
+    },
+    "os_config_v1_ImageDigestMirrorSetList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "config.openshift.io/v1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/os_config_v1_ImageDigestMirrorSet",
+            "existingJavaType": "io.fabric8.openshift.api.model.config.v1.ImageDigestMirrorSet"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "ImageDigestMirrorSetList",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ListMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.config.v1.ImageDigestMirrorSetList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.openshift.api.model.config.v1.ImageDigestMirrorSet\u003e"
+      ]
+    },
+    "os_config_v1_ImageDigestMirrorSetSpec": {
+      "type": "object",
+      "properties": {
+        "imageDigestMirrors": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/os_config_v1_ImageDigestMirrors",
+            "existingJavaType": "io.fabric8.openshift.api.model.config.v1.ImageDigestMirrors"
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.config.v1.ImageDigestMirrorSetSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_config_v1_ImageDigestMirrorSetStatus": {
+      "type": "object",
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.config.v1.ImageDigestMirrorSetStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_config_v1_ImageDigestMirrors": {
+      "type": "object",
+      "properties": {
+        "mirrorSourcePolicy": {
+          "type": "string"
+        },
+        "mirrors": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "source": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.config.v1.ImageDigestMirrors",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "os_config_v1_ImageLabel": {
       "type": "object",
       "properties": {
@@ -3195,6 +3307,118 @@
       },
       "additionalProperties": true,
       "javaType": "io.fabric8.openshift.api.model.config.v1.ImageStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_config_v1_ImageTagMirrorSet": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "config.openshift.io/v1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "ImageTagMirrorSet",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/os_config_v1_ImageTagMirrorSetSpec",
+          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.ImageTagMirrorSetSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/os_config_v1_ImageTagMirrorSetStatus",
+          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.ImageTagMirrorSetStatus"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.config.v1.ImageTagMirrorSet",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata"
+      ]
+    },
+    "os_config_v1_ImageTagMirrorSetList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "config.openshift.io/v1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/os_config_v1_ImageTagMirrorSet",
+            "existingJavaType": "io.fabric8.openshift.api.model.config.v1.ImageTagMirrorSet"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "ImageTagMirrorSetList",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ListMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.config.v1.ImageTagMirrorSetList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.openshift.api.model.config.v1.ImageTagMirrorSet\u003e"
+      ]
+    },
+    "os_config_v1_ImageTagMirrorSetSpec": {
+      "type": "object",
+      "properties": {
+        "imageTagMirrors": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/os_config_v1_ImageTagMirrors",
+            "existingJavaType": "io.fabric8.openshift.api.model.config.v1.ImageTagMirrors"
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.config.v1.ImageTagMirrorSetSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_config_v1_ImageTagMirrorSetStatus": {
+      "type": "object",
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.config.v1.ImageTagMirrorSetStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_config_v1_ImageTagMirrors": {
+      "type": "object",
+      "properties": {
+        "mirrorSourcePolicy": {
+          "type": "string"
+        },
+        "mirrors": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "source": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.config.v1.ImageTagMirrors",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -5557,9 +5781,25 @@
       "$ref": "#/definitions/os_config_v1_ImageContentPolicyList",
       "existingJavaType": "io.fabric8.openshift.api.model.config.v1.ImageContentPolicyList"
     },
+    "ImageDigestMirrorSet": {
+      "$ref": "#/definitions/os_config_v1_ImageDigestMirrorSet",
+      "existingJavaType": "io.fabric8.openshift.api.model.config.v1.ImageDigestMirrorSet"
+    },
+    "ImageDigestMirrorSetList": {
+      "$ref": "#/definitions/os_config_v1_ImageDigestMirrorSetList",
+      "existingJavaType": "io.fabric8.openshift.api.model.config.v1.ImageDigestMirrorSetList"
+    },
     "ImageList": {
       "$ref": "#/definitions/os_config_v1_ImageList",
       "existingJavaType": "io.fabric8.openshift.api.model.config.v1.ImageList"
+    },
+    "ImageTagMirrorSet": {
+      "$ref": "#/definitions/os_config_v1_ImageTagMirrorSet",
+      "existingJavaType": "io.fabric8.openshift.api.model.config.v1.ImageTagMirrorSet"
+    },
+    "ImageTagMirrorSetList": {
+      "$ref": "#/definitions/os_config_v1_ImageTagMirrorSetList",
+      "existingJavaType": "io.fabric8.openshift.api.model.config.v1.ImageTagMirrorSetList"
     },
     "Info": {
       "$ref": "#/definitions/kubernetes_apimachinery_pkg_version_Info",

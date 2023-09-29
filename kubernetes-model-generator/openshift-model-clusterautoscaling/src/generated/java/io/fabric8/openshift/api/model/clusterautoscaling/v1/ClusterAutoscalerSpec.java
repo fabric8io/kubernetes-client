@@ -1,7 +1,9 @@
 
 package io.fabric8.openshift.api.model.clusterautoscaling.v1;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -36,7 +38,9 @@ import lombok.experimental.Accessors;
     "kind",
     "metadata",
     "balanceSimilarNodeGroups",
+    "balancingIgnoredLabels",
     "ignoreDaemonsetsUtilization",
+    "logVerbosity",
     "maxNodeProvisionTime",
     "maxPodGracePeriod",
     "podPriorityThreshold",
@@ -68,8 +72,13 @@ public class ClusterAutoscalerSpec implements Editable<ClusterAutoscalerSpecBuil
 
     @JsonProperty("balanceSimilarNodeGroups")
     private Boolean balanceSimilarNodeGroups;
+    @JsonProperty("balancingIgnoredLabels")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> balancingIgnoredLabels = new ArrayList<String>();
     @JsonProperty("ignoreDaemonsetsUtilization")
     private Boolean ignoreDaemonsetsUtilization;
+    @JsonProperty("logVerbosity")
+    private Integer logVerbosity;
     @JsonProperty("maxNodeProvisionTime")
     private String maxNodeProvisionTime;
     @JsonProperty("maxPodGracePeriod")
@@ -92,10 +101,12 @@ public class ClusterAutoscalerSpec implements Editable<ClusterAutoscalerSpecBuil
     public ClusterAutoscalerSpec() {
     }
 
-    public ClusterAutoscalerSpec(Boolean balanceSimilarNodeGroups, Boolean ignoreDaemonsetsUtilization, String maxNodeProvisionTime, Integer maxPodGracePeriod, Integer podPriorityThreshold, ResourceLimits resourceLimits, ScaleDownConfig scaleDown, Boolean skipNodesWithLocalStorage) {
+    public ClusterAutoscalerSpec(Boolean balanceSimilarNodeGroups, List<String> balancingIgnoredLabels, Boolean ignoreDaemonsetsUtilization, Integer logVerbosity, String maxNodeProvisionTime, Integer maxPodGracePeriod, Integer podPriorityThreshold, ResourceLimits resourceLimits, ScaleDownConfig scaleDown, Boolean skipNodesWithLocalStorage) {
         super();
         this.balanceSimilarNodeGroups = balanceSimilarNodeGroups;
+        this.balancingIgnoredLabels = balancingIgnoredLabels;
         this.ignoreDaemonsetsUtilization = ignoreDaemonsetsUtilization;
+        this.logVerbosity = logVerbosity;
         this.maxNodeProvisionTime = maxNodeProvisionTime;
         this.maxPodGracePeriod = maxPodGracePeriod;
         this.podPriorityThreshold = podPriorityThreshold;
@@ -114,6 +125,16 @@ public class ClusterAutoscalerSpec implements Editable<ClusterAutoscalerSpecBuil
         this.balanceSimilarNodeGroups = balanceSimilarNodeGroups;
     }
 
+    @JsonProperty("balancingIgnoredLabels")
+    public List<String> getBalancingIgnoredLabels() {
+        return balancingIgnoredLabels;
+    }
+
+    @JsonProperty("balancingIgnoredLabels")
+    public void setBalancingIgnoredLabels(List<String> balancingIgnoredLabels) {
+        this.balancingIgnoredLabels = balancingIgnoredLabels;
+    }
+
     @JsonProperty("ignoreDaemonsetsUtilization")
     public Boolean getIgnoreDaemonsetsUtilization() {
         return ignoreDaemonsetsUtilization;
@@ -122,6 +143,16 @@ public class ClusterAutoscalerSpec implements Editable<ClusterAutoscalerSpecBuil
     @JsonProperty("ignoreDaemonsetsUtilization")
     public void setIgnoreDaemonsetsUtilization(Boolean ignoreDaemonsetsUtilization) {
         this.ignoreDaemonsetsUtilization = ignoreDaemonsetsUtilization;
+    }
+
+    @JsonProperty("logVerbosity")
+    public Integer getLogVerbosity() {
+        return logVerbosity;
+    }
+
+    @JsonProperty("logVerbosity")
+    public void setLogVerbosity(Integer logVerbosity) {
+        this.logVerbosity = logVerbosity;
     }
 
     @JsonProperty("maxNodeProvisionTime")

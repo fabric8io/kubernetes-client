@@ -39,6 +39,8 @@ import lombok.experimental.Accessors;
     "metadata",
     "conditions",
     "machineSets",
+    "ownedLabels",
+    "ownedTaints",
     "replicas"
 })
 @ToString
@@ -69,6 +71,12 @@ public class MachinePoolStatus implements Editable<MachinePoolStatusBuilder> , K
     @JsonProperty("machineSets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<MachineSetStatus> machineSets = new ArrayList<MachineSetStatus>();
+    @JsonProperty("ownedLabels")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> ownedLabels = new ArrayList<String>();
+    @JsonProperty("ownedTaints")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<TaintIdentifier> ownedTaints = new ArrayList<TaintIdentifier>();
     @JsonProperty("replicas")
     private Integer replicas;
     @JsonIgnore
@@ -81,10 +89,12 @@ public class MachinePoolStatus implements Editable<MachinePoolStatusBuilder> , K
     public MachinePoolStatus() {
     }
 
-    public MachinePoolStatus(List<MachinePoolCondition> conditions, List<MachineSetStatus> machineSets, Integer replicas) {
+    public MachinePoolStatus(List<MachinePoolCondition> conditions, List<MachineSetStatus> machineSets, List<String> ownedLabels, List<TaintIdentifier> ownedTaints, Integer replicas) {
         super();
         this.conditions = conditions;
         this.machineSets = machineSets;
+        this.ownedLabels = ownedLabels;
+        this.ownedTaints = ownedTaints;
         this.replicas = replicas;
     }
 
@@ -106,6 +116,26 @@ public class MachinePoolStatus implements Editable<MachinePoolStatusBuilder> , K
     @JsonProperty("machineSets")
     public void setMachineSets(List<MachineSetStatus> machineSets) {
         this.machineSets = machineSets;
+    }
+
+    @JsonProperty("ownedLabels")
+    public List<String> getOwnedLabels() {
+        return ownedLabels;
+    }
+
+    @JsonProperty("ownedLabels")
+    public void setOwnedLabels(List<String> ownedLabels) {
+        this.ownedLabels = ownedLabels;
+    }
+
+    @JsonProperty("ownedTaints")
+    public List<TaintIdentifier> getOwnedTaints() {
+        return ownedTaints;
+    }
+
+    @JsonProperty("ownedTaints")
+    public void setOwnedTaints(List<TaintIdentifier> ownedTaints) {
+        this.ownedTaints = ownedTaints;
     }
 
     @JsonProperty("replicas")

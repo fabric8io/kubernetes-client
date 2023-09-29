@@ -38,6 +38,7 @@ import lombok.experimental.Accessors;
     "kind",
     "metadata",
     "interval",
+    "limit",
     "name",
     "partial_response_strategy",
     "rules"
@@ -66,6 +67,8 @@ public class RuleGroup implements Editable<RuleGroupBuilder> , KubernetesResourc
 
     @JsonProperty("interval")
     private String interval;
+    @JsonProperty("limit")
+    private Integer limit;
     @JsonProperty("name")
     private String name;
     @JsonProperty("partial_response_strategy")
@@ -83,9 +86,10 @@ public class RuleGroup implements Editable<RuleGroupBuilder> , KubernetesResourc
     public RuleGroup() {
     }
 
-    public RuleGroup(String interval, String name, String partialResponseStrategy, List<Rule> rules) {
+    public RuleGroup(String interval, Integer limit, String name, String partialResponseStrategy, List<Rule> rules) {
         super();
         this.interval = interval;
+        this.limit = limit;
         this.name = name;
         this.partialResponseStrategy = partialResponseStrategy;
         this.rules = rules;
@@ -99,6 +103,16 @@ public class RuleGroup implements Editable<RuleGroupBuilder> , KubernetesResourc
     @JsonProperty("interval")
     public void setInterval(String interval) {
         this.interval = interval;
+    }
+
+    @JsonProperty("limit")
+    public Integer getLimit() {
+        return limit;
+    }
+
+    @JsonProperty("limit")
+    public void setLimit(Integer limit) {
+        this.limit = limit;
     }
 
     @JsonProperty("name")

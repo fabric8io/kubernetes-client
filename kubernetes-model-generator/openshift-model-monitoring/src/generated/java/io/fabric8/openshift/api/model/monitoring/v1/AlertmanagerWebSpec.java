@@ -1,5 +1,5 @@
 
-package io.fabric8.openshift.api.model.hive.aws.v1;
+package io.fabric8.openshift.api.model.monitoring.v1;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -35,7 +35,10 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "privateLink"
+    "getConcurrency",
+    "httpConfig",
+    "timeout",
+    "tlsConfig"
 })
 @ToString
 @EqualsAndHashCode
@@ -56,11 +59,17 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class PlatformStatus implements Editable<PlatformStatusBuilder> , KubernetesResource
+public class AlertmanagerWebSpec implements Editable<AlertmanagerWebSpecBuilder> , KubernetesResource
 {
 
-    @JsonProperty("privateLink")
-    private PrivateLinkAccessStatus privateLink;
+    @JsonProperty("getConcurrency")
+    private Integer getConcurrency;
+    @JsonProperty("httpConfig")
+    private WebHTTPConfig httpConfig;
+    @JsonProperty("timeout")
+    private Integer timeout;
+    @JsonProperty("tlsConfig")
+    private WebTLSConfig tlsConfig;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -68,31 +77,64 @@ public class PlatformStatus implements Editable<PlatformStatusBuilder> , Kuberne
      * No args constructor for use in serialization
      * 
      */
-    public PlatformStatus() {
+    public AlertmanagerWebSpec() {
     }
 
-    public PlatformStatus(PrivateLinkAccessStatus privateLink) {
+    public AlertmanagerWebSpec(Integer getConcurrency, WebHTTPConfig httpConfig, Integer timeout, WebTLSConfig tlsConfig) {
         super();
-        this.privateLink = privateLink;
+        this.getConcurrency = getConcurrency;
+        this.httpConfig = httpConfig;
+        this.timeout = timeout;
+        this.tlsConfig = tlsConfig;
     }
 
-    @JsonProperty("privateLink")
-    public PrivateLinkAccessStatus getPrivateLink() {
-        return privateLink;
+    @JsonProperty("getConcurrency")
+    public Integer getGetConcurrency() {
+        return getConcurrency;
     }
 
-    @JsonProperty("privateLink")
-    public void setPrivateLink(PrivateLinkAccessStatus privateLink) {
-        this.privateLink = privateLink;
+    @JsonProperty("getConcurrency")
+    public void setGetConcurrency(Integer getConcurrency) {
+        this.getConcurrency = getConcurrency;
+    }
+
+    @JsonProperty("httpConfig")
+    public WebHTTPConfig getHttpConfig() {
+        return httpConfig;
+    }
+
+    @JsonProperty("httpConfig")
+    public void setHttpConfig(WebHTTPConfig httpConfig) {
+        this.httpConfig = httpConfig;
+    }
+
+    @JsonProperty("timeout")
+    public Integer getTimeout() {
+        return timeout;
+    }
+
+    @JsonProperty("timeout")
+    public void setTimeout(Integer timeout) {
+        this.timeout = timeout;
+    }
+
+    @JsonProperty("tlsConfig")
+    public WebTLSConfig getTlsConfig() {
+        return tlsConfig;
+    }
+
+    @JsonProperty("tlsConfig")
+    public void setTlsConfig(WebTLSConfig tlsConfig) {
+        this.tlsConfig = tlsConfig;
     }
 
     @JsonIgnore
-    public PlatformStatusBuilder edit() {
-        return new PlatformStatusBuilder(this);
+    public AlertmanagerWebSpecBuilder edit() {
+        return new AlertmanagerWebSpecBuilder(this);
     }
 
     @JsonIgnore
-    public PlatformStatusBuilder toBuilder() {
+    public AlertmanagerWebSpecBuilder toBuilder() {
         return edit();
     }
 

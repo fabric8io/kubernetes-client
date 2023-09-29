@@ -38,6 +38,7 @@ import lombok.experimental.Accessors;
     "kind",
     "metadata",
     "osDisk",
+    "osImage",
     "type",
     "zones"
 })
@@ -65,6 +66,8 @@ public class MachinePool implements Editable<MachinePoolBuilder> , KubernetesRes
 
     @JsonProperty("osDisk")
     private OSDisk osDisk;
+    @JsonProperty("osImage")
+    private OSImage osImage;
     @JsonProperty("type")
     private String type;
     @JsonProperty("zones")
@@ -80,9 +83,10 @@ public class MachinePool implements Editable<MachinePoolBuilder> , KubernetesRes
     public MachinePool() {
     }
 
-    public MachinePool(OSDisk osDisk, String type, List<String> zones) {
+    public MachinePool(OSDisk osDisk, OSImage osImage, String type, List<String> zones) {
         super();
         this.osDisk = osDisk;
+        this.osImage = osImage;
         this.type = type;
         this.zones = zones;
     }
@@ -95,6 +99,16 @@ public class MachinePool implements Editable<MachinePoolBuilder> , KubernetesRes
     @JsonProperty("osDisk")
     public void setOsDisk(OSDisk osDisk) {
         this.osDisk = osDisk;
+    }
+
+    @JsonProperty("osImage")
+    public OSImage getOsImage() {
+        return osImage;
+    }
+
+    @JsonProperty("osImage")
+    public void setOsImage(OSImage osImage) {
+        this.osImage = osImage;
     }
 
     @JsonProperty("type")

@@ -39,7 +39,8 @@ import lombok.experimental.Accessors;
     "selector",
     "serviceAccountName",
     "staticProvidedAPIs",
-    "targetNamespaces"
+    "targetNamespaces",
+    "upgradeStrategy"
 })
 @ToString
 @EqualsAndHashCode
@@ -72,6 +73,8 @@ public class OperatorGroupSpec implements Editable<OperatorGroupSpecBuilder> , K
     @JsonProperty("targetNamespaces")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> targetNamespaces = new ArrayList<String>();
+    @JsonProperty("upgradeStrategy")
+    private String upgradeStrategy;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -82,12 +85,13 @@ public class OperatorGroupSpec implements Editable<OperatorGroupSpecBuilder> , K
     public OperatorGroupSpec() {
     }
 
-    public OperatorGroupSpec(io.fabric8.kubernetes.api.model.LabelSelector selector, String serviceAccountName, Boolean staticProvidedAPIs, List<String> targetNamespaces) {
+    public OperatorGroupSpec(io.fabric8.kubernetes.api.model.LabelSelector selector, String serviceAccountName, Boolean staticProvidedAPIs, List<String> targetNamespaces, String upgradeStrategy) {
         super();
         this.selector = selector;
         this.serviceAccountName = serviceAccountName;
         this.staticProvidedAPIs = staticProvidedAPIs;
         this.targetNamespaces = targetNamespaces;
+        this.upgradeStrategy = upgradeStrategy;
     }
 
     @JsonProperty("selector")
@@ -128,6 +132,16 @@ public class OperatorGroupSpec implements Editable<OperatorGroupSpecBuilder> , K
     @JsonProperty("targetNamespaces")
     public void setTargetNamespaces(List<String> targetNamespaces) {
         this.targetNamespaces = targetNamespaces;
+    }
+
+    @JsonProperty("upgradeStrategy")
+    public String getUpgradeStrategy() {
+        return upgradeStrategy;
+    }
+
+    @JsonProperty("upgradeStrategy")
+    public void setUpgradeStrategy(String upgradeStrategy) {
+        this.upgradeStrategy = upgradeStrategy;
     }
 
     @JsonIgnore

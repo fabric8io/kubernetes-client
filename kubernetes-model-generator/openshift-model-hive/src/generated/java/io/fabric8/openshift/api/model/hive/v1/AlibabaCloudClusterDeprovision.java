@@ -1,5 +1,5 @@
 
-package io.fabric8.openshift.api.model.hive.aws.v1;
+package io.fabric8.openshift.api.model.hive.v1;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -34,11 +34,9 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "credentialsAssumeRole",
+    "baseDomain",
     "credentialsSecretRef",
-    "privateLink",
-    "region",
-    "userTags"
+    "region"
 })
 @ToString
 @EqualsAndHashCode
@@ -59,47 +57,40 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class Platform implements Editable<PlatformBuilder> , KubernetesResource
+public class AlibabaCloudClusterDeprovision implements Editable<AlibabaCloudClusterDeprovisionBuilder> , KubernetesResource
 {
 
-    @JsonProperty("credentialsAssumeRole")
-    private AssumeRole credentialsAssumeRole;
+    @JsonProperty("baseDomain")
+    private String baseDomain;
     @JsonProperty("credentialsSecretRef")
     private io.fabric8.kubernetes.api.model.LocalObjectReference credentialsSecretRef;
-    @JsonProperty("privateLink")
-    private PrivateLinkAccess privateLink;
     @JsonProperty("region")
-    private java.lang.String region;
-    @JsonProperty("userTags")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> userTags = new LinkedHashMap<String, String>();
+    private String region;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      * 
      */
-    public Platform() {
+    public AlibabaCloudClusterDeprovision() {
     }
 
-    public Platform(AssumeRole credentialsAssumeRole, io.fabric8.kubernetes.api.model.LocalObjectReference credentialsSecretRef, PrivateLinkAccess privateLink, java.lang.String region, Map<String, String> userTags) {
+    public AlibabaCloudClusterDeprovision(String baseDomain, io.fabric8.kubernetes.api.model.LocalObjectReference credentialsSecretRef, String region) {
         super();
-        this.credentialsAssumeRole = credentialsAssumeRole;
+        this.baseDomain = baseDomain;
         this.credentialsSecretRef = credentialsSecretRef;
-        this.privateLink = privateLink;
         this.region = region;
-        this.userTags = userTags;
     }
 
-    @JsonProperty("credentialsAssumeRole")
-    public AssumeRole getCredentialsAssumeRole() {
-        return credentialsAssumeRole;
+    @JsonProperty("baseDomain")
+    public String getBaseDomain() {
+        return baseDomain;
     }
 
-    @JsonProperty("credentialsAssumeRole")
-    public void setCredentialsAssumeRole(AssumeRole credentialsAssumeRole) {
-        this.credentialsAssumeRole = credentialsAssumeRole;
+    @JsonProperty("baseDomain")
+    public void setBaseDomain(String baseDomain) {
+        this.baseDomain = baseDomain;
     }
 
     @JsonProperty("credentialsSecretRef")
@@ -112,53 +103,33 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
         this.credentialsSecretRef = credentialsSecretRef;
     }
 
-    @JsonProperty("privateLink")
-    public PrivateLinkAccess getPrivateLink() {
-        return privateLink;
-    }
-
-    @JsonProperty("privateLink")
-    public void setPrivateLink(PrivateLinkAccess privateLink) {
-        this.privateLink = privateLink;
-    }
-
     @JsonProperty("region")
-    public java.lang.String getRegion() {
+    public String getRegion() {
         return region;
     }
 
     @JsonProperty("region")
-    public void setRegion(java.lang.String region) {
+    public void setRegion(String region) {
         this.region = region;
     }
 
-    @JsonProperty("userTags")
-    public Map<String, String> getUserTags() {
-        return userTags;
-    }
-
-    @JsonProperty("userTags")
-    public void setUserTags(Map<String, String> userTags) {
-        this.userTags = userTags;
+    @JsonIgnore
+    public AlibabaCloudClusterDeprovisionBuilder edit() {
+        return new AlibabaCloudClusterDeprovisionBuilder(this);
     }
 
     @JsonIgnore
-    public PlatformBuilder edit() {
-        return new PlatformBuilder(this);
-    }
-
-    @JsonIgnore
-    public PlatformBuilder toBuilder() {
+    public AlibabaCloudClusterDeprovisionBuilder toBuilder() {
         return edit();
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 

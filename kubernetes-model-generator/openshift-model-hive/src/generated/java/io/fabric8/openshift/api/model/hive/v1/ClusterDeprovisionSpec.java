@@ -35,7 +35,9 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
+    "baseDomain",
     "clusterID",
+    "clusterName",
     "infraID",
     "platform"
 })
@@ -61,8 +63,12 @@ import lombok.experimental.Accessors;
 public class ClusterDeprovisionSpec implements Editable<ClusterDeprovisionSpecBuilder> , KubernetesResource
 {
 
+    @JsonProperty("baseDomain")
+    private String baseDomain;
     @JsonProperty("clusterID")
     private String clusterID;
+    @JsonProperty("clusterName")
+    private String clusterName;
     @JsonProperty("infraID")
     private String infraID;
     @JsonProperty("platform")
@@ -77,11 +83,23 @@ public class ClusterDeprovisionSpec implements Editable<ClusterDeprovisionSpecBu
     public ClusterDeprovisionSpec() {
     }
 
-    public ClusterDeprovisionSpec(String clusterID, String infraID, ClusterDeprovisionPlatform platform) {
+    public ClusterDeprovisionSpec(String baseDomain, String clusterID, String clusterName, String infraID, ClusterDeprovisionPlatform platform) {
         super();
+        this.baseDomain = baseDomain;
         this.clusterID = clusterID;
+        this.clusterName = clusterName;
         this.infraID = infraID;
         this.platform = platform;
+    }
+
+    @JsonProperty("baseDomain")
+    public String getBaseDomain() {
+        return baseDomain;
+    }
+
+    @JsonProperty("baseDomain")
+    public void setBaseDomain(String baseDomain) {
+        this.baseDomain = baseDomain;
     }
 
     @JsonProperty("clusterID")
@@ -92,6 +110,16 @@ public class ClusterDeprovisionSpec implements Editable<ClusterDeprovisionSpecBu
     @JsonProperty("clusterID")
     public void setClusterID(String clusterID) {
         this.clusterID = clusterID;
+    }
+
+    @JsonProperty("clusterName")
+    public String getClusterName() {
+        return clusterName;
+    }
+
+    @JsonProperty("clusterName")
+    public void setClusterName(String clusterName) {
+        this.clusterName = clusterName;
     }
 
     @JsonProperty("infraID")

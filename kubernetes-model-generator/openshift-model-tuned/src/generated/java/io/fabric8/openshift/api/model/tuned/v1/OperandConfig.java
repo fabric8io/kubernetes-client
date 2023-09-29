@@ -35,7 +35,8 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "debug"
+    "debug",
+    "tunedConfig"
 })
 @ToString
 @EqualsAndHashCode
@@ -61,6 +62,8 @@ public class OperandConfig implements Editable<OperandConfigBuilder> , Kubernete
 
     @JsonProperty("debug")
     private Boolean debug;
+    @JsonProperty("tunedConfig")
+    private TuneDConfig tunedConfig;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -71,9 +74,10 @@ public class OperandConfig implements Editable<OperandConfigBuilder> , Kubernete
     public OperandConfig() {
     }
 
-    public OperandConfig(Boolean debug) {
+    public OperandConfig(Boolean debug, TuneDConfig tunedConfig) {
         super();
         this.debug = debug;
+        this.tunedConfig = tunedConfig;
     }
 
     @JsonProperty("debug")
@@ -84,6 +88,16 @@ public class OperandConfig implements Editable<OperandConfigBuilder> , Kubernete
     @JsonProperty("debug")
     public void setDebug(Boolean debug) {
         this.debug = debug;
+    }
+
+    @JsonProperty("tunedConfig")
+    public TuneDConfig getTunedConfig() {
+        return tunedConfig;
+    }
+
+    @JsonProperty("tunedConfig")
+    public void setTunedConfig(TuneDConfig tunedConfig) {
+        this.tunedConfig = tunedConfig;
     }
 
     @JsonIgnore

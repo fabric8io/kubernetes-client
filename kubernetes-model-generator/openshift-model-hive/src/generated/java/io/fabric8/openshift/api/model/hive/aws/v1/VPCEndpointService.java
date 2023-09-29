@@ -1,7 +1,9 @@
 
 package io.fabric8.openshift.api.model.hive.aws.v1;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -35,6 +37,8 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
+    "additionalAllowedPrincipals",
+    "defaultAllowedPrincipal",
     "id",
     "name"
 })
@@ -60,6 +64,11 @@ import lombok.experimental.Accessors;
 public class VPCEndpointService implements Editable<VPCEndpointServiceBuilder> , KubernetesResource
 {
 
+    @JsonProperty("additionalAllowedPrincipals")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> additionalAllowedPrincipals = new ArrayList<String>();
+    @JsonProperty("defaultAllowedPrincipal")
+    private String defaultAllowedPrincipal;
     @JsonProperty("id")
     private String id;
     @JsonProperty("name")
@@ -74,10 +83,32 @@ public class VPCEndpointService implements Editable<VPCEndpointServiceBuilder> ,
     public VPCEndpointService() {
     }
 
-    public VPCEndpointService(String id, String name) {
+    public VPCEndpointService(List<String> additionalAllowedPrincipals, String defaultAllowedPrincipal, String id, String name) {
         super();
+        this.additionalAllowedPrincipals = additionalAllowedPrincipals;
+        this.defaultAllowedPrincipal = defaultAllowedPrincipal;
         this.id = id;
         this.name = name;
+    }
+
+    @JsonProperty("additionalAllowedPrincipals")
+    public List<String> getAdditionalAllowedPrincipals() {
+        return additionalAllowedPrincipals;
+    }
+
+    @JsonProperty("additionalAllowedPrincipals")
+    public void setAdditionalAllowedPrincipals(List<String> additionalAllowedPrincipals) {
+        this.additionalAllowedPrincipals = additionalAllowedPrincipals;
+    }
+
+    @JsonProperty("defaultAllowedPrincipal")
+    public String getDefaultAllowedPrincipal() {
+        return defaultAllowedPrincipal;
+    }
+
+    @JsonProperty("defaultAllowedPrincipal")
+    public void setDefaultAllowedPrincipal(String defaultAllowedPrincipal) {
+        this.defaultAllowedPrincipal = defaultAllowedPrincipal;
     }
 
     @JsonProperty("id")

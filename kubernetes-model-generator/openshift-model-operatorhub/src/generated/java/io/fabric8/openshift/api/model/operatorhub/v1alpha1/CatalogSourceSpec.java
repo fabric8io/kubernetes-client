@@ -41,6 +41,7 @@ import lombok.experimental.Accessors;
     "configMap",
     "description",
     "displayName",
+    "grpcPodConfig",
     "icon",
     "image",
     "priority",
@@ -79,6 +80,8 @@ public class CatalogSourceSpec implements Editable<CatalogSourceSpecBuilder> , K
     private String description;
     @JsonProperty("displayName")
     private String displayName;
+    @JsonProperty("grpcPodConfig")
+    private GrpcPodConfig grpcPodConfig;
     @JsonProperty("icon")
     private Icon icon;
     @JsonProperty("image")
@@ -104,12 +107,13 @@ public class CatalogSourceSpec implements Editable<CatalogSourceSpecBuilder> , K
     public CatalogSourceSpec() {
     }
 
-    public CatalogSourceSpec(String address, String configMap, String description, String displayName, Icon icon, String image, Integer priority, String publisher, List<String> secrets, String sourceType, UpdateStrategy updateStrategy) {
+    public CatalogSourceSpec(String address, String configMap, String description, String displayName, GrpcPodConfig grpcPodConfig, Icon icon, String image, Integer priority, String publisher, List<String> secrets, String sourceType, UpdateStrategy updateStrategy) {
         super();
         this.address = address;
         this.configMap = configMap;
         this.description = description;
         this.displayName = displayName;
+        this.grpcPodConfig = grpcPodConfig;
         this.icon = icon;
         this.image = image;
         this.priority = priority;
@@ -157,6 +161,16 @@ public class CatalogSourceSpec implements Editable<CatalogSourceSpecBuilder> , K
     @JsonProperty("displayName")
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
+    }
+
+    @JsonProperty("grpcPodConfig")
+    public GrpcPodConfig getGrpcPodConfig() {
+        return grpcPodConfig;
+    }
+
+    @JsonProperty("grpcPodConfig")
+    public void setGrpcPodConfig(GrpcPodConfig grpcPodConfig) {
+        this.grpcPodConfig = grpcPodConfig;
     }
 
     @JsonProperty("icon")

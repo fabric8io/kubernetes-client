@@ -1,5 +1,5 @@
 
-package io.fabric8.openshift.api.model.hive.azure.v1;
+package io.fabric8.openshift.api.model.monitoring.v1;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -16,6 +16,7 @@ import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
+import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
@@ -34,10 +35,8 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "baseDomainResourceGroupName",
-    "cloudName",
-    "credentialsSecretRef",
-    "region"
+    "host",
+    "port"
 })
 @ToString
 @EqualsAndHashCode
@@ -54,21 +53,17 @@ import lombok.experimental.Accessors;
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.LocalObjectReference.class),
+    @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class Platform implements Editable<PlatformBuilder> , KubernetesResource
+public class HostPort implements Editable<HostPortBuilder> , KubernetesResource
 {
 
-    @JsonProperty("baseDomainResourceGroupName")
-    private String baseDomainResourceGroupName;
-    @JsonProperty("cloudName")
-    private String cloudName;
-    @JsonProperty("credentialsSecretRef")
-    private io.fabric8.kubernetes.api.model.LocalObjectReference credentialsSecretRef;
-    @JsonProperty("region")
-    private String region;
+    @JsonProperty("host")
+    private String host;
+    @JsonProperty("port")
+    private String port;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -76,64 +71,42 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
      * No args constructor for use in serialization
      * 
      */
-    public Platform() {
+    public HostPort() {
     }
 
-    public Platform(String baseDomainResourceGroupName, String cloudName, io.fabric8.kubernetes.api.model.LocalObjectReference credentialsSecretRef, String region) {
+    public HostPort(String host, String port) {
         super();
-        this.baseDomainResourceGroupName = baseDomainResourceGroupName;
-        this.cloudName = cloudName;
-        this.credentialsSecretRef = credentialsSecretRef;
-        this.region = region;
+        this.host = host;
+        this.port = port;
     }
 
-    @JsonProperty("baseDomainResourceGroupName")
-    public String getBaseDomainResourceGroupName() {
-        return baseDomainResourceGroupName;
+    @JsonProperty("host")
+    public String getHost() {
+        return host;
     }
 
-    @JsonProperty("baseDomainResourceGroupName")
-    public void setBaseDomainResourceGroupName(String baseDomainResourceGroupName) {
-        this.baseDomainResourceGroupName = baseDomainResourceGroupName;
+    @JsonProperty("host")
+    public void setHost(String host) {
+        this.host = host;
     }
 
-    @JsonProperty("cloudName")
-    public String getCloudName() {
-        return cloudName;
+    @JsonProperty("port")
+    public String getPort() {
+        return port;
     }
 
-    @JsonProperty("cloudName")
-    public void setCloudName(String cloudName) {
-        this.cloudName = cloudName;
-    }
-
-    @JsonProperty("credentialsSecretRef")
-    public io.fabric8.kubernetes.api.model.LocalObjectReference getCredentialsSecretRef() {
-        return credentialsSecretRef;
-    }
-
-    @JsonProperty("credentialsSecretRef")
-    public void setCredentialsSecretRef(io.fabric8.kubernetes.api.model.LocalObjectReference credentialsSecretRef) {
-        this.credentialsSecretRef = credentialsSecretRef;
-    }
-
-    @JsonProperty("region")
-    public String getRegion() {
-        return region;
-    }
-
-    @JsonProperty("region")
-    public void setRegion(String region) {
-        this.region = region;
+    @JsonProperty("port")
+    public void setPort(String port) {
+        this.port = port;
     }
 
     @JsonIgnore
-    public PlatformBuilder edit() {
-        return new PlatformBuilder(this);
+    public HostPortBuilder edit() {
+        return new HostPortBuilder(this);
     }
 
     @JsonIgnore
-    public PlatformBuilder toBuilder() {
+    public HostPortBuilder toBuilder() {
         return edit();
     }
 

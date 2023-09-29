@@ -1,0 +1,13 @@
+{
+  "apiVersion": "helm.openshift.io/v1beta1",
+  "kind": "ProjectHelmChartRepository",
+  "metadata": {
+    "name": "azure-sample-repo"
+  },
+  "spec": {
+    "name": "azure-sample-repo",
+    "connectionConfig": {
+      "url": "https://example.com/Azure-Samples/helm-charts/master/docs"
+    }
+  }
+}

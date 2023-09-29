@@ -23,6 +23,7 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
+import io.fabric8.openshift.api.model.hive.metricsconfig.v1.MetricsConfig;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -42,6 +43,7 @@ import lombok.experimental.Accessors;
     "backup",
     "controllersConfig",
     "deleteProtection",
+    "deploymentConfig",
     "deprovisionsDisabled",
     "disabledControllers",
     "exportMetrics",
@@ -51,6 +53,7 @@ import lombok.experimental.Accessors;
     "logLevel",
     "maintenanceMode",
     "managedDomains",
+    "metricsConfig",
     "releaseImageVerificationConfigMapRef",
     "serviceProviderCredentialsConfig",
     "syncSetReapplyInterval",
@@ -91,6 +94,9 @@ public class HiveConfigSpec implements Editable<HiveConfigSpecBuilder> , Kuberne
     private ControllersConfig controllersConfig;
     @JsonProperty("deleteProtection")
     private String deleteProtection;
+    @JsonProperty("deploymentConfig")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<DeploymentConfig> deploymentConfig = new ArrayList<DeploymentConfig>();
     @JsonProperty("deprovisionsDisabled")
     private Boolean deprovisionsDisabled;
     @JsonProperty("disabledControllers")
@@ -111,6 +117,8 @@ public class HiveConfigSpec implements Editable<HiveConfigSpecBuilder> , Kuberne
     @JsonProperty("managedDomains")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ManageDNSConfig> managedDomains = new ArrayList<ManageDNSConfig>();
+    @JsonProperty("metricsConfig")
+    private MetricsConfig metricsConfig;
     @JsonProperty("releaseImageVerificationConfigMapRef")
     private ReleaseImageVerificationConfigMapReference releaseImageVerificationConfigMapRef;
     @JsonProperty("serviceProviderCredentialsConfig")
@@ -129,7 +137,7 @@ public class HiveConfigSpec implements Editable<HiveConfigSpecBuilder> , Kuberne
     public HiveConfigSpec() {
     }
 
-    public HiveConfigSpec(List<io.fabric8.kubernetes.api.model.LocalObjectReference> additionalCertificateAuthoritiesSecretRef, ArgoCDConfig argoCDConfig, AWSPrivateLinkConfig awsPrivateLink, BackupConfig backup, ControllersConfig controllersConfig, String deleteProtection, Boolean deprovisionsDisabled, List<String> disabledControllers, Boolean exportMetrics, FailedProvisionConfig failedProvisionConfig, FeatureGateSelection featureGates, io.fabric8.kubernetes.api.model.LocalObjectReference globalPullSecretRef, String logLevel, Boolean maintenanceMode, List<ManageDNSConfig> managedDomains, ReleaseImageVerificationConfigMapReference releaseImageVerificationConfigMapRef, ServiceProviderCredentials serviceProviderCredentialsConfig, String syncSetReapplyInterval, String targetNamespace) {
+    public HiveConfigSpec(List<io.fabric8.kubernetes.api.model.LocalObjectReference> additionalCertificateAuthoritiesSecretRef, ArgoCDConfig argoCDConfig, AWSPrivateLinkConfig awsPrivateLink, BackupConfig backup, ControllersConfig controllersConfig, String deleteProtection, List<DeploymentConfig> deploymentConfig, Boolean deprovisionsDisabled, List<String> disabledControllers, Boolean exportMetrics, FailedProvisionConfig failedProvisionConfig, FeatureGateSelection featureGates, io.fabric8.kubernetes.api.model.LocalObjectReference globalPullSecretRef, String logLevel, Boolean maintenanceMode, List<ManageDNSConfig> managedDomains, MetricsConfig metricsConfig, ReleaseImageVerificationConfigMapReference releaseImageVerificationConfigMapRef, ServiceProviderCredentials serviceProviderCredentialsConfig, String syncSetReapplyInterval, String targetNamespace) {
         super();
         this.additionalCertificateAuthoritiesSecretRef = additionalCertificateAuthoritiesSecretRef;
         this.argoCDConfig = argoCDConfig;
@@ -137,6 +145,7 @@ public class HiveConfigSpec implements Editable<HiveConfigSpecBuilder> , Kuberne
         this.backup = backup;
         this.controllersConfig = controllersConfig;
         this.deleteProtection = deleteProtection;
+        this.deploymentConfig = deploymentConfig;
         this.deprovisionsDisabled = deprovisionsDisabled;
         this.disabledControllers = disabledControllers;
         this.exportMetrics = exportMetrics;
@@ -146,6 +155,7 @@ public class HiveConfigSpec implements Editable<HiveConfigSpecBuilder> , Kuberne
         this.logLevel = logLevel;
         this.maintenanceMode = maintenanceMode;
         this.managedDomains = managedDomains;
+        this.metricsConfig = metricsConfig;
         this.releaseImageVerificationConfigMapRef = releaseImageVerificationConfigMapRef;
         this.serviceProviderCredentialsConfig = serviceProviderCredentialsConfig;
         this.syncSetReapplyInterval = syncSetReapplyInterval;
@@ -210,6 +220,16 @@ public class HiveConfigSpec implements Editable<HiveConfigSpecBuilder> , Kuberne
     @JsonProperty("deleteProtection")
     public void setDeleteProtection(String deleteProtection) {
         this.deleteProtection = deleteProtection;
+    }
+
+    @JsonProperty("deploymentConfig")
+    public List<DeploymentConfig> getDeploymentConfig() {
+        return deploymentConfig;
+    }
+
+    @JsonProperty("deploymentConfig")
+    public void setDeploymentConfig(List<DeploymentConfig> deploymentConfig) {
+        this.deploymentConfig = deploymentConfig;
     }
 
     @JsonProperty("deprovisionsDisabled")
@@ -300,6 +320,16 @@ public class HiveConfigSpec implements Editable<HiveConfigSpecBuilder> , Kuberne
     @JsonProperty("managedDomains")
     public void setManagedDomains(List<ManageDNSConfig> managedDomains) {
         this.managedDomains = managedDomains;
+    }
+
+    @JsonProperty("metricsConfig")
+    public MetricsConfig getMetricsConfig() {
+        return metricsConfig;
+    }
+
+    @JsonProperty("metricsConfig")
+    public void setMetricsConfig(MetricsConfig metricsConfig) {
+        this.metricsConfig = metricsConfig;
     }
 
     @JsonProperty("releaseImageVerificationConfigMapRef")

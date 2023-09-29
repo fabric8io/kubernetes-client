@@ -156,6 +156,8 @@ type Schema struct {
 	ClusterResourceQuotaList        quotaapi.ClusterResourceQuotaList
 	HelmChartRepository             helmapiv1beta1.HelmChartRepository
 	HelmChartRepositoryList         helmapiv1beta1.HelmChartRepositoryList
+        ProjectHelmChartRepository      helmapiv1beta1.ProjectHelmChartRepository
+        ProjectHelmChartRepositoryList  helmapiv1beta1.ProjectHelmChartRepositoryList
 }
 
 func main() {

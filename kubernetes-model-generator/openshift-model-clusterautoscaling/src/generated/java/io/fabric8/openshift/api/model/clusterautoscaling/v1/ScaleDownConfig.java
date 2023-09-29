@@ -39,7 +39,8 @@ import lombok.experimental.Accessors;
     "delayAfterDelete",
     "delayAfterFailure",
     "enabled",
-    "unneededTime"
+    "unneededTime",
+    "utilizationThreshold"
 })
 @ToString
 @EqualsAndHashCode
@@ -73,6 +74,8 @@ public class ScaleDownConfig implements Editable<ScaleDownConfigBuilder> , Kuber
     private Boolean enabled;
     @JsonProperty("unneededTime")
     private String unneededTime;
+    @JsonProperty("utilizationThreshold")
+    private String utilizationThreshold;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -83,13 +86,14 @@ public class ScaleDownConfig implements Editable<ScaleDownConfigBuilder> , Kuber
     public ScaleDownConfig() {
     }
 
-    public ScaleDownConfig(String delayAfterAdd, String delayAfterDelete, String delayAfterFailure, Boolean enabled, String unneededTime) {
+    public ScaleDownConfig(String delayAfterAdd, String delayAfterDelete, String delayAfterFailure, Boolean enabled, String unneededTime, String utilizationThreshold) {
         super();
         this.delayAfterAdd = delayAfterAdd;
         this.delayAfterDelete = delayAfterDelete;
         this.delayAfterFailure = delayAfterFailure;
         this.enabled = enabled;
         this.unneededTime = unneededTime;
+        this.utilizationThreshold = utilizationThreshold;
     }
 
     @JsonProperty("delayAfterAdd")
@@ -140,6 +144,16 @@ public class ScaleDownConfig implements Editable<ScaleDownConfigBuilder> , Kuber
     @JsonProperty("unneededTime")
     public void setUnneededTime(String unneededTime) {
         this.unneededTime = unneededTime;
+    }
+
+    @JsonProperty("utilizationThreshold")
+    public String getUtilizationThreshold() {
+        return utilizationThreshold;
+    }
+
+    @JsonProperty("utilizationThreshold")
+    public void setUtilizationThreshold(String utilizationThreshold) {
+        this.utilizationThreshold = utilizationThreshold;
     }
 
     @JsonIgnore

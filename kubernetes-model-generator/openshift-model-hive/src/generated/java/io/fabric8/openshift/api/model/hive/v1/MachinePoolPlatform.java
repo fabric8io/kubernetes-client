@@ -35,6 +35,7 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
+    "alibabacloud",
     "aws",
     "azure",
     "gcp",
@@ -65,6 +66,8 @@ import lombok.experimental.Accessors;
 public class MachinePoolPlatform implements Editable<MachinePoolPlatformBuilder> , KubernetesResource
 {
 
+    @JsonProperty("alibabacloud")
+    private io.fabric8.openshift.api.model.hive.alibabacloud.v1.MachinePool alibabacloud;
     @JsonProperty("aws")
     private io.fabric8.openshift.api.model.hive.aws.v1.MachinePoolPlatform aws;
     @JsonProperty("azure")
@@ -89,8 +92,9 @@ public class MachinePoolPlatform implements Editable<MachinePoolPlatformBuilder>
     public MachinePoolPlatform() {
     }
 
-    public MachinePoolPlatform(io.fabric8.openshift.api.model.hive.aws.v1.MachinePoolPlatform aws, io.fabric8.openshift.api.model.hive.azure.v1.MachinePool azure, io.fabric8.openshift.api.model.hive.gcp.v1.MachinePool gcp, io.fabric8.openshift.api.model.hive.ibmcloud.v1.MachinePool ibmcloud, io.fabric8.openshift.api.model.hive.openstack.v1.MachinePool openstack, io.fabric8.openshift.api.model.hive.ovirt.v1.MachinePool ovirt, io.fabric8.openshift.api.model.hive.vsphere.v1.MachinePool vsphere) {
+    public MachinePoolPlatform(io.fabric8.openshift.api.model.hive.alibabacloud.v1.MachinePool alibabacloud, io.fabric8.openshift.api.model.hive.aws.v1.MachinePoolPlatform aws, io.fabric8.openshift.api.model.hive.azure.v1.MachinePool azure, io.fabric8.openshift.api.model.hive.gcp.v1.MachinePool gcp, io.fabric8.openshift.api.model.hive.ibmcloud.v1.MachinePool ibmcloud, io.fabric8.openshift.api.model.hive.openstack.v1.MachinePool openstack, io.fabric8.openshift.api.model.hive.ovirt.v1.MachinePool ovirt, io.fabric8.openshift.api.model.hive.vsphere.v1.MachinePool vsphere) {
         super();
+        this.alibabacloud = alibabacloud;
         this.aws = aws;
         this.azure = azure;
         this.gcp = gcp;
@@ -98,6 +102,16 @@ public class MachinePoolPlatform implements Editable<MachinePoolPlatformBuilder>
         this.openstack = openstack;
         this.ovirt = ovirt;
         this.vsphere = vsphere;
+    }
+
+    @JsonProperty("alibabacloud")
+    public io.fabric8.openshift.api.model.hive.alibabacloud.v1.MachinePool getAlibabacloud() {
+        return alibabacloud;
+    }
+
+    @JsonProperty("alibabacloud")
+    public void setAlibabacloud(io.fabric8.openshift.api.model.hive.alibabacloud.v1.MachinePool alibabacloud) {
+        this.alibabacloud = alibabacloud;
     }
 
     @JsonProperty("aws")

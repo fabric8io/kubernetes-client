@@ -1446,6 +1446,9 @@
     "os_cloudcredential_v1_CredentialsRequestSpec": {
       "type": "object",
       "properties": {
+        "cloudTokenPath": {
+          "type": "string"
+        },
         "providerSpec": {
           "$ref": "#/definitions/kubernetes_apimachinery_pkg_runtime_RawExtension",
           "existingJavaType": "java.util.Map\u003cString, Object\u003e"
@@ -2259,6 +2262,9 @@
     "os_metal3_v1alpha1_BareMetalHostSpec": {
       "type": "object",
       "properties": {
+        "architecture": {
+          "type": "string"
+        },
         "automatedCleaningMode": {
           "type": "string"
         },
@@ -2815,6 +2821,13 @@
     "os_metal3_v1alpha1_Storage": {
       "type": "object",
       "properties": {
+        "alternateNames": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
         "hctl": {
           "type": "string"
         },
@@ -2868,6 +2881,232 @@
       },
       "additionalProperties": true,
       "javaType": "io.fabric8.openshift.api.model.miscellaneous.metal3.v1alpha1.VLAN",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_metal3_v1beta1_Metal3Remediation": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "infrastructure.cluster.x-k8s.io/v1beta1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "Metal3Remediation",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/os_metal3_v1beta1_Metal3RemediationSpec",
+          "existingJavaType": "io.fabric8.openshift.api.model.miscellaneous.metal3.v1beta1.Metal3RemediationSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/os_metal3_v1beta1_Metal3RemediationStatus",
+          "existingJavaType": "io.fabric8.openshift.api.model.miscellaneous.metal3.v1beta1.Metal3RemediationStatus"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.miscellaneous.metal3.v1beta1.Metal3Remediation",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
+      ]
+    },
+    "os_metal3_v1beta1_Metal3RemediationList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "infrastructure.cluster.x-k8s.io/v1beta1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/os_metal3_v1beta1_Metal3Remediation",
+            "existingJavaType": "io.fabric8.openshift.api.model.miscellaneous.metal3.v1beta1.Metal3Remediation"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "Metal3RemediationList",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ListMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.miscellaneous.metal3.v1beta1.Metal3RemediationList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.openshift.api.model.miscellaneous.metal3.v1beta1.Metal3Remediation\u003e"
+      ]
+    },
+    "os_metal3_v1beta1_Metal3RemediationSpec": {
+      "type": "object",
+      "properties": {
+        "strategy": {
+          "$ref": "#/definitions/os_metal3_v1beta1_RemediationStrategy",
+          "existingJavaType": "io.fabric8.openshift.api.model.miscellaneous.metal3.v1beta1.RemediationStrategy"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.miscellaneous.metal3.v1beta1.Metal3RemediationSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_metal3_v1beta1_Metal3RemediationStatus": {
+      "type": "object",
+      "properties": {
+        "lastRemediated": {
+          "$ref": "#/definitions/kubernetes_apimachinery_Time",
+          "existingJavaType": "String"
+        },
+        "phase": {
+          "type": "string"
+        },
+        "retryCount": {
+          "type": "integer"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.miscellaneous.metal3.v1beta1.Metal3RemediationStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_metal3_v1beta1_Metal3RemediationTemplate": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "infrastructure.cluster.x-k8s.io/v1beta1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "Metal3RemediationTemplate",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/os_metal3_v1beta1_Metal3RemediationTemplateSpec",
+          "existingJavaType": "io.fabric8.openshift.api.model.miscellaneous.metal3.v1beta1.Metal3RemediationTemplateSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/os_metal3_v1beta1_Metal3RemediationTemplateStatus",
+          "existingJavaType": "io.fabric8.openshift.api.model.miscellaneous.metal3.v1beta1.Metal3RemediationTemplateStatus"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.miscellaneous.metal3.v1beta1.Metal3RemediationTemplate",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
+      ]
+    },
+    "os_metal3_v1beta1_Metal3RemediationTemplateList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "infrastructure.cluster.x-k8s.io/v1beta1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/os_metal3_v1beta1_Metal3RemediationTemplate",
+            "existingJavaType": "io.fabric8.openshift.api.model.miscellaneous.metal3.v1beta1.Metal3RemediationTemplate"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "Metal3RemediationTemplateList",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ListMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.miscellaneous.metal3.v1beta1.Metal3RemediationTemplateList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.openshift.api.model.miscellaneous.metal3.v1beta1.Metal3RemediationTemplate\u003e"
+      ]
+    },
+    "os_metal3_v1beta1_Metal3RemediationTemplateResource": {
+      "type": "object",
+      "properties": {
+        "spec": {
+          "$ref": "#/definitions/os_metal3_v1beta1_Metal3RemediationSpec",
+          "existingJavaType": "io.fabric8.openshift.api.model.miscellaneous.metal3.v1beta1.Metal3RemediationSpec"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.miscellaneous.metal3.v1beta1.Metal3RemediationTemplateResource",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_metal3_v1beta1_Metal3RemediationTemplateSpec": {
+      "type": "object",
+      "properties": {
+        "template": {
+          "$ref": "#/definitions/os_metal3_v1beta1_Metal3RemediationTemplateResource",
+          "existingJavaType": "io.fabric8.openshift.api.model.miscellaneous.metal3.v1beta1.Metal3RemediationTemplateResource"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.miscellaneous.metal3.v1beta1.Metal3RemediationTemplateSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_metal3_v1beta1_Metal3RemediationTemplateStatus": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "#/definitions/os_metal3_v1beta1_Metal3RemediationStatus",
+          "existingJavaType": "io.fabric8.openshift.api.model.miscellaneous.metal3.v1beta1.Metal3RemediationStatus"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.miscellaneous.metal3.v1beta1.Metal3RemediationTemplateStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_metal3_v1beta1_RemediationStrategy": {
+      "type": "object",
+      "properties": {
+        "retryLimit": {
+          "type": "integer"
+        },
+        "timeout": {
+          "$ref": "#/definitions/kubernetes_apimachinery_Duration",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.Duration"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.miscellaneous.metal3.v1beta1.RemediationStrategy",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -3256,6 +3495,22 @@
     "Info": {
       "$ref": "#/definitions/kubernetes_apimachinery_pkg_version_Info",
       "existingJavaType": "io.fabric8.kubernetes.api.model.version.Info"
+    },
+    "Metal3Remediation": {
+      "$ref": "#/definitions/os_metal3_v1beta1_Metal3Remediation",
+      "existingJavaType": "io.fabric8.openshift.api.model.miscellaneous.metal3.v1beta1.Metal3Remediation"
+    },
+    "Metal3RemediationList": {
+      "$ref": "#/definitions/os_metal3_v1beta1_Metal3RemediationList",
+      "existingJavaType": "io.fabric8.openshift.api.model.miscellaneous.metal3.v1beta1.Metal3RemediationList"
+    },
+    "Metal3RemediationTemplate": {
+      "$ref": "#/definitions/os_metal3_v1beta1_Metal3RemediationTemplate",
+      "existingJavaType": "io.fabric8.openshift.api.model.miscellaneous.metal3.v1beta1.Metal3RemediationTemplate"
+    },
+    "Metal3RemediationTemplateList": {
+      "$ref": "#/definitions/os_metal3_v1beta1_Metal3RemediationTemplateList",
+      "existingJavaType": "io.fabric8.openshift.api.model.miscellaneous.metal3.v1beta1.Metal3RemediationTemplateList"
     },
     "NetworkAttachmentDefinition": {
       "$ref": "#/definitions/os_cncf_cni_v1_NetworkAttachmentDefinition",

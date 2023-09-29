@@ -36,6 +36,7 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
+    "cloudTokenPath",
     "providerSpec",
     "secretRef",
     "serviceAccountNames"
@@ -62,6 +63,8 @@ import lombok.experimental.Accessors;
 public class CredentialsRequestSpec implements Editable<CredentialsRequestSpecBuilder> , KubernetesResource
 {
 
+    @JsonProperty("cloudTokenPath")
+    private java.lang.String cloudTokenPath;
     @JsonProperty("providerSpec")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, Object> providerSpec = new LinkedHashMap<String, Object>();
@@ -80,11 +83,22 @@ public class CredentialsRequestSpec implements Editable<CredentialsRequestSpecBu
     public CredentialsRequestSpec() {
     }
 
-    public CredentialsRequestSpec(Map<String, Object> providerSpec, io.fabric8.kubernetes.api.model.ObjectReference secretRef, List<java.lang.String> serviceAccountNames) {
+    public CredentialsRequestSpec(java.lang.String cloudTokenPath, Map<String, Object> providerSpec, io.fabric8.kubernetes.api.model.ObjectReference secretRef, List<java.lang.String> serviceAccountNames) {
         super();
+        this.cloudTokenPath = cloudTokenPath;
         this.providerSpec = providerSpec;
         this.secretRef = secretRef;
         this.serviceAccountNames = serviceAccountNames;
+    }
+
+    @JsonProperty("cloudTokenPath")
+    public java.lang.String getCloudTokenPath() {
+        return cloudTokenPath;
+    }
+
+    @JsonProperty("cloudTokenPath")
+    public void setCloudTokenPath(java.lang.String cloudTokenPath) {
+        this.cloudTokenPath = cloudTokenPath;
     }
 
     @JsonProperty("providerSpec")

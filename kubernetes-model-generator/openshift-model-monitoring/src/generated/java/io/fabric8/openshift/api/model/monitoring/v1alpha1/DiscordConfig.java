@@ -1,5 +1,5 @@
 
-package io.fabric8.openshift.api.model.monitoring.v1;
+package io.fabric8.openshift.api.model.monitoring.v1alpha1;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -22,6 +22,7 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
+import io.fabric8.kubernetes.api.model.SecretKeySelector;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -35,11 +36,11 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "lastTransitionTime",
+    "apiURL",
+    "httpConfig",
     "message",
-    "reason",
-    "status",
-    "type"
+    "sendResolved",
+    "title"
 })
 @ToString
 @EqualsAndHashCode
@@ -60,105 +61,105 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class PrometheusCondition implements Editable<PrometheusConditionBuilder> , KubernetesResource
+public class DiscordConfig implements Editable<DiscordConfigBuilder> , KubernetesResource
 {
 
-    @JsonProperty("lastTransitionTime")
-    private String lastTransitionTime;
+    @JsonProperty("apiURL")
+    private SecretKeySelector apiURL;
+    @JsonProperty("httpConfig")
+    private HTTPConfig httpConfig;
     @JsonProperty("message")
-    private java.lang.String message;
-    @JsonProperty("reason")
-    private java.lang.String reason;
-    @JsonProperty("status")
-    private java.lang.String status;
-    @JsonProperty("type")
-    private java.lang.String type;
+    private String message;
+    @JsonProperty("sendResolved")
+    private Boolean sendResolved;
+    @JsonProperty("title")
+    private String title;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      * 
      */
-    public PrometheusCondition() {
+    public DiscordConfig() {
     }
 
-    public PrometheusCondition(String lastTransitionTime, java.lang.String message, java.lang.String reason, java.lang.String status, java.lang.String type) {
+    public DiscordConfig(SecretKeySelector apiURL, HTTPConfig httpConfig, String message, Boolean sendResolved, String title) {
         super();
-        this.lastTransitionTime = lastTransitionTime;
+        this.apiURL = apiURL;
+        this.httpConfig = httpConfig;
         this.message = message;
-        this.reason = reason;
-        this.status = status;
-        this.type = type;
+        this.sendResolved = sendResolved;
+        this.title = title;
     }
 
-    @JsonProperty("lastTransitionTime")
-    public String getLastTransitionTime() {
-        return lastTransitionTime;
+    @JsonProperty("apiURL")
+    public SecretKeySelector getApiURL() {
+        return apiURL;
     }
 
-    @JsonProperty("lastTransitionTime")
-    public void setLastTransitionTime(String lastTransitionTime) {
-        this.lastTransitionTime = lastTransitionTime;
+    @JsonProperty("apiURL")
+    public void setApiURL(SecretKeySelector apiURL) {
+        this.apiURL = apiURL;
+    }
+
+    @JsonProperty("httpConfig")
+    public HTTPConfig getHttpConfig() {
+        return httpConfig;
+    }
+
+    @JsonProperty("httpConfig")
+    public void setHttpConfig(HTTPConfig httpConfig) {
+        this.httpConfig = httpConfig;
     }
 
     @JsonProperty("message")
-    public java.lang.String getMessage() {
+    public String getMessage() {
         return message;
     }
 
     @JsonProperty("message")
-    public void setMessage(java.lang.String message) {
+    public void setMessage(String message) {
         this.message = message;
     }
 
-    @JsonProperty("reason")
-    public java.lang.String getReason() {
-        return reason;
+    @JsonProperty("sendResolved")
+    public Boolean getSendResolved() {
+        return sendResolved;
     }
 
-    @JsonProperty("reason")
-    public void setReason(java.lang.String reason) {
-        this.reason = reason;
+    @JsonProperty("sendResolved")
+    public void setSendResolved(Boolean sendResolved) {
+        this.sendResolved = sendResolved;
     }
 
-    @JsonProperty("status")
-    public java.lang.String getStatus() {
-        return status;
+    @JsonProperty("title")
+    public String getTitle() {
+        return title;
     }
 
-    @JsonProperty("status")
-    public void setStatus(java.lang.String status) {
-        this.status = status;
-    }
-
-    @JsonProperty("type")
-    public java.lang.String getType() {
-        return type;
-    }
-
-    @JsonProperty("type")
-    public void setType(java.lang.String type) {
-        this.type = type;
+    @JsonProperty("title")
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     @JsonIgnore
-    public PrometheusConditionBuilder edit() {
-        return new PrometheusConditionBuilder(this);
+    public DiscordConfigBuilder edit() {
+        return new DiscordConfigBuilder(this);
     }
 
     @JsonIgnore
-    public PrometheusConditionBuilder toBuilder() {
+    public DiscordConfigBuilder toBuilder() {
         return edit();
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 

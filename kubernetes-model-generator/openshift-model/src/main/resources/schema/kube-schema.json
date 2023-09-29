@@ -7425,6 +7425,31 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "os_helm_v1beta1_ConnectionConfigNamespaceScoped": {
+      "type": "object",
+      "properties": {
+        "basicAuthConfig": {
+          "$ref": "#/definitions/os_config_v1_SecretNameReference",
+          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.SecretNameReference"
+        },
+        "ca": {
+          "$ref": "#/definitions/os_config_v1_ConfigMapNameReference",
+          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.ConfigMapNameReference"
+        },
+        "tlsClientConfig": {
+          "$ref": "#/definitions/os_config_v1_SecretNameReference",
+          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.SecretNameReference"
+        },
+        "url": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.ConnectionConfigNamespaceScoped",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "os_helm_v1beta1_HelmChartRepository": {
       "type": "object",
       "properties": {
@@ -7526,6 +7551,94 @@
       },
       "additionalProperties": true,
       "javaType": "io.fabric8.openshift.api.model.HelmChartRepositoryStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_helm_v1beta1_ProjectHelmChartRepository": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "helm.openshift.io/v1beta1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "ProjectHelmChartRepository",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/os_helm_v1beta1_ProjectHelmChartRepositorySpec",
+          "existingJavaType": "io.fabric8.openshift.api.model.ProjectHelmChartRepositorySpec"
+        },
+        "status": {
+          "$ref": "#/definitions/os_helm_v1beta1_HelmChartRepositoryStatus",
+          "existingJavaType": "io.fabric8.openshift.api.model.HelmChartRepositoryStatus"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.ProjectHelmChartRepository",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
+      ]
+    },
+    "os_helm_v1beta1_ProjectHelmChartRepositoryList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "helm.openshift.io/v1beta1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/os_helm_v1beta1_ProjectHelmChartRepository",
+            "existingJavaType": "io.fabric8.openshift.api.model.ProjectHelmChartRepository"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "ProjectHelmChartRepositoryList",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ListMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.ProjectHelmChartRepositoryList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.openshift.api.model.ProjectHelmChartRepository\u003e"
+      ]
+    },
+    "os_helm_v1beta1_ProjectHelmChartRepositorySpec": {
+      "type": "object",
+      "properties": {
+        "connectionConfig": {
+          "$ref": "#/definitions/os_helm_v1beta1_ConnectionConfigNamespaceScoped",
+          "existingJavaType": "io.fabric8.openshift.api.model.ConnectionConfigNamespaceScoped"
+        },
+        "description": {
+          "type": "string"
+        },
+        "disabled": {
+          "type": "boolean"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.ProjectHelmChartRepositorySpec",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -11389,6 +11502,14 @@
     "Project": {
       "$ref": "#/definitions/os_project_Project",
       "existingJavaType": "io.fabric8.openshift.api.model.Project"
+    },
+    "ProjectHelmChartRepository": {
+      "$ref": "#/definitions/os_helm_v1beta1_ProjectHelmChartRepository",
+      "existingJavaType": "io.fabric8.openshift.api.model.ProjectHelmChartRepository"
+    },
+    "ProjectHelmChartRepositoryList": {
+      "$ref": "#/definitions/os_helm_v1beta1_ProjectHelmChartRepositoryList",
+      "existingJavaType": "io.fabric8.openshift.api.model.ProjectHelmChartRepositoryList"
     },
     "ProjectList": {
       "$ref": "#/definitions/os_project_ProjectList",

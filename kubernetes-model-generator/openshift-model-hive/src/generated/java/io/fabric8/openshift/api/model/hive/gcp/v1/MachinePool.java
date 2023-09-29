@@ -37,6 +37,7 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
+    "networkProjectID",
     "osDisk",
     "type",
     "zones"
@@ -63,6 +64,8 @@ import lombok.experimental.Accessors;
 public class MachinePool implements Editable<MachinePoolBuilder> , KubernetesResource
 {
 
+    @JsonProperty("networkProjectID")
+    private String networkProjectID;
     @JsonProperty("osDisk")
     private OSDisk osDisk;
     @JsonProperty("type")
@@ -80,11 +83,22 @@ public class MachinePool implements Editable<MachinePoolBuilder> , KubernetesRes
     public MachinePool() {
     }
 
-    public MachinePool(OSDisk osDisk, String type, List<String> zones) {
+    public MachinePool(String networkProjectID, OSDisk osDisk, String type, List<String> zones) {
         super();
+        this.networkProjectID = networkProjectID;
         this.osDisk = osDisk;
         this.type = type;
         this.zones = zones;
+    }
+
+    @JsonProperty("networkProjectID")
+    public String getNetworkProjectID() {
+        return networkProjectID;
+    }
+
+    @JsonProperty("networkProjectID")
+    public void setNetworkProjectID(String networkProjectID) {
+        this.networkProjectID = networkProjectID;
     }
 
     @JsonProperty("osDisk")

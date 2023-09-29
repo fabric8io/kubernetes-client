@@ -16,7 +16,6 @@ import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
-import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
@@ -37,6 +36,7 @@ import lombok.experimental.Accessors;
     "metadata",
     "claimName",
     "claimedTimestamp",
+    "clusterDeploymentCustomization",
     "namespace",
     "poolName"
 })
@@ -55,7 +55,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
-    @BuildableReference(LocalObjectReference.class),
+    @BuildableReference(io.fabric8.kubernetes.api.model.LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
@@ -66,6 +66,8 @@ public class ClusterPoolReference implements Editable<ClusterPoolReferenceBuilde
     private java.lang.String claimName;
     @JsonProperty("claimedTimestamp")
     private String claimedTimestamp;
+    @JsonProperty("clusterDeploymentCustomization")
+    private io.fabric8.kubernetes.api.model.LocalObjectReference clusterDeploymentCustomization;
     @JsonProperty("namespace")
     private java.lang.String namespace;
     @JsonProperty("poolName")
@@ -80,10 +82,11 @@ public class ClusterPoolReference implements Editable<ClusterPoolReferenceBuilde
     public ClusterPoolReference() {
     }
 
-    public ClusterPoolReference(java.lang.String claimName, String claimedTimestamp, java.lang.String namespace, java.lang.String poolName) {
+    public ClusterPoolReference(java.lang.String claimName, String claimedTimestamp, io.fabric8.kubernetes.api.model.LocalObjectReference clusterDeploymentCustomization, java.lang.String namespace, java.lang.String poolName) {
         super();
         this.claimName = claimName;
         this.claimedTimestamp = claimedTimestamp;
+        this.clusterDeploymentCustomization = clusterDeploymentCustomization;
         this.namespace = namespace;
         this.poolName = poolName;
     }
@@ -106,6 +109,16 @@ public class ClusterPoolReference implements Editable<ClusterPoolReferenceBuilde
     @JsonProperty("claimedTimestamp")
     public void setClaimedTimestamp(String claimedTimestamp) {
         this.claimedTimestamp = claimedTimestamp;
+    }
+
+    @JsonProperty("clusterDeploymentCustomization")
+    public io.fabric8.kubernetes.api.model.LocalObjectReference getClusterDeploymentCustomization() {
+        return clusterDeploymentCustomization;
+    }
+
+    @JsonProperty("clusterDeploymentCustomization")
+    public void setClusterDeploymentCustomization(io.fabric8.kubernetes.api.model.LocalObjectReference clusterDeploymentCustomization) {
+        this.clusterDeploymentCustomization = clusterDeploymentCustomization;
     }
 
     @JsonProperty("namespace")

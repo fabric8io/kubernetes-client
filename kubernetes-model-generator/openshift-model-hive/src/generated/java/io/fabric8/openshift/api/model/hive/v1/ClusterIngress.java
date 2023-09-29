@@ -21,6 +21,7 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
+import io.fabric8.openshift.api.model.config.v1.ConfigMapNameReference;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -35,6 +36,7 @@ import lombok.experimental.Accessors;
     "kind",
     "metadata",
     "domain",
+    "httpErrorCodePages",
     "name",
     "namespaceSelector",
     "routeSelector",
@@ -64,6 +66,8 @@ public class ClusterIngress implements Editable<ClusterIngressBuilder> , Kuberne
 
     @JsonProperty("domain")
     private String domain;
+    @JsonProperty("httpErrorCodePages")
+    private ConfigMapNameReference httpErrorCodePages;
     @JsonProperty("name")
     private String name;
     @JsonProperty("namespaceSelector")
@@ -82,9 +86,10 @@ public class ClusterIngress implements Editable<ClusterIngressBuilder> , Kuberne
     public ClusterIngress() {
     }
 
-    public ClusterIngress(String domain, String name, io.fabric8.kubernetes.api.model.LabelSelector namespaceSelector, io.fabric8.kubernetes.api.model.LabelSelector routeSelector, String servingCertificate) {
+    public ClusterIngress(String domain, ConfigMapNameReference httpErrorCodePages, String name, io.fabric8.kubernetes.api.model.LabelSelector namespaceSelector, io.fabric8.kubernetes.api.model.LabelSelector routeSelector, String servingCertificate) {
         super();
         this.domain = domain;
+        this.httpErrorCodePages = httpErrorCodePages;
         this.name = name;
         this.namespaceSelector = namespaceSelector;
         this.routeSelector = routeSelector;
@@ -99,6 +104,16 @@ public class ClusterIngress implements Editable<ClusterIngressBuilder> , Kuberne
     @JsonProperty("domain")
     public void setDomain(String domain) {
         this.domain = domain;
+    }
+
+    @JsonProperty("httpErrorCodePages")
+    public ConfigMapNameReference getHttpErrorCodePages() {
+        return httpErrorCodePages;
+    }
+
+    @JsonProperty("httpErrorCodePages")
+    public void setHttpErrorCodePages(ConfigMapNameReference httpErrorCodePages) {
+        this.httpErrorCodePages = httpErrorCodePages;
     }
 
     @JsonProperty("name")

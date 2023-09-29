@@ -37,7 +37,8 @@ import lombok.experimental.Accessors;
     "adminKubeconfigSecretRef",
     "adminPasswordSecretRef",
     "clusterID",
-    "infraID"
+    "infraID",
+    "platform"
 })
 @ToString
 @EqualsAndHashCode
@@ -69,6 +70,8 @@ public class ClusterMetadata implements Editable<ClusterMetadataBuilder> , Kuber
     private String clusterID;
     @JsonProperty("infraID")
     private String infraID;
+    @JsonProperty("platform")
+    private ClusterPlatformMetadata platform;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -79,12 +82,13 @@ public class ClusterMetadata implements Editable<ClusterMetadataBuilder> , Kuber
     public ClusterMetadata() {
     }
 
-    public ClusterMetadata(io.fabric8.kubernetes.api.model.LocalObjectReference adminKubeconfigSecretRef, io.fabric8.kubernetes.api.model.LocalObjectReference adminPasswordSecretRef, String clusterID, String infraID) {
+    public ClusterMetadata(io.fabric8.kubernetes.api.model.LocalObjectReference adminKubeconfigSecretRef, io.fabric8.kubernetes.api.model.LocalObjectReference adminPasswordSecretRef, String clusterID, String infraID, ClusterPlatformMetadata platform) {
         super();
         this.adminKubeconfigSecretRef = adminKubeconfigSecretRef;
         this.adminPasswordSecretRef = adminPasswordSecretRef;
         this.clusterID = clusterID;
         this.infraID = infraID;
+        this.platform = platform;
     }
 
     @JsonProperty("adminKubeconfigSecretRef")
@@ -125,6 +129,16 @@ public class ClusterMetadata implements Editable<ClusterMetadataBuilder> , Kuber
     @JsonProperty("infraID")
     public void setInfraID(String infraID) {
         this.infraID = infraID;
+    }
+
+    @JsonProperty("platform")
+    public ClusterPlatformMetadata getPlatform() {
+        return platform;
+    }
+
+    @JsonProperty("platform")
+    public void setPlatform(ClusterPlatformMetadata platform) {
+        this.platform = platform;
     }
 
     @JsonIgnore

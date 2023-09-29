@@ -37,9 +37,7 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "bootcmdline",
     "conditions",
-    "stalld",
     "tunedProfile"
 })
 @ToString
@@ -64,13 +62,9 @@ import lombok.experimental.Accessors;
 public class ProfileStatus implements Editable<ProfileStatusBuilder> , KubernetesResource
 {
 
-    @JsonProperty("bootcmdline")
-    private String bootcmdline;
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ProfileStatusCondition> conditions = new ArrayList<ProfileStatusCondition>();
-    @JsonProperty("stalld")
-    private Boolean stalld;
     @JsonProperty("tunedProfile")
     private String tunedProfile;
     @JsonIgnore
@@ -83,22 +77,10 @@ public class ProfileStatus implements Editable<ProfileStatusBuilder> , Kubernete
     public ProfileStatus() {
     }
 
-    public ProfileStatus(String bootcmdline, List<ProfileStatusCondition> conditions, Boolean stalld, String tunedProfile) {
+    public ProfileStatus(List<ProfileStatusCondition> conditions, String tunedProfile) {
         super();
-        this.bootcmdline = bootcmdline;
         this.conditions = conditions;
-        this.stalld = stalld;
         this.tunedProfile = tunedProfile;
-    }
-
-    @JsonProperty("bootcmdline")
-    public String getBootcmdline() {
-        return bootcmdline;
-    }
-
-    @JsonProperty("bootcmdline")
-    public void setBootcmdline(String bootcmdline) {
-        this.bootcmdline = bootcmdline;
     }
 
     @JsonProperty("conditions")
@@ -109,16 +91,6 @@ public class ProfileStatus implements Editable<ProfileStatusBuilder> , Kubernete
     @JsonProperty("conditions")
     public void setConditions(List<ProfileStatusCondition> conditions) {
         this.conditions = conditions;
-    }
-
-    @JsonProperty("stalld")
-    public Boolean getStalld() {
-        return stalld;
-    }
-
-    @JsonProperty("stalld")
-    public void setStalld(Boolean stalld) {
-        this.stalld = stalld;
     }
 
     @JsonProperty("tunedProfile")

@@ -34,9 +34,7 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "accountID",
     "baseDomain",
-    "cisInstanceCRN",
     "credentialsSecretRef",
     "region"
 })
@@ -62,12 +60,8 @@ import lombok.experimental.Accessors;
 public class IBMClusterDeprovision implements Editable<IBMClusterDeprovisionBuilder> , KubernetesResource
 {
 
-    @JsonProperty("accountID")
-    private String accountID;
     @JsonProperty("baseDomain")
     private String baseDomain;
-    @JsonProperty("cisInstanceCRN")
-    private String cisInstanceCRN;
     @JsonProperty("credentialsSecretRef")
     private io.fabric8.kubernetes.api.model.LocalObjectReference credentialsSecretRef;
     @JsonProperty("region")
@@ -82,23 +76,11 @@ public class IBMClusterDeprovision implements Editable<IBMClusterDeprovisionBuil
     public IBMClusterDeprovision() {
     }
 
-    public IBMClusterDeprovision(String accountID, String baseDomain, String cisInstanceCRN, io.fabric8.kubernetes.api.model.LocalObjectReference credentialsSecretRef, String region) {
+    public IBMClusterDeprovision(String baseDomain, io.fabric8.kubernetes.api.model.LocalObjectReference credentialsSecretRef, String region) {
         super();
-        this.accountID = accountID;
         this.baseDomain = baseDomain;
-        this.cisInstanceCRN = cisInstanceCRN;
         this.credentialsSecretRef = credentialsSecretRef;
         this.region = region;
-    }
-
-    @JsonProperty("accountID")
-    public String getAccountID() {
-        return accountID;
-    }
-
-    @JsonProperty("accountID")
-    public void setAccountID(String accountID) {
-        this.accountID = accountID;
     }
 
     @JsonProperty("baseDomain")
@@ -109,16 +91,6 @@ public class IBMClusterDeprovision implements Editable<IBMClusterDeprovisionBuil
     @JsonProperty("baseDomain")
     public void setBaseDomain(String baseDomain) {
         this.baseDomain = baseDomain;
-    }
-
-    @JsonProperty("cisInstanceCRN")
-    public String getCisInstanceCRN() {
-        return cisInstanceCRN;
-    }
-
-    @JsonProperty("cisInstanceCRN")
-    public void setCisInstanceCRN(String cisInstanceCRN) {
-        this.cisInstanceCRN = cisInstanceCRN;
     }
 
     @JsonProperty("credentialsSecretRef")

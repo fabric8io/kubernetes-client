@@ -38,6 +38,7 @@ import lombok.experimental.Accessors;
     "annotations",
     "expr",
     "for",
+    "keep_firing_for",
     "labels",
     "record"
 })
@@ -72,6 +73,8 @@ public class Rule implements Editable<RuleBuilder> , KubernetesResource
     private io.fabric8.kubernetes.api.model.IntOrString expr;
     @JsonProperty("for")
     private java.lang.String _for;
+    @JsonProperty("keep_firing_for")
+    private java.lang.String keepFiringFor;
     @JsonProperty("labels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> labels = new LinkedHashMap<String, String>();
@@ -87,12 +90,13 @@ public class Rule implements Editable<RuleBuilder> , KubernetesResource
     public Rule() {
     }
 
-    public Rule(java.lang.String alert, Map<String, String> annotations, io.fabric8.kubernetes.api.model.IntOrString expr, java.lang.String _for, Map<String, String> labels, java.lang.String record) {
+    public Rule(java.lang.String alert, Map<String, String> annotations, io.fabric8.kubernetes.api.model.IntOrString expr, java.lang.String _for, java.lang.String keepFiringFor, Map<String, String> labels, java.lang.String record) {
         super();
         this.alert = alert;
         this.annotations = annotations;
         this.expr = expr;
         this._for = _for;
+        this.keepFiringFor = keepFiringFor;
         this.labels = labels;
         this.record = record;
     }
@@ -135,6 +139,16 @@ public class Rule implements Editable<RuleBuilder> , KubernetesResource
     @JsonProperty("for")
     public void setFor(java.lang.String _for) {
         this._for = _for;
+    }
+
+    @JsonProperty("keep_firing_for")
+    public java.lang.String getKeepFiringFor() {
+        return keepFiringFor;
+    }
+
+    @JsonProperty("keep_firing_for")
+    public void setKeepFiringFor(java.lang.String keepFiringFor) {
+        this.keepFiringFor = keepFiringFor;
     }
 
     @JsonProperty("labels")

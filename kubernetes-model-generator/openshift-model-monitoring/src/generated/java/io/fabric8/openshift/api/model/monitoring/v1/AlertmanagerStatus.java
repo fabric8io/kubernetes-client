@@ -1,7 +1,9 @@
 
 package io.fabric8.openshift.api.model.monitoring.v1;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -36,6 +38,7 @@ import lombok.experimental.Accessors;
     "kind",
     "metadata",
     "availableReplicas",
+    "conditions",
     "paused",
     "replicas",
     "unavailableReplicas",
@@ -65,6 +68,9 @@ public class AlertmanagerStatus implements Editable<AlertmanagerStatusBuilder> ,
 
     @JsonProperty("availableReplicas")
     private Integer availableReplicas;
+    @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<Condition> conditions = new ArrayList<Condition>();
     @JsonProperty("paused")
     private Boolean paused;
     @JsonProperty("replicas")
@@ -83,9 +89,10 @@ public class AlertmanagerStatus implements Editable<AlertmanagerStatusBuilder> ,
     public AlertmanagerStatus() {
     }
 
-    public AlertmanagerStatus(Integer availableReplicas, Boolean paused, Integer replicas, Integer unavailableReplicas, Integer updatedReplicas) {
+    public AlertmanagerStatus(Integer availableReplicas, List<Condition> conditions, Boolean paused, Integer replicas, Integer unavailableReplicas, Integer updatedReplicas) {
         super();
         this.availableReplicas = availableReplicas;
+        this.conditions = conditions;
         this.paused = paused;
         this.replicas = replicas;
         this.unavailableReplicas = unavailableReplicas;
@@ -100,6 +107,16 @@ public class AlertmanagerStatus implements Editable<AlertmanagerStatusBuilder> ,
     @JsonProperty("availableReplicas")
     public void setAvailableReplicas(Integer availableReplicas) {
         this.availableReplicas = availableReplicas;
+    }
+
+    @JsonProperty("conditions")
+    public List<Condition> getConditions() {
+        return conditions;
+    }
+
+    @JsonProperty("conditions")
+    public void setConditions(List<Condition> conditions) {
+        this.conditions = conditions;
     }
 
     @JsonProperty("paused")

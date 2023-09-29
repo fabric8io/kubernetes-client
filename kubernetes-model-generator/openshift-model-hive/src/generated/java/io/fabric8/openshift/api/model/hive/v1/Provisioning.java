@@ -42,6 +42,7 @@ import lombok.experimental.Accessors;
     "installerEnv",
     "installerImageOverride",
     "manifestsConfigMapRef",
+    "manifestsSecretRef",
     "releaseImage",
     "sshKnownHosts",
     "sshPrivateKeySecretRef"
@@ -79,6 +80,8 @@ public class Provisioning implements Editable<ProvisioningBuilder> , KubernetesR
     private String installerImageOverride;
     @JsonProperty("manifestsConfigMapRef")
     private io.fabric8.kubernetes.api.model.LocalObjectReference manifestsConfigMapRef;
+    @JsonProperty("manifestsSecretRef")
+    private io.fabric8.kubernetes.api.model.LocalObjectReference manifestsSecretRef;
     @JsonProperty("releaseImage")
     private String releaseImage;
     @JsonProperty("sshKnownHosts")
@@ -96,13 +99,14 @@ public class Provisioning implements Editable<ProvisioningBuilder> , KubernetesR
     public Provisioning() {
     }
 
-    public Provisioning(ClusterImageSetReference imageSetRef, io.fabric8.kubernetes.api.model.LocalObjectReference installConfigSecretRef, List<EnvVar> installerEnv, String installerImageOverride, io.fabric8.kubernetes.api.model.LocalObjectReference manifestsConfigMapRef, String releaseImage, List<String> sshKnownHosts, io.fabric8.kubernetes.api.model.LocalObjectReference sshPrivateKeySecretRef) {
+    public Provisioning(ClusterImageSetReference imageSetRef, io.fabric8.kubernetes.api.model.LocalObjectReference installConfigSecretRef, List<EnvVar> installerEnv, String installerImageOverride, io.fabric8.kubernetes.api.model.LocalObjectReference manifestsConfigMapRef, io.fabric8.kubernetes.api.model.LocalObjectReference manifestsSecretRef, String releaseImage, List<String> sshKnownHosts, io.fabric8.kubernetes.api.model.LocalObjectReference sshPrivateKeySecretRef) {
         super();
         this.imageSetRef = imageSetRef;
         this.installConfigSecretRef = installConfigSecretRef;
         this.installerEnv = installerEnv;
         this.installerImageOverride = installerImageOverride;
         this.manifestsConfigMapRef = manifestsConfigMapRef;
+        this.manifestsSecretRef = manifestsSecretRef;
         this.releaseImage = releaseImage;
         this.sshKnownHosts = sshKnownHosts;
         this.sshPrivateKeySecretRef = sshPrivateKeySecretRef;
@@ -156,6 +160,16 @@ public class Provisioning implements Editable<ProvisioningBuilder> , KubernetesR
     @JsonProperty("manifestsConfigMapRef")
     public void setManifestsConfigMapRef(io.fabric8.kubernetes.api.model.LocalObjectReference manifestsConfigMapRef) {
         this.manifestsConfigMapRef = manifestsConfigMapRef;
+    }
+
+    @JsonProperty("manifestsSecretRef")
+    public io.fabric8.kubernetes.api.model.LocalObjectReference getManifestsSecretRef() {
+        return manifestsSecretRef;
+    }
+
+    @JsonProperty("manifestsSecretRef")
+    public void setManifestsSecretRef(io.fabric8.kubernetes.api.model.LocalObjectReference manifestsSecretRef) {
+        this.manifestsSecretRef = manifestsSecretRef;
     }
 
     @JsonProperty("releaseImage")

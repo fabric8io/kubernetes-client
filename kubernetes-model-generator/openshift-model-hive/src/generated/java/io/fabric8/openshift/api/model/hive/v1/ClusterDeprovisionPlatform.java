@@ -35,6 +35,7 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
+    "alibabacloud",
     "aws",
     "azure",
     "gcp",
@@ -65,6 +66,8 @@ import lombok.experimental.Accessors;
 public class ClusterDeprovisionPlatform implements Editable<ClusterDeprovisionPlatformBuilder> , KubernetesResource
 {
 
+    @JsonProperty("alibabacloud")
+    private AlibabaCloudClusterDeprovision alibabacloud;
     @JsonProperty("aws")
     private AWSClusterDeprovision aws;
     @JsonProperty("azure")
@@ -89,8 +92,9 @@ public class ClusterDeprovisionPlatform implements Editable<ClusterDeprovisionPl
     public ClusterDeprovisionPlatform() {
     }
 
-    public ClusterDeprovisionPlatform(AWSClusterDeprovision aws, AzureClusterDeprovision azure, GCPClusterDeprovision gcp, IBMClusterDeprovision ibmcloud, OpenStackClusterDeprovision openstack, OvirtClusterDeprovision ovirt, VSphereClusterDeprovision vsphere) {
+    public ClusterDeprovisionPlatform(AlibabaCloudClusterDeprovision alibabacloud, AWSClusterDeprovision aws, AzureClusterDeprovision azure, GCPClusterDeprovision gcp, IBMClusterDeprovision ibmcloud, OpenStackClusterDeprovision openstack, OvirtClusterDeprovision ovirt, VSphereClusterDeprovision vsphere) {
         super();
+        this.alibabacloud = alibabacloud;
         this.aws = aws;
         this.azure = azure;
         this.gcp = gcp;
@@ -98,6 +102,16 @@ public class ClusterDeprovisionPlatform implements Editable<ClusterDeprovisionPl
         this.openstack = openstack;
         this.ovirt = ovirt;
         this.vsphere = vsphere;
+    }
+
+    @JsonProperty("alibabacloud")
+    public AlibabaCloudClusterDeprovision getAlibabacloud() {
+        return alibabacloud;
+    }
+
+    @JsonProperty("alibabacloud")
+    public void setAlibabacloud(AlibabaCloudClusterDeprovision alibabacloud) {
+        this.alibabacloud = alibabacloud;
     }
 
     @JsonProperty("aws")

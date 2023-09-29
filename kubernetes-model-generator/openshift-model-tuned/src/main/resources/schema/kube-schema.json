@@ -490,6 +490,10 @@
       "properties": {
         "debug": {
           "type": "boolean"
+        },
+        "tunedConfig": {
+          "$ref": "#/definitions/os_tuned_v1_TuneDConfig",
+          "existingJavaType": "io.fabric8.openshift.api.model.tuned.v1.TuneDConfig"
         }
       },
       "additionalProperties": true,
@@ -536,6 +540,13 @@
       "properties": {
         "debug": {
           "type": "boolean"
+        },
+        "providerName": {
+          "type": "string"
+        },
+        "tunedConfig": {
+          "$ref": "#/definitions/os_tuned_v1_TuneDConfig",
+          "existingJavaType": "io.fabric8.openshift.api.model.tuned.v1.TuneDConfig"
         },
         "tunedProfile": {
           "type": "string"
@@ -596,9 +607,6 @@
     "os_tuned_v1_ProfileStatus": {
       "type": "object",
       "properties": {
-        "bootcmdline": {
-          "type": "string"
-        },
         "conditions": {
           "type": "array",
           "javaOmitEmpty": true,
@@ -606,9 +614,6 @@
             "$ref": "#/definitions/os_tuned_v1_ProfileStatusCondition",
             "existingJavaType": "io.fabric8.openshift.api.model.tuned.v1.ProfileStatusCondition"
           }
-        },
-        "stalld": {
-          "type": "boolean"
         },
         "tunedProfile": {
           "type": "string"
@@ -642,6 +647,19 @@
       },
       "additionalProperties": true,
       "javaType": "io.fabric8.openshift.api.model.tuned.v1.ProfileStatusCondition",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_tuned_v1_TuneDConfig": {
+      "type": "object",
+      "properties": {
+        "reapply_sysctl": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.tuned.v1.TuneDConfig",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]

@@ -1,7 +1,9 @@
 
 package io.fabric8.openshift.api.model.miscellaneous.metal3.v1alpha1;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -35,6 +37,7 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
+    "alternateNames",
     "hctl",
     "model",
     "name",
@@ -69,6 +72,9 @@ import lombok.experimental.Accessors;
 public class Storage implements Editable<StorageBuilder> , KubernetesResource
 {
 
+    @JsonProperty("alternateNames")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> alternateNames = new ArrayList<String>();
     @JsonProperty("hctl")
     private String hctl;
     @JsonProperty("model")
@@ -101,8 +107,9 @@ public class Storage implements Editable<StorageBuilder> , KubernetesResource
     public Storage() {
     }
 
-    public Storage(String hctl, String model, String name, Boolean rotational, String serialNumber, Long sizeBytes, String type, String vendor, String wwn, String wwnVendorExtension, String wwnWithExtension) {
+    public Storage(List<String> alternateNames, String hctl, String model, String name, Boolean rotational, String serialNumber, Long sizeBytes, String type, String vendor, String wwn, String wwnVendorExtension, String wwnWithExtension) {
         super();
+        this.alternateNames = alternateNames;
         this.hctl = hctl;
         this.model = model;
         this.name = name;
@@ -114,6 +121,16 @@ public class Storage implements Editable<StorageBuilder> , KubernetesResource
         this.wwn = wwn;
         this.wwnVendorExtension = wwnVendorExtension;
         this.wwnWithExtension = wwnWithExtension;
+    }
+
+    @JsonProperty("alternateNames")
+    public List<String> getAlternateNames() {
+        return alternateNames;
+    }
+
+    @JsonProperty("alternateNames")
+    public void setAlternateNames(List<String> alternateNames) {
+        this.alternateNames = alternateNames;
     }
 
     @JsonProperty("hctl")

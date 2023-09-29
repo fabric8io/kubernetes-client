@@ -71,7 +71,7 @@ public class PrometheusStatus implements Editable<PrometheusStatusBuilder> , Kub
     private Integer availableReplicas;
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<PrometheusCondition> conditions = new ArrayList<PrometheusCondition>();
+    private List<Condition> conditions = new ArrayList<Condition>();
     @JsonProperty("paused")
     private Boolean paused;
     @JsonProperty("replicas")
@@ -93,7 +93,7 @@ public class PrometheusStatus implements Editable<PrometheusStatusBuilder> , Kub
     public PrometheusStatus() {
     }
 
-    public PrometheusStatus(Integer availableReplicas, List<PrometheusCondition> conditions, Boolean paused, Integer replicas, List<ShardStatus> shardStatuses, Integer unavailableReplicas, Integer updatedReplicas) {
+    public PrometheusStatus(Integer availableReplicas, List<Condition> conditions, Boolean paused, Integer replicas, List<ShardStatus> shardStatuses, Integer unavailableReplicas, Integer updatedReplicas) {
         super();
         this.availableReplicas = availableReplicas;
         this.conditions = conditions;
@@ -115,12 +115,12 @@ public class PrometheusStatus implements Editable<PrometheusStatusBuilder> , Kub
     }
 
     @JsonProperty("conditions")
-    public List<PrometheusCondition> getConditions() {
+    public List<Condition> getConditions() {
         return conditions;
     }
 
     @JsonProperty("conditions")
-    public void setConditions(List<PrometheusCondition> conditions) {
+    public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;
     }
 

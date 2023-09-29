@@ -36,8 +36,10 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
+    "attachMetadata",
     "endpoints",
     "jobLabel",
+    "keepDroppedTargets",
     "labelLimit",
     "labelNameLengthLimit",
     "labelValueLengthLimit",
@@ -70,11 +72,15 @@ import lombok.experimental.Accessors;
 public class ServiceMonitorSpec implements Editable<ServiceMonitorSpecBuilder> , KubernetesResource
 {
 
+    @JsonProperty("attachMetadata")
+    private AttachMetadata attachMetadata;
     @JsonProperty("endpoints")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Endpoint> endpoints = new ArrayList<Endpoint>();
     @JsonProperty("jobLabel")
     private String jobLabel;
+    @JsonProperty("keepDroppedTargets")
+    private Long keepDroppedTargets;
     @JsonProperty("labelLimit")
     private Long labelLimit;
     @JsonProperty("labelNameLengthLimit")
@@ -105,10 +111,12 @@ public class ServiceMonitorSpec implements Editable<ServiceMonitorSpecBuilder> ,
     public ServiceMonitorSpec() {
     }
 
-    public ServiceMonitorSpec(List<Endpoint> endpoints, String jobLabel, Long labelLimit, Long labelNameLengthLimit, Long labelValueLengthLimit, NamespaceSelector namespaceSelector, List<String> podTargetLabels, Long sampleLimit, io.fabric8.kubernetes.api.model.LabelSelector selector, List<String> targetLabels, Long targetLimit) {
+    public ServiceMonitorSpec(AttachMetadata attachMetadata, List<Endpoint> endpoints, String jobLabel, Long keepDroppedTargets, Long labelLimit, Long labelNameLengthLimit, Long labelValueLengthLimit, NamespaceSelector namespaceSelector, List<String> podTargetLabels, Long sampleLimit, io.fabric8.kubernetes.api.model.LabelSelector selector, List<String> targetLabels, Long targetLimit) {
         super();
+        this.attachMetadata = attachMetadata;
         this.endpoints = endpoints;
         this.jobLabel = jobLabel;
+        this.keepDroppedTargets = keepDroppedTargets;
         this.labelLimit = labelLimit;
         this.labelNameLengthLimit = labelNameLengthLimit;
         this.labelValueLengthLimit = labelValueLengthLimit;
@@ -118,6 +126,16 @@ public class ServiceMonitorSpec implements Editable<ServiceMonitorSpecBuilder> ,
         this.selector = selector;
         this.targetLabels = targetLabels;
         this.targetLimit = targetLimit;
+    }
+
+    @JsonProperty("attachMetadata")
+    public AttachMetadata getAttachMetadata() {
+        return attachMetadata;
+    }
+
+    @JsonProperty("attachMetadata")
+    public void setAttachMetadata(AttachMetadata attachMetadata) {
+        this.attachMetadata = attachMetadata;
     }
 
     @JsonProperty("endpoints")
@@ -138,6 +156,16 @@ public class ServiceMonitorSpec implements Editable<ServiceMonitorSpecBuilder> ,
     @JsonProperty("jobLabel")
     public void setJobLabel(String jobLabel) {
         this.jobLabel = jobLabel;
+    }
+
+    @JsonProperty("keepDroppedTargets")
+    public Long getKeepDroppedTargets() {
+        return keepDroppedTargets;
+    }
+
+    @JsonProperty("keepDroppedTargets")
+    public void setKeepDroppedTargets(Long keepDroppedTargets) {
+        this.keepDroppedTargets = keepDroppedTargets;
     }
 
     @JsonProperty("labelLimit")

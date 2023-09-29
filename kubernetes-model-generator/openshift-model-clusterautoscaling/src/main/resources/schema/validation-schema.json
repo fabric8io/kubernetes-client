@@ -555,8 +555,18 @@
         "balanceSimilarNodeGroups": {
           "type": "boolean"
         },
+        "balancingIgnoredLabels": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
         "ignoreDaemonsetsUtilization": {
           "type": "boolean"
+        },
+        "logVerbosity": {
+          "type": "integer"
         },
         "maxNodeProvisionTime": {
           "type": "string"
@@ -673,6 +683,9 @@
           "type": "boolean"
         },
         "unneededTime": {
+          "type": "string"
+        },
+        "utilizationThreshold": {
           "type": "string"
         }
       },
@@ -975,8 +988,18 @@
         "balanceSimilarNodeGroups": {
           "type": "boolean"
         },
+        "balancingIgnoredLabels": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
         "ignoreDaemonsetsUtilization": {
           "type": "boolean"
+        },
+        "logVerbosity": {
+          "type": "integer"
         },
         "maxNodeProvisionTime": {
           "type": "string"
@@ -1384,6 +1407,9 @@
           "type": "boolean"
         },
         "unneededTime": {
+          "type": "string"
+        },
+        "utilizationThreshold": {
           "type": "string"
         }
       },

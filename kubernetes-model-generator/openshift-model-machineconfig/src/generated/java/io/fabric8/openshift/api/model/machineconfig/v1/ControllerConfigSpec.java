@@ -1,7 +1,9 @@
 
 package io.fabric8.openshift.api.model.machineconfig.v1;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -38,15 +40,20 @@ import lombok.experimental.Accessors;
     "kind",
     "metadata",
     "additionalTrustBundle",
+    "baseOSContainerImage",
+    "baseOSExtensionsContainerImage",
     "cloudProviderCAData",
     "cloudProviderConfig",
     "clusterDNSIP",
     "dns",
     "etcdDiscoveryDomain",
+    "imageRegistryBundleData",
+    "imageRegistryBundleUserData",
     "images",
     "infra",
     "ipFamilies",
     "kubeAPIServerServingCAData",
+    "network",
     "networkType",
     "osImageURL",
     "platform",
@@ -79,6 +86,10 @@ public class ControllerConfigSpec implements Editable<ControllerConfigSpecBuilde
 
     @JsonProperty("additionalTrustBundle")
     private java.lang.String additionalTrustBundle;
+    @JsonProperty("baseOSContainerImage")
+    private java.lang.String baseOSContainerImage;
+    @JsonProperty("baseOSExtensionsContainerImage")
+    private java.lang.String baseOSExtensionsContainerImage;
     @JsonProperty("cloudProviderCAData")
     private java.lang.String cloudProviderCAData;
     @JsonProperty("cloudProviderConfig")
@@ -89,6 +100,12 @@ public class ControllerConfigSpec implements Editable<ControllerConfigSpecBuilde
     private DNS dns;
     @JsonProperty("etcdDiscoveryDomain")
     private java.lang.String etcdDiscoveryDomain;
+    @JsonProperty("imageRegistryBundleData")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<ImageRegistryBundle> imageRegistryBundleData = new ArrayList<ImageRegistryBundle>();
+    @JsonProperty("imageRegistryBundleUserData")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<ImageRegistryBundle> imageRegistryBundleUserData = new ArrayList<ImageRegistryBundle>();
     @JsonProperty("images")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> images = new LinkedHashMap<String, String>();
@@ -98,6 +115,8 @@ public class ControllerConfigSpec implements Editable<ControllerConfigSpecBuilde
     private java.lang.String ipFamilies;
     @JsonProperty("kubeAPIServerServingCAData")
     private java.lang.String kubeAPIServerServingCAData;
+    @JsonProperty("network")
+    private NetworkInfo network;
     @JsonProperty("networkType")
     private java.lang.String networkType;
     @JsonProperty("osImageURL")
@@ -122,18 +141,23 @@ public class ControllerConfigSpec implements Editable<ControllerConfigSpecBuilde
     public ControllerConfigSpec() {
     }
 
-    public ControllerConfigSpec(java.lang.String additionalTrustBundle, java.lang.String cloudProviderCAData, java.lang.String cloudProviderConfig, java.lang.String clusterDNSIP, DNS dns, java.lang.String etcdDiscoveryDomain, Map<String, String> images, Infrastructure infra, java.lang.String ipFamilies, java.lang.String kubeAPIServerServingCAData, java.lang.String networkType, java.lang.String osImageURL, java.lang.String platform, ProxyStatus proxy, io.fabric8.kubernetes.api.model.ObjectReference pullSecret, java.lang.String releaseImage, java.lang.String rootCAData) {
+    public ControllerConfigSpec(java.lang.String additionalTrustBundle, java.lang.String baseOSContainerImage, java.lang.String baseOSExtensionsContainerImage, java.lang.String cloudProviderCAData, java.lang.String cloudProviderConfig, java.lang.String clusterDNSIP, DNS dns, java.lang.String etcdDiscoveryDomain, List<ImageRegistryBundle> imageRegistryBundleData, List<ImageRegistryBundle> imageRegistryBundleUserData, Map<String, String> images, Infrastructure infra, java.lang.String ipFamilies, java.lang.String kubeAPIServerServingCAData, NetworkInfo network, java.lang.String networkType, java.lang.String osImageURL, java.lang.String platform, ProxyStatus proxy, io.fabric8.kubernetes.api.model.ObjectReference pullSecret, java.lang.String releaseImage, java.lang.String rootCAData) {
         super();
         this.additionalTrustBundle = additionalTrustBundle;
+        this.baseOSContainerImage = baseOSContainerImage;
+        this.baseOSExtensionsContainerImage = baseOSExtensionsContainerImage;
         this.cloudProviderCAData = cloudProviderCAData;
         this.cloudProviderConfig = cloudProviderConfig;
         this.clusterDNSIP = clusterDNSIP;
         this.dns = dns;
         this.etcdDiscoveryDomain = etcdDiscoveryDomain;
+        this.imageRegistryBundleData = imageRegistryBundleData;
+        this.imageRegistryBundleUserData = imageRegistryBundleUserData;
         this.images = images;
         this.infra = infra;
         this.ipFamilies = ipFamilies;
         this.kubeAPIServerServingCAData = kubeAPIServerServingCAData;
+        this.network = network;
         this.networkType = networkType;
         this.osImageURL = osImageURL;
         this.platform = platform;
@@ -151,6 +175,26 @@ public class ControllerConfigSpec implements Editable<ControllerConfigSpecBuilde
     @JsonProperty("additionalTrustBundle")
     public void setAdditionalTrustBundle(java.lang.String additionalTrustBundle) {
         this.additionalTrustBundle = additionalTrustBundle;
+    }
+
+    @JsonProperty("baseOSContainerImage")
+    public java.lang.String getBaseOSContainerImage() {
+        return baseOSContainerImage;
+    }
+
+    @JsonProperty("baseOSContainerImage")
+    public void setBaseOSContainerImage(java.lang.String baseOSContainerImage) {
+        this.baseOSContainerImage = baseOSContainerImage;
+    }
+
+    @JsonProperty("baseOSExtensionsContainerImage")
+    public java.lang.String getBaseOSExtensionsContainerImage() {
+        return baseOSExtensionsContainerImage;
+    }
+
+    @JsonProperty("baseOSExtensionsContainerImage")
+    public void setBaseOSExtensionsContainerImage(java.lang.String baseOSExtensionsContainerImage) {
+        this.baseOSExtensionsContainerImage = baseOSExtensionsContainerImage;
     }
 
     @JsonProperty("cloudProviderCAData")
@@ -203,6 +247,26 @@ public class ControllerConfigSpec implements Editable<ControllerConfigSpecBuilde
         this.etcdDiscoveryDomain = etcdDiscoveryDomain;
     }
 
+    @JsonProperty("imageRegistryBundleData")
+    public List<ImageRegistryBundle> getImageRegistryBundleData() {
+        return imageRegistryBundleData;
+    }
+
+    @JsonProperty("imageRegistryBundleData")
+    public void setImageRegistryBundleData(List<ImageRegistryBundle> imageRegistryBundleData) {
+        this.imageRegistryBundleData = imageRegistryBundleData;
+    }
+
+    @JsonProperty("imageRegistryBundleUserData")
+    public List<ImageRegistryBundle> getImageRegistryBundleUserData() {
+        return imageRegistryBundleUserData;
+    }
+
+    @JsonProperty("imageRegistryBundleUserData")
+    public void setImageRegistryBundleUserData(List<ImageRegistryBundle> imageRegistryBundleUserData) {
+        this.imageRegistryBundleUserData = imageRegistryBundleUserData;
+    }
+
     @JsonProperty("images")
     public Map<String, String> getImages() {
         return images;
@@ -241,6 +305,16 @@ public class ControllerConfigSpec implements Editable<ControllerConfigSpecBuilde
     @JsonProperty("kubeAPIServerServingCAData")
     public void setKubeAPIServerServingCAData(java.lang.String kubeAPIServerServingCAData) {
         this.kubeAPIServerServingCAData = kubeAPIServerServingCAData;
+    }
+
+    @JsonProperty("network")
+    public NetworkInfo getNetwork() {
+        return network;
+    }
+
+    @JsonProperty("network")
+    public void setNetwork(NetworkInfo network) {
+        this.network = network;
     }
 
     @JsonProperty("networkType")

@@ -43,7 +43,11 @@ import io.fabric8.openshift.api.model.config.v1.FeatureGateList;
 import io.fabric8.openshift.api.model.config.v1.Image;
 import io.fabric8.openshift.api.model.config.v1.ImageContentPolicy;
 import io.fabric8.openshift.api.model.config.v1.ImageContentPolicyList;
+import io.fabric8.openshift.api.model.config.v1.ImageDigestMirrorSet;
+import io.fabric8.openshift.api.model.config.v1.ImageDigestMirrorSetList;
 import io.fabric8.openshift.api.model.config.v1.ImageList;
+import io.fabric8.openshift.api.model.config.v1.ImageTagMirrorSet;
+import io.fabric8.openshift.api.model.config.v1.ImageTagMirrorSetList;
 import io.fabric8.openshift.api.model.config.v1.Infrastructure;
 import io.fabric8.openshift.api.model.config.v1.InfrastructureList;
 import io.fabric8.openshift.api.model.config.v1.Ingress;
@@ -99,7 +103,11 @@ import lombok.experimental.Accessors;
     "Image",
     "ImageContentPolicy",
     "ImageContentPolicyList",
+    "ImageDigestMirrorSet",
+    "ImageDigestMirrorSetList",
     "ImageList",
+    "ImageTagMirrorSet",
+    "ImageTagMirrorSetList",
     "Info",
     "Infrastructure",
     "InfrastructureList",
@@ -196,8 +204,16 @@ public class ValidationSchema implements Editable<ValidationSchemaBuilder>
     private ImageContentPolicy imageContentPolicy;
     @JsonProperty("ImageContentPolicyList")
     private ImageContentPolicyList imageContentPolicyList;
+    @JsonProperty("ImageDigestMirrorSet")
+    private ImageDigestMirrorSet imageDigestMirrorSet;
+    @JsonProperty("ImageDigestMirrorSetList")
+    private ImageDigestMirrorSetList imageDigestMirrorSetList;
     @JsonProperty("ImageList")
     private ImageList imageList;
+    @JsonProperty("ImageTagMirrorSet")
+    private ImageTagMirrorSet imageTagMirrorSet;
+    @JsonProperty("ImageTagMirrorSetList")
+    private ImageTagMirrorSetList imageTagMirrorSetList;
     @JsonProperty("Info")
     private Info info;
     @JsonProperty("Infrastructure")
@@ -258,7 +274,7 @@ public class ValidationSchema implements Editable<ValidationSchemaBuilder>
     public ValidationSchema() {
     }
 
-    public ValidationSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, APIServer aPIServer, APIServerList aPIServerList, Authentication authentication, AuthenticationList authenticationList, KubernetesList baseKubernetesList, Build build, BuildList buildList, ClusterOperator clusterOperator, ClusterOperatorList clusterOperatorList, ClusterVersion clusterVersion, ClusterVersionList clusterVersionList, ConfigMapFileReference configMapFileReference, Console console, ConsoleList consoleList, DNS dns, DNSList dNSList, DNSZone dNSZone, FeatureGate featureGate, FeatureGateList featureGateList, Image image, ImageContentPolicy imageContentPolicy, ImageContentPolicyList imageContentPolicyList, ImageList imageList, Info info, Infrastructure infrastructure, InfrastructureList infrastructureList, Ingress ingress, IngressList ingressList, Network network, NetworkList networkList, OAuth oAuth, OAuthList oAuthList, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, OperatorHub operatorHub, OperatorHubList operatorHubList, Patch patch, Project project, ProjectList projectList, Proxy proxy, ProxyList proxyList, ResourceAttributes resourceAttributes, Scheduler scheduler, SchedulerList schedulerList, SecretNameReference secretNameReference, Status status, TLSProfileSpec tLSProfileSpec, String time, TypeMeta typeMeta) {
+    public ValidationSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, APIServer aPIServer, APIServerList aPIServerList, Authentication authentication, AuthenticationList authenticationList, KubernetesList baseKubernetesList, Build build, BuildList buildList, ClusterOperator clusterOperator, ClusterOperatorList clusterOperatorList, ClusterVersion clusterVersion, ClusterVersionList clusterVersionList, ConfigMapFileReference configMapFileReference, Console console, ConsoleList consoleList, DNS dns, DNSList dNSList, DNSZone dNSZone, FeatureGate featureGate, FeatureGateList featureGateList, Image image, ImageContentPolicy imageContentPolicy, ImageContentPolicyList imageContentPolicyList, ImageDigestMirrorSet imageDigestMirrorSet, ImageDigestMirrorSetList imageDigestMirrorSetList, ImageList imageList, ImageTagMirrorSet imageTagMirrorSet, ImageTagMirrorSetList imageTagMirrorSetList, Info info, Infrastructure infrastructure, InfrastructureList infrastructureList, Ingress ingress, IngressList ingressList, Network network, NetworkList networkList, OAuth oAuth, OAuthList oAuthList, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, OperatorHub operatorHub, OperatorHubList operatorHubList, Patch patch, Project project, ProjectList projectList, Proxy proxy, ProxyList proxyList, ResourceAttributes resourceAttributes, Scheduler scheduler, SchedulerList schedulerList, SecretNameReference secretNameReference, Status status, TLSProfileSpec tLSProfileSpec, String time, TypeMeta typeMeta) {
         super();
         this.aPIGroup = aPIGroup;
         this.aPIGroupList = aPIGroupList;
@@ -284,7 +300,11 @@ public class ValidationSchema implements Editable<ValidationSchemaBuilder>
         this.image = image;
         this.imageContentPolicy = imageContentPolicy;
         this.imageContentPolicyList = imageContentPolicyList;
+        this.imageDigestMirrorSet = imageDigestMirrorSet;
+        this.imageDigestMirrorSetList = imageDigestMirrorSetList;
         this.imageList = imageList;
+        this.imageTagMirrorSet = imageTagMirrorSet;
+        this.imageTagMirrorSetList = imageTagMirrorSetList;
         this.info = info;
         this.infrastructure = infrastructure;
         this.infrastructureList = infrastructureList;
@@ -552,6 +572,26 @@ public class ValidationSchema implements Editable<ValidationSchemaBuilder>
         this.imageContentPolicyList = imageContentPolicyList;
     }
 
+    @JsonProperty("ImageDigestMirrorSet")
+    public ImageDigestMirrorSet getImageDigestMirrorSet() {
+        return imageDigestMirrorSet;
+    }
+
+    @JsonProperty("ImageDigestMirrorSet")
+    public void setImageDigestMirrorSet(ImageDigestMirrorSet imageDigestMirrorSet) {
+        this.imageDigestMirrorSet = imageDigestMirrorSet;
+    }
+
+    @JsonProperty("ImageDigestMirrorSetList")
+    public ImageDigestMirrorSetList getImageDigestMirrorSetList() {
+        return imageDigestMirrorSetList;
+    }
+
+    @JsonProperty("ImageDigestMirrorSetList")
+    public void setImageDigestMirrorSetList(ImageDigestMirrorSetList imageDigestMirrorSetList) {
+        this.imageDigestMirrorSetList = imageDigestMirrorSetList;
+    }
+
     @JsonProperty("ImageList")
     public ImageList getImageList() {
         return imageList;
@@ -560,6 +600,26 @@ public class ValidationSchema implements Editable<ValidationSchemaBuilder>
     @JsonProperty("ImageList")
     public void setImageList(ImageList imageList) {
         this.imageList = imageList;
+    }
+
+    @JsonProperty("ImageTagMirrorSet")
+    public ImageTagMirrorSet getImageTagMirrorSet() {
+        return imageTagMirrorSet;
+    }
+
+    @JsonProperty("ImageTagMirrorSet")
+    public void setImageTagMirrorSet(ImageTagMirrorSet imageTagMirrorSet) {
+        this.imageTagMirrorSet = imageTagMirrorSet;
+    }
+
+    @JsonProperty("ImageTagMirrorSetList")
+    public ImageTagMirrorSetList getImageTagMirrorSetList() {
+        return imageTagMirrorSetList;
+    }
+
+    @JsonProperty("ImageTagMirrorSetList")
+    public void setImageTagMirrorSetList(ImageTagMirrorSetList imageTagMirrorSetList) {
+        this.imageTagMirrorSetList = imageTagMirrorSetList;
     }
 
     @JsonProperty("Info")

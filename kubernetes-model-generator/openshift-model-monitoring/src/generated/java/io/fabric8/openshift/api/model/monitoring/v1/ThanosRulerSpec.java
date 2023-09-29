@@ -25,6 +25,7 @@ import io.fabric8.kubernetes.api.model.SecretKeySelector;
 import io.fabric8.kubernetes.api.model.Toleration;
 import io.fabric8.kubernetes.api.model.TopologySpreadConstraint;
 import io.fabric8.kubernetes.api.model.Volume;
+import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -38,6 +39,7 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
+    "additionalArgs",
     "affinity",
     "alertDropLabels",
     "alertQueryUrl",
@@ -53,6 +55,7 @@ import lombok.experimental.Accessors;
     "grpcServerTlsConfig",
     "hostAliases",
     "image",
+    "imagePullPolicy",
     "imagePullSecrets",
     "initContainers",
     "labels",
@@ -82,6 +85,9 @@ import lombok.experimental.Accessors;
     "tolerations",
     "topologySpreadConstraints",
     "tracingConfig",
+    "tracingConfigFile",
+    "version",
+    "volumeMounts",
     "volumes"
 })
 @ToString
@@ -106,6 +112,9 @@ import lombok.experimental.Accessors;
 public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder> , KubernetesResource
 {
 
+    @JsonProperty("additionalArgs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<Argument> additionalArgs = new ArrayList<Argument>();
     @JsonProperty("affinity")
     private Affinity affinity;
     @JsonProperty("alertDropLabels")
@@ -141,6 +150,8 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder> , Kuber
     private List<HostAlias> hostAliases = new ArrayList<HostAlias>();
     @JsonProperty("image")
     private java.lang.String image;
+    @JsonProperty("imagePullPolicy")
+    private java.lang.String imagePullPolicy;
     @JsonProperty("imagePullSecrets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.kubernetes.api.model.LocalObjectReference> imagePullSecrets = new ArrayList<io.fabric8.kubernetes.api.model.LocalObjectReference>();
@@ -207,6 +218,13 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder> , Kuber
     private List<TopologySpreadConstraint> topologySpreadConstraints = new ArrayList<TopologySpreadConstraint>();
     @JsonProperty("tracingConfig")
     private SecretKeySelector tracingConfig;
+    @JsonProperty("tracingConfigFile")
+    private java.lang.String tracingConfigFile;
+    @JsonProperty("version")
+    private java.lang.String version;
+    @JsonProperty("volumeMounts")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<VolumeMount> volumeMounts = new ArrayList<VolumeMount>();
     @JsonProperty("volumes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Volume> volumes = new ArrayList<Volume>();
@@ -220,8 +238,9 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder> , Kuber
     public ThanosRulerSpec() {
     }
 
-    public ThanosRulerSpec(Affinity affinity, List<java.lang.String> alertDropLabels, java.lang.String alertQueryUrl, java.lang.String alertRelabelConfigFile, SecretKeySelector alertRelabelConfigs, SecretKeySelector alertmanagersConfig, List<java.lang.String> alertmanagersUrl, List<io.fabric8.kubernetes.api.model.Container> containers, java.lang.String enforcedNamespaceLabel, java.lang.String evaluationInterval, List<io.fabric8.openshift.api.model.monitoring.v1.ObjectReference> excludedFromEnforcement, java.lang.String externalPrefix, TLSConfig grpcServerTlsConfig, List<HostAlias> hostAliases, java.lang.String image, List<io.fabric8.kubernetes.api.model.LocalObjectReference> imagePullSecrets, List<io.fabric8.kubernetes.api.model.Container> initContainers, Map<String, String> labels, Boolean listenLocal, java.lang.String logFormat, java.lang.String logLevel, Integer minReadySeconds, Map<String, String> nodeSelector, SecretKeySelector objectStorageConfig, java.lang.String objectStorageConfigFile, Boolean paused, EmbeddedObjectMetadata podMetadata, java.lang.String portName, java.lang.String priorityClassName, List<PrometheusRuleExcludeConfig> prometheusRulesExcludedFromEnforce, SecretKeySelector queryConfig, List<java.lang.String> queryEndpoints, Integer replicas, io.fabric8.kubernetes.api.model.ResourceRequirements resources, java.lang.String retention, java.lang.String routePrefix, io.fabric8.kubernetes.api.model.LabelSelector ruleNamespaceSelector, io.fabric8.kubernetes.api.model.LabelSelector ruleSelector, PodSecurityContext securityContext, java.lang.String serviceAccountName, StorageSpec storage, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, SecretKeySelector tracingConfig, List<Volume> volumes) {
+    public ThanosRulerSpec(List<Argument> additionalArgs, Affinity affinity, List<java.lang.String> alertDropLabels, java.lang.String alertQueryUrl, java.lang.String alertRelabelConfigFile, SecretKeySelector alertRelabelConfigs, SecretKeySelector alertmanagersConfig, List<java.lang.String> alertmanagersUrl, List<io.fabric8.kubernetes.api.model.Container> containers, java.lang.String enforcedNamespaceLabel, java.lang.String evaluationInterval, List<io.fabric8.openshift.api.model.monitoring.v1.ObjectReference> excludedFromEnforcement, java.lang.String externalPrefix, TLSConfig grpcServerTlsConfig, List<HostAlias> hostAliases, java.lang.String image, java.lang.String imagePullPolicy, List<io.fabric8.kubernetes.api.model.LocalObjectReference> imagePullSecrets, List<io.fabric8.kubernetes.api.model.Container> initContainers, Map<String, String> labels, Boolean listenLocal, java.lang.String logFormat, java.lang.String logLevel, Integer minReadySeconds, Map<String, String> nodeSelector, SecretKeySelector objectStorageConfig, java.lang.String objectStorageConfigFile, Boolean paused, EmbeddedObjectMetadata podMetadata, java.lang.String portName, java.lang.String priorityClassName, List<PrometheusRuleExcludeConfig> prometheusRulesExcludedFromEnforce, SecretKeySelector queryConfig, List<java.lang.String> queryEndpoints, Integer replicas, io.fabric8.kubernetes.api.model.ResourceRequirements resources, java.lang.String retention, java.lang.String routePrefix, io.fabric8.kubernetes.api.model.LabelSelector ruleNamespaceSelector, io.fabric8.kubernetes.api.model.LabelSelector ruleSelector, PodSecurityContext securityContext, java.lang.String serviceAccountName, StorageSpec storage, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, SecretKeySelector tracingConfig, java.lang.String tracingConfigFile, java.lang.String version, List<VolumeMount> volumeMounts, List<Volume> volumes) {
         super();
+        this.additionalArgs = additionalArgs;
         this.affinity = affinity;
         this.alertDropLabels = alertDropLabels;
         this.alertQueryUrl = alertQueryUrl;
@@ -237,6 +256,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder> , Kuber
         this.grpcServerTlsConfig = grpcServerTlsConfig;
         this.hostAliases = hostAliases;
         this.image = image;
+        this.imagePullPolicy = imagePullPolicy;
         this.imagePullSecrets = imagePullSecrets;
         this.initContainers = initContainers;
         this.labels = labels;
@@ -266,7 +286,20 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder> , Kuber
         this.tolerations = tolerations;
         this.topologySpreadConstraints = topologySpreadConstraints;
         this.tracingConfig = tracingConfig;
+        this.tracingConfigFile = tracingConfigFile;
+        this.version = version;
+        this.volumeMounts = volumeMounts;
         this.volumes = volumes;
+    }
+
+    @JsonProperty("additionalArgs")
+    public List<Argument> getAdditionalArgs() {
+        return additionalArgs;
+    }
+
+    @JsonProperty("additionalArgs")
+    public void setAdditionalArgs(List<Argument> additionalArgs) {
+        this.additionalArgs = additionalArgs;
     }
 
     @JsonProperty("affinity")
@@ -417,6 +450,16 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder> , Kuber
     @JsonProperty("image")
     public void setImage(java.lang.String image) {
         this.image = image;
+    }
+
+    @JsonProperty("imagePullPolicy")
+    public java.lang.String getImagePullPolicy() {
+        return imagePullPolicy;
+    }
+
+    @JsonProperty("imagePullPolicy")
+    public void setImagePullPolicy(java.lang.String imagePullPolicy) {
+        this.imagePullPolicy = imagePullPolicy;
     }
 
     @JsonProperty("imagePullSecrets")
@@ -707,6 +750,36 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder> , Kuber
     @JsonProperty("tracingConfig")
     public void setTracingConfig(SecretKeySelector tracingConfig) {
         this.tracingConfig = tracingConfig;
+    }
+
+    @JsonProperty("tracingConfigFile")
+    public java.lang.String getTracingConfigFile() {
+        return tracingConfigFile;
+    }
+
+    @JsonProperty("tracingConfigFile")
+    public void setTracingConfigFile(java.lang.String tracingConfigFile) {
+        this.tracingConfigFile = tracingConfigFile;
+    }
+
+    @JsonProperty("version")
+    public java.lang.String getVersion() {
+        return version;
+    }
+
+    @JsonProperty("version")
+    public void setVersion(java.lang.String version) {
+        this.version = version;
+    }
+
+    @JsonProperty("volumeMounts")
+    public List<VolumeMount> getVolumeMounts() {
+        return volumeMounts;
+    }
+
+    @JsonProperty("volumeMounts")
+    public void setVolumeMounts(List<VolumeMount> volumeMounts) {
+        this.volumeMounts = volumeMounts;
     }
 
     @JsonProperty("volumes")

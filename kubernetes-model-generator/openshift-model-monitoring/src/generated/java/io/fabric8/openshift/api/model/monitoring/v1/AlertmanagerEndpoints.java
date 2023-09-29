@@ -35,7 +35,9 @@ import lombok.experimental.Accessors;
     "kind",
     "metadata",
     "authorization",
+    "basicAuth",
     "bearerTokenFile",
+    "enableHttp2",
     "name",
     "namespace",
     "pathPrefix",
@@ -70,8 +72,12 @@ public class AlertmanagerEndpoints implements Editable<AlertmanagerEndpointsBuil
     private String apiVersion;
     @JsonProperty("authorization")
     private SafeAuthorization authorization;
+    @JsonProperty("basicAuth")
+    private BasicAuth basicAuth;
     @JsonProperty("bearerTokenFile")
     private String bearerTokenFile;
+    @JsonProperty("enableHttp2")
+    private Boolean enableHttp2;
     @JsonProperty("name")
     private String name;
     @JsonProperty("namespace")
@@ -96,11 +102,13 @@ public class AlertmanagerEndpoints implements Editable<AlertmanagerEndpointsBuil
     public AlertmanagerEndpoints() {
     }
 
-    public AlertmanagerEndpoints(String apiVersion, SafeAuthorization authorization, String bearerTokenFile, String name, String namespace, String pathPrefix, io.fabric8.kubernetes.api.model.IntOrString port, String scheme, String timeout, TLSConfig tlsConfig) {
+    public AlertmanagerEndpoints(String apiVersion, SafeAuthorization authorization, BasicAuth basicAuth, String bearerTokenFile, Boolean enableHttp2, String name, String namespace, String pathPrefix, io.fabric8.kubernetes.api.model.IntOrString port, String scheme, String timeout, TLSConfig tlsConfig) {
         super();
         this.apiVersion = apiVersion;
         this.authorization = authorization;
+        this.basicAuth = basicAuth;
         this.bearerTokenFile = bearerTokenFile;
+        this.enableHttp2 = enableHttp2;
         this.name = name;
         this.namespace = namespace;
         this.pathPrefix = pathPrefix;
@@ -130,6 +138,16 @@ public class AlertmanagerEndpoints implements Editable<AlertmanagerEndpointsBuil
         this.authorization = authorization;
     }
 
+    @JsonProperty("basicAuth")
+    public BasicAuth getBasicAuth() {
+        return basicAuth;
+    }
+
+    @JsonProperty("basicAuth")
+    public void setBasicAuth(BasicAuth basicAuth) {
+        this.basicAuth = basicAuth;
+    }
+
     @JsonProperty("bearerTokenFile")
     public String getBearerTokenFile() {
         return bearerTokenFile;
@@ -138,6 +156,16 @@ public class AlertmanagerEndpoints implements Editable<AlertmanagerEndpointsBuil
     @JsonProperty("bearerTokenFile")
     public void setBearerTokenFile(String bearerTokenFile) {
         this.bearerTokenFile = bearerTokenFile;
+    }
+
+    @JsonProperty("enableHttp2")
+    public Boolean getEnableHttp2() {
+        return enableHttp2;
+    }
+
+    @JsonProperty("enableHttp2")
+    public void setEnableHttp2(Boolean enableHttp2) {
+        this.enableHttp2 = enableHttp2;
     }
 
     @JsonProperty("name")

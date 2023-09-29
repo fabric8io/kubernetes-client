@@ -13,7 +13,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.Duration;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
@@ -61,7 +60,7 @@ public class RegistryPoll implements Editable<RegistryPollBuilder> , KubernetesR
 {
 
     @JsonProperty("interval")
-    private Duration interval;
+    private String interval;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -72,18 +71,18 @@ public class RegistryPoll implements Editable<RegistryPollBuilder> , KubernetesR
     public RegistryPoll() {
     }
 
-    public RegistryPoll(Duration interval) {
+    public RegistryPoll(String interval) {
         super();
         this.interval = interval;
     }
 
     @JsonProperty("interval")
-    public Duration getInterval() {
+    public String getInterval() {
         return interval;
     }
 
     @JsonProperty("interval")
-    public void setInterval(Duration interval) {
+    public void setInterval(String interval) {
         this.interval = interval;
     }
 
