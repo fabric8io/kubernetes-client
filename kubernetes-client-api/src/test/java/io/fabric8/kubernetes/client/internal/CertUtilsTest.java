@@ -20,6 +20,7 @@ import io.fabric8.kubernetes.client.utils.Utils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import java.io.File;
 import java.io.IOException;
@@ -36,6 +37,7 @@ import java.util.Objects;
 import java.util.Properties;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -66,6 +68,21 @@ class CertUtilsTest {
   @AfterEach
   public void resetSystemPropertiesBack() {
     System.setProperties(systemProperties);
+  }
+
+  @Test
+  void handleReadOnlyJavaTrustStore() throws Exception {
+    KeyStore system = CertUtils.loadTrustStore(null, "changeit".toCharArray());
+    KeyStore trustStore = Mockito.spy(system);
+    Mockito.doThrow(KeyStoreException.class).when(trustStore).setCertificateEntry(Mockito.anyString(), Mockito.any());
+    KeyStore result = CertUtils.mergePemCertsIntoTrustStore(
+        CertUtils.getInputStreamFromDataOrFile(null, "src/test/resources/ssl/multiple-certs.pem"), trustStore, true);
+
+    assertNotSame(trustStore, result);
+    assertThat(Collections.list(result.aliases()))
+        .hasSizeGreaterThanOrEqualTo(2)
+        .satisfiesOnlyOnce(alias -> assertThat(alias).contains("openshift-signer"))
+        .satisfiesOnlyOnce(alias -> assertThat(alias).contains("openshift-service-serving-signer"));
   }
 
   @Test
