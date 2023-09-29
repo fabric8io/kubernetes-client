@@ -11,6 +11,7 @@
 * Fix #5423: OkHttpClientImpl supports setting request method for empty payload requests
 
 #### Improvements
+* Fix #5316: support read-only system KeyStores with Kube CA Certs
 * Fix #5327: added proactive shutdown of informers on client close
 * Fix #5432: [java-generator] Add the possibility to always emit `additionalProperties` on generated POJOs
 * Fix #5368: added support for additional ListOptions fields

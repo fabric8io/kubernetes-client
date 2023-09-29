@@ -27,6 +27,7 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -48,6 +49,7 @@ import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.RSAPrivateCrtKeySpec;
 import java.util.Base64;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.concurrent.Callable;
 import java.util.stream.Collectors;
 
@@ -73,15 +75,16 @@ public class CertUtils {
   public static KeyStore createTrustStore(String caCertData, String caCertFile, String trustStoreFile,
       String trustStorePassphrase) throws IOException, CertificateException, KeyStoreException, NoSuchAlgorithmException {
     ByteArrayInputStream pemInputStream = getInputStreamFromDataOrFile(caCertData, caCertFile);
-    return createTrustStore(pemInputStream, trustStoreFile,
+
+    KeyStore trustStore = loadTrustStore(trustStoreFile,
         getPassphrase(TRUST_STORE_PASSWORD_SYSTEM_PROPERTY, trustStorePassphrase));
+
+    return mergePemCertsIntoTrustStore(pemInputStream, trustStore, true);
   }
 
-  private static KeyStore createTrustStore(ByteArrayInputStream pemInputStream, String trustStoreFile,
-      char[] trustStorePassphrase)
-      throws IOException, CertificateException, KeyStoreException, NoSuchAlgorithmException {
-
-    final String trustStoreType = System.getProperty(TRUST_STORE_TYPE_SYSTEM_PROPERTY, KeyStore.getDefaultType());
+  static KeyStore loadTrustStore(String trustStoreFile, char[] trustStorePassphrase)
+      throws KeyStoreException, IOException, NoSuchAlgorithmException, CertificateException, FileNotFoundException {
+    String trustStoreType = System.getProperty(TRUST_STORE_TYPE_SYSTEM_PROPERTY, KeyStore.getDefaultType());
     KeyStore trustStore = KeyStore.getInstance(trustStoreType);
 
     if (Utils.isNotNullOrEmpty(trustStoreFile)) {
@@ -91,19 +94,45 @@ public class CertUtils {
     } else {
       loadDefaultTrustStoreFile(trustStore, trustStorePassphrase);
     }
+    return trustStore;
+  }
 
+  static KeyStore mergePemCertsIntoTrustStore(ByteArrayInputStream pemInputStream, KeyStore trustStore, boolean first)
+      throws CertificateException, KeyStoreException {
     CertificateFactory certFactory = CertificateFactory.getInstance("X509");
     while (pemInputStream.available() > 0) {
+      X509Certificate cert;
       try {
-        X509Certificate cert = (X509Certificate) certFactory.generateCertificate(pemInputStream);
-        String alias = cert.getSubjectX500Principal().getName() + "_" + cert.getSerialNumber().toString(16);
-        trustStore.setCertificateEntry(alias, cert);
+        cert = (X509Certificate) certFactory.generateCertificate(pemInputStream);
       } catch (CertificateException e) {
         if (pemInputStream.available() > 0) {
           // any remaining input means there is an actual problem with the key contents or file format
           throw e;
         }
         LOG.debug("The trailing entry generated a certificate exception.  More than likely the contents end with comments.", e);
+        break;
+      }
+      try {
+        String alias = cert.getSubjectX500Principal().getName() + "_" + cert.getSerialNumber().toString(16);
+        trustStore.setCertificateEntry(alias, cert);
+        first = false;
+      } catch (KeyStoreException e) {
+        if (first) {
+          // could be that the store type is not writable, rather than some elaborate check for read-only
+          // we'll simply try again with a well supported type
+          pemInputStream.reset();
+          KeyStore writableStore = KeyStore.getInstance("PKCS12");
+          try {
+            writableStore.load(null, null); // initialize the instance
+          } catch (NoSuchAlgorithmException | CertificateException | IOException e1) {
+            throw e; // not usable, just give up
+          }
+          for (String alias : Collections.list(trustStore.aliases())) {
+            writableStore.setCertificateEntry(alias, trustStore.getCertificate(alias));
+          }
+          return mergePemCertsIntoTrustStore(pemInputStream, writableStore, false);
+        }
+        throw e;
       }
     }
     return trustStore;
