@@ -21,8 +21,11 @@ import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.kubernetes.api.model.version.Info;
+import io.fabric8.openshift.api.model.machine.v1.ControlPlaneMachineSet;
+import io.fabric8.openshift.api.model.machine.v1.ControlPlaneMachineSetList;
 import io.fabric8.openshift.api.model.machine.v1.NutanixCategory;
 import io.fabric8.openshift.api.model.machine.v1.NutanixResourceIdentifier;
+import io.fabric8.openshift.api.model.machine.v1alpha1.OpenstackProviderSpec;
 import io.fabric8.openshift.api.model.machine.v1alpha1.SubnetFilter;
 import io.fabric8.openshift.api.model.machine.v1beta1.Machine;
 import io.fabric8.openshift.api.model.machine.v1beta1.MachineHealthCheck;
@@ -46,6 +49,8 @@ import lombok.experimental.Accessors;
     "APIGroup",
     "APIGroupList",
     "BaseKubernetesList",
+    "ControlPlaneMachineSet",
+    "ControlPlaneMachineSetList",
     "Info",
     "Machine",
     "MachineHealthCheck",
@@ -58,6 +63,7 @@ import lombok.experimental.Accessors;
     "Status",
     "Time",
     "TypeMeta",
+    "V1Alpha1OpenStackProviderSpec",
     "V1Alpha1SubnetFilter",
     "V1NutanixCategory",
     "V1NutanixResourceIdentifier"
@@ -90,6 +96,10 @@ public class ValidationSchema implements Editable<ValidationSchemaBuilder>
     private APIGroupList aPIGroupList;
     @JsonProperty("BaseKubernetesList")
     private KubernetesList baseKubernetesList;
+    @JsonProperty("ControlPlaneMachineSet")
+    private ControlPlaneMachineSet controlPlaneMachineSet;
+    @JsonProperty("ControlPlaneMachineSetList")
+    private ControlPlaneMachineSetList controlPlaneMachineSetList;
     @JsonProperty("Info")
     private Info info;
     @JsonProperty("Machine")
@@ -114,6 +124,8 @@ public class ValidationSchema implements Editable<ValidationSchemaBuilder>
     private String time;
     @JsonProperty("TypeMeta")
     private TypeMeta typeMeta;
+    @JsonProperty("V1Alpha1OpenStackProviderSpec")
+    private OpenstackProviderSpec v1Alpha1OpenStackProviderSpec;
     @JsonProperty("V1Alpha1SubnetFilter")
     private SubnetFilter v1Alpha1SubnetFilter;
     @JsonProperty("V1NutanixCategory")
@@ -130,11 +142,13 @@ public class ValidationSchema implements Editable<ValidationSchemaBuilder>
     public ValidationSchema() {
     }
 
-    public ValidationSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, KubernetesList baseKubernetesList, Info info, Machine machine, MachineHealthCheck machineHealthCheck, MachineHealthCheckList machineHealthCheckList, MachineList machineList, MachineSet machineSet, MachineSetList machineSetList, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, Patch patch, Status status, String time, TypeMeta typeMeta, SubnetFilter v1Alpha1SubnetFilter, NutanixCategory v1NutanixCategory, NutanixResourceIdentifier v1NutanixResourceIdentifier) {
+    public ValidationSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, KubernetesList baseKubernetesList, ControlPlaneMachineSet controlPlaneMachineSet, ControlPlaneMachineSetList controlPlaneMachineSetList, Info info, Machine machine, MachineHealthCheck machineHealthCheck, MachineHealthCheckList machineHealthCheckList, MachineList machineList, MachineSet machineSet, MachineSetList machineSetList, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, Patch patch, Status status, String time, TypeMeta typeMeta, OpenstackProviderSpec v1Alpha1OpenStackProviderSpec, SubnetFilter v1Alpha1SubnetFilter, NutanixCategory v1NutanixCategory, NutanixResourceIdentifier v1NutanixResourceIdentifier) {
         super();
         this.aPIGroup = aPIGroup;
         this.aPIGroupList = aPIGroupList;
         this.baseKubernetesList = baseKubernetesList;
+        this.controlPlaneMachineSet = controlPlaneMachineSet;
+        this.controlPlaneMachineSetList = controlPlaneMachineSetList;
         this.info = info;
         this.machine = machine;
         this.machineHealthCheck = machineHealthCheck;
@@ -147,6 +161,7 @@ public class ValidationSchema implements Editable<ValidationSchemaBuilder>
         this.status = status;
         this.time = time;
         this.typeMeta = typeMeta;
+        this.v1Alpha1OpenStackProviderSpec = v1Alpha1OpenStackProviderSpec;
         this.v1Alpha1SubnetFilter = v1Alpha1SubnetFilter;
         this.v1NutanixCategory = v1NutanixCategory;
         this.v1NutanixResourceIdentifier = v1NutanixResourceIdentifier;
@@ -180,6 +195,26 @@ public class ValidationSchema implements Editable<ValidationSchemaBuilder>
     @JsonProperty("BaseKubernetesList")
     public void setBaseKubernetesList(KubernetesList baseKubernetesList) {
         this.baseKubernetesList = baseKubernetesList;
+    }
+
+    @JsonProperty("ControlPlaneMachineSet")
+    public ControlPlaneMachineSet getControlPlaneMachineSet() {
+        return controlPlaneMachineSet;
+    }
+
+    @JsonProperty("ControlPlaneMachineSet")
+    public void setControlPlaneMachineSet(ControlPlaneMachineSet controlPlaneMachineSet) {
+        this.controlPlaneMachineSet = controlPlaneMachineSet;
+    }
+
+    @JsonProperty("ControlPlaneMachineSetList")
+    public ControlPlaneMachineSetList getControlPlaneMachineSetList() {
+        return controlPlaneMachineSetList;
+    }
+
+    @JsonProperty("ControlPlaneMachineSetList")
+    public void setControlPlaneMachineSetList(ControlPlaneMachineSetList controlPlaneMachineSetList) {
+        this.controlPlaneMachineSetList = controlPlaneMachineSetList;
     }
 
     @JsonProperty("Info")
@@ -300,6 +335,16 @@ public class ValidationSchema implements Editable<ValidationSchemaBuilder>
     @JsonProperty("TypeMeta")
     public void setTypeMeta(TypeMeta typeMeta) {
         this.typeMeta = typeMeta;
+    }
+
+    @JsonProperty("V1Alpha1OpenStackProviderSpec")
+    public OpenstackProviderSpec getV1Alpha1OpenStackProviderSpec() {
+        return v1Alpha1OpenStackProviderSpec;
+    }
+
+    @JsonProperty("V1Alpha1OpenStackProviderSpec")
+    public void setV1Alpha1OpenStackProviderSpec(OpenstackProviderSpec v1Alpha1OpenStackProviderSpec) {
+        this.v1Alpha1OpenStackProviderSpec = v1Alpha1OpenStackProviderSpec;
     }
 
     @JsonProperty("V1Alpha1SubnetFilter")

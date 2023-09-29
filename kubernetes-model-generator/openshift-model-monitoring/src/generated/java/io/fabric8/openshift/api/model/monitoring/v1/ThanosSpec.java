@@ -38,8 +38,14 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
+    "additionalArgs",
     "baseImage",
+    "blockSize",
+    "getConfigInterval",
+    "getConfigTimeout",
+    "grpcListenLocal",
     "grpcServerTlsConfig",
+    "httpListenLocal",
     "image",
     "listenLocal",
     "logFormat",
@@ -78,10 +84,23 @@ import lombok.experimental.Accessors;
 public class ThanosSpec implements Editable<ThanosSpecBuilder> , KubernetesResource
 {
 
+    @JsonProperty("additionalArgs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<Argument> additionalArgs = new ArrayList<Argument>();
     @JsonProperty("baseImage")
     private String baseImage;
+    @JsonProperty("blockSize")
+    private String blockSize;
+    @JsonProperty("getConfigInterval")
+    private String getConfigInterval;
+    @JsonProperty("getConfigTimeout")
+    private String getConfigTimeout;
+    @JsonProperty("grpcListenLocal")
+    private Boolean grpcListenLocal;
     @JsonProperty("grpcServerTlsConfig")
     private TLSConfig grpcServerTlsConfig;
+    @JsonProperty("httpListenLocal")
+    private Boolean httpListenLocal;
     @JsonProperty("image")
     private String image;
     @JsonProperty("listenLocal")
@@ -123,10 +142,16 @@ public class ThanosSpec implements Editable<ThanosSpecBuilder> , KubernetesResou
     public ThanosSpec() {
     }
 
-    public ThanosSpec(String baseImage, TLSConfig grpcServerTlsConfig, String image, Boolean listenLocal, String logFormat, String logLevel, String minTime, SecretKeySelector objectStorageConfig, String objectStorageConfigFile, String readyTimeout, io.fabric8.kubernetes.api.model.ResourceRequirements resources, String sha, String tag, SecretKeySelector tracingConfig, String tracingConfigFile, String version, List<VolumeMount> volumeMounts) {
+    public ThanosSpec(List<Argument> additionalArgs, String baseImage, String blockSize, String getConfigInterval, String getConfigTimeout, Boolean grpcListenLocal, TLSConfig grpcServerTlsConfig, Boolean httpListenLocal, String image, Boolean listenLocal, String logFormat, String logLevel, String minTime, SecretKeySelector objectStorageConfig, String objectStorageConfigFile, String readyTimeout, io.fabric8.kubernetes.api.model.ResourceRequirements resources, String sha, String tag, SecretKeySelector tracingConfig, String tracingConfigFile, String version, List<VolumeMount> volumeMounts) {
         super();
+        this.additionalArgs = additionalArgs;
         this.baseImage = baseImage;
+        this.blockSize = blockSize;
+        this.getConfigInterval = getConfigInterval;
+        this.getConfigTimeout = getConfigTimeout;
+        this.grpcListenLocal = grpcListenLocal;
         this.grpcServerTlsConfig = grpcServerTlsConfig;
+        this.httpListenLocal = httpListenLocal;
         this.image = image;
         this.listenLocal = listenLocal;
         this.logFormat = logFormat;
@@ -144,6 +169,16 @@ public class ThanosSpec implements Editable<ThanosSpecBuilder> , KubernetesResou
         this.volumeMounts = volumeMounts;
     }
 
+    @JsonProperty("additionalArgs")
+    public List<Argument> getAdditionalArgs() {
+        return additionalArgs;
+    }
+
+    @JsonProperty("additionalArgs")
+    public void setAdditionalArgs(List<Argument> additionalArgs) {
+        this.additionalArgs = additionalArgs;
+    }
+
     @JsonProperty("baseImage")
     public String getBaseImage() {
         return baseImage;
@@ -154,6 +189,46 @@ public class ThanosSpec implements Editable<ThanosSpecBuilder> , KubernetesResou
         this.baseImage = baseImage;
     }
 
+    @JsonProperty("blockSize")
+    public String getBlockSize() {
+        return blockSize;
+    }
+
+    @JsonProperty("blockSize")
+    public void setBlockSize(String blockSize) {
+        this.blockSize = blockSize;
+    }
+
+    @JsonProperty("getConfigInterval")
+    public String getGetConfigInterval() {
+        return getConfigInterval;
+    }
+
+    @JsonProperty("getConfigInterval")
+    public void setGetConfigInterval(String getConfigInterval) {
+        this.getConfigInterval = getConfigInterval;
+    }
+
+    @JsonProperty("getConfigTimeout")
+    public String getGetConfigTimeout() {
+        return getConfigTimeout;
+    }
+
+    @JsonProperty("getConfigTimeout")
+    public void setGetConfigTimeout(String getConfigTimeout) {
+        this.getConfigTimeout = getConfigTimeout;
+    }
+
+    @JsonProperty("grpcListenLocal")
+    public Boolean getGrpcListenLocal() {
+        return grpcListenLocal;
+    }
+
+    @JsonProperty("grpcListenLocal")
+    public void setGrpcListenLocal(Boolean grpcListenLocal) {
+        this.grpcListenLocal = grpcListenLocal;
+    }
+
     @JsonProperty("grpcServerTlsConfig")
     public TLSConfig getGrpcServerTlsConfig() {
         return grpcServerTlsConfig;
@@ -162,6 +237,16 @@ public class ThanosSpec implements Editable<ThanosSpecBuilder> , KubernetesResou
     @JsonProperty("grpcServerTlsConfig")
     public void setGrpcServerTlsConfig(TLSConfig grpcServerTlsConfig) {
         this.grpcServerTlsConfig = grpcServerTlsConfig;
+    }
+
+    @JsonProperty("httpListenLocal")
+    public Boolean getHttpListenLocal() {
+        return httpListenLocal;
+    }
+
+    @JsonProperty("httpListenLocal")
+    public void setHttpListenLocal(Boolean httpListenLocal) {
+        this.httpListenLocal = httpListenLocal;
     }
 
     @JsonProperty("image")

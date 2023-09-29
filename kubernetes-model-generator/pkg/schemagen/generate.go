@@ -564,6 +564,7 @@ func (g *schemaGenerator) isSubresourceContainingMetadata(t reflect.Type) bool {
 		"MachineSpec",
 		"MachineTemplateSpec",
 		"ResourceClaimTemplateSpec",
+                "OpenShiftMachineV1Beta1MachineTemplate",
 	}
 	return Contains(subResourcesContainingMetadataList, t.Name())
 }
@@ -676,6 +677,7 @@ func (g *schemaGenerator) isClusterScopedResource(t reflect.Type) bool {
 		"github.com/openshift/api/operator/v1/KubeScheduler",
 		"github.com/openshift/api/operator/v1/Authentication",
 		"github.com/operator-framework/api/pkg/operators/v1/Operator",
+		"github.com/operator-framework/api/pkg/operators/v1/OLMConfig",
 		"github.com/openshift/api/imageregistry/v1/ImagePruner",
 		"github.com/openshift/api/imageregistry/v1/Config",
 		"github.com/openshift/api/console/v1/ConsoleLink",
@@ -686,6 +688,8 @@ func (g *schemaGenerator) isClusterScopedResource(t reflect.Type) bool {
 		"github.com/openshift/api/console/v1/ConsoleQuickStart",
 		"github.com/openshift/api/console/v1alpha1/ConsolePlugin",
 		"github.com/openshift/api/config/v1/Ingress",
+                "github.com/openshift/api/config/v1/ImageDigestMirrorSet",
+                "github.com/openshift/api/config/v1/ImageTagMirrorSet",
 		"github.com/openshift/api/template/v1/BrokerTemplateInstance",
 		"github.com/openshift/api/helm/v1beta1/HelmChartRepository",
 		"github.com/openshift/api/network/v1/HostSubnet",

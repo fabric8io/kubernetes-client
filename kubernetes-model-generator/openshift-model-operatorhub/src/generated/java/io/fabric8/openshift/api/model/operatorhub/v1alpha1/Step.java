@@ -35,6 +35,7 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
+    "optional",
     "resolving",
     "resource",
     "status"
@@ -61,6 +62,8 @@ import lombok.experimental.Accessors;
 public class Step implements Editable<StepBuilder> , KubernetesResource
 {
 
+    @JsonProperty("optional")
+    private Boolean optional;
     @JsonProperty("resolving")
     private String resolving;
     @JsonProperty("resource")
@@ -77,11 +80,22 @@ public class Step implements Editable<StepBuilder> , KubernetesResource
     public Step() {
     }
 
-    public Step(String resolving, StepResource resource, String status) {
+    public Step(Boolean optional, String resolving, StepResource resource, String status) {
         super();
+        this.optional = optional;
         this.resolving = resolving;
         this.resource = resource;
         this.status = status;
+    }
+
+    @JsonProperty("optional")
+    public Boolean getOptional() {
+        return optional;
+    }
+
+    @JsonProperty("optional")
+    public void setOptional(Boolean optional) {
+        this.optional = optional;
     }
 
     @JsonProperty("resolving")

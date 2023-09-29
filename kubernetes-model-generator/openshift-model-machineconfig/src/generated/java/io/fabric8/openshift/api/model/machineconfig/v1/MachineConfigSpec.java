@@ -37,6 +37,7 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
+    "baseOSExtensionsContainerImage",
     "config",
     "extensions",
     "fips",
@@ -66,6 +67,8 @@ import lombok.experimental.Accessors;
 public class MachineConfigSpec implements Editable<MachineConfigSpecBuilder> , KubernetesResource
 {
 
+    @JsonProperty("baseOSExtensionsContainerImage")
+    private java.lang.String baseOSExtensionsContainerImage;
     @JsonProperty("config")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, Object> config = new LinkedHashMap<String, Object>();
@@ -91,14 +94,25 @@ public class MachineConfigSpec implements Editable<MachineConfigSpecBuilder> , K
     public MachineConfigSpec() {
     }
 
-    public MachineConfigSpec(Map<String, Object> config, List<java.lang.String> extensions, Boolean fips, List<java.lang.String> kernelArguments, java.lang.String kernelType, java.lang.String osImageURL) {
+    public MachineConfigSpec(java.lang.String baseOSExtensionsContainerImage, Map<String, Object> config, List<java.lang.String> extensions, Boolean fips, List<java.lang.String> kernelArguments, java.lang.String kernelType, java.lang.String osImageURL) {
         super();
+        this.baseOSExtensionsContainerImage = baseOSExtensionsContainerImage;
         this.config = config;
         this.extensions = extensions;
         this.fips = fips;
         this.kernelArguments = kernelArguments;
         this.kernelType = kernelType;
         this.osImageURL = osImageURL;
+    }
+
+    @JsonProperty("baseOSExtensionsContainerImage")
+    public java.lang.String getBaseOSExtensionsContainerImage() {
+        return baseOSExtensionsContainerImage;
+    }
+
+    @JsonProperty("baseOSExtensionsContainerImage")
+    public void setBaseOSExtensionsContainerImage(java.lang.String baseOSExtensionsContainerImage) {
+        this.baseOSExtensionsContainerImage = baseOSExtensionsContainerImage;
     }
 
     @JsonProperty("config")

@@ -38,6 +38,7 @@ import lombok.experimental.Accessors;
     "metadata",
     "apiURL",
     "botToken",
+    "botTokenFile",
     "chatID",
     "disableNotifications",
     "httpConfig",
@@ -71,6 +72,8 @@ public class TelegramConfig implements Editable<TelegramConfigBuilder> , Kuberne
     private String apiURL;
     @JsonProperty("botToken")
     private SecretKeySelector botToken;
+    @JsonProperty("botTokenFile")
+    private String botTokenFile;
     @JsonProperty("chatID")
     private Long chatID;
     @JsonProperty("disableNotifications")
@@ -93,10 +96,11 @@ public class TelegramConfig implements Editable<TelegramConfigBuilder> , Kuberne
     public TelegramConfig() {
     }
 
-    public TelegramConfig(String apiURL, SecretKeySelector botToken, Long chatID, Boolean disableNotifications, HTTPConfig httpConfig, String message, String parseMode, Boolean sendResolved) {
+    public TelegramConfig(String apiURL, SecretKeySelector botToken, String botTokenFile, Long chatID, Boolean disableNotifications, HTTPConfig httpConfig, String message, String parseMode, Boolean sendResolved) {
         super();
         this.apiURL = apiURL;
         this.botToken = botToken;
+        this.botTokenFile = botTokenFile;
         this.chatID = chatID;
         this.disableNotifications = disableNotifications;
         this.httpConfig = httpConfig;
@@ -123,6 +127,16 @@ public class TelegramConfig implements Editable<TelegramConfigBuilder> , Kuberne
     @JsonProperty("botToken")
     public void setBotToken(SecretKeySelector botToken) {
         this.botToken = botToken;
+    }
+
+    @JsonProperty("botTokenFile")
+    public String getBotTokenFile() {
+        return botTokenFile;
+    }
+
+    @JsonProperty("botTokenFile")
+    public void setBotTokenFile(String botTokenFile) {
+        this.botTokenFile = botTokenFile;
     }
 
     @JsonProperty("chatID")

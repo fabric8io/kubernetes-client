@@ -42,6 +42,7 @@ import lombok.experimental.Accessors;
     "clusterID",
     "infraID",
     "installLog",
+    "metadataJSON",
     "podSpec",
     "prevClusterID",
     "prevInfraID",
@@ -87,6 +88,8 @@ public class ClusterProvisionSpec implements Editable<ClusterProvisionSpecBuilde
     @JsonProperty("metadata")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, Object> metadata = new LinkedHashMap<String, Object>();
+    @JsonProperty("metadataJSON")
+    private java.lang.String metadataJSON;
     @JsonProperty("podSpec")
     private PodSpec podSpec;
     @JsonProperty("prevClusterID")
@@ -107,7 +110,7 @@ public class ClusterProvisionSpec implements Editable<ClusterProvisionSpecBuilde
     public ClusterProvisionSpec() {
     }
 
-    public ClusterProvisionSpec(io.fabric8.kubernetes.api.model.LocalObjectReference adminKubeconfigSecretRef, io.fabric8.kubernetes.api.model.LocalObjectReference adminPasswordSecretRef, Integer attempt, io.fabric8.kubernetes.api.model.LocalObjectReference clusterDeploymentRef, java.lang.String clusterID, java.lang.String infraID, java.lang.String installLog, Map<String, Object> metadata, PodSpec podSpec, java.lang.String prevClusterID, java.lang.String prevInfraID, java.lang.String prevProvisionName, java.lang.String stage) {
+    public ClusterProvisionSpec(io.fabric8.kubernetes.api.model.LocalObjectReference adminKubeconfigSecretRef, io.fabric8.kubernetes.api.model.LocalObjectReference adminPasswordSecretRef, Integer attempt, io.fabric8.kubernetes.api.model.LocalObjectReference clusterDeploymentRef, java.lang.String clusterID, java.lang.String infraID, java.lang.String installLog, Map<String, Object> metadata, java.lang.String metadataJSON, PodSpec podSpec, java.lang.String prevClusterID, java.lang.String prevInfraID, java.lang.String prevProvisionName, java.lang.String stage) {
         super();
         this.adminKubeconfigSecretRef = adminKubeconfigSecretRef;
         this.adminPasswordSecretRef = adminPasswordSecretRef;
@@ -117,6 +120,7 @@ public class ClusterProvisionSpec implements Editable<ClusterProvisionSpecBuilde
         this.infraID = infraID;
         this.installLog = installLog;
         this.metadata = metadata;
+        this.metadataJSON = metadataJSON;
         this.podSpec = podSpec;
         this.prevClusterID = prevClusterID;
         this.prevInfraID = prevInfraID;
@@ -202,6 +206,16 @@ public class ClusterProvisionSpec implements Editable<ClusterProvisionSpecBuilde
     @JsonProperty("metadata")
     public void setMetadata(Map<String, Object> metadata) {
         this.metadata = metadata;
+    }
+
+    @JsonProperty("metadataJSON")
+    public java.lang.String getMetadataJSON() {
+        return metadataJSON;
+    }
+
+    @JsonProperty("metadataJSON")
+    public void setMetadataJSON(java.lang.String metadataJSON) {
+        this.metadataJSON = metadataJSON;
     }
 
     @JsonProperty("podSpec")

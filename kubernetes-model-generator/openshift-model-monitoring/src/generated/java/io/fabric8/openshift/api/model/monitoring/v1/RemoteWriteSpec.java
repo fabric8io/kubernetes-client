@@ -49,6 +49,7 @@ import lombok.experimental.Accessors;
     "queueConfig",
     "remoteTimeout",
     "sendExemplars",
+    "sendNativeHistograms",
     "sigv4",
     "tlsConfig",
     "url",
@@ -101,6 +102,8 @@ public class RemoteWriteSpec implements Editable<RemoteWriteSpecBuilder> , Kuber
     private java.lang.String remoteTimeout;
     @JsonProperty("sendExemplars")
     private Boolean sendExemplars;
+    @JsonProperty("sendNativeHistograms")
+    private Boolean sendNativeHistograms;
     @JsonProperty("sigv4")
     private Sigv4 sigv4;
     @JsonProperty("tlsConfig")
@@ -120,7 +123,7 @@ public class RemoteWriteSpec implements Editable<RemoteWriteSpecBuilder> , Kuber
     public RemoteWriteSpec() {
     }
 
-    public RemoteWriteSpec(Authorization authorization, BasicAuth basicAuth, java.lang.String bearerToken, java.lang.String bearerTokenFile, Map<String, String> headers, MetadataConfig metadataConfig, java.lang.String name, OAuth2 oauth2, java.lang.String proxyUrl, QueueConfig queueConfig, java.lang.String remoteTimeout, Boolean sendExemplars, Sigv4 sigv4, TLSConfig tlsConfig, java.lang.String url, List<RelabelConfig> writeRelabelConfigs) {
+    public RemoteWriteSpec(Authorization authorization, BasicAuth basicAuth, java.lang.String bearerToken, java.lang.String bearerTokenFile, Map<String, String> headers, MetadataConfig metadataConfig, java.lang.String name, OAuth2 oauth2, java.lang.String proxyUrl, QueueConfig queueConfig, java.lang.String remoteTimeout, Boolean sendExemplars, Boolean sendNativeHistograms, Sigv4 sigv4, TLSConfig tlsConfig, java.lang.String url, List<RelabelConfig> writeRelabelConfigs) {
         super();
         this.authorization = authorization;
         this.basicAuth = basicAuth;
@@ -134,6 +137,7 @@ public class RemoteWriteSpec implements Editable<RemoteWriteSpecBuilder> , Kuber
         this.queueConfig = queueConfig;
         this.remoteTimeout = remoteTimeout;
         this.sendExemplars = sendExemplars;
+        this.sendNativeHistograms = sendNativeHistograms;
         this.sigv4 = sigv4;
         this.tlsConfig = tlsConfig;
         this.url = url;
@@ -258,6 +262,16 @@ public class RemoteWriteSpec implements Editable<RemoteWriteSpecBuilder> , Kuber
     @JsonProperty("sendExemplars")
     public void setSendExemplars(Boolean sendExemplars) {
         this.sendExemplars = sendExemplars;
+    }
+
+    @JsonProperty("sendNativeHistograms")
+    public Boolean getSendNativeHistograms() {
+        return sendNativeHistograms;
+    }
+
+    @JsonProperty("sendNativeHistograms")
+    public void setSendNativeHistograms(Boolean sendNativeHistograms) {
+        this.sendNativeHistograms = sendNativeHistograms;
     }
 
     @JsonProperty("sigv4")

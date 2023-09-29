@@ -36,6 +36,7 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
+    "defaultRuntime",
     "logLevel",
     "logSizeMax",
     "overlaySize",
@@ -63,6 +64,8 @@ import lombok.experimental.Accessors;
 public class ContainerRuntimeConfiguration implements Editable<ContainerRuntimeConfigurationBuilder> , KubernetesResource
 {
 
+    @JsonProperty("defaultRuntime")
+    private String defaultRuntime;
     @JsonProperty("logLevel")
     private String logLevel;
     @JsonProperty("logSizeMax")
@@ -81,12 +84,23 @@ public class ContainerRuntimeConfiguration implements Editable<ContainerRuntimeC
     public ContainerRuntimeConfiguration() {
     }
 
-    public ContainerRuntimeConfiguration(String logLevel, Quantity logSizeMax, Quantity overlaySize, Long pidsLimit) {
+    public ContainerRuntimeConfiguration(String defaultRuntime, String logLevel, Quantity logSizeMax, Quantity overlaySize, Long pidsLimit) {
         super();
+        this.defaultRuntime = defaultRuntime;
         this.logLevel = logLevel;
         this.logSizeMax = logSizeMax;
         this.overlaySize = overlaySize;
         this.pidsLimit = pidsLimit;
+    }
+
+    @JsonProperty("defaultRuntime")
+    public String getDefaultRuntime() {
+        return defaultRuntime;
+    }
+
+    @JsonProperty("defaultRuntime")
+    public void setDefaultRuntime(String defaultRuntime) {
+        this.defaultRuntime = defaultRuntime;
     }
 
     @JsonProperty("logLevel")

@@ -38,6 +38,7 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
+    "architecture",
     "automatedCleaningMode",
     "bmc",
     "bootMACAddress",
@@ -80,6 +81,8 @@ import lombok.experimental.Accessors;
 public class BareMetalHostSpec implements Editable<BareMetalHostSpecBuilder> , KubernetesResource
 {
 
+    @JsonProperty("architecture")
+    private String architecture;
     @JsonProperty("automatedCleaningMode")
     private String automatedCleaningMode;
     @JsonProperty("bmc")
@@ -129,8 +132,9 @@ public class BareMetalHostSpec implements Editable<BareMetalHostSpecBuilder> , K
     public BareMetalHostSpec() {
     }
 
-    public BareMetalHostSpec(String automatedCleaningMode, BMCDetails bmc, String bootMACAddress, String bootMode, io.fabric8.kubernetes.api.model.ObjectReference consumerRef, CustomDeploy customDeploy, String description, Boolean externallyProvisioned, FirmwareConfig firmware, String hardwareProfile, Image image, SecretReference metaData, SecretReference networkData, Boolean online, String preprovisioningNetworkDataName, RAIDConfig raid, RootDeviceHints rootDeviceHints, List<Taint> taints, SecretReference userData) {
+    public BareMetalHostSpec(String architecture, String automatedCleaningMode, BMCDetails bmc, String bootMACAddress, String bootMode, io.fabric8.kubernetes.api.model.ObjectReference consumerRef, CustomDeploy customDeploy, String description, Boolean externallyProvisioned, FirmwareConfig firmware, String hardwareProfile, Image image, SecretReference metaData, SecretReference networkData, Boolean online, String preprovisioningNetworkDataName, RAIDConfig raid, RootDeviceHints rootDeviceHints, List<Taint> taints, SecretReference userData) {
         super();
+        this.architecture = architecture;
         this.automatedCleaningMode = automatedCleaningMode;
         this.bmc = bmc;
         this.bootMACAddress = bootMACAddress;
@@ -150,6 +154,16 @@ public class BareMetalHostSpec implements Editable<BareMetalHostSpecBuilder> , K
         this.rootDeviceHints = rootDeviceHints;
         this.taints = taints;
         this.userData = userData;
+    }
+
+    @JsonProperty("architecture")
+    public String getArchitecture() {
+        return architecture;
+    }
+
+    @JsonProperty("architecture")
+    public void setArchitecture(String architecture) {
+        this.architecture = architecture;
     }
 
     @JsonProperty("automatedCleaningMode")

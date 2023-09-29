@@ -1,7 +1,9 @@
 
 package io.fabric8.openshift.api.model.hive.v1;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -43,6 +45,7 @@ import lombok.experimental.Accessors;
     "imageSetRef",
     "installAttemptsLimit",
     "installConfigSecretTemplateRef",
+    "inventory",
     "labels",
     "maxConcurrent",
     "maxSize",
@@ -91,6 +94,9 @@ public class ClusterPoolSpec implements Editable<ClusterPoolSpecBuilder> , Kuber
     private Integer installAttemptsLimit;
     @JsonProperty("installConfigSecretTemplateRef")
     private io.fabric8.kubernetes.api.model.LocalObjectReference installConfigSecretTemplateRef;
+    @JsonProperty("inventory")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<InventoryEntry> inventory = new ArrayList<InventoryEntry>();
     @JsonProperty("labels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> labels = new LinkedHashMap<String, String>();
@@ -118,7 +124,7 @@ public class ClusterPoolSpec implements Editable<ClusterPoolSpecBuilder> , Kuber
     public ClusterPoolSpec() {
     }
 
-    public ClusterPoolSpec(Map<String, String> annotations, java.lang.String baseDomain, ClusterPoolClaimLifetime claimLifetime, Duration hibernateAfter, HibernationConfig hibernationConfig, ClusterImageSetReference imageSetRef, Integer installAttemptsLimit, io.fabric8.kubernetes.api.model.LocalObjectReference installConfigSecretTemplateRef, Map<String, String> labels, Integer maxConcurrent, Integer maxSize, Platform platform, io.fabric8.kubernetes.api.model.LocalObjectReference pullSecretRef, Integer runningCount, Integer size, Boolean skipMachinePools) {
+    public ClusterPoolSpec(Map<String, String> annotations, java.lang.String baseDomain, ClusterPoolClaimLifetime claimLifetime, Duration hibernateAfter, HibernationConfig hibernationConfig, ClusterImageSetReference imageSetRef, Integer installAttemptsLimit, io.fabric8.kubernetes.api.model.LocalObjectReference installConfigSecretTemplateRef, List<InventoryEntry> inventory, Map<String, String> labels, Integer maxConcurrent, Integer maxSize, Platform platform, io.fabric8.kubernetes.api.model.LocalObjectReference pullSecretRef, Integer runningCount, Integer size, Boolean skipMachinePools) {
         super();
         this.annotations = annotations;
         this.baseDomain = baseDomain;
@@ -128,6 +134,7 @@ public class ClusterPoolSpec implements Editable<ClusterPoolSpecBuilder> , Kuber
         this.imageSetRef = imageSetRef;
         this.installAttemptsLimit = installAttemptsLimit;
         this.installConfigSecretTemplateRef = installConfigSecretTemplateRef;
+        this.inventory = inventory;
         this.labels = labels;
         this.maxConcurrent = maxConcurrent;
         this.maxSize = maxSize;
@@ -216,6 +223,16 @@ public class ClusterPoolSpec implements Editable<ClusterPoolSpecBuilder> , Kuber
     @JsonProperty("installConfigSecretTemplateRef")
     public void setInstallConfigSecretTemplateRef(io.fabric8.kubernetes.api.model.LocalObjectReference installConfigSecretTemplateRef) {
         this.installConfigSecretTemplateRef = installConfigSecretTemplateRef;
+    }
+
+    @JsonProperty("inventory")
+    public List<InventoryEntry> getInventory() {
+        return inventory;
+    }
+
+    @JsonProperty("inventory")
+    public void setInventory(List<InventoryEntry> inventory) {
+        this.inventory = inventory;
     }
 
     @JsonProperty("labels")

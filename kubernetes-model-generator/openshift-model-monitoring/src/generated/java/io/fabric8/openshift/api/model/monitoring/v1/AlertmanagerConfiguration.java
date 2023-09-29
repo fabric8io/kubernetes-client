@@ -1,7 +1,9 @@
 
 package io.fabric8.openshift.api.model.monitoring.v1;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -35,7 +37,9 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "name"
+    "global",
+    "name",
+    "templates"
 })
 @ToString
 @EqualsAndHashCode
@@ -59,8 +63,13 @@ import lombok.experimental.Accessors;
 public class AlertmanagerConfiguration implements Editable<AlertmanagerConfigurationBuilder> , KubernetesResource
 {
 
+    @JsonProperty("global")
+    private AlertmanagerGlobalConfig global;
     @JsonProperty("name")
     private String name;
+    @JsonProperty("templates")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<SecretOrConfigMap> templates = new ArrayList<SecretOrConfigMap>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -71,9 +80,21 @@ public class AlertmanagerConfiguration implements Editable<AlertmanagerConfigura
     public AlertmanagerConfiguration() {
     }
 
-    public AlertmanagerConfiguration(String name) {
+    public AlertmanagerConfiguration(AlertmanagerGlobalConfig global, String name, List<SecretOrConfigMap> templates) {
         super();
+        this.global = global;
         this.name = name;
+        this.templates = templates;
+    }
+
+    @JsonProperty("global")
+    public AlertmanagerGlobalConfig getGlobal() {
+        return global;
+    }
+
+    @JsonProperty("global")
+    public void setGlobal(AlertmanagerGlobalConfig global) {
+        this.global = global;
     }
 
     @JsonProperty("name")
@@ -84,6 +105,16 @@ public class AlertmanagerConfiguration implements Editable<AlertmanagerConfigura
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
+    }
+
+    @JsonProperty("templates")
+    public List<SecretOrConfigMap> getTemplates() {
+        return templates;
+    }
+
+    @JsonProperty("templates")
+    public void setTemplates(List<SecretOrConfigMap> templates) {
+        this.templates = templates;
     }
 
     @JsonIgnore

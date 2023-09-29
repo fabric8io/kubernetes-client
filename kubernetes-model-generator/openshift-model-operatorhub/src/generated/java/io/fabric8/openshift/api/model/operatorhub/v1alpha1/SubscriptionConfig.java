@@ -14,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
+import io.fabric8.kubernetes.api.model.Affinity;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.EnvFromSource;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -40,6 +41,7 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
+    "affinity",
     "env",
     "envFrom",
     "nodeSelector",
@@ -71,6 +73,8 @@ import lombok.experimental.Accessors;
 public class SubscriptionConfig implements Editable<SubscriptionConfigBuilder> , KubernetesResource
 {
 
+    @JsonProperty("affinity")
+    private Affinity affinity;
     @JsonProperty("env")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<EnvVar> env = new ArrayList<EnvVar>();
@@ -103,8 +107,9 @@ public class SubscriptionConfig implements Editable<SubscriptionConfigBuilder> ,
     public SubscriptionConfig() {
     }
 
-    public SubscriptionConfig(List<EnvVar> env, List<EnvFromSource> envFrom, Map<String, String> nodeSelector, io.fabric8.kubernetes.api.model.ResourceRequirements resources, io.fabric8.kubernetes.api.model.LabelSelector selector, List<Toleration> tolerations, List<VolumeMount> volumeMounts, List<Volume> volumes) {
+    public SubscriptionConfig(Affinity affinity, List<EnvVar> env, List<EnvFromSource> envFrom, Map<String, String> nodeSelector, io.fabric8.kubernetes.api.model.ResourceRequirements resources, io.fabric8.kubernetes.api.model.LabelSelector selector, List<Toleration> tolerations, List<VolumeMount> volumeMounts, List<Volume> volumes) {
         super();
+        this.affinity = affinity;
         this.env = env;
         this.envFrom = envFrom;
         this.nodeSelector = nodeSelector;
@@ -113,6 +118,16 @@ public class SubscriptionConfig implements Editable<SubscriptionConfigBuilder> ,
         this.tolerations = tolerations;
         this.volumeMounts = volumeMounts;
         this.volumes = volumes;
+    }
+
+    @JsonProperty("affinity")
+    public Affinity getAffinity() {
+        return affinity;
+    }
+
+    @JsonProperty("affinity")
+    public void setAffinity(Affinity affinity) {
+        this.affinity = affinity;
     }
 
     @JsonProperty("env")

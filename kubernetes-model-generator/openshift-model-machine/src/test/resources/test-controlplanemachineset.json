@@ -1,0 +1,88 @@
+{
+  "apiVersion": "machine.openshift.io/v1",
+  "kind": "ControlPlaneMachineSet",
+  "metadata": {
+    "name": "cluster"
+  },
+  "spec": {
+    "replicas": 3,
+    "selector": {
+      "matchLabels": {
+        "machine.openshift.io/cluster-api-machine-type": "master"
+      }
+    },
+    "state": "Active",
+    "template": {
+      "machineType": "machines_v1beta1_machine_openshift_io",
+      "machines_v1beta1_machine_openshift_io": {
+        "failureDomains": {
+          "openstack": [
+            {
+              "availabilityZone": "nova-one",
+              "rootVolume": {
+                "availabilityZone": "cinder-one"
+              }
+            }
+          ],
+          "platform": "OpenStack"
+        },
+        "metadata": {
+          "labels": {
+            "machine.openshift.io/cluster-api-machine-type": "master"
+          }
+        },
+        "spec": {
+          "providerSpec": {
+            "value": {
+              "apiVersion": "machine.openshift.io/v1alpha1",
+              "cloudName": "openstack",
+              "cloudsSecret": {
+                "name": "openstack-cloud-credentials",
+                "namespace": "openshift-machine-api"
+              },
+              "flavor": "m1.xlarge",
+              "image": "ocp1-2g2xs-rhcos",
+              "kind": "OpenstackProviderSpec",
+              "metadata": {
+                "creationTimestamp": null
+              },
+              "networks": [
+                {
+                  "subnets": [
+                    {
+                      "filter": {
+                        "name": "ocp1-2g2xs-nodes",
+                        "tags": "openshiftClusterID=ocp1-2g2xs"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "rootVolume": {
+                "diskSize": 30,
+                "volumeType": "performance"
+              },
+              "securityGroups": [
+                {
+                  "name": "ocp1-2g2xs-master"
+                }
+              ],
+              "serverGroupName": "ocp1-2g2xs-master",
+              "serverMetadata": {
+                "Name": "ocp1-2g2xs-master",
+                "openshiftClusterID": "ocp1-2g2xs"
+              },
+              "tags": [
+                "openshiftClusterID=ocp1-2g2xs"
+              ],
+              "trunk": true,
+              "userDataSecret": {
+                "name": "master-user-data"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

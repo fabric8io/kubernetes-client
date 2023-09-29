@@ -37,6 +37,7 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
+    "discordConfigs",
     "emailConfigs",
     "name",
     "opsgenieConfigs",
@@ -46,6 +47,7 @@ import lombok.experimental.Accessors;
     "snsConfigs",
     "telegramConfigs",
     "victoropsConfigs",
+    "webexConfigs",
     "webhookConfigs",
     "wechatConfigs"
 })
@@ -71,6 +73,9 @@ import lombok.experimental.Accessors;
 public class Receiver implements Editable<ReceiverBuilder> , KubernetesResource
 {
 
+    @JsonProperty("discordConfigs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<DiscordConfig> discordConfigs = new ArrayList<DiscordConfig>();
     @JsonProperty("emailConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<EmailConfig> emailConfigs = new ArrayList<EmailConfig>();
@@ -97,6 +102,9 @@ public class Receiver implements Editable<ReceiverBuilder> , KubernetesResource
     @JsonProperty("victoropsConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<VictorOpsConfig> victoropsConfigs = new ArrayList<VictorOpsConfig>();
+    @JsonProperty("webexConfigs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<WebexConfig> webexConfigs = new ArrayList<WebexConfig>();
     @JsonProperty("webhookConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<WebhookConfig> webhookConfigs = new ArrayList<WebhookConfig>();
@@ -113,8 +121,9 @@ public class Receiver implements Editable<ReceiverBuilder> , KubernetesResource
     public Receiver() {
     }
 
-    public Receiver(List<EmailConfig> emailConfigs, String name, List<OpsGenieConfig> opsgenieConfigs, List<PagerDutyConfig> pagerdutyConfigs, List<PushoverConfig> pushoverConfigs, List<SlackConfig> slackConfigs, List<SNSConfig> snsConfigs, List<TelegramConfig> telegramConfigs, List<VictorOpsConfig> victoropsConfigs, List<WebhookConfig> webhookConfigs, List<WeChatConfig> wechatConfigs) {
+    public Receiver(List<DiscordConfig> discordConfigs, List<EmailConfig> emailConfigs, String name, List<OpsGenieConfig> opsgenieConfigs, List<PagerDutyConfig> pagerdutyConfigs, List<PushoverConfig> pushoverConfigs, List<SlackConfig> slackConfigs, List<SNSConfig> snsConfigs, List<TelegramConfig> telegramConfigs, List<VictorOpsConfig> victoropsConfigs, List<WebexConfig> webexConfigs, List<WebhookConfig> webhookConfigs, List<WeChatConfig> wechatConfigs) {
         super();
+        this.discordConfigs = discordConfigs;
         this.emailConfigs = emailConfigs;
         this.name = name;
         this.opsgenieConfigs = opsgenieConfigs;
@@ -124,8 +133,19 @@ public class Receiver implements Editable<ReceiverBuilder> , KubernetesResource
         this.snsConfigs = snsConfigs;
         this.telegramConfigs = telegramConfigs;
         this.victoropsConfigs = victoropsConfigs;
+        this.webexConfigs = webexConfigs;
         this.webhookConfigs = webhookConfigs;
         this.wechatConfigs = wechatConfigs;
+    }
+
+    @JsonProperty("discordConfigs")
+    public List<DiscordConfig> getDiscordConfigs() {
+        return discordConfigs;
+    }
+
+    @JsonProperty("discordConfigs")
+    public void setDiscordConfigs(List<DiscordConfig> discordConfigs) {
+        this.discordConfigs = discordConfigs;
     }
 
     @JsonProperty("emailConfigs")
@@ -216,6 +236,16 @@ public class Receiver implements Editable<ReceiverBuilder> , KubernetesResource
     @JsonProperty("victoropsConfigs")
     public void setVictoropsConfigs(List<VictorOpsConfig> victoropsConfigs) {
         this.victoropsConfigs = victoropsConfigs;
+    }
+
+    @JsonProperty("webexConfigs")
+    public List<WebexConfig> getWebexConfigs() {
+        return webexConfigs;
+    }
+
+    @JsonProperty("webexConfigs")
+    public void setWebexConfigs(List<WebexConfig> webexConfigs) {
+        this.webexConfigs = webexConfigs;
     }
 
     @JsonProperty("webhookConfigs")

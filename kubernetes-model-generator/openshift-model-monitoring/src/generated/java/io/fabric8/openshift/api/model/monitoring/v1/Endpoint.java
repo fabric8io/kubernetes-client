@@ -41,6 +41,8 @@ import lombok.experimental.Accessors;
     "basicAuth",
     "bearerTokenFile",
     "bearerTokenSecret",
+    "enableHttp2",
+    "filterRunning",
     "followRedirects",
     "honorLabels",
     "honorTimestamps",
@@ -87,6 +89,10 @@ public class Endpoint implements Editable<EndpointBuilder> , KubernetesResource
     private java.lang.String bearerTokenFile;
     @JsonProperty("bearerTokenSecret")
     private SecretKeySelector bearerTokenSecret;
+    @JsonProperty("enableHttp2")
+    private Boolean enableHttp2;
+    @JsonProperty("filterRunning")
+    private Boolean filterRunning;
     @JsonProperty("followRedirects")
     private Boolean followRedirects;
     @JsonProperty("honorLabels")
@@ -130,12 +136,14 @@ public class Endpoint implements Editable<EndpointBuilder> , KubernetesResource
     public Endpoint() {
     }
 
-    public Endpoint(SafeAuthorization authorization, BasicAuth basicAuth, java.lang.String bearerTokenFile, SecretKeySelector bearerTokenSecret, Boolean followRedirects, Boolean honorLabels, Boolean honorTimestamps, java.lang.String interval, List<RelabelConfig> metricRelabelings, OAuth2 oauth2, Map<String, ArrayList<String>> params, java.lang.String path, java.lang.String port, java.lang.String proxyUrl, List<RelabelConfig> relabelings, java.lang.String scheme, java.lang.String scrapeTimeout, io.fabric8.kubernetes.api.model.IntOrString targetPort, TLSConfig tlsConfig) {
+    public Endpoint(SafeAuthorization authorization, BasicAuth basicAuth, java.lang.String bearerTokenFile, SecretKeySelector bearerTokenSecret, Boolean enableHttp2, Boolean filterRunning, Boolean followRedirects, Boolean honorLabels, Boolean honorTimestamps, java.lang.String interval, List<RelabelConfig> metricRelabelings, OAuth2 oauth2, Map<String, ArrayList<String>> params, java.lang.String path, java.lang.String port, java.lang.String proxyUrl, List<RelabelConfig> relabelings, java.lang.String scheme, java.lang.String scrapeTimeout, io.fabric8.kubernetes.api.model.IntOrString targetPort, TLSConfig tlsConfig) {
         super();
         this.authorization = authorization;
         this.basicAuth = basicAuth;
         this.bearerTokenFile = bearerTokenFile;
         this.bearerTokenSecret = bearerTokenSecret;
+        this.enableHttp2 = enableHttp2;
+        this.filterRunning = filterRunning;
         this.followRedirects = followRedirects;
         this.honorLabels = honorLabels;
         this.honorTimestamps = honorTimestamps;
@@ -191,6 +199,26 @@ public class Endpoint implements Editable<EndpointBuilder> , KubernetesResource
     @JsonProperty("bearerTokenSecret")
     public void setBearerTokenSecret(SecretKeySelector bearerTokenSecret) {
         this.bearerTokenSecret = bearerTokenSecret;
+    }
+
+    @JsonProperty("enableHttp2")
+    public Boolean getEnableHttp2() {
+        return enableHttp2;
+    }
+
+    @JsonProperty("enableHttp2")
+    public void setEnableHttp2(Boolean enableHttp2) {
+        this.enableHttp2 = enableHttp2;
+    }
+
+    @JsonProperty("filterRunning")
+    public Boolean getFilterRunning() {
+        return filterRunning;
+    }
+
+    @JsonProperty("filterRunning")
+    public void setFilterRunning(Boolean filterRunning) {
+        this.filterRunning = filterRunning;
     }
 
     @JsonProperty("followRedirects")

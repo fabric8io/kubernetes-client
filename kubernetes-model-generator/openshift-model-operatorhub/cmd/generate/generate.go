@@ -67,6 +67,8 @@ type Schema struct {
   OperatorConditionList                    operatorhubv1.OperatorConditionList
   Operator                                 operatorhubv1.Operator
   OperatorList                             operatorhubv1.OperatorList
+  OLMConfig                                operatorhubv1.OLMConfig
+  OLMConfigList                            operatorhubv1.OLMConfigList
   PackageManifest                          operatorlifecyclemanager.PackageManifest
   PackageManifestList                      operatorlifecyclemanager.PackageManifestList
 }

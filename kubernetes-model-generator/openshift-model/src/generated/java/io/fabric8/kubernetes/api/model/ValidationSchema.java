@@ -76,6 +76,8 @@ import io.fabric8.openshift.api.model.PodSecurityPolicyReview;
 import io.fabric8.openshift.api.model.PodSecurityPolicySelfSubjectReview;
 import io.fabric8.openshift.api.model.PodSecurityPolicySubjectReview;
 import io.fabric8.openshift.api.model.Project;
+import io.fabric8.openshift.api.model.ProjectHelmChartRepository;
+import io.fabric8.openshift.api.model.ProjectHelmChartRepositoryList;
 import io.fabric8.openshift.api.model.ProjectList;
 import io.fabric8.openshift.api.model.ProjectRequest;
 import io.fabric8.openshift.api.model.RangeAllocation;
@@ -193,6 +195,8 @@ import lombok.experimental.Accessors;
     "PodSecurityPolicySelfSubjectReview",
     "PodSecurityPolicySubjectReview",
     "Project",
+    "ProjectHelmChartRepository",
+    "ProjectHelmChartRepositoryList",
     "ProjectList",
     "ProjectRequest",
     "Quantity",
@@ -393,6 +397,10 @@ public class ValidationSchema implements Editable<ValidationSchemaBuilder>
     private PodSecurityPolicySubjectReview podSecurityPolicySubjectReview;
     @JsonProperty("Project")
     private Project project;
+    @JsonProperty("ProjectHelmChartRepository")
+    private ProjectHelmChartRepository projectHelmChartRepository;
+    @JsonProperty("ProjectHelmChartRepositoryList")
+    private ProjectHelmChartRepositoryList projectHelmChartRepositoryList;
     @JsonProperty("ProjectList")
     private ProjectList projectList;
     @JsonProperty("ProjectRequest")
@@ -465,7 +473,7 @@ public class ValidationSchema implements Editable<ValidationSchemaBuilder>
     public ValidationSchema() {
     }
 
-    public ValidationSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, AggregationRule aggregationRule, AppliedClusterResourceQuota appliedClusterResourceQuota, AppliedClusterResourceQuotaList appliedClusterResourceQuotaList, KubernetesList baseKubernetesList, BrokerTemplateInstance brokerTemplateInstance, BrokerTemplateInstanceList brokerTemplateInstanceList, BuildConfigList buildConfigList, BuildList buildList, BuildRequest buildRequest, ClusterNetwork clusterNetwork, ClusterNetworkList clusterNetworkList, ClusterResourceQuota clusterResourceQuota, ClusterResourceQuotaList clusterResourceQuotaList, Config config, CreateOptions createOptions, DeleteOptions deleteOptions, DeploymentConfig deploymentConfig, DeploymentConfigList deploymentConfigList, EgressNetworkPolicy egressNetworkPolicy, EgressNetworkPolicyList egressNetworkPolicyList, GetOptions getOptions, Group group, GroupList groupList, HelmChartRepository helmChartRepository, HelmChartRepositoryList helmChartRepositoryList, HostSubnet hostSubnet, HostSubnetList hostSubnetList, Identity identity, IdentityList identityList, ImageList imageList, ImageSignature imageSignature, ImageStreamImage imageStreamImage, ImageStreamImport imageStreamImport, ImageStreamList imageStreamList, ImageStreamMapping imageStreamMapping, ImageStreamTagList imageStreamTagList, ImageTag imageTag, ImageTagList imageTagList, Info info, ListOptions listOptions, LocalResourceAccessReview localResourceAccessReview, LocalSubjectAccessReview localSubjectAccessReview, NetNamespace netNamespace, NetNamespaceList netNamespaceList, OAuthAccessToken oAuthAccessToken, OAuthAccessTokenList oAuthAccessTokenList, OAuthAuthorizeToken oAuthAuthorizeToken, OAuthAuthorizeTokenList oAuthAuthorizeTokenList, OAuthClient oAuthClient, OAuthClientAuthorization oAuthClientAuthorization, OAuthClientAuthorizationList oAuthClientAuthorizationList, OAuthClientList oAuthClientList, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, RoleBindingRestrictionList openShiftRoleBindingRestrictionList, ClusterRole openshiftClusterRole, ClusterRoleBinding openshiftClusterRoleBinding, ClusterRoleBindingList openshiftClusterRoleBindingList, ClusterRoleList openshiftClusterRoleList, ClusterRoleScopeRestriction openshiftClusterRoleScopeRestriction, Role openshiftRole, RoleBinding openshiftRoleBinding, RoleBindingList openshiftRoleBindingList, RoleBindingRestriction openshiftRoleBindingRestriction, RoleBindingRestrictionSpec openshiftRoleBindingRestrictionSpec, RoleList openshiftRoleList, Patch patch, PatchOptions patchOptions, PodSecurityPolicyReview podSecurityPolicyReview, PodSecurityPolicySelfSubjectReview podSecurityPolicySelfSubjectReview, PodSecurityPolicySubjectReview podSecurityPolicySubjectReview, Project project, ProjectList projectList, ProjectRequest projectRequest, Quantity quantity, RangeAllocation rangeAllocation, RangeAllocationList rangeAllocationList, ResourceAccessReview resourceAccessReview, ResourceAccessReviewResponse resourceAccessReviewResponse, RootPaths rootPaths, Route route, RouteList routeList, SecurityContextConstraints securityContextConstraints, SecurityContextConstraintsList securityContextConstraintsList, SelfSubjectRulesReview selfSubjectRulesReview, Status status, SubjectAccessReview subjectAccessReview, SubjectAccessReviewResponse subjectAccessReviewResponse, SubjectRulesReview subjectRulesReview, TagEvent tagEvent, Template template, TemplateInstance templateInstance, TemplateInstanceList templateInstanceList, TemplateList templateList, String time, TokenReview tokenReview, TypeMeta typeMeta, UpdateOptions updateOptions, User user, UserIdentityMapping userIdentityMapping, UserList userList, UserOAuthAccessToken userOAuthAccessToken, UserOAuthAccessTokenList userOAuthAccessTokenList) {
+    public ValidationSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, AggregationRule aggregationRule, AppliedClusterResourceQuota appliedClusterResourceQuota, AppliedClusterResourceQuotaList appliedClusterResourceQuotaList, KubernetesList baseKubernetesList, BrokerTemplateInstance brokerTemplateInstance, BrokerTemplateInstanceList brokerTemplateInstanceList, BuildConfigList buildConfigList, BuildList buildList, BuildRequest buildRequest, ClusterNetwork clusterNetwork, ClusterNetworkList clusterNetworkList, ClusterResourceQuota clusterResourceQuota, ClusterResourceQuotaList clusterResourceQuotaList, Config config, CreateOptions createOptions, DeleteOptions deleteOptions, DeploymentConfig deploymentConfig, DeploymentConfigList deploymentConfigList, EgressNetworkPolicy egressNetworkPolicy, EgressNetworkPolicyList egressNetworkPolicyList, GetOptions getOptions, Group group, GroupList groupList, HelmChartRepository helmChartRepository, HelmChartRepositoryList helmChartRepositoryList, HostSubnet hostSubnet, HostSubnetList hostSubnetList, Identity identity, IdentityList identityList, ImageList imageList, ImageSignature imageSignature, ImageStreamImage imageStreamImage, ImageStreamImport imageStreamImport, ImageStreamList imageStreamList, ImageStreamMapping imageStreamMapping, ImageStreamTagList imageStreamTagList, ImageTag imageTag, ImageTagList imageTagList, Info info, ListOptions listOptions, LocalResourceAccessReview localResourceAccessReview, LocalSubjectAccessReview localSubjectAccessReview, NetNamespace netNamespace, NetNamespaceList netNamespaceList, OAuthAccessToken oAuthAccessToken, OAuthAccessTokenList oAuthAccessTokenList, OAuthAuthorizeToken oAuthAuthorizeToken, OAuthAuthorizeTokenList oAuthAuthorizeTokenList, OAuthClient oAuthClient, OAuthClientAuthorization oAuthClientAuthorization, OAuthClientAuthorizationList oAuthClientAuthorizationList, OAuthClientList oAuthClientList, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, RoleBindingRestrictionList openShiftRoleBindingRestrictionList, ClusterRole openshiftClusterRole, ClusterRoleBinding openshiftClusterRoleBinding, ClusterRoleBindingList openshiftClusterRoleBindingList, ClusterRoleList openshiftClusterRoleList, ClusterRoleScopeRestriction openshiftClusterRoleScopeRestriction, Role openshiftRole, RoleBinding openshiftRoleBinding, RoleBindingList openshiftRoleBindingList, RoleBindingRestriction openshiftRoleBindingRestriction, RoleBindingRestrictionSpec openshiftRoleBindingRestrictionSpec, RoleList openshiftRoleList, Patch patch, PatchOptions patchOptions, PodSecurityPolicyReview podSecurityPolicyReview, PodSecurityPolicySelfSubjectReview podSecurityPolicySelfSubjectReview, PodSecurityPolicySubjectReview podSecurityPolicySubjectReview, Project project, ProjectHelmChartRepository projectHelmChartRepository, ProjectHelmChartRepositoryList projectHelmChartRepositoryList, ProjectList projectList, ProjectRequest projectRequest, Quantity quantity, RangeAllocation rangeAllocation, RangeAllocationList rangeAllocationList, ResourceAccessReview resourceAccessReview, ResourceAccessReviewResponse resourceAccessReviewResponse, RootPaths rootPaths, Route route, RouteList routeList, SecurityContextConstraints securityContextConstraints, SecurityContextConstraintsList securityContextConstraintsList, SelfSubjectRulesReview selfSubjectRulesReview, Status status, SubjectAccessReview subjectAccessReview, SubjectAccessReviewResponse subjectAccessReviewResponse, SubjectRulesReview subjectRulesReview, TagEvent tagEvent, Template template, TemplateInstance templateInstance, TemplateInstanceList templateInstanceList, TemplateList templateList, String time, TokenReview tokenReview, TypeMeta typeMeta, UpdateOptions updateOptions, User user, UserIdentityMapping userIdentityMapping, UserList userList, UserOAuthAccessToken userOAuthAccessToken, UserOAuthAccessTokenList userOAuthAccessTokenList) {
         super();
         this.aPIGroup = aPIGroup;
         this.aPIGroupList = aPIGroupList;
@@ -540,6 +548,8 @@ public class ValidationSchema implements Editable<ValidationSchemaBuilder>
         this.podSecurityPolicySelfSubjectReview = podSecurityPolicySelfSubjectReview;
         this.podSecurityPolicySubjectReview = podSecurityPolicySubjectReview;
         this.project = project;
+        this.projectHelmChartRepository = projectHelmChartRepository;
+        this.projectHelmChartRepositoryList = projectHelmChartRepositoryList;
         this.projectList = projectList;
         this.projectRequest = projectRequest;
         this.quantity = quantity;
@@ -1301,6 +1311,26 @@ public class ValidationSchema implements Editable<ValidationSchemaBuilder>
     @JsonProperty("Project")
     public void setProject(Project project) {
         this.project = project;
+    }
+
+    @JsonProperty("ProjectHelmChartRepository")
+    public ProjectHelmChartRepository getProjectHelmChartRepository() {
+        return projectHelmChartRepository;
+    }
+
+    @JsonProperty("ProjectHelmChartRepository")
+    public void setProjectHelmChartRepository(ProjectHelmChartRepository projectHelmChartRepository) {
+        this.projectHelmChartRepository = projectHelmChartRepository;
+    }
+
+    @JsonProperty("ProjectHelmChartRepositoryList")
+    public ProjectHelmChartRepositoryList getProjectHelmChartRepositoryList() {
+        return projectHelmChartRepositoryList;
+    }
+
+    @JsonProperty("ProjectHelmChartRepositoryList")
+    public void setProjectHelmChartRepositoryList(ProjectHelmChartRepositoryList projectHelmChartRepositoryList) {
+        this.projectHelmChartRepositoryList = projectHelmChartRepositoryList;
     }
 
     @JsonProperty("ProjectList")

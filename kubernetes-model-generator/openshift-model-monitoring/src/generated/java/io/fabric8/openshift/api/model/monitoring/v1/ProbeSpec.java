@@ -43,6 +43,7 @@ import lombok.experimental.Accessors;
     "bearerTokenSecret",
     "interval",
     "jobName",
+    "keepDroppedTargets",
     "labelLimit",
     "labelNameLengthLimit",
     "labelValueLengthLimit",
@@ -88,6 +89,8 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder> , KubernetesResourc
     private String interval;
     @JsonProperty("jobName")
     private String jobName;
+    @JsonProperty("keepDroppedTargets")
+    private Long keepDroppedTargets;
     @JsonProperty("labelLimit")
     private Long labelLimit;
     @JsonProperty("labelNameLengthLimit")
@@ -123,13 +126,14 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder> , KubernetesResourc
     public ProbeSpec() {
     }
 
-    public ProbeSpec(SafeAuthorization authorization, BasicAuth basicAuth, SecretKeySelector bearerTokenSecret, String interval, String jobName, Long labelLimit, Long labelNameLengthLimit, Long labelValueLengthLimit, List<RelabelConfig> metricRelabelings, String module, OAuth2 oauth2, ProberSpec prober, Long sampleLimit, String scrapeTimeout, Long targetLimit, ProbeTargets targets, ProbeTLSConfig tlsConfig) {
+    public ProbeSpec(SafeAuthorization authorization, BasicAuth basicAuth, SecretKeySelector bearerTokenSecret, String interval, String jobName, Long keepDroppedTargets, Long labelLimit, Long labelNameLengthLimit, Long labelValueLengthLimit, List<RelabelConfig> metricRelabelings, String module, OAuth2 oauth2, ProberSpec prober, Long sampleLimit, String scrapeTimeout, Long targetLimit, ProbeTargets targets, ProbeTLSConfig tlsConfig) {
         super();
         this.authorization = authorization;
         this.basicAuth = basicAuth;
         this.bearerTokenSecret = bearerTokenSecret;
         this.interval = interval;
         this.jobName = jobName;
+        this.keepDroppedTargets = keepDroppedTargets;
         this.labelLimit = labelLimit;
         this.labelNameLengthLimit = labelNameLengthLimit;
         this.labelValueLengthLimit = labelValueLengthLimit;
@@ -192,6 +196,16 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder> , KubernetesResourc
     @JsonProperty("jobName")
     public void setJobName(String jobName) {
         this.jobName = jobName;
+    }
+
+    @JsonProperty("keepDroppedTargets")
+    public Long getKeepDroppedTargets() {
+        return keepDroppedTargets;
+    }
+
+    @JsonProperty("keepDroppedTargets")
+    public void setKeepDroppedTargets(Long keepDroppedTargets) {
+        this.keepDroppedTargets = keepDroppedTargets;
     }
 
     @JsonProperty("labelLimit")

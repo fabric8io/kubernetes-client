@@ -37,6 +37,8 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
+    "additionalSecurityGroupIDs",
+    "metadataService",
     "rootVolume",
     "spotMarketOptions",
     "subnets",
@@ -65,6 +67,11 @@ import lombok.experimental.Accessors;
 public class MachinePoolPlatform implements Editable<MachinePoolPlatformBuilder> , KubernetesResource
 {
 
+    @JsonProperty("additionalSecurityGroupIDs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> additionalSecurityGroupIDs = new ArrayList<String>();
+    @JsonProperty("metadataService")
+    private EC2Metadata metadataService;
     @JsonProperty("rootVolume")
     private EC2RootVolume rootVolume;
     @JsonProperty("spotMarketOptions")
@@ -87,13 +94,35 @@ public class MachinePoolPlatform implements Editable<MachinePoolPlatformBuilder>
     public MachinePoolPlatform() {
     }
 
-    public MachinePoolPlatform(EC2RootVolume rootVolume, SpotMarketOptions spotMarketOptions, List<String> subnets, String type, List<String> zones) {
+    public MachinePoolPlatform(List<String> additionalSecurityGroupIDs, EC2Metadata metadataService, EC2RootVolume rootVolume, SpotMarketOptions spotMarketOptions, List<String> subnets, String type, List<String> zones) {
         super();
+        this.additionalSecurityGroupIDs = additionalSecurityGroupIDs;
+        this.metadataService = metadataService;
         this.rootVolume = rootVolume;
         this.spotMarketOptions = spotMarketOptions;
         this.subnets = subnets;
         this.type = type;
         this.zones = zones;
+    }
+
+    @JsonProperty("additionalSecurityGroupIDs")
+    public List<String> getAdditionalSecurityGroupIDs() {
+        return additionalSecurityGroupIDs;
+    }
+
+    @JsonProperty("additionalSecurityGroupIDs")
+    public void setAdditionalSecurityGroupIDs(List<String> additionalSecurityGroupIDs) {
+        this.additionalSecurityGroupIDs = additionalSecurityGroupIDs;
+    }
+
+    @JsonProperty("metadataService")
+    public EC2Metadata getMetadataService() {
+        return metadataService;
+    }
+
+    @JsonProperty("metadataService")
+    public void setMetadataService(EC2Metadata metadataService) {
+        this.metadataService = metadataService;
     }
 
     @JsonProperty("rootVolume")

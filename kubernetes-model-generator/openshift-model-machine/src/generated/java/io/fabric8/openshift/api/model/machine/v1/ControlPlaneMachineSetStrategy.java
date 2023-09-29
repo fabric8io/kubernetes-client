@@ -1,5 +1,5 @@
 
-package io.fabric8.openshift.api.model.monitoring.v1;
+package io.fabric8.openshift.api.model.machine.v1;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -35,8 +35,7 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "pageTitle",
-    "tlsConfig"
+    "type"
 })
 @ToString
 @EqualsAndHashCode
@@ -57,13 +56,11 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class WebSpec implements Editable<WebSpecBuilder> , KubernetesResource
+public class ControlPlaneMachineSetStrategy implements Editable<ControlPlaneMachineSetStrategyBuilder> , KubernetesResource
 {
 
-    @JsonProperty("pageTitle")
-    private String pageTitle;
-    @JsonProperty("tlsConfig")
-    private WebTLSConfig tlsConfig;
+    @JsonProperty("type")
+    private String type;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -71,42 +68,31 @@ public class WebSpec implements Editable<WebSpecBuilder> , KubernetesResource
      * No args constructor for use in serialization
      * 
      */
-    public WebSpec() {
+    public ControlPlaneMachineSetStrategy() {
     }
 
-    public WebSpec(String pageTitle, WebTLSConfig tlsConfig) {
+    public ControlPlaneMachineSetStrategy(String type) {
         super();
-        this.pageTitle = pageTitle;
-        this.tlsConfig = tlsConfig;
+        this.type = type;
     }
 
-    @JsonProperty("pageTitle")
-    public String getPageTitle() {
-        return pageTitle;
+    @JsonProperty("type")
+    public String getType() {
+        return type;
     }
 
-    @JsonProperty("pageTitle")
-    public void setPageTitle(String pageTitle) {
-        this.pageTitle = pageTitle;
-    }
-
-    @JsonProperty("tlsConfig")
-    public WebTLSConfig getTlsConfig() {
-        return tlsConfig;
-    }
-
-    @JsonProperty("tlsConfig")
-    public void setTlsConfig(WebTLSConfig tlsConfig) {
-        this.tlsConfig = tlsConfig;
+    @JsonProperty("type")
+    public void setType(String type) {
+        this.type = type;
     }
 
     @JsonIgnore
-    public WebSpecBuilder edit() {
-        return new WebSpecBuilder(this);
+    public ControlPlaneMachineSetStrategyBuilder edit() {
+        return new ControlPlaneMachineSetStrategyBuilder(this);
     }
 
     @JsonIgnore
-    public WebSpecBuilder toBuilder() {
+    public ControlPlaneMachineSetStrategyBuilder toBuilder() {
         return edit();
     }
 

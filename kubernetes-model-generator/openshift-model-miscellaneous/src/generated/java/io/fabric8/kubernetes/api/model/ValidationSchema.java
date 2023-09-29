@@ -31,6 +31,10 @@ import io.fabric8.openshift.api.model.miscellaneous.imageregistry.operator.v1.Co
 import io.fabric8.openshift.api.model.miscellaneous.imageregistry.operator.v1.ConfigList;
 import io.fabric8.openshift.api.model.miscellaneous.metal3.v1alpha1.BareMetalHost;
 import io.fabric8.openshift.api.model.miscellaneous.metal3.v1alpha1.BareMetalHostList;
+import io.fabric8.openshift.api.model.miscellaneous.metal3.v1beta1.Metal3Remediation;
+import io.fabric8.openshift.api.model.miscellaneous.metal3.v1beta1.Metal3RemediationList;
+import io.fabric8.openshift.api.model.miscellaneous.metal3.v1beta1.Metal3RemediationTemplate;
+import io.fabric8.openshift.api.model.miscellaneous.metal3.v1beta1.Metal3RemediationTemplateList;
 import io.fabric8.openshift.api.model.miscellaneous.network.operator.v1.EgressRouter;
 import io.fabric8.openshift.api.model.miscellaneous.network.operator.v1.EgressRouterList;
 import io.fabric8.openshift.api.model.miscellaneous.network.operator.v1.OperatorPKI;
@@ -62,6 +66,10 @@ import lombok.experimental.Accessors;
     "EgressRouter",
     "EgressRouterList",
     "Info",
+    "Metal3Remediation",
+    "Metal3RemediationList",
+    "Metal3RemediationTemplate",
+    "Metal3RemediationTemplateList",
     "NetworkAttachmentDefinition",
     "NetworkAttachmentDefinitionList",
     "ObjectMeta",
@@ -122,6 +130,14 @@ public class ValidationSchema implements Editable<ValidationSchemaBuilder>
     private EgressRouterList egressRouterList;
     @JsonProperty("Info")
     private Info info;
+    @JsonProperty("Metal3Remediation")
+    private Metal3Remediation metal3Remediation;
+    @JsonProperty("Metal3RemediationList")
+    private Metal3RemediationList metal3RemediationList;
+    @JsonProperty("Metal3RemediationTemplate")
+    private Metal3RemediationTemplate metal3RemediationTemplate;
+    @JsonProperty("Metal3RemediationTemplateList")
+    private Metal3RemediationTemplateList metal3RemediationTemplateList;
     @JsonProperty("NetworkAttachmentDefinition")
     private NetworkAttachmentDefinition networkAttachmentDefinition;
     @JsonProperty("NetworkAttachmentDefinitionList")
@@ -150,7 +166,7 @@ public class ValidationSchema implements Editable<ValidationSchemaBuilder>
     public ValidationSchema() {
     }
 
-    public ValidationSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, APIRequestCount aPIRequestCount, APIRequestCountList aPIRequestCountList, BareMetalHost bareMetalHost, BareMetalHostList bareMetalHostList, KubernetesList baseKubernetesList, Config config, ConfigList configList, CredentialsRequest credentialsRequest, CredentialsRequestList credentialsRequestList, EgressRouter egressRouter, EgressRouterList egressRouterList, Info info, NetworkAttachmentDefinition networkAttachmentDefinition, NetworkAttachmentDefinitionList networkAttachmentDefinitionList, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, OperatorPKI operatorPKI, OperatorPKIList operatorPKIList, Patch patch, Status status, String time, TypeMeta typeMeta) {
+    public ValidationSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, APIRequestCount aPIRequestCount, APIRequestCountList aPIRequestCountList, BareMetalHost bareMetalHost, BareMetalHostList bareMetalHostList, KubernetesList baseKubernetesList, Config config, ConfigList configList, CredentialsRequest credentialsRequest, CredentialsRequestList credentialsRequestList, EgressRouter egressRouter, EgressRouterList egressRouterList, Info info, Metal3Remediation metal3Remediation, Metal3RemediationList metal3RemediationList, Metal3RemediationTemplate metal3RemediationTemplate, Metal3RemediationTemplateList metal3RemediationTemplateList, NetworkAttachmentDefinition networkAttachmentDefinition, NetworkAttachmentDefinitionList networkAttachmentDefinitionList, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, OperatorPKI operatorPKI, OperatorPKIList operatorPKIList, Patch patch, Status status, String time, TypeMeta typeMeta) {
         super();
         this.aPIGroup = aPIGroup;
         this.aPIGroupList = aPIGroupList;
@@ -166,6 +182,10 @@ public class ValidationSchema implements Editable<ValidationSchemaBuilder>
         this.egressRouter = egressRouter;
         this.egressRouterList = egressRouterList;
         this.info = info;
+        this.metal3Remediation = metal3Remediation;
+        this.metal3RemediationList = metal3RemediationList;
+        this.metal3RemediationTemplate = metal3RemediationTemplate;
+        this.metal3RemediationTemplateList = metal3RemediationTemplateList;
         this.networkAttachmentDefinition = networkAttachmentDefinition;
         this.networkAttachmentDefinitionList = networkAttachmentDefinitionList;
         this.objectMeta = objectMeta;
@@ -315,6 +335,46 @@ public class ValidationSchema implements Editable<ValidationSchemaBuilder>
     @JsonProperty("Info")
     public void setInfo(Info info) {
         this.info = info;
+    }
+
+    @JsonProperty("Metal3Remediation")
+    public Metal3Remediation getMetal3Remediation() {
+        return metal3Remediation;
+    }
+
+    @JsonProperty("Metal3Remediation")
+    public void setMetal3Remediation(Metal3Remediation metal3Remediation) {
+        this.metal3Remediation = metal3Remediation;
+    }
+
+    @JsonProperty("Metal3RemediationList")
+    public Metal3RemediationList getMetal3RemediationList() {
+        return metal3RemediationList;
+    }
+
+    @JsonProperty("Metal3RemediationList")
+    public void setMetal3RemediationList(Metal3RemediationList metal3RemediationList) {
+        this.metal3RemediationList = metal3RemediationList;
+    }
+
+    @JsonProperty("Metal3RemediationTemplate")
+    public Metal3RemediationTemplate getMetal3RemediationTemplate() {
+        return metal3RemediationTemplate;
+    }
+
+    @JsonProperty("Metal3RemediationTemplate")
+    public void setMetal3RemediationTemplate(Metal3RemediationTemplate metal3RemediationTemplate) {
+        this.metal3RemediationTemplate = metal3RemediationTemplate;
+    }
+
+    @JsonProperty("Metal3RemediationTemplateList")
+    public Metal3RemediationTemplateList getMetal3RemediationTemplateList() {
+        return metal3RemediationTemplateList;
+    }
+
+    @JsonProperty("Metal3RemediationTemplateList")
+    public void setMetal3RemediationTemplateList(Metal3RemediationTemplateList metal3RemediationTemplateList) {
+        this.metal3RemediationTemplateList = metal3RemediationTemplateList;
     }
 
     @JsonProperty("NetworkAttachmentDefinition")

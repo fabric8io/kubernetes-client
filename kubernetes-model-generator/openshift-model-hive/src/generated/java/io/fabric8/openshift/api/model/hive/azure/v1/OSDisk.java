@@ -35,7 +35,9 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "diskSizeGB"
+    "diskEncryptionSet",
+    "diskSizeGB",
+    "diskType"
 })
 @ToString
 @EqualsAndHashCode
@@ -59,8 +61,12 @@ import lombok.experimental.Accessors;
 public class OSDisk implements Editable<OSDiskBuilder> , KubernetesResource
 {
 
+    @JsonProperty("diskEncryptionSet")
+    private DiskEncryptionSet diskEncryptionSet;
     @JsonProperty("diskSizeGB")
     private Integer diskSizeGB;
+    @JsonProperty("diskType")
+    private String diskType;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -71,9 +77,21 @@ public class OSDisk implements Editable<OSDiskBuilder> , KubernetesResource
     public OSDisk() {
     }
 
-    public OSDisk(Integer diskSizeGB) {
+    public OSDisk(DiskEncryptionSet diskEncryptionSet, Integer diskSizeGB, String diskType) {
         super();
+        this.diskEncryptionSet = diskEncryptionSet;
         this.diskSizeGB = diskSizeGB;
+        this.diskType = diskType;
+    }
+
+    @JsonProperty("diskEncryptionSet")
+    public DiskEncryptionSet getDiskEncryptionSet() {
+        return diskEncryptionSet;
+    }
+
+    @JsonProperty("diskEncryptionSet")
+    public void setDiskEncryptionSet(DiskEncryptionSet diskEncryptionSet) {
+        this.diskEncryptionSet = diskEncryptionSet;
     }
 
     @JsonProperty("diskSizeGB")
@@ -84,6 +102,16 @@ public class OSDisk implements Editable<OSDiskBuilder> , KubernetesResource
     @JsonProperty("diskSizeGB")
     public void setDiskSizeGB(Integer diskSizeGB) {
         this.diskSizeGB = diskSizeGB;
+    }
+
+    @JsonProperty("diskType")
+    public String getDiskType() {
+        return diskType;
+    }
+
+    @JsonProperty("diskType")
+    public void setDiskType(String diskType) {
+        this.diskType = diskType;
     }
 
     @JsonIgnore

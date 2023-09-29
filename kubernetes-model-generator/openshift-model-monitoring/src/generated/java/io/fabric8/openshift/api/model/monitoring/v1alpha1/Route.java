@@ -38,6 +38,7 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
+    "activeTimeIntervals",
     "continue",
     "groupBy",
     "groupInterval",
@@ -70,6 +71,9 @@ import lombok.experimental.Accessors;
 public class Route implements Editable<RouteBuilder> , KubernetesResource
 {
 
+    @JsonProperty("activeTimeIntervals")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> activeTimeIntervals = new ArrayList<String>();
     @JsonProperty("continue")
     private Boolean _continue;
     @JsonProperty("groupBy")
@@ -102,8 +106,9 @@ public class Route implements Editable<RouteBuilder> , KubernetesResource
     public Route() {
     }
 
-    public Route(Boolean _continue, List<String> groupBy, String groupInterval, String groupWait, List<Matcher> matchers, List<String> muteTimeIntervals, String receiver, String repeatInterval, List<JsonNode> routes) {
+    public Route(List<String> activeTimeIntervals, Boolean _continue, List<String> groupBy, String groupInterval, String groupWait, List<Matcher> matchers, List<String> muteTimeIntervals, String receiver, String repeatInterval, List<JsonNode> routes) {
         super();
+        this.activeTimeIntervals = activeTimeIntervals;
         this._continue = _continue;
         this.groupBy = groupBy;
         this.groupInterval = groupInterval;
@@ -113,6 +118,16 @@ public class Route implements Editable<RouteBuilder> , KubernetesResource
         this.receiver = receiver;
         this.repeatInterval = repeatInterval;
         this.routes = routes;
+    }
+
+    @JsonProperty("activeTimeIntervals")
+    public List<String> getActiveTimeIntervals() {
+        return activeTimeIntervals;
+    }
+
+    @JsonProperty("activeTimeIntervals")
+    public void setActiveTimeIntervals(List<String> activeTimeIntervals) {
+        this.activeTimeIntervals = activeTimeIntervals;
     }
 
     @JsonProperty("continue")

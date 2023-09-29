@@ -35,7 +35,8 @@ import lombok.experimental.Accessors;
     "kind",
     "metadata",
     "cloudName",
-    "credentialsSecretRef"
+    "credentialsSecretRef",
+    "resourceGroupName"
 })
 @ToString
 @EqualsAndHashCode
@@ -63,6 +64,8 @@ public class AzureClusterDeprovision implements Editable<AzureClusterDeprovision
     private String cloudName;
     @JsonProperty("credentialsSecretRef")
     private io.fabric8.kubernetes.api.model.LocalObjectReference credentialsSecretRef;
+    @JsonProperty("resourceGroupName")
+    private String resourceGroupName;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -73,10 +76,11 @@ public class AzureClusterDeprovision implements Editable<AzureClusterDeprovision
     public AzureClusterDeprovision() {
     }
 
-    public AzureClusterDeprovision(String cloudName, io.fabric8.kubernetes.api.model.LocalObjectReference credentialsSecretRef) {
+    public AzureClusterDeprovision(String cloudName, io.fabric8.kubernetes.api.model.LocalObjectReference credentialsSecretRef, String resourceGroupName) {
         super();
         this.cloudName = cloudName;
         this.credentialsSecretRef = credentialsSecretRef;
+        this.resourceGroupName = resourceGroupName;
     }
 
     @JsonProperty("cloudName")
@@ -97,6 +101,16 @@ public class AzureClusterDeprovision implements Editable<AzureClusterDeprovision
     @JsonProperty("credentialsSecretRef")
     public void setCredentialsSecretRef(io.fabric8.kubernetes.api.model.LocalObjectReference credentialsSecretRef) {
         this.credentialsSecretRef = credentialsSecretRef;
+    }
+
+    @JsonProperty("resourceGroupName")
+    public String getResourceGroupName() {
+        return resourceGroupName;
+    }
+
+    @JsonProperty("resourceGroupName")
+    public void setResourceGroupName(String resourceGroupName) {
+        this.resourceGroupName = resourceGroupName;
     }
 
     @JsonIgnore

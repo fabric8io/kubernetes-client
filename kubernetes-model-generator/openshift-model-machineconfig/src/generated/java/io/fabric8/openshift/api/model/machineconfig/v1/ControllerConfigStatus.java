@@ -38,6 +38,7 @@ import lombok.experimental.Accessors;
     "kind",
     "metadata",
     "conditions",
+    "controllerCertificates",
     "observedGeneration"
 })
 @ToString
@@ -65,6 +66,9 @@ public class ControllerConfigStatus implements Editable<ControllerConfigStatusBu
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ControllerConfigStatusCondition> conditions = new ArrayList<ControllerConfigStatusCondition>();
+    @JsonProperty("controllerCertificates")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<ControllerCertificate> controllerCertificates = new ArrayList<ControllerCertificate>();
     @JsonProperty("observedGeneration")
     private Long observedGeneration;
     @JsonIgnore
@@ -77,9 +81,10 @@ public class ControllerConfigStatus implements Editable<ControllerConfigStatusBu
     public ControllerConfigStatus() {
     }
 
-    public ControllerConfigStatus(List<ControllerConfigStatusCondition> conditions, Long observedGeneration) {
+    public ControllerConfigStatus(List<ControllerConfigStatusCondition> conditions, List<ControllerCertificate> controllerCertificates, Long observedGeneration) {
         super();
         this.conditions = conditions;
+        this.controllerCertificates = controllerCertificates;
         this.observedGeneration = observedGeneration;
     }
 
@@ -91,6 +96,16 @@ public class ControllerConfigStatus implements Editable<ControllerConfigStatusBu
     @JsonProperty("conditions")
     public void setConditions(List<ControllerConfigStatusCondition> conditions) {
         this.conditions = conditions;
+    }
+
+    @JsonProperty("controllerCertificates")
+    public List<ControllerCertificate> getControllerCertificates() {
+        return controllerCertificates;
+    }
+
+    @JsonProperty("controllerCertificates")
+    public void setControllerCertificates(List<ControllerCertificate> controllerCertificates) {
+        this.controllerCertificates = controllerCertificates;
     }
 
     @JsonProperty("observedGeneration")

@@ -38,6 +38,7 @@ import lombok.experimental.Accessors;
     "metadata",
     "attachMetadata",
     "jobLabel",
+    "keepDroppedTargets",
     "labelLimit",
     "labelNameLengthLimit",
     "labelValueLengthLimit",
@@ -74,6 +75,8 @@ public class PodMonitorSpec implements Editable<PodMonitorSpecBuilder> , Kuberne
     private AttachMetadata attachMetadata;
     @JsonProperty("jobLabel")
     private String jobLabel;
+    @JsonProperty("keepDroppedTargets")
+    private Long keepDroppedTargets;
     @JsonProperty("labelLimit")
     private Long labelLimit;
     @JsonProperty("labelNameLengthLimit")
@@ -104,10 +107,11 @@ public class PodMonitorSpec implements Editable<PodMonitorSpecBuilder> , Kuberne
     public PodMonitorSpec() {
     }
 
-    public PodMonitorSpec(AttachMetadata attachMetadata, String jobLabel, Long labelLimit, Long labelNameLengthLimit, Long labelValueLengthLimit, NamespaceSelector namespaceSelector, List<PodMetricsEndpoint> podMetricsEndpoints, List<String> podTargetLabels, Long sampleLimit, io.fabric8.kubernetes.api.model.LabelSelector selector, Long targetLimit) {
+    public PodMonitorSpec(AttachMetadata attachMetadata, String jobLabel, Long keepDroppedTargets, Long labelLimit, Long labelNameLengthLimit, Long labelValueLengthLimit, NamespaceSelector namespaceSelector, List<PodMetricsEndpoint> podMetricsEndpoints, List<String> podTargetLabels, Long sampleLimit, io.fabric8.kubernetes.api.model.LabelSelector selector, Long targetLimit) {
         super();
         this.attachMetadata = attachMetadata;
         this.jobLabel = jobLabel;
+        this.keepDroppedTargets = keepDroppedTargets;
         this.labelLimit = labelLimit;
         this.labelNameLengthLimit = labelNameLengthLimit;
         this.labelValueLengthLimit = labelValueLengthLimit;
@@ -137,6 +141,16 @@ public class PodMonitorSpec implements Editable<PodMonitorSpecBuilder> , Kuberne
     @JsonProperty("jobLabel")
     public void setJobLabel(String jobLabel) {
         this.jobLabel = jobLabel;
+    }
+
+    @JsonProperty("keepDroppedTargets")
+    public Long getKeepDroppedTargets() {
+        return keepDroppedTargets;
+    }
+
+    @JsonProperty("keepDroppedTargets")
+    public void setKeepDroppedTargets(Long keepDroppedTargets) {
+        this.keepDroppedTargets = keepDroppedTargets;
     }
 
     @JsonProperty("labelLimit")

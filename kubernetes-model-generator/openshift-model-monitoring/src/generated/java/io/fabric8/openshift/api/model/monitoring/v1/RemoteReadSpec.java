@@ -39,6 +39,8 @@ import lombok.experimental.Accessors;
     "basicAuth",
     "bearerToken",
     "bearerTokenFile",
+    "filterExternalLabels",
+    "followRedirects",
     "headers",
     "name",
     "oauth2",
@@ -79,6 +81,10 @@ public class RemoteReadSpec implements Editable<RemoteReadSpecBuilder> , Kuberne
     private java.lang.String bearerToken;
     @JsonProperty("bearerTokenFile")
     private java.lang.String bearerTokenFile;
+    @JsonProperty("filterExternalLabels")
+    private Boolean filterExternalLabels;
+    @JsonProperty("followRedirects")
+    private Boolean followRedirects;
     @JsonProperty("headers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> headers = new LinkedHashMap<String, String>();
@@ -109,12 +115,14 @@ public class RemoteReadSpec implements Editable<RemoteReadSpecBuilder> , Kuberne
     public RemoteReadSpec() {
     }
 
-    public RemoteReadSpec(Authorization authorization, BasicAuth basicAuth, java.lang.String bearerToken, java.lang.String bearerTokenFile, Map<String, String> headers, java.lang.String name, OAuth2 oauth2, java.lang.String proxyUrl, Boolean readRecent, java.lang.String remoteTimeout, Map<String, String> requiredMatchers, TLSConfig tlsConfig, java.lang.String url) {
+    public RemoteReadSpec(Authorization authorization, BasicAuth basicAuth, java.lang.String bearerToken, java.lang.String bearerTokenFile, Boolean filterExternalLabels, Boolean followRedirects, Map<String, String> headers, java.lang.String name, OAuth2 oauth2, java.lang.String proxyUrl, Boolean readRecent, java.lang.String remoteTimeout, Map<String, String> requiredMatchers, TLSConfig tlsConfig, java.lang.String url) {
         super();
         this.authorization = authorization;
         this.basicAuth = basicAuth;
         this.bearerToken = bearerToken;
         this.bearerTokenFile = bearerTokenFile;
+        this.filterExternalLabels = filterExternalLabels;
+        this.followRedirects = followRedirects;
         this.headers = headers;
         this.name = name;
         this.oauth2 = oauth2;
@@ -164,6 +172,26 @@ public class RemoteReadSpec implements Editable<RemoteReadSpecBuilder> , Kuberne
     @JsonProperty("bearerTokenFile")
     public void setBearerTokenFile(java.lang.String bearerTokenFile) {
         this.bearerTokenFile = bearerTokenFile;
+    }
+
+    @JsonProperty("filterExternalLabels")
+    public Boolean getFilterExternalLabels() {
+        return filterExternalLabels;
+    }
+
+    @JsonProperty("filterExternalLabels")
+    public void setFilterExternalLabels(Boolean filterExternalLabels) {
+        this.filterExternalLabels = filterExternalLabels;
+    }
+
+    @JsonProperty("followRedirects")
+    public Boolean getFollowRedirects() {
+        return followRedirects;
+    }
+
+    @JsonProperty("followRedirects")
+    public void setFollowRedirects(Boolean followRedirects) {
+        this.followRedirects = followRedirects;
     }
 
     @JsonProperty("headers")

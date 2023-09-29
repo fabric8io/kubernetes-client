@@ -1225,6 +1225,40 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "os_config_v1_MTUMigration": {
+      "type": "object",
+      "properties": {
+        "machine": {
+          "$ref": "#/definitions/os_config_v1_MTUMigrationValues",
+          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.MTUMigrationValues"
+        },
+        "network": {
+          "$ref": "#/definitions/os_config_v1_MTUMigrationValues",
+          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.MTUMigrationValues"
+        }
+      },
+      "additionalProperties": true,
+      "existingJavaType": "io.fabric8.openshift.api.model.config.v1.MTUMigration",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_config_v1_MTUMigrationValues": {
+      "type": "object",
+      "properties": {
+        "from": {
+          "type": "integer"
+        },
+        "to": {
+          "type": "integer"
+        }
+      },
+      "additionalProperties": true,
+      "existingJavaType": "io.fabric8.openshift.api.model.config.v1.MTUMigrationValues",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "os_config_v1_ModernTLSProfile": {
       "type": "object",
       "additionalProperties": true,
@@ -1929,6 +1963,25 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "os_machineconfig_v1_CertExpiry": {
+      "type": "object",
+      "properties": {
+        "bundle": {
+          "type": "string"
+        },
+        "expiry": {
+          "type": "string"
+        },
+        "subject": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.machineconfig.v1.CertExpiry",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "os_machineconfig_v1_ContainerRuntimeConfig": {
       "type": "object",
       "properties": {
@@ -2061,6 +2114,9 @@
     "os_machineconfig_v1_ContainerRuntimeConfiguration": {
       "type": "object",
       "properties": {
+        "defaultRuntime": {
+          "type": "string"
+        },
         "logLevel": {
           "type": "string"
         },
@@ -2079,6 +2135,31 @@
       },
       "additionalProperties": true,
       "javaType": "io.fabric8.openshift.api.model.machineconfig.v1.ContainerRuntimeConfiguration",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_machineconfig_v1_ControllerCertificate": {
+      "type": "object",
+      "properties": {
+        "bundleFile": {
+          "type": "string"
+        },
+        "notAfter": {
+          "type": "string"
+        },
+        "notBefore": {
+          "type": "string"
+        },
+        "signer": {
+          "type": "string"
+        },
+        "subject": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.machineconfig.v1.ControllerCertificate",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -2153,6 +2234,12 @@
         "additionalTrustBundle": {
           "type": "string"
         },
+        "baseOSContainerImage": {
+          "type": "string"
+        },
+        "baseOSExtensionsContainerImage": {
+          "type": "string"
+        },
         "cloudProviderCAData": {
           "type": "string"
         },
@@ -2168,6 +2255,20 @@
         },
         "etcdDiscoveryDomain": {
           "type": "string"
+        },
+        "imageRegistryBundleData": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/os_machineconfig_v1_ImageRegistryBundle",
+            "existingJavaType": "io.fabric8.openshift.api.model.machineconfig.v1.ImageRegistryBundle"
+          }
+        },
+        "imageRegistryBundleUserData": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/os_machineconfig_v1_ImageRegistryBundle",
+            "existingJavaType": "io.fabric8.openshift.api.model.machineconfig.v1.ImageRegistryBundle"
+          }
         },
         "images": {
           "type": "object",
@@ -2185,6 +2286,10 @@
         },
         "kubeAPIServerServingCAData": {
           "type": "string"
+        },
+        "network": {
+          "$ref": "#/definitions/os_machineconfig_v1_NetworkInfo",
+          "existingJavaType": "io.fabric8.openshift.api.model.machineconfig.v1.NetworkInfo"
         },
         "networkType": {
           "type": "string"
@@ -2226,6 +2331,13 @@
             "existingJavaType": "io.fabric8.openshift.api.model.machineconfig.v1.ControllerConfigStatusCondition"
           }
         },
+        "controllerCertificates": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/os_machineconfig_v1_ControllerCertificate",
+            "existingJavaType": "io.fabric8.openshift.api.model.machineconfig.v1.ControllerCertificate"
+          }
+        },
         "observedGeneration": {
           "type": "integer",
           "existingJavaType": "Long"
@@ -2259,6 +2371,22 @@
       },
       "additionalProperties": true,
       "javaType": "io.fabric8.openshift.api.model.machineconfig.v1.ControllerConfigStatusCondition",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_machineconfig_v1_ImageRegistryBundle": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "string"
+        },
+        "file": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.machineconfig.v1.ImageRegistryBundle",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -2584,6 +2712,13 @@
     "os_machineconfig_v1_MachineConfigPoolStatus": {
       "type": "object",
       "properties": {
+        "certExpirys": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/os_machineconfig_v1_CertExpiry",
+            "existingJavaType": "io.fabric8.openshift.api.model.machineconfig.v1.CertExpiry"
+          }
+        },
         "conditions": {
           "type": "array",
           "items": {
@@ -2667,6 +2802,9 @@
     "os_machineconfig_v1_MachineConfigSpec": {
       "type": "object",
       "properties": {
+        "baseOSExtensionsContainerImage": {
+          "type": "string"
+        },
         "config": {
           "$ref": "#/definitions/kubernetes_apimachinery_pkg_runtime_RawExtension",
           "existingJavaType": "java.util.Map\u003cString, Object\u003e"
@@ -2695,6 +2833,20 @@
       },
       "additionalProperties": true,
       "javaType": "io.fabric8.openshift.api.model.machineconfig.v1.MachineConfigSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_machineconfig_v1_NetworkInfo": {
+      "type": "object",
+      "properties": {
+        "mtuMigration": {
+          "$ref": "#/definitions/os_config_v1_MTUMigration",
+          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.MTUMigration"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.machineconfig.v1.NetworkInfo",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]

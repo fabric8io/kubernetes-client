@@ -35,6 +35,7 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
+    "apiServerIPOverride",
     "apiURLOverride",
     "servingCertificates"
 })
@@ -60,6 +61,8 @@ import lombok.experimental.Accessors;
 public class ControlPlaneConfigSpec implements Editable<ControlPlaneConfigSpecBuilder> , KubernetesResource
 {
 
+    @JsonProperty("apiServerIPOverride")
+    private String apiServerIPOverride;
     @JsonProperty("apiURLOverride")
     private String apiURLOverride;
     @JsonProperty("servingCertificates")
@@ -74,10 +77,21 @@ public class ControlPlaneConfigSpec implements Editable<ControlPlaneConfigSpecBu
     public ControlPlaneConfigSpec() {
     }
 
-    public ControlPlaneConfigSpec(String apiURLOverride, ControlPlaneServingCertificateSpec servingCertificates) {
+    public ControlPlaneConfigSpec(String apiServerIPOverride, String apiURLOverride, ControlPlaneServingCertificateSpec servingCertificates) {
         super();
+        this.apiServerIPOverride = apiServerIPOverride;
         this.apiURLOverride = apiURLOverride;
         this.servingCertificates = servingCertificates;
+    }
+
+    @JsonProperty("apiServerIPOverride")
+    public String getApiServerIPOverride() {
+        return apiServerIPOverride;
+    }
+
+    @JsonProperty("apiServerIPOverride")
+    public void setApiServerIPOverride(String apiServerIPOverride) {
+        this.apiServerIPOverride = apiServerIPOverride;
     }
 
     @JsonProperty("apiURLOverride")

@@ -36,6 +36,8 @@ import lombok.experimental.Accessors;
     "kind",
     "metadata",
     "debug",
+    "providerName",
+    "tunedConfig",
     "tunedProfile"
 })
 @ToString
@@ -62,6 +64,10 @@ public class ProfileConfig implements Editable<ProfileConfigBuilder> , Kubernete
 
     @JsonProperty("debug")
     private Boolean debug;
+    @JsonProperty("providerName")
+    private String providerName;
+    @JsonProperty("tunedConfig")
+    private TuneDConfig tunedConfig;
     @JsonProperty("tunedProfile")
     private String tunedProfile;
     @JsonIgnore
@@ -74,9 +80,11 @@ public class ProfileConfig implements Editable<ProfileConfigBuilder> , Kubernete
     public ProfileConfig() {
     }
 
-    public ProfileConfig(Boolean debug, String tunedProfile) {
+    public ProfileConfig(Boolean debug, String providerName, TuneDConfig tunedConfig, String tunedProfile) {
         super();
         this.debug = debug;
+        this.providerName = providerName;
+        this.tunedConfig = tunedConfig;
         this.tunedProfile = tunedProfile;
     }
 
@@ -88,6 +96,26 @@ public class ProfileConfig implements Editable<ProfileConfigBuilder> , Kubernete
     @JsonProperty("debug")
     public void setDebug(Boolean debug) {
         this.debug = debug;
+    }
+
+    @JsonProperty("providerName")
+    public String getProviderName() {
+        return providerName;
+    }
+
+    @JsonProperty("providerName")
+    public void setProviderName(String providerName) {
+        this.providerName = providerName;
+    }
+
+    @JsonProperty("tunedConfig")
+    public TuneDConfig getTunedConfig() {
+        return tunedConfig;
+    }
+
+    @JsonProperty("tunedConfig")
+    public void setTunedConfig(TuneDConfig tunedConfig) {
+        this.tunedConfig = tunedConfig;
     }
 
     @JsonProperty("tunedProfile")

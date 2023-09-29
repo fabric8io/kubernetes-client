@@ -53,7 +53,10 @@ type Schema struct {
   MachineSetList                           machineapi.MachineSetList
   V1NutanixCategory                        v1machineapi.NutanixCategory
   V1NutanixResourceIdentifier              v1machineapi.NutanixResourceIdentifier
+  ControlPlaneMachineSet                   v1machineapi.ControlPlaneMachineSet
+  ControlPlaneMachineSetList               v1machineapi.ControlPlaneMachineSetList
   V1Alpha1SubnetFilter                     v1alpha1machineapi.SubnetFilter
+  V1Alpha1OpenStackProviderSpec            v1alpha1machineapi.OpenstackProviderSpec
 }
 
 func main() {

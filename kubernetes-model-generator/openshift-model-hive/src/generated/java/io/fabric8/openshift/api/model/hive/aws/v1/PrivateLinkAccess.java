@@ -1,7 +1,9 @@
 
 package io.fabric8.openshift.api.model.hive.aws.v1;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -35,6 +37,7 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
+    "additionalAllowedPrincipals",
     "enabled"
 })
 @ToString
@@ -59,6 +62,9 @@ import lombok.experimental.Accessors;
 public class PrivateLinkAccess implements Editable<PrivateLinkAccessBuilder> , KubernetesResource
 {
 
+    @JsonProperty("additionalAllowedPrincipals")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> additionalAllowedPrincipals = new ArrayList<String>();
     @JsonProperty("enabled")
     private Boolean enabled;
     @JsonIgnore
@@ -71,9 +77,20 @@ public class PrivateLinkAccess implements Editable<PrivateLinkAccessBuilder> , K
     public PrivateLinkAccess() {
     }
 
-    public PrivateLinkAccess(Boolean enabled) {
+    public PrivateLinkAccess(List<String> additionalAllowedPrincipals, Boolean enabled) {
         super();
+        this.additionalAllowedPrincipals = additionalAllowedPrincipals;
         this.enabled = enabled;
+    }
+
+    @JsonProperty("additionalAllowedPrincipals")
+    public List<String> getAdditionalAllowedPrincipals() {
+        return additionalAllowedPrincipals;
+    }
+
+    @JsonProperty("additionalAllowedPrincipals")
+    public void setAdditionalAllowedPrincipals(List<String> additionalAllowedPrincipals) {
+        this.additionalAllowedPrincipals = additionalAllowedPrincipals;
     }
 
     @JsonProperty("enabled")

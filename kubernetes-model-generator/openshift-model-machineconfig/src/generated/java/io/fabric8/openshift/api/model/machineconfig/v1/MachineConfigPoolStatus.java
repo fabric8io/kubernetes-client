@@ -37,6 +37,7 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
+    "certExpirys",
     "conditions",
     "configuration",
     "degradedMachineCount",
@@ -68,6 +69,9 @@ import lombok.experimental.Accessors;
 public class MachineConfigPoolStatus implements Editable<MachineConfigPoolStatusBuilder> , KubernetesResource
 {
 
+    @JsonProperty("certExpirys")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<CertExpiry> certExpirys = new ArrayList<CertExpiry>();
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<MachineConfigPoolCondition> conditions = new ArrayList<MachineConfigPoolCondition>();
@@ -95,8 +99,9 @@ public class MachineConfigPoolStatus implements Editable<MachineConfigPoolStatus
     public MachineConfigPoolStatus() {
     }
 
-    public MachineConfigPoolStatus(List<MachineConfigPoolCondition> conditions, MachineConfigPoolStatusConfiguration configuration, Integer degradedMachineCount, Integer machineCount, Long observedGeneration, Integer readyMachineCount, Integer unavailableMachineCount, Integer updatedMachineCount) {
+    public MachineConfigPoolStatus(List<CertExpiry> certExpirys, List<MachineConfigPoolCondition> conditions, MachineConfigPoolStatusConfiguration configuration, Integer degradedMachineCount, Integer machineCount, Long observedGeneration, Integer readyMachineCount, Integer unavailableMachineCount, Integer updatedMachineCount) {
         super();
+        this.certExpirys = certExpirys;
         this.conditions = conditions;
         this.configuration = configuration;
         this.degradedMachineCount = degradedMachineCount;
@@ -105,6 +110,16 @@ public class MachineConfigPoolStatus implements Editable<MachineConfigPoolStatus
         this.readyMachineCount = readyMachineCount;
         this.unavailableMachineCount = unavailableMachineCount;
         this.updatedMachineCount = updatedMachineCount;
+    }
+
+    @JsonProperty("certExpirys")
+    public List<CertExpiry> getCertExpirys() {
+        return certExpirys;
+    }
+
+    @JsonProperty("certExpirys")
+    public void setCertExpirys(List<CertExpiry> certExpirys) {
+        this.certExpirys = certExpirys;
     }
 
     @JsonProperty("conditions")

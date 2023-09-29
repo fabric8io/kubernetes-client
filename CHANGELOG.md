@@ -24,6 +24,7 @@
 * Fix #5220: refinements and clarifications to the validation of names
 
 #### Dependency Upgrade
+* Fix #5286: Update Fabric8 OpenShift Model as per OpenShift 4.13.12 
 * Fix #5373: Gradle base API based on v8.2.1
 * Fix #5401: Upgrade Fabric8 Kubernetes Model to Kubernetes v1.28.2
 

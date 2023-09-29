@@ -26,6 +26,8 @@ import io.fabric8.kubernetes.api.model.rbac.PolicyRule;
 import io.fabric8.kubernetes.api.model.version.Info;
 import io.fabric8.openshift.api.model.operatorhub.lifecyclemanager.v1.PackageManifest;
 import io.fabric8.openshift.api.model.operatorhub.lifecyclemanager.v1.PackageManifestList;
+import io.fabric8.openshift.api.model.operatorhub.v1.OLMConfig;
+import io.fabric8.openshift.api.model.operatorhub.v1.OLMConfigList;
 import io.fabric8.openshift.api.model.operatorhub.v1.Operator;
 import io.fabric8.openshift.api.model.operatorhub.v1.OperatorCondition;
 import io.fabric8.openshift.api.model.operatorhub.v1.OperatorConditionList;
@@ -64,6 +66,8 @@ import lombok.experimental.Accessors;
     "Info",
     "InstallPlan",
     "InstallPlanList",
+    "OLMConfig",
+    "OLMConfigList",
     "ObjectMeta",
     "Operator",
     "OperatorCondition",
@@ -127,6 +131,10 @@ public class ValidationSchema implements Editable<ValidationSchemaBuilder>
     private InstallPlan installPlan;
     @JsonProperty("InstallPlanList")
     private InstallPlanList installPlanList;
+    @JsonProperty("OLMConfig")
+    private OLMConfig oLMConfig;
+    @JsonProperty("OLMConfigList")
+    private OLMConfigList oLMConfigList;
     @JsonProperty("ObjectMeta")
     private io.fabric8.kubernetes.api.model.ObjectMeta objectMeta;
     @JsonProperty("Operator")
@@ -173,7 +181,7 @@ public class ValidationSchema implements Editable<ValidationSchemaBuilder>
     public ValidationSchema() {
     }
 
-    public ValidationSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, KubernetesList baseKubernetesList, CatalogSource catalogSource, CatalogSourceList catalogSourceList, ClusterServiceVersion clusterServiceVersion, ClusterServiceVersionList clusterServiceVersionList, Deployment deployment, Info info, InstallPlan installPlan, InstallPlanList installPlanList, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, Operator operator, OperatorCondition operatorCondition, OperatorConditionList operatorConditionList, OperatorGroup operatorGroup, OperatorGroupList operatorGroupList, OperatorList operatorList, PackageManifest packageManifest, PackageManifestList packageManifestList, Patch patch, PolicyRule policyRule, Quantity quantity, RuleWithOperations ruleWithOperations, Status status, Subscription subscription, SubscriptionList subscriptionList, String time, TypeMeta typeMeta) {
+    public ValidationSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, KubernetesList baseKubernetesList, CatalogSource catalogSource, CatalogSourceList catalogSourceList, ClusterServiceVersion clusterServiceVersion, ClusterServiceVersionList clusterServiceVersionList, Deployment deployment, Info info, InstallPlan installPlan, InstallPlanList installPlanList, OLMConfig oLMConfig, OLMConfigList oLMConfigList, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, Operator operator, OperatorCondition operatorCondition, OperatorConditionList operatorConditionList, OperatorGroup operatorGroup, OperatorGroupList operatorGroupList, OperatorList operatorList, PackageManifest packageManifest, PackageManifestList packageManifestList, Patch patch, PolicyRule policyRule, Quantity quantity, RuleWithOperations ruleWithOperations, Status status, Subscription subscription, SubscriptionList subscriptionList, String time, TypeMeta typeMeta) {
         super();
         this.aPIGroup = aPIGroup;
         this.aPIGroupList = aPIGroupList;
@@ -186,6 +194,8 @@ public class ValidationSchema implements Editable<ValidationSchemaBuilder>
         this.info = info;
         this.installPlan = installPlan;
         this.installPlanList = installPlanList;
+        this.oLMConfig = oLMConfig;
+        this.oLMConfigList = oLMConfigList;
         this.objectMeta = objectMeta;
         this.operator = operator;
         this.operatorCondition = operatorCondition;
@@ -314,6 +324,26 @@ public class ValidationSchema implements Editable<ValidationSchemaBuilder>
     @JsonProperty("InstallPlanList")
     public void setInstallPlanList(InstallPlanList installPlanList) {
         this.installPlanList = installPlanList;
+    }
+
+    @JsonProperty("OLMConfig")
+    public OLMConfig getOLMConfig() {
+        return oLMConfig;
+    }
+
+    @JsonProperty("OLMConfig")
+    public void setOLMConfig(OLMConfig oLMConfig) {
+        this.oLMConfig = oLMConfig;
+    }
+
+    @JsonProperty("OLMConfigList")
+    public OLMConfigList getOLMConfigList() {
+        return oLMConfigList;
+    }
+
+    @JsonProperty("OLMConfigList")
+    public void setOLMConfigList(OLMConfigList oLMConfigList) {
+        this.oLMConfigList = oLMConfigList;
     }
 
     @JsonProperty("ObjectMeta")

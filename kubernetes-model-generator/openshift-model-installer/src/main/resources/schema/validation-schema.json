@@ -3134,20 +3134,17 @@
     },
     "failuredomain": {
       "properties": {
-        "name": {
+        "computeAvailabilityZone": {
           "type": "string"
         },
-        "region": {
-          "type": "string"
+        "portTargets": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/os_installer_openstack_v1_NamedPortTarget",
+            "existingJavaType": "io.fabric8.openshift.api.model.installer.openstack.v1.NamedPortTarget"
+          }
         },
-        "server": {
-          "type": "string"
-        },
-        "topology": {
-          "$ref": "#/definitions/os_installer_vsphere_v1_Topology",
-          "existingJavaType": "io.fabric8.openshift.api.model.installer.vsphere.v1.Topology"
-        },
-        "zone": {
+        "storageAvailabilityZone": {
           "type": "string"
         }
       },
@@ -3401,22 +3398,44 @@
     },
     "machinepool": {
       "properties": {
-        "architecture": {
+        "additionalNetworkIDs": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "additionalSecurityGroupIDs": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "failureDomains": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/os_installer_openstack_v1_FailureDomain",
+            "existingJavaType": "io.fabric8.openshift.api.model.installer.openstack.v1.FailureDomain"
+          }
+        },
+        "rootVolume": {
+          "$ref": "#/definitions/os_installer_openstack_v1_RootVolume",
+          "existingJavaType": "io.fabric8.openshift.api.model.installer.openstack.v1.RootVolume"
+        },
+        "serverGroupPolicy": {
           "type": "string"
         },
-        "hyperthreading": {
+        "type": {
           "type": "string"
         },
-        "name": {
-          "type": "string"
-        },
-        "platform": {
-          "$ref": "#/definitions/os_installer_v1_MachinePoolPlatform",
-          "existingJavaType": "io.fabric8.openshift.api.model.installer.v1.MachinePoolPlatform"
-        },
-        "replicas": {
-          "type": "integer",
-          "existingJavaType": "Long"
+        "zones": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
         }
       },
       "additionalProperties": true
@@ -3718,15 +3737,8 @@
     },
     "osdisk": {
       "properties": {
-        "diskEncryptionSet": {
-          "$ref": "#/definitions/os_installer_azure_v1_DiskEncryptionSet",
-          "existingJavaType": "io.fabric8.openshift.api.model.installer.azure.v1.DiskEncryptionSet"
-        },
         "diskSizeGB": {
           "type": "integer"
-        },
-        "diskType": {
-          "type": "string"
         }
       },
       "additionalProperties": true
@@ -3794,35 +3806,12 @@
             "type": "string"
           }
         },
-        "cluster": {
-          "type": "string"
-        },
         "clusterOSImage": {
           "type": "string"
         },
-        "datacenter": {
-          "type": "string"
-        },
-        "defaultDatastore": {
-          "type": "string"
-        },
         "defaultMachinePlatform": {
-          "$ref": "#/definitions/os_installer_vsphere_v1_MachinePool",
-          "existingJavaType": "io.fabric8.openshift.api.model.installer.vsphere.v1.MachinePool"
-        },
-        "diskType": {
-          "type": "string"
-        },
-        "failureDomains": {
-          "type": "array",
-          "javaOmitEmpty": true,
-          "items": {
-            "$ref": "#/definitions/os_installer_vsphere_v1_FailureDomain",
-            "existingJavaType": "io.fabric8.openshift.api.model.installer.vsphere.v1.FailureDomain"
-          }
-        },
-        "folder": {
-          "type": "string"
+          "$ref": "#/definitions/os_installer_nutanix_v1_MachinePool",
+          "existingJavaType": "io.fabric8.openshift.api.model.installer.nutanix.v1.MachinePool"
         },
         "ingressVIP": {
           "type": "string"
@@ -3835,30 +3824,24 @@
           }
         },
         "loadBalancer": {
-          "$ref": "#/definitions/os_config_v1_VSpherePlatformLoadBalancer",
-          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.VSpherePlatformLoadBalancer"
+          "$ref": "#/definitions/os_config_v1_NutanixPlatformLoadBalancer",
+          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.NutanixPlatformLoadBalancer"
         },
-        "network": {
-          "type": "string"
+        "prismCentral": {
+          "$ref": "#/definitions/os_installer_nutanix_v1_PrismCentral",
+          "existingJavaType": "io.fabric8.openshift.api.model.installer.nutanix.v1.PrismCentral"
         },
-        "password": {
-          "type": "string"
-        },
-        "resourcePool": {
-          "type": "string"
-        },
-        "username": {
-          "type": "string"
-        },
-        "vCenter": {
-          "type": "string"
-        },
-        "vcenters": {
+        "prismElements": {
           "type": "array",
-          "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/os_installer_vsphere_v1_VCenter",
-            "existingJavaType": "io.fabric8.openshift.api.model.installer.vsphere.v1.VCenter"
+            "$ref": "#/definitions/os_installer_nutanix_v1_PrismElement",
+            "existingJavaType": "io.fabric8.openshift.api.model.installer.nutanix.v1.PrismElement"
+          }
+        },
+        "subnetUUIDs": {
+          "type": "array",
+          "items": {
+            "type": "string"
           }
         }
       },

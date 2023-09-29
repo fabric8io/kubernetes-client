@@ -105,6 +105,8 @@ func main() {
     {"github.com/openshift/hive/apis/hive/v1/vsphere", "hive", "io.fabric8.openshift.api.model.hive.vsphere.v1", "os_hive_vsphere_v1_", true},
     {"github.com/openshift/hive/apis/hive/v1/ovirt", "hive", "io.fabric8.openshift.api.model.hive.ovirt.v1", "os_hive_ovirt_v1_", true},
     {"github.com/openshift/hive/apis/hive/v1/agent", "hive", "io.fabric8.openshift.api.model.hive.agent.v1", "os_hive_agent_v1_", true},
+    {"github.com/openshift/hive/apis/hive/v1/none", "hive", "io.fabric8.openshift.api.model.hive.none.v1", "os_hive_none_v1_", true},
+    {"github.com/openshift/hive/apis/hive/v1/metricsconfig", "hive", "io.fabric8.openshift.api.model.hive.metricsconfig.v1", "os_hive_metricsconfig_v1_", true},
   }
 
   typeMap := map[reflect.Type]reflect.Type{
@@ -131,6 +133,12 @@ func main() {
   }
   result := string(b)
   result = strings.Replace(result, "\"additionalProperty\":", "\"additionalProperties\":", -1)
+  // Sundrio seems to be having problems with generating builders when there are fields with same class
+  // names but different packages
+  result = strings.Replace(result, "io.fabric8.openshift.api.model.hive.aws.v1.Metadata", "io.fabric8.openshift.api.model.hive.aws.v1.AwsMetadata", -1)
+  result = strings.Replace(result, "io.fabric8.openshift.api.model.hive.azure.v1.Metadata", "io.fabric8.openshift.api.model.hive.azure.v1.AzureMetadata", -1)
+  result = strings.Replace(result, "io.fabric8.openshift.api.model.hive.aws.v1.Platform", "io.fabric8.openshift.api.model.hive.aws.v1.AwsPlatform", -1)
+  result = strings.Replace(result, "io.fabric8.openshift.api.model.hive.azure.v1.Platform", "io.fabric8.openshift.api.model.hive.azure.v1.AzurePlatform", -1)
 
   var out bytes.Buffer
   err = json.Indent(&out, []byte(result), "", "  ")

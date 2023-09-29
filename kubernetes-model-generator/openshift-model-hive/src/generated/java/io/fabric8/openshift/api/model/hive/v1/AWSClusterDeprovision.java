@@ -37,6 +37,7 @@ import lombok.experimental.Accessors;
     "metadata",
     "credentialsAssumeRole",
     "credentialsSecretRef",
+    "hostedZoneRole",
     "region"
 })
 @ToString
@@ -65,6 +66,8 @@ public class AWSClusterDeprovision implements Editable<AWSClusterDeprovisionBuil
     private AssumeRole credentialsAssumeRole;
     @JsonProperty("credentialsSecretRef")
     private io.fabric8.kubernetes.api.model.LocalObjectReference credentialsSecretRef;
+    @JsonProperty("hostedZoneRole")
+    private String hostedZoneRole;
     @JsonProperty("region")
     private String region;
     @JsonIgnore
@@ -77,10 +80,11 @@ public class AWSClusterDeprovision implements Editable<AWSClusterDeprovisionBuil
     public AWSClusterDeprovision() {
     }
 
-    public AWSClusterDeprovision(AssumeRole credentialsAssumeRole, io.fabric8.kubernetes.api.model.LocalObjectReference credentialsSecretRef, String region) {
+    public AWSClusterDeprovision(AssumeRole credentialsAssumeRole, io.fabric8.kubernetes.api.model.LocalObjectReference credentialsSecretRef, String hostedZoneRole, String region) {
         super();
         this.credentialsAssumeRole = credentialsAssumeRole;
         this.credentialsSecretRef = credentialsSecretRef;
+        this.hostedZoneRole = hostedZoneRole;
         this.region = region;
     }
 
@@ -102,6 +106,16 @@ public class AWSClusterDeprovision implements Editable<AWSClusterDeprovisionBuil
     @JsonProperty("credentialsSecretRef")
     public void setCredentialsSecretRef(io.fabric8.kubernetes.api.model.LocalObjectReference credentialsSecretRef) {
         this.credentialsSecretRef = credentialsSecretRef;
+    }
+
+    @JsonProperty("hostedZoneRole")
+    public String getHostedZoneRole() {
+        return hostedZoneRole;
+    }
+
+    @JsonProperty("hostedZoneRole")
+    public void setHostedZoneRole(String hostedZoneRole) {
+        this.hostedZoneRole = hostedZoneRole;
     }
 
     @JsonProperty("region")

@@ -84,6 +84,10 @@ type Schema struct {
   ImageList                                openshiftconfigapi.ImageList
   ImageContentPolicy                       openshiftconfigapi.ImageContentPolicy
   ImageContentPolicyList                   openshiftconfigapi.ImageContentPolicyList
+  ImageDigestMirrorSet                     openshiftconfigapi.ImageDigestMirrorSet
+  ImageDigestMirrorSetList                 openshiftconfigapi.ImageDigestMirrorSetList
+  ImageTagMirrorSet                        openshiftconfigapi.ImageTagMirrorSet
+  ImageTagMirrorSetList                    openshiftconfigapi.ImageTagMirrorSetList
 }
 
 func main() {
