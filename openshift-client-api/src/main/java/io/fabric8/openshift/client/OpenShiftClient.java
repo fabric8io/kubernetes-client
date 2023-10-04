@@ -88,6 +88,8 @@ import io.fabric8.openshift.api.model.OAuthClientList;
 import io.fabric8.openshift.api.model.PodSecurityPolicyReview;
 import io.fabric8.openshift.api.model.PodSecurityPolicySelfSubjectReview;
 import io.fabric8.openshift.api.model.PodSecurityPolicySubjectReview;
+import io.fabric8.openshift.api.model.ProjectHelmChartRepository;
+import io.fabric8.openshift.api.model.ProjectHelmChartRepositoryList;
 import io.fabric8.openshift.api.model.RangeAllocation;
 import io.fabric8.openshift.api.model.RangeAllocationList;
 import io.fabric8.openshift.api.model.ResourceAccessReview;
@@ -123,6 +125,10 @@ import io.fabric8.openshift.api.model.miscellaneous.cncf.cni.v1.NetworkAttachmen
 import io.fabric8.openshift.api.model.miscellaneous.cncf.cni.v1.NetworkAttachmentDefinitionList;
 import io.fabric8.openshift.api.model.miscellaneous.metal3.v1alpha1.BareMetalHost;
 import io.fabric8.openshift.api.model.miscellaneous.metal3.v1alpha1.BareMetalHostList;
+import io.fabric8.openshift.api.model.miscellaneous.metal3.v1beta1.Metal3Remediation;
+import io.fabric8.openshift.api.model.miscellaneous.metal3.v1beta1.Metal3RemediationList;
+import io.fabric8.openshift.api.model.miscellaneous.metal3.v1beta1.Metal3RemediationTemplate;
+import io.fabric8.openshift.api.model.miscellaneous.metal3.v1beta1.Metal3RemediationTemplateList;
 import io.fabric8.openshift.api.model.miscellaneous.network.operator.v1.EgressRouter;
 import io.fabric8.openshift.api.model.miscellaneous.network.operator.v1.EgressRouterList;
 import io.fabric8.openshift.api.model.miscellaneous.network.operator.v1.OperatorPKI;
@@ -443,6 +449,20 @@ public interface OpenShiftClient extends KubernetesClient, SupportTestingClient 
   NonNamespaceOperation<io.fabric8.openshift.api.model.miscellaneous.imageregistry.operator.v1.Config, io.fabric8.openshift.api.model.miscellaneous.imageregistry.operator.v1.ConfigList, Resource<io.fabric8.openshift.api.model.miscellaneous.imageregistry.operator.v1.Config>> imageRegistryOperatorConfigs();
 
   /**
+   * API entrypoint for Metal3Remediation (infrastructure.cluster.x-k8s.io/v1beta1)
+   *
+   * @return {@link MixedOperation} for Metal3Remediation
+   */
+  MixedOperation<Metal3Remediation, Metal3RemediationList, Resource<Metal3Remediation>> metal3Remediations();
+
+  /**
+   * API entrypoint for Metal3RemediationTemplate (infrastructure.cluster.x-k8s.io/v1beta1)
+   *
+   * @return {@link MixedOperation} for Metal3RemediationTemplate
+   */
+  MixedOperation<Metal3RemediationTemplate, Metal3RemediationTemplateList, Resource<Metal3RemediationTemplate>> metal3RemediationTemplates();
+
+  /**
    * API entrypoint for accessing NetworkAttachmentDefinition(k8s.cni.cncf.io/v1)
    *
    * @return {@link MixedOperation} for NetworkAttachmentDefinition
@@ -518,6 +538,13 @@ public interface OpenShiftClient extends KubernetesClient, SupportTestingClient 
    * @return {@link ProjectOperation} for Project specific operations
    */
   ProjectOperation projects();
+
+  /**
+   * API entrypoint for handling ProjectHelmChartRepository (helm.openshift.io/v1beta1)
+   *
+   * @return {@link NonNamespaceOperation} for ProjectHelmChartRepository
+   */
+  MixedOperation<ProjectHelmChartRepository, ProjectHelmChartRepositoryList, Resource<ProjectHelmChartRepository>> projectHelmChartRepositories();
 
   /**
    * API entrypoint for accessing ProjectRequest operations(project.openshift.io/v1)

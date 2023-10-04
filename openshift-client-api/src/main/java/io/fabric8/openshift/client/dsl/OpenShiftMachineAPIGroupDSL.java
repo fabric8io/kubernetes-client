@@ -18,6 +18,8 @@ package io.fabric8.openshift.client.dsl;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.openshift.api.model.machine.v1.ControlPlaneMachineSet;
+import io.fabric8.openshift.api.model.machine.v1.ControlPlaneMachineSetList;
 import io.fabric8.openshift.api.model.machine.v1beta1.Machine;
 import io.fabric8.openshift.api.model.machine.v1beta1.MachineHealthCheck;
 import io.fabric8.openshift.api.model.machine.v1beta1.MachineHealthCheckList;
@@ -46,4 +48,11 @@ public interface OpenShiftMachineAPIGroupDSL extends Client {
    * @return {@link MixedOperation} for MachineHealthCheck
    */
   MixedOperation<MachineHealthCheck, MachineHealthCheckList, Resource<MachineHealthCheck>> machineHealthChecks();
+
+  /**
+   * DSL entrypoint for ControlPlaneMachineSet (machine.openshift.io/v1)
+   *
+   * @return {@link MixedOperation} for ControlPlaneMachineSet
+   */
+  MixedOperation<ControlPlaneMachineSet, ControlPlaneMachineSetList, Resource<ControlPlaneMachineSet>> controlPlaneMachineSets();
 }

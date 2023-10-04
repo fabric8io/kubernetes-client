@@ -37,7 +37,11 @@ import io.fabric8.openshift.api.model.config.v1.FeatureGateList;
 import io.fabric8.openshift.api.model.config.v1.Image;
 import io.fabric8.openshift.api.model.config.v1.ImageContentPolicy;
 import io.fabric8.openshift.api.model.config.v1.ImageContentPolicyList;
+import io.fabric8.openshift.api.model.config.v1.ImageDigestMirrorSet;
+import io.fabric8.openshift.api.model.config.v1.ImageDigestMirrorSetList;
 import io.fabric8.openshift.api.model.config.v1.ImageList;
+import io.fabric8.openshift.api.model.config.v1.ImageTagMirrorSet;
+import io.fabric8.openshift.api.model.config.v1.ImageTagMirrorSetList;
 import io.fabric8.openshift.api.model.config.v1.Infrastructure;
 import io.fabric8.openshift.api.model.config.v1.InfrastructureList;
 import io.fabric8.openshift.api.model.config.v1.Ingress;
@@ -122,6 +126,16 @@ public class OpenShiftConfigAPIGroupClient extends ClientAdapter<OpenShiftConfig
   @Override
   public NonNamespaceOperation<ImageContentPolicy, ImageContentPolicyList, Resource<ImageContentPolicy>> imageContentPolicies() {
     return resources(ImageContentPolicy.class, ImageContentPolicyList.class);
+  }
+
+  @Override
+  public NonNamespaceOperation<ImageDigestMirrorSet, ImageDigestMirrorSetList, Resource<ImageDigestMirrorSet>> imageDigestMirrorSets() {
+    return resources(ImageDigestMirrorSet.class, ImageDigestMirrorSetList.class);
+  }
+
+  @Override
+  public NonNamespaceOperation<ImageTagMirrorSet, ImageTagMirrorSetList, Resource<ImageTagMirrorSet>> imageTagMirrorSets() {
+    return resources(ImageTagMirrorSet.class, ImageTagMirrorSetList.class);
   }
 
   @Override
