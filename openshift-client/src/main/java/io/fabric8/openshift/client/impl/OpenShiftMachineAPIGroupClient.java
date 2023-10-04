@@ -18,6 +18,8 @@ package io.fabric8.openshift.client.impl;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.extension.ClientAdapter;
+import io.fabric8.openshift.api.model.machine.v1.ControlPlaneMachineSet;
+import io.fabric8.openshift.api.model.machine.v1.ControlPlaneMachineSetList;
 import io.fabric8.openshift.api.model.machine.v1beta1.Machine;
 import io.fabric8.openshift.api.model.machine.v1beta1.MachineHealthCheck;
 import io.fabric8.openshift.api.model.machine.v1beta1.MachineHealthCheckList;
@@ -42,6 +44,11 @@ public class OpenShiftMachineAPIGroupClient extends ClientAdapter<OpenShiftMachi
   @Override
   public MixedOperation<MachineHealthCheck, MachineHealthCheckList, Resource<MachineHealthCheck>> machineHealthChecks() {
     return resources(MachineHealthCheck.class, MachineHealthCheckList.class);
+  }
+
+  @Override
+  public MixedOperation<ControlPlaneMachineSet, ControlPlaneMachineSetList, Resource<ControlPlaneMachineSet>> controlPlaneMachineSets() {
+    return resources(ControlPlaneMachineSet.class, ControlPlaneMachineSetList.class);
   }
 
   @Override

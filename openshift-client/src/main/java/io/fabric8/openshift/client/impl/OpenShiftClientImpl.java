@@ -92,6 +92,8 @@ import io.fabric8.openshift.api.model.OAuthClientList;
 import io.fabric8.openshift.api.model.PodSecurityPolicyReview;
 import io.fabric8.openshift.api.model.PodSecurityPolicySelfSubjectReview;
 import io.fabric8.openshift.api.model.PodSecurityPolicySubjectReview;
+import io.fabric8.openshift.api.model.ProjectHelmChartRepository;
+import io.fabric8.openshift.api.model.ProjectHelmChartRepositoryList;
 import io.fabric8.openshift.api.model.ProjectRequest;
 import io.fabric8.openshift.api.model.RangeAllocation;
 import io.fabric8.openshift.api.model.RangeAllocationList;
@@ -130,6 +132,10 @@ import io.fabric8.openshift.api.model.miscellaneous.cncf.cni.v1.NetworkAttachmen
 import io.fabric8.openshift.api.model.miscellaneous.imageregistry.operator.v1.ConfigList;
 import io.fabric8.openshift.api.model.miscellaneous.metal3.v1alpha1.BareMetalHost;
 import io.fabric8.openshift.api.model.miscellaneous.metal3.v1alpha1.BareMetalHostList;
+import io.fabric8.openshift.api.model.miscellaneous.metal3.v1beta1.Metal3Remediation;
+import io.fabric8.openshift.api.model.miscellaneous.metal3.v1beta1.Metal3RemediationList;
+import io.fabric8.openshift.api.model.miscellaneous.metal3.v1beta1.Metal3RemediationTemplate;
+import io.fabric8.openshift.api.model.miscellaneous.metal3.v1beta1.Metal3RemediationTemplateList;
 import io.fabric8.openshift.api.model.miscellaneous.network.operator.v1.EgressRouter;
 import io.fabric8.openshift.api.model.miscellaneous.network.operator.v1.EgressRouterList;
 import io.fabric8.openshift.api.model.miscellaneous.network.operator.v1.OperatorPKI;
@@ -355,6 +361,16 @@ public class OpenShiftClientImpl extends KubernetesClientImpl
   }
 
   @Override
+  public MixedOperation<Metal3Remediation, Metal3RemediationList, Resource<Metal3Remediation>> metal3Remediations() {
+    return resources(Metal3Remediation.class, Metal3RemediationList.class);
+  }
+
+  @Override
+  public MixedOperation<Metal3RemediationTemplate, Metal3RemediationTemplateList, Resource<Metal3RemediationTemplate>> metal3RemediationTemplates() {
+    return resources(Metal3RemediationTemplate.class, Metal3RemediationTemplateList.class);
+  }
+
+  @Override
   public MixedOperation<NetworkAttachmentDefinition, NetworkAttachmentDefinitionList, Resource<NetworkAttachmentDefinition>> networkAttachmentDefinitions() {
     return resources(NetworkAttachmentDefinition.class, NetworkAttachmentDefinitionList.class);
   }
@@ -409,6 +425,11 @@ public class OpenShiftClientImpl extends KubernetesClientImpl
   @Override
   public ProjectOperation projects() {
     return new ProjectOperationsImpl(this);
+  }
+
+  @Override
+  public MixedOperation<ProjectHelmChartRepository, ProjectHelmChartRepositoryList, Resource<ProjectHelmChartRepository>> projectHelmChartRepositories() {
+    return resources(ProjectHelmChartRepository.class, ProjectHelmChartRepositoryList.class);
   }
 
   @Override

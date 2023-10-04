@@ -37,7 +37,11 @@ import io.fabric8.openshift.api.model.config.v1.FeatureGateList;
 import io.fabric8.openshift.api.model.config.v1.Image;
 import io.fabric8.openshift.api.model.config.v1.ImageContentPolicy;
 import io.fabric8.openshift.api.model.config.v1.ImageContentPolicyList;
+import io.fabric8.openshift.api.model.config.v1.ImageDigestMirrorSet;
+import io.fabric8.openshift.api.model.config.v1.ImageDigestMirrorSetList;
 import io.fabric8.openshift.api.model.config.v1.ImageList;
+import io.fabric8.openshift.api.model.config.v1.ImageTagMirrorSet;
+import io.fabric8.openshift.api.model.config.v1.ImageTagMirrorSetList;
 import io.fabric8.openshift.api.model.config.v1.Infrastructure;
 import io.fabric8.openshift.api.model.config.v1.InfrastructureList;
 import io.fabric8.openshift.api.model.config.v1.Ingress;
@@ -139,6 +143,20 @@ public interface OpenShiftConfigAPIGroupDSL extends Client {
    * @return {@link NonNamespaceOperation} for ImageContentPolicy
    */
   NonNamespaceOperation<ImageContentPolicy, ImageContentPolicyList, Resource<ImageContentPolicy>> imageContentPolicies();
+
+  /**
+   * API entrypoint for ImageDigestMirrorSet related operations (config.openshift.io/v1)
+   *
+   * @return {@link NonNamespaceOperation} for ImageDigestMirrorSet
+   */
+  NonNamespaceOperation<ImageDigestMirrorSet, ImageDigestMirrorSetList, Resource<ImageDigestMirrorSet>> imageDigestMirrorSets();
+
+  /**
+   * API entrypoint for ImageTagMirrorSet related operations (config.openshift.io/v1)
+   *
+   * @return {@link NonNamespaceOperation} for ImageTagMirrorSet
+   */
+  NonNamespaceOperation<ImageTagMirrorSet, ImageTagMirrorSetList, Resource<ImageTagMirrorSet>> imageTagMirrorSets();
 
   /**
    * API entrypoint for Network (config.openshift.io/v1)

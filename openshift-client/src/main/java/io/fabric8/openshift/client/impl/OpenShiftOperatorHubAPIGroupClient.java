@@ -21,6 +21,8 @@ import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.extension.ClientAdapter;
 import io.fabric8.openshift.api.model.operatorhub.lifecyclemanager.v1.PackageManifest;
 import io.fabric8.openshift.api.model.operatorhub.lifecyclemanager.v1.PackageManifestList;
+import io.fabric8.openshift.api.model.operatorhub.v1.OLMConfig;
+import io.fabric8.openshift.api.model.operatorhub.v1.OLMConfigList;
 import io.fabric8.openshift.api.model.operatorhub.v1.Operator;
 import io.fabric8.openshift.api.model.operatorhub.v1.OperatorCondition;
 import io.fabric8.openshift.api.model.operatorhub.v1.OperatorConditionList;
@@ -78,6 +80,11 @@ public class OpenShiftOperatorHubAPIGroupClient extends ClientAdapter<OpenShiftO
   @Override
   public NonNamespaceOperation<Operator, OperatorList, Resource<Operator>> operators() {
     return resources(Operator.class, OperatorList.class);
+  }
+
+  @Override
+  public NonNamespaceOperation<OLMConfig, OLMConfigList, Resource<OLMConfig>> olmConfigs() {
+    return resources(OLMConfig.class, OLMConfigList.class);
   }
 
   @Override
