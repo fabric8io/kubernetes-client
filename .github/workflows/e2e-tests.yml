@@ -169,6 +169,26 @@ jobs:
       matrix:
         openshift: [v3.11.0, v3.10.0]
     steps:
+      - name: Free up Space
+        run: |
+          sudo apt list --installed
+          sudo apt-get purge -y                     \
+            'aspnetcore.*'                          \
+            'cabal-install.*'                       \
+            'clang.*'                               \
+            'dotnet.*'                              \
+            'firefox.*'                             \
+            'ghc.*'                                 \
+            'google-chrome.*'                       \
+            'heroku.*'                              \
+            'libmagic.*'                            \
+            'libmono.*'                             \
+            'mono-.*'                               \
+            'mysql.*'                               \
+            'php.*'                                 \
+            'ruby.*'
+          sudo apt-get autoremove
+          df -h
       - name: Checkout
         uses: actions/checkout@v4
       - name: Setup OpenShift
