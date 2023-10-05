@@ -1,6 +1,6 @@
 ## CHANGELOG
 
-### 6.9-SNAPSHOT
+### 6.9.0 (2023-10-05)
 
 #### Bugs
 * Fix #5466: OperationSupport should not fail trying to parse Status
