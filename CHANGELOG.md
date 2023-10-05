@@ -4,9 +4,9 @@
 
 #### Bugs
 * Fix #5466: OperationSupport should not fail trying to parse Status
-* Fix #5382: [java-generator] Allow to deserialize more valid RFC3339 date-time and make the format customizable
-* Fix #5380: [java-generator] Avoid to emit Java Keywords as package names
-* Fix #5457: [java-generator] Correctly handle numeric enums
+* Fix #5382: (java-generator) Allow to deserialize more valid RFC3339 date-time and make the format customizable
+* Fix #5380: (java-generator) Avoid to emit Java Keywords as package names
+* Fix #5457: (java-generator) Correctly handle numeric enums
 * Fix #5379: ensuring informOnCondition and waitUntilCondition commple with exception when the client closes
 * Fix #5463: ensures that onStopLeading is called with releaseOnCancel even when leadership is already lost
 * Fix #5423: OkHttpClientImpl supports setting request method for empty payload requests
@@ -14,12 +14,12 @@
 #### Improvements
 * Fix #5316: support read-only system KeyStores with Kube CA Certs
 * Fix #5327: added proactive shutdown of informers on client close
-* Fix #5432: [java-generator] Add the possibility to always emit `additionalProperties` on generated POJOs
-* Fix #5410: [crd-generator] added support for `default`
+* Fix #5432: (java-generator) Add the possibility to always emit `additionalProperties` on generated POJOs
+* Fix #5410: (crd-generator) added support for `default`
 * Fix #5368: added support for additional ListOptions fields
 * Fix #5377: added a createOr and unlock function to provide a straight-forward replacement for createOrReplace.
 * Fix #4624: added Config.onlyHttpWatches to control whether watches should only use regular HTTP requests, and not attempt WebSocket connections.
-* Fix #5388: [crd-generator] Generate deterministic CRDs
+* Fix #5388: (crd-generator) Generate deterministic CRDs
 * Fix #5135: added per instance methods to create a builder - instead on new PodBuilder(pod), you may use pod.toBuilder()
 * Fix #5257: Add ErrorStreamMessage and StatusStreamMessage to ease mocking of pods/exec requests
 * Fix #5220: refinements and clarifications to the validation of names
@@ -47,7 +47,7 @@
 ### 6.8.0 (2023-07-24)
 
 #### Bugs
-* Fix #4225: \[crd-generator\] Principled generation of enum values instead of considering more properties
+* Fix #4225: (crd-generator) Principled generation of enum values instead of considering more properties
 * Fix #5113: Clashing package names in trigger model dependencies
 * Fix #5186: Support for Pod uploads with big numbers
 * Fix #5221: Empty kube config file causes NPE
@@ -111,9 +111,9 @@
 * Fix #5117: corrected the trace httpclient logging of large response bodies
 * Fix #5125: TLS 1.3 only should be supported
 * Fix #5126: fallback to changeit only if null/empty does not work
-* Fix #5145: \[java-generator\] handle `additionalProperties: true` emitting a field of type `AnyType`
+* Fix #5145: (java-generator) handle `additionalProperties: true` emitting a field of type `AnyType`
 * Fix #5152: preventing JDK WebSocket errors from terminating watches and improving watch termination and its logging
-* Fix #5164: \[java-generator\] handle more special characters in field names
+* Fix #5164: (java-generator) handle more special characters in field names
 
 #### Improvements
 * Fix #1335: HttpClient Factory additionalConfig consistently applied for all client types
@@ -303,7 +303,7 @@ Fix #5121: RequestConfig is propagated to derived HttpClient instances
 * Fix #4637: all pod operations that require a ready / succeeded pod may use withReadyWaitTimeout, which supersedes withLogWaitTimeout.
 * Fix #4654: Fix GatewayClass to not implement Namespaced interface
 * Fix #4670: the initial informer listing will use a resourceVersion of 0 to utilize the watch cache if possible.  This means that the initial cache state when the informer is returned, or the start future is completed, may not be as fresh as the previous behavior which forced the latest version.  It will of course become more consistent as the watch will already have been established.
-* Fix #4694: \[java-generator\] Option to override the package name of the generated code.
+* Fix #4694: (java-generator) Option to override the package name of the generated code.
 * Fix #4698: changes were made to improve authentication logic.  If a username and password are specified and you are using a base KuberentesClient, then that will always be used as a basic auth header value.  If a username and password are specified and you are using an OpenShiftClient, then a token will still be used if present, but upon an auth failure the username and password will be used to obtain a fresh token.  If a new token is obtained it will be saved in the kubeconfig if one were used to create the Config.
 * Fix #4720: interceptors close any response body if the response is not a 2xx response.
 * Fix #4734: @KubernetesTest annotation can be used in base test classes
@@ -398,7 +398,7 @@ Fix #5121: RequestConfig is propagated to derived HttpClient instances
 * Fix #3864: Change ManagedOpenShiftClient OSGi ConfigurationPolicy to REQUIRE
 * Fix #4414: RawExtension as default fall-back type for KubernetesResource deserialization
 * Fix #4470: Added timestamps support for deployment logs and other resources.
-* Fix #4476: \[crd-generator\] Support custom `Annotations` and `Labels` to be emitted in the CRD
+* Fix #4476: (crd-generator) Support custom `Annotations` and `Labels` to be emitted in the CRD
 
 #### Dependency Upgrade
 * Fix #4243: Update Tekton pipeline model to v0.39.0
