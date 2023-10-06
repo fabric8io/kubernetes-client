@@ -37,6 +37,8 @@ public class AnnotatedSpec {
   private String singleDigit;
   private String nullable;
   private String defaultValue;
+  @Default("my-value2")
+  private String defaultValue2;
   @Required
   private boolean emptySetter;
   @Required

@@ -102,7 +102,7 @@ class JsonSchemaTest {
     assertNotNull(schema);
     Map<String, JSONSchemaProps> properties = assertSchemaHasNumberOfProperties(schema, 2);
     final JSONSchemaProps specSchema = properties.get("spec");
-    Map<String, JSONSchemaProps> spec = assertSchemaHasNumberOfProperties(specSchema, 12);
+    Map<String, JSONSchemaProps> spec = assertSchemaHasNumberOfProperties(specSchema, 13);
 
     // check descriptions are present
     assertTrue(spec.containsKey("from-field"));
@@ -149,6 +149,13 @@ class JsonSchemaTest {
 
     final JSONSchemaProps defaultValue = spec.get("defaultValue");
     assertEquals("my-value", YAML_MAPPER.writeValueAsString(defaultValue.getDefault()).trim());
+    assertNull(defaultValue.getNullable());
+    assertNull(defaultValue.getMinimum());
+    assertNull(defaultValue.getMaximum());
+    assertNull(defaultValue.getPattern());
+
+    final JSONSchemaProps defaultValue2 = spec.get("defaultValue2");
+    assertEquals("my-value2", YAML_MAPPER.writeValueAsString(defaultValue2.getDefault()).trim());
     assertNull(defaultValue.getNullable());
     assertNull(defaultValue.getMinimum());
     assertNull(defaultValue.getMaximum());
