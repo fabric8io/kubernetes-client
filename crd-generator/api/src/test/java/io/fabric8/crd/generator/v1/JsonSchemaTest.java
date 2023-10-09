@@ -156,10 +156,10 @@ class JsonSchemaTest {
 
     final JSONSchemaProps defaultValue2 = spec.get("defaultValue2");
     assertEquals("my-value2", YAML_MAPPER.writeValueAsString(defaultValue2.getDefault()).trim());
-    assertNull(defaultValue.getNullable());
-    assertNull(defaultValue.getMinimum());
-    assertNull(defaultValue.getMaximum());
-    assertNull(defaultValue.getPattern());
+    assertNull(defaultValue2.getNullable());
+    assertNull(defaultValue2.getMinimum());
+    assertNull(defaultValue2.getMaximum());
+    assertNull(defaultValue2.getPattern());
 
     // check required list, should register properties with their modified name if needed
     final List<String> required = specSchema.getRequired();
