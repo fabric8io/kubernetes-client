@@ -24,7 +24,9 @@ import io.fabric8.generator.annotation.Min;
 import io.fabric8.generator.annotation.Nullable;
 import io.fabric8.generator.annotation.Pattern;
 import io.fabric8.generator.annotation.Required;
+import lombok.Data;
 
+@Data
 public class AnnotatedSpec {
   @JsonProperty("from-field")
   @JsonPropertyDescription("from-field-description")

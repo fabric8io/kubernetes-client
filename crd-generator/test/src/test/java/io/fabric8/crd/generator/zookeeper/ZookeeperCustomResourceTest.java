@@ -66,6 +66,7 @@ class ZookeeperCustomResourceTest {
       assertEquals(1, v.getAdditionalPrinterColumns().get(0).getPriority());
       assertEquals("UPTIME", v.getAdditionalPrinterColumns().get(1).getName());
       assertEquals(0, v.getAdditionalPrinterColumns().get(1).getPriority());
+      assertEquals("false", props.getProperties().get("ephemeral").getDefault().asText());
     });
 
     Optional<CustomResourceDefinitionVersion> v1alpha1 = d.getSpec().getVersions().stream()

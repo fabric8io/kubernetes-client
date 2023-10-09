@@ -15,14 +15,18 @@
  */
 package io.fabric8.crd.generator.zookeeper.v1;
 
+import io.fabric8.generator.annotation.Default;
+import lombok.Data;
 import io.fabric8.generator.annotation.Required;
 import io.fabric8.kubernetes.model.annotation.SpecReplicas;
 
+@Data
 public class ZookeeperSpec {
 
   @SpecReplicas
   private int size;
   @Required
   private String version;
+  @Default("false")
   private boolean ephemeral;
 }
