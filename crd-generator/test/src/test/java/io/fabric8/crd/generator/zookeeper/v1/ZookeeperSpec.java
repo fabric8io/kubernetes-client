@@ -16,9 +16,9 @@
 package io.fabric8.crd.generator.zookeeper.v1;
 
 import io.fabric8.generator.annotation.Default;
-import lombok.Data;
 import io.fabric8.generator.annotation.Required;
 import io.fabric8.kubernetes.model.annotation.SpecReplicas;
+import lombok.Data;
 
 @Data
 public class ZookeeperSpec {
