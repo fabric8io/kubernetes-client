@@ -99,7 +99,6 @@
     </osgi.import>
     <osgi.export>
       io.fabric8.kubernetes.api,
-      io.fabric8.kubernetes.api.builder,
       io.fabric8.kubernetes.api.model**,
     </osgi.export>
     <osgi.private>
