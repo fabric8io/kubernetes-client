@@ -102,7 +102,7 @@ class JsonSchemaTest {
     assertNotNull(schema);
     Map<String, JSONSchemaProps> properties = assertSchemaHasNumberOfProperties(schema, 2);
     final JSONSchemaProps specSchema = properties.get("spec");
-    Map<String, JSONSchemaProps> spec = assertSchemaHasNumberOfProperties(specSchema, 12);
+    Map<String, JSONSchemaProps> spec = assertSchemaHasNumberOfProperties(specSchema, 13);
 
     // check descriptions are present
     assertTrue(spec.containsKey("from-field"));
@@ -153,6 +153,13 @@ class JsonSchemaTest {
     assertNull(defaultValue.getMinimum());
     assertNull(defaultValue.getMaximum());
     assertNull(defaultValue.getPattern());
+
+    final JSONSchemaProps defaultValue2 = spec.get("defaultValue2");
+    assertEquals("my-value2", YAML_MAPPER.writeValueAsString(defaultValue2.getDefault()).trim());
+    assertNull(defaultValue2.getNullable());
+    assertNull(defaultValue2.getMinimum());
+    assertNull(defaultValue2.getMaximum());
+    assertNull(defaultValue2.getPattern());
 
     // check required list, should register properties with their modified name if needed
     final List<String> required = specSchema.getRequired();

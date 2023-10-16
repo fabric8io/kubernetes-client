@@ -558,7 +558,7 @@ public abstract class AbstractJsonSchema<T, B> {
             LOGGER.debug("Description for property {} has already been contributed by: {}", name, descriptionContributedBy);
           }
         }
-        defaultValue = p.getDefault().orElse(null);
+        defaultValue = p.getDefault().orElse(defaultValue);
         min = p.getMin().orElse(min);
         max = p.getMax().orElse(max);
         pattern = p.getPattern().orElse(pattern);

@@ -3,6 +3,7 @@
 ### 6.10-SNAPSHOT
 
 #### Bugs
+* Fix #5501: [crd-generator] Fix fallback value of `Default` annotation in presence of multiple accessors
 
 #### Improvements
 
