@@ -41,6 +41,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import javax.annotation.processing.*;
+import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.Name;
 import javax.lang.model.element.TypeElement;
@@ -54,6 +55,12 @@ public class CustomResourceAnnotationProcessor extends AbstractProcessor {
   public static final String PROCESSOR_OPTION_PARALLEL = "io.fabric8.crd.generator.parallel";
   private final CRDGenerator generator = new CRDGenerator();
 
+  @Override
+  public SourceVersion getSupportedSourceVersion() {
+    return SourceVersion.latestSupported();
+  }
+
+  @SuppressWarnings("unchecked")
   public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
     if (roundEnv.processingOver()) {
       final Messager messager = processingEnv.getMessager();
