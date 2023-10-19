@@ -43,6 +43,7 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.TimeUnit;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -179,6 +180,18 @@ public abstract class AbstractHttpLoggingInterceptorTest {
     inOrder.verify(logger).trace(eq("< {} {}"), anyInt(), anyString());
     inOrder.verify(logger).trace("This is the response body");
     inOrder.verify(logger).trace("-HTTP END-");
+  }
+
+  @Test
+  @DisplayName("Interceptor doesn't consume response bytes")
+  public void responseBodyIsNotConsumed() throws Exception {
+    server.expect().withPath("/response-body")
+        .andReturn(200, "This is the response body")
+        .always();
+    HttpResponse<String> httpResponse = httpClient.sendAsync(httpClient.newHttpRequestBuilder()
+        .uri(server.url("/response-body"))
+        .build(), String.class).get(10, TimeUnit.SECONDS);
+    assertThat(httpResponse.bodyString()).isEqualTo("This is the response body");
   }
 
   @Test
