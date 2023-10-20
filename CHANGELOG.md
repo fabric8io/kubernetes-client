@@ -6,6 +6,7 @@
 * Fix #5501: [crd-generator] Fix fallback value of `Default` annotation in presence of multiple accessors
 
 #### Improvements
+* Fix #5535: Add lombok and sundrio dependencies to the generated bom
 
 #### Dependency Upgrade
 

@@ -1456,6 +1456,8 @@
                   <name>Fabric8 :: Kubernetes :: Bom with Dependencies</name>
                   <dependencies>
                     <includes>
+                      <include>io.sundr*:*</include>
+                      <include>org.projectlombok:lombok*</include>
                       <include>com.squareup*:*</include>
                       <include>com.fasterxml.jackson*:*</include>
                       <include>io.fabric8:kubernetes-model-core*</include>
