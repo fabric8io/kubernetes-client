@@ -5,6 +5,7 @@
 #### Bugs
 
 #### Improvements
+* Fix #5535: Add lombok and sundrio dependencies to the generated bom
 
 #### Dependency Upgrade
 
