@@ -127,9 +127,9 @@ Pod aPod = new PodBuilder().withNewMetadata().withName("demo-pod1").endMetadata(
     .build();
 Pod createdPod = client.pods().inNamespace("default").create(aPod);
 ```
-- Create or Replace some `Pod` with some existing object:
-```
-client.pods().inNamespace("default").createOrReplace(aPod);
+- Apply a `Pod` to Kubernetes Cluster with some existing object:
+```java
+client.pods().inNamespace("default").resource(pod).serverSideApply();
 ```
 - Edit a `Pod` object:
 ```java
@@ -247,9 +247,9 @@ Service service = client.services().inNamespace("default").withName("some-servic
 ```
 Service createdSvc = client.services().inNamespace("default").create(svc);
 ```
-- Create or Replace existing `Service`:
-```
-Service createdSvc = client.services().inNamespace("default").createOrReplace(svc);
+- Apply a `Service` object onto Kubernetes Cluster:
+```java
+Service createdSvc = client.services().inNamespace("default").resource(svc).serverSideApply();
 ```
 - List all `Service` objects in some specific namespace:
 ```
@@ -321,9 +321,9 @@ Deployment deployment1 = new DeploymentBuilder()
 
 client.apps().deployments().inNamespace("default").create(deployment1);
 ```
-- Create or Replace an existing `Deployment`:
-```
-Deployment createdDeployment = client.apps().deployments().inNamespace("default").createOrReplace(deployObj);
+- Apply a `Deployment` object onto Kubernetes Cluster:
+```java
+Deployment createdDeployment = client.apps().deployments().inNamespace("default").resource(deployObj).serverSideApply();
 ```
 - List `Deployment` objects in some specific namespace:
 ```
@@ -468,9 +468,9 @@ ReplicaSet replicaset1 = new ReplicaSetBuilder()
 
 client.apps().replicaSets().inNamespace("default").create(replicaset1);
 ```
-- Create or Replace an existing `ReplicaSet`:
-```
-ReplicaSet rs = client.apps().replicaSets().inNamespace("default").createOrReplace(replicaSet);
+- Apply an existing `ReplicaSet`:
+```java
+ReplicaSet rs = client.apps().replicaSets().inNamespace("default").resource(replicaSet).serverSideApply();
 ```
 - List `ReplicaSet` objects in some namespace:
 ```
@@ -556,9 +556,9 @@ ReplicationController rc1 = new ReplicationControllerBuilder()
 
 ReplicationController rc = client.replicationControllers().inNamespace("default").create(rc1);
 ```
-- Create or Replace an existing `ReplicationController`:
-```
-ReplicationController rc = client.replicationControllers().inNamespace("default").createOrReplace(rc1);
+- Apply `ReplicationController` object onto Kubernetes Cluster:
+```java
+ReplicationController rc = client.replicationControllers().inNamespace("default").resource(rc1).serverSideApply();
 ``` 
 - List `ReplicationController` object in some namespace:
 ```
@@ -634,9 +634,9 @@ ConfigMap configMap1 = new ConfigMapBuilder()
       .build();
 ConfigMap configMap = client.configMaps().inNamespace("default").create(configMap1);
 ```
-- Create or Replace some existing `ConfigMap`:
-```
-ConfigMap configMap = client.configMaps().inNamespace("default").createOrReplace(configMap1);
+- Apply a `ConfigMap` object onto Kubernetes Cluster:
+```java
+ConfigMap configMap = client.configMaps().inNamespace("default").resource(configMap1).serverSideApply();
 ```
 - List `ConfigMap` objects in some namespace:
 ```
@@ -695,9 +695,9 @@ Secret secret1 = new SecretBuilder()
       .build();
 Secret secretCreated = client.secrets().inNamespace("default").create(secret1);
 ```
-- Create or Replace an existing `Secret`:
-```
-Secret createdSecret = client.secrets().inNamespace("default").resource(secret1).createOrReplace();
+- Apply a `Secret` onto Kubernetes Cluster:
+```java
+Secret createdSecret = client.secrets().inNamespace("default").resource(secret1).serverSideApply();
 ```
 - List `Secret` resources in some namespace:
 ```
@@ -771,9 +771,9 @@ final Job job = new JobBuilder()
 
 client.batch().jobs().inNamespace("default").create(job);
 ```
-- Create or Replace an existing `Job`:
-```
-Job job = client.batch().v1().jobs().inNamespace("default").resource(job).createOrReplace();
+- Apply `Job` onto Kubernetes Cluster:
+```java
+Job job = client.batch().v1().jobs().inNamespace("default").resource(job1).serverSideApply();
 ```
 - List `Job` in some namespace:
 ```
@@ -845,9 +845,9 @@ CronJob cronJob1 = new CronJobBuilder()
 
 cronJob1 = client.batch().cronjobs().inNamespace("default").create(cronJob1);
 ```
-- Create or Replace an existing `CronJob`:
-```
-CronJob cronJob = client.batch().cronjobs().inNamespace("default").createOrReplace(cronJob1);
+- Apply `CronJob` onto Kubernetes Cluster:
+```java
+CronJob cronJob = client.batch().v1().cronjobs().inNamespace("default").resource(cronJob1).serverSideApply();
 ```
 - List some `CronJob` objects in some namespace:
 ```
@@ -915,9 +915,9 @@ ServiceAccount serviceAccount1 = new ServiceAccountBuilder()
 
 client.serviceAccounts().inNamespace("default").create(serviceAccount1);
 ```
-- Create or Replace `ServiceAccount`:
-```
-ServiceAccount serviceAccount = client.serviceAccounts().inNamespace("default").createOrReplace(serviceAccount1);
+- Apply `ServiceAccount` onto Kubernetes cluster:
+```java
+ServiceAccount serviceAccount = client.serviceAccounts().inNamespace("default").resource(serviceAccount1).serverSideApply();
 ```
 - List `ServiceAccount` in some specific namespace:
 ```
@@ -966,9 +966,9 @@ Ingress ingress = new IngressBuilder()
   .build();
 client.network().v1().ingress().inNamespace("default").create(ingress);
 ```
-- Create or Replace `Ingress`:
-```
-Ingress igx = client.network().v1().ingress().inNamespace("default").createOrReplace(ingress);
+- Apply `Ingress` onto Kubernetes Cluster:
+```java
+Ingress igx = client.network().v1().ingresses().inNamespace("default").resource(ingress).serverSideApply();
 ```
 - List `Ingress` in some namespace:
 ```
@@ -1041,9 +1041,9 @@ StatefulSet ss1 = new StatefulSetBuilder()
 
 StatefulSet ss = client.apps().statefulSets().inNamespace("default").create(ss1);
 ```
-- Create or Replace an existing `StatefulSet`:
-```
-StatefulSet ss = client.apps().statefulSets().inNamespace("default").createOrReplace(ss1);
+- Apply `StatefulSet` onto Kubernetes Cluster:
+```java
+StatefulSet ss = client.apps().statefulSets().inNamespace("default").resource(ss1).serverSideApply();
 ```
 - List `StatefulSet` in some particular namespace:
 ```
@@ -1170,9 +1170,9 @@ DaemonSet ds = new DaemonSetBuilder()
   .build();
 ds = client.apps().daemonSets().inNamespace("default").create(ds);
 ```
-- Create or Replace existing `DaemonSet`:
-```
-DaemonSet ds = client.apps().daemonSets().inNamespace("default").createOrReplace(ds);
+- Apply a `DaemonSet` onto Kubernetes Cluster:
+```java
+DaemonSet ds = client.apps().daemonSets().inNamespace("default").resource(ds1).serverSideApply();
 ```
 - List `DaemonSet` in some namespace:
 ```
@@ -1237,9 +1237,9 @@ EndpointSlice es = new EndpointSliceBuilder()
          .build();
 es = client.discovery().v1beta1().endpointSlices().inNamespace("ns1").create(es);
 ```
-- Create or Replace existing `EndpointSlice`:
+- Apply `EndpointSlice` onto Kubernetes Cluster:
 ```java
-EndpointSlice es = client.discovery().v1beta1().endpointSlices().inNamespace("ns1").createOrReplace(endpointSlice);
+EndpointSlice es = client.discovery().v1beta1().endpointSlices().inNamespace("ns1").resource(endpointSlice).serverSideApply();
 ```
 - List `EndpointSlice` in some namespace:
 ```java
@@ -1297,9 +1297,9 @@ PersistentVolumeClaim persistentVolumeClaim = new PersistentVolumeClaimBuilder()
 
 client.persistentVolumeClaims().inNamespace("default").create(persistentVolumeClaim);
 ```
-- Create or Replace an existing `PersistentVolumeClaim`:
-```
-PersistentVolumeClaim pvc = client.persistentVolumeClaims().inNamespace("default").createOrReplace(pvcToCreate);
+- Apply `PersistentVolumeClaim` onto Kubernetes Cluster:
+```java
+PersistentVolumeClaim pvc = client.persistentVolumeClaims().inNamespace("default").resource(pvcToCreate).serverSideApply();
 ```
 - List `PersistentVolumeClaim` objects in a particular namespace:
 ```
@@ -1357,9 +1357,9 @@ PersistentVolume pv = new PersistentVolumeBuilder()
 
 PersistentVolume pvCreated = client.persistentVolumes().create(pv)
 ```
-- Create or Replace `PersistentVolume`:
-```
-PersistentVolume pv = client.persistentVolumes().createOrReplace(pvToCreate);
+- Apply `PersistentVolume` onto Kubernetes Cluster:
+```java
+PersistentVolume pv = client.persistentVolumes().resource(pvToCreate).serverSideApply();
 ```
 - List `PersistentVolume`:
 ```
@@ -1415,9 +1415,9 @@ NetworkPolicy networkPolicy = new NetworkPolicyBuilder()
 
 NetworkPolicy npCreated = client.network().networkPolicies().create(networkPolicy);
 ```
-- Create or Replace some existing `NetworkPolicy`:
-```
-NetworkPolicy npCreated = client.network().networkPolicies().createOrReplace(networkPolicy);
+- Apply `NetworkPolicy` onto Kubernetes Cluster:
+```java
+NetworkPolicy npCreated = client.network().networkPolicies().resource(networkPolicy).serverSideApply();
 ```
 - List `NetworkPolicy`:
 ```
@@ -1457,9 +1457,9 @@ PodDisruptionBudget podDisruptionBudget = new PodDisruptionBudgetBuilder()
 
 client.policy().podDisruptionBudget().inNamespace("default").create(podDisruptionBudget);
 ```
-- Create or Replace `PodDisruptionBudget`:
-```
-PodDisruptionBudget pdb = client.policy().podDisruptionBudget().inNamespace("default").createOrReplace(podDisruptionBudgetObj);
+- Apply `PodDisruptionBudget` onto Kubernetes Cluster:
+```java
+PodDisruptionBudget pdb = client.policy().v1().podDisruptionBudget().inNamespace("default").resource(podDisruptionBudgetObj).serverSideApply();
 ```
 - List `PodDisruptionBudget` in some namespace:
 ```
@@ -1589,7 +1589,7 @@ client.rbac().clusterRoles().withName("clusterrole1").delete();
 ClusterRoleBinding clusterRoleBinding = client.rbac().clusterRoleBindings().load(new FileInputStream("clusterrolebinding-test.yml")).get();
 ```
 - Create `ClusterRoleBinding` from Kubernetes API server:
-```
+```java
 List<Subject> subjects = new ArrayList<>();
     Subject subject = new Subject();
     subject.setKind("ServiceAccount");
@@ -1600,12 +1600,12 @@ List<Subject> subjects = new ArrayList<>();
     roleRef.setApiGroup("rbac.authorization.k8s.io");
     roleRef.setKind("ClusterRole");
     roleRef.setName("clusterrolename");
-    ClusterRoleBinding clusterRoleBindingCreated = new ClusterRoleBindingBuilder()
+ClusterRoleBinding clusterRoleBindingCreated = new ClusterRoleBindingBuilder()
             .withNewMetadata().withName("clusterrolebindingname").withNamespace("default").endMetadata()
             .withRoleRef(roleRef)
             .addAllToSubjects(subjects)
             .build();
-ClusterRoleBinding clusterRoleBinding = client.rbac().clusterRoleBindings().createOrReplace(clusterRoleBindingCreated);
+ClusterRoleBinding clusterRoleBinding = client.rbac().clusterRoleBindings().resource(clusterRoleBindingCreated).create();
 ```
 - Get `ClusterRoleBinding` from Kubernetes API server:
 ```
@@ -1631,18 +1631,18 @@ client.rbac().clusterRoleBindings().withName("clusterrolebindingname").delete();
 Role role = client.rbac().roles().load(new FileInputStream("role-test.yml")).get();
 ```
 - Create `Role` from Kubernetes API server:
-```
+```java
 List<PolicyRule> policyRuleList = new ArrayList<>();
     PolicyRule endpoints = new PolicyRule();
     endpoints.setApiGroups(Arrays.asList(""));
     endpoints.setResources(Arrays.asList("endpoints"));
     endpoints.setVerbs(Arrays.asList("get", "list", "watch", "create", "update", "patch"));
     policyRuleList.add(endpoints);
-    Role roleCreated = new RoleBuilder()
+Role roleCreated = new RoleBuilder()
             .withNewMetadata().withName("rolename").withNamespace("default").endMetadata()
             .addAllToRules(policyRuleList)
             .build();
-Role role = client.rbac().roles().createOrReplace(roleCreated);
+Role role = client.rbac().roles().resource(roleCreated).create();
 ```
 - Get `Role` from Kubernetes API server:
 ```
@@ -1668,7 +1668,7 @@ client.rbac().roles().withName("rolename").delete();
 RoleBinding roleBinding = client.rbac().roleBindings().load(new FileInputStream("rolebinding-test.yml")).get();
 ```
 - Create `RoleBinding` from Kubernetes API server:
-```
+```java
 List<Subject> subjects = new ArrayList<>();
     Subject subject = new Subject();
     subject.setNamespace("default");
@@ -1679,12 +1679,12 @@ List<Subject> subjects = new ArrayList<>();
     roleRef.setName("rolename");
     roleRef.setKind("Role");
     roleRef.setApiGroup("rbac.authorization.k8s.io");
-    RoleBinding roleBindingCreated = new RoleBindingBuilder()
+RoleBinding roleBindingToCreate = new RoleBindingBuilder()
             .withNewMetadata().withName("rolename").withNamespace("default").endMetadata()
             .addAllToSubjects(subjects)
             .withRoleRef(roleRef)
             .build();
-RoleBinding roleBinding = client.rbac().roleBindings().createOrReplace(roleBindingCreated);
+RoleBinding roleBinding = client.rbac().roleBindings().resource(roleBindingToCreate).create();
 ```
 - Get `RoleBinding` from Kubernetes API server:
 ```
@@ -1732,8 +1732,8 @@ Kubernetes Client also offers a generic API to handle different kind of Kubernet
 ```
 Pod pod = client.resource(pod1).inNamespace("default").get();
 ```
-- Create or Replace a Kubernetes Resource:
-```
+- Apply a Kubernetes resource onto Kubernetes Cluster (Server Side Apply) :
+```java
 Pod pod1 = new PodBuilder()
   .withNewMetadata().withName("resource-pod-" + RandomStringUtils.randomAlphanumeric(6).toLowerCase(Locale.ROOT)).endMetadata()
   .withNewSpec()
@@ -1741,11 +1741,12 @@ Pod pod1 = new PodBuilder()
   .endSpec()
   .build();
 
-client.resource(pod1).inNamespace("default").createOrReplace();
+client.resource(pod1).inNamespace("default").serverSideApply();
 ```
-- Create And Wait until resource is ready:
-```
-Pod p = client.resource(pod1).createOrReplaceAnd().waitUntilReady(10, TimeUnit.SECONDS);
+- Apply a Kubernetes resource And Wait until resource is ready:
+```java
+pod1 = client.resource(pod1).serverSideApply();
+Pod p = client.pods().resource(pod1).waitUntilReady(10, TimeUnit.SECONDS);
 ```
 - Delete a Kubernetes Resource:
 ```
@@ -1754,8 +1755,8 @@ client.resource(pod1).inNamespace("default").delete();
 
 ### ResourceList API
 Just like generic Kubernetes Resource API, Kubernetes client also provides a generic API to deal with Kubernetes List. Here are some examples of its usage:
-- Create or Replace a list of Kubernetes resources:
-```
+- Apply a list of Kubernetes resources onto Kubernetes Cluster:
+```java
 Service service =  new ServiceBuilder()
   .withNewMetadata().withName("my-service").endMetadata()
   .withNewSpec()
@@ -1772,13 +1773,8 @@ ConfigMap configMap = new ConfigMapBuilder()
 
 KubernetesList list = new KubernetesListBuilder().withItems(deployment, service, configMap).build();
 
-// Create them for the first time
-client.resourceList(list).inNamespace("default").createOrReplace();
-```
-- Create or Replace with delete existing resources before creation:
-```
-KubernetesList list = new KubernetesListBuilder().withItems(updatedService, updatedConfigMap).build();
-client.resourceList(list).inNamespace("default").deletingExisting().createOrReplace();
+// Apply
+client.resourceList(list).inNamespace("default").serverSideApply();
 ```
 - Delete a list of items:
 ```
@@ -1816,11 +1812,11 @@ CustomResourceDefinition customResourceDefinition = new CustomResourceDefinition
       .endSpec()
       .build();
 
-CustomResourceDefinition crd = client.apiextensions().v1beta1().customResourceDefinitions().createOrReplace(customResourceDefinition);
+CustomResourceDefinition crd = client.apiextensions().v1beta1().customResourceDefinitions().resource(customResourceDefinition).create();
 ```
-- Create or Replace some `CustomResourceDefinition`:
+- Apply some `CustomResourceDefinition`:
 ```java
-CustomResourceDefinition crd = client.apiextensions().v1beta1().customResourceDefinitions().createOrReplace(customResourceDefinition);
+CustomResourceDefinition crd = client.apiextensions().v1beta1().customResourceDefinitions().resource(customResourceDefinition).serverSideApply();
 ```
 - List `CustomResourceDefinition`:
 ```java
@@ -2477,9 +2473,9 @@ DeploymentConfig dc = new DeploymentConfigBuilder()
 
 DeploymentConfig dcCreated = client.deploymentConfigs().inNamespace("default").create(dc);
 ```
-- Create or Replace an existing `DeploymentConfig`:
-```
-DeploymentConfig dc = client.deploymentConfigs().inNamespace("default").createOrReplace(dcToCreate);
+- Apply an existing `DeploymentConfig` onto OpenShift Cluster:
+```java
+DeploymentConfig dc = client.deploymentConfigs().inNamespace("default").resource(dcToCreate).serverSideApply();
 ```
 - List `DeploymentConfig` in some namespace:
 ```
@@ -2579,7 +2575,7 @@ BuildConfig buildConfig1 = new BuildConfigBuilder()
 
 client.buildConfigs().inNamespace("default").create(buildConfig1);
 ```
-- Create or Replace `BuildConfig`:
+- Create `BuildConfig`:
 ```
 BuildConfig bc = client.buildConfigs().inNamespace("default").create(buildConfig1);
 ```
@@ -2633,9 +2629,9 @@ Route route1 = new RouteBuilder()
 
 client.routes().inNamespace("defalt").create(route1);
 ```
-- Create or Replace `Route`:
-```
-Route route = client.routes().inNamespace("default").createOrReplace(route1);
+- Apply `Route` onto OpenShift Cluster:
+```java
+Route route = client.routes().inNamespace("default").resource(route1).serverSideApply();
 ```
 - List `Route` in some namespace:
 ```
@@ -2704,9 +2700,9 @@ ImageStream imageStream1 = new ImageStreamBuilder()
 
 client.imageStreams().inNamespace("default").create(imageStream1);
 ```
-- Create or Replace `ImageStream`:
-```
-ImageStream is = client.imageStreams().inNamespace("default").createOrReplace(imageStream1);
+- Apply `ImageStream` onto OpenShift Cluster:
+```java
+ImageStream is = client.imageStreams().inNamespace("default").resource(imageStream1).create();
 ```
 - List `ImageStream` in some namespace:
 ```
@@ -2732,7 +2728,7 @@ CatalogSource cs = client.operatorHub().catalogSources()
   .load(new FileInputStream("/test-catalogsource.yml").get();
 ```
 - Create `CatalogSource`:
-```
+```java
 CatalogSource cs = new CatalogSourceBuilder()
   .withNewMetadata().withName("foo").endMetadata()
   .withNewSpec()
@@ -2742,7 +2738,7 @@ CatalogSource cs = new CatalogSourceBuilder()
   .withPublisher("Fabric8")
   .endSpec()
   .build();
-client.operatorHub().catalogSources().inNamespace("default").createOrReplace(cs);
+client.operatorHub().catalogSources().inNamespace("default").resource(cs).create();
 ```
 - List `CatalogSource` in some namespace:
 ```
@@ -2769,7 +2765,7 @@ PrometheusRule prometheusRule = client.monitoring().prometheusRules()
   .load(new FileInputStream("/test-prometheusrule.yml").get();
 ```
 - Create `PrometheusRule`:
-```
+```java
 PrometheusRule prometheusRule = new PrometheusRuleBuilder()
     .withNewMetadata().withName("foo").endMetadata()
     .withNewSpec()
@@ -2782,7 +2778,7 @@ PrometheusRule prometheusRule = new PrometheusRuleBuilder()
     .endGroup()
     .endSpec()
     .build();
-client.monitoring().prometheusRules().inNamespace("default").createOrReplace(prometheusRule);
+client.monitoring().prometheusRules().inNamespace("default").resource(prometheusRule).create();
 ```
 - List `PrometheusRule` in some namespace:
 ```
@@ -2809,7 +2805,7 @@ ServiceMonitor serviceMonitor = client.monitoring().serviceMonitors()
   .load(new FileInputStream("/test-servicemonitor.yml").get();
 ```
 - Create `ServiceMonitor`:
-```
+```java
 ServiceMonitor serviceMonitor = new ServiceMonitorBuilder()
     .withNewMetadata()
     .withName("foo")
@@ -2827,7 +2823,7 @@ ServiceMonitor serviceMonitor = new ServiceMonitorBuilder()
     .endSpec()
     .build();
 
-client.monitoring().serviceMonitors().inNamespace("rokumar").createOrReplace(serviceMonitor)
+client.monitoring().serviceMonitors().inNamespace("default").resource(serviceMonitor).create();
 ```
 - List `ServiceMonitor` in some namespace:
 ```
@@ -2848,7 +2844,7 @@ client.operatorHub().monitoring().inNamespace("default").withName("foo").delete(
 
 #### ClusterResourceQuota
 - Create `ClusterResourceQuota`:
-```
+```java
 try (OpenShiftClient client = new KubernetesClientBuilder().build().adapt(OpenShiftClient.class)) {
     Map<String, Quantity> hard = new HashMap<>();
     hard.put("pods", new Quantity("10"));
@@ -2865,7 +2861,7 @@ try (OpenShiftClient client = new KubernetesClientBuilder().build().adapt(OpenSh
             .endSpec()
             .build();
 
-    client.quotas().clusterResourceQuotas().createOrReplace(acrq);
+    client.quotas().clusterResourceQuotas().resource(acrq).create();
 }
 ```
 - List `ClusterResourceQuota` from server:
@@ -2916,7 +2912,7 @@ try (OpenShiftClient client = new KubernetesClientBuilder().build().adapt(OpenSh
             .endEgress()
             .endSpec()
             .build();
-    client.egressNetworkPolicies().inNamespace("default").createOrReplace(enp);
+    client.egressNetworkPolicies().inNamespace("default").resource(enp).create();
 }
 ```
 - List `EgressNetworkPolicy` in some namespace:
@@ -3001,8 +2997,8 @@ Here are some common examples:
 ```
 ServiceList list = knativeClient.services().inNamespace("default").list();
 ```
-- Create a `Service`:
-```
+- Apply a `Service`:
+```java
 try (KnativeClient kn = new DefaultKnativeClient()) {
     // Create Service object
     Service service = new ServiceBuilder()
@@ -3020,7 +3016,7 @@ try (KnativeClient kn = new DefaultKnativeClient()) {
             .build();
 
     // Apply it onto Kubernetes Server
-    kn.services().inNamespace("default").createOrReplace(service);
+    kn.services().inNamespace("default").resource(service).serverSideApply();
 }
 ```
 
