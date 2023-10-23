@@ -98,7 +98,7 @@
     <jackson.version>2.15.2</jackson.version>
     <jetty.version>11.0.17</jetty.version>
     <maven-core.version>3.9.5</maven-core.version>
-    <maven-plugin-annotations.version>3.9.0</maven-plugin-annotations.version>
+    <maven-plugin-annotations.version>3.10.1</maven-plugin-annotations.version>
     <vertx.version>4.4.6</vertx.version>
     <zjsonpatch.version>0.3.0</zjsonpatch.version>
 
