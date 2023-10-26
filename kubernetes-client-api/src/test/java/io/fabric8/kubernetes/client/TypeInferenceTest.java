@@ -27,15 +27,13 @@ import java.util.Optional;
 
 class TypeInferenceTest {
 
-  // Commented-out due to compilation failure
-  // TODO: Enable after #5522 is fixed
-  //  @Test
-  //  void typeInferenceWithLambda() {
-  //    final ConfigMapDependentResource cdr = new ConfigMapDependentResource();
-  //    final DeploymentDependentResource ddr = new DeploymentDependentResource();
-  //    Arrays.asList(cdr, ddr).forEach(dr -> dr.reconcile());
-  //    Assertions.assertTrue(true);
-  //  }
+  @Test
+  void typeInferenceWithLambda() {
+    final ConfigMapDependentResource cdr = new ConfigMapDependentResource();
+    final DeploymentDependentResource ddr = new DeploymentDependentResource();
+    Arrays.asList(cdr, ddr).forEach(dr -> dr.reconcile());
+    Assertions.assertTrue(true);
+  }
 
   @Test
   void typeInferenceWithMethodReference() {
