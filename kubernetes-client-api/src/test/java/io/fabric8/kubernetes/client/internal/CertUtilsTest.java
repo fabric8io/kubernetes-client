@@ -44,7 +44,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class CertUtilsTest {
 
-  private static final String FABRIC8_STORE_PATH = Utils.filePath(CertUtilsTest.class.getResource("/ssl/fabric8-store"));
+  private static final String FABRIC8_STORE_PATH = Utils.filePath(CertUtilsTest.class.getResource("/ssl-test/fabric8-store"));
   private static final String FABRIC8_STORE_PASSPHRASE = "fabric8";
   private Properties systemProperties;
 
@@ -76,7 +76,7 @@ class CertUtilsTest {
     KeyStore trustStore = Mockito.spy(system);
     Mockito.doThrow(KeyStoreException.class).when(trustStore).setCertificateEntry(Mockito.anyString(), Mockito.any());
     KeyStore result = CertUtils.mergePemCertsIntoTrustStore(
-        CertUtils.getInputStreamFromDataOrFile(null, "src/test/resources/ssl/multiple-certs.pem"), trustStore, true);
+        CertUtils.getInputStreamFromDataOrFile(null, "src/test/resources/ssl-test/multiple-certs.pem"), trustStore, true);
 
     assertNotSame(trustStore, result);
     assertThat(Collections.list(result.aliases()))
@@ -88,7 +88,7 @@ class CertUtilsTest {
   @Test
   void loadingMultipleCertsFromSameFile() throws Exception {
     KeyStore ts = CertUtils.createTrustStore(
-        null, "src/test/resources/ssl/multiple-certs.pem", null, "changeit");
+        null, "src/test/resources/ssl-test/multiple-certs.pem", null, "changeit");
 
     assertThat(Collections.list(ts.aliases()))
         .hasSizeGreaterThanOrEqualTo(2)
@@ -99,7 +99,7 @@ class CertUtilsTest {
   @Test
   void loadingMultipleCertsWithSameSubjectFromSameFile() throws Exception {
     KeyStore ts = CertUtils.createTrustStore(
-        null, "src/test/resources/ssl/nonunique-subject.pem", null, "changeit");
+        null, "src/test/resources/ssl-test/nonunique-subject.pem", null, "changeit");
 
     assertTrue(ts.size() >= 2);
   }
@@ -107,7 +107,7 @@ class CertUtilsTest {
   @Test
   void loadTrustStoreFromFileUsingConfigProperties() throws Exception {
     KeyStore trustStore = CertUtils.createTrustStore(
-        null, "src/test/resources/ssl/multiple-certs.pem", FABRIC8_STORE_PATH, FABRIC8_STORE_PASSPHRASE);
+        null, "src/test/resources/ssl-test/multiple-certs.pem", FABRIC8_STORE_PATH, FABRIC8_STORE_PASSPHRASE);
 
     assertThat(Collections.list(trustStore.aliases()))
         .hasSizeGreaterThanOrEqualTo(3)
@@ -123,7 +123,7 @@ class CertUtilsTest {
     System.setProperty("javax.net.ssl.trustStorePassword", FABRIC8_STORE_PASSPHRASE);
 
     KeyStore trustStore = CertUtils.createTrustStore(
-        null, "src/test/resources/ssl/multiple-certs.pem", null, null);
+        null, "src/test/resources/ssl-test/multiple-certs.pem", null, null);
 
     assertEquals(3, trustStore.size());
     verifyFabric8InStore(trustStore);
@@ -132,8 +132,8 @@ class CertUtilsTest {
   @Test
   void loadKeyStoreFromFileUsingConfigProperties() throws Exception {
     KeyStore trustStore = CertUtils.createKeyStore(
-        null, "src/test/resources/ssl/multiple-certs.pem",
-        null, "src/test/resources/ssl/fabric8", "RSA", "changeit",
+        null, "src/test/resources/ssl-test/multiple-certs.pem",
+        null, "src/test/resources/ssl-test/fabric8", "RSA", "changeit",
         FABRIC8_STORE_PATH, FABRIC8_STORE_PASSPHRASE);
 
     assertEquals(2, trustStore.size());
@@ -145,8 +145,8 @@ class CertUtilsTest {
     System.setProperty("javax.net.ssl.keyStore", FABRIC8_STORE_PATH);
     System.setProperty("javax.net.ssl.keyStorePassword", String.valueOf(FABRIC8_STORE_PASSPHRASE));
 
-    String privateKeyPath = Utils.filePath(getClass().getResource("/ssl/fabric8"));
-    String multipleCertsPath = Utils.filePath(getClass().getResource("/ssl/multiple-certs.pem"));
+    String privateKeyPath = Utils.filePath(getClass().getResource("/ssl-test/fabric8"));
+    String multipleCertsPath = Utils.filePath(getClass().getResource("/ssl-test/multiple-certs.pem"));
 
     KeyStore trustStore = CertUtils.createKeyStore(null, multipleCertsPath, null, privateKeyPath, "RSA", "changeit", null,
         null);
@@ -159,7 +159,7 @@ class CertUtilsTest {
   void getInputStreamFromDataOrFileShouldNotDecodedPEMAgain() throws IOException {
     // Given
     File certFile = new File(
-        Objects.requireNonNull(getClass().getResource("/ssl/valid-non-base64-encoded-cert.pem")).getFile());
+        Objects.requireNonNull(getClass().getResource("/ssl-test/valid-non-base64-encoded-cert.pem")).getFile());
     String certData = new String(Files.readAllBytes(certFile.toPath()));
 
     // When
@@ -188,7 +188,7 @@ class CertUtilsTest {
   void storeKeyFallbacksToDefault() throws Exception {
     // When
     final KeyStore result = CertUtils.createTrustStore(
-        null, "src/test/resources/ssl/multiple-certs.pem", null, "");
+        null, "src/test/resources/ssl-test/multiple-certs.pem", null, "");
     // Then
     assertThat(Collections.list(result.aliases()))
         .hasSizeGreaterThanOrEqualTo(2)
@@ -203,7 +203,7 @@ class CertUtilsTest {
     assertNotNull(certificate);
 
     KeyStore storeWithCert = CertUtils.createTrustStore(
-        null, "src/test/resources/ssl/fabric8.crt", null, "");
+        null, "src/test/resources/ssl-test/fabric8.crt", null, "");
     String certificateAlias = storeWithCert.getCertificateAlias(certificate);
     assertNotNull(certificateAlias);
   }
