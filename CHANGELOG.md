@@ -1,19 +1,11 @@
 ## CHANGELOG
 
-### 6.10-SNAPSHOT
+### 6.9.1 (2023-10-26)
 
 #### Bugs
 * Fix #5501: (crd-generator) Fix fallback value of `Default` annotation in presence of multiple accessors
 * Fix #5522: type inference fixed by bumping Sundrio to 0.101.2 (see https://github.com/sundrio/sundrio/pull/431)
 * Fix #5554: move certificates in kubernetes-client-api to avoid collisions with those from mockwebserver
-
-#### Improvements
-
-#### Dependency Upgrade
-
-#### New Features
-
-#### _**Note**_: Breaking changes
 
 ### 6.9.0 (2023-10-05)
 
