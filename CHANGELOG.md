@@ -3,7 +3,7 @@
 ### 6.10-SNAPSHOT
 
 #### Bugs
-* Fix #5501: [crd-generator] Fix fallback value of `Default` annotation in presence of multiple accessors
+* Fix #5501: (crd-generator) Fix fallback value of `Default` annotation in presence of multiple accessors
 * Fix #5522: type inference fixed by bumping Sundrio to 0.101.2 (see https://github.com/sundrio/sundrio/pull/431)
 
 #### Improvements
