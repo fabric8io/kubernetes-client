@@ -7,11 +7,6 @@ CrontabJavaExtraAnnotationsCr[0] = package org.test.v1;
 @javax.annotation.processing.Generated("io.fabric8.java.generator.CRGeneratorRunner")
 @lombok.ToString()
 @lombok.EqualsAndHashCode(callSuper = true)
-@lombok.Setter()
-@lombok.experimental.Accessors(prefix = {
-    "_",
-    ""
-})
 @io.sundr.builder.annotations.Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
     @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
@@ -33,11 +28,6 @@ CrontabJavaExtraAnnotationsCr[1] = package org.test.v1;
 @javax.annotation.processing.Generated("io.fabric8.java.generator.CRGeneratorRunner")
 @lombok.ToString()
 @lombok.EqualsAndHashCode()
-@lombok.Setter()
-@lombok.experimental.Accessors(prefix = {
-    "_",
-    ""
-})
 @io.sundr.builder.annotations.Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
     @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
@@ -109,11 +99,6 @@ CrontabJavaExtraAnnotationsCr[2] = package org.test.v1;
 @javax.annotation.processing.Generated("io.fabric8.java.generator.CRGeneratorRunner")
 @lombok.ToString()
 @lombok.EqualsAndHashCode()
-@lombok.Setter()
-@lombok.experimental.Accessors(prefix = {
-    "_",
-    ""
-})
 @io.sundr.builder.annotations.Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
     @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
