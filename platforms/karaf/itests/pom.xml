@@ -21,7 +21,7 @@
   <parent>
     <artifactId>karaf</artifactId>
     <groupId>io.fabric8.kubernetes</groupId>
-    <version>6.10-SNAPSHOT</version>
+    <version>6.9.2</version>
   </parent>
 
   <artifactId>kubernetes-karaf-itests</artifactId>
