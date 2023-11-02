@@ -1,5 +1,17 @@
 ## CHANGELOG
 
+### 6.10-SNAPSHOT
+
+#### Bugs
+
+#### Improvements
+
+#### Dependency Upgrade
+
+#### New Features
+
+#### _**Note**_: Breaking changes
+
 ### 6.9.2 (2023-11-02)
 
 #### Bugs
