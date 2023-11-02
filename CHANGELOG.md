@@ -3,6 +3,9 @@
 ### 6.10-SNAPSHOT
 
 #### Bugs
+* Fix #5560: bump com.marcnuri.plugins:gradle-api-maven-plugin to v0.0.5, allows compilation behind a proxy
+* Fix #5564: remove redundant lombok.Setter and lombok.experimental.Accessors annotations
+* Fix #5565: bump sundrio to 0.101.3 to fix Visitor problems
 
 #### Improvements
 

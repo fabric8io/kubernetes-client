@@ -31,12 +31,6 @@ public interface JObjectExtraAnnotations {
           new Name("lombok.EqualsAndHashCode"),
           new NameExpr("callSuper = true")));
     }
-    clz.addAnnotation("lombok.Setter");
-
-    clz.addAnnotation(
-        new SingleMemberAnnotationExpr(
-            new Name("lombok.experimental.Accessors"),
-            new NameExpr("prefix = {\n" + "    \"_\",\n" + "    \"\"\n" + "}")));
 
     clz.addAnnotation(
         new SingleMemberAnnotationExpr(
