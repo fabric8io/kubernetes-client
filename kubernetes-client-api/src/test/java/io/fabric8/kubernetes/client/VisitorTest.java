@@ -19,7 +19,6 @@ import io.fabric8.kubernetes.api.builder.TypedVisitor;
 import io.fabric8.kubernetes.api.model.ContainerBuilder;
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
 import io.fabric8.kubernetes.api.model.apps.DeploymentBuilder;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -29,7 +28,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 class VisitorTest {
 
   @Test
-  @Disabled("https://github.com/sundrio/sundrio/issues/438")
   void visitorShouldVisitOnlyOnce() {
     // Given
     final AtomicInteger counter = new AtomicInteger();
