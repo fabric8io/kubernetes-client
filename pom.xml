@@ -108,7 +108,7 @@
     <groovy-api.version>4.0.15</groovy-api.version>
 
     <!-- Testing versions -->
-    <junit.version>5.10.0</junit.version>
+    <junit.version>5.10.1</junit.version>
     <assertj.core.version>3.24.2</assertj.core.version>
     <awaitility.version>4.2.0</awaitility.version>
     <approvaltests.version>22.2.0</approvaltests.version>
