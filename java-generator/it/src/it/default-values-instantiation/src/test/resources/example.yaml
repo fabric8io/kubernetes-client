@@ -108,5 +108,17 @@ spec:
                     - 302
                     - 303
                   default: 302
+                fourteen:
+                  anyOf:
+                    - type: integer
+                    - type: string
+                  x-kubernetes-int-or-string: true
+                  default: 10Gi
+                fifteen:
+                  anyOf:
+                    - type: integer
+                    - type: string
+                  x-kubernetes-int-or-string: true
+                  default: 11
       served: true
       storage: true

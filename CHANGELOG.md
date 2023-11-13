@@ -4,6 +4,8 @@
 
 #### Bugs
 
+* Fix #5580: [java-generator] Correctly handle defaults for IntOrString types
+
 #### Improvements
 * Fix #5535: Add lombok and sundrio dependencies to the generated bom
 
