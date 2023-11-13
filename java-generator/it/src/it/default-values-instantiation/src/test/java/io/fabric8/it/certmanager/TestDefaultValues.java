@@ -18,6 +18,7 @@ package io.fabric8.it.certmanager;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.cert_manager.v1.CertificateRequest;
 import io.cert_manager.v1.certificaterequestspec.Ten;
+import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import org.junit.jupiter.api.Test;
 
@@ -52,6 +53,8 @@ class TestDefaultValues {
     Eleven eleven = cr.getSpec().getEleven();
     ZonedDateTime twelve = cr.getSpec().getTwelve();
     Thirteen thirteen = cr.getSpec().getThirteen();
+    IntOrString fourteen = cr.getSpec().getFourteen();
+    IntOrString fifteen = cr.getSpec().getFifteen();
 
     // Assert
     assertEquals("one", one);
@@ -71,5 +74,7 @@ class TestDefaultValues {
     assertEquals(ZonedDateTime.parse("2017-07-21T17:32:28Z", formatter), twelve);
     assertEquals(Thirteen.V__302, thirteen);
     assertEquals(302L, thirteen.getValue());
+    assertEquals("10Gi", fourteen.getStrVal());
+    assertEquals(11, fifteen.getIntVal());
   }
 }

@@ -40,6 +40,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static io.fabric8.java.generator.nodes.JPrimitiveNameAndType.DATETIME_NAME;
+import static io.fabric8.java.generator.nodes.JPrimitiveNameAndType.INT_OR_STRING;
 
 public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnnotations {
 
@@ -361,6 +362,11 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
       } else if (prop.getClassType().equals(DATETIME_NAME) && prop.getDefaultValue().isTextual()) {
         return new NameExpr(DATETIME_NAME + ".parse(" + prop.getDefaultValue()
             + ", java.time.format.DateTimeFormatter.ofPattern(\"" + config.getDeserDatetimeFormat() + "\"))");
+      } else if (prop.getClassType().equals(INT_OR_STRING.getName())) {
+        return (prop.getDefaultValue().isInt())
+            ? new NameExpr("new " + INT_OR_STRING.getName() + "(" + prop.getDefaultValue().intValue() + ")")
+            : new NameExpr("new " + INT_OR_STRING.getName() + "(\""
+                + StringEscapeUtils.escapeJava(prop.getDefaultValue().asText()) + "\")");
       } else {
         return new NameExpr(value);
       }

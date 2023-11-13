@@ -4,7 +4,11 @@
 
 #### Bugs
 
+* Fix #5580: [java-generator] Correctly handle defaults for IntOrString types
+
 #### Improvements
+* Fix #5429: moved crd generator annotations to generator-annotations instead of crd-generator-api. Using generator-annotations introduces no transitive dependencies.
+* Fix #5535: Add lombok and sundrio dependencies to the generated bom
 
 #### Dependency Upgrade
 
