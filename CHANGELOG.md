@@ -12,7 +12,7 @@
 * Fix #5535: Add lombok and sundrio dependencies to the generated bom
 
 #### Dependency Upgrade
-
+* Updated okio to version 1.17.6 to avoid CVE-2023-3635
 #### New Features
 
 #### _**Note**_: Breaking changes
