@@ -22,7 +22,9 @@ import io.sundr.model.Property;
 import io.sundr.model.TypeDef;
 import io.sundr.model.TypeDefBuilder;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,21 +42,19 @@ public class AnnotatedMultiPropertyPathDetector extends TypedVisitor<TypeDefBuil
   private final String annotationName;
   private final List<Property> parents;
   private final Map<String, Property> properties;
+  private final Deque<Runnable> toRun;
 
   public AnnotatedMultiPropertyPathDetector(String prefix, String annotationName) {
-    this(prefix, annotationName, new ArrayList<>());
-  }
-
-  public AnnotatedMultiPropertyPathDetector(String prefix, String annotationName, List<Property> parents) {
-    this(prefix, annotationName, parents, new HashMap<>());
+    this(prefix, annotationName, new ArrayList<>(), new HashMap<>(), new ArrayDeque<>());
   }
 
   public AnnotatedMultiPropertyPathDetector(String prefix, String annotationName, List<Property> parents,
-      Map<String, Property> properties) {
+      Map<String, Property> properties, Deque<Runnable> toRun) {
     this.prefix = prefix;
     this.annotationName = annotationName;
     this.parents = parents;
     this.properties = properties;
+    this.toRun = toRun;
   }
 
   private boolean excludePropertyProcessing(Property p) {
@@ -84,15 +84,20 @@ public class AnnotatedMultiPropertyPathDetector extends TypedVisitor<TypeDefBuil
       if (!parents.contains(p) && !excludePropertyProcessing(p)) {
         ClassRef classRef = (ClassRef) p.getTypeRef();
         TypeDef propertyType = Types.typeDefFrom(classRef);
-        if (!propertyType.isEnum()) {
+        if (!propertyType.isEnum() && !classRef.getPackageName().startsWith("java.")) {
           List<Property> newParents = new ArrayList<>(parents);
           newParents.add(p);
-          new TypeDefBuilder(propertyType)
-              .accept(new AnnotatedMultiPropertyPathDetector(prefix, annotationName, newParents, properties))
-              .build();
+          toRun.add(() -> new TypeDefBuilder(propertyType)
+              .accept(new AnnotatedMultiPropertyPathDetector(prefix, annotationName, newParents, properties, toRun)));
         }
       }
     });
+
+    if (parents.isEmpty()) {
+      while (!toRun.isEmpty()) {
+        toRun.pop().run();
+      }
+    }
   }
 
   public Set<String> getPaths() {
