@@ -17,12 +17,10 @@ package io.fabric8.crd.generator.visitor;
 
 import io.fabric8.kubernetes.model.annotation.StatusReplicas;
 
-import java.util.ArrayList;
-
 public class StatusReplicasPathDetector extends AnnotatedPropertyPathDetector {
 
   public StatusReplicasPathDetector(String prefix) {
-    super(prefix, StatusReplicas.class.getSimpleName(), new ArrayList<>());
+    super(prefix, StatusReplicas.class.getSimpleName());
 
   }
 
