@@ -5,6 +5,7 @@
 #### Bugs
 
 * Fix #5580: [java-generator] Correctly handle defaults for IntOrString types
+* Fix #5584: Fix CRD generation when EnumMap is used
 
 #### Improvements
 * Fix #5429: moved crd generator annotations to generator-annotations instead of crd-generator-api. Using generator-annotations introduces no transitive dependencies.

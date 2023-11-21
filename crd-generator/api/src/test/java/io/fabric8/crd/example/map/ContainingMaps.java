@@ -19,8 +19,16 @@ import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 
+import java.util.EnumMap;
+
 @Group("map.fabric8.io")
 @Version("v1alpha1")
 public class ContainingMaps extends CustomResource<ContainingMapsSpec, Void> {
+
+  public enum Foo {
+    BAR
+  }
+
+  private EnumMap<Foo, String> enumToStringMap;
 
 }

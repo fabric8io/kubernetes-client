@@ -17,8 +17,6 @@ package io.fabric8.crd.generator.visitor;
 
 import io.fabric8.crd.generator.annotation.PrinterColumn;
 
-import java.util.ArrayList;
-
 public class AdditionalPrinterColumnDetector extends AnnotatedMultiPropertyPathDetector {
 
   public AdditionalPrinterColumnDetector() {
@@ -26,6 +24,6 @@ public class AdditionalPrinterColumnDetector extends AnnotatedMultiPropertyPathD
   }
 
   public AdditionalPrinterColumnDetector(String prefix) {
-    super(prefix, PrinterColumn.class.getSimpleName(), new ArrayList<>());
+    super(prefix, PrinterColumn.class.getSimpleName());
   }
 }

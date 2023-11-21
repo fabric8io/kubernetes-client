@@ -23,7 +23,9 @@ import io.sundr.model.Property;
 import io.sundr.model.TypeDef;
 import io.sundr.model.TypeDefBuilder;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
@@ -39,22 +41,20 @@ public class AnnotatedPropertyPathDetector extends TypedVisitor<TypeDefBuilder> 
   private final String prefix;
   private final String annotationName;
   private final List<Property> parents;
-  private final AtomicReference<Optional<String>> reference;
+  private final AtomicReference<String> reference;
+  private final Deque<Runnable> toRun;
 
   public AnnotatedPropertyPathDetector(String prefix, String annotationName) {
-    this(prefix, annotationName, new ArrayList<>());
-  }
-
-  public AnnotatedPropertyPathDetector(String prefix, String annotationName, List<Property> parents) {
-    this(prefix, annotationName, parents, new AtomicReference<>(Optional.empty()));
+    this(prefix, annotationName, new ArrayList<>(), new AtomicReference<>(), new ArrayDeque<>());
   }
 
   public AnnotatedPropertyPathDetector(String prefix, String annotationName, List<Property> parents,
-      AtomicReference<Optional<String>> reference) {
+      AtomicReference<String> reference, Deque<Runnable> toRun) {
     this.prefix = prefix;
     this.annotationName = annotationName;
     this.parents = parents;
     this.reference = reference;
+    this.toRun = toRun;
   }
 
   private static boolean excludePropertyProcessing(Property p) {
@@ -70,32 +70,10 @@ public class AnnotatedPropertyPathDetector extends TypedVisitor<TypeDefBuilder> 
   public void visit(TypeDefBuilder builder) {
     TypeDef type = builder.build();
     final List<Property> properties = type.getProperties();
-    if (visitProperties(properties)) {
-      return;
-    }
-    visitPropertiesClasses(properties);
+    visitProperties(properties);
   }
 
-  private void visitPropertiesClasses(List<Property> properties) {
-    for (Property p : properties) {
-      if (!(p.getTypeRef() instanceof ClassRef)) {
-        continue;
-      }
-      if (!parents.contains(p) && !excludePropertyProcessing(p)) {
-        ClassRef classRef = (ClassRef) p.getTypeRef();
-        TypeDef propertyType = Types.typeDefFrom(classRef);
-        if (!propertyType.isEnum()) {
-          List<Property> newParents = new ArrayList<>(parents);
-          newParents.add(p);
-          new TypeDefBuilder(propertyType)
-              .accept(new AnnotatedPropertyPathDetector(prefix, annotationName, newParents, reference))
-              .build();
-        }
-      }
-    }
-  }
-
-  private boolean visitProperties(List<Property> properties) {
+  private void visitProperties(List<Property> properties) {
     for (Property p : properties) {
       if (parents.contains(p)) {
         continue;
@@ -107,15 +85,30 @@ public class AnnotatedPropertyPathDetector extends TypedVisitor<TypeDefBuilder> 
         match = annotation.getClassRef().getName().equals(annotationName);
         if (match) {
           newParents.add(p);
-          reference.set(Optional.of(newParents.stream().map(Property::getName).collect(Collectors.joining(DOT, prefix, ""))));
-          return true;
+          reference.set(newParents.stream().map(Property::getName).collect(Collectors.joining(DOT, prefix, "")));
+          return;
+        }
+      }
+
+      if (p.getTypeRef() instanceof ClassRef && !excludePropertyProcessing(p)) {
+        ClassRef classRef = (ClassRef) p.getTypeRef();
+        TypeDef propertyType = Types.typeDefFrom(classRef);
+        if (!propertyType.isEnum() && !classRef.getPackageName().startsWith("java.")) {
+          newParents.add(p);
+          new TypeDefBuilder(propertyType)
+              .accept(new AnnotatedPropertyPathDetector(prefix, annotationName, newParents, reference, toRun));
         }
       }
     }
-    return false;
+
+    if (parents.isEmpty()) {
+      while (!toRun.isEmpty() && reference.get() == null) {
+        toRun.pop().run();
+      }
+    }
   }
 
   public Optional<String> getPath() {
-    return reference.get();
+    return Optional.ofNullable(reference.get());
   }
 }

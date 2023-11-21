@@ -95,7 +95,7 @@
     <okhttp.bundle.version>3.12.1_1</okhttp.bundle.version>
     <okio.version>1.15.0</okio.version>
     <okio.bundle.version>1.15.0_1</okio.bundle.version>
-    <jackson.version>2.15.2</jackson.version>
+    <jackson.version>2.15.3</jackson.version>
     <jetty.version>11.0.18</jetty.version>
     <maven-core.version>3.9.5</maven-core.version>
     <maven-plugin-annotations.version>3.10.2</maven-plugin-annotations.version>
@@ -125,9 +125,9 @@
     <slf4j.version>2.0.9</slf4j.version>
     <lombok.version>1.18.30</lombok.version>
     <snakeyaml.version>2.7</snakeyaml.version>
-    <snakeyaml.bundle.version>2.0</snakeyaml.bundle.version> <!-- Transitive Jackson -->
-    <bouncycastle.version>1.76</bouncycastle.version>
-    <commons-compress.version>1.24.0</commons-compress.version>
+    <snakeyaml.bundle.version>2.1</snakeyaml.bundle.version> <!-- Transitive Jackson -->
+    <bouncycastle.version>1.77</bouncycastle.version>
+    <commons-compress.version>1.25.0</commons-compress.version>
     <commons-io.version>2.15.0</commons-io.version> <!-- Required by Gradle Testing Toolkit -->
     <guava.version>32.1.3-jre</guava.version> <!-- Required by Gradle Testing Toolkit -->
     <scr.annotations.version>1.12.0</scr.annotations.version>
