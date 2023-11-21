@@ -152,9 +152,9 @@ The field will be skipped in the generated CRD and will not appear in the schema
             type: object
 ```
 
-### io.fabric8.generator.annotation.Min
+### io.fabric8.generator.annotation.Default
 
-If a field or one of its accessors is annotated with `io.fabric8.generator.annotation.Min`
+If a field or one of its accessors is annotated with `io.fabric8.generator.annotation.Default`
 
 ```java
 public class ExampleSpec {
