@@ -782,18 +782,26 @@ public class Config {
 
   private static void mergeKubeConfigExecCredential(Config config, ExecConfig exec, File configFile)
       throws IOException {
-    if (exec != null) {
-      try {
-        ExecCredential ec = getExecCredentialFromExecConfig(exec, configFile);
-        if (ec != null && ec.status != null && ec.status.token != null) {
-          config.setAutoOAuthToken(ec.status.token);
-        } else {
-          LOGGER.warn("No token returned");
-        }
-      } catch (InterruptedException interruptedException) {
-        Thread.currentThread().interrupt();
-        throw KubernetesClientException.launderThrowable("failure while running exec credential ", interruptedException);
+    if (exec == null) {
+      return;
+    }
+    try {
+      ExecCredential ec = getExecCredentialFromExecConfig(exec, configFile);
+      if (ec == null || ec.status == null) {
+        LOGGER.warn("The generated exec credential is null or its content is invalid");
+        return;
       }
+      if (ec.status.token != null) {
+        config.setAutoOAuthToken(ec.status.token);
+      } else if (ec.status.clientCertificateData != null && ec.status.clientKeyData != null) {
+        config.setClientCertData(ec.status.clientCertificateData);
+        config.setClientKeyData(ec.status.clientKeyData);
+      } else {
+        LOGGER.warn("Both token and certificate are unavailable");
+      }
+    } catch (InterruptedException interruptedException) {
+      Thread.currentThread().interrupt();
+      throw KubernetesClientException.launderThrowable("failure while running exec credential ", interruptedException);
     }
   }
 
@@ -898,6 +906,8 @@ public class Config {
   @JsonIgnoreProperties(ignoreUnknown = true)
   public static final class ExecCredentialStatus {
     public String token;
+    public String clientCertificateData;
+    public String clientKeyData;
     // TODO clientCertificateData, clientKeyData, expirationTimestamp
   }
 
