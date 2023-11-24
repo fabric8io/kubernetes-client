@@ -14,6 +14,7 @@
 #### Dependency Upgrade
 
 #### New Features
+* Fix #5608 support authentication with certificate
 
 #### _**Note**_: Breaking changes
 
