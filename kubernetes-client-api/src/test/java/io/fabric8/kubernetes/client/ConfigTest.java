@@ -84,6 +84,12 @@ class ConfigTest {
   private static final String TEST_KUBECONFIG_NO_CURRENT_CONTEXT_FILE = Utils
       .filePath(ConfigTest.class.getResource("/test-kubeconfig-nocurrentctxt.yml"));
 
+  private static final String TEST_KUBECONFIG_EXEC_FILE_CERT_AUTH = Utils
+      .filePath(ConfigTest.class.getResource("/test-kubeconfig-exec-cert-auth"));
+  private static final String TEST_KUBECONFIG_EXEC_WIN_FILE_CERT_AUTH = Utils
+      .filePath(ConfigTest.class.getResource("/test-kubeconfig-exec-win-cert-auth"));
+  private static final String TEST_CERT_GENERATOR_FILE = Utils.filePath(ConfigTest.class.getResource("/cert-generator"));
+
   @BeforeEach
   public void setUp() {
     System.getProperties().remove(Config.KUBERNETES_MASTER_SYSTEM_PROPERTY);
@@ -499,6 +505,25 @@ class ConfigTest {
       Config config = Config.autoConfigure(null);
       assertNotNull(config);
       assertEquals("HELLO", config.getAutoOAuthToken());
+    } finally {
+      System.clearProperty(Config.KUBERNETES_KUBECONFIG_FILE);
+    }
+  }
+
+  @Test
+  void testClientAuthenticationWithCert() throws Exception {
+    try {
+      if (FileSystem.getCurrent() == FileSystem.WINDOWS) {
+        System.setProperty(Config.KUBERNETES_KUBECONFIG_FILE, TEST_KUBECONFIG_EXEC_WIN_FILE_CERT_AUTH);
+      } else {
+        Files.setPosixFilePermissions(Paths.get(TEST_CERT_GENERATOR_FILE), PosixFilePermissions.fromString("rwxrwxr-x"));
+        System.setProperty(Config.KUBERNETES_KUBECONFIG_FILE, TEST_KUBECONFIG_EXEC_FILE_CERT_AUTH);
+      }
+
+      Config config = Config.autoConfigure(null);
+      assertNotNull(config);
+      assertEquals("CERT DATA", config.getClientCertData());
+      assertEquals("KEY DATA", config.getClientKeyData());
     } finally {
       System.clearProperty(Config.KUBERNETES_KUBECONFIG_FILE);
     }

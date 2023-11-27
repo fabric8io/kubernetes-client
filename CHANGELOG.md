@@ -14,7 +14,7 @@
 #### Dependency Upgrade
 
 #### New Features
-* Fix #5608 support authentication with certificate
+* Fix #5608 Support authentication with certificate in exec-credentials
 
 #### _**Note**_: Breaking changes
 
