@@ -15,16 +15,23 @@
 @REM
 
 @echo off
-IF [%1]==[] (
-    SET certData=%PART1%
-    SET keyData=%PART2%
-) ELSE (
-    SET certData=%PART1% %~1
-    SET keyData=%PART2% %~1
+SET valid=true
+IF [%PART1%]==[] (
+    IF [%PART2%]==[] (
+        SET valid=false
+    )
 )
-
-CALL :upper certData
-CALL :upper keyData
+IF [%valid%]==[true] (
+    IF [%1]==[] (
+        SET certData=%PART1%
+        SET keyData=%PART2%
+    ) ELSE (
+        SET certData=%PART1% %~1
+        SET keyData=%PART2% %~1
+    )
+    CALL :upper certData
+    CALL :upper keyData
+)
 
 echo {
 echo   "kind": "ExecCredential",

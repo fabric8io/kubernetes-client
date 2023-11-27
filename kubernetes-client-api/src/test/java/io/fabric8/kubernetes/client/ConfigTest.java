@@ -88,6 +88,10 @@ class ConfigTest {
       .filePath(ConfigTest.class.getResource("/test-kubeconfig-exec-cert-auth"));
   private static final String TEST_KUBECONFIG_EXEC_WIN_FILE_CERT_AUTH = Utils
       .filePath(ConfigTest.class.getResource("/test-kubeconfig-exec-win-cert-auth"));
+  private static final String TEST_KUBECONFIG_EXEC_FILE_CERT_AUTH_EC_INVALID = Utils
+      .filePath(ConfigTest.class.getResource("/test-kubeconfig-exec-cert-auth-ec-invalid"));
+  private static final String TEST_KUBECONFIG_EXEC_WIN_FILE_CERT_AUTH_EC_INVALID = Utils
+      .filePath(ConfigTest.class.getResource("/test-kubeconfig-exec-win-cert-auth-ec-invalid"));
   private static final String TEST_CERT_GENERATOR_FILE = Utils.filePath(ConfigTest.class.getResource("/cert-generator"));
 
   @BeforeEach
@@ -524,6 +528,25 @@ class ConfigTest {
       assertNotNull(config);
       assertEquals("CERT DATA", config.getClientCertData());
       assertEquals("KEY DATA", config.getClientKeyData());
+    } finally {
+      System.clearProperty(Config.KUBERNETES_KUBECONFIG_FILE);
+    }
+  }
+
+  @Test
+  void testClientAuthenticationWithCertAndECInvalid() throws Exception {
+    try {
+      if (FileSystem.getCurrent() == FileSystem.WINDOWS) {
+        System.setProperty(Config.KUBERNETES_KUBECONFIG_FILE, TEST_KUBECONFIG_EXEC_WIN_FILE_CERT_AUTH_EC_INVALID);
+      } else {
+        Files.setPosixFilePermissions(Paths.get(TEST_CERT_GENERATOR_FILE), PosixFilePermissions.fromString("rwxrwxr-x"));
+        System.setProperty(Config.KUBERNETES_KUBECONFIG_FILE, TEST_KUBECONFIG_EXEC_FILE_CERT_AUTH_EC_INVALID);
+      }
+
+      Config config = Config.autoConfigure(null);
+      assertNotNull(config);
+      assertNull(config.getClientCertData());
+      assertNull(config.getClientKeyData());
     } finally {
       System.clearProperty(Config.KUBERNETES_KUBECONFIG_FILE);
     }
