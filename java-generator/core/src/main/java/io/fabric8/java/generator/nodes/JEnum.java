@@ -26,8 +26,10 @@ import io.fabric8.java.generator.Config;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static io.fabric8.java.generator.nodes.Keywords.JAVA_LANG_LONG;
@@ -39,7 +41,7 @@ public class JEnum extends AbstractJSONSchema2Pojo {
 
   private final String type;
   private final String underlyingType;
-  private final List<String> values;
+  private final Set<String> values; //Let's prevent duplicates
 
   public JEnum(String type, String underlyingType, List<JsonNode> values, Config config, String description,
       final boolean isNullable,
@@ -48,7 +50,8 @@ public class JEnum extends AbstractJSONSchema2Pojo {
     this.type = AbstractJSONSchema2Pojo.sanitizeString(
         type.substring(0, 1).toUpperCase() + type.substring(1));
     this.underlyingType = underlyingType;
-    this.values = values.stream().map(JsonNode::asText).collect(Collectors.toList());
+    //Tests assume order so let's use LinkedHashSet instead of just using Collectors.toSet()
+    this.values = values.stream().map(JsonNode::asText).collect(Collectors.toCollection(LinkedHashSet::new));
   }
 
   @Override
