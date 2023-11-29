@@ -906,7 +906,7 @@ public class Config {
     public String token;
     public String clientCertificateData;
     public String clientKeyData;
-    // TODO clientCertificateData, clientKeyData, expirationTimestamp
+    // TODO expirationTimestamp
   }
 
   private static boolean tryNamespaceFromPath(Config config) {
