@@ -1,0 +1,14 @@
+#!/bin/sh
+certData=`echo $PART1 $1 | tr '[a-z]' '[A-Z]'`
+keyData=`echo $PART2 $1 | tr '[a-z]' '[A-Z]'`
+cat <<EOF
+{
+  "kind": "ExecCredential",
+  "apiVersion": "client.authentication.k8s.io/v1",
+  "spec": {},
+  "status": {
+    "clientCertificateData": "$certData",
+    "clientKeyData": "$keyData"
+  }
+}
+EOF
