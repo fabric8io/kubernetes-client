@@ -166,6 +166,10 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
     return reflector.start();
   }
 
+  public CompletableFuture<Void> started() {
+    return reflector.getStartFuture();
+  }
+
   @Override
   public SharedIndexInformer<T> run() {
     Utils.waitUntilReadyOrFail(start(), -1, TimeUnit.MILLISECONDS);

@@ -15,7 +15,9 @@
  */
 package io.fabric8.kubernetes.client.http;
 
+import java.util.Optional;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class TestStandardHttpClientBuilder
     extends StandardHttpClientBuilder<TestStandardHttpClient, TestStandardHttpClientFactory, TestStandardHttpClientBuilder> {
@@ -30,7 +32,8 @@ public class TestStandardHttpClientBuilder
 
   @Override
   public TestStandardHttpClient build() {
-    final TestStandardHttpClient instance = new TestStandardHttpClient(this);
+    final TestStandardHttpClient instance = new TestStandardHttpClient(this,
+        Optional.ofNullable(instances.peek()).map(TestStandardHttpClient::getClosed).orElse(new AtomicBoolean()));
     instances.add(instance);
     return instance;
   }

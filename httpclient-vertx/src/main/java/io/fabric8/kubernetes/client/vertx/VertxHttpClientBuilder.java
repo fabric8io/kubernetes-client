@@ -33,6 +33,7 @@ import io.vertx.ext.web.client.WebClientOptions;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Stream;
 
 public class VertxHttpClientBuilder<F extends HttpClient.Factory>
@@ -52,7 +53,7 @@ public class VertxHttpClientBuilder<F extends HttpClient.Factory>
   @Override
   public VertxHttpClient<F> build() {
     if (this.client != null) {
-      return new VertxHttpClient<>(this, this.client.getClient());
+      return new VertxHttpClient<>(this, this.client.getClient(), this.client.getClosed());
     }
 
     WebClientOptions options = new WebClientOptions();
@@ -115,7 +116,7 @@ public class VertxHttpClientBuilder<F extends HttpClient.Factory>
         }
       });
     }
-    return new VertxHttpClient<>(this, vertx.createHttpClient(options));
+    return new VertxHttpClient<>(this, vertx.createHttpClient(options), new AtomicBoolean());
   }
 
   @Override

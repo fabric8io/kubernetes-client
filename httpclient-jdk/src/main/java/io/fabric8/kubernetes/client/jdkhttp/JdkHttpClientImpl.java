@@ -52,6 +52,7 @@ import java.util.concurrent.CompletionStage;
 import java.util.concurrent.Flow;
 import java.util.concurrent.Flow.Subscriber;
 import java.util.concurrent.Flow.Subscription;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 import static io.fabric8.kubernetes.client.http.StandardHttpHeaders.CONTENT_TYPE;
@@ -223,13 +224,13 @@ public class JdkHttpClientImpl extends StandardHttpClient<JdkHttpClientImpl, Jdk
 
   private java.net.http.HttpClient httpClient;
 
-  public JdkHttpClientImpl(JdkHttpClientBuilderImpl builder, HttpClient httpClient) {
-    super(builder);
+  public JdkHttpClientImpl(JdkHttpClientBuilderImpl builder, HttpClient httpClient, AtomicBoolean closed) {
+    super(builder, closed);
     this.httpClient = httpClient;
   }
 
   @Override
-  public void close() {
+  public void doClose() {
     if (this.httpClient == null) {
       return;
     }

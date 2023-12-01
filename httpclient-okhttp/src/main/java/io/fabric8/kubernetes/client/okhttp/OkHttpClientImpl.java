@@ -68,6 +68,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.RejectedExecutionException;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 
 public class OkHttpClientImpl extends StandardHttpClient<OkHttpClientImpl, OkHttpClientFactory, OkHttpClientBuilderImpl> {
@@ -241,13 +242,13 @@ public class OkHttpClientImpl extends StandardHttpClient<OkHttpClientImpl, OkHtt
 
   private final okhttp3.OkHttpClient httpClient;
 
-  public OkHttpClientImpl(OkHttpClient client, OkHttpClientBuilderImpl builder) {
-    super(builder);
+  public OkHttpClientImpl(OkHttpClient client, OkHttpClientBuilderImpl builder, AtomicBoolean closed) {
+    super(builder, closed);
     this.httpClient = client;
   }
 
   @Override
-  public void close() {
+  public void doClose() {
     ConnectionPool connectionPool = httpClient.connectionPool();
 
     Dispatcher dispatcher = httpClient.dispatcher();

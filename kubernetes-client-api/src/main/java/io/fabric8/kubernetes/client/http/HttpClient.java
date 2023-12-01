@@ -167,4 +167,6 @@ public interface HttpClient extends AutoCloseable {
 
   HttpRequest.Builder newHttpRequestBuilder();
 
+  boolean isClosed();
+
 }

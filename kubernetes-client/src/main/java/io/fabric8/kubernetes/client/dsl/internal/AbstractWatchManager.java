@@ -240,6 +240,11 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
 
   synchronized void reconnect() {
     try {
+      if (client.isClosed()) {
+        logger.debug("The client has closed, closing the watch");
+        this.close();
+        return;
+      }
       startWatch();
       if (isForceClosed()) {
         closeRequest();

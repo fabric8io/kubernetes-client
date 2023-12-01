@@ -39,6 +39,7 @@ import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -52,9 +53,11 @@ public abstract class StandardHttpClient<C extends HttpClient, F extends HttpCli
   private static final Logger LOG = LoggerFactory.getLogger(StandardHttpClient.class);
 
   protected StandardHttpClientBuilder<C, F, T> builder;
+  protected AtomicBoolean closed;
 
-  protected StandardHttpClient(StandardHttpClientBuilder<C, F, T> builder) {
+  protected StandardHttpClient(StandardHttpClientBuilder<C, F, T> builder, AtomicBoolean closed) {
     this.builder = builder;
+    this.closed = closed;
   }
 
   public abstract CompletableFuture<WebSocketResponse> buildWebSocketDirect(
@@ -278,6 +281,24 @@ public abstract class StandardHttpClient<C extends HttpClient, F extends HttpCli
   @Override
   public <V> V getTag(Class<V> type) {
     return type.cast(builder.tags.get(type));
+  }
+
+  @Override
+  final public void close() {
+    if (closed.compareAndSet(false, true)) {
+      doClose();
+    }
+  }
+
+  protected abstract void doClose();
+
+  @Override
+  public boolean isClosed() {
+    return closed.get();
+  }
+
+  public AtomicBoolean getClosed() {
+    return closed;
   }
 
 }

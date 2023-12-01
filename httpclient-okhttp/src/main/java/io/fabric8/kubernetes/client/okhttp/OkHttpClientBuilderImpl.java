@@ -28,6 +28,7 @@ import okhttp3.Protocol;
 import java.net.Proxy;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.net.ssl.X509TrustManager;
 
@@ -119,7 +120,7 @@ class OkHttpClientBuilderImpl
 
     OkHttpClient client = builder.build();
 
-    return new OkHttpClientImpl(client, this);
+    return new OkHttpClientImpl(client, this, new AtomicBoolean());
   }
 
   @Override

@@ -55,7 +55,7 @@ public class JettyHttpClientBuilder
   @Override
   public JettyHttpClient build() {
     if (client != null) {
-      return new JettyHttpClient(this, client.getJetty(), client.getJettyWs());
+      return new JettyHttpClient(this, client.getJetty(), client.getJettyWs(), client.getClosed());
     }
     final var sslContextFactory = new SslContextFactory.Client();
     if (sslContext != null) {

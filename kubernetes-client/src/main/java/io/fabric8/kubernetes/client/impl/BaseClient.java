@@ -47,7 +47,10 @@ import org.slf4j.LoggerFactory;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
+import java.util.WeakHashMap;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
@@ -90,6 +93,7 @@ public abstract class BaseClient implements Client {
   private Executor executor;
   protected KubernetesSerialization kubernetesSerialization;
   private CompletableFuture<Void> closed;
+  private Set<AutoCloseable> closable;
 
   private OperationContext operationContext;
 
@@ -103,6 +107,7 @@ public abstract class BaseClient implements Client {
     this.executorSupplier = baseClient.executorSupplier;
     this.executor = baseClient.executor;
     this.kubernetesSerialization = baseClient.kubernetesSerialization;
+    this.closable = baseClient.closable;
     setDerivedFields();
     if (baseClient.operationContext != null) {
       operationContext(baseClient.operationContext);
@@ -111,6 +116,7 @@ public abstract class BaseClient implements Client {
 
   BaseClient(final HttpClient httpClient, Config config, ExecutorSupplier executorSupplier,
       KubernetesSerialization kubernetesSerialization) {
+    this.closable = Collections.newSetFromMap(new WeakHashMap<>());
     this.closed = new CompletableFuture<>();
     this.config = config;
     this.httpClient = httpClient;
@@ -150,6 +156,14 @@ public abstract class BaseClient implements Client {
           httpClient.getClass().getName());
     }
     httpClient.close();
+    closable.forEach(c -> {
+      try {
+        c.close();
+      } catch (Exception e) {
+        logger.warn("Error closing resource", e);
+      }
+    });
+    closable.clear();
     if (this.executorSupplier != null) {
       this.executorSupplier.onClose(executor);
       this.executorSupplier = null;
@@ -396,6 +410,17 @@ public abstract class BaseClient implements Client {
 
   public KubernetesSerialization getKubernetesSerialization() {
     return kubernetesSerialization;
+  }
+
+  public synchronized void addToCloseable(AutoCloseable closeable) {
+    if (this.closed.isDone()) {
+      throw new KubernetesClientException("Client is already closed");
+    }
+    this.closable.add(closeable);
+  }
+
+  public synchronized void removeFromCloseable(AutoCloseable closeable) {
+    this.closable.remove(closeable);
   }
 
 }

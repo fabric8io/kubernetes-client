@@ -35,6 +35,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static io.fabric8.kubernetes.client.vertx.VertxHttpRequest.toHeadersMap;
 
@@ -43,8 +44,8 @@ public class VertxHttpClient<F extends io.fabric8.kubernetes.client.http.HttpCli
   private final Vertx vertx;
   private final HttpClient client;
 
-  VertxHttpClient(VertxHttpClientBuilder<F> vertxHttpClientBuilder, HttpClient client) {
-    super(vertxHttpClientBuilder);
+  VertxHttpClient(VertxHttpClientBuilder<F> vertxHttpClientBuilder, HttpClient client, AtomicBoolean closed) {
+    super(vertxHttpClientBuilder, closed);
     this.vertx = vertxHttpClientBuilder.vertx;
     this.client = client;
   }
@@ -119,7 +120,7 @@ public class VertxHttpClient<F extends io.fabric8.kubernetes.client.http.HttpCli
   }
 
   @Override
-  public void close() {
+  public void doClose() {
     client.close();
   }
 

@@ -265,4 +265,18 @@ class StandardHttpClientTest {
             10000));
   }
 
+  @Test
+  void testIsClosed() {
+    client.close();
+    assertTrue(client.isClosed());
+  }
+
+  @Test
+  void testDerivedIsClosed() {
+    TestStandardHttpClient childClient = client.newBuilder().connectTimeout(0, TimeUnit.SECONDS).build();
+    childClient.close();
+    assertTrue(childClient.isClosed());
+    assertTrue(client.isClosed());
+  }
+
 }

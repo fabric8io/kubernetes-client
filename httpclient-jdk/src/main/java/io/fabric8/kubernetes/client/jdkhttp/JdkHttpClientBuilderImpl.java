@@ -25,6 +25,7 @@ import java.net.ProxySelector;
 import java.net.http.HttpClient.Redirect;
 import java.net.http.HttpClient.Version;
 import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.net.ssl.SSLParameters;
 
@@ -48,7 +49,7 @@ class JdkHttpClientBuilderImpl
   @Override
   public HttpClient build() {
     if (client != null) {
-      return new JdkHttpClientImpl(this, client.getHttpClient());
+      return new JdkHttpClientImpl(this, client.getHttpClient(), client.getClosed());
     }
     java.net.http.HttpClient.Builder builder = clientFactory.createNewHttpClientBuilder();
     if (connectTimeout != null && !java.time.Duration.ZERO.equals(connectTimeout)) {
@@ -78,7 +79,7 @@ class JdkHttpClientBuilderImpl
           Arrays.asList(tlsVersions).stream().map(TlsVersion::javaName).toArray(String[]::new)));
     }
     clientFactory.additionalConfig(builder);
-    return new JdkHttpClientImpl(this, builder.build());
+    return new JdkHttpClientImpl(this, builder.build(), new AtomicBoolean());
   }
 
   @Override
