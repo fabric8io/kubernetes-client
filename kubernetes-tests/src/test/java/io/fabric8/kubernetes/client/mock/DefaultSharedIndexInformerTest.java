@@ -1216,7 +1216,28 @@ class DefaultSharedIndexInformerTest {
         .inNamespace("ns1")
         .runnableInformer(60 * WATCH_EVENT_EMIT_TIME);
 
+    animalSharedIndexInformer.start();
+
     client.close();
+
+    await().atMost(60, TimeUnit.SECONDS).until(() -> animalSharedIndexInformer.stopped().toCompletableFuture().isDone());
+  }
+
+  @Test
+  void testClientStopClosesInformerBeforeStarting() throws InterruptedException {
+    // Given
+    setupMockServerExpectations(Animal.class, "ns1", this::getList,
+        r -> new WatchEvent(getAnimal("red-panda", "Carnivora", r), "ADDED"), null, null);
+
+    // When
+    SharedIndexInformer<GenericKubernetesResource> animalSharedIndexInformer = client
+        .genericKubernetesResources(animalContext)
+        .inNamespace("ns1")
+        .runnableInformer(60 * WATCH_EVENT_EMIT_TIME);
+
+    client.close();
+
+    animalSharedIndexInformer.start();
 
     assertTrue(animalSharedIndexInformer.stopped().toCompletableFuture().isDone());
   }

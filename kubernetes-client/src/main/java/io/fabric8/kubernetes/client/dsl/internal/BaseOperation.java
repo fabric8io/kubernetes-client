@@ -1069,7 +1069,13 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     if (indexers != null) {
       informer.addIndexers(indexers);
     }
-    this.context.getClient().adapt(BaseClient.class).getClosed().whenComplete((closed, ignored) -> informer.stop());
+    informer.started().whenComplete((ignored, throwable) -> {
+      if (throwable == null) {
+        BaseClient baseClient = this.context.getClient().adapt(BaseClient.class);
+        baseClient.addToCloseable(informer);
+        informer.stopped().whenComplete((x, y) -> baseClient.removeFromCloseable(informer));
+      }
+    });
     return informer;
   }
 

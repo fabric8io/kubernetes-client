@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class TestStandardHttpClient
     extends StandardHttpClient<TestStandardHttpClient, TestStandardHttpClientFactory, TestStandardHttpClientBuilder> {
@@ -39,15 +40,15 @@ public class TestStandardHttpClient
   @Getter
   private final List<RecordedConsumeBytesDirect> recordedConsumeBytesDirects;
 
-  protected TestStandardHttpClient(TestStandardHttpClientBuilder builder) {
-    super(builder);
+  protected TestStandardHttpClient(TestStandardHttpClientBuilder builder, AtomicBoolean closed) {
+    super(builder, closed);
     expectations = new HashMap<>();
     recordedBuildWebSocketDirects = new ArrayList<>();
     recordedConsumeBytesDirects = new ArrayList<>();
   }
 
   @Override
-  public void close() {
+  public void doClose() {
     recordedConsumeBytesDirects.clear();
     recordedBuildWebSocketDirects.clear();
     expectations.values().forEach(e -> {

@@ -49,6 +49,7 @@ import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static io.fabric8.kubernetes.client.http.BufferUtil.copy;
 import static io.fabric8.kubernetes.client.http.StandardMediaTypes.APPLICATION_OCTET_STREAM;
@@ -61,13 +62,18 @@ public class JettyHttpClient extends StandardHttpClient<JettyHttpClient, JettyHt
 
   public JettyHttpClient(StandardHttpClientBuilder<JettyHttpClient, JettyHttpClientFactory, JettyHttpClientBuilder> builder,
       HttpClient jetty, WebSocketClient jettyWs) {
-    super(builder);
+    this(builder, jetty, jettyWs, new AtomicBoolean());
+  }
+
+  public JettyHttpClient(StandardHttpClientBuilder<JettyHttpClient, JettyHttpClientFactory, JettyHttpClientBuilder> builder,
+      HttpClient jetty, WebSocketClient jettyWs, AtomicBoolean closed) {
+    super(builder, closed);
     this.jetty = jetty;
     this.jettyWs = jettyWs;
   }
 
   @Override
-  public void close() {
+  public void doClose() {
     try {
       jetty.stop();
       jettyWs.stop();
