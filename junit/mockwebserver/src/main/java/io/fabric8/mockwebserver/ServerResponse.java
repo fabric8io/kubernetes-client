@@ -15,8 +15,8 @@
  */
 package io.fabric8.mockwebserver;
 
-import okhttp3.mockwebserver.MockResponse;
-import okhttp3.mockwebserver.RecordedRequest;
+import io.fabric8.mockwebserver.http.MockResponse;
+import io.fabric8.mockwebserver.http.RecordedRequest;
 
 public interface ServerResponse {
 

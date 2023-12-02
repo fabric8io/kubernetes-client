@@ -27,11 +27,11 @@ import io.fabric8.mockwebserver.dsl.Pathable;
 import io.fabric8.mockwebserver.dsl.ReturnOrWebsocketable;
 import io.fabric8.mockwebserver.dsl.TimesOnceableOrHttpHeaderable;
 import io.fabric8.mockwebserver.dsl.WebSocketSessionBuilder;
+import io.fabric8.mockwebserver.http.Headers;
+import io.fabric8.mockwebserver.http.RecordedRequest;
 import io.fabric8.mockwebserver.utils.BodyProvider;
 import io.fabric8.mockwebserver.utils.ResponseProvider;
 import io.fabric8.mockwebserver.utils.ResponseProviders;
-import okhttp3.Headers;
-import okhttp3.mockwebserver.RecordedRequest;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;

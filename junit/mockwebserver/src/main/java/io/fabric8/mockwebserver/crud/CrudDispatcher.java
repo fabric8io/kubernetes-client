@@ -18,10 +18,10 @@ package io.fabric8.mockwebserver.crud;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.fabric8.mockwebserver.Context;
 import io.fabric8.mockwebserver.MockServerException;
+import io.fabric8.mockwebserver.http.Dispatcher;
+import io.fabric8.mockwebserver.http.MockResponse;
+import io.fabric8.mockwebserver.http.RecordedRequest;
 import io.fabric8.zjsonpatch.JsonPatch;
-import okhttp3.mockwebserver.Dispatcher;
-import okhttp3.mockwebserver.MockResponse;
-import okhttp3.mockwebserver.RecordedRequest;
 
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
@@ -31,12 +31,6 @@ import java.util.List;
 import java.util.Map;
 
 public class CrudDispatcher extends Dispatcher {
-
-  private static final String POST = "POST";
-  private static final String PUT = "PUT";
-  private static final String PATCH = "PATCH";
-  private static final String GET = "GET";
-  private static final String DELETE = "DELETE";
 
   protected final Map<AttributeSet, String> map = Collections.synchronizedMap(new LinkedHashMap<>());
 
@@ -53,7 +47,7 @@ public class CrudDispatcher extends Dispatcher {
   @Override
   public MockResponse dispatch(RecordedRequest request) {
     String path = request.getPath();
-    switch (request.getMethod().toUpperCase()) {
+    switch (request.method()) {
       case POST:
         return handleCreate(request);
       case PUT:

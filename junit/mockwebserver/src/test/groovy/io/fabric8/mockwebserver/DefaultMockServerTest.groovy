@@ -15,6 +15,8 @@
  */
 package io.fabric8.mockwebserver
 
+import io.fabric8.mockwebserver.http.Headers
+import io.fabric8.mockwebserver.http.RecordedRequest
 import io.fabric8.mockwebserver.internal.WebSocketMessage
 import io.fabric8.mockwebserver.utils.ResponseProvider
 import io.vertx.core.Future
@@ -26,8 +28,6 @@ import io.vertx.ext.web.client.WebClient
 import java.util.concurrent.ConcurrentLinkedQueue
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicInteger
-import okhttp3.Headers
-import okhttp3.mockwebserver.RecordedRequest
 import spock.lang.Shared
 import spock.lang.Specification
 import spock.util.concurrent.PollingConditions
