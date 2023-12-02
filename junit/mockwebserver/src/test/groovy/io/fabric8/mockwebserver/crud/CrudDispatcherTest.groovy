@@ -17,12 +17,12 @@ package io.fabric8.mockwebserver.crud
 
 import io.fabric8.mockwebserver.Context
 import io.fabric8.mockwebserver.DefaultMockServer
+import io.fabric8.mockwebserver.MockWebServer
 import io.fabric8.mockwebserver.ServerRequest
 import io.fabric8.mockwebserver.ServerResponse
 import io.vertx.core.Vertx
 import io.vertx.core.buffer.Buffer
 import io.vertx.ext.web.client.WebClient
-import okhttp3.mockwebserver.MockWebServer
 import spock.lang.Shared
 import spock.lang.Specification
 import spock.util.concurrent.AsyncConditions

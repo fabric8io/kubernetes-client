@@ -15,7 +15,7 @@
  */
 package io.fabric8.mockwebserver.utils;
 
-import okhttp3.mockwebserver.RecordedRequest;
+import io.fabric8.mockwebserver.http.RecordedRequest;
 
 /**
  * A class that allows returning the body of a response given a certain request.
