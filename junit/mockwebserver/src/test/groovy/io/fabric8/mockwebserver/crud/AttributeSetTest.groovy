@@ -106,12 +106,13 @@ class AttributeSetTest extends Specification {
     when:
     AttributeSet attributeSet = new AttributeSet(a2)
     AttributeSet selectorWithOne = new AttributeSet(a2)
-    AttributeSet selectorWithTwo = new AttributeSet(a2, a3);
+    AttributeSet selectorWithTwo = new AttributeSet(a2, a3)
+    def orderedAttributes = new LinkedHashSet([a2, a3]);
     then:
 
     // Assert that the order is suitable for testing. The failing attribute should
     // be in the *second* position to ensure we're examining all the values of the selector
-    assert new ArrayList<>(selectorWithTwo.attributes.values()).indexOf(a3) == 1;
+    assert new ArrayList<>(orderedAttributes).indexOf(a3) == 1;
 
     assert attributeSet.matches(selectorWithOne)
     assert !attributeSet.matches(selectorWithTwo)
