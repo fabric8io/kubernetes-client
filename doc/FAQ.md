@@ -147,7 +147,7 @@ When the resourceVersion is null for a patch the server will always attempt to p
 
 - A handful of additional operations, such as undo, updateImage, and others are currently locked by default.  This may not be intentional - under the covers this is apply a json patch; older versions of json patching that created the resource diff were unlocked by default.  If you encounter an exception due to a concurrent modification performing an operation that seems like it should ignore that possibility by default please raise an issue.
 
-- Legacy operations such as creatOrReplace or replace were effectively unlocked - they would repeatedly retry the operation with the freshest resourceVersion until it succeeded.  These methods have been deprecated because of the complexity of their implementation and the broad unlocking behavior by default could be considered unsafe.
+- Legacy operations such as createOrReplace or replace were effectively unlocked - they would repeatedly retry the operation with the freshest resourceVersion until it succeeded.  These methods have been deprecated because of the complexity of their implementation and the broad unlocking behavior by default could be considered unsafe.
 
 ### Alternatives to createOrReplace and replace
 
