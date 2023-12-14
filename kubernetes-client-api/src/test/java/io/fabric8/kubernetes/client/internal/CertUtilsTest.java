@@ -31,6 +31,7 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.Objects;
@@ -182,6 +183,17 @@ class CertUtilsTest {
 
     // Then
     assertEquals(inputStr, certDataReadFromInputStream);
+  }
+
+  @Test
+  public void testECKeyLoad() throws InvalidKeySpecException, CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException {
+    String privateKeyPath = Utils.filePath(getClass().getResource("/ssl-test/fabric8-ec.paired.key"));
+    String certPath = Utils.filePath(getClass().getResource("/ssl-test/fabric8-ec.cert"));
+
+    KeyStore trustStore =
+      CertUtils.createKeyStore(null, certPath, null, privateKeyPath, "EC", "foo", null, null);
+
+    assertEquals(1, trustStore.size());
   }
 
   @Test
