@@ -174,3 +174,25 @@ Or NonDeletingOperation::patch.  The use of the unlock function is optional and 
 The alternative to replace is either serverSideApply - with the same caveats as above - or to use update, but with resourceVersion set to null or usage of the unlock function.
 
 **Note:** that when using informers - do not make modifications to the resources obtained from the cache - especially to the resourceVersion.  If you use the unlock function it will make changes to a copy of your item.
+
+### What credentials does the client use for authentication?
+
+Kubernetes supports [service account automounting](https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/), a feature that automatically provisions the authentication information of a namespace's default service account in every pod. As part of the auto-configuration process. This kubernetes client integrates with automounting and will use these credentials by default if available.
+
+This can be inappropriate in a few cases, such as when you wish to perform kubernetes operation on behalf of third parties in their namespaces. You can disable automounting on the service account object, or on the pod object, as explained [here](https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/#opt-out-of-api-credential-automounting). You can also disable the kubernetes client automatic configuration.
+
+In order to disable the kubernetes client automatic configuration, you can use any of the following mechanisms:
+
+* Set the system property `kubernetes.disable.autoConfig`
+* Set the environment variable `KUBERNETES_DISABLE_AUTOCONFIG` (overridden by the system property)
+* Pass `Config.empty()` explicitly as an argument to the Kubernetes configuration builder like so:
+
+```java
+var client = new KubernetesClientBuilder(Config.empty())
+                     .withMasterUrl(...)
+                     .withOauthToken(...)
+                     // etc.
+                     .build()
+```
+
+Be aware that the cluster autoconfiguration sets up more than just authentication information; see the implementation of `io.fabric8.kubernetes.client.Config#configFromSysPropsOrEnvVars` for details.
