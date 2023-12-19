@@ -186,23 +186,23 @@ class CertUtilsTest {
   }
 
   @Test
-  public void testECKeyLoad() throws InvalidKeySpecException, CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException {
+  public void testECKeyLoad()
+      throws InvalidKeySpecException, CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException {
     String privateKeyPath = Utils.filePath(getClass().getResource("/ssl-test/fabric8-ec.paired.key"));
     String certPath = Utils.filePath(getClass().getResource("/ssl-test/fabric8-ec.cert"));
 
-    KeyStore trustStore =
-      CertUtils.createKeyStore(null, certPath, null, privateKeyPath, "EC", "foo", null, null);
+    KeyStore trustStore = CertUtils.createKeyStore(null, certPath, null, privateKeyPath, "EC", "foo", null, null);
 
     assertEquals(1, trustStore.size());
   }
 
   @Test
-  public void testECKeyOnlyLoad() throws InvalidKeySpecException, CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException {
+  public void testECKeyOnlyLoad()
+      throws InvalidKeySpecException, CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException {
     String privateKeyPath = Utils.filePath(getClass().getResource("/ssl-test/fabric8-ec.private-only.key"));
     String certPath = Utils.filePath(getClass().getResource("/ssl-test/fabric8-ec.cert"));
 
-    KeyStore trustStore =
-      CertUtils.createKeyStore(null, certPath, null, privateKeyPath, "EC", "foo", null, null);
+    KeyStore trustStore = CertUtils.createKeyStore(null, certPath, null, privateKeyPath, "EC", "foo", null, null);
 
     assertEquals(1, trustStore.size());
   }
