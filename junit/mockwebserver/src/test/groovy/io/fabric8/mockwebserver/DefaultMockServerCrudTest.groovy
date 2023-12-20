@@ -90,12 +90,12 @@ class DefaultMockServerCrudTest extends Specification {
     and: "An instance of AsyncConditions"
       def async = new AsyncConditions(1)
     and: "Items in the server"
-      def itemsInServer = Future.all(
-        client.post(server.port, server.getHostName(), "/")
-          .sendJson(new User(1L, "user", true)),
-        client.post(server.port, server.getHostName(), "/")
-          .sendJson(new User(2L, "user-2", true))
-      )
+      def itemsInServer = client.post(server.port, server.getHostName(), "/")
+        .sendJson(new User(1L, "user", true))
+        .compose { _ ->
+          client.post(server.port, server.getHostName(), "/")
+            .sendJson(new User(2L, "user-2", true))
+        }
 
     when: "The request is sent and completed"
       itemsInServer.onComplete {isr ->
