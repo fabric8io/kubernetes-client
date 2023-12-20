@@ -71,7 +71,7 @@ public class VertxHttpClient<F extends io.fabric8.kubernetes.client.http.HttpCli
 
     request.headers().entrySet().stream()
         .forEach(e -> e.getValue().stream().forEach(v -> options.addHeader(e.getKey(), v)));
-    options.setAbsoluteURI(request.uri().toString());
+    options.setAbsoluteURI(WebSocket.toWebSocketUri(request.uri()).toString());
 
     CompletableFuture<WebSocketResponse> response = new CompletableFuture<>();
 
