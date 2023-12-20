@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.client.internal;
 
+import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.utils.IOHelpers;
 import io.fabric8.kubernetes.client.utils.Utils;
 import org.junit.jupiter.api.AfterEach;
@@ -39,9 +40,7 @@ import java.util.Properties;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertNotSame;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class CertUtilsTest {
 
@@ -186,7 +185,7 @@ class CertUtilsTest {
   }
 
   @Test
-  public void testECKeyLoad()
+  void loadECkeys()
       throws InvalidKeySpecException, CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException {
     String privateKeyPath = Utils.filePath(getClass().getResource("/ssl-test/fabric8-ec.paired.key"));
     String certPath = Utils.filePath(getClass().getResource("/ssl-test/fabric8-ec.cert"));
@@ -197,7 +196,7 @@ class CertUtilsTest {
   }
 
   @Test
-  public void testECKeyOnlyLoad()
+  void loadECPrivateOnlyKey()
       throws InvalidKeySpecException, CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException {
     String privateKeyPath = Utils.filePath(getClass().getResource("/ssl-test/fabric8-ec.private-only.key"));
     String certPath = Utils.filePath(getClass().getResource("/ssl-test/fabric8-ec.cert"));
@@ -205,6 +204,28 @@ class CertUtilsTest {
     KeyStore trustStore = CertUtils.createKeyStore(null, certPath, null, privateKeyPath, "EC", "foo", null, null);
 
     assertEquals(1, trustStore.size());
+  }
+
+  @Test
+  void loadNothingError()
+      throws InvalidKeySpecException, CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException {
+    String privateKeyPath = Utils.filePath(getClass().getResource("/ssl-test/empty"));
+    String certPath = Utils.filePath(getClass().getResource("/ssl-test/empty"));
+
+    Exception exception = assertThrows(KubernetesClientException.class,
+        () -> CertUtils.createKeyStore(null, certPath, null, privateKeyPath, "EC", "foo", null, null));
+    assertTrue(exception.getMessage().contains("Could not load EC key."));
+  }
+
+  @Test
+  void loadUnknownError() {
+    String privateKeyPath = Utils.filePath(getClass().getResource("/ssl-test/multiple-certs.p7b"));
+    String certPath = Utils.filePath(getClass().getResource("/ssl-test/multiple-certs.p7b"));
+
+    Exception exception = assertThrows(KubernetesClientException.class,
+        () -> CertUtils.createKeyStore(null, certPath, null, privateKeyPath, "EC", "foo", null, null));
+    assertTrue(exception.getMessage().contains("Don't know what to do with a"));
+
   }
 
   @Test

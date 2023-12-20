@@ -193,7 +193,7 @@ public class CertUtils {
             } else if (pemObject instanceof PrivateKeyInfo) {
               return BouncyCastleProvider.getPrivateKey((PrivateKeyInfo) pemObject);
             } else {
-              throw new RuntimeException("Don't know what to do with a " + pemObject.getClass().getName());
+              throw new KubernetesClientException("Don't know what to do with a " + pemObject.getClass().getName());
             }
           } catch (IOException exception) {
             exception.printStackTrace();
@@ -204,6 +204,8 @@ public class CertUtils {
     } catch (NoClassDefFoundError e) {
       throw new KubernetesClientException(
           "JcaPEMKeyConverter is provided by BouncyCastle, an optional dependency. To use support for EC Keys you must explicitly add this dependency to classpath.");
+    } catch (NullPointerException npe) {
+      throw new KubernetesClientException("Could not load EC key.");
     }
   }
 
