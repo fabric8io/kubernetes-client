@@ -15,654 +15,647 @@
  */
 package io.fabric8.mockwebserver
 
+import io.fabric8.mockwebserver.internal.WebSocketMessage
 import io.fabric8.mockwebserver.utils.ResponseProvider
-import okhttp3.*
+import io.vertx.core.Future
+import io.vertx.core.Vertx
+import io.vertx.core.http.WebSocketClient
+import io.vertx.ext.web.client.WebClient
+import okhttp3.Headers
 import okhttp3.mockwebserver.RecordedRequest
-import okio.ByteString
 import spock.lang.Shared
 import spock.lang.Specification
+import spock.util.concurrent.AsyncConditions
 
 import java.util.concurrent.ArrayBlockingQueue
-import java.util.concurrent.CountDownLatch
+import java.util.concurrent.CompletableFuture
 import java.util.concurrent.TimeUnit
-import java.util.concurrent.atomic.AtomicReference
+import java.util.concurrent.atomic.AtomicInteger
 
 class DefaultMockServerTest extends Specification {
 
-    DefaultMockServer server
+  @Shared
+  static def vertx = Vertx.vertx()
 
-    @Shared
-    OkHttpClient client = new OkHttpClient()
+  DefaultMockServer server
 
-    def setup() {
-        server = new DefaultMockServer()
-        server.start()
-    }
+  WebClient client
 
-    def cleanup() {
-        server.shutdown()
-    }
+  WebSocketClient wsClient
 
-    def "getPort, should return a valid port"() {
-        when:
-        def result = server.getPort()
+  def setup() {
+    server = new DefaultMockServer()
+    server.start()
+    client = WebClient.create(vertx)
+    wsClient = vertx.createWebSocketClient()
+  }
 
-        then:
-        assert result > 0
-        assert result <= 65535
-    }
+  def cleanup() {
+    server.shutdown()
+    client.close()
+    wsClient.close()
+  }
 
-    def "getHostName, should return a valid host name"() {
-        when:
-        def result = server.getHostName()
+  def cleanupSpec() {
+    vertx.close()
+  }
 
-        then:
-        assert !result.isBlank()
-    }
 
-    def "toProxy, should return Proxy with the current HostName and Port"() {
-        when:
-        def result = server.toProxyAddress()
+  def "getPort, should return a valid port"() {
+    when:
+      def result = server.getPort()
 
-        then:
-        assert result.address() instanceof InetSocketAddress
-        assert ((InetSocketAddress)result.address()).getPort() == server.getPort()
-        assert ((InetSocketAddress)result.address()).getHostName() == server.getHostName()
-    }
+    then:
+      assert result > 0
+      assert result <= 65535
+  }
 
-    def "getRequestCount, with no requests, should return 0"() {
-        when:
-        def result = server.getRequestCount()
+  def "getHostName, should return a valid host name"() {
+    when:
+      def result = server.getHostName()
 
-        then:
-        assert result == 0
-    }
+    then:
+      assert !result.isBlank()
+  }
 
-    def "getRequestCount, with multiple, should return valid request count"() {
-        given:
-        client.newCall(new Request.Builder().url(server.url("/")).get().build()).execute()
-        client.newCall(new Request.Builder().url(server.url("/one")).get().build()).execute()
-        client.newCall(new Request.Builder().url(server.url("/two")).get().build()).execute()
+  def "toProxy, should return Proxy with the current HostName and Port"() {
+    when:
+      def result = server.toProxyAddress()
 
-        when:
-        def result = server.getRequestCount()
+    then:
+      assert result.address() instanceof InetSocketAddress
+      assert ((InetSocketAddress) result.address()).getPort() == server.getPort()
+      assert ((InetSocketAddress) result.address()).getHostName() == server.getHostName()
+  }
 
-        then:
-        assert result == 3
-    }
+  def "getRequestCount, with no requests, should return 0"() {
+    when:
+      def result = server.getRequestCount()
 
-    def "getLastRequest, with no requests, should return null"() {
-        when:
-        def result = server.getLastRequest()
+    then:
+      assert result == 0
+  }
 
-        then:
-        assert result == null
-    }
+  def "getRequestCount, with multiple, should return valid request count"() {
+    given:
+      def all = Future.all(
+        client.get(server.port, server.getHostName(), "/").send(),
+        client.get(server.port, server.getHostName(), "/one").send(),
+        client.get(server.port, server.getHostName(), "/two").send()
+      )
+    and: "An instance of AsyncConditions"
+      def async = new AsyncConditions(1)
 
-    def "getLastRequest, with one request, should return the request"() {
-        given:
-        client.newCall(new Request.Builder().url(server.url("/")).get().build()).execute()
+    when: "The request is sent and completed"
+      all.onComplete {isr ->
+        async.evaluate { assert server.getRequestCount() == 3 }
+      }
 
-        when:
-        def result = server.getLastRequest()
+    then: "Expect the result to be completed in the specified time"
+      async.await(10)
+  }
 
-        then:
-        assert result.getPath() == "/"
-    }
+  def "getLastRequest, with no requests, should return null"() {
+    when:
+      def result = server.getLastRequest()
 
-    def "getLastRequest, with one request, can be invoked multiple times"() {
-        given:
-        client.newCall(new Request.Builder().url(server.url("/")).get().build()).execute()
+    then:
+      assert result == null
+  }
+
+  def "getLastRequest, with one request, should return the request"() {
+    given:
+      def request = client.get(server.port, server.getHostName(), "/").send()
+    and: "An instance of AsyncConditions"
+      def async = new AsyncConditions(1)
+
+    when: "The request is sent and completed"
+      request.onComplete { isr ->
+        async.evaluate { assert server.getLastRequest().getPath() == "/" }
+      }
+
+    then: "Expect the result to be completed in the specified time"
+      async.await(10)
+  }
+
+  def "getLastRequest, with one request, can be invoked multiple times"() {
+    given:
+      def request = client.get(server.port, server.getHostName(), "/").send()
+    and: "An instance of AsyncConditions"
+      def async = new AsyncConditions(1)
+
+    when: "The request is sent and completed"
+      request.onComplete { isr ->
         server.getLastRequest()
+        async.evaluate { assert server.getLastRequest().getPath() == "/" }
+      }
 
-        when:
-        def result = server.getLastRequest()
+    then: "Expect the result to be completed in the specified time"
+      async.await(10)
+  }
 
-        then:
-        assert result.getPath() == "/"
-    }
+  def "getLastRequest, with multiple requests, should return the latest request"() {
+    given:
+      def all = client.get(server.port, server.getHostName(), "/").send()
+        .compose { _ -> client.get(server.port, server.getHostName(), "/one").send() }
+        .compose { _ -> client.get(server.port, server.getHostName(), "/two").send() }
+    and: "An instance of AsyncConditions"
+      def async = new AsyncConditions(1)
 
-    def "getLastRequest, with multiple requests, should return the latest request"() {
-        given:
-        client.newCall(new Request.Builder().url(server.url("/")).get().build()).execute()
-        client.newCall(new Request.Builder().url(server.url("/one")).get().build()).execute()
-        client.newCall(new Request.Builder().url(server.url("/two")).get().build()).execute()
 
-        when:
-        def result = server.getLastRequest()
+    when: "The request is sent and completed"
+      all.onComplete {isr ->
+        async.evaluate { assert server.getLastRequest().getPath() == "/two" }
+      }
 
-        then:
-        assert result.getPath() == "/two"
-    }
+    then: "Expect the result to be completed in the specified time"
+      async.await(10)
+  }
 
-    def "getLastRequest, with multiple requests, can be invoked multiple times"() {
-        given:
-        client.newCall(new Request.Builder().url(server.url("/")).get().build()).execute()
-        client.newCall(new Request.Builder().url(server.url("/one")).get().build()).execute()
+  def "getLastRequest, with multiple requests, can be invoked multiple times"() {
+    given:
+      def all = client.get(server.port, server.getHostName(), "/").send()
+        .compose { _ -> client.get(server.port, server.getHostName(), "/one").send()}
+        .compose { _ -> client.get(server.port, server.getHostName(), "/two").send()}
+    and: "An instance of AsyncConditions"
+      def async = new AsyncConditions(1)
+
+    when: "The request is sent and completed"
+      all.onComplete {isr ->
         server.getLastRequest()
-        client.newCall(new Request.Builder().url(server.url("/two")).get().build()).execute()
-        server.getLastRequest()
+        async.evaluate { assert server.getLastRequest().getPath() == "/two" }
+      }
 
-        when:
-        def result = server.getLastRequest()
+    then: "Expect the result to be completed in the specified time"
+      async.await(10)
+  }
 
-        then:
-        assert result.getPath() == "/two"
-    }
+  def "takeRequest, with timeout and no requests, should return null and don't block (after timeout)"() {
+    when:
+      def result = server.takeRequest(1, TimeUnit.MICROSECONDS)
 
-    def "takeRequest, with timeout and no requests, should return null and don't block (after timeout)"() {
-        when:
-        def result = server.takeRequest(1, TimeUnit.MICROSECONDS)
+    then:
+      assert result == null
+  }
 
-        then:
-        assert result == null
-    }
+  def "when setting an expectation with once it should be met only the first time"() {
+    given: "An expectation with once"
+      server.expect().get().withPath("/api/v1/users").andReturn(200, "admin").once()
+    and: "A first request"
+      def req1 = client.get(server.port, server.getHostName(), "/api/v1/users").send()
+    and: "A second request"
+      def req2 = req1.compose { _ ->
+        client.get(server.port, server.getHostName(), "/api/v1/users").send()
+      }
+    and: "An instance of AsyncConditions"
+      def async = new AsyncConditions(1)
 
-    def "when setting an expectation with once it should be met only the first time"() {
-        given:
-        server.expect().get().withPath("/api/v1/users").andReturn(200, "admin").once()
-
-        when:
-        Request request = new Request.Builder().url(server.url("/api/v1/users")).get().build()
-        Response response1 = client.newCall(request).execute()
-        Response response2 = client.newCall(request).execute()
-
-        then:
-        assert response1.code() == 200
-        assert response1.body().string() == "admin"
-        assert response2.code() == 404
-
-        cleanup:
-        response1.close()
-        response2.close()
-    }
-
-    def "when setting an expectation with n-th times it should be met only the for the first n-th times"() {
-        given:
-        server.expect().get().withPath("/api/v1/users").andReturn(200, "admin").times(3)
-
-        when:
-        Request request = new Request.Builder().url(server.url("/api/v1/users")).get().build()
-        Response response1 = client.newCall(request).execute()
-        Response response2 = client.newCall(request).execute()
-        Response response3 = client.newCall(request).execute()
-        Response response4 = client.newCall(request).execute()
-
-        then:
-        assert response1.code() == 200
-        assert response1.body().string() == "admin"
-        assert response2.code() == 200
-        assert response2.body().string() == "admin"
-        assert response3.code() == 200
-        assert response3.body().string() == "admin"
-        assert response4.code() == 404
-
-        cleanup:
-        response1.close()
-        response2.close()
-        response3.close()
-        response4.close()
-    }
-
-    def "when setting an expectation with always it should be met only always"() {
-        given:
-        server.expect().get().withPath("/api/v1/users").andReturn(200, "admin").always()
-
-        when:
-        Request request = new Request.Builder().url(server.url("/api/v1/users")).get().build()
-        Response response1 = client.newCall(request).execute()
-        Response response2 = client.newCall(request).execute()
-        Response response3 = client.newCall(request).execute()
-        Response response4 = client.newCall(request).execute()
-
-        then:
-        assert response1.code() == 200
-        assert response1.body().string() == "admin"
-        assert response2.code() == 200
-        assert response2.body().string() == "admin"
-        assert response3.code() == 200
-        assert response3.body().string() == "admin"
-        assert response4.code() == 200
-        assert response4.body().string() == "admin"
-
-        cleanup:
-        response1.close()
-        response2.close()
-        response3.close()
-        response4.close()
-    }
-
-    def "when setting an expectation as an object it should be serialized to json"() {
-        given:
-        User root = new User(0, "root", true)
-
-        server.expect().get().withPath("/api/v1/users").andReturn(200, root).always()
-
-        when:
-        Request request = new Request.Builder().url(server.url("/api/v1/users")).get().build()
-        Response response1 = client.newCall(request).execute()
-
-        then:
-        assert response1.code() == 200
-        assert response1.body().string() == "{\"id\":0,\"username\":\"root\",\"enabled\":true}"
-
-        cleanup:
-        response1.close()
-    }
-
-    def "when setting a timed websocket message it should be fire at the specified time"() {
-        given:
-        CountDownLatch closed = new CountDownLatch(1)
-        Queue<String> messages = new ArrayBlockingQueue<String>(1)
-        AtomicReference<WebSocket> webSocketRef = new AtomicReference<>()
-        WebSocketListener listener = new WebSocketListener() {
-            @Override
-            void onMessage(WebSocket webSocket, String text) {
-                messages.add(text)
-            }
-
-            @Override
-            void onMessage(WebSocket webSocket, ByteString bytes) {
-                onMessage(webSocket, bytes.utf8())
-            }
-
-            @Override
-            void onClosing(WebSocket webSocket, int code, String reason) {
-                webSocket.close(code, reason)
-            }
-
-            @Override
-            void onClosed(WebSocket webSocket, int code, String reason) {
-                closed.countDown()
-            }
+    when: "The requests are sent and completed"
+      Future.all(req1, req2).onComplete {isr ->
+        async.evaluate {
+          assert req1.result().statusCode() == 200
+          assert req1.result().body().toString() == "admin"
+          assert req2.result().statusCode() == 404
+          assert req2.result().body() == null
         }
+      }
 
-        server.expect().get().withPath("/api/v1/users/watch")
-            .andUpgradeToWebSocket()
-                .open()
-                .waitFor(1000).andEmit("DELETED")
-                .done()
-            .once()
+    then: "Expect the result to be completed in the specified time"
+      async.await(10)
+  }
 
-        when:
-        Request request = new Request.Builder().url(server.url("/api/v1/users/watch")).get().build()
-        webSocketRef.set(client.newWebSocket(request, listener))
+  def "when setting an expectation with n-th times it should be met only the for the first n-th times"() {
+    given: "An expectation with times (3)"
+      server.expect().get().withPath("/api/v1/users").andReturn(200, "admin").times(3)
+    and: "A first request"
+      def req1 = client.get(server.port, server.getHostName(), "/api/v1/users").send()
+    and: "A second request"
+      def req2 = req1.compose { _ ->
+        client.get(server.port, server.getHostName(), "/api/v1/users").send()
+      }
+    and: "A third request"
+      def req3 = req2.compose { _ ->
+        client.get(server.port, server.getHostName(), "/api/v1/users").send()
+      }
+    and: "A fourth request"
+      def req4 = req3.compose { _ ->
+        client.get(server.port, server.getHostName(), "/api/v1/users").send()
+      }
+    and: "An instance of AsyncConditions"
+      def async = new AsyncConditions(1)
 
-        then:
-        messages.poll(10, TimeUnit.SECONDS) == "DELETED"
-
-        when:
-        webSocketRef.get().close(1000, "just close")
-
-        then:
-        closed.await(10, TimeUnit.SECONDS)
-    }
-
-    def "when setting a request/response websocket message it should be fired when the event is triggered"() {
-        given:
-        CountDownLatch opened = new CountDownLatch(1)
-        CountDownLatch closed = new CountDownLatch(1)
-        CountDownLatch queued = new CountDownLatch(2)
-        Queue<String> messages = new ArrayBlockingQueue<String>(2)
-        AtomicReference<WebSocket> webSocketRef = new AtomicReference<>()
-
-        WebSocketListener listener = new WebSocketListener() {
-            @Override
-            void onOpen(WebSocket webSocket, Response response) {
-                webSocketRef.set(webSocket)
-                opened.countDown()
-            }
-
-            @Override
-            void onMessage(WebSocket webSocket, String text) {
-                messages.add(text)
-                queued.countDown()
-            }
-
-            @Override
-            void onMessage(WebSocket webSocket, ByteString bytes) {
-                onMessage(webSocket, bytes.utf8())
-            }
-
-            @Override
-            void onClosing(WebSocket webSocket, int code, String reason) {
-                webSocket.close(code, reason)
-            }
-
-            @Override
-            void onClosed(WebSocket webSocket, int code, String reason) {
-                closed.countDown()
-            }
+    when: "The requests are sent and completed"
+      Future.all(req1, req2, req3, req4).onComplete {isr ->
+        async.evaluate {
+          assert req1.result().statusCode() == 200
+          assert req1.result().body().toString() == "admin"
+          assert req2.result().statusCode() == 200
+          assert req2.result().body().toString() == "admin"
+          assert req3.result().statusCode() == 200
+          assert req3.result().body().toString() == "admin"
+          assert req4.result().statusCode() == 404
+          assert req4.result().body() == null
         }
+      }
 
-        server.expect().get().withPath("/api/v1/users/watch")
-                .andUpgradeToWebSocket()
-                .open()
-                    .expect("create root").andEmit("CREATED").once()
-                    .expect("delete root").andEmit("DELETED").once()
-                .done()
-                .once()
+    then: "Expect the result to be completed in the specified time"
+      async.await(10)
+  }
 
+  def "when setting an expectation with always it should always be met"() {
+    given: "An expectation with always"
+      server.expect().get().withPath("/api/v1/users").andReturn(200, "admin").always()
+    and: "A first request"
+      def req1 = client.get(server.port, server.getHostName(), "/api/v1/users").send()
+    and: "A second request"
+      def req2 = client.get(server.port, server.getHostName(), "/api/v1/users").send()
+    and: "A third request"
+      def req3 = client.get(server.port, server.getHostName(), "/api/v1/users").send()
+    and: "A fourth request"
+      def req4 = client.get(server.port, server.getHostName(), "/api/v1/users").send()
+    and: "An instance of AsyncConditions"
+      def async = new AsyncConditions(1)
 
-        when:
-        Request request = new Request.Builder().url(server.url("/api/v1/users/watch")).get().build()
-        webSocketRef.set(client.newWebSocket(request, listener))
-
-        then:
-        opened.await(10, TimeUnit.SECONDS)
-        WebSocket ws = webSocketRef.get()
-        ws.send("create root")
-        ws.send("delete root")
-        queued.await(10, TimeUnit.SECONDS)
-        messages.poll(10, TimeUnit.SECONDS) == "CREATED"
-        messages.poll(10, TimeUnit.SECONDS) == "DELETED"
-
-        when:
-        ws.close(1000, "just close")
-
-        then:
-        closed.await(10, TimeUnit.SECONDS)
-    }
-
-    def "when receiving an unexpected websocket message it should close the connection with status code 1002"() {
-        given:
-        CountDownLatch opened = new CountDownLatch(1)
-        CountDownLatch closed = new CountDownLatch(1)
-        int closeCode = -1
-        String closeReason = null
-        AtomicReference<WebSocket> webSocketRef = new AtomicReference<>()
-
-        WebSocketListener listener = new WebSocketListener() {
-            @Override
-            void onOpen(WebSocket webSocket, Response response) {
-                webSocketRef.set(webSocket)
-                opened.countDown()
-            }
-
-            @Override
-            void onMessage(WebSocket webSocket, String text) {
-                System.out.println(text)
-            }
-
-            @Override
-            void onMessage(WebSocket webSocket, ByteString bytes) {
-                onMessage(webSocket, bytes.utf8())
-            }
-
-            @Override
-            void onClosing(WebSocket webSocket, int code, String reason) {
-                System.out.println("Closing: " + code + " : " + reason)
-                webSocket.close(code, reason)
-            }
-
-            @Override
-            void onClosed(WebSocket webSocket, int code, String reason) {
-                closeCode = code
-                closeReason = reason
-                closed.countDown()
-            }
+    when: "The requests are sent and completed"
+      Future.all(req1, req2, req3, req4).onComplete {isr ->
+        async.evaluate {
+          assert req1.result().statusCode() == 200
+          assert req1.result().body().toString() == "admin"
+          assert req2.result().statusCode() == 200
+          assert req2.result().body().toString() == "admin"
+          assert req3.result().statusCode() == 200
+          assert req3.result().body().toString() == "admin"
+          assert req4.result().statusCode() == 200
+          assert req4.result().body().toString() == "admin"
         }
+      }
 
-        server.expect().get().withPath("/api/v1/users/watch")
-                .andUpgradeToWebSocket()
-                .open()
-                    .expect("expected message").andEmit("MESSAGE OK").once()
-                .done()
-                .once()
+    then: "Expect the result to be completed in the specified time"
+      async.await(10)
+  }
 
-        when:
-        Request request = new Request.Builder().url(server.url("/api/v1/users/watch")).get().build()
-        webSocketRef.set(client.newWebSocket(request, listener))
+  def "when setting an expectation as an object it should be serialized to json"() {
+    given: "An expectation with always"
+      def root = new User(0, "root", true)
+      server.expect().get().withPath("/api/v1/users").andReturn(200, root).always()
+    and: "A request"
+      def req1 = client.get(server.port, server.getHostName(), "/api/v1/users").send()
+    and: "An instance of AsyncConditions"
+      def async = new AsyncConditions(1)
 
-        then:
-        opened.await(10, TimeUnit.SECONDS)
-        WebSocket ws = webSocketRef.get()
-        ws.send("unexpected message")
-        closed.await(10, TimeUnit.SECONDS)
-        assert closeCode == 1002
-        assert closeReason == "Unexpected message:unexpected message"
+    when: "The request is sent and completed"
+      req1.onComplete {isr ->
+        async.evaluate {
+          assert req1.result().statusCode() == 200
+          assert req1.result().body().toString() == "{\"id\":0,\"username\":\"root\",\"enabled\":true}"
+        }
+      }
 
-    }
+    then: "Expect the result to be completed in the specified time"
+      async.await(10)
+  }
 
-    def "when setting a delayed response it should be delayed for the specified duration"() {
-        given:
-        server.expect().get().withPath("/api/v1/users").delay(100, TimeUnit.MILLISECONDS).andReturn(200, "admin").once()
+  def "when setting a timed websocket String message it should be fired at the specified time"() {
+    given: "A WebSocket expectation"
+      server.expect().get().withPath("/api/v1/users/watch")
+        .andUpgradeToWebSocket()
+        .open()
+        .waitFor(1000).andEmit("DELETED")
+        .done()
+        .once()
+    and:
+      Queue<String> messages = new ArrayBlockingQueue<>(1)
+    and: "A WebSocket request"
+      def wsReq =wsClient.webSocket().connect(server.port, server.getHostName(), "/api/v1/users/watch")
+    and: "A WebSocket listener"
+      wsReq.onComplete { ws ->
+        ws.result().textMessageHandler { text ->
+          messages.add(text)
+        }
+        ws.result().closeHandler { _ ->
+          ws.result().close()
+        }
+      }
+    and: "An instance of AsyncConditions"
+      def async = new AsyncConditions(1)
 
-        when:
-        Request request = new Request.Builder().url(server.url("/api/v1/users")).get().build()
-        long startTime = System.currentTimeMillis()
-        Response response1 = client.newCall(request).execute()
+    when: "The request is sent and completed"
+      async.evaluate {
+        assert messages.poll(10, TimeUnit.SECONDS) == "DELETED"
+      }
 
-        then:
-        assert response1.code() == 200
-        assert response1.body().string() == "admin"
-        assert System.currentTimeMillis() - startTime >= 100
+    then: "Expect the result to be completed in the specified time"
+      async.await(10)
+  }
 
-        cleanup:
-        response1.close()
-    }
+  def "when setting a timed websocket binary message it should be fire at the specified time"() {
+    given: "A WebSocket expectation"
+      server.expect().get().withPath("/api/v1/users/watch")
+        .andUpgradeToWebSocket()
+        .open()
+        .waitFor(1000).andEmit(new WebSocketMessage(new byte[]{1, 2, 3}))
+        .done()
+        .once()
+    and:
+      Queue<byte[]> messages = new ArrayBlockingQueue<>(1)
+    and: "A WebSocket request"
+      def wsReq = wsClient.webSocket().connect(server.port, server.getHostName(), "/api/v1/users/watch")
+    and: "A WebSocket listener"
+      wsReq.onComplete { ws ->
+        ws.result().binaryMessageHandler { buffer ->
+          messages.add(buffer.getBytes(0, buffer.length()))
+        }
+        ws.result().closeHandler { _ ->
+          ws.result().close()
+        }
+      }
+    and: "An instance of AsyncConditions"
+      def async = new AsyncConditions(1)
 
-    def "when using a body provider it should work as for static responses"() {
-        given:
-        int[] counter = [0]
-        server.expect().get().withPath("/api/v1/users").andReply(200, {req -> "admin" + (counter[0]++)}).always()
+    when: "The request is sent and completed"
+      async.evaluate {
+        assert messages.poll(10, TimeUnit.SECONDS) == new byte[]{1, 2, 3}
+      }
 
-        when:
-        Request request = new Request.Builder().url(server.url("/api/v1/users")).get().build()
-        Response response1 = client.newCall(request).execute()
-        Response response2 = client.newCall(request).execute()
+    then: "Expect the result to be completed in the specified time"
+      async.await(10)
+  }
 
-        then:
-        assert response1.code() == 200
-        assert response1.body().string() == "admin0"
-        assert response2.code() == 200
-        assert response2.body().string() == "admin1"
+  def "when setting a request/response websocket message it should be fired when the event is triggered"() {
+    given: "A WebSocket expectation"
+      server.expect().get().withPath("/api/v1/users/watch")
+        .andUpgradeToWebSocket()
+        .open()
+        .expect("create root").andEmit("CREATED").once()
+        .expect("delete root").andEmit("DELETED").once()
+        .done()
+        .once()
+    and:
+      Queue<String> messages = new ArrayBlockingQueue<>(2)
+    and: "A WebSocket request"
+      def wsReq = wsClient.webSocket().connect(server.port, server.getHostName(), "/api/v1/users/watch")
+    and: "A WebSocket listener"
+      wsReq.onComplete { ws ->
+        ws.result().textMessageHandler { text ->
+          messages.add(text)
+        }
+        ws.result().writeTextMessage("create root")
+        ws.result().writeTextMessage("delete root")
+      }
+    and: "An instance of AsyncConditions"
+      def async = new AsyncConditions(1)
 
-        cleanup:
-        response1.close()
-        response2.close()
-    }
+    when: "The request is sent and completed"
+      async.evaluate {
+        assert messages.poll(10, TimeUnit.SECONDS) == "CREATED"
+        assert messages.poll(10, TimeUnit.SECONDS) == "DELETED"
+      }
 
-    def "when using a response provider it should work as for static responses"() {
-        given:
-        int[] counter = [0, 0]
-        server.expect().get().withPath("/api/v1/users").andReply(new ResponseProvider<Object>() {
-            private Headers headers = new Headers.Builder().build()
+    then: "Expect the result to be completed in the specified time"
+      async.await(10)
+  }
+
+  def "when receiving an unexpected websocket message it should close the connection with status code 1002"() {
+    given: "A WebSocket expectation"
+      server.expect().get().withPath("/api/v1/users/watch")
+        .andUpgradeToWebSocket()
+        .open()
+        .expect("expected message").andEmit("MESSAGE OK").once()
+        .done()
+        .once()
+    and:
+      def closeCode = new CompletableFuture<Integer>()
+      def closeReason = new CompletableFuture<String>()
+    and: "A WebSocket request"
+      def wsReq = wsClient.webSocket().connect(server.port, server.getHostName(), "/api/v1/users/watch")
+    and: "A WebSocket listener"
+      wsReq.onComplete { ws ->
+        ws.result().closeHandler { v ->
+          closeCode.complete(ws.result().closeStatusCode())
+          closeReason.complete(ws.result().closeReason())
+        }
+        ws.result().writeTextMessage("unexpected message")
+      }
+    and: "An instance of AsyncConditions"
+      def async = new AsyncConditions(1)
+
+    when: "The request is sent and completed"
+      async.evaluate {
+        assert closeCode.get(10, TimeUnit.SECONDS) == 1002
+        assert closeReason.get(10, TimeUnit.SECONDS) == "Unexpected message:unexpected message"
+      }
+
+    then: "Expect the result to be completed in the specified time"
+      async.await(10)
+  }
+
+  def "when setting a delayed response it should be delayed for the specified duration"() {
+    given: "An expectation with delay"
+      server.expect().get().withPath("/api/v1/users")
+        .delay(100, TimeUnit.MILLISECONDS)
+        .andReturn(200, "admin")
+        .once()
+    and: "A start time"
+      def startTime = System.currentTimeMillis()
+    and: "A request"
+      def req1 = client.get(server.port, server.getHostName(), "/api/v1/users").send()
+    and: "An instance of AsyncConditions"
+      def async = new AsyncConditions(1)
+
+    when: "The request is sent and completed"
+      req1.onComplete {isr ->
+        async.evaluate {
+          assert req1.result().statusCode() == 200
+          assert req1.result().body().toString() == "admin"
+          assert System.currentTimeMillis() - startTime >= 100
+        }
+      }
+
+    then: "Expect the result to be completed in the specified time"
+      async.await(10)
+  }
+
+  def "when using a body provider it should work as for static responses"() {
+    given: "A counter"
+      def counter = new AtomicInteger(0);
+    and: "An expectation with body provider"
+      server.expect().get().withPath("/api/v1/users")
+        .andReply(200, {req -> "admin-" + counter.getAndIncrement()})
+        .always()
+    and: "A request"
+      def req1 = client.get(server.port, server.getHostName(), "/api/v1/users").send()
+    and: "A second request"
+      def req2 = req1.compose { _ ->
+        client.get(server.port, server.getHostName(), "/api/v1/users").send()
+      }
+    and: "An instance of AsyncConditions"
+      def async = new AsyncConditions(1)
+
+    when: "The request is sent and completed"
+      Future.all(req1, req2).onComplete {isr ->
+        async.evaluate {
+          assert req1.result().statusCode() == 200
+          assert req1.result().body().toString() == "admin-0"
+          assert req2.result().statusCode() == 200
+          assert req2.result().body().toString() == "admin-1"
+        }
+      }
+
+    then: "Expect the result to be completed in the specified time"
+      async.await(10)
+  }
+
+  def "when using a response provider it should work as for static responses"() {
+    given: "An expectation with response provider"
+      server.expect().get().withPath("/api/v1/users")
+        .andReply(new ResponseProvider<Object>() {
+            def counter = new AtomicInteger(0);
+            def headers = new Headers.Builder().build()
 
             int getStatusCode(RecordedRequest request) {
-                return 200 + (counter[0]++)
+                return 200
             }
 
             Object getBody(RecordedRequest request) {
-                return "admin" + (counter[1]++)
+                return "admin-" + counter.get()
             }
 
             @Override
             Headers getHeaders() {
-                return headers
+                return headers.newBuilder().add("Count", "" + counter.incrementAndGet()).build()
             }
 
             @Override
             void setHeaders(Headers headers) {
                 this.headers = headers
             }
-        }).always()
+        })
+        .always()
+    and: "A request"
+      def req1 = client.get(server.port, server.getHostName(), "/api/v1/users").send()
+    and: "A second request"
+      def req2 = req1.compose { _ ->
+        client.get(server.port, server.getHostName(), "/api/v1/users").send()
+      }
+    and: "An instance of AsyncConditions"
+      def async = new AsyncConditions(1)
 
-        when:
-        Request req = new Request.Builder().url(server.url("/api/v1/users")).get().build()
-        Response response1 = client.newCall(req).execute()
-        Response response2 = client.newCall(req).execute()
-
-        then:
-        assert response1.code() == 200
-        assert response1.body().string() == "admin0"
-        assert response2.code() == 201
-        assert response2.body().string() == "admin1"
-
-        cleanup:
-        response1.close()
-        response2.close()
-    }
-
-    def "should be able to set headers on responses"() {
-        given:
-        server.expect().get().withPath("/api/v1/users").andReturn(200, "admin").withHeader("test: header").withHeader("test2", "header2").once()
-
-        when:
-        Request request = new Request.Builder().url(server.url("/api/v1/users")).get().build()
-        Response response = client.newCall(request).execute()
-
-        then:
-        assert response.code() == 200
-        assert response.body().string() == "admin"
-        assert response.header("test") == "header"
-        assert response.header("test2") == "header2"
-
-        cleanup:
-        response.close()
-    }
-
-    def "when setting an httprequest/response websocket message it should be fired when the event is triggered"() {
-        given:
-        CountDownLatch opened = new CountDownLatch(1)
-        CountDownLatch closed = new CountDownLatch(1)
-        CountDownLatch queued = new CountDownLatch(2)
-        Queue<String> messages = new ArrayBlockingQueue<String>(2)
-        AtomicReference<WebSocket> webSocketRef = new AtomicReference<>()
-
-        WebSocketListener listener = new WebSocketListener() {
-            @Override
-            void onOpen(WebSocket webSocket, Response response) {
-                webSocketRef.set(webSocket)
-                opened.countDown()
-            }
-
-            @Override
-            void onMessage(WebSocket webSocket, String text) {
-                messages.add(text)
-                queued.countDown()
-            }
-
-            @Override
-            void onMessage(WebSocket webSocket, ByteString bytes) {
-                onMessage(webSocket, bytes.utf8())
-            }
-
-            @Override
-            void onClosing(WebSocket webSocket, int code, String reason) {
-                webSocket.close(code, reason)
-            }
-
-            @Override
-            void onClosed(WebSocket webSocket, int code, String reason) {
-                closed.countDown()
-            }
+    when: "The request is sent and completed"
+      Future.all(req1, req2).onComplete {isr ->
+        async.evaluate {
+          assert req1.result().statusCode() == 200
+          assert req1.result().body().toString() == "admin-1"
+          assert req1.result().headers().get("Count") == "1"
+          assert req2.result().statusCode() == 200
+          assert req2.result().body().toString() == "admin-2"
+          assert req2.result().headers().get("Count") == "2"
         }
+      }
 
-        server.expect().get().withPath("/api/v1/users/watch")
-                .andUpgradeToWebSocket()
-                .open()
-                .expectHttpRequest("/api/v1/create").andEmit("CREATED").once()
-                .expectHttpRequest("/api/v1/delete").andEmit("DELETED").once()
-                .done()
-                .once()
+    then: "Expect the result to be completed in the specified time"
+      async.await(10)
+  }
 
+  def "should be able to set headers on responses"() {
+    given: "An expectation with header"
+      server.expect().get().withPath("/api/v1/users")
+        .andReturn(200, "admin")
+        .withHeader("test: header")
+        .withHeader("test2", "header2")
+        .once()
+    and: "A request"
+      def req1 = client.get(server.port, server.getHostName(), "/api/v1/users").send()
+    and: "An instance of AsyncConditions"
+      def async = new AsyncConditions(1)
 
-        when:
-        Request request = new Request.Builder().url(server.url("/api/v1/users/watch")).get().build()
-        webSocketRef.set(client.newWebSocket(request, listener))
-
-        then:
-        opened.await(10, TimeUnit.SECONDS)
-        WebSocket ws = webSocketRef.get()
-
-        when:
-        request = new Request.Builder().url(server.url("/api/v1/create")).get().build()
-        client.newCall(request).execute()
-
-        then:
-        messages.poll(10, TimeUnit.SECONDS) == "CREATED"
-
-        when:
-        request = new Request.Builder().url(server.url("/api/v1/delete")).get().build()
-        client.newCall(request).execute()
-
-        then:
-        messages.poll(10, TimeUnit.SECONDS) == "DELETED"
-
-        when:
-        ws.close(1000, "just close")
-
-        then:
-        closed.await(10, TimeUnit.SECONDS)
-    }
-
-    def "when setting an sentWebSocketMessage/response websocket message it should be fired when the event is triggered"() {
-        given:
-        CountDownLatch opened = new CountDownLatch(1)
-        CountDownLatch closed = new CountDownLatch(1)
-        CountDownLatch queued = new CountDownLatch(2)
-        Queue<String> messages = new ArrayBlockingQueue<String>(2)
-        AtomicReference<WebSocket> webSocketRef = new AtomicReference<>()
-
-        WebSocketListener listener = new WebSocketListener() {
-            @Override
-            void onOpen(WebSocket webSocket, Response response) {
-                webSocketRef.set(webSocket)
-                opened.countDown()
-            }
-
-            @Override
-            void onMessage(WebSocket webSocket, String text) {
-                messages.add(text)
-                queued.countDown()
-            }
-
-            @Override
-            void onMessage(WebSocket webSocket, ByteString bytes) {
-                onMessage(webSocket, bytes.utf8())
-            }
-
-            @Override
-            void onClosing(WebSocket webSocket, int code, String reason) {
-                webSocket.close(code, reason)
-            }
-
-            @Override
-            void onClosed(WebSocket webSocket, int code, String reason) {
-                closed.countDown()
-            }
+    when: "The request is sent and completed"
+      req1.onComplete {isr ->
+        async.evaluate {
+          assert req1.result().statusCode() == 200
+          assert req1.result().body().toString() == "admin"
+          assert req1.result().headers().get("test") == "header"
+          assert req1.result().headers().get("test2") == "header2"
         }
+      }
 
-        server.expect().get().withPath("/api/v1/users/watch")
-                .andUpgradeToWebSocket()
-                .open()
-                .expectHttpRequest("/api/v1/create").andEmit("CREATED").once()
-                .expectSentWebSocketMessage("CREATED").andEmit("DELETED").once()
-                .done()
-                .once()
+    then: "Expect the result to be completed in the specified time"
+      async.await(10)
+  }
 
+  def "when setting an httprequest/response websocket message it should be fired when the event is triggered"() {
+    given: "A WebSocket + HTTP expectation"
+      server.expect().get().withPath("/api/v1/users/watch")
+        .andUpgradeToWebSocket()
+        .open()
+        .expectHttpRequest("/api/v1/create").andEmit("CREATED").once()
+        .expectHttpRequest("/api/v1/delete").andEmit("DELETED").once()
+        .done()
+        .once()
+    and:
+      Queue<String> messages = new ArrayBlockingQueue<>(2)
+    and: "A WebSocket request"
+      def wsReq = wsClient.webSocket().connect(server.port, server.getHostName(), "/api/v1/users/watch")
+    and: "A WebSocket listener"
+      wsReq.andThen { ws ->
+        ws.result().textMessageHandler { text ->
+          messages.add(text)
+        }
+      }
+    and: "HTTP requests after WS connection initiated"
+      wsReq.onComplete {
+        client.get(server.port, server.getHostName(), "/api/v1/create").send()
+          .compose { _ -> client.get(server.port, server.getHostName(), "/api/v1/delete").send() }
 
-        when:
-        Request request = new Request.Builder().url(server.url("/api/v1/users/watch")).get().build()
-        webSocketRef.set(client.newWebSocket(request, listener))
+      }
+    and: "An instance of AsyncConditions"
+      def async = new AsyncConditions(1)
 
-        then:
-        opened.await(10, TimeUnit.SECONDS)
-        WebSocket ws = webSocketRef.get()
+    when: "The request is sent and completed"
+      async.evaluate {
+        assert messages.poll(10, TimeUnit.SECONDS) == "CREATED"
+        assert messages.poll(10, TimeUnit.SECONDS) == "DELETED"
+      }
 
-        when:
-        request = new Request.Builder().url(server.url("/api/v1/create")).get().build()
-        client.newCall(request).execute()
+    then: "Expect the result to be completed in the specified time"
+      async.await(10)
+  }
 
-        then:
-        messages.poll(10, TimeUnit.SECONDS) == "CREATED"
-        messages.poll(10, TimeUnit.SECONDS) == "DELETED"
+  def "when setting an sentWebSocketMessage/response websocket message it should be fired when the event is triggered"() {
+    given: "A WebSocket + HTTP expectation"
+      server.expect().get().withPath("/api/v1/users/watch")
+        .andUpgradeToWebSocket()
+        .open()
+        .expectHttpRequest("/api/v1/create").andEmit("CREATED").once()
+        .expectSentWebSocketMessage("CREATED").andEmit("WS-CREATED").once()
+        .done()
+        .once()
+    and:
+      Queue<String> messages = new ArrayBlockingQueue<>(2)
+    and: "A WebSocket request"
+      def wsReq = wsClient.webSocket().connect(server.port, server.getHostName(), "/api/v1/users/watch")
+    and: "A WebSocket listener"
+      wsReq.andThen { ws ->
+        ws.result().textMessageHandler { text ->
+          messages.add(text)
+        }
+      }
+    and: "HTTP request after WS connection initiated and WS request after HTTP request"
+      wsReq.andThen { ws ->
+        client.get(server.port, server.getHostName(), "/api/v1/create").send()
+        .compose {_ ->{
+          ws.result().writeTextMessage("CREATED")
+        }}
+      }
+    and: "An instance of AsyncConditions"
+      def async = new AsyncConditions(1)
 
-        when:
-        ws.close(1000, "just close")
+    when: "The request is sent and completed"
+      async.evaluate {
+        assert messages.poll(10, TimeUnit.SECONDS) == "CREATED"
+        assert messages.poll(10, TimeUnit.SECONDS) == "WS-CREATED"
+      }
 
-        then:
-        closed.await(10, TimeUnit.SECONDS)
-    }
+    then: "Expect the result to be completed in the specified time"
+      async.await(10)
+  }
 }
