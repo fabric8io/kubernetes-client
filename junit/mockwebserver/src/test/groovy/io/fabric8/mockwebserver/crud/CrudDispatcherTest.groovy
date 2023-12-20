@@ -19,106 +19,146 @@ import io.fabric8.mockwebserver.Context
 import io.fabric8.mockwebserver.DefaultMockServer
 import io.fabric8.mockwebserver.ServerRequest
 import io.fabric8.mockwebserver.ServerResponse
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.Response
-import okhttp3.RequestBody
-import okhttp3.MediaType
+import io.vertx.core.Vertx
+import io.vertx.core.buffer.Buffer
+import io.vertx.ext.web.client.WebClient
 import okhttp3.mockwebserver.MockWebServer
+import spock.lang.Shared
 import spock.lang.Specification
-import com.fasterxml.jackson.databind.JsonNode
+import spock.util.concurrent.AsyncConditions
 
 class CrudDispatcherTest extends Specification {
 
-    AttributeExtractor extractor = new AttributeExtractor() {
+  @Shared
+  static def vertx = Vertx.vertx()
 
-        @Override
-        AttributeSet fromPath(String path) {
-            AttributeSet set = new AttributeSet()
+  DefaultMockServer server
 
-            String[] parts = path.split("/")
-            if (parts.length > 2) {
-                set = set.add(new Attribute("namespace", parts[2]))
-            }
+  WebClient client
 
-            if (parts.length > 4) {
-                set = set.add(new Attribute("name", parts[4]))
-            }
-            return set
+  def setup() {
+    final var context = new Context();
+    server = new DefaultMockServer(context, new MockWebServer(), new HashMap<ServerRequest, Queue<ServerResponse>>(),
+      new CrudDispatcher(context, new CrudDispatcherTestAttributeExtractor(), new CrudDispatcherTestComposer()), false)
+    server.start()
+    client = WebClient.create(vertx)
+  }
+
+  def cleanup() {
+    server.shutdown()
+    client.close()
+  }
+
+  def "should be able to get after a patch"() {
+    given: "A POST request with a starting object"
+      final var postNew = client.post(server.port, server.hostName, "/namespace/test/name/one")
+        .putHeader("Content-Type", "application/json")
+        .sendBuffer(Buffer.buffer("""{"foo":{"bar":"startingValue","baz":"keepThis"} }"""))
+    and: "A PATCH request to update the object"
+      final var patch = postNew.compose { _ ->
+        client
+          .patch(server.port, server.hostName, "/namespace/test/name/one")
+          .putHeader("Content-Type", "application/strategic-merge-patch+json")
+          .sendBuffer(Buffer.buffer("""[{"op":"replace","path":"/foo/bar","value":"canary"}]"""))
+      }
+    and: "A GET request to retrieve and verify the object"
+      final var get = patch.compose { _ ->
+        client.get(server.port, server.hostName, "/namespace/test/name/one").send()
+      }
+    and: "An instance of AsyncConditions"
+      def async = new AsyncConditions(1)
+
+    when: "The requests are sent and completed"
+      get.onComplete { res ->
+        async.evaluate {
+          assert res.result().statusCode() == 200
+          assert res.result().body().toString() == """{"foo":{"bar":"canary","baz":"keepThis"}}"""
         }
+      }
 
-        @Override
-        AttributeSet fromResource(String resource) {
-            return null
+    then: "Expect the result to be completed in the specified time"
+      async.await(10)
+  }
+
+  def "should be able to get after a post"() {
+    given: "A POST request with a starting object"
+      final var postNew = client.post(server.port, server.hostName, "/namespace/test/name/one")
+        .putHeader("Content-Type", "text/html")
+        .sendBuffer(Buffer.buffer("one"))
+    and: "A GET request to retrieve and verify the object"
+      final var get = postNew.compose { _ ->
+        client.get(server.port, server.hostName, "/namespace/test/name/one").send()
+      }
+    and: "An instance of AsyncConditions"
+      def async = new AsyncConditions(1)
+
+    when: "The requests are sent and completed"
+      get.onComplete { res ->
+        async.evaluate {
+          assert res.result().statusCode() == 200
+          assert res.result().body().toString() == "one"
         }
-    }
+      }
 
-    ResponseComposer composer = new ResponseComposer() {
-        @Override
-        String compose(Collection<String> items) {
-            StringBuilder sb = new StringBuilder();
-            for (String item : items) {
-                sb.append(item).append(" ")
-            }
-            return sb.toString().trim()
+    then: "Expect the result to be completed in the specified time"
+      async.await(10)
+  }
+
+  def "should be able to delete after a post"() {
+    given: "A POST request with a starting object"
+      final var postNew = client.post(server.port, server.hostName, "/namespace/test/name/one")
+        .putHeader("Content-Type", "text/html")
+        .sendBuffer(Buffer.buffer("one"))
+    and: "A DELETE request to delete the object"
+      final var delete = postNew.compose { _ ->
+        client.delete(server.port, server.hostName, "/namespace/test/name/one").send()
+      }
+    and: "A GET request to retrieve and verify the object"
+      final var get = delete.compose { _ ->
+        client.get(server.port, server.hostName, "/namespace/test/name/one").send()
+      }
+    and: "An instance of AsyncConditions"
+      def async = new AsyncConditions(1)
+
+    when: "The requests are sent and completed"
+      get.onComplete { res ->
+        async.evaluate {
+          assert res.result().statusCode() == 404
         }
+      }
+
+    then: "Expect the result to be completed in the specified time"
+      async.await(10)
+  }
+
+  private static final class CrudDispatcherTestAttributeExtractor implements AttributeExtractor {
+
+    @Override
+    AttributeSet fromPath(String path) {
+      final var set = new AttributeSet()
+      final var parts = path.split("/")
+      if (parts.length > 2) {
+        set.add(new Attribute("namespace", parts[2]))
+      } else if (parts.length > 4) {
+        set.add(new Attribute("name", parts[4]))
+      }
+      return set
     }
 
-    def "should be able to get after a patch"() {
-        given:
-        Context context = new Context()
-        DefaultMockServer server = new DefaultMockServer(context, new  MockWebServer(), new HashMap<ServerRequest, Queue<ServerResponse>>(), new CrudDispatcher(context, extractor, composer), false)
-        String startingJson = """{"foo":{"bar":"startingValue","baz":"keepThis"} }"""
-        String patch = """[{"op":"replace","path":"/foo/bar","value":"canary"}]"""
-        when:
-        server.start()
-        then:
-        OkHttpClient client = new OkHttpClient()
-        Request post = new Request.Builder().post(RequestBody.create(MediaType.parse("application/json"), startingJson)).url(server.url("/namespace/test/name/one")).build()
-        client.newCall(post).execute()
-
-        Request patchRequest = new Request.Builder().patch(RequestBody.create(MediaType.parse("application/strategic-merge-patch+json"), patch)).url(server.url("/namespace/test/name/one")).build()
-        client.newCall(patchRequest).execute()
-
-        Request get = new Request.Builder().get().url(server.url("/namespace/test/name/one")).build()
-        Response response = client.newCall(get).execute()
-        JsonNode responseJson = context.getMapper().readValue(response.body().string(), JsonNode.class);
-        JsonNode expected = context.mapper.readValue("""{"foo": {"bar": "canary", "baz": "keepThis"}}""", JsonNode.class)
-        expected == responseJson
+    @Override
+    AttributeSet fromResource(String resource) {
+      return null
     }
+  }
 
-    def "should be able to get after a post"() {
-        given:
-        Context context = new Context()
-        DefaultMockServer server = new DefaultMockServer(context, new  MockWebServer(), new HashMap<ServerRequest, Queue<ServerResponse>>(), new CrudDispatcher(context, extractor, composer), false)
-        when:
-        server.start()
-        then:
-        OkHttpClient client = new OkHttpClient()
-        Request post = new Request.Builder().post(RequestBody.create(MediaType.parse("text/html"), "one")).url(server.url("/namespace/test/name/one")).build()
-        client.newCall(post).execute()
-        Request get = new Request.Builder().get().url(server.url("/namespace/test/name/one")).build()
-        Response response = client.newCall(get).execute()
-        assert response.body().string().equals("one")
+  private static final class CrudDispatcherTestComposer implements ResponseComposer {
+    @Override
+    String compose(Collection<String> items) {
+      StringBuilder sb = new StringBuilder();
+      for (String item : items) {
+        sb.append(item).append(" ")
+      }
+      return sb.toString().trim()
     }
-
-    def "should be able to delete after a post"() {
-        given:
-        Context context = new Context()
-        DefaultMockServer server = new DefaultMockServer(context, new MockWebServer(), new HashMap<ServerRequest, Queue<ServerResponse>>(), new CrudDispatcher(context, extractor, composer), false)
-        when:
-        server.start()
-        then:
-        OkHttpClient client = new OkHttpClient()
-        Request post = new Request.Builder().post(RequestBody.create(MediaType.parse("text/html"), "one")).url(server.url("/namespace/test/name/one")).build()
-        client.newCall(post).execute()
-        Request get = new Request.Builder().delete().url(server.url("/namespace/test/name/one")).build()
-        Response response = client.newCall(get).execute()
-        assert response.successful
-
-        Request getMissing = new Request.Builder().delete().url(server.url("/namespace/test/name/two")).build()
-        Response responseMissing = client.newCall(getMissing).execute()
-    assert !responseMissing.successful
-    }
-
+  }
 }
