@@ -15,25 +15,23 @@
  */
 package io.fabric8.mockwebserver
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import io.fabric8.mockwebserver.crud.CrudDispatcher
-import okhttp3.MediaType
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.RequestBody
+import io.vertx.core.Future
+import io.vertx.core.Vertx
+import io.vertx.ext.web.client.WebClient
 import okhttp3.mockwebserver.MockWebServer
 import spock.lang.Shared
 import spock.lang.Specification
+import spock.util.concurrent.AsyncConditions
 
 class DefaultMockServerCrudTest extends Specification {
 
+  @Shared
+  static def vertx = Vertx.vertx()
+  @Shared
+  static def client = WebClient.create(vertx)
+
   DefaultMockServer server
-
-  @Shared
-  def client = new OkHttpClient()
-
-  @Shared
-  def mapper = new ObjectMapper()
 
   def setup() {
     server = new DefaultMockServer(new Context(), new MockWebServer(), new HashMap<>(),
@@ -45,98 +43,143 @@ class DefaultMockServerCrudTest extends Specification {
     server.shutdown()
   }
 
-  def "get /, with empty store, should return 404"() {
-    when:
-    def result = client.newCall(new Request.Builder().url(server.url("/")).build()).execute()
-
-    then:
-    assert result.code() == 404
-    assert result.body().string() == ""
+  def cleanupSpec() {
+    client.close()
+    vertx.close()
   }
 
-  def "get /, with one item, should return item"() {
-    given:
-    client.newCall(new Request.Builder().url(server.url("/")).post(
-        RequestBody.create(MediaType.parse("application/json"),
-            mapper.writeValueAsString(new User(1L, "user", true)))).build()).
-        execute()
+  def "GET /, with empty store, should return 404"() {
+    given: "An HTTP request to /"
+     def request = client.get(server.port, server.getHostName(), "/")
+    and: "An instance of AsyncConditions"
+      def async = new AsyncConditions(1)
 
-    when:
-    def result = client.newCall(new Request.Builder().url(server.url("/")).build()).execute()
+    when: "The request is sent and completed"
+      request.send().onComplete { res ->
+        async.evaluate {
+          assert res.result().statusCode() == 404
+          assert res.result().body() == null
+        }
+      }
 
-    then:
-    assert result.code() == 200
-    assert result.body().string() == "{\"id\":1,\"username\":\"user\",\"enabled\":true}"
+    then: "Expect the result to be completed in the specified time"
+      async.await(10)
   }
 
-  def "get /, with multiple items, should return array"() {
-    given:
-    client.newCall(new Request.Builder().url(server.url("/")).post(
-        RequestBody.create(MediaType.parse("application/json"),
-            mapper.writeValueAsString(new User(1L, "user", true)))).build()).
-        execute()
-    client.newCall(new Request.Builder().url(server.url("/")).post(
-        RequestBody.create(MediaType.parse("application/json"),
-            mapper.writeValueAsString(new User(2L, "user-2", true)))).build()).
-        execute()
+  def "POST /, with one item, should return item"() {
+    given: "An HTTP request to /"
+      def request = client.post(server.port, server.getHostName(), "/")
+    and: "An instance of AsyncConditions"
+      def async = new AsyncConditions(1)
 
-    when:
-    def result = client.newCall(new Request.Builder().url(server.url("/")).build()).execute()
+    when: "The request is sent with one JSON item and completed"
+      request.sendJson(new User(1L, "user", true)).onComplete { res ->
+        async.evaluate {
+          assert res.result().statusCode() == 202
+          assert res.result().body().toString() == "{\"id\":1,\"username\":\"user\",\"enabled\":true}"
+        }
+      }
 
-    then:
-    assert result.code() == 200
-    assert result.body().string() ==
-        "[{\"id\":1,\"username\":\"user\",\"enabled\":true},{\"id\":2,\"username\":\"user-2\",\"enabled\":true}]"
+    then: "Expect the result to be completed in the specified time"
+      async.await(10)
   }
 
-  def "get /1, with existent item, should return item"() {
-    given:
-    client.newCall(new Request.Builder().url(server.url("/")).post(
-        RequestBody.create(MediaType.parse("application/json"),
-            mapper.writeValueAsString(new User(1L, "user", true)))).build()).
-        execute()
-    client.newCall(new Request.Builder().url(server.url("/")).post(
-        RequestBody.create(MediaType.parse("application/json"),
-            mapper.writeValueAsString(new User(2L, "user-2", true)))).build()).
-        execute()
+  def "GET /, with multiple items, should return array"() {
+    given: "An HTTP request to /"
+      def request = client.get(server.port, server.getHostName(), "/")
+    and: "An instance of AsyncConditions"
+      def async = new AsyncConditions(1)
+    and: "Items in the server"
+      def itemsInServer = Future.all(
+        client.post(server.port, server.getHostName(), "/")
+          .sendJson(new User(1L, "user", true)),
+        client.post(server.port, server.getHostName(), "/")
+          .sendJson(new User(2L, "user-2", true))
+      )
 
-    when:
-    def result = client.newCall(new Request.Builder().url(server.url("/1")).build()).execute()
+    when: "The request is sent and completed"
+      itemsInServer.onComplete {isr ->
+        request.send().onComplete { res ->
+          async.evaluate { assert res.result().statusCode() == 200
+            assert res.result().body().toString() == "[{\"id\":1,\"username\":\"user\",\"enabled\":true},{\"id\":2,\"username\":\"user-2\",\"enabled\":true}]"
+          }
+        }
+      }
 
-    then:
-    assert result.code() == 200
-    assert result.body().string() == "{\"id\":1,\"username\":\"user\",\"enabled\":true}"
+    then: "Expect the result to be completed in the specified time"
+      async.await(10)
   }
 
-  def "put /1, with missing item, should create item"() {
-    when:
-    def result = client.newCall(new Request.Builder().url(server.url("/1")).put(
-        RequestBody.create(MediaType.parse("application/json"),
-            mapper.writeValueAsString(new User(1L, "user-replaced", true)))).build()).
-        execute()
+  def "GET /1, with existent item, should return item"() {
+    given: "An HTTP request to /1"
+      def request = client.get(server.port, server.getHostName(), "/1")
+    and: "An instance of AsyncConditions"
+      def async = new AsyncConditions(1)
+    and: "Items in the server"
+      def itemsInServer = Future.all(
+        client.post(server.port, server.getHostName(), "/")
+          .sendJson(new User(1L, "user", true)),
+        client.post(server.port, server.getHostName(), "/")
+          .sendJson(new User(2L, "user-2", true))
+      )
 
-    then:
-    assert result.code() == 201
-    assert result.body().string() == "{\"id\":1,\"username\":\"user-replaced\",\"enabled\":true}"
+    when: "The request is sent and completed"
+      itemsInServer.onComplete {isr ->
+        request.send().onComplete { res ->
+          async.evaluate {
+            assert res.result().statusCode() == 200
+            assert res.result().body().toString() == "{\"id\":1,\"username\":\"user\",\"enabled\":true}"
+          }
+        }
+      }
+
+    then: "Expect the result to be completed in the specified time"
+      async.await(10)
   }
 
-  def "put /1, with existent item, should replace item"() {
-    given:
-    client.newCall(new Request.Builder().url(server.url("/")).post(
-        RequestBody.create(MediaType.parse("application/json"),
-            mapper.writeValueAsString(new User(1L, "user", true)))).build()).
-        execute()
+  def "PUT /1, with missing item, should create item"() {
+    given: "An HTTP request to /1"
+      def request = client.put(server.port, server.getHostName(), "/1")
+    and: "An instance of AsyncConditions"
+      def async = new AsyncConditions(1)
 
-    when:
-    def result = client.newCall(new Request.Builder().url(server.url("/1")).put(
-        RequestBody.create(MediaType.parse("application/json"),
-            mapper.writeValueAsString(new User(1L, "user-replaced", true)))).build()).
-        execute()
 
-    then:
-    assert result.code() == 202
-    assert result.body().string() == "{\"id\":1,\"username\":\"user-replaced\",\"enabled\":true}"
-    def item = client.newCall(new Request.Builder().url(server.url("/1")).build()).execute()
-    assert item.body().string() == "{\"id\":1,\"username\":\"user-replaced\",\"enabled\":true}"
+    when: "The request is sent with one JSON item and completed"
+      request.sendJson(new User(1L, "user-replaced", true)).onComplete { res ->
+        async.evaluate {
+          assert res.result().statusCode() == 201
+          assert res.result().body().toString() == "{\"id\":1,\"username\":\"user-replaced\",\"enabled\":true}"
+        }
+      }
+
+    then: "Expect the result to be completed in the specified time"
+      async.await(10)
+  }
+
+  def "PUT /1, with existent item, should replace item"() {
+    given: "An HTTP request to /1"
+      def request = client.put(server.port, server.getHostName(), "/1")
+    and: "An instance of AsyncConditions"
+      def async = new AsyncConditions(1)
+    and: "Items in the server"
+      def itemsInServer = Future.all(
+        client.post(server.port, server.getHostName(), "/")
+          .sendJson(new User(1L, "user", true)),
+        client.post(server.port, server.getHostName(), "/")
+          .sendJson(new User(2L, "user-2", true))
+      )
+
+    when: "The request is sent with one JSON item and completed"
+      itemsInServer.onComplete { isr ->
+        request.sendJson(new User(1L, "user-replaced", true)).onComplete { res ->
+          async.evaluate {
+            assert res.result().statusCode() == 202
+            assert res.result().body().toString() == "{\"id\":1,\"username\":\"user-replaced\",\"enabled\":true}"
+          }
+        }
+      }
+
+    then: "Expect the result to be completed in the specified time"
+      async.await(10)
   }
 }
