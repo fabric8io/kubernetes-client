@@ -23,7 +23,6 @@ import io.vertx.core.http.WebSocketClient
 import io.vertx.ext.web.client.WebClient
 import okhttp3.Headers
 import okhttp3.mockwebserver.RecordedRequest
-import spock.lang.Shared
 import spock.lang.Specification
 import spock.util.concurrent.AsyncConditions
 
@@ -34,8 +33,7 @@ import java.util.concurrent.atomic.AtomicInteger
 
 class DefaultMockServerTest extends Specification {
 
-  @Shared
-  static def vertx = Vertx.vertx()
+  Vertx vertx = Vertx.vertx()
 
   DefaultMockServer server
 
@@ -44,6 +42,7 @@ class DefaultMockServerTest extends Specification {
   WebSocketClient wsClient
 
   def setup() {
+    vertx = Vertx.vertx()
     server = new DefaultMockServer()
     server.start()
     client = WebClient.create(vertx)
@@ -54,12 +53,8 @@ class DefaultMockServerTest extends Specification {
     server.shutdown()
     client.close()
     wsClient.close()
-  }
-
-  def cleanupSpec() {
     vertx.close()
   }
-
 
   def "getPort, should return a valid port"() {
     when:
@@ -625,6 +620,7 @@ class DefaultMockServerTest extends Specification {
       server.expect().get().withPath("/api/v1/users/watch")
         .andUpgradeToWebSocket()
         .open()
+        .immediately().andEmit("READY")
         .expectHttpRequest("/api/v1/create").andEmit("CREATED").once()
         .expectSentWebSocketMessage("CREATED").andEmit("WS-CREATED").once()
         .done()
@@ -633,18 +629,18 @@ class DefaultMockServerTest extends Specification {
       Queue<String> messages = new ArrayBlockingQueue<>(2)
     and: "A WebSocket request"
       def wsReq = wsClient.webSocket().connect(server.port, server.getHostName(), "/api/v1/users/watch")
-    and: "A WebSocket listener"
+    and: "A WebSocket listener that sends an HTTP request after WS connection initiated and WS request after HTTP request"
       wsReq.andThen { ws ->
         ws.result().textMessageHandler { text ->
-          messages.add(text)
+          if (text == "READY") {
+            client.get(server.port, server.getHostName(), "/api/v1/create").send()
+                .andThen {_ ->{
+                  ws.result().writeTextMessage("CREATED")
+                }}
+          } else {
+            messages.add(text)
+          }
         }
-      }
-    and: "HTTP request after WS connection initiated and WS request after HTTP request"
-      wsReq.andThen { ws ->
-        client.get(server.port, server.getHostName(), "/api/v1/create").send()
-        .compose {_ ->{
-          ws.result().writeTextMessage("CREATED")
-        }}
       }
     and: "An instance of AsyncConditions"
       def async = new AsyncConditions(1)
