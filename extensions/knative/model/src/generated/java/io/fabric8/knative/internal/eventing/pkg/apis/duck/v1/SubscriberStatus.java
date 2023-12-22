@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.knative.internal.pkg.apis.duck.v1.AuthStatus;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -39,6 +40,7 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
+    "auth",
     "message",
     "observedGeneration",
     "ready",
@@ -70,6 +72,8 @@ import lombok.experimental.Accessors;
 public class SubscriberStatus implements Editable<SubscriberStatusBuilder> , KubernetesResource
 {
 
+    @JsonProperty("auth")
+    private AuthStatus auth;
     @JsonProperty("message")
     private String message;
     @JsonProperty("observedGeneration")
@@ -88,12 +92,23 @@ public class SubscriberStatus implements Editable<SubscriberStatusBuilder> , Kub
     public SubscriberStatus() {
     }
 
-    public SubscriberStatus(String message, Long observedGeneration, String ready, String uid) {
+    public SubscriberStatus(AuthStatus auth, String message, Long observedGeneration, String ready, String uid) {
         super();
+        this.auth = auth;
         this.message = message;
         this.observedGeneration = observedGeneration;
         this.ready = ready;
         this.uid = uid;
+    }
+
+    @JsonProperty("auth")
+    public AuthStatus getAuth() {
+        return auth;
+    }
+
+    @JsonProperty("auth")
+    public void setAuth(AuthStatus auth) {
+        this.auth = auth;
     }
 
     @JsonProperty("message")

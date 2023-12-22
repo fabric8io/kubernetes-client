@@ -40,6 +40,7 @@ import lombok.experimental.Accessors;
     "kind",
     "metadata",
     "CACerts",
+    "audience",
     "ref",
     "uri"
 })
@@ -71,6 +72,8 @@ public class Destination implements Editable<DestinationBuilder> , KubernetesRes
 
     @JsonProperty("CACerts")
     private String cACerts;
+    @JsonProperty("audience")
+    private String audience;
     @JsonProperty("ref")
     private KReference ref;
     @JsonProperty("uri")
@@ -85,9 +88,10 @@ public class Destination implements Editable<DestinationBuilder> , KubernetesRes
     public Destination() {
     }
 
-    public Destination(String cACerts, KReference ref, java.lang.String uri) {
+    public Destination(String cACerts, String audience, KReference ref, java.lang.String uri) {
         super();
         this.cACerts = cACerts;
+        this.audience = audience;
         this.ref = ref;
         this.uri = uri;
     }
@@ -100,6 +104,16 @@ public class Destination implements Editable<DestinationBuilder> , KubernetesRes
     @JsonProperty("CACerts")
     public void setCACerts(String cACerts) {
         this.cACerts = cACerts;
+    }
+
+    @JsonProperty("audience")
+    public String getAudience() {
+        return audience;
+    }
+
+    @JsonProperty("audience")
+    public void setAudience(String audience) {
+        this.audience = audience;
     }
 
     @JsonProperty("ref")

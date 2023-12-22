@@ -43,9 +43,11 @@ import lombok.experimental.Accessors;
     "kind",
     "metadata",
     "annotations",
+    "auth",
     "ceAttributes",
     "conditions",
     "observedGeneration",
+    "sinkAudience",
     "sinkCACerts",
     "sinkUri"
 })
@@ -78,6 +80,8 @@ public class SourceStatus implements Editable<SourceStatusBuilder> , KubernetesR
     @JsonProperty("annotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> annotations = new LinkedHashMap<String, String>();
+    @JsonProperty("auth")
+    private AuthStatus auth;
     @JsonProperty("ceAttributes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<CloudEventAttributes> ceAttributes = new ArrayList<CloudEventAttributes>();
@@ -86,6 +90,8 @@ public class SourceStatus implements Editable<SourceStatusBuilder> , KubernetesR
     private List<Condition> conditions = new ArrayList<Condition>();
     @JsonProperty("observedGeneration")
     private Long observedGeneration;
+    @JsonProperty("sinkAudience")
+    private String sinkAudience;
     @JsonProperty("sinkCACerts")
     private String sinkCACerts;
     @JsonProperty("sinkUri")
@@ -100,12 +106,14 @@ public class SourceStatus implements Editable<SourceStatusBuilder> , KubernetesR
     public SourceStatus() {
     }
 
-    public SourceStatus(Map<String, String> annotations, List<CloudEventAttributes> ceAttributes, List<Condition> conditions, Long observedGeneration, String sinkCACerts, java.lang.String sinkUri) {
+    public SourceStatus(Map<String, String> annotations, AuthStatus auth, List<CloudEventAttributes> ceAttributes, List<Condition> conditions, Long observedGeneration, String sinkAudience, String sinkCACerts, java.lang.String sinkUri) {
         super();
         this.annotations = annotations;
+        this.auth = auth;
         this.ceAttributes = ceAttributes;
         this.conditions = conditions;
         this.observedGeneration = observedGeneration;
+        this.sinkAudience = sinkAudience;
         this.sinkCACerts = sinkCACerts;
         this.sinkUri = sinkUri;
     }
@@ -118,6 +126,16 @@ public class SourceStatus implements Editable<SourceStatusBuilder> , KubernetesR
     @JsonProperty("annotations")
     public void setAnnotations(Map<String, String> annotations) {
         this.annotations = annotations;
+    }
+
+    @JsonProperty("auth")
+    public AuthStatus getAuth() {
+        return auth;
+    }
+
+    @JsonProperty("auth")
+    public void setAuth(AuthStatus auth) {
+        this.auth = auth;
     }
 
     @JsonProperty("ceAttributes")
@@ -148,6 +166,16 @@ public class SourceStatus implements Editable<SourceStatusBuilder> , KubernetesR
     @JsonProperty("observedGeneration")
     public void setObservedGeneration(Long observedGeneration) {
         this.observedGeneration = observedGeneration;
+    }
+
+    @JsonProperty("sinkAudience")
+    public String getSinkAudience() {
+        return sinkAudience;
+    }
+
+    @JsonProperty("sinkAudience")
+    public void setSinkAudience(String sinkAudience) {
+        this.sinkAudience = sinkAudience;
     }
 
     @JsonProperty("sinkCACerts")

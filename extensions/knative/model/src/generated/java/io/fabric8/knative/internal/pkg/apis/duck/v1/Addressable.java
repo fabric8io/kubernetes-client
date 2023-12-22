@@ -40,6 +40,7 @@ import lombok.experimental.Accessors;
     "kind",
     "metadata",
     "CACerts",
+    "audience",
     "name",
     "url"
 })
@@ -71,6 +72,8 @@ public class Addressable implements Editable<AddressableBuilder> , KubernetesRes
 
     @JsonProperty("CACerts")
     private String cACerts;
+    @JsonProperty("audience")
+    private String audience;
     @JsonProperty("name")
     private String name;
     @JsonProperty("url")
@@ -85,9 +88,10 @@ public class Addressable implements Editable<AddressableBuilder> , KubernetesRes
     public Addressable() {
     }
 
-    public Addressable(String cACerts, String name, java.lang.String url) {
+    public Addressable(String cACerts, String audience, String name, java.lang.String url) {
         super();
         this.cACerts = cACerts;
+        this.audience = audience;
         this.name = name;
         this.url = url;
     }
@@ -100,6 +104,16 @@ public class Addressable implements Editable<AddressableBuilder> , KubernetesRes
     @JsonProperty("CACerts")
     public void setCACerts(String cACerts) {
         this.cACerts = cACerts;
+    }
+
+    @JsonProperty("audience")
+    public String getAudience() {
+        return audience;
+    }
+
+    @JsonProperty("audience")
+    public void setAudience(String audience) {
+        this.audience = audience;
     }
 
     @JsonProperty("name")

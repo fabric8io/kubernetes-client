@@ -14,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.knative.internal.pkg.apis.Condition;
+import io.fabric8.knative.internal.pkg.apis.duck.v1.AuthStatus;
 import io.fabric8.knative.internal.pkg.apis.duck.v1.CloudEventAttributes;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
@@ -44,10 +45,12 @@ import lombok.experimental.Accessors;
     "kind",
     "metadata",
     "annotations",
+    "auth",
     "ceAttributes",
     "conditions",
     "namespaces",
     "observedGeneration",
+    "sinkAudience",
     "sinkCACerts",
     "sinkUri"
 })
@@ -80,6 +83,8 @@ public class ApiServerSourceStatus implements Editable<ApiServerSourceStatusBuil
     @JsonProperty("annotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> annotations = new LinkedHashMap<String, String>();
+    @JsonProperty("auth")
+    private AuthStatus auth;
     @JsonProperty("ceAttributes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<CloudEventAttributes> ceAttributes = new ArrayList<CloudEventAttributes>();
@@ -91,6 +96,8 @@ public class ApiServerSourceStatus implements Editable<ApiServerSourceStatusBuil
     private List<java.lang.String> namespaces = new ArrayList<java.lang.String>();
     @JsonProperty("observedGeneration")
     private Long observedGeneration;
+    @JsonProperty("sinkAudience")
+    private String sinkAudience;
     @JsonProperty("sinkCACerts")
     private String sinkCACerts;
     @JsonProperty("sinkUri")
@@ -105,13 +112,15 @@ public class ApiServerSourceStatus implements Editable<ApiServerSourceStatusBuil
     public ApiServerSourceStatus() {
     }
 
-    public ApiServerSourceStatus(Map<String, String> annotations, List<CloudEventAttributes> ceAttributes, List<Condition> conditions, List<java.lang.String> namespaces, Long observedGeneration, String sinkCACerts, java.lang.String sinkUri) {
+    public ApiServerSourceStatus(Map<String, String> annotations, AuthStatus auth, List<CloudEventAttributes> ceAttributes, List<Condition> conditions, List<java.lang.String> namespaces, Long observedGeneration, String sinkAudience, String sinkCACerts, java.lang.String sinkUri) {
         super();
         this.annotations = annotations;
+        this.auth = auth;
         this.ceAttributes = ceAttributes;
         this.conditions = conditions;
         this.namespaces = namespaces;
         this.observedGeneration = observedGeneration;
+        this.sinkAudience = sinkAudience;
         this.sinkCACerts = sinkCACerts;
         this.sinkUri = sinkUri;
     }
@@ -124,6 +133,16 @@ public class ApiServerSourceStatus implements Editable<ApiServerSourceStatusBuil
     @JsonProperty("annotations")
     public void setAnnotations(Map<String, String> annotations) {
         this.annotations = annotations;
+    }
+
+    @JsonProperty("auth")
+    public AuthStatus getAuth() {
+        return auth;
+    }
+
+    @JsonProperty("auth")
+    public void setAuth(AuthStatus auth) {
+        this.auth = auth;
     }
 
     @JsonProperty("ceAttributes")
@@ -164,6 +183,16 @@ public class ApiServerSourceStatus implements Editable<ApiServerSourceStatusBuil
     @JsonProperty("observedGeneration")
     public void setObservedGeneration(Long observedGeneration) {
         this.observedGeneration = observedGeneration;
+    }
+
+    @JsonProperty("sinkAudience")
+    public String getSinkAudience() {
+        return sinkAudience;
+    }
+
+    @JsonProperty("sinkAudience")
+    public void setSinkAudience(String sinkAudience) {
+        this.sinkAudience = sinkAudience;
     }
 
     @JsonProperty("sinkCACerts")

@@ -48,6 +48,7 @@ import lombok.experimental.Accessors;
     "addresses",
     "annotations",
     "conditions",
+    "deadLetterSinkCACerts",
     "deadLetterSinkUri",
     "observedGeneration",
     "subscribers"
@@ -89,6 +90,8 @@ public class KafkaChannelStatus implements Editable<KafkaChannelStatusBuilder> ,
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Condition> conditions = new ArrayList<Condition>();
+    @JsonProperty("deadLetterSinkCACerts")
+    private String deadLetterSinkCACerts;
     @JsonProperty("deadLetterSinkUri")
     private java.lang.String deadLetterSinkUri;
     @JsonProperty("observedGeneration")
@@ -106,12 +109,13 @@ public class KafkaChannelStatus implements Editable<KafkaChannelStatusBuilder> ,
     public KafkaChannelStatus() {
     }
 
-    public KafkaChannelStatus(Addressable address, List<Addressable> addresses, Map<String, String> annotations, List<Condition> conditions, java.lang.String deadLetterSinkUri, Long observedGeneration, List<SubscriberStatus> subscribers) {
+    public KafkaChannelStatus(Addressable address, List<Addressable> addresses, Map<String, String> annotations, List<Condition> conditions, String deadLetterSinkCACerts, java.lang.String deadLetterSinkUri, Long observedGeneration, List<SubscriberStatus> subscribers) {
         super();
         this.address = address;
         this.addresses = addresses;
         this.annotations = annotations;
         this.conditions = conditions;
+        this.deadLetterSinkCACerts = deadLetterSinkCACerts;
         this.deadLetterSinkUri = deadLetterSinkUri;
         this.observedGeneration = observedGeneration;
         this.subscribers = subscribers;
@@ -155,6 +159,16 @@ public class KafkaChannelStatus implements Editable<KafkaChannelStatusBuilder> ,
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;
+    }
+
+    @JsonProperty("deadLetterSinkCACerts")
+    public String getDeadLetterSinkCACerts() {
+        return deadLetterSinkCACerts;
+    }
+
+    @JsonProperty("deadLetterSinkCACerts")
+    public void setDeadLetterSinkCACerts(String deadLetterSinkCACerts) {
+        this.deadLetterSinkCACerts = deadLetterSinkCACerts;
     }
 
     @JsonProperty("deadLetterSinkUri")

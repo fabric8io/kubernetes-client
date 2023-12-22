@@ -203,6 +203,10 @@
           "type": "object",
           "existingJavaType": "java.util.Map\u003cString,String\u003e"
         },
+        "auth": {
+          "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_AuthStatus",
+          "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.AuthStatus"
+        },
         "ceAttributes": {
           "type": "array",
           "javaOmitEmpty": true,
@@ -222,6 +226,10 @@
         "observedGeneration": {
           "type": "integer",
           "existingJavaType": "Long"
+        },
+        "sinkAudience": {
+          "type": "string",
+          "existingJavaType": "String"
         },
         "sinkCACerts": {
           "type": "string",
@@ -329,6 +337,10 @@
           "type": "object",
           "existingJavaType": "java.util.Map\u003cString,String\u003e"
         },
+        "auth": {
+          "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_AuthStatus",
+          "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.AuthStatus"
+        },
         "ceAttributes": {
           "type": "array",
           "javaOmitEmpty": true,
@@ -348,6 +360,10 @@
         "observedGeneration": {
           "type": "integer",
           "existingJavaType": "Long"
+        },
+        "sinkAudience": {
+          "type": "string",
+          "existingJavaType": "String"
         },
         "sinkCACerts": {
           "type": "string",
@@ -447,6 +463,10 @@
           "type": "object",
           "existingJavaType": "java.util.Map\u003cString,String\u003e"
         },
+        "auth": {
+          "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_AuthStatus",
+          "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.AuthStatus"
+        },
         "ceAttributes": {
           "type": "array",
           "javaOmitEmpty": true,
@@ -466,6 +486,10 @@
         "observedGeneration": {
           "type": "integer",
           "existingJavaType": "Long"
+        },
+        "sinkAudience": {
+          "type": "string",
+          "existingJavaType": "String"
         },
         "sinkCACerts": {
           "type": "string",
@@ -604,6 +628,10 @@
           "type": "object",
           "existingJavaType": "java.util.Map\u003cString,String\u003e"
         },
+        "auth": {
+          "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_AuthStatus",
+          "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.AuthStatus"
+        },
         "ceAttributes": {
           "type": "array",
           "javaOmitEmpty": true,
@@ -623,6 +651,10 @@
         "observedGeneration": {
           "type": "integer",
           "existingJavaType": "Long"
+        },
+        "sinkAudience": {
+          "type": "string",
+          "existingJavaType": "String"
         },
         "sinkCACerts": {
           "type": "string",
@@ -737,6 +769,10 @@
           "type": "object",
           "existingJavaType": "java.util.Map\u003cString,String\u003e"
         },
+        "auth": {
+          "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_AuthStatus",
+          "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.AuthStatus"
+        },
         "ceAttributes": {
           "type": "array",
           "javaOmitEmpty": true,
@@ -756,6 +792,10 @@
         "observedGeneration": {
           "type": "integer",
           "existingJavaType": "Long"
+        },
+        "sinkAudience": {
+          "type": "string",
+          "existingJavaType": "String"
         },
         "sinkCACerts": {
           "type": "string",
@@ -890,6 +930,10 @@
           "type": "object",
           "existingJavaType": "java.util.Map\u003cString,String\u003e"
         },
+        "auth": {
+          "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_AuthStatus",
+          "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.AuthStatus"
+        },
         "ceAttributes": {
           "type": "array",
           "javaOmitEmpty": true,
@@ -909,6 +953,10 @@
         "observedGeneration": {
           "type": "integer",
           "existingJavaType": "Long"
+        },
+        "sinkAudience": {
+          "type": "string",
+          "existingJavaType": "String"
         },
         "sinkCACerts": {
           "type": "string",
@@ -1243,6 +1291,10 @@
             "existingJavaType": "io.fabric8.knative.internal.pkg.apis.Condition"
           }
         },
+        "deadLetterSinkCACerts": {
+          "type": "string",
+          "existingJavaType": "String"
+        },
         "deadLetterSinkUri": {
           "existingJavaType": "java.lang.String"
         },
@@ -1379,6 +1431,10 @@
           "type": "object",
           "existingJavaType": "java.util.Map\u003cString,String\u003e"
         },
+        "auth": {
+          "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_AuthStatus",
+          "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.AuthStatus"
+        },
         "ceAttributes": {
           "type": "array",
           "javaOmitEmpty": true,
@@ -1419,6 +1475,10 @@
         },
         "selector": {
           "type": "string"
+        },
+        "sinkAudience": {
+          "type": "string",
+          "existingJavaType": "String"
         },
         "sinkCACerts": {
           "type": "string",
@@ -1535,6 +1595,10 @@
           "type": "object",
           "existingJavaType": "java.util.Map\u003cString,String\u003e"
         },
+        "auth": {
+          "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_AuthStatus",
+          "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.AuthStatus"
+        },
         "ceAttributes": {
           "type": "array",
           "javaOmitEmpty": true,
@@ -1554,6 +1618,10 @@
         "observedGeneration": {
           "type": "integer",
           "existingJavaType": "Long"
+        },
+        "sinkAudience": {
+          "type": "string",
+          "existingJavaType": "String"
         },
         "sinkCACerts": {
           "type": "string",
@@ -1612,8 +1680,24 @@
           "type": "integer",
           "existingJavaType": "Long"
         },
+        "replyAudience": {
+          "type": "string",
+          "existingJavaType": "String"
+        },
+        "replyCACerts": {
+          "type": "string",
+          "existingJavaType": "String"
+        },
         "replyUri": {
           "existingJavaType": "java.lang.String"
+        },
+        "subscriberAudience": {
+          "type": "string",
+          "existingJavaType": "String"
+        },
+        "subscriberCACerts": {
+          "type": "string",
+          "existingJavaType": "String"
         },
         "subscriberUri": {
           "existingJavaType": "java.lang.String"
@@ -1630,6 +1714,10 @@
     "knative_dev_eventing_pkg_apis_duck_v1_SubscriberStatus": {
       "type": "object",
       "properties": {
+        "auth": {
+          "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_AuthStatus",
+          "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.AuthStatus"
+        },
         "message": {
           "type": "string"
         },
@@ -1768,6 +1856,10 @@
             "$ref": "#/definitions/knative_dev_pkg_apis_Condition",
             "existingJavaType": "io.fabric8.knative.internal.pkg.apis.Condition"
           }
+        },
+        "deadLetterSinkCACerts": {
+          "type": "string",
+          "existingJavaType": "String"
         },
         "deadLetterSinkUri": {
           "existingJavaType": "java.lang.String"
@@ -1939,6 +2031,10 @@
           "type": "object",
           "existingJavaType": "java.util.Map\u003cString,String\u003e"
         },
+        "auth": {
+          "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_AuthStatus",
+          "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.AuthStatus"
+        },
         "conditions": {
           "type": "array",
           "javaOmitEmpty": true,
@@ -1947,12 +2043,20 @@
             "existingJavaType": "io.fabric8.knative.internal.pkg.apis.Condition"
           }
         },
+        "deadLetterSinkCACerts": {
+          "type": "string",
+          "existingJavaType": "String"
+        },
         "deadLetterSinkUri": {
           "existingJavaType": "java.lang.String"
         },
         "observedGeneration": {
           "type": "integer",
           "existingJavaType": "Long"
+        },
+        "subscriberCACerts": {
+          "type": "string",
+          "existingJavaType": "String"
         },
         "subscriberUri": {
           "existingJavaType": "java.lang.String"
@@ -2032,6 +2136,10 @@
         },
         "description": {
           "type": "string"
+        },
+        "reference": {
+          "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_KReference",
+          "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.KReference"
         },
         "schema": {
           "existingJavaType": "java.lang.String"
@@ -2242,6 +2350,10 @@
           "type": "object",
           "existingJavaType": "java.util.Map\u003cString,String\u003e"
         },
+        "auth": {
+          "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_AuthStatus",
+          "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.AuthStatus"
+        },
         "branchStatuses": {
           "type": "array",
           "items": {
@@ -2399,6 +2511,10 @@
           "type": "object",
           "existingJavaType": "java.util.Map\u003cString,String\u003e"
         },
+        "auth": {
+          "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_AuthStatus",
+          "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.AuthStatus"
+        },
         "channelStatuses": {
           "type": "array",
           "javaOmitEmpty": true,
@@ -2437,6 +2553,10 @@
       "type": "object",
       "properties": {
         "CACerts": {
+          "type": "string",
+          "existingJavaType": "String"
+        },
+        "audience": {
           "type": "string",
           "existingJavaType": "String"
         },
@@ -2590,6 +2710,10 @@
             "existingJavaType": "io.fabric8.knative.internal.pkg.apis.Condition"
           }
         },
+        "deadLetterSinkCACerts": {
+          "type": "string",
+          "existingJavaType": "String"
+        },
         "deadLetterSinkUri": {
           "existingJavaType": "java.lang.String"
         },
@@ -2738,6 +2862,10 @@
             "existingJavaType": "io.fabric8.knative.internal.pkg.apis.Condition"
           }
         },
+        "deadLetterSinkCACerts": {
+          "type": "string",
+          "existingJavaType": "String"
+        },
         "deadLetterSinkUri": {
           "existingJavaType": "java.lang.String"
         },
@@ -2852,6 +2980,10 @@
           "type": "object",
           "existingJavaType": "java.util.Map\u003cString,String\u003e"
         },
+        "auth": {
+          "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_AuthStatus",
+          "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.AuthStatus"
+        },
         "conditions": {
           "type": "array",
           "javaOmitEmpty": true,
@@ -2877,11 +3009,31 @@
     "knative_dev_eventing_pkg_apis_messaging_v1_SubscriptionStatusPhysicalSubscription": {
       "type": "object",
       "properties": {
+        "deadLetterSinkCACerts": {
+          "type": "string",
+          "existingJavaType": "String"
+        },
         "deadLetterSinkUri": {
           "existingJavaType": "java.lang.String"
         },
+        "replyAudience": {
+          "type": "string",
+          "existingJavaType": "String"
+        },
+        "replyCACerts": {
+          "type": "string",
+          "existingJavaType": "String"
+        },
         "replyUri": {
           "existingJavaType": "java.lang.String"
+        },
+        "subscriberAudience": {
+          "type": "string",
+          "existingJavaType": "String"
+        },
+        "subscriberCACerts": {
+          "type": "string",
+          "existingJavaType": "String"
         },
         "subscriberUri": {
           "existingJavaType": "java.lang.String"
@@ -3031,6 +3183,10 @@
           "type": "object",
           "existingJavaType": "java.util.Map\u003cString,String\u003e"
         },
+        "auth": {
+          "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_AuthStatus",
+          "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.AuthStatus"
+        },
         "ceAttributes": {
           "type": "array",
           "javaOmitEmpty": true,
@@ -3056,6 +3212,10 @@
         "observedGeneration": {
           "type": "integer",
           "existingJavaType": "Long"
+        },
+        "sinkAudience": {
+          "type": "string",
+          "existingJavaType": "String"
         },
         "sinkCACerts": {
           "type": "string",
@@ -3158,6 +3318,10 @@
           "type": "object",
           "existingJavaType": "java.util.Map\u003cString,String\u003e"
         },
+        "auth": {
+          "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_AuthStatus",
+          "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.AuthStatus"
+        },
         "ceAttributes": {
           "type": "array",
           "javaOmitEmpty": true,
@@ -3177,6 +3341,10 @@
         "observedGeneration": {
           "type": "integer",
           "existingJavaType": "Long"
+        },
+        "sinkAudience": {
+          "type": "string",
+          "existingJavaType": "String"
         },
         "sinkCACerts": {
           "type": "string",
@@ -3291,6 +3459,10 @@
           "type": "object",
           "existingJavaType": "java.util.Map\u003cString,String\u003e"
         },
+        "auth": {
+          "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_AuthStatus",
+          "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.AuthStatus"
+        },
         "ceAttributes": {
           "type": "array",
           "javaOmitEmpty": true,
@@ -3310,6 +3482,10 @@
         "observedGeneration": {
           "type": "integer",
           "existingJavaType": "Long"
+        },
+        "sinkAudience": {
+          "type": "string",
+          "existingJavaType": "String"
         },
         "sinkCACerts": {
           "type": "string",
@@ -3413,6 +3589,10 @@
           "type": "object",
           "existingJavaType": "java.util.Map\u003cString,String\u003e"
         },
+        "auth": {
+          "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_AuthStatus",
+          "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.AuthStatus"
+        },
         "ceAttributes": {
           "type": "array",
           "javaOmitEmpty": true,
@@ -3432,6 +3612,10 @@
         "observedGeneration": {
           "type": "integer",
           "existingJavaType": "Long"
+        },
+        "sinkAudience": {
+          "type": "string",
+          "existingJavaType": "String"
         },
         "sinkCACerts": {
           "type": "string",
@@ -4114,6 +4298,10 @@
           "type": "string",
           "existingJavaType": "String"
         },
+        "audience": {
+          "type": "string",
+          "existingJavaType": "String"
+        },
         "name": {
           "type": "string",
           "existingJavaType": "String"
@@ -4181,6 +4369,19 @@
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource",
         "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.knative.internal.pkg.apis.duck.v1.AddressableType\u003e"
+      ]
+    },
+    "knative_dev_pkg_apis_duck_v1_AuthStatus": {
+      "type": "object",
+      "properties": {
+        "serviceAccountName": {
+          "type": "string",
+          "existingJavaType": "String"
+        }
+      },
+      "javaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.AuthStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
     "knative_dev_pkg_apis_duck_v1_Binding": {
@@ -4339,6 +4540,10 @@
       "type": "object",
       "properties": {
         "CACerts": {
+          "type": "string",
+          "existingJavaType": "String"
+        },
+        "audience": {
           "type": "string",
           "existingJavaType": "String"
         },
@@ -4568,6 +4773,10 @@
           "type": "object",
           "existingJavaType": "java.util.Map\u003cString,String\u003e"
         },
+        "auth": {
+          "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_AuthStatus",
+          "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.AuthStatus"
+        },
         "ceAttributes": {
           "type": "array",
           "javaOmitEmpty": true,
@@ -4587,6 +4796,10 @@
         "observedGeneration": {
           "type": "integer",
           "existingJavaType": "Long"
+        },
+        "sinkAudience": {
+          "type": "string",
+          "existingJavaType": "String"
         },
         "sinkCACerts": {
           "type": "string",
@@ -7090,6 +7303,10 @@
     "knative_dev_pkg_apis_duck_v1_AddressableTypeList": {
       "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_AddressableTypeList",
       "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.AddressableTypeList"
+    },
+    "knative_dev_pkg_apis_duck_v1_AuthStatus": {
+      "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_AuthStatus",
+      "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.AuthStatus"
     },
     "knative_dev_pkg_apis_duck_v1_Binding": {
       "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_Binding",

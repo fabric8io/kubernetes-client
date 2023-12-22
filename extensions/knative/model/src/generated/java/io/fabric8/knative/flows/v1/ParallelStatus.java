@@ -15,6 +15,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.knative.internal.pkg.apis.Condition;
 import io.fabric8.knative.internal.pkg.apis.duck.v1.Addressable;
+import io.fabric8.knative.internal.pkg.apis.duck.v1.AuthStatus;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -46,6 +47,7 @@ import lombok.experimental.Accessors;
     "address",
     "addresses",
     "annotations",
+    "auth",
     "branchStatuses",
     "conditions",
     "ingressChannelStatus",
@@ -85,6 +87,8 @@ public class ParallelStatus implements Editable<ParallelStatusBuilder> , Kuberne
     @JsonProperty("annotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> annotations = new LinkedHashMap<String, String>();
+    @JsonProperty("auth")
+    private AuthStatus auth;
     @JsonProperty("branchStatuses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ParallelBranchStatus> branchStatuses = new ArrayList<ParallelBranchStatus>();
@@ -105,11 +109,12 @@ public class ParallelStatus implements Editable<ParallelStatusBuilder> , Kuberne
     public ParallelStatus() {
     }
 
-    public ParallelStatus(Addressable address, List<Addressable> addresses, Map<String, String> annotations, List<ParallelBranchStatus> branchStatuses, List<Condition> conditions, ParallelChannelStatus ingressChannelStatus, Long observedGeneration) {
+    public ParallelStatus(Addressable address, List<Addressable> addresses, Map<String, String> annotations, AuthStatus auth, List<ParallelBranchStatus> branchStatuses, List<Condition> conditions, ParallelChannelStatus ingressChannelStatus, Long observedGeneration) {
         super();
         this.address = address;
         this.addresses = addresses;
         this.annotations = annotations;
+        this.auth = auth;
         this.branchStatuses = branchStatuses;
         this.conditions = conditions;
         this.ingressChannelStatus = ingressChannelStatus;
@@ -144,6 +149,16 @@ public class ParallelStatus implements Editable<ParallelStatusBuilder> , Kuberne
     @JsonProperty("annotations")
     public void setAnnotations(Map<String, String> annotations) {
         this.annotations = annotations;
+    }
+
+    @JsonProperty("auth")
+    public AuthStatus getAuth() {
+        return auth;
+    }
+
+    @JsonProperty("auth")
+    public void setAuth(AuthStatus auth) {
+        this.auth = auth;
     }
 
     @JsonProperty("branchStatuses")
