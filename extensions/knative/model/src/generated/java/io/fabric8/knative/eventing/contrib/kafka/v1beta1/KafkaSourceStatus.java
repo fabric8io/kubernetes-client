@@ -15,6 +15,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.knative.internal.eventing.pkg.apis.duck.v1alpha1.Placement;
 import io.fabric8.knative.internal.pkg.apis.Condition;
+import io.fabric8.knative.internal.pkg.apis.duck.v1.AuthStatus;
 import io.fabric8.knative.internal.pkg.apis.duck.v1.CloudEventAttributes;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
@@ -45,6 +46,7 @@ import lombok.experimental.Accessors;
     "kind",
     "metadata",
     "annotations",
+    "auth",
     "ceAttributes",
     "claims",
     "conditions",
@@ -53,6 +55,7 @@ import lombok.experimental.Accessors;
     "observedGeneration",
     "placements",
     "selector",
+    "sinkAudience",
     "sinkCACerts",
     "sinkUri"
 })
@@ -85,6 +88,8 @@ public class KafkaSourceStatus implements Editable<KafkaSourceStatusBuilder> , K
     @JsonProperty("annotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> annotations = new LinkedHashMap<String, String>();
+    @JsonProperty("auth")
+    private AuthStatus auth;
     @JsonProperty("ceAttributes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<CloudEventAttributes> ceAttributes = new ArrayList<CloudEventAttributes>();
@@ -104,6 +109,8 @@ public class KafkaSourceStatus implements Editable<KafkaSourceStatusBuilder> , K
     private List<Placement> placements = new ArrayList<Placement>();
     @JsonProperty("selector")
     private java.lang.String selector;
+    @JsonProperty("sinkAudience")
+    private String sinkAudience;
     @JsonProperty("sinkCACerts")
     private String sinkCACerts;
     @JsonProperty("sinkUri")
@@ -118,9 +125,10 @@ public class KafkaSourceStatus implements Editable<KafkaSourceStatusBuilder> , K
     public KafkaSourceStatus() {
     }
 
-    public KafkaSourceStatus(Map<String, String> annotations, List<CloudEventAttributes> ceAttributes, java.lang.String claims, List<Condition> conditions, java.lang.Integer consumers, Integer maxAllowedVReplicas, Long observedGeneration, List<Placement> placements, java.lang.String selector, String sinkCACerts, java.lang.String sinkUri) {
+    public KafkaSourceStatus(Map<String, String> annotations, AuthStatus auth, List<CloudEventAttributes> ceAttributes, java.lang.String claims, List<Condition> conditions, java.lang.Integer consumers, Integer maxAllowedVReplicas, Long observedGeneration, List<Placement> placements, java.lang.String selector, String sinkAudience, String sinkCACerts, java.lang.String sinkUri) {
         super();
         this.annotations = annotations;
+        this.auth = auth;
         this.ceAttributes = ceAttributes;
         this.claims = claims;
         this.conditions = conditions;
@@ -129,6 +137,7 @@ public class KafkaSourceStatus implements Editable<KafkaSourceStatusBuilder> , K
         this.observedGeneration = observedGeneration;
         this.placements = placements;
         this.selector = selector;
+        this.sinkAudience = sinkAudience;
         this.sinkCACerts = sinkCACerts;
         this.sinkUri = sinkUri;
     }
@@ -141,6 +150,16 @@ public class KafkaSourceStatus implements Editable<KafkaSourceStatusBuilder> , K
     @JsonProperty("annotations")
     public void setAnnotations(Map<String, String> annotations) {
         this.annotations = annotations;
+    }
+
+    @JsonProperty("auth")
+    public AuthStatus getAuth() {
+        return auth;
+    }
+
+    @JsonProperty("auth")
+    public void setAuth(AuthStatus auth) {
+        this.auth = auth;
     }
 
     @JsonProperty("ceAttributes")
@@ -221,6 +240,16 @@ public class KafkaSourceStatus implements Editable<KafkaSourceStatusBuilder> , K
     @JsonProperty("selector")
     public void setSelector(java.lang.String selector) {
         this.selector = selector;
+    }
+
+    @JsonProperty("sinkAudience")
+    public String getSinkAudience() {
+        return sinkAudience;
+    }
+
+    @JsonProperty("sinkAudience")
+    public void setSinkAudience(String sinkAudience) {
+        this.sinkAudience = sinkAudience;
     }
 
     @JsonProperty("sinkCACerts")

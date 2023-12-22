@@ -15,6 +15,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.knative.internal.pkg.apis.Condition;
 import io.fabric8.knative.internal.pkg.apis.duck.v1.Addressable;
+import io.fabric8.knative.internal.pkg.apis.duck.v1.AuthStatus;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -45,6 +46,7 @@ import lombok.experimental.Accessors;
     "metadata",
     "address",
     "annotations",
+    "auth",
     "channelStatuses",
     "conditions",
     "observedGeneration",
@@ -81,6 +83,8 @@ public class SequenceStatus implements Editable<SequenceStatusBuilder> , Kuberne
     @JsonProperty("annotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> annotations = new LinkedHashMap<String, String>();
+    @JsonProperty("auth")
+    private AuthStatus auth;
     @JsonProperty("channelStatuses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<SequenceChannelStatus> channelStatuses = new ArrayList<SequenceChannelStatus>();
@@ -102,10 +106,11 @@ public class SequenceStatus implements Editable<SequenceStatusBuilder> , Kuberne
     public SequenceStatus() {
     }
 
-    public SequenceStatus(Addressable address, Map<String, String> annotations, List<SequenceChannelStatus> channelStatuses, List<Condition> conditions, Long observedGeneration, List<SequenceSubscriptionStatus> subscriptionStatuses) {
+    public SequenceStatus(Addressable address, Map<String, String> annotations, AuthStatus auth, List<SequenceChannelStatus> channelStatuses, List<Condition> conditions, Long observedGeneration, List<SequenceSubscriptionStatus> subscriptionStatuses) {
         super();
         this.address = address;
         this.annotations = annotations;
+        this.auth = auth;
         this.channelStatuses = channelStatuses;
         this.conditions = conditions;
         this.observedGeneration = observedGeneration;
@@ -130,6 +135,16 @@ public class SequenceStatus implements Editable<SequenceStatusBuilder> , Kuberne
     @JsonProperty("annotations")
     public void setAnnotations(Map<String, String> annotations) {
         this.annotations = annotations;
+    }
+
+    @JsonProperty("auth")
+    public AuthStatus getAuth() {
+        return auth;
+    }
+
+    @JsonProperty("auth")
+    public void setAuth(AuthStatus auth) {
+        this.auth = auth;
     }
 
     @JsonProperty("channelStatuses")

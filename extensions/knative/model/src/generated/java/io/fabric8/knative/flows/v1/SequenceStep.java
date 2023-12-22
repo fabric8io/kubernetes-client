@@ -42,6 +42,7 @@ import lombok.experimental.Accessors;
     "kind",
     "metadata",
     "CACerts",
+    "audience",
     "delivery",
     "ref",
     "uri"
@@ -74,6 +75,8 @@ public class SequenceStep implements Editable<SequenceStepBuilder> , KubernetesR
 
     @JsonProperty("CACerts")
     private String cACerts;
+    @JsonProperty("audience")
+    private String audience;
     @JsonProperty("delivery")
     private DeliverySpec delivery;
     @JsonProperty("ref")
@@ -90,9 +93,10 @@ public class SequenceStep implements Editable<SequenceStepBuilder> , KubernetesR
     public SequenceStep() {
     }
 
-    public SequenceStep(String cACerts, DeliverySpec delivery, KReference ref, java.lang.String uri) {
+    public SequenceStep(String cACerts, String audience, DeliverySpec delivery, KReference ref, java.lang.String uri) {
         super();
         this.cACerts = cACerts;
+        this.audience = audience;
         this.delivery = delivery;
         this.ref = ref;
         this.uri = uri;
@@ -106,6 +110,16 @@ public class SequenceStep implements Editable<SequenceStepBuilder> , KubernetesR
     @JsonProperty("CACerts")
     public void setCACerts(String cACerts) {
         this.cACerts = cACerts;
+    }
+
+    @JsonProperty("audience")
+    public String getAudience() {
+        return audience;
+    }
+
+    @JsonProperty("audience")
+    public void setAudience(String audience) {
+        this.audience = audience;
     }
 
     @JsonProperty("delivery")

@@ -14,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.knative.internal.pkg.apis.Condition;
+import io.fabric8.knative.internal.pkg.apis.duck.v1.AuthStatus;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -43,9 +44,12 @@ import lombok.experimental.Accessors;
     "kind",
     "metadata",
     "annotations",
+    "auth",
     "conditions",
+    "deadLetterSinkCACerts",
     "deadLetterSinkUri",
     "observedGeneration",
+    "subscriberCACerts",
     "subscriberUri"
 })
 @ToString
@@ -77,13 +81,19 @@ public class TriggerStatus implements Editable<TriggerStatusBuilder> , Kubernete
     @JsonProperty("annotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> annotations = new LinkedHashMap<String, String>();
+    @JsonProperty("auth")
+    private AuthStatus auth;
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Condition> conditions = new ArrayList<Condition>();
+    @JsonProperty("deadLetterSinkCACerts")
+    private String deadLetterSinkCACerts;
     @JsonProperty("deadLetterSinkUri")
     private java.lang.String deadLetterSinkUri;
     @JsonProperty("observedGeneration")
     private Long observedGeneration;
+    @JsonProperty("subscriberCACerts")
+    private String subscriberCACerts;
     @JsonProperty("subscriberUri")
     private java.lang.String subscriberUri;
     @JsonIgnore
@@ -96,12 +106,15 @@ public class TriggerStatus implements Editable<TriggerStatusBuilder> , Kubernete
     public TriggerStatus() {
     }
 
-    public TriggerStatus(Map<String, String> annotations, List<Condition> conditions, java.lang.String deadLetterSinkUri, Long observedGeneration, java.lang.String subscriberUri) {
+    public TriggerStatus(Map<String, String> annotations, AuthStatus auth, List<Condition> conditions, String deadLetterSinkCACerts, java.lang.String deadLetterSinkUri, Long observedGeneration, String subscriberCACerts, java.lang.String subscriberUri) {
         super();
         this.annotations = annotations;
+        this.auth = auth;
         this.conditions = conditions;
+        this.deadLetterSinkCACerts = deadLetterSinkCACerts;
         this.deadLetterSinkUri = deadLetterSinkUri;
         this.observedGeneration = observedGeneration;
+        this.subscriberCACerts = subscriberCACerts;
         this.subscriberUri = subscriberUri;
     }
 
@@ -115,6 +128,16 @@ public class TriggerStatus implements Editable<TriggerStatusBuilder> , Kubernete
         this.annotations = annotations;
     }
 
+    @JsonProperty("auth")
+    public AuthStatus getAuth() {
+        return auth;
+    }
+
+    @JsonProperty("auth")
+    public void setAuth(AuthStatus auth) {
+        this.auth = auth;
+    }
+
     @JsonProperty("conditions")
     public List<Condition> getConditions() {
         return conditions;
@@ -123,6 +146,16 @@ public class TriggerStatus implements Editable<TriggerStatusBuilder> , Kubernete
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;
+    }
+
+    @JsonProperty("deadLetterSinkCACerts")
+    public String getDeadLetterSinkCACerts() {
+        return deadLetterSinkCACerts;
+    }
+
+    @JsonProperty("deadLetterSinkCACerts")
+    public void setDeadLetterSinkCACerts(String deadLetterSinkCACerts) {
+        this.deadLetterSinkCACerts = deadLetterSinkCACerts;
     }
 
     @JsonProperty("deadLetterSinkUri")
@@ -143,6 +176,16 @@ public class TriggerStatus implements Editable<TriggerStatusBuilder> , Kubernete
     @JsonProperty("observedGeneration")
     public void setObservedGeneration(Long observedGeneration) {
         this.observedGeneration = observedGeneration;
+    }
+
+    @JsonProperty("subscriberCACerts")
+    public String getSubscriberCACerts() {
+        return subscriberCACerts;
+    }
+
+    @JsonProperty("subscriberCACerts")
+    public void setSubscriberCACerts(String subscriberCACerts) {
+        this.subscriberCACerts = subscriberCACerts;
     }
 
     @JsonProperty("subscriberUri")

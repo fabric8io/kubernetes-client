@@ -41,7 +41,11 @@ import lombok.experimental.Accessors;
     "metadata",
     "delivery",
     "generation",
+    "replyAudience",
+    "replyCACerts",
     "replyUri",
+    "subscriberAudience",
+    "subscriberCACerts",
     "subscriberUri",
     "uid"
 })
@@ -75,14 +79,22 @@ public class SubscriberSpec implements Editable<SubscriberSpecBuilder> , Kuberne
     private DeliverySpec delivery;
     @JsonProperty("generation")
     private Long generation;
+    @JsonProperty("replyAudience")
+    private String replyAudience;
+    @JsonProperty("replyCACerts")
+    private String replyCACerts;
     @JsonProperty("replyUri")
-    private String replyUri;
+    private java.lang.String replyUri;
+    @JsonProperty("subscriberAudience")
+    private String subscriberAudience;
+    @JsonProperty("subscriberCACerts")
+    private String subscriberCACerts;
     @JsonProperty("subscriberUri")
-    private String subscriberUri;
+    private java.lang.String subscriberUri;
     @JsonProperty("uid")
-    private String uid;
+    private java.lang.String uid;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -91,11 +103,15 @@ public class SubscriberSpec implements Editable<SubscriberSpecBuilder> , Kuberne
     public SubscriberSpec() {
     }
 
-    public SubscriberSpec(DeliverySpec delivery, Long generation, String replyUri, String subscriberUri, String uid) {
+    public SubscriberSpec(DeliverySpec delivery, Long generation, String replyAudience, String replyCACerts, java.lang.String replyUri, String subscriberAudience, String subscriberCACerts, java.lang.String subscriberUri, java.lang.String uid) {
         super();
         this.delivery = delivery;
         this.generation = generation;
+        this.replyAudience = replyAudience;
+        this.replyCACerts = replyCACerts;
         this.replyUri = replyUri;
+        this.subscriberAudience = subscriberAudience;
+        this.subscriberCACerts = subscriberCACerts;
         this.subscriberUri = subscriberUri;
         this.uid = uid;
     }
@@ -120,33 +136,73 @@ public class SubscriberSpec implements Editable<SubscriberSpecBuilder> , Kuberne
         this.generation = generation;
     }
 
+    @JsonProperty("replyAudience")
+    public String getReplyAudience() {
+        return replyAudience;
+    }
+
+    @JsonProperty("replyAudience")
+    public void setReplyAudience(String replyAudience) {
+        this.replyAudience = replyAudience;
+    }
+
+    @JsonProperty("replyCACerts")
+    public String getReplyCACerts() {
+        return replyCACerts;
+    }
+
+    @JsonProperty("replyCACerts")
+    public void setReplyCACerts(String replyCACerts) {
+        this.replyCACerts = replyCACerts;
+    }
+
     @JsonProperty("replyUri")
-    public String getReplyUri() {
+    public java.lang.String getReplyUri() {
         return replyUri;
     }
 
     @JsonProperty("replyUri")
-    public void setReplyUri(String replyUri) {
+    public void setReplyUri(java.lang.String replyUri) {
         this.replyUri = replyUri;
     }
 
+    @JsonProperty("subscriberAudience")
+    public String getSubscriberAudience() {
+        return subscriberAudience;
+    }
+
+    @JsonProperty("subscriberAudience")
+    public void setSubscriberAudience(String subscriberAudience) {
+        this.subscriberAudience = subscriberAudience;
+    }
+
+    @JsonProperty("subscriberCACerts")
+    public String getSubscriberCACerts() {
+        return subscriberCACerts;
+    }
+
+    @JsonProperty("subscriberCACerts")
+    public void setSubscriberCACerts(String subscriberCACerts) {
+        this.subscriberCACerts = subscriberCACerts;
+    }
+
     @JsonProperty("subscriberUri")
-    public String getSubscriberUri() {
+    public java.lang.String getSubscriberUri() {
         return subscriberUri;
     }
 
     @JsonProperty("subscriberUri")
-    public void setSubscriberUri(String subscriberUri) {
+    public void setSubscriberUri(java.lang.String subscriberUri) {
         this.subscriberUri = subscriberUri;
     }
 
     @JsonProperty("uid")
-    public String getUid() {
+    public java.lang.String getUid() {
         return uid;
     }
 
     @JsonProperty("uid")
-    public void setUid(String uid) {
+    public void setUid(java.lang.String uid) {
         this.uid = uid;
     }
 
@@ -161,12 +217,12 @@ public class SubscriberSpec implements Editable<SubscriberSpecBuilder> , Kuberne
     }
 
     @JsonAnyGetter
-    public Map<String, Object> getAdditionalProperties() {
+    public Map<java.lang.String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(String name, Object value) {
+    public void setAdditionalProperty(java.lang.String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 

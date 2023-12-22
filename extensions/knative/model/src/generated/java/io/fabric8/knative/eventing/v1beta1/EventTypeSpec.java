@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.knative.internal.pkg.apis.duck.v1.KReference;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -41,6 +42,7 @@ import lombok.experimental.Accessors;
     "metadata",
     "broker",
     "description",
+    "reference",
     "schema",
     "schemaData",
     "source",
@@ -76,6 +78,8 @@ public class EventTypeSpec implements Editable<EventTypeSpecBuilder> , Kubernete
     private String broker;
     @JsonProperty("description")
     private String description;
+    @JsonProperty("reference")
+    private KReference reference;
     @JsonProperty("schema")
     private String schema;
     @JsonProperty("schemaData")
@@ -94,10 +98,11 @@ public class EventTypeSpec implements Editable<EventTypeSpecBuilder> , Kubernete
     public EventTypeSpec() {
     }
 
-    public EventTypeSpec(String broker, String description, String schema, String schemaData, String source, String type) {
+    public EventTypeSpec(String broker, String description, KReference reference, String schema, String schemaData, String source, String type) {
         super();
         this.broker = broker;
         this.description = description;
+        this.reference = reference;
         this.schema = schema;
         this.schemaData = schemaData;
         this.source = source;
@@ -122,6 +127,16 @@ public class EventTypeSpec implements Editable<EventTypeSpecBuilder> , Kubernete
     @JsonProperty("description")
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @JsonProperty("reference")
+    public KReference getReference() {
+        return reference;
+    }
+
+    @JsonProperty("reference")
+    public void setReference(KReference reference) {
+        this.reference = reference;
     }
 
     @JsonProperty("schema")

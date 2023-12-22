@@ -39,8 +39,13 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
+    "deadLetterSinkCACerts",
     "deadLetterSinkUri",
+    "replyAudience",
+    "replyCACerts",
     "replyUri",
+    "subscriberAudience",
+    "subscriberCACerts",
     "subscriberUri"
 })
 @ToString
@@ -69,14 +74,24 @@ import lombok.experimental.Accessors;
 public class SubscriptionStatusPhysicalSubscription implements Editable<SubscriptionStatusPhysicalSubscriptionBuilder> , KubernetesResource
 {
 
+    @JsonProperty("deadLetterSinkCACerts")
+    private String deadLetterSinkCACerts;
     @JsonProperty("deadLetterSinkUri")
-    private String deadLetterSinkUri;
+    private java.lang.String deadLetterSinkUri;
+    @JsonProperty("replyAudience")
+    private String replyAudience;
+    @JsonProperty("replyCACerts")
+    private String replyCACerts;
     @JsonProperty("replyUri")
-    private String replyUri;
+    private java.lang.String replyUri;
+    @JsonProperty("subscriberAudience")
+    private String subscriberAudience;
+    @JsonProperty("subscriberCACerts")
+    private String subscriberCACerts;
     @JsonProperty("subscriberUri")
-    private String subscriberUri;
+    private java.lang.String subscriberUri;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -85,40 +100,95 @@ public class SubscriptionStatusPhysicalSubscription implements Editable<Subscrip
     public SubscriptionStatusPhysicalSubscription() {
     }
 
-    public SubscriptionStatusPhysicalSubscription(String deadLetterSinkUri, String replyUri, String subscriberUri) {
+    public SubscriptionStatusPhysicalSubscription(String deadLetterSinkCACerts, java.lang.String deadLetterSinkUri, String replyAudience, String replyCACerts, java.lang.String replyUri, String subscriberAudience, String subscriberCACerts, java.lang.String subscriberUri) {
         super();
+        this.deadLetterSinkCACerts = deadLetterSinkCACerts;
         this.deadLetterSinkUri = deadLetterSinkUri;
+        this.replyAudience = replyAudience;
+        this.replyCACerts = replyCACerts;
         this.replyUri = replyUri;
+        this.subscriberAudience = subscriberAudience;
+        this.subscriberCACerts = subscriberCACerts;
         this.subscriberUri = subscriberUri;
     }
 
+    @JsonProperty("deadLetterSinkCACerts")
+    public String getDeadLetterSinkCACerts() {
+        return deadLetterSinkCACerts;
+    }
+
+    @JsonProperty("deadLetterSinkCACerts")
+    public void setDeadLetterSinkCACerts(String deadLetterSinkCACerts) {
+        this.deadLetterSinkCACerts = deadLetterSinkCACerts;
+    }
+
     @JsonProperty("deadLetterSinkUri")
-    public String getDeadLetterSinkUri() {
+    public java.lang.String getDeadLetterSinkUri() {
         return deadLetterSinkUri;
     }
 
     @JsonProperty("deadLetterSinkUri")
-    public void setDeadLetterSinkUri(String deadLetterSinkUri) {
+    public void setDeadLetterSinkUri(java.lang.String deadLetterSinkUri) {
         this.deadLetterSinkUri = deadLetterSinkUri;
     }
 
+    @JsonProperty("replyAudience")
+    public String getReplyAudience() {
+        return replyAudience;
+    }
+
+    @JsonProperty("replyAudience")
+    public void setReplyAudience(String replyAudience) {
+        this.replyAudience = replyAudience;
+    }
+
+    @JsonProperty("replyCACerts")
+    public String getReplyCACerts() {
+        return replyCACerts;
+    }
+
+    @JsonProperty("replyCACerts")
+    public void setReplyCACerts(String replyCACerts) {
+        this.replyCACerts = replyCACerts;
+    }
+
     @JsonProperty("replyUri")
-    public String getReplyUri() {
+    public java.lang.String getReplyUri() {
         return replyUri;
     }
 
     @JsonProperty("replyUri")
-    public void setReplyUri(String replyUri) {
+    public void setReplyUri(java.lang.String replyUri) {
         this.replyUri = replyUri;
     }
 
+    @JsonProperty("subscriberAudience")
+    public String getSubscriberAudience() {
+        return subscriberAudience;
+    }
+
+    @JsonProperty("subscriberAudience")
+    public void setSubscriberAudience(String subscriberAudience) {
+        this.subscriberAudience = subscriberAudience;
+    }
+
+    @JsonProperty("subscriberCACerts")
+    public String getSubscriberCACerts() {
+        return subscriberCACerts;
+    }
+
+    @JsonProperty("subscriberCACerts")
+    public void setSubscriberCACerts(String subscriberCACerts) {
+        this.subscriberCACerts = subscriberCACerts;
+    }
+
     @JsonProperty("subscriberUri")
-    public String getSubscriberUri() {
+    public java.lang.String getSubscriberUri() {
         return subscriberUri;
     }
 
     @JsonProperty("subscriberUri")
-    public void setSubscriberUri(String subscriberUri) {
+    public void setSubscriberUri(java.lang.String subscriberUri) {
         this.subscriberUri = subscriberUri;
     }
 
@@ -133,12 +203,12 @@ public class SubscriptionStatusPhysicalSubscription implements Editable<Subscrip
     }
 
     @JsonAnyGetter
-    public Map<String, Object> getAdditionalProperties() {
+    public Map<java.lang.String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(String name, Object value) {
+    public void setAdditionalProperty(java.lang.String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 

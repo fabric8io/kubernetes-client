@@ -1,9 +1,7 @@
 
-package io.fabric8.knative.messaging.v1;
+package io.fabric8.knative.internal.pkg.apis.duck.v1;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -13,8 +11,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import io.fabric8.knative.internal.pkg.apis.Condition;
-import io.fabric8.knative.internal.pkg.apis.duck.v1.AuthStatus;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -43,11 +39,7 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "annotations",
-    "auth",
-    "conditions",
-    "observedGeneration",
-    "physicalSubscription"
+    "serviceAccountName"
 })
 @ToString
 @EqualsAndHashCode
@@ -72,21 +64,11 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class SubscriptionStatus implements Editable<SubscriptionStatusBuilder> , KubernetesResource
+public class AuthStatus implements Editable<AuthStatusBuilder> , KubernetesResource
 {
 
-    @JsonProperty("annotations")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> annotations = new LinkedHashMap<String, String>();
-    @JsonProperty("auth")
-    private AuthStatus auth;
-    @JsonProperty("conditions")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Condition> conditions = new ArrayList<Condition>();
-    @JsonProperty("observedGeneration")
-    private Long observedGeneration;
-    @JsonProperty("physicalSubscription")
-    private SubscriptionStatusPhysicalSubscription physicalSubscription;
+    @JsonProperty("serviceAccountName")
+    private String serviceAccountName;
     @JsonIgnore
     private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
@@ -94,75 +76,31 @@ public class SubscriptionStatus implements Editable<SubscriptionStatusBuilder> ,
      * No args constructor for use in serialization
      * 
      */
-    public SubscriptionStatus() {
+    public AuthStatus() {
     }
 
-    public SubscriptionStatus(Map<String, String> annotations, AuthStatus auth, List<Condition> conditions, Long observedGeneration, SubscriptionStatusPhysicalSubscription physicalSubscription) {
+    public AuthStatus(String serviceAccountName) {
         super();
-        this.annotations = annotations;
-        this.auth = auth;
-        this.conditions = conditions;
-        this.observedGeneration = observedGeneration;
-        this.physicalSubscription = physicalSubscription;
+        this.serviceAccountName = serviceAccountName;
     }
 
-    @JsonProperty("annotations")
-    public Map<String, String> getAnnotations() {
-        return annotations;
+    @JsonProperty("serviceAccountName")
+    public String getServiceAccountName() {
+        return serviceAccountName;
     }
 
-    @JsonProperty("annotations")
-    public void setAnnotations(Map<String, String> annotations) {
-        this.annotations = annotations;
-    }
-
-    @JsonProperty("auth")
-    public AuthStatus getAuth() {
-        return auth;
-    }
-
-    @JsonProperty("auth")
-    public void setAuth(AuthStatus auth) {
-        this.auth = auth;
-    }
-
-    @JsonProperty("conditions")
-    public List<Condition> getConditions() {
-        return conditions;
-    }
-
-    @JsonProperty("conditions")
-    public void setConditions(List<Condition> conditions) {
-        this.conditions = conditions;
-    }
-
-    @JsonProperty("observedGeneration")
-    public Long getObservedGeneration() {
-        return observedGeneration;
-    }
-
-    @JsonProperty("observedGeneration")
-    public void setObservedGeneration(Long observedGeneration) {
-        this.observedGeneration = observedGeneration;
-    }
-
-    @JsonProperty("physicalSubscription")
-    public SubscriptionStatusPhysicalSubscription getPhysicalSubscription() {
-        return physicalSubscription;
-    }
-
-    @JsonProperty("physicalSubscription")
-    public void setPhysicalSubscription(SubscriptionStatusPhysicalSubscription physicalSubscription) {
-        this.physicalSubscription = physicalSubscription;
+    @JsonProperty("serviceAccountName")
+    public void setServiceAccountName(String serviceAccountName) {
+        this.serviceAccountName = serviceAccountName;
     }
 
     @JsonIgnore
-    public SubscriptionStatusBuilder edit() {
-        return new SubscriptionStatusBuilder(this);
+    public AuthStatusBuilder edit() {
+        return new AuthStatusBuilder(this);
     }
 
     @JsonIgnore
-    public SubscriptionStatusBuilder toBuilder() {
+    public AuthStatusBuilder toBuilder() {
         return edit();
     }
 
