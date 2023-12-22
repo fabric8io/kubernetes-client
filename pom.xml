@@ -125,7 +125,7 @@
     <slf4j.version>2.0.10</slf4j.version>
     <lombok.version>1.18.30</lombok.version>
     <snakeyaml.version>2.7</snakeyaml.version>
-    <snakeyaml.bundle.version>2.1</snakeyaml.bundle.version> <!-- Transitive Jackson -->
+    <snakeyaml.bundle.version>2.2</snakeyaml.bundle.version> <!-- Transitive Jackson -->
     <bouncycastle.version>1.77</bouncycastle.version>
     <commons-compress.version>1.25.0</commons-compress.version>
     <commons-io.version>2.15.1</commons-io.version> <!-- Required by Gradle Testing Toolkit -->
