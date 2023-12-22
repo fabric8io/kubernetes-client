@@ -89,7 +89,7 @@ class AdaptTest {
           }
         }).once();
     server.expect().withPath("/apis").andReturn(HttpURLConnection.HTTP_OK, new APIGroupListBuilder()
-        .addToGroups(new APIGroupBuilder().withName("security.internal.openshift.io").build()))
+        .addToGroups(new APIGroupBuilder().withName("security.internal.openshift.io").build()).build())
         .once();
 
     client.getConfiguration().setUsername("foo");
