@@ -38,10 +38,10 @@ import lombok.experimental.Accessors;
     "metadata",
     "V1Alpha1StorageVersion",
     "V1Alpha1StorageVersionList",
-    "V1alpha1FlowSchema",
-    "V1alpha1FlowSchemaList",
-    "V1alpha1PriorityLevelConfiguration",
-    "V1alpha1PriorityLevelConfigurationList",
+    "V1FlowSchema",
+    "V1FlowSchemaList",
+    "V1PriorityLevelConfiguration",
+    "V1PriorityLevelConfigurationList",
     "V1beta1FlowSchema",
     "V1beta1FlowSchemaList",
     "V1beta1PriorityLevelConfiguration",
@@ -81,14 +81,14 @@ public class KubeSchema implements Editable<KubeSchemaBuilder>
     private StorageVersion v1Alpha1StorageVersion;
     @JsonProperty("V1Alpha1StorageVersionList")
     private StorageVersionList v1Alpha1StorageVersionList;
-    @JsonProperty("V1alpha1FlowSchema")
-    private io.fabric8.kubernetes.api.model.flowcontrol.v1alpha1.FlowSchema v1alpha1FlowSchema;
-    @JsonProperty("V1alpha1FlowSchemaList")
-    private io.fabric8.kubernetes.api.model.flowcontrol.v1alpha1.FlowSchemaList v1alpha1FlowSchemaList;
-    @JsonProperty("V1alpha1PriorityLevelConfiguration")
-    private io.fabric8.kubernetes.api.model.flowcontrol.v1alpha1.PriorityLevelConfiguration v1alpha1PriorityLevelConfiguration;
-    @JsonProperty("V1alpha1PriorityLevelConfigurationList")
-    private io.fabric8.kubernetes.api.model.flowcontrol.v1alpha1.PriorityLevelConfigurationList v1alpha1PriorityLevelConfigurationList;
+    @JsonProperty("V1FlowSchema")
+    private io.fabric8.kubernetes.api.model.flowcontrol.v1.FlowSchema v1FlowSchema;
+    @JsonProperty("V1FlowSchemaList")
+    private io.fabric8.kubernetes.api.model.flowcontrol.v1.FlowSchemaList v1FlowSchemaList;
+    @JsonProperty("V1PriorityLevelConfiguration")
+    private io.fabric8.kubernetes.api.model.flowcontrol.v1.PriorityLevelConfiguration v1PriorityLevelConfiguration;
+    @JsonProperty("V1PriorityLevelConfigurationList")
+    private io.fabric8.kubernetes.api.model.flowcontrol.v1.PriorityLevelConfigurationList v1PriorityLevelConfigurationList;
     @JsonProperty("V1beta1FlowSchema")
     private io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.FlowSchema v1beta1FlowSchema;
     @JsonProperty("V1beta1FlowSchemaList")
@@ -123,14 +123,14 @@ public class KubeSchema implements Editable<KubeSchemaBuilder>
     public KubeSchema() {
     }
 
-    public KubeSchema(StorageVersion v1Alpha1StorageVersion, StorageVersionList v1Alpha1StorageVersionList, io.fabric8.kubernetes.api.model.flowcontrol.v1alpha1.FlowSchema v1alpha1FlowSchema, io.fabric8.kubernetes.api.model.flowcontrol.v1alpha1.FlowSchemaList v1alpha1FlowSchemaList, io.fabric8.kubernetes.api.model.flowcontrol.v1alpha1.PriorityLevelConfiguration v1alpha1PriorityLevelConfiguration, io.fabric8.kubernetes.api.model.flowcontrol.v1alpha1.PriorityLevelConfigurationList v1alpha1PriorityLevelConfigurationList, io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.FlowSchema v1beta1FlowSchema, io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.FlowSchemaList v1beta1FlowSchemaList, io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.PriorityLevelConfiguration v1beta1PriorityLevelConfiguration, io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.PriorityLevelConfigurationList v1beta1PriorityLevelConfigurationList, io.fabric8.kubernetes.api.model.flowcontrol.v1beta2.FlowSchema v1beta2FlowSchema, io.fabric8.kubernetes.api.model.flowcontrol.v1beta2.FlowSchemaList v1beta2FlowSchemaList, io.fabric8.kubernetes.api.model.flowcontrol.v1beta2.PriorityLevelConfiguration v1beta2PriorityLevelConfiguration, io.fabric8.kubernetes.api.model.flowcontrol.v1beta2.PriorityLevelConfigurationList v1beta2PriorityLevelConfigurationList, io.fabric8.kubernetes.api.model.flowcontrol.v1beta3.FlowSchema v1beta3FlowSchema, io.fabric8.kubernetes.api.model.flowcontrol.v1beta3.FlowSchemaList v1beta3FlowSchemaList, io.fabric8.kubernetes.api.model.flowcontrol.v1beta3.PriorityLevelConfiguration v1beta3PriorityLevelConfiguration, io.fabric8.kubernetes.api.model.flowcontrol.v1beta3.PriorityLevelConfigurationList v1beta3PriorityLevelConfigurationList) {
+    public KubeSchema(StorageVersion v1Alpha1StorageVersion, StorageVersionList v1Alpha1StorageVersionList, io.fabric8.kubernetes.api.model.flowcontrol.v1.FlowSchema v1FlowSchema, io.fabric8.kubernetes.api.model.flowcontrol.v1.FlowSchemaList v1FlowSchemaList, io.fabric8.kubernetes.api.model.flowcontrol.v1.PriorityLevelConfiguration v1PriorityLevelConfiguration, io.fabric8.kubernetes.api.model.flowcontrol.v1.PriorityLevelConfigurationList v1PriorityLevelConfigurationList, io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.FlowSchema v1beta1FlowSchema, io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.FlowSchemaList v1beta1FlowSchemaList, io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.PriorityLevelConfiguration v1beta1PriorityLevelConfiguration, io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.PriorityLevelConfigurationList v1beta1PriorityLevelConfigurationList, io.fabric8.kubernetes.api.model.flowcontrol.v1beta2.FlowSchema v1beta2FlowSchema, io.fabric8.kubernetes.api.model.flowcontrol.v1beta2.FlowSchemaList v1beta2FlowSchemaList, io.fabric8.kubernetes.api.model.flowcontrol.v1beta2.PriorityLevelConfiguration v1beta2PriorityLevelConfiguration, io.fabric8.kubernetes.api.model.flowcontrol.v1beta2.PriorityLevelConfigurationList v1beta2PriorityLevelConfigurationList, io.fabric8.kubernetes.api.model.flowcontrol.v1beta3.FlowSchema v1beta3FlowSchema, io.fabric8.kubernetes.api.model.flowcontrol.v1beta3.FlowSchemaList v1beta3FlowSchemaList, io.fabric8.kubernetes.api.model.flowcontrol.v1beta3.PriorityLevelConfiguration v1beta3PriorityLevelConfiguration, io.fabric8.kubernetes.api.model.flowcontrol.v1beta3.PriorityLevelConfigurationList v1beta3PriorityLevelConfigurationList) {
         super();
         this.v1Alpha1StorageVersion = v1Alpha1StorageVersion;
         this.v1Alpha1StorageVersionList = v1Alpha1StorageVersionList;
-        this.v1alpha1FlowSchema = v1alpha1FlowSchema;
-        this.v1alpha1FlowSchemaList = v1alpha1FlowSchemaList;
-        this.v1alpha1PriorityLevelConfiguration = v1alpha1PriorityLevelConfiguration;
-        this.v1alpha1PriorityLevelConfigurationList = v1alpha1PriorityLevelConfigurationList;
+        this.v1FlowSchema = v1FlowSchema;
+        this.v1FlowSchemaList = v1FlowSchemaList;
+        this.v1PriorityLevelConfiguration = v1PriorityLevelConfiguration;
+        this.v1PriorityLevelConfigurationList = v1PriorityLevelConfigurationList;
         this.v1beta1FlowSchema = v1beta1FlowSchema;
         this.v1beta1FlowSchemaList = v1beta1FlowSchemaList;
         this.v1beta1PriorityLevelConfiguration = v1beta1PriorityLevelConfiguration;
@@ -165,44 +165,44 @@ public class KubeSchema implements Editable<KubeSchemaBuilder>
         this.v1Alpha1StorageVersionList = v1Alpha1StorageVersionList;
     }
 
-    @JsonProperty("V1alpha1FlowSchema")
-    public io.fabric8.kubernetes.api.model.flowcontrol.v1alpha1.FlowSchema getV1alpha1FlowSchema() {
-        return v1alpha1FlowSchema;
+    @JsonProperty("V1FlowSchema")
+    public io.fabric8.kubernetes.api.model.flowcontrol.v1.FlowSchema getV1FlowSchema() {
+        return v1FlowSchema;
     }
 
-    @JsonProperty("V1alpha1FlowSchema")
-    public void setV1alpha1FlowSchema(io.fabric8.kubernetes.api.model.flowcontrol.v1alpha1.FlowSchema v1alpha1FlowSchema) {
-        this.v1alpha1FlowSchema = v1alpha1FlowSchema;
+    @JsonProperty("V1FlowSchema")
+    public void setV1FlowSchema(io.fabric8.kubernetes.api.model.flowcontrol.v1.FlowSchema v1FlowSchema) {
+        this.v1FlowSchema = v1FlowSchema;
     }
 
-    @JsonProperty("V1alpha1FlowSchemaList")
-    public io.fabric8.kubernetes.api.model.flowcontrol.v1alpha1.FlowSchemaList getV1alpha1FlowSchemaList() {
-        return v1alpha1FlowSchemaList;
+    @JsonProperty("V1FlowSchemaList")
+    public io.fabric8.kubernetes.api.model.flowcontrol.v1.FlowSchemaList getV1FlowSchemaList() {
+        return v1FlowSchemaList;
     }
 
-    @JsonProperty("V1alpha1FlowSchemaList")
-    public void setV1alpha1FlowSchemaList(io.fabric8.kubernetes.api.model.flowcontrol.v1alpha1.FlowSchemaList v1alpha1FlowSchemaList) {
-        this.v1alpha1FlowSchemaList = v1alpha1FlowSchemaList;
+    @JsonProperty("V1FlowSchemaList")
+    public void setV1FlowSchemaList(io.fabric8.kubernetes.api.model.flowcontrol.v1.FlowSchemaList v1FlowSchemaList) {
+        this.v1FlowSchemaList = v1FlowSchemaList;
     }
 
-    @JsonProperty("V1alpha1PriorityLevelConfiguration")
-    public io.fabric8.kubernetes.api.model.flowcontrol.v1alpha1.PriorityLevelConfiguration getV1alpha1PriorityLevelConfiguration() {
-        return v1alpha1PriorityLevelConfiguration;
+    @JsonProperty("V1PriorityLevelConfiguration")
+    public io.fabric8.kubernetes.api.model.flowcontrol.v1.PriorityLevelConfiguration getV1PriorityLevelConfiguration() {
+        return v1PriorityLevelConfiguration;
     }
 
-    @JsonProperty("V1alpha1PriorityLevelConfiguration")
-    public void setV1alpha1PriorityLevelConfiguration(io.fabric8.kubernetes.api.model.flowcontrol.v1alpha1.PriorityLevelConfiguration v1alpha1PriorityLevelConfiguration) {
-        this.v1alpha1PriorityLevelConfiguration = v1alpha1PriorityLevelConfiguration;
+    @JsonProperty("V1PriorityLevelConfiguration")
+    public void setV1PriorityLevelConfiguration(io.fabric8.kubernetes.api.model.flowcontrol.v1.PriorityLevelConfiguration v1PriorityLevelConfiguration) {
+        this.v1PriorityLevelConfiguration = v1PriorityLevelConfiguration;
     }
 
-    @JsonProperty("V1alpha1PriorityLevelConfigurationList")
-    public io.fabric8.kubernetes.api.model.flowcontrol.v1alpha1.PriorityLevelConfigurationList getV1alpha1PriorityLevelConfigurationList() {
-        return v1alpha1PriorityLevelConfigurationList;
+    @JsonProperty("V1PriorityLevelConfigurationList")
+    public io.fabric8.kubernetes.api.model.flowcontrol.v1.PriorityLevelConfigurationList getV1PriorityLevelConfigurationList() {
+        return v1PriorityLevelConfigurationList;
     }
 
-    @JsonProperty("V1alpha1PriorityLevelConfigurationList")
-    public void setV1alpha1PriorityLevelConfigurationList(io.fabric8.kubernetes.api.model.flowcontrol.v1alpha1.PriorityLevelConfigurationList v1alpha1PriorityLevelConfigurationList) {
-        this.v1alpha1PriorityLevelConfigurationList = v1alpha1PriorityLevelConfigurationList;
+    @JsonProperty("V1PriorityLevelConfigurationList")
+    public void setV1PriorityLevelConfigurationList(io.fabric8.kubernetes.api.model.flowcontrol.v1.PriorityLevelConfigurationList v1PriorityLevelConfigurationList) {
+        this.v1PriorityLevelConfigurationList = v1PriorityLevelConfigurationList;
     }
 
     @JsonProperty("V1beta1FlowSchema")

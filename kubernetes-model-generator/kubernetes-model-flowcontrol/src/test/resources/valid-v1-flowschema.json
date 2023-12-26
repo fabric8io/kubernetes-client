@@ -1,0 +1,73 @@
+{
+  "kind": "FlowSchema",
+  "apiVersion": "flowcontrol.apiserver.k8s.io/v1",
+  "metadata": {
+    "name": "test-flowschema"
+  },
+  "spec": {
+    "priorityLevelConfiguration": {
+      "name": "nameValue"
+    },
+    "matchingPrecedence": 2,
+    "distinguisherMethod": {
+      "type": "typeValue"
+    },
+    "rules": [
+      {
+        "subjects": [
+          {
+            "kind": "kindValue",
+            "user": {
+              "name": "nameValue"
+            },
+            "group": {
+              "name": "nameValue"
+            },
+            "serviceAccount": {
+              "namespace": "namespaceValue",
+              "name": "nameValue"
+            }
+          }
+        ],
+        "resourceRules": [
+          {
+            "verbs": [
+              "verbsValue"
+            ],
+            "apiGroups": [
+              "apiGroupsValue"
+            ],
+            "resources": [
+              "resourcesValue"
+            ],
+            "clusterScope": true,
+            "namespaces": [
+              "namespacesValue"
+            ]
+          }
+        ],
+        "nonResourceRules": [
+          {
+            "verbs": [
+              "verbsValue"
+            ],
+            "nonResourceURLs": [
+              "nonResourceURLsValue"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "status": {
+    "conditions": [
+      {
+        "type": "typeValue",
+        "status": "statusValue",
+        "lastTransitionTime": "2003-01-01T01:01:01Z",
+        "reason": "reasonValue",
+        "message": "messageValue"
+      }
+    ]
+  }
+}

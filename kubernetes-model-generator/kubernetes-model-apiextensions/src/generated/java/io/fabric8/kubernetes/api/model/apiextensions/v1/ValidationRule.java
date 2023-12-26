@@ -38,6 +38,7 @@ import lombok.experimental.Accessors;
     "fieldPath",
     "message",
     "messageExpression",
+    "optionalOldSelf",
     "reason",
     "rule"
 })
@@ -69,6 +70,8 @@ public class ValidationRule implements Editable<ValidationRuleBuilder> , Kuberne
     private String message;
     @JsonProperty("messageExpression")
     private String messageExpression;
+    @JsonProperty("optionalOldSelf")
+    private Boolean optionalOldSelf;
     @JsonProperty("reason")
     private String reason;
     @JsonProperty("rule")
@@ -83,11 +86,12 @@ public class ValidationRule implements Editable<ValidationRuleBuilder> , Kuberne
     public ValidationRule() {
     }
 
-    public ValidationRule(String fieldPath, String message, String messageExpression, String reason, String rule) {
+    public ValidationRule(String fieldPath, String message, String messageExpression, Boolean optionalOldSelf, String reason, String rule) {
         super();
         this.fieldPath = fieldPath;
         this.message = message;
         this.messageExpression = messageExpression;
+        this.optionalOldSelf = optionalOldSelf;
         this.reason = reason;
         this.rule = rule;
     }
@@ -120,6 +124,16 @@ public class ValidationRule implements Editable<ValidationRuleBuilder> , Kuberne
     @JsonProperty("messageExpression")
     public void setMessageExpression(String messageExpression) {
         this.messageExpression = messageExpression;
+    }
+
+    @JsonProperty("optionalOldSelf")
+    public Boolean getOptionalOldSelf() {
+        return optionalOldSelf;
+    }
+
+    @JsonProperty("optionalOldSelf")
+    public void setOptionalOldSelf(Boolean optionalOldSelf) {
+        this.optionalOldSelf = optionalOldSelf;
     }
 
     @JsonProperty("reason")

@@ -9,8 +9,7 @@
       "group": "apps",
       "resource": "Deployment",
       "namespace": "default",
-      "name": "test-deploy",
-      "uid": "95f24228-b0fb-499c-94f0-801a707c6875"
+      "name": "test-deploy"
     }
   }
 }

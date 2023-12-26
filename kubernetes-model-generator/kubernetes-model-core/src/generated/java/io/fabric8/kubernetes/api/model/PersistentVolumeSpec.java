@@ -54,6 +54,7 @@ import lombok.experimental.Accessors;
     "scaleIO",
     "storageClassName",
     "storageos",
+    "volumeAttributesClassName",
     "volumeMode",
     "vsphereVolume"
 })
@@ -128,6 +129,8 @@ public class PersistentVolumeSpec implements Editable<PersistentVolumeSpecBuilde
     private java.lang.String storageClassName;
     @JsonProperty("storageos")
     private StorageOSPersistentVolumeSource storageos;
+    @JsonProperty("volumeAttributesClassName")
+    private java.lang.String volumeAttributesClassName;
     @JsonProperty("volumeMode")
     private java.lang.String volumeMode;
     @JsonProperty("vsphereVolume")
@@ -142,7 +145,7 @@ public class PersistentVolumeSpec implements Editable<PersistentVolumeSpecBuilde
     public PersistentVolumeSpec() {
     }
 
-    public PersistentVolumeSpec(List<java.lang.String> accessModes, AWSElasticBlockStoreVolumeSource awsElasticBlockStore, AzureDiskVolumeSource azureDisk, AzureFilePersistentVolumeSource azureFile, Map<String, Quantity> capacity, CephFSPersistentVolumeSource cephfs, CinderPersistentVolumeSource cinder, ObjectReference claimRef, CSIPersistentVolumeSource csi, FCVolumeSource fc, FlexPersistentVolumeSource flexVolume, FlockerVolumeSource flocker, GCEPersistentDiskVolumeSource gcePersistentDisk, GlusterfsPersistentVolumeSource glusterfs, HostPathVolumeSource hostPath, ISCSIPersistentVolumeSource iscsi, LocalVolumeSource local, List<java.lang.String> mountOptions, NFSVolumeSource nfs, VolumeNodeAffinity nodeAffinity, java.lang.String persistentVolumeReclaimPolicy, PhotonPersistentDiskVolumeSource photonPersistentDisk, PortworxVolumeSource portworxVolume, QuobyteVolumeSource quobyte, RBDPersistentVolumeSource rbd, ScaleIOPersistentVolumeSource scaleIO, java.lang.String storageClassName, StorageOSPersistentVolumeSource storageos, java.lang.String volumeMode, VsphereVirtualDiskVolumeSource vsphereVolume) {
+    public PersistentVolumeSpec(List<java.lang.String> accessModes, AWSElasticBlockStoreVolumeSource awsElasticBlockStore, AzureDiskVolumeSource azureDisk, AzureFilePersistentVolumeSource azureFile, Map<String, Quantity> capacity, CephFSPersistentVolumeSource cephfs, CinderPersistentVolumeSource cinder, ObjectReference claimRef, CSIPersistentVolumeSource csi, FCVolumeSource fc, FlexPersistentVolumeSource flexVolume, FlockerVolumeSource flocker, GCEPersistentDiskVolumeSource gcePersistentDisk, GlusterfsPersistentVolumeSource glusterfs, HostPathVolumeSource hostPath, ISCSIPersistentVolumeSource iscsi, LocalVolumeSource local, List<java.lang.String> mountOptions, NFSVolumeSource nfs, VolumeNodeAffinity nodeAffinity, java.lang.String persistentVolumeReclaimPolicy, PhotonPersistentDiskVolumeSource photonPersistentDisk, PortworxVolumeSource portworxVolume, QuobyteVolumeSource quobyte, RBDPersistentVolumeSource rbd, ScaleIOPersistentVolumeSource scaleIO, java.lang.String storageClassName, StorageOSPersistentVolumeSource storageos, java.lang.String volumeAttributesClassName, java.lang.String volumeMode, VsphereVirtualDiskVolumeSource vsphereVolume) {
         super();
         this.accessModes = accessModes;
         this.awsElasticBlockStore = awsElasticBlockStore;
@@ -172,6 +175,7 @@ public class PersistentVolumeSpec implements Editable<PersistentVolumeSpecBuilde
         this.scaleIO = scaleIO;
         this.storageClassName = storageClassName;
         this.storageos = storageos;
+        this.volumeAttributesClassName = volumeAttributesClassName;
         this.volumeMode = volumeMode;
         this.vsphereVolume = vsphereVolume;
     }
@@ -454,6 +458,16 @@ public class PersistentVolumeSpec implements Editable<PersistentVolumeSpecBuilde
     @JsonProperty("storageos")
     public void setStorageos(StorageOSPersistentVolumeSource storageos) {
         this.storageos = storageos;
+    }
+
+    @JsonProperty("volumeAttributesClassName")
+    public java.lang.String getVolumeAttributesClassName() {
+        return volumeAttributesClassName;
+    }
+
+    @JsonProperty("volumeAttributesClassName")
+    public void setVolumeAttributesClassName(java.lang.String volumeAttributesClassName) {
+        this.volumeAttributesClassName = volumeAttributesClassName;
     }
 
     @JsonProperty("volumeMode")

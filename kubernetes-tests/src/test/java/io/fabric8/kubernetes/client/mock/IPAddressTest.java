@@ -94,7 +94,6 @@ class IPAddressTest {
         .withResource("Deployment")
         .withNamespace("default")
         .withName("test-deploy")
-        .withUid("95f24228-b0fb-499c-94f0-801a707c6875")
         .endParentRef()
         .endSpec()
         .build();

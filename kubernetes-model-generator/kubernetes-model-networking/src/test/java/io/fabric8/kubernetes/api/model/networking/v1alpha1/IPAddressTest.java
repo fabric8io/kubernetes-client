@@ -51,8 +51,7 @@ class IPAddressTest {
         .hasFieldOrPropertyWithValue("spec.parentRef.group", "apps")
         .hasFieldOrPropertyWithValue("spec.parentRef.resource", "Deployment")
         .hasFieldOrPropertyWithValue("spec.parentRef.namespace", "default")
-        .hasFieldOrPropertyWithValue("spec.parentRef.name", "test-deploy")
-        .hasFieldOrPropertyWithValue("spec.parentRef.uid", "95f24228-b0fb-499c-94f0-801a707c6875");
+        .hasFieldOrPropertyWithValue("spec.parentRef.name", "test-deploy");
   }
 
   @Test
@@ -68,7 +67,6 @@ class IPAddressTest {
         .withResource("Deployment")
         .withNamespace("default")
         .withName("test-deploy")
-        .withUid("95f24228-b0fb-499c-94f0-801a707c6875")
         .endParentRef()
         .endSpec();
     // When
@@ -81,7 +79,6 @@ class IPAddressTest {
         .hasFieldOrPropertyWithValue("spec.parentRef.group", "apps")
         .hasFieldOrPropertyWithValue("spec.parentRef.resource", "Deployment")
         .hasFieldOrPropertyWithValue("spec.parentRef.namespace", "default")
-        .hasFieldOrPropertyWithValue("spec.parentRef.name", "test-deploy")
-        .hasFieldOrPropertyWithValue("spec.parentRef.uid", "95f24228-b0fb-499c-94f0-801a707c6875");
+        .hasFieldOrPropertyWithValue("spec.parentRef.name", "test-deploy");
   }
 }

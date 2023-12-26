@@ -1,0 +1,12 @@
+{
+  "kind": "VolumeAttributesClass",
+  "apiVersion": "storage.k8s.io/v1alpha1",
+  "metadata": {
+    "name": "silver"
+  },
+  "driverName": "pd.csi.storage.example.io",
+  "parameters": {
+    "provisioned-iops": "3000",
+    "provisioned-throughput": "50"
+  }
+}

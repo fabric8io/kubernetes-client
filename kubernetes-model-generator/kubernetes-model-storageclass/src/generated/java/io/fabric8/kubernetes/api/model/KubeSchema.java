@@ -23,6 +23,8 @@ import io.fabric8.kubernetes.api.model.storage.StorageClass;
 import io.fabric8.kubernetes.api.model.storage.StorageClassList;
 import io.fabric8.kubernetes.api.model.storage.VolumeAttachment;
 import io.fabric8.kubernetes.api.model.storage.VolumeAttachmentList;
+import io.fabric8.kubernetes.api.model.storage.v1alpha1.VolumeAttributesClass;
+import io.fabric8.kubernetes.api.model.storage.v1alpha1.VolumeAttributesClassList;
 import io.fabric8.kubernetes.api.model.version.Info;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
@@ -70,7 +72,9 @@ import lombok.experimental.Accessors;
     "V1CSIStorageCapacity",
     "V1CSIStorageCapacityList",
     "VolumeAttachment",
-    "VolumeAttachmentList"
+    "VolumeAttachmentList",
+    "VolumeAttributesClass",
+    "VolumeAttributesClassList"
 })
 @ToString
 @EqualsAndHashCode
@@ -162,6 +166,10 @@ public class KubeSchema implements Editable<KubeSchemaBuilder>
     private VolumeAttachment volumeAttachment;
     @JsonProperty("VolumeAttachmentList")
     private VolumeAttachmentList volumeAttachmentList;
+    @JsonProperty("VolumeAttributesClass")
+    private VolumeAttributesClass volumeAttributesClass;
+    @JsonProperty("VolumeAttributesClassList")
+    private VolumeAttributesClassList volumeAttributesClassList;
     @JsonIgnore
     private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
@@ -172,7 +180,7 @@ public class KubeSchema implements Editable<KubeSchemaBuilder>
     public KubeSchema() {
     }
 
-    public KubeSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, KubernetesList baseKubernetesList, io.fabric8.kubernetes.api.model.storage.v1beta1.CSIDriver cSIDriver, io.fabric8.kubernetes.api.model.storage.v1beta1.CSIDriverList cSIDriverList, io.fabric8.kubernetes.api.model.storage.v1beta1.CSINode cSINode, io.fabric8.kubernetes.api.model.storage.v1beta1.CSINodeList cSINodeList, io.fabric8.kubernetes.api.model.storage.v1beta1.CSIStorageCapacity cSIStorageCapacity, io.fabric8.kubernetes.api.model.storage.v1beta1.CSIStorageCapacityList cSIStorageCapacityList, CreateOptions createOptions, DeleteOptions deleteOptions, GetOptions getOptions, Info info, ListOptions listOptions, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, io.fabric8.kubernetes.api.model.ObjectReference objectReference, Patch patch, PatchOptions patchOptions, Quantity quantity, RootPaths rootPaths, Status status, StorageClass storageClass, StorageClassList storageClassList, String time, TypeMeta typeMeta, UpdateOptions updateOptions, io.fabric8.kubernetes.api.model.storage.CSIDriver v1CSIDriver, io.fabric8.kubernetes.api.model.storage.CSIDriverList v1CSIDriverList, io.fabric8.kubernetes.api.model.storage.CSINode v1CSINode, io.fabric8.kubernetes.api.model.storage.CSINodeList v1CSINodeList, io.fabric8.kubernetes.api.model.storage.CSIStorageCapacity v1CSIStorageCapacity, io.fabric8.kubernetes.api.model.storage.CSIStorageCapacityList v1CSIStorageCapacityList, VolumeAttachment volumeAttachment, VolumeAttachmentList volumeAttachmentList) {
+    public KubeSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, KubernetesList baseKubernetesList, io.fabric8.kubernetes.api.model.storage.v1beta1.CSIDriver cSIDriver, io.fabric8.kubernetes.api.model.storage.v1beta1.CSIDriverList cSIDriverList, io.fabric8.kubernetes.api.model.storage.v1beta1.CSINode cSINode, io.fabric8.kubernetes.api.model.storage.v1beta1.CSINodeList cSINodeList, io.fabric8.kubernetes.api.model.storage.v1beta1.CSIStorageCapacity cSIStorageCapacity, io.fabric8.kubernetes.api.model.storage.v1beta1.CSIStorageCapacityList cSIStorageCapacityList, CreateOptions createOptions, DeleteOptions deleteOptions, GetOptions getOptions, Info info, ListOptions listOptions, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, io.fabric8.kubernetes.api.model.ObjectReference objectReference, Patch patch, PatchOptions patchOptions, Quantity quantity, RootPaths rootPaths, Status status, StorageClass storageClass, StorageClassList storageClassList, String time, TypeMeta typeMeta, UpdateOptions updateOptions, io.fabric8.kubernetes.api.model.storage.CSIDriver v1CSIDriver, io.fabric8.kubernetes.api.model.storage.CSIDriverList v1CSIDriverList, io.fabric8.kubernetes.api.model.storage.CSINode v1CSINode, io.fabric8.kubernetes.api.model.storage.CSINodeList v1CSINodeList, io.fabric8.kubernetes.api.model.storage.CSIStorageCapacity v1CSIStorageCapacity, io.fabric8.kubernetes.api.model.storage.CSIStorageCapacityList v1CSIStorageCapacityList, VolumeAttachment volumeAttachment, VolumeAttachmentList volumeAttachmentList, VolumeAttributesClass volumeAttributesClass, VolumeAttributesClassList volumeAttributesClassList) {
         super();
         this.aPIGroup = aPIGroup;
         this.aPIGroupList = aPIGroupList;
@@ -208,6 +216,8 @@ public class KubeSchema implements Editable<KubeSchemaBuilder>
         this.v1CSIStorageCapacityList = v1CSIStorageCapacityList;
         this.volumeAttachment = volumeAttachment;
         this.volumeAttachmentList = volumeAttachmentList;
+        this.volumeAttributesClass = volumeAttributesClass;
+        this.volumeAttributesClassList = volumeAttributesClassList;
     }
 
     @JsonProperty("APIGroup")
@@ -548,6 +558,26 @@ public class KubeSchema implements Editable<KubeSchemaBuilder>
     @JsonProperty("VolumeAttachmentList")
     public void setVolumeAttachmentList(VolumeAttachmentList volumeAttachmentList) {
         this.volumeAttachmentList = volumeAttachmentList;
+    }
+
+    @JsonProperty("VolumeAttributesClass")
+    public VolumeAttributesClass getVolumeAttributesClass() {
+        return volumeAttributesClass;
+    }
+
+    @JsonProperty("VolumeAttributesClass")
+    public void setVolumeAttributesClass(VolumeAttributesClass volumeAttributesClass) {
+        this.volumeAttributesClass = volumeAttributesClass;
+    }
+
+    @JsonProperty("VolumeAttributesClassList")
+    public VolumeAttributesClassList getVolumeAttributesClassList() {
+        return volumeAttributesClassList;
+    }
+
+    @JsonProperty("VolumeAttributesClassList")
+    public void setVolumeAttributesClassList(VolumeAttributesClassList volumeAttributesClassList) {
+        this.volumeAttributesClassList = volumeAttributesClassList;
     }
 
     @JsonIgnore

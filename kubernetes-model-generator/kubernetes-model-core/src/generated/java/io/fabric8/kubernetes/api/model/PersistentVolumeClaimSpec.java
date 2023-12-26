@@ -32,6 +32,7 @@ import lombok.experimental.Accessors;
     "resources",
     "selector",
     "storageClassName",
+    "volumeAttributesClassName",
     "volumeMode",
     "volumeName"
 })
@@ -55,11 +56,13 @@ public class PersistentVolumeClaimSpec implements Editable<PersistentVolumeClaim
     @JsonProperty("dataSourceRef")
     private TypedObjectReference dataSourceRef;
     @JsonProperty("resources")
-    private ResourceRequirements resources;
+    private VolumeResourceRequirements resources;
     @JsonProperty("selector")
     private LabelSelector selector;
     @JsonProperty("storageClassName")
     private String storageClassName;
+    @JsonProperty("volumeAttributesClassName")
+    private String volumeAttributesClassName;
     @JsonProperty("volumeMode")
     private String volumeMode;
     @JsonProperty("volumeName")
@@ -74,7 +77,7 @@ public class PersistentVolumeClaimSpec implements Editable<PersistentVolumeClaim
     public PersistentVolumeClaimSpec() {
     }
 
-    public PersistentVolumeClaimSpec(List<String> accessModes, TypedLocalObjectReference dataSource, TypedObjectReference dataSourceRef, ResourceRequirements resources, LabelSelector selector, String storageClassName, String volumeMode, String volumeName) {
+    public PersistentVolumeClaimSpec(List<String> accessModes, TypedLocalObjectReference dataSource, TypedObjectReference dataSourceRef, VolumeResourceRequirements resources, LabelSelector selector, String storageClassName, String volumeAttributesClassName, String volumeMode, String volumeName) {
         super();
         this.accessModes = accessModes;
         this.dataSource = dataSource;
@@ -82,6 +85,7 @@ public class PersistentVolumeClaimSpec implements Editable<PersistentVolumeClaim
         this.resources = resources;
         this.selector = selector;
         this.storageClassName = storageClassName;
+        this.volumeAttributesClassName = volumeAttributesClassName;
         this.volumeMode = volumeMode;
         this.volumeName = volumeName;
     }
@@ -117,12 +121,12 @@ public class PersistentVolumeClaimSpec implements Editable<PersistentVolumeClaim
     }
 
     @JsonProperty("resources")
-    public ResourceRequirements getResources() {
+    public VolumeResourceRequirements getResources() {
         return resources;
     }
 
     @JsonProperty("resources")
-    public void setResources(ResourceRequirements resources) {
+    public void setResources(VolumeResourceRequirements resources) {
         this.resources = resources;
     }
 
@@ -144,6 +148,16 @@ public class PersistentVolumeClaimSpec implements Editable<PersistentVolumeClaim
     @JsonProperty("storageClassName")
     public void setStorageClassName(String storageClassName) {
         this.storageClassName = storageClassName;
+    }
+
+    @JsonProperty("volumeAttributesClassName")
+    public String getVolumeAttributesClassName() {
+        return volumeAttributesClassName;
+    }
+
+    @JsonProperty("volumeAttributesClassName")
+    public void setVolumeAttributesClassName(String volumeAttributesClassName) {
+        this.volumeAttributesClassName = volumeAttributesClassName;
     }
 
     @JsonProperty("volumeMode")

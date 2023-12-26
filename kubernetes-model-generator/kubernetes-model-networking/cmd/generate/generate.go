@@ -69,10 +69,10 @@ type Schema struct {
   IngressList                              networkingv1beta1.IngressList
   IngressClass                             networkingv1beta1.IngressClass
   IngressClassList                         networkingv1beta1.IngressClassList
-  V1Alpha1ClusterCIDR                      networkingv1alpha1.ClusterCIDR
-  V1Alpha1ClusterCIDRList                  networkingv1alpha1.ClusterCIDRList
   V1Alpha1IPAddress                        networkingv1alpha1.IPAddress
   V1Alpha1IPAddressList                    networkingv1alpha1.IPAddressList
+  V1Alpha1ServiceCIDR                      networkingv1alpha1.ServiceCIDR
+  V1Alpha1ServiceCIDRList                  networkingv1alpha1.ServiceCIDRList
 }
 
 func main() {

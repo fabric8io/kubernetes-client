@@ -753,6 +753,9 @@
         "messageExpression": {
           "type": "string"
         },
+        "optionalOldSelf": {
+          "type": "boolean"
+        },
         "reason": {
           "type": "string"
         },
@@ -1494,6 +1497,9 @@
         },
         "messageExpression": {
           "type": "string"
+        },
+        "optionalOldSelf": {
+          "type": "boolean"
         },
         "reason": {
           "type": "string"
