@@ -26,6 +26,7 @@ import lombok.experimental.Accessors;
     "metadata",
     "exec",
     "httpGet",
+    "sleep",
     "tcpSocket"
 })
 @ToString
@@ -44,6 +45,8 @@ public class LifecycleHandler implements Editable<LifecycleHandlerBuilder> , Kub
     private ExecAction exec;
     @JsonProperty("httpGet")
     private HTTPGetAction httpGet;
+    @JsonProperty("sleep")
+    private SleepAction sleep;
     @JsonProperty("tcpSocket")
     private TCPSocketAction tcpSocket;
     @JsonIgnore
@@ -56,10 +59,11 @@ public class LifecycleHandler implements Editable<LifecycleHandlerBuilder> , Kub
     public LifecycleHandler() {
     }
 
-    public LifecycleHandler(ExecAction exec, HTTPGetAction httpGet, TCPSocketAction tcpSocket) {
+    public LifecycleHandler(ExecAction exec, HTTPGetAction httpGet, SleepAction sleep, TCPSocketAction tcpSocket) {
         super();
         this.exec = exec;
         this.httpGet = httpGet;
+        this.sleep = sleep;
         this.tcpSocket = tcpSocket;
     }
 
@@ -81,6 +85,16 @@ public class LifecycleHandler implements Editable<LifecycleHandlerBuilder> , Kub
     @JsonProperty("httpGet")
     public void setHttpGet(HTTPGetAction httpGet) {
         this.httpGet = httpGet;
+    }
+
+    @JsonProperty("sleep")
+    public SleepAction getSleep() {
+        return sleep;
+    }
+
+    @JsonProperty("sleep")
+    public void setSleep(SleepAction sleep) {
+        this.sleep = sleep;
     }
 
     @JsonProperty("tcpSocket")

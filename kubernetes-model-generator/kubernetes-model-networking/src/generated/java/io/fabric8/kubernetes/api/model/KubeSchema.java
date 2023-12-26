@@ -21,10 +21,10 @@ import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.kubernetes.api.model.networking.v1.NetworkPolicy;
 import io.fabric8.kubernetes.api.model.networking.v1.NetworkPolicyList;
-import io.fabric8.kubernetes.api.model.networking.v1alpha1.ClusterCIDR;
-import io.fabric8.kubernetes.api.model.networking.v1alpha1.ClusterCIDRList;
 import io.fabric8.kubernetes.api.model.networking.v1alpha1.IPAddress;
 import io.fabric8.kubernetes.api.model.networking.v1alpha1.IPAddressList;
+import io.fabric8.kubernetes.api.model.networking.v1alpha1.ServiceCIDR;
+import io.fabric8.kubernetes.api.model.networking.v1alpha1.ServiceCIDRList;
 import io.fabric8.kubernetes.api.model.version.Info;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
@@ -63,10 +63,10 @@ import lombok.experimental.Accessors;
     "Time",
     "TypeMeta",
     "UpdateOptions",
-    "V1Alpha1ClusterCIDR",
-    "V1Alpha1ClusterCIDRList",
     "V1Alpha1IPAddress",
     "V1Alpha1IPAddressList",
+    "V1Alpha1ServiceCIDR",
+    "V1Alpha1ServiceCIDRList",
     "V1Ingress",
     "V1IngressClass",
     "V1IngressClassList",
@@ -142,14 +142,14 @@ public class KubeSchema implements Editable<KubeSchemaBuilder>
     private TypeMeta typeMeta;
     @JsonProperty("UpdateOptions")
     private UpdateOptions updateOptions;
-    @JsonProperty("V1Alpha1ClusterCIDR")
-    private ClusterCIDR v1Alpha1ClusterCIDR;
-    @JsonProperty("V1Alpha1ClusterCIDRList")
-    private ClusterCIDRList v1Alpha1ClusterCIDRList;
     @JsonProperty("V1Alpha1IPAddress")
     private IPAddress v1Alpha1IPAddress;
     @JsonProperty("V1Alpha1IPAddressList")
     private IPAddressList v1Alpha1IPAddressList;
+    @JsonProperty("V1Alpha1ServiceCIDR")
+    private ServiceCIDR v1Alpha1ServiceCIDR;
+    @JsonProperty("V1Alpha1ServiceCIDRList")
+    private ServiceCIDRList v1Alpha1ServiceCIDRList;
     @JsonProperty("V1Ingress")
     private io.fabric8.kubernetes.api.model.networking.v1.Ingress v1Ingress;
     @JsonProperty("V1IngressClass")
@@ -168,7 +168,7 @@ public class KubeSchema implements Editable<KubeSchemaBuilder>
     public KubeSchema() {
     }
 
-    public KubeSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, KubernetesList baseKubernetesList, CreateOptions createOptions, DeleteOptions deleteOptions, GetOptions getOptions, Info info, io.fabric8.kubernetes.api.model.networking.v1beta1.Ingress ingress, io.fabric8.kubernetes.api.model.networking.v1beta1.IngressClass ingressClass, io.fabric8.kubernetes.api.model.networking.v1beta1.IngressClassList ingressClassList, io.fabric8.kubernetes.api.model.networking.v1beta1.IngressList ingressList, ListOptions listOptions, NetworkPolicy networkPolicy, NetworkPolicyList networkPolicyList, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, io.fabric8.kubernetes.api.model.ObjectReference objectReference, Patch patch, PatchOptions patchOptions, Quantity quantity, RootPaths rootPaths, Status status, String time, TypeMeta typeMeta, UpdateOptions updateOptions, ClusterCIDR v1Alpha1ClusterCIDR, ClusterCIDRList v1Alpha1ClusterCIDRList, IPAddress v1Alpha1IPAddress, IPAddressList v1Alpha1IPAddressList, io.fabric8.kubernetes.api.model.networking.v1.Ingress v1Ingress, io.fabric8.kubernetes.api.model.networking.v1.IngressClass v1IngressClass, io.fabric8.kubernetes.api.model.networking.v1.IngressClassList v1IngressClassList, io.fabric8.kubernetes.api.model.networking.v1.IngressList v1IngressList) {
+    public KubeSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, KubernetesList baseKubernetesList, CreateOptions createOptions, DeleteOptions deleteOptions, GetOptions getOptions, Info info, io.fabric8.kubernetes.api.model.networking.v1beta1.Ingress ingress, io.fabric8.kubernetes.api.model.networking.v1beta1.IngressClass ingressClass, io.fabric8.kubernetes.api.model.networking.v1beta1.IngressClassList ingressClassList, io.fabric8.kubernetes.api.model.networking.v1beta1.IngressList ingressList, ListOptions listOptions, NetworkPolicy networkPolicy, NetworkPolicyList networkPolicyList, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, io.fabric8.kubernetes.api.model.ObjectReference objectReference, Patch patch, PatchOptions patchOptions, Quantity quantity, RootPaths rootPaths, Status status, String time, TypeMeta typeMeta, UpdateOptions updateOptions, IPAddress v1Alpha1IPAddress, IPAddressList v1Alpha1IPAddressList, ServiceCIDR v1Alpha1ServiceCIDR, ServiceCIDRList v1Alpha1ServiceCIDRList, io.fabric8.kubernetes.api.model.networking.v1.Ingress v1Ingress, io.fabric8.kubernetes.api.model.networking.v1.IngressClass v1IngressClass, io.fabric8.kubernetes.api.model.networking.v1.IngressClassList v1IngressClassList, io.fabric8.kubernetes.api.model.networking.v1.IngressList v1IngressList) {
         super();
         this.aPIGroup = aPIGroup;
         this.aPIGroupList = aPIGroupList;
@@ -194,10 +194,10 @@ public class KubeSchema implements Editable<KubeSchemaBuilder>
         this.time = time;
         this.typeMeta = typeMeta;
         this.updateOptions = updateOptions;
-        this.v1Alpha1ClusterCIDR = v1Alpha1ClusterCIDR;
-        this.v1Alpha1ClusterCIDRList = v1Alpha1ClusterCIDRList;
         this.v1Alpha1IPAddress = v1Alpha1IPAddress;
         this.v1Alpha1IPAddressList = v1Alpha1IPAddressList;
+        this.v1Alpha1ServiceCIDR = v1Alpha1ServiceCIDR;
+        this.v1Alpha1ServiceCIDRList = v1Alpha1ServiceCIDRList;
         this.v1Ingress = v1Ingress;
         this.v1IngressClass = v1IngressClass;
         this.v1IngressClassList = v1IngressClassList;
@@ -444,26 +444,6 @@ public class KubeSchema implements Editable<KubeSchemaBuilder>
         this.updateOptions = updateOptions;
     }
 
-    @JsonProperty("V1Alpha1ClusterCIDR")
-    public ClusterCIDR getV1Alpha1ClusterCIDR() {
-        return v1Alpha1ClusterCIDR;
-    }
-
-    @JsonProperty("V1Alpha1ClusterCIDR")
-    public void setV1Alpha1ClusterCIDR(ClusterCIDR v1Alpha1ClusterCIDR) {
-        this.v1Alpha1ClusterCIDR = v1Alpha1ClusterCIDR;
-    }
-
-    @JsonProperty("V1Alpha1ClusterCIDRList")
-    public ClusterCIDRList getV1Alpha1ClusterCIDRList() {
-        return v1Alpha1ClusterCIDRList;
-    }
-
-    @JsonProperty("V1Alpha1ClusterCIDRList")
-    public void setV1Alpha1ClusterCIDRList(ClusterCIDRList v1Alpha1ClusterCIDRList) {
-        this.v1Alpha1ClusterCIDRList = v1Alpha1ClusterCIDRList;
-    }
-
     @JsonProperty("V1Alpha1IPAddress")
     public IPAddress getV1Alpha1IPAddress() {
         return v1Alpha1IPAddress;
@@ -482,6 +462,26 @@ public class KubeSchema implements Editable<KubeSchemaBuilder>
     @JsonProperty("V1Alpha1IPAddressList")
     public void setV1Alpha1IPAddressList(IPAddressList v1Alpha1IPAddressList) {
         this.v1Alpha1IPAddressList = v1Alpha1IPAddressList;
+    }
+
+    @JsonProperty("V1Alpha1ServiceCIDR")
+    public ServiceCIDR getV1Alpha1ServiceCIDR() {
+        return v1Alpha1ServiceCIDR;
+    }
+
+    @JsonProperty("V1Alpha1ServiceCIDR")
+    public void setV1Alpha1ServiceCIDR(ServiceCIDR v1Alpha1ServiceCIDR) {
+        this.v1Alpha1ServiceCIDR = v1Alpha1ServiceCIDR;
+    }
+
+    @JsonProperty("V1Alpha1ServiceCIDRList")
+    public ServiceCIDRList getV1Alpha1ServiceCIDRList() {
+        return v1Alpha1ServiceCIDRList;
+    }
+
+    @JsonProperty("V1Alpha1ServiceCIDRList")
+    public void setV1Alpha1ServiceCIDRList(ServiceCIDRList v1Alpha1ServiceCIDRList) {
+        this.v1Alpha1ServiceCIDRList = v1Alpha1ServiceCIDRList;
     }
 
     @JsonProperty("V1Ingress")

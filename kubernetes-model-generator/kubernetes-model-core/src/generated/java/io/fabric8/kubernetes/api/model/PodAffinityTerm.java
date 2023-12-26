@@ -27,6 +27,8 @@ import lombok.experimental.Accessors;
     "kind",
     "metadata",
     "labelSelector",
+    "matchLabelKeys",
+    "mismatchLabelKeys",
     "namespaceSelector",
     "namespaces",
     "topologyKey"
@@ -45,6 +47,12 @@ public class PodAffinityTerm implements Editable<PodAffinityTermBuilder> , Kuber
 
     @JsonProperty("labelSelector")
     private LabelSelector labelSelector;
+    @JsonProperty("matchLabelKeys")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> matchLabelKeys = new ArrayList<String>();
+    @JsonProperty("mismatchLabelKeys")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> mismatchLabelKeys = new ArrayList<String>();
     @JsonProperty("namespaceSelector")
     private LabelSelector namespaceSelector;
     @JsonProperty("namespaces")
@@ -62,9 +70,11 @@ public class PodAffinityTerm implements Editable<PodAffinityTermBuilder> , Kuber
     public PodAffinityTerm() {
     }
 
-    public PodAffinityTerm(LabelSelector labelSelector, LabelSelector namespaceSelector, List<String> namespaces, String topologyKey) {
+    public PodAffinityTerm(LabelSelector labelSelector, List<String> matchLabelKeys, List<String> mismatchLabelKeys, LabelSelector namespaceSelector, List<String> namespaces, String topologyKey) {
         super();
         this.labelSelector = labelSelector;
+        this.matchLabelKeys = matchLabelKeys;
+        this.mismatchLabelKeys = mismatchLabelKeys;
         this.namespaceSelector = namespaceSelector;
         this.namespaces = namespaces;
         this.topologyKey = topologyKey;
@@ -78,6 +88,26 @@ public class PodAffinityTerm implements Editable<PodAffinityTermBuilder> , Kuber
     @JsonProperty("labelSelector")
     public void setLabelSelector(LabelSelector labelSelector) {
         this.labelSelector = labelSelector;
+    }
+
+    @JsonProperty("matchLabelKeys")
+    public List<String> getMatchLabelKeys() {
+        return matchLabelKeys;
+    }
+
+    @JsonProperty("matchLabelKeys")
+    public void setMatchLabelKeys(List<String> matchLabelKeys) {
+        this.matchLabelKeys = matchLabelKeys;
+    }
+
+    @JsonProperty("mismatchLabelKeys")
+    public List<String> getMismatchLabelKeys() {
+        return mismatchLabelKeys;
+    }
+
+    @JsonProperty("mismatchLabelKeys")
+    public void setMismatchLabelKeys(List<String> mismatchLabelKeys) {
+        this.mismatchLabelKeys = mismatchLabelKeys;
     }
 
     @JsonProperty("namespaceSelector")

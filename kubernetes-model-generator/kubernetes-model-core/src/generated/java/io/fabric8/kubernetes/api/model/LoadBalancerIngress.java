@@ -28,6 +28,7 @@ import lombok.experimental.Accessors;
     "metadata",
     "hostname",
     "ip",
+    "ipMode",
     "ports"
 })
 @ToString
@@ -46,6 +47,8 @@ public class LoadBalancerIngress implements Editable<LoadBalancerIngressBuilder>
     private String hostname;
     @JsonProperty("ip")
     private String ip;
+    @JsonProperty("ipMode")
+    private String ipMode;
     @JsonProperty("ports")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<PortStatus> ports = new ArrayList<PortStatus>();
@@ -59,10 +62,11 @@ public class LoadBalancerIngress implements Editable<LoadBalancerIngressBuilder>
     public LoadBalancerIngress() {
     }
 
-    public LoadBalancerIngress(String hostname, String ip, List<PortStatus> ports) {
+    public LoadBalancerIngress(String hostname, String ip, String ipMode, List<PortStatus> ports) {
         super();
         this.hostname = hostname;
         this.ip = ip;
+        this.ipMode = ipMode;
         this.ports = ports;
     }
 
@@ -84,6 +88,16 @@ public class LoadBalancerIngress implements Editable<LoadBalancerIngressBuilder>
     @JsonProperty("ip")
     public void setIp(String ip) {
         this.ip = ip;
+    }
+
+    @JsonProperty("ipMode")
+    public String getIpMode() {
+        return ipMode;
+    }
+
+    @JsonProperty("ipMode")
+    public void setIpMode(String ipMode) {
+        this.ipMode = ipMode;
     }
 
     @JsonProperty("ports")

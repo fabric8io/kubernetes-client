@@ -38,8 +38,7 @@ import lombok.experimental.Accessors;
     "group",
     "name",
     "namespace",
-    "resource",
-    "uid"
+    "resource"
 })
 @ToString
 @EqualsAndHashCode
@@ -71,8 +70,6 @@ public class ParentReference implements Editable<ParentReferenceBuilder> , Kuber
     private String namespace;
     @JsonProperty("resource")
     private String resource;
-    @JsonProperty("uid")
-    private String uid;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -83,13 +80,12 @@ public class ParentReference implements Editable<ParentReferenceBuilder> , Kuber
     public ParentReference() {
     }
 
-    public ParentReference(String group, String name, String namespace, String resource, String uid) {
+    public ParentReference(String group, String name, String namespace, String resource) {
         super();
         this.group = group;
         this.name = name;
         this.namespace = namespace;
         this.resource = resource;
-        this.uid = uid;
     }
 
     @JsonProperty("group")
@@ -130,16 +126,6 @@ public class ParentReference implements Editable<ParentReferenceBuilder> , Kuber
     @JsonProperty("resource")
     public void setResource(String resource) {
         this.resource = resource;
-    }
-
-    @JsonProperty("uid")
-    public String getUid() {
-        return uid;
-    }
-
-    @JsonProperty("uid")
-    public void setUid(String uid) {
-        this.uid = uid;
     }
 
     @JsonIgnore

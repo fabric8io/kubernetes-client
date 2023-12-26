@@ -1,0 +1,27 @@
+{
+  "kind": "PriorityLevelConfiguration",
+  "apiVersion": "flowcontrol.apiserver.k8s.io/v1",
+  "metadata": {
+    "name": "test-prioritylevelconfiguration"
+  },
+  "spec": {
+    "type": "typeValue",
+    "limited": {
+      "nominalConcurrencyShares": 1,
+      "limitResponse": {
+        "type": "typeValue",
+        "queuing": {
+          "queues": 1,
+          "handSize": 2,
+          "queueLengthLimit": 3
+        }
+      },
+      "lendablePercent": 3,
+      "borrowingLimitPercent": 4
+    },
+    "exempt": {
+      "nominalConcurrencyShares": 1,
+      "lendablePercent": 2
+    }
+  }
+}

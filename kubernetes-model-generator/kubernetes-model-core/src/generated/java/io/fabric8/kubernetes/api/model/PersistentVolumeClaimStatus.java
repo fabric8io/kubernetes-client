@@ -31,6 +31,8 @@ import lombok.experimental.Accessors;
     "allocatedResources",
     "capacity",
     "conditions",
+    "currentVolumeAttributesClassName",
+    "modifyVolumeStatus",
     "phase"
 })
 @ToString
@@ -60,6 +62,10 @@ public class PersistentVolumeClaimStatus implements Editable<PersistentVolumeCla
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<PersistentVolumeClaimCondition> conditions = new ArrayList<PersistentVolumeClaimCondition>();
+    @JsonProperty("currentVolumeAttributesClassName")
+    private java.lang.String currentVolumeAttributesClassName;
+    @JsonProperty("modifyVolumeStatus")
+    private ModifyVolumeStatus modifyVolumeStatus;
     @JsonProperty("phase")
     private java.lang.String phase;
     @JsonIgnore
@@ -72,13 +78,15 @@ public class PersistentVolumeClaimStatus implements Editable<PersistentVolumeCla
     public PersistentVolumeClaimStatus() {
     }
 
-    public PersistentVolumeClaimStatus(List<java.lang.String> accessModes, Map<String, String> allocatedResourceStatuses, Map<String, io.fabric8.kubernetes.api.model.Quantity> allocatedResources, Map<String, io.fabric8.kubernetes.api.model.Quantity> capacity, List<PersistentVolumeClaimCondition> conditions, java.lang.String phase) {
+    public PersistentVolumeClaimStatus(List<java.lang.String> accessModes, Map<String, String> allocatedResourceStatuses, Map<String, io.fabric8.kubernetes.api.model.Quantity> allocatedResources, Map<String, io.fabric8.kubernetes.api.model.Quantity> capacity, List<PersistentVolumeClaimCondition> conditions, java.lang.String currentVolumeAttributesClassName, ModifyVolumeStatus modifyVolumeStatus, java.lang.String phase) {
         super();
         this.accessModes = accessModes;
         this.allocatedResourceStatuses = allocatedResourceStatuses;
         this.allocatedResources = allocatedResources;
         this.capacity = capacity;
         this.conditions = conditions;
+        this.currentVolumeAttributesClassName = currentVolumeAttributesClassName;
+        this.modifyVolumeStatus = modifyVolumeStatus;
         this.phase = phase;
     }
 
@@ -130,6 +138,26 @@ public class PersistentVolumeClaimStatus implements Editable<PersistentVolumeCla
     @JsonProperty("conditions")
     public void setConditions(List<PersistentVolumeClaimCondition> conditions) {
         this.conditions = conditions;
+    }
+
+    @JsonProperty("currentVolumeAttributesClassName")
+    public java.lang.String getCurrentVolumeAttributesClassName() {
+        return currentVolumeAttributesClassName;
+    }
+
+    @JsonProperty("currentVolumeAttributesClassName")
+    public void setCurrentVolumeAttributesClassName(java.lang.String currentVolumeAttributesClassName) {
+        this.currentVolumeAttributesClassName = currentVolumeAttributesClassName;
+    }
+
+    @JsonProperty("modifyVolumeStatus")
+    public ModifyVolumeStatus getModifyVolumeStatus() {
+        return modifyVolumeStatus;
+    }
+
+    @JsonProperty("modifyVolumeStatus")
+    public void setModifyVolumeStatus(ModifyVolumeStatus modifyVolumeStatus) {
+        this.modifyVolumeStatus = modifyVolumeStatus;
     }
 
     @JsonProperty("phase")

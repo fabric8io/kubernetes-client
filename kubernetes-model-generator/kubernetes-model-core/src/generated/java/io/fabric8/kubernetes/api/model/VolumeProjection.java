@@ -24,6 +24,7 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
+    "clusterTrustBundle",
     "configMap",
     "downwardAPI",
     "secret",
@@ -41,6 +42,8 @@ import lombok.experimental.Accessors;
 public class VolumeProjection implements Editable<VolumeProjectionBuilder> , KubernetesResource
 {
 
+    @JsonProperty("clusterTrustBundle")
+    private ClusterTrustBundleProjection clusterTrustBundle;
     @JsonProperty("configMap")
     private ConfigMapProjection configMap;
     @JsonProperty("downwardAPI")
@@ -59,12 +62,23 @@ public class VolumeProjection implements Editable<VolumeProjectionBuilder> , Kub
     public VolumeProjection() {
     }
 
-    public VolumeProjection(ConfigMapProjection configMap, DownwardAPIProjection downwardAPI, SecretProjection secret, ServiceAccountTokenProjection serviceAccountToken) {
+    public VolumeProjection(ClusterTrustBundleProjection clusterTrustBundle, ConfigMapProjection configMap, DownwardAPIProjection downwardAPI, SecretProjection secret, ServiceAccountTokenProjection serviceAccountToken) {
         super();
+        this.clusterTrustBundle = clusterTrustBundle;
         this.configMap = configMap;
         this.downwardAPI = downwardAPI;
         this.secret = secret;
         this.serviceAccountToken = serviceAccountToken;
+    }
+
+    @JsonProperty("clusterTrustBundle")
+    public ClusterTrustBundleProjection getClusterTrustBundle() {
+        return clusterTrustBundle;
+    }
+
+    @JsonProperty("clusterTrustBundle")
+    public void setClusterTrustBundle(ClusterTrustBundleProjection clusterTrustBundle) {
+        this.clusterTrustBundle = clusterTrustBundle;
     }
 
     @JsonProperty("configMap")

@@ -1044,6 +1044,7 @@
         },
         "variables": {
           "type": "array",
+          "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/kubernetes_admissionregistration_v1alpha1_Variable",
             "existingJavaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1alpha1.Variable"
@@ -1653,6 +1654,7 @@
         },
         "variables": {
           "type": "array",
+          "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/kubernetes_admissionregistration_v1beta1_Variable",
             "existingJavaType": "io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.Variable"

@@ -58,9 +58,6 @@ type Schema struct {
   Quantity                                 resource.Quantity
   ObjectReference                          kapi.ObjectReference
 
-  PodSecurityPolicy                        policy.PodSecurityPolicy
-  PodSecurityPolicyList                    policy.PodSecurityPolicyList
-  KubernetesRunAsUserStrategyOptions       policy.RunAsUserStrategyOptions
   PodDisruptionBudget                      policy.PodDisruptionBudget
   PodDisruptionBudgetList                  policy.PodDisruptionBudgetList
   Eviction                                 policy.Eviction

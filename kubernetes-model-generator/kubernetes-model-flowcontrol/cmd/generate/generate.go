@@ -20,7 +20,7 @@ import (
   "encoding/json"
   "fmt"
 
-  flowcontrolv1alpha1 "k8s.io/api/flowcontrol/v1alpha1"
+  flowcontrolv1 "k8s.io/api/flowcontrol/v1"
   flowcontrolv1beta1 "k8s.io/api/flowcontrol/v1beta1"
   flowcontrolv1beta2 "k8s.io/api/flowcontrol/v1beta2"
   flowcontrolv1beta3 "k8s.io/api/flowcontrol/v1beta3"
@@ -38,10 +38,10 @@ import (
 )
 
 type Schema struct {
-  V1alpha1FlowSchema                       flowcontrolv1alpha1.FlowSchema
-  V1alpha1FlowSchemaList                   flowcontrolv1alpha1.FlowSchemaList
-  V1alpha1PriorityLevelConfiguration       flowcontrolv1alpha1.PriorityLevelConfiguration
-  V1alpha1PriorityLevelConfigurationList   flowcontrolv1alpha1.PriorityLevelConfigurationList
+  V1FlowSchema                             flowcontrolv1.FlowSchema
+  V1FlowSchemaList                         flowcontrolv1.FlowSchemaList
+  V1PriorityLevelConfiguration             flowcontrolv1.PriorityLevelConfiguration
+  V1PriorityLevelConfigurationList         flowcontrolv1.PriorityLevelConfigurationList
   V1beta1FlowSchema                        flowcontrolv1beta1.FlowSchema
   V1beta1FlowSchemaList                    flowcontrolv1beta1.FlowSchemaList
   V1beta1PriorityLevelConfiguration        flowcontrolv1beta1.PriorityLevelConfiguration
@@ -65,10 +65,10 @@ func main() {
     {"k8s.io/apimachinery/pkg/version", "", "io.fabric8.kubernetes.api.model.version", "kubernetes_apimachinery_pkg_version_", false},
     {"k8s.io/apimachinery/pkg/apis/meta/v1", "", "io.fabric8.kubernetes.api.model", "kubernetes_apimachinery_", false},
     {"k8s.io/api/core/v1", "", "io.fabric8.kubernetes.api.model", "kubernetes_core_", false},
-    {"k8s.io/api/flowcontrol/v1alpha1", "flowcontrol.apiserver.k8s.io", "io.fabric8.kubernetes.api.model.flowcontrol.v1alpha1", "kubernetes_flowcontrol_v1alpha1_", true},
     {"k8s.io/api/flowcontrol/v1beta1", "flowcontrol.apiserver.k8s.io", "io.fabric8.kubernetes.api.model.flowcontrol.v1beta1", "kubernetes_flowcontrol_v1beta1_", true},
     {"k8s.io/api/flowcontrol/v1beta2", "flowcontrol.apiserver.k8s.io", "io.fabric8.kubernetes.api.model.flowcontrol.v1beta2", "kubernetes_flowcontrol_v1beta2_", true},
     {"k8s.io/api/flowcontrol/v1beta3", "flowcontrol.apiserver.k8s.io", "io.fabric8.kubernetes.api.model.flowcontrol.v1beta3", "kubernetes_flowcontrol_v1beta3_", true},
+    {"k8s.io/api/flowcontrol/v1", "flowcontrol.apiserver.k8s.io", "io.fabric8.kubernetes.api.model.flowcontrol.v1", "kubernetes_flowcontrol_v1_", true},
     {"k8s.io/api/apiserverinternal/v1alpha1", "internal.apiserver.k8s.io", "io.fabric8.kubernetes.api.model.internal.apiserver.v1alpha1", "kubernetes_internal_apiserver_v1alpha1_", true},
   }
 

@@ -19,9 +19,6 @@ import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.kubernetes.api.model.policy.v1beta1.PodSecurityPolicy;
-import io.fabric8.kubernetes.api.model.policy.v1beta1.PodSecurityPolicyList;
-import io.fabric8.kubernetes.api.model.policy.v1beta1.RunAsUserStrategyOptions;
 import io.fabric8.kubernetes.api.model.version.Info;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
@@ -44,7 +41,6 @@ import lombok.experimental.Accessors;
     "Eviction",
     "GetOptions",
     "Info",
-    "KubernetesRunAsUserStrategyOptions",
     "ListOptions",
     "ObjectMeta",
     "ObjectReference",
@@ -52,8 +48,6 @@ import lombok.experimental.Accessors;
     "PatchOptions",
     "PodDisruptionBudget",
     "PodDisruptionBudgetList",
-    "PodSecurityPolicy",
-    "PodSecurityPolicyList",
     "Quantity",
     "RootPaths",
     "Status",
@@ -102,8 +96,6 @@ public class ValidationSchema implements Editable<ValidationSchemaBuilder>
     private GetOptions getOptions;
     @JsonProperty("Info")
     private Info info;
-    @JsonProperty("KubernetesRunAsUserStrategyOptions")
-    private RunAsUserStrategyOptions kubernetesRunAsUserStrategyOptions;
     @JsonProperty("ListOptions")
     private ListOptions listOptions;
     @JsonProperty("ObjectMeta")
@@ -118,10 +110,6 @@ public class ValidationSchema implements Editable<ValidationSchemaBuilder>
     private io.fabric8.kubernetes.api.model.policy.v1beta1.PodDisruptionBudget podDisruptionBudget;
     @JsonProperty("PodDisruptionBudgetList")
     private io.fabric8.kubernetes.api.model.policy.v1beta1.PodDisruptionBudgetList podDisruptionBudgetList;
-    @JsonProperty("PodSecurityPolicy")
-    private PodSecurityPolicy podSecurityPolicy;
-    @JsonProperty("PodSecurityPolicyList")
-    private PodSecurityPolicyList podSecurityPolicyList;
     @JsonProperty("Quantity")
     private Quantity quantity;
     @JsonProperty("RootPaths")
@@ -150,7 +138,7 @@ public class ValidationSchema implements Editable<ValidationSchemaBuilder>
     public ValidationSchema() {
     }
 
-    public ValidationSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, KubernetesList baseKubernetesList, CreateOptions createOptions, DeleteOptions deleteOptions, io.fabric8.kubernetes.api.model.policy.v1beta1.Eviction eviction, GetOptions getOptions, Info info, RunAsUserStrategyOptions kubernetesRunAsUserStrategyOptions, ListOptions listOptions, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, io.fabric8.kubernetes.api.model.ObjectReference objectReference, Patch patch, PatchOptions patchOptions, io.fabric8.kubernetes.api.model.policy.v1beta1.PodDisruptionBudget podDisruptionBudget, io.fabric8.kubernetes.api.model.policy.v1beta1.PodDisruptionBudgetList podDisruptionBudgetList, PodSecurityPolicy podSecurityPolicy, PodSecurityPolicyList podSecurityPolicyList, Quantity quantity, RootPaths rootPaths, Status status, String time, TypeMeta typeMeta, UpdateOptions updateOptions, io.fabric8.kubernetes.api.model.policy.v1.Eviction v1Eviction, io.fabric8.kubernetes.api.model.policy.v1.PodDisruptionBudget v1PodDisruptionBudget, io.fabric8.kubernetes.api.model.policy.v1.PodDisruptionBudgetList v1PodDisruptionBudgetList) {
+    public ValidationSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, KubernetesList baseKubernetesList, CreateOptions createOptions, DeleteOptions deleteOptions, io.fabric8.kubernetes.api.model.policy.v1beta1.Eviction eviction, GetOptions getOptions, Info info, ListOptions listOptions, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, io.fabric8.kubernetes.api.model.ObjectReference objectReference, Patch patch, PatchOptions patchOptions, io.fabric8.kubernetes.api.model.policy.v1beta1.PodDisruptionBudget podDisruptionBudget, io.fabric8.kubernetes.api.model.policy.v1beta1.PodDisruptionBudgetList podDisruptionBudgetList, Quantity quantity, RootPaths rootPaths, Status status, String time, TypeMeta typeMeta, UpdateOptions updateOptions, io.fabric8.kubernetes.api.model.policy.v1.Eviction v1Eviction, io.fabric8.kubernetes.api.model.policy.v1.PodDisruptionBudget v1PodDisruptionBudget, io.fabric8.kubernetes.api.model.policy.v1.PodDisruptionBudgetList v1PodDisruptionBudgetList) {
         super();
         this.aPIGroup = aPIGroup;
         this.aPIGroupList = aPIGroupList;
@@ -160,7 +148,6 @@ public class ValidationSchema implements Editable<ValidationSchemaBuilder>
         this.eviction = eviction;
         this.getOptions = getOptions;
         this.info = info;
-        this.kubernetesRunAsUserStrategyOptions = kubernetesRunAsUserStrategyOptions;
         this.listOptions = listOptions;
         this.objectMeta = objectMeta;
         this.objectReference = objectReference;
@@ -168,8 +155,6 @@ public class ValidationSchema implements Editable<ValidationSchemaBuilder>
         this.patchOptions = patchOptions;
         this.podDisruptionBudget = podDisruptionBudget;
         this.podDisruptionBudgetList = podDisruptionBudgetList;
-        this.podSecurityPolicy = podSecurityPolicy;
-        this.podSecurityPolicyList = podSecurityPolicyList;
         this.quantity = quantity;
         this.rootPaths = rootPaths;
         this.status = status;
@@ -261,16 +246,6 @@ public class ValidationSchema implements Editable<ValidationSchemaBuilder>
         this.info = info;
     }
 
-    @JsonProperty("KubernetesRunAsUserStrategyOptions")
-    public RunAsUserStrategyOptions getKubernetesRunAsUserStrategyOptions() {
-        return kubernetesRunAsUserStrategyOptions;
-    }
-
-    @JsonProperty("KubernetesRunAsUserStrategyOptions")
-    public void setKubernetesRunAsUserStrategyOptions(RunAsUserStrategyOptions kubernetesRunAsUserStrategyOptions) {
-        this.kubernetesRunAsUserStrategyOptions = kubernetesRunAsUserStrategyOptions;
-    }
-
     @JsonProperty("ListOptions")
     public ListOptions getListOptions() {
         return listOptions;
@@ -339,26 +314,6 @@ public class ValidationSchema implements Editable<ValidationSchemaBuilder>
     @JsonProperty("PodDisruptionBudgetList")
     public void setPodDisruptionBudgetList(io.fabric8.kubernetes.api.model.policy.v1beta1.PodDisruptionBudgetList podDisruptionBudgetList) {
         this.podDisruptionBudgetList = podDisruptionBudgetList;
-    }
-
-    @JsonProperty("PodSecurityPolicy")
-    public PodSecurityPolicy getPodSecurityPolicy() {
-        return podSecurityPolicy;
-    }
-
-    @JsonProperty("PodSecurityPolicy")
-    public void setPodSecurityPolicy(PodSecurityPolicy podSecurityPolicy) {
-        this.podSecurityPolicy = podSecurityPolicy;
-    }
-
-    @JsonProperty("PodSecurityPolicyList")
-    public PodSecurityPolicyList getPodSecurityPolicyList() {
-        return podSecurityPolicyList;
-    }
-
-    @JsonProperty("PodSecurityPolicyList")
-    public void setPodSecurityPolicyList(PodSecurityPolicyList podSecurityPolicyList) {
-        this.podSecurityPolicyList = podSecurityPolicyList;
     }
 
     @JsonProperty("Quantity")
