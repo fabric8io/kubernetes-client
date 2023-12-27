@@ -52,10 +52,10 @@ public class PodUpload {
       throws IOException {
 
     if (Utils.isNotNullOrEmpty(operation.getContext().getFile()) && pathToUpload.toFile().isFile()) {
-      return uploadTar(operation, getDirectoryFromFile(operation),
+      return uploadTar(operation, getDirectoryFromFile(operation.getContext().getFile()),
           tar -> addFileToTar(new File(operation.getContext().getFile()).getName(), pathToUpload.toFile(), tar));
     } else if (Utils.isNotNullOrEmpty(operation.getContext().getDir()) && pathToUpload.toFile().isDirectory()) {
-      return uploadTar(operation, operation.getContext().getDir(), tar -> {
+      return uploadTar(operation, ensureEndsWithSlash(operation.getContext().getDir()), tar -> {
         for (File file : pathToUpload.toFile().listFiles()) {
           addFileToTar(file.getName(), file, tar);
         }
@@ -64,10 +64,9 @@ public class PodUpload {
     throw new IllegalArgumentException("Provided arguments are not valid (file, directory, path)");
   }
 
-  private static String getDirectoryFromFile(PodOperationsImpl operation) {
-    String file = operation.getContext().getFile();
+  private static String getDirectoryFromFile(String file) {
     String directoryTrimmedFromFilePath = file.substring(0, file.lastIndexOf('/'));
-    return directoryTrimmedFromFilePath.isEmpty() ? "/" : directoryTrimmedFromFilePath;
+    return ensureEndsWithSlash(directoryTrimmedFromFilePath.isEmpty() ? "/" : directoryTrimmedFromFilePath);
   }
 
   private interface UploadProcessor<T extends OutputStream> {
@@ -136,7 +135,7 @@ public class PodUpload {
       UploadProcessor<TarArchiveOutputStream> processor)
       throws IOException {
 
-    String fileName = String.format("/tmp/fabric8-%s.tar", UUID.randomUUID());
+    String fileName = String.format("%sfabric8-%s.tar", directory, UUID.randomUUID());
 
     boolean uploaded = upload(operation, fileName, os -> {
       try (final TarArchiveOutputStream tar = new TarArchiveOutputStream(os)) {
@@ -188,10 +187,12 @@ public class PodUpload {
   }
 
   static String createExecCommandForUpload(String file) {
-    String directoryTrimmedFromFilePath = file.substring(0, file.lastIndexOf('/'));
-    final String directory = directoryTrimmedFromFilePath.isEmpty() ? "/" : directoryTrimmedFromFilePath;
     return String.format(
-        "mkdir -p %s && cat - > %s", shellQuote(directory), shellQuote(file));
+        "mkdir -p %s && cat - > %s", shellQuote(getDirectoryFromFile(file)), shellQuote(file));
+  }
+
+  private static String ensureEndsWithSlash(String path) {
+    return path.endsWith("/") ? path : (path + "/");
   }
 
 }
