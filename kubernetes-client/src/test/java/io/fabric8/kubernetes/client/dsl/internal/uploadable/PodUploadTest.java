@@ -57,7 +57,7 @@ class PodUploadTest {
       // When
       String result = PodUpload.createExecCommandForUpload("/tmp/foo/cp.log");
       // Then
-      assertThat(result).isEqualTo("mkdir -p '/tmp/foo' && cat - > '/tmp/foo/cp.log'");
+      assertThat(result).isEqualTo("mkdir -p '/tmp/foo/' && cat - > '/tmp/foo/cp.log'");
     }
 
     //
@@ -66,7 +66,7 @@ class PodUploadTest {
       // When
       String result = PodUpload.createExecCommandForUpload("/tmp/fo'o/cp.log");
       // Then
-      assertThat(result).isEqualTo("mkdir -p '/tmp/fo\'\\'\'o' && cat - > '/tmp/fo\'\\'\'o/cp.log'");
+      assertThat(result).isEqualTo("mkdir -p '/tmp/fo\'\\'\'o/' && cat - > '/tmp/fo\'\\'\'o/cp.log'");
     }
 
     @Test
@@ -74,7 +74,7 @@ class PodUploadTest {
       // When
       String result = PodUpload.createExecCommandForUpload("/tmp/f'o'o/c'p.log");
       // Then
-      assertThat(result).isEqualTo("mkdir -p '/tmp/f\'\\'\'o\'\\'\'o' && cat - > '/tmp/f\'\\'\'o\'\\'\'o/c\'\\'\'p.log'");
+      assertThat(result).isEqualTo("mkdir -p '/tmp/f\'\\'\'o\'\\'\'o/' && cat - > '/tmp/f\'\\'\'o\'\\'\'o/c\'\\'\'p.log'");
     }
   }
 

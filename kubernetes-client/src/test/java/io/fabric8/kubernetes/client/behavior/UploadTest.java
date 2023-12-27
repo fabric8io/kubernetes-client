@@ -135,7 +135,7 @@ class UploadTest {
         .extracting(StandardWebSocketBuilder::asHttpRequest)
         .extracting(StandardHttpRequest::uri)
         .extracting(URI::getQuery).asString()
-        .contains("command=rm /tmp/fabric8-");
+        .contains("command=rm /target/fabric8-");
   }
 
   @Nested
@@ -213,7 +213,7 @@ class UploadTest {
             .extracting(StandardWebSocketBuilder::asHttpRequest)
             .extracting(StandardHttpRequest::uri)
             .extracting(URI::getQuery).asString()
-            .contains("command=mkdir -p '/tmp' && cat - > '/tmp/fabric8-");
+            .contains("command=mkdir -p '/target/' && cat - > '/target/fabric8-");
       }
 
       @Test
@@ -229,7 +229,7 @@ class UploadTest {
             .extracting(StandardWebSocketBuilder::asHttpRequest)
             .extracting(StandardHttpRequest::uri)
             .extracting(URI::getQuery).asString()
-            .contains("command=wc -c < '/tmp/fabric8-");
+            .contains("command=wc -c < '/target/fabric8-");
       }
 
       @Test
@@ -246,7 +246,7 @@ class UploadTest {
             .extracting(StandardHttpRequest::uri)
             .extracting(URI::getQuery).asString()
             .matches(
-                ".+command=mkdir -p '/target-dir'; tar -C '/target-dir' -xmf /tmp/fabric8-.+\\.tar; e=\\$\\?; rm /tmp/fabric8-.+");
+                ".+command=mkdir -p '/target-dir/'; tar -C '/target-dir/' -xmf /target-dir/fabric8-.+\\.tar; e=\\$\\?; rm /target-dir/fabric8-.+");
       }
 
       @Nested
@@ -272,7 +272,7 @@ class UploadTest {
           final byte[] tarBytes = new byte[sendCaptor.getValue().remaining() - 1];
           System.arraycopy(sendCaptor.getValue().array(), 1, tarBytes, 0, tarBytes.length);
           final TarArchiveInputStream tar = new TarArchiveInputStream(new ByteArrayInputStream(tarBytes));
-          assertThat(tar.getNextTarEntry())
+          assertThat(tar.getNextEntry())
               .hasFieldOrPropertyWithValue("name", "file-name.txt")
               .hasFieldOrPropertyWithValue("size", toUpload.toFile().length());
         }
@@ -292,7 +292,7 @@ class UploadTest {
           final byte[] tarBytes = new byte[sendCaptor.getValue().remaining() - 1];
           System.arraycopy(sendCaptor.getValue().array(), 1, tarBytes, 0, tarBytes.length);
           final TarArchiveInputStream tar = new TarArchiveInputStream(new ByteArrayInputStream(tarBytes));
-          assertThat(tar.getNextTarEntry())
+          assertThat(tar.getNextEntry())
               .hasFieldOrPropertyWithValue("name", longFileName);
         }
 
@@ -310,7 +310,7 @@ class UploadTest {
           final byte[] tarBytes = new byte[sendCaptor.getValue().remaining() - 1];
           System.arraycopy(sendCaptor.getValue().array(), 1, tarBytes, 0, tarBytes.length);
           final TarArchiveInputStream tar = new TarArchiveInputStream(new ByteArrayInputStream(tarBytes));
-          assertThat(tar.getNextTarEntry())
+          assertThat(tar.getNextEntry())
               .hasFieldOrPropertyWithValue("name", "file-name.txt")
               .hasFieldOrPropertyWithValue("lastModifiedTime", FileTime.fromMillis(9999999999999L));
         }
@@ -351,7 +351,7 @@ class UploadTest {
             .extracting(StandardWebSocketBuilder::asHttpRequest)
             .extracting(StandardHttpRequest::uri)
             .extracting(URI::getQuery).asString()
-            .contains("command=mkdir -p '/tmp' && cat - > '/tmp/fabric8-");
+            .contains("command=mkdir -p '/target/location/' && cat - > '/target/location/fabric8-");
       }
 
       @Test
@@ -367,7 +367,7 @@ class UploadTest {
             .extracting(StandardWebSocketBuilder::asHttpRequest)
             .extracting(StandardHttpRequest::uri)
             .extracting(URI::getQuery).asString()
-            .contains("command=wc -c < '/tmp/fabric8-");
+            .contains("command=wc -c < '/target/location/fabric8-");
       }
 
       @Test
@@ -384,7 +384,7 @@ class UploadTest {
             .extracting(StandardHttpRequest::uri)
             .extracting(URI::getQuery).asString()
             .matches(
-                ".+command=mkdir -p '/target-dir/location'; tar -C '/target-dir/location' -xmf /tmp/fabric8-.+\\.tar; e=\\$\\?; rm /tmp/fabric8-.+");
+                ".+command=mkdir -p '/target-dir/location/'; tar -C '/target-dir/location/' -xmf /target-dir/location/fabric8-.+\\.tar; e=\\$\\?; rm /target-dir/location/fabric8-.+");
       }
 
     }
@@ -423,7 +423,7 @@ class UploadTest {
             .extracting(StandardWebSocketBuilder::asHttpRequest)
             .extracting(StandardHttpRequest::uri)
             .extracting(URI::getQuery).asString()
-            .contains("command=mkdir -p '/target' && cat - > '/target/location");
+            .contains("command=mkdir -p '/target/' && cat - > '/target/location");
       }
 
       @Test
