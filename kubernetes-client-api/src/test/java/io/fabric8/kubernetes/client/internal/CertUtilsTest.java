@@ -45,6 +45,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
 class CertUtilsTest {
 
   private static final String FABRIC8_STORE_PATH = Utils.filePath(CertUtilsTest.class.getResource("/ssl-test/fabric8-store"));
@@ -226,8 +227,8 @@ class CertUtilsTest {
     String certPath = Utils.filePath(getClass().getResource("/ssl-test/multiple-certs.p7b"));
 
     assertThatExceptionOfType(KubernetesClientException.class)
-      .isThrownBy(() -> CertUtils.createKeyStore(null, certPath, null, privateKeyPath, "EC", "foo", null, null))
-      .withMessageContaining("Don't know what to do with a");
+        .isThrownBy(() -> CertUtils.createKeyStore(null, certPath, null, privateKeyPath, "EC", "foo", null, null))
+        .withMessageContaining("Don't know what to do with a");
   }
 
   @Test
