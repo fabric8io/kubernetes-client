@@ -39,9 +39,12 @@ import java.util.Objects;
 import java.util.Properties;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.Assert.assertNotSame;
-import static org.junit.jupiter.api.Assertions.*;
-
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 class CertUtilsTest {
 
   private static final String FABRIC8_STORE_PATH = Utils.filePath(CertUtilsTest.class.getResource("/ssl-test/fabric8-store"));
@@ -222,10 +225,9 @@ class CertUtilsTest {
     String privateKeyPath = Utils.filePath(getClass().getResource("/ssl-test/multiple-certs.p7b"));
     String certPath = Utils.filePath(getClass().getResource("/ssl-test/multiple-certs.p7b"));
 
-    Exception exception = assertThrows(KubernetesClientException.class,
-        () -> CertUtils.createKeyStore(null, certPath, null, privateKeyPath, "EC", "foo", null, null));
-    assertTrue(exception.getMessage().contains("Don't know what to do with a"));
-
+    assertThatExceptionOfType(KubernetesClientException.class)
+      .isThrownBy(() -> CertUtils.createKeyStore(null, certPath, null, privateKeyPath, "EC", "foo", null, null))
+      .withMessageContaining("Don't know what to do with a");
   }
 
   @Test
