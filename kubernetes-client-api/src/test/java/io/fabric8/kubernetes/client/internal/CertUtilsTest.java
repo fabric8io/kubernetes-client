@@ -218,7 +218,7 @@ class CertUtilsTest {
 
     Exception exception = assertThrows(KubernetesClientException.class,
         () -> CertUtils.createKeyStore(null, certPath, null, privateKeyPath, "EC", "foo", null, null));
-    assertTrue(exception.getMessage().contains("Could not load EC key."));
+    assertTrue(exception.getMessage().equals("Got null PEM object from EC key's input stream."));
   }
 
   @Test
