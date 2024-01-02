@@ -36,6 +36,7 @@ import org.junit.jupiter.api.Test;
 import java.util.function.UnaryOperator;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -319,11 +320,10 @@ class KubernetesCrudDispatcherPatchTest extends KubernetesCrudDispatcherTestBase
           .addToData("key", "changed")
           .build());
       // Then
-      assertThatThrownBy(patchedCmOp::patch)
-          .asInstanceOf(InstanceOfAssertFactories.type(KubernetesClientException.class))
+      assertThatExceptionOfType(KubernetesClientException.class)
+          .isThrownBy(patchedCmOp::patch)
           .hasFieldOrPropertyWithValue("code", 409)
-          .extracting(KubernetesClientException::getMessage).asString()
-          .contains("the object has been modified;");
+          .withMessageContaining("the object has been modified;");
     }
 
     @Test
