@@ -123,9 +123,13 @@ class DefaultMockServerWebSocketTest extends Specification {
       def wsReq = wsClient.webSocket().connect(server.port, server.getHostName(), "/websocket")
     and: "A WebSocket listener"
       wsReq.onComplete { ws ->
-        ws.result().closeHandler { _ ->
-          ws.result().close()
+        if (ws.result().isClosed()) {
           future.complete(ws.result().closeReason())
+        } else {
+          ws.result().closeHandler { _ ->
+            ws.result().close()
+            future.complete(ws.result().closeReason())
+          }
         }
       }
     and: "An instance of AsyncConditions"

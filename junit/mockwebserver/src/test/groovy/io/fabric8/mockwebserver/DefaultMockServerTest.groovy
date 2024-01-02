@@ -620,7 +620,7 @@ class DefaultMockServerTest extends Specification {
       server.expect().get().withPath("/api/v1/users/watch")
         .andUpgradeToWebSocket()
         .open()
-        .immediately().andEmit("READY")
+        .waitFor(50L).andEmit("READY")
         .expectHttpRequest("/api/v1/create").andEmit("CREATED").once()
         .expectSentWebSocketMessage("CREATED").andEmit("WS-CREATED").once()
         .done()
