@@ -41,6 +41,7 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -231,8 +232,9 @@ class StandardHttpClientTest {
         });
 
     Awaitility.await().atMost(10, TimeUnit.SECONDS).until(consumeFuture::isDone);
-    assertThatThrownBy(consumeFuture::get)
-        .isInstanceOf(ExecutionException.class).hasCauseInstanceOf(TimeoutException.class);
+    assertThatExceptionOfType(ExecutionException.class)
+        .isThrownBy(consumeFuture::get)
+        .withCauseExactlyInstanceOf(TimeoutException.class);
   }
 
   @Test
