@@ -15,8 +15,6 @@
  */
 package io.fabric8.kubernetes.client.impl;
 
-import io.fabric8.kubernetes.api.model.networking.v1alpha1.ClusterCIDR;
-import io.fabric8.kubernetes.api.model.networking.v1alpha1.ClusterCIDRList;
 import io.fabric8.kubernetes.api.model.networking.v1alpha1.IPAddress;
 import io.fabric8.kubernetes.api.model.networking.v1alpha1.IPAddressList;
 import io.fabric8.kubernetes.client.V1Alpha1NetworkAPIGroupDSL;
@@ -29,11 +27,6 @@ public class V1Alpha1NetworkAPIGroupClient extends ClientAdapter<V1Alpha1Network
   @Override
   public NonNamespaceOperation<IPAddress, IPAddressList, Resource<IPAddress>> ipAddresses() {
     return resources(IPAddress.class, IPAddressList.class);
-  }
-
-  @Override
-  public NonNamespaceOperation<ClusterCIDR, ClusterCIDRList, Resource<ClusterCIDR>> clusterCIDRs() {
-    return resources(ClusterCIDR.class, ClusterCIDRList.class);
   }
 
   @Override
