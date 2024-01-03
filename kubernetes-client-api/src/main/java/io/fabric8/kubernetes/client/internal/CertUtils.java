@@ -17,6 +17,8 @@ package io.fabric8.kubernetes.client.internal;
 
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.utils.Utils;
+import org.bouncycastle.asn1.pkcs.PrivateKeyInfo;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.openssl.PEMKeyPair;
 import org.bouncycastle.openssl.PEMParser;
 import org.bouncycastle.openssl.jcajce.JcaPEMKeyConverter;
@@ -180,22 +182,27 @@ public class CertUtils {
     try {
       return new Callable<PrivateKey>() {
         @Override
-        public PrivateKey call() {
-          try {
-            if (Security.getProvider("BC") == null && Security.getProvider("BCFIPS") == null) {
-              Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
-            }
-            PEMKeyPair keys = (PEMKeyPair) new PEMParser(new InputStreamReader(keyInputStream)).readObject();
-            return new JcaPEMKeyConverter().getKeyPair(keys).getPrivate();
-          } catch (IOException exception) {
-            exception.printStackTrace();
+        public PrivateKey call() throws IOException {
+          if (Security.getProvider("BC") == null && Security.getProvider("BCFIPS") == null) {
+            Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
           }
-          return null;
+          Object pemObject = new PEMParser(new InputStreamReader(keyInputStream)).readObject();
+          if (pemObject == null) {
+            throw new KubernetesClientException("Got null PEM object from EC key's input stream.");
+          } else if (pemObject instanceof PEMKeyPair) {
+            return new JcaPEMKeyConverter().getKeyPair((PEMKeyPair) pemObject).getPrivate();
+          } else if (pemObject instanceof PrivateKeyInfo) {
+            return BouncyCastleProvider.getPrivateKey((PrivateKeyInfo) pemObject);
+          } else {
+            throw new KubernetesClientException("Don't know what to do with a " + pemObject.getClass().getName());
+          }
         }
       }.call();
     } catch (NoClassDefFoundError e) {
       throw new KubernetesClientException(
           "JcaPEMKeyConverter is provided by BouncyCastle, an optional dependency. To use support for EC Keys you must explicitly add this dependency to classpath.");
+    } catch (IOException e) {
+      throw new KubernetesClientException(e.getMessage());
     }
   }
 

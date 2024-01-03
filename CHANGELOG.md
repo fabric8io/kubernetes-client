@@ -8,6 +8,7 @@
 * Fix #5584: Fix CRD generation when EnumMap is used
 * Fix #5626: Prevent memory accumulation from informer usage
 * Fix #5527: Unable to transfer file to pod if `/tmp` is read-only
+* Fix #5656: Enable EC private key usage for mTLS auth
 
 #### Improvements
 * Fix #5429: moved crd generator annotations to generator-annotations instead of crd-generator-api. Using generator-annotations introduces no transitive dependencies.
