@@ -17,6 +17,8 @@ package io.fabric8.mockwebserver.crud
 
 import spock.lang.Specification
 
+import java.util.stream.Collectors
+
 class AttributeSetTest extends Specification {
 
     def "when two feature set are empty the should be equals"() {
@@ -98,24 +100,31 @@ class AttributeSetTest extends Specification {
         assert attributeSet.matches(selector)
     }
 
+  def "when multiple attributes are specified it should not match an attribute set with a single attribute"() {
+    given: "multiple attributes"
+      def a2 = new Attribute("key2", "value2")
+      def a3 = new Attribute("key3", "", AttributeType.EXISTS)
+    and: "an AttributeSet with only one attribute"
+      def attributeSet = new AttributeSet(a2)
+    and: "an AttributeSet with two attributes as selector"
+      def selectorWithTwo = new AttributeSet(a2, a3)
+    when: "matching"
+      def matches = attributeSet.matches(selectorWithTwo)
+    then: "it should not match"
+      assert !matches
+  }
+
   def "when multiple attributes are specified it should examine all"() {
-    given:
-    // Naming is important here as it controls the hashed order
-    Attribute a2 = new Attribute("key2", "value2")
-    Attribute a3 = new Attribute("key3", "", AttributeType.EXISTS)
-    when:
-    AttributeSet attributeSet = new AttributeSet(a2)
-    AttributeSet selectorWithOne = new AttributeSet(a2)
-    AttributeSet selectorWithTwo = new AttributeSet(a2, a3)
-    def orderedAttributes = new LinkedHashSet([a2, a3]);
-    then:
-
-    // Assert that the order is suitable for testing. The failing attribute should
-    // be in the *second* position to ensure we're examining all the values of the selector
-    assert new ArrayList<>(orderedAttributes).indexOf(a3) == 1;
-
-    assert attributeSet.matches(selectorWithOne)
-    assert !attributeSet.matches(selectorWithTwo)
+    given: "multiple attributes"
+      def a2 = new Attribute("key2", "value2")
+      def a3 = new Attribute("key3", "", AttributeType.EXISTS)
+    and: "an AttributeSet with all attributes"
+      def attributeSet = new AttributeSet(a2, a3)
+    when: "listing its values"
+      def attributes = attributeSet.attributes.values().stream().sorted().collect(Collectors.toList())
+    then: "it should contain all attributes"
+      assert attributes.indexOf(a3) == 1
+      assert attributes.size() == 2
   }
 
   def "when IN attribute in selector"() {

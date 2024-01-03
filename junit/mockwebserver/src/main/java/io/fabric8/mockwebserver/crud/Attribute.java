@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 
 import static io.fabric8.mockwebserver.crud.AttributeType.WITH;
 
-public class Attribute {
+public class Attribute implements Comparable<Attribute> {
 
   private final Key key;
   private final List<Value> values;
@@ -87,5 +87,10 @@ public class Attribute {
 
   public AttributeType getType() {
     return type;
+  }
+
+  @Override
+  public int compareTo(Attribute o) {
+    return key.compareTo(o.key);
   }
 }
