@@ -17,7 +17,7 @@ package io.fabric8.mockwebserver.crud;
 
 import java.util.Objects;
 
-public class Key {
+public class Key implements Comparable<Key> {
 
   private final String name;
 
@@ -38,6 +38,11 @@ public class Key {
   @Override
   public int hashCode() {
     return Objects.hash(name);
+  }
+
+  @Override
+  public int compareTo(Key o) {
+    return name.compareTo(o.name);
   }
 
   @Override
