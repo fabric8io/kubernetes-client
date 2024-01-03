@@ -43,7 +43,6 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class CertUtilsTest {
@@ -211,14 +210,13 @@ class CertUtilsTest {
   }
 
   @Test
-  void loadNothingError()
-      throws InvalidKeySpecException, CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException {
+  void loadNothingError() {
     String privateKeyPath = Utils.filePath(getClass().getResource("/ssl-test/empty"));
     String certPath = Utils.filePath(getClass().getResource("/ssl-test/empty"));
 
-    Exception exception = assertThrows(KubernetesClientException.class,
-        () -> CertUtils.createKeyStore(null, certPath, null, privateKeyPath, "EC", "foo", null, null));
-    assertTrue(exception.getMessage().equals("Got null PEM object from EC key's input stream."));
+    assertThatExceptionOfType(KubernetesClientException.class)
+        .isThrownBy(() -> CertUtils.createKeyStore(null, certPath, null, privateKeyPath, "EC", "foo", null, null))
+        .withMessage("Got null PEM object from EC key's input stream.");
   }
 
   @Test

@@ -202,7 +202,6 @@ public class CertUtils {
       throw new KubernetesClientException(
           "JcaPEMKeyConverter is provided by BouncyCastle, an optional dependency. To use support for EC Keys you must explicitly add this dependency to classpath.");
     } catch (IOException e) {
-      e.printStackTrace();
       throw new KubernetesClientException(e.getMessage());
     }
   }
