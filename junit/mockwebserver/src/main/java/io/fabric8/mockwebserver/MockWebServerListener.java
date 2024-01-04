@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright (C) 2015 Red Hat, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,20 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.mockwebserver.utils;
+package io.fabric8.mockwebserver;
 
-import io.fabric8.mockwebserver.http.Headers;
-import io.fabric8.mockwebserver.http.RecordedRequest;
+import io.fabric8.mockwebserver.http.RecordedHttpConnection;
 
-/**
- * A class that allows returning a response given a certain request.
- */
-public interface ResponseProvider<T> extends BodyProvider<T> {
+public interface MockWebServerListener {
+  default void onConnection(RecordedHttpConnection connection) {
+  }
 
-  int getStatusCode(RecordedRequest request);
-
-  Headers getHeaders();
-
-  void setHeaders(Headers headers);
-
+  default void onConnectionClosed(RecordedHttpConnection connection) {
+  }
 }
