@@ -25,8 +25,8 @@ public class OkHttpClientProxyTest extends AbstractHttpClientProxyTest {
     return new OkHttpClientFactory();
   }
 
-  @Override
-  protected void proxyConfigurationOtherAuthAddsRequiredHeaders() throws Exception {
-    // OkHttp uses a response intercept to add the auth proxy headers in case the original response failed
-  }
+  //  @Override
+  //  protected void proxyConfigurationOtherAuthAddsRequiredHeaders() throws Exception {
+  //    // OkHttp uses a response intercept to add the auth proxy headers in case the original response failed
+  //  }
 }
