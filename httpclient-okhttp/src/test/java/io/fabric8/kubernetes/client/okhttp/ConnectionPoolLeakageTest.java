@@ -18,10 +18,10 @@ package io.fabric8.kubernetes.client.okhttp;
 import io.fabric8.kubernetes.client.http.AsyncBody;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.HttpResponse;
+import io.fabric8.mockwebserver.MockWebServer;
+import io.fabric8.mockwebserver.http.MockResponse;
 import okhttp3.ConnectionPool;
 import okhttp3.Protocol;
-import okhttp3.mockwebserver.MockResponse;
-import okhttp3.mockwebserver.MockWebServer;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -53,7 +53,7 @@ class ConnectionPoolLeakageTest {
   }
 
   @AfterEach
-  void tearDown() throws Exception {
+  void tearDown() {
     server.shutdown();
     connectionPool.evictAll();
   }
@@ -63,7 +63,7 @@ class ConnectionPoolLeakageTest {
   @ValueSource(strings = { "h2_prior_knowledge", "http/1.1" })
   void consumeBytes(String protocol) throws Exception {
     final Protocol p = Protocol.get(protocol);
-    server.setProtocols(Collections.singletonList(p));
+    server.setProtocols(Collections.singletonList(io.fabric8.mockwebserver.vertx.Protocol.get(p.toString())));
     server.start();
     clientBuilder.getBuilder().protocols(Collections.singletonList(p));
     try (HttpClient httpClient = clientBuilder.build()) {
