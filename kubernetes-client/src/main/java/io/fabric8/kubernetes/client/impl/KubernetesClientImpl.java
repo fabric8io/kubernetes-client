@@ -133,6 +133,7 @@ import io.fabric8.kubernetes.client.dsl.V1Beta1AuthenticationAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.V1CertificatesAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.V1DiscoveryAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.V1EventingAPIGroupDSL;
+import io.fabric8.kubernetes.client.dsl.V1FlowControlAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.V1PolicyAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.V1SchedulingAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.V1beta1BatchAPIGroupDSL;
@@ -234,6 +235,7 @@ public class KubernetesClientImpl extends BaseClient implements NamespacedKubern
     adapters.registerClient(V1EventingAPIGroupDSL.class, new V1EventingAPIGroupClient());
     adapters.registerClient(V1beta1EventingAPIGroupDSL.class, new V1beta1EventingAPIGroupClient());
     adapters.registerClient(FlowControlAPIGroupDSL.class, new FlowControlAPIGroupClient());
+    adapters.registerClient(V1FlowControlAPIGroupDSL.class, new V1FlowControlAPIGroupClient());
     adapters.registerClient(V1beta1FlowControlAPIGroupDSL.class, new V1beta1FlowControlAPIGroupClient());
     adapters.registerClient(V1beta2FlowControlAPIGroupDSL.class, new V1beta2FlowControlAPIGroupClient());
     adapters.registerClient(V1beta3FlowControlAPIGroupDSL.class, new V1beta3FlowControlAPIGroupClient());

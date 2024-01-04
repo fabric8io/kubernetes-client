@@ -15,12 +15,19 @@
 * Fix #5535: Add lombok and sundrio dependencies to the generated bom
 
 #### Dependency Upgrade
+* Updated Kubernetes Model to Kubernetes `v1.29.0`
 * Updated okio to version 1.17.6 to avoid CVE-2023-3635
 
 #### New Features
 * Fix #5608 Support authentication with certificate in exec-credentials
 
 #### _**Note**_: Breaking changes
+- Deleted resources in Kubernetes 1.29.0  `flowcontrol.apiserver.k8s.io/v1alpha1`, please migrate to `flowcontrol.apiserver.k8s.io/v1` resources (available via `client.flowControl().v1()` DSL)
+  - `io.fabric8.kubernetes.api.model.flowcontrol.v1alpha1.FlowSchema` removed
+  - `io.fabric8.kubernetes.api.model.flowcontrol.v1alpha1.PriorityLevelConfiguration` removed
+- ClusterCIDR has been removed from Kubernetes 1.29.0 Networking Model
+  - `io.fabric8.kubernetes.api.model.networking.v1alpha1.ClusterCIDR` removed
+  - DSL entrypoint `client.network().v1alpha1().clusterCIDRs()` has been removed from KubernetesClient
 
 ### 6.9.2 (2023-11-02)
 
