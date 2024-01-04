@@ -23,7 +23,7 @@ import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.mockwebserver.crud.Attribute;
 import io.fabric8.mockwebserver.crud.AttributeSet;
-import okhttp3.mockwebserver.MockResponse;
+import io.fabric8.mockwebserver.http.MockResponse;
 
 import java.net.HttpURLConnection;
 import java.time.ZoneOffset;

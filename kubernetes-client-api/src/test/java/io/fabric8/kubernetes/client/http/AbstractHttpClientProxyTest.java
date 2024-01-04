@@ -16,7 +16,7 @@
 package io.fabric8.kubernetes.client.http;
 
 import io.fabric8.mockwebserver.DefaultMockServer;
-import okhttp3.mockwebserver.RecordedRequest;
+import io.fabric8.mockwebserver.http.RecordedRequest;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
