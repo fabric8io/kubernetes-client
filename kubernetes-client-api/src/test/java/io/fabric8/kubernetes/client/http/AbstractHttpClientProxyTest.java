@@ -16,7 +16,6 @@
 package io.fabric8.kubernetes.client.http;
 
 import io.fabric8.mockwebserver.DefaultMockServer;
-import okhttp3.Headers;
 import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -24,7 +23,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.net.InetSocketAddress;
-import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -61,9 +59,8 @@ public abstract class AbstractHttpClientProxyTest {
       // Then
       assertThat(server.getLastRequest())
           .extracting(RecordedRequest::getHeaders)
-          .extracting(Headers::toMultimap)
-          .hasFieldOrPropertyWithValue("Host", Collections.singletonList("0.0.0.0:" + server.getPort()))
-          .hasFieldOrPropertyWithValue("Proxy-Authorization", Collections.singletonList("auth:cred"));
+          .returns("0.0.0.0:" + server.getPort(), h -> h.get("Host"))
+          .returns("auth:cred", h -> h.get("Proxy-Authorization"));
     }
   }
 }
