@@ -19,11 +19,11 @@ import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.mockwebserver.ServerRequest;
 import io.fabric8.mockwebserver.ServerResponse;
 import io.fabric8.mockwebserver.dsl.HttpMethod;
+import io.fabric8.mockwebserver.http.Dispatcher;
+import io.fabric8.mockwebserver.http.MockResponse;
+import io.fabric8.mockwebserver.http.RecordedRequest;
 import io.fabric8.mockwebserver.internal.MockDispatcher;
 import io.fabric8.mockwebserver.internal.SimpleRequest;
-import okhttp3.mockwebserver.Dispatcher;
-import okhttp3.mockwebserver.MockResponse;
-import okhttp3.mockwebserver.RecordedRequest;
 
 import java.util.Collections;
 import java.util.List;
@@ -58,7 +58,7 @@ public class KubernetesMixedDispatcher extends Dispatcher implements Resetable, 
   }
 
   @Override
-  public MockResponse dispatch(RecordedRequest request) throws InterruptedException {
+  public MockResponse dispatch(RecordedRequest request) {
     final Queue<ServerResponse> responseQueue = responses.get(
         new SimpleRequest(HttpMethod.valueOf(request.getMethod()), request.getPath()));
     if (responseQueue != null && !responseQueue.isEmpty()) {
