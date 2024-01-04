@@ -15,8 +15,8 @@
  */
 package io.fabric8.mockwebserver.utils;
 
-import okhttp3.Headers;
-import okhttp3.mockwebserver.RecordedRequest;
+import io.fabric8.mockwebserver.http.Headers;
+import io.fabric8.mockwebserver.http.RecordedRequest;
 
 import java.util.Arrays;
 import java.util.Collections;

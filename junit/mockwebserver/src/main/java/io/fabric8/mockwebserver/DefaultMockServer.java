@@ -16,14 +16,12 @@
 package io.fabric8.mockwebserver;
 
 import io.fabric8.mockwebserver.dsl.MockServerExpectation;
+import io.fabric8.mockwebserver.http.Dispatcher;
+import io.fabric8.mockwebserver.http.RecordedRequest;
 import io.fabric8.mockwebserver.internal.MockDispatcher;
-import io.fabric8.mockwebserver.internal.MockSSLContextFactory;
 import io.fabric8.mockwebserver.internal.MockServerExpectationImpl;
-import okhttp3.mockwebserver.Dispatcher;
-import okhttp3.mockwebserver.MockWebServer;
-import okhttp3.mockwebserver.RecordedRequest;
+import io.vertx.core.net.SelfSignedCertificate;
 
-import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Proxy;
 import java.util.HashMap;
@@ -63,8 +61,9 @@ public class DefaultMockServer implements MockServer {
     this(context, server, responses, new MockDispatcher(responses), useHttps);
   }
 
-  public DefaultMockServer(Context context, MockWebServer server, Map<ServerRequest, Queue<ServerResponse>> responses,
-      Dispatcher dispatcher, boolean useHttps) {
+  public DefaultMockServer(
+      Context context, MockWebServer server, Map<ServerRequest, Queue<ServerResponse>> responses, Dispatcher dispatcher,
+      boolean useHttps) {
     this.context = context;
     this.useHttps = useHttps;
     this.server = server;
@@ -77,7 +76,7 @@ public class DefaultMockServer implements MockServer {
   private void startInternal() {
     if (initialized.compareAndSet(false, true)) {
       if (useHttps) {
-        server.useHttps(MockSSLContextFactory.create().getSocketFactory(), false);
+        server.useHttps();
       }
       onStart();
     }
@@ -90,37 +89,23 @@ public class DefaultMockServer implements MockServer {
   }
 
   public final void start() {
-    try {
-      startInternal();
-      server.start();
-    } catch (IOException e) {
-      throw new MockServerException("Exception when starting DefaultMockServer", e);
-    }
+    startInternal();
+    server.start();
   }
 
   public final void start(int port) {
-    try {
-      startInternal();
-      server.start(port);
-    } catch (IOException e) {
-      throw new MockServerException("Exception when starting DefaultMockServer with port", e);
-    }
+    startInternal();
+    server.start(port);
   }
 
   public final void start(InetAddress inetAddress, int port) {
-    try {
-      startInternal();
-      server.start(inetAddress, port);
-    } catch (IOException e) {
-      throw new MockServerException("Exception when starting DefaultMockServer with InetAddress and port", e);
-    }
+    startInternal();
+    server.start(inetAddress, port);
   }
 
   public final void shutdown() {
     try {
       server.shutdown();
-    } catch (IOException e) {
-      throw new MockServerException("Exception when stopping DefaultMockServer", e);
     } finally {
       shutdownInternal();
     }
@@ -156,6 +141,11 @@ public class DefaultMockServer implements MockServer {
   @Override
   public Proxy toProxyAddress() {
     return server.toProxyAddress();
+  }
+
+  @Override
+  public SelfSignedCertificate getSelfSignedCertificate() {
+    return server.getSelfSignedCertificate();
   }
 
   /**
