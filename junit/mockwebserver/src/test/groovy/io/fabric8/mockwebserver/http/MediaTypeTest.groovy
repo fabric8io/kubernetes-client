@@ -19,31 +19,31 @@ import spock.lang.Specification
 
 class MediaTypeTest extends Specification  {
 
-  def "parse gets type"() {
-    when:
-      def mediaType = MediaType.parse("text/plain;boundary=foo;charset=utf-8")
-    then:
-      assert mediaType.type() == "text"
-  }
+	def "parse gets type"() {
+		when:
+		def mediaType = MediaType.parse("text/plain;boundary=foo;charset=utf-8")
+		then:
+		assert mediaType.type() == "text"
+	}
 
-  def "parse gets subtype"() {
-    when:
-      def mediaType = MediaType.parse("text/plain;boundary=foo;charset=utf-8")
-    then:
-      assert mediaType.subtype() == "plain"
-  }
+	def "parse gets subtype"() {
+		when:
+		def mediaType = MediaType.parse("text/plain;boundary=foo;charset=utf-8")
+		then:
+		assert mediaType.subtype() == "plain"
+	}
 
-  def "parse gets charset"() {
-    when:
-      def mediaType = MediaType.parse("text/plain;boundary=foo;charset=utf-8")
-    then:
-      assert mediaType.charset() == "utf-8"
-  }
+	def "parse gets charset"() {
+		when:
+		def mediaType = MediaType.parse("text/plain;boundary=foo;charset=utf-8")
+		then:
+		assert mediaType.charset() == "utf-8"
+	}
 
-  def "parse preserves mediaType"() {
-    when:
-      def mediaType = MediaType.parse("text/plain;boundary=foo;charset=utf-8")
-    then:
-      assert mediaType.toString() == "text/plain;boundary=foo;charset=utf-8"
-  }
+	def "parse preserves mediaType"() {
+		when:
+		def mediaType = MediaType.parse("text/plain;boundary=foo;charset=utf-8")
+		then:
+		assert mediaType.toString() == "text/plain;boundary=foo;charset=utf-8"
+	}
 }

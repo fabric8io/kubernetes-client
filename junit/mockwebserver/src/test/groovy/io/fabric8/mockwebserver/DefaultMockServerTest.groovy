@@ -15,6 +15,8 @@
  */
 package io.fabric8.mockwebserver
 
+import io.fabric8.mockwebserver.http.Headers
+import io.fabric8.mockwebserver.http.RecordedRequest
 import io.fabric8.mockwebserver.internal.WebSocketMessage
 import io.fabric8.mockwebserver.utils.ResponseProvider
 import io.vertx.core.Future
@@ -25,8 +27,6 @@ import java.util.concurrent.ArrayBlockingQueue
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicInteger
-import okhttp3.Headers
-import okhttp3.mockwebserver.RecordedRequest
 import spock.lang.Specification
 import spock.util.concurrent.AsyncConditions
 
@@ -347,7 +347,7 @@ class DefaultMockServerTest extends Specification {
 		server.expect().get().withPath("/api/v1/users/watch")
 				.andUpgradeToWebSocket()
 				.open()
-				.waitFor(1000).andEmit(new WebSocketMessage([1, 2, 3] as byte[]))
+				.waitFor(1000).andEmit(new WebSocketMessage((byte[])[1, 2, 3]))
 				.done()
 				.once()
 		and:
@@ -368,7 +368,7 @@ class DefaultMockServerTest extends Specification {
 
 		when: "The request is sent and completed"
 		async.evaluate {
-			assert messages.poll(10, TimeUnit.SECONDS) == [1, 2, 3] as byte[]
+			assert messages.poll(10, TimeUnit.SECONDS) == (byte[])[1, 2, 3]
 		}
 
 		then: "Expect the result to be completed in the specified time"
