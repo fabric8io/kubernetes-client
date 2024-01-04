@@ -20,12 +20,12 @@ import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.mockwebserver.ServerRequest;
 import io.fabric8.mockwebserver.ServerResponse;
 import io.fabric8.mockwebserver.dsl.HttpMethod;
+import io.fabric8.mockwebserver.http.Buffer;
+import io.fabric8.mockwebserver.http.Headers;
+import io.fabric8.mockwebserver.http.MockResponse;
+import io.fabric8.mockwebserver.http.RecordedRequest;
 import io.fabric8.mockwebserver.internal.SimpleRequest;
 import io.fabric8.mockwebserver.internal.SimpleResponse;
-import okhttp3.Headers;
-import okhttp3.mockwebserver.MockResponse;
-import okhttp3.mockwebserver.RecordedRequest;
-import okio.Buffer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -59,7 +59,7 @@ class KubernetesMixedDispatcherTest {
 
   @Test
   @DisplayName("dispatch, with matching expectation, returns expectation")
-  void dispatchWithMatchingExpectation() throws Exception {
+  void dispatchWithMatchingExpectation() {
     // Given
     responses.compute(new SimpleRequest(HttpMethod.GET, "/api/v1/resources/my-resource"), (k, v) -> new ArrayDeque<>())
         .add(new SimpleResponse(true, 200, "resourceBody", null));
@@ -76,7 +76,7 @@ class KubernetesMixedDispatcherTest {
 
   @Test
   @DisplayName("dispatch, with existing CRUD resource, returns CRUD resource")
-  void dispatchWithCrudExistentResource() throws Exception {
+  void dispatchWithCrudExistentResource() {
     // Given
     final Buffer requestBody = new Buffer();
     requestBody.writeString("{\"kind\": \"Resource\", \"apiVersion\": \"v1\",\"metadata\": {\"name\": \"my-resource\"}}",

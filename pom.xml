@@ -108,6 +108,7 @@
     <groovy-api.version>4.0.23</groovy-api.version>
 
     <!-- Testing versions -->
+    <junit4.version>4.13.2</junit4.version>
     <junit.version>5.11.2</junit.version>
     <assertj.core.version>3.26.3</assertj.core.version>
     <awaitility.version>4.2.2</awaitility.version>
@@ -909,6 +910,12 @@
         <scope>test</scope>
       </dependency>
 
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>${junit4.version}</version>
+        <scope>test</scope>
+      </dependency>
       <dependency>
         <groupId>org.junit.jupiter</groupId>
         <artifactId>junit-jupiter-api</artifactId>
