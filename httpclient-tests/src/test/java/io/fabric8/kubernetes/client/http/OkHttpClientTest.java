@@ -79,7 +79,7 @@ class OkHttpClientTest {
     server.expect().withPath("/wsclose")
         .andUpgradeToWebSocket()
         .open()
-        .expect("never sent").andEmit("response").always().done().always();
+        .waitFor(100L).andEmit("response").done().always();
 
     CompletableFuture<String> closeReason = new CompletableFuture<>();
 
