@@ -33,7 +33,7 @@ import java.util.concurrent.atomic.AtomicInteger
 
 class DefaultMockServerTest extends Specification {
 
-  Vertx vertx = Vertx.vertx()
+  Vertx vertx
 
   DefaultMockServer server
 
