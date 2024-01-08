@@ -13,6 +13,7 @@
 #### Improvements
 * Fix #5429: moved crd generator annotations to generator-annotations instead of crd-generator-api. Using generator-annotations introduces no transitive dependencies.
 * Fix #5535: Add lombok and sundrio dependencies to the generated bom
+* Fix #5496: Added PodResource.patchReadinessGateStatus and a general subresource method to use any of the patch/edit/update methods with any subresource
 
 #### Dependency Upgrade
 * Updated okio to version 1.17.6 to avoid CVE-2023-3635

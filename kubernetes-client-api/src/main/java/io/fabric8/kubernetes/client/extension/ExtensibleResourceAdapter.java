@@ -132,4 +132,9 @@ public abstract class ExtensibleResourceAdapter<T> extends ResourceAdapter<T> im
     return newInstance().init(resource.unlock(), client);
   }
 
+  @Override
+  public ExtensibleResource<T> subresource(String subresource) {
+    return newInstance().init(resource.subresource(subresource), client);
+  }
+
 }

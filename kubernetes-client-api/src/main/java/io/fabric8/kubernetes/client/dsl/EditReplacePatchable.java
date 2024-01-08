@@ -23,8 +23,7 @@ import io.fabric8.kubernetes.client.dsl.base.PatchType;
 import java.util.function.Consumer;
 import java.util.function.UnaryOperator;
 
-public interface EditReplacePatchable<T>
-    extends Replaceable<T> {
+public interface EditReplacePatchable<T> extends Updatable<T> {
 
   /**
    * Issues a JSON patch against the item based upon the changes made to the object returned by the function.
@@ -131,26 +130,6 @@ public interface EditReplacePatchable<T>
    * @return updated object
    */
   T patch(PatchContext patchContext, String patch);
-
-  /**
-   * Edit the status subresource
-   *
-   * @param function to produce a modified status
-   * @return updated object
-   */
-  T editStatus(UnaryOperator<T> function);
-
-  /**
-   * Does a PATCH request to the /status subresource ignoring changes to anything except the status stanza.
-   * <p>
-   * This method has the same patching behavior as {@link #patch(PatchContext)}, with
-   * {@link PatchType#JSON_MERGE} but against the status subresource.
-   * <p>
-   * Set the resourceVersion to null to prevent optimistic locking.
-   *
-   * @return updated object
-   */
-  T patchStatus();
 
   /**
    * Update field(s) of a resource using a JSON patch which will be computed using the latest
