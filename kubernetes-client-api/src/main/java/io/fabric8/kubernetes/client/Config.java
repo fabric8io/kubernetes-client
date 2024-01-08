@@ -823,11 +823,15 @@ public class Config {
     if (p.waitFor() != 0) {
       LOGGER.warn(output);
     }
-    ExecCredential ec = Serialization.unmarshal(output, ExecCredential.class);
-    if (!apiVersion.equals(ec.apiVersion)) {
-      LOGGER.warn("Wrong apiVersion {} vs. {}", ec.apiVersion, apiVersion);
-    } else {
-      return ec;
+    try {
+      ExecCredential ec = Serialization.unmarshal(output, ExecCredential.class);
+      if (!apiVersion.equals(ec.apiVersion)) {
+        LOGGER.warn("Wrong apiVersion {} vs. {}", ec.apiVersion, apiVersion);
+      } else {
+        return ec;
+      }
+    } catch (Exception ex) {
+      LOGGER.warn("Error unmarshalling ExecCredential", ex);
     }
     return null;
   }
