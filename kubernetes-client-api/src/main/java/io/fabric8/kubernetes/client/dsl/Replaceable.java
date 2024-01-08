@@ -15,30 +15,7 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
-public interface Replaceable<T> {
-
-  /**
-   * Replace the server's state with the given item.
-   *
-   * <p>
-   * If {@link Resource#lockResourceVersion(String)} has been used to lock the resourceVersion,
-   * this operation is effectively a single update attempt against that version.
-   * <p>
-   * If {@link Resource#lockResourceVersion(String)} has not been called, this operation
-   * will be retried a number of times in the event of a conflict. If a resourceVersion has been set
-   * on the item, the first update attempt will be made against that version. Subsequent attempts will fetch
-   * the latest resourceVersion from the server.
-   *
-   * @return returns deserialized version of api server response
-   *
-   * @deprecated use {@link #update()} instead
-   *
-   * @see <a href=
-   *      "https://github.com/fabric8io/kubernetes-client/blob/main/doc/FAQ.md#alternatives-to-createOrReplace-and-replace"
-   *      >Migration FAQ</a>
-   */
-  @Deprecated
-  T replace();
+public interface Replaceable<T> extends Updatable<T> {
 
   /**
    * Similar to {@link Replaceable#replace()}, but only affects the status subresource
@@ -60,16 +37,5 @@ public interface Replaceable<T> {
    * @return returns deserialized version of api server response
    */
   T updateStatus();
-
-  /**
-   * Update the server's state with the given item (PUT).
-   * <p>
-   * If the resourceVersion is on the resource, the update will be performed with optimistic locking, and may
-   * result in a conflict (409 error). If no resourceVersion is on the resource, the latest resourceVersion will
-   * be obtained from the server prior to the update call - which may still be a conflict in a rare circumstance.
-   *
-   * @return returns deserialized version of api server response
-   */
-  T update();
 
 }

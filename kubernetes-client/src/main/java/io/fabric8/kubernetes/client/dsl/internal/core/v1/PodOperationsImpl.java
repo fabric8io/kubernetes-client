@@ -20,8 +20,11 @@ import io.fabric8.kubernetes.api.model.DeleteOptions;
 import io.fabric8.kubernetes.api.model.EphemeralContainer;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Pod;
+import io.fabric8.kubernetes.api.model.PodCondition;
+import io.fabric8.kubernetes.api.model.PodConditionBuilder;
 import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.api.model.PodSpec;
+import io.fabric8.kubernetes.api.model.PodStatus;
 import io.fabric8.kubernetes.api.model.policy.v1beta1.Eviction;
 import io.fabric8.kubernetes.api.model.policy.v1beta1.EvictionBuilder;
 import io.fabric8.kubernetes.client.Client;
@@ -82,9 +85,12 @@ import java.nio.channels.WritableByteChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import static io.fabric8.kubernetes.client.utils.internal.OptionalDependencyWrapper.wrapRunWithOptionalDependency;
 
@@ -640,4 +646,30 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
   public PodOperationsImpl terminateOnError() {
     return new PodOperationsImpl(getContext().toBuilder().terminateOnError(true).build(), context);
   }
+
+  @Override
+  public Pod patchReadinessGateStatus(Map<String, Boolean> readiness) {
+    Map<String, PodCondition> conditions = new LinkedHashMap<>();
+    Pod pod = getItemOrRequireFromServer();
+    if (pod.getStatus() == null) {
+      pod.setStatus(new PodStatus());
+    }
+    pod.getStatus().getConditions().forEach(pc -> conditions.put(pc.getType(), pc));
+    for (Map.Entry<String, Boolean> entry : readiness.entrySet()) {
+      if (entry.getValue() == null) { // effectively false, may not even need to account for this case
+        conditions.remove(entry.getKey());
+      } else {
+        PodCondition condition = conditions.get(entry.getKey());
+        String valueString = entry.getValue() ? "True" : "False";
+        if (condition == null) {
+          conditions.put(entry.getKey(), new PodConditionBuilder().withStatus(valueString).withType(entry.getKey()).build());
+        } else {
+          condition.setStatus(valueString);
+        }
+      }
+    }
+    pod.getStatus().setConditions(conditions.values().stream().collect(Collectors.toList()));
+    return this.resource(pod).subresource("status").patch();
+  }
+
 }

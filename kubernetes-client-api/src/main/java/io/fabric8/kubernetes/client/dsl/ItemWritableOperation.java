@@ -68,7 +68,7 @@ public interface ItemWritableOperation<T> extends DeletableWithOptions, ItemRepl
   T updateStatus(T item);
 
   /**
-   * See {@link EditReplacePatchable#patchStatus()}
+   * See {@link NonDeletingOperation#patchStatus()}
    *
    * @param item kubernetes object
    * @return updated object

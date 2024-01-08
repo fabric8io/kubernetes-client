@@ -15,7 +15,11 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
+import io.fabric8.kubernetes.client.dsl.base.PatchContext;
+import io.fabric8.kubernetes.client.dsl.base.PatchType;
+
 import java.util.function.Function;
+import java.util.function.UnaryOperator;
 
 public interface NonDeletingOperation<T> extends
     CreateOrReplaceable<T>,
@@ -44,4 +48,30 @@ public interface NonDeletingOperation<T> extends
    * @return NonDeletingOperation that may act on the unlocked item
    */
   NonDeletingOperation<T> unlock();
+
+  /**
+   * Edit the status subresource
+   *
+   * @param function to produce a modified status
+   * @return updated object
+   */
+  T editStatus(UnaryOperator<T> function);
+
+  /**
+   * Does a PATCH request to the /status subresource ignoring changes to anything except the status stanza.
+   * <p>
+   * This method has the same patching behavior as {@link #patch(PatchContext)}, with
+   * {@link PatchType#JSON_MERGE} but against the status subresource.
+   * <p>
+   * Set the resourceVersion to null to prevent optimistic locking.
+   *
+   * @return updated object
+   */
+  T patchStatus();
+
+  /**
+   * Provides edit, patch, and replace methods for the given subresource
+   */
+  EditReplacePatchable<T> subresource(String subresource);
+
 }

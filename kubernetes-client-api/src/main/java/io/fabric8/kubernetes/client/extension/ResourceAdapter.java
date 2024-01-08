@@ -27,6 +27,7 @@ import io.fabric8.kubernetes.client.ResourceNotFoundException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.Deletable;
+import io.fabric8.kubernetes.client.dsl.EditReplacePatchable;
 import io.fabric8.kubernetes.client.dsl.Gettable;
 import io.fabric8.kubernetes.client.dsl.Informable;
 import io.fabric8.kubernetes.client.dsl.NonDeletingOperation;
@@ -378,6 +379,11 @@ public class ResourceAdapter<T> implements Resource<T> {
   @Override
   public NonDeletingOperation<T> unlock() {
     return resource.unlock();
+  }
+
+  @Override
+  public EditReplacePatchable<T> subresource(String subresource) {
+    return resource.subresource(subresource);
   }
 
 }

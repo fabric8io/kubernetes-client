@@ -58,6 +58,25 @@ class PodEphemeralContainersIT {
   }
 
   @Test
+  void editSubresource() {
+    Pod pod = client.pods().withName("pod-standard")
+        .subresource("ephemeralcontainers")
+        .edit(p -> new PodBuilder(p)
+            .editMetadata().withResourceVersion(null).endMetadata()
+            .editSpec()
+            .addNewEphemeralContainer()
+            .withName("debugger-sub")
+            .withImage("alpine")
+            .withCommand("sh")
+            .endEphemeralContainer()
+            .endSpec()
+            .build());
+
+    List<EphemeralContainer> containers = pod.getSpec().getEphemeralContainers();
+    assertTrue(containers.stream().anyMatch(c -> c.getName().equals("debugger-sub")));
+  }
+
+  @Test
   void replace() {
     Pod item = client.pods().withName("pod-standard").get();
     Pod replacement = new PodBuilder(item)

@@ -1202,4 +1202,9 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     throw new KubernetesClientException(READ_ONLY_UPDATE_EXCEPTION_MESSAGE);
   }
 
+  @Override
+  public ExtensibleResource<T> subresource(String subresource) {
+    return newInstance(context.withSubresource(subresource));
+  }
+
 }
