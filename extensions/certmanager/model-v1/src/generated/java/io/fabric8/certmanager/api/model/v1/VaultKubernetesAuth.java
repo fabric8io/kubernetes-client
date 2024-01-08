@@ -42,7 +42,8 @@ import lombok.experimental.Accessors;
     "metadata",
     "mountPath",
     "role",
-    "secretRef"
+    "secretRef",
+    "serviceAccountRef"
 })
 @ToString
 @EqualsAndHashCode
@@ -76,6 +77,8 @@ public class VaultKubernetesAuth implements Editable<VaultKubernetesAuthBuilder>
     private String role;
     @JsonProperty("secretRef")
     private SecretKeySelector secretRef;
+    @JsonProperty("serviceAccountRef")
+    private ServiceAccountRef serviceAccountRef;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -86,11 +89,12 @@ public class VaultKubernetesAuth implements Editable<VaultKubernetesAuthBuilder>
     public VaultKubernetesAuth() {
     }
 
-    public VaultKubernetesAuth(String mountPath, String role, SecretKeySelector secretRef) {
+    public VaultKubernetesAuth(String mountPath, String role, SecretKeySelector secretRef, ServiceAccountRef serviceAccountRef) {
         super();
         this.mountPath = mountPath;
         this.role = role;
         this.secretRef = secretRef;
+        this.serviceAccountRef = serviceAccountRef;
     }
 
     @JsonProperty("mountPath")
@@ -121,6 +125,16 @@ public class VaultKubernetesAuth implements Editable<VaultKubernetesAuthBuilder>
     @JsonProperty("secretRef")
     public void setSecretRef(SecretKeySelector secretRef) {
         this.secretRef = secretRef;
+    }
+
+    @JsonProperty("serviceAccountRef")
+    public ServiceAccountRef getServiceAccountRef() {
+        return serviceAccountRef;
+    }
+
+    @JsonProperty("serviceAccountRef")
+    public void setServiceAccountRef(ServiceAccountRef serviceAccountRef) {
+        this.serviceAccountRef = serviceAccountRef;
     }
 
     @JsonIgnore

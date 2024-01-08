@@ -40,6 +40,7 @@ import lombok.experimental.Accessors;
     "kind",
     "metadata",
     "class",
+    "ingressClassName",
     "ingressTemplate",
     "name",
     "podTemplate",
@@ -73,6 +74,8 @@ public class ACMEChallengeSolverHTTP01Ingress implements Editable<ACMEChallengeS
 
     @JsonProperty("class")
     private String className;
+    @JsonProperty("ingressClassName")
+    private String ingressClassName;
     @JsonProperty("ingressTemplate")
     private ACMEChallengeSolverHTTP01IngressTemplate ingressTemplate;
     @JsonProperty("name")
@@ -91,9 +94,10 @@ public class ACMEChallengeSolverHTTP01Ingress implements Editable<ACMEChallengeS
     public ACMEChallengeSolverHTTP01Ingress() {
     }
 
-    public ACMEChallengeSolverHTTP01Ingress(String className, ACMEChallengeSolverHTTP01IngressTemplate ingressTemplate, java.lang.String name, ACMEChallengeSolverHTTP01IngressPodTemplate podTemplate, java.lang.String serviceType) {
+    public ACMEChallengeSolverHTTP01Ingress(String className, String ingressClassName, ACMEChallengeSolverHTTP01IngressTemplate ingressTemplate, java.lang.String name, ACMEChallengeSolverHTTP01IngressPodTemplate podTemplate, java.lang.String serviceType) {
         super();
         this.className = className;
+        this.ingressClassName = ingressClassName;
         this.ingressTemplate = ingressTemplate;
         this.name = name;
         this.podTemplate = podTemplate;
@@ -108,6 +112,16 @@ public class ACMEChallengeSolverHTTP01Ingress implements Editable<ACMEChallengeS
     @JsonProperty("class")
     public void setClassName(String className) {
         this.className = className;
+    }
+
+    @JsonProperty("ingressClassName")
+    public String getIngressClassName() {
+        return ingressClassName;
+    }
+
+    @JsonProperty("ingressClassName")
+    public void setIngressClassName(String ingressClassName) {
+        this.ingressClassName = ingressClassName;
     }
 
     @JsonProperty("ingressTemplate")

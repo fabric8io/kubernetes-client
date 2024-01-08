@@ -18,6 +18,8 @@
 #### Dependency Upgrade
 * Updated Kubernetes Model to Kubernetes `v1.29.0`
 * Updated okio to version 1.17.6 to avoid CVE-2023-3635
+* Updated `sigs.k8s.io/gateway-api` go dependency to v1.0.0
+* Updated `github.com/cert-manager/cert-manager` to latest available version (`v1.14.0-alpha.0.0.20240105200543-3234974a3865`)
 
 #### New Features
 * Fix #5608 Support authentication with certificate in exec-credentials

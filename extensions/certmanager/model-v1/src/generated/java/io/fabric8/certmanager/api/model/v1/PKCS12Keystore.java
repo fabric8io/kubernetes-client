@@ -41,7 +41,8 @@ import lombok.experimental.Accessors;
     "kind",
     "metadata",
     "create",
-    "passwordSecretRef"
+    "passwordSecretRef",
+    "profile"
 })
 @ToString
 @EqualsAndHashCode
@@ -73,6 +74,8 @@ public class PKCS12Keystore implements Editable<PKCS12KeystoreBuilder> , Kuberne
     private Boolean create;
     @JsonProperty("passwordSecretRef")
     private SecretKeySelector passwordSecretRef;
+    @JsonProperty("profile")
+    private String profile;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -83,10 +86,11 @@ public class PKCS12Keystore implements Editable<PKCS12KeystoreBuilder> , Kuberne
     public PKCS12Keystore() {
     }
 
-    public PKCS12Keystore(Boolean create, SecretKeySelector passwordSecretRef) {
+    public PKCS12Keystore(Boolean create, SecretKeySelector passwordSecretRef, String profile) {
         super();
         this.create = create;
         this.passwordSecretRef = passwordSecretRef;
+        this.profile = profile;
     }
 
     @JsonProperty("create")
@@ -107,6 +111,16 @@ public class PKCS12Keystore implements Editable<PKCS12KeystoreBuilder> , Kuberne
     @JsonProperty("passwordSecretRef")
     public void setPasswordSecretRef(SecretKeySelector passwordSecretRef) {
         this.passwordSecretRef = passwordSecretRef;
+    }
+
+    @JsonProperty("profile")
+    public String getProfile() {
+        return profile;
+    }
+
+    @JsonProperty("profile")
+    public void setProfile(String profile) {
+        this.profile = profile;
     }
 
     @JsonIgnore

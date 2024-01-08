@@ -42,6 +42,7 @@ import lombok.experimental.Accessors;
     "kind",
     "metadata",
     "crlDistributionPoints",
+    "issuingCertificateURLs",
     "ocspServers",
     "secretName"
 })
@@ -74,6 +75,9 @@ public class CAIssuer implements Editable<CAIssuerBuilder> , KubernetesResource
     @JsonProperty("crlDistributionPoints")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> crlDistributionPoints = new ArrayList<String>();
+    @JsonProperty("issuingCertificateURLs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> issuingCertificateURLs = new ArrayList<String>();
     @JsonProperty("ocspServers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> ocspServers = new ArrayList<String>();
@@ -89,9 +93,10 @@ public class CAIssuer implements Editable<CAIssuerBuilder> , KubernetesResource
     public CAIssuer() {
     }
 
-    public CAIssuer(List<String> crlDistributionPoints, List<String> ocspServers, String secretName) {
+    public CAIssuer(List<String> crlDistributionPoints, List<String> issuingCertificateURLs, List<String> ocspServers, String secretName) {
         super();
         this.crlDistributionPoints = crlDistributionPoints;
+        this.issuingCertificateURLs = issuingCertificateURLs;
         this.ocspServers = ocspServers;
         this.secretName = secretName;
     }
@@ -104,6 +109,16 @@ public class CAIssuer implements Editable<CAIssuerBuilder> , KubernetesResource
     @JsonProperty("crlDistributionPoints")
     public void setCrlDistributionPoints(List<String> crlDistributionPoints) {
         this.crlDistributionPoints = crlDistributionPoints;
+    }
+
+    @JsonProperty("issuingCertificateURLs")
+    public List<String> getIssuingCertificateURLs() {
+        return issuingCertificateURLs;
+    }
+
+    @JsonProperty("issuingCertificateURLs")
+    public void setIssuingCertificateURLs(List<String> issuingCertificateURLs) {
+        this.issuingCertificateURLs = issuingCertificateURLs;
     }
 
     @JsonProperty("ocspServers")

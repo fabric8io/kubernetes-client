@@ -1,5 +1,5 @@
 
-package io.fabric8.certmanager.api.model.acme.v1;
+package io.fabric8.certmanager.api.model.v1;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -39,9 +39,7 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "lastPrivateKeyHash",
-    "lastRegisteredEmail",
-    "uri"
+    "name"
 })
 @ToString
 @EqualsAndHashCode
@@ -66,15 +64,11 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class ACMEIssuerStatus implements Editable<ACMEIssuerStatusBuilder> , KubernetesResource
+public class ServiceAccountRef implements Editable<ServiceAccountRefBuilder> , KubernetesResource
 {
 
-    @JsonProperty("lastPrivateKeyHash")
-    private String lastPrivateKeyHash;
-    @JsonProperty("lastRegisteredEmail")
-    private String lastRegisteredEmail;
-    @JsonProperty("uri")
-    private String uri;
+    @JsonProperty("name")
+    private String name;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -82,53 +76,31 @@ public class ACMEIssuerStatus implements Editable<ACMEIssuerStatusBuilder> , Kub
      * No args constructor for use in serialization
      * 
      */
-    public ACMEIssuerStatus() {
+    public ServiceAccountRef() {
     }
 
-    public ACMEIssuerStatus(String lastPrivateKeyHash, String lastRegisteredEmail, String uri) {
+    public ServiceAccountRef(String name) {
         super();
-        this.lastPrivateKeyHash = lastPrivateKeyHash;
-        this.lastRegisteredEmail = lastRegisteredEmail;
-        this.uri = uri;
+        this.name = name;
     }
 
-    @JsonProperty("lastPrivateKeyHash")
-    public String getLastPrivateKeyHash() {
-        return lastPrivateKeyHash;
+    @JsonProperty("name")
+    public String getName() {
+        return name;
     }
 
-    @JsonProperty("lastPrivateKeyHash")
-    public void setLastPrivateKeyHash(String lastPrivateKeyHash) {
-        this.lastPrivateKeyHash = lastPrivateKeyHash;
-    }
-
-    @JsonProperty("lastRegisteredEmail")
-    public String getLastRegisteredEmail() {
-        return lastRegisteredEmail;
-    }
-
-    @JsonProperty("lastRegisteredEmail")
-    public void setLastRegisteredEmail(String lastRegisteredEmail) {
-        this.lastRegisteredEmail = lastRegisteredEmail;
-    }
-
-    @JsonProperty("uri")
-    public String getUri() {
-        return uri;
-    }
-
-    @JsonProperty("uri")
-    public void setUri(String uri) {
-        this.uri = uri;
+    @JsonProperty("name")
+    public void setName(String name) {
+        this.name = name;
     }
 
     @JsonIgnore
-    public ACMEIssuerStatusBuilder edit() {
-        return new ACMEIssuerStatusBuilder(this);
+    public ServiceAccountRefBuilder edit() {
+        return new ServiceAccountRefBuilder(this);
     }
 
     @JsonIgnore
-    public ACMEIssuerStatusBuilder toBuilder() {
+    public ServiceAccountRefBuilder toBuilder() {
         return edit();
     }
 
