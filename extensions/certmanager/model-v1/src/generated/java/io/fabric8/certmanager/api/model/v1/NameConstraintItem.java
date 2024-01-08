@@ -1,7 +1,9 @@
 
-package io.fabric8.certmanager.api.model.acme.v1;
+package io.fabric8.certmanager.api.model.v1;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -39,9 +41,10 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "lastPrivateKeyHash",
-    "lastRegisteredEmail",
-    "uri"
+    "dnsDomains",
+    "emailAddresses",
+    "ipRanges",
+    "uriDomains"
 })
 @ToString
 @EqualsAndHashCode
@@ -66,15 +69,21 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class ACMEIssuerStatus implements Editable<ACMEIssuerStatusBuilder> , KubernetesResource
+public class NameConstraintItem implements Editable<NameConstraintItemBuilder> , KubernetesResource
 {
 
-    @JsonProperty("lastPrivateKeyHash")
-    private String lastPrivateKeyHash;
-    @JsonProperty("lastRegisteredEmail")
-    private String lastRegisteredEmail;
-    @JsonProperty("uri")
-    private String uri;
+    @JsonProperty("dnsDomains")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> dnsDomains = new ArrayList<String>();
+    @JsonProperty("emailAddresses")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> emailAddresses = new ArrayList<String>();
+    @JsonProperty("ipRanges")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> ipRanges = new ArrayList<String>();
+    @JsonProperty("uriDomains")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> uriDomains = new ArrayList<String>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -82,53 +91,64 @@ public class ACMEIssuerStatus implements Editable<ACMEIssuerStatusBuilder> , Kub
      * No args constructor for use in serialization
      * 
      */
-    public ACMEIssuerStatus() {
+    public NameConstraintItem() {
     }
 
-    public ACMEIssuerStatus(String lastPrivateKeyHash, String lastRegisteredEmail, String uri) {
+    public NameConstraintItem(List<String> dnsDomains, List<String> emailAddresses, List<String> ipRanges, List<String> uriDomains) {
         super();
-        this.lastPrivateKeyHash = lastPrivateKeyHash;
-        this.lastRegisteredEmail = lastRegisteredEmail;
-        this.uri = uri;
+        this.dnsDomains = dnsDomains;
+        this.emailAddresses = emailAddresses;
+        this.ipRanges = ipRanges;
+        this.uriDomains = uriDomains;
     }
 
-    @JsonProperty("lastPrivateKeyHash")
-    public String getLastPrivateKeyHash() {
-        return lastPrivateKeyHash;
+    @JsonProperty("dnsDomains")
+    public List<String> getDnsDomains() {
+        return dnsDomains;
     }
 
-    @JsonProperty("lastPrivateKeyHash")
-    public void setLastPrivateKeyHash(String lastPrivateKeyHash) {
-        this.lastPrivateKeyHash = lastPrivateKeyHash;
+    @JsonProperty("dnsDomains")
+    public void setDnsDomains(List<String> dnsDomains) {
+        this.dnsDomains = dnsDomains;
     }
 
-    @JsonProperty("lastRegisteredEmail")
-    public String getLastRegisteredEmail() {
-        return lastRegisteredEmail;
+    @JsonProperty("emailAddresses")
+    public List<String> getEmailAddresses() {
+        return emailAddresses;
     }
 
-    @JsonProperty("lastRegisteredEmail")
-    public void setLastRegisteredEmail(String lastRegisteredEmail) {
-        this.lastRegisteredEmail = lastRegisteredEmail;
+    @JsonProperty("emailAddresses")
+    public void setEmailAddresses(List<String> emailAddresses) {
+        this.emailAddresses = emailAddresses;
     }
 
-    @JsonProperty("uri")
-    public String getUri() {
-        return uri;
+    @JsonProperty("ipRanges")
+    public List<String> getIpRanges() {
+        return ipRanges;
     }
 
-    @JsonProperty("uri")
-    public void setUri(String uri) {
-        this.uri = uri;
+    @JsonProperty("ipRanges")
+    public void setIpRanges(List<String> ipRanges) {
+        this.ipRanges = ipRanges;
+    }
+
+    @JsonProperty("uriDomains")
+    public List<String> getUriDomains() {
+        return uriDomains;
+    }
+
+    @JsonProperty("uriDomains")
+    public void setUriDomains(List<String> uriDomains) {
+        this.uriDomains = uriDomains;
     }
 
     @JsonIgnore
-    public ACMEIssuerStatusBuilder edit() {
-        return new ACMEIssuerStatusBuilder(this);
+    public NameConstraintItemBuilder edit() {
+        return new NameConstraintItemBuilder(this);
     }
 
     @JsonIgnore
-    public ACMEIssuerStatusBuilder toBuilder() {
+    public NameConstraintItemBuilder toBuilder() {
         return edit();
     }
 

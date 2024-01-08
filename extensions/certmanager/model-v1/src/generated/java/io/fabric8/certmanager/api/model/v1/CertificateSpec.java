@@ -52,6 +52,8 @@ import lombok.experimental.Accessors;
     "issuerRef",
     "keystores",
     "literalSubject",
+    "nameConstraints",
+    "otherNames",
     "privateKey",
     "renewBefore",
     "revisionHistoryLimit",
@@ -113,6 +115,11 @@ public class CertificateSpec implements Editable<CertificateSpecBuilder> , Kuber
     private CertificateKeystores keystores;
     @JsonProperty("literalSubject")
     private String literalSubject;
+    @JsonProperty("nameConstraints")
+    private NameConstraints nameConstraints;
+    @JsonProperty("otherNames")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<OtherName> otherNames = new ArrayList<OtherName>();
     @JsonProperty("privateKey")
     private CertificatePrivateKey privateKey;
     @JsonProperty("renewBefore")
@@ -141,7 +148,7 @@ public class CertificateSpec implements Editable<CertificateSpecBuilder> , Kuber
     public CertificateSpec() {
     }
 
-    public CertificateSpec(List<CertificateAdditionalOutputFormat> additionalOutputFormats, String commonName, List<String> dnsNames, Duration duration, List<String> emailAddresses, Boolean encodeUsagesInRequest, List<String> ipAddresses, java.lang.Boolean isCA, io.fabric8.certmanager.api.model.meta.v1.ObjectReference issuerRef, CertificateKeystores keystores, String literalSubject, CertificatePrivateKey privateKey, Duration renewBefore, Integer revisionHistoryLimit, String secretName, CertificateSecretTemplate secretTemplate, X509Subject subject, List<String> uris, List<String> usages) {
+    public CertificateSpec(List<CertificateAdditionalOutputFormat> additionalOutputFormats, String commonName, List<String> dnsNames, Duration duration, List<String> emailAddresses, Boolean encodeUsagesInRequest, List<String> ipAddresses, java.lang.Boolean isCA, io.fabric8.certmanager.api.model.meta.v1.ObjectReference issuerRef, CertificateKeystores keystores, String literalSubject, NameConstraints nameConstraints, List<OtherName> otherNames, CertificatePrivateKey privateKey, Duration renewBefore, Integer revisionHistoryLimit, String secretName, CertificateSecretTemplate secretTemplate, X509Subject subject, List<String> uris, List<String> usages) {
         super();
         this.additionalOutputFormats = additionalOutputFormats;
         this.commonName = commonName;
@@ -154,6 +161,8 @@ public class CertificateSpec implements Editable<CertificateSpecBuilder> , Kuber
         this.issuerRef = issuerRef;
         this.keystores = keystores;
         this.literalSubject = literalSubject;
+        this.nameConstraints = nameConstraints;
+        this.otherNames = otherNames;
         this.privateKey = privateKey;
         this.renewBefore = renewBefore;
         this.revisionHistoryLimit = revisionHistoryLimit;
@@ -272,6 +281,26 @@ public class CertificateSpec implements Editable<CertificateSpecBuilder> , Kuber
     @JsonProperty("literalSubject")
     public void setLiteralSubject(String literalSubject) {
         this.literalSubject = literalSubject;
+    }
+
+    @JsonProperty("nameConstraints")
+    public NameConstraints getNameConstraints() {
+        return nameConstraints;
+    }
+
+    @JsonProperty("nameConstraints")
+    public void setNameConstraints(NameConstraints nameConstraints) {
+        this.nameConstraints = nameConstraints;
+    }
+
+    @JsonProperty("otherNames")
+    public List<OtherName> getOtherNames() {
+        return otherNames;
+    }
+
+    @JsonProperty("otherNames")
+    public void setOtherNames(List<OtherName> otherNames) {
+        this.otherNames = otherNames;
     }
 
     @JsonProperty("privateKey")

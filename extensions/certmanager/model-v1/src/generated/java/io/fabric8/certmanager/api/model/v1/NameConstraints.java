@@ -1,5 +1,5 @@
 
-package io.fabric8.certmanager.api.model.acme.v1;
+package io.fabric8.certmanager.api.model.v1;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -39,9 +39,9 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "lastPrivateKeyHash",
-    "lastRegisteredEmail",
-    "uri"
+    "critical",
+    "excluded",
+    "permitted"
 })
 @ToString
 @EqualsAndHashCode
@@ -66,15 +66,15 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class ACMEIssuerStatus implements Editable<ACMEIssuerStatusBuilder> , KubernetesResource
+public class NameConstraints implements Editable<NameConstraintsBuilder> , KubernetesResource
 {
 
-    @JsonProperty("lastPrivateKeyHash")
-    private String lastPrivateKeyHash;
-    @JsonProperty("lastRegisteredEmail")
-    private String lastRegisteredEmail;
-    @JsonProperty("uri")
-    private String uri;
+    @JsonProperty("critical")
+    private Boolean critical;
+    @JsonProperty("excluded")
+    private NameConstraintItem excluded;
+    @JsonProperty("permitted")
+    private NameConstraintItem permitted;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -82,53 +82,53 @@ public class ACMEIssuerStatus implements Editable<ACMEIssuerStatusBuilder> , Kub
      * No args constructor for use in serialization
      * 
      */
-    public ACMEIssuerStatus() {
+    public NameConstraints() {
     }
 
-    public ACMEIssuerStatus(String lastPrivateKeyHash, String lastRegisteredEmail, String uri) {
+    public NameConstraints(Boolean critical, NameConstraintItem excluded, NameConstraintItem permitted) {
         super();
-        this.lastPrivateKeyHash = lastPrivateKeyHash;
-        this.lastRegisteredEmail = lastRegisteredEmail;
-        this.uri = uri;
+        this.critical = critical;
+        this.excluded = excluded;
+        this.permitted = permitted;
     }
 
-    @JsonProperty("lastPrivateKeyHash")
-    public String getLastPrivateKeyHash() {
-        return lastPrivateKeyHash;
+    @JsonProperty("critical")
+    public Boolean getCritical() {
+        return critical;
     }
 
-    @JsonProperty("lastPrivateKeyHash")
-    public void setLastPrivateKeyHash(String lastPrivateKeyHash) {
-        this.lastPrivateKeyHash = lastPrivateKeyHash;
+    @JsonProperty("critical")
+    public void setCritical(Boolean critical) {
+        this.critical = critical;
     }
 
-    @JsonProperty("lastRegisteredEmail")
-    public String getLastRegisteredEmail() {
-        return lastRegisteredEmail;
+    @JsonProperty("excluded")
+    public NameConstraintItem getExcluded() {
+        return excluded;
     }
 
-    @JsonProperty("lastRegisteredEmail")
-    public void setLastRegisteredEmail(String lastRegisteredEmail) {
-        this.lastRegisteredEmail = lastRegisteredEmail;
+    @JsonProperty("excluded")
+    public void setExcluded(NameConstraintItem excluded) {
+        this.excluded = excluded;
     }
 
-    @JsonProperty("uri")
-    public String getUri() {
-        return uri;
+    @JsonProperty("permitted")
+    public NameConstraintItem getPermitted() {
+        return permitted;
     }
 
-    @JsonProperty("uri")
-    public void setUri(String uri) {
-        this.uri = uri;
-    }
-
-    @JsonIgnore
-    public ACMEIssuerStatusBuilder edit() {
-        return new ACMEIssuerStatusBuilder(this);
+    @JsonProperty("permitted")
+    public void setPermitted(NameConstraintItem permitted) {
+        this.permitted = permitted;
     }
 
     @JsonIgnore
-    public ACMEIssuerStatusBuilder toBuilder() {
+    public NameConstraintsBuilder edit() {
+        return new NameConstraintsBuilder(this);
+    }
+
+    @JsonIgnore
+    public NameConstraintsBuilder toBuilder() {
         return edit();
     }
 

@@ -21,7 +21,6 @@ import io.fabric8.kubernetes.api.model.EnvVar;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
-import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
@@ -44,6 +43,7 @@ import lombok.experimental.Accessors;
     "kind",
     "metadata",
     "affinity",
+    "imagePullSecrets",
     "nodeSelector",
     "priorityClassName",
     "serviceAccountName",
@@ -64,7 +64,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
-    @BuildableReference(LocalObjectReference.class),
+    @BuildableReference(io.fabric8.kubernetes.api.model.LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class),
     @BuildableReference(EnvVar.class),
     @BuildableReference(ContainerPort.class),
@@ -77,6 +77,9 @@ public class ACMEChallengeSolverHTTP01IngressPodSpec implements Editable<ACMECha
 
     @JsonProperty("affinity")
     private Affinity affinity;
+    @JsonProperty("imagePullSecrets")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<io.fabric8.kubernetes.api.model.LocalObjectReference> imagePullSecrets = new ArrayList<io.fabric8.kubernetes.api.model.LocalObjectReference>();
     @JsonProperty("nodeSelector")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> nodeSelector = new LinkedHashMap<String, String>();
@@ -97,9 +100,10 @@ public class ACMEChallengeSolverHTTP01IngressPodSpec implements Editable<ACMECha
     public ACMEChallengeSolverHTTP01IngressPodSpec() {
     }
 
-    public ACMEChallengeSolverHTTP01IngressPodSpec(Affinity affinity, Map<String, String> nodeSelector, java.lang.String priorityClassName, java.lang.String serviceAccountName, List<Toleration> tolerations) {
+    public ACMEChallengeSolverHTTP01IngressPodSpec(Affinity affinity, List<io.fabric8.kubernetes.api.model.LocalObjectReference> imagePullSecrets, Map<String, String> nodeSelector, java.lang.String priorityClassName, java.lang.String serviceAccountName, List<Toleration> tolerations) {
         super();
         this.affinity = affinity;
+        this.imagePullSecrets = imagePullSecrets;
         this.nodeSelector = nodeSelector;
         this.priorityClassName = priorityClassName;
         this.serviceAccountName = serviceAccountName;
@@ -114,6 +118,16 @@ public class ACMEChallengeSolverHTTP01IngressPodSpec implements Editable<ACMECha
     @JsonProperty("affinity")
     public void setAffinity(Affinity affinity) {
         this.affinity = affinity;
+    }
+
+    @JsonProperty("imagePullSecrets")
+    public List<io.fabric8.kubernetes.api.model.LocalObjectReference> getImagePullSecrets() {
+        return imagePullSecrets;
+    }
+
+    @JsonProperty("imagePullSecrets")
+    public void setImagePullSecrets(List<io.fabric8.kubernetes.api.model.LocalObjectReference> imagePullSecrets) {
+        this.imagePullSecrets = imagePullSecrets;
     }
 
     @JsonProperty("nodeSelector")

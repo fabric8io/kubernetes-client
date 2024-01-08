@@ -147,7 +147,7 @@
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
-            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.ParentReference"
+            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1.ParentReference"
           }
         },
         "serviceType": {
@@ -163,6 +163,10 @@
       "type": "object",
       "properties": {
         "class": {
+          "type": "string",
+          "existingJavaType": "String"
+        },
+        "ingressClassName": {
           "type": "string",
           "existingJavaType": "String"
         },
@@ -225,6 +229,13 @@
       "properties": {
         "affinity": {
           "existingJavaType": "io.fabric8.kubernetes.api.model.Affinity"
+        },
+        "imagePullSecrets": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "existingJavaType": "io.fabric8.kubernetes.api.model.LocalObjectReference"
+          }
         },
         "nodeSelector": {
           "type": "object",
@@ -544,6 +555,9 @@
     "github_com_cert-manager_cert-manager_pkg_apis_acme_v1_ACMEIssuerStatus": {
       "type": "object",
       "properties": {
+        "lastPrivateKeyHash": {
+          "type": "string"
+        },
         "lastRegisteredEmail": {
           "type": "string"
         },
@@ -855,6 +869,13 @@
       "type": "object",
       "properties": {
         "crlDistributionPoints": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "issuingCertificateURLs": {
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
@@ -1248,6 +1269,18 @@
         "literalSubject": {
           "type": "string"
         },
+        "nameConstraints": {
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_NameConstraints",
+          "existingJavaType": "io.fabric8.certmanager.api.model.v1.NameConstraints"
+        },
+        "otherNames": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_OtherName",
+            "existingJavaType": "io.fabric8.certmanager.api.model.v1.OtherName"
+          }
+        },
         "privateKey": {
           "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_CertificatePrivateKey",
           "existingJavaType": "io.fabric8.certmanager.api.model.v1.CertificatePrivateKey"
@@ -1546,6 +1579,78 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_NameConstraintItem": {
+      "type": "object",
+      "properties": {
+        "dnsDomains": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "emailAddresses": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "ipRanges": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "uriDomains": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "javaType": "io.fabric8.certmanager.api.model.v1.NameConstraintItem",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_NameConstraints": {
+      "type": "object",
+      "properties": {
+        "critical": {
+          "type": "boolean"
+        },
+        "excluded": {
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_NameConstraintItem",
+          "existingJavaType": "io.fabric8.certmanager.api.model.v1.NameConstraintItem"
+        },
+        "permitted": {
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_NameConstraintItem",
+          "existingJavaType": "io.fabric8.certmanager.api.model.v1.NameConstraintItem"
+        }
+      },
+      "javaType": "io.fabric8.certmanager.api.model.v1.NameConstraints",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_OtherName": {
+      "type": "object",
+      "properties": {
+        "oid": {
+          "type": "string"
+        },
+        "utf8Value": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.certmanager.api.model.v1.OtherName",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_PKCS12Keystore": {
       "type": "object",
       "properties": {
@@ -1555,6 +1660,9 @@
         "passwordSecretRef": {
           "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_meta_v1_SecretKeySelector",
           "existingJavaType": "io.fabric8.certmanager.api.model.meta.v1.SecretKeySelector"
+        },
+        "profile": {
+          "type": "string"
         }
       },
       "javaType": "io.fabric8.certmanager.api.model.v1.PKCS12Keystore",
@@ -1574,6 +1682,18 @@
         }
       },
       "javaType": "io.fabric8.certmanager.api.model.v1.SelfSignedIssuer",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_ServiceAccountRef": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.certmanager.api.model.v1.ServiceAccountRef",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -1660,6 +1780,10 @@
         "secretRef": {
           "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_meta_v1_SecretKeySelector",
           "existingJavaType": "io.fabric8.certmanager.api.model.meta.v1.SecretKeySelector"
+        },
+        "serviceAccountRef": {
+          "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_ServiceAccountRef",
+          "existingJavaType": "io.fabric8.certmanager.api.model.v1.ServiceAccountRef"
         }
       },
       "javaType": "io.fabric8.certmanager.api.model.v1.VaultKubernetesAuth",
@@ -2060,6 +2184,18 @@
       "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_JKSKeystore",
       "existingJavaType": "io.fabric8.certmanager.api.model.v1.JKSKeystore"
     },
+    "github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_NameConstraintItem": {
+      "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_NameConstraintItem",
+      "existingJavaType": "io.fabric8.certmanager.api.model.v1.NameConstraintItem"
+    },
+    "github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_NameConstraints": {
+      "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_NameConstraints",
+      "existingJavaType": "io.fabric8.certmanager.api.model.v1.NameConstraints"
+    },
+    "github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_OtherName": {
+      "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_OtherName",
+      "existingJavaType": "io.fabric8.certmanager.api.model.v1.OtherName"
+    },
     "github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_PKCS12Keystore": {
       "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_PKCS12Keystore",
       "existingJavaType": "io.fabric8.certmanager.api.model.v1.PKCS12Keystore"
@@ -2067,6 +2203,10 @@
     "github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_SelfSignedIssuer": {
       "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_SelfSignedIssuer",
       "existingJavaType": "io.fabric8.certmanager.api.model.v1.SelfSignedIssuer"
+    },
+    "github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_ServiceAccountRef": {
+      "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_ServiceAccountRef",
+      "existingJavaType": "io.fabric8.certmanager.api.model.v1.ServiceAccountRef"
     },
     "github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_VaultAppRole": {
       "$ref": "#/definitions/github_com_cert-manager_cert-manager_pkg_apis_certmanager_v1_VaultAppRole",
