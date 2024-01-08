@@ -21,8 +21,8 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.HTTPHeaderFilter;
-import io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.HTTPRequestMirrorFilter;
+import io.fabric8.kubernetes.api.model.gatewayapi.v1.HTTPHeaderFilter;
+import io.fabric8.kubernetes.api.model.gatewayapi.v1.HTTPRequestMirrorFilter;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -65,7 +65,7 @@ public class GRPCRouteFilter implements Editable<GRPCRouteFilterBuilder> , Kuber
 {
 
     @JsonProperty("extensionRef")
-    private io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.LocalObjectReference extensionRef;
+    private io.fabric8.kubernetes.api.model.gatewayapi.v1.LocalObjectReference extensionRef;
     @JsonProperty("requestHeaderModifier")
     private HTTPHeaderFilter requestHeaderModifier;
     @JsonProperty("requestMirror")
@@ -84,7 +84,7 @@ public class GRPCRouteFilter implements Editable<GRPCRouteFilterBuilder> , Kuber
     public GRPCRouteFilter() {
     }
 
-    public GRPCRouteFilter(io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.LocalObjectReference extensionRef, HTTPHeaderFilter requestHeaderModifier, HTTPRequestMirrorFilter requestMirror, HTTPHeaderFilter responseHeaderModifier, String type) {
+    public GRPCRouteFilter(io.fabric8.kubernetes.api.model.gatewayapi.v1.LocalObjectReference extensionRef, HTTPHeaderFilter requestHeaderModifier, HTTPRequestMirrorFilter requestMirror, HTTPHeaderFilter responseHeaderModifier, String type) {
         super();
         this.extensionRef = extensionRef;
         this.requestHeaderModifier = requestHeaderModifier;
@@ -94,12 +94,12 @@ public class GRPCRouteFilter implements Editable<GRPCRouteFilterBuilder> , Kuber
     }
 
     @JsonProperty("extensionRef")
-    public io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.LocalObjectReference getExtensionRef() {
+    public io.fabric8.kubernetes.api.model.gatewayapi.v1.LocalObjectReference getExtensionRef() {
         return extensionRef;
     }
 
     @JsonProperty("extensionRef")
-    public void setExtensionRef(io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.LocalObjectReference extensionRef) {
+    public void setExtensionRef(io.fabric8.kubernetes.api.model.gatewayapi.v1.LocalObjectReference extensionRef) {
         this.extensionRef = extensionRef;
     }
 

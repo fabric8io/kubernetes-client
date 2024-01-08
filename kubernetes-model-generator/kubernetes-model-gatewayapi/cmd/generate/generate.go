@@ -21,6 +21,7 @@ import (
   "fmt"
   v1alpha2gwapi "sigs.k8s.io/gateway-api/apis/v1alpha2"
   v1beta1gwapi "sigs.k8s.io/gateway-api/apis/v1beta1"
+  v1gwapi "sigs.k8s.io/gateway-api/apis/v1"
 
   "log"
   "reflect"
@@ -49,6 +50,8 @@ type Schema struct {
   UDPRouteList                             v1alpha2gwapi.UDPRouteList
   GRPCRoute                                v1alpha2gwapi.GRPCRoute
   GRPCRouteList                            v1alpha2gwapi.GRPCRouteList
+  BackendTLSPolicy                         v1alpha2gwapi.BackendTLSPolicy
+  BackendTLSPolicyList                     v1alpha2gwapi.BackendTLSPolicyList
   V1Beta1Gateway                           v1beta1gwapi.Gateway
   V1Beta1GatewayList                       v1beta1gwapi.GatewayList
   V1Beta1GatewayClass                      v1beta1gwapi.GatewayClass
@@ -57,6 +60,12 @@ type Schema struct {
   V1Beta1HTTPRouteList                     v1beta1gwapi.HTTPRouteList
   V1Beta1ReferenceGrant                    v1beta1gwapi.ReferenceGrant
   V1Beta1ReferenceGrantList                v1beta1gwapi.ReferenceGrantList
+  V1Gateway                                v1gwapi.Gateway
+  V1GatewayList                            v1gwapi.GatewayList
+  V1GatewayClass                           v1gwapi.GatewayClass
+  V1GatewayClassList                       v1gwapi.GatewayClassList
+  V1HTTPRoute                              v1gwapi.HTTPRoute
+  V1HTTPRouteList                          v1gwapi.HTTPRouteList
 }
 
 func main() {
@@ -67,6 +76,7 @@ func main() {
     {"k8s.io/api/core/v1", "", "io.fabric8.kubernetes.api.model", "kubernetes_core_", false},
     {"sigs.k8s.io/gateway-api/apis/v1alpha2", "gateway.networking.k8s.io", "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2", "kubernetes_sigs_gatewayapi_v1alpha2_", true},
     {"sigs.k8s.io/gateway-api/apis/v1beta1", "gateway.networking.k8s.io", "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1", "kubernetes_sigs_gatewayapi_v1beta1_", true},
+    {"sigs.k8s.io/gateway-api/apis/v1", "gateway.networking.k8s.io", "io.fabric8.kubernetes.api.model.gatewayapi.v1", "kubernetes_sigs_gatewayapi_v1_", true},
   }
 
   typeMap := map[reflect.Type]reflect.Type{
