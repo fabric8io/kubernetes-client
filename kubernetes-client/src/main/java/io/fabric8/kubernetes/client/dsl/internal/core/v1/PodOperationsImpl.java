@@ -69,7 +69,6 @@ import org.slf4j.LoggerFactory;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -85,12 +84,12 @@ import java.nio.channels.WritableByteChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 import static io.fabric8.kubernetes.client.utils.internal.OptionalDependencyWrapper.wrapRunWithOptionalDependency;
 
@@ -477,7 +476,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
       destination = destination.toPath().resolve(filename).toFile();
     }
 
-    try (OutputStream out = new BufferedOutputStream(new FileOutputStream(destination))) {
+    try (OutputStream out = new BufferedOutputStream(Files.newOutputStream(destination.toPath()))) {
       ExecWatch w = writingOutput(out).exec(readFileCommand(source));
       w.exitCode().get();
     } catch (Exception e) {
@@ -668,7 +667,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
         }
       }
     }
-    pod.getStatus().setConditions(conditions.values().stream().collect(Collectors.toList()));
+    pod.getStatus().setConditions(new ArrayList<>(conditions.values()));
     return this.resource(pod).subresource("status").patch();
   }
 

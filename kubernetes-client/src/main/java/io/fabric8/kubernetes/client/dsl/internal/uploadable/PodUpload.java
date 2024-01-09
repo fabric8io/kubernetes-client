@@ -33,6 +33,7 @@ import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
@@ -51,12 +52,13 @@ public class PodUpload {
   public static boolean upload(PodOperationsImpl operation, Path pathToUpload)
       throws IOException {
 
-    if (Utils.isNotNullOrEmpty(operation.getContext().getFile()) && pathToUpload.toFile().isFile()) {
+    final File toUpload = pathToUpload.toFile();
+    if (Utils.isNotNullOrEmpty(operation.getContext().getFile()) && toUpload.isFile()) {
       return uploadTar(operation, getDirectoryFromFile(operation.getContext().getFile()),
-          tar -> addFileToTar(new File(operation.getContext().getFile()).getName(), pathToUpload.toFile(), tar));
-    } else if (Utils.isNotNullOrEmpty(operation.getContext().getDir()) && pathToUpload.toFile().isDirectory()) {
+          tar -> addFileToTar(new File(operation.getContext().getFile()).getName(), toUpload, tar));
+    } else if (Utils.isNotNullOrEmpty(operation.getContext().getDir()) && toUpload.isDirectory()) {
       return uploadTar(operation, ensureEndsWithSlash(operation.getContext().getDir()), tar -> {
-        for (File file : pathToUpload.toFile().listFiles()) {
+        for (File file : Objects.requireNonNull(toUpload.listFiles())) {
           addFileToTar(file.getName(), file, tar);
         }
       });
@@ -67,12 +69,6 @@ public class PodUpload {
   private static String getDirectoryFromFile(String file) {
     String directoryTrimmedFromFilePath = file.substring(0, file.lastIndexOf('/'));
     return ensureEndsWithSlash(directoryTrimmedFromFilePath.isEmpty() ? "/" : directoryTrimmedFromFilePath);
-  }
-
-  private interface UploadProcessor<T extends OutputStream> {
-
-    void process(T out) throws IOException;
-
   }
 
   private static boolean upload(PodOperationsImpl operation, String file, UploadProcessor<OutputStream> processor)
@@ -102,8 +98,8 @@ public class PodUpload {
       LOG.debug("failed to complete upload before timeout expired");
       return false;
     }
-    Integer exitCode = exitFuture.getNow(null);
-    if (exitCode != null && exitCode.intValue() != 0) {
+    final Integer exitCode = exitFuture.getNow(null);
+    if (exitCode != null && exitCode != 0) {
       LOG.debug("upload process failed with exit code {}", exitCode);
       return false;
     }
@@ -180,7 +176,7 @@ public class PodUpload {
       tar.closeArchiveEntry();
     } else if (file.isDirectory()) {
       tar.closeArchiveEntry();
-      for (File fileInDirectory : file.listFiles()) {
+      for (File fileInDirectory : Objects.requireNonNull(file.listFiles())) {
         addFileToTar(fileName + TAR_PATH_DELIMITER + fileInDirectory.getName(), fileInDirectory, tar);
       }
     }
