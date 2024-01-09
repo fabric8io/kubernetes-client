@@ -26,8 +26,13 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
+import java.util.stream.IntStream;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class CacheTest {
@@ -42,6 +47,10 @@ class CacheTest {
   @Test
   void testCacheIndex() {
     Pod testPodObj = new PodBuilder().withNewMetadata().withName("test-pod").withResourceVersion("1").endMetadata().build();
+
+    Map<String, Function<Pod, List<String>>> indexers = cache.getIndexers();
+    Function<Pod, List<String>> keyFunction = indexers.get("mock");
+    assertEquals(Collections.singletonList("io.fabric8.kubernetes.api.model.Pod"), keyFunction.apply(testPodObj));
 
     cache.put(testPodObj);
     replace(cache, Collections.singletonList(testPodObj));
@@ -147,6 +156,47 @@ class CacheTest {
 
     List<Pod> clusterNameIndexedPods = podCache.byIndex(clusterIndex, "test-cluster");
     assertEquals(1, clusterNameIndexedPods.size());
+  }
+
+  @Test
+  void parallelStore() throws InterruptedException {
+    cache = new CacheImpl<>();
+    String keyIndex = "key";
+    cache.addIndexFunc(keyIndex, CacheTest::podToKey);
+
+    int tasks = 1000;
+    CountDownLatch latch = new CountDownLatch(tasks);
+    IntStream.range(0, tasks)
+        .<Runnable> mapToObj(i -> () -> {
+          Pod pod = new PodBuilder()
+              .withNewMetadata()
+              .withName("test-pod")
+              .withNamespace("test-namespace")
+              .withResourceVersion(Integer.toString(i))
+              .endMetadata()
+              .build();
+          String expectedIndexKey = "pods/test-pod/" + i;
+          assertThat(cache.getKey(pod)).isEqualTo("test-namespace/test-pod");
+          cache.put(pod);
+          assertThat(cache.byIndex(keyIndex, expectedIndexKey)).isNotNull();
+          assertThat(cache.byIndex(Cache.NAMESPACE_INDEX, "test-namespace"))
+              .isNotEmpty();
+          latch.countDown();
+        })
+        .forEach(ForkJoinPool.commonPool()::execute);
+
+    assertThat(latch.await(5, TimeUnit.SECONDS)).isTrue();
+    assertThat(cache.byIndex(Cache.NAMESPACE_INDEX, "test-namespace"))
+        .hasSize(1)
+        .isNotNull();
+    assertThat(cache.list()).hasSize(1);
+    assertThat(cache.listKeys()).hasSize(1).containsExactly("test-namespace/test-pod");
+    assertThat(cache.byIndex(keyIndex, "pods/test-pod/123")).isNotNull().isEmpty();
+  }
+
+  private static List<String> podToKey(Pod pod) {
+    return Collections.singletonList(pod.getFullResourceName() + "/"
+        + pod.getMetadata().getName() + "/" + pod.getMetadata().getResourceVersion());
   }
 
   private static List<String> mockIndexFunction(Object obj) {
