@@ -19,13 +19,14 @@ package io.fabric8.kubernetes.client.informers.cache;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
 public class BasicItemStore<V extends HasMetadata> implements ItemStore<V> {
 
-  private Function<V, String> keyFunction;
-  private ConcurrentHashMap<String, V> store = new ConcurrentHashMap<>();
+  private final Function<V, String> keyFunction;
+  private final ConcurrentMap<String, V> store = new ConcurrentHashMap<>();
 
   public BasicItemStore(Function<V, String> keyFunction) {
     this.keyFunction = keyFunction;
