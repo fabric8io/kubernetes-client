@@ -366,8 +366,8 @@ public interface HasMetadata extends KubernetesResource {
             "Cannot add owner reference from a cluster scoped to a namespace scoped resource: "
                 + optionalMetadata().map(m -> "'" + m.getName() + "' ").orElse("unnamed ")
                 + getKind());
-      } else if (!Objects.equals(owner.getMetadata().getNamespace(),
-          this.getMetadata().getNamespace())) {
+      } else if (optionalMetadata().map(m -> !Objects.equals(m.getNamespace(), owner.getMetadata().getNamespace()))
+          .orElse(false)) {
         throw new IllegalArgumentException(
             "Cannot add owner reference between to resource in a different namespace:"
                 + optionalMetadata().map(m -> "'" + m.getName() + "' ").orElse("unnamed ")
