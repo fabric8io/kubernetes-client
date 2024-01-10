@@ -368,7 +368,7 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
 
           onStatus(status, state);
         } else {
-          logger.error("Error received, but object is not a status - will retry");
+          logger.error("Received an error which is not a status but {} - will retry", message);
           closeRequest();
         }
       } else if (object instanceof HasMetadata) {
