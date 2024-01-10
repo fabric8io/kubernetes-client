@@ -1,0 +1,17 @@
+apiVersion: admissionregistration.k8s.io/v1
+kind: MutatingWebhookConfiguration
+metadata:
+  name: "mutating.jenvtest.example.com"
+webhooks:
+  - name: "mutating.jenvtest.example.com"
+    rules:
+      - apiGroups:   ["networking.k8s.io"]
+        apiVersions: ["v1"]
+        operations:  ["*"]
+        resources:   ["ingresses"]
+        scope:       "Namespaced"
+    clientConfig:
+      url: "https://127.0.0.1:8443/mutate"
+    admissionReviewVersions: ["v1"]
+    sideEffects: None
+    timeoutSeconds: 10

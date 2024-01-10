@@ -223,6 +223,7 @@
     <module>java-generator</module>
     <module>httpclient-okhttp</module>
     <module>httpclient-vertx</module>
+    <module>junit/kube-api-test</module>
     <module>kubernetes-client-deps-compatibility-tests</module>
   </modules>
 
