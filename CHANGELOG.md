@@ -1,25 +1,25 @@
 ## CHANGELOG
 
-### 6.10-SNAPSHOT
+### 6.10.0 (2024-01-10)
 
 #### Bugs
-* Fix #5580: [java-generator] Correctly handle defaults for IntOrString types
+* Fix #5527: Unable to transfer file to pod if `/tmp` is read-only
+* Fix #5580: (java-generator) Correctly handle defaults for IntOrString types
 * Fix #5584: Fix CRD generation when EnumMap is used
 * Fix #5626: Prevent memory accumulation from informer usage
-* Fix #5527: Unable to transfer file to pod if `/tmp` is read-only
 * Fix #5656: Enable EC private key usage for mTLS auth
 * Fix #5694: ExecCredential doesn't fail with unsupported command output
 
 #### Improvements
 * Fix #5429: moved crd generator annotations to generator-annotations instead of crd-generator-api. Using generator-annotations introduces no transitive dependencies.
-* Fix #5535: Add lombok and sundrio dependencies to the generated bom
 * Fix #5496: Added PodResource.patchReadinessGateStatus and a general subresource method to use any of the patch/edit/update methods with any subresource
+* Fix #5535: Add lombok and sundrio dependencies to the generated bom
 
 #### Dependency Upgrade
-* Updated Kubernetes Model to Kubernetes `v1.29.0`
-* Updated okio to version 1.17.6 to avoid CVE-2023-3635
-* Updated `sigs.k8s.io/gateway-api` go dependency to v1.0.0
-* Updated `github.com/cert-manager/cert-manager` to latest available version (`v1.14.0-alpha.0.0.20240105200543-3234974a3865`)
+* Fix #5485: Updated okio to version 1.17.6 to avoid CVE-2023-3635
+* Fix #5643: Updated Kubernetes Model to Kubernetes `v1.29.0`
+* Fix #5673: Updated `sigs.k8s.io/gateway-api` go dependency to v1.0.0
+* Fix #5691: Updated `github.com/cert-manager/cert-manager` to latest available version (`v1.14.0-alpha.0.0.20240105200543-3234974a3865`)
 
 #### New Features
 * Fix #5608 Support authentication with certificate in exec-credentials
