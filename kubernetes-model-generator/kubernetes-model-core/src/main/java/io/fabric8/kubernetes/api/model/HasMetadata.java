@@ -358,6 +358,23 @@ public interface HasMetadata extends KubernetesResource {
           + getKind());
     }
 
+    if (!(owner instanceof GenericKubernetesResource)
+        && !(this instanceof GenericKubernetesResource)
+        && owner instanceof Namespaced) {
+      if (!(this instanceof Namespaced)) {
+        throw new IllegalArgumentException(
+            "Cannot add owner reference from a cluster scoped to a namespace scoped resource: "
+                + optionalMetadata().map(m -> "'" + m.getName() + "' ").orElse("unnamed ")
+                + getKind());
+      } else if (!Objects.equals(owner.getMetadata().getNamespace(),
+          this.getMetadata().getNamespace())) {
+        throw new IllegalArgumentException(
+            "Cannot add owner reference between to resource in a different namespace:"
+                + optionalMetadata().map(m -> "'" + m.getName() + "' ").orElse("unnamed ")
+                + getKind());
+      }
+    }
+
     final OwnerReference ownerReference = new OwnerReferenceBuilder()
         .withUid(metadata.getUid())
         .withApiVersion(owner.getApiVersion())
