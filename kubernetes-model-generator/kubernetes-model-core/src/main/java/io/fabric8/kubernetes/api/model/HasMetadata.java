@@ -369,7 +369,7 @@ public interface HasMetadata extends KubernetesResource {
       } else if (optionalMetadata().map(m -> !Objects.equals(m.getNamespace(), owner.getMetadata().getNamespace()))
           .orElse(false)) {
         throw new IllegalArgumentException(
-            "Cannot add owner reference between to resource in a different namespace:"
+            "Cannot add owner reference between two resources in a different namespaces:"
                 + optionalMetadata().map(m -> "'" + m.getName() + "' ").orElse("unnamed ")
                 + getKind());
       }
