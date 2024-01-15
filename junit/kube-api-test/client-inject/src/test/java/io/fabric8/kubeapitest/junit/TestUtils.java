@@ -1,4 +1,4 @@
-package io.javaoperatorsdk.jenvtest.junit;
+package io.fabric8.kubeapitest.junit;
 
 import java.util.Map;
 
