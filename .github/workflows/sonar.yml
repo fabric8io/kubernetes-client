@@ -50,10 +50,10 @@ jobs:
         with:
           # Shallow clones should be disabled for a better relevancy of analysis
           fetch-depth: 0
-      - name: Setup Java 11 # Move Sonar analysis to Java 11
+      - name: Setup Java 17
         uses: actions/setup-java@v4
         with:
-          java-version: '11'
+          java-version: '17'
           distribution: 'temurin'
       - name: Maven Sonar
         run: ./mvnw ${MAVEN_ARGS} clean install sonar:sonar -Psonar
