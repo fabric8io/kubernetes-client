@@ -27,7 +27,7 @@ public class KubeAPIServer implements UnexpectedProcessStopHandler {
   public KubeAPIServer(KubeAPIServerConfig config) {
     this.config = config;
     this.binaryManager = new BinaryManager(config);
-    this.certManager = new CertManager(config.getJenvtestDir());
+    this.certManager = new CertManager(config.getKubeAPITestDir());
     this.kubeConfig = new KubeConfig(certManager, binaryManager);
     this.etcdProcess = new EtcdProcess(binaryManager, this,
         config.isWaitForEtcdHealthCheckOnStartup(), config.getStartupTimeout());
@@ -36,7 +36,7 @@ public class KubeAPIServer implements UnexpectedProcessStopHandler {
   }
 
   public void start() {
-    log.debug("Stating API Server. Using jenvtest dir: {}", config.getJenvtestDir());
+    log.debug("Stating API Server. Using Kube API Test dir: {}", config.getKubeAPITestDir());
     binaryManager.initAndDownloadIfRequired();
     certManager.createCertificatesIfNeeded();
     var etcdPort = etcdProcess.startEtcd();

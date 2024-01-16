@@ -25,7 +25,7 @@ public class BinaryManager {
   public BinaryManager(KubeAPIServerConfig config) {
     this.config = config;
     this.osInfo = new OSInfo();
-    this.downloader = new BinaryDownloader(config.getJenvtestDir(), osInfo);
+    this.downloader = new BinaryDownloader(config.getKubeAPITestDir(), osInfo);
   }
 
   public void initAndDownloadIfRequired() {
@@ -91,7 +91,7 @@ public class BinaryManager {
           apiServerVersion = targetWildcardVersion.orElseThrow();
         }
       }
-      var targetVersionDir = new File(config.getJenvtestDir(), BINARY_LIST_DIR
+      var targetVersionDir = new File(config.getKubeAPITestDir(), BINARY_LIST_DIR
           + File.separator + apiServerVersion + platformSuffix);
       if (targetVersionDir.exists()) {
         return Optional.of(targetVersionDir);
@@ -99,7 +99,7 @@ public class BinaryManager {
         return Optional.empty();
       }
     }
-    File binariesListDir = new File(config.getJenvtestDir(), BINARY_LIST_DIR);
+    File binariesListDir = new File(config.getKubeAPITestDir(), BINARY_LIST_DIR);
     var dirVersionList = listBinaryDirectories();
     if (dirVersionList.isEmpty()) {
       return Optional.empty();
@@ -121,7 +121,7 @@ public class BinaryManager {
 
   private List<String> listBinaryDirectories() {
     var platformSuffix = Utils.platformSuffix(osInfo);
-    File binariesListDir = new File(config.getJenvtestDir(), BINARY_LIST_DIR);
+    File binariesListDir = new File(config.getKubeAPITestDir(), BINARY_LIST_DIR);
     if (!binariesListDir.exists()) {
       return Collections.emptyList();
     }

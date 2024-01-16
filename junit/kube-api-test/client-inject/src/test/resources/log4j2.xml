@@ -6,7 +6,7 @@
     </Console>
   </Appenders>
   <Loggers>
-    <Logger name="io.javaoperatorsdk.jenvtest" level="debug">
+    <Logger name="io.fabric8.kubeapitest.junit" level="debug">
     </Logger>
     <Root level="error">
       <AppenderRef ref="Console"/>

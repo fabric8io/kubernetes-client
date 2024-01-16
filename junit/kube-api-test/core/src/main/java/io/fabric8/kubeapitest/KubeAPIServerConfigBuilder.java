@@ -7,14 +7,14 @@ import java.util.List;
 public final class KubeAPIServerConfigBuilder {
 
   // environment variables
-  public static final String JENVTEST_OFFLINE_MODE = "JENVTEST_OFFLINE_MODE";
-  public static final String JENVTEST_DIR = "JENVTEST_DIR";
-  public static final String JENVTEST_KUBE_API_SERVER_VERSION = "JENVTEST_KUBE_API_SERVER_VERSION";
-  public static final String JENVTEST_WAIT_FOR_ETCD_HEALTH_CHECK =
-      "JENVTEST_WAIT_FOR_ETCD_HEALTH_CHECK";
-  public static final String JENVTEST_STARTUP_TIMEOUT = "JENVTEST_STARTUP_TIMEOUT";
+  public static final String KUBE_API_TEST_OFFLINE_MODE = "KUBE_API_TEST_OFFLINE_MODE";
+  public static final String KUBE_API_TEST_DIR = "KUBE_API_TEST_DIR";
+  public static final String KUBE_API_TEST_API_SERVER_VERSION = "KUBE_API_TEST_API_SERVER_VERSION";
+  public static final String KUBE_API_TEST_WAIT_FOR_ETCD_HEALTH_CHECK =
+      "KUBE_API_TEST_WAIT_FOR_ETCD_HEALTH_CHECK";
+  public static final String KUBE_API_TEST_STARTUP_TIMEOUT = "KUBE_API_TEST_STARTUP_TIMEOUT";
 
-  public static final String DIRECTORY_NAME = ".jenvtest";
+  public static final String DIRECTORY_NAME = ".kubeapitest";
 
   private final List<String> apiServerFlags = new ArrayList<>(0);
   private boolean updateKubeConfig = false;
@@ -47,14 +47,14 @@ public final class KubeAPIServerConfigBuilder {
   }
 
   public KubeAPIServerConfig build() {
-    this.apiTestDir = finalConfigValue(this.apiTestDir, JENVTEST_DIR,
+    this.apiTestDir = finalConfigValue(this.apiTestDir, KUBE_API_TEST_DIR,
         new File(System.getProperty("user.home"), DIRECTORY_NAME).getPath());
-    this.offlineMode = finalConfigValue(this.offlineMode, JENVTEST_OFFLINE_MODE, false);
+    this.offlineMode = finalConfigValue(this.offlineMode, KUBE_API_TEST_OFFLINE_MODE, false);
     this.apiServerVersion =
-        finalConfigValue(this.apiServerVersion, JENVTEST_KUBE_API_SERVER_VERSION, null);
+        finalConfigValue(this.apiServerVersion, KUBE_API_TEST_API_SERVER_VERSION, null);
     this.waitForEtcdHealthCheckOnStartup = finalConfigValue(this.waitForEtcdHealthCheckOnStartup,
-        JENVTEST_WAIT_FOR_ETCD_HEALTH_CHECK, false);
-    this.startupTimeout = finalConfigValue(this.startupTimeout, JENVTEST_STARTUP_TIMEOUT, 60_000);
+      KUBE_API_TEST_WAIT_FOR_ETCD_HEALTH_CHECK, false);
+    this.startupTimeout = finalConfigValue(this.startupTimeout, KUBE_API_TEST_STARTUP_TIMEOUT, 60_000);
 
     return new KubeAPIServerConfig(apiTestDir, apiServerVersion, offlineMode, apiServerFlags,
         updateKubeConfig, waitForEtcdHealthCheckOnStartup, startupTimeout);

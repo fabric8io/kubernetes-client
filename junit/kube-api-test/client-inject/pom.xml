@@ -11,7 +11,7 @@
 
     <artifactId>kube-api-test-client-inject</artifactId>
     <packaging>jar</packaging>
-    <name>JEnvTest Fabric8 Client Support</name>
+    <name>Kube API Test - Client Injecting Support</name>
 
     <dependencies>
         <dependency>

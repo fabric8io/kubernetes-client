@@ -27,19 +27,19 @@ public class BinaryDownloader {
 
   private static final String OBJECT_TAR_PREFIX = "kubebuilder-tools-";
 
-  private final String jenvtestDir;
+  private final String kubeAPITestDir;
   private final BinaryRepo binaryRepo;
   private final OSInfo osInfoProvider;
   private static final Map<String, ReentrantLock> versionLocks = new ConcurrentHashMap<>();
 
-  public BinaryDownloader(String jenvtestDir, OSInfo osInfoProvider) {
-    this.jenvtestDir = jenvtestDir;
+  public BinaryDownloader(String kubeAPITestDir, OSInfo osInfoProvider) {
+    this.kubeAPITestDir = kubeAPITestDir;
     this.osInfoProvider = osInfoProvider;
     this.binaryRepo = new BinaryRepo(osInfoProvider);
   }
 
-  BinaryDownloader(String jenvtestDir, BinaryRepo binaryRepo, OSInfo osInfoProvider) {
-    this.jenvtestDir = jenvtestDir;
+  BinaryDownloader(String kubeAPITestDir, BinaryRepo binaryRepo, OSInfo osInfoProvider) {
+    this.kubeAPITestDir = kubeAPITestDir;
     this.binaryRepo = binaryRepo;
     this.osInfoProvider = osInfoProvider;
   }
@@ -52,7 +52,7 @@ public class BinaryDownloader {
       if (dirForVersion.exists()) {
         return dirForVersion;
       }
-      new File(jenvtestDir, BinaryManager.BINARY_LIST_DIR).mkdirs();
+      new File(kubeAPITestDir, BinaryManager.BINARY_LIST_DIR).mkdirs();
       log.info("Downloading binaries with version: {}", version);
       var tempFile = binaryRepo.downloadVersionToTempFile(version);
       File dir = createDirForBinaries(version);
@@ -122,7 +122,7 @@ public class BinaryDownloader {
   }
 
   private File dirForVersion(String version) {
-    return new File(jenvtestDir, BinaryManager.BINARY_LIST_DIR + File.separator
+    return new File(kubeAPITestDir, BinaryManager.BINARY_LIST_DIR + File.separator
         + version + Utils.platformSuffix(osInfoProvider));
   }
 

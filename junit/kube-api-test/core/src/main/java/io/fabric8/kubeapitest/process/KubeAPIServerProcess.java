@@ -73,7 +73,7 @@ public class KubeAPIServerProcess {
     ArrayList<String> command = new ArrayList<String>();
     command.add(apiServerBinary.getAbsolutePath());
     command.addAll(config.getApiServerFlags());
-    command.addAll(Arrays.asList("--cert-dir", config.getJenvtestDir(),
+    command.addAll(Arrays.asList("--cert-dir", config.getKubeAPITestDir(),
         "--secure-port", "" + apiServerPort,
         "--etcd-servers", "http://0.0.0.0:" + etcdPort,
         "--authorization-mode", "RBAC",

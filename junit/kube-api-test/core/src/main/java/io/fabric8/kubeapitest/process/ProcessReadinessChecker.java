@@ -64,7 +64,7 @@ public class ProcessReadinessChecker {
         // option to kubectl, because kubectl will complain if such file does not exist, but when
         // set through KUBECONFIG env. variable, it does not complain.
         Map<String, String> env = processBuilder.environment();
-        env.put("KUBECONFIG", config.getJenvtestDir() + "/.kubeconfig");
+        env.put("KUBECONFIG", config.getKubeAPITestDir() + "/.kubeconfig");
       }
 
       Process process = processBuilder.start();

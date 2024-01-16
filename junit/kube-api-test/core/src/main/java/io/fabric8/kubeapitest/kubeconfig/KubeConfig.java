@@ -20,7 +20,7 @@ import io.fabric8.kubeapitest.cert.CertManager;
 public class KubeConfig {
 
   private static final Logger log = LoggerFactory.getLogger(KubeConfig.class);
-  public static final String JENVTEST = "jenvtest";
+  public static final String KUBE_API_TEST = "kubeapitest";
 
   private final CertManager certManager;
   private final BinaryManager binaryManager;
@@ -34,22 +34,22 @@ public class KubeConfig {
   public void updateKubeConfig(int apiServerPort) {
     log.debug("Updating kubeconfig");
     previousCurrentContext = execWithKubectlConfigAndWait("current-context").trim();
-    execWithKubectlConfigAndWait("set-cluster", JENVTEST,
+    execWithKubectlConfigAndWait("set-cluster", KUBE_API_TEST,
         "--server=https://127.0.0.1:" + apiServerPort,
         "--certificate-authority=" + certManager.getAPIServerCertPath());
-    execWithKubectlConfigAndWait("set-credentials", JENVTEST,
+    execWithKubectlConfigAndWait("set-credentials", KUBE_API_TEST,
         "--client-certificate=" + certManager.getClientCertPath(),
         "--client-key=" + certManager.getClientKeyPath());
-    execWithKubectlConfigAndWait("set-context", JENVTEST, "--cluster=jenvtest",
-        "--namespace=default", "--user=jenvtest");
-    execWithKubectlConfigAndWait("use-context", JENVTEST);
+    execWithKubectlConfigAndWait("set-context", KUBE_API_TEST, "--cluster=kubeapitest",
+        "--namespace=default", "--user=kubeapitest");
+    execWithKubectlConfigAndWait("use-context", KUBE_API_TEST);
   }
 
   public void restoreKubeConfig() {
     log.debug("Cleanig up kubeconfig");
-    unset("contexts." + JENVTEST);
-    unset("clusters." + JENVTEST);
-    unset("users." + JENVTEST);
+    unset("contexts." + KUBE_API_TEST);
+    unset("clusters." + KUBE_API_TEST);
+    unset("users." + KUBE_API_TEST);
     unset("current-context");
     if (previousCurrentContext != null && !previousCurrentContext.isEmpty()) {
       execWithKubectlConfigAndWait("use-context", previousCurrentContext);

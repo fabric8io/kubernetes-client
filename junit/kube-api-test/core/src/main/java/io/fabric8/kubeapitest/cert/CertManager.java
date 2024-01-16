@@ -42,10 +42,10 @@ public class CertManager {
 
   private static final ReentrantLock generatorLock = new ReentrantLock();
 
-  private String jenvtestDir;
+  private final String kubeAPITestDir;
 
-  public CertManager(String jenvtestDir) {
-    this.jenvtestDir = jenvtestDir;
+  public CertManager(String kubeAPITestDir) {
+    this.kubeAPITestDir = kubeAPITestDir;
   }
 
   public void createCertificatesIfNeeded() {
@@ -65,18 +65,18 @@ public class CertManager {
   }
 
   private boolean certFilesPresent() {
-    var apiCert = new File(jenvtestDir, API_SERVER_CERT_NAME);
-    var apiKey = new File(jenvtestDir, API_SERVER_KEY_NAME);
-    var clientCert = new File(jenvtestDir, CLIENT_CERT_NAME);
-    var clientKey = new File(jenvtestDir, CLIENT_KEY_NAME);
+    var apiCert = new File(kubeAPITestDir, API_SERVER_CERT_NAME);
+    var apiKey = new File(kubeAPITestDir, API_SERVER_KEY_NAME);
+    var clientCert = new File(kubeAPITestDir, CLIENT_CERT_NAME);
+    var clientKey = new File(kubeAPITestDir, CLIENT_KEY_NAME);
 
     return apiCert.exists() && apiKey.exists() && clientCert.exists() && clientKey.exists();
   }
 
   private void generateAPIServerCertificates() {
     log.info("Generating API Server certificates");
-    generateKeyAndCertificate("CN=example.org", new File(jenvtestDir, API_SERVER_KEY_NAME),
-        new File(jenvtestDir, API_SERVER_CERT_NAME),
+    generateKeyAndCertificate("CN=example.org", new File(kubeAPITestDir, API_SERVER_KEY_NAME),
+        new File(kubeAPITestDir, API_SERVER_CERT_NAME),
         new GeneralName(GeneralName.iPAddress, "127.0.0.1"),
         dns("kubernetes"), dns("kubernetes.default"),
         dns("kubernetes.default.svc"), dns("kubernetes.default.svc.cluster"),
@@ -89,9 +89,9 @@ public class CertManager {
 
   private void generateUserCertificates() {
     log.info("Generating Client certificates");
-    generateKeyAndCertificate("O=system:masters,CN=jenvtest",
-        new File(jenvtestDir, CLIENT_KEY_NAME),
-        new File(jenvtestDir, CLIENT_CERT_NAME));
+    generateKeyAndCertificate("O=system:masters,CN=kubeapitest",
+        new File(kubeAPITestDir, CLIENT_KEY_NAME),
+        new File(kubeAPITestDir, CLIENT_CERT_NAME));
   }
 
 
@@ -139,18 +139,18 @@ public class CertManager {
   }
 
   public String getClientCertPath() {
-    return new File(jenvtestDir, CLIENT_CERT_NAME).getAbsolutePath();
+    return new File(kubeAPITestDir, CLIENT_CERT_NAME).getAbsolutePath();
   }
 
   public String getClientKeyPath() {
-    return new File(jenvtestDir, CLIENT_KEY_NAME).getAbsolutePath();
+    return new File(kubeAPITestDir, CLIENT_KEY_NAME).getAbsolutePath();
   }
 
   public String getAPIServerKeyPath() {
-    return new File(jenvtestDir, API_SERVER_KEY_NAME).getAbsolutePath();
+    return new File(kubeAPITestDir, API_SERVER_KEY_NAME).getAbsolutePath();
   }
 
   public String getAPIServerCertPath() {
-    return new File(jenvtestDir, API_SERVER_CERT_NAME).getAbsolutePath();
+    return new File(kubeAPITestDir, API_SERVER_CERT_NAME).getAbsolutePath();
   }
 }

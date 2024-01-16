@@ -10,9 +10,9 @@ import static org.mockito.Mockito.when;
 
 class KubeConfigTest {
 
-  public static final String API_CERT_PATH = "~/.jenvtest/certpath";
-  public static final String CLIENT_KEY_PATH = "~/.jenvtest/clientcertkey";
-  public static final String CLIENT_CERT_PATH = "~/.jenvtest/clientcertpath";
+  public static final String API_CERT_PATH = "~/.kubeapitest/certpath";
+  public static final String CLIENT_KEY_PATH = "~/.kubeapitest/clientcertkey";
+  public static final String CLIENT_CERT_PATH = "~/.kubeapitest/clientcertpath";
   public static final int API_SERVER_PORT = 32101;
 
   CertManager certManagerMock = mock(CertManager.class);

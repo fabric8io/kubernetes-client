@@ -6,9 +6,9 @@ import java.util.Optional;
 public class KubeAPIServerConfig {
 
   /**
-   * Set directory where binaries and other assets are present. Default is ~/.jenvtest.
+   * Set directory where binaries and other assets are present. Default is ~/.kubeapitest.
    **/
-  private final String jenvtestDir;
+  private final String kubeAPITestDir;
 
   /**
    * If not set the latest binary will be selected automatically. Sample: '1.26.1', '1.25.0'.
@@ -54,10 +54,10 @@ public class KubeAPIServerConfig {
    */
   private final int startupTimeout;
 
-  KubeAPIServerConfig(String jenvtestDir, String apiServerVersion, boolean offlineMode,
-      List<String> apiServerFlags, boolean updateKubeConfig,
-      boolean waitForEtcdHealthCheckOnStartup, int startupTimeout) {
-    this.jenvtestDir = jenvtestDir;
+  KubeAPIServerConfig(String kubeAPITestDir, String apiServerVersion, boolean offlineMode,
+                      List<String> apiServerFlags, boolean updateKubeConfig,
+                      boolean waitForEtcdHealthCheckOnStartup, int startupTimeout) {
+    this.kubeAPITestDir = kubeAPITestDir;
     this.apiServerVersion = apiServerVersion;
     this.offlineMode = offlineMode;
     this.apiServerFlags = apiServerFlags;
@@ -66,8 +66,8 @@ public class KubeAPIServerConfig {
     this.startupTimeout = startupTimeout;
   }
 
-  public String getJenvtestDir() {
-    return jenvtestDir;
+  public String getKubeAPITestDir() {
+    return kubeAPITestDir;
   }
 
   public Optional<String> getApiServerVersion() {
