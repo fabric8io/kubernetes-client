@@ -3,6 +3,7 @@
 ### 6.11-SNAPSHOT
 
 #### Bugs
+* Fix #3032: JUnit5 Kubernetes Extension works with Nested tests
 
 #### Improvements
 * Fix #5701: Owner reference validity check regarding scope and namespace

@@ -39,15 +39,28 @@ public interface BaseExtension {
 
   default Field[] extractFields(ExtensionContext context, Class<?> clazz, Predicate<Field>... predicates) {
     final List<Field> fields = new ArrayList<>();
-    Class<?> testClass = context.getTestClass().orElse(Object.class);
-    do {
+    if (context.getTestClass().isPresent()) {
+      Class<?> testClass = context.getTestClass().orElse(Object.class);
       fields.addAll(extractFields(testClass, clazz, predicates));
-      testClass = testClass.getSuperclass();
-    } while (testClass != Object.class);
+      Class<?> enclosingTestClass = testClass.getEnclosingClass();
+      while (enclosingTestClass != null) {
+        fields.addAll(extractFields(enclosingTestClass, clazz, predicates));
+        enclosingTestClass = enclosingTestClass.getEnclosingClass();
+      }
+    }
     return fields.toArray(new Field[0]);
   }
 
-  /* private */static List<Field> extractFields(Class<?> classWhereFieldIs, Class<?> fieldType,
+  default List<Field> extractFields(Class<?> testClass, Class<?> clazz, Predicate<Field>... predicates) {
+    final List<Field> fields = new ArrayList<>();
+    do {
+      fields.addAll(extractFieldsFromClass(testClass, clazz, predicates));
+      testClass = testClass.getSuperclass();
+    } while (testClass != Object.class);
+    return fields;
+  }
+
+  /* private */static List<Field> extractFieldsFromClass(Class<?> classWhereFieldIs, Class<?> fieldType,
       Predicate<Field>... predicates) {
     if (classWhereFieldIs != null && classWhereFieldIs != Object.class) {
       Stream<Field> fieldStream = Arrays.stream(classWhereFieldIs.getDeclaredFields())
@@ -68,14 +81,22 @@ public interface BaseExtension {
   }
 
   default <T extends Annotation> T findAnnotation(Class<?> clazz, Class<T> annotation) {
+    T ret = null;
     if (clazz != null) {
+      // Current
       if (clazz.isAnnotationPresent(annotation)) {
-        return clazz.getAnnotation(annotation);
-      } else if (clazz.getSuperclass() != null) {
-        return findAnnotation(clazz.getSuperclass(), annotation);
+        ret = clazz.getAnnotation(annotation);
+      }
+      // Superclass
+      if (ret == null && clazz.getSuperclass() != null) {
+        ret = findAnnotation(clazz.getSuperclass(), annotation);
+      }
+      // Enclosing
+      if (ret == null && clazz.getEnclosingClass() != null) {
+        ret = findAnnotation(clazz.getEnclosingClass(), annotation);
       }
     }
-    return null;
+    return ret;
   }
 
 }
