@@ -213,6 +213,7 @@
     <module>junit/kubernetes-junit-jupiter</module>
     <module>junit/kubernetes-junit-jupiter-autodetected</module>
     <module>junit/kubernetes-server-mock</module>
+    <module>junit/kube-api-test</module>
     <module>openshift-client-api</module>
     <module>openshift-client</module>
     <module>extensions</module>
@@ -817,6 +818,12 @@
         <groupId>org.eclipse.jetty.websocket</groupId>
         <artifactId>websocket-jetty-client</artifactId>
         <version>${jetty.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-server</artifactId>
+        <version>${jetty.version}</version>
+        <scope>test</scope>
       </dependency>
       <dependency>
         <groupId>org.eclipse.jetty</groupId>
