@@ -5,6 +5,7 @@
 #### Bugs
 
 #### Improvements
+* Fix #5701: Owner reference validity check regarding scope and namespace
 
 #### Dependency Upgrade
 

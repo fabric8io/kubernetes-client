@@ -217,6 +217,24 @@ class HasMetadataTest {
     assertEquals(1, hasMetadata.getMetadata().getOwnerReferences().size());
   }
 
+  @Test
+  void addingOwnerReferenceToNamespacedResourceFromClusterScopedResourceShouldFail() {
+    HasMetadata clusterScoped = new Owner();
+    HasMetadata namespaced = new OwnerNamespaced();
+
+    assertThrows(IllegalArgumentException.class, () -> clusterScoped.addOwnerReference(namespaced));
+  }
+
+  @Test
+  void addingOwnerReferenceToResourceInDifferentNamespaceShouldFail() {
+    HasMetadata namespaced1 = new OwnerNamespaced();
+    namespaced1.getMetadata().setNamespace("namespace1");
+    HasMetadata namespaced2 = new OwnerNamespaced();
+    namespaced2.getMetadata().setNamespace("namespace2");
+
+    assertThrows(IllegalArgumentException.class, () -> namespaced1.addOwnerReference(namespaced2));
+  }
+
   @Group("fabric8.io")
   @Version("v1")
   private static class Woman implements HasMetadata {
@@ -346,4 +364,8 @@ class HasMetadataTest {
       throw new RuntimeException("setApiVersion shouldn't be called");
     }
   }
+
+  private static class OwnerNamespaced extends Owner implements Namespaced {
+  }
+
 }
