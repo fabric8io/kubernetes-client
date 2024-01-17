@@ -1,4 +1,24 @@
+/**
+ * Copyright (C) 2015 Red Hat, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package io.fabric8.kubeapitest.binary;
+
+import io.fabric8.kubeapitest.KubeAPIServerConfig;
+import io.fabric8.kubeapitest.KubeAPITestException;
+import io.fabric8.kubeapitest.Utils;
 
 import java.io.File;
 import java.util.Collections;
@@ -6,10 +26,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import io.fabric8.kubeapitest.KubeAPITestException;
-import io.fabric8.kubeapitest.KubeAPIServerConfig;
-import io.fabric8.kubeapitest.Utils;
 
 import static io.fabric8.kubeapitest.Utils.isWildcardVersion;
 
@@ -111,8 +127,7 @@ public class BinaryManager {
   private Optional<String> findLatestVersionForWildcard(String wildcardVersion) {
     var targetPrefix = Utils.wildcardToPrefix(wildcardVersion);
     var dirs = listBinaryDirectories();
-    var filteredDirs =
-        dirs.stream().filter(d -> d.startsWith(targetPrefix)).collect(Collectors.toList());
+    var filteredDirs = dirs.stream().filter(d -> d.startsWith(targetPrefix)).collect(Collectors.toList());
     if (filteredDirs.isEmpty()) {
       return Optional.empty();
     }
@@ -130,6 +145,5 @@ public class BinaryManager {
         .map(s -> s.substring(0, s.indexOf(platformSuffix)))
         .collect(Collectors.toList());
   }
-
 
 }

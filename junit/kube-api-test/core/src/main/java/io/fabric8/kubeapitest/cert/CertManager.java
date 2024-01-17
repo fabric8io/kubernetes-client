@@ -1,19 +1,22 @@
+/**
+ * Copyright (C) 2015 Red Hat, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package io.fabric8.kubeapitest.cert;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.math.BigInteger;
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
-import java.security.NoSuchAlgorithmException;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.Date;
-import java.util.concurrent.locks.ReentrantLock;
-
+import io.fabric8.kubeapitest.KubeAPITestException;
 import org.bouncycastle.asn1.x500.X500Name;
 import org.bouncycastle.asn1.x509.Extension;
 import org.bouncycastle.asn1.x509.GeneralName;
@@ -28,7 +31,19 @@ import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.fabric8.kubeapitest.KubeAPITestException;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.math.BigInteger;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.Date;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class CertManager {
 
@@ -94,7 +109,6 @@ public class CertManager {
         new File(kubeAPITestDir, CLIENT_CERT_NAME));
   }
 
-
   public static void generateKeyAndCertificate(String dirName, File keyFile, File certFile,
       GeneralName... generalNames) {
     try {
@@ -120,8 +134,7 @@ public class CertManager {
       }
 
       // Finally, sign the certificate:
-      ContentSigner signer =
-          new JcaContentSignerBuilder("SHA256WithRSA").build(certKeyPair.getPrivate());
+      ContentSigner signer = new JcaContentSignerBuilder("SHA256WithRSA").build(certKeyPair.getPrivate());
       X509CertificateHolder certHolder = builder.build(signer);
       X509Certificate cert = new JcaX509CertificateConverter().getCertificate(certHolder);
 

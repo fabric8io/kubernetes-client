@@ -1,4 +1,28 @@
+/**
+ * Copyright (C) 2015 Red Hat, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package io.fabric8.kubeapitest.junit;
+
+import io.fabric8.kubeapitest.KubeAPIServer;
+import io.fabric8.kubeapitest.KubeAPIServerConfig;
+import io.fabric8.kubeapitest.KubeAPIServerConfigBuilder;
+import io.fabric8.kubeapitest.KubeAPITestException;
+import org.junit.jupiter.api.extension.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.AnnotatedElement;
 import java.util.Arrays;
@@ -6,15 +30,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.ServiceLoader;
 import java.util.stream.Collectors;
-
-import org.junit.jupiter.api.extension.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import io.fabric8.kubeapitest.KubeAPITestException;
-import io.fabric8.kubeapitest.KubeAPIServer;
-import io.fabric8.kubeapitest.KubeAPIServerConfig;
-import io.fabric8.kubeapitest.KubeAPIServerConfigBuilder;
 
 public class KubeAPIServerExtension
     implements BeforeAllCallback, AfterAllCallback, BeforeEachCallback, AfterEachCallback {
@@ -26,8 +41,7 @@ public class KubeAPIServerExtension
 
   public KubeAPIServerExtension() {
     var loader = ServiceLoader.load(ClientInjectionHandler.class);
-    clientInjectionHandlers =
-        loader.stream().map(ServiceLoader.Provider::get).collect(Collectors.toList());
+    clientInjectionHandlers = loader.stream().map(ServiceLoader.Provider::get).collect(Collectors.toList());
   }
 
   @Override
@@ -49,7 +63,6 @@ public class KubeAPIServerExtension
   public void afterEach(ExtensionContext extensionContext) {
     stopIfAnnotationPresent(extensionContext);
   }
-
 
   private void initialize(ExtensionContext extensionContext, boolean staticContext) {
     var targetInjectors = clientInjectionHandlers.stream()
@@ -82,7 +95,6 @@ public class KubeAPIServerExtension
     kubeApiServer = new KubeAPIServer(annotationToConfig(annotation));
     kubeApiServer.start();
   }
-
 
   private void stopIfAnnotationPresent(ExtensionContext extensionContext) {
     extensionContext.getElement().ifPresent(ae -> {

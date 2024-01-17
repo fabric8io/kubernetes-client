@@ -1,17 +1,34 @@
+/**
+ * Copyright (C) 2015 Red Hat, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package io.fabric8.kubeapitest.sample;
 
-import java.io.*;
-import java.nio.charset.StandardCharsets;
-import java.security.KeyStore;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.PrivateKey;
-import java.security.cert.Certificate;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
-import java.util.Base64;
-import java.util.HashMap;
-
+import io.fabric8.kubeapitest.cert.CertManager;
+import io.fabric8.kubeapitest.junit.EnableKubeAPIServer;
+import io.fabric8.kubeapitest.junit.KubeConfig;
+import io.fabric8.kubernetes.api.model.admission.v1.AdmissionReview;
+import io.fabric8.kubernetes.api.model.admissionregistration.v1.MutatingWebhookConfiguration;
+import io.fabric8.kubernetes.api.model.networking.v1.*;
+import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
+import io.fabric8.kubernetes.client.utils.Serialization;
+import io.javaoperatorsdk.webhook.admission.AdmissionController;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.apache.commons.io.FileUtils;
 import org.bouncycastle.asn1.x509.GeneralName;
 import org.bouncycastle.cert.X509CertificateHolder;
@@ -28,20 +45,17 @@ import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.fabric8.kubernetes.api.model.admission.v1.AdmissionReview;
-import io.fabric8.kubernetes.api.model.admissionregistration.v1.MutatingWebhookConfiguration;
-import io.fabric8.kubernetes.api.model.networking.v1.*;
-import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.KubernetesClientBuilder;
-import io.fabric8.kubernetes.client.utils.Serialization;
-import io.fabric8.kubeapitest.cert.CertManager;
-import io.fabric8.kubeapitest.junit.EnableKubeAPIServer;
-import io.fabric8.kubeapitest.junit.KubeConfig;
-import io.javaoperatorsdk.webhook.admission.AdmissionController;
-
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
+import java.security.cert.Certificate;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
+import java.util.Base64;
+import java.util.HashMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -57,8 +71,7 @@ class KubernetesMutationHookHandlingTest {
   @KubeConfig
   static String kubeConfig;
 
-  private static final Logger log =
-      LoggerFactory.getLogger(KubernetesMutationHookHandlingTest.class);
+  private static final Logger log = LoggerFactory.getLogger(KubernetesMutationHookHandlingTest.class);
 
   public static final String PASSWORD = "secret";
   public static final String TEST_LABEL_KEY = "test-label";
@@ -70,19 +83,17 @@ class KubernetesMutationHookHandlingTest {
 
   // using https://github.com/java-operator-sdk/kubernetes-webooks-framework framework to implement
   // the response
-  static AdmissionController<Ingress> mutationController =
-      new AdmissionController<>((resource, operation) -> {
-        if (resource.getMetadata().getLabels() == null) {
-          resource.getMetadata().setLabels(new HashMap<>());
-        }
-        resource.getMetadata().getLabels().putIfAbsent(TEST_LABEL_KEY, TEST_LABEL_VALUE);
-        return resource;
-      });
+  static AdmissionController<Ingress> mutationController = new AdmissionController<>((resource, operation) -> {
+    if (resource.getMetadata().getLabels() == null) {
+      resource.getMetadata().setLabels(new HashMap<>());
+    }
+    resource.getMetadata().getLabels().putIfAbsent(TEST_LABEL_KEY, TEST_LABEL_VALUE);
+    return resource;
+  });
 
   @Test
   void handleMutatingWebhook() {
-    var client =
-        new KubernetesClientBuilder().withConfig(Config.fromKubeconfig(kubeConfig)).build();
+    var client = new KubernetesClientBuilder().withConfig(Config.fromKubeconfig(kubeConfig)).build();
     applyConfig(client);
 
     var ingress = client.resource(testIngress()).create();
@@ -99,8 +110,7 @@ class KubernetesMutationHookHandlingTest {
           HttpServletResponse httpServletResponse) {
         try {
           request.setHandled(true);
-          AdmissionReview admissionReview =
-              Serialization.unmarshal(httpServletRequest.getInputStream());
+          AdmissionReview admissionReview = Serialization.unmarshal(httpServletRequest.getInputStream());
 
           var response = mutationController.handle(admissionReview);
 
@@ -124,11 +134,9 @@ class KubernetesMutationHookHandlingTest {
   }
 
   private void applyConfig(KubernetesClient client) {
-    try (var resource =
-        KubernetesMutationHookHandlingTest.class
-            .getResourceAsStream("/MutatingWebhookConfig.yaml")) {
-      MutatingWebhookConfiguration hook =
-          (MutatingWebhookConfiguration) client.load(resource).items().get(0);
+    try (var resource = KubernetesMutationHookHandlingTest.class
+        .getResourceAsStream("/MutatingWebhookConfig.yaml")) {
+      MutatingWebhookConfiguration hook = (MutatingWebhookConfiguration) client.load(resource).items().get(0);
       String cert = FileUtils.readFileToString(certFile, StandardCharsets.UTF_8);
 
       hook.getWebhooks().get(0).getClientConfig()
@@ -166,17 +174,15 @@ class KubernetesMutationHookHandlingTest {
     try (var certReader = new PEMParser(new InputStreamReader(new FileInputStream(certPem)));
         var keyReader = new PEMParser(new InputStreamReader(new FileInputStream(keyPem)))) {
       var certConverter = new JcaX509CertificateConverter();
-      X509Certificate cert =
-          certConverter.getCertificate((X509CertificateHolder) certReader.readObject());
+      X509Certificate cert = certConverter.getCertificate((X509CertificateHolder) certReader.readObject());
 
       JcaPEMKeyConverter keyConverter = new JcaPEMKeyConverter();
-      PrivateKey key =
-          keyConverter.getPrivateKey(((PEMKeyPair) keyReader.readObject()).getPrivateKeyInfo());
+      PrivateKey key = keyConverter.getPrivateKey(((PEMKeyPair) keyReader.readObject()).getPrivateKeyInfo());
 
       KeyStore keystore = KeyStore.getInstance("JKS");
       keystore.load(null);
       keystore.setCertificateEntry("cert-alias", cert);
-      keystore.setKeyEntry("key-alias", key, PASSWORD.toCharArray(), new Certificate[] {cert});
+      keystore.setKeyEntry("key-alias", key, PASSWORD.toCharArray(), new Certificate[] { cert });
 
       return keystore;
     } catch (IOException | CertificateException | KeyStoreException | NoSuchAlgorithmException e) {
