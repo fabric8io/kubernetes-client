@@ -615,12 +615,12 @@ class DefaultMockServerTest extends Specification {
       async.await(10)
   }
 
-  def "when setting an sentWebSocketMessage/response websocket message it should be fired when the event is triggered"() {
+  def "when setting an sentWebSocketMessage it should be fired when the server sends the expected message"() {
     given: "A WebSocket + HTTP expectation"
       server.expect().get().withPath("/api/v1/users/watch")
         .andUpgradeToWebSocket()
         .open()
-        .waitFor(50L).andEmit("READY")
+        .waitFor(60L).andEmit("READY")
         .expectHttpRequest("/api/v1/create").andEmit("CREATED").once()
         .expectSentWebSocketMessage("CREATED").andEmit("WS-CREATED").once()
         .done()
@@ -629,14 +629,11 @@ class DefaultMockServerTest extends Specification {
       Queue<String> messages = new ArrayBlockingQueue<>(2)
     and: "A WebSocket request"
       def wsReq = wsClient.webSocket().connect(server.port, server.getHostName(), "/api/v1/users/watch")
-    and: "A WebSocket listener that sends an HTTP request after WS connection initiated and WS request after HTTP request"
+    and: "A WebSocket listener that sends an HTTP request after WS connection initiated"
       wsReq.andThen { ws ->
         ws.result().textMessageHandler { text ->
           if (text == "READY") {
             client.get(server.port, server.getHostName(), "/api/v1/create").send()
-                .andThen {_ ->{
-                  ws.result().writeTextMessage("CREATED")
-                }}
           } else {
             messages.add(text)
           }
