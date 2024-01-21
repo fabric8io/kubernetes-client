@@ -39,6 +39,7 @@ import java.math.BigDecimal;
 import java.math.MathContext;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.BiFunction;
 
 /**
  * Quantity is fixed point representation of a number.
@@ -54,7 +55,7 @@ import java.util.Map;
     ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, builderPackage = "io.fabric8.kubernetes.api.builder")
-public class Quantity implements Serializable {
+public class Quantity implements Serializable, Comparable<Quantity> {
   private String amount;
   private String format = "";
   @JsonIgnore
@@ -261,8 +262,15 @@ public class Quantity implements Serializable {
     }
 
     Quantity quantity = (Quantity) o;
-    return getAmountInBytes(this)
-        .compareTo(getAmountInBytes(quantity)) == 0;
+    return this.compareTo(quantity) == 0;
+  }
+
+  /**
+   * Compares the numerical amounts of these quantities.
+   */
+  @Override
+  public int compareTo(Quantity o) {
+    return getNumericalAmount().compareTo(o.getNumericalAmount());
   }
 
   @Override
@@ -375,6 +383,39 @@ public class Quantity implements Serializable {
       return quantity;
     }
 
+  }
+
+  /**
+   * Add the provided quantity to the current value. If the current value is zero, the format of the quantity will be the format
+   * of y.
+   * 
+   * @param y to add
+   * @return a new Quantity after y has been added
+   */
+  public Quantity add(Quantity y) {
+    return op(y, BigDecimal::add);
+  }
+
+  /**
+   * Subtract the provided quantity from the current value. If the current value is zero, the format of the quantity will be the
+   * format
+   * of y.
+   * 
+   * @param y to subtract
+   * @return a new Quantity after y has been subtracted
+   */
+  public Quantity subtract(Quantity y) {
+    return op(y, BigDecimal::subtract);
+  }
+
+  Quantity op(Quantity y, BiFunction<BigDecimal, BigDecimal, BigDecimal> func) {
+    BigDecimal numericalAmount = this.getNumericalAmount();
+    numericalAmount = func.apply(numericalAmount, y.getNumericalAmount());
+    String format = this.format;
+    if (numericalAmount.signum() == 0) {
+      format = y.format;
+    }
+    return fromNumericalAmount(numericalAmount, format);
   }
 
 }
