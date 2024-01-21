@@ -158,4 +158,23 @@ public class KubernetesClientBuilder {
     return this;
   }
 
+  public class ConfigNested extends ConfigFluent<ConfigNested> {
+
+    private ConfigBuilder builder;
+
+    private ConfigNested() {
+      this.builder = new ConfigBuilder(this, config);
+    }
+
+    public KubernetesClientBuilder endConfig() {
+      config = this.builder.build();
+      return KubernetesClientBuilder.this;
+    }
+
+  }
+
+  public ConfigNested editOrNewConfig() {
+    return new ConfigNested();
+  }
+
 }

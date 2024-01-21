@@ -16,6 +16,7 @@
 
 package io.fabric8.kubernetes.client;
 
+import io.fabric8.kubernetes.client.KubernetesClientBuilder.ConfigNested;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.HttpClient.Factory;
 import org.junit.jupiter.api.Test;
@@ -35,6 +36,16 @@ class KubernetesClientBuilderTest {
     builder.withHttpClientFactory(mockFactory).withHttpClientBuilderConsumer(b -> b.proxyAuthorization("something"));
     builder.getHttpClient();
     Mockito.verify(mockBuilder).proxyAuthorization("something");
+  }
+
+  @Test
+  void testConfigNested() {
+    KubernetesClientBuilder builder = new KubernetesClientBuilder(null);
+    builder.withConfig(new ConfigBuilder().withWatchReconnectLimit(600).build());
+    builder.editOrNewConfig().withApiVersion("x.y").endConfig();
+    ConfigNested configNested = builder.editOrNewConfig();
+    assertEquals("x.y", configNested.getApiVersion());
+    assertEquals(600, configNested.getWatchReconnectLimit());
   }
 
   /**
