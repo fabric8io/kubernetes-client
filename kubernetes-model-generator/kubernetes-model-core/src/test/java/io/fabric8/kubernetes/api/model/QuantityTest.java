@@ -210,4 +210,16 @@ class QuantityTest {
     Quantity quantity = new Quantity(amount);
     assertThat(quantity).isEqualTo(Quantity.fromNumericalAmount(quantity.getNumericalAmount(), quantity.getFormat()));
   }
+
+  @Test
+  void testAdd() {
+    Quantity quantity = new Quantity("7Mi");
+    assertThat(quantity.add(new Quantity("6Mi"))).isEqualTo(new Quantity("13Mi"));
+  }
+
+  @Test
+  void testSubtract() {
+    Quantity quantity = new Quantity("0Mi");
+    assertThat(quantity.subtract(new Quantity("1Ki"))).isEqualTo(new Quantity("-1Ki"));
+  }
 }

@@ -8,6 +8,7 @@
 #### Improvements
 * Fix #5701: Owner reference validity check regarding scope and namespace
 * Fix #5353: added KubernetesClientBuilder.editOrNewConfig
+* Fix #5357: adding additional Quantity methods
 
 #### Dependency Upgrade
 
