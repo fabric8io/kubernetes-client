@@ -34,7 +34,6 @@
         <dependency>
           <groupId>io.fabric8</groupId>
           <artifactId>kube-api-test</artifactId>
-          <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -53,7 +52,6 @@
         <dependency>
             <groupId>io.fabric8</groupId>
             <artifactId>kubernetes-client</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.assertj</groupId>
