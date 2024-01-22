@@ -194,8 +194,13 @@ public class ProcessReadinessChecker {
               }
           },
           null);
+      // Set protocol to HTTP/1.1 for unauthenticated invocations of "GET /readyz". Sending
+      // unauthenticated requests using HTTP/2 is problematic on Kubernetes >=1.29, which enables
+      // denial-of-service mitigation for authenticated HTTP/2 by default with the
+      // UnauthenticatedHTTP2DOSMitigation feature gate.
       return HttpClient.newBuilder()
           .sslContext(sslContext)
+          .version(HttpClient.Version.HTTP_1_1)
           .build();
     } catch (NoSuchAlgorithmException | KeyManagementException e) {
       throw new KubeAPITestException(e);
