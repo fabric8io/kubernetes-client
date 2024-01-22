@@ -91,19 +91,19 @@ public class Utils {
   }
 
   public static void deleteDirectory(File file) throws IOException {
-    try(var stream = Files.walk(file.toPath())) {
+    try (var stream = Files.walk(file.toPath())) {
       stream.sorted(Comparator.reverseOrder())
-        .map(Path::toFile)
-        .forEach(File::delete);
+          .map(Path::toFile)
+          .forEach(File::delete);
     }
   }
 
   public static void cleanDirectory(File file) throws IOException {
-      deleteDirectory(file);
-      var res = file.mkdirs();
-      if (!res) {
-        throw new KubeAPITestException("Cannot create dir: "+ file.getPath());
-      }
+    deleteDirectory(file);
+    var res = file.mkdirs();
+    if (!res) {
+      throw new KubeAPITestException("Cannot create dir: " + file.getPath());
+    }
   }
 
 }

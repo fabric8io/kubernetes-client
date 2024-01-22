@@ -25,8 +25,6 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.Comparator;
 
 import static io.fabric8.kubeapitest.Utils.deleteDirectory;
 

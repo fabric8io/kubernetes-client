@@ -65,7 +65,7 @@ public class BinaryRepo {
   }
 
   private void copyURLToFile(String url, File tempFile) throws IOException {
-    try(InputStream in = new URL(url).openStream()) {
+    try (InputStream in = new URL(url).openStream()) {
       Files.copy(in, tempFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
     }
   }
