@@ -3,7 +3,7 @@ module github.com/fabric8io/kubernetes-client/kubernetes-model-generator
 go 1.21
 
 require (
-	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.2.0
+	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.4.0
 	github.com/k8snetworkplumbingwg/whereabouts v0.4.3-0.20211129155010-abd29e856f36
 	github.com/metal3-io/baremetal-operator/apis v0.2.0
 	github.com/metal3-io/cluster-api-provider-metal3/api v0.0.0-00010101000000-000000000000
@@ -17,6 +17,7 @@ require (
 	github.com/openshift/machine-config-operator v0.0.1-0.20230807154212-886c5c3fc7a9
 	github.com/operator-framework/api v0.17.7
 	github.com/operator-framework/operator-lifecycle-manager v0.22.0
+	github.com/ovn-org/ovn-kubernetes/go-controller v0.0.0-20240119130830-e7acee6595c6
 	github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.68.0
 	k8s.io/api v0.29.0
 	k8s.io/apiextensions-apiserver v0.29.0

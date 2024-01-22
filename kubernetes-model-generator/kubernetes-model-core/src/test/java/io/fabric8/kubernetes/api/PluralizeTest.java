@@ -58,7 +58,8 @@ class PluralizeTest {
         arguments("nodes", "nodemetrics"),
         arguments("women", "woman"),
         arguments("men", "man"),
-        arguments("dnses", "dns"));
+        arguments("dnses", "dns"),
+        arguments("egressqoses", "egressqos"));
   }
 
 }

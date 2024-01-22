@@ -1,0 +1,15 @@
+{
+  "apiVersion": "k8s.ovn.org/v1",
+  "kind": "EgressService",
+  "metadata": {
+    "name": "test-svc"
+  },
+  "spec": {
+    "sourceIPBy": "LoadBalancerIP",
+    "nodeSelector": {
+      "matchLabels": {
+        "node-role.kubernetes.io/worker": ""
+      }
+    }
+  }
+}
