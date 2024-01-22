@@ -16,7 +16,6 @@
 
 package io.fabric8.kubeapitest.cert;
 
-import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -24,6 +23,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import static io.fabric8.kubeapitest.Utils.cleanDirectory;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class CertManagerTest {
@@ -37,7 +37,7 @@ class CertManagerTest {
       throw new IllegalStateException("Cannot create test dir");
     }
     if (certsDir.exists()) {
-      FileUtils.cleanDirectory(certsDir);
+      cleanDirectory(certsDir);
     }
   }
 

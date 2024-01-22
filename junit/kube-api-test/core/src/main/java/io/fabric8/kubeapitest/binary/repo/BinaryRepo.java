@@ -20,17 +20,19 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.kubeapitest.KubeAPITestException;
 import io.fabric8.kubeapitest.binary.OSInfo;
-import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
@@ -55,10 +57,16 @@ public class BinaryRepo {
 
       File tempFile = File.createTempFile("kubebuilder-tools-" + version, ".tar.gz");
       log.debug("Downloading binary from url: {} to Temp file: {}", url, tempFile.getPath());
-      FileUtils.copyURLToFile(new URL(url), tempFile);
+      copyURLToFile(url, tempFile);
       return tempFile;
     } catch (IOException e) {
       throw new KubeAPITestException(e);
+    }
+  }
+
+  private void copyURLToFile(String url, File tempFile) throws IOException {
+    try(InputStream in = new URL(url).openStream()) {
+      Files.copy(in, tempFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
     }
   }
 

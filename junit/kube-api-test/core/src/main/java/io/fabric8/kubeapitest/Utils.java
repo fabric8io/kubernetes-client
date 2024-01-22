@@ -19,9 +19,12 @@ package io.fabric8.kubeapitest;
 import io.fabric8.kubeapitest.binary.OSInfo;
 import org.slf4j.Logger;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.ServerSocket;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
@@ -85,6 +88,22 @@ public class Utils {
 
   public static String wildcardToPrefix(String wildcardVersion) {
     return wildcardVersion.substring(0, wildcardVersion.lastIndexOf("."));
+  }
+
+  public static void deleteDirectory(File file) throws IOException {
+    try(var stream = Files.walk(file.toPath())) {
+      stream.sorted(Comparator.reverseOrder())
+        .map(Path::toFile)
+        .forEach(File::delete);
+    }
+  }
+
+  public static void cleanDirectory(File file) throws IOException {
+      deleteDirectory(file);
+      var res = file.mkdirs();
+      if (!res) {
+        throw new KubeAPITestException("Cannot create dir: "+ file.getPath());
+      }
   }
 
 }

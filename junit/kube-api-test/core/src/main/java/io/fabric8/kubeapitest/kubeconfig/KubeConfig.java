@@ -19,7 +19,6 @@ package io.fabric8.kubeapitest.kubeconfig;
 import io.fabric8.kubeapitest.KubeAPITestException;
 import io.fabric8.kubeapitest.binary.BinaryManager;
 import io.fabric8.kubeapitest.cert.CertManager;
-import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -77,7 +76,7 @@ public class KubeConfig {
 
   public String generateKubeConfigYaml(int apiServerPort) {
     try (InputStream is = KubeConfig.class.getResourceAsStream("/kubeconfig-template.yaml")) {
-      String template = IOUtils.toString(is, StandardCharsets.UTF_8);
+      String template = new String(is.readAllBytes(), StandardCharsets.UTF_8);
       Object[] args = new Object[] { certManager.getAPIServerCertPath(),
           apiServerPort, certManager.getClientCertPath(), certManager.getClientKeyPath() };
       MessageFormat format = new MessageFormat(template);
@@ -96,7 +95,7 @@ public class KubeConfig {
       Process process = new ProcessBuilder(args).start();
       String stdout;
       try (InputStream is = process.getInputStream()) {
-        stdout = IOUtils.toString(is, Charset.defaultCharset());
+        stdout = new String(is.readAllBytes(), Charset.defaultCharset());
       }
       process.waitFor();
       return stdout;

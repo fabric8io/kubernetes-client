@@ -19,13 +19,16 @@ package io.fabric8.kubeapitest.process;
 import io.fabric8.kubeapitest.KubeAPITestException;
 import io.fabric8.kubeapitest.Utils;
 import io.fabric8.kubeapitest.binary.BinaryManager;
-import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Comparator;
+
+import static io.fabric8.kubeapitest.Utils.deleteDirectory;
 
 public class EtcdProcess {
 
@@ -101,8 +104,8 @@ public class EtcdProcess {
 
   public void cleanEtcdData() {
     try {
-      FileUtils.deleteDirectory(tempDataDir);
-      FileUtils.deleteDirectory(tempWalDir);
+      deleteDirectory(tempDataDir);
+      deleteDirectory(tempWalDir);
     } catch (IOException e) {
       throw new KubeAPITestException(e);
     }

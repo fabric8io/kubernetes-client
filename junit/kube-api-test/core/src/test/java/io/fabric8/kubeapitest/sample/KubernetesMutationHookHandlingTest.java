@@ -29,7 +29,6 @@ import io.fabric8.kubernetes.client.utils.Serialization;
 import io.javaoperatorsdk.webhook.admission.AdmissionController;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.apache.commons.io.FileUtils;
 import org.bouncycastle.asn1.x509.GeneralName;
 import org.bouncycastle.cert.X509CertificateHolder;
 import org.bouncycastle.cert.jcajce.JcaX509CertificateConverter;
@@ -45,8 +44,12 @@ import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -137,7 +140,8 @@ class KubernetesMutationHookHandlingTest {
     try (var resource = KubernetesMutationHookHandlingTest.class
         .getResourceAsStream("/MutatingWebhookConfig.yaml")) {
       MutatingWebhookConfiguration hook = (MutatingWebhookConfiguration) client.load(resource).items().get(0);
-      String cert = FileUtils.readFileToString(certFile, StandardCharsets.UTF_8);
+
+      String cert = Files.readString(certFile.toPath(), StandardCharsets.UTF_8);
 
       hook.getWebhooks().get(0).getClientConfig()
           .setCaBundle(new String(Base64.getEncoder().encode(cert.getBytes())));
