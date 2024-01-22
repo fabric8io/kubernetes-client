@@ -1,0 +1,29 @@
+{
+  "apiVersion": "k8s.ovn.org/v1",
+  "kind": "EgressIP",
+  "metadata": {
+    "name": "egressip-prod"
+  },
+  "spec": {
+    "egressIPs": [
+      "172.18.0.33",
+      "172.18.0.44"
+    ],
+    "namespaceSelector": {
+      "matchExpressions": [
+        {
+          "key": "environment",
+          "operator": "NotIn",
+          "values": [
+            "development"
+          ]
+        }
+      ]
+    },
+    "podSelector": {
+      "matchLabels": {
+        "app": "web"
+      }
+    }
+  }
+}

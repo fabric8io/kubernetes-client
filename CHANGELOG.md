@@ -13,6 +13,7 @@
 #### Dependency Upgrade
 
 #### New Features
+* Fix #5636: Add model for Kubernetes Open Virtual Networking `k8s.ovn.org/v1` 
 
 #### _**Note**_: Breaking changes
 

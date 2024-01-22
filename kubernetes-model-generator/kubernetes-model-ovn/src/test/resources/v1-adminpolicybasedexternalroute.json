@@ -1,0 +1,40 @@
+{
+  "apiVersion": "k8s.ovn.org/v1",
+  "kind": "AdminPolicyBasedExternalRoute",
+  "metadata": {
+    "name": "test-adminpolicybasedexternalroute"
+  },
+  "spec": {
+    "from": {
+      "namespaceSelector": {
+        "matchLabels": {
+          "multiple_gws": "true"
+        }
+      }
+    },
+    "nextHops": {
+      "static": [
+        {
+          "ip": "172.18.0.2",
+          "bfdEnabled": true
+        }
+      ],
+      "dynamic": [
+        {
+          "podSelector": {
+            "matchLabels": {
+              "external-gateway": "true"
+            }
+          },
+          "bfdEnabled": true,
+          "namespaceSelector": {
+            "matchLabels": {
+              "gateway": "true"
+            }
+          },
+          "networkAttachmentName": "sriov1"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "kind": "EgressQoS",
+  "apiVersion": "k8s.ovn.org/v1",
+  "metadata": {
+    "name": "default"
+  },
+  "spec": {
+    "egress": [
+      {
+        "dscp": 48,
+        "podSelector": {
+          "matchLabels": {
+            "app": "updated-example"
+          }
+        }
+      },
+      {
+        "dscp": 28
+      }
+    ]
+  }
+}

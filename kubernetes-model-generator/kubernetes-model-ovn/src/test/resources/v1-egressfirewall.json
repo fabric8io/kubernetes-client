@@ -1,0 +1,35 @@
+{
+  "kind": "EgressFirewall",
+  "apiVersion": "k8s.ovn.org/v1",
+  "metadata": {
+    "name": "default"
+  },
+  "spec": {
+    "egress": [
+      {
+        "type": "Allow",
+        "to": {
+          "dnsName": "www.openvswitch.org"
+        }
+      },
+      {
+        "type": "Allow",
+        "to": {
+          "cidrSelector": "1.2.3.0/24"
+        },
+        "ports": [
+          {
+            "protocol": "UDP",
+            "port": 55
+          }
+        ]
+      },
+      {
+        "type": "Deny",
+        "to": {
+          "cidrSelector": "0.0.0.0/0"
+        }
+      }
+    ]
+  }
+}
