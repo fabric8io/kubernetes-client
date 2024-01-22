@@ -213,7 +213,6 @@
     <module>junit/kubernetes-junit-jupiter</module>
     <module>junit/kubernetes-junit-jupiter-autodetected</module>
     <module>junit/kubernetes-server-mock</module>
-    <module>junit/kube-api-test</module>
     <module>openshift-client-api</module>
     <module>openshift-client</module>
     <module>extensions</module>
@@ -781,6 +780,11 @@
         <artifactId>commons-compress</artifactId>
         <version>${commons-compress.version}</version>
         <optional>true</optional>
+      </dependency>
+      <dependency>
+        <groupId>commons-io</groupId>
+        <artifactId>commons-io</artifactId>
+        <version>${commons-io.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.maven</groupId>
