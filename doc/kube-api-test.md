@@ -6,10 +6,6 @@ Inspired by [envtest](https://book.kubebuilder.io/reference/envtest.html) in Kub
 It runs the API Server binaries directly (without nodes and other components, but with etcd).
 Linux, Windows, Mac is supported.
 
-See also [this blog](https://csviri.medium.com/introducing-jenvtest-kubernetes-api-server-tests-made-easy-for-java-4d02a9bb26d4)
-post regarding the motivation and more.
-
-
 ## Usage
 
 Include dependency:
@@ -94,7 +90,7 @@ Use dependency:
 </dependency>
 ```
 
-The client can be directly injected to the test. See sample test [here](https://github.com/java-operator-sdk/jenvtest/blob/main/fabric8/src/test/java/io/javaoperatorsdk/jenvtest/junit/sample/JUnitFabric8ClientInjectionTest.java#L111-L111).
+The client can be directly injected to the test. See sample test [here](https://github.com/csviri/kubernetes-client/blob/main/junit/kube-api-test/client-inject/src/test/java/io/fabric8/kubeapitest/junit/sample/JUnitFabric8ClientInjectionTest.java#L28-L28).
 
 ```java
 
@@ -135,7 +131,7 @@ Binaries are downloaded automatically under ~/.kubeapitest/k8s/[target-platform-
 If there are multiple binaries found, the latest if selected (unless a target version is not specified).
 
 Also [`setup-envtest`](https://pkg.go.dev/sigs.k8s.io/controller-runtime/tools/setup-envtest#section-readme) can be used
-to download binaries manually. By executing `setup-envtest use --bin-dir ~/.jenvtest` will download the latest required
+to download binaries manually. By executing `setup-envtest use --bin-dir ~/.kubeapitest` will download the latest required
 binaries to the default directory. This is useful if always running the tests in offline mode.
 
 ### Support for Parallel Execution in Junit5
