@@ -16,6 +16,7 @@
 
 #### New Features
 * Fix #5636: Add new extension `open-virtual-networking` to manage resources in `k8s.ovn.org/v1` API group.
+* Fix #5711: Kube API Test - Kubernetes API Server JUnit Test Support
 
 #### _**Note**_: Breaking changes
 
