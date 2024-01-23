@@ -20,7 +20,6 @@ import io.fabric8.kubernetes.api.model.ConfigMap;
 import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
 import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import org.assertj.core.api.Assertions;
 
 import java.util.Map;
@@ -28,10 +27,6 @@ import java.util.Map;
 public class TestUtils {
 
   public static final String TEST_1 = "test1";
-
-  public static ConfigMap testConfigMap() {
-    return testConfigMap(TEST_1);
-  }
 
   public static ConfigMap testConfigMap(String name) {
     return new ConfigMapBuilder()
@@ -41,10 +36,6 @@ public class TestUtils {
             .build())
         .withData(Map.of("key", "data"))
         .build();
-  }
-
-  public static void simpleTest() {
-    simpleTest(new KubernetesClientBuilder().build(), "test1");
   }
 
   public static void simpleTest(KubernetesClient client) {
