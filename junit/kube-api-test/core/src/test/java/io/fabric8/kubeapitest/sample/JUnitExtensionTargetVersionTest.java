@@ -22,10 +22,10 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import org.junit.jupiter.api.Test;
 
-import static io.fabric8.kubeapitest.sample.TestUtils.simpleTest;
+import static io.fabric8.kubeapitest.sample.TestCaseUtils.simpleTest;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@EnableKubeAPIServer(kubeAPIVersion = TestUtils.NON_LATEST_API_SERVER_VERSION)
+@EnableKubeAPIServer(kubeAPIVersion = TestCaseUtils.NON_LATEST_API_SERVER_VERSION)
 class JUnitExtensionTargetVersionTest {
 
   @KubeConfig
@@ -38,7 +38,7 @@ class JUnitExtensionTargetVersionTest {
     simpleTest(client);
 
     String kubeVersion = client.getKubernetesVersion().getGitVersion().substring(1);
-    assertThat(kubeVersion).isEqualTo(TestUtils.NON_LATEST_API_SERVER_VERSION);
+    assertThat(kubeVersion).isEqualTo(TestCaseUtils.NON_LATEST_API_SERVER_VERSION);
   }
 
 }

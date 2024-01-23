@@ -24,7 +24,7 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import org.junit.jupiter.api.Test;
 
-import static io.fabric8.kubeapitest.sample.TestUtils.simpleTest;
+import static io.fabric8.kubeapitest.sample.TestCaseUtils.simpleTest;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -38,7 +38,7 @@ class KubeApiServerTest {
   @Test
   void apiServerWithSpecificVersion() {
     testWithAPIServer(new KubeAPIServer(KubeAPIServerConfigBuilder.anAPIServerConfig()
-        .withApiServerVersion(TestUtils.NON_LATEST_API_SERVER_VERSION)
+        .withApiServerVersion(TestCaseUtils.NON_LATEST_API_SERVER_VERSION)
         .build()));
   }
 
@@ -50,7 +50,7 @@ class KubeApiServerTest {
     kubeApi.start();
 
     var client = createClient(kubeApi.getKubeConfigYaml());
-    TestUtils.simpleTest(client);
+    TestCaseUtils.simpleTest(client);
 
     kubeApi.stop();
   }
@@ -63,7 +63,7 @@ class KubeApiServerTest {
     kubeApi.start();
 
     var client = createClient(kubeApi.getKubeConfigYaml());
-    TestUtils.simpleTest(client);
+    TestCaseUtils.simpleTest(client);
     assertThat(client.getKubernetesVersion().getMinor()).isEqualTo("26");
 
     kubeApi.stop();
@@ -77,7 +77,7 @@ class KubeApiServerTest {
     kubeApi.start();
 
     var client = createClient(kubeApi.getKubeConfigYaml());
-    TestUtils.simpleTest(client);
+    TestCaseUtils.simpleTest(client);
 
     kubeApi.stop();
   }

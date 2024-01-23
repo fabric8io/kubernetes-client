@@ -18,7 +18,7 @@ package io.fabric8.kubeapitest.junit.sample;
 
 import io.fabric8.kubeapitest.junit.EnableKubeAPIServer;
 import io.fabric8.kubeapitest.junit.KubeConfig;
-import io.fabric8.kubeapitest.junit.TestUtils;
+import io.fabric8.kubeapitest.junit.TestCaseUtils;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientBuilder;
@@ -35,12 +35,12 @@ class JUnitFabric8ClientInjectionTest {
 
   @Test
   void testClientInjection() {
-    TestUtils.simpleTest(client, "test1");
+    TestCaseUtils.simpleTest(client, "test1");
   }
 
   @Test
   void testKubeConfigInjectionAlsoWorks() {
-    TestUtils.simpleTest(new KubernetesClientBuilder().withConfig(Config.fromKubeconfig(configYaml)).build(),
+    TestCaseUtils.simpleTest(new KubernetesClientBuilder().withConfig(Config.fromKubeconfig(configYaml)).build(),
         "test2");
   }
 }

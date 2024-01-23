@@ -32,12 +32,12 @@ class JUnitExtensionOnMethodTest {
   @Test
   @EnableKubeAPIServer
   void simpleTest1() {
-    TestUtils.simpleTest(kubeConfigYaml);
+    TestCaseUtils.simpleTest(kubeConfigYaml);
   }
 
   @Test
   @EnableKubeAPIServer
   void simpleTest2() {
-    TestUtils.simpleTest(kubeConfigYaml);
+    TestCaseUtils.simpleTest(kubeConfigYaml);
   }
 }

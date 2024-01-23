@@ -24,6 +24,6 @@ class JUnitExtensionKubeConfigUpdateTest {
 
   @Test
   void usesConfigFromGenericKubeConfig() {
-    TestUtils.simpleTest();
+    TestCaseUtils.simpleTest();
   }
 }

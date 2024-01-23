@@ -22,7 +22,7 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import org.junit.jupiter.api.Test;
 
-import static io.fabric8.kubeapitest.sample.TestUtils.simpleTest;
+import static io.fabric8.kubeapitest.sample.TestCaseUtils.simpleTest;
 
 @EnableKubeAPIServer
 class JUnitExtensionSimpleCaseTest {
