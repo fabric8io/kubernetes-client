@@ -385,6 +385,13 @@
     </dependency>
   </dependencies>
 
+  <distributionManagement>
+    <repository>
+      <id>teamcity-repository</id>
+      <url>https://download.jetbrains.com/teamcity-repository/</url>
+    </repository>
+  </distributionManagement>
+
   <build>
     <plugins>
       <plugin>
