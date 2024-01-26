@@ -387,7 +387,7 @@
 
   <distributionManagement>
     <repository>
-      <id>teamcity-repository</id>
+      <id>jetbrains.teamcity.repo</id>
       <url>https://download.jetbrains.com/teamcity-repository/</url>
     </repository>
   </distributionManagement>
