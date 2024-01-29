@@ -47,6 +47,7 @@ import org.slf4j.LoggerFactory;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -116,7 +117,7 @@ public abstract class BaseClient implements Client {
 
   BaseClient(final HttpClient httpClient, Config config, ExecutorSupplier executorSupplier,
       KubernetesSerialization kubernetesSerialization) {
-    this.closable = Collections.newSetFromMap(new WeakHashMap<>());
+    this.closable = Collections.synchronizedSet(Collections.newSetFromMap(new WeakHashMap<>()));
     this.closed = new CompletableFuture<>();
     this.config = config;
     this.httpClient = httpClient;
@@ -149,21 +150,25 @@ public abstract class BaseClient implements Client {
   }
 
   @Override
-  public synchronized void close() {
+  public void close() {
     if (closed.complete(null) && logger.isDebugEnabled()) {
       logger.debug(
           "The client and associated httpclient {} have been closed, the usage of this or any client using the httpclient will not work after this",
           httpClient.getClass().getName());
     }
     httpClient.close();
-    closable.forEach(c -> {
+    List<AutoCloseable> toClose = null;
+    synchronized (closable) {
+      toClose = new ArrayList<>(closable);
+      closable.clear();
+    }
+    toClose.forEach(c -> {
       try {
         c.close();
       } catch (Exception e) {
         logger.warn("Error closing resource", e);
       }
     });
-    closable.clear();
     if (this.executorSupplier != null) {
       this.executorSupplier.onClose(executor);
       this.executorSupplier = null;
@@ -412,14 +417,16 @@ public abstract class BaseClient implements Client {
     return kubernetesSerialization;
   }
 
-  public synchronized void addToCloseable(AutoCloseable closeable) {
-    if (this.closed.isDone()) {
-      throw new KubernetesClientException("Client is already closed");
+  public void addToCloseable(AutoCloseable closeable) {
+    synchronized (closeable) {
+      if (this.closed.isDone()) {
+        throw new KubernetesClientException("Client is already closed");
+      }
+      this.closable.add(closeable);
     }
-    this.closable.add(closeable);
   }
 
-  public synchronized void removeFromCloseable(AutoCloseable closeable) {
+  public void removeFromCloseable(AutoCloseable closeable) {
     this.closable.remove(closeable);
   }
 
