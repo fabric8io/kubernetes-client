@@ -20,6 +20,7 @@ import io.fabric8.kubernetes.api.builder.TypedVisitor;
 import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.DefaultKubernetesResourceList;
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
+import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
@@ -438,7 +439,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
         }
       };
       CompletableFuture<L> futureAnswer = handleResponse(httpClient, requestBuilder, listTypeReference);
-      return futureAnswer.thenApply(updateApiVersion());
+      return futureAnswer.thenApply(this::updateListItems);
     } catch (IOException e) {
       throw KubernetesClientException.launderThrowable(forOperationType("list"), e);
     }
@@ -873,16 +874,22 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   /**
    * Updates the list items if they have missing or default apiGroupVersion values and the resource is currently
-   * using API Groups with custom version strings
+   * using API Groups with custom version strings, or if they are generic and lack a kind
    */
-  protected UnaryOperator<L> updateApiVersion() {
-    return list -> {
-      String version = apiVersion;
-      if (list != null && version != null && version.length() > 0 && list.getItems() != null) {
-        list.getItems().forEach(this::updateApiVersion);
+  protected L updateListItems(L list) {
+    if (list != null && list.getItems() != null) {
+      boolean updateApiVersion = Utils.isNotNullOrEmpty(apiVersion);
+      boolean updateKind = GenericKubernetesResource.class.isAssignableFrom(getType());
+      if (updateApiVersion || updateKind) {
+        for (T item : list.getItems()) {
+          updateApiVersion(item);
+          if (updateKind && item != null && item.getKind() == null) {
+            ((GenericKubernetesResource) item).setKind(getKind());
+          }
+        }
       }
-      return list;
-    };
+    }
+    return list;
   }
 
   /**
@@ -893,11 +900,11 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
    */
   protected void updateApiVersion(HasMetadata hasMetadata) {
     String version = apiVersion;
-    if (hasMetadata != null && version != null && version.length() > 0) {
+    if (hasMetadata != null && Utils.isNotNullOrEmpty(version)) {
       String current = hasMetadata.getApiVersion();
       // lets overwrite the api version if its currently missing, the resource uses an API Group with '/'
       // or we have the default of 'v1' when using an API group version like 'build.openshift.io/v1'
-      if (current == null || "v1".equals(current) || current.indexOf('/') < 0 && version.indexOf('/') > 0) {
+      if (current == null || "v1".equals(current) || (current.indexOf('/') < 0 && version.indexOf('/') > 0)) {
         hasMetadata.setApiVersion(version);
       }
     }

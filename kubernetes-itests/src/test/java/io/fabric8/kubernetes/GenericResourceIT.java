@@ -62,7 +62,9 @@ class GenericResourceIT {
 
     MixedOperation<GenericKubernetesResource, GenericKubernetesResourceList, Resource<GenericKubernetesResource>> resources = client
         .genericKubernetesResources("v1", "ConfigMap");
-    assertTrue(!resources.list().getItems().isEmpty());
+    List<GenericKubernetesResource> items = resources.list().getItems();
+    assertTrue(!items.isEmpty());
+    assertTrue(items.stream().allMatch(g -> g.getKind().equals("ConfigMap")));
   }
 
   @Test
