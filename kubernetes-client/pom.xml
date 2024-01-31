@@ -388,7 +388,7 @@
   <distributionManagement>
     <repository>
       <id>jetbrains.teamcity.repo</id>
-      <url>https://download.jetbrains.com/teamcity-repository/</url>
+      <url>ftp://download.labs.intellij.net</url>
     </repository>
   </distributionManagement>
 
