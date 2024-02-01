@@ -623,6 +623,12 @@
 
       <dependency>
         <groupId>io.fabric8</groupId>
+        <artifactId>open-virtual-networking-model-v1</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>io.fabric8</groupId>
         <artifactId>certmanager-model-v1alpha2</artifactId>
         <version>${project.version}</version>
       </dependency>

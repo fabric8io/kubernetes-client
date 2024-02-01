@@ -39,7 +39,6 @@ declare -a modules=(
     "kubernetes-model-networking"
     "kubernetes-model-metrics"
     "kubernetes-model-node"
-    "kubernetes-model-ovn"
     "kubernetes-model-policy"
     "kubernetes-model-scheduling"
     "kubernetes-model-storageclass"
@@ -83,6 +82,7 @@ declare -a modules=(
     "../extensions/open-cluster-management/generator-placementruleapps"
     "../extensions/open-cluster-management/generator-policy"
     "../extensions/open-cluster-management/generator-search"
+    "../extensions/open-virtual-networking/generator-v1"
 )
 
 declare -a extensionModuleParents=(
