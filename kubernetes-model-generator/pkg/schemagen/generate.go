@@ -630,8 +630,6 @@ func (g *schemaGenerator) isClusterScopedResource(t reflect.Type) bool {
 		"k8s.io/api/flowcontrol/v1beta3/PriorityLevelConfiguration",
 		"k8s.io/api/apiserverinternal/v1alpha1/StorageVersion",
 		"k8s.io/api/resource/v1alpha2/ResourceClass",
-                "github.com/ovn-org/ovn-kubernetes/go-controller/pkg/crd/egressip/v1/EgressIP",
-                "github.com/ovn-org/ovn-kubernetes/go-controller/pkg/crd/adminpolicybasedroute/v1/AdminPolicyBasedExternalRoute",
 		"github.com/openshift/api/authorization/v1/ClusterRole",
 		"github.com/openshift/api/authorization/v1/ClusterRoleBinding",
 		"github.com/openshift/api/authorization/v1/ResourceAccessReview",
