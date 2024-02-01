@@ -626,6 +626,11 @@
         <artifactId>open-virtual-networking-model-v1</artifactId>
         <version>${project.version}</version>
       </dependency>
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>open-virtual-networking-client</artifactId>
+        <version>${project.version}</version>
+      </dependency>
 
       <dependency>
         <groupId>io.fabric8</groupId>

@@ -14,7 +14,7 @@
 #### Dependency Upgrade
 
 #### New Features
-* Fix #5636: Add model for Kubernetes Open Virtual Networking `k8s.ovn.org/v1` 
+* Fix #5636: Add new extension `open-virtual-networking` to manage resources in `k8s.ovn.org/v1` API group.
 
 #### _**Note**_: Breaking changes
 

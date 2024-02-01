@@ -35,6 +35,8 @@
 
   <modules>
     <module>model-v1</module>
+    <module>client</module>
+    <module>tests</module>
   </modules>
 
 </project>
