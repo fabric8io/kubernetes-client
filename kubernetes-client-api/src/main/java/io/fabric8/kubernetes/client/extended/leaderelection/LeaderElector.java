@@ -51,6 +51,7 @@ public class LeaderElector {
   private final AtomicReference<LeaderElectionRecord> observedRecord = new AtomicReference<>();
   private final AtomicReference<LocalDateTime> observedTime = new AtomicReference<>();
   private final Executor executor;
+  private boolean started;
   private boolean stopped;
 
   public LeaderElector(KubernetesClient kubernetesClient, LeaderElectionConfig leaderElectionConfig, Executor executor) {
@@ -60,7 +61,7 @@ public class LeaderElector {
   }
 
   /**
-   * Starts the leader election loop
+   * Starts the leader election loop. May only be run once.
    * <p>
    * {@link #start()} is preferred as it does not hold a thread.
    */
@@ -78,11 +79,17 @@ public class LeaderElector {
 
   /**
    * Start a leader elector. The future may be cancelled to stop
-   * the leader elector.
+   * the leader elector. May only be run once.
    *
    * @return the future
    */
   public CompletableFuture<?> start() {
+    synchronized (this) {
+      if (started || stopped) {
+        throw new IllegalStateException("LeaderElector may only be used once, please create another instance");
+      }
+      started = true;
+    }
     LOGGER.debug("Leader election started");
     CompletableFuture<Void> result = new CompletableFuture<>();
 
@@ -178,7 +185,11 @@ public class LeaderElector {
           LOGGER.debug("Failed to acquire lease '{}' retrying...", lockDescription);
         }
       } catch (KubernetesClientException exception) {
-        LOGGER.error("Exception occurred while acquiring lock '{} retrying...'", lockDescription, exception);
+        if (exception.getCode() == HttpURLConnection.HTTP_CONFLICT) {
+          LOGGER.debug("Conflict while acquiring lock '{} retrying...'", lockDescription, exception);
+        } else {
+          LOGGER.warn("Exception occurred while acquiring lock '{} retrying...'", lockDescription, exception);
+        }
       }
     }, () -> jitter(leaderElectionConfig.getRetryPeriod(), JITTER_FACTOR).toMillis(), executor);
   }
@@ -202,7 +213,9 @@ public class LeaderElector {
           completion.complete(null);
         }
       } catch (KubernetesClientException exception) {
-        LOGGER.debug("Exception occurred while renewing lock: {}", exception.getMessage(), exception);
+        // this is always a warning as conflict is not expected for renewal, however it is possible
+        // should some other actor make an unrelated change to the lock
+        LOGGER.warn("Exception occurred while acquiring lock '{} retrying...'", lockDescription, exception);
       }
     }, () -> leaderElectionConfig.getRetryPeriod().toMillis(), executor);
   }
