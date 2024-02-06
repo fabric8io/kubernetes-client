@@ -20,7 +20,7 @@ all: build
 
 build: gobuild
 	pushd ../model-v1beta1 && \
-	mvn -Pgenerate clean install -DskipTests -o && \
+	mvn -Pgenerate clean install -DskipTests && \
   popd
 
 gobuild:
