@@ -113,15 +113,6 @@
   <build>
     <plugins>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-release-plugin</artifactId>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-gpg-plugin</artifactId>
-      </plugin>
-
-      <plugin>
         <groupId>io.sundr</groupId>
         <artifactId>sundr-maven-plugin</artifactId>
         <version>${sundrio.version}</version>

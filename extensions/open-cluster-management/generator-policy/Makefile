@@ -20,7 +20,7 @@ all: build
 
 build: gobuild
 	pushd ../model-policy && \
-	mvn -Pgenerate clean install -DskipTests -o && \
+	mvn -Pgenerate clean install -DskipTests && \
 	popd
 
 gobuild:

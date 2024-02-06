@@ -20,7 +20,7 @@ all: build
 
 build: gobuild
 	pushd ../model-observability && \
-	mvn -Pgenerate clean install -DskipTests -o && \
+	mvn -Pgenerate clean install -DskipTests && \
 	popd
 
 gobuild:
