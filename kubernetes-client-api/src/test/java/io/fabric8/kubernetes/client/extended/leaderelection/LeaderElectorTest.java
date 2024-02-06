@@ -46,6 +46,7 @@ import static io.fabric8.kubernetes.client.extended.leaderelection.LeaderElector
 import static io.fabric8.kubernetes.client.extended.leaderelection.LeaderElector.now;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -98,7 +99,8 @@ class LeaderElectorTest {
       return null;
     }).when(mockedLock).update(any(), any());
     // When
-    executor.submit(() -> new LeaderElector(mock(NamespacedKubernetesClient.class), lec, CommonThreadPool.get()).run());
+    LeaderElector le = new LeaderElector(mock(NamespacedKubernetesClient.class), lec, CommonThreadPool.get());
+    executor.submit(le::run);
     signal.await(10, TimeUnit.SECONDS);
     // Then
     assertEquals(0, signal.getCount());
@@ -107,6 +109,9 @@ class LeaderElectorTest {
     verify(mockedLock, atLeast(2)).update(any(), any());
     verify(lec.getLeaderCallbacks(), atLeast(1)).onNewLeader(eq("1337"));
     verify(lec.getLeaderCallbacks(), times(1)).onStartLeading();
+    // should not run a second time
+    assertThrows(IllegalStateException.class, le::run);
+
     executor.shutdownNow();
     executor.awaitTermination(5, TimeUnit.SECONDS);
     verify(lec.getLeaderCallbacks(), times(1)).onStopLeading();
