@@ -177,10 +177,23 @@ The alternative to replace is either serverSideApply - with the same caveats as 
 
 ### What credentials does the client use for authentication?
 
-Kubernetes supports [service account automounting](https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/), a feature that automatically provisions the authentication information of a namespace's default service account in every pod. As part of the auto-configuration process. This kubernetes client integrates with automounting and will use these credentials by default if available.
+By default, KubernetesClient tries to look up for Kubernetes Cluster information in the following sources:
+- Kube Config file (`~/.kube/config` or `kubeconfig` environment variable)
+- Currently mounted ServiceAccount inside Pod (`/var/run/secrets/kubernetes.io/serviceaccount/`)
+- System properties
+- Environment variables
 
-This can be inappropriate in a few cases, such as when you wish to perform kubernetes operation on behalf of third parties in their namespaces. You can disable automounting on the service account object, or on the pod object, as explained [here](https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/#opt-out-of-api-credential-automounting). You can also disable the kubernetes client automatic configuration.
+Be aware that the cluster autoconfiguration sets up more than just authentication information; see the implementation of `io.fabric8.kubernetes.client.Config#configFromSysPropsOrEnvVars` for details.
 
+#### Running KubernetesClient from outside of a Kubernetes cluster:
+When running KubernetesClient outside a Kubernetes cluster, KubernetesClient tries looking into user's `~/.kube/config` (or file set by `kubeconfig` environment variable), System properties and Environment variables for fetching Kubernetes Cluster information.
+
+#### Running KubernetesClient from within a Pod in Kubernetes cluster:
+Kubernetes supports [service account automounting](https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/), a feature that automatically provisions the authentication information of a namespace's default service account in every pod. As part of the auto-configuration process. Fabric8 Kubernetes Client integrates with auto mounting and will use these credentials by default if available.
+
+This can be inappropriate in a few cases, such as when you wish to perform kubernetes operation on behalf of third parties in their namespaces. You can disable auto mounting on the service account object, or on the pod object, as explained [here](https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/#opt-out-of-api-credential-automounting). You can also disable the kubernetes client automatic configuration.
+
+#### Disable KubernetesClient automatic configuration:
 In order to disable the kubernetes client automatic configuration, you can use any of the following mechanisms:
 
 * Set the system property `kubernetes.disable.autoConfig`
@@ -194,5 +207,3 @@ var client = new KubernetesClientBuilder(Config.empty())
                      // etc.
                      .build()
 ```
-
-Be aware that the cluster autoconfiguration sets up more than just authentication information; see the implementation of `io.fabric8.kubernetes.client.Config#configFromSysPropsOrEnvVars` for details.
