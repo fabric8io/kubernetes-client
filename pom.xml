@@ -1167,36 +1167,40 @@
         <version>4.3</version>
         <configuration>
           <aggregate>true</aggregate>
-          <header>header.txt</header>
           <properties>
             <owner>Red Hat, Inc.</owner>
           </properties>
-          <excludes>
-            <exclude>**/.idea</exclude>
-            <exclude>.idea</exclude>
-            <exclude>.editorconfig</exclude>
-            <exclude>license.txt</exclude>
-            <exclude>**/test-kubeconfig</exclude>
-            <exclude>**/src/generated/java/**/*</exclude>
-            <exclude>**/io/fabric8/kubernetes/client/lib/**/*.java</exclude>
-            <exclude>kubernetes-model/vendor/**/*</exclude>
-            <exclude>kubernetes-model/generate</exclude>
-            <exclude>kubernetes-model/.openshift-version</exclude>
-            <exclude>kubernetes-model/glide.*</exclude>
-            <exclude>kubernetes-model/Gopkg.*</exclude>
-            <exclude>extensions/**/vendor/**/*</exclude>
-            <exclude>**/go.mod</exclude>
-            <exclude>**/go.sum</exclude>
-            <exclude>kubernetes-client/src/test/resources/**/*</exclude>
-            <exclude>kubernetes-client/src/test/resources/mockito-extensions/*</exclude>
-            <exclude>**/src/test/resources/ssl/*</exclude>
-            <exclude>**/src/test/resources/io/fabric8/java/generator/approvals/*.*.approved.txt</exclude>
-            <exclude>**/it/**/expected/**/*.expected</exclude>
-            <exclude>Jenkinsfile</exclude>
-            <exclude>.mvn/**/*</exclude>
-            <exclude>mvnw</exclude>
-            <exclude>mvnw.cmd</exclude>
-          </excludes>
+          <licenseSets>
+            <licenseSet>
+              <header>header.txt</header>
+              <excludes>
+                <exclude>**/.idea</exclude>
+                <exclude>.idea</exclude>
+                <exclude>.editorconfig</exclude>
+                <exclude>license.txt</exclude>
+                <exclude>**/test-kubeconfig</exclude>
+                <exclude>**/src/generated/java/**/*</exclude>
+                <exclude>**/io/fabric8/kubernetes/client/lib/**/*.java</exclude>
+                <exclude>kubernetes-model/vendor/**/*</exclude>
+                <exclude>kubernetes-model/generate</exclude>
+                <exclude>kubernetes-model/.openshift-version</exclude>
+                <exclude>kubernetes-model/glide.*</exclude>
+                <exclude>kubernetes-model/Gopkg.*</exclude>
+                <exclude>extensions/**/vendor/**/*</exclude>
+                <exclude>**/go.mod</exclude>
+                <exclude>**/go.sum</exclude>
+                <exclude>kubernetes-client/src/test/resources/**/*</exclude>
+                <exclude>kubernetes-client/src/test/resources/mockito-extensions/*</exclude>
+                <exclude>**/src/test/resources/ssl/*</exclude>
+                <exclude>**/src/test/resources/io/fabric8/java/generator/approvals/*.*.approved.txt</exclude>
+                <exclude>**/it/**/expected/**/*.expected</exclude>
+                <exclude>Jenkinsfile</exclude>
+                <exclude>.mvn/**/*</exclude>
+                <exclude>mvnw</exclude>
+                <exclude>mvnw.cmd</exclude>
+              </excludes>
+            </licenseSet>
+          </licenseSets>
           <mapping>
             <go>JAVADOC_STYLE</go>
             <svg>XML_STYLE</svg>
