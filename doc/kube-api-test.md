@@ -22,7 +22,7 @@ Include dependency:
 ### In Unit Tests
 
 See sample unit
-test [here](https://github.com/csviri/kubernetes-client/blob/main/junit/kube-api-test/core/src/test/java/io/fabric8/kubeapitest/sample/JUnitExtensionSimpleCaseTest.java)
+test [here](https://github.com/fabric8io/kubernetes-client/blob/main/junit/kube-api-test/core/src/test/java/io/fabric8/kubeapitest/sample/JUnitExtensionSimpleCaseTest.java)
 
 ```java
 
@@ -50,10 +50,10 @@ class JUnitExtensionSimpleCaseTest {
 ### Public API
 
 The underlying API can be used directly.
-See [KubeApiServer](https://github.com/csviri/kubernetes-client/blob/main/junit/kube-api-test/core/src/main/java/io/fabric8/kubeapitest/KubeAPIServer.java#L28-L28)
+See [KubeApiServer](https://github.com/fabric8io/kubernetes-client/blob/main/junit/kube-api-test/core/src/main/java/io/fabric8/kubeapitest/KubeAPIServer.java#L28-L28)
 
 See
-it's [usage in a test](https://github.com/csviri/kubernetes-client/blob/main/junit/kube-api-test/core/src/test/java/io/fabric8/kubeapitest/sample/KubeApiServerTest.java#L31-L31).
+it's [usage in a test](https://github.com/fabric8io/kubernetes-client/blob/main/junit/kube-api-test/core/src/test/java/io/fabric8/kubeapitest/sample/KubeApiServerTest.java#L31-L31).
 
 ```java
 class KubeApiServerTest {
@@ -90,7 +90,7 @@ Use dependency:
 </dependency>
 ```
 
-The client can be directly injected to the test. See sample test [here](https://github.com/csviri/kubernetes-client/blob/main/junit/kube-api-test/client-inject/src/test/java/io/fabric8/kubeapitest/junit/sample/JUnitFabric8ClientInjectionTest.java#L28-L28).
+The client can be directly injected to the test. See sample test [here](https://github.com/fabric8io/kubernetes-client/blob/main/junit/kube-api-test/client-inject/src/test/java/io/fabric8/kubeapitest/junit/sample/JUnitFabric8ClientInjectionTest.java#L28-L28).
 
 ```java
 
@@ -105,18 +105,18 @@ class JUnitFabric8ClientInjectionTest {
 
 ### Configuration Options
 
-See available configuration options documented in [KubeAPIServerConfig](https://github.com/csviri/kubernetes-client/blob/main/junit/kube-api-test/core/src/main/java/io/fabric8/kubeapitest/KubeAPIServerConfig.java)
+See available configuration options documented in [KubeAPIServerConfig](https://github.com/fabric8io/kubernetes-client/blob/main/junit/kube-api-test/core/src/main/java/io/fabric8/kubeapitest/KubeAPIServerConfig.java)
 
-Not all those properties can be overridden using [`@EnableKubeAPIServer`](https://github.com/csviri/kubernetes-client/blob/main/junit/kube-api-test/core/src/main/java/io/fabric8/kubeapitest/junit/EnableKubeAPIServer.java)
+Not all those properties can be overridden using [`@EnableKubeAPIServer`](https://github.com/fabric8io/kubernetes-client/blob/main/junit/kube-api-test/core/src/main/java/io/fabric8/kubeapitest/junit/EnableKubeAPIServer.java)
 annotation, since might not make sense to do it for an individual test case. However, those can be passed to
-[`KubeApiServer`](https://github.com/csviri/kubernetes-client/blob/main/junit/kube-api-test/core/src/main/java/io/fabric8/kubeapitest/KubeAPIServer.java)
-and also configured globally using environment variables, see [KubeAPIServerConfigBuilder](https://github.com/csviri/kubernetes-client/blob/main/junit/kube-api-test/core/src/main/java/io/fabric8/kubeapitest/KubeAPIServerConfigBuilder.java)
+[`KubeApiServer`](https://github.com/fabric8io/kubernetes-client/blob/main/junit/kube-api-test/core/src/main/java/io/fabric8/kubeapitest/KubeAPIServer.java)
+and also configured globally using environment variables, see [KubeAPIServerConfigBuilder](https://github.com/fabric8io/kubernetes-client/blob/main/junit/kube-api-test/core/src/main/java/io/fabric8/kubeapitest/KubeAPIServerConfigBuilder.java)
 
 
 ### Updating kube config file
 
 In general, it is not advised but if instructed kube config file (~/kube/config) is updated by the framework.
-See related property in [`@EnableKubeAPIServer`](https://github.com/csviri/kubernetes-client/blob/main/junit/kube-api-test/core/src/main/java/io/fabric8/kubeapitest/junit/EnableKubeAPIServer.java#L42-L42)
+See related property in [`@EnableKubeAPIServer`](https://github.com/fabric8io/kubernetes-client/blob/main/junit/kube-api-test/core/src/main/java/io/fabric8/kubeapitest/junit/EnableKubeAPIServer.java#L42-L42)
 annotation. The config file is automatically cleaned up on stop.
 
 ### How does it work
@@ -150,4 +150,4 @@ and/or
 In general, it is a best practice to use additional standard frameworks to implement Kubernetes webhooks,
 like [kubernetes-webooks-framework](https://github.com/java-operator-sdk/kubernetes-webooks-framework)
 with Quarkus or Spring. However, we demonstrate how it works
-in [this test](https://github.com/csviri/kubernetes-client/blob/main/junit/kube-api-test/core/src/test/java/io/fabric8/kubeapitest/sample/KubernetesMutationHookHandlingTest.java#L72-L72)
+in [this test](https://github.com/fabric8io/kubernetes-client/blob/main/junit/kube-api-test/core/src/test/java/io/fabric8/kubeapitest/sample/KubernetesMutationHookHandlingTest.java#L72-L72)
