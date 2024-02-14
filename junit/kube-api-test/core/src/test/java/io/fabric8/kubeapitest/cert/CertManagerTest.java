@@ -15,34 +15,22 @@
  */
 package io.fabric8.kubeapitest.cert;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
-import static io.fabric8.kubeapitest.Utils.cleanDirectory;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class CertManagerTest {
 
-  File certsDir = new File("target", "certs");
-  CertManager certManager = new CertManager(certsDir.getPath());
-
-  @BeforeEach
-  void cleanup() throws IOException {
-    if (!certsDir.mkdirs()) {
-      throw new IllegalStateException("Cannot create test dir");
-    }
-    if (certsDir.exists()) {
-      cleanDirectory(certsDir);
-    }
-  }
+  @TempDir
+  File certsDir;
 
   @Test
-  void generatesCertificates() throws IOException {
-
+  void generatesCertificates() {
+    CertManager certManager = new CertManager(certsDir.getPath());
     certManager.createCertificatesIfNeeded();
 
     var files = List.of(certsDir.list());
