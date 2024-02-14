@@ -26,10 +26,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
 
 public class Utils {
+
   public static final String WILDCARD_SUFFIX = ".*";
+  private static final Random RANDOM = new Random();
 
   private Utils() {
   }
@@ -73,12 +76,21 @@ public class Utils {
   }
 
   public static int findFreePort() {
-    try (ServerSocket socket = new ServerSocket(0)) {
-      return socket.getLocalPort();
-    } catch (IOException e) {
+    // 100 attempts should be enough
+    return findFreePort(49152, 65535, 100);
+  }
 
+  public static int findFreePort(int min, int max, int attempts) {
+    for (int i = 0; i < attempts; i++) {
+      int port = min + RANDOM.nextInt(max - min + 1);
+      try (ServerSocket ignored = new ServerSocket(port)) {
+        return port;
+      } catch (Exception e) {
+        // NOOP
+      }
     }
-    return -1;
+    throw new IllegalStateException(
+        "Cannot find a free random port in the range [" + min + ", " + max + "] after " + attempts + " attempts");
   }
 
   public static boolean isWildcardVersion(String version) {
@@ -94,14 +106,6 @@ public class Utils {
       stream.sorted(Comparator.reverseOrder())
           .map(Path::toFile)
           .forEach(File::delete);
-    }
-  }
-
-  public static void cleanDirectory(File file) throws IOException {
-    deleteDirectory(file);
-    var res = file.mkdirs();
-    if (!res) {
-      throw new KubeAPITestException("Cannot create dir: " + file.getPath());
     }
   }
 
