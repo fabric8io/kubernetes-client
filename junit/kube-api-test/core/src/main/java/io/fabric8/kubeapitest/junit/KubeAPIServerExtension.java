@@ -84,7 +84,7 @@ public class KubeAPIServerExtension
           log.warn(
               "Neither kube config file will be updated or client info will be injected into the test. "
                   +
-                  "This is probably a miss configuration since server won't be easily accessible.");
+                  "This is probably a misconfiguration since server won't be easily accessible.");
         }
         startApiServer(a);
       });
