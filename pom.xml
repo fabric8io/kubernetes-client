@@ -127,6 +127,8 @@
     <snakeyaml.version>2.7</snakeyaml.version>
     <snakeyaml.bundle.version>2.2</snakeyaml.bundle.version> <!-- Transitive Jackson -->
     <bouncycastle.version>1.77</bouncycastle.version>
+    <bc-fips.version>1.0.2.4</bc-fips.version>
+    <bcpkix-fips.version>1.0.7</bcpkix-fips.version>
     <commons-compress.version>1.25.0</commons-compress.version>
     <commons-io.version>2.15.1</commons-io.version> <!-- Required by Gradle Testing Toolkit -->
     <guava.version>33.0.0-jre</guava.version> <!-- Required by Gradle Testing Toolkit -->
@@ -221,6 +223,7 @@
     <module>java-generator</module>
     <module>httpclient-okhttp</module>
     <module>httpclient-vertx</module>
+    <module>kubernetes-client-deps-compatibility-tests</module>
   </modules>
 
   <dependencyManagement>
