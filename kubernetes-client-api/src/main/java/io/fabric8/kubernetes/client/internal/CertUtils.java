@@ -184,6 +184,9 @@ public class CertUtils {
         @Override
         public PrivateKey call() throws IOException {
           if (Security.getProvider("BC") == null && Security.getProvider("BCFIPS") == null) {
+            // org.bouncycastle.jce.provider.BouncyCastleProvider needs to be wrapped with a Callable otherwise
+            // runtime won't even evaluate this whole block. This happens even when above condition testing if
+            // block evaluates to false
             new Callable<String>() {
               @Override
               public String call() {
