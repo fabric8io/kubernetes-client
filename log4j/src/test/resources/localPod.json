@@ -9,7 +9,7 @@
       "pod-template-hash": "584f99476d"
     },
     "name": "sampleapp-584f99476d-mnrp4",
-    "namespace": "my-namespace",
+    "namespace": "test",
     "ownerReferences": [
       {
         "apiVersion": "apps/v1",

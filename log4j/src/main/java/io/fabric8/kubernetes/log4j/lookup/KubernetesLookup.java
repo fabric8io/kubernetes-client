@@ -15,8 +15,10 @@ package io.fabric8.kubernetes.log4j.lookup;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerStatus;
 import io.fabric8.kubernetes.api.model.Namespace;
+import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.Pod;
-import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.api.model.PodSpec;
+import io.fabric8.kubernetes.api.model.PodStatus;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -26,10 +28,10 @@ import org.apache.logging.log4j.core.lookup.AbstractLookup;
 import org.apache.logging.log4j.core.lookup.StrLookup;
 import org.apache.logging.log4j.status.StatusLogger;
 import org.apache.logging.log4j.util.LoaderUtil;
-import org.apache.logging.log4j.util.Strings;
 
+import java.net.InetAddress;
 import java.net.URL;
-import java.nio.file.Paths;
+import java.net.UnknownHostException;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.locks.Lock;
@@ -126,7 +128,9 @@ public class KubernetesLookup extends AbstractLookup {
   private static final String HOSTNAME = "HOSTNAME";
   private static final String SPRING_ENVIRONMENT_KEY = "SpringEnvironment";
 
-  /** Supported keys */
+  /**
+   * Supported keys
+   */
   private static final String ACCOUNT_NAME = "accountName";
   private static final String ANNOTATIONS = "annotations";
   private static final String CONTAINER_ID = "containerId";
@@ -179,7 +183,7 @@ public class KubernetesLookup extends AbstractLookup {
           KubernetesClient client = null;
           info.isSpringActive = isSpringActive;
           if (pod == null) {
-            client = ClientBuilder.createClient();
+            client = createClient();
             if (client != null) {
               pod = getCurrentPod(client);
               info.masterUrl = client.getMasterUrl();
@@ -194,55 +198,72 @@ public class KubernetesLookup extends AbstractLookup {
           } else {
             info.masterUrl = masterUrl;
           }
+          if (namespace != null) {
+            final ObjectMeta namespaceMetadata = namespace.getMetadata();
+            if (namespaceMetadata != null) {
+              info.namespaceAnnotations = namespaceMetadata.getAnnotations();
+              info.namespaceId = namespaceMetadata.getUid();
+              info.namespaceLabels = namespaceMetadata.getLabels();
+            }
+          }
           if (pod != null) {
-            info.namespace = pod.getMetadata().getNamespace();
-            if (namespace != null) {
-              info.namespaceId = namespace.getMetadata().getUid();
-              info.namespaceAnnotations = namespace.getMetadata().getAnnotations();
-              info.namespaceLabels = namespace.getMetadata().getLabels();
+            final ObjectMeta podMetadata = pod.getMetadata();
+            if (podMetadata != null) {
+              info.annotations = podMetadata.getAnnotations();
+              info.labels = podMetadata.getLabels();
+              info.namespace = podMetadata.getNamespace();
+              info.podId = podMetadata.getUid();
+              info.podName = podMetadata.getName();
             }
-            info.hostName = pod.getSpec().getNodeName();
-            info.annotations = pod.getMetadata().getAnnotations();
-            info.accountName = pod.getSpec().getServiceAccountName();
-            info.hostIp = pod.getStatus().getHostIP();
-            info.labels = pod.getMetadata().getLabels();
-            info.podId = pod.getMetadata().getUid();
-            info.podIp = pod.getStatus().getPodIP();
-            info.podName = pod.getMetadata().getName();
-            ContainerStatus containerStatus = null;
-            final List<ContainerStatus> statuses = pod.getStatus().getContainerStatuses();
-            if (statuses.size() == 1) {
-              containerStatus = statuses.get(0);
-            } else if (statuses.size() > 1) {
-              final String containerId = ContainerUtil.getContainerId();
-              if (containerId != null) {
-                containerStatus = statuses.stream()
-                    .filter(cs -> cs.getContainerID().contains(containerId))
-                    .findFirst()
-                    .orElse(null);
-              }
-            }
+
             final String containerName;
-            if (containerStatus != null) {
-              info.containerId = containerStatus.getContainerID();
-              info.imageId = containerStatus.getImageID();
-              containerName = containerStatus.getName();
+            final PodStatus podStatus = pod.getStatus();
+            if (podStatus != null) {
+              info.hostIp = podStatus.getHostIP();
+              info.podIp = podStatus.getPodIP();
+
+              ContainerStatus containerStatus = null;
+              final List<ContainerStatus> statuses = podStatus.getContainerStatuses();
+              if (statuses.size() == 1) {
+                containerStatus = statuses.get(0);
+              } else if (statuses.size() > 1) {
+                final String containerId = ContainerUtil.getContainerId();
+                if (containerId != null) {
+                  containerStatus = statuses.stream()
+                      .filter(cs -> cs.getContainerID().contains(containerId))
+                      .findFirst()
+                      .orElse(null);
+                }
+              }
+              if (containerStatus != null) {
+                info.containerId = containerStatus.getContainerID();
+                info.imageId = containerStatus.getImageID();
+                containerName = containerStatus.getName();
+              } else {
+                containerName = null;
+              }
             } else {
               containerName = null;
             }
-            Container container = null;
-            final List<Container> containers = pod.getSpec().getContainers();
-            if (containers.size() == 1) {
-              container = containers.get(0);
-            } else if (containers.size() > 1 && containerName != null) {
-              container = containers.stream()
-                  .filter(c -> c.getName().equals(containerName))
-                  .findFirst()
-                  .orElse(null);
-            }
-            if (container != null) {
-              info.containerName = container.getName();
-              info.imageName = container.getImage();
+
+            final PodSpec podSpec = pod.getSpec();
+            if (podSpec != null) {
+              info.hostName = podSpec.getNodeName();
+              info.accountName = podSpec.getServiceAccountName();
+              Container container = null;
+              final List<Container> containers = podSpec.getContainers();
+              if (containers.size() == 1) {
+                container = containers.get(0);
+              } else if (containers.size() > 1 && containerName != null) {
+                container = containers.stream()
+                    .filter(c -> c.getName().equals(containerName))
+                    .findFirst()
+                    .orElse(null);
+              }
+              if (container != null) {
+                info.containerName = container.getName();
+                info.imageName = container.getImage();
+              }
             }
 
             kubernetesInfo = info;
@@ -254,20 +275,25 @@ public class KubernetesLookup extends AbstractLookup {
     }
   }
 
+  // Used for testing
+  protected KubernetesClient createClient() {
+    return ClientBuilder.createClient();
+  }
+
   @Override
   public String lookup(final LogEvent event, final String key) {
     if (kubernetesInfo == null) {
       return null;
     }
     if (key.startsWith(LABELS_PREFIX)) {
-      return kubernetesInfo.labels.get(key.substring(LABELS_PREFIX.length()));
+      return kubernetesInfo.labels != null ? kubernetesInfo.labels.get(key.substring(LABELS_PREFIX.length())) : null;
     }
     switch (key) {
       case ACCOUNT_NAME: {
         return kubernetesInfo.accountName;
       }
       case ANNOTATIONS: {
-        return kubernetesInfo.annotations.toString();
+        return kubernetesInfo.annotations != null ? kubernetesInfo.annotations.toString() : null;
       }
       case CONTAINER_ID: {
         return kubernetesInfo.containerId;
@@ -282,19 +308,19 @@ public class KubernetesLookup extends AbstractLookup {
         return kubernetesInfo.hostIp;
       }
       case LABELS: {
-        return kubernetesInfo.labels.toString();
+        return kubernetesInfo.labels != null ? kubernetesInfo.labels.toString() : null;
       }
       case MASTER_URL: {
-        return kubernetesInfo.masterUrl.toString();
+        return kubernetesInfo.masterUrl != null ? kubernetesInfo.masterUrl.toString() : null;
       }
       case NAMESPACE_ANNOTATIONS: {
-        return kubernetesInfo.namespaceAnnotations.toString();
+        return kubernetesInfo.namespaceAnnotations != null ? kubernetesInfo.namespaceAnnotations.toString() : null;
       }
       case NAMESPACE_ID: {
         return kubernetesInfo.namespaceId;
       }
       case NAMESPACE_LABELS: {
-        return kubernetesInfo.namespaceLabels.toString();
+        return kubernetesInfo.namespaceLabels != null ? kubernetesInfo.namespaceLabels.toString() : null;
       }
       case NAMESPACE_NAME: {
         return kubernetesInfo.namespace;
@@ -322,14 +348,14 @@ public class KubernetesLookup extends AbstractLookup {
   /**
    * For unit testing only.
    */
-  void clearInfo() {
+  static void clearInfo() {
     kubernetesInfo = null;
   }
 
   private Pod getCurrentPod(final KubernetesClient kubernetesClient) {
-    final String hostName = System.getenv(HOSTNAME);
+    final String hostName = getHostName();
     try {
-      if (isServiceAccount() && Strings.isNotBlank(hostName)) {
+      if (hostName != null && !hostName.isEmpty()) {
         return kubernetesClient.pods().withName(hostName).get();
       }
     } catch (Throwable t) {
@@ -338,11 +364,14 @@ public class KubernetesLookup extends AbstractLookup {
     return null;
   }
 
-  private boolean isServiceAccount() {
-    return Paths.get(Config.KUBERNETES_SERVICE_ACCOUNT_TOKEN_PATH).toFile().exists()
-        && Paths.get(Config.KUBERNETES_SERVICE_ACCOUNT_CA_CRT_PATH)
-            .toFile()
-            .exists();
+  static String getHostName() {
+    String hostName = null;
+    try {
+      hostName = InetAddress.getLocalHost().getHostName();
+    } catch (final UnknownHostException ignored) {
+      // NOP
+    }
+    return hostName != null && !"localhost".equals(hostName) ? hostName : System.getenv(HOSTNAME);
   }
 
   private boolean isSpringActive() {
