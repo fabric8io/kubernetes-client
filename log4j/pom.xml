@@ -25,13 +25,16 @@
   </parent>
 
   <artifactId>kubernetes-log4j</artifactId>
-  <packaging>jar</packaging>
+  <packaging>bundle</packaging>
   <name>Fabric8 :: Kubernetes :: Log4j Core components</name>
   <description>Provides a lookup to use Kubernetes attributes in a Log4j Core configuration.</description>
 
   <properties>
     <osgi.export>io.fabric8.kubernetes.log4j.*</osgi.export>
     <osgi.import>*</osgi.import>
+
+    <!-- Dependency versions -->
+    <log4j.version>2.22.1</log4j.version>
   </properties>
 
   <dependencies>
@@ -40,12 +43,9 @@
       <artifactId>kubernetes-client</artifactId>
     </dependency>
     <dependency>
-      <groupId>io.fabric8</groupId>
-      <artifactId>kubernetes-model-core</artifactId>
-    </dependency>
-    <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-core</artifactId>
+      <version>${log4j.version}</version>
     </dependency>
     <dependency>
       <groupId>org.assertj</groupId>
@@ -69,31 +69,4 @@
     </dependency>
   </dependencies>
 
-  <build>
-    <plugins>
-      <!-- Replace `jar:jar` execution with `bundle:bundle` -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>default-jar</id>
-            <phase>none</phase>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.felix</groupId>
-        <artifactId>maven-bundle-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>generate-osgi-bundle</id>
-            <goals>
-              <goal>bundle</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
 </project>
