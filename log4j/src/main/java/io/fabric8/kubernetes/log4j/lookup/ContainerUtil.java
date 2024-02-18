@@ -32,6 +32,9 @@ final class ContainerUtil {
   private static final Logger LOGGER = StatusLogger.getLogger();
   private static final int MAXLENGTH = 65;
 
+  private ContainerUtil() {
+  }
+
   /**
    * Returns the container id when running in a Docker container.
    *

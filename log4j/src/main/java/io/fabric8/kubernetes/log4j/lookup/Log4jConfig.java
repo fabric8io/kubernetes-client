@@ -1,17 +1,14 @@
 /**
  * Copyright (C) 2015 Red Hat, Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *         http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+ * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations under the License.
  */
 package io.fabric8.kubernetes.log4j.lookup;
 
@@ -23,9 +20,11 @@ import java.time.Duration;
 /**
  * Obtains properties used to configure the Kubernetes client.
  */
-class ClientProperties {
+final class Log4jConfig {
 
+  // Prefixes used in Log4j properties
   private static final String[] PREFIXES = { "log4j2.kubernetes.client.", "spring.cloud.kubernetes.client." };
+  // Recognized Log4j properties
   private static final String API_VERSION = "apiVersion";
   private static final String CA_CERT_FILE = "caCertFile";
   private static final String CA_CERT_DATA = "caCertData";
@@ -51,10 +50,11 @@ class ClientProperties {
   private static final String WATCH_RECONNECT_INTERVAL = "watchReconnectInterval";
   private static final String WATCH_RECONNECT_LIMIT = "watchReconnectLimit";
 
-  private final PropertiesUtil props = PropertiesUtil.getProperties();
+  private final PropertiesUtil props;
   private final Config base;
 
-  public ClientProperties(final Config base) {
+  public Log4jConfig(final PropertiesUtil props, final Config base) {
+    this.props = props;
     this.base = base;
   }
 
@@ -96,10 +96,7 @@ class ClientProperties {
 
   public int getConnectionTimeout() {
     final Duration timeout = props.getDurationProperty(PREFIXES, CONNECTION_TIMEOUT, null);
-    if (timeout != null) {
-      return (int) timeout.toMillis();
-    }
-    return base.getConnectionTimeout();
+    return timeout != null ? (int) timeout.toMillis() : base.getConnectionTimeout();
   }
 
   public String getHttpProxy() {
@@ -112,10 +109,7 @@ class ClientProperties {
 
   public int getLoggingInterval() {
     final Duration interval = props.getDurationProperty(PREFIXES, LOGGING_INTERVAL, null);
-    if (interval != null) {
-      return (int) interval.toMillis();
-    }
-    return base.getLoggingInterval();
+    return interval != null ? (int) interval.toMillis() : base.getLoggingInterval();
   }
 
   public String getMasterUrl() {
@@ -128,10 +122,7 @@ class ClientProperties {
 
   public String[] getNoProxy() {
     final String result = props.getStringProperty(PREFIXES, NO_PROXY, null);
-    if (result != null) {
-      return result.replace("\\s", "").split(",");
-    }
-    return base.getNoProxy();
+    return result != null ? result.replace("\\s", "").split(",") : base.getNoProxy();
   }
 
   public String getPassword() {
@@ -148,10 +139,7 @@ class ClientProperties {
 
   public int getRequestTimeout() {
     final Duration interval = props.getDurationProperty(PREFIXES, REQUEST_TIMEOUT, null);
-    if (interval != null) {
-      return (int) interval.toMillis();
-    }
-    return base.getRequestTimeout();
+    return interval != null ? (int) interval.toMillis() : base.getRequestTimeout();
   }
 
   public Boolean isTrustCerts() {
@@ -164,17 +152,11 @@ class ClientProperties {
 
   public int getWatchReconnectInterval() {
     final Duration interval = props.getDurationProperty(PREFIXES, WATCH_RECONNECT_INTERVAL, null);
-    if (interval != null) {
-      return (int) interval.toMillis();
-    }
-    return base.getWatchReconnectInterval();
+    return interval != null ? (int) interval.toMillis() : base.getWatchReconnectInterval();
   }
 
   public int getWatchReconnectLimit() {
     final Duration interval = props.getDurationProperty(PREFIXES, WATCH_RECONNECT_LIMIT, null);
-    if (interval != null) {
-      return (int) interval.toMillis();
-    }
-    return base.getWatchReconnectLimit();
+    return interval != null ? (int) interval.toMillis() : base.getWatchReconnectLimit();
   }
 }

@@ -16,7 +16,7 @@
       "pod-template-hash": "5ddfc4f9b8"
     },
     "name": "platform-forms-service-primary-5ddfc4f9b8-kfpzv",
-    "namespace": "default",
+    "namespace": "my-namespace",
     "ownerReferences": [
       {
         "apiVersion": "apps/v1",
