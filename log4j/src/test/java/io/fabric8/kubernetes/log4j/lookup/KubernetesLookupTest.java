@@ -14,14 +14,12 @@ package io.fabric8.kubernetes.log4j.lookup;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.kubernetes.api.model.Namespace;
-import io.fabric8.kubernetes.api.model.ObjectMeta;
+import io.fabric8.kubernetes.api.model.NamespaceBuilder;
 import io.fabric8.kubernetes.api.model.Pod;
 import org.apache.logging.log4j.core.lookup.StrLookup;
 import org.junit.jupiter.api.Test;
 
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -101,16 +99,11 @@ class KubernetesLookupTest {
   }
 
   private Namespace createNamespace() {
-    final Namespace namespace = new Namespace();
-    final ObjectMeta meta = new ObjectMeta();
-    final Map<String, String> annotations = new HashMap<>();
-    annotations.put("test", "name");
-    meta.setAnnotations(annotations);
-    final Map<String, String> labels = new HashMap<>();
-    labels.put("ns", "my-namespace");
-    meta.setLabels(labels);
-    meta.setUid("878f1143-df6d-47eb-81e4-d576597fca24");
-    namespace.setMetadata(meta);
-    return namespace;
+    return new NamespaceBuilder().editMetadata()
+        .addToAnnotations("test", "name")
+        .addToLabels("ns", "my-namespace")
+        .withUid("878f1143-df6d-47eb-81e4-d576597fca24")
+        .endMetadata()
+        .build();
   }
 }
