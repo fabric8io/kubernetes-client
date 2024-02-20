@@ -7,98 +7,28 @@ import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import io.fabric8.kubernetes.api.builder.Editable;
-import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.IntOrString;
-import io.fabric8.kubernetes.api.model.LabelSelector;
-import io.fabric8.kubernetes.api.model.LocalObjectReference;
-import io.fabric8.kubernetes.api.model.ObjectReference;
-import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
-import io.fabric8.kubernetes.api.model.PodTemplateSpec;
-import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.kubernetes.api.model.version.Info;
 import io.fabric8.openshift.api.model.clusterautoscaling.v1.ClusterAutoscaler;
 import io.fabric8.openshift.api.model.clusterautoscaling.v1.ClusterAutoscalerList;
 import io.fabric8.openshift.api.model.clusterautoscaling.v1beta1.MachineAutoscaler;
 import io.fabric8.openshift.api.model.clusterautoscaling.v1beta1.MachineAutoscalerList;
-import io.sundr.builder.annotations.Buildable;
-import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.Setter;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-    "apiVersion",
-    "kind",
-    "metadata",
-    "APIGroup",
-    "APIGroupList",
-    "BaseKubernetesList",
-    "ClusterAutoscaler",
-    "ClusterAutoscalerList",
-    "Info",
-    "ObjectMeta",
-    "Patch",
-    "Status",
-    "Time",
-    "TypeMeta",
-    "V1beta1MachineAutoscaler",
-    "V1beta1MachineAutoscalerList"
-})
-@ToString
-@EqualsAndHashCode
-@Setter
-@Accessors(prefix = {
-    "_",
-    ""
-})
-@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
-    @BuildableReference(LabelSelector.class),
-    @BuildableReference(Container.class),
-    @BuildableReference(PodTemplateSpec.class),
-    @BuildableReference(ResourceRequirements.class),
-    @BuildableReference(IntOrString.class),
-    @BuildableReference(ObjectReference.class),
-    @BuildableReference(LocalObjectReference.class),
-    @BuildableReference(PersistentVolumeClaim.class)
-})
 @Generated("jsonschema2pojo")
-public class ValidationSchema implements Editable<ValidationSchemaBuilder>
-{
+public class ValidationSchema {
 
-    @JsonProperty("APIGroup")
     private APIGroup aPIGroup;
-    @JsonProperty("APIGroupList")
     private APIGroupList aPIGroupList;
-    @JsonProperty("BaseKubernetesList")
     private KubernetesList baseKubernetesList;
-    @JsonProperty("ClusterAutoscaler")
     private ClusterAutoscaler clusterAutoscaler;
-    @JsonProperty("ClusterAutoscalerList")
     private ClusterAutoscalerList clusterAutoscalerList;
-    @JsonProperty("Info")
     private Info info;
-    @JsonProperty("ObjectMeta")
-    private io.fabric8.kubernetes.api.model.ObjectMeta objectMeta;
-    @JsonProperty("Patch")
+    private ObjectMeta objectMeta;
     private Patch patch;
-    @JsonProperty("Status")
     private Status status;
-    @JsonProperty("Time")
     private String time;
-    @JsonProperty("TypeMeta")
     private TypeMeta typeMeta;
-    @JsonProperty("V1beta1MachineAutoscaler")
     private MachineAutoscaler v1beta1MachineAutoscaler;
-    @JsonProperty("V1beta1MachineAutoscalerList")
     private MachineAutoscalerList v1beta1MachineAutoscalerList;
     @JsonIgnore
     private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
@@ -110,7 +40,7 @@ public class ValidationSchema implements Editable<ValidationSchemaBuilder>
     public ValidationSchema() {
     }
 
-    public ValidationSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, KubernetesList baseKubernetesList, ClusterAutoscaler clusterAutoscaler, ClusterAutoscalerList clusterAutoscalerList, Info info, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, Patch patch, Status status, String time, TypeMeta typeMeta, MachineAutoscaler v1beta1MachineAutoscaler, MachineAutoscalerList v1beta1MachineAutoscalerList) {
+    public ValidationSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, KubernetesList baseKubernetesList, ClusterAutoscaler clusterAutoscaler, ClusterAutoscalerList clusterAutoscalerList, Info info, ObjectMeta objectMeta, Patch patch, Status status, String time, TypeMeta typeMeta, MachineAutoscaler v1beta1MachineAutoscaler, MachineAutoscalerList v1beta1MachineAutoscalerList) {
         super();
         this.aPIGroup = aPIGroup;
         this.aPIGroupList = aPIGroupList;
@@ -188,12 +118,12 @@ public class ValidationSchema implements Editable<ValidationSchemaBuilder>
     }
 
     @JsonProperty("ObjectMeta")
-    public io.fabric8.kubernetes.api.model.ObjectMeta getObjectMeta() {
+    public ObjectMeta getObjectMeta() {
         return objectMeta;
     }
 
     @JsonProperty("ObjectMeta")
-    public void setObjectMeta(io.fabric8.kubernetes.api.model.ObjectMeta objectMeta) {
+    public void setObjectMeta(ObjectMeta objectMeta) {
         this.objectMeta = objectMeta;
     }
 
@@ -255,16 +185,6 @@ public class ValidationSchema implements Editable<ValidationSchemaBuilder>
     @JsonProperty("V1beta1MachineAutoscalerList")
     public void setV1beta1MachineAutoscalerList(MachineAutoscalerList v1beta1MachineAutoscalerList) {
         this.v1beta1MachineAutoscalerList = v1beta1MachineAutoscalerList;
-    }
-
-    @JsonIgnore
-    public ValidationSchemaBuilder edit() {
-        return new ValidationSchemaBuilder(this);
-    }
-
-    @JsonIgnore
-    public ValidationSchemaBuilder toBuilder() {
-        return edit();
     }
 
     @JsonAnyGetter

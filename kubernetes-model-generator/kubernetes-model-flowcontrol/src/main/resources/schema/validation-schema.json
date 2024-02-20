@@ -2576,7 +2576,7 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "flowcontrol.apiserver.k8s.io/v1",
+          "default": "flowcontrol.apiserver.k8s.io/v1beta1",
           "required": true
         },
         "kind": {
@@ -2589,12 +2589,12 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
-          "$ref": "#/definitions/kubernetes_flowcontrol_v1_FlowSchemaSpec",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1.FlowSchemaSpec"
+          "$ref": "#/definitions/kubernetes_flowcontrol_v1beta1_FlowSchemaSpec",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.FlowSchemaSpec"
         },
         "status": {
-          "$ref": "#/definitions/kubernetes_flowcontrol_v1_FlowSchemaStatus",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1.FlowSchemaStatus"
+          "$ref": "#/definitions/kubernetes_flowcontrol_v1beta1_FlowSchemaStatus",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.FlowSchemaStatus"
         }
       },
       "additionalProperties": true
@@ -2649,22 +2649,22 @@
     "flowschemaspec": {
       "properties": {
         "distinguisherMethod": {
-          "$ref": "#/definitions/kubernetes_flowcontrol_v1beta1_FlowDistinguisherMethod",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.FlowDistinguisherMethod"
+          "$ref": "#/definitions/kubernetes_flowcontrol_v1beta2_FlowDistinguisherMethod",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta2.FlowDistinguisherMethod"
         },
         "matchingPrecedence": {
           "type": "integer"
         },
         "priorityLevelConfiguration": {
-          "$ref": "#/definitions/kubernetes_flowcontrol_v1beta1_PriorityLevelConfigurationReference",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.PriorityLevelConfigurationReference"
+          "$ref": "#/definitions/kubernetes_flowcontrol_v1beta2_PriorityLevelConfigurationReference",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta2.PriorityLevelConfigurationReference"
         },
         "rules": {
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/kubernetes_flowcontrol_v1beta1_PolicyRulesWithSubjects",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.PolicyRulesWithSubjects"
+            "$ref": "#/definitions/kubernetes_flowcontrol_v1beta2_PolicyRulesWithSubjects",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta2.PolicyRulesWithSubjects"
           }
         }
       },
@@ -2676,8 +2676,8 @@
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/kubernetes_flowcontrol_v1beta3_FlowSchemaCondition",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta3.FlowSchemaCondition"
+            "$ref": "#/definitions/kubernetes_flowcontrol_v1beta1_FlowSchemaCondition",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.FlowSchemaCondition"
           }
         }
       },
@@ -2693,6 +2693,9 @@
     },
     "limitedprioritylevelconfiguration": {
       "properties": {
+        "assuredConcurrencyShares": {
+          "type": "integer"
+        },
         "borrowingLimitPercent": {
           "type": "integer"
         },
@@ -2700,11 +2703,8 @@
           "type": "integer"
         },
         "limitResponse": {
-          "$ref": "#/definitions/kubernetes_flowcontrol_v1_LimitResponse",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1.LimitResponse"
-        },
-        "nominalConcurrencyShares": {
-          "type": "integer"
+          "$ref": "#/definitions/kubernetes_flowcontrol_v1beta1_LimitResponse",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.LimitResponse"
         }
       },
       "additionalProperties": true
@@ -2712,8 +2712,8 @@
     "limitresponse": {
       "properties": {
         "queuing": {
-          "$ref": "#/definitions/kubernetes_flowcontrol_v1beta1_QueuingConfiguration",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.QueuingConfiguration"
+          "$ref": "#/definitions/kubernetes_flowcontrol_v1beta3_QueuingConfiguration",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta3.QueuingConfiguration"
         },
         "type": {
           "type": "string"
@@ -2891,23 +2891,23 @@
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/kubernetes_flowcontrol_v1beta3_NonResourcePolicyRule",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta3.NonResourcePolicyRule"
+            "$ref": "#/definitions/kubernetes_flowcontrol_v1_NonResourcePolicyRule",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1.NonResourcePolicyRule"
           }
         },
         "resourceRules": {
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/kubernetes_flowcontrol_v1beta3_ResourcePolicyRule",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta3.ResourcePolicyRule"
+            "$ref": "#/definitions/kubernetes_flowcontrol_v1_ResourcePolicyRule",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1.ResourcePolicyRule"
           }
         },
         "subjects": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/kubernetes_flowcontrol_v1beta3_Subject",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta3.Subject"
+            "$ref": "#/definitions/kubernetes_flowcontrol_v1_Subject",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1.Subject"
           }
         }
       },
@@ -2917,7 +2917,7 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "flowcontrol.apiserver.k8s.io/v1beta2",
+          "default": "flowcontrol.apiserver.k8s.io/v1",
           "required": true
         },
         "kind": {
@@ -2930,12 +2930,12 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
-          "$ref": "#/definitions/kubernetes_flowcontrol_v1beta2_PriorityLevelConfigurationSpec",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta2.PriorityLevelConfigurationSpec"
+          "$ref": "#/definitions/kubernetes_flowcontrol_v1_PriorityLevelConfigurationSpec",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1.PriorityLevelConfigurationSpec"
         },
         "status": {
-          "$ref": "#/definitions/kubernetes_flowcontrol_v1beta2_PriorityLevelConfigurationStatus",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta2.PriorityLevelConfigurationStatus"
+          "$ref": "#/definitions/kubernetes_flowcontrol_v1_PriorityLevelConfigurationStatus",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1.PriorityLevelConfigurationStatus"
         }
       },
       "additionalProperties": true
@@ -2965,14 +2965,14 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "flowcontrol.apiserver.k8s.io/v1beta2",
+          "default": "flowcontrol.apiserver.k8s.io/v1beta3",
           "required": true
         },
         "items": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/kubernetes_flowcontrol_v1beta2_PriorityLevelConfiguration",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta2.PriorityLevelConfiguration"
+            "$ref": "#/definitions/kubernetes_flowcontrol_v1beta3_PriorityLevelConfiguration",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta3.PriorityLevelConfiguration"
           }
         },
         "kind": {
@@ -2998,12 +2998,12 @@
     "prioritylevelconfigurationspec": {
       "properties": {
         "exempt": {
-          "$ref": "#/definitions/kubernetes_flowcontrol_v1beta3_ExemptPriorityLevelConfiguration",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta3.ExemptPriorityLevelConfiguration"
+          "$ref": "#/definitions/kubernetes_flowcontrol_v1beta2_ExemptPriorityLevelConfiguration",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta2.ExemptPriorityLevelConfiguration"
         },
         "limited": {
-          "$ref": "#/definitions/kubernetes_flowcontrol_v1beta3_LimitedPriorityLevelConfiguration",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta3.LimitedPriorityLevelConfiguration"
+          "$ref": "#/definitions/kubernetes_flowcontrol_v1beta2_LimitedPriorityLevelConfiguration",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta2.LimitedPriorityLevelConfiguration"
         },
         "type": {
           "type": "string"
@@ -3017,8 +3017,8 @@
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/kubernetes_flowcontrol_v1beta3_PriorityLevelConfigurationCondition",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta3.PriorityLevelConfigurationCondition"
+            "$ref": "#/definitions/kubernetes_flowcontrol_v1beta1_PriorityLevelConfigurationCondition",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.PriorityLevelConfigurationCondition"
           }
         }
       },
@@ -3214,19 +3214,19 @@
     "subject": {
       "properties": {
         "group": {
-          "$ref": "#/definitions/kubernetes_flowcontrol_v1beta1_GroupSubject",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.GroupSubject"
+          "$ref": "#/definitions/kubernetes_flowcontrol_v1beta2_GroupSubject",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta2.GroupSubject"
         },
         "kind": {
           "type": "string"
         },
         "serviceAccount": {
-          "$ref": "#/definitions/kubernetes_flowcontrol_v1beta1_ServiceAccountSubject",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.ServiceAccountSubject"
+          "$ref": "#/definitions/kubernetes_flowcontrol_v1beta2_ServiceAccountSubject",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta2.ServiceAccountSubject"
         },
         "user": {
-          "$ref": "#/definitions/kubernetes_flowcontrol_v1beta1_UserSubject",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.UserSubject"
+          "$ref": "#/definitions/kubernetes_flowcontrol_v1beta2_UserSubject",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta2.UserSubject"
         }
       },
       "additionalProperties": true

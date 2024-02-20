@@ -7,228 +7,75 @@ import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.version.Info;
-import io.sundr.builder.annotations.Buildable;
-import lombok.EqualsAndHashCode;
-import lombok.Setter;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-    "apiVersion",
-    "kind",
-    "metadata",
-    "APIGroup",
-    "APIGroupList",
-    "APIResource",
-    "APIResourceList",
-    "APIService",
-    "APIServiceList",
-    "Binding",
-    "ComponentStatus",
-    "ComponentStatusList",
-    "Condition",
-    "Config",
-    "ConfigMap",
-    "ConfigMapList",
-    "ContainerStatus",
-    "CreateOptions",
-    "DeleteOptions",
-    "EndpointPort",
-    "Endpoints",
-    "EndpointsList",
-    "EnvVar",
-    "Event",
-    "EventList",
-    "EventSeries",
-    "EventSource",
-    "GetOptions",
-    "GroupKind",
-    "GroupVersionKind",
-    "GroupVersionResource",
-    "Info",
-    "KubernetesList",
-    "LimitRangeList",
-    "ListOptions",
-    "MicroTime",
-    "Namespace",
-    "NamespaceList",
-    "Node",
-    "NodeList",
-    "ObjectMeta",
-    "Patch",
-    "PatchOptions",
-    "PersistentVolume",
-    "PersistentVolumeClaim",
-    "PersistentVolumeClaimList",
-    "PersistentVolumeList",
-    "PodExecOptions",
-    "PodList",
-    "PodTemplateList",
-    "Quantity",
-    "ReplicationControllerList",
-    "ResourceQuota",
-    "ResourceQuotaList",
-    "RootPaths",
-    "Secret",
-    "SecretList",
-    "ServiceAccount",
-    "ServiceAccountList",
-    "ServiceList",
-    "Status",
-    "Time",
-    "Toleration",
-    "TopologySelectorTerm",
-    "TypeMeta",
-    "UpdateOptions",
-    "WatchEvent"
-})
-@ToString
-@EqualsAndHashCode
-@Setter
-@Accessors(prefix = {
-    "_",
-    ""
-})
-@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("jsonschema2pojo")
-public class ValidationSchema implements Editable<ValidationSchemaBuilder>
-{
+public class ValidationSchema {
 
-    @JsonProperty("APIGroup")
     private APIGroup aPIGroup;
-    @JsonProperty("APIGroupList")
     private APIGroupList aPIGroupList;
-    @JsonProperty("APIResource")
     private APIResource aPIResource;
-    @JsonProperty("APIResourceList")
     private APIResourceList aPIResourceList;
-    @JsonProperty("APIService")
     private APIService aPIService;
-    @JsonProperty("APIServiceList")
     private APIServiceList aPIServiceList;
-    @JsonProperty("Binding")
     private Binding binding;
-    @JsonProperty("ComponentStatus")
     private ComponentStatus componentStatus;
-    @JsonProperty("ComponentStatusList")
     private ComponentStatusList componentStatusList;
-    @JsonProperty("Condition")
     private Condition condition;
-    @JsonProperty("Config")
     private Config config;
-    @JsonProperty("ConfigMap")
     private ConfigMap configMap;
-    @JsonProperty("ConfigMapList")
     private ConfigMapList configMapList;
-    @JsonProperty("ContainerStatus")
     private ContainerStatus containerStatus;
-    @JsonProperty("CreateOptions")
     private CreateOptions createOptions;
-    @JsonProperty("DeleteOptions")
     private DeleteOptions deleteOptions;
-    @JsonProperty("EndpointPort")
     private EndpointPort endpointPort;
-    @JsonProperty("Endpoints")
     private Endpoints endpoints;
-    @JsonProperty("EndpointsList")
     private EndpointsList endpointsList;
-    @JsonProperty("EnvVar")
     private EnvVar envVar;
-    @JsonProperty("Event")
     private Event event;
-    @JsonProperty("EventList")
     private EventList eventList;
-    @JsonProperty("EventSeries")
     private EventSeries eventSeries;
-    @JsonProperty("EventSource")
     private EventSource eventSource;
-    @JsonProperty("GetOptions")
     private GetOptions getOptions;
-    @JsonProperty("GroupKind")
     private GroupKind groupKind;
-    @JsonProperty("GroupVersionKind")
     private GroupVersionKind groupVersionKind;
-    @JsonProperty("GroupVersionResource")
     private GroupVersionResource groupVersionResource;
-    @JsonProperty("Info")
     private Info info;
-    @JsonProperty("KubernetesList")
     private KubernetesList kubernetesList;
-    @JsonProperty("LimitRangeList")
     private LimitRangeList limitRangeList;
-    @JsonProperty("ListOptions")
     private ListOptions listOptions;
-    @JsonProperty("MicroTime")
     private MicroTime microTime;
-    @JsonProperty("Namespace")
     private Namespace namespace;
-    @JsonProperty("NamespaceList")
     private NamespaceList namespaceList;
-    @JsonProperty("Node")
     private Node node;
-    @JsonProperty("NodeList")
     private NodeList nodeList;
-    @JsonProperty("ObjectMeta")
     private ObjectMeta objectMeta;
-    @JsonProperty("Patch")
     private Patch patch;
-    @JsonProperty("PatchOptions")
     private PatchOptions patchOptions;
-    @JsonProperty("PersistentVolume")
     private PersistentVolume persistentVolume;
-    @JsonProperty("PersistentVolumeClaim")
     private PersistentVolumeClaim persistentVolumeClaim;
-    @JsonProperty("PersistentVolumeClaimList")
     private PersistentVolumeClaimList persistentVolumeClaimList;
-    @JsonProperty("PersistentVolumeList")
     private PersistentVolumeList persistentVolumeList;
-    @JsonProperty("PodExecOptions")
     private PodExecOptions podExecOptions;
-    @JsonProperty("PodList")
     private PodList podList;
-    @JsonProperty("PodTemplateList")
     private PodTemplateList podTemplateList;
-    @JsonProperty("Quantity")
     private Quantity quantity;
-    @JsonProperty("ReplicationControllerList")
     private ReplicationControllerList replicationControllerList;
-    @JsonProperty("ResourceQuota")
     private ResourceQuota resourceQuota;
-    @JsonProperty("ResourceQuotaList")
     private ResourceQuotaList resourceQuotaList;
-    @JsonProperty("RootPaths")
     private RootPaths rootPaths;
-    @JsonProperty("Secret")
     private Secret secret;
-    @JsonProperty("SecretList")
     private SecretList secretList;
-    @JsonProperty("ServiceAccount")
     private ServiceAccount serviceAccount;
-    @JsonProperty("ServiceAccountList")
     private ServiceAccountList serviceAccountList;
-    @JsonProperty("ServiceList")
     private ServiceList serviceList;
-    @JsonProperty("Status")
     private Status status;
-    @JsonProperty("Time")
     private String time;
-    @JsonProperty("Toleration")
     private Toleration toleration;
-    @JsonProperty("TopologySelectorTerm")
     private TopologySelectorTerm topologySelectorTerm;
-    @JsonProperty("TypeMeta")
     private TypeMeta typeMeta;
-    @JsonProperty("UpdateOptions")
     private UpdateOptions updateOptions;
-    @JsonProperty("WatchEvent")
     private WatchEvent watchEvent;
     @JsonIgnore
     private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
@@ -946,16 +793,6 @@ public class ValidationSchema implements Editable<ValidationSchemaBuilder>
     @JsonProperty("WatchEvent")
     public void setWatchEvent(WatchEvent watchEvent) {
         this.watchEvent = watchEvent;
-    }
-
-    @JsonIgnore
-    public ValidationSchemaBuilder edit() {
-        return new ValidationSchemaBuilder(this);
-    }
-
-    @JsonIgnore
-    public ValidationSchemaBuilder toBuilder() {
-        return edit();
     }
 
     @JsonAnyGetter

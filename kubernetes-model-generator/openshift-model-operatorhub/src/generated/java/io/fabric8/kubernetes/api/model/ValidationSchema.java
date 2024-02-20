@@ -7,19 +7,7 @@ import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import io.fabric8.kubernetes.api.builder.Editable;
-import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.IntOrString;
-import io.fabric8.kubernetes.api.model.LabelSelector;
-import io.fabric8.kubernetes.api.model.LocalObjectReference;
-import io.fabric8.kubernetes.api.model.ObjectReference;
-import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
-import io.fabric8.kubernetes.api.model.PodTemplateSpec;
-import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.kubernetes.api.model.admissionregistration.v1.RuleWithOperations;
 import io.fabric8.kubernetes.api.model.apps.Deployment;
 import io.fabric8.kubernetes.api.model.rbac.PolicyRule;
@@ -42,134 +30,40 @@ import io.fabric8.openshift.api.model.operatorhub.v1alpha1.InstallPlan;
 import io.fabric8.openshift.api.model.operatorhub.v1alpha1.InstallPlanList;
 import io.fabric8.openshift.api.model.operatorhub.v1alpha1.Subscription;
 import io.fabric8.openshift.api.model.operatorhub.v1alpha1.SubscriptionList;
-import io.sundr.builder.annotations.Buildable;
-import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.Setter;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-    "apiVersion",
-    "kind",
-    "metadata",
-    "APIGroup",
-    "APIGroupList",
-    "BaseKubernetesList",
-    "CatalogSource",
-    "CatalogSourceList",
-    "ClusterServiceVersion",
-    "ClusterServiceVersionList",
-    "Deployment",
-    "Info",
-    "InstallPlan",
-    "InstallPlanList",
-    "OLMConfig",
-    "OLMConfigList",
-    "ObjectMeta",
-    "Operator",
-    "OperatorCondition",
-    "OperatorConditionList",
-    "OperatorGroup",
-    "OperatorGroupList",
-    "OperatorList",
-    "PackageManifest",
-    "PackageManifestList",
-    "Patch",
-    "PolicyRule",
-    "Quantity",
-    "RuleWithOperations",
-    "Status",
-    "Subscription",
-    "SubscriptionList",
-    "Time",
-    "TypeMeta"
-})
-@ToString
-@EqualsAndHashCode
-@Setter
-@Accessors(prefix = {
-    "_",
-    ""
-})
-@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
-    @BuildableReference(LabelSelector.class),
-    @BuildableReference(Container.class),
-    @BuildableReference(PodTemplateSpec.class),
-    @BuildableReference(ResourceRequirements.class),
-    @BuildableReference(IntOrString.class),
-    @BuildableReference(ObjectReference.class),
-    @BuildableReference(LocalObjectReference.class),
-    @BuildableReference(PersistentVolumeClaim.class)
-})
 @Generated("jsonschema2pojo")
-public class ValidationSchema implements Editable<ValidationSchemaBuilder>
-{
+public class ValidationSchema {
 
-    @JsonProperty("APIGroup")
     private APIGroup aPIGroup;
-    @JsonProperty("APIGroupList")
     private APIGroupList aPIGroupList;
-    @JsonProperty("BaseKubernetesList")
     private KubernetesList baseKubernetesList;
-    @JsonProperty("CatalogSource")
     private CatalogSource catalogSource;
-    @JsonProperty("CatalogSourceList")
     private CatalogSourceList catalogSourceList;
-    @JsonProperty("ClusterServiceVersion")
     private ClusterServiceVersion clusterServiceVersion;
-    @JsonProperty("ClusterServiceVersionList")
     private ClusterServiceVersionList clusterServiceVersionList;
-    @JsonProperty("Deployment")
     private Deployment deployment;
-    @JsonProperty("Info")
     private Info info;
-    @JsonProperty("InstallPlan")
     private InstallPlan installPlan;
-    @JsonProperty("InstallPlanList")
     private InstallPlanList installPlanList;
-    @JsonProperty("OLMConfig")
     private OLMConfig oLMConfig;
-    @JsonProperty("OLMConfigList")
     private OLMConfigList oLMConfigList;
-    @JsonProperty("ObjectMeta")
-    private io.fabric8.kubernetes.api.model.ObjectMeta objectMeta;
-    @JsonProperty("Operator")
+    private ObjectMeta objectMeta;
     private Operator operator;
-    @JsonProperty("OperatorCondition")
     private OperatorCondition operatorCondition;
-    @JsonProperty("OperatorConditionList")
     private OperatorConditionList operatorConditionList;
-    @JsonProperty("OperatorGroup")
     private OperatorGroup operatorGroup;
-    @JsonProperty("OperatorGroupList")
     private OperatorGroupList operatorGroupList;
-    @JsonProperty("OperatorList")
     private OperatorList operatorList;
-    @JsonProperty("PackageManifest")
     private PackageManifest packageManifest;
-    @JsonProperty("PackageManifestList")
     private PackageManifestList packageManifestList;
-    @JsonProperty("Patch")
     private Patch patch;
-    @JsonProperty("PolicyRule")
     private PolicyRule policyRule;
-    @JsonProperty("Quantity")
     private Quantity quantity;
-    @JsonProperty("RuleWithOperations")
     private RuleWithOperations ruleWithOperations;
-    @JsonProperty("Status")
     private Status status;
-    @JsonProperty("Subscription")
     private Subscription subscription;
-    @JsonProperty("SubscriptionList")
     private SubscriptionList subscriptionList;
-    @JsonProperty("Time")
     private String time;
-    @JsonProperty("TypeMeta")
     private TypeMeta typeMeta;
     @JsonIgnore
     private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
@@ -181,7 +75,7 @@ public class ValidationSchema implements Editable<ValidationSchemaBuilder>
     public ValidationSchema() {
     }
 
-    public ValidationSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, KubernetesList baseKubernetesList, CatalogSource catalogSource, CatalogSourceList catalogSourceList, ClusterServiceVersion clusterServiceVersion, ClusterServiceVersionList clusterServiceVersionList, Deployment deployment, Info info, InstallPlan installPlan, InstallPlanList installPlanList, OLMConfig oLMConfig, OLMConfigList oLMConfigList, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, Operator operator, OperatorCondition operatorCondition, OperatorConditionList operatorConditionList, OperatorGroup operatorGroup, OperatorGroupList operatorGroupList, OperatorList operatorList, PackageManifest packageManifest, PackageManifestList packageManifestList, Patch patch, PolicyRule policyRule, Quantity quantity, RuleWithOperations ruleWithOperations, Status status, Subscription subscription, SubscriptionList subscriptionList, String time, TypeMeta typeMeta) {
+    public ValidationSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, KubernetesList baseKubernetesList, CatalogSource catalogSource, CatalogSourceList catalogSourceList, ClusterServiceVersion clusterServiceVersion, ClusterServiceVersionList clusterServiceVersionList, Deployment deployment, Info info, InstallPlan installPlan, InstallPlanList installPlanList, OLMConfig oLMConfig, OLMConfigList oLMConfigList, ObjectMeta objectMeta, Operator operator, OperatorCondition operatorCondition, OperatorConditionList operatorConditionList, OperatorGroup operatorGroup, OperatorGroupList operatorGroupList, OperatorList operatorList, PackageManifest packageManifest, PackageManifestList packageManifestList, Patch patch, PolicyRule policyRule, Quantity quantity, RuleWithOperations ruleWithOperations, Status status, Subscription subscription, SubscriptionList subscriptionList, String time, TypeMeta typeMeta) {
         super();
         this.aPIGroup = aPIGroup;
         this.aPIGroupList = aPIGroupList;
@@ -347,12 +241,12 @@ public class ValidationSchema implements Editable<ValidationSchemaBuilder>
     }
 
     @JsonProperty("ObjectMeta")
-    public io.fabric8.kubernetes.api.model.ObjectMeta getObjectMeta() {
+    public ObjectMeta getObjectMeta() {
         return objectMeta;
     }
 
     @JsonProperty("ObjectMeta")
-    public void setObjectMeta(io.fabric8.kubernetes.api.model.ObjectMeta objectMeta) {
+    public void setObjectMeta(ObjectMeta objectMeta) {
         this.objectMeta = objectMeta;
     }
 
@@ -524,16 +418,6 @@ public class ValidationSchema implements Editable<ValidationSchemaBuilder>
     @JsonProperty("TypeMeta")
     public void setTypeMeta(TypeMeta typeMeta) {
         this.typeMeta = typeMeta;
-    }
-
-    @JsonIgnore
-    public ValidationSchemaBuilder edit() {
-        return new ValidationSchemaBuilder(this);
-    }
-
-    @JsonIgnore
-    public ValidationSchemaBuilder toBuilder() {
-        return edit();
     }
 
     @JsonAnyGetter

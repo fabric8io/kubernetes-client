@@ -5,6 +5,7 @@
 #### Bugs
 * Fix #5729: ensure that kind is set for generic resource lists
 * Fix #3032: JUnit5 Kubernetes Extension works with Nested tests
+* Fix #5759: Don't annotate KubeSchema and ValidationSchema classes
 
 #### Improvements
 * Fix #5701: Owner reference validity check regarding scope and namespace
@@ -19,6 +20,8 @@
 * Fix #5711: Kube API Test - Kubernetes API Server JUnit Test Support
 
 #### _**Note**_: Breaking changes
+* KubeSchema and Validation Schema generated classes are no longer annotated with Jackson, Lombok, and Sundrio annotations.
+  This implies that builders will no longer be generated for these classes and that they won't have special deserialization/serialization behavior.
 
 ### 6.10.0 (2024-01-10)
 

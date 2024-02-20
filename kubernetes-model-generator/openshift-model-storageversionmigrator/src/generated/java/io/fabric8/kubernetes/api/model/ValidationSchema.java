@@ -7,98 +7,28 @@ import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import io.fabric8.kubernetes.api.builder.Editable;
-import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.IntOrString;
-import io.fabric8.kubernetes.api.model.LabelSelector;
-import io.fabric8.kubernetes.api.model.LocalObjectReference;
-import io.fabric8.kubernetes.api.model.ObjectReference;
-import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
-import io.fabric8.kubernetes.api.model.PodTemplateSpec;
-import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.kubernetes.api.model.version.Info;
 import io.fabric8.openshift.api.model.storageversionmigrator.v1alpha1.StorageState;
 import io.fabric8.openshift.api.model.storageversionmigrator.v1alpha1.StorageStateList;
 import io.fabric8.openshift.api.model.storageversionmigrator.v1alpha1.StorageVersionMigration;
 import io.fabric8.openshift.api.model.storageversionmigrator.v1alpha1.StorageVersionMigrationList;
-import io.sundr.builder.annotations.Buildable;
-import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.Setter;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-    "apiVersion",
-    "kind",
-    "metadata",
-    "APIGroup",
-    "APIGroupList",
-    "BaseKubernetesList",
-    "Info",
-    "ObjectMeta",
-    "Patch",
-    "Status",
-    "StorageState",
-    "StorageStateList",
-    "StorageVersionMigration",
-    "StorageVersionMigrationList",
-    "Time",
-    "TypeMeta"
-})
-@ToString
-@EqualsAndHashCode
-@Setter
-@Accessors(prefix = {
-    "_",
-    ""
-})
-@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
-    @BuildableReference(LabelSelector.class),
-    @BuildableReference(Container.class),
-    @BuildableReference(PodTemplateSpec.class),
-    @BuildableReference(ResourceRequirements.class),
-    @BuildableReference(IntOrString.class),
-    @BuildableReference(ObjectReference.class),
-    @BuildableReference(LocalObjectReference.class),
-    @BuildableReference(PersistentVolumeClaim.class)
-})
 @Generated("jsonschema2pojo")
-public class ValidationSchema implements Editable<ValidationSchemaBuilder>
-{
+public class ValidationSchema {
 
-    @JsonProperty("APIGroup")
     private APIGroup aPIGroup;
-    @JsonProperty("APIGroupList")
     private APIGroupList aPIGroupList;
-    @JsonProperty("BaseKubernetesList")
     private KubernetesList baseKubernetesList;
-    @JsonProperty("Info")
     private Info info;
-    @JsonProperty("ObjectMeta")
-    private io.fabric8.kubernetes.api.model.ObjectMeta objectMeta;
-    @JsonProperty("Patch")
+    private ObjectMeta objectMeta;
     private Patch patch;
-    @JsonProperty("Status")
     private Status status;
-    @JsonProperty("StorageState")
     private StorageState storageState;
-    @JsonProperty("StorageStateList")
     private StorageStateList storageStateList;
-    @JsonProperty("StorageVersionMigration")
     private StorageVersionMigration storageVersionMigration;
-    @JsonProperty("StorageVersionMigrationList")
     private StorageVersionMigrationList storageVersionMigrationList;
-    @JsonProperty("Time")
     private String time;
-    @JsonProperty("TypeMeta")
     private TypeMeta typeMeta;
     @JsonIgnore
     private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
@@ -110,7 +40,7 @@ public class ValidationSchema implements Editable<ValidationSchemaBuilder>
     public ValidationSchema() {
     }
 
-    public ValidationSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, KubernetesList baseKubernetesList, Info info, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, Patch patch, Status status, StorageState storageState, StorageStateList storageStateList, StorageVersionMigration storageVersionMigration, StorageVersionMigrationList storageVersionMigrationList, String time, TypeMeta typeMeta) {
+    public ValidationSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, KubernetesList baseKubernetesList, Info info, ObjectMeta objectMeta, Patch patch, Status status, StorageState storageState, StorageStateList storageStateList, StorageVersionMigration storageVersionMigration, StorageVersionMigrationList storageVersionMigrationList, String time, TypeMeta typeMeta) {
         super();
         this.aPIGroup = aPIGroup;
         this.aPIGroupList = aPIGroupList;
@@ -168,12 +98,12 @@ public class ValidationSchema implements Editable<ValidationSchemaBuilder>
     }
 
     @JsonProperty("ObjectMeta")
-    public io.fabric8.kubernetes.api.model.ObjectMeta getObjectMeta() {
+    public ObjectMeta getObjectMeta() {
         return objectMeta;
     }
 
     @JsonProperty("ObjectMeta")
-    public void setObjectMeta(io.fabric8.kubernetes.api.model.ObjectMeta objectMeta) {
+    public void setObjectMeta(ObjectMeta objectMeta) {
         this.objectMeta = objectMeta;
     }
 
@@ -255,16 +185,6 @@ public class ValidationSchema implements Editable<ValidationSchemaBuilder>
     @JsonProperty("TypeMeta")
     public void setTypeMeta(TypeMeta typeMeta) {
         this.typeMeta = typeMeta;
-    }
-
-    @JsonIgnore
-    public ValidationSchemaBuilder edit() {
-        return new ValidationSchemaBuilder(this);
-    }
-
-    @JsonIgnore
-    public ValidationSchemaBuilder toBuilder() {
-        return edit();
     }
 
     @JsonAnyGetter

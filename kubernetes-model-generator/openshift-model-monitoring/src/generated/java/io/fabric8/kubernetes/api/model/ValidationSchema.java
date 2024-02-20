@@ -7,19 +7,7 @@ import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import io.fabric8.kubernetes.api.builder.Editable;
-import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.IntOrString;
-import io.fabric8.kubernetes.api.model.LabelSelector;
-import io.fabric8.kubernetes.api.model.LocalObjectReference;
-import io.fabric8.kubernetes.api.model.ObjectReference;
-import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
-import io.fabric8.kubernetes.api.model.PodTemplateSpec;
-import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.kubernetes.api.model.version.Info;
 import io.fabric8.openshift.api.model.monitoring.v1.Alertmanager;
 import io.fabric8.openshift.api.model.monitoring.v1.AlertmanagerList;
@@ -37,116 +25,34 @@ import io.fabric8.openshift.api.model.monitoring.v1.ThanosRuler;
 import io.fabric8.openshift.api.model.monitoring.v1.ThanosRulerList;
 import io.fabric8.openshift.api.model.monitoring.v1alpha1.AlertmanagerConfig;
 import io.fabric8.openshift.api.model.monitoring.v1alpha1.AlertmanagerConfigList;
-import io.sundr.builder.annotations.Buildable;
-import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.Setter;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-    "apiVersion",
-    "kind",
-    "metadata",
-    "APIGroup",
-    "APIGroupList",
-    "Alertmanager",
-    "AlertmanagerConfig",
-    "AlertmanagerConfigList",
-    "AlertmanagerList",
-    "BaseKubernetesList",
-    "Info",
-    "ObjectMeta",
-    "Patch",
-    "PodMonitor",
-    "PodMonitorList",
-    "Probe",
-    "ProbeList",
-    "Prometheus",
-    "PrometheusList",
-    "PrometheusRule",
-    "PrometheusRuleList",
-    "ServiceMonitor",
-    "ServiceMonitorList",
-    "Status",
-    "ThanosRuler",
-    "ThanosRulerList",
-    "Time",
-    "TypeMeta"
-})
-@ToString
-@EqualsAndHashCode
-@Setter
-@Accessors(prefix = {
-    "_",
-    ""
-})
-@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
-    @BuildableReference(LabelSelector.class),
-    @BuildableReference(Container.class),
-    @BuildableReference(PodTemplateSpec.class),
-    @BuildableReference(ResourceRequirements.class),
-    @BuildableReference(IntOrString.class),
-    @BuildableReference(ObjectReference.class),
-    @BuildableReference(LocalObjectReference.class),
-    @BuildableReference(PersistentVolumeClaim.class)
-})
 @Generated("jsonschema2pojo")
-public class ValidationSchema implements Editable<ValidationSchemaBuilder>
-{
+public class ValidationSchema {
 
-    @JsonProperty("APIGroup")
     private APIGroup aPIGroup;
-    @JsonProperty("APIGroupList")
     private APIGroupList aPIGroupList;
-    @JsonProperty("Alertmanager")
     private Alertmanager alertmanager;
-    @JsonProperty("AlertmanagerConfig")
     private AlertmanagerConfig alertmanagerConfig;
-    @JsonProperty("AlertmanagerConfigList")
     private AlertmanagerConfigList alertmanagerConfigList;
-    @JsonProperty("AlertmanagerList")
     private AlertmanagerList alertmanagerList;
-    @JsonProperty("BaseKubernetesList")
     private KubernetesList baseKubernetesList;
-    @JsonProperty("Info")
     private Info info;
-    @JsonProperty("ObjectMeta")
-    private io.fabric8.kubernetes.api.model.ObjectMeta objectMeta;
-    @JsonProperty("Patch")
+    private ObjectMeta objectMeta;
     private Patch patch;
-    @JsonProperty("PodMonitor")
     private PodMonitor podMonitor;
-    @JsonProperty("PodMonitorList")
     private PodMonitorList podMonitorList;
-    @JsonProperty("Probe")
     private Probe probe;
-    @JsonProperty("ProbeList")
     private ProbeList probeList;
-    @JsonProperty("Prometheus")
     private Prometheus prometheus;
-    @JsonProperty("PrometheusList")
     private PrometheusList prometheusList;
-    @JsonProperty("PrometheusRule")
     private PrometheusRule prometheusRule;
-    @JsonProperty("PrometheusRuleList")
     private PrometheusRuleList prometheusRuleList;
-    @JsonProperty("ServiceMonitor")
     private ServiceMonitor serviceMonitor;
-    @JsonProperty("ServiceMonitorList")
     private ServiceMonitorList serviceMonitorList;
-    @JsonProperty("Status")
     private Status status;
-    @JsonProperty("ThanosRuler")
     private ThanosRuler thanosRuler;
-    @JsonProperty("ThanosRulerList")
     private ThanosRulerList thanosRulerList;
-    @JsonProperty("Time")
     private String time;
-    @JsonProperty("TypeMeta")
     private TypeMeta typeMeta;
     @JsonIgnore
     private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
@@ -158,7 +64,7 @@ public class ValidationSchema implements Editable<ValidationSchemaBuilder>
     public ValidationSchema() {
     }
 
-    public ValidationSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, Alertmanager alertmanager, AlertmanagerConfig alertmanagerConfig, AlertmanagerConfigList alertmanagerConfigList, AlertmanagerList alertmanagerList, KubernetesList baseKubernetesList, Info info, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, Patch patch, PodMonitor podMonitor, PodMonitorList podMonitorList, Probe probe, ProbeList probeList, Prometheus prometheus, PrometheusList prometheusList, PrometheusRule prometheusRule, PrometheusRuleList prometheusRuleList, ServiceMonitor serviceMonitor, ServiceMonitorList serviceMonitorList, Status status, ThanosRuler thanosRuler, ThanosRulerList thanosRulerList, String time, TypeMeta typeMeta) {
+    public ValidationSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, Alertmanager alertmanager, AlertmanagerConfig alertmanagerConfig, AlertmanagerConfigList alertmanagerConfigList, AlertmanagerList alertmanagerList, KubernetesList baseKubernetesList, Info info, ObjectMeta objectMeta, Patch patch, PodMonitor podMonitor, PodMonitorList podMonitorList, Probe probe, ProbeList probeList, Prometheus prometheus, PrometheusList prometheusList, PrometheusRule prometheusRule, PrometheusRuleList prometheusRuleList, ServiceMonitor serviceMonitor, ServiceMonitorList serviceMonitorList, Status status, ThanosRuler thanosRuler, ThanosRulerList thanosRulerList, String time, TypeMeta typeMeta) {
         super();
         this.aPIGroup = aPIGroup;
         this.aPIGroupList = aPIGroupList;
@@ -268,12 +174,12 @@ public class ValidationSchema implements Editable<ValidationSchemaBuilder>
     }
 
     @JsonProperty("ObjectMeta")
-    public io.fabric8.kubernetes.api.model.ObjectMeta getObjectMeta() {
+    public ObjectMeta getObjectMeta() {
         return objectMeta;
     }
 
     @JsonProperty("ObjectMeta")
-    public void setObjectMeta(io.fabric8.kubernetes.api.model.ObjectMeta objectMeta) {
+    public void setObjectMeta(ObjectMeta objectMeta) {
         this.objectMeta = objectMeta;
     }
 
@@ -435,16 +341,6 @@ public class ValidationSchema implements Editable<ValidationSchemaBuilder>
     @JsonProperty("TypeMeta")
     public void setTypeMeta(TypeMeta typeMeta) {
         this.typeMeta = typeMeta;
-    }
-
-    @JsonIgnore
-    public ValidationSchemaBuilder edit() {
-        return new ValidationSchemaBuilder(this);
-    }
-
-    @JsonIgnore
-    public ValidationSchemaBuilder toBuilder() {
-        return edit();
     }
 
     @JsonAnyGetter

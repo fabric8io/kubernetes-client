@@ -7,19 +7,7 @@ import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import io.fabric8.kubernetes.api.builder.Editable;
-import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.IntOrString;
-import io.fabric8.kubernetes.api.model.LabelSelector;
-import io.fabric8.kubernetes.api.model.LocalObjectReference;
-import io.fabric8.kubernetes.api.model.ObjectReference;
-import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
-import io.fabric8.kubernetes.api.model.PodTemplateSpec;
-import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.kubernetes.api.model.version.Info;
 import io.fabric8.openshift.api.model.miscellaneous.apiserver.v1.APIRequestCount;
 import io.fabric8.openshift.api.model.miscellaneous.apiserver.v1.APIRequestCountList;
@@ -39,122 +27,36 @@ import io.fabric8.openshift.api.model.miscellaneous.network.operator.v1.EgressRo
 import io.fabric8.openshift.api.model.miscellaneous.network.operator.v1.EgressRouterList;
 import io.fabric8.openshift.api.model.miscellaneous.network.operator.v1.OperatorPKI;
 import io.fabric8.openshift.api.model.miscellaneous.network.operator.v1.OperatorPKIList;
-import io.sundr.builder.annotations.Buildable;
-import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.Setter;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-    "apiVersion",
-    "kind",
-    "metadata",
-    "APIGroup",
-    "APIGroupList",
-    "APIRequestCount",
-    "APIRequestCountList",
-    "BareMetalHost",
-    "BareMetalHostList",
-    "BaseKubernetesList",
-    "Config",
-    "ConfigList",
-    "CredentialsRequest",
-    "CredentialsRequestList",
-    "EgressRouter",
-    "EgressRouterList",
-    "Info",
-    "Metal3Remediation",
-    "Metal3RemediationList",
-    "Metal3RemediationTemplate",
-    "Metal3RemediationTemplateList",
-    "NetworkAttachmentDefinition",
-    "NetworkAttachmentDefinitionList",
-    "ObjectMeta",
-    "OperatorPKI",
-    "OperatorPKIList",
-    "Patch",
-    "Status",
-    "Time",
-    "TypeMeta"
-})
-@ToString
-@EqualsAndHashCode
-@Setter
-@Accessors(prefix = {
-    "_",
-    ""
-})
-@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
-    @BuildableReference(LabelSelector.class),
-    @BuildableReference(Container.class),
-    @BuildableReference(PodTemplateSpec.class),
-    @BuildableReference(ResourceRequirements.class),
-    @BuildableReference(IntOrString.class),
-    @BuildableReference(ObjectReference.class),
-    @BuildableReference(LocalObjectReference.class),
-    @BuildableReference(PersistentVolumeClaim.class)
-})
 @Generated("jsonschema2pojo")
-public class KubeSchema implements Editable<KubeSchemaBuilder>
-{
+public class KubeSchema {
 
-    @JsonProperty("APIGroup")
     private APIGroup aPIGroup;
-    @JsonProperty("APIGroupList")
     private APIGroupList aPIGroupList;
-    @JsonProperty("APIRequestCount")
     private APIRequestCount aPIRequestCount;
-    @JsonProperty("APIRequestCountList")
     private APIRequestCountList aPIRequestCountList;
-    @JsonProperty("BareMetalHost")
     private BareMetalHost bareMetalHost;
-    @JsonProperty("BareMetalHostList")
     private BareMetalHostList bareMetalHostList;
-    @JsonProperty("BaseKubernetesList")
     private KubernetesList baseKubernetesList;
-    @JsonProperty("Config")
     private Config config;
-    @JsonProperty("ConfigList")
     private ConfigList configList;
-    @JsonProperty("CredentialsRequest")
     private CredentialsRequest credentialsRequest;
-    @JsonProperty("CredentialsRequestList")
     private CredentialsRequestList credentialsRequestList;
-    @JsonProperty("EgressRouter")
     private EgressRouter egressRouter;
-    @JsonProperty("EgressRouterList")
     private EgressRouterList egressRouterList;
-    @JsonProperty("Info")
     private Info info;
-    @JsonProperty("Metal3Remediation")
     private Metal3Remediation metal3Remediation;
-    @JsonProperty("Metal3RemediationList")
     private Metal3RemediationList metal3RemediationList;
-    @JsonProperty("Metal3RemediationTemplate")
     private Metal3RemediationTemplate metal3RemediationTemplate;
-    @JsonProperty("Metal3RemediationTemplateList")
     private Metal3RemediationTemplateList metal3RemediationTemplateList;
-    @JsonProperty("NetworkAttachmentDefinition")
     private NetworkAttachmentDefinition networkAttachmentDefinition;
-    @JsonProperty("NetworkAttachmentDefinitionList")
     private NetworkAttachmentDefinitionList networkAttachmentDefinitionList;
-    @JsonProperty("ObjectMeta")
-    private io.fabric8.kubernetes.api.model.ObjectMeta objectMeta;
-    @JsonProperty("OperatorPKI")
+    private ObjectMeta objectMeta;
     private OperatorPKI operatorPKI;
-    @JsonProperty("OperatorPKIList")
     private OperatorPKIList operatorPKIList;
-    @JsonProperty("Patch")
     private Patch patch;
-    @JsonProperty("Status")
     private Status status;
-    @JsonProperty("Time")
     private String time;
-    @JsonProperty("TypeMeta")
     private TypeMeta typeMeta;
     @JsonIgnore
     private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
@@ -166,7 +68,7 @@ public class KubeSchema implements Editable<KubeSchemaBuilder>
     public KubeSchema() {
     }
 
-    public KubeSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, APIRequestCount aPIRequestCount, APIRequestCountList aPIRequestCountList, BareMetalHost bareMetalHost, BareMetalHostList bareMetalHostList, KubernetesList baseKubernetesList, Config config, ConfigList configList, CredentialsRequest credentialsRequest, CredentialsRequestList credentialsRequestList, EgressRouter egressRouter, EgressRouterList egressRouterList, Info info, Metal3Remediation metal3Remediation, Metal3RemediationList metal3RemediationList, Metal3RemediationTemplate metal3RemediationTemplate, Metal3RemediationTemplateList metal3RemediationTemplateList, NetworkAttachmentDefinition networkAttachmentDefinition, NetworkAttachmentDefinitionList networkAttachmentDefinitionList, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, OperatorPKI operatorPKI, OperatorPKIList operatorPKIList, Patch patch, Status status, String time, TypeMeta typeMeta) {
+    public KubeSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, APIRequestCount aPIRequestCount, APIRequestCountList aPIRequestCountList, BareMetalHost bareMetalHost, BareMetalHostList bareMetalHostList, KubernetesList baseKubernetesList, Config config, ConfigList configList, CredentialsRequest credentialsRequest, CredentialsRequestList credentialsRequestList, EgressRouter egressRouter, EgressRouterList egressRouterList, Info info, Metal3Remediation metal3Remediation, Metal3RemediationList metal3RemediationList, Metal3RemediationTemplate metal3RemediationTemplate, Metal3RemediationTemplateList metal3RemediationTemplateList, NetworkAttachmentDefinition networkAttachmentDefinition, NetworkAttachmentDefinitionList networkAttachmentDefinitionList, ObjectMeta objectMeta, OperatorPKI operatorPKI, OperatorPKIList operatorPKIList, Patch patch, Status status, String time, TypeMeta typeMeta) {
         super();
         this.aPIGroup = aPIGroup;
         this.aPIGroupList = aPIGroupList;
@@ -398,12 +300,12 @@ public class KubeSchema implements Editable<KubeSchemaBuilder>
     }
 
     @JsonProperty("ObjectMeta")
-    public io.fabric8.kubernetes.api.model.ObjectMeta getObjectMeta() {
+    public ObjectMeta getObjectMeta() {
         return objectMeta;
     }
 
     @JsonProperty("ObjectMeta")
-    public void setObjectMeta(io.fabric8.kubernetes.api.model.ObjectMeta objectMeta) {
+    public void setObjectMeta(ObjectMeta objectMeta) {
         this.objectMeta = objectMeta;
     }
 
@@ -465,16 +367,6 @@ public class KubeSchema implements Editable<KubeSchemaBuilder>
     @JsonProperty("TypeMeta")
     public void setTypeMeta(TypeMeta typeMeta) {
         this.typeMeta = typeMeta;
-    }
-
-    @JsonIgnore
-    public KubeSchemaBuilder edit() {
-        return new KubeSchemaBuilder(this);
-    }
-
-    @JsonIgnore
-    public KubeSchemaBuilder toBuilder() {
-        return edit();
     }
 
     @JsonAnyGetter

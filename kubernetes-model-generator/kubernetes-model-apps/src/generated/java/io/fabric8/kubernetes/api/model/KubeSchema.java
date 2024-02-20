@@ -7,18 +7,7 @@ import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import io.fabric8.kubernetes.api.builder.Editable;
-import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.IntOrString;
-import io.fabric8.kubernetes.api.model.LabelSelector;
-import io.fabric8.kubernetes.api.model.LocalObjectReference;
-import io.fabric8.kubernetes.api.model.ObjectReference;
-import io.fabric8.kubernetes.api.model.PodTemplateSpec;
-import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.kubernetes.api.model.apps.ControllerRevision;
 import io.fabric8.kubernetes.api.model.apps.ControllerRevisionList;
 import io.fabric8.kubernetes.api.model.apps.DaemonSet;
@@ -30,209 +19,65 @@ import io.fabric8.kubernetes.api.model.apps.ReplicaSetList;
 import io.fabric8.kubernetes.api.model.apps.StatefulSet;
 import io.fabric8.kubernetes.api.model.apps.StatefulSetList;
 import io.fabric8.kubernetes.api.model.version.Info;
-import io.sundr.builder.annotations.Buildable;
-import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.Setter;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-    "apiVersion",
-    "kind",
-    "metadata",
-    "APIGroup",
-    "APIGroupList",
-    "BaseKubernetesList",
-    "Binding",
-    "ComponentStatusList",
-    "ConfigMap",
-    "ConfigMapList",
-    "ContainerStatus",
-    "ControllerRevision",
-    "ControllerRevisionList",
-    "CreateOptions",
-    "DaemonSet",
-    "DaemonSetList",
-    "DeleteOptions",
-    "Deployment",
-    "DeploymentList",
-    "EndpointPort",
-    "Endpoints",
-    "EndpointsList",
-    "EnvVar",
-    "GetOptions",
-    "Info",
-    "LimitRangeList",
-    "ListOptions",
-    "Namespace",
-    "NamespaceList",
-    "Node",
-    "NodeList",
-    "ObjectMeta",
-    "Patch",
-    "PatchOptions",
-    "PersistentVolume",
-    "PersistentVolumeClaim",
-    "PersistentVolumeClaimList",
-    "PersistentVolumeList",
-    "PodList",
-    "PodTemplateList",
-    "Quantity",
-    "ReplicaSet",
-    "ReplicaSetList",
-    "ReplicationControllerList",
-    "ResourceQuota",
-    "ResourceQuotaList",
-    "RootPaths",
-    "Secret",
-    "SecretList",
-    "ServiceAccount",
-    "ServiceAccountList",
-    "ServiceList",
-    "StatefulSet",
-    "StatefulSetList",
-    "Status",
-    "Time",
-    "Toleration",
-    "TypeMeta",
-    "UpdateOptions"
-})
-@ToString
-@EqualsAndHashCode
-@Setter
-@Accessors(prefix = {
-    "_",
-    ""
-})
-@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
-    @BuildableReference(LabelSelector.class),
-    @BuildableReference(Container.class),
-    @BuildableReference(PodTemplateSpec.class),
-    @BuildableReference(ResourceRequirements.class),
-    @BuildableReference(IntOrString.class),
-    @BuildableReference(ObjectReference.class),
-    @BuildableReference(LocalObjectReference.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.PersistentVolumeClaim.class)
-})
 @Generated("jsonschema2pojo")
-public class KubeSchema implements Editable<KubeSchemaBuilder>
-{
+public class KubeSchema {
 
-    @JsonProperty("APIGroup")
     private APIGroup aPIGroup;
-    @JsonProperty("APIGroupList")
     private APIGroupList aPIGroupList;
-    @JsonProperty("BaseKubernetesList")
     private KubernetesList baseKubernetesList;
-    @JsonProperty("Binding")
     private Binding binding;
-    @JsonProperty("ComponentStatusList")
     private ComponentStatusList componentStatusList;
-    @JsonProperty("ConfigMap")
     private ConfigMap configMap;
-    @JsonProperty("ConfigMapList")
     private ConfigMapList configMapList;
-    @JsonProperty("ContainerStatus")
     private ContainerStatus containerStatus;
-    @JsonProperty("ControllerRevision")
     private ControllerRevision controllerRevision;
-    @JsonProperty("ControllerRevisionList")
     private ControllerRevisionList controllerRevisionList;
-    @JsonProperty("CreateOptions")
     private CreateOptions createOptions;
-    @JsonProperty("DaemonSet")
     private DaemonSet daemonSet;
-    @JsonProperty("DaemonSetList")
     private DaemonSetList daemonSetList;
-    @JsonProperty("DeleteOptions")
     private DeleteOptions deleteOptions;
-    @JsonProperty("Deployment")
     private Deployment deployment;
-    @JsonProperty("DeploymentList")
     private DeploymentList deploymentList;
-    @JsonProperty("EndpointPort")
     private EndpointPort endpointPort;
-    @JsonProperty("Endpoints")
     private Endpoints endpoints;
-    @JsonProperty("EndpointsList")
     private EndpointsList endpointsList;
-    @JsonProperty("EnvVar")
     private EnvVar envVar;
-    @JsonProperty("GetOptions")
     private GetOptions getOptions;
-    @JsonProperty("Info")
     private Info info;
-    @JsonProperty("LimitRangeList")
     private LimitRangeList limitRangeList;
-    @JsonProperty("ListOptions")
     private ListOptions listOptions;
-    @JsonProperty("Namespace")
     private Namespace namespace;
-    @JsonProperty("NamespaceList")
     private NamespaceList namespaceList;
-    @JsonProperty("Node")
     private Node node;
-    @JsonProperty("NodeList")
     private NodeList nodeList;
-    @JsonProperty("ObjectMeta")
-    private io.fabric8.kubernetes.api.model.ObjectMeta objectMeta;
-    @JsonProperty("Patch")
+    private ObjectMeta objectMeta;
     private Patch patch;
-    @JsonProperty("PatchOptions")
     private PatchOptions patchOptions;
-    @JsonProperty("PersistentVolume")
     private PersistentVolume persistentVolume;
-    @JsonProperty("PersistentVolumeClaim")
-    private io.fabric8.kubernetes.api.model.PersistentVolumeClaim persistentVolumeClaim;
-    @JsonProperty("PersistentVolumeClaimList")
+    private PersistentVolumeClaim persistentVolumeClaim;
     private PersistentVolumeClaimList persistentVolumeClaimList;
-    @JsonProperty("PersistentVolumeList")
     private PersistentVolumeList persistentVolumeList;
-    @JsonProperty("PodList")
     private PodList podList;
-    @JsonProperty("PodTemplateList")
     private PodTemplateList podTemplateList;
-    @JsonProperty("Quantity")
     private Quantity quantity;
-    @JsonProperty("ReplicaSet")
     private ReplicaSet replicaSet;
-    @JsonProperty("ReplicaSetList")
     private ReplicaSetList replicaSetList;
-    @JsonProperty("ReplicationControllerList")
     private ReplicationControllerList replicationControllerList;
-    @JsonProperty("ResourceQuota")
     private ResourceQuota resourceQuota;
-    @JsonProperty("ResourceQuotaList")
     private ResourceQuotaList resourceQuotaList;
-    @JsonProperty("RootPaths")
     private RootPaths rootPaths;
-    @JsonProperty("Secret")
     private Secret secret;
-    @JsonProperty("SecretList")
     private SecretList secretList;
-    @JsonProperty("ServiceAccount")
     private ServiceAccount serviceAccount;
-    @JsonProperty("ServiceAccountList")
     private ServiceAccountList serviceAccountList;
-    @JsonProperty("ServiceList")
     private ServiceList serviceList;
-    @JsonProperty("StatefulSet")
     private StatefulSet statefulSet;
-    @JsonProperty("StatefulSetList")
     private StatefulSetList statefulSetList;
-    @JsonProperty("Status")
     private Status status;
-    @JsonProperty("Time")
     private String time;
-    @JsonProperty("Toleration")
     private Toleration toleration;
-    @JsonProperty("TypeMeta")
     private TypeMeta typeMeta;
-    @JsonProperty("UpdateOptions")
     private UpdateOptions updateOptions;
     @JsonIgnore
     private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
@@ -244,7 +89,7 @@ public class KubeSchema implements Editable<KubeSchemaBuilder>
     public KubeSchema() {
     }
 
-    public KubeSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, KubernetesList baseKubernetesList, Binding binding, ComponentStatusList componentStatusList, ConfigMap configMap, ConfigMapList configMapList, ContainerStatus containerStatus, ControllerRevision controllerRevision, ControllerRevisionList controllerRevisionList, CreateOptions createOptions, DaemonSet daemonSet, DaemonSetList daemonSetList, DeleteOptions deleteOptions, Deployment deployment, DeploymentList deploymentList, EndpointPort endpointPort, Endpoints endpoints, EndpointsList endpointsList, EnvVar envVar, GetOptions getOptions, Info info, LimitRangeList limitRangeList, ListOptions listOptions, Namespace namespace, NamespaceList namespaceList, Node node, NodeList nodeList, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, Patch patch, PatchOptions patchOptions, PersistentVolume persistentVolume, io.fabric8.kubernetes.api.model.PersistentVolumeClaim persistentVolumeClaim, PersistentVolumeClaimList persistentVolumeClaimList, PersistentVolumeList persistentVolumeList, PodList podList, PodTemplateList podTemplateList, Quantity quantity, ReplicaSet replicaSet, ReplicaSetList replicaSetList, ReplicationControllerList replicationControllerList, ResourceQuota resourceQuota, ResourceQuotaList resourceQuotaList, RootPaths rootPaths, Secret secret, SecretList secretList, ServiceAccount serviceAccount, ServiceAccountList serviceAccountList, ServiceList serviceList, StatefulSet statefulSet, StatefulSetList statefulSetList, Status status, String time, Toleration toleration, TypeMeta typeMeta, UpdateOptions updateOptions) {
+    public KubeSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, KubernetesList baseKubernetesList, Binding binding, ComponentStatusList componentStatusList, ConfigMap configMap, ConfigMapList configMapList, ContainerStatus containerStatus, ControllerRevision controllerRevision, ControllerRevisionList controllerRevisionList, CreateOptions createOptions, DaemonSet daemonSet, DaemonSetList daemonSetList, DeleteOptions deleteOptions, Deployment deployment, DeploymentList deploymentList, EndpointPort endpointPort, Endpoints endpoints, EndpointsList endpointsList, EnvVar envVar, GetOptions getOptions, Info info, LimitRangeList limitRangeList, ListOptions listOptions, Namespace namespace, NamespaceList namespaceList, Node node, NodeList nodeList, ObjectMeta objectMeta, Patch patch, PatchOptions patchOptions, PersistentVolume persistentVolume, PersistentVolumeClaim persistentVolumeClaim, PersistentVolumeClaimList persistentVolumeClaimList, PersistentVolumeList persistentVolumeList, PodList podList, PodTemplateList podTemplateList, Quantity quantity, ReplicaSet replicaSet, ReplicaSetList replicaSetList, ReplicationControllerList replicationControllerList, ResourceQuota resourceQuota, ResourceQuotaList resourceQuotaList, RootPaths rootPaths, Secret secret, SecretList secretList, ServiceAccount serviceAccount, ServiceAccountList serviceAccountList, ServiceList serviceList, StatefulSet statefulSet, StatefulSetList statefulSetList, Status status, String time, Toleration toleration, TypeMeta typeMeta, UpdateOptions updateOptions) {
         super();
         this.aPIGroup = aPIGroup;
         this.aPIGroupList = aPIGroupList;
@@ -585,12 +430,12 @@ public class KubeSchema implements Editable<KubeSchemaBuilder>
     }
 
     @JsonProperty("ObjectMeta")
-    public io.fabric8.kubernetes.api.model.ObjectMeta getObjectMeta() {
+    public ObjectMeta getObjectMeta() {
         return objectMeta;
     }
 
     @JsonProperty("ObjectMeta")
-    public void setObjectMeta(io.fabric8.kubernetes.api.model.ObjectMeta objectMeta) {
+    public void setObjectMeta(ObjectMeta objectMeta) {
         this.objectMeta = objectMeta;
     }
 
@@ -625,12 +470,12 @@ public class KubeSchema implements Editable<KubeSchemaBuilder>
     }
 
     @JsonProperty("PersistentVolumeClaim")
-    public io.fabric8.kubernetes.api.model.PersistentVolumeClaim getPersistentVolumeClaim() {
+    public PersistentVolumeClaim getPersistentVolumeClaim() {
         return persistentVolumeClaim;
     }
 
     @JsonProperty("PersistentVolumeClaim")
-    public void setPersistentVolumeClaim(io.fabric8.kubernetes.api.model.PersistentVolumeClaim persistentVolumeClaim) {
+    public void setPersistentVolumeClaim(PersistentVolumeClaim persistentVolumeClaim) {
         this.persistentVolumeClaim = persistentVolumeClaim;
     }
 
@@ -862,16 +707,6 @@ public class KubeSchema implements Editable<KubeSchemaBuilder>
     @JsonProperty("UpdateOptions")
     public void setUpdateOptions(UpdateOptions updateOptions) {
         this.updateOptions = updateOptions;
-    }
-
-    @JsonIgnore
-    public KubeSchemaBuilder edit() {
-        return new KubeSchemaBuilder(this);
-    }
-
-    @JsonIgnore
-    public KubeSchemaBuilder toBuilder() {
-        return edit();
     }
 
     @JsonAnyGetter

@@ -7,19 +7,7 @@ import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import io.fabric8.kubernetes.api.builder.Editable;
-import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.IntOrString;
-import io.fabric8.kubernetes.api.model.LabelSelector;
-import io.fabric8.kubernetes.api.model.LocalObjectReference;
-import io.fabric8.kubernetes.api.model.ObjectReference;
-import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
-import io.fabric8.kubernetes.api.model.PodTemplateSpec;
-import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.kubernetes.api.model.authentication.TokenReview;
 import io.fabric8.kubernetes.api.model.rbac.AggregationRule;
 import io.fabric8.kubernetes.api.model.version.Info;
@@ -109,359 +97,115 @@ import io.fabric8.openshift.api.model.UserIdentityMapping;
 import io.fabric8.openshift.api.model.UserList;
 import io.fabric8.openshift.api.model.UserOAuthAccessToken;
 import io.fabric8.openshift.api.model.UserOAuthAccessTokenList;
-import io.sundr.builder.annotations.Buildable;
-import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.Setter;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-    "apiVersion",
-    "kind",
-    "metadata",
-    "APIGroup",
-    "APIGroupList",
-    "AggregationRule",
-    "AppliedClusterResourceQuota",
-    "AppliedClusterResourceQuotaList",
-    "BaseKubernetesList",
-    "BrokerTemplateInstance",
-    "BrokerTemplateInstanceList",
-    "BuildConfigList",
-    "BuildList",
-    "BuildRequest",
-    "ClusterNetwork",
-    "ClusterNetworkList",
-    "ClusterResourceQuota",
-    "ClusterResourceQuotaList",
-    "Config",
-    "CreateOptions",
-    "DeleteOptions",
-    "DeploymentConfig",
-    "DeploymentConfigList",
-    "EgressNetworkPolicy",
-    "EgressNetworkPolicyList",
-    "GetOptions",
-    "Group",
-    "GroupList",
-    "HelmChartRepository",
-    "HelmChartRepositoryList",
-    "HostSubnet",
-    "HostSubnetList",
-    "Identity",
-    "IdentityList",
-    "ImageList",
-    "ImageSignature",
-    "ImageStreamImage",
-    "ImageStreamImport",
-    "ImageStreamList",
-    "ImageStreamMapping",
-    "ImageStreamTagList",
-    "ImageTag",
-    "ImageTagList",
-    "Info",
-    "ListOptions",
-    "LocalResourceAccessReview",
-    "LocalSubjectAccessReview",
-    "NetNamespace",
-    "NetNamespaceList",
-    "OAuthAccessToken",
-    "OAuthAccessTokenList",
-    "OAuthAuthorizeToken",
-    "OAuthAuthorizeTokenList",
-    "OAuthClient",
-    "OAuthClientAuthorization",
-    "OAuthClientAuthorizationList",
-    "OAuthClientList",
-    "ObjectMeta",
-    "OpenShiftRoleBindingRestrictionList",
-    "OpenshiftClusterRole",
-    "OpenshiftClusterRoleBinding",
-    "OpenshiftClusterRoleBindingList",
-    "OpenshiftClusterRoleList",
-    "OpenshiftClusterRoleScopeRestriction",
-    "OpenshiftRole",
-    "OpenshiftRoleBinding",
-    "OpenshiftRoleBindingList",
-    "OpenshiftRoleBindingRestriction",
-    "OpenshiftRoleBindingRestrictionSpec",
-    "OpenshiftRoleList",
-    "Patch",
-    "PatchOptions",
-    "PodSecurityPolicyReview",
-    "PodSecurityPolicySelfSubjectReview",
-    "PodSecurityPolicySubjectReview",
-    "Project",
-    "ProjectHelmChartRepository",
-    "ProjectHelmChartRepositoryList",
-    "ProjectList",
-    "ProjectRequest",
-    "Quantity",
-    "RangeAllocation",
-    "RangeAllocationList",
-    "ResourceAccessReview",
-    "ResourceAccessReviewResponse",
-    "RootPaths",
-    "Route",
-    "RouteList",
-    "SecurityContextConstraints",
-    "SecurityContextConstraintsList",
-    "SelfSubjectRulesReview",
-    "Status",
-    "SubjectAccessReview",
-    "SubjectAccessReviewResponse",
-    "SubjectRulesReview",
-    "TagEvent",
-    "Template",
-    "TemplateInstance",
-    "TemplateInstanceList",
-    "TemplateList",
-    "Time",
-    "TokenReview",
-    "TypeMeta",
-    "UpdateOptions",
-    "User",
-    "UserIdentityMapping",
-    "UserList",
-    "UserOAuthAccessToken",
-    "UserOAuthAccessTokenList"
-})
-@ToString
-@EqualsAndHashCode
-@Setter
-@Accessors(prefix = {
-    "_",
-    ""
-})
-@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
-    @BuildableReference(LabelSelector.class),
-    @BuildableReference(Container.class),
-    @BuildableReference(PodTemplateSpec.class),
-    @BuildableReference(ResourceRequirements.class),
-    @BuildableReference(IntOrString.class),
-    @BuildableReference(ObjectReference.class),
-    @BuildableReference(LocalObjectReference.class),
-    @BuildableReference(PersistentVolumeClaim.class)
-})
 @Generated("jsonschema2pojo")
-public class KubeSchema implements Editable<KubeSchemaBuilder>
-{
+public class KubeSchema {
 
-    @JsonProperty("APIGroup")
     private APIGroup aPIGroup;
-    @JsonProperty("APIGroupList")
     private APIGroupList aPIGroupList;
-    @JsonProperty("AggregationRule")
     private AggregationRule aggregationRule;
-    @JsonProperty("AppliedClusterResourceQuota")
     private AppliedClusterResourceQuota appliedClusterResourceQuota;
-    @JsonProperty("AppliedClusterResourceQuotaList")
     private AppliedClusterResourceQuotaList appliedClusterResourceQuotaList;
-    @JsonProperty("BaseKubernetesList")
     private KubernetesList baseKubernetesList;
-    @JsonProperty("BrokerTemplateInstance")
     private BrokerTemplateInstance brokerTemplateInstance;
-    @JsonProperty("BrokerTemplateInstanceList")
     private BrokerTemplateInstanceList brokerTemplateInstanceList;
-    @JsonProperty("BuildConfigList")
     private BuildConfigList buildConfigList;
-    @JsonProperty("BuildList")
     private BuildList buildList;
-    @JsonProperty("BuildRequest")
     private BuildRequest buildRequest;
-    @JsonProperty("ClusterNetwork")
     private ClusterNetwork clusterNetwork;
-    @JsonProperty("ClusterNetworkList")
     private ClusterNetworkList clusterNetworkList;
-    @JsonProperty("ClusterResourceQuota")
     private ClusterResourceQuota clusterResourceQuota;
-    @JsonProperty("ClusterResourceQuotaList")
     private ClusterResourceQuotaList clusterResourceQuotaList;
-    @JsonProperty("Config")
     private Config config;
-    @JsonProperty("CreateOptions")
     private CreateOptions createOptions;
-    @JsonProperty("DeleteOptions")
     private DeleteOptions deleteOptions;
-    @JsonProperty("DeploymentConfig")
     private DeploymentConfig deploymentConfig;
-    @JsonProperty("DeploymentConfigList")
     private DeploymentConfigList deploymentConfigList;
-    @JsonProperty("EgressNetworkPolicy")
     private EgressNetworkPolicy egressNetworkPolicy;
-    @JsonProperty("EgressNetworkPolicyList")
     private EgressNetworkPolicyList egressNetworkPolicyList;
-    @JsonProperty("GetOptions")
     private GetOptions getOptions;
-    @JsonProperty("Group")
     private Group group;
-    @JsonProperty("GroupList")
     private GroupList groupList;
-    @JsonProperty("HelmChartRepository")
     private HelmChartRepository helmChartRepository;
-    @JsonProperty("HelmChartRepositoryList")
     private HelmChartRepositoryList helmChartRepositoryList;
-    @JsonProperty("HostSubnet")
     private HostSubnet hostSubnet;
-    @JsonProperty("HostSubnetList")
     private HostSubnetList hostSubnetList;
-    @JsonProperty("Identity")
     private Identity identity;
-    @JsonProperty("IdentityList")
     private IdentityList identityList;
-    @JsonProperty("ImageList")
     private ImageList imageList;
-    @JsonProperty("ImageSignature")
     private ImageSignature imageSignature;
-    @JsonProperty("ImageStreamImage")
     private ImageStreamImage imageStreamImage;
-    @JsonProperty("ImageStreamImport")
     private ImageStreamImport imageStreamImport;
-    @JsonProperty("ImageStreamList")
     private ImageStreamList imageStreamList;
-    @JsonProperty("ImageStreamMapping")
     private ImageStreamMapping imageStreamMapping;
-    @JsonProperty("ImageStreamTagList")
     private ImageStreamTagList imageStreamTagList;
-    @JsonProperty("ImageTag")
     private ImageTag imageTag;
-    @JsonProperty("ImageTagList")
     private ImageTagList imageTagList;
-    @JsonProperty("Info")
     private Info info;
-    @JsonProperty("ListOptions")
     private ListOptions listOptions;
-    @JsonProperty("LocalResourceAccessReview")
     private LocalResourceAccessReview localResourceAccessReview;
-    @JsonProperty("LocalSubjectAccessReview")
     private LocalSubjectAccessReview localSubjectAccessReview;
-    @JsonProperty("NetNamespace")
     private NetNamespace netNamespace;
-    @JsonProperty("NetNamespaceList")
     private NetNamespaceList netNamespaceList;
-    @JsonProperty("OAuthAccessToken")
     private OAuthAccessToken oAuthAccessToken;
-    @JsonProperty("OAuthAccessTokenList")
     private OAuthAccessTokenList oAuthAccessTokenList;
-    @JsonProperty("OAuthAuthorizeToken")
     private OAuthAuthorizeToken oAuthAuthorizeToken;
-    @JsonProperty("OAuthAuthorizeTokenList")
     private OAuthAuthorizeTokenList oAuthAuthorizeTokenList;
-    @JsonProperty("OAuthClient")
     private OAuthClient oAuthClient;
-    @JsonProperty("OAuthClientAuthorization")
     private OAuthClientAuthorization oAuthClientAuthorization;
-    @JsonProperty("OAuthClientAuthorizationList")
     private OAuthClientAuthorizationList oAuthClientAuthorizationList;
-    @JsonProperty("OAuthClientList")
     private OAuthClientList oAuthClientList;
-    @JsonProperty("ObjectMeta")
-    private io.fabric8.kubernetes.api.model.ObjectMeta objectMeta;
-    @JsonProperty("OpenShiftRoleBindingRestrictionList")
+    private ObjectMeta objectMeta;
     private RoleBindingRestrictionList openShiftRoleBindingRestrictionList;
-    @JsonProperty("OpenshiftClusterRole")
     private ClusterRole openshiftClusterRole;
-    @JsonProperty("OpenshiftClusterRoleBinding")
     private ClusterRoleBinding openshiftClusterRoleBinding;
-    @JsonProperty("OpenshiftClusterRoleBindingList")
     private ClusterRoleBindingList openshiftClusterRoleBindingList;
-    @JsonProperty("OpenshiftClusterRoleList")
     private ClusterRoleList openshiftClusterRoleList;
-    @JsonProperty("OpenshiftClusterRoleScopeRestriction")
     private ClusterRoleScopeRestriction openshiftClusterRoleScopeRestriction;
-    @JsonProperty("OpenshiftRole")
     private Role openshiftRole;
-    @JsonProperty("OpenshiftRoleBinding")
     private RoleBinding openshiftRoleBinding;
-    @JsonProperty("OpenshiftRoleBindingList")
     private RoleBindingList openshiftRoleBindingList;
-    @JsonProperty("OpenshiftRoleBindingRestriction")
     private RoleBindingRestriction openshiftRoleBindingRestriction;
-    @JsonProperty("OpenshiftRoleBindingRestrictionSpec")
     private RoleBindingRestrictionSpec openshiftRoleBindingRestrictionSpec;
-    @JsonProperty("OpenshiftRoleList")
     private RoleList openshiftRoleList;
-    @JsonProperty("Patch")
     private Patch patch;
-    @JsonProperty("PatchOptions")
     private PatchOptions patchOptions;
-    @JsonProperty("PodSecurityPolicyReview")
     private PodSecurityPolicyReview podSecurityPolicyReview;
-    @JsonProperty("PodSecurityPolicySelfSubjectReview")
     private PodSecurityPolicySelfSubjectReview podSecurityPolicySelfSubjectReview;
-    @JsonProperty("PodSecurityPolicySubjectReview")
     private PodSecurityPolicySubjectReview podSecurityPolicySubjectReview;
-    @JsonProperty("Project")
     private Project project;
-    @JsonProperty("ProjectHelmChartRepository")
     private ProjectHelmChartRepository projectHelmChartRepository;
-    @JsonProperty("ProjectHelmChartRepositoryList")
     private ProjectHelmChartRepositoryList projectHelmChartRepositoryList;
-    @JsonProperty("ProjectList")
     private ProjectList projectList;
-    @JsonProperty("ProjectRequest")
     private ProjectRequest projectRequest;
-    @JsonProperty("Quantity")
     private Quantity quantity;
-    @JsonProperty("RangeAllocation")
     private RangeAllocation rangeAllocation;
-    @JsonProperty("RangeAllocationList")
     private RangeAllocationList rangeAllocationList;
-    @JsonProperty("ResourceAccessReview")
     private ResourceAccessReview resourceAccessReview;
-    @JsonProperty("ResourceAccessReviewResponse")
     private ResourceAccessReviewResponse resourceAccessReviewResponse;
-    @JsonProperty("RootPaths")
     private RootPaths rootPaths;
-    @JsonProperty("Route")
     private Route route;
-    @JsonProperty("RouteList")
     private RouteList routeList;
-    @JsonProperty("SecurityContextConstraints")
     private SecurityContextConstraints securityContextConstraints;
-    @JsonProperty("SecurityContextConstraintsList")
     private SecurityContextConstraintsList securityContextConstraintsList;
-    @JsonProperty("SelfSubjectRulesReview")
     private SelfSubjectRulesReview selfSubjectRulesReview;
-    @JsonProperty("Status")
     private Status status;
-    @JsonProperty("SubjectAccessReview")
     private SubjectAccessReview subjectAccessReview;
-    @JsonProperty("SubjectAccessReviewResponse")
     private SubjectAccessReviewResponse subjectAccessReviewResponse;
-    @JsonProperty("SubjectRulesReview")
     private SubjectRulesReview subjectRulesReview;
-    @JsonProperty("TagEvent")
     private TagEvent tagEvent;
-    @JsonProperty("Template")
     private Template template;
-    @JsonProperty("TemplateInstance")
     private TemplateInstance templateInstance;
-    @JsonProperty("TemplateInstanceList")
     private TemplateInstanceList templateInstanceList;
-    @JsonProperty("TemplateList")
     private TemplateList templateList;
-    @JsonProperty("Time")
     private String time;
-    @JsonProperty("TokenReview")
     private TokenReview tokenReview;
-    @JsonProperty("TypeMeta")
     private TypeMeta typeMeta;
-    @JsonProperty("UpdateOptions")
     private UpdateOptions updateOptions;
-    @JsonProperty("User")
     private User user;
-    @JsonProperty("UserIdentityMapping")
     private UserIdentityMapping userIdentityMapping;
-    @JsonProperty("UserList")
     private UserList userList;
-    @JsonProperty("UserOAuthAccessToken")
     private UserOAuthAccessToken userOAuthAccessToken;
-    @JsonProperty("UserOAuthAccessTokenList")
     private UserOAuthAccessTokenList userOAuthAccessTokenList;
     @JsonIgnore
     private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
@@ -473,7 +217,7 @@ public class KubeSchema implements Editable<KubeSchemaBuilder>
     public KubeSchema() {
     }
 
-    public KubeSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, AggregationRule aggregationRule, AppliedClusterResourceQuota appliedClusterResourceQuota, AppliedClusterResourceQuotaList appliedClusterResourceQuotaList, KubernetesList baseKubernetesList, BrokerTemplateInstance brokerTemplateInstance, BrokerTemplateInstanceList brokerTemplateInstanceList, BuildConfigList buildConfigList, BuildList buildList, BuildRequest buildRequest, ClusterNetwork clusterNetwork, ClusterNetworkList clusterNetworkList, ClusterResourceQuota clusterResourceQuota, ClusterResourceQuotaList clusterResourceQuotaList, Config config, CreateOptions createOptions, DeleteOptions deleteOptions, DeploymentConfig deploymentConfig, DeploymentConfigList deploymentConfigList, EgressNetworkPolicy egressNetworkPolicy, EgressNetworkPolicyList egressNetworkPolicyList, GetOptions getOptions, Group group, GroupList groupList, HelmChartRepository helmChartRepository, HelmChartRepositoryList helmChartRepositoryList, HostSubnet hostSubnet, HostSubnetList hostSubnetList, Identity identity, IdentityList identityList, ImageList imageList, ImageSignature imageSignature, ImageStreamImage imageStreamImage, ImageStreamImport imageStreamImport, ImageStreamList imageStreamList, ImageStreamMapping imageStreamMapping, ImageStreamTagList imageStreamTagList, ImageTag imageTag, ImageTagList imageTagList, Info info, ListOptions listOptions, LocalResourceAccessReview localResourceAccessReview, LocalSubjectAccessReview localSubjectAccessReview, NetNamespace netNamespace, NetNamespaceList netNamespaceList, OAuthAccessToken oAuthAccessToken, OAuthAccessTokenList oAuthAccessTokenList, OAuthAuthorizeToken oAuthAuthorizeToken, OAuthAuthorizeTokenList oAuthAuthorizeTokenList, OAuthClient oAuthClient, OAuthClientAuthorization oAuthClientAuthorization, OAuthClientAuthorizationList oAuthClientAuthorizationList, OAuthClientList oAuthClientList, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, RoleBindingRestrictionList openShiftRoleBindingRestrictionList, ClusterRole openshiftClusterRole, ClusterRoleBinding openshiftClusterRoleBinding, ClusterRoleBindingList openshiftClusterRoleBindingList, ClusterRoleList openshiftClusterRoleList, ClusterRoleScopeRestriction openshiftClusterRoleScopeRestriction, Role openshiftRole, RoleBinding openshiftRoleBinding, RoleBindingList openshiftRoleBindingList, RoleBindingRestriction openshiftRoleBindingRestriction, RoleBindingRestrictionSpec openshiftRoleBindingRestrictionSpec, RoleList openshiftRoleList, Patch patch, PatchOptions patchOptions, PodSecurityPolicyReview podSecurityPolicyReview, PodSecurityPolicySelfSubjectReview podSecurityPolicySelfSubjectReview, PodSecurityPolicySubjectReview podSecurityPolicySubjectReview, Project project, ProjectHelmChartRepository projectHelmChartRepository, ProjectHelmChartRepositoryList projectHelmChartRepositoryList, ProjectList projectList, ProjectRequest projectRequest, Quantity quantity, RangeAllocation rangeAllocation, RangeAllocationList rangeAllocationList, ResourceAccessReview resourceAccessReview, ResourceAccessReviewResponse resourceAccessReviewResponse, RootPaths rootPaths, Route route, RouteList routeList, SecurityContextConstraints securityContextConstraints, SecurityContextConstraintsList securityContextConstraintsList, SelfSubjectRulesReview selfSubjectRulesReview, Status status, SubjectAccessReview subjectAccessReview, SubjectAccessReviewResponse subjectAccessReviewResponse, SubjectRulesReview subjectRulesReview, TagEvent tagEvent, Template template, TemplateInstance templateInstance, TemplateInstanceList templateInstanceList, TemplateList templateList, String time, TokenReview tokenReview, TypeMeta typeMeta, UpdateOptions updateOptions, User user, UserIdentityMapping userIdentityMapping, UserList userList, UserOAuthAccessToken userOAuthAccessToken, UserOAuthAccessTokenList userOAuthAccessTokenList) {
+    public KubeSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, AggregationRule aggregationRule, AppliedClusterResourceQuota appliedClusterResourceQuota, AppliedClusterResourceQuotaList appliedClusterResourceQuotaList, KubernetesList baseKubernetesList, BrokerTemplateInstance brokerTemplateInstance, BrokerTemplateInstanceList brokerTemplateInstanceList, BuildConfigList buildConfigList, BuildList buildList, BuildRequest buildRequest, ClusterNetwork clusterNetwork, ClusterNetworkList clusterNetworkList, ClusterResourceQuota clusterResourceQuota, ClusterResourceQuotaList clusterResourceQuotaList, Config config, CreateOptions createOptions, DeleteOptions deleteOptions, DeploymentConfig deploymentConfig, DeploymentConfigList deploymentConfigList, EgressNetworkPolicy egressNetworkPolicy, EgressNetworkPolicyList egressNetworkPolicyList, GetOptions getOptions, Group group, GroupList groupList, HelmChartRepository helmChartRepository, HelmChartRepositoryList helmChartRepositoryList, HostSubnet hostSubnet, HostSubnetList hostSubnetList, Identity identity, IdentityList identityList, ImageList imageList, ImageSignature imageSignature, ImageStreamImage imageStreamImage, ImageStreamImport imageStreamImport, ImageStreamList imageStreamList, ImageStreamMapping imageStreamMapping, ImageStreamTagList imageStreamTagList, ImageTag imageTag, ImageTagList imageTagList, Info info, ListOptions listOptions, LocalResourceAccessReview localResourceAccessReview, LocalSubjectAccessReview localSubjectAccessReview, NetNamespace netNamespace, NetNamespaceList netNamespaceList, OAuthAccessToken oAuthAccessToken, OAuthAccessTokenList oAuthAccessTokenList, OAuthAuthorizeToken oAuthAuthorizeToken, OAuthAuthorizeTokenList oAuthAuthorizeTokenList, OAuthClient oAuthClient, OAuthClientAuthorization oAuthClientAuthorization, OAuthClientAuthorizationList oAuthClientAuthorizationList, OAuthClientList oAuthClientList, ObjectMeta objectMeta, RoleBindingRestrictionList openShiftRoleBindingRestrictionList, ClusterRole openshiftClusterRole, ClusterRoleBinding openshiftClusterRoleBinding, ClusterRoleBindingList openshiftClusterRoleBindingList, ClusterRoleList openshiftClusterRoleList, ClusterRoleScopeRestriction openshiftClusterRoleScopeRestriction, Role openshiftRole, RoleBinding openshiftRoleBinding, RoleBindingList openshiftRoleBindingList, RoleBindingRestriction openshiftRoleBindingRestriction, RoleBindingRestrictionSpec openshiftRoleBindingRestrictionSpec, RoleList openshiftRoleList, Patch patch, PatchOptions patchOptions, PodSecurityPolicyReview podSecurityPolicyReview, PodSecurityPolicySelfSubjectReview podSecurityPolicySelfSubjectReview, PodSecurityPolicySubjectReview podSecurityPolicySubjectReview, Project project, ProjectHelmChartRepository projectHelmChartRepository, ProjectHelmChartRepositoryList projectHelmChartRepositoryList, ProjectList projectList, ProjectRequest projectRequest, Quantity quantity, RangeAllocation rangeAllocation, RangeAllocationList rangeAllocationList, ResourceAccessReview resourceAccessReview, ResourceAccessReviewResponse resourceAccessReviewResponse, RootPaths rootPaths, Route route, RouteList routeList, SecurityContextConstraints securityContextConstraints, SecurityContextConstraintsList securityContextConstraintsList, SelfSubjectRulesReview selfSubjectRulesReview, Status status, SubjectAccessReview subjectAccessReview, SubjectAccessReviewResponse subjectAccessReviewResponse, SubjectRulesReview subjectRulesReview, TagEvent tagEvent, Template template, TemplateInstance templateInstance, TemplateInstanceList templateInstanceList, TemplateList templateList, String time, TokenReview tokenReview, TypeMeta typeMeta, UpdateOptions updateOptions, User user, UserIdentityMapping userIdentityMapping, UserList userList, UserOAuthAccessToken userOAuthAccessToken, UserOAuthAccessTokenList userOAuthAccessTokenList) {
         super();
         this.aPIGroup = aPIGroup;
         this.aPIGroupList = aPIGroupList;
@@ -1124,12 +868,12 @@ public class KubeSchema implements Editable<KubeSchemaBuilder>
     }
 
     @JsonProperty("ObjectMeta")
-    public io.fabric8.kubernetes.api.model.ObjectMeta getObjectMeta() {
+    public ObjectMeta getObjectMeta() {
         return objectMeta;
     }
 
     @JsonProperty("ObjectMeta")
-    public void setObjectMeta(io.fabric8.kubernetes.api.model.ObjectMeta objectMeta) {
+    public void setObjectMeta(ObjectMeta objectMeta) {
         this.objectMeta = objectMeta;
     }
 
@@ -1641,16 +1385,6 @@ public class KubeSchema implements Editable<KubeSchemaBuilder>
     @JsonProperty("UserOAuthAccessTokenList")
     public void setUserOAuthAccessTokenList(UserOAuthAccessTokenList userOAuthAccessTokenList) {
         this.userOAuthAccessTokenList = userOAuthAccessTokenList;
-    }
-
-    @JsonIgnore
-    public KubeSchemaBuilder edit() {
-        return new KubeSchemaBuilder(this);
-    }
-
-    @JsonIgnore
-    public KubeSchemaBuilder toBuilder() {
-        return edit();
     }
 
     @JsonAnyGetter

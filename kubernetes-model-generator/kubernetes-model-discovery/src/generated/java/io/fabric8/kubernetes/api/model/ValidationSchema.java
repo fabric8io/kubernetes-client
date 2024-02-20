@@ -7,124 +7,35 @@ import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import io.fabric8.kubernetes.api.builder.Editable;
-import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.IntOrString;
-import io.fabric8.kubernetes.api.model.LabelSelector;
-import io.fabric8.kubernetes.api.model.LocalObjectReference;
-import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
-import io.fabric8.kubernetes.api.model.PodTemplateSpec;
-import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.kubernetes.api.model.discovery.v1beta1.EndpointPort;
 import io.fabric8.kubernetes.api.model.version.Info;
-import io.sundr.builder.annotations.Buildable;
-import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.Setter;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-    "apiVersion",
-    "kind",
-    "metadata",
-    "APIGroup",
-    "APIGroupList",
-    "BaseKubernetesList",
-    "CreateOptions",
-    "DeleteOptions",
-    "DiscoveryEndpointPort",
-    "EndpointSlice",
-    "EndpointSliceList",
-    "GetOptions",
-    "Info",
-    "ListOptions",
-    "ObjectMeta",
-    "ObjectReference",
-    "Patch",
-    "PatchOptions",
-    "Quantity",
-    "RootPaths",
-    "Status",
-    "Time",
-    "TypeMeta",
-    "UpdateOptions",
-    "V1EndpointSlice",
-    "V1EndpointSliceList"
-})
-@ToString
-@EqualsAndHashCode
-@Setter
-@Accessors(prefix = {
-    "_",
-    ""
-})
-@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
-    @BuildableReference(LabelSelector.class),
-    @BuildableReference(Container.class),
-    @BuildableReference(PodTemplateSpec.class),
-    @BuildableReference(ResourceRequirements.class),
-    @BuildableReference(IntOrString.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
-    @BuildableReference(LocalObjectReference.class),
-    @BuildableReference(PersistentVolumeClaim.class)
-})
 @Generated("jsonschema2pojo")
-public class ValidationSchema implements Editable<ValidationSchemaBuilder>
-{
+public class ValidationSchema {
 
-    @JsonProperty("APIGroup")
     private APIGroup aPIGroup;
-    @JsonProperty("APIGroupList")
     private APIGroupList aPIGroupList;
-    @JsonProperty("BaseKubernetesList")
     private KubernetesList baseKubernetesList;
-    @JsonProperty("CreateOptions")
     private CreateOptions createOptions;
-    @JsonProperty("DeleteOptions")
     private DeleteOptions deleteOptions;
-    @JsonProperty("DiscoveryEndpointPort")
     private EndpointPort discoveryEndpointPort;
-    @JsonProperty("EndpointSlice")
     private io.fabric8.kubernetes.api.model.discovery.v1beta1.EndpointSlice endpointSlice;
-    @JsonProperty("EndpointSliceList")
     private io.fabric8.kubernetes.api.model.discovery.v1beta1.EndpointSliceList endpointSliceList;
-    @JsonProperty("GetOptions")
     private GetOptions getOptions;
-    @JsonProperty("Info")
     private Info info;
-    @JsonProperty("ListOptions")
     private ListOptions listOptions;
-    @JsonProperty("ObjectMeta")
-    private io.fabric8.kubernetes.api.model.ObjectMeta objectMeta;
-    @JsonProperty("ObjectReference")
-    private io.fabric8.kubernetes.api.model.ObjectReference objectReference;
-    @JsonProperty("Patch")
+    private ObjectMeta objectMeta;
+    private ObjectReference objectReference;
     private Patch patch;
-    @JsonProperty("PatchOptions")
     private PatchOptions patchOptions;
-    @JsonProperty("Quantity")
     private Quantity quantity;
-    @JsonProperty("RootPaths")
     private RootPaths rootPaths;
-    @JsonProperty("Status")
     private Status status;
-    @JsonProperty("Time")
     private String time;
-    @JsonProperty("TypeMeta")
     private TypeMeta typeMeta;
-    @JsonProperty("UpdateOptions")
     private UpdateOptions updateOptions;
-    @JsonProperty("V1EndpointSlice")
     private io.fabric8.kubernetes.api.model.discovery.v1.EndpointSlice v1EndpointSlice;
-    @JsonProperty("V1EndpointSliceList")
     private io.fabric8.kubernetes.api.model.discovery.v1.EndpointSliceList v1EndpointSliceList;
     @JsonIgnore
     private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
@@ -136,7 +47,7 @@ public class ValidationSchema implements Editable<ValidationSchemaBuilder>
     public ValidationSchema() {
     }
 
-    public ValidationSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, KubernetesList baseKubernetesList, CreateOptions createOptions, DeleteOptions deleteOptions, EndpointPort discoveryEndpointPort, io.fabric8.kubernetes.api.model.discovery.v1beta1.EndpointSlice endpointSlice, io.fabric8.kubernetes.api.model.discovery.v1beta1.EndpointSliceList endpointSliceList, GetOptions getOptions, Info info, ListOptions listOptions, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, io.fabric8.kubernetes.api.model.ObjectReference objectReference, Patch patch, PatchOptions patchOptions, Quantity quantity, RootPaths rootPaths, Status status, String time, TypeMeta typeMeta, UpdateOptions updateOptions, io.fabric8.kubernetes.api.model.discovery.v1.EndpointSlice v1EndpointSlice, io.fabric8.kubernetes.api.model.discovery.v1.EndpointSliceList v1EndpointSliceList) {
+    public ValidationSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, KubernetesList baseKubernetesList, CreateOptions createOptions, DeleteOptions deleteOptions, EndpointPort discoveryEndpointPort, io.fabric8.kubernetes.api.model.discovery.v1beta1.EndpointSlice endpointSlice, io.fabric8.kubernetes.api.model.discovery.v1beta1.EndpointSliceList endpointSliceList, GetOptions getOptions, Info info, ListOptions listOptions, ObjectMeta objectMeta, ObjectReference objectReference, Patch patch, PatchOptions patchOptions, Quantity quantity, RootPaths rootPaths, Status status, String time, TypeMeta typeMeta, UpdateOptions updateOptions, io.fabric8.kubernetes.api.model.discovery.v1.EndpointSlice v1EndpointSlice, io.fabric8.kubernetes.api.model.discovery.v1.EndpointSliceList v1EndpointSliceList) {
         super();
         this.aPIGroup = aPIGroup;
         this.aPIGroupList = aPIGroupList;
@@ -274,22 +185,22 @@ public class ValidationSchema implements Editable<ValidationSchemaBuilder>
     }
 
     @JsonProperty("ObjectMeta")
-    public io.fabric8.kubernetes.api.model.ObjectMeta getObjectMeta() {
+    public ObjectMeta getObjectMeta() {
         return objectMeta;
     }
 
     @JsonProperty("ObjectMeta")
-    public void setObjectMeta(io.fabric8.kubernetes.api.model.ObjectMeta objectMeta) {
+    public void setObjectMeta(ObjectMeta objectMeta) {
         this.objectMeta = objectMeta;
     }
 
     @JsonProperty("ObjectReference")
-    public io.fabric8.kubernetes.api.model.ObjectReference getObjectReference() {
+    public ObjectReference getObjectReference() {
         return objectReference;
     }
 
     @JsonProperty("ObjectReference")
-    public void setObjectReference(io.fabric8.kubernetes.api.model.ObjectReference objectReference) {
+    public void setObjectReference(ObjectReference objectReference) {
         this.objectReference = objectReference;
     }
 
@@ -391,16 +302,6 @@ public class ValidationSchema implements Editable<ValidationSchemaBuilder>
     @JsonProperty("V1EndpointSliceList")
     public void setV1EndpointSliceList(io.fabric8.kubernetes.api.model.discovery.v1.EndpointSliceList v1EndpointSliceList) {
         this.v1EndpointSliceList = v1EndpointSliceList;
-    }
-
-    @JsonIgnore
-    public ValidationSchemaBuilder edit() {
-        return new ValidationSchemaBuilder(this);
-    }
-
-    @JsonIgnore
-    public ValidationSchemaBuilder toBuilder() {
-        return edit();
     }
 
     @JsonAnyGetter

@@ -7,18 +7,7 @@ import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import io.fabric8.kubernetes.api.builder.Editable;
-import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.IntOrString;
-import io.fabric8.kubernetes.api.model.LabelSelector;
-import io.fabric8.kubernetes.api.model.LocalObjectReference;
-import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
-import io.fabric8.kubernetes.api.model.PodTemplateSpec;
-import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.kubernetes.api.model.storage.StorageClass;
 import io.fabric8.kubernetes.api.model.storage.StorageClassList;
 import io.fabric8.kubernetes.api.model.storage.VolumeAttachment;
@@ -26,149 +15,45 @@ import io.fabric8.kubernetes.api.model.storage.VolumeAttachmentList;
 import io.fabric8.kubernetes.api.model.storage.v1alpha1.VolumeAttributesClass;
 import io.fabric8.kubernetes.api.model.storage.v1alpha1.VolumeAttributesClassList;
 import io.fabric8.kubernetes.api.model.version.Info;
-import io.sundr.builder.annotations.Buildable;
-import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.Setter;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-    "apiVersion",
-    "kind",
-    "metadata",
-    "APIGroup",
-    "APIGroupList",
-    "BaseKubernetesList",
-    "CSIDriver",
-    "CSIDriverList",
-    "CSINode",
-    "CSINodeList",
-    "CSIStorageCapacity",
-    "CSIStorageCapacityList",
-    "CreateOptions",
-    "DeleteOptions",
-    "GetOptions",
-    "Info",
-    "ListOptions",
-    "ObjectMeta",
-    "ObjectReference",
-    "Patch",
-    "PatchOptions",
-    "Quantity",
-    "RootPaths",
-    "Status",
-    "StorageClass",
-    "StorageClassList",
-    "Time",
-    "TypeMeta",
-    "UpdateOptions",
-    "V1CSIDriver",
-    "V1CSIDriverList",
-    "V1CSINode",
-    "V1CSINodeList",
-    "V1CSIStorageCapacity",
-    "V1CSIStorageCapacityList",
-    "VolumeAttachment",
-    "VolumeAttachmentList",
-    "VolumeAttributesClass",
-    "VolumeAttributesClassList"
-})
-@ToString
-@EqualsAndHashCode
-@Setter
-@Accessors(prefix = {
-    "_",
-    ""
-})
-@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
-    @BuildableReference(LabelSelector.class),
-    @BuildableReference(Container.class),
-    @BuildableReference(PodTemplateSpec.class),
-    @BuildableReference(ResourceRequirements.class),
-    @BuildableReference(IntOrString.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
-    @BuildableReference(LocalObjectReference.class),
-    @BuildableReference(PersistentVolumeClaim.class)
-})
 @Generated("jsonschema2pojo")
-public class ValidationSchema implements Editable<ValidationSchemaBuilder>
-{
+public class ValidationSchema {
 
-    @JsonProperty("APIGroup")
     private APIGroup aPIGroup;
-    @JsonProperty("APIGroupList")
     private APIGroupList aPIGroupList;
-    @JsonProperty("BaseKubernetesList")
     private KubernetesList baseKubernetesList;
-    @JsonProperty("CSIDriver")
     private io.fabric8.kubernetes.api.model.storage.v1beta1.CSIDriver cSIDriver;
-    @JsonProperty("CSIDriverList")
     private io.fabric8.kubernetes.api.model.storage.v1beta1.CSIDriverList cSIDriverList;
-    @JsonProperty("CSINode")
     private io.fabric8.kubernetes.api.model.storage.v1beta1.CSINode cSINode;
-    @JsonProperty("CSINodeList")
     private io.fabric8.kubernetes.api.model.storage.v1beta1.CSINodeList cSINodeList;
-    @JsonProperty("CSIStorageCapacity")
     private io.fabric8.kubernetes.api.model.storage.v1beta1.CSIStorageCapacity cSIStorageCapacity;
-    @JsonProperty("CSIStorageCapacityList")
     private io.fabric8.kubernetes.api.model.storage.v1beta1.CSIStorageCapacityList cSIStorageCapacityList;
-    @JsonProperty("CreateOptions")
     private CreateOptions createOptions;
-    @JsonProperty("DeleteOptions")
     private DeleteOptions deleteOptions;
-    @JsonProperty("GetOptions")
     private GetOptions getOptions;
-    @JsonProperty("Info")
     private Info info;
-    @JsonProperty("ListOptions")
     private ListOptions listOptions;
-    @JsonProperty("ObjectMeta")
-    private io.fabric8.kubernetes.api.model.ObjectMeta objectMeta;
-    @JsonProperty("ObjectReference")
-    private io.fabric8.kubernetes.api.model.ObjectReference objectReference;
-    @JsonProperty("Patch")
+    private ObjectMeta objectMeta;
+    private ObjectReference objectReference;
     private Patch patch;
-    @JsonProperty("PatchOptions")
     private PatchOptions patchOptions;
-    @JsonProperty("Quantity")
     private Quantity quantity;
-    @JsonProperty("RootPaths")
     private RootPaths rootPaths;
-    @JsonProperty("Status")
     private Status status;
-    @JsonProperty("StorageClass")
     private StorageClass storageClass;
-    @JsonProperty("StorageClassList")
     private StorageClassList storageClassList;
-    @JsonProperty("Time")
     private String time;
-    @JsonProperty("TypeMeta")
     private TypeMeta typeMeta;
-    @JsonProperty("UpdateOptions")
     private UpdateOptions updateOptions;
-    @JsonProperty("V1CSIDriver")
     private io.fabric8.kubernetes.api.model.storage.CSIDriver v1CSIDriver;
-    @JsonProperty("V1CSIDriverList")
     private io.fabric8.kubernetes.api.model.storage.CSIDriverList v1CSIDriverList;
-    @JsonProperty("V1CSINode")
     private io.fabric8.kubernetes.api.model.storage.CSINode v1CSINode;
-    @JsonProperty("V1CSINodeList")
     private io.fabric8.kubernetes.api.model.storage.CSINodeList v1CSINodeList;
-    @JsonProperty("V1CSIStorageCapacity")
     private io.fabric8.kubernetes.api.model.storage.CSIStorageCapacity v1CSIStorageCapacity;
-    @JsonProperty("V1CSIStorageCapacityList")
     private io.fabric8.kubernetes.api.model.storage.CSIStorageCapacityList v1CSIStorageCapacityList;
-    @JsonProperty("VolumeAttachment")
     private VolumeAttachment volumeAttachment;
-    @JsonProperty("VolumeAttachmentList")
     private VolumeAttachmentList volumeAttachmentList;
-    @JsonProperty("VolumeAttributesClass")
     private VolumeAttributesClass volumeAttributesClass;
-    @JsonProperty("VolumeAttributesClassList")
     private VolumeAttributesClassList volumeAttributesClassList;
     @JsonIgnore
     private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
@@ -180,7 +65,7 @@ public class ValidationSchema implements Editable<ValidationSchemaBuilder>
     public ValidationSchema() {
     }
 
-    public ValidationSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, KubernetesList baseKubernetesList, io.fabric8.kubernetes.api.model.storage.v1beta1.CSIDriver cSIDriver, io.fabric8.kubernetes.api.model.storage.v1beta1.CSIDriverList cSIDriverList, io.fabric8.kubernetes.api.model.storage.v1beta1.CSINode cSINode, io.fabric8.kubernetes.api.model.storage.v1beta1.CSINodeList cSINodeList, io.fabric8.kubernetes.api.model.storage.v1beta1.CSIStorageCapacity cSIStorageCapacity, io.fabric8.kubernetes.api.model.storage.v1beta1.CSIStorageCapacityList cSIStorageCapacityList, CreateOptions createOptions, DeleteOptions deleteOptions, GetOptions getOptions, Info info, ListOptions listOptions, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, io.fabric8.kubernetes.api.model.ObjectReference objectReference, Patch patch, PatchOptions patchOptions, Quantity quantity, RootPaths rootPaths, Status status, StorageClass storageClass, StorageClassList storageClassList, String time, TypeMeta typeMeta, UpdateOptions updateOptions, io.fabric8.kubernetes.api.model.storage.CSIDriver v1CSIDriver, io.fabric8.kubernetes.api.model.storage.CSIDriverList v1CSIDriverList, io.fabric8.kubernetes.api.model.storage.CSINode v1CSINode, io.fabric8.kubernetes.api.model.storage.CSINodeList v1CSINodeList, io.fabric8.kubernetes.api.model.storage.CSIStorageCapacity v1CSIStorageCapacity, io.fabric8.kubernetes.api.model.storage.CSIStorageCapacityList v1CSIStorageCapacityList, VolumeAttachment volumeAttachment, VolumeAttachmentList volumeAttachmentList, VolumeAttributesClass volumeAttributesClass, VolumeAttributesClassList volumeAttributesClassList) {
+    public ValidationSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, KubernetesList baseKubernetesList, io.fabric8.kubernetes.api.model.storage.v1beta1.CSIDriver cSIDriver, io.fabric8.kubernetes.api.model.storage.v1beta1.CSIDriverList cSIDriverList, io.fabric8.kubernetes.api.model.storage.v1beta1.CSINode cSINode, io.fabric8.kubernetes.api.model.storage.v1beta1.CSINodeList cSINodeList, io.fabric8.kubernetes.api.model.storage.v1beta1.CSIStorageCapacity cSIStorageCapacity, io.fabric8.kubernetes.api.model.storage.v1beta1.CSIStorageCapacityList cSIStorageCapacityList, CreateOptions createOptions, DeleteOptions deleteOptions, GetOptions getOptions, Info info, ListOptions listOptions, ObjectMeta objectMeta, ObjectReference objectReference, Patch patch, PatchOptions patchOptions, Quantity quantity, RootPaths rootPaths, Status status, StorageClass storageClass, StorageClassList storageClassList, String time, TypeMeta typeMeta, UpdateOptions updateOptions, io.fabric8.kubernetes.api.model.storage.CSIDriver v1CSIDriver, io.fabric8.kubernetes.api.model.storage.CSIDriverList v1CSIDriverList, io.fabric8.kubernetes.api.model.storage.CSINode v1CSINode, io.fabric8.kubernetes.api.model.storage.CSINodeList v1CSINodeList, io.fabric8.kubernetes.api.model.storage.CSIStorageCapacity v1CSIStorageCapacity, io.fabric8.kubernetes.api.model.storage.CSIStorageCapacityList v1CSIStorageCapacityList, VolumeAttachment volumeAttachment, VolumeAttachmentList volumeAttachmentList, VolumeAttributesClass volumeAttributesClass, VolumeAttributesClassList volumeAttributesClassList) {
         super();
         this.aPIGroup = aPIGroup;
         this.aPIGroupList = aPIGroupList;
@@ -361,22 +246,22 @@ public class ValidationSchema implements Editable<ValidationSchemaBuilder>
     }
 
     @JsonProperty("ObjectMeta")
-    public io.fabric8.kubernetes.api.model.ObjectMeta getObjectMeta() {
+    public ObjectMeta getObjectMeta() {
         return objectMeta;
     }
 
     @JsonProperty("ObjectMeta")
-    public void setObjectMeta(io.fabric8.kubernetes.api.model.ObjectMeta objectMeta) {
+    public void setObjectMeta(ObjectMeta objectMeta) {
         this.objectMeta = objectMeta;
     }
 
     @JsonProperty("ObjectReference")
-    public io.fabric8.kubernetes.api.model.ObjectReference getObjectReference() {
+    public ObjectReference getObjectReference() {
         return objectReference;
     }
 
     @JsonProperty("ObjectReference")
-    public void setObjectReference(io.fabric8.kubernetes.api.model.ObjectReference objectReference) {
+    public void setObjectReference(ObjectReference objectReference) {
         this.objectReference = objectReference;
     }
 
@@ -578,16 +463,6 @@ public class ValidationSchema implements Editable<ValidationSchemaBuilder>
     @JsonProperty("VolumeAttributesClassList")
     public void setVolumeAttributesClassList(VolumeAttributesClassList volumeAttributesClassList) {
         this.volumeAttributesClassList = volumeAttributesClassList;
-    }
-
-    @JsonIgnore
-    public ValidationSchemaBuilder edit() {
-        return new ValidationSchemaBuilder(this);
-    }
-
-    @JsonIgnore
-    public ValidationSchemaBuilder toBuilder() {
-        return edit();
     }
 
     @JsonAnyGetter

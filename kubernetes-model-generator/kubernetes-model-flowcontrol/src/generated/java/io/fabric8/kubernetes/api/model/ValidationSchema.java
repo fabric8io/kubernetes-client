@@ -7,111 +7,30 @@ import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import io.fabric8.kubernetes.api.builder.Editable;
-import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.IntOrString;
-import io.fabric8.kubernetes.api.model.LabelSelector;
-import io.fabric8.kubernetes.api.model.LocalObjectReference;
-import io.fabric8.kubernetes.api.model.ObjectMeta;
-import io.fabric8.kubernetes.api.model.ObjectReference;
-import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
-import io.fabric8.kubernetes.api.model.PodTemplateSpec;
-import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.kubernetes.api.model.internal.apiserver.v1alpha1.StorageVersion;
 import io.fabric8.kubernetes.api.model.internal.apiserver.v1alpha1.StorageVersionList;
-import io.sundr.builder.annotations.Buildable;
-import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.Setter;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-    "apiVersion",
-    "kind",
-    "metadata",
-    "V1Alpha1StorageVersion",
-    "V1Alpha1StorageVersionList",
-    "V1FlowSchema",
-    "V1FlowSchemaList",
-    "V1PriorityLevelConfiguration",
-    "V1PriorityLevelConfigurationList",
-    "V1beta1FlowSchema",
-    "V1beta1FlowSchemaList",
-    "V1beta1PriorityLevelConfiguration",
-    "V1beta1PriorityLevelConfigurationList",
-    "V1beta2FlowSchema",
-    "V1beta2FlowSchemaList",
-    "V1beta2PriorityLevelConfiguration",
-    "V1beta2PriorityLevelConfigurationList",
-    "V1beta3FlowSchema",
-    "V1beta3FlowSchemaList",
-    "V1beta3PriorityLevelConfiguration",
-    "V1beta3PriorityLevelConfigurationList"
-})
-@ToString
-@EqualsAndHashCode
-@Setter
-@Accessors(prefix = {
-    "_",
-    ""
-})
-@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
-    @BuildableReference(ObjectMeta.class),
-    @BuildableReference(LabelSelector.class),
-    @BuildableReference(Container.class),
-    @BuildableReference(PodTemplateSpec.class),
-    @BuildableReference(ResourceRequirements.class),
-    @BuildableReference(IntOrString.class),
-    @BuildableReference(ObjectReference.class),
-    @BuildableReference(LocalObjectReference.class),
-    @BuildableReference(PersistentVolumeClaim.class)
-})
 @Generated("jsonschema2pojo")
-public class ValidationSchema implements Editable<ValidationSchemaBuilder>
-{
+public class ValidationSchema {
 
-    @JsonProperty("V1Alpha1StorageVersion")
     private StorageVersion v1Alpha1StorageVersion;
-    @JsonProperty("V1Alpha1StorageVersionList")
     private StorageVersionList v1Alpha1StorageVersionList;
-    @JsonProperty("V1FlowSchema")
     private io.fabric8.kubernetes.api.model.flowcontrol.v1.FlowSchema v1FlowSchema;
-    @JsonProperty("V1FlowSchemaList")
     private io.fabric8.kubernetes.api.model.flowcontrol.v1.FlowSchemaList v1FlowSchemaList;
-    @JsonProperty("V1PriorityLevelConfiguration")
     private io.fabric8.kubernetes.api.model.flowcontrol.v1.PriorityLevelConfiguration v1PriorityLevelConfiguration;
-    @JsonProperty("V1PriorityLevelConfigurationList")
     private io.fabric8.kubernetes.api.model.flowcontrol.v1.PriorityLevelConfigurationList v1PriorityLevelConfigurationList;
-    @JsonProperty("V1beta1FlowSchema")
     private io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.FlowSchema v1beta1FlowSchema;
-    @JsonProperty("V1beta1FlowSchemaList")
     private io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.FlowSchemaList v1beta1FlowSchemaList;
-    @JsonProperty("V1beta1PriorityLevelConfiguration")
     private io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.PriorityLevelConfiguration v1beta1PriorityLevelConfiguration;
-    @JsonProperty("V1beta1PriorityLevelConfigurationList")
     private io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.PriorityLevelConfigurationList v1beta1PriorityLevelConfigurationList;
-    @JsonProperty("V1beta2FlowSchema")
     private io.fabric8.kubernetes.api.model.flowcontrol.v1beta2.FlowSchema v1beta2FlowSchema;
-    @JsonProperty("V1beta2FlowSchemaList")
     private io.fabric8.kubernetes.api.model.flowcontrol.v1beta2.FlowSchemaList v1beta2FlowSchemaList;
-    @JsonProperty("V1beta2PriorityLevelConfiguration")
     private io.fabric8.kubernetes.api.model.flowcontrol.v1beta2.PriorityLevelConfiguration v1beta2PriorityLevelConfiguration;
-    @JsonProperty("V1beta2PriorityLevelConfigurationList")
     private io.fabric8.kubernetes.api.model.flowcontrol.v1beta2.PriorityLevelConfigurationList v1beta2PriorityLevelConfigurationList;
-    @JsonProperty("V1beta3FlowSchema")
     private io.fabric8.kubernetes.api.model.flowcontrol.v1beta3.FlowSchema v1beta3FlowSchema;
-    @JsonProperty("V1beta3FlowSchemaList")
     private io.fabric8.kubernetes.api.model.flowcontrol.v1beta3.FlowSchemaList v1beta3FlowSchemaList;
-    @JsonProperty("V1beta3PriorityLevelConfiguration")
     private io.fabric8.kubernetes.api.model.flowcontrol.v1beta3.PriorityLevelConfiguration v1beta3PriorityLevelConfiguration;
-    @JsonProperty("V1beta3PriorityLevelConfigurationList")
     private io.fabric8.kubernetes.api.model.flowcontrol.v1beta3.PriorityLevelConfigurationList v1beta3PriorityLevelConfigurationList;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
@@ -323,16 +242,6 @@ public class ValidationSchema implements Editable<ValidationSchemaBuilder>
     @JsonProperty("V1beta3PriorityLevelConfigurationList")
     public void setV1beta3PriorityLevelConfigurationList(io.fabric8.kubernetes.api.model.flowcontrol.v1beta3.PriorityLevelConfigurationList v1beta3PriorityLevelConfigurationList) {
         this.v1beta3PriorityLevelConfigurationList = v1beta3PriorityLevelConfigurationList;
-    }
-
-    @JsonIgnore
-    public ValidationSchemaBuilder edit() {
-        return new ValidationSchemaBuilder(this);
-    }
-
-    @JsonIgnore
-    public ValidationSchemaBuilder toBuilder() {
-        return edit();
     }
 
     @JsonAnyGetter
