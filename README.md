@@ -399,6 +399,26 @@ class ExampleTest {
     }
 }
 ```
+
+## Testing Against real Kubernetes API Server with Kube API Test
+
+In order to test against real Kubernetes API the project provides a lightweight approach, thus starting up Kubernetes API Server and etcd binaries.
+
+```java
+@EnableKubeAPIServer
+class KubeAPITestSample {
+
+  static KubernetesClient client;
+  
+  @Test
+  void testWithClient() {
+    // test using the client against real K8S API Server   
+  }
+}
+```
+
+For details see docs for [Kube API Test](doc/kube-api-test.md).
+
 ## Compatibility
 
 ### Kubernetes
