@@ -7,154 +7,45 @@ import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import io.fabric8.kubernetes.api.builder.Editable;
-import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.IntOrString;
-import io.fabric8.kubernetes.api.model.LabelSelector;
-import io.fabric8.kubernetes.api.model.LocalObjectReference;
-import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
-import io.fabric8.kubernetes.api.model.PodTemplateSpec;
-import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.ConversionReview;
 import io.fabric8.kubernetes.api.model.version.Info;
-import io.sundr.builder.annotations.Buildable;
-import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.Setter;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-    "apiVersion",
-    "kind",
-    "metadata",
-    "APIGroup",
-    "APIGroupList",
-    "BaseKubernetesList",
-    "CreateOptions",
-    "CustomResourceDefinition",
-    "CustomResourceDefinitionCondition",
-    "CustomResourceDefinitionList",
-    "CustomResourceDefinitionNames",
-    "CustomResourceDefinitionSpec",
-    "CustomResourceDefinitionStatus",
-    "DeleteOptions",
-    "GetOptions",
-    "Info",
-    "JSONSchemaPropsOrStringArray",
-    "ListOptions",
-    "ObjectMeta",
-    "ObjectReference",
-    "Patch",
-    "PatchOptions",
-    "Quantity",
-    "RootPaths",
-    "Status",
-    "Time",
-    "TypeMeta",
-    "UpdateOptions",
-    "V1ConversionReview",
-    "V1CustomResourceDefinition",
-    "V1CustomResourceDefinitionCondition",
-    "V1CustomResourceDefinitionList",
-    "V1CustomResourceDefinitionNames",
-    "V1CustomResourceDefinitionSpec",
-    "V1CustomResourceDefinitionStatus",
-    "V1JSONSchemaPropsOrStringArray"
-})
-@ToString
-@EqualsAndHashCode
-@Setter
-@Accessors(prefix = {
-    "_",
-    ""
-})
-@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
-    @BuildableReference(LabelSelector.class),
-    @BuildableReference(Container.class),
-    @BuildableReference(PodTemplateSpec.class),
-    @BuildableReference(ResourceRequirements.class),
-    @BuildableReference(IntOrString.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
-    @BuildableReference(LocalObjectReference.class),
-    @BuildableReference(PersistentVolumeClaim.class)
-})
 @Generated("jsonschema2pojo")
-public class KubeSchema implements Editable<KubeSchemaBuilder>
-{
+public class KubeSchema {
 
-    @JsonProperty("APIGroup")
     private APIGroup aPIGroup;
-    @JsonProperty("APIGroupList")
     private APIGroupList aPIGroupList;
-    @JsonProperty("BaseKubernetesList")
     private KubernetesList baseKubernetesList;
-    @JsonProperty("CreateOptions")
     private CreateOptions createOptions;
-    @JsonProperty("CustomResourceDefinition")
     private io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition customResourceDefinition;
-    @JsonProperty("CustomResourceDefinitionCondition")
     private io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionCondition customResourceDefinitionCondition;
-    @JsonProperty("CustomResourceDefinitionList")
     private io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionList customResourceDefinitionList;
-    @JsonProperty("CustomResourceDefinitionNames")
     private io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionNames customResourceDefinitionNames;
-    @JsonProperty("CustomResourceDefinitionSpec")
     private io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionSpec customResourceDefinitionSpec;
-    @JsonProperty("CustomResourceDefinitionStatus")
     private io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionStatus customResourceDefinitionStatus;
-    @JsonProperty("DeleteOptions")
     private DeleteOptions deleteOptions;
-    @JsonProperty("GetOptions")
     private GetOptions getOptions;
-    @JsonProperty("Info")
     private Info info;
-    @JsonProperty("JSONSchemaPropsOrStringArray")
     private io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaPropsOrStringArray jSONSchemaPropsOrStringArray;
-    @JsonProperty("ListOptions")
     private ListOptions listOptions;
-    @JsonProperty("ObjectMeta")
-    private io.fabric8.kubernetes.api.model.ObjectMeta objectMeta;
-    @JsonProperty("ObjectReference")
-    private io.fabric8.kubernetes.api.model.ObjectReference objectReference;
-    @JsonProperty("Patch")
+    private ObjectMeta objectMeta;
+    private ObjectReference objectReference;
     private Patch patch;
-    @JsonProperty("PatchOptions")
     private PatchOptions patchOptions;
-    @JsonProperty("Quantity")
     private Quantity quantity;
-    @JsonProperty("RootPaths")
     private RootPaths rootPaths;
-    @JsonProperty("Status")
     private Status status;
-    @JsonProperty("Time")
     private String time;
-    @JsonProperty("TypeMeta")
     private TypeMeta typeMeta;
-    @JsonProperty("UpdateOptions")
     private UpdateOptions updateOptions;
-    @JsonProperty("V1ConversionReview")
     private ConversionReview v1ConversionReview;
-    @JsonProperty("V1CustomResourceDefinition")
     private io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinition v1CustomResourceDefinition;
-    @JsonProperty("V1CustomResourceDefinitionCondition")
     private io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionCondition v1CustomResourceDefinitionCondition;
-    @JsonProperty("V1CustomResourceDefinitionList")
     private io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionList v1CustomResourceDefinitionList;
-    @JsonProperty("V1CustomResourceDefinitionNames")
     private io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionNames v1CustomResourceDefinitionNames;
-    @JsonProperty("V1CustomResourceDefinitionSpec")
     private io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionSpec v1CustomResourceDefinitionSpec;
-    @JsonProperty("V1CustomResourceDefinitionStatus")
     private io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionStatus v1CustomResourceDefinitionStatus;
-    @JsonProperty("V1JSONSchemaPropsOrStringArray")
     private io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaPropsOrStringArray v1JSONSchemaPropsOrStringArray;
     @JsonIgnore
     private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
@@ -166,7 +57,7 @@ public class KubeSchema implements Editable<KubeSchemaBuilder>
     public KubeSchema() {
     }
 
-    public KubeSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, KubernetesList baseKubernetesList, CreateOptions createOptions, io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition customResourceDefinition, io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionCondition customResourceDefinitionCondition, io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionList customResourceDefinitionList, io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionNames customResourceDefinitionNames, io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionSpec customResourceDefinitionSpec, io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionStatus customResourceDefinitionStatus, DeleteOptions deleteOptions, GetOptions getOptions, Info info, io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaPropsOrStringArray jSONSchemaPropsOrStringArray, ListOptions listOptions, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, io.fabric8.kubernetes.api.model.ObjectReference objectReference, Patch patch, PatchOptions patchOptions, Quantity quantity, RootPaths rootPaths, Status status, String time, TypeMeta typeMeta, UpdateOptions updateOptions, ConversionReview v1ConversionReview, io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinition v1CustomResourceDefinition, io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionCondition v1CustomResourceDefinitionCondition, io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionList v1CustomResourceDefinitionList, io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionNames v1CustomResourceDefinitionNames, io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionSpec v1CustomResourceDefinitionSpec, io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionStatus v1CustomResourceDefinitionStatus, io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaPropsOrStringArray v1JSONSchemaPropsOrStringArray) {
+    public KubeSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, KubernetesList baseKubernetesList, CreateOptions createOptions, io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition customResourceDefinition, io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionCondition customResourceDefinitionCondition, io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionList customResourceDefinitionList, io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionNames customResourceDefinitionNames, io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionSpec customResourceDefinitionSpec, io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionStatus customResourceDefinitionStatus, DeleteOptions deleteOptions, GetOptions getOptions, Info info, io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaPropsOrStringArray jSONSchemaPropsOrStringArray, ListOptions listOptions, ObjectMeta objectMeta, ObjectReference objectReference, Patch patch, PatchOptions patchOptions, Quantity quantity, RootPaths rootPaths, Status status, String time, TypeMeta typeMeta, UpdateOptions updateOptions, ConversionReview v1ConversionReview, io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinition v1CustomResourceDefinition, io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionCondition v1CustomResourceDefinitionCondition, io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionList v1CustomResourceDefinitionList, io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionNames v1CustomResourceDefinitionNames, io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionSpec v1CustomResourceDefinitionSpec, io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionStatus v1CustomResourceDefinitionStatus, io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaPropsOrStringArray v1JSONSchemaPropsOrStringArray) {
         super();
         this.aPIGroup = aPIGroup;
         this.aPIGroupList = aPIGroupList;
@@ -354,22 +245,22 @@ public class KubeSchema implements Editable<KubeSchemaBuilder>
     }
 
     @JsonProperty("ObjectMeta")
-    public io.fabric8.kubernetes.api.model.ObjectMeta getObjectMeta() {
+    public ObjectMeta getObjectMeta() {
         return objectMeta;
     }
 
     @JsonProperty("ObjectMeta")
-    public void setObjectMeta(io.fabric8.kubernetes.api.model.ObjectMeta objectMeta) {
+    public void setObjectMeta(ObjectMeta objectMeta) {
         this.objectMeta = objectMeta;
     }
 
     @JsonProperty("ObjectReference")
-    public io.fabric8.kubernetes.api.model.ObjectReference getObjectReference() {
+    public ObjectReference getObjectReference() {
         return objectReference;
     }
 
     @JsonProperty("ObjectReference")
-    public void setObjectReference(io.fabric8.kubernetes.api.model.ObjectReference objectReference) {
+    public void setObjectReference(ObjectReference objectReference) {
         this.objectReference = objectReference;
     }
 
@@ -531,16 +422,6 @@ public class KubeSchema implements Editable<KubeSchemaBuilder>
     @JsonProperty("V1JSONSchemaPropsOrStringArray")
     public void setV1JSONSchemaPropsOrStringArray(io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaPropsOrStringArray v1JSONSchemaPropsOrStringArray) {
         this.v1JSONSchemaPropsOrStringArray = v1JSONSchemaPropsOrStringArray;
-    }
-
-    @JsonIgnore
-    public KubeSchemaBuilder edit() {
-        return new KubeSchemaBuilder(this);
-    }
-
-    @JsonIgnore
-    public KubeSchemaBuilder toBuilder() {
-        return edit();
     }
 
     @JsonAnyGetter

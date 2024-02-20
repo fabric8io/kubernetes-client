@@ -7,112 +7,30 @@ import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import io.fabric8.kubernetes.api.builder.Editable;
-import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.IntOrString;
-import io.fabric8.kubernetes.api.model.LabelSelector;
-import io.fabric8.kubernetes.api.model.LocalObjectReference;
-import io.fabric8.kubernetes.api.model.ObjectReference;
-import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
-import io.fabric8.kubernetes.api.model.PodTemplateSpec;
-import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.openshift.api.model.installer.v1.InstallConfig;
-import io.sundr.builder.annotations.Buildable;
-import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.Setter;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-    "apiVersion",
-    "kind",
-    "metadata",
-    "APIGroup",
-    "APIGroupList",
-    "AlibabaCloudMachinePool",
-    "AwsMachinePool",
-    "AzureMachinePool",
-    "BaremetalMachinePool",
-    "BaseKubernetesList",
-    "GcpMachinePool",
-    "IBMCloudMachinePool",
-    "InstallConfig",
-    "LibvirtMachinePool",
-    "ObjectMeta",
-    "OpenStackMachinePool",
-    "OvirtMachinePool",
-    "Patch",
-    "Status",
-    "Time",
-    "TypeMeta",
-    "VSphereMachinePool"
-})
-@ToString
-@EqualsAndHashCode
-@Setter
-@Accessors(prefix = {
-    "_",
-    ""
-})
-@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
-    @BuildableReference(LabelSelector.class),
-    @BuildableReference(Container.class),
-    @BuildableReference(PodTemplateSpec.class),
-    @BuildableReference(ResourceRequirements.class),
-    @BuildableReference(IntOrString.class),
-    @BuildableReference(ObjectReference.class),
-    @BuildableReference(LocalObjectReference.class),
-    @BuildableReference(PersistentVolumeClaim.class)
-})
 @Generated("jsonschema2pojo")
-public class ValidationSchema implements Editable<ValidationSchemaBuilder>
-{
+public class ValidationSchema {
 
-    @JsonProperty("APIGroup")
     private APIGroup aPIGroup;
-    @JsonProperty("APIGroupList")
     private APIGroupList aPIGroupList;
-    @JsonProperty("AlibabaCloudMachinePool")
     private io.fabric8.openshift.api.model.installer.alibabacloud.v1.MachinePool alibabaCloudMachinePool;
-    @JsonProperty("AwsMachinePool")
     private io.fabric8.openshift.api.model.installer.aws.v1.MachinePool awsMachinePool;
-    @JsonProperty("AzureMachinePool")
     private io.fabric8.openshift.api.model.installer.azure.v1.MachinePool azureMachinePool;
-    @JsonProperty("BaremetalMachinePool")
     private io.fabric8.openshift.api.model.installer.baremetal.v1.MachinePool baremetalMachinePool;
-    @JsonProperty("BaseKubernetesList")
     private KubernetesList baseKubernetesList;
-    @JsonProperty("GcpMachinePool")
     private io.fabric8.openshift.api.model.installer.gcp.v1.MachinePool gcpMachinePool;
-    @JsonProperty("IBMCloudMachinePool")
     private io.fabric8.openshift.api.model.installer.ibmcloud.v1.MachinePool iBMCloudMachinePool;
-    @JsonProperty("InstallConfig")
     private InstallConfig installConfig;
-    @JsonProperty("LibvirtMachinePool")
     private io.fabric8.openshift.api.model.installer.libvirt.v1.MachinePool libvirtMachinePool;
-    @JsonProperty("ObjectMeta")
-    private io.fabric8.kubernetes.api.model.ObjectMeta objectMeta;
-    @JsonProperty("OpenStackMachinePool")
+    private ObjectMeta objectMeta;
     private io.fabric8.openshift.api.model.installer.openstack.v1.MachinePool openStackMachinePool;
-    @JsonProperty("OvirtMachinePool")
     private io.fabric8.openshift.api.model.installer.ovirt.v1.MachinePool ovirtMachinePool;
-    @JsonProperty("Patch")
     private Patch patch;
-    @JsonProperty("Status")
     private Status status;
-    @JsonProperty("Time")
     private String time;
-    @JsonProperty("TypeMeta")
     private TypeMeta typeMeta;
-    @JsonProperty("VSphereMachinePool")
     private io.fabric8.openshift.api.model.installer.vsphere.v1.MachinePool vSphereMachinePool;
     @JsonIgnore
     private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
@@ -124,7 +42,7 @@ public class ValidationSchema implements Editable<ValidationSchemaBuilder>
     public ValidationSchema() {
     }
 
-    public ValidationSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, io.fabric8.openshift.api.model.installer.alibabacloud.v1.MachinePool alibabaCloudMachinePool, io.fabric8.openshift.api.model.installer.aws.v1.MachinePool awsMachinePool, io.fabric8.openshift.api.model.installer.azure.v1.MachinePool azureMachinePool, io.fabric8.openshift.api.model.installer.baremetal.v1.MachinePool baremetalMachinePool, KubernetesList baseKubernetesList, io.fabric8.openshift.api.model.installer.gcp.v1.MachinePool gcpMachinePool, io.fabric8.openshift.api.model.installer.ibmcloud.v1.MachinePool iBMCloudMachinePool, InstallConfig installConfig, io.fabric8.openshift.api.model.installer.libvirt.v1.MachinePool libvirtMachinePool, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, io.fabric8.openshift.api.model.installer.openstack.v1.MachinePool openStackMachinePool, io.fabric8.openshift.api.model.installer.ovirt.v1.MachinePool ovirtMachinePool, Patch patch, Status status, String time, TypeMeta typeMeta, io.fabric8.openshift.api.model.installer.vsphere.v1.MachinePool vSphereMachinePool) {
+    public ValidationSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, io.fabric8.openshift.api.model.installer.alibabacloud.v1.MachinePool alibabaCloudMachinePool, io.fabric8.openshift.api.model.installer.aws.v1.MachinePool awsMachinePool, io.fabric8.openshift.api.model.installer.azure.v1.MachinePool azureMachinePool, io.fabric8.openshift.api.model.installer.baremetal.v1.MachinePool baremetalMachinePool, KubernetesList baseKubernetesList, io.fabric8.openshift.api.model.installer.gcp.v1.MachinePool gcpMachinePool, io.fabric8.openshift.api.model.installer.ibmcloud.v1.MachinePool iBMCloudMachinePool, InstallConfig installConfig, io.fabric8.openshift.api.model.installer.libvirt.v1.MachinePool libvirtMachinePool, ObjectMeta objectMeta, io.fabric8.openshift.api.model.installer.openstack.v1.MachinePool openStackMachinePool, io.fabric8.openshift.api.model.installer.ovirt.v1.MachinePool ovirtMachinePool, Patch patch, Status status, String time, TypeMeta typeMeta, io.fabric8.openshift.api.model.installer.vsphere.v1.MachinePool vSphereMachinePool) {
         super();
         this.aPIGroup = aPIGroup;
         this.aPIGroupList = aPIGroupList;
@@ -258,12 +176,12 @@ public class ValidationSchema implements Editable<ValidationSchemaBuilder>
     }
 
     @JsonProperty("ObjectMeta")
-    public io.fabric8.kubernetes.api.model.ObjectMeta getObjectMeta() {
+    public ObjectMeta getObjectMeta() {
         return objectMeta;
     }
 
     @JsonProperty("ObjectMeta")
-    public void setObjectMeta(io.fabric8.kubernetes.api.model.ObjectMeta objectMeta) {
+    public void setObjectMeta(ObjectMeta objectMeta) {
         this.objectMeta = objectMeta;
     }
 
@@ -335,16 +253,6 @@ public class ValidationSchema implements Editable<ValidationSchemaBuilder>
     @JsonProperty("VSphereMachinePool")
     public void setVSphereMachinePool(io.fabric8.openshift.api.model.installer.vsphere.v1.MachinePool vSphereMachinePool) {
         this.vSphereMachinePool = vSphereMachinePool;
-    }
-
-    @JsonIgnore
-    public ValidationSchemaBuilder edit() {
-        return new ValidationSchemaBuilder(this);
-    }
-
-    @JsonIgnore
-    public ValidationSchemaBuilder toBuilder() {
-        return edit();
     }
 
     @JsonAnyGetter

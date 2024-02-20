@@ -7,19 +7,7 @@ import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import io.fabric8.kubernetes.api.builder.Editable;
-import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.IntOrString;
-import io.fabric8.kubernetes.api.model.LabelSelector;
-import io.fabric8.kubernetes.api.model.LocalObjectReference;
-import io.fabric8.kubernetes.api.model.ObjectReference;
-import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
-import io.fabric8.kubernetes.api.model.PodTemplateSpec;
-import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.kubernetes.api.model.version.Info;
 import io.fabric8.openshift.api.model.config.v1.ConfigMapFileReference;
 import io.fabric8.openshift.api.model.config.v1.SecretNameReference;
@@ -71,221 +59,69 @@ import io.fabric8.openshift.api.model.operator.v1.Storage;
 import io.fabric8.openshift.api.model.operator.v1.StorageList;
 import io.fabric8.openshift.api.model.operator.v1alpha1.ImageContentSourcePolicy;
 import io.fabric8.openshift.api.model.operator.v1alpha1.ImageContentSourcePolicyList;
-import io.sundr.builder.annotations.Buildable;
-import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.Setter;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-    "apiVersion",
-    "kind",
-    "metadata",
-    "APIGroup",
-    "APIGroupList",
-    "Authentication",
-    "AuthenticationList",
-    "BaseKubernetesList",
-    "CSISnapshotController",
-    "CSISnapshotControllerList",
-    "CloudCredential",
-    "CloudCredentialList",
-    "ClusterCSIDriver",
-    "ClusterCSIDriverList",
-    "Config",
-    "ConfigList",
-    "ConfigMapFileReference",
-    "Console",
-    "ConsoleList",
-    "DNS",
-    "DNSList",
-    "DNSRecord",
-    "DNSRecordList",
-    "Etcd",
-    "EtcdList",
-    "ImageContentSourcePolicy",
-    "ImageContentSourcePolicyList",
-    "ImagePruner",
-    "ImagePrunerList",
-    "Info",
-    "IngressController",
-    "IngressControllerList",
-    "KubeAPIServer",
-    "KubeAPIServerList",
-    "KubeControllerManager",
-    "KubeControllerManagerList",
-    "KubeScheduler",
-    "KubeSchedulerList",
-    "KubeStorageVersionMigrator",
-    "KubeStorageVersionMigratorList",
-    "Network",
-    "NetworkList",
-    "ObjectMeta",
-    "OpenShiftAPIServer",
-    "OpenShiftAPIServerList",
-    "OpenShiftContollerManager",
-    "OpenShiftControllerManagerList",
-    "Patch",
-    "PodNetworkConnectivityCheck",
-    "PodNetworkConnectivityCheckList",
-    "Quantity",
-    "SecretNameReference",
-    "ServiceCA",
-    "ServiceCAList",
-    "ServiceCatalogAPIServer",
-    "ServiceCatalogAPIServerList",
-    "ServiceCatalogControllerManager",
-    "ServiceCatalogControllerManagerList",
-    "Status",
-    "Storage",
-    "StorageList",
-    "Time",
-    "TypeMeta"
-})
-@ToString
-@EqualsAndHashCode
-@Setter
-@Accessors(prefix = {
-    "_",
-    ""
-})
-@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
-    @BuildableReference(LabelSelector.class),
-    @BuildableReference(Container.class),
-    @BuildableReference(PodTemplateSpec.class),
-    @BuildableReference(ResourceRequirements.class),
-    @BuildableReference(IntOrString.class),
-    @BuildableReference(ObjectReference.class),
-    @BuildableReference(LocalObjectReference.class),
-    @BuildableReference(PersistentVolumeClaim.class)
-})
 @Generated("jsonschema2pojo")
-public class KubeSchema implements Editable<KubeSchemaBuilder>
-{
+public class KubeSchema {
 
-    @JsonProperty("APIGroup")
     private APIGroup aPIGroup;
-    @JsonProperty("APIGroupList")
     private APIGroupList aPIGroupList;
-    @JsonProperty("Authentication")
     private Authentication authentication;
-    @JsonProperty("AuthenticationList")
     private AuthenticationList authenticationList;
-    @JsonProperty("BaseKubernetesList")
     private KubernetesList baseKubernetesList;
-    @JsonProperty("CSISnapshotController")
     private CSISnapshotController cSISnapshotController;
-    @JsonProperty("CSISnapshotControllerList")
     private CSISnapshotControllerList cSISnapshotControllerList;
-    @JsonProperty("CloudCredential")
     private CloudCredential cloudCredential;
-    @JsonProperty("CloudCredentialList")
     private CloudCredentialList cloudCredentialList;
-    @JsonProperty("ClusterCSIDriver")
     private ClusterCSIDriver clusterCSIDriver;
-    @JsonProperty("ClusterCSIDriverList")
     private ClusterCSIDriverList clusterCSIDriverList;
-    @JsonProperty("Config")
     private Config config;
-    @JsonProperty("ConfigList")
     private ConfigList configList;
-    @JsonProperty("ConfigMapFileReference")
     private ConfigMapFileReference configMapFileReference;
-    @JsonProperty("Console")
     private Console console;
-    @JsonProperty("ConsoleList")
     private ConsoleList consoleList;
-    @JsonProperty("DNS")
     private DNS dns;
-    @JsonProperty("DNSList")
     private DNSList dNSList;
-    @JsonProperty("DNSRecord")
     private DNSRecord dNSRecord;
-    @JsonProperty("DNSRecordList")
     private DNSRecordList dNSRecordList;
-    @JsonProperty("Etcd")
     private Etcd etcd;
-    @JsonProperty("EtcdList")
     private EtcdList etcdList;
-    @JsonProperty("ImageContentSourcePolicy")
     private ImageContentSourcePolicy imageContentSourcePolicy;
-    @JsonProperty("ImageContentSourcePolicyList")
     private ImageContentSourcePolicyList imageContentSourcePolicyList;
-    @JsonProperty("ImagePruner")
     private ImagePruner imagePruner;
-    @JsonProperty("ImagePrunerList")
     private ImagePrunerList imagePrunerList;
-    @JsonProperty("Info")
     private Info info;
-    @JsonProperty("IngressController")
     private IngressController ingressController;
-    @JsonProperty("IngressControllerList")
     private IngressControllerList ingressControllerList;
-    @JsonProperty("KubeAPIServer")
     private KubeAPIServer kubeAPIServer;
-    @JsonProperty("KubeAPIServerList")
     private KubeAPIServerList kubeAPIServerList;
-    @JsonProperty("KubeControllerManager")
     private KubeControllerManager kubeControllerManager;
-    @JsonProperty("KubeControllerManagerList")
     private KubeControllerManagerList kubeControllerManagerList;
-    @JsonProperty("KubeScheduler")
     private KubeScheduler kubeScheduler;
-    @JsonProperty("KubeSchedulerList")
     private KubeSchedulerList kubeSchedulerList;
-    @JsonProperty("KubeStorageVersionMigrator")
     private KubeStorageVersionMigrator kubeStorageVersionMigrator;
-    @JsonProperty("KubeStorageVersionMigratorList")
     private KubeStorageVersionMigratorList kubeStorageVersionMigratorList;
-    @JsonProperty("Network")
     private Network network;
-    @JsonProperty("NetworkList")
     private NetworkList networkList;
-    @JsonProperty("ObjectMeta")
-    private io.fabric8.kubernetes.api.model.ObjectMeta objectMeta;
-    @JsonProperty("OpenShiftAPIServer")
+    private ObjectMeta objectMeta;
     private OpenShiftAPIServer openShiftAPIServer;
-    @JsonProperty("OpenShiftAPIServerList")
     private OpenShiftAPIServerList openShiftAPIServerList;
-    @JsonProperty("OpenShiftContollerManager")
     private OpenShiftControllerManager openShiftContollerManager;
-    @JsonProperty("OpenShiftControllerManagerList")
     private OpenShiftControllerManagerList openShiftControllerManagerList;
-    @JsonProperty("Patch")
     private Patch patch;
-    @JsonProperty("PodNetworkConnectivityCheck")
     private PodNetworkConnectivityCheck podNetworkConnectivityCheck;
-    @JsonProperty("PodNetworkConnectivityCheckList")
     private PodNetworkConnectivityCheckList podNetworkConnectivityCheckList;
-    @JsonProperty("Quantity")
     private Quantity quantity;
-    @JsonProperty("SecretNameReference")
     private SecretNameReference secretNameReference;
-    @JsonProperty("ServiceCA")
     private ServiceCA serviceCA;
-    @JsonProperty("ServiceCAList")
     private ServiceCAList serviceCAList;
-    @JsonProperty("ServiceCatalogAPIServer")
     private ServiceCatalogAPIServer serviceCatalogAPIServer;
-    @JsonProperty("ServiceCatalogAPIServerList")
     private ServiceCatalogAPIServerList serviceCatalogAPIServerList;
-    @JsonProperty("ServiceCatalogControllerManager")
     private ServiceCatalogControllerManager serviceCatalogControllerManager;
-    @JsonProperty("ServiceCatalogControllerManagerList")
     private ServiceCatalogControllerManagerList serviceCatalogControllerManagerList;
-    @JsonProperty("Status")
     private Status status;
-    @JsonProperty("Storage")
     private Storage storage;
-    @JsonProperty("StorageList")
     private StorageList storageList;
-    @JsonProperty("Time")
     private String time;
-    @JsonProperty("TypeMeta")
     private TypeMeta typeMeta;
     @JsonIgnore
     private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
@@ -297,7 +133,7 @@ public class KubeSchema implements Editable<KubeSchemaBuilder>
     public KubeSchema() {
     }
 
-    public KubeSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, Authentication authentication, AuthenticationList authenticationList, KubernetesList baseKubernetesList, CSISnapshotController cSISnapshotController, CSISnapshotControllerList cSISnapshotControllerList, CloudCredential cloudCredential, CloudCredentialList cloudCredentialList, ClusterCSIDriver clusterCSIDriver, ClusterCSIDriverList clusterCSIDriverList, Config config, ConfigList configList, ConfigMapFileReference configMapFileReference, Console console, ConsoleList consoleList, DNS dns, DNSList dNSList, DNSRecord dNSRecord, DNSRecordList dNSRecordList, Etcd etcd, EtcdList etcdList, ImageContentSourcePolicy imageContentSourcePolicy, ImageContentSourcePolicyList imageContentSourcePolicyList, ImagePruner imagePruner, ImagePrunerList imagePrunerList, Info info, IngressController ingressController, IngressControllerList ingressControllerList, KubeAPIServer kubeAPIServer, KubeAPIServerList kubeAPIServerList, KubeControllerManager kubeControllerManager, KubeControllerManagerList kubeControllerManagerList, KubeScheduler kubeScheduler, KubeSchedulerList kubeSchedulerList, KubeStorageVersionMigrator kubeStorageVersionMigrator, KubeStorageVersionMigratorList kubeStorageVersionMigratorList, Network network, NetworkList networkList, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, OpenShiftAPIServer openShiftAPIServer, OpenShiftAPIServerList openShiftAPIServerList, OpenShiftControllerManager openShiftContollerManager, OpenShiftControllerManagerList openShiftControllerManagerList, Patch patch, PodNetworkConnectivityCheck podNetworkConnectivityCheck, PodNetworkConnectivityCheckList podNetworkConnectivityCheckList, Quantity quantity, SecretNameReference secretNameReference, ServiceCA serviceCA, ServiceCAList serviceCAList, ServiceCatalogAPIServer serviceCatalogAPIServer, ServiceCatalogAPIServerList serviceCatalogAPIServerList, ServiceCatalogControllerManager serviceCatalogControllerManager, ServiceCatalogControllerManagerList serviceCatalogControllerManagerList, Status status, Storage storage, StorageList storageList, String time, TypeMeta typeMeta) {
+    public KubeSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, Authentication authentication, AuthenticationList authenticationList, KubernetesList baseKubernetesList, CSISnapshotController cSISnapshotController, CSISnapshotControllerList cSISnapshotControllerList, CloudCredential cloudCredential, CloudCredentialList cloudCredentialList, ClusterCSIDriver clusterCSIDriver, ClusterCSIDriverList clusterCSIDriverList, Config config, ConfigList configList, ConfigMapFileReference configMapFileReference, Console console, ConsoleList consoleList, DNS dns, DNSList dNSList, DNSRecord dNSRecord, DNSRecordList dNSRecordList, Etcd etcd, EtcdList etcdList, ImageContentSourcePolicy imageContentSourcePolicy, ImageContentSourcePolicyList imageContentSourcePolicyList, ImagePruner imagePruner, ImagePrunerList imagePrunerList, Info info, IngressController ingressController, IngressControllerList ingressControllerList, KubeAPIServer kubeAPIServer, KubeAPIServerList kubeAPIServerList, KubeControllerManager kubeControllerManager, KubeControllerManagerList kubeControllerManagerList, KubeScheduler kubeScheduler, KubeSchedulerList kubeSchedulerList, KubeStorageVersionMigrator kubeStorageVersionMigrator, KubeStorageVersionMigratorList kubeStorageVersionMigratorList, Network network, NetworkList networkList, ObjectMeta objectMeta, OpenShiftAPIServer openShiftAPIServer, OpenShiftAPIServerList openShiftAPIServerList, OpenShiftControllerManager openShiftContollerManager, OpenShiftControllerManagerList openShiftControllerManagerList, Patch patch, PodNetworkConnectivityCheck podNetworkConnectivityCheck, PodNetworkConnectivityCheckList podNetworkConnectivityCheckList, Quantity quantity, SecretNameReference secretNameReference, ServiceCA serviceCA, ServiceCAList serviceCAList, ServiceCatalogAPIServer serviceCatalogAPIServer, ServiceCatalogAPIServerList serviceCatalogAPIServerList, ServiceCatalogControllerManager serviceCatalogControllerManager, ServiceCatalogControllerManagerList serviceCatalogControllerManagerList, Status status, Storage storage, StorageList storageList, String time, TypeMeta typeMeta) {
         super();
         this.aPIGroup = aPIGroup;
         this.aPIGroupList = aPIGroupList;
@@ -752,12 +588,12 @@ public class KubeSchema implements Editable<KubeSchemaBuilder>
     }
 
     @JsonProperty("ObjectMeta")
-    public io.fabric8.kubernetes.api.model.ObjectMeta getObjectMeta() {
+    public ObjectMeta getObjectMeta() {
         return objectMeta;
     }
 
     @JsonProperty("ObjectMeta")
-    public void setObjectMeta(io.fabric8.kubernetes.api.model.ObjectMeta objectMeta) {
+    public void setObjectMeta(ObjectMeta objectMeta) {
         this.objectMeta = objectMeta;
     }
 
@@ -959,16 +795,6 @@ public class KubeSchema implements Editable<KubeSchemaBuilder>
     @JsonProperty("TypeMeta")
     public void setTypeMeta(TypeMeta typeMeta) {
         this.typeMeta = typeMeta;
-    }
-
-    @JsonIgnore
-    public KubeSchemaBuilder edit() {
-        return new KubeSchemaBuilder(this);
-    }
-
-    @JsonIgnore
-    public KubeSchemaBuilder toBuilder() {
-        return edit();
     }
 
     @JsonAnyGetter

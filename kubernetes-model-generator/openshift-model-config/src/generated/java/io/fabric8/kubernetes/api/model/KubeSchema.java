@@ -7,19 +7,7 @@ import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import io.fabric8.kubernetes.api.builder.Editable;
-import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.IntOrString;
-import io.fabric8.kubernetes.api.model.LabelSelector;
-import io.fabric8.kubernetes.api.model.LocalObjectReference;
-import io.fabric8.kubernetes.api.model.ObjectReference;
-import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
-import io.fabric8.kubernetes.api.model.PodTemplateSpec;
-import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.kubernetes.api.model.authorization.v1.ResourceAttributes;
 import io.fabric8.kubernetes.api.model.version.Info;
 import io.fabric8.openshift.api.model.config.v1.APIServer;
@@ -66,203 +54,63 @@ import io.fabric8.openshift.api.model.config.v1.Scheduler;
 import io.fabric8.openshift.api.model.config.v1.SchedulerList;
 import io.fabric8.openshift.api.model.config.v1.SecretNameReference;
 import io.fabric8.openshift.api.model.config.v1.TLSProfileSpec;
-import io.sundr.builder.annotations.Buildable;
-import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.Setter;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-    "apiVersion",
-    "kind",
-    "metadata",
-    "APIGroup",
-    "APIGroupList",
-    "APIServer",
-    "APIServerList",
-    "Authentication",
-    "AuthenticationList",
-    "BaseKubernetesList",
-    "Build",
-    "BuildList",
-    "ClusterOperator",
-    "ClusterOperatorList",
-    "ClusterVersion",
-    "ClusterVersionList",
-    "ConfigMapFileReference",
-    "Console",
-    "ConsoleList",
-    "DNS",
-    "DNSList",
-    "DNSZone",
-    "FeatureGate",
-    "FeatureGateList",
-    "Image",
-    "ImageContentPolicy",
-    "ImageContentPolicyList",
-    "ImageDigestMirrorSet",
-    "ImageDigestMirrorSetList",
-    "ImageList",
-    "ImageTagMirrorSet",
-    "ImageTagMirrorSetList",
-    "Info",
-    "Infrastructure",
-    "InfrastructureList",
-    "Ingress",
-    "IngressList",
-    "Network",
-    "NetworkList",
-    "OAuth",
-    "OAuthList",
-    "ObjectMeta",
-    "OperatorHub",
-    "OperatorHubList",
-    "Patch",
-    "Project",
-    "ProjectList",
-    "Proxy",
-    "ProxyList",
-    "ResourceAttributes",
-    "Scheduler",
-    "SchedulerList",
-    "SecretNameReference",
-    "Status",
-    "TLSProfileSpec",
-    "Time",
-    "TypeMeta"
-})
-@ToString
-@EqualsAndHashCode
-@Setter
-@Accessors(prefix = {
-    "_",
-    ""
-})
-@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
-    @BuildableReference(LabelSelector.class),
-    @BuildableReference(Container.class),
-    @BuildableReference(PodTemplateSpec.class),
-    @BuildableReference(ResourceRequirements.class),
-    @BuildableReference(IntOrString.class),
-    @BuildableReference(ObjectReference.class),
-    @BuildableReference(LocalObjectReference.class),
-    @BuildableReference(PersistentVolumeClaim.class)
-})
 @Generated("jsonschema2pojo")
-public class KubeSchema implements Editable<KubeSchemaBuilder>
-{
+public class KubeSchema {
 
-    @JsonProperty("APIGroup")
     private APIGroup aPIGroup;
-    @JsonProperty("APIGroupList")
     private APIGroupList aPIGroupList;
-    @JsonProperty("APIServer")
     private APIServer aPIServer;
-    @JsonProperty("APIServerList")
     private APIServerList aPIServerList;
-    @JsonProperty("Authentication")
     private Authentication authentication;
-    @JsonProperty("AuthenticationList")
     private AuthenticationList authenticationList;
-    @JsonProperty("BaseKubernetesList")
     private KubernetesList baseKubernetesList;
-    @JsonProperty("Build")
     private Build build;
-    @JsonProperty("BuildList")
     private BuildList buildList;
-    @JsonProperty("ClusterOperator")
     private ClusterOperator clusterOperator;
-    @JsonProperty("ClusterOperatorList")
     private ClusterOperatorList clusterOperatorList;
-    @JsonProperty("ClusterVersion")
     private ClusterVersion clusterVersion;
-    @JsonProperty("ClusterVersionList")
     private ClusterVersionList clusterVersionList;
-    @JsonProperty("ConfigMapFileReference")
     private ConfigMapFileReference configMapFileReference;
-    @JsonProperty("Console")
     private Console console;
-    @JsonProperty("ConsoleList")
     private ConsoleList consoleList;
-    @JsonProperty("DNS")
     private DNS dns;
-    @JsonProperty("DNSList")
     private DNSList dNSList;
-    @JsonProperty("DNSZone")
     private DNSZone dNSZone;
-    @JsonProperty("FeatureGate")
     private FeatureGate featureGate;
-    @JsonProperty("FeatureGateList")
     private FeatureGateList featureGateList;
-    @JsonProperty("Image")
     private Image image;
-    @JsonProperty("ImageContentPolicy")
     private ImageContentPolicy imageContentPolicy;
-    @JsonProperty("ImageContentPolicyList")
     private ImageContentPolicyList imageContentPolicyList;
-    @JsonProperty("ImageDigestMirrorSet")
     private ImageDigestMirrorSet imageDigestMirrorSet;
-    @JsonProperty("ImageDigestMirrorSetList")
     private ImageDigestMirrorSetList imageDigestMirrorSetList;
-    @JsonProperty("ImageList")
     private ImageList imageList;
-    @JsonProperty("ImageTagMirrorSet")
     private ImageTagMirrorSet imageTagMirrorSet;
-    @JsonProperty("ImageTagMirrorSetList")
     private ImageTagMirrorSetList imageTagMirrorSetList;
-    @JsonProperty("Info")
     private Info info;
-    @JsonProperty("Infrastructure")
     private Infrastructure infrastructure;
-    @JsonProperty("InfrastructureList")
     private InfrastructureList infrastructureList;
-    @JsonProperty("Ingress")
     private Ingress ingress;
-    @JsonProperty("IngressList")
     private IngressList ingressList;
-    @JsonProperty("Network")
     private Network network;
-    @JsonProperty("NetworkList")
     private NetworkList networkList;
-    @JsonProperty("OAuth")
     private OAuth oAuth;
-    @JsonProperty("OAuthList")
     private OAuthList oAuthList;
-    @JsonProperty("ObjectMeta")
-    private io.fabric8.kubernetes.api.model.ObjectMeta objectMeta;
-    @JsonProperty("OperatorHub")
+    private ObjectMeta objectMeta;
     private OperatorHub operatorHub;
-    @JsonProperty("OperatorHubList")
     private OperatorHubList operatorHubList;
-    @JsonProperty("Patch")
     private Patch patch;
-    @JsonProperty("Project")
     private Project project;
-    @JsonProperty("ProjectList")
     private ProjectList projectList;
-    @JsonProperty("Proxy")
     private Proxy proxy;
-    @JsonProperty("ProxyList")
     private ProxyList proxyList;
-    @JsonProperty("ResourceAttributes")
     private ResourceAttributes resourceAttributes;
-    @JsonProperty("Scheduler")
     private Scheduler scheduler;
-    @JsonProperty("SchedulerList")
     private SchedulerList schedulerList;
-    @JsonProperty("SecretNameReference")
     private SecretNameReference secretNameReference;
-    @JsonProperty("Status")
     private Status status;
-    @JsonProperty("TLSProfileSpec")
     private TLSProfileSpec tLSProfileSpec;
-    @JsonProperty("Time")
     private String time;
-    @JsonProperty("TypeMeta")
     private TypeMeta typeMeta;
     @JsonIgnore
     private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
@@ -274,7 +122,7 @@ public class KubeSchema implements Editable<KubeSchemaBuilder>
     public KubeSchema() {
     }
 
-    public KubeSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, APIServer aPIServer, APIServerList aPIServerList, Authentication authentication, AuthenticationList authenticationList, KubernetesList baseKubernetesList, Build build, BuildList buildList, ClusterOperator clusterOperator, ClusterOperatorList clusterOperatorList, ClusterVersion clusterVersion, ClusterVersionList clusterVersionList, ConfigMapFileReference configMapFileReference, Console console, ConsoleList consoleList, DNS dns, DNSList dNSList, DNSZone dNSZone, FeatureGate featureGate, FeatureGateList featureGateList, Image image, ImageContentPolicy imageContentPolicy, ImageContentPolicyList imageContentPolicyList, ImageDigestMirrorSet imageDigestMirrorSet, ImageDigestMirrorSetList imageDigestMirrorSetList, ImageList imageList, ImageTagMirrorSet imageTagMirrorSet, ImageTagMirrorSetList imageTagMirrorSetList, Info info, Infrastructure infrastructure, InfrastructureList infrastructureList, Ingress ingress, IngressList ingressList, Network network, NetworkList networkList, OAuth oAuth, OAuthList oAuthList, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, OperatorHub operatorHub, OperatorHubList operatorHubList, Patch patch, Project project, ProjectList projectList, Proxy proxy, ProxyList proxyList, ResourceAttributes resourceAttributes, Scheduler scheduler, SchedulerList schedulerList, SecretNameReference secretNameReference, Status status, TLSProfileSpec tLSProfileSpec, String time, TypeMeta typeMeta) {
+    public KubeSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, APIServer aPIServer, APIServerList aPIServerList, Authentication authentication, AuthenticationList authenticationList, KubernetesList baseKubernetesList, Build build, BuildList buildList, ClusterOperator clusterOperator, ClusterOperatorList clusterOperatorList, ClusterVersion clusterVersion, ClusterVersionList clusterVersionList, ConfigMapFileReference configMapFileReference, Console console, ConsoleList consoleList, DNS dns, DNSList dNSList, DNSZone dNSZone, FeatureGate featureGate, FeatureGateList featureGateList, Image image, ImageContentPolicy imageContentPolicy, ImageContentPolicyList imageContentPolicyList, ImageDigestMirrorSet imageDigestMirrorSet, ImageDigestMirrorSetList imageDigestMirrorSetList, ImageList imageList, ImageTagMirrorSet imageTagMirrorSet, ImageTagMirrorSetList imageTagMirrorSetList, Info info, Infrastructure infrastructure, InfrastructureList infrastructureList, Ingress ingress, IngressList ingressList, Network network, NetworkList networkList, OAuth oAuth, OAuthList oAuthList, ObjectMeta objectMeta, OperatorHub operatorHub, OperatorHubList operatorHubList, Patch patch, Project project, ProjectList projectList, Proxy proxy, ProxyList proxyList, ResourceAttributes resourceAttributes, Scheduler scheduler, SchedulerList schedulerList, SecretNameReference secretNameReference, Status status, TLSProfileSpec tLSProfileSpec, String time, TypeMeta typeMeta) {
         super();
         this.aPIGroup = aPIGroup;
         this.aPIGroupList = aPIGroupList;
@@ -713,12 +561,12 @@ public class KubeSchema implements Editable<KubeSchemaBuilder>
     }
 
     @JsonProperty("ObjectMeta")
-    public io.fabric8.kubernetes.api.model.ObjectMeta getObjectMeta() {
+    public ObjectMeta getObjectMeta() {
         return objectMeta;
     }
 
     @JsonProperty("ObjectMeta")
-    public void setObjectMeta(io.fabric8.kubernetes.api.model.ObjectMeta objectMeta) {
+    public void setObjectMeta(ObjectMeta objectMeta) {
         this.objectMeta = objectMeta;
     }
 
@@ -870,16 +718,6 @@ public class KubeSchema implements Editable<KubeSchemaBuilder>
     @JsonProperty("TypeMeta")
     public void setTypeMeta(TypeMeta typeMeta) {
         this.typeMeta = typeMeta;
-    }
-
-    @JsonIgnore
-    public KubeSchemaBuilder edit() {
-        return new KubeSchemaBuilder(this);
-    }
-
-    @JsonIgnore
-    public KubeSchemaBuilder toBuilder() {
-        return edit();
     }
 
     @JsonAnyGetter

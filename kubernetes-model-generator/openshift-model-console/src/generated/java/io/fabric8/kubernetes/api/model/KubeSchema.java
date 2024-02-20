@@ -7,19 +7,7 @@ import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import io.fabric8.kubernetes.api.builder.Editable;
-import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.IntOrString;
-import io.fabric8.kubernetes.api.model.LabelSelector;
-import io.fabric8.kubernetes.api.model.LocalObjectReference;
-import io.fabric8.kubernetes.api.model.ObjectReference;
-import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
-import io.fabric8.kubernetes.api.model.PodTemplateSpec;
-import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.kubernetes.api.model.authorization.v1.ResourceAttributes;
 import io.fabric8.kubernetes.api.model.version.Info;
 import io.fabric8.openshift.api.model.console.v1.ConsoleCLIDownload;
@@ -35,113 +23,33 @@ import io.fabric8.openshift.api.model.console.v1.ConsoleQuickStartList;
 import io.fabric8.openshift.api.model.console.v1.ConsoleYAMLSample;
 import io.fabric8.openshift.api.model.console.v1.ConsoleYAMLSampleList;
 import io.fabric8.openshift.api.model.console.v1alpha1.ConsolePluginList;
-import io.sundr.builder.annotations.Buildable;
-import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.Setter;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-    "apiVersion",
-    "kind",
-    "metadata",
-    "APIGroup",
-    "APIGroupList",
-    "BaseKubernetesList",
-    "ConsoleCLIDownload",
-    "ConsoleCLIDownloadList",
-    "ConsoleExternalLogLink",
-    "ConsoleExternalLogLinkList",
-    "ConsoleLink",
-    "ConsoleLinkList",
-    "ConsoleNotification",
-    "ConsoleNotificationList",
-    "ConsolePlugin",
-    "ConsolePluginList",
-    "ConsoleQuickStart",
-    "ConsoleQuickStartList",
-    "ConsoleYAMLSample",
-    "ConsoleYAMLSampleList",
-    "Info",
-    "ObjectMeta",
-    "Patch",
-    "ResourceAttributes",
-    "Status",
-    "Time",
-    "TypeMeta"
-})
-@ToString
-@EqualsAndHashCode
-@Setter
-@Accessors(prefix = {
-    "_",
-    ""
-})
-@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
-    @BuildableReference(LabelSelector.class),
-    @BuildableReference(Container.class),
-    @BuildableReference(PodTemplateSpec.class),
-    @BuildableReference(ResourceRequirements.class),
-    @BuildableReference(IntOrString.class),
-    @BuildableReference(ObjectReference.class),
-    @BuildableReference(LocalObjectReference.class),
-    @BuildableReference(PersistentVolumeClaim.class)
-})
 @Generated("jsonschema2pojo")
-public class KubeSchema implements Editable<KubeSchemaBuilder>
-{
+public class KubeSchema {
 
-    @JsonProperty("APIGroup")
     private APIGroup aPIGroup;
-    @JsonProperty("APIGroupList")
     private APIGroupList aPIGroupList;
-    @JsonProperty("BaseKubernetesList")
     private KubernetesList baseKubernetesList;
-    @JsonProperty("ConsoleCLIDownload")
     private ConsoleCLIDownload consoleCLIDownload;
-    @JsonProperty("ConsoleCLIDownloadList")
     private ConsoleCLIDownloadList consoleCLIDownloadList;
-    @JsonProperty("ConsoleExternalLogLink")
     private ConsoleExternalLogLink consoleExternalLogLink;
-    @JsonProperty("ConsoleExternalLogLinkList")
     private ConsoleExternalLogLinkList consoleExternalLogLinkList;
-    @JsonProperty("ConsoleLink")
     private ConsoleLink consoleLink;
-    @JsonProperty("ConsoleLinkList")
     private ConsoleLinkList consoleLinkList;
-    @JsonProperty("ConsoleNotification")
     private ConsoleNotification consoleNotification;
-    @JsonProperty("ConsoleNotificationList")
     private ConsoleNotificationList consoleNotificationList;
-    @JsonProperty("ConsolePlugin")
     private ConsolePluginList consolePlugin;
-    @JsonProperty("ConsolePluginList")
     private ConsolePluginList consolePluginList;
-    @JsonProperty("ConsoleQuickStart")
     private ConsoleQuickStart consoleQuickStart;
-    @JsonProperty("ConsoleQuickStartList")
     private ConsoleQuickStartList consoleQuickStartList;
-    @JsonProperty("ConsoleYAMLSample")
     private ConsoleYAMLSample consoleYAMLSample;
-    @JsonProperty("ConsoleYAMLSampleList")
     private ConsoleYAMLSampleList consoleYAMLSampleList;
-    @JsonProperty("Info")
     private Info info;
-    @JsonProperty("ObjectMeta")
-    private io.fabric8.kubernetes.api.model.ObjectMeta objectMeta;
-    @JsonProperty("Patch")
+    private ObjectMeta objectMeta;
     private Patch patch;
-    @JsonProperty("ResourceAttributes")
     private ResourceAttributes resourceAttributes;
-    @JsonProperty("Status")
     private Status status;
-    @JsonProperty("Time")
     private String time;
-    @JsonProperty("TypeMeta")
     private TypeMeta typeMeta;
     @JsonIgnore
     private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
@@ -153,7 +61,7 @@ public class KubeSchema implements Editable<KubeSchemaBuilder>
     public KubeSchema() {
     }
 
-    public KubeSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, KubernetesList baseKubernetesList, ConsoleCLIDownload consoleCLIDownload, ConsoleCLIDownloadList consoleCLIDownloadList, ConsoleExternalLogLink consoleExternalLogLink, ConsoleExternalLogLinkList consoleExternalLogLinkList, ConsoleLink consoleLink, ConsoleLinkList consoleLinkList, ConsoleNotification consoleNotification, ConsoleNotificationList consoleNotificationList, ConsolePluginList consolePlugin, ConsolePluginList consolePluginList, ConsoleQuickStart consoleQuickStart, ConsoleQuickStartList consoleQuickStartList, ConsoleYAMLSample consoleYAMLSample, ConsoleYAMLSampleList consoleYAMLSampleList, Info info, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, Patch patch, ResourceAttributes resourceAttributes, Status status, String time, TypeMeta typeMeta) {
+    public KubeSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, KubernetesList baseKubernetesList, ConsoleCLIDownload consoleCLIDownload, ConsoleCLIDownloadList consoleCLIDownloadList, ConsoleExternalLogLink consoleExternalLogLink, ConsoleExternalLogLinkList consoleExternalLogLinkList, ConsoleLink consoleLink, ConsoleLinkList consoleLinkList, ConsoleNotification consoleNotification, ConsoleNotificationList consoleNotificationList, ConsolePluginList consolePlugin, ConsolePluginList consolePluginList, ConsoleQuickStart consoleQuickStart, ConsoleQuickStartList consoleQuickStartList, ConsoleYAMLSample consoleYAMLSample, ConsoleYAMLSampleList consoleYAMLSampleList, Info info, ObjectMeta objectMeta, Patch patch, ResourceAttributes resourceAttributes, Status status, String time, TypeMeta typeMeta) {
         super();
         this.aPIGroup = aPIGroup;
         this.aPIGroupList = aPIGroupList;
@@ -362,12 +270,12 @@ public class KubeSchema implements Editable<KubeSchemaBuilder>
     }
 
     @JsonProperty("ObjectMeta")
-    public io.fabric8.kubernetes.api.model.ObjectMeta getObjectMeta() {
+    public ObjectMeta getObjectMeta() {
         return objectMeta;
     }
 
     @JsonProperty("ObjectMeta")
-    public void setObjectMeta(io.fabric8.kubernetes.api.model.ObjectMeta objectMeta) {
+    public void setObjectMeta(ObjectMeta objectMeta) {
         this.objectMeta = objectMeta;
     }
 
@@ -419,16 +327,6 @@ public class KubeSchema implements Editable<KubeSchemaBuilder>
     @JsonProperty("TypeMeta")
     public void setTypeMeta(TypeMeta typeMeta) {
         this.typeMeta = typeMeta;
-    }
-
-    @JsonIgnore
-    public KubeSchemaBuilder edit() {
-        return new KubeSchemaBuilder(this);
-    }
-
-    @JsonIgnore
-    public KubeSchemaBuilder toBuilder() {
-        return edit();
     }
 
     @JsonAnyGetter

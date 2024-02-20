@@ -7,18 +7,7 @@ import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import io.fabric8.kubernetes.api.builder.Editable;
-import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.IntOrString;
-import io.fabric8.kubernetes.api.model.LabelSelector;
-import io.fabric8.kubernetes.api.model.ObjectReference;
-import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
-import io.fabric8.kubernetes.api.model.PodTemplateSpec;
-import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.openshift.api.model.config.v1.ClusterOperatorStatusCondition;
 import io.fabric8.openshift.api.model.hive.v1.Checkpoint;
 import io.fabric8.openshift.api.model.hive.v1.CheckpointList;
@@ -54,182 +43,56 @@ import io.fabric8.openshift.api.model.hive.v1.SyncIdentityProvider;
 import io.fabric8.openshift.api.model.hive.v1.SyncIdentityProviderList;
 import io.fabric8.openshift.api.model.hive.v1.SyncSet;
 import io.fabric8.openshift.api.model.hive.v1.SyncSetList;
-import io.sundr.builder.annotations.Buildable;
-import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.Setter;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-    "apiVersion",
-    "kind",
-    "metadata",
-    "APIGroup",
-    "APIGroupList",
-    "AzureOSDisk",
-    "BaseKubernetesList",
-    "Checkpoint",
-    "CheckpointList",
-    "ClusterClaim",
-    "ClusterClaimList",
-    "ClusterDeployment",
-    "ClusterDeploymentList",
-    "ClusterDeprovision",
-    "ClusterDeprovisionList",
-    "ClusterImageSet",
-    "ClusterImageSetList",
-    "ClusterOperatorStatusCondition",
-    "ClusterPool",
-    "ClusterPoolList",
-    "ClusterProvision",
-    "ClusterProvisionList",
-    "ClusterRelocate",
-    "ClusterRelocateList",
-    "ClusterState",
-    "ClusterStateList",
-    "DNSZone",
-    "DNSZoneList",
-    "GcpOSDisk",
-    "HiveConfig",
-    "HiveConfigList",
-    "LocalObjectReference",
-    "MachinePool",
-    "MachinePoolList",
-    "MachinePoolNameLease",
-    "MachinePoolNameLeaseList",
-    "ObjectMeta",
-    "Patch",
-    "SelectorSyncIdentityProvider",
-    "SelectorSyncIdentityProviderList",
-    "SelectorSyncSet",
-    "SelectorSyncSetList",
-    "Status",
-    "SyncIdentityProvider",
-    "SyncIdentityProviderList",
-    "SyncSet",
-    "SyncSetList",
-    "Time",
-    "TypeMeta",
-    "VsphereOSDisk"
-})
-@ToString
-@EqualsAndHashCode
-@Setter
-@Accessors(prefix = {
-    "_",
-    ""
-})
-@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
-    @BuildableReference(LabelSelector.class),
-    @BuildableReference(Container.class),
-    @BuildableReference(PodTemplateSpec.class),
-    @BuildableReference(ResourceRequirements.class),
-    @BuildableReference(IntOrString.class),
-    @BuildableReference(ObjectReference.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.LocalObjectReference.class),
-    @BuildableReference(PersistentVolumeClaim.class)
-})
 @Generated("jsonschema2pojo")
-public class ValidationSchema implements Editable<ValidationSchemaBuilder>
-{
+public class ValidationSchema {
 
-    @JsonProperty("APIGroup")
     private APIGroup aPIGroup;
-    @JsonProperty("APIGroupList")
     private APIGroupList aPIGroupList;
-    @JsonProperty("AzureOSDisk")
     private io.fabric8.openshift.api.model.hive.azure.v1.OSDisk azureOSDisk;
-    @JsonProperty("BaseKubernetesList")
     private KubernetesList baseKubernetesList;
-    @JsonProperty("Checkpoint")
     private Checkpoint checkpoint;
-    @JsonProperty("CheckpointList")
     private CheckpointList checkpointList;
-    @JsonProperty("ClusterClaim")
     private ClusterClaim clusterClaim;
-    @JsonProperty("ClusterClaimList")
     private ClusterClaimList clusterClaimList;
-    @JsonProperty("ClusterDeployment")
     private ClusterDeployment clusterDeployment;
-    @JsonProperty("ClusterDeploymentList")
     private ClusterDeploymentList clusterDeploymentList;
-    @JsonProperty("ClusterDeprovision")
     private ClusterDeprovision clusterDeprovision;
-    @JsonProperty("ClusterDeprovisionList")
     private ClusterDeprovisionList clusterDeprovisionList;
-    @JsonProperty("ClusterImageSet")
     private ClusterImageSet clusterImageSet;
-    @JsonProperty("ClusterImageSetList")
     private ClusterImageSetList clusterImageSetList;
-    @JsonProperty("ClusterOperatorStatusCondition")
     private ClusterOperatorStatusCondition clusterOperatorStatusCondition;
-    @JsonProperty("ClusterPool")
     private ClusterPool clusterPool;
-    @JsonProperty("ClusterPoolList")
     private ClusterPoolList clusterPoolList;
-    @JsonProperty("ClusterProvision")
     private ClusterProvision clusterProvision;
-    @JsonProperty("ClusterProvisionList")
     private ClusterProvisionList clusterProvisionList;
-    @JsonProperty("ClusterRelocate")
     private ClusterRelocate clusterRelocate;
-    @JsonProperty("ClusterRelocateList")
     private ClusterRelocateList clusterRelocateList;
-    @JsonProperty("ClusterState")
     private ClusterState clusterState;
-    @JsonProperty("ClusterStateList")
     private ClusterStateList clusterStateList;
-    @JsonProperty("DNSZone")
     private DNSZone dNSZone;
-    @JsonProperty("DNSZoneList")
     private DNSZoneList dNSZoneList;
-    @JsonProperty("GcpOSDisk")
     private io.fabric8.openshift.api.model.hive.gcp.v1.OSDisk gcpOSDisk;
-    @JsonProperty("HiveConfig")
     private HiveConfig hiveConfig;
-    @JsonProperty("HiveConfigList")
     private HiveConfigList hiveConfigList;
-    @JsonProperty("LocalObjectReference")
-    private io.fabric8.kubernetes.api.model.LocalObjectReference localObjectReference;
-    @JsonProperty("MachinePool")
+    private LocalObjectReference localObjectReference;
     private MachinePool machinePool;
-    @JsonProperty("MachinePoolList")
     private MachinePoolList machinePoolList;
-    @JsonProperty("MachinePoolNameLease")
     private MachinePoolNameLease machinePoolNameLease;
-    @JsonProperty("MachinePoolNameLeaseList")
     private MachinePoolNameLeaseList machinePoolNameLeaseList;
-    @JsonProperty("ObjectMeta")
-    private io.fabric8.kubernetes.api.model.ObjectMeta objectMeta;
-    @JsonProperty("Patch")
+    private ObjectMeta objectMeta;
     private Patch patch;
-    @JsonProperty("SelectorSyncIdentityProvider")
     private SelectorSyncIdentityProvider selectorSyncIdentityProvider;
-    @JsonProperty("SelectorSyncIdentityProviderList")
     private SelectorSyncIdentityProviderList selectorSyncIdentityProviderList;
-    @JsonProperty("SelectorSyncSet")
     private SelectorSyncSet selectorSyncSet;
-    @JsonProperty("SelectorSyncSetList")
     private SelectorSyncSetList selectorSyncSetList;
-    @JsonProperty("Status")
     private Status status;
-    @JsonProperty("SyncIdentityProvider")
     private SyncIdentityProvider syncIdentityProvider;
-    @JsonProperty("SyncIdentityProviderList")
     private SyncIdentityProviderList syncIdentityProviderList;
-    @JsonProperty("SyncSet")
     private SyncSet syncSet;
-    @JsonProperty("SyncSetList")
     private SyncSetList syncSetList;
-    @JsonProperty("Time")
     private String time;
-    @JsonProperty("TypeMeta")
     private TypeMeta typeMeta;
-    @JsonProperty("VsphereOSDisk")
     private io.fabric8.openshift.api.model.hive.vsphere.v1.OSDisk vsphereOSDisk;
     @JsonIgnore
     private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
@@ -241,7 +104,7 @@ public class ValidationSchema implements Editable<ValidationSchemaBuilder>
     public ValidationSchema() {
     }
 
-    public ValidationSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, io.fabric8.openshift.api.model.hive.azure.v1.OSDisk azureOSDisk, KubernetesList baseKubernetesList, Checkpoint checkpoint, CheckpointList checkpointList, ClusterClaim clusterClaim, ClusterClaimList clusterClaimList, ClusterDeployment clusterDeployment, ClusterDeploymentList clusterDeploymentList, ClusterDeprovision clusterDeprovision, ClusterDeprovisionList clusterDeprovisionList, ClusterImageSet clusterImageSet, ClusterImageSetList clusterImageSetList, ClusterOperatorStatusCondition clusterOperatorStatusCondition, ClusterPool clusterPool, ClusterPoolList clusterPoolList, ClusterProvision clusterProvision, ClusterProvisionList clusterProvisionList, ClusterRelocate clusterRelocate, ClusterRelocateList clusterRelocateList, ClusterState clusterState, ClusterStateList clusterStateList, DNSZone dNSZone, DNSZoneList dNSZoneList, io.fabric8.openshift.api.model.hive.gcp.v1.OSDisk gcpOSDisk, HiveConfig hiveConfig, HiveConfigList hiveConfigList, io.fabric8.kubernetes.api.model.LocalObjectReference localObjectReference, MachinePool machinePool, MachinePoolList machinePoolList, MachinePoolNameLease machinePoolNameLease, MachinePoolNameLeaseList machinePoolNameLeaseList, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, Patch patch, SelectorSyncIdentityProvider selectorSyncIdentityProvider, SelectorSyncIdentityProviderList selectorSyncIdentityProviderList, SelectorSyncSet selectorSyncSet, SelectorSyncSetList selectorSyncSetList, Status status, SyncIdentityProvider syncIdentityProvider, SyncIdentityProviderList syncIdentityProviderList, SyncSet syncSet, SyncSetList syncSetList, String time, TypeMeta typeMeta, io.fabric8.openshift.api.model.hive.vsphere.v1.OSDisk vsphereOSDisk) {
+    public ValidationSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, io.fabric8.openshift.api.model.hive.azure.v1.OSDisk azureOSDisk, KubernetesList baseKubernetesList, Checkpoint checkpoint, CheckpointList checkpointList, ClusterClaim clusterClaim, ClusterClaimList clusterClaimList, ClusterDeployment clusterDeployment, ClusterDeploymentList clusterDeploymentList, ClusterDeprovision clusterDeprovision, ClusterDeprovisionList clusterDeprovisionList, ClusterImageSet clusterImageSet, ClusterImageSetList clusterImageSetList, ClusterOperatorStatusCondition clusterOperatorStatusCondition, ClusterPool clusterPool, ClusterPoolList clusterPoolList, ClusterProvision clusterProvision, ClusterProvisionList clusterProvisionList, ClusterRelocate clusterRelocate, ClusterRelocateList clusterRelocateList, ClusterState clusterState, ClusterStateList clusterStateList, DNSZone dNSZone, DNSZoneList dNSZoneList, io.fabric8.openshift.api.model.hive.gcp.v1.OSDisk gcpOSDisk, HiveConfig hiveConfig, HiveConfigList hiveConfigList, LocalObjectReference localObjectReference, MachinePool machinePool, MachinePoolList machinePoolList, MachinePoolNameLease machinePoolNameLease, MachinePoolNameLeaseList machinePoolNameLeaseList, ObjectMeta objectMeta, Patch patch, SelectorSyncIdentityProvider selectorSyncIdentityProvider, SelectorSyncIdentityProviderList selectorSyncIdentityProviderList, SelectorSyncSet selectorSyncSet, SelectorSyncSetList selectorSyncSetList, Status status, SyncIdentityProvider syncIdentityProvider, SyncIdentityProviderList syncIdentityProviderList, SyncSet syncSet, SyncSetList syncSetList, String time, TypeMeta typeMeta, io.fabric8.openshift.api.model.hive.vsphere.v1.OSDisk vsphereOSDisk) {
         super();
         this.aPIGroup = aPIGroup;
         this.aPIGroupList = aPIGroupList;
@@ -573,12 +436,12 @@ public class ValidationSchema implements Editable<ValidationSchemaBuilder>
     }
 
     @JsonProperty("LocalObjectReference")
-    public io.fabric8.kubernetes.api.model.LocalObjectReference getLocalObjectReference() {
+    public LocalObjectReference getLocalObjectReference() {
         return localObjectReference;
     }
 
     @JsonProperty("LocalObjectReference")
-    public void setLocalObjectReference(io.fabric8.kubernetes.api.model.LocalObjectReference localObjectReference) {
+    public void setLocalObjectReference(LocalObjectReference localObjectReference) {
         this.localObjectReference = localObjectReference;
     }
 
@@ -623,12 +486,12 @@ public class ValidationSchema implements Editable<ValidationSchemaBuilder>
     }
 
     @JsonProperty("ObjectMeta")
-    public io.fabric8.kubernetes.api.model.ObjectMeta getObjectMeta() {
+    public ObjectMeta getObjectMeta() {
         return objectMeta;
     }
 
     @JsonProperty("ObjectMeta")
-    public void setObjectMeta(io.fabric8.kubernetes.api.model.ObjectMeta objectMeta) {
+    public void setObjectMeta(ObjectMeta objectMeta) {
         this.objectMeta = objectMeta;
     }
 
@@ -760,16 +623,6 @@ public class ValidationSchema implements Editable<ValidationSchemaBuilder>
     @JsonProperty("VsphereOSDisk")
     public void setVsphereOSDisk(io.fabric8.openshift.api.model.hive.vsphere.v1.OSDisk vsphereOSDisk) {
         this.vsphereOSDisk = vsphereOSDisk;
-    }
-
-    @JsonIgnore
-    public ValidationSchemaBuilder edit() {
-        return new ValidationSchemaBuilder(this);
-    }
-
-    @JsonIgnore
-    public ValidationSchemaBuilder toBuilder() {
-        return edit();
     }
 
     @JsonAnyGetter

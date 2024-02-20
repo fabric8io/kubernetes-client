@@ -59,6 +59,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class KubernetesCoreTypeAnnotator extends Jackson2Annotator {
 
@@ -72,8 +73,11 @@ public class KubernetesCoreTypeAnnotator extends Jackson2Annotator {
   protected static final String KIND = "kind";
   protected static final String DEFAULT = "default";
   protected static final String INTERFACE_TYPE_PROPERTY = "interfaceType";
-  public static final String CORE_PACKAGE = "core";
-  public static final String OPENSHIFT_PACKAGE = "openshift";
+  private static final Set<String> IGNORED_CLASSES = ConcurrentHashMap.newKeySet();
+  static {
+    IGNORED_CLASSES.add("io.fabric8.kubernetes.api.model.KubeSchema");
+    IGNORED_CLASSES.add("io.fabric8.kubernetes.api.model.ValidationSchema");
+  }
   protected final Map<String, JDefinedClass> pendingResources = new HashMap<>();
   protected final Map<String, JDefinedClass> pendingLists = new HashMap<>();
 
@@ -86,9 +90,10 @@ public class KubernetesCoreTypeAnnotator extends Jackson2Annotator {
   @Override
   public void propertyOrder(JDefinedClass clazz, JsonNode propertiesNode) {
     // ensure every class is only processed once
-    if (handledClasses.contains(clazz.fullName())) {
+    if (handledClasses.contains(clazz.fullName()) || IGNORED_CLASSES.contains(clazz.fullName())) {
       return;
     }
+    handledClasses.add(clazz.fullName());
 
     JAnnotationArrayMember annotationValue = clazz.annotate(JsonPropertyOrder.class).paramArray(ANNOTATION_VALUE);
 
@@ -165,6 +170,9 @@ public class KubernetesCoreTypeAnnotator extends Jackson2Annotator {
 
   @Override
   public void propertyInclusion(JDefinedClass clazz, JsonNode schema) {
+    if (IGNORED_CLASSES.contains(clazz.fullName())) {
+      return;
+    }
     if (schema.has("serializer")) {
       annotateSerde(clazz, JsonSerialize.class, schema.get("serializer").asText());
     }
@@ -204,6 +212,9 @@ public class KubernetesCoreTypeAnnotator extends Jackson2Annotator {
 
   @Override
   public void propertyField(JFieldVar field, JDefinedClass clazz, String propertyName, JsonNode propertyNode) {
+    if (IGNORED_CLASSES.contains(clazz.fullName())) {
+      return;
+    }
     super.propertyField(field, clazz, propertyName, propertyNode);
 
     if (propertyNode.has("javaOmitEmpty") && propertyNode.get("javaOmitEmpty").asBoolean(false)) {

@@ -7,20 +7,7 @@ import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import io.fabric8.kubernetes.api.builder.Editable;
-import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.IntOrString;
-import io.fabric8.kubernetes.api.model.LabelSelector;
-import io.fabric8.kubernetes.api.model.LocalObjectReference;
-import io.fabric8.kubernetes.api.model.ObjectMeta;
-import io.fabric8.kubernetes.api.model.ObjectReference;
-import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
-import io.fabric8.kubernetes.api.model.PodTemplateSpec;
-import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.BackendTLSPolicy;
 import io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.BackendTLSPolicyList;
 import io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.GRPCRoute;
@@ -31,137 +18,41 @@ import io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.TLSRoute;
 import io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.TLSRouteList;
 import io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.UDPRoute;
 import io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.UDPRouteList;
-import io.sundr.builder.annotations.Buildable;
-import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.Setter;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-    "apiVersion",
-    "kind",
-    "metadata",
-    "BackendTLSPolicy",
-    "BackendTLSPolicyList",
-    "GRPCRoute",
-    "GRPCRouteList",
-    "Gateway",
-    "GatewayClass",
-    "GatewayClassList",
-    "GatewayList",
-    "HTTPRoute",
-    "HTTPRouteList",
-    "ReferenceGrant",
-    "ReferenceGrantList",
-    "TCPRoute",
-    "TCPRouteList",
-    "TLSRoute",
-    "TLSRouteList",
-    "UDPRoute",
-    "UDPRouteList",
-    "V1Beta1Gateway",
-    "V1Beta1GatewayClass",
-    "V1Beta1GatewayClassList",
-    "V1Beta1GatewayList",
-    "V1Beta1HTTPRoute",
-    "V1Beta1HTTPRouteList",
-    "V1Beta1ReferenceGrant",
-    "V1Beta1ReferenceGrantList",
-    "V1Gateway",
-    "V1GatewayClass",
-    "V1GatewayClassList",
-    "V1GatewayList",
-    "V1HTTPRoute",
-    "V1HTTPRouteList"
-})
-@ToString
-@EqualsAndHashCode
-@Setter
-@Accessors(prefix = {
-    "_",
-    ""
-})
-@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
-    @BuildableReference(ObjectMeta.class),
-    @BuildableReference(LabelSelector.class),
-    @BuildableReference(Container.class),
-    @BuildableReference(PodTemplateSpec.class),
-    @BuildableReference(ResourceRequirements.class),
-    @BuildableReference(IntOrString.class),
-    @BuildableReference(ObjectReference.class),
-    @BuildableReference(LocalObjectReference.class),
-    @BuildableReference(PersistentVolumeClaim.class)
-})
 @Generated("jsonschema2pojo")
-public class ValidationSchema implements Editable<ValidationSchemaBuilder>
-{
+public class ValidationSchema {
 
-    @JsonProperty("BackendTLSPolicy")
     private BackendTLSPolicy backendTLSPolicy;
-    @JsonProperty("BackendTLSPolicyList")
     private BackendTLSPolicyList backendTLSPolicyList;
-    @JsonProperty("GRPCRoute")
     private GRPCRoute gRPCRoute;
-    @JsonProperty("GRPCRouteList")
     private GRPCRouteList gRPCRouteList;
-    @JsonProperty("Gateway")
     private io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.Gateway gateway;
-    @JsonProperty("GatewayClass")
     private io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.GatewayClass gatewayClass;
-    @JsonProperty("GatewayClassList")
     private io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.GatewayClassList gatewayClassList;
-    @JsonProperty("GatewayList")
     private io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.GatewayList gatewayList;
-    @JsonProperty("HTTPRoute")
     private io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.HTTPRoute hTTPRoute;
-    @JsonProperty("HTTPRouteList")
     private io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.HTTPRouteList hTTPRouteList;
-    @JsonProperty("ReferenceGrant")
     private io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.ReferenceGrant referenceGrant;
-    @JsonProperty("ReferenceGrantList")
     private io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.ReferenceGrantList referenceGrantList;
-    @JsonProperty("TCPRoute")
     private TCPRoute tCPRoute;
-    @JsonProperty("TCPRouteList")
     private TCPRouteList tCPRouteList;
-    @JsonProperty("TLSRoute")
     private TLSRoute tLSRoute;
-    @JsonProperty("TLSRouteList")
     private TLSRouteList tLSRouteList;
-    @JsonProperty("UDPRoute")
     private UDPRoute uDPRoute;
-    @JsonProperty("UDPRouteList")
     private UDPRouteList uDPRouteList;
-    @JsonProperty("V1Beta1Gateway")
     private io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.Gateway v1Beta1Gateway;
-    @JsonProperty("V1Beta1GatewayClass")
     private io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.GatewayClass v1Beta1GatewayClass;
-    @JsonProperty("V1Beta1GatewayClassList")
     private io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.GatewayClassList v1Beta1GatewayClassList;
-    @JsonProperty("V1Beta1GatewayList")
     private io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.GatewayList v1Beta1GatewayList;
-    @JsonProperty("V1Beta1HTTPRoute")
     private io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.HTTPRoute v1Beta1HTTPRoute;
-    @JsonProperty("V1Beta1HTTPRouteList")
     private io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.HTTPRouteList v1Beta1HTTPRouteList;
-    @JsonProperty("V1Beta1ReferenceGrant")
     private io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.ReferenceGrant v1Beta1ReferenceGrant;
-    @JsonProperty("V1Beta1ReferenceGrantList")
     private io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.ReferenceGrantList v1Beta1ReferenceGrantList;
-    @JsonProperty("V1Gateway")
     private io.fabric8.kubernetes.api.model.gatewayapi.v1.Gateway v1Gateway;
-    @JsonProperty("V1GatewayClass")
     private io.fabric8.kubernetes.api.model.gatewayapi.v1.GatewayClass v1GatewayClass;
-    @JsonProperty("V1GatewayClassList")
     private io.fabric8.kubernetes.api.model.gatewayapi.v1.GatewayClassList v1GatewayClassList;
-    @JsonProperty("V1GatewayList")
     private io.fabric8.kubernetes.api.model.gatewayapi.v1.GatewayList v1GatewayList;
-    @JsonProperty("V1HTTPRoute")
     private io.fabric8.kubernetes.api.model.gatewayapi.v1.HTTPRoute v1HTTPRoute;
-    @JsonProperty("V1HTTPRouteList")
     private io.fabric8.kubernetes.api.model.gatewayapi.v1.HTTPRouteList v1HTTPRouteList;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
@@ -527,16 +418,6 @@ public class ValidationSchema implements Editable<ValidationSchemaBuilder>
     @JsonProperty("V1HTTPRouteList")
     public void setV1HTTPRouteList(io.fabric8.kubernetes.api.model.gatewayapi.v1.HTTPRouteList v1HTTPRouteList) {
         this.v1HTTPRouteList = v1HTTPRouteList;
-    }
-
-    @JsonIgnore
-    public ValidationSchemaBuilder edit() {
-        return new ValidationSchemaBuilder(this);
-    }
-
-    @JsonIgnore
-    public ValidationSchemaBuilder toBuilder() {
-        return edit();
     }
 
     @JsonAnyGetter
