@@ -27,8 +27,6 @@ import java.nio.file.Files;
 
 import static io.fabric8.kubeapitest.Utils.deleteDirectory;
 
-import static io.fabric8.kubeapitest.Utils.deleteDirectory;
-
 public class EtcdProcess {
 
   private static final Logger log = LoggerFactory.getLogger(EtcdProcess.class);
