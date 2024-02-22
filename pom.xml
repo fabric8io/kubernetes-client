@@ -142,6 +142,7 @@
 
     <!-- Maven plugin versions -->
     <buildnumber.plugin.version>3.2.0</buildnumber.plugin.version>
+    <exec.maven-plugin.version>3.2.0</exec.maven-plugin.version>
     <maven.compiler.plugin.version>3.12.1</maven.compiler.plugin.version>
     <maven.bundle.plugin.version>5.1.9</maven.bundle.plugin.version>
     <maven.buildhelper.plugin.version>3.5.0</maven.buildhelper.plugin.version>
@@ -983,6 +984,11 @@
     </resources>
     <pluginManagement>
       <plugins>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>exec-maven-plugin</artifactId>
+          <version>${exec.maven-plugin.version}</version>
+        </plugin>
         <plugin>
           <artifactId>maven-compiler-plugin</artifactId>
           <version>${maven.compiler.plugin.version}</version>
