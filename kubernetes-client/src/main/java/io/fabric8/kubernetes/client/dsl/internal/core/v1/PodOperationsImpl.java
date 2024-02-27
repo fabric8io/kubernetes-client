@@ -422,7 +422,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
       } catch (Exception ex) {
         throw KubernetesClientException.launderThrowable(ex);
       }
-    }, "TarArchiveOutputStream is provided by commons-compress");
+    }, "TarArchiveOutputStream is provided by commons-compress and commons-codec");
   }
 
   @Override
@@ -433,7 +433,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
       } catch (Exception ex) {
         throw KubernetesClientException.launderThrowable(ex);
       }
-    }, "TarArchiveOutputStream is provided by commons-compress");
+    }, "TarArchiveOutputStream is provided by commons-compress and commons-codec");
   }
 
   @Override

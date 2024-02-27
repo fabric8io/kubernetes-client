@@ -14,6 +14,7 @@
 * Fix #5635: refined LeaderElector lifecycle and logging
 
 #### Dependency Upgrade
+* Fix #5757: Apache Commons Compress upgraded to 1.26.0
 
 #### New Features
 * Fix #5636: Add new extension `open-virtual-networking` to manage resources in `k8s.ovn.org/v1` API group.
@@ -22,6 +23,8 @@
 #### _**Note**_: Breaking changes
 * KubeSchema and Validation Schema generated classes are no longer annotated with Jackson, Lombok, and Sundrio annotations.
   This implies that builders will no longer be generated for these classes and that they won't have special deserialization/serialization behavior.
+* Starting on 1.26.0 Commons Compress requires commons-codec:commons-codec to work.
+  If you are using any of the capabilities provided by the Commons Compress library (such as upload/download from a Pod), you will need to add this dependency too.
 
 ### 6.10.0 (2024-01-10)
 

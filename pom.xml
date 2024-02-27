@@ -130,6 +130,7 @@
     <bouncycastle.version>1.77</bouncycastle.version>
     <bc-fips.version>1.0.2.4</bc-fips.version>
     <bcpkix-fips.version>1.0.7</bcpkix-fips.version>
+    <commons-codec.version>1.16.1</commons-codec.version>
     <commons-compress.version>1.26.0</commons-compress.version>
     <commons-io.version>2.15.1</commons-io.version> <!-- Required by Gradle Testing Toolkit -->
     <guava.version>33.0.0-jre</guava.version> <!-- Required by Gradle Testing Toolkit -->
@@ -774,6 +775,12 @@
         <groupId>com.squareup.okhttp3</groupId>
         <artifactId>mockwebserver</artifactId>
         <version>${okhttp.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>commons-codec</groupId>
+        <artifactId>commons-codec</artifactId>
+        <version>${commons-codec.version}</version>
+        <optional>true</optional>
       </dependency>
       <dependency>
         <groupId>org.apache.commons</groupId>

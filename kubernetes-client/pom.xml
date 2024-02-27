@@ -88,14 +88,13 @@
       <optional>true</optional>
     </dependency>
     <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-compress</artifactId>
+      <groupId>commons-codec</groupId>
+      <artifactId>commons-codec</artifactId>
       <optional>true</optional>
     </dependency>
     <dependency>
-      <groupId>commons-codec</groupId>
-      <artifactId>commons-codec</artifactId>
-      <version>1.16.1</version>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-compress</artifactId>
       <optional>true</optional>
     </dependency>
 
