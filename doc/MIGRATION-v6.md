@@ -63,7 +63,7 @@ To use it, exclude the `kubernetes-httpclient-okhttp` dependency and add the `ku
 ### Package Changes
 
 - Readiness/OpenShiftReadiness moved from client.internal.readiness to client.readiness
-- client.utils classes including Base64, CreateOrReplaceHelper, DeleteOrCreateHelper, OptionalDendencyWrapper, etc. are not in the -api jar, they are still in the -client jar under utils.internal.
+- client.utils classes including Base64, CreateOrReplaceHelper, DeleteOrCreateHelper, OptionalDependencyWrapper, etc. are not in the -api jar, they are still in the -client jar under utils.internal.
 - Some other effectively internal classes in dsl.base and other packages were moved to corresponding internal packages - it is unlikely this will affect you unless you developed a custom extension.  Extension development can now be done exclusively against the api, please see the previous section.
 
 ## Default Maps
