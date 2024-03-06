@@ -1,0 +1,25 @@
+{
+  "apiVersion": "apps.openshift.io/v1",
+  "kind": "DeploymentConfigRollback",
+  "name": "app-to-rollback",
+  "spec": {
+    "from": {
+      "apiVersion": "version-1",
+      "fieldPath": "fieldPath",
+      "kind": "ObjectReference",
+      "name": "ObjectReferenceName",
+      "namespace": "ObjectReferenceNamespace",
+      "resourceVersion": "version 1",
+      "uid": "1234"
+    },
+    "includeReplicationMeta": false,
+    "includeStrategy": false,
+    "includeTemplate": false,
+    "includeTriggers": false,
+    "revision": 1
+  },
+  "updatedAnnotations": {
+    "APPLICATION_VERSION": "2.7.18"
+  },
+  "additionalProperty": "additionalValue"
+}

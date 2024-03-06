@@ -7152,6 +7152,70 @@
         "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.openshift.api.model.DeploymentConfig\u003e"
       ]
     },
+    "os_deploy_DeploymentConfigRollback": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "apps.openshift.io/v1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "DeploymentConfigRollback",
+          "required": true
+        },
+        "name": {
+          "type": "string"
+        },
+        "spec": {
+          "$ref": "#/definitions/os_deploy_DeploymentConfigRollbackSpec",
+          "existingJavaType": "io.fabric8.openshift.api.model.DeploymentConfigRollbackSpec"
+        },
+        "updatedAnnotations": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.DeploymentConfigRollback",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_deploy_DeploymentConfigRollbackSpec": {
+      "type": "object",
+      "properties": {
+        "from": {
+          "$ref": "#/definitions/kubernetes_core_ObjectReference",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectReference"
+        },
+        "includeReplicationMeta": {
+          "type": "boolean"
+        },
+        "includeStrategy": {
+          "type": "boolean"
+        },
+        "includeTemplate": {
+          "type": "boolean"
+        },
+        "includeTriggers": {
+          "type": "boolean"
+        },
+        "revision": {
+          "type": "integer",
+          "existingJavaType": "Long"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.DeploymentConfigRollbackSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "os_deploy_DeploymentConfigSpec": {
       "type": "object",
       "properties": {
@@ -11381,6 +11445,10 @@
     "DeploymentConfigList": {
       "$ref": "#/definitions/os_deploy_DeploymentConfigList",
       "existingJavaType": "io.fabric8.openshift.api.model.DeploymentConfigList"
+    },
+    "DeploymentConfigRollback": {
+      "$ref": "#/definitions/os_deploy_DeploymentConfigRollback",
+      "existingJavaType": "io.fabric8.openshift.api.model.DeploymentConfigRollback"
     },
     "EgressNetworkPolicy": {
       "$ref": "#/definitions/os_network_EgressNetworkPolicy",

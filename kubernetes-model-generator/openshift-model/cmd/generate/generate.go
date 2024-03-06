@@ -87,6 +87,7 @@ type Schema struct {
 	ImageSignature                       imageapi.ImageSignature
 	DeploymentConfig                     appsapi.DeploymentConfig
 	DeploymentConfigList                 appsapi.DeploymentConfigList
+	DeploymentConfigRollback             appsapi.DeploymentConfigRollback
 	Route                                routeapi.Route
 	RouteList                            routeapi.RouteList
 	Template                             templateapi.Template
