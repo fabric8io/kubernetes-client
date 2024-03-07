@@ -40,7 +40,7 @@ class ClientBuilderTest {
     assertThat(config.getProxyUsername()).isEqualTo("proxyUsername");
     assertThat(config.getProxyPassword()).isEqualTo("proxyPassword");
     assertThat(config.getRequestTimeout()).isEqualTo(678);
-    assertThat(config.isTrustCerts()).isEqualTo(true);
+    assertThat(config.isTrustCerts()).isTrue();
     assertThat(config.getUsername()).isEqualTo("username");
     assertThat(config.getWatchReconnectInterval()).isEqualTo(1234);
     assertThat(config.getWatchReconnectLimit()).isEqualTo(5678);

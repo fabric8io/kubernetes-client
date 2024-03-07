@@ -32,9 +32,6 @@
   <properties>
     <osgi.export>io.fabric8.kubernetes.log4j.*</osgi.export>
     <osgi.import>*</osgi.import>
-
-    <!-- Dependency versions -->
-    <log4j.version>2.22.1</log4j.version>
   </properties>
 
   <dependencies>
@@ -44,8 +41,15 @@
     </dependency>
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-api</artifactId>
+      <version>${log4j.version}</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-core</artifactId>
       <version>${log4j.version}</version>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.assertj</groupId>

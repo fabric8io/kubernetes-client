@@ -35,7 +35,8 @@ import java.net.UnknownHostException;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
  * Retrieves various attributes from the Kubernetes server.
@@ -150,11 +151,14 @@ public class KubernetesLookup extends AbstractLookup {
   private static final String POD_IP = "podIp";
   private static final String POD_NAME = "podName";
 
-  private static volatile KubernetesInfo kubernetesInfo;
-  private static final Lock initLock = new ReentrantLock();
-  private static final boolean isSpringIncluded = LoaderUtil
+  private static KubernetesInfo kubernetesInfo;
+  private static final ReadWriteLock LOCK = new ReentrantReadWriteLock();
+  private static final Lock READ_LOCK = LOCK.readLock();
+  private static final Lock WRITE_LOCK = LOCK.writeLock();
+  private static final boolean IS_SPRING_INCLUDED = LoaderUtil
       .isClassAvailable("org.apache.logging.log4j.spring.cloud.config.client.SpringEnvironmentHolder")
       || LoaderUtil.isClassAvailable("org.apache.logging.log4j.spring.boot.SpringEnvironmentHolder");
+
   private Pod pod;
   private Namespace namespace;
   private URL masterUrl;
@@ -163,49 +167,49 @@ public class KubernetesLookup extends AbstractLookup {
     this.pod = null;
     this.namespace = null;
     this.masterUrl = null;
-    initialize();
+    initialize(this);
   }
 
   KubernetesLookup(Pod pod, Namespace namespace, URL masterUrl) {
     this.pod = pod;
     this.namespace = namespace;
     this.masterUrl = masterUrl;
-    initialize();
+    initialize(this);
   }
 
-  private void initialize() {
+  private static void initialize(KubernetesLookup lookup) {
     KubernetesInfo kubernetesInfo = KubernetesLookup.kubernetesInfo;
     if (kubernetesInfo == null || isSpringStatusChanged(kubernetesInfo)) {
-      initLock.lock();
+      WRITE_LOCK.lock();
       try {
         kubernetesInfo = KubernetesLookup.kubernetesInfo;
         if (kubernetesInfo == null || isSpringStatusChanged(kubernetesInfo)) {
-          tryInitializeFields();
+          tryInitializeFields(lookup);
           // Retrieve the data from the fields
           kubernetesInfo = new KubernetesInfo();
           kubernetesInfo.isSpringActive = isSpringActive();
-          kubernetesInfo.masterUrl = masterUrl;
-          if (namespace != null) {
-            fillNamespaceData(namespace, kubernetesInfo);
+          kubernetesInfo.masterUrl = lookup.masterUrl;
+          if (lookup.namespace != null) {
+            fillNamespaceData(lookup.namespace, kubernetesInfo);
           }
-          if (pod != null) {
-            fillPodData(pod, kubernetesInfo);
+          if (lookup.pod != null) {
+            fillPodData(lookup.pod, kubernetesInfo);
           }
           KubernetesLookup.kubernetesInfo = kubernetesInfo;
         }
       } finally {
-        initLock.unlock();
+        WRITE_LOCK.unlock();
       }
     }
   }
 
   private static boolean isSpringStatusChanged(KubernetesInfo kubernetesInfo) {
-    return isSpringIncluded
+    return IS_SPRING_INCLUDED
         && isSpringActive() != (kubernetesInfo != null && kubernetesInfo.isSpringActive);
   }
 
   private static boolean isSpringActive() {
-    return isSpringIncluded
+    return IS_SPRING_INCLUDED
         && LogManager.getFactory() != null
         && LogManager.getFactory().hasContext(KubernetesLookup.class.getName(), null, false)
         && LogManager.getContext(false).getObject(SPRING_ENVIRONMENT_KEY) != null;
@@ -214,17 +218,17 @@ public class KubernetesLookup extends AbstractLookup {
   /**
    * Tries to initialize the fields of the lookup.
    */
-  private void tryInitializeFields() {
-    KubernetesClient client = createClient();
+  private static void tryInitializeFields(KubernetesLookup lookup) {
+    KubernetesClient client = lookup.createClient();
     if (client != null) {
-      if (pod == null) {
-        pod = getCurrentPod(client);
+      if (lookup.pod == null) {
+        lookup.pod = getCurrentPod(client);
       }
-      if (pod != null && namespace == null) {
-        namespace = getNamespace(client, pod);
+      if (lookup.pod != null && lookup.namespace == null) {
+        lookup.namespace = getNamespace(client, lookup.pod);
       }
-      if (masterUrl == null) {
-        masterUrl = client.getMasterUrl();
+      if (lookup.masterUrl == null) {
+        lookup.masterUrl = client.getMasterUrl();
       }
     } else {
       LOGGER.warn("Kubernetes is not available for access");
@@ -347,6 +351,13 @@ public class KubernetesLookup extends AbstractLookup {
 
   @Override
   public String lookup(final LogEvent event, final String key) {
+    KubernetesInfo kubernetesInfo = null;
+    READ_LOCK.lock();
+    try {
+      kubernetesInfo = KubernetesLookup.kubernetesInfo;
+    } finally {
+      READ_LOCK.unlock();
+    }
     if (kubernetesInfo == null) {
       return null;
     }
