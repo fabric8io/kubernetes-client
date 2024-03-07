@@ -16,6 +16,10 @@
 package io.fabric8.kubernetes.log4j.lookup;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.fabric8.kubernetes.api.model.Container;
+import io.fabric8.kubernetes.api.model.ContainerBuilder;
+import io.fabric8.kubernetes.api.model.ContainerStatus;
+import io.fabric8.kubernetes.api.model.ContainerStatusBuilder;
 import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.NamespaceBuilder;
 import io.fabric8.kubernetes.api.model.Pod;
@@ -25,10 +29,15 @@ import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import org.apache.logging.log4j.core.lookup.StrLookup;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.net.URL;
+import java.nio.file.Paths;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 /**
  * Validate the Kubernetes Lookup.
@@ -36,13 +45,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 @EnableKubernetesMockClient(crud = true)
 class KubernetesLookupTest {
 
+  private static final int MAX_CONTAINER_COUNT = 2;
   private static KubernetesClient mockClient;
 
   private static final ObjectMapper objectMapper = new ObjectMapper();
 
   @AfterEach
   void cleanUp() {
-    KubernetesLookup.clearInfo();
+    KubernetesLookup.clear();
   }
 
   @Test
@@ -100,6 +110,67 @@ class KubernetesLookupTest {
     assertNamespaceLookups(lookup, namespace.getMetadata().getUid());
   }
 
+  static Stream<String> container_statuses_smoke_test() {
+    return Stream.of(
+        ContainerUtilTest.TEST_GOOD_CGROUP_RESOURCE,
+        ContainerUtilTest.TEST_BAD_CGROUP_RESOURCE);
+  }
+
+  @ParameterizedTest
+  @MethodSource
+  void container_statuses_smoke_test(String cgroupPath) throws Exception {
+    Namespace namespace = new NamespaceBuilder().build();
+    URL masterUrl = new URL("http://localhost:443/");
+    // Supports any number of container statuses
+    for (int containerCount = 0; containerCount <= MAX_CONTAINER_COUNT; containerCount++) {
+      // If more than a status is available ContainerUtil is used, so we set a test file to scan for the container id
+      KubernetesLookup.cgroupPath = Paths.get(KubernetesLookupTest.class.getClassLoader().getResource(cgroupPath).toURI());
+      ContainerStatus[] containerStatuses = new ContainerStatus[containerCount];
+      for (int i = 0; i < containerCount; i++) {
+        containerStatuses[i] = new ContainerStatusBuilder().withName("container" + i)
+            .withContainerID(i == 0 ? ContainerUtilTest.CONTAINER_ID : null).build();
+      }
+      Pod pod = new PodBuilder().withNewStatus()
+          .withContainerStatuses(containerStatuses)
+          .endStatus()
+          .build();
+      assertDoesNotThrow(() -> new KubernetesLookup(pod, namespace, masterUrl));
+      cleanUp();
+    }
+  }
+
+  static Stream<String> containers_smoke_test() {
+    return Stream.of(
+        null,
+        "container0");
+  }
+
+  @ParameterizedTest
+  @MethodSource
+  void containers_smoke_test(String containerName) throws Exception {
+    Namespace namespace = new NamespaceBuilder().build();
+    URL masterUrl = new URL("http://localhost:443/");
+    // Supports any number of containers in the spec
+    for (int containerCount = 0; containerCount <= MAX_CONTAINER_COUNT; containerCount++) {
+      Container[] containers = new Container[containerCount];
+      for (int i = 0; i < containerCount; i++) {
+        containers[i] = new ContainerBuilder().withName("container" + i).build();
+      }
+      Pod pod = new PodBuilder().withNewSpec()
+          .withContainers(containers)
+          .endSpec()
+          .withNewStatus()
+          .addNewContainerStatus()
+          .withName(
+              containerName)
+          .endContainerStatus()
+          .endStatus()
+          .build();
+      assertDoesNotThrow(() -> new KubernetesLookup(pod, namespace, masterUrl));
+      cleanUp();
+    }
+  }
+
   @Test
   void initialize_works_with_mock_client() {
     final Pod pod = mockClient.pods().resource(createPod()).create();
@@ -117,7 +188,12 @@ class KubernetesLookupTest {
 
   @Test
   void no_client_should_return_no_data() {
-    final StrLookup lookup = new KubernetesLookup();
+    final StrLookup lookup = new KubernetesLookup() {
+      @Override
+      protected KubernetesClient createClient() {
+        return null;
+      }
+    };
     assertThat(lookup.lookup("accountName")).isNull();
   }
 

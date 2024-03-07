@@ -27,12 +27,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class ContainerUtilTest {
 
-  private static final String CONTAINER_ID = "3dd988081e7149463c043b5d9c57d7309e079c5e9290f91feba1cc45a04d6a5b";
+  // Also used in KubernetesLookupTest
+  static final String CONTAINER_ID = "3dd988081e7149463c043b5d9c57d7309e079c5e9290f91feba1cc45a04d6a5b";
+  static final String TEST_GOOD_CGROUP_RESOURCE = "cgroups/positive/case_0.dat";
+  static final String TEST_BAD_CGROUP_RESOURCE = "cgroups/negative/case_0.dat";
 
   static Stream<Arguments> should_recognize_container_id() {
     return Stream.of(
         // Some possible example /proc/self/cgroup
-        Arguments.of("cgroups/positive/case_0.dat", CONTAINER_ID),
+        Arguments.of(TEST_GOOD_CGROUP_RESOURCE, CONTAINER_ID),
         Arguments.of("cgroups/positive/case_1.dat", CONTAINER_ID),
         Arguments.of("cgroups/positive/case_2.dat", CONTAINER_ID),
         Arguments.of("cgroups/positive/case_3.dat", CONTAINER_ID),
@@ -42,7 +45,7 @@ class ContainerUtilTest {
         Arguments.of("cgroups/positive/case_7.dat", CONTAINER_ID),
         Arguments.of("cgroups/positive/case_8.dat", CONTAINER_ID),
         // Smoke test in case the file changes format
-        Arguments.of("cgroups/negative/case_0.dat", null),
+        Arguments.of(TEST_BAD_CGROUP_RESOURCE, null),
         Arguments.of("cgroups/negative/case_1.dat", null));
   }
 

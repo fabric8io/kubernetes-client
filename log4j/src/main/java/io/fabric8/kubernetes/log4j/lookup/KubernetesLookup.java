@@ -35,6 +35,7 @@ import org.apache.logging.log4j.util.LoaderUtil;
 import java.net.InetAddress;
 import java.net.URL;
 import java.net.UnknownHostException;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.locks.Lock;
@@ -156,6 +157,8 @@ public class KubernetesLookup extends AbstractLookup {
   private static final String POD_NAME = "podName";
 
   private static KubernetesInfo kubernetesInfo;
+  // Used in tests
+  static Path cgroupPath = ContainerUtil.CGROUP_PATH;
   private static final ReadWriteLock LOCK = new ReentrantReadWriteLock();
   private static final Lock READ_LOCK = LOCK.readLock();
   private static final Lock WRITE_LOCK = LOCK.writeLock();
@@ -191,7 +194,9 @@ public class KubernetesLookup extends AbstractLookup {
       try {
         kubernetesInfo = KubernetesLookup.kubernetesInfo;
         if (kubernetesInfo == null || isSpringStatusChanged(kubernetesInfo)) {
-          tryInitializeFields(lookup);
+          if (lookup.pod == null || lookup.namespace == null || lookup.masterUrl == null) {
+            tryInitializeFields(lookup);
+          }
           // Retrieve the data from the fields
           kubernetesInfo = new KubernetesInfo();
           kubernetesInfo.isSpringActive = isSpringActive();
@@ -260,8 +265,8 @@ public class KubernetesLookup extends AbstractLookup {
       if (hostName != null && !hostName.isEmpty()) {
         return kubernetesClient.pods().withName(hostName).get();
       }
-    } catch (Throwable t) {
-      LOGGER.debug("Unable to locate pod with name {}.", hostName);
+    } catch (Exception e) {
+      LOGGER.debug("Unable to locate pod with name {}.", hostName, e);
     }
     return null;
   }
@@ -340,7 +345,7 @@ public class KubernetesLookup extends AbstractLookup {
       case 1:
         return statuses.get(0);
       default:
-        final String containerId = ContainerUtil.getContainerId(ContainerUtil.CGROUP_FILE);
+        final String containerId = ContainerUtil.getContainerId(cgroupPath);
         return containerId != null ? statuses.stream()
             .filter(cs -> cs.getContainerID().contains(containerId))
             .findFirst()
@@ -365,70 +370,67 @@ public class KubernetesLookup extends AbstractLookup {
 
   @Override
   public String lookup(final LogEvent event, final String key) {
-    KubernetesInfo kubernetesInfo = null;
+    KubernetesInfo info;
     READ_LOCK.lock();
     try {
-      kubernetesInfo = KubernetesLookup.kubernetesInfo;
+      info = kubernetesInfo;
     } finally {
       READ_LOCK.unlock();
     }
-    if (kubernetesInfo == null) {
-      return null;
-    }
     if (key.startsWith(LABELS_PREFIX)) {
-      return kubernetesInfo.labels != null ? kubernetesInfo.labels.get(key.substring(LABELS_PREFIX.length())) : null;
+      return info.labels != null ? info.labels.get(key.substring(LABELS_PREFIX.length())) : null;
     }
     switch (key) {
       case ACCOUNT_NAME: {
-        return kubernetesInfo.accountName;
+        return info.accountName;
       }
       case ANNOTATIONS: {
-        return kubernetesInfo.annotations != null ? kubernetesInfo.annotations.toString() : null;
+        return info.annotations != null ? info.annotations.toString() : null;
       }
       case CONTAINER_ID: {
-        return kubernetesInfo.containerId;
+        return info.containerId;
       }
       case CONTAINER_NAME: {
-        return kubernetesInfo.containerName;
+        return info.containerName;
       }
       case HOST: {
-        return kubernetesInfo.hostName;
+        return info.hostName;
       }
       case HOST_IP: {
-        return kubernetesInfo.hostIp;
+        return info.hostIp;
       }
       case LABELS: {
-        return kubernetesInfo.labels != null ? kubernetesInfo.labels.toString() : null;
+        return info.labels != null ? info.labels.toString() : null;
       }
       case MASTER_URL: {
-        return kubernetesInfo.masterUrl != null ? kubernetesInfo.masterUrl.toString() : null;
+        return info.masterUrl != null ? info.masterUrl.toString() : null;
       }
       case NAMESPACE_ANNOTATIONS: {
-        return kubernetesInfo.namespaceAnnotations != null ? kubernetesInfo.namespaceAnnotations.toString() : null;
+        return info.namespaceAnnotations != null ? info.namespaceAnnotations.toString() : null;
       }
       case NAMESPACE_ID: {
-        return kubernetesInfo.namespaceId;
+        return info.namespaceId;
       }
       case NAMESPACE_LABELS: {
-        return kubernetesInfo.namespaceLabels != null ? kubernetesInfo.namespaceLabels.toString() : null;
+        return info.namespaceLabels != null ? info.namespaceLabels.toString() : null;
       }
       case NAMESPACE_NAME: {
-        return kubernetesInfo.namespace;
+        return info.namespace;
       }
       case POD_ID: {
-        return kubernetesInfo.podId;
+        return info.podId;
       }
       case POD_IP: {
-        return kubernetesInfo.podIp;
+        return info.podIp;
       }
       case POD_NAME: {
-        return kubernetesInfo.podName;
+        return info.podName;
       }
       case IMAGE_ID: {
-        return kubernetesInfo.imageId;
+        return info.imageId;
       }
       case IMAGE_NAME: {
-        return kubernetesInfo.imageName;
+        return info.imageName;
       }
       default:
         return null;
@@ -438,8 +440,9 @@ public class KubernetesLookup extends AbstractLookup {
   /**
    * For unit testing only.
    */
-  static void clearInfo() {
+  static void clear() {
     kubernetesInfo = null;
+    cgroupPath = ContainerUtil.CGROUP_PATH;
   }
 
   private static class KubernetesInfo {

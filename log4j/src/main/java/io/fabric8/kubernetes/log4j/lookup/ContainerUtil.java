@@ -35,7 +35,7 @@ final class ContainerUtil {
 
   private static final Logger LOGGER = StatusLogger.getLogger();
   private static final Pattern DOCKER_ID_PATTERN = Pattern.compile("[0-9a-fA-F]{64}");
-  static final Path CGROUP_FILE = Paths.get("/proc/self/cgroup");
+  static final Path CGROUP_PATH = Paths.get("/proc/self/cgroup");
 
   private ContainerUtil() {
   }

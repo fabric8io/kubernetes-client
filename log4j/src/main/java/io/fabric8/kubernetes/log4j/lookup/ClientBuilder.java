@@ -76,9 +76,9 @@ final class ClientBuilder {
             .build();
       }
       return base;
-    } catch (final Throwable t) {
+    } catch (final Exception e) {
       StatusLogger.getLogger().warn("An error occurred while retrieving Kubernetes Client configuration: {}.",
-          t.getMessage(), t);
+          e.getMessage(), e);
     }
     return null;
   }
