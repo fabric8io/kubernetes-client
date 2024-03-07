@@ -44,9 +44,10 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 /**
  * Retrieves various attributes from the Kubernetes server.
  * <p>
- * Supported keys are:
+ * The supported keys are listed in the following table:
  * </p>
  * <table>
+ * <caption>Supported keys</caption>
  * <tr>
  * <th>Key</th>
  * <th>Description</th>
@@ -166,6 +167,9 @@ public class KubernetesLookup extends AbstractLookup {
   private Namespace namespace;
   private URL masterUrl;
 
+  /**
+   * Default constructor, called by reflection.
+   */
   public KubernetesLookup() {
     this.pod = null;
     this.namespace = null;
@@ -238,7 +242,14 @@ public class KubernetesLookup extends AbstractLookup {
     }
   }
 
-  // Used for testing
+  /**
+   * Creates a Kubernetes client used to retrieve K8S configuration.
+   * <p>
+   * Used in tests to provide a mock client.
+   * </p>
+   * 
+   * @return A Kubernetes client.
+   */
   protected KubernetesClient createClient() {
     return ClientBuilder.createClient();
   }

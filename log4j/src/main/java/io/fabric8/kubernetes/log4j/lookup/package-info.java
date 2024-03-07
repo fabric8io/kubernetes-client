@@ -13,4 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+/**
+ * Provides a lookup to use Kubernetes attributes in a Log4j Core configuration.
+ */
 package io.fabric8.kubernetes.log4j.lookup;
