@@ -227,7 +227,7 @@ public class KubernetesLookup extends AbstractLookup {
               if (statuses.size() == 1) {
                 containerStatus = statuses.get(0);
               } else if (statuses.size() > 1) {
-                final String containerId = ContainerUtil.getContainerId();
+                final String containerId = ContainerUtil.getContainerId(ContainerUtil.CGROUP_FILE);
                 if (containerId != null) {
                   containerStatus = statuses.stream()
                       .filter(cs -> cs.getContainerID().contains(containerId))

@@ -18,11 +18,15 @@ package io.fabric8.kubernetes.log4j.lookup;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.status.StatusLogger;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 /**
  * Locate the current docker container.
@@ -30,37 +34,36 @@ import java.util.Objects;
 final class ContainerUtil {
 
   private static final Logger LOGGER = StatusLogger.getLogger();
-  private static final int MAXLENGTH = 65;
+  private static final Pattern DOCKER_ID_PATTERN = Pattern.compile("[0-9a-fA-F]{64}");
+  static final Path CGROUP_FILE = Paths.get("/proc/self/cgroup");
 
   private ContainerUtil() {
   }
 
   /**
    * Returns the container id when running in a Docker container.
-   *
+   * <p>
    * This inspects /proc/self/cgroup looking for a Kubernetes Control Group. Once it finds one it attempts
    * to isolate just the docker container id. There doesn't appear to be a standard way to do this, but
    * it seems to be the only way to determine what the current container is in a multi-container pod. It would have
    * been much nicer if Kubernetes would just put the container id in a standard environment variable.
-   *
-   * @see <a href="http://stackoverflow.com/a/25729598/12916">Stackoverflow</a> for a discussion on retrieving the containerId.
-   * @see <a href=
-   *      "https://github.com/jenkinsci/docker-workflow-plugin/blob/master/src/main/java/org/jenkinsci/plugins/docker/workflow/client/ControlGroup.java">ControlGroup</a>
-   *      for the original version of this. Not much is actually left but it provided good inspiration.
-   * @return The container id.
+   * </p>
+   * 
+   * @param path Path to a {@code /proc/pid/cgroup} file.
+   * @return A container id or {@code null} if not found.
    */
-  public static String getContainerId() {
+  public static String getContainerId(Path path) {
     try {
-      final File file = new File("/proc/self/cgroup");
-      if (file.exists()) {
-        final Path path = file.toPath();
-        final String id = Files.lines(path)
-            .map(ContainerUtil::getContainerId)
-            .filter(Objects::nonNull)
-            .findFirst()
-            .orElse(null);
-        LOGGER.debug("Found container id {}", id);
-        return id;
+      if (Files.exists(path)) {
+        try (final Stream<String> lines = Files.lines(path)) {
+          final String id = lines
+              .map(ContainerUtil::getContainerId)
+              .filter(Objects::nonNull)
+              .findFirst()
+              .orElse(null);
+          LOGGER.debug("Found container id {}", id);
+          return id;
+        }
       }
       LOGGER.warn("Unable to access container information");
     } catch (IOException ioe) {
@@ -70,28 +73,44 @@ final class ContainerUtil {
   }
 
   private static String getContainerId(String line) {
-    // Every control group in Kubernetes will use
-    if (line.contains("/kubepods")) {
-      // Strip off everything up to the last slash.
-      int i = line.lastIndexOf('/');
-      if (i < 0) {
-        return null;
-      }
-      // If the remainder has a period then take everything up to it.
-      line = line.substring(i + 1);
-      i = line.lastIndexOf('.');
-      if (i > 0) {
-        line = line.substring(0, i);
-      }
-      // Everything ending with a '/' has already been stripped but the remainder might start with "docker-"
-      if (line.contains("docker-")) {
-        // 8:cpuset:/kubepods.slice/kubepods-pod9c26dfb6_b9c9_11e7_bfb9_02c6c1fc4861.slice/docker-3dd988081e7149463c043b5d9c57d7309e079c5e9290f91feba1cc45a04d6a5b.scope
-        i = line.lastIndexOf("docker-");
-        line = line.substring(i + 7);
-      }
-      return line.length() <= MAXLENGTH ? line : line.substring(0, MAXLENGTH);
-    }
+    return Optional.ofNullable(getCGroupPath(line))
+        .map(ContainerUtil::getDockerId)
+        .orElse(null);
+  }
 
-    return null;
+  /**
+   * Retrieves a container id from a hierarchy of CGroups
+   * <p>
+   * Based on
+   * <a href=
+   * "https://github.com/jenkinsci/docker-workflow-plugin/blob/master/src/main/java/org/jenkinsci/plugins/docker/workflow/client/ControlGroup.java">ControlGroup.java</a>
+   * </p>
+   * 
+   * @param cgroupPath a slash-separated hierarchy of CGroups.
+   * @return a Docker ID
+   */
+  private static String getDockerId(String cgroupPath) {
+    String[] elements = cgroupPath.split("/", -1);
+    String dockerId = null;
+    for (String element : elements) {
+      Matcher matcher = DOCKER_ID_PATTERN.matcher(element);
+      if (matcher.find()) {
+        dockerId = matcher.group();
+      }
+    }
+    return dockerId;
+  }
+
+  /**
+   * Retrieves the full hierarchy of CGroups the process belongs
+   * <p>
+   * See <a href="https://man7.org/linux/man-pages/man7/cgroups.7.html">/proc/pid/cgroups</a>
+   * </p>
+   * 
+   * @param line A line from a {@code /proc/pid/cgroups} file
+   */
+  private static String getCGroupPath(String line) {
+    String[] fields = line.split(":", -1);
+    return fields.length > 2 ? fields[2] : null;
   }
 }
