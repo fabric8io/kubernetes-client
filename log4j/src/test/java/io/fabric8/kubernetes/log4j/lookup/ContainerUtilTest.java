@@ -1,3 +1,18 @@
+/*
+ * Copyright (C) 2015 Red Hat, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package io.fabric8.kubernetes.log4j.lookup;
 
 import org.junit.jupiter.params.ParameterizedTest;
@@ -17,18 +32,18 @@ class ContainerUtilTest {
   static Stream<Arguments> should_recognize_container_id() {
     return Stream.of(
         // Some possible example /proc/self/cgroup
-        Arguments.of("cgroups/positive/case_0.txt", CONTAINER_ID),
-        Arguments.of("cgroups/positive/case_1.txt", CONTAINER_ID),
-        Arguments.of("cgroups/positive/case_2.txt", CONTAINER_ID),
-        Arguments.of("cgroups/positive/case_3.txt", CONTAINER_ID),
-        Arguments.of("cgroups/positive/case_4.txt", CONTAINER_ID),
-        Arguments.of("cgroups/positive/case_5.txt", CONTAINER_ID),
-        Arguments.of("cgroups/positive/case_6.txt", CONTAINER_ID),
-        Arguments.of("cgroups/positive/case_7.txt", CONTAINER_ID),
-        Arguments.of("cgroups/positive/case_8.txt", CONTAINER_ID),
+        Arguments.of("cgroups/positive/case_0.dat", CONTAINER_ID),
+        Arguments.of("cgroups/positive/case_1.dat", CONTAINER_ID),
+        Arguments.of("cgroups/positive/case_2.dat", CONTAINER_ID),
+        Arguments.of("cgroups/positive/case_3.dat", CONTAINER_ID),
+        Arguments.of("cgroups/positive/case_4.dat", CONTAINER_ID),
+        Arguments.of("cgroups/positive/case_5.dat", CONTAINER_ID),
+        Arguments.of("cgroups/positive/case_6.dat", CONTAINER_ID),
+        Arguments.of("cgroups/positive/case_7.dat", CONTAINER_ID),
+        Arguments.of("cgroups/positive/case_8.dat", CONTAINER_ID),
         // Smoke test in case the file changes format
-        Arguments.of("cgroups/negative/case_0.txt", null),
-        Arguments.of("cgroups/negative/case_1.txt", null));
+        Arguments.of("cgroups/negative/case_0.dat", null),
+        Arguments.of("cgroups/negative/case_1.dat", null));
   }
 
   @ParameterizedTest
