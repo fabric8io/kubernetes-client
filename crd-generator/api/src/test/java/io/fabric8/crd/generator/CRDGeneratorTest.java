@@ -50,6 +50,7 @@ import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps;
 import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.model.Scope;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.opentest4j.AssertionFailedError;
 import org.slf4j.Logger;
@@ -449,6 +450,42 @@ class CRDGeneratorTest {
 
     assertNotNull(crdResource);
     assertNotNull(crdResourceV1Beta1);
+    final File expectedCrdFile = new File(crdResource.getFile());
+    final File expectedCrdFileV1Beta1 = new File(crdResourceV1Beta1.getFile());
+    assertFileEquals(expectedCrdFile, crdFile);
+    assertFileEquals(expectedCrdFileV1Beta1, crdFileV1Beta1);
+
+    // only delete the generated files if the test is successful
+    assertTrue(crdFile.delete());
+    assertTrue(crdFileV1Beta1.delete());
+    assertTrue(outputDir.delete());
+  }
+
+  @RepeatedTest(value = 10)
+  void checkGenerationMultipleVersionsOfCRDsIsDeterministic() throws Exception {
+    // generated CRD
+    final File outputDir = Files.createTempDirectory("crd-").toFile();
+    final CustomResourceInfo infoV1 = CustomResourceInfo.fromClass(Multiple.class);
+    final CustomResourceInfo infoV2 = CustomResourceInfo.fromClass(io.fabric8.crd.example.multiple.v2.Multiple.class);
+    assertEquals(infoV1.crdName(), infoV2.crdName());
+    final String crdName = infoV1.crdName();
+
+    final CRDGenerationInfo crdInfo = newCRDGenerator()
+        .inOutputDir(outputDir)
+        .customResourceClasses(Multiple.class,
+            io.fabric8.crd.example.multiple.v2.Multiple.class)
+        .forCRDVersions("v1", "v1beta1")
+        .detailedGenerate();
+
+    final File crdFile = new File(crdInfo.getCRDInfos(crdName).get("v1").getFilePath());
+    final File crdFileV1Beta1 = new File(crdInfo.getCRDInfos(crdName).get("v1beta1").getFilePath());
+
+    // expected CRD
+    final URL crdResource = CRDGeneratorTest.class.getResource("/" + crdFile.getName());
+    final URL crdResourceV1Beta1 = CRDGeneratorTest.class.getResource("/" + crdFileV1Beta1.getName());
+    assertNotNull(crdResource);
+    assertNotNull(crdResourceV1Beta1);
+
     final File expectedCrdFile = new File(crdResource.getFile());
     final File expectedCrdFileV1Beta1 = new File(crdResourceV1Beta1.getFile());
     assertFileEquals(expectedCrdFile, crdFile);
