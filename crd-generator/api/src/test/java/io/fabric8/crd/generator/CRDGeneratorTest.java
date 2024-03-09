@@ -434,19 +434,29 @@ class CRDGeneratorTest {
   void checkGenerationIsDeterministic() throws Exception {
     // generated CRD
     final File outputDir = Files.createTempDirectory("crd-").toFile();
-    final CustomResourceInfo info = CustomResourceInfo.fromClass(Complex.class);
-    final CRDGenerationInfo crdInfo = newCRDGenerator().inOutputDir(outputDir).forCRDVersions(info.version())
-        .customResources(info).customResourceClasses(Complex.class).detailedGenerate();
-    final File crdFile = new File(crdInfo.getCRDInfos(info.crdName()).get(info.version()).getFilePath());
+    final String crdName = CustomResourceInfo.fromClass(Complex.class).crdName();
+    final CRDGenerationInfo crdInfo = newCRDGenerator()
+        .inOutputDir(outputDir)
+        .forCRDVersions("v1", "v1beta1")
+        .customResourceClasses(Complex.class)
+        .detailedGenerate();
+    final File crdFile = new File(crdInfo.getCRDInfos(crdName).get("v1").getFilePath());
+    final File crdFileV1Beta1 = new File(crdInfo.getCRDInfos(crdName).get("v1beta1").getFilePath());
 
     // expected CRD
     final URL crdResource = CRDGeneratorTest.class.getResource("/" + crdFile.getName());
+    final URL crdResourceV1Beta1 = CRDGeneratorTest.class.getResource("/" + crdFileV1Beta1.getName());
+
     assertNotNull(crdResource);
+    assertNotNull(crdResourceV1Beta1);
     final File expectedCrdFile = new File(crdResource.getFile());
+    final File expectedCrdFileV1Beta1 = new File(crdResourceV1Beta1.getFile());
     assertFileEquals(expectedCrdFile, crdFile);
+    assertFileEquals(expectedCrdFileV1Beta1, crdFileV1Beta1);
 
     // only delete the generated files if the test is successful
     assertTrue(crdFile.delete());
+    assertTrue(crdFileV1Beta1.delete());
     assertTrue(outputDir.delete());
   }
 
