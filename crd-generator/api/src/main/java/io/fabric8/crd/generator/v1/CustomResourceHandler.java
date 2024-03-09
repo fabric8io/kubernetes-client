@@ -31,6 +31,7 @@ import io.fabric8.crd.generator.v1.decorator.AddSubresourcesDecorator;
 import io.fabric8.crd.generator.v1.decorator.EnsureSingleStorageVersionDecorator;
 import io.fabric8.crd.generator.v1.decorator.SetServedVersionDecorator;
 import io.fabric8.crd.generator.v1.decorator.SetStorageVersionDecorator;
+import io.fabric8.crd.generator.v1.decorator.SortCustomResourceDefinitionVersionDecorator;
 import io.fabric8.crd.generator.v1.decorator.SortPrinterColumnsDecorator;
 import io.sundr.model.TypeDef;
 
@@ -90,6 +91,7 @@ public class CustomResourceHandler extends AbstractCustomResourceHandler {
     resources.decorate(new SetServedVersionDecorator(name, version, config.served()));
     resources.decorate(new SetStorageVersionDecorator(name, version, config.storage()));
     resources.decorate(new EnsureSingleStorageVersionDecorator(name));
+    resources.decorate(new SortCustomResourceDefinitionVersionDecorator(name));
     resources.decorate(new SortPrinterColumnsDecorator(name, version));
   }
 
