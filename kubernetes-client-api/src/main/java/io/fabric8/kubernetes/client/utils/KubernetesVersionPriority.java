@@ -96,6 +96,7 @@ public class KubernetesVersionPriority {
    * @see KubernetesVersionPriority
    */
   public static <T> List<T> sortByPriority(List<T> resources, Function<T, String> versionProvider) {
+    Utils.checkNotNull(versionProvider, "versionProvider function can't be null");
     if (resources == null || resources.isEmpty()) {
       return Collections.emptyList();
     }
