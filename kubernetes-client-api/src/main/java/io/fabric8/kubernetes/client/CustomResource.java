@@ -135,7 +135,7 @@ public abstract class CustomResource<S, T> implements HasMetadata {
 
   public static String getDeprecationWarning(Class<? extends CustomResource> clazz) {
     final Version annotation = clazz.getAnnotation(Version.class);
-    return annotation != null && annotation.deprecated() && Utils.isNotNullOrEmpty(annotation.deprecationWarning())
+    return annotation != null && Utils.isNotNullOrEmpty(annotation.deprecationWarning())
         ? annotation.deprecationWarning()
         : null;
   }

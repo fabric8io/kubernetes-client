@@ -24,8 +24,14 @@ import io.fabric8.crd.generator.annotation.Labels;
 import io.fabric8.crd.generator.utils.Types;
 import io.fabric8.crd.generator.utils.Types.SpecAndStatus;
 import io.fabric8.kubernetes.api.Pluralize;
+import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.kubernetes.model.Scope;
-import io.fabric8.kubernetes.model.annotation.*;
+import io.fabric8.kubernetes.model.annotation.Group;
+import io.fabric8.kubernetes.model.annotation.Kind;
+import io.fabric8.kubernetes.model.annotation.Plural;
+import io.fabric8.kubernetes.model.annotation.ShortNames;
+import io.fabric8.kubernetes.model.annotation.Singular;
+import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.adapter.api.Adapters;
 import io.sundr.adapter.apt.AptContext;
 import io.sundr.model.TypeDef;
@@ -40,7 +46,11 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-import javax.annotation.processing.*;
+import javax.annotation.processing.AbstractProcessor;
+import javax.annotation.processing.Messager;
+import javax.annotation.processing.ProcessingEnvironment;
+import javax.annotation.processing.RoundEnvironment;
+import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.Name;
@@ -160,11 +170,17 @@ public class CustomResourceAnnotationProcessor extends AbstractProcessor {
 
     final boolean storage = customResource.getAnnotation(Version.class).storage();
     final boolean served = customResource.getAnnotation(Version.class).served();
+    final boolean deprecated = customResource.getAnnotation(Version.class).deprecated();
+    final String deprecationWarning = Optional.ofNullable(customResource.getAnnotation(Version.class).deprecationWarning())
+        .filter(s -> deprecated)
+        .filter(Utils::isNotNullOrEmpty)
+        .orElse(null);
 
     final Scope scope = Types.isNamespaced(definition) ? Scope.NAMESPACED : Scope.CLUSTER;
 
-    return new CustomResourceInfo(group, version, kind, singular, plural, shortNames, storage, served, scope, definition,
-        crClassName.toString(),
+    return new CustomResourceInfo(group, version, kind, singular, plural, shortNames, storage, served,
+        deprecated, deprecationWarning,
+        scope, definition, crClassName.toString(),
         specAndStatus.getSpecClassName(), specAndStatus.getStatusClassName(), annotations, labels);
   }
 
