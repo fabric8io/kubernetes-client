@@ -20,14 +20,16 @@ import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinition
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatException;
 
 class KubernetesVersionPriorityTest {
 
   @Test
-  void should_version_with_highest_priority() {
+  void highestPriority_should_version_with_highest_priority() {
     // given
     String highest = "v10";
     List<String> versions = Arrays.asList(
@@ -48,7 +50,13 @@ class KubernetesVersionPriorityTest {
   }
 
   @Test
-  void should_sort_with_highest_priority() {
+  void highestPriority_should_null() {
+    assertThat(KubernetesVersionPriority.highestPriority(null)).isNull();
+    assertThat(KubernetesVersionPriority.highestPriority(Collections.emptyList())).isNull();
+  }
+
+  @Test
+  void sortByPriority_should_sort_with_highest_priority() {
     // given
     CustomResourceDefinitionVersion foo10 = createCustomResourceDefinitionVersion("foo10");
     CustomResourceDefinitionVersion v11alpha2 = createCustomResourceDefinitionVersion("v11alpha2");
@@ -91,6 +99,21 @@ class KubernetesVersionPriorityTest {
     assertThat(computed).isEqualTo(expected);
     // ensure that the implementation works only on references
     assertThat(computed.get(0)).isSameAs(v10);
+  }
+
+  @Test
+  void sortByPriority_should_accept_null_or_empty() {
+    assertThat(KubernetesVersionPriority.sortByPriority(null, CustomResourceDefinitionVersion::getName)).isEmpty();
+    assertThat(KubernetesVersionPriority.sortByPriority(Collections.emptyList(), CustomResourceDefinitionVersion::getName))
+        .isEmpty();
+  }
+
+  @Test
+  void sortByPriority_no_versionProvider_should_throw_exception() {
+    final CustomResourceDefinitionVersion v1 = createCustomResourceDefinitionVersion("v1");
+    assertThatException().isThrownBy(() -> KubernetesVersionPriority.sortByPriority(Collections.singletonList(v1), null));
+    assertThatException().isThrownBy(() -> KubernetesVersionPriority.sortByPriority(null, null));
+    assertThatException().isThrownBy(() -> KubernetesVersionPriority.sortByPriority(Collections.emptyList(), null));
   }
 
   private static CustomResourceDefinitionVersion createCustomResourceDefinitionVersion(String name) {
