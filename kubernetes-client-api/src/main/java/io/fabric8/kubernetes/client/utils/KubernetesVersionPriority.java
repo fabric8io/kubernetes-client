@@ -29,7 +29,6 @@ import static io.fabric8.kubernetes.client.utils.KubernetesVersionFactory.Versio
 /**
  * A utility class that allows to deal with Kubernetes versions and their priorities.
  *
- * <p>
  * The kubernetes specs v1.28 at <a href=
  * "https://v1-28.docs.kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definition-versioning/#version-priority">Version
  * Priority</a>
@@ -46,7 +45,6 @@ import static io.fabric8.kubernetes.client.utils.KubernetesVersionFactory.Versio
  * Notice that in the example below, foo1 is sorted above foo10.
  * This is different from the sorting of the numeric portion of entries that do follow the Kubernetes version patterns.</li>
  * </ul>
- * </p>
  *
  * @see KubernetesVersionFactory.KubernetesVersion#compareTo(Version)
  * @see KubernetesVersionFactory.NonKubernetesVersion#compareTo(Version)
