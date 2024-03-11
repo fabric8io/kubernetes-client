@@ -24,6 +24,7 @@ import io.fabric8.generator.annotation.Min;
 import io.fabric8.generator.annotation.Nullable;
 import io.fabric8.generator.annotation.Pattern;
 import io.fabric8.generator.annotation.Required;
+import io.fabric8.generator.annotation.ValidationRule;
 import lombok.Data;
 
 @Data
@@ -53,6 +54,14 @@ public class AnnotatedSpec {
   private int ignoredFoo;
 
   private boolean ignoredBar;
+
+  @ValidationRule("a.rule")
+  private String kubernetesValidation;
+
+  @ValidationRule("a.rule")
+  @ValidationRule("a.second.rule")
+  @ValidationRule("a.third.rule")
+  private String kubernetesValidations;
 
   @JsonProperty("from-getter")
   @JsonPropertyDescription("from-getter-description")
