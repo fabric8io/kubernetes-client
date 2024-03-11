@@ -23,8 +23,8 @@ import static java.lang.annotation.ElementType.TYPE;
 
 /**
  * Allows to specify which version of the API the annotated class is defined under. Together with {@link Group}, this allows to
- * determine the `apiVersion` field associated with the annotated resource.
- * See https://kubernetes.io/docs/reference/using-api/#api-versioning for more details.
+ * determine the {@code apiVersion} field associated with the annotated resource.
+ * See <a href="https://kubernetes.io/docs/reference/using-api/#api-versioning">API versioning</a> for more details.
  */
 @Target({ TYPE })
 @Retention(RetentionPolicy.RUNTIME)
@@ -38,7 +38,7 @@ public @interface Version {
   String value();
 
   /**
-   * Whether or not this version corresponds to the persisted version for the associated CRD. Note that only one version can set
+   * Whether this version corresponds to the persisted version for the associated CRD. Note that only one version can set
    * {@code storage} to {@code true} for a given CRD.
    *
    * @return {@code true} if this version corresponds to the persisted version for the associated CRD, {@code false} otherwise
@@ -51,4 +51,24 @@ public @interface Version {
    * @return {@code true} if this version is served by the REST API, {@code false} otherwise
    */
   boolean served() default true;
+
+  /**
+   * Whether this version is deprecated. When API requests to a resource which is deprecated are made,
+   * a warning message is returned in the API response as a header.
+   * The warning message for this version can be customized by defining
+   * a {@link Version#deprecationWarning} if desired.
+   *
+   * @return {@code true} if this version is deprecated.
+   */
+  boolean deprecated() default false;
+
+  /**
+   * The warning message to indicate the deprecation. Note that this message is only used
+   * if {@link Version#deprecated} is {@code true}.
+   * The warning message should indicate the deprecated API group, version, and kind,
+   * and should indicate what API group, version, and kind should be used instead, if applicable.
+   *
+   * @return the deprecation warning
+   */
+  String deprecationWarning() default "";
 }

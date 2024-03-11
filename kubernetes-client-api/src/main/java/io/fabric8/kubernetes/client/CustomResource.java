@@ -26,6 +26,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
+import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.kubernetes.model.Scope;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.ShortNames;
@@ -93,6 +94,8 @@ public abstract class CustomResource<S, T> implements HasMetadata {
   private final String plural;
   private final boolean served;
   private final boolean storage;
+  private final boolean deprecated;
+  private final String deprecationWarning;
 
   public CustomResource() {
     final String version = HasMetadata.super.getApiVersion();
@@ -109,6 +112,8 @@ public abstract class CustomResource<S, T> implements HasMetadata {
     this.crdName = getCRDName(clazz);
     this.served = getServed(clazz);
     this.storage = getStorage(clazz);
+    this.deprecated = getDeprecated(clazz);
+    this.deprecationWarning = getDeprecationWarning(clazz);
     this.spec = initSpec();
     this.status = initStatus();
   }
@@ -123,9 +128,21 @@ public abstract class CustomResource<S, T> implements HasMetadata {
     return annotation == null || annotation.storage();
   }
 
+  public static boolean getDeprecated(Class<? extends CustomResource> clazz) {
+    final Version annotation = clazz.getAnnotation(Version.class);
+    return annotation == null || annotation.deprecated();
+  }
+
+  public static String getDeprecationWarning(Class<? extends CustomResource> clazz) {
+    final Version annotation = clazz.getAnnotation(Version.class);
+    return annotation != null && Utils.isNotNullOrEmpty(annotation.deprecationWarning())
+        ? annotation.deprecationWarning()
+        : null;
+  }
+
   /**
    * Override to provide your own Spec instance
-   * 
+   *
    * @return a new Spec instance or {@code null} if the responsibility of instantiating the Spec is left to users of this
    *         CustomResource
    */
@@ -135,7 +152,7 @@ public abstract class CustomResource<S, T> implements HasMetadata {
 
   /**
    * Override to provide your own Status instance
-   * 
+   *
    * @return a new Status instance or {@code null} if the responsibility of instantiating the Status is left to users of this
    *         CustomResource
    */
@@ -151,6 +168,8 @@ public abstract class CustomResource<S, T> implements HasMetadata {
         ", metadata=" + metadata +
         ", spec=" + spec +
         ", status=" + status +
+        ", deprecated=" + deprecated +
+        ", deprecationWarning=" + deprecationWarning +
         '}';
   }
 
@@ -272,6 +291,16 @@ public abstract class CustomResource<S, T> implements HasMetadata {
     return storage;
   }
 
+  @JsonIgnore
+  public boolean isDeprecated() {
+    return deprecated;
+  }
+
+  @JsonIgnore
+  public String getDeprecationWarning() {
+    return deprecationWarning;
+  }
+
   public S getSpec() {
     return spec;
   }
@@ -300,6 +329,10 @@ public abstract class CustomResource<S, T> implements HasMetadata {
     if (served != that.served)
       return false;
     if (storage != that.storage)
+      return false;
+    if (deprecated != that.deprecated)
+      return false;
+    if (!Objects.equals(deprecationWarning, that.deprecationWarning))
       return false;
     if (!metadata.equals(that.metadata))
       return false;
@@ -333,6 +366,8 @@ public abstract class CustomResource<S, T> implements HasMetadata {
     result = 31 * result + plural.hashCode();
     result = 31 * result + (served ? 1 : 0);
     result = 31 * result + (storage ? 1 : 0);
+    result = 31 * result + (deprecated ? 1 : 0);
+    result = 31 * result + (deprecationWarning != null ? deprecationWarning.hashCode() : 0);
     return result;
   }
 }

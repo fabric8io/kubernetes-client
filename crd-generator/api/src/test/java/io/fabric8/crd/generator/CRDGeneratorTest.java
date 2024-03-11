@@ -21,6 +21,7 @@ import io.fabric8.crd.example.basic.BasicStatus;
 import io.fabric8.crd.example.complex.Complex;
 import io.fabric8.crd.example.cyclic.Cyclic;
 import io.fabric8.crd.example.cyclic.CyclicList;
+import io.fabric8.crd.example.deprecated.v2.DeprecationExample;
 import io.fabric8.crd.example.inherited.BaseSpec;
 import io.fabric8.crd.example.inherited.BaseStatus;
 import io.fabric8.crd.example.inherited.Child;
@@ -218,6 +219,53 @@ class CRDGeneratorTest {
     final Set<String> dependentClassNames = infos.get(specVersion).getDependentClassNames();
     Arrays.stream(mustContainTraversedClasses).map(Class::getCanonicalName)
         .forEach(c -> assertTrue(dependentClassNames.contains(c), "should contain " + c));
+  }
+
+  @Test
+  void checkDeprecated() {
+    CRDGenerator generator = newCRDGenerator();
+    final String specVersion = "v1";
+    final CRDGenerationInfo info = generator
+        .customResourceClasses(
+            io.fabric8.crd.example.deprecated.v1beta1.DeprecationExample.class,
+            io.fabric8.crd.example.deprecated.v1.DeprecationExample.class,
+            DeprecationExample.class)
+        .forCRDVersions(specVersion)
+        .withOutput(output)
+        .detailedGenerate();
+
+    assertEquals(1, info.numberOfGeneratedCRDs());
+    final Map<String, Map<String, CRDInfo>> details = info.getCRDDetailsPerNameAndVersion();
+    assertEquals(1, details.size());
+    // check multiple versions for same CR
+    final String crdName = CustomResource.getCRDName(DeprecationExample.class);
+    assertTrue(details.containsKey(crdName));
+    final Map<String, CRDInfo> infos = info.getCRDInfos(crdName);
+    assertEquals(1, infos.size());
+    assertTrue(infos.containsKey(specVersion));
+
+    final String outputName = CRDGenerator.getOutputName(crdName, specVersion);
+    CustomResourceDefinition definition = output.definition(outputName);
+    assertNotNull(definition);
+    assertEquals("apiextensions.k8s.io/" + specVersion, definition.getApiVersion());
+
+    CustomResourceDefinitionSpec spec = definition.getSpec();
+    final List<CustomResourceDefinitionVersion> versions = spec.getVersions();
+    assertEquals(3, versions.size());
+    assertEquals(1, versions.stream().filter(v -> v.getName().equals("v1beta1")).count());
+    assertEquals(1, versions.stream().filter(v -> v.getName().equals("v1")).count());
+    assertEquals(1, versions.stream().filter(v -> v.getName().equals("v2")).count());
+
+    CustomResourceDefinitionVersion v1Beta1 = versions.stream().filter(v -> v.getName().equals("v1beta1")).findFirst().get();
+    CustomResourceDefinitionVersion v1 = versions.stream().filter(v -> v.getName().equals("v1")).findFirst().get();
+    CustomResourceDefinitionVersion v2 = versions.stream().filter(v -> v.getName().equals("v2")).findFirst().get();
+    assertTrue(v1Beta1.getDeprecated());
+    assertEquals("sample.fabric8.io/v1beta1 DeprecationExample is deprecated; Migrate to sample.fabric8.io/v2",
+        v1Beta1.getDeprecationWarning());
+    assertTrue(v1.getDeprecated());
+    assertNull(v1.getDeprecationWarning());
+    assertNull(v2.getDeprecated());
+    assertNull(v2.getDeprecationWarning());
   }
 
   @Test

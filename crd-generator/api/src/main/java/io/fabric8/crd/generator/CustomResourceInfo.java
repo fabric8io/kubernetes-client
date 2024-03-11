@@ -42,6 +42,8 @@ public class CustomResourceInfo {
   private final String[] shortNames;
   private final boolean storage;
   private final boolean served;
+  private final boolean deprecated;
+  private final String deprecationWarning;
   private final Scope scope;
   private final TypeDef definition;
   private final String crClassName;
@@ -54,7 +56,7 @@ public class CustomResourceInfo {
   private final String[] labels;
 
   public CustomResourceInfo(String group, String version, String kind, String singular,
-      String plural, String[] shortNames, boolean storage, boolean served,
+      String plural, String[] shortNames, boolean storage, boolean served, boolean deprecated, String deprecationWarning,
       Scope scope, TypeDef definition, String crClassName,
       String specClassName, String statusClassName, String[] annotations, String[] labels) {
     this.group = group;
@@ -65,6 +67,8 @@ public class CustomResourceInfo {
     this.shortNames = shortNames;
     this.storage = storage;
     this.served = served;
+    this.deprecated = deprecated;
+    this.deprecationWarning = deprecationWarning;
     this.scope = scope;
     this.definition = definition;
     this.crClassName = crClassName;
@@ -82,6 +86,14 @@ public class CustomResourceInfo {
 
   public boolean served() {
     return served;
+  }
+
+  public boolean deprecated() {
+    return deprecated;
+  }
+
+  public String deprecationWarning() {
+    return deprecationWarning;
   }
 
   public String key() {
@@ -165,8 +177,9 @@ public class CustomResourceInfo {
       }
 
       return new CustomResourceInfo(instance.getGroup(), instance.getVersion(), instance.getKind(),
-          instance.getSingular(), instance.getPlural(), shortNames, instance.isStorage(), instance.isServed(), scope,
-          definition,
+          instance.getSingular(), instance.getPlural(), shortNames, instance.isStorage(), instance.isServed(),
+          instance.isDeprecated(), instance.getDeprecationWarning(),
+          scope, definition,
           customResource.getCanonicalName(), specAndStatus.getSpecClassName(),
           specAndStatus.getStatusClassName(), toStringArray(instance.getMetadata().getAnnotations()),
           toStringArray(instance.getMetadata().getLabels()));
