@@ -12,7 +12,7 @@
 * Fix #5353: added KubernetesClientBuilder.editOrNewConfig
 * Fix #5357: adding additional Quantity methods
 * Fix #5635: refined LeaderElector lifecycle and logging
-
+* Fix #5787: (crd-generator) add support for deprecated versions for generated CRDs
 
 #### Dependency Upgrade
 
