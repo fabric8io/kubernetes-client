@@ -39,7 +39,9 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Collection;
 import java.util.List;
 import java.util.ServiceLoader;
@@ -124,6 +126,22 @@ class HttpClientUtilsTest {
     } finally {
       System.clearProperty("kubernetes.backwardsCompatibilityInterceptor.disable");
     }
+  }
+
+  @ParameterizedTest
+  @MethodSource("basicCredentialsInput")
+  void testBasicCredentials(String username, String password, String authentication) {
+    String result = HttpClientUtils.basicCredentials(username, password);
+    assertThat(result).isEqualTo(authentication);
+    String decoded = new String(
+        Base64.getDecoder().decode(result.substring("Basic ".length())), StandardCharsets.UTF_8);
+    assertThat(decoded).isEqualTo(username + ":" + password);
+  }
+
+  static Stream<Arguments> basicCredentialsInput() {
+    return Stream.of(
+        arguments("username", "password", "Basic dXNlcm5hbWU6cGFzc3dvcmQ="),
+        arguments("username", "Þaßßword£", "Basic dXNlcm5hbWU6w55hw5/Dn3dvcmTCow=="));
   }
 
   @Nested

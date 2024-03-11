@@ -118,7 +118,7 @@ public class HttpClientUtils {
 
   public static String basicCredentials(String username, String password) {
     String usernameAndPassword = username + ":" + password;
-    String encoded = Base64.getEncoder().encodeToString(usernameAndPassword.getBytes(StandardCharsets.ISO_8859_1));
+    String encoded = Base64.getEncoder().encodeToString(usernameAndPassword.getBytes(StandardCharsets.UTF_8));
     return "Basic " + encoded;
   }
 
