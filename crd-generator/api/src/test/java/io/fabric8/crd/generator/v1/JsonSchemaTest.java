@@ -179,15 +179,33 @@ class JsonSchemaTest {
     assertFalse(spec.containsKey("ignoredFoo"));
     assertFalse(spec.containsKey("ignoredBar"));
 
-    final JSONSchemaProps kubernetesValidation = spec.get("kubernetesValidation");
-    final List<ValidationRule> kubernetesValidationRules = kubernetesValidation.getXKubernetesValidations();
-    assertNotNull(kubernetesValidationRules);
-    assertEquals(1, kubernetesValidationRules.size());
+    final JSONSchemaProps k8sValidationProps = spec.get("kubernetesValidationRule");
+    final List<ValidationRule> k8sValidationRulesSingle = k8sValidationProps.getXKubernetesValidations();
+    assertNotNull(k8sValidationRulesSingle);
+    assertEquals(1, k8sValidationRulesSingle.size());
+    assertEquals("self.startwith('prefix-')", k8sValidationRulesSingle.get(0).getRule());
+    assertEquals("kubernetesValidationRule must start with prefix 'prefix-'", k8sValidationRulesSingle.get(0).getMessage());
+    assertNull(k8sValidationRulesSingle.get(0).getMessageExpression());
+    assertNull(k8sValidationRulesSingle.get(0).getReason());
+    assertNull(k8sValidationRulesSingle.get(0).getFieldPath());
+    assertNull(k8sValidationRulesSingle.get(0).getOptionalOldSelf());
 
-    final JSONSchemaProps kubernetesValidationsRepeated = spec.get("kubernetesValidations");
+    final JSONSchemaProps kubernetesValidationsRepeated = spec.get("kubernetesValidationRules");
     final List<ValidationRule> kubernetesValidationsRepeatedRules = kubernetesValidationsRepeated.getXKubernetesValidations();
     assertNotNull(kubernetesValidationsRepeatedRules);
     assertEquals(3, kubernetesValidationsRepeatedRules.size());
+    assertEquals("first.rule", kubernetesValidationsRepeatedRules.get(0).getRule());
+    assertNull(kubernetesValidationsRepeatedRules.get(0).getFieldPath());
+    assertNull(kubernetesValidationsRepeatedRules.get(0).getReason());
+    assertNull(kubernetesValidationsRepeatedRules.get(0).getMessage());
+    assertNull(kubernetesValidationsRepeatedRules.get(0).getMessageExpression());
+    assertNull(kubernetesValidationsRepeatedRules.get(0).getOptionalOldSelf());
+    assertEquals("second.rule", kubernetesValidationsRepeatedRules.get(1).getRule());
+    assertNull(kubernetesValidationsRepeatedRules.get(1).getFieldPath());
+    assertNull(kubernetesValidationsRepeatedRules.get(1).getReason());
+    assertNull(kubernetesValidationsRepeatedRules.get(1).getMessage());
+    assertNull(kubernetesValidationsRepeatedRules.get(1).getMessageExpression());
+    assertNull(kubernetesValidationsRepeatedRules.get(1).getOptionalOldSelf());
   }
 
   @Test
