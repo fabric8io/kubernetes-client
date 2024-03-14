@@ -105,7 +105,7 @@
     <!-- API versions -->
     <jsr305.version>3.0.2</jsr305.version>
     <gradle-api.version>8.5</gradle-api.version>
-    <groovy-api.version>4.0.19</groovy-api.version>
+    <groovy-api.version>4.0.20</groovy-api.version>
 
     <!-- Testing versions -->
     <junit.version>5.10.2</junit.version>
