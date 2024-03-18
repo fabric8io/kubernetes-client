@@ -31,6 +31,7 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
+import static io.fabric8.kubernetes.client.utils.Utils.generateId;
 import static java.net.HttpURLConnection.HTTP_BAD_REQUEST;
 
 public class PostHandler implements KubernetesCrudDispatcherHandler {
@@ -67,7 +68,7 @@ public class PostHandler implements KubernetesCrudDispatcherHandler {
   }
 
   private void initMetadata(HasMetadata resource, String path) throws KubernetesCrudDispatcherException {
-    final UUID uuid = UUID.randomUUID();
+    final UUID uuid = generateId();
     if (Utils.isNullOrEmpty(resource.getMetadata().getName())) {
       resource.getMetadata().setName(resource.getMetadata().getGenerateName() + "-" + uuid);
     }

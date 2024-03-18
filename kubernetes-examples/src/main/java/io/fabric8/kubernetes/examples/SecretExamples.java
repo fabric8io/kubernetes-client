@@ -26,7 +26,8 @@ import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
+
+import static io.fabric8.kubernetes.client.utils.Utils.generateId;
 
 /**
  * This is an example of secret.
@@ -41,7 +42,7 @@ public class SecretExamples {
       logger.info("Using master with URL: {}", args[0]);
     }
     try (KubernetesClient client = new KubernetesClientBuilder().withConfig(configBuilder.build()).build()) {
-      final String secretName = UUID.randomUUID().toString();
+      final String secretName = generateId().toString();
       final String namespace = "default";
       logger.info("List of existent Secret:");
       client.secrets().inNamespace(namespace).list().getItems()

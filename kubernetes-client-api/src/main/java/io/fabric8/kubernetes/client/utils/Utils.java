@@ -43,6 +43,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
@@ -69,6 +70,7 @@ public class Utils {
   public static final String PATH_WINDOWS = "Path";
   public static final String PATH_UNIX = "PATH";
   private static final Random random = new Random();
+  private static final AtomicLong leastSigBits = new AtomicLong();
 
   private static final CachedSingleThreadScheduler SHARED_SCHEDULER = new CachedSingleThreadScheduler();
 
@@ -225,6 +227,17 @@ public class Utils {
       }
     }
     return null;
+  }
+
+  /**
+   * Utility method to generate UUIDs.
+   * This is taken from Spring Framework's <a href=
+   * "https://github.com/spring-projects/spring-framework/blob/a4db0e7448287028d228d46fe7b4df202150958a/spring-core/src/main/java/org/springframework/util/SimpleIdGenerator.java#L35">SimpleIdGenerator</a>
+   * 
+   * @return generated UUID
+   */
+  public static UUID generateId() {
+    return new UUID(0, leastSigBits.incrementAndGet());
   }
 
   public static String randomString(int length) {

@@ -34,11 +34,11 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Objects;
-import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
 import static io.fabric8.kubernetes.client.dsl.internal.core.v1.PodOperationsImpl.shellQuote;
+import static io.fabric8.kubernetes.client.utils.Utils.generateId;
 
 public class PodUpload {
 
@@ -131,7 +131,7 @@ public class PodUpload {
       UploadProcessor<TarArchiveOutputStream> processor)
       throws IOException {
 
-    String fileName = String.format("%sfabric8-%s.tar", directory, UUID.randomUUID());
+    String fileName = String.format("%sfabric8-%s.tar", directory, generateId());
 
     boolean uploaded = upload(operation, fileName, os -> {
       try (final TarArchiveOutputStream tar = new TarArchiveOutputStream(os)) {

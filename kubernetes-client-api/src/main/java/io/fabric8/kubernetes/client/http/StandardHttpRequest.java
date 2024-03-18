@@ -28,6 +28,8 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
+import static io.fabric8.kubernetes.client.utils.Utils.generateId;
+
 /**
  * Standard representation of a request. HttpClient implementations need to handle the special fields,
  * such as expectContinue, or content-type
@@ -113,7 +115,7 @@ public class StandardHttpRequest extends StandardHttpHeaders implements HttpRequ
   StandardHttpRequest(Map<String, List<String>> headers, URI uri, String method, String bodyString,
       BodyContent body, boolean expectContinue, String contentType, Duration timeout, boolean forStreaming) {
     super(headers);
-    this.id = UUID.randomUUID();
+    this.id = generateId();
     this.uri = uri;
     this.method = method;
     this.bodyString = bodyString;

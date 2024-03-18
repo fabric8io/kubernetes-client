@@ -24,7 +24,7 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.UUID;
+import static io.fabric8.kubernetes.client.utils.Utils.generateId;
 
 public class StorageClassExamples {
 
@@ -37,7 +37,7 @@ public class StorageClassExamples {
       logger.info("Using master with URL: {}", args[0]);
     }
     try (KubernetesClient client = new KubernetesClientBuilder().withConfig(configBuilder.build()).build()) {
-      final String storageClassName = UUID.randomUUID().toString();
+      final String storageClassName = generateId().toString();
       logger.info("List of existent storage classes:");
       client.storage().v1().storageClasses().list().getItems()
           .forEach(sc -> logger.info(" - {}", sc.getMetadata().getName()));

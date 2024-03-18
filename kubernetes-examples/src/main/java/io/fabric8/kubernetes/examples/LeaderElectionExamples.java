@@ -27,7 +27,6 @@ import io.fabric8.kubernetes.client.extended.leaderelection.resourcelock.Lock;
 import java.time.Duration;
 import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
@@ -39,6 +38,8 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
+import static io.fabric8.kubernetes.client.utils.Utils.generateId;
+
 @SuppressWarnings("java:S106")
 public class LeaderElectionExamples {
 
@@ -47,7 +48,7 @@ public class LeaderElectionExamples {
 
   public static final class SingleThreadExample {
     public static void main(String[] args) throws InterruptedException {
-      final String lockIdentity = UUID.randomUUID().toString();
+      final String lockIdentity = generateId().toString();
       try (KubernetesClient kc = new KubernetesClientBuilder().build()) {
         LeaderElector leader = kc.leaderElector()
             .withConfig(

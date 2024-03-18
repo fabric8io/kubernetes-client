@@ -23,7 +23,7 @@ import io.fabric8.kubernetes.api.model.PodSpecBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 
-import java.util.UUID;
+import static io.fabric8.kubernetes.client.utils.Utils.generateId;
 
 /**
  * This is an example of pod binding node.
@@ -32,7 +32,7 @@ public class BindingExample {
 
   @SuppressWarnings("java:S106")
   public static void main(String[] args) {
-    final String podName = "binding-example-" + UUID.randomUUID();
+    final String podName = "binding-example-" + generateId();
     try (final KubernetesClient client = new KubernetesClientBuilder().build()) {
       final String namespace;
       if (client.getConfiguration().getNamespace() != null) {

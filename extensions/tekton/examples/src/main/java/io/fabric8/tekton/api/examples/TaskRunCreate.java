@@ -24,7 +24,7 @@ import io.fabric8.tekton.pipeline.v1.TaskRun;
 import io.fabric8.tekton.pipeline.v1.TaskRunBuilder;
 import io.fabric8.tekton.pipeline.v1.TaskRunList;
 
-import java.util.UUID;
+import static io.fabric8.kubernetes.client.utils.Utils.generateId;
 
 public class TaskRunCreate {
   public static void main(String[] args) {
@@ -32,7 +32,7 @@ public class TaskRunCreate {
       String namespace = "default";
 
       Task task = new TaskBuilder()
-          .withNewMetadata().withName("hello-world-" + UUID.randomUUID()).endMetadata()
+          .withNewMetadata().withName("hello-world-" + generateId()).endMetadata()
           .withNewSpec()
           .withSteps(
               new StepBuilder()
