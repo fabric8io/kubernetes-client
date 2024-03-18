@@ -83,6 +83,7 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -405,5 +406,13 @@ class UtilsTest {
       completableFuture.complete(null);
     }, 0, () -> 1L, TimeUnit.MILLISECONDS);
     completableFuture.get(1, TimeUnit.SECONDS);
+  }
+
+  @Test
+  void generateId() {
+    assertThat(Utils.generateId())
+        .isNotNull()
+        .satisfies(uuid -> assertThat(uuid.getLeastSignificantBits()).isPositive())
+        .satisfies(uuid -> assertThat(uuid.getMostSignificantBits()).isZero());
   }
 }

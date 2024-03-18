@@ -40,9 +40,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
+import static io.fabric8.kubernetes.client.utils.Utils.generateId;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @KubernetesTest(createEphemeralNamespace = false)
@@ -59,7 +59,7 @@ class BuildIT {
 
   @BeforeEach
   void setUp() {
-    final String id = UUID.randomUUID().toString().replace("-", "");
+    final String id = generateId().toString().replace("-", "");
     imageStreamName = id + "-is";
     imageStreamTag = imageStreamName + ":latest";
     buildConfigName = id + "-bc";

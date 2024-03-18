@@ -16,6 +16,7 @@
 * Fix #5635: refined LeaderElector lifecycle and logging
 * Fix #5787: (crd-generator) add support for deprecated versions for generated CRDs
 * Fix #5788: (crd-generator) add support for Kubernetes validation rules 
+* Fix #5735: Replace usages of `UUID.randomUUID()` with UUID created via AtomicLong
 
 #### Dependency Upgrade
 

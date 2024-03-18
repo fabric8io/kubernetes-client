@@ -28,7 +28,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Optional;
-import java.util.UUID;
+
+import static io.fabric8.kubernetes.client.utils.Utils.generateId;
 
 public class WatchExample {
 
@@ -40,7 +41,7 @@ public class WatchExample {
         KubernetesClient client = new KubernetesClientBuilder().build();
         Watch ignored = newConfigMapWatch(client)) {
       final String namespace = Optional.ofNullable(client.getNamespace()).orElse("default");
-      final String name = "watch-config-map-test-" + UUID.randomUUID();
+      final String name = "watch-config-map-test-" + generateId();
       final ConfigMap cm = client.configMaps().inNamespace(namespace).resource(new ConfigMapBuilder()
           .withNewMetadata().withName(name).endMetadata()
           .build())

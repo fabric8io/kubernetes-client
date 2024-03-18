@@ -27,8 +27,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
-import java.util.UUID;
 
+import static io.fabric8.kubernetes.client.utils.Utils.generateId;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RequireK8sVersionAtLeast(majorVersion = 1, minorVersion = 16)
@@ -44,7 +44,7 @@ class CustomResourceDefinitionIT {
 
   @BeforeEach
   public void setUp() {
-    singular = "a" + UUID.randomUUID().toString().replace("-", "");
+    singular = "a" + generateId().toString().replace("-", "");
     plural = singular + "s";
     group = "examples.fabric8.io";
     name = plural + "." + group;
