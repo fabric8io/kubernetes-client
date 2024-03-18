@@ -110,7 +110,7 @@
     <!-- Testing versions -->
     <junit.version>5.10.2</junit.version>
     <assertj.core.version>3.25.3</assertj.core.version>
-    <awaitility.version>4.2.0</awaitility.version>
+    <awaitility.version>4.2.1</awaitility.version>
     <approvaltests.version>23.0.0</approvaltests.version>
     <mockito.version>4.11.0</mockito.version>
     <spock.version>2.3-groovy-4.0</spock.version>
