@@ -422,7 +422,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
       } catch (Exception ex) {
         throw KubernetesClientException.launderThrowable(ex);
       }
-    }, "TarArchiveOutputStream is provided by commons-compress");
+    }, "TarArchiveOutputStream is provided by commons-compress, an optional dependency. To use the read/copy functionality you must explicitly add commons-compress and commons-io dependency to the classpath.");
   }
 
   @Override
@@ -433,7 +433,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
       } catch (Exception ex) {
         throw KubernetesClientException.launderThrowable(ex);
       }
-    }, "TarArchiveOutputStream is provided by commons-compress");
+    }, "TarArchiveOutputStream is provided by commons-compress, an optional dependency. To use the read/copy functionality you must explicitly add commons-compress and commons-io dependency to the classpath.");
   }
 
   @Override
@@ -539,7 +539,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
       }.run();
     } catch (NoClassDefFoundError e) {
       throw new KubernetesClientException(
-          "TarArchiveInputStream class is provided by commons-compress, an optional dependency. To use the read/copy functionality you must explicitly add this dependency to the classpath.");
+          "TarArchiveInputStream class is provided by commons-compress, an optional dependency. To use the read/copy functionality you must explicitly add commons-compress and commons-io dependency to the classpath.");
     }
   }
 
