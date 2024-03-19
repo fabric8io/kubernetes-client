@@ -29,6 +29,8 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.UnrecoverableKeyException;
@@ -89,7 +91,7 @@ public class OpenIDConnectionUtils {
     String clientId = currentAuthProviderConfig.get(CLIENT_ID_KUBECONFIG);
     String refreshToken = currentAuthProviderConfig.get(REFRESH_TOKEN_KUBECONFIG);
     String clientSecret = currentAuthProviderConfig.getOrDefault(CLIENT_SECRET_KUBECONFIG, "");
-    String idpCert = currentAuthProviderConfig.getOrDefault(IDP_CERT_DATA, currentConfig.getCaCertData());
+    String idpCert = currentAuthProviderConfig.getOrDefault(IDP_CERT_DATA, getClientCertDataFromConfig(currentConfig));
     if (isTokenRefreshSupported(currentAuthProviderConfig)) {
       return getOIDCProviderTokenEndpointAndRefreshToken(issuer, clientId, refreshToken, clientSecret, idpCert, clientBuilder)
           .thenApply(map -> {
@@ -351,5 +353,19 @@ public class OpenIDConnectionUtils {
       return jwtParts.length == 3;
     }
     return false;
+  }
+
+  private static String getClientCertDataFromConfig(Config config) {
+    if (config.getCaCertData() != null && !config.getCaCertData().isEmpty()) {
+      return config.getCaCertData();
+    }
+    try {
+      if (config.getCaCertFile() != null) {
+        return java.util.Base64.getEncoder().encodeToString(Files.readAllBytes(Paths.get(config.getCaCertFile())));
+      }
+    } catch (IOException e) {
+      LOGGER.debug("Failure in reading certificate data from {}", config.getCaCertFile());
+    }
+    return null;
   }
 }
