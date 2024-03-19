@@ -21,10 +21,21 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#validation-rules
+ * Kubernetes validation rules.
+ *
+ * @see ValidationRule
+ * @see <a href=
+ *      "https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#validation-rules">
+ *      Kubernetes Docs - CRD Validation
+ *      </a>
  */
 @Target({ ElementType.ANNOTATION_TYPE, ElementType.FIELD, ElementType.METHOD, ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ValidationRules {
+  /**
+   * The validation rule to combine.
+   *
+   * @return the validation rules.
+   */
   ValidationRule[] value();
 }
