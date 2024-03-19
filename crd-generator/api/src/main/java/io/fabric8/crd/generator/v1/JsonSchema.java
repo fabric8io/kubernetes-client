@@ -26,6 +26,7 @@ import io.sundr.model.Property;
 import io.sundr.model.TypeDef;
 import io.sundr.model.TypeRef;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -80,9 +81,16 @@ public class JsonSchema extends AbstractJsonSchema<JSONSchemaProps, JSONSchemaPr
       options.getMax().ifPresent(schema::setMaximum);
       options.getPattern().ifPresent(schema::setPattern);
 
-      options.getValidationRules()
-          .map(this::mapValidationRules)
-          .ifPresent(schema::setXKubernetesValidations);
+      List<ValidationRule> validationRulesFromProperty = options.getValidationRules().stream()
+          .map(this::mapValidationRule)
+          .collect(Collectors.toList());
+
+      List<ValidationRule> resultingValidationRules = new ArrayList<>(schema.getXKubernetesValidations());
+      resultingValidationRules.addAll(validationRulesFromProperty);
+
+      if (!resultingValidationRules.isEmpty()) {
+        schema.setXKubernetesValidations(resultingValidationRules);
+      }
 
       if (options.isNullable()) {
         schema.setNullable(true);
@@ -97,11 +105,13 @@ public class JsonSchema extends AbstractJsonSchema<JSONSchemaProps, JSONSchemaPr
   }
 
   @Override
-  public JSONSchemaProps build(JSONSchemaPropsBuilder builder, List<String> required, boolean preserveUnknownFields) {
+  public JSONSchemaProps build(JSONSchemaPropsBuilder builder, List<String> required,
+      List<KubernetesValidationRule> validationRules, boolean preserveUnknownFields) {
     builder = builder.withRequired(required);
     if (preserveUnknownFields) {
       builder.withXKubernetesPreserveUnknownFields(preserveUnknownFields);
     }
+    builder.addAllToXKubernetesValidations(mapValidationRules(validationRules));
     return builder.build();
   }
 
