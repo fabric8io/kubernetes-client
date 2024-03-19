@@ -677,7 +677,7 @@ public abstract class AbstractJsonSchema<T, B> {
       result.message = mapNotEmpty((String) annotationRef.getParameters().get("message"));
       result.messageExpression = mapNotEmpty((String) annotationRef.getParameters().get("messageExpression"));
       result.fieldPath = mapNotEmpty((String) annotationRef.getParameters().get("fieldPath"));
-      result.optionalOldSelf = ((Boolean) annotationRef.getParameters().get("optionalOldSelf")) ? true : null;
+      result.optionalOldSelf = Boolean.TRUE.equals(annotationRef.getParameters().get("optionalOldSelf")) ? Boolean.TRUE : null;
       return result;
     }
 
