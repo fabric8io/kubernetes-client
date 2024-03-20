@@ -124,7 +124,7 @@
     <jackson.bundle.version>${jackson.version}</jackson.bundle.version>
     <slf4j.version>2.0.12</slf4j.version>
     <log4j.version>2.23.1</log4j.version>
-    <lombok.version>1.18.30</lombok.version>
+    <lombok.version>1.18.32</lombok.version>
     <snakeyaml.version>2.7</snakeyaml.version>
     <snakeyaml.bundle.version>2.2</snakeyaml.bundle.version> <!-- Transitive Jackson -->
     <bouncycastle.version>1.77</bouncycastle.version>
