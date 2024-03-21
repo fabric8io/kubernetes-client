@@ -7,13 +7,14 @@
 * Fix #3032: JUnit5 Kubernetes Extension works with Nested tests
 * Fix #5759: Don't annotate KubeSchema and ValidationSchema classes
 * Fix #5781: Use UTF-8 for basic authentication
+* Fix #5508: (crd-generator) Ensure deterministic ordering of CustomResourceDefinitionVersions
 
 #### Improvements
 * Fix #5701: Owner reference validity check regarding scope and namespace
 * Fix #5353: added KubernetesClientBuilder.editOrNewConfig
 * Fix #5357: adding additional Quantity methods
 * Fix #5635: refined LeaderElector lifecycle and logging
-
+* Fix #5787: (crd-generator) add support for deprecated versions for generated CRDs
 
 #### Dependency Upgrade
 

@@ -60,7 +60,7 @@ jobs:
           distribution: "temurin"
           cache: maven
       - name: Setup Kubectl # Chaos-Mesh setup requires a functional kubectl version for all cluster versiones
-        uses: azure/setup-kubectl@v3
+        uses: azure/setup-kubectl@v4
         with:
           version: ${{ matrix.kubernetes }}
       - name: Install Chaos Mesh

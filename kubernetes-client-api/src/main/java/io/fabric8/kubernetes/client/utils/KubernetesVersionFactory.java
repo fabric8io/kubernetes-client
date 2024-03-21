@@ -114,8 +114,8 @@ public class KubernetesVersionFactory {
      * Compares this version to another version and returns whether this version has a
      * higher, equal or lower priority than the version that it is being compared to.
      *
-     * The kubernetes specs v1.17 at <a href=
-     * "https://v1-17.docs.kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definition-versioning/#version-priority">Version
+     * The kubernetes specs v1.28 at <a href=
+     * "https://v1-28.docs.kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definition-versioning/#version-priority">Version
      * Priority</a>
      * state the following:
      *
