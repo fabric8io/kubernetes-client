@@ -6,6 +6,7 @@
 * Fix #5729: ensure that kind is set for generic resource lists
 * Fix #3032: JUnit5 Kubernetes Extension works with Nested tests
 * Fix #5759: Don't annotate KubeSchema and ValidationSchema classes
+* Fix #5781: Use UTF-8 for basic authentication
 * Fix #5508: (crd-generator) Ensure deterministic ordering of CustomResourceDefinitionVersions
 
 #### Improvements
