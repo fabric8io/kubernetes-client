@@ -44,12 +44,14 @@ public class ExampleStatus {
 }
 ```
 
-Running the `compile` task will generate 2 files
-`target/classes/META-INF/fabric8/examples.org.example-v1.yml` and
-`target/classes/META-INF/fabric8/examples.org.example-v1beta1.yml`,
-the file name is calculated as `<plural>.<group>-<CRD spec version>.yml`.
+Running the `compile` task will generate 2 files:
 
-The content of the `v1` looks similar to:
+- `target/classes/META-INF/fabric8/examples.org.example-v1.yml`
+- `target/classes/META-INF/fabric8/examples.org.example-v1beta1.yml`
+
+The schema `<plural>.<group>-<CRD spec version>.yml` is used to calculate the file names.
+
+The content of the `examples.org.example-v1.yml` looks similar to:
 
 ```yaml
 apiVersion: apiextensions.k8s.io/v1
@@ -90,6 +92,11 @@ spec:
 ```
 
 ## Features
+
+### Deterministic Output
+
+The CRDs are generated in a deterministic way: 
+Properties and lists of the schema are ordered, so that it is possible to check the resulting CRDs into source-control without cluttering the history.
 
 ### com.fasterxml.jackson.annotation.JsonProperty
 
@@ -295,6 +302,54 @@ The field will be marked as `required` in the generated CRD, such as:
             type: object
 ```
 
+### io.fabric8.generator.annotation.ValidationRule
+
+If a field or one of its accessors is annotated with `io.fabric8.generator.annotation.ValidationRule`
+
+```java
+public class ExampleSpec {
+  @ValidationRule("self.startsWith('start-')")
+  String someValue;
+}
+```
+
+The field will have the `x-kubernetes-validations` property in the generated CRD, such as:
+
+```yaml
+          spec:
+            properties:
+              someValue:
+                type: string
+                x-kubernetes-validations:
+                  - rule: self.startsWith('start-')
+            type: object
+```
+
+If a class is annotated with  `io.fabric8.generator.annotation.ValidationRule`:
+
+```java
+@ValidationRule(value="self.someValue.startsWith('start-')")
+public class ExampleSpec {
+  String someValue;
+}
+```
+
+The object will have the `x-kubernetes-validations` property in the generated CRD, such as:
+
+```yaml
+          spec:
+            properties:
+              someValue:
+                type: string
+            type: object
+            x-kubernetes-validations:
+              - rule: self.someValue.startsWith('start-')
+```
+
+Note that all occurences will end up in the resulting list if multiple `ValidationRule` annotations are defined on the same field and/or class.
+The annotation can also be used on the CustomResource class itself, which allows to define CEL rules on the root-level.
+Please look at the [example](crd-generator/api/src/test/java/io/fabric8/crd/example/k8svalidation/K8sValidation.java) and the resulting [CRD](crd-generator/api/src/test/resources/k8svalidations.samples.fabric8.io-v1.yml) to explore all features.
+
 ### io.fabric8.crd.generator.annotation.PrinterColumn
 
 If a field or one of its accessors is annotated with `io.fabric8.crd.generator.annotation.PrinterColumn`
@@ -370,7 +425,7 @@ The name of the field is restricted to the original `fieldName` and should be ba
 
 SchemaSwaps cannot currently be nested - if a more deeply nested class contains a swap for the same class and field, an exception will be thrown.
 
-The ScheamSwap annotation has an optional depth property, which is for advanced scenarios involving cyclic references.  Since CRDs cannot directly represent cycles, the depth property may be used to control an unrolling of the representation in your CRD.  A depth of 0, the default, performs the swap on the field without the originalType appearing in your CRD.  A depth of n will allow the originalType to appear in the CRD up to a nesting depth of n, with the specified field at the nth level terminated by the targetType.
+The `SchemaSwap` annotation has an optional `depth` property, which is for advanced scenarios involving cyclic references.  Since CRDs cannot directly represent cycles, the `depth` property may be used to control an unrolling of the representation in your CRD.  A `depth` of `0`, the default, performs the swap on the field without the `originalType` appearing in your CRD.  A `depth` of n will allow the `originalType` to appear in the CRD up to a nesting depth of `n`, with the specified field at the nth level terminated by the `targetType`.
 
 ### Generating `x-kubernetes-preserve-unknown-fields: true`
 
@@ -470,26 +525,78 @@ The CRD generator will add the additional `labels`:
             ...
 ```
 
+### Multiple Custom Resource Versions
+
+The CRD Generator supports multiple versions of the same kind. In this case a schema for each version will be generated and merged into a single CRD. Keep in mind, that only one version can be marked as stored at the same time!
+
+```java
+package io.fabric8.crd.example.multiple.v2;
+
+@Group("sample.fabric8.io")
+@Version(value = "v2", storage = true, served = true)
+public class Multiple extends CustomResource<MultipleSpec, Void> {}
+
+// -------
+
+package io.fabric8.crd.example.multiple.v1;
+
+@Group("sample.fabric8.io")
+@Version(value = "v1", storage = false, served = true, deprecated = true)
+public class Multiple extends CustomResource<MultipleSpec, Void> {}
+```
+
+Result:
+
+```yaml
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: multiples.sample.fabric8.io
+spec:
+  group: sample.fabric8.io
+  names:
+    kind: Multiple
+    plural: multiples
+    singular: multiple
+  versions:
+  - name: v2
+    storage: true
+    served: true
+    schema:
+      openAPIV3Schema:
+        [...]
+  - name: v1
+    storage: false
+    served: true
+    deprecated: true
+    schema:
+      openAPIV3Schema:
+        [...]
+```
+
+
 ## Features cheatsheet
 
-| Annotation                                                   | Description                                                                           |
-|--------------------------------------------------------------|---------------------------------------------------------------------------------------|
-| `com.fasterxml.jackson.annotation.JsonProperty`              | The field is named after the provided value instead of looking up the java field name |
-| `com.fasterxml.jackson.annotation.JsonPropertyDescription`   | The provided text is be embedded in the `description` of the field                    |
-| `com.fasterxml.jackson.annotation.JsonIgnore`                | The field is ignored                                                                  |
-| `io.fabric8.crd.generator.annotation.PreserveUnknownFields`  | The field have `x-kubernetes-preserve-unknown-fields: true` defined                   |
-| `com.fasterxml.jackson.annotation.JsonAnyGetter`             | The corresponding object have `x-kubernetes-preserve-unknown-fields: true` defined    |
-| `com.fasterxml.jackson.annotation.JsonAnySetter`             | The corresponding object have `x-kubernetes-preserve-unknown-fields: true` defined    |
-| `io.fabric8.generator.annotation.Min`                        | The field defines a validation `min`                                                  |
-| `io.fabric8.generator.annotation.Max`                        | The field defines a validation `max`                                                  |
-| `io.fabric8.generator.annotation.Pattern`                    | The field defines a validation `pattern`                                              |
-| `io.fabric8.generator.annotation.Nullable`                   | The field is marked as `nullable`                                                     |
-| `io.fabric8.generator.annotation.Required`                   | The field is marked as `required`                                                     |
-| `io.fabric8.crd.generator.annotation.SchemaFrom`             | The field type for the generation is the one coming from the annotation               |
-| `io.fabric8.crd.generator.annotation.SchemaSwap`             | Similar to SchemaFrom, but can be applied at any point in the class hierarchy            |
-| `io.fabric8.crd.generator.annotation.Annotations`            | Additional `annotations` in `metadata`                                                |
-| `io.fabric8.crd.generator.annotation.Labels`                 | Additional `labels` in `metadata`                                                     |
-| `io.fabric8.crd.generator.annotation.PrinterColumn`       | Customize columns shown by the `kubectl get` command                                  |
+| Annotation                                                  | Description                                                                           |
+|-------------------------------------------------------------|---------------------------------------------------------------------------------------|
+| `com.fasterxml.jackson.annotation.JsonProperty`             | The field is named after the provided value instead of looking up the java field name |
+| `com.fasterxml.jackson.annotation.JsonPropertyDescription`  | The provided text is be embedded in the `description` of the field                    |
+| `com.fasterxml.jackson.annotation.JsonIgnore`               | The field is ignored                                                                  |
+| `io.fabric8.crd.generator.annotation.PreserveUnknownFields` | The field have `x-kubernetes-preserve-unknown-fields: true` defined                   |
+| `com.fasterxml.jackson.annotation.JsonAnyGetter`            | The corresponding object have `x-kubernetes-preserve-unknown-fields: true` defined    |
+| `com.fasterxml.jackson.annotation.JsonAnySetter`            | The corresponding object have `x-kubernetes-preserve-unknown-fields: true` defined    |
+| `io.fabric8.generator.annotation.Min`                       | The field defines a validation `min`                                                  |
+| `io.fabric8.generator.annotation.Max`                       | The field defines a validation `max`                                                  |
+| `io.fabric8.generator.annotation.Pattern`                   | The field defines a validation `pattern`                                              |
+| `io.fabric8.generator.annotation.Nullable`                  | The field is marked as `nullable`                                                     |
+| `io.fabric8.generator.annotation.Required`                  | The field is marked as `required`                                                     |
+| `io.fabric8.generator.annotation.ValidationRule`            | The field or object is validated by a CEL rule                                        |
+| `io.fabric8.crd.generator.annotation.SchemaFrom`            | The field type for the generation is the one coming from the annotation               |
+| `io.fabric8.crd.generator.annotation.SchemaSwap`            | Similar to SchemaFrom, but can be applied at any point in the class hierarchy         |
+| `io.fabric8.crd.generator.annotation.Annotations`           | Additional `annotations` in `metadata`                                                |
+| `io.fabric8.crd.generator.annotation.Labels`                | Additional `labels` in `metadata`                                                     |
+| `io.fabric8.crd.generator.annotation.PrinterColumn`         | Customize columns shown by the `kubectl get` command                                  |
+
 
 A field of type `com.fasterxml.jackson.databind.JsonNode` is encoded as an empty object with `x-kubernetes-preserve-unknown-fields: true` defined.
 
