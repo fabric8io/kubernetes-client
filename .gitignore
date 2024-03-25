@@ -87,3 +87,6 @@ extensions/*/generator/generate
 
 # Formatter and Impsort cache directory
 .cache
+
+# MacOS
+.DS_Store
