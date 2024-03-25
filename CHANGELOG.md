@@ -1,6 +1,6 @@
 ## CHANGELOG
 
-### 6.11-SNAPSHOT
+### 6.11.0 (2024-03-25)
 
 #### Bugs
 * Fix #5729: ensure that kind is set for generic resource lists
@@ -17,8 +17,6 @@
 * Fix #5787: (crd-generator) add support for deprecated versions for generated CRDs
 * Fix #5788: (crd-generator) add support for Kubernetes validation rules 
 * Fix #5735: Replace usages of `UUID.randomUUID()` with UUID created via AtomicLong
-
-#### Dependency Upgrade
 
 #### New Features
 * Fix #5636: Add new extension `open-virtual-networking` to manage resources in `k8s.ovn.org/v1` API group.
