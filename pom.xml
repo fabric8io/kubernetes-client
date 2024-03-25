@@ -715,11 +715,6 @@
       </dependency>
       <dependency>
         <groupId>io.fabric8</groupId>
-        <artifactId>kube-api-test</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>io.fabric8</groupId>
         <artifactId>kube-api-test-client-inject</artifactId>
         <version>${project.version}</version>
       </dependency>
@@ -817,12 +812,6 @@
         <groupId>org.eclipse.jetty.websocket</groupId>
         <artifactId>websocket-jetty-client</artifactId>
         <version>${jetty.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.eclipse.jetty</groupId>
-        <artifactId>jetty-server</artifactId>
-        <version>${jetty.version}</version>
-        <scope>test</scope>
       </dependency>
       <dependency>
         <groupId>org.eclipse.jetty</groupId>
