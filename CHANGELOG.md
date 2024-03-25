@@ -1,5 +1,17 @@
 ## CHANGELOG
 
+### 6.12-SNAPSHOT
+
+#### Bugs
+
+#### Improvements
+
+#### Dependency Upgrade
+
+#### New Features
+
+#### _**Note**_: Breaking changes
+
 ### 6.11.0 (2024-03-25)
 
 #### Bugs
