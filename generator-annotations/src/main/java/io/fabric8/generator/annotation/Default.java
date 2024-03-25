@@ -20,9 +20,13 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-/*
- * Java representation of the `default` field of JSONSchemaProps
- * https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.25/#jsonschemaprops-v1-apiextensions-k8s-io
+/**
+ * Java representation of the {@code default} field of JSONSchemaProps.
+ *
+ * @see <a href=
+ *      "https://kubernetes.io/docs/reference/kubernetes-api/extend-resources/custom-resource-definition-v1/#JSONSchemaProps">
+ *      Kubernetes Docs - API Reference - CRD v1 - JSONSchemaProps
+ *      </a>
  */
 @Target({ ElementType.ANNOTATION_TYPE, ElementType.FIELD, ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)
