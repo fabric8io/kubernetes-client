@@ -24,6 +24,7 @@
 * Fix #5636: Add new extension `open-virtual-networking` to manage resources in `k8s.ovn.org/v1` API group.
 * Fix #5711: Kube API Test - Kubernetes API Server JUnit Test Support
 * Fix #5772: Add openshift model `io.fabric8.openshift.api.model.DeploymentConfigRollback`
+* Add a `kubernetes-log4j` module to lookup Kubernetes attributes in a Log4j Core configuration.
 
 #### _**Note**_: Breaking changes
 * KubeSchema and Validation Schema generated classes are no longer annotated with Jackson, Lombok, and Sundrio annotations.
