@@ -32,6 +32,7 @@ import io.fabric8.crd.example.person.Person;
 import io.fabric8.crd.generator.utils.Types;
 import io.fabric8.kubernetes.api.model.AnyType;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps;
+import io.fabric8.kubernetes.api.model.apiextensions.v1.ValidationRule;
 import io.sundr.model.TypeDef;
 import org.junit.jupiter.api.Test;
 
@@ -102,7 +103,7 @@ class JsonSchemaTest {
     assertNotNull(schema);
     Map<String, JSONSchemaProps> properties = assertSchemaHasNumberOfProperties(schema, 2);
     final JSONSchemaProps specSchema = properties.get("spec");
-    Map<String, JSONSchemaProps> spec = assertSchemaHasNumberOfProperties(specSchema, 13);
+    Map<String, JSONSchemaProps> spec = assertSchemaHasNumberOfProperties(specSchema, 15);
 
     // check descriptions are present
     assertTrue(spec.containsKey("from-field"));
@@ -177,6 +178,34 @@ class JsonSchemaTest {
     // check ignored fields
     assertFalse(spec.containsKey("ignoredFoo"));
     assertFalse(spec.containsKey("ignoredBar"));
+
+    final JSONSchemaProps k8sValidationProps = spec.get("kubernetesValidationRule");
+    final List<ValidationRule> k8sValidationRulesSingle = k8sValidationProps.getXKubernetesValidations();
+    assertNotNull(k8sValidationRulesSingle);
+    assertEquals(1, k8sValidationRulesSingle.size());
+    assertEquals("self.startwith('prefix-')", k8sValidationRulesSingle.get(0).getRule());
+    assertEquals("kubernetesValidationRule must start with prefix 'prefix-'", k8sValidationRulesSingle.get(0).getMessage());
+    assertNull(k8sValidationRulesSingle.get(0).getMessageExpression());
+    assertNull(k8sValidationRulesSingle.get(0).getReason());
+    assertNull(k8sValidationRulesSingle.get(0).getFieldPath());
+    assertNull(k8sValidationRulesSingle.get(0).getOptionalOldSelf());
+
+    final JSONSchemaProps kubernetesValidationsRepeated = spec.get("kubernetesValidationRules");
+    final List<ValidationRule> kubernetesValidationsRepeatedRules = kubernetesValidationsRepeated.getXKubernetesValidations();
+    assertNotNull(kubernetesValidationsRepeatedRules);
+    assertEquals(3, kubernetesValidationsRepeatedRules.size());
+    assertEquals("first.rule", kubernetesValidationsRepeatedRules.get(0).getRule());
+    assertNull(kubernetesValidationsRepeatedRules.get(0).getFieldPath());
+    assertNull(kubernetesValidationsRepeatedRules.get(0).getReason());
+    assertNull(kubernetesValidationsRepeatedRules.get(0).getMessage());
+    assertNull(kubernetesValidationsRepeatedRules.get(0).getMessageExpression());
+    assertNull(kubernetesValidationsRepeatedRules.get(0).getOptionalOldSelf());
+    assertEquals("second.rule", kubernetesValidationsRepeatedRules.get(1).getRule());
+    assertNull(kubernetesValidationsRepeatedRules.get(1).getFieldPath());
+    assertNull(kubernetesValidationsRepeatedRules.get(1).getReason());
+    assertNull(kubernetesValidationsRepeatedRules.get(1).getMessage());
+    assertNull(kubernetesValidationsRepeatedRules.get(1).getMessageExpression());
+    assertNull(kubernetesValidationsRepeatedRules.get(1).getOptionalOldSelf());
   }
 
   @Test

@@ -31,6 +31,7 @@ import io.fabric8.crd.example.joke.Joke;
 import io.fabric8.crd.example.joke.JokeRequest;
 import io.fabric8.crd.example.joke.JokeRequestSpec;
 import io.fabric8.crd.example.joke.JokeRequestStatus;
+import io.fabric8.crd.example.k8svalidation.K8sValidation;
 import io.fabric8.crd.example.map.ContainingMaps;
 import io.fabric8.crd.example.map.ContainingMapsSpec;
 import io.fabric8.crd.example.multiple.v1.Multiple;
@@ -522,6 +523,38 @@ class CRDGeneratorTest {
         .inOutputDir(outputDir)
         .customResourceClasses(Multiple.class,
             io.fabric8.crd.example.multiple.v2.Multiple.class)
+        .forCRDVersions("v1", "v1beta1")
+        .detailedGenerate();
+
+    final File crdFile = new File(crdInfo.getCRDInfos(crdName).get("v1").getFilePath());
+    final File crdFileV1Beta1 = new File(crdInfo.getCRDInfos(crdName).get("v1beta1").getFilePath());
+
+    // expected CRD
+    final URL crdResource = CRDGeneratorTest.class.getResource("/" + crdFile.getName());
+    final URL crdResourceV1Beta1 = CRDGeneratorTest.class.getResource("/" + crdFileV1Beta1.getName());
+    assertNotNull(crdResource);
+    assertNotNull(crdResourceV1Beta1);
+
+    final File expectedCrdFile = new File(crdResource.getFile());
+    final File expectedCrdFileV1Beta1 = new File(crdResourceV1Beta1.getFile());
+    assertFileEquals(expectedCrdFile, crdFile);
+    assertFileEquals(expectedCrdFileV1Beta1, crdFileV1Beta1);
+
+    // only delete the generated files if the test is successful
+    assertTrue(crdFile.delete());
+    assertTrue(crdFileV1Beta1.delete());
+    assertTrue(outputDir.delete());
+  }
+
+  @Test
+  void checkK8sValidationRules() throws Exception {
+    // generated CRD
+    final File outputDir = Files.createTempDirectory("crd-").toFile();
+    final String crdName = CustomResourceInfo.fromClass(K8sValidation.class).crdName();
+
+    final CRDGenerationInfo crdInfo = newCRDGenerator()
+        .inOutputDir(outputDir)
+        .customResourceClasses(K8sValidation.class)
         .forCRDVersions("v1", "v1beta1")
         .detailedGenerate();
 

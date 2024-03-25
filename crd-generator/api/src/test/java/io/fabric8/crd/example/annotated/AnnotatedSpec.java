@@ -24,6 +24,7 @@ import io.fabric8.generator.annotation.Min;
 import io.fabric8.generator.annotation.Nullable;
 import io.fabric8.generator.annotation.Pattern;
 import io.fabric8.generator.annotation.Required;
+import io.fabric8.generator.annotation.ValidationRule;
 import lombok.Data;
 
 @Data
@@ -53,6 +54,14 @@ public class AnnotatedSpec {
   private int ignoredFoo;
 
   private boolean ignoredBar;
+
+  @ValidationRule(value = "self.startwith('prefix-')", message = "kubernetesValidationRule must start with prefix 'prefix-'")
+  private String kubernetesValidationRule;
+
+  @ValidationRule("first.rule")
+  @ValidationRule("second.rule")
+  @ValidationRule(value = "third.rule", reason = "FieldValueForbidden")
+  private String kubernetesValidationRules;
 
   @JsonProperty("from-getter")
   @JsonPropertyDescription("from-getter-description")
