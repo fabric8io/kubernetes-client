@@ -73,6 +73,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static io.fabric8.crd.generator.CRDGeneratorAssertions.assertFileEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -576,32 +577,6 @@ class CRDGeneratorTest {
     assertTrue(crdFile.delete());
     assertTrue(crdFileV1Beta1.delete());
     assertTrue(outputDir.delete());
-  }
-
-  private void assertFileEquals(final File expectedFile, final File actualFile) {
-    try (final BufferedReader expectedReader = new BufferedReader(new FileReader(expectedFile));
-        final BufferedReader actualReader = new BufferedReader(new FileReader(actualFile))) {
-      // skip license headers
-      String expectedLine = skipCommentsAndEmptyLines(expectedReader);
-      String actualLine = skipCommentsAndEmptyLines(actualReader);
-      // compare both files
-      final String message = String.format("Expected %s and actual %s files are not equal", expectedFile, actualFile);
-      while (expectedLine != null || actualLine != null) {
-        assertEquals(expectedLine, actualLine, message);
-        expectedLine = expectedReader.readLine();
-        actualLine = actualReader.readLine();
-      }
-    } catch (final IOException e) {
-      fail(String.format("Cannot compare files %s and %s: %s", expectedFile, actualFile, e.getMessage()));
-    }
-  }
-
-  private String skipCommentsAndEmptyLines(final BufferedReader reader) throws IOException {
-    String line = reader.readLine();
-    while (line.startsWith("#") || line.isEmpty()) {
-      line = reader.readLine();
-    }
-    return line;
   }
 
   private CustomResourceDefinitionVersion checkCRD(Class<? extends CustomResource<?, ?>> customResource, String kind,
