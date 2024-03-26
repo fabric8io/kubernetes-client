@@ -18,6 +18,7 @@ package io.fabric8.crd.generator.apt;
 import io.fabric8.crd.generator.CRDGenerationInfo;
 import io.fabric8.crd.generator.CRDGenerator;
 import io.fabric8.crd.generator.CRDGenerator.AbstractCRDOutput;
+import io.fabric8.crd.generator.CustomResourceConversionInfo;
 import io.fabric8.crd.generator.CustomResourceInfo;
 import io.fabric8.crd.generator.annotation.Annotations;
 import io.fabric8.crd.generator.annotation.Labels;
@@ -178,10 +179,14 @@ public class CustomResourceAnnotationProcessor extends AbstractProcessor {
 
     final Scope scope = Types.isNamespaced(definition) ? Scope.NAMESPACED : Scope.CLUSTER;
 
+    final CustomResourceConversionInfo conversionInfo = CustomResourceConversionInfo.from(customResource)
+        .orElse(null);
+
     return new CustomResourceInfo(group, version, kind, singular, plural, shortNames, storage, served,
         deprecated, deprecationWarning,
         scope, definition, crClassName.toString(),
-        specAndStatus.getSpecClassName(), specAndStatus.getStatusClassName(), annotations, labels);
+        specAndStatus.getSpecClassName(), specAndStatus.getStatusClassName(), annotations, labels,
+        conversionInfo);
   }
 
   private static class FileObjectOutputStream extends OutputStream {

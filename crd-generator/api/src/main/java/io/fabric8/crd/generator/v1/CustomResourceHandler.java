@@ -29,6 +29,7 @@ import io.fabric8.crd.generator.v1.decorator.AddStatusReplicasPathDecorator;
 import io.fabric8.crd.generator.v1.decorator.AddStatusSubresourceDecorator;
 import io.fabric8.crd.generator.v1.decorator.AddSubresourcesDecorator;
 import io.fabric8.crd.generator.v1.decorator.EnsureSingleStorageVersionDecorator;
+import io.fabric8.crd.generator.v1.decorator.SetCustomResourceConversionDecorator;
 import io.fabric8.crd.generator.v1.decorator.SetDeprecatedVersionDecorator;
 import io.fabric8.crd.generator.v1.decorator.SetServedVersionDecorator;
 import io.fabric8.crd.generator.v1.decorator.SetStorageVersionDecorator;
@@ -95,6 +96,9 @@ public class CustomResourceHandler extends AbstractCustomResourceHandler {
     resources.decorate(new EnsureSingleStorageVersionDecorator(name));
     resources.decorate(new SortCustomResourceDefinitionVersionDecorator(name));
     resources.decorate(new SortPrinterColumnsDecorator(name, version));
+
+    config.conversionInfo()
+        .ifPresent(conversionInfo -> resources.decorate(new SetCustomResourceConversionDecorator(name, conversionInfo)));
   }
 
   @Override

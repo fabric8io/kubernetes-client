@@ -54,11 +54,13 @@ public class CustomResourceInfo {
 
   private final String[] annotations;
   private final String[] labels;
+  private final CustomResourceConversionInfo conversionInfo;
 
-  public CustomResourceInfo(String group, String version, String kind, String singular,
-      String plural, String[] shortNames, boolean storage, boolean served, boolean deprecated, String deprecationWarning,
-      Scope scope, TypeDef definition, String crClassName,
-      String specClassName, String statusClassName, String[] annotations, String[] labels) {
+  public CustomResourceInfo(String group, String version, String kind,
+      String singular, String plural, String[] shortNames,
+      boolean storage, boolean served, boolean deprecated, String deprecationWarning,
+      Scope scope, TypeDef definition, String crClassName, String specClassName, String statusClassName,
+      String[] annotations, String[] labels, CustomResourceConversionInfo conversionInfo) {
     this.group = group;
     this.version = version;
     this.kind = kind;
@@ -78,6 +80,7 @@ public class CustomResourceInfo {
     this.hash = id.hashCode();
     this.annotations = annotations;
     this.labels = labels;
+    this.conversionInfo = conversionInfo;
   }
 
   public boolean storage() {
@@ -156,6 +159,10 @@ public class CustomResourceInfo {
     return labels;
   }
 
+  public Optional<CustomResourceConversionInfo> conversionInfo() {
+    return Optional.ofNullable(conversionInfo);
+  }
+
   public static CustomResourceInfo fromClass(Class<? extends CustomResource<?, ?>> customResource) {
     try {
       final CustomResource<?, ?> instance = customResource.getDeclaredConstructor().newInstance();
@@ -176,13 +183,16 @@ public class CustomResourceInfo {
             customResource.getCanonicalName());
       }
 
+      final CustomResourceConversionInfo conversionInfo = CustomResourceConversionInfo.from(customResource)
+          .orElse(null);
+
       return new CustomResourceInfo(instance.getGroup(), instance.getVersion(), instance.getKind(),
           instance.getSingular(), instance.getPlural(), shortNames, instance.isStorage(), instance.isServed(),
           instance.isDeprecated(), instance.getDeprecationWarning(),
           scope, definition,
           customResource.getCanonicalName(), specAndStatus.getSpecClassName(),
           specAndStatus.getStatusClassName(), toStringArray(instance.getMetadata().getAnnotations()),
-          toStringArray(instance.getMetadata().getLabels()));
+          toStringArray(instance.getMetadata().getLabels()), conversionInfo);
     } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
       throw KubernetesClientException.launderThrowable(e);
     }

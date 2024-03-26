@@ -17,12 +17,12 @@ package io.fabric8.crd.generator;
 
 import io.fabric8.crd.example.k8svalidation.K8sValidation;
 import io.fabric8.crd.example.multiple.v2.MultipleSpec;
+import io.fabric8.crd.example.nonconversion.NoneConversionExample;
+import io.fabric8.crd.example.webhookconversion.v1.WebhookConversionExample;
 import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import org.junit.jupiter.api.Test;
-
-import java.io.IOException;
 
 import static io.fabric8.crd.generator.CRDGeneratorAssertions.assertCRDOutputEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -32,7 +32,7 @@ class CRDGeneratorExamplesTest {
   protected boolean parallelCRDGeneration;
 
   @Test
-  void multiple() throws IOException {
+  void multiple() {
     assertCRDOutputEquals(newCRDGenerator(),
         io.fabric8.crd.example.multiple.v1.Multiple.class, io.fabric8.crd.example.multiple.v2.Multiple.class);
   }
@@ -50,8 +50,19 @@ class CRDGeneratorExamplesTest {
   }
 
   @Test
-  void k8sValidation() throws IOException {
+  void k8sValidation() {
     assertCRDOutputEquals(newCRDGenerator(), K8sValidation.class);
+  }
+
+  @Test
+  void webhookConversion() {
+    assertCRDOutputEquals(newCRDGenerator(),
+        WebhookConversionExample.class, io.fabric8.crd.example.webhookconversion.v2.WebhookConversionExample.class);
+  }
+
+  @Test
+  void noneConversion() {
+    assertCRDOutputEquals(newCRDGenerator(), NoneConversionExample.class);
   }
 
   private CRDGenerator newCRDGenerator() {
