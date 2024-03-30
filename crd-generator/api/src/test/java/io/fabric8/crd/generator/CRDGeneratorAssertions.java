@@ -41,11 +41,10 @@ public class CRDGeneratorAssertions {
    *
    * @param crClasses custom resource classes under test
    * @param crdGenerator a CRDGenerator instance
-   * @throws IOException, if creating temp files/directory went wrong
    */
   @SafeVarargs
   public static void assertCRDOutputEquals(CRDGenerator crdGenerator,
-      Class<? extends CustomResource<?, ?>>... crClasses) throws IOException {
+      Class<? extends CustomResource<?, ?>>... crClasses) {
 
     assertCRDOutputEquals(crdGenerator, null, crClasses);
   }
@@ -57,12 +56,11 @@ public class CRDGeneratorAssertions {
    * @param crdGenerator a CRDGenerator instance
    * @param classPathExpectedCRDsNullable the class path to the directory which contains the expected CRDs. Defaults to "/" if
    *        null.
-   * @throws IOException, if creating temp files/directory went wrong
    */
   @SafeVarargs
   public static void assertCRDOutputEquals(CRDGenerator crdGenerator,
       String classPathExpectedCRDsNullable,
-      Class<? extends CustomResource<?, ?>>... crClasses) throws IOException {
+      Class<? extends CustomResource<?, ?>>... crClasses) {
     assertNotNull(crClasses);
     assertTrue(crClasses.length > 0);
     assertEquals(1, Arrays.stream(crClasses)
@@ -70,8 +68,14 @@ public class CRDGeneratorAssertions {
         "all crClasses must be of the same kind");
 
     final String crdName = CustomResource.getCRDName(crClasses[0]);
+    final File outputDir;
+    try {
+      outputDir = Files.createTempDirectory("crd-").toFile();
+    } catch (IOException e) {
+      fail("Could not create temp directory", e);
+      throw new RuntimeException(e);
+    }
 
-    final File outputDir = Files.createTempDirectory("crd-").toFile();
     final String classPathExpectedCRDs = Optional.ofNullable(classPathExpectedCRDsNullable)
         .map(s -> s.endsWith("/") ? s : s + "/")
         .orElse("/");
