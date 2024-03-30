@@ -94,7 +94,7 @@ public class Resources {
     // We also might need it more than once. So, we'll do it as many times as we have to, till there are not more transformations.
     // But hey, let's have an upper limit just to prevent infinite loops.
     for (int i = 0; i < SORT_ROUND_LIMIT && bubbleSort(array); i++) {
-      LOGGER.debug("Sorting again:" + (i + 1));
+      LOGGER.debug("Sorting again: {}", i + 1);
     }
 
     List<Decorator<?>> result = Collections.unmodifiableList(Arrays.asList(array));

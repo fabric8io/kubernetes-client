@@ -27,7 +27,7 @@ import java.io.IOException;
 import static io.fabric8.crd.generator.CRDGeneratorAssertions.assertCRDOutputEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class CRDGeneratorExamplesTest {
+class CRDGeneratorExamplesTest {
 
   protected boolean parallelCRDGeneration;
 
