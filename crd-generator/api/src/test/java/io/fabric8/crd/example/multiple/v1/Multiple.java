@@ -20,6 +20,6 @@ import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 
 @Group("sample.fabric8.io")
-@Version("v1")
+@Version(value = "v1", storage = false)
 public class Multiple extends CustomResource<MultipleSpec, Void> {
 }
