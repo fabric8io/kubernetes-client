@@ -3,6 +3,7 @@
 ### 6.12-SNAPSHOT
 
 #### Bugs
+* Fix #5845: (crd-generator) Fail generating if multiple versions are marked as stored
 
 #### Improvements
 
