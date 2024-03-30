@@ -44,7 +44,8 @@ class CRDGeneratorExamplesTest {
 
   @Test
   void multipleStorage_thenFail() {
-    assertThrows(IllegalStateException.class, () -> assertCRDOutputEquals(newCRDGenerator(),
+    CRDGenerator crdGenerator = newCRDGenerator();
+    assertThrows(IllegalStateException.class, () -> assertCRDOutputEquals(crdGenerator,
         io.fabric8.crd.example.multiple.v2.Multiple.class, Multiple.class));
   }
 
