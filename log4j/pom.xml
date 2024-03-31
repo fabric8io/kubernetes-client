@@ -32,6 +32,13 @@
   <properties>
     <osgi.export>io.fabric8.kubernetes.log4j.*</osgi.export>
     <osgi.import>*</osgi.import>
+
+    <!-- Resources to copy into the JAR -->
+    <osgi.include.resources.default>
+      {maven-resources},
+      /META-INF/org/apache/logging/=${project.build.outputDirectory}/META-INF/org/apache/logging/,
+      /META-INF/jandex.idx=${project.build.outputDirectory}/META-INF/jandex.idx
+    </osgi.include.resources.default>
   </properties>
 
   <dependencies>
@@ -78,4 +85,23 @@
     </dependency>
   </dependencies>
 
+  <build>
+
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <version>${maven.surefire.plugin.version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>integration-test</goal>
+              <goal>verify</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+
+  </build>
 </project>
