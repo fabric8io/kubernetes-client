@@ -23,7 +23,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class KubernetesLookupIT {
+class KubernetesLookupIT {
 
   @Test
   void should_find_lookup() {
