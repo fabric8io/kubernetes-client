@@ -3,6 +3,7 @@
 ### 6.12-SNAPSHOT
 
 #### Bugs
+* Fix #5853: [java-generator] Gracefully handle colliding enum definitions
 
 #### Improvements
 
