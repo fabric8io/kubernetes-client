@@ -97,7 +97,7 @@ public class JEnum extends AbstractJSONSchema2Pojo {
         .setBody(new BlockStmt().addStatement(new ReturnStmt(VALUE)));
     getValue.addAnnotation("com.fasterxml.jackson.annotation.JsonValue");
 
-    Set<String> constantNames = new HashSet<String>(values.size());
+    Set<String> constantNames = new HashSet<>(values.size());
     for (String k : values) {
       StringBuilder constantNameBuilder = new StringBuilder();
       try {
