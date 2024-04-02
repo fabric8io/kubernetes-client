@@ -182,6 +182,9 @@ spec:
                       - ocsp signing
                       - microsoft sgc
                       - netscape sgc
+                      - another
+                      - Another
+                      - anotheR
                 username:
                   description: Username contains the name of the user that created the CertificateRequest. Populated by the cert-manager webhook on creation and immutable.
                   type: string

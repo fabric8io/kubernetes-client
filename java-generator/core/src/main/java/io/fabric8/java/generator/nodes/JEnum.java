@@ -26,6 +26,7 @@ import io.fabric8.java.generator.Config;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
@@ -96,7 +97,8 @@ public class JEnum extends AbstractJSONSchema2Pojo {
         .setBody(new BlockStmt().addStatement(new ReturnStmt(VALUE)));
     getValue.addAnnotation("com.fasterxml.jackson.annotation.JsonValue");
 
-    for (String k : this.values) {
+    Set<String> constantNames = new HashSet(values.size());
+    for (String k : values) {
       String constantName;
       try {
         // If the value can be parsed as an Integer
@@ -106,6 +108,13 @@ public class JEnum extends AbstractJSONSchema2Pojo {
       } catch (Exception e) {
         constantName = sanitizeEnumEntry(sanitizeString(k));
       }
+      // enums with colliding names are bad practice, we should make sure that the resulting code compiles,
+      // but we don't need fancy heuristics for the naming let's just prepend an underscore until it works
+      while (constantNames.contains(constantName)) {
+        constantName = "_" + constantName;
+      }
+      constantNames.add(constantName);
+
       String originalName = AbstractJSONSchema2Pojo.escapeQuotes(k);
       Expression valueArgument = new StringLiteralExpr(originalName);
       if (!underlyingType.equals(JAVA_LANG_STRING)) {
