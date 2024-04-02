@@ -35,6 +35,7 @@ public class Config {
   // RFC 3339 - from: https://swagger.io/docs/specification/data-models/data-types/
   public static final String DEFAULT_SER_DATETIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ssVV";
   public static final String DEFAULT_DESER_DATETIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss[XXX][VV]";
+  public static final Map<String, String> DEFAULT_EXISTING_JAVA_TYPES_OVERRIDES = new HashMap<>();
 
   private Boolean uppercaseEnums = DEFAULT_UPPERCASE_ENUM;
   private Boolean objectExtraAnnotations = DEFAULT_ADD_EXTRA_ANNOTATIONS;
@@ -44,6 +45,7 @@ public class Config {
   private List<String> filesSuffixes = DEFAULT_FILES_SUFFIXES;
   private String serDatetimeFormat = DEFAULT_SER_DATETIME_FORMAT;
   private String deserDatetimeFormat = DEFAULT_DESER_DATETIME_FORMAT;
+  private Map<String, String> existingJavaTypes = DEFAULT_EXISTING_JAVA_TYPES_OVERRIDES;
 
   public Config(
       Boolean uppercaseEnums,
@@ -64,6 +66,7 @@ public class Config {
     }
   }
 
+  @Deprecated
   public Config(
       Boolean uppercaseEnums,
       Boolean objectExtraAnnotations,
@@ -87,6 +90,7 @@ public class Config {
     }
   }
 
+  @Deprecated
   public Config(
       Boolean uppercaseEnums,
       Boolean objectExtraAnnotations,
@@ -126,7 +130,8 @@ public class Config {
       Map<String, String> packageOverrides,
       List<String> filesSuffixes,
       String serDatetimeFormat,
-      String deserDatetimeFormat) {
+      String deserDatetimeFormat,
+      Map<String, String> existingJavaTypes) {
     if (uppercaseEnums != null) {
       this.uppercaseEnums = uppercaseEnums;
     }
@@ -150,6 +155,9 @@ public class Config {
     }
     if (deserDatetimeFormat != null) {
       this.deserDatetimeFormat = deserDatetimeFormat;
+    }
+    if (existingJavaTypes != null) {
+      this.existingJavaTypes = existingJavaTypes;
     }
   }
 
@@ -197,5 +205,11 @@ public class Config {
     return (deserDatetimeFormat == null || deserDatetimeFormat.isEmpty())
         ? DEFAULT_DESER_DATETIME_FORMAT
         : deserDatetimeFormat;
+  }
+
+  public Map<String, String> getExistingJavaTypes() {
+    return (existingJavaTypes == null || existingJavaTypes.isEmpty())
+        ? DEFAULT_EXISTING_JAVA_TYPES_OVERRIDES
+        : existingJavaTypes;
   }
 }

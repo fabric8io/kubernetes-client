@@ -698,7 +698,7 @@ class GeneratorTest {
   @Test
   void testConfigToGeneratePreservedUnknownFields() {
     // Arrange
-    Config config = new Config(null, null, null, true, new HashMap<>(), new ArrayList<>(), null, null);
+    Config config = new Config(null, null, null, true, new HashMap<>(), new ArrayList<>(), null, null, null);
     JObject obj = new JObject(
         null,
         "t",
@@ -981,5 +981,29 @@ class GeneratorTest {
       JObject obj = new JObject(null, "t", props, null, false, defaultConfig, null, Boolean.FALSE, null);
     },
         "An exception is expected to be thrown when an object contains one duplicated field that is not marked as deprecated");
+  }
+
+  @Test
+  void testExistingJavaTypeObject() {
+    // Arrange
+    Config config = Config.builder()
+        .existingJavaTypes(Collections.singletonMap("v1alpha1.T", "org.test.ExistingJavaType")).build();
+    JObject obj = new JObject(
+        "v1alpha1",
+        "T",
+        null,
+        null,
+        false,
+        config,
+        null,
+        Boolean.FALSE,
+        null);
+
+    // Act
+    GeneratorResult res = obj.generateJava();
+
+    // Assert
+    assertEquals("org.test.ExistingJavaType", obj.getType());
+    assertEquals(0, res.getTopLevelClasses().size());
   }
 }

@@ -133,7 +133,7 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
 
   @Override
   public String getType() {
-    return this.type;
+    return config.getExistingJavaTypes().getOrDefault(this.type, this.type);
   }
 
   private String getSortedFieldsAsParam(Set<String> list) {
@@ -153,6 +153,9 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
 
   @Override
   public GeneratorResult generateJava() {
+    if (config.getExistingJavaTypes().containsKey(this.type)) {
+      return new GeneratorResult(Collections.emptyList());
+    }
     CompilationUnit cu = new CompilationUnit();
     if (!this.pkg.isEmpty()) {
       cu.setPackageDeclaration(new PackageDeclaration(new Name(this.pkg)));

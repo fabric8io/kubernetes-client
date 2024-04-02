@@ -26,6 +26,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Stream;
@@ -44,7 +45,10 @@ class ApprovalTest {
         Arguments.of("testJokeCrd", "jokerequests-crd.yml", "JokeRequest", "JokeRequestJavaCr", new Config()),
         Arguments.of("testAkkaMicroservicesCrd", "akka-microservices-crd.yml", "AkkaMicroservice", "AkkaMicroserviceJavaCr",
             new Config()),
-        Arguments.of("testCalicoIPPoolCrd", "calico-ippool-crd.yml", "IPPool", "CalicoIPPoolCr", new Config()));
+        Arguments.of("testCalicoIPPoolCrd", "calico-ippool-crd.yml", "IPPool", "CalicoIPPoolCr", new Config()),
+        Arguments.of("testExistingJavaType", "existing-java-type-crd.yml", "ExistingJavaType", "ExistingJavaTypeCr",
+            Config.builder().existingJavaTypes(Collections.singletonMap(
+                "org.test.v1.existingjavatypespec.Affinity", "io.fabric8.kubernetes.api.model.Affinity")).build()));
   }
 
   @ParameterizedTest
