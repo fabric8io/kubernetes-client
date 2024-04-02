@@ -43,11 +43,13 @@ import lombok.experimental.Accessors;
     "metadata",
     "audiences",
     "forwardOriginalToken",
+    "fromCookies",
     "fromHeaders",
     "fromParams",
     "issuer",
     "jwks",
     "jwksUri",
+    "outputClaimToHeaders",
     "outputPayloadToHeader"
 })
 @ToString
@@ -81,6 +83,9 @@ public class JWTRule implements Editable<JWTRuleBuilder> , KubernetesResource
     private List<String> audiences = new ArrayList<String>();
     @JsonProperty("forwardOriginalToken")
     private Boolean forwardOriginalToken;
+    @JsonProperty("fromCookies")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> fromCookies = new ArrayList<String>();
     @JsonProperty("fromHeaders")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<JWTHeader> fromHeaders = new ArrayList<JWTHeader>();
@@ -93,6 +98,9 @@ public class JWTRule implements Editable<JWTRuleBuilder> , KubernetesResource
     private String jwks;
     @JsonProperty("jwksUri")
     private String jwksUri;
+    @JsonProperty("outputClaimToHeaders")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<ClaimToHeader> outputClaimToHeaders = new ArrayList<ClaimToHeader>();
     @JsonProperty("outputPayloadToHeader")
     private String outputPayloadToHeader;
     @JsonIgnore
@@ -105,15 +113,17 @@ public class JWTRule implements Editable<JWTRuleBuilder> , KubernetesResource
     public JWTRule() {
     }
 
-    public JWTRule(List<String> audiences, Boolean forwardOriginalToken, List<JWTHeader> fromHeaders, List<String> fromParams, String issuer, String jwks, String jwksUri, String outputPayloadToHeader) {
+    public JWTRule(List<String> audiences, Boolean forwardOriginalToken, List<String> fromCookies, List<JWTHeader> fromHeaders, List<String> fromParams, String issuer, String jwks, String jwksUri, List<ClaimToHeader> outputClaimToHeaders, String outputPayloadToHeader) {
         super();
         this.audiences = audiences;
         this.forwardOriginalToken = forwardOriginalToken;
+        this.fromCookies = fromCookies;
         this.fromHeaders = fromHeaders;
         this.fromParams = fromParams;
         this.issuer = issuer;
         this.jwks = jwks;
         this.jwksUri = jwksUri;
+        this.outputClaimToHeaders = outputClaimToHeaders;
         this.outputPayloadToHeader = outputPayloadToHeader;
     }
 
@@ -135,6 +145,16 @@ public class JWTRule implements Editable<JWTRuleBuilder> , KubernetesResource
     @JsonProperty("forwardOriginalToken")
     public void setForwardOriginalToken(Boolean forwardOriginalToken) {
         this.forwardOriginalToken = forwardOriginalToken;
+    }
+
+    @JsonProperty("fromCookies")
+    public List<String> getFromCookies() {
+        return fromCookies;
+    }
+
+    @JsonProperty("fromCookies")
+    public void setFromCookies(List<String> fromCookies) {
+        this.fromCookies = fromCookies;
     }
 
     @JsonProperty("fromHeaders")
@@ -185,6 +205,16 @@ public class JWTRule implements Editable<JWTRuleBuilder> , KubernetesResource
     @JsonProperty("jwksUri")
     public void setJwksUri(String jwksUri) {
         this.jwksUri = jwksUri;
+    }
+
+    @JsonProperty("outputClaimToHeaders")
+    public List<ClaimToHeader> getOutputClaimToHeaders() {
+        return outputClaimToHeaders;
+    }
+
+    @JsonProperty("outputClaimToHeaders")
+    public void setOutputClaimToHeaders(List<ClaimToHeader> outputClaimToHeaders) {
+        this.outputClaimToHeaders = outputClaimToHeaders;
     }
 
     @JsonProperty("outputPayloadToHeader")

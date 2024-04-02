@@ -13,7 +13,8 @@ public enum ServerTLSSettingsTLSmode {
     SIMPLE(1),
     MUTUAL(2),
     AUTO_PASSTHROUGH(3),
-    ISTIO_MUTUAL(4);
+    ISTIO_MUTUAL(4),
+    OPTIONAL_MUTUAL(5);
     private final Integer value;
     private final static Map<Integer, ServerTLSSettingsTLSmode> CONSTANTS = new HashMap<Integer, ServerTLSSettingsTLSmode>();
     private final static Map<String, ServerTLSSettingsTLSmode> NAME_CONSTANTS = new HashMap<String, ServerTLSSettingsTLSmode>();

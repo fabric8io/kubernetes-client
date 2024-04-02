@@ -37,7 +37,15 @@
       *
     </osgi.import>
     <osgi.export>
-      io.fabric8.istio.*
+      io.fabric8.istio.api.analysis.v1alpha1.*,
+      io.fabric8.istio.api.networking.v1alpha3.*,
+      io.fabric8.istio.api.internal.protobuf.types.*,
+      io.fabric8.istio.api.meta.v1alpha1.*,
+      io.fabric8.istio.api.networking.v1alpha1.*,
+      io.fabric8.istio.api.extensions.v1alpha1.*,
+      io.fabric8.istio.api.telemetry.v1alpha1.*,
+      io.fabric8.istio.api.type.v1beta1.*,
+      io.fabric8.istio.api.networking.v1beta1.*,
     </osgi.export>
   </properties>
 
@@ -61,6 +69,14 @@
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-core</artifactId>
     </dependency>
   </dependencies>
 

@@ -41,8 +41,10 @@ import lombok.experimental.Accessors;
     "metadata",
     "bind",
     "captureMode",
+    "connectionPool",
     "defaultEndpoint",
-    "port"
+    "port",
+    "tls"
 })
 @ToString
 @EqualsAndHashCode
@@ -74,10 +76,14 @@ public class IstioIngressListener implements Editable<IstioIngressListenerBuilde
     private String bind;
     @JsonProperty("captureMode")
     private CaptureMode captureMode;
+    @JsonProperty("connectionPool")
+    private ConnectionPoolSettings connectionPool;
     @JsonProperty("defaultEndpoint")
     private String defaultEndpoint;
     @JsonProperty("port")
-    private Port port;
+    private SidecarPort port;
+    @JsonProperty("tls")
+    private ServerTLSSettings tls;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -88,12 +94,14 @@ public class IstioIngressListener implements Editable<IstioIngressListenerBuilde
     public IstioIngressListener() {
     }
 
-    public IstioIngressListener(String bind, CaptureMode captureMode, String defaultEndpoint, Port port) {
+    public IstioIngressListener(String bind, CaptureMode captureMode, ConnectionPoolSettings connectionPool, String defaultEndpoint, SidecarPort port, ServerTLSSettings tls) {
         super();
         this.bind = bind;
         this.captureMode = captureMode;
+        this.connectionPool = connectionPool;
         this.defaultEndpoint = defaultEndpoint;
         this.port = port;
+        this.tls = tls;
     }
 
     @JsonProperty("bind")
@@ -116,6 +124,16 @@ public class IstioIngressListener implements Editable<IstioIngressListenerBuilde
         this.captureMode = captureMode;
     }
 
+    @JsonProperty("connectionPool")
+    public ConnectionPoolSettings getConnectionPool() {
+        return connectionPool;
+    }
+
+    @JsonProperty("connectionPool")
+    public void setConnectionPool(ConnectionPoolSettings connectionPool) {
+        this.connectionPool = connectionPool;
+    }
+
     @JsonProperty("defaultEndpoint")
     public String getDefaultEndpoint() {
         return defaultEndpoint;
@@ -127,13 +145,23 @@ public class IstioIngressListener implements Editable<IstioIngressListenerBuilde
     }
 
     @JsonProperty("port")
-    public Port getPort() {
+    public SidecarPort getPort() {
         return port;
     }
 
     @JsonProperty("port")
-    public void setPort(Port port) {
+    public void setPort(SidecarPort port) {
         this.port = port;
+    }
+
+    @JsonProperty("tls")
+    public ServerTLSSettings getTls() {
+        return tls;
+    }
+
+    @JsonProperty("tls")
+    public void setTls(ServerTLSSettings tls) {
+        this.tls = tls;
     }
 
     @JsonIgnore

@@ -40,7 +40,8 @@ import lombok.experimental.Accessors;
     "kind",
     "metadata",
     "authority",
-    "uri"
+    "uri",
+    "uriRegexRewrite"
 })
 @ToString
 @EqualsAndHashCode
@@ -72,6 +73,8 @@ public class HTTPRewrite implements Editable<HTTPRewriteBuilder> , KubernetesRes
     private String authority;
     @JsonProperty("uri")
     private String uri;
+    @JsonProperty("uriRegexRewrite")
+    private RegexRewrite uriRegexRewrite;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -82,10 +85,11 @@ public class HTTPRewrite implements Editable<HTTPRewriteBuilder> , KubernetesRes
     public HTTPRewrite() {
     }
 
-    public HTTPRewrite(String authority, String uri) {
+    public HTTPRewrite(String authority, String uri, RegexRewrite uriRegexRewrite) {
         super();
         this.authority = authority;
         this.uri = uri;
+        this.uriRegexRewrite = uriRegexRewrite;
     }
 
     @JsonProperty("authority")
@@ -106,6 +110,16 @@ public class HTTPRewrite implements Editable<HTTPRewriteBuilder> , KubernetesRes
     @JsonProperty("uri")
     public void setUri(String uri) {
         this.uri = uri;
+    }
+
+    @JsonProperty("uriRegexRewrite")
+    public RegexRewrite getUriRegexRewrite() {
+        return uriRegexRewrite;
+    }
+
+    @JsonProperty("uriRegexRewrite")
+    public void setUriRegexRewrite(RegexRewrite uriRegexRewrite) {
+        this.uriRegexRewrite = uriRegexRewrite;
     }
 
     @JsonIgnore

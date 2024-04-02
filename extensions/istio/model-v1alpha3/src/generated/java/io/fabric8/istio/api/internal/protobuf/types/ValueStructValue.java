@@ -67,10 +67,9 @@ public class ValueStructValue implements IsValueKind, Editable<ValueStructValueB
 {
 
     @JsonProperty("structValue")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Object> structValue = new LinkedHashMap<String, Object>();
+    private Struct structValue;
     @JsonIgnore
-    private Map<java.lang.String, java.lang.Object> additionalProperties = new LinkedHashMap<java.lang.String, java.lang.Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -79,18 +78,18 @@ public class ValueStructValue implements IsValueKind, Editable<ValueStructValueB
     public ValueStructValue() {
     }
 
-    public ValueStructValue(Map<String, Object> structValue) {
+    public ValueStructValue(Struct structValue) {
         super();
         this.structValue = structValue;
     }
 
     @JsonProperty("structValue")
-    public Map<String, Object> getStructValue() {
+    public Struct getStructValue() {
         return structValue;
     }
 
     @JsonProperty("structValue")
-    public void setStructValue(Map<String, Object> structValue) {
+    public void setStructValue(Struct structValue) {
         this.structValue = structValue;
     }
 
@@ -105,12 +104,12 @@ public class ValueStructValue implements IsValueKind, Editable<ValueStructValueB
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, java.lang.Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, java.lang.Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 

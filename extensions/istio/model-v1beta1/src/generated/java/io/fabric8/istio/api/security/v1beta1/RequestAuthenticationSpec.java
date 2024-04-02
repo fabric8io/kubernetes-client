@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.istio.api.type.v1beta1.PolicyTargetReference;
 import io.fabric8.istio.api.type.v1beta1.WorkloadSelector;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
@@ -43,7 +44,8 @@ import lombok.experimental.Accessors;
     "kind",
     "metadata",
     "jwtRules",
-    "selector"
+    "selector",
+    "targetRef"
 })
 @ToString
 @EqualsAndHashCode
@@ -76,6 +78,8 @@ public class RequestAuthenticationSpec implements Editable<RequestAuthentication
     private List<JWTRule> jwtRules = new ArrayList<JWTRule>();
     @JsonProperty("selector")
     private WorkloadSelector selector;
+    @JsonProperty("targetRef")
+    private PolicyTargetReference targetRef;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -86,10 +90,11 @@ public class RequestAuthenticationSpec implements Editable<RequestAuthentication
     public RequestAuthenticationSpec() {
     }
 
-    public RequestAuthenticationSpec(List<JWTRule> jwtRules, WorkloadSelector selector) {
+    public RequestAuthenticationSpec(List<JWTRule> jwtRules, WorkloadSelector selector, PolicyTargetReference targetRef) {
         super();
         this.jwtRules = jwtRules;
         this.selector = selector;
+        this.targetRef = targetRef;
     }
 
     @JsonProperty("jwtRules")
@@ -110,6 +115,16 @@ public class RequestAuthenticationSpec implements Editable<RequestAuthentication
     @JsonProperty("selector")
     public void setSelector(WorkloadSelector selector) {
         this.selector = selector;
+    }
+
+    @JsonProperty("targetRef")
+    public PolicyTargetReference getTargetRef() {
+        return targetRef;
+    }
+
+    @JsonProperty("targetRef")
+    public void setTargetRef(PolicyTargetReference targetRef) {
+        this.targetRef = targetRef;
     }
 
     @JsonIgnore

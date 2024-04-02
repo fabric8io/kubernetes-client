@@ -29,6 +29,8 @@ import io.fabric8.istio.api.networking.v1alpha3.VirtualService;
 import io.fabric8.istio.api.networking.v1alpha3.VirtualServiceList;
 import io.fabric8.istio.api.networking.v1alpha3.WorkloadEntry;
 import io.fabric8.istio.api.networking.v1alpha3.WorkloadEntryList;
+import io.fabric8.istio.api.networking.v1alpha3.WorkloadGroup;
+import io.fabric8.istio.api.networking.v1alpha3.WorkloadGroupList;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.extension.ClientAdapter;
@@ -75,5 +77,10 @@ public class V1alpha3APIGroupClient extends ClientAdapter<V1alpha3APIGroupClient
   @Override
   public MixedOperation<WorkloadEntry, WorkloadEntryList, Resource<WorkloadEntry>> workloadEntries() {
     return resources(WorkloadEntry.class, WorkloadEntryList.class);
+  }
+
+  @Override
+  public MixedOperation<WorkloadGroup, WorkloadGroupList, Resource<WorkloadGroup>> workloadGroups() {
+    return resources(WorkloadGroup.class, WorkloadGroupList.class);
   }
 }

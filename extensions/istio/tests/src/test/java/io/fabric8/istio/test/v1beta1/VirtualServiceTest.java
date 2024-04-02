@@ -25,6 +25,7 @@ import io.fabric8.istio.api.networking.v1beta1.HTTPRouteBuilder;
 import io.fabric8.istio.api.networking.v1beta1.HTTPRouteDestination;
 import io.fabric8.istio.api.networking.v1beta1.HTTPRouteDestinationBuilder;
 import io.fabric8.istio.api.networking.v1beta1.StringMatch;
+import io.fabric8.istio.api.networking.v1beta1.StringMatchBuilder;
 import io.fabric8.istio.api.networking.v1beta1.StringMatchPrefix;
 import io.fabric8.istio.api.networking.v1beta1.StringMatchRegex;
 import io.fabric8.istio.api.networking.v1beta1.VirtualService;
@@ -82,12 +83,18 @@ class VirtualServiceTest {
         .withHttp(
             new HTTPRouteBuilder().withName("reviews-v2-routes")
                 .withMatch(
-                    new HTTPMatchRequestBuilder().withUri(new StringMatch(new StringMatchPrefix("/wpcatalog"))).build(),
-                    new HTTPMatchRequestBuilder().withUri(new StringMatch(new StringMatchPrefix("/consumercatalog"))).build())
+                    new HTTPMatchRequestBuilder()
+                        .withUri(new StringMatchBuilder().withMatchType(new StringMatchPrefix("/wpcatalog")).build()).build(),
+                    new HTTPMatchRequestBuilder()
+                        .withUri(new StringMatchBuilder().withMatchType(new StringMatchPrefix("/consumercatalog")).build())
+                        .build())
                 .withRewrite(new HTTPRewriteBuilder().withUri("/newcatalog").build())
                 .withRoute(
                     new HTTPRouteDestinationBuilder()
-                        .withDestination(new Destination("reviews.prod.svc.cluster.local", null, "v2"))
+                        .withNewDestination()
+                        .withHost("reviews.prod.svc.cluster.local")
+                        .withSubset("v2")
+                        .endDestination()
                         .build())
                 .build())
         .endSpec()

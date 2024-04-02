@@ -43,6 +43,7 @@ import lombok.experimental.Accessors;
     "http1MaxPendingRequests",
     "http2MaxRequests",
     "idleTimeout",
+    "maxConcurrentStreams",
     "maxRequestsPerConnection",
     "maxRetries",
     "useClientProtocol"
@@ -81,6 +82,8 @@ public class ConnectionPoolSettingsHTTPSettings implements Editable<ConnectionPo
     private Integer http2MaxRequests;
     @JsonProperty("idleTimeout")
     private String idleTimeout;
+    @JsonProperty("maxConcurrentStreams")
+    private Integer maxConcurrentStreams;
     @JsonProperty("maxRequestsPerConnection")
     private Integer maxRequestsPerConnection;
     @JsonProperty("maxRetries")
@@ -97,12 +100,13 @@ public class ConnectionPoolSettingsHTTPSettings implements Editable<ConnectionPo
     public ConnectionPoolSettingsHTTPSettings() {
     }
 
-    public ConnectionPoolSettingsHTTPSettings(ConnectionPoolSettingsHTTPSettingsH2UpgradePolicy h2UpgradePolicy, Integer http1MaxPendingRequests, Integer http2MaxRequests, String idleTimeout, Integer maxRequestsPerConnection, Integer maxRetries, Boolean useClientProtocol) {
+    public ConnectionPoolSettingsHTTPSettings(ConnectionPoolSettingsHTTPSettingsH2UpgradePolicy h2UpgradePolicy, Integer http1MaxPendingRequests, Integer http2MaxRequests, String idleTimeout, Integer maxConcurrentStreams, Integer maxRequestsPerConnection, Integer maxRetries, Boolean useClientProtocol) {
         super();
         this.h2UpgradePolicy = h2UpgradePolicy;
         this.http1MaxPendingRequests = http1MaxPendingRequests;
         this.http2MaxRequests = http2MaxRequests;
         this.idleTimeout = idleTimeout;
+        this.maxConcurrentStreams = maxConcurrentStreams;
         this.maxRequestsPerConnection = maxRequestsPerConnection;
         this.maxRetries = maxRetries;
         this.useClientProtocol = useClientProtocol;
@@ -146,6 +150,16 @@ public class ConnectionPoolSettingsHTTPSettings implements Editable<ConnectionPo
     @JsonProperty("idleTimeout")
     public void setIdleTimeout(String idleTimeout) {
         this.idleTimeout = idleTimeout;
+    }
+
+    @JsonProperty("maxConcurrentStreams")
+    public Integer getMaxConcurrentStreams() {
+        return maxConcurrentStreams;
+    }
+
+    @JsonProperty("maxConcurrentStreams")
+    public void setMaxConcurrentStreams(Integer maxConcurrentStreams) {
+        this.maxConcurrentStreams = maxConcurrentStreams;
     }
 
     @JsonProperty("maxRequestsPerConnection")

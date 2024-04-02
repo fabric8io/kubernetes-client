@@ -42,6 +42,7 @@ import lombok.experimental.Accessors;
     "kind",
     "metadata",
     "egress",
+    "inboundConnectionPool",
     "ingress",
     "outboundTrafficPolicy",
     "workloadSelector"
@@ -75,6 +76,8 @@ public class SidecarSpec implements Editable<SidecarSpecBuilder> , KubernetesRes
     @JsonProperty("egress")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<IstioEgressListener> egress = new ArrayList<IstioEgressListener>();
+    @JsonProperty("inboundConnectionPool")
+    private ConnectionPoolSettings inboundConnectionPool;
     @JsonProperty("ingress")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<IstioIngressListener> ingress = new ArrayList<IstioIngressListener>();
@@ -92,9 +95,10 @@ public class SidecarSpec implements Editable<SidecarSpecBuilder> , KubernetesRes
     public SidecarSpec() {
     }
 
-    public SidecarSpec(List<IstioEgressListener> egress, List<IstioIngressListener> ingress, OutboundTrafficPolicy outboundTrafficPolicy, WorkloadSelector workloadSelector) {
+    public SidecarSpec(List<IstioEgressListener> egress, ConnectionPoolSettings inboundConnectionPool, List<IstioIngressListener> ingress, OutboundTrafficPolicy outboundTrafficPolicy, WorkloadSelector workloadSelector) {
         super();
         this.egress = egress;
+        this.inboundConnectionPool = inboundConnectionPool;
         this.ingress = ingress;
         this.outboundTrafficPolicy = outboundTrafficPolicy;
         this.workloadSelector = workloadSelector;
@@ -108,6 +112,16 @@ public class SidecarSpec implements Editable<SidecarSpecBuilder> , KubernetesRes
     @JsonProperty("egress")
     public void setEgress(List<IstioEgressListener> egress) {
         this.egress = egress;
+    }
+
+    @JsonProperty("inboundConnectionPool")
+    public ConnectionPoolSettings getInboundConnectionPool() {
+        return inboundConnectionPool;
+    }
+
+    @JsonProperty("inboundConnectionPool")
+    public void setInboundConnectionPool(ConnectionPoolSettings inboundConnectionPool) {
+        this.inboundConnectionPool = inboundConnectionPool;
     }
 
     @JsonProperty("ingress")

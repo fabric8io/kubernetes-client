@@ -1,0 +1,24 @@
+{
+  "apiVersion": "telemetry.istio.io/v1alpha1",
+  "kind": "Telemetry",
+  "metadata": {
+    "name": "foo-tracing-alternate"
+  },
+  "spec": {
+    "selector": {
+      "matchLabels": {
+        "service.istio.io/canonical-name": "foo"
+      }
+    },
+    "tracing": [
+      {
+        "providers": [
+          {
+            "name": "zipkin-alternate"
+          }
+        ],
+        "randomSamplingPercentage": 10
+      }
+    ]
+  }
+}

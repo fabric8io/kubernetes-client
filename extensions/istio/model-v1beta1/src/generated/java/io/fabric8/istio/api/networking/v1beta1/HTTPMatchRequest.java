@@ -52,6 +52,7 @@ import lombok.experimental.Accessors;
     "scheme",
     "sourceLabels",
     "sourceNamespace",
+    "statPrefix",
     "uri",
     "withoutHeaders"
 })
@@ -107,6 +108,8 @@ public class HTTPMatchRequest implements Editable<HTTPMatchRequestBuilder> , Kub
     private Map<String, String> sourceLabels = new LinkedHashMap<String, String>();
     @JsonProperty("sourceNamespace")
     private java.lang.String sourceNamespace;
+    @JsonProperty("statPrefix")
+    private java.lang.String statPrefix;
     @JsonProperty("uri")
     private io.fabric8.istio.api.networking.v1beta1.StringMatch uri;
     @JsonProperty("withoutHeaders")
@@ -122,7 +125,7 @@ public class HTTPMatchRequest implements Editable<HTTPMatchRequestBuilder> , Kub
     public HTTPMatchRequest() {
     }
 
-    public HTTPMatchRequest(io.fabric8.istio.api.networking.v1beta1.StringMatch authority, List<java.lang.String> gateways, Map<String, io.fabric8.istio.api.networking.v1beta1.StringMatch> headers, Boolean ignoreUriCase, io.fabric8.istio.api.networking.v1beta1.StringMatch method, java.lang.String name, Integer port, Map<String, io.fabric8.istio.api.networking.v1beta1.StringMatch> queryParams, io.fabric8.istio.api.networking.v1beta1.StringMatch scheme, Map<String, String> sourceLabels, java.lang.String sourceNamespace, io.fabric8.istio.api.networking.v1beta1.StringMatch uri, Map<String, io.fabric8.istio.api.networking.v1beta1.StringMatch> withoutHeaders) {
+    public HTTPMatchRequest(io.fabric8.istio.api.networking.v1beta1.StringMatch authority, List<java.lang.String> gateways, Map<String, io.fabric8.istio.api.networking.v1beta1.StringMatch> headers, Boolean ignoreUriCase, io.fabric8.istio.api.networking.v1beta1.StringMatch method, java.lang.String name, Integer port, Map<String, io.fabric8.istio.api.networking.v1beta1.StringMatch> queryParams, io.fabric8.istio.api.networking.v1beta1.StringMatch scheme, Map<String, String> sourceLabels, java.lang.String sourceNamespace, java.lang.String statPrefix, io.fabric8.istio.api.networking.v1beta1.StringMatch uri, Map<String, io.fabric8.istio.api.networking.v1beta1.StringMatch> withoutHeaders) {
         super();
         this.authority = authority;
         this.gateways = gateways;
@@ -135,6 +138,7 @@ public class HTTPMatchRequest implements Editable<HTTPMatchRequestBuilder> , Kub
         this.scheme = scheme;
         this.sourceLabels = sourceLabels;
         this.sourceNamespace = sourceNamespace;
+        this.statPrefix = statPrefix;
         this.uri = uri;
         this.withoutHeaders = withoutHeaders;
     }
@@ -247,6 +251,16 @@ public class HTTPMatchRequest implements Editable<HTTPMatchRequestBuilder> , Kub
     @JsonProperty("sourceNamespace")
     public void setSourceNamespace(java.lang.String sourceNamespace) {
         this.sourceNamespace = sourceNamespace;
+    }
+
+    @JsonProperty("statPrefix")
+    public java.lang.String getStatPrefix() {
+        return statPrefix;
+    }
+
+    @JsonProperty("statPrefix")
+    public void setStatPrefix(java.lang.String statPrefix) {
+        this.statPrefix = statPrefix;
     }
 
     @JsonProperty("uri")

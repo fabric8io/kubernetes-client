@@ -17,7 +17,7 @@ package io.fabric8.istio.test.v1beta1;
 
 import io.fabric8.istio.api.security.v1beta1.PeerAuthentication;
 import io.fabric8.istio.api.security.v1beta1.PeerAuthenticationBuilder;
-import io.fabric8.istio.api.security.v1beta1.PeerAuthenticationMutualTLS;
+import io.fabric8.istio.api.security.v1beta1.PeerAuthenticationMutualTLSBuilder;
 import io.fabric8.istio.api.security.v1beta1.PeerAuthenticationMutualTLSMode;
 import io.fabric8.istio.api.type.v1beta1.WorkloadSelectorBuilder;
 import io.fabric8.istio.client.IstioClient;
@@ -62,7 +62,7 @@ class PeerAuthenticationTest {
         .endMetadata()
         .withNewSpec()
         .withSelector(new WorkloadSelectorBuilder().addToMatchLabels("app", "reviews").build())
-        .withMtls(new PeerAuthenticationMutualTLS(PeerAuthenticationMutualTLSMode.STRICT))
+        .withMtls(new PeerAuthenticationMutualTLSBuilder().withMode(PeerAuthenticationMutualTLSMode.STRICT).build())
         .endSpec()
         .build();
 

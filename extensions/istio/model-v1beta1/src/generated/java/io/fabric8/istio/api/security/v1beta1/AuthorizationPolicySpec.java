@@ -14,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.istio.api.type.v1beta1.PolicyTargetReference;
 import io.fabric8.istio.api.type.v1beta1.WorkloadSelector;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
@@ -46,7 +47,8 @@ import lombok.experimental.Accessors;
     "ActionDetail",
     "action",
     "rules",
-    "selector"
+    "selector",
+    "targetRef"
 })
 @ToString
 @EqualsAndHashCode
@@ -84,6 +86,8 @@ public class AuthorizationPolicySpec implements Editable<AuthorizationPolicySpec
     private List<Rule> rules = new ArrayList<Rule>();
     @JsonProperty("selector")
     private WorkloadSelector selector;
+    @JsonProperty("targetRef")
+    private PolicyTargetReference targetRef;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -94,12 +98,13 @@ public class AuthorizationPolicySpec implements Editable<AuthorizationPolicySpec
     public AuthorizationPolicySpec() {
     }
 
-    public AuthorizationPolicySpec(IsAuthorizationPolicyActionDetail actionDetail, AuthorizationPolicyAction action, List<Rule> rules, WorkloadSelector selector) {
+    public AuthorizationPolicySpec(IsAuthorizationPolicyActionDetail actionDetail, AuthorizationPolicyAction action, List<Rule> rules, WorkloadSelector selector, PolicyTargetReference targetRef) {
         super();
         this.actionDetail = actionDetail;
         this.action = action;
         this.rules = rules;
         this.selector = selector;
+        this.targetRef = targetRef;
     }
 
     @JsonProperty("ActionDetail")
@@ -140,6 +145,16 @@ public class AuthorizationPolicySpec implements Editable<AuthorizationPolicySpec
     @JsonProperty("selector")
     public void setSelector(WorkloadSelector selector) {
         this.selector = selector;
+    }
+
+    @JsonProperty("targetRef")
+    public PolicyTargetReference getTargetRef() {
+        return targetRef;
+    }
+
+    @JsonProperty("targetRef")
+    public void setTargetRef(PolicyTargetReference targetRef) {
+        this.targetRef = targetRef;
     }
 
     @JsonIgnore

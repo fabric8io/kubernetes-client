@@ -19,9 +19,11 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/gogo/protobuf/types"
-
 	"github.com/fabric8io/kubernetes-client/generator/pkg/schemagen"
+	"github.com/gogo/protobuf/types"
+	duration "github.com/golang/protobuf/ptypes/duration"
+	timestamp "github.com/golang/protobuf/ptypes/timestamp"
+	wrappers "github.com/golang/protobuf/ptypes/wrappers"
 
 	// Internal APIs:
 	api_networking_v1beta1 "istio.io/api/networking/v1beta1"
@@ -46,6 +48,8 @@ func main() {
 		reflect.TypeOf(client_networking_v1beta1.SidecarList{}):         schemagen.Namespaced,
 		reflect.TypeOf(client_networking_v1beta1.VirtualServiceList{}):  schemagen.Namespaced,
 		reflect.TypeOf(client_networking_v1beta1.WorkloadEntryList{}):   schemagen.Namespaced,
+		reflect.TypeOf(client_networking_v1beta1.WorkloadGroupList{}):   schemagen.Namespaced,
+		reflect.TypeOf(client_networking_v1beta1.ProxyConfigList{}):     schemagen.Namespaced,
 
 		// security
 		reflect.TypeOf(client_security_v1beta1.PeerAuthenticationList{}):    schemagen.Namespaced,
@@ -85,30 +89,36 @@ func main() {
 	//  - replace <key> with <value> aka "package prefix"
 	//  - replace '/' with '.' for a valid java package name
 	mappingSchema := map[string]string{
-	  "istio.io/api/networking/v1beta1": "io.fabric8.istio.api.networking.v1beta1",
-		"istio.io/api/type/v1beta1": "io.fabric8.istio.api.type.v1beta1",
-		"istio.io/api/security/v1beta1": "io.fabric8.istio.api.security.v1beta1",
+		"istio.io/api/networking/v1beta1": "io.fabric8.istio.api.networking.v1beta1",
+		"istio.io/api/type/v1beta1":       "io.fabric8.istio.api.type.v1beta1",
+		"istio.io/api/security/v1beta1":   "io.fabric8.istio.api.security.v1beta1",
 	}
 
 	// overwriting some times
 	manualTypeMap := map[reflect.Type]string{
-		reflect.TypeOf(types.BoolValue{}):   "java.lang.Boolean",
-		reflect.TypeOf(types.DoubleValue{}): "java.lang.Double",
-		reflect.TypeOf(types.Duration{}):    "java.lang.String",
-		reflect.TypeOf(types.Timestamp{}):   "java.lang.String",
-		reflect.TypeOf(types.Int32Value{}):  "java.lang.Integer",
-		reflect.TypeOf(types.UInt32Value{}): "java.lang.Integer",
+		reflect.TypeOf(types.BoolValue{}):      "java.lang.Boolean",
+		reflect.TypeOf(wrappers.BoolValue{}):   "java.lang.Boolean",
+		reflect.TypeOf(wrappers.UInt32Value{}): "java.lang.Integer",
+		reflect.TypeOf(wrappers.Int32Value{}):  "java.lang.Integer",
+		reflect.TypeOf(types.DoubleValue{}):    "java.lang.Double",
+		reflect.TypeOf(duration.Duration{}):    "java.lang.String",
+		reflect.TypeOf(timestamp.Timestamp{}):  "java.lang.String",
+		reflect.TypeOf(types.Int32Value{}):     "java.lang.Integer",
+		reflect.TypeOf(types.UInt32Value{}):    "java.lang.Integer",
 	}
 
 	// types for interfaces
 	interfacesMapping := map[string][]reflect.Type{
 		// networking
-		"istio.io/api/networking/v1beta1/isStringMatch_MatchType":                         {reflect.TypeOf(api_networking_v1beta1.StringMatch_Exact{}), reflect.TypeOf(api_networking_v1beta1.StringMatch_Regex{}), reflect.TypeOf(api_networking_v1beta1.StringMatch_Prefix{})},
-		"istio.io/api/networking/v1beta1/isHTTPFaultInjection_Abort_ErrorType":            {reflect.TypeOf(api_networking_v1beta1.HTTPFaultInjection_Abort_HttpStatus{}), reflect.TypeOf(api_networking_v1beta1.HTTPFaultInjection_Abort_GrpcStatus{}), reflect.TypeOf(api_networking_v1beta1.HTTPFaultInjection_Abort_Http2Error{})},
-		"istio.io/api/networking/v1beta1/isHTTPFaultInjection_Delay_HttpDelayType":        {reflect.TypeOf(api_networking_v1beta1.HTTPFaultInjection_Delay_ExponentialDelay{}), reflect.TypeOf(api_networking_v1beta1.HTTPFaultInjection_Delay_FixedDelay{})},
-		"istio.io/api/networking/v1beta1/isLoadBalancerSettings_LbPolicy":                 {reflect.TypeOf(api_networking_v1beta1.LoadBalancerSettings_ConsistentHash{}), reflect.TypeOf(api_networking_v1beta1.LoadBalancerSettings_Simple{})},
-		"istio.io/api/networking/v1beta1/isLoadBalancerSettings_ConsistentHashLB_HashKey": {reflect.TypeOf(api_networking_v1beta1.LoadBalancerSettings_ConsistentHashLB_HttpHeaderName{}), reflect.TypeOf(api_networking_v1beta1.LoadBalancerSettings_ConsistentHashLB_HttpCookie{}), reflect.TypeOf(api_networking_v1beta1.LoadBalancerSettings_ConsistentHashLB_UseSourceIp{}), reflect.TypeOf(api_networking_v1beta1.LoadBalancerSettings_ConsistentHashLB_HttpQueryParameterName{})},
-		"istio.io/api/networking/v1beta1/isHTTPRedirect_RedirectPort":                     {reflect.TypeOf(api_networking_v1beta1.HTTPRedirect_Port{}), reflect.TypeOf(api_networking_v1beta1.HTTPRedirect_DerivePort{})},
+		"istio.io/api/networking/v1beta1/isStringMatch_MatchType":                               {reflect.TypeOf(api_networking_v1beta1.StringMatch_Exact{}), reflect.TypeOf(api_networking_v1beta1.StringMatch_Regex{}), reflect.TypeOf(api_networking_v1beta1.StringMatch_Prefix{})},
+		"istio.io/api/networking/v1beta1/isHTTPFaultInjection_Abort_ErrorType":                  {reflect.TypeOf(api_networking_v1beta1.HTTPFaultInjection_Abort_HttpStatus{}), reflect.TypeOf(api_networking_v1beta1.HTTPFaultInjection_Abort_GrpcStatus{}), reflect.TypeOf(api_networking_v1beta1.HTTPFaultInjection_Abort_Http2Error{})},
+		"istio.io/api/networking/v1beta1/isHTTPFaultInjection_Delay_HttpDelayType":              {reflect.TypeOf(api_networking_v1beta1.HTTPFaultInjection_Delay_ExponentialDelay{}), reflect.TypeOf(api_networking_v1beta1.HTTPFaultInjection_Delay_FixedDelay{})},
+		"istio.io/api/networking/v1beta1/isLoadBalancerSettings_LbPolicy":                       {reflect.TypeOf(api_networking_v1beta1.LoadBalancerSettings_ConsistentHash{}), reflect.TypeOf(api_networking_v1beta1.LoadBalancerSettings_Simple{})},
+		"istio.io/api/networking/v1beta1/isLoadBalancerSettings_ConsistentHashLB_HashKey":       {reflect.TypeOf(api_networking_v1beta1.LoadBalancerSettings_ConsistentHashLB_HttpHeaderName{}), reflect.TypeOf(api_networking_v1beta1.LoadBalancerSettings_ConsistentHashLB_HttpCookie{}), reflect.TypeOf(api_networking_v1beta1.LoadBalancerSettings_ConsistentHashLB_UseSourceIp{}), reflect.TypeOf(api_networking_v1beta1.LoadBalancerSettings_ConsistentHashLB_HttpQueryParameterName{})},
+		"istio.io/api/networking/v1beta1/isHTTPRedirect_RedirectPort":                           {reflect.TypeOf(api_networking_v1beta1.HTTPRedirect_Port{}), reflect.TypeOf(api_networking_v1beta1.HTTPRedirect_DerivePort{})},
+		"istio.io/api/networking/v1beta1/isHTTPBody_Specifier":                                  {reflect.TypeOf(api_networking_v1beta1.HTTPBody_String_{}), reflect.TypeOf(api_networking_v1beta1.HTTPBody_Bytes{})},
+		"istio.io/api/networking/v1beta1/isLoadBalancerSettings_ConsistentHashLB_HashAlgorithm": {reflect.TypeOf(api_networking_v1beta1.LoadBalancerSettings_ConsistentHashLB_RingHash_{}), reflect.TypeOf(api_networking_v1beta1.LoadBalancerSettings_ConsistentHashLB_Maglev{})},
+		"istio.io/api/networking/v1beta1/isReadinessProbe_HealthCheckMethod":                    {reflect.TypeOf(api_networking_v1beta1.ReadinessProbe_HttpGet{}), reflect.TypeOf(api_networking_v1beta1.ReadinessProbe_TcpSocket{}), reflect.TypeOf(api_networking_v1beta1.ReadinessProbe_Exec{})},
 
 		// security
 		"istio.io/api/security/v1beta1/isAuthorizationPolicy_ActionDetail": {reflect.TypeOf(api_security_v1beta1.AuthorizationPolicy_Provider{})},
@@ -117,6 +127,7 @@ func main() {
 	// custom name rules
 	javaNameStrategyMapping := schemagen.JavaNameStrategyMapping{
 		ResolveFieldNameFromProtobufFirst: true,
+		SkipFieldWithEmptyTag:             true,
 		NameMapping: map[reflect.Type]string{
 			reflect.TypeOf(api_networking_v1beta1.DestinationRule{}):     "io.fabric8.istio.api.networking.v1beta1.DestinationRuleSpec",
 			reflect.TypeOf(api_networking_v1beta1.Gateway{}):             "io.fabric8.istio.api.networking.v1beta1.GatewaySpec",
@@ -124,12 +135,16 @@ func main() {
 			reflect.TypeOf(api_networking_v1beta1.Sidecar{}):             "io.fabric8.istio.api.networking.v1beta1.SidecarSpec",
 			reflect.TypeOf(api_networking_v1beta1.VirtualService{}):      "io.fabric8.istio.api.networking.v1beta1.VirtualServiceSpec",
 			reflect.TypeOf(api_networking_v1beta1.WorkloadEntry{}):       "io.fabric8.istio.api.networking.v1beta1.WorkloadEntrySpec",
+			reflect.TypeOf(api_networking_v1beta1.WorkloadGroup{}):       "io.fabric8.istio.api.networking.v1beta1.WorkloadGroupSpec",
+			reflect.TypeOf(api_networking_v1beta1.ProxyConfig{}):         "io.fabric8.istio.api.networking.v1beta1.ProxyConfigSpec",
 			reflect.TypeOf(api_security_v1beta1.AuthorizationPolicy{}):   "io.fabric8.istio.api.security.v1beta1.AuthorizationPolicySpec",
 			reflect.TypeOf(api_security_v1beta1.PeerAuthentication{}):    "io.fabric8.istio.api.security.v1beta1.PeerAuthenticationSpec",
 			reflect.TypeOf(api_security_v1beta1.RequestAuthentication{}): "io.fabric8.istio.api.security.v1beta1.RequestAuthenticationSpec",
 
 			// Avoid same name for:
 			reflect.TypeOf(api_networking_v1beta1.LoadBalancerSettings_ConsistentHashLB_HTTPCookie{}): "io.fabric8.istio.api.networking.v1beta1.LoadBalancerSettingsConsistentHashLBHttpCookieValue",
+			reflect.TypeOf(api_networking_v1beta1.LoadBalancerSettings_ConsistentHashLB_RingHash{}):   "io.fabric8.istio.api.networking.v1beta1.LoadBalancerSettingsConsistentHashLBRingHashValue",
+			reflect.TypeOf(api_networking_v1beta1.LoadBalancerSettings_ConsistentHashLB_MagLev{}):     "io.fabric8.istio.api.networking.v1beta1.LoadBalancerSettingsConsistentHashLBMagLevValue",
 		},
 		CustomJavaNameRule: func(packageName *string, className *string) {
 			// remove underscores
@@ -142,5 +157,7 @@ func main() {
 
 	json := schemagen.GenerateSchemaWithAllOptions("http://fabric8.io/istio/IstioSchema#", crdLists, typesDescriptors, providedPackages, manualTypeMap, packageMapping, mappingSchema, providedTypes, constraints, interfacesMapping, javaNameStrategyMapping, enumMapping, "io.fabric8")
 
+	// Workaround to avoid error due to two types with same name RingHash and RingHash_
+	json = strings.Replace(json, "RingHash_", "RingHashWrapper", -1)
 	fmt.Println(json)
 }

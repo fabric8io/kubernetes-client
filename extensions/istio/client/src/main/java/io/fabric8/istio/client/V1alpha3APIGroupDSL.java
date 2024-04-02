@@ -29,6 +29,8 @@ import io.fabric8.istio.api.networking.v1alpha3.VirtualService;
 import io.fabric8.istio.api.networking.v1alpha3.VirtualServiceList;
 import io.fabric8.istio.api.networking.v1alpha3.WorkloadEntry;
 import io.fabric8.istio.api.networking.v1alpha3.WorkloadEntryList;
+import io.fabric8.istio.api.networking.v1alpha3.WorkloadGroup;
+import io.fabric8.istio.api.networking.v1alpha3.WorkloadGroupList;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
@@ -87,4 +89,11 @@ public interface V1alpha3APIGroupDSL extends Client {
    * @return MixedOperation for WorkloadEntry class
    */
   MixedOperation<WorkloadEntry, WorkloadEntryList, Resource<WorkloadEntry>> workloadEntries();
+
+  /**
+   * API entrypoint for <a href="https://istio.io/latest/docs/reference/config/networking/workload-group/">WorkloadGroup</a>
+   *
+   * @return MixedOperation for WorkloadGroup class
+   */
+  MixedOperation<WorkloadGroup, WorkloadGroupList, Resource<WorkloadGroup>> workloadGroups();
 }
