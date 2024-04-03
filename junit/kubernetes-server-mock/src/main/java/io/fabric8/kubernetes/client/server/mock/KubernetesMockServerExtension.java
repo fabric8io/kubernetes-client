@@ -114,9 +114,7 @@ public class KubernetesMockServerExtension
       dispatcher = new MockDispatcher(responses);
     }
     final KubernetesMockServer mock = new KubernetesMockServer(new Context(Serialization.jsonMapper()),
-        new MockWebServer(), responses,
-        dispatcher,
-        a.https());
+        new MockWebServer(), responses, dispatcher, a.https());
     mock.init();
     if (isStatic) {
       staticMock = mock;
