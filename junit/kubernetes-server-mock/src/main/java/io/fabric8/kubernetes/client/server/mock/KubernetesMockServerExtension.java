@@ -46,6 +46,8 @@ import java.util.Queue;
 public class KubernetesMockServerExtension
     implements AfterEachCallback, AfterAllCallback, BeforeEachCallback, BeforeAllCallback {
 
+  private KubernetesMockServer staticMock;
+  private NamespacedKubernetesClient staticClient;
   private KubernetesMockServer mock;
   private NamespacedKubernetesClient client;
 
@@ -55,18 +57,12 @@ public class KubernetesMockServerExtension
 
   @Override
   public void afterEach(ExtensionContext context) {
-    Optional<Class<?>> optClass = context.getTestClass();
-    if (optClass.isPresent()) {
-      Class<?> testClass = optClass.get();
-      if (findField(testClass, true) == null) {
-        destroy();
-      }
-    }
+    destroy();
   }
 
   @Override
   public void afterAll(ExtensionContext context) {
-    destroy();
+    destroyStatic();
   }
 
   @Override
@@ -82,9 +78,21 @@ public class KubernetesMockServerExtension
   protected void setFieldIfKubernetesClientOrMockServer(ExtensionContext context, boolean isStatic, Field field)
       throws IllegalAccessException {
     if (extensionMatches(field.getType())) {
+      final NamespacedKubernetesClient client;
+      if (isStatic) {
+        client = staticClient;
+      } else {
+        client = this.client;
+      }
       setFieldIfEqualsToProvidedType(context, isStatic, field, Client.class,
           (i, f) -> f.set(i, client.adapt((Class<Client>) f.getType())));
     } else {
+      final KubernetesMockServer mock;
+      if (isStatic) {
+        mock = staticMock;
+      } else {
+        mock = this.mock;
+      }
       setFieldIfEqualsToProvidedType(context, isStatic, field, getKubernetesMockServerType(), (i, f) -> f.set(i, mock));
     }
   }
@@ -96,7 +104,7 @@ public class KubernetesMockServerExtension
     }
   }
 
-  protected void initializeKubernetesClientAndMockServer(Class<?> testClass) {
+  protected void initializeKubernetesClientAndMockServer(Class<?> testClass, boolean isStatic) {
     EnableKubernetesMockClient a = testClass.getAnnotation(EnableKubernetesMockClient.class);
     final Map<ServerRequest, Queue<ServerResponse>> responses = new HashMap<>();
     final Dispatcher dispatcher;
@@ -105,19 +113,41 @@ public class KubernetesMockServerExtension
     } else {
       dispatcher = new MockDispatcher(responses);
     }
-    mock = new KubernetesMockServer(new Context(Serialization.jsonMapper()), new MockWebServer(), responses, dispatcher,
+    final KubernetesMockServer mock = new KubernetesMockServer(new Context(Serialization.jsonMapper()),
+        new MockWebServer(), responses,
+        dispatcher,
         a.https());
     mock.init();
+    if (isStatic) {
+      staticMock = mock;
+    } else {
+      this.mock = mock;
+    }
     try {
-      client = mock.createClient(a.kubernetesClientBuilderCustomizer().getConstructor().newInstance());
+      final NamespacedKubernetesClient client = mock.createClient(
+          a.kubernetesClientBuilderCustomizer().getConstructor().newInstance());
+      if (isStatic) {
+        staticClient = client;
+      } else {
+        this.client = client;
+      }
     } catch (Exception e) {
       throw new IllegalArgumentException("The provided kubernetesClientBuilder is invalid", e);
     }
   }
 
   protected void destroy() {
-    mock.destroy();
-    client.close();
+    if (mock != null) {
+      mock.destroy();
+    }
+    if (client != null) {
+      client.close();
+    }
+  }
+
+  protected void destroyStatic() {
+    staticMock.destroy();
+    staticClient.close();
   }
 
   /**
@@ -152,7 +182,7 @@ public class KubernetesMockServerExtension
     Optional<Class<?>> optClass = context.getTestClass();
     if (optClass.isPresent()) {
       Class<?> testClass = optClass.get();
-      initializeKubernetesClientAndMockServer(testClass);
+      initializeKubernetesClientAndMockServer(testClass, isStatic);
       processTestClassDeclaredFields(context, isStatic, testClass);
     }
   }
