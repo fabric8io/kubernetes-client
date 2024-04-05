@@ -39,8 +39,8 @@ public class OpenShiftMockServerExtension extends KubernetesMockServerExtension 
 
   private OpenShiftMockServer staticOpenShiftMockServer;
   private NamespacedOpenShiftClient staticOpenShiftClient;
-  private OpenShiftMockServer openShiftMockServer;
-  private NamespacedOpenShiftClient openShiftClient;
+  private OpenShiftMockServer instantOpenShiftMockServer;
+  private NamespacedOpenShiftClient instantOpenShiftClient;
 
   @Override
   protected void destroyStatic() {
@@ -50,11 +50,11 @@ public class OpenShiftMockServerExtension extends KubernetesMockServerExtension 
 
   @Override
   protected void destroy() {
-    if (openShiftMockServer != null) {
-      openShiftMockServer.destroy();
+    if (instantOpenShiftMockServer != null) {
+      instantOpenShiftMockServer.destroy();
     }
-    if (openShiftClient != null) {
-      openShiftClient.close();
+    if (instantOpenShiftClient != null) {
+      instantOpenShiftClient.close();
     }
   }
 
@@ -83,8 +83,8 @@ public class OpenShiftMockServerExtension extends KubernetesMockServerExtension 
       staticOpenShiftMockServer = openShiftMockServer;
       staticOpenShiftClient = openShiftClient;
     } else {
-      this.openShiftMockServer = openShiftMockServer;
-      this.openShiftClient = openShiftClient;
+      instantOpenShiftMockServer = openShiftMockServer;
+      instantOpenShiftClient = openShiftClient;
     }
   }
 
@@ -97,8 +97,8 @@ public class OpenShiftMockServerExtension extends KubernetesMockServerExtension 
       openShiftClient = staticOpenShiftClient;
       openShiftMockServer = staticOpenShiftMockServer;
     } else {
-      openShiftClient = this.openShiftClient;
-      openShiftMockServer = this.openShiftMockServer;
+      openShiftClient = instantOpenShiftClient;
+      openShiftMockServer = instantOpenShiftMockServer;
     }
     setFieldIfEqualsToProvidedType(context, isStatic, field, getClientType(), (i, f) -> f.set(i, openShiftClient));
     setFieldIfEqualsToProvidedType(context, isStatic, field, getKubernetesMockServerType(),

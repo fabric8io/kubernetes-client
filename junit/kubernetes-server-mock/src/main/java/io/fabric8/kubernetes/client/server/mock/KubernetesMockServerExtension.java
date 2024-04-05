@@ -48,8 +48,8 @@ public class KubernetesMockServerExtension
 
   private KubernetesMockServer staticMock;
   private NamespacedKubernetesClient staticClient;
-  private KubernetesMockServer mock;
-  private NamespacedKubernetesClient client;
+  private KubernetesMockServer instantMock;
+  private NamespacedKubernetesClient instantClient;
 
   public interface SetTestClassField {
     void apply(Object instance, Field f) throws IllegalAccessException;
@@ -82,7 +82,7 @@ public class KubernetesMockServerExtension
       if (isStatic) {
         client = staticClient;
       } else {
-        client = this.client;
+        client = instantClient;
       }
       setFieldIfEqualsToProvidedType(context, isStatic, field, Client.class,
           (i, f) -> f.set(i, client.adapt((Class<Client>) f.getType())));
@@ -91,7 +91,7 @@ public class KubernetesMockServerExtension
       if (isStatic) {
         mock = staticMock;
       } else {
-        mock = this.mock;
+        mock = instantMock;
       }
       setFieldIfEqualsToProvidedType(context, isStatic, field, getKubernetesMockServerType(), (i, f) -> f.set(i, mock));
     }
@@ -119,7 +119,7 @@ public class KubernetesMockServerExtension
     if (isStatic) {
       staticMock = mock;
     } else {
-      this.mock = mock;
+      instantMock = mock;
     }
     try {
       final NamespacedKubernetesClient client = mock.createClient(
@@ -127,7 +127,7 @@ public class KubernetesMockServerExtension
       if (isStatic) {
         staticClient = client;
       } else {
-        this.client = client;
+        instantClient = client;
       }
     } catch (Exception e) {
       throw new IllegalArgumentException("The provided kubernetesClientBuilder is invalid", e);
@@ -135,11 +135,11 @@ public class KubernetesMockServerExtension
   }
 
   protected void destroy() {
-    if (mock != null) {
-      mock.destroy();
+    if (instantMock != null) {
+      instantMock.destroy();
     }
-    if (client != null) {
-      client.close();
+    if (instantClient != null) {
+      instantClient.close();
     }
   }
 
@@ -158,17 +158,6 @@ public class KubernetesMockServerExtension
 
   protected Class<?> getKubernetesMockServerType() {
     return KubernetesMockServer.class;
-  }
-
-  private Field findField(Class<?> testClass, boolean isStatic) {
-    Field[] fields = testClass.getDeclaredFields();
-    for (Field f : fields) {
-      if (Modifier.isStatic(f.getModifiers()) == isStatic &&
-          (extensionMatches(f.getType()) || f.getType().equals(getKubernetesMockServerType()))) {
-        return f;
-      }
-    }
-    return null;
   }
 
   private boolean extensionMatches(Class<?> type) {
