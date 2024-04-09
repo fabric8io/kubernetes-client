@@ -13,13 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.crd.example.multiple.v1;
+package io.fabric8.crd.generator.multiple.v1;
 
-import io.fabric8.kubernetes.client.CustomResource;
-import io.fabric8.kubernetes.model.annotation.Group;
-import io.fabric8.kubernetes.model.annotation.Version;
+public class MultipleSpec {
+  private String v1;
 
-@Group("sample.fabric8.io")
-@Version(value = "v1", storage = false)
-public class Multiple extends CustomResource<MultipleSpec, Void> {
+  public String getV1() {
+    return v1;
+  }
 }

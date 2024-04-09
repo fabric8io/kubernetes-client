@@ -19,15 +19,13 @@ import io.fabric8.crd.generator.decorator.Decorator;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionSpecFluent;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionVersion;
-import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionVersionBuilder;
 
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Predicate;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class EnsureSingleStorageVersionDecorator
     extends CustomResourceDefinitionDecorator<CustomResourceDefinitionSpecFluent<?>> {
-
-  private final AtomicReference<String> storageVersion = new AtomicReference<>();
 
   public EnsureSingleStorageVersionDecorator(String name) {
     super(name);
@@ -35,30 +33,25 @@ public class EnsureSingleStorageVersionDecorator
 
   @Override
   public void andThenVisit(CustomResourceDefinitionSpecFluent<?> spec, ObjectMeta resourceMeta) {
-    Predicate<CustomResourceDefinitionVersionBuilder> hasStorageVersion = v -> v.getStorage() != null && v.getStorage();
+    List<CustomResourceDefinitionVersion> versions = spec.buildVersions();
 
-    if (spec.hasVersions() && !spec.hasMatchingVersion(hasStorageVersion)) {
-      spec.editFirstVersion().withStorage(true).endVersion();
-    }
+    List<String> storageVersions = versions.stream()
+        .filter(v -> Optional.ofNullable(v.getStorage()).orElse(true))
+        .map(CustomResourceDefinitionVersion::getName)
+        .collect(Collectors.toList());
 
-    for (CustomResourceDefinitionVersion version : spec.buildVersions()) {
-      if (version.getStorage() != null && version.getStorage()) {
-        String existing = storageVersion.get();
-        if (existing != null && !existing.equals(version.getName())) {
-          throw new IllegalStateException(String.format(
-              "'%s' custom resource has versions %s and %s marked as storage. Only one version can be marked as storage per custom resource.",
-              resourceMeta.getName(), version.getName(), existing));
-        } else {
-          storageVersion.set(version.getName());
-        }
-      }
+    if (storageVersions.size() > 1) {
+      throw new IllegalStateException(String.format(
+          "'%s' custom resource has versions %s marked as storage. Only one version can be marked as storage per custom resource.",
+          resourceMeta.getName(), storageVersions));
     }
   }
 
   @Override
   public Class<? extends Decorator>[] after() {
-    return new Class[] { AddCustomResourceDefinitionResourceDecorator.class,
-        AddCustomResourceDefinitionVersionDecorator.class, SetStorageVersionDecorator.class };
+    return new Class[] {
+        CustomResourceDefinitionVersionDecorator.class
+    };
   }
 
   @Override
