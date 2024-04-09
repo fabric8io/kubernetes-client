@@ -5,6 +5,7 @@
 #### Bugs
 * Fix #5853: [java-generator] Gracefully handle colliding enum definitions
 * Fix #5860: Corrections to java-generator gradle plugin extension
+* Fix #5817: NPE on EKS OIDC cluster when token needs to be refreshed
 
 #### Improvements
 * Fix #5843: Support existingJavaTypes extension in java-generator
