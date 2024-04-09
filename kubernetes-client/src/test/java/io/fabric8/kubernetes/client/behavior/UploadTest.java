@@ -302,6 +302,7 @@ class UploadTest {
           // When
           final Path toUploadWithModifiedDate = Files.copy(toUpload, tempDir.resolve("upload-sample.txt"));
           assertTrue(toUploadWithModifiedDate.toFile().setLastModified(9999999999999L)); // Would trigger IllegalArgumentException: last modification time '9999999999' is too big ( > 8589934591 ).
+          assertTrue(toUploadWithModifiedDate.toFile().setLastModified(123456L)); // To have a stable, within ranges, value to compare with
           client.pods().inNamespace("default").withName("success-pod").file("/target-dir/file-name.txt")
               .upload(toUploadWithModifiedDate);
           // Then
@@ -312,7 +313,7 @@ class UploadTest {
           final TarArchiveInputStream tar = new TarArchiveInputStream(new ByteArrayInputStream(tarBytes));
           assertThat(tar.getNextEntry())
               .hasFieldOrPropertyWithValue("name", "file-name.txt")
-              .hasFieldOrPropertyWithValue("lastModifiedTime", FileTime.fromMillis(9999999999999L));
+              .hasFieldOrPropertyWithValue("lastModifiedTime", FileTime.fromMillis(123456L));
         }
       }
     }
