@@ -79,18 +79,20 @@ Provide a `source` referencing a file or a folder containing your CRDs definitio
 The full list of options of the CLI is (output of `--help`):
 
 ```
-Usage: java-gen [-hV] [-add-extra-annotations] [-enum-uppercase]
+Usage: java-gen [-hV] [-add-extra-annotations] [-always-preserve-unknown]
+                [-enum-uppercase]
                 [-deserialization-datetime-format=<deserializationDateTimeFormat
                 >] [-dt=<downloadTarget>] [-s=<source>]
                 [-serialization-datetime-format=<serializationDateTimeFormat>]
-                -t=<target> [-files-suffixes=<filesSuffixes>]...
+                -t=<target> [-existing-java-types=<String=String>]...
+                [-files-suffixes=<filesSuffixes>]...
                 [-package-overrides=<String=String>]... [-u=<urls>]...
       -add-extra-annotations, --add-extra-annotations
                           Add extra lombok and sundrio annotation to the
                             generated classes
       -always-preserve-unknown, --always-preserve-unknown
                           Always preserve unknown fields in the generated
-                            classes
+                            classes by emitting an additionalProperties field
       -deserialization-datetime-format, 
         --deserialization-datetime-format=<deserializationDateTimeFormat>
                           DateTime format used for Deserialization of fields of
@@ -100,6 +102,9 @@ Usage: java-gen [-hV] [-add-extra-annotations] [-enum-uppercase]
                             crds
       -enum-uppercase, --enum-uppercase
                           Uppercase the enum values
+      -existing-java-types, --existing-java-types=<String=String>
+                          Mapping from fully qualified generated type to fully
+                            qualified existing Java type
       -files-suffixes, --files-suffixes=<filesSuffixes>
                           Filter the source files with the specific suffixes
   -h, --help              Show this help message and exit.
@@ -140,6 +145,11 @@ And the corresponding configurations of the Maven plugin are (output of `mvn hel
     enumUppercase
       User property: fabric8.java-generator.enum-uppercase
       Generate uppercase Enums
+
+    existingJavaTypes
+      User property: fabric8.java-generator.existing-java-types
+      Mapping from fully qualified generated type to fully qualified existing
+      Java type
 
     extraAnnotations
       User property: fabric8.java-generator.extra-annotations

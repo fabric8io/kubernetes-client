@@ -54,6 +54,6 @@ java {
 }
 
 javaGen {
-    source = file('src/main/resources/broker_activemqartemis_crd.yaml')
+    source = file('src/main/resources')
+    existingJavaTypes(Collections.singletonMap("com.example.v1.existingjavatypespec.Affinity", "io.fabric8.kubernetes.api.model.Affinity"))
 }
-

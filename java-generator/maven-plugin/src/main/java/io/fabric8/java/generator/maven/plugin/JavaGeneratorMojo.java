@@ -122,6 +122,13 @@ public class JavaGeneratorMojo extends AbstractMojo {
   @Parameter(property = "fabric8.java-generator.datetime-deserialization-format", required = false)
   String datetimeDeserializationFormat = null;
 
+  /**
+   * Mapping from fully qualified generated type to fully qualified existing Java type
+   *
+   */
+  @Parameter(property = "fabric8.java-generator.existing-java-types", required = false)
+  Map<String, String> existingJavaTypes = null;
+
   @Override
   public void execute() throws MojoExecutionException {
     final Config config = Config.builder()
@@ -133,6 +140,7 @@ public class JavaGeneratorMojo extends AbstractMojo {
         .filesSuffixes(filesSuffixes)
         .serDatetimeFormat(datetimeSerializationFormat)
         .deserDatetimeFormat(datetimeDeserializationFormat)
+        .existingJavaTypes(existingJavaTypes)
         .build();
 
     List<JavaGenerator> runners = new ArrayList<>();

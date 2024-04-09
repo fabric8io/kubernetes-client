@@ -83,6 +83,10 @@ public class GenerateJavaSources implements Runnable {
       "--deserialization-datetime-format" }, description = "DateTime format used for Deserialization of fields of type `date-time`", required = false)
   String deserializationDateTimeFormat = null;
 
+  @Option(names = { "-existing-java-types",
+      "--existing-java-types" }, description = "Mapping from fully qualified generated type to fully qualified existing Java type", required = false)
+  Map<String, String> existingJavaTypes = null;
+
   @Override
   public void run() {
     final Boolean noGeneratedAnnotations = (skipGeneratedAnnotations != null) ? skipGeneratedAnnotations : false;
@@ -94,7 +98,8 @@ public class GenerateJavaSources implements Runnable {
         packageOverrides,
         filesSuffixes,
         serializationDateTimeFormat,
-        deserializationDateTimeFormat);
+        deserializationDateTimeFormat,
+        existingJavaTypes);
 
     List<JavaGenerator> runners = new ArrayList<>();
 

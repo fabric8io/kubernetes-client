@@ -1,0 +1,30 @@
+ExistingJavaTypeCr[0] = package org.test.v1;
+
+@io.fabric8.kubernetes.model.annotation.Version(value = "v1" , storage = true , served = true)
+@io.fabric8.kubernetes.model.annotation.Group("example.com")
+@io.fabric8.kubernetes.model.annotation.Plural("existingJavaTypes")
+@javax.annotation.processing.Generated("io.fabric8.java.generator.CRGeneratorRunner")
+public class ExistingJavaType extends io.fabric8.kubernetes.client.CustomResource<org.test.v1.ExistingJavaTypeSpec, java.lang.Void> implements io.fabric8.kubernetes.api.model.Namespaced {
+}
+
+ExistingJavaTypeCr[1] = package org.test.v1;
+
+@com.fasterxml.jackson.annotation.JsonInclude(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL)
+@com.fasterxml.jackson.annotation.JsonPropertyOrder({"affinity"})
+@com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@javax.annotation.processing.Generated("io.fabric8.java.generator.CRGeneratorRunner")
+public class ExistingJavaTypeSpec implements io.fabric8.kubernetes.api.model.KubernetesResource {
+
+    @com.fasterxml.jackson.annotation.JsonProperty("affinity")
+    @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
+    private io.fabric8.kubernetes.api.model.Affinity affinity;
+
+    public io.fabric8.kubernetes.api.model.Affinity getAffinity() {
+        return affinity;
+    }
+
+    public void setAffinity(io.fabric8.kubernetes.api.model.Affinity affinity) {
+        this.affinity = affinity;
+    }
+}
+
