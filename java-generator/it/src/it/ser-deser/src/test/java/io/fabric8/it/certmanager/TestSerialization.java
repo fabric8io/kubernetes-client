@@ -50,12 +50,14 @@ class TestSerialization {
     List<CertificateRequestSpec.Usages> usagesList = sample.getSpec().getUsages();
 
     // Assert
-    assertEquals(5, usagesList.size());
+    assertEquals(7, usagesList.size());
     assertEquals(CertificateRequestSpec.Usages._EMPTY, usagesList.get(0));
     assertEquals(CertificateRequestSpec.Usages.SIGNING, usagesList.get(1));
     assertEquals(CertificateRequestSpec.Usages.DIGITAL_SIGNATURE, usagesList.get(2));
     assertEquals(CertificateRequestSpec.Usages.SERVER_AUTH, usagesList.get(3));
     assertEquals(CertificateRequestSpec.Usages.S_MIME, usagesList.get(4));
+    assertEquals(CertificateRequestSpec.Usages.ANOTHER, usagesList.get(5));
+    assertEquals(CertificateRequestSpec.Usages.__ANOTHER, usagesList.get(6));
 
     assertEquals(datetimeValue, sample.getSpec().getDatetime());
   }

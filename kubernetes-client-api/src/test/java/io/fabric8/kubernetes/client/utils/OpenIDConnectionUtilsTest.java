@@ -24,6 +24,7 @@ import io.fabric8.kubernetes.client.http.HttpResponse;
 import io.fabric8.kubernetes.client.internal.KubeConfigUtils;
 import io.fabric8.kubernetes.client.internal.SSLUtils;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
@@ -226,6 +227,34 @@ class OpenIDConnectionUtilsTest {
       sslUtilsMockedStatic.verify(() -> SSLUtils.trustManagers(eq(decodedCert), isNull(), anyBoolean(), isNull(), isNull()));
       sslUtilsMockedStatic.verify(
           () -> SSLUtils.keyManagers(eq(decodedCert), isNull(), isNull(), isNull(), isNull(), isNull(), isNull(), isNull()));
+    }
+  }
+
+  @Test
+  void resolveOIDCTokenFromAuthConfig_whenIDPCertNotPresentInAuthConfig_thenUseCertFileFromConfig(@TempDir File temporaryFolder)
+      throws Exception {
+    try (MockedStatic<SSLUtils> sslUtilsMockedStatic = mockStatic(SSLUtils.class)) {
+      // Given
+      File caCertFile = new File(temporaryFolder, "ca.crt");
+      Files.write(caCertFile.toPath(), "cert".getBytes(StandardCharsets.UTF_8));
+      Map<String, String> currentAuthProviderConfig = new HashMap<>();
+      currentAuthProviderConfig.put(CLIENT_ID_KUBECONFIG, "client-id");
+      currentAuthProviderConfig.put(CLIENT_SECRET_KUBECONFIG, "client-secret");
+      currentAuthProviderConfig.put(ID_TOKEN_KUBECONFIG, "id-token");
+      currentAuthProviderConfig.put(REFRESH_TOKEN_KUBECONFIG, "refresh-token");
+      currentAuthProviderConfig.put(ISSUER_KUBECONFIG, "https://iam.cloud.example.com/identity");
+      Config config = new ConfigBuilder(Config.empty()).withCaCertFile(caCertFile.getAbsolutePath()).build();
+      HttpClient.Builder builder = mock(HttpClient.Builder.class);
+      HttpClient httpClient = mock(HttpClient.class, RETURNS_DEEP_STUBS);
+      when(builder.build()).thenReturn(httpClient);
+
+      // When
+      OpenIDConnectionUtils.resolveOIDCTokenFromAuthConfig(config, currentAuthProviderConfig, builder).get();
+
+      // Then
+      sslUtilsMockedStatic.verify(() -> SSLUtils.trustManagers(eq("cert"), isNull(), anyBoolean(), isNull(), isNull()));
+      sslUtilsMockedStatic.verify(
+          () -> SSLUtils.keyManagers(eq("cert"), isNull(), isNull(), isNull(), isNull(), isNull(), isNull(), isNull()));
     }
   }
 

@@ -98,7 +98,7 @@
     <jackson.version>2.17.0</jackson.version>
     <jetty.version>11.0.20</jetty.version>
     <maven-core.version>3.9.6</maven-core.version>
-    <maven-plugin-annotations.version>3.11.0</maven-plugin-annotations.version>
+    <maven-plugin-annotations.version>3.12.0</maven-plugin-annotations.version>
     <vertx.version>4.5.7</vertx.version>
     <zjsonpatch.version>0.3.0</zjsonpatch.version>
 
@@ -127,11 +127,11 @@
     <lombok.version>1.18.32</lombok.version>
     <snakeyaml.version>2.7</snakeyaml.version>
     <snakeyaml.bundle.version>2.2</snakeyaml.bundle.version> <!-- Transitive Jackson -->
-    <bouncycastle.version>1.77</bouncycastle.version>
+    <bouncycastle.version>1.78</bouncycastle.version>
     <bc-fips.version>1.0.2.4</bc-fips.version>
     <bcpkix-fips.version>1.0.7</bcpkix-fips.version>
     <commons-compress.version>1.26.1</commons-compress.version>
-    <commons-io.version>2.15.1</commons-io.version> <!-- Required by Gradle Testing Toolkit -->
+    <commons-io.version>2.16.0</commons-io.version> <!-- Required by Gradle Testing Toolkit -->
     <guava.version>33.1.0-jre</guava.version> <!-- Required by Gradle Testing Toolkit -->
     <scr.annotations.version>1.12.0</scr.annotations.version>
     <jsonschema2pojo.version>1.2.1</jsonschema2pojo.version>
@@ -152,7 +152,7 @@
     <maven.resources.plugin.version>3.3.1</maven.resources.plugin.version>
     <maven.release.plugin.version>3.0.1</maven.release.plugin.version>
     <maven.javadoc.plugin.version>3.6.3</maven.javadoc.plugin.version>
-    <maven.source.plugin.version>3.3.0</maven.source.plugin.version>
+    <maven.source.plugin.version>3.3.1</maven.source.plugin.version>
     <maven.enforcer.plugin.version>3.4.1</maven.enforcer.plugin.version>
     <maven.deploy.plugin.version>3.1.1</maven.deploy.plugin.version>
     <maven.gpg.plugin.version>3.2.2</maven.gpg.plugin.version>
@@ -160,13 +160,13 @@
     <maven.dependency.plugin.version>3.6.1</maven.dependency.plugin.version>
     <maven.shade.plugin.version>3.5.2</maven.shade.plugin.version>
     <maven.install.plugin.version>3.1.1</maven.install.plugin.version>
-    <maven.invoker.plugin.version>3.6.0</maven.invoker.plugin.version>
-    <maven.plugin.plugin.version>3.11.0</maven.plugin.plugin.version>
+    <maven.invoker.plugin.version>3.6.1</maven.invoker.plugin.version>
+    <maven.plugin.plugin.version>3.12.0</maven.plugin.plugin.version>
     <gmavenplus-plugin.version>3.0.2</gmavenplus-plugin.version>
     <gradle-api-maven-plugin.version>0.0.5</gradle-api-maven-plugin.version>
     <jandex.plugin.version>1.2.3</jandex.plugin.version>
     <jandex.version>2.4.4.Final</jandex.version>
-    <jacoco-maven-plugin.version>0.8.11</jacoco-maven-plugin.version>
+    <jacoco-maven-plugin.version>0.8.12</jacoco-maven-plugin.version>
     <jkube.version>1.16.2</jkube.version>
     <sonar-maven-plugin.version>3.11.0.3922</sonar-maven-plugin.version>
     <nexus-staging-maven-plugin>1.6.13</nexus-staging-maven-plugin>

@@ -4,6 +4,8 @@
 
 #### Bugs
 * Fix #5845: (crd-generator) Fail generating if multiple versions are marked as stored
+* Fix #5853: [java-generator] Gracefully handle colliding enum definitions
+* Fix #5817: NPE on EKS OIDC cluster when token needs to be refreshed
 
 #### Improvements
 

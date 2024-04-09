@@ -70,7 +70,8 @@ class CompilationTest {
         Arguments.of("two-crds.yml", 6),
         Arguments.of("folder", 6),
         Arguments.of("calico-ippool-crd.yml", 3),
-        Arguments.of("emissary-crds.yaml", 242));
+        Arguments.of("emissary-crds.yaml", 242),
+        Arguments.of("colliding-enums-crd.yml", 2));
   }
 
   @ParameterizedTest(name = "{0} should generate {1} source files and compile OK")

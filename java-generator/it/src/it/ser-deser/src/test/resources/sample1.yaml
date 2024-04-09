@@ -28,6 +28,8 @@ spec:
     - digital signature
     - server auth
     - s/mime
+    - another
+    - anotheR
   duration: 2160h
   issuerRef:
     name: ca-issuer
