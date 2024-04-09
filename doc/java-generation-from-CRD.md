@@ -69,7 +69,7 @@ The properties that can be used in the `javaGen` closure are the one defined by 
 The Gradle plugin defines a `crd2java` task (see `gradle tasks --all`), that can be applied or called directly, e.g.:
 
 ```shell
-gradle crd2Java 
+gradle crd2java 
 ```
 
 ## Usage

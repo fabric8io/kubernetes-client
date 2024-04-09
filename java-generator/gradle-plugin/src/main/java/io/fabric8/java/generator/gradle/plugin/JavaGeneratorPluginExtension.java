@@ -131,7 +131,7 @@ public abstract class JavaGeneratorPluginExtension {
    *
    */
   public Boolean getGeneratedAnnotations() {
-    return javaGeneratorConfig.isUppercaseEnums();
+    return javaGeneratorConfig.isGeneratedAnnotations();
   }
 
   public void setGeneratedAnnotations(final Boolean isGeneratedAnnotations) {
@@ -191,7 +191,7 @@ public abstract class JavaGeneratorPluginExtension {
     return javaGeneratorConfig.getFilesSuffixes();
   }
 
-  public void setPackageOverrides(final List<String> filesSuffixes) {
+  public void setFilesSuffixes(final List<String> filesSuffixes) {
     javaGeneratorConfig = new Config(javaGeneratorConfig.isUppercaseEnums(),
         javaGeneratorConfig.isObjectExtraAnnotations(),
         javaGeneratorConfig.isGeneratedAnnotations(),
