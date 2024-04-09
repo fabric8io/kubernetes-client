@@ -4,6 +4,7 @@
 
 #### Bugs
 * Fix #5853: [java-generator] Gracefully handle colliding enum definitions
+* Fix #5817: NPE on EKS OIDC cluster when token needs to be refreshed
 
 #### Improvements
 
