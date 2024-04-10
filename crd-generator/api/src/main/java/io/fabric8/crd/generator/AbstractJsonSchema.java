@@ -43,7 +43,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -228,7 +228,7 @@ public abstract class AbstractJsonSchema<T, B> {
    */
   protected T internalFrom(TypeDef definition, String... ignore) {
     InternalSchemaSwaps schemaSwaps = new InternalSchemaSwaps();
-    return internalFromImpl(definition, new HashSet<>(), schemaSwaps, ignore);
+    return internalFromImpl(definition, new LinkedHashMap<>(), schemaSwaps, ignore);
   }
 
   private static ClassRef extractClassRef(Object type) {
@@ -294,7 +294,8 @@ public abstract class AbstractJsonSchema<T, B> {
     }
   }
 
-  private T internalFromImpl(TypeDef definition, Set<String> visited, InternalSchemaSwaps schemaSwaps, String... ignore) {
+  private T internalFromImpl(TypeDef definition, LinkedHashMap<String, String> visited, InternalSchemaSwaps schemaSwaps,
+      String... ignore) {
     Set<String> ignores = ignore.length > 0 ? new LinkedHashSet<>(Arrays.asList(ignore))
         : Collections
             .emptySet();
@@ -327,9 +328,9 @@ public abstract class AbstractJsonSchema<T, B> {
 
       schemaSwaps = schemaSwaps.branchDepths();
       SwapResult swapResult = schemaSwaps.lookupAndMark(definition.toReference(), name);
+      LinkedHashMap<String, String> savedVisited = visited;
       if (swapResult.onGoing) {
-        // hack to prevent cycle detection - this may need improved at some point should stackoverflows be encountered
-        visited.clear();
+        visited = new LinkedHashMap<>();
       }
       final PropertyFacade facade = new PropertyFacade(property, accessors, swapResult.classRef);
       final Property possiblyRenamedProperty = facade.process();
@@ -341,6 +342,7 @@ public abstract class AbstractJsonSchema<T, B> {
         continue;
       }
       final T schema = internalFromImpl(name, possiblyRenamedProperty.getTypeRef(), visited, schemaSwaps);
+      visited = savedVisited;
       if (facade.preserveUnknownFields) {
         preserveUnknownFields = true;
       }
@@ -784,10 +786,11 @@ public abstract class AbstractJsonSchema<T, B> {
    * @return the structural schema associated with the specified property
    */
   public T internalFrom(String name, TypeRef typeRef) {
-    return internalFromImpl(name, typeRef, new HashSet<>(), new InternalSchemaSwaps());
+    return internalFromImpl(name, typeRef, new LinkedHashMap<>(), new InternalSchemaSwaps());
   }
 
-  private T internalFromImpl(String name, TypeRef typeRef, Set<String> visited, InternalSchemaSwaps schemaSwaps) {
+  private T internalFromImpl(String name, TypeRef typeRef, LinkedHashMap<String, String> visited,
+      InternalSchemaSwaps schemaSwaps) {
     // Note that ordering of the checks here is meaningful: we need to check for complex types last
     // in case some "complex" types are handled specifically
     if (typeRef.getDimensions() > 0 || io.sundr.model.utils.Collections.isCollection(typeRef)) { // Handle Collections & Arrays
@@ -848,24 +851,17 @@ public abstract class AbstractJsonSchema<T, B> {
     }
   }
 
-  // Flag to detect cycles
-  private boolean resolving = false;
-
-  private T resolveNestedClass(String name, TypeDef def, Set<String> visited, InternalSchemaSwaps schemaSwaps) {
-    if (!resolving) {
-      visited.clear();
-      resolving = true;
-    } else {
-      String visitedName = name + ":" + def.getFullyQualifiedName();
-      if (!def.getFullyQualifiedName().startsWith("java") && visited.contains(visitedName)) {
-        throw new IllegalArgumentException(
-            "Found a cyclic reference involving the field " + name + " of type " + def.getFullyQualifiedName());
-      }
-      visited.add(visitedName);
+  private T resolveNestedClass(String name, TypeDef def, LinkedHashMap<String, String> visited,
+      InternalSchemaSwaps schemaSwaps) {
+    if (visited.put(def.getFullyQualifiedName(), name) != null) {
+      throw new IllegalArgumentException(
+          "Found a cyclic reference involving the field of type " + def.getFullyQualifiedName() + " starting a field "
+              + visited.entrySet().stream().map(e -> e.getValue() + " >>\n" + e.getKey()).collect(Collectors.joining(".")) + "."
+              + name);
     }
 
     T res = internalFromImpl(def, visited, schemaSwaps);
-    resolving = false;
+    visited.remove(def.getFullyQualifiedName());
     return res;
   }
 
