@@ -121,10 +121,10 @@ public class CustomResourceConversionInfo {
   public static CustomResourceConversionInfo from(WebhookConversion webhookConversion) {
     final String[] versions = webhookConversion.versions();
     final String url = mapNotEmpty(webhookConversion.url());
-    final String serviceName = mapNotEmpty(webhookConversion.svcName());
-    final String serviceNamespace = mapNotEmpty(webhookConversion.svcNamespace());
-    final String servicePath = mapNotEmpty(webhookConversion.svcPath());
-    final Integer servicePort = webhookConversion.svcPort() != 443 ? webhookConversion.svcPort() : null;
+    final String serviceName = mapNotEmpty(webhookConversion.serviceName());
+    final String serviceNamespace = mapNotEmpty(webhookConversion.serviceNamespace());
+    final String servicePath = mapNotEmpty(webhookConversion.servicePath());
+    final Integer servicePort = webhookConversion.servicePort() != 443 ? webhookConversion.servicePort() : null;
 
     assertUniqueConversionReviewVersions(versions);
     assertUrlOrService(url, serviceName, serviceNamespace, servicePath, servicePort);

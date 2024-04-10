@@ -24,6 +24,6 @@ import io.fabric8.kubernetes.model.annotation.Version;
 @Group("sample.fabric8.io")
 @Version("v2")
 @Kind("WebhookConversion")
-@WebhookConversion(versions = { "v2", "v1" }, svcName = "conversion-webhook", svcNamespace = "my-namespace")
+@WebhookConversion(versions = { "v2", "v1" }, serviceName = "conversion-webhook", serviceNamespace = "my-namespace")
 public class WebhookConversionExample extends CustomResource<WebhookConversionSpec, Void> {
 }

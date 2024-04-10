@@ -62,15 +62,15 @@ class CustomResourceConversionInfoTest {
   private static class WebhookConversionExampleNoUrlOrService {
   }
 
-  @WebhookConversion(versions = { "v1" }, svcName = "my-service", svcNamespace = "my-ns", svcPort = 99999999)
+  @WebhookConversion(versions = { "v1" }, serviceName = "my-service", serviceNamespace = "my-ns", servicePort = 99999999)
   private static class WebhookConversionExampleServicePortInvalid {
   }
 
-  @WebhookConversion(versions = { "v1" }, svcName = "my-service")
+  @WebhookConversion(versions = { "v1" }, serviceName = "my-service")
   private static class WebhookConversionExampleServiceNamespaceMissing {
   }
 
-  @WebhookConversion(versions = { "v1" }, url = "https://example.com", svcName = "my-service")
+  @WebhookConversion(versions = { "v1" }, url = "https://example.com", serviceName = "my-service")
   private static class WebhookConversionExampleUrlAndServiceNameMissing {
   }
 

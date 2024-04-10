@@ -75,7 +75,7 @@ public @interface WebhookConversion {
    *      Kubernetes Docs - CRD Versioning - Webhook Conversion - Service Reference
    *      </a>
    */
-  String svcName() default "";
+  String serviceName() default "";
 
   /**
    * The namespace of the service.
@@ -87,20 +87,20 @@ public @interface WebhookConversion {
    *      Kubernetes Docs - CRD Versioning - Webhook Conversion - Service Reference
    *      </a>
    */
-  String svcNamespace() default "";
+  String serviceNamespace() default "";
 
   /**
    * Service path is an optional URL path at which the webhook will be contacted.
    *
    * @return the path;
    */
-  String svcPath() default "";
+  String servicePath() default "";
 
   /**
    * The service port.
    *
    * @return the service port
    */
-  int svcPort() default 443;
+  int servicePort() default 443;
 
 }
