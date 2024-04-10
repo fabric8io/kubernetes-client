@@ -4,6 +4,7 @@
 
 #### Bugs
 * Fix #5845: (crd-generator) Fail generating if multiple versions are marked as stored
+* Fix #5847: Missing `Log4j2Plugins.dat` descriptor in Kubernetes Lookup
 * Fix #5853: [java-generator] Gracefully handle colliding enum definitions
 * Fix #5860: Corrections to java-generator gradle plugin extension
 * Fix #5817: NPE on EKS OIDC cluster when token needs to be refreshed
