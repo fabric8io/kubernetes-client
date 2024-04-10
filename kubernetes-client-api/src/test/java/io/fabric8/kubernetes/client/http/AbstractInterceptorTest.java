@@ -225,10 +225,12 @@ public abstract class AbstractInterceptorTest {
         });
     // When
     try (HttpClient client = builder.build()) {
-      client.consumeBytes(
+      final HttpResponse<AsyncBody> asyncR = client.consumeBytes(
           client.newHttpRequestBuilder().uri(server.url("/not-found")).build(),
           (s, ab) -> ab.consume())
           .get(10, TimeUnit.SECONDS);
+      asyncR.body().consume();
+      asyncR.body().done().get(10L, TimeUnit.SECONDS);
     }
     // Then
     assertThat(interceptedResponses)
@@ -279,10 +281,12 @@ public abstract class AbstractInterceptorTest {
         });
     // When
     try (HttpClient client = builder.build()) {
-      client.consumeBytes(
+      final HttpResponse<AsyncBody> asyncR = client.consumeBytes(
           client.newHttpRequestBuilder().uri(server.url("/success")).build(),
           (s, ab) -> ab.consume())
           .get(10, TimeUnit.SECONDS);
+      asyncR.body().consume();
+      asyncR.body().done().get(10L, TimeUnit.SECONDS);
     }
     // Then
     assertThat(responseFuture)
@@ -306,10 +310,12 @@ public abstract class AbstractInterceptorTest {
         });
     // When
     try (HttpClient client = builder.build()) {
-      client.consumeBytes(
+      final HttpResponse<AsyncBody> asyncR = client.consumeBytes(
           client.newHttpRequestBuilder().uri(server.url("/client-error")).build(),
           (s, ab) -> ab.consume())
           .get(10, TimeUnit.SECONDS);
+      asyncR.body().consume();
+      asyncR.body().done().get(10L, TimeUnit.SECONDS);
     }
     // Then
     assertThat(responseFuture)

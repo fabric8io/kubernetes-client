@@ -118,7 +118,11 @@ public abstract class AbstractSimultaneousConnectionsTest {
       assertThat(asyncResponses)
           .hasSize(MAX_HTTP_1_CONNECTIONS)
           .extracting(CompletableFuture::join)
-          .extracting(HttpResponse::code).containsOnly(204);
+          .extracting(response -> {
+            response.body().consume();
+            return response.code();
+          })
+          .containsOnly(204);
     }
   }
 
