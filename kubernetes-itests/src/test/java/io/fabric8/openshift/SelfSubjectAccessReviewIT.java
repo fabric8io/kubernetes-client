@@ -15,8 +15,8 @@
  */
 package io.fabric8.openshift;
 
+import io.fabric8.junit.jupiter.api.KubernetesTest;
 import io.fabric8.junit.jupiter.api.RequireK8sSupport;
-import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.authorization.v1.SelfSubjectAccessReview;
 import io.fabric8.kubernetes.api.model.authorization.v1.SelfSubjectAccessReviewBuilder;
 import io.fabric8.openshift.api.model.Project;
@@ -25,23 +25,23 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@KubernetesTest(createEphemeralNamespace = false)
 @RequireK8sSupport(Project.class)
 class SelfSubjectAccessReviewIT {
 
   OpenShiftClient client;
 
-  Namespace namespace;
-
   @Test
   void create() {
     // Given
+    String namespace = client.getConfiguration().getNamespace();
     SelfSubjectAccessReview ssar = new SelfSubjectAccessReviewBuilder()
         .withNewSpec()
         .withNewResourceAttributes()
         .withGroup("apps")
         .withResource("deployments")
         .withVerb("create")
-        .withNamespace(namespace.getMetadata().getName())
+        .withNamespace(namespace)
         .endResourceAttributes()
         .endSpec()
         .build();

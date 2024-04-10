@@ -15,8 +15,8 @@
  */
 package io.fabric8.openshift;
 
+import io.fabric8.junit.jupiter.api.KubernetesTest;
 import io.fabric8.junit.jupiter.api.RequireK8sSupport;
-import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.ServiceAccount;
 import io.fabric8.kubernetes.api.model.ServiceAccountBuilder;
 import io.fabric8.kubernetes.api.model.rbac.ClusterRole;
@@ -46,6 +46,7 @@ import java.util.concurrent.TimeUnit;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 
+@KubernetesTest(createEphemeralNamespace = false)
 @RequireK8sSupport(Project.class)
 class UserImpersonationIT {
 
@@ -53,8 +54,6 @@ class UserImpersonationIT {
   private static final String NEW_PROJECT = "impersonation" + System.nanoTime();
 
   OpenShiftClient client;
-
-  Namespace namespace;
 
   private ServiceAccount serviceAccount1;
   private ClusterRole impersonatorRole;
@@ -90,7 +89,7 @@ class UserImpersonationIT {
             .withApiGroup("rbac.authorization.k8s.io")
             .withKind("User")
             .withName(client.currentUser().getMetadata().getName())
-            .withNamespace(namespace.getMetadata().getName())
+            .withNamespace(client.getConfiguration().getNamespace())
             .build())
         .withRoleRef(new RoleRefBuilder()
             .withApiGroup("rbac.authorization.k8s.io")
