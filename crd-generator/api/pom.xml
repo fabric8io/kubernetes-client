@@ -35,6 +35,11 @@
       <artifactId>kubernetes-client-api</artifactId>
       <scope>compile</scope>
     </dependency>
+    
+    <dependency>
+      <groupId>com.fasterxml.jackson.module</groupId>
+      <artifactId>jackson-module-jsonSchema</artifactId>
+    </dependency>
 
     <dependency>
       <groupId>io.fabric8</groupId>

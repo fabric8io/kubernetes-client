@@ -16,12 +16,14 @@
 package io.fabric8.crd.generator.types;
 
 import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinition;
+import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.Map;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -40,27 +42,29 @@ class TypeMappingsTest {
   @ParameterizedTest(name = "{0} type maps to {1}")
   @MethodSource("targetTypeCases")
   void targetType(String propertyName, String expectedType) {
-    assertThat(crd.getSpec().getVersions().iterator().next().getSchema().getOpenAPIV3Schema().getProperties())
-        .extracting(schema -> schema.get("spec").getProperties())
+    Map<String, JSONSchemaProps> properties = crd.getSpec().getVersions().iterator().next().getSchema().getOpenAPIV3Schema()
+        .getProperties().get("spec").getProperties();
+    assertThat(properties)
+        .withFailMessage("Expected %s to be %s, but was %s", propertyName, expectedType, properties.get(propertyName).getType())
         .returns(expectedType, specProps -> specProps.get(propertyName).getType());
   }
 
   private static Stream<Arguments> targetTypeCases() {
     return Stream.of(
         Arguments.of("date", "string"),
-        Arguments.of("localDate", "object"), // to review
-        Arguments.of("localDateTime", "object"), // to review
-        Arguments.of("zonedDateTime", "object"), // to review
-        Arguments.of("offsetDateTime", "object"), // to review
-        Arguments.of("offsetTime", "object"), // to review
-        Arguments.of("yearMonth", "object"), // to review
-        Arguments.of("monthDay", "object"), // to review
-        Arguments.of("instant", "object"), // to review
-        Arguments.of("duration", "object"), // to review
-        Arguments.of("period", "object"), // to review
-        Arguments.of("timestamp", "object"), // to review
+        Arguments.of("localDate", "array"), // to review
+        Arguments.of("localDateTime", "array"), // to review
+        Arguments.of("zonedDateTime", "number"), // to review
+        Arguments.of("offsetDateTime", "number"), // to review
+        Arguments.of("offsetTime", "array"), // to review
+        Arguments.of("yearMonth", "array"), // to review
+        Arguments.of("monthDay", "array"), // to review
+        Arguments.of("instant", "number"), // to review
+        Arguments.of("duration", "integer"), // to review
+        Arguments.of("period", "string"),
+        Arguments.of("timestamp", "integer"), // to review
         // Arguments.of("aShort", "integer"), // TODO: Not even present in the CRD
-        Arguments.of("aShortObj", "object"), // to review
+        Arguments.of("aShortObj", "integer"),
         Arguments.of("aInt", "integer"),
         Arguments.of("aIntegerObj", "integer"),
         Arguments.of("aLong", "integer"),
@@ -69,21 +73,21 @@ class TypeMappingsTest {
         Arguments.of("aDoubleObj", "number"),
         Arguments.of("aFloat", "number"),
         Arguments.of("aFloatObj", "number"),
-        Arguments.of("aNumber", "object"), // to review
-        Arguments.of("aBigInteger", "object"), // to review
-        Arguments.of("aBigDecimal", "object"), // to review
+        Arguments.of("aNumber", "number"),
+        Arguments.of("aBigInteger", "integer"),
+        Arguments.of("aBigDecimal", "number"),
         Arguments.of("aBoolean", "boolean"),
         Arguments.of("aBooleanObj", "boolean"),
         // Arguments.of("aChar", "string"), // TODO: Not even present in the CRD
-        Arguments.of("aCharacterObj", "object"), // to review
+        Arguments.of("aCharacterObj", "string"),
         Arguments.of("aCharArray", "array"),
-        Arguments.of("aCharSequence", "object"), // to review
+        Arguments.of("aCharSequence", "string"),
         Arguments.of("aString", "string"),
         Arguments.of("aStringArray", "array"),
         // Arguments.of("aByte", "?"), // TODO: Not even present in the CRD
-        Arguments.of("aByteObj", "object"), // to review
+        Arguments.of("aByteObj", "integer"),
         Arguments.of("aByteArray", "array"), // to review, should be string (base64)
-        Arguments.of("uuid", "object")); // to review, should be string
+        Arguments.of("uuid", "string"));
   }
 
 }
