@@ -16,37 +16,65 @@
 
 ---
 apiVersion: "image.openshift.io/v1"
-kind: "ImageStreamTag"
+kind: "ImageStream"
 metadata:
-  name: "get:1.0.12"
-tag:
-  from:
-    kind: "DockerImage"
-    name: "busybox:latest"
+  name: "is-tag-get"
+spec:
+  dockerImageRepository: "quay.io/quay/busybox"
 ---
 apiVersion: "image.openshift.io/v1"
 kind: "ImageStreamTag"
 metadata:
-  name: "list:1.0.12"
+  name: "is-tag-get:1.0.12"
 tag:
   from:
     kind: "DockerImage"
-    name: "busybox:latest"
+    name: "quay.io/quay/busybox:latest"
+---
+apiVersion: "image.openshift.io/v1"
+kind: "ImageStream"
+metadata:
+  name: "is-tag-list"
+spec:
+  dockerImageRepository: "quay.io/quay/busybox"
 ---
 apiVersion: "image.openshift.io/v1"
 kind: "ImageStreamTag"
 metadata:
-  name: "update:1.0.12"
+  name: "is-tag-list:1.0.12"
 tag:
   from:
     kind: "DockerImage"
-    name: "busybox:latest"
+    name: "quay.io/quay/busybox:latest"
+---
+apiVersion: "image.openshift.io/v1"
+kind: "ImageStream"
+metadata:
+  name: "is-tag-update"
+spec:
+  dockerImageRepository: "quay.io/quay/busybox"
 ---
 apiVersion: "image.openshift.io/v1"
 kind: "ImageStreamTag"
 metadata:
-  name: "delete:1.0.12"
+  name: "is-tag-update:1.0.12"
 tag:
   from:
     kind: "DockerImage"
-    name: "busybox:latest"
+    name: "quay.io/quay/busybox:latest"
+---
+apiVersion: "image.openshift.io/v1"
+kind: "ImageStream"
+metadata:
+  name: "is-tag-delete"
+spec:
+  dockerImageRepository: "quay.io/quay/busybox"
+---
+apiVersion: "image.openshift.io/v1"
+kind: "ImageStreamTag"
+metadata:
+  name: "is-tag-delete:1.0.12"
+tag:
+  from:
+    kind: "DockerImage"
+    name: "quay.io/quay/busybox:latest"

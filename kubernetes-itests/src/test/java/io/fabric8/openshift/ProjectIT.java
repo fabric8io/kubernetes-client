@@ -15,6 +15,7 @@
  */
 package io.fabric8.openshift;
 
+import io.fabric8.junit.jupiter.api.KubernetesTest;
 import io.fabric8.junit.jupiter.api.RequireK8sSupport;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.openshift.api.model.Project;
@@ -28,6 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@KubernetesTest(createEphemeralNamespace = false)
 @RequireK8sSupport(Project.class)
 class ProjectIT {
 

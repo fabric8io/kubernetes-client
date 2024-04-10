@@ -15,6 +15,7 @@
  */
 package io.fabric8.openshift;
 
+import io.fabric8.junit.jupiter.api.KubernetesTest;
 import io.fabric8.junit.jupiter.api.LoadKubernetesManifests;
 import io.fabric8.junit.jupiter.api.RequireK8sSupport;
 import io.fabric8.openshift.api.model.ImageStreamTag;
@@ -30,6 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@KubernetesTest(createEphemeralNamespace = false)
 @RequireK8sSupport(ImageStreamTag.class)
 @LoadKubernetesManifests("/imagestreamtag-it.yml")
 class ImageStreamTagIT {
@@ -49,20 +51,20 @@ class ImageStreamTagIT {
 
   @Test
   void get() {
-    client.imageStreams().withName("get").waitUntilCondition(is -> is != null && is.getStatus() != null &&
+    client.imageStreams().withName("is-tag-get").waitUntilCondition(is -> is != null && is.getStatus() != null &&
         is.getStatus().getTags().stream().anyMatch(nt -> nt.getTag().equals("1.0.12")),
         30, TimeUnit.SECONDS);
-    ImageStreamTag getIST = client.imageStreamTags().withName("get:1.0.12").get();
+    ImageStreamTag getIST = client.imageStreamTags().withName("is-tag-get:1.0.12").get();
 
     assertNotNull(getIST);
-    assertEquals("get:1.0.12", getIST.getMetadata().getName());
+    assertEquals("is-tag-get:1.0.12", getIST.getMetadata().getName());
     assertEquals("DockerImage", getIST.getTag().getFrom().getKind());
-    assertEquals("busybox:latest", getIST.getTag().getFrom().getName());
+    assertEquals("quay.io/quay/busybox:latest", getIST.getTag().getFrom().getName());
   }
 
   @Test
   void list() {
-    client.imageStreams().withName("list").waitUntilCondition(is -> is != null && is.getStatus() != null &&
+    client.imageStreams().withName("is-tag-list").waitUntilCondition(is -> is != null && is.getStatus() != null &&
         is.getStatus().getTags().stream().anyMatch(nt -> nt.getTag().equals("1.0.12")),
         30, TimeUnit.SECONDS);
     ImageStreamTagList istagList = client.imageStreamTags().list();
@@ -70,42 +72,42 @@ class ImageStreamTagIT {
     assertNotNull(istagList);
     assertTrue(istagList.getItems().size() >= 1);
     Optional<ImageStreamTag> imageStreamTag = istagList.getItems().stream()
-        .filter(i -> i.getMetadata().getName().equalsIgnoreCase("list:1.0.12")).findFirst();
+        .filter(i -> i.getMetadata().getName().equalsIgnoreCase("is-tag-list:1.0.12")).findFirst();
     assertTrue(imageStreamTag.isPresent());
-    assertEquals("list:1.0.12", imageStreamTag.get().getMetadata().getName());
+    assertEquals("is-tag-list:1.0.12", imageStreamTag.get().getMetadata().getName());
     assertEquals("DockerImage", imageStreamTag.get().getTag().getFrom().getKind());
-    assertEquals("busybox:latest", imageStreamTag.get().getTag().getFrom().getName());
+    assertEquals("quay.io/quay/busybox:latest", imageStreamTag.get().getTag().getFrom().getName());
   }
 
   @Test
   void update() {
-    client.imageStreams().withName("update").waitUntilCondition(is -> is != null && is.getStatus() != null &&
+    client.imageStreams().withName("is-tag-update").waitUntilCondition(is -> is != null && is.getStatus() != null &&
         is.getStatus().getTags().stream().anyMatch(nt -> nt.getTag().equals("1.0.12")),
         30, TimeUnit.SECONDS);
-    ImageStreamTag istag2 = new ImageStreamTagBuilder().withNewMetadata().withName("update:1.0.12").endMetadata()
+    ImageStreamTag istag2 = new ImageStreamTagBuilder().withNewMetadata().withName("is-tag-update:1.0.12").endMetadata()
         .withNewTag()
         .withNewFrom()
         .withKind("DockerImage")
-        .withName("busybox:latest")
+        .withName("quay.io/quay/busybox:latest")
         .endFrom()
         .endTag()
         .build();
-    ImageStreamTag istag = client.imageStreamTags().withName("update:1.0.12").patch(istag2);
+    ImageStreamTag istag = client.imageStreamTags().withName("is-tag-update:1.0.12").patch(istag2);
 
     assertNotNull(istag);
-    assertEquals("update:1.0.12", istag.getMetadata().getName());
+    assertEquals("is-tag-update:1.0.12", istag.getMetadata().getName());
     assertEquals("DockerImage", istag.getTag().getFrom().getKind());
-    assertEquals("busybox:latest", istag.getTag().getFrom().getName());
+    assertEquals("quay.io/quay/busybox:latest", istag.getTag().getFrom().getName());
   }
 
   @Test
   void delete() {
-    client.imageStreams().withName("delete").waitUntilCondition(is -> is != null && is.getStatus() != null &&
+    client.imageStreams().withName("is-tag-delete").waitUntilCondition(is -> is != null && is.getStatus() != null &&
         is.getStatus().getTags().stream().anyMatch(nt -> nt.getTag().equals("1.0.12")),
         30, TimeUnit.SECONDS);
-    boolean deleted = client.imageStreamTags().withName("delete:1.0.12").delete().size() == 1;
+    boolean deleted = client.imageStreamTags().withName("is-tag-delete:1.0.12").delete().size() == 1;
     assertTrue(deleted);
-    client.imageStreamTags().withName("delete:1.0.12")
+    client.imageStreamTags().withName("is-tag-delete:1.0.12")
         .waitUntilCondition(r -> r == null || r.getMetadata().getDeletionTimestamp() != null, 30, TimeUnit.SECONDS);
   }
 

@@ -15,6 +15,7 @@
  */
 package io.fabric8.openshift;
 
+import io.fabric8.junit.jupiter.api.KubernetesTest;
 import io.fabric8.junit.jupiter.api.LoadKubernetesManifests;
 import io.fabric8.junit.jupiter.api.RequireK8sSupport;
 import io.fabric8.openshift.api.model.BuildConfig;
@@ -22,6 +23,7 @@ import io.fabric8.openshift.api.model.BuildConfigBuilder;
 import io.fabric8.openshift.api.model.BuildConfigList;
 import io.fabric8.openshift.api.model.BuildSourceBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
+import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.Test;
 
 import java.util.Objects;
@@ -32,6 +34,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@KubernetesTest(createEphemeralNamespace = false)
 @RequireK8sSupport(BuildConfig.class)
 @LoadKubernetesManifests("/buildconfig-it.yml")
 class BuildConfigIT {
@@ -54,8 +57,11 @@ class BuildConfigIT {
   @Test
   void list() {
     BuildConfigList bcList = client.buildConfigs().list();
-    assertThat(bcList).isNotNull();
-    assertTrue(bcList.getItems().size() >= 1);
+    assertThat(bcList)
+        .isNotNull()
+        .extracting(BuildConfigList::getItems)
+        .asInstanceOf(InstanceOfAssertFactories.list(BuildConfig.class))
+        .hasSizeGreaterThanOrEqualTo(1);
   }
 
   @Test
