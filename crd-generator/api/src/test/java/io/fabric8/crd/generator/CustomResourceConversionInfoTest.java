@@ -123,16 +123,20 @@ class CustomResourceConversionInfoTest {
 
   @Test
   void givenWebhookConversionDuplicateVersions_whenFrom_thenFail() {
-    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> CustomResourceConversionInfo
-        .from(null, WebhookConversionUrlExampleDuplicateVersions.class.getAnnotation(WebhookConversion.class)));
+    WebhookConversion annotation = WebhookConversionUrlExampleDuplicateVersions.class
+        .getAnnotation(WebhookConversion.class);
+    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+        () -> CustomResourceConversionInfo.from(null, annotation));
 
     assertEquals("ConversionReviewVersions values must be distinct: [v1, v1]", exception.getMessage());
   }
 
   @Test
   void givenWebhookConversionInvalidUrlSchema_whenFrom_thenFail() {
-    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> CustomResourceConversionInfo
-        .from(null, WebhookConversionUrlExampleInvalidUrlSchema.class.getAnnotation(WebhookConversion.class)));
+    WebhookConversion annotation = WebhookConversionUrlExampleInvalidUrlSchema.class
+        .getAnnotation(WebhookConversion.class);
+    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+        () -> CustomResourceConversionInfo.from(null, annotation));
 
     assertEquals(
         "Invalid WebhookConversion configuration: URL schema of http://example.com is invalid. Only https:// is allowed.",
@@ -141,8 +145,10 @@ class CustomResourceConversionInfoTest {
 
   @Test
   void givenWebhookConversionWithUrlHasParameter_whenFrom_thenFail() {
-    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> CustomResourceConversionInfo
-        .from(null, WebhookConversionUrlExampleUrlHasParameter.class.getAnnotation(WebhookConversion.class)));
+    WebhookConversion annotation = WebhookConversionUrlExampleUrlHasParameter.class
+        .getAnnotation(WebhookConversion.class);
+    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+        () -> CustomResourceConversionInfo.from(null, annotation));
 
     assertEquals(
         "Invalid WebhookConversion configuration: URL https://example.com?myparam=3 contains query parameters which are not allowed.",
@@ -151,8 +157,10 @@ class CustomResourceConversionInfoTest {
 
   @Test
   void givenWebhookConversionWithUrlHasFragment_whenFrom_thenFail() {
+    WebhookConversion annotation = WebhookConversionUrlExampleUrlHasFragment.class
+        .getAnnotation(WebhookConversion.class);
     IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> CustomResourceConversionInfo
-        .from(null, WebhookConversionUrlExampleUrlHasFragment.class.getAnnotation(WebhookConversion.class)));
+        .from(null, annotation));
 
     assertEquals(
         "Invalid WebhookConversion configuration: URL https://example.com/test#myfragment contains fragment(s) which is not allowed.",
@@ -161,18 +169,22 @@ class CustomResourceConversionInfoTest {
 
   @Test
   void givenWebhookConversionWithMalformedUrl_whenFrom_thenFail() {
-    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> CustomResourceConversionInfo
-        .from(null, WebhookConversionExampleUrlMalformed.class.getAnnotation(WebhookConversion.class)));
+    WebhookConversion annotation = WebhookConversionExampleUrlMalformed.class
+        .getAnnotation(WebhookConversion.class);
+    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+        () -> CustomResourceConversionInfo.from(null, annotation));
 
     assertEquals(
-        "Invalid WebhookConversion configuration. Malformed URL: no protocol: example.com",
+        "Invalid WebhookConversion configuration: Malformed URL: no protocol: example.com",
         exception.getMessage());
   }
 
   @Test
   void givenWebhookConversionNoUrlOrService_whenFrom_thenFail() {
-    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> CustomResourceConversionInfo
-        .from(null, WebhookConversionExampleNoUrlOrService.class.getAnnotation(WebhookConversion.class)));
+    WebhookConversion annotation = WebhookConversionExampleNoUrlOrService.class
+        .getAnnotation(WebhookConversion.class);
+    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+        () -> CustomResourceConversionInfo.from(null, annotation));
 
     assertEquals(
         "Invalid WebhookConversion configuration: Exactly one of URL or serviceNamespace/serviceName must be specified. serviceNamespace: null, serviceName: null, servicePath: null, servicePort: null, URL: null",
@@ -181,8 +193,10 @@ class CustomResourceConversionInfoTest {
 
   @Test
   void givenWebhookConversionInvalidServicePort_whenFrom_thenFail() {
-    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> CustomResourceConversionInfo
-        .from(null, WebhookConversionExampleServicePortInvalid.class.getAnnotation(WebhookConversion.class)));
+    WebhookConversion annotation = WebhookConversionExampleServicePortInvalid.class
+        .getAnnotation(WebhookConversion.class);
+    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+        () -> CustomResourceConversionInfo.from(null, annotation));
 
     assertEquals(
         "Invalid WebhookConversion configuration: Service port must be a valid port number (1-65535, inclusive). ServicePort: 99999999",
@@ -191,8 +205,10 @@ class CustomResourceConversionInfoTest {
 
   @Test
   void givenWebhookConversionServiceNameMissing_whenFrom_thenFail() {
-    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> CustomResourceConversionInfo
-        .from(null, WebhookConversionExampleServiceNamespaceMissing.class.getAnnotation(WebhookConversion.class)));
+    WebhookConversion annotation = WebhookConversionExampleServiceNamespaceMissing.class
+        .getAnnotation(WebhookConversion.class);
+    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+        () -> CustomResourceConversionInfo.from(null, annotation));
 
     assertEquals(
         "Invalid WebhookConversion configuration: Exactly one of URL or serviceNamespace/serviceName must be specified. serviceNamespace: null, serviceName: my-service, servicePath: null, servicePort: null, URL: null",
@@ -201,8 +217,10 @@ class CustomResourceConversionInfoTest {
 
   @Test
   void givenWebhookConversionUrlAndServiceName_whenFrom_thenFail() {
-    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> CustomResourceConversionInfo
-        .from(null, WebhookConversionExampleUrlAndServiceNameMissing.class.getAnnotation(WebhookConversion.class)));
+    WebhookConversion annotation = WebhookConversionExampleUrlAndServiceNameMissing.class
+        .getAnnotation(WebhookConversion.class);
+    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+        () -> CustomResourceConversionInfo.from(null, annotation));
 
     assertEquals(
         "Invalid WebhookConversion configuration: Exactly one of URL or serviceNamespace/serviceName must be specified. serviceNamespace: null, serviceName: my-service, servicePath: null, servicePort: null, URL: https://example.com",

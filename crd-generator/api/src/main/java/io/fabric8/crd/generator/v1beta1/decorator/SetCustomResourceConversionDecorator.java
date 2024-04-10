@@ -20,9 +20,13 @@ import io.fabric8.crd.generator.decorator.Decorator;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceConversion;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionFluent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SetCustomResourceConversionDecorator
     extends CustomResourceDefinitionDecorator<CustomResourceDefinitionFluent<?>> {
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(SetCustomResourceConversionDecorator.class);
 
   private final CustomResourceConversionInfo conversionInfo;
 
@@ -57,6 +61,9 @@ public class SetCustomResourceConversionDecorator
             .endWebhookClientConfig()
             .endConversion()
             .endSpec();
+        break;
+      default:
+        LOGGER.warn("Unknown CustomResourceConversion strategy: {}", conversionInfo.getStrategy());
         break;
     }
   }
