@@ -313,7 +313,6 @@ class UploadTest {
           final byte[] tarBytes = new byte[sendCaptor.getValue().remaining() - 1];
           System.arraycopy(sendCaptor.getValue().array(), 1, tarBytes, 0, tarBytes.length);
           final TarArchiveInputStream tar = new TarArchiveInputStream(new ByteArrayInputStream(tarBytes));
-
           assertThat(tar.getNextEntry())
               .hasFieldOrPropertyWithValue("name", "file-name.txt")
               .hasFieldOrPropertyWithValue("lastModifiedTime", FileTime.fromMillis(9999999999999L));
