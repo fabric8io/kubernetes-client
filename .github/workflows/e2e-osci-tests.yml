@@ -1,0 +1,53 @@
+#
+# Copyright (C) 2015 Red Hat, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#         http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+name: E2E osci.io Tests
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 4 * * *' # Every day at 4am
+
+concurrency:
+  group: single-instance-for-persistent-cluster
+  cancel-in-progress: true
+
+env:
+  IT_MODULE: kubernetes-itests
+  MAVEN_ARGS: -B -C -V -ntp -Dhttp.keepAlive=false -e
+  FAILSAFE_TEST_GROUPS: OSCI
+
+jobs:
+  e2e:
+    name: E2E OpenShift 4
+    runs-on: ubuntu-latest
+    if: github.repository == 'fabric8io/kubernetes-client'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Java 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      - name: Install oc
+        uses: redhat-actions/oc-installer@v1
+      - name: Login to OpenShift
+        run: |
+          oc login --server=${{ secrets.OSCI_SERVER }} --token=${{ secrets.OSCI_TOKEN }}
+      - name: Run Integration Tests
+        run: |
+          ./mvnw ${MAVEN_ARGS} -Pitests -pl $IT_MODULE -Dgroups=$FAILSAFE_TEST_GROUPS verify

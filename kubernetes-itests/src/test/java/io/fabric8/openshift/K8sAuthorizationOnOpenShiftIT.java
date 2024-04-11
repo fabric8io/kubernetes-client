@@ -32,6 +32,7 @@ import io.fabric8.kubernetes.api.model.rbac.RoleBuilder;
 import io.fabric8.openshift.api.model.Project;
 import io.fabric8.openshift.api.model.User;
 import io.fabric8.openshift.client.OpenShiftClient;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -44,6 +45,7 @@ class K8sAuthorizationOnOpenShiftIT {
 
   OpenShiftClient client;
 
+  @Tag("OSCI")
   @Test
   void createRoleK8s() {
     // Given

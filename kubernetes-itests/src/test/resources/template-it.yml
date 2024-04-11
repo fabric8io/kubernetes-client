@@ -15,7 +15,7 @@
 #
 
 ---
-apiVersion: v1
+apiVersion: template.openshift.io/v1
 kind: Template
 metadata:
   name: template-get
@@ -23,7 +23,7 @@ objects:
   - apiVersion: v1
     kind: Service
     metadata:
-      name: my-service
+      name: template-get
     spec:
       selector:
         app: MyApp
@@ -37,7 +37,7 @@ objects:
           port: 443
           targetPort: 9377
 ---
-apiVersion: v1
+apiVersion: template.openshift.io/v1
 kind: Template
 metadata:
   name: template-list
@@ -49,7 +49,7 @@ objects:
   - apiVersion: v1
     kind: Service
     metadata:
-      name: my-service
+      name: template-list
     spec:
       selector:
         app: MyApp
@@ -63,7 +63,7 @@ objects:
           port: 443
           targetPort: 9377
 ---
-apiVersion: v1
+apiVersion: template.openshift.io/v1
 kind: Template
 metadata:
   name: template-delete
@@ -75,7 +75,7 @@ objects:
   - apiVersion: v1
     kind: Service
     metadata:
-      name: my-service
+      name: template-delete
     spec:
       selector:
         app: MyApp
