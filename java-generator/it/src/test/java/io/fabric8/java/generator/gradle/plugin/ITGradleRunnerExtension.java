@@ -24,7 +24,9 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 
 import java.io.File;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -33,8 +35,12 @@ import java.util.stream.Collectors;
  */
 public class ITGradleRunnerExtension implements BeforeEachCallback, AfterEachCallback {
   public static final String GRADLE_PROJECT_PROPERTY_KUBERNETES_CLIENT_VERSION = "kubernetesClientVersion";
+  public static final String GRADLE_PROJECT_PROPERTY_LOMBOK_VERSION = "lombokVersion";
+  public static final String GRADLE_PROJECT_PROPERTY_SUNDRIO_VERSION = "sundrioVersion";
   public static final String GRADLE_PROJECT_PROPERTY_IT_DIR = "itDir";
   public static final String MAVEN_PROJECT_PROPERTY_KUBERNETES_CLIENT_VERSION = GRADLE_PROJECT_PROPERTY_KUBERNETES_CLIENT_VERSION;
+  public static final String MAVEN_PROJECT_PROPERTY_LOMBOK_VERSION = GRADLE_PROJECT_PROPERTY_LOMBOK_VERSION;
+  public static final String MAVEN_PROJECT_PROPERTY_SUNDRIO_VERSION = GRADLE_PROJECT_PROPERTY_SUNDRIO_VERSION;
   public static final String GRADLE_RUNNER_BINARIES_ARCHIVE_URL = "https://services.gradle.org/distributions/gradle-"
       + GradleProperties.binariesVersion() + "-bin.zip";
   private GradleRunner gradleRunner;
@@ -65,12 +71,16 @@ public class ITGradleRunnerExtension implements BeforeEachCallback, AfterEachCal
   }
 
   public ITGradleRunnerExtension withArguments(String... originalArguments) {
-    final String[] arguments = new String[originalArguments.length + 2];
-    arguments[0] = String.format("-P%s=%s", GRADLE_PROJECT_PROPERTY_KUBERNETES_CLIENT_VERSION,
-        System.getProperty(MAVEN_PROJECT_PROPERTY_KUBERNETES_CLIENT_VERSION));
-    arguments[1] = "--console=plain";
-    System.arraycopy(originalArguments, 0, arguments, 2, originalArguments.length);
-    gradleRunner = gradleRunner.withArguments(arguments);
+    List<String> arguments = new ArrayList<>();
+    arguments.add(String.format("-P%s=%s", GRADLE_PROJECT_PROPERTY_KUBERNETES_CLIENT_VERSION,
+        System.getProperty(MAVEN_PROJECT_PROPERTY_KUBERNETES_CLIENT_VERSION)));
+    arguments.add(String.format("-P%s=%s", GRADLE_PROJECT_PROPERTY_LOMBOK_VERSION,
+        System.getProperty(MAVEN_PROJECT_PROPERTY_LOMBOK_VERSION)));
+    arguments.add(String.format("-P%s=%s", GRADLE_PROJECT_PROPERTY_SUNDRIO_VERSION,
+        System.getProperty(MAVEN_PROJECT_PROPERTY_SUNDRIO_VERSION)));
+    arguments.add("--console=plain");
+    arguments.addAll(Arrays.asList(originalArguments));
+    gradleRunner = gradleRunner.withArguments(arguments.toArray(new String[0]));
     return this;
   }
 

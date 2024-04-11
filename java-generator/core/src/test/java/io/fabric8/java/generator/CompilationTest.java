@@ -18,7 +18,9 @@ package io.fabric8.java.generator;
 import com.google.testing.compile.Compilation;
 import com.google.testing.compile.JavaFileObjects;
 import io.fabric8.java.generator.exceptions.JavaGeneratorException;
+import io.sundr.builder.internal.processor.BuildableProcessor;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -31,6 +33,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -90,6 +93,7 @@ class CompilationTest {
     assertEquals(Compilation.Status.SUCCESS, compilation.status());
   }
 
+  @Disabled("Requires support from sundrio to work with compile-testing, see sundrio PR #469")
   @Test
   void testCrontabCRDCompilesWithExtraAnnotations() throws Exception {
     // Arrange
@@ -100,10 +104,12 @@ class CompilationTest {
 
     // Act
     new FileJavaGenerator(config, crd).run(tempDir);
-    Compilation compilation = javac().compile(getSources(tempDir));
+    Compilation compilation = javac()
+        .withProcessors(new BuildableProcessor())
+        .compile(getSources(tempDir));
 
     // Assert
-    assertTrue(compilation.errors().isEmpty());
+    assertEquals(Collections.emptyList(), compilation.errors());
     assertEquals(3, compilation.sourceFiles().size());
     assertEquals(Compilation.Status.SUCCESS, compilation.status());
   }

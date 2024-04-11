@@ -15,10 +15,18 @@
  */
 package io.fabric8.java.generator.nodes;
 
+import com.github.javaparser.ast.Modifier;
+import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
+import com.github.javaparser.ast.expr.MarkerAnnotationExpr;
 import com.github.javaparser.ast.expr.Name;
 import com.github.javaparser.ast.expr.NameExpr;
+import com.github.javaparser.ast.expr.ObjectCreationExpr;
 import com.github.javaparser.ast.expr.SingleMemberAnnotationExpr;
+import com.github.javaparser.ast.expr.ThisExpr;
+import com.github.javaparser.ast.stmt.BlockStmt;
+import com.github.javaparser.ast.stmt.ReturnStmt;
+import com.github.javaparser.ast.type.ClassOrInterfaceType;
 
 public interface JObjectExtraAnnotations {
 
@@ -46,5 +54,16 @@ public interface JObjectExtraAnnotations {
                     + "    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.Volume.class),\n"
                     + "    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.VolumeMount.class)\n"
                     + "}")));
+
+    // implements Editable
+    final String builderName = clz.getNameAsString() + "Builder";
+    clz.addImplementedType(new ClassOrInterfaceType(null, "io.fabric8.kubernetes.api.builder.Editable")
+        .setTypeArguments(new ClassOrInterfaceType(null, builderName)));
+    clz.addMethod("edit", Modifier.Keyword.PUBLIC)
+        .setAnnotations(NodeList.nodeList(new MarkerAnnotationExpr(Override.class.getName())))
+        .setType(builderName)
+        .setBody(new BlockStmt().addStatement(new ReturnStmt(new ObjectCreationExpr()
+            .setType(builderName)
+            .setArguments(NodeList.nodeList(new ThisExpr())))));
   }
 }
