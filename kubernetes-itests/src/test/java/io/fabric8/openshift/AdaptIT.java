@@ -20,11 +20,13 @@ import io.fabric8.junit.jupiter.api.RequireK8sSupport;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.openshift.api.model.Project;
 import io.fabric8.openshift.client.OpenShiftClient;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Tag("OSCI")
 @KubernetesTest(createEphemeralNamespace = false)
 @RequireK8sSupport(Project.class)
 class AdaptIT {

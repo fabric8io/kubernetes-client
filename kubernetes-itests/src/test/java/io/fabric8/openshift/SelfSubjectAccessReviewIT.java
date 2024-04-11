@@ -21,10 +21,12 @@ import io.fabric8.kubernetes.api.model.authorization.v1.SelfSubjectAccessReview;
 import io.fabric8.kubernetes.api.model.authorization.v1.SelfSubjectAccessReviewBuilder;
 import io.fabric8.openshift.api.model.Project;
 import io.fabric8.openshift.client.OpenShiftClient;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Tag("OSCI")
 @KubernetesTest(createEphemeralNamespace = false)
 @RequireK8sSupport(Project.class)
 class SelfSubjectAccessReviewIT {

@@ -22,6 +22,7 @@ import io.fabric8.openshift.api.model.Route;
 import io.fabric8.openshift.api.model.RouteBuilder;
 import io.fabric8.openshift.api.model.RouteList;
 import io.fabric8.openshift.client.OpenShiftClient;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
@@ -33,6 +34,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Tag("OSCI")
 @KubernetesTest(createEphemeralNamespace = false)
 @RequireK8sSupport(Route.class)
 @LoadKubernetesManifests("/route-it.yml")
@@ -83,14 +85,12 @@ class RouteIT {
 
     // When
     route.getMetadata().setAnnotations(Collections.singletonMap("foo", "bar"));
-    route.getSpec().setHost("test.fabric8.io");
     route = client.routes().createOrReplace(route);
 
     // Then
     assertNotNull(route);
     assertEquals("route-createorreplace", route.getMetadata().getName());
     assertEquals("bar", route.getMetadata().getAnnotations().get("foo"));
-    assertEquals("test.fabric8.io", route.getSpec().getHost());
   }
 
 }

@@ -22,6 +22,7 @@ import io.fabric8.openshift.api.model.ImageStream;
 import io.fabric8.openshift.api.model.ImageStreamBuilder;
 import io.fabric8.openshift.api.model.ImageStreamList;
 import io.fabric8.openshift.client.OpenShiftClient;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.util.Objects;
@@ -32,6 +33,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Tag("OSCI")
 @KubernetesTest(createEphemeralNamespace = false)
 @RequireK8sSupport(ImageStream.class)
 @LoadKubernetesManifests("/imagestream-it.yml")

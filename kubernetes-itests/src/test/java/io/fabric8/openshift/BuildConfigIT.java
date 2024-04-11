@@ -24,6 +24,7 @@ import io.fabric8.openshift.api.model.BuildConfigList;
 import io.fabric8.openshift.api.model.BuildSourceBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
 import org.assertj.core.api.InstanceOfAssertFactories;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.util.Objects;
@@ -34,6 +35,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Tag("OSCI")
 @KubernetesTest(createEphemeralNamespace = false)
 @RequireK8sSupport(BuildConfig.class)
 @LoadKubernetesManifests("/buildconfig-it.yml")

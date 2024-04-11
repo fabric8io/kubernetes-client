@@ -16,7 +16,7 @@
 
 ---
 kind: "DeploymentConfig"
-apiVersion: "v1"
+apiVersion: "apps.openshift.io/v1"
 metadata:
   name: dc-get
 spec:
@@ -48,7 +48,7 @@ spec:
     type: "Rolling"
 ---
 kind: "DeploymentConfig"
-apiVersion: "v1"
+apiVersion: "apps.openshift.io/v1"
 metadata:
   name: dc-list
 spec:
@@ -80,7 +80,7 @@ spec:
     type: "Rolling"
 ---
 kind: "DeploymentConfig"
-apiVersion: "v1"
+apiVersion: "apps.openshift.io/v1"
 metadata:
   name: dc-update
 spec:
@@ -112,7 +112,7 @@ spec:
     type: "Rolling"
 ---
 kind: "DeploymentConfig"
-apiVersion: "v1"
+apiVersion: "apps.openshift.io/v1"
 metadata:
   name: dc-scale
 spec:
@@ -144,7 +144,7 @@ spec:
     type: "Rolling"
 ---
 kind: "DeploymentConfig"
-apiVersion: "v1"
+apiVersion: "apps.openshift.io/v1"
 metadata:
   name: dc-delete
 spec:
@@ -176,7 +176,7 @@ spec:
     type: "Rolling"
 ---
 kind: "DeploymentConfig"
-apiVersion: "v1"
+apiVersion: "apps.openshift.io/v1"
 metadata:
   name: dc-createorreplace
 spec:

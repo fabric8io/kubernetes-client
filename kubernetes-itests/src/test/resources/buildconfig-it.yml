@@ -16,7 +16,7 @@
 
 ---
 kind: "BuildConfig"
-apiVersion: "v1"
+apiVersion: "build.openshift.io/v1"
 metadata:
   name: bc-get
 spec:
@@ -45,7 +45,7 @@ spec:
       name: "origin-ruby-sample:latest"
 ---
 kind: "BuildConfig"
-apiVersion: "v1"
+apiVersion: "build.openshift.io/v1"
 metadata:
   name: bc-list
 spec:
@@ -74,7 +74,7 @@ spec:
       name: "origin-ruby-sample:latest"
 ---
 kind: "BuildConfig"
-apiVersion: "v1"
+apiVersion: "build.openshift.io/v1"
 metadata:
   name: bc-update
 spec:
@@ -103,7 +103,7 @@ spec:
       name: "origin-ruby-sample:latest"
 ---
 kind: "BuildConfig"
-apiVersion: "v1"
+apiVersion: "build.openshift.io/v1"
 metadata:
   name: bc-delete
 spec:
@@ -132,7 +132,7 @@ spec:
       name: "origin-ruby-sample:latest"
 ---
 kind: "BuildConfig"
-apiVersion: "v1"
+apiVersion: "build.openshift.io/v1"
 metadata:
   name: bc-createorreplace
 spec:

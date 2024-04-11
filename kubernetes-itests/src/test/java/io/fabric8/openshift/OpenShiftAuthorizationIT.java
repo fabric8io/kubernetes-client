@@ -34,6 +34,7 @@ import io.fabric8.openshift.api.model.SubjectAccessReviewResponse;
 import io.fabric8.openshift.api.model.SubjectRulesReview;
 import io.fabric8.openshift.api.model.SubjectRulesReviewBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -62,6 +63,7 @@ class OpenShiftAuthorizationIT {
     assertTrue(sarResponse.getAllowed());
   }
 
+  @Tag("OSCI")
   @Test
   void createSubjectRulesReviewOpenShift() {
     // Given
@@ -82,6 +84,7 @@ class OpenShiftAuthorizationIT {
     assertFalse(createdSrr.getStatus().getRules().isEmpty());
   }
 
+  @Tag("OSCI")
   @Test
   void createSelfSubjectRulesReview() {
     // Given
@@ -98,6 +101,7 @@ class OpenShiftAuthorizationIT {
     assertFalse(createdSsrr.getStatus().getRules().isEmpty());
   }
 
+  @Tag("OSCI")
   @Test
   void createLocalResourceAccessReview() {
     // Given
@@ -117,6 +121,7 @@ class OpenShiftAuthorizationIT {
     assertFalse(rarr.getGroups().isEmpty());
   }
 
+  @Tag("OSCI")
   @Test
   void createLocalSubjectAccessReview() {
     // Given
