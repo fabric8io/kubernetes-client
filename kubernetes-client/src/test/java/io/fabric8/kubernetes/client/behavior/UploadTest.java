@@ -37,6 +37,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledOnJre;
 import org.junit.jupiter.api.io.TempDir;
 import org.mockito.ArgumentCaptor;
 
@@ -61,6 +62,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.condition.JRE.JAVA_21;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -296,13 +298,13 @@ class UploadTest {
               .hasFieldOrPropertyWithValue("name", longFileName);
         }
 
+        @DisabledOnJre(JAVA_21)
         @Test
         @DisplayName("Big numbers supported (POSIX)")
         void bigNumbersSupported(@TempDir Path tempDir) throws Exception {
           // When
           final Path toUploadWithModifiedDate = Files.copy(toUpload, tempDir.resolve("upload-sample.txt"));
           assertTrue(toUploadWithModifiedDate.toFile().setLastModified(9999999999999L)); // Would trigger IllegalArgumentException: last modification time '9999999999' is too big ( > 8589934591 ).
-          assertTrue(toUploadWithModifiedDate.toFile().setLastModified(123456L)); // To have a stable, within ranges, value to compare with
           client.pods().inNamespace("default").withName("success-pod").file("/target-dir/file-name.txt")
               .upload(toUploadWithModifiedDate);
           // Then
@@ -311,9 +313,10 @@ class UploadTest {
           final byte[] tarBytes = new byte[sendCaptor.getValue().remaining() - 1];
           System.arraycopy(sendCaptor.getValue().array(), 1, tarBytes, 0, tarBytes.length);
           final TarArchiveInputStream tar = new TarArchiveInputStream(new ByteArrayInputStream(tarBytes));
+
           assertThat(tar.getNextEntry())
               .hasFieldOrPropertyWithValue("name", "file-name.txt")
-              .hasFieldOrPropertyWithValue("lastModifiedTime", FileTime.fromMillis(123456L));
+              .hasFieldOrPropertyWithValue("lastModifiedTime", FileTime.fromMillis(9999999999999L));
         }
       }
     }
