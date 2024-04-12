@@ -1,11 +1,23 @@
 ## CHANGELOG
 
+### 6.13-SNAPSHOT
+
+#### Bugs
+
+#### Improvements
+
+#### Dependency Upgrade
+
+#### New Features
+
+#### _**Note**_: Breaking changes
+
 ### 6.12.0 (2024-04-12)
 
 #### Bugs
 * Fix #5845: (crd-generator) Fail generating if multiple versions are marked as stored
 * Fix #5847: Missing `Log4j2Plugins.dat` descriptor in Kubernetes Lookup
-* Fix #5853: [java-generator] Gracefully handle colliding enum definitions
+* Fix #5853: (java-generator) Gracefully handle colliding enum definitions
 * Fix #5860: Corrections to java-generator gradle plugin extension
 * Fix #5817: NPE on EKS OIDC cluster when token needs to be refreshed
 
