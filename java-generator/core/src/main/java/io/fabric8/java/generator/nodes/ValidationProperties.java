@@ -22,11 +22,13 @@ package io.fabric8.java.generator.nodes;
 public class ValidationProperties {
   private final Double maximum;
   private final Double minimum;
+  private final String format;
   private final String pattern;
 
-  private ValidationProperties(final Double maximum, final Double minimum, final String pattern) {
+  private ValidationProperties(final Double maximum, final Double minimum, final String format, final String pattern) {
     this.maximum = maximum;
     this.minimum = minimum;
+    this.format = format;
     this.pattern = pattern;
   }
 
@@ -38,6 +40,10 @@ public class ValidationProperties {
     return minimum;
   }
 
+  public String getFormat() {
+    return format;
+  }
+
   public String getPattern() {
     return pattern;
   }
@@ -45,6 +51,7 @@ public class ValidationProperties {
   public static final class Builder {
     private Double maximum;
     private Double minimum;
+    private String format;
     private String pattern;
 
     private Builder() {
@@ -64,13 +71,18 @@ public class ValidationProperties {
       return this;
     }
 
+    public Builder withFormat(final String format) {
+      this.format = format;
+      return this;
+    }
+
     public Builder withPattern(final String pattern) {
       this.pattern = pattern;
       return this;
     }
 
     public ValidationProperties build() {
-      return new ValidationProperties(maximum, minimum, pattern);
+      return new ValidationProperties(maximum, minimum, format, pattern);
     }
   }
 }

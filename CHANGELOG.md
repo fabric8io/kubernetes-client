@@ -11,6 +11,8 @@
 * Fix #5867: (crd-generator) Imply schemaFrom via JsonFormat shape (SchemaFrom takes precedence)
 * Fix #5867: (java-generator) Add JsonFormat shape to date-time
 * Fix #5954: (crd-generator) Sort required properties to ensure deterministic output
+* Fix #5867: (crd-generator) Add support to define `format` from `@Format` annotation
+* Fix #5867: (java-generator) Add support to define `@Format` annotation from `format`
 
 #### Dependency Upgrade
 

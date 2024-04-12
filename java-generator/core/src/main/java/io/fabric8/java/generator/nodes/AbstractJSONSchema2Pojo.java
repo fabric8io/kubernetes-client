@@ -56,6 +56,7 @@ public abstract class AbstractJSONSchema2Pojo {
 
   protected Double maximum;
   protected Double minimum;
+  protected String format;
   protected String pattern;
 
   public Double getMaximum() {
@@ -64,6 +65,10 @@ public abstract class AbstractJSONSchema2Pojo {
 
   public Double getMinimum() {
     return minimum;
+  }
+
+  public String getFormat() {
+    return format;
   }
 
   public String getPattern() {
@@ -109,6 +114,7 @@ public abstract class AbstractJSONSchema2Pojo {
     if (validationProperties != null) {
       this.maximum = validationProperties.getMaximum();
       this.minimum = validationProperties.getMinimum();
+      this.format = validationProperties.getFormat();
       this.pattern = validationProperties.getPattern();
     }
   }
@@ -268,6 +274,7 @@ public abstract class AbstractJSONSchema2Pojo {
             ValidationProperties.Builder.getInstance()
                 .withMaximum(prop.getMaximum())
                 .withMinimum(prop.getMinimum())
+                .withFormat(prop.getFormat())
                 .withPattern(prop.getPattern())
                 .build());
       case ARRAY:

@@ -105,7 +105,7 @@ class JsonSchemaTest {
     assertNotNull(schema);
     Map<String, JSONSchemaProps> properties = assertSchemaHasNumberOfProperties(schema, 2);
     final JSONSchemaProps specSchema = properties.get("spec");
-    Map<String, JSONSchemaProps> spec = assertSchemaHasNumberOfProperties(specSchema, 20);
+    Map<String, JSONSchemaProps> spec = assertSchemaHasNumberOfProperties(specSchema, 21);
 
     // check descriptions are present
     assertTrue(spec.containsKey("from-field"));
@@ -125,6 +125,7 @@ class JsonSchemaTest {
     Function<String, JSONSchemaPropsBuilder> type = t -> new JSONSchemaPropsBuilder().withType(t);
     assertEquals(type.apply("integer").withMinimum(-5.0).build(), spec.get("min"));
     assertEquals(type.apply("integer").withMaximum(5.0).build(), spec.get("max"));
+    assertEquals(type.apply("string").withFormat("password").build(), spec.get("password"));
     assertEquals(type.apply("string").withPattern("\\b[1-9]\\b").build(), spec.get("singleDigit"));
     assertEquals(type.apply("string").withNullable(true).build(), spec.get("nullable"));
     assertEquals(type.apply("string").withDefault(TextNode.valueOf("my-value")).build(), spec.get("defaultValue"));
