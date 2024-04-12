@@ -50,4 +50,4 @@ jobs:
           oc login --server=${{ secrets.OSCI_SERVER }} --token=${{ secrets.OSCI_TOKEN }}
       - name: Run Integration Tests
         run: |
-          ./mvnw ${MAVEN_ARGS} -Pitests -pl $IT_MODULE -Dgroups=$FAILSAFE_TEST_GROUPS verify
+          ./mvnw ${MAVEN_ARGS} -P"enable-snapshots" -Pitests -pl $IT_MODULE -Dgroups=$FAILSAFE_TEST_GROUPS verify

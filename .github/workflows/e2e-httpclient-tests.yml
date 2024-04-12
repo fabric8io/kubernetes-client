@@ -57,7 +57,7 @@ jobs:
           distribution: 'temurin'
       - name: Run Integration Tests
         run: |
-          ./mvnw ${MAVEN_ARGS} -P"httpclient-${{ matrix.httpclient }}" -Pitests -pl $IT_MODULE test -Dtest="io.fabric8.kubernetes.**"
+          ./mvnw ${MAVEN_ARGS} -P"enable-snapshots" -P"httpclient-${{ matrix.httpclient }}" -Pitests -pl $IT_MODULE test -Dtest="io.fabric8.kubernetes.**"
 
   openshift:
     name: OpenShift
@@ -83,4 +83,4 @@ jobs:
           distribution: 'temurin'
       - name: Run Integration Tests
         run: |
-          ./mvnw ${MAVEN_ARGS} -P"httpclient-${{ matrix.httpclient }}" -Pitests -pl $IT_MODULE verify
+          ./mvnw ${MAVEN_ARGS} -P"enable-snapshots" -P"httpclient-${{ matrix.httpclient }}" -Pitests -pl $IT_MODULE verify

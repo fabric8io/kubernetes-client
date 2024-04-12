@@ -71,4 +71,4 @@ jobs:
         env:
           CHAOS_TEST: ${{ matrix.chaos-test }}
         run: |
-          ./mvnw ${MAVEN_ARGS} -Pitests -P"httpclient-${{ matrix.http-client }}" verify -pl chaos-tests
+          ./mvnw ${MAVEN_ARGS} -Pitests -P"enable-snapshots" -P"httpclient-${{ matrix.http-client }}" verify -pl chaos-tests
