@@ -34,5 +34,6 @@
     <module>apt</module>
     <module>api</module>
     <module>test</module>
+    <module>test-parallel</module>
   </modules>
 </project>
