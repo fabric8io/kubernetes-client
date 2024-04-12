@@ -1,6 +1,6 @@
 ## CHANGELOG
 
-### 6.12-SNAPSHOT
+### 6.12.0 (2024-04-12)
 
 #### Bugs
 * Fix #5845: (crd-generator) Fail generating if multiple versions are marked as stored
@@ -11,12 +11,6 @@
 
 #### Improvements
 * Fix #5843: Support existingJavaTypes extension in java-generator
-
-#### Dependency Upgrade
-
-#### New Features
-
-#### _**Note**_: Breaking changes
 
 ### 6.11.0 (2024-03-25)
 
