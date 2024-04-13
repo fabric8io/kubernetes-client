@@ -27,8 +27,6 @@ import io.fabric8.kubernetes.client.internal.SSLUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.net.ssl.KeyManager;
-import javax.net.ssl.TrustManager;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -45,6 +43,9 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
+
+import javax.net.ssl.KeyManager;
+import javax.net.ssl.TrustManager;
 
 /**
  * Utility class for OpenID token refresh.
@@ -117,7 +118,8 @@ public class OpenIDConnectionUtils {
   }
 
   /**
-   *  update Updated Access and Refresh token in memory config.
+   * update Updated Access and Refresh token in memory config.
+   * 
    * @param currentConfig config
    * @param map updated access and refresh token
    */
