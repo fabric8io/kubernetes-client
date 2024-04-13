@@ -41,8 +41,10 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.annotation.Annotation;
 import java.net.URI;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -62,22 +64,54 @@ import javax.tools.StandardLocation;
 @SupportedAnnotationTypes({ "io.fabric8.kubernetes.model.annotation.Version" })
 public class CustomResourceAnnotationProcessor extends AbstractProcessor {
 
-  public static final String PROCESSOR_OPTION_PARALLEL = "io.fabric8.crd.generator.parallel";
+  @Deprecated
+  public static final String PROCESSOR_OPTION_PARALLEL = CustomResourceAnnotationProcessorOptions.OPTION_PARALLEL;
+
+  private static final String SYSTEM_PROPERTY_DISABLED = "io.fabric8.crd.generator.disabled";
+
   private final CRDGenerator generator = new CRDGenerator();
+
+  private boolean enabled = true;
+
+  private CustomResourceAnnotationProcessorOptions options;
 
   @Override
   public SourceVersion getSupportedSourceVersion() {
     return SourceVersion.latestSupported();
   }
 
+  @Override
+  public Set<String> getSupportedOptions() {
+    return CustomResourceAnnotationProcessorOptions.SUPPORTED_OPTIONS;
+  }
+
+  @Override
+  public synchronized void init(ProcessingEnvironment processingEnv) {
+    super.init(processingEnv);
+    if (Boolean.parseBoolean(System.getProperty(SYSTEM_PROPERTY_DISABLED))) {
+      enabled = false;
+      return;
+    }
+    options = CustomResourceAnnotationProcessorOptions.from(processingEnv);
+    generator.withParallelGenerationEnabled(options.isParallelEnabled());
+    generator.forCRDVersions(options.getVersions());
+    generator.withHeader(options.getHeader());
+  }
+
   @SuppressWarnings("unchecked")
   public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
+    if (!enabled)
+      return false;
     if (roundEnv.processingOver()) {
       final Messager messager = processingEnv.getMessager();
+      if (options.hasUserProvidedOptions()) {
+        messager.printMessage(Diagnostic.Kind.NOTE,
+            String.format("Found processor options %s. Using %s", options.getOwnOptionsRaw(), options));
+      }
+
       final CRDGenerator crdGenerator = generator
-          .withOutput(new FileObjectCRDOutput(processingEnv));
-      final Map<String, String> options = processingEnv.getOptions();
-      enableParallelGeneration(messager, crdGenerator, options);
+          .withOutput(new FileObjectCRDOutput(processingEnv, options.getOutputPath()));
+
       final CRDGenerationInfo allCRDs = crdGenerator
           .detailedGenerate();
       allCRDs.getCRDDetailsPerNameAndVersion().forEach((crdName, versionToInfo) -> {
@@ -104,7 +138,7 @@ public class CustomResourceAnnotationProcessor extends AbstractProcessor {
           } catch (ClassNotFoundException e) {
             // ignore
           }
-          generator.customResources(toCustomResourceInfo((TypeElement) element));
+          generator.customResources(toCustomResourceInfo((TypeElement) element, options));
         }
       }
     }
@@ -112,21 +146,12 @@ public class CustomResourceAnnotationProcessor extends AbstractProcessor {
     return false;
   }
 
-  private void enableParallelGeneration(Messager messager, CRDGenerator crdGenerator, Map<String, String> options) {
-    if (options.containsKey(PROCESSOR_OPTION_PARALLEL)) {
-      final String rawValue = options.get(PROCESSOR_OPTION_PARALLEL);
-      final boolean parallel = Boolean.parseBoolean(rawValue);
-      messager.printMessage(Diagnostic.Kind.NOTE,
-          String.format("Found option %s set to %s, parallel set to %b ", PROCESSOR_OPTION_PARALLEL, rawValue, parallel));
-      crdGenerator.withParallelGenerationEnabled(parallel);
-    }
-  }
-
-  private CustomResourceInfo toCustomResourceInfo(TypeElement customResource) {
+  private CustomResourceInfo toCustomResourceInfo(TypeElement customResource,
+      CustomResourceAnnotationProcessorOptions options) {
     TypeDef definition = Adapters.adaptType(customResource, AptContext.getContext());
     definition = Types.unshallow(definition);
 
-    if (CustomResourceInfo.DESCRIBE_TYPE_DEFS) {
+    if (options.isDescribeDefinitionsEnabled()) {
       Types.output(definition);
     }
     final Name crClassName = customResource.getQualifiedName();
@@ -158,15 +183,21 @@ public class CustomResourceAnnotationProcessor extends AbstractProcessor {
         .map(ShortNames::value)
         .orElse(new String[] {});
 
-    final String[] annotations = Optional
+    final String[] annotationsFromAnnotation = Optional
         .ofNullable(customResource.getAnnotation(Annotations.class))
         .map(Annotations::value)
         .orElse(new String[] {});
 
-    final String[] labels = Optional
+    final List<String> annotations = new LinkedList<>(Arrays.asList(annotationsFromAnnotation));
+    annotations.addAll(options.getAnnotations());
+
+    final String[] labelsFromAnnotation = Optional
         .ofNullable(customResource.getAnnotation(Labels.class))
         .map(Labels::value)
         .orElse(new String[] {});
+
+    final List<String> labels = new LinkedList<>(Arrays.asList(labelsFromAnnotation));
+    labels.addAll(options.getLabels());
 
     final boolean storage = customResource.getAnnotation(Version.class).storage();
     final boolean served = customResource.getAnnotation(Version.class).served();
@@ -181,7 +212,8 @@ public class CustomResourceAnnotationProcessor extends AbstractProcessor {
     return new CustomResourceInfo(group, version, kind, singular, plural, shortNames, storage, served,
         deprecated, deprecationWarning,
         scope, definition, crClassName.toString(),
-        specAndStatus.getSpecClassName(), specAndStatus.getStatusClassName(), annotations, labels);
+        specAndStatus.getSpecClassName(), specAndStatus.getStatusClassName(),
+        annotations.toArray(new String[0]), labels.toArray(new String[0]));
   }
 
   private static class FileObjectOutputStream extends OutputStream {
@@ -227,16 +259,18 @@ public class CustomResourceAnnotationProcessor extends AbstractProcessor {
   private static class FileObjectCRDOutput extends AbstractCRDOutput<FileObjectOutputStream> {
 
     private final ProcessingEnvironment processingEnv;
+    private final String outputLocation;
 
-    public FileObjectCRDOutput(ProcessingEnvironment processingEnv) {
+    public FileObjectCRDOutput(ProcessingEnvironment processingEnv, String outputLocation) {
       this.processingEnv = processingEnv;
+      this.outputLocation = outputLocation;
     }
 
     @Override
     protected FileObjectOutputStream createStreamFor(String crdName) throws IOException {
       return new FileObjectOutputStream(
           processingEnv.getFiler().createResource(StandardLocation.CLASS_OUTPUT, "",
-              "META-INF/fabric8/" + crdName + ".yml"));
+              outputLocation + crdName + ".yml"));
     }
 
     @Override

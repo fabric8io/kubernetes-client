@@ -33,6 +33,8 @@ import java.util.Set;
 public class CustomResourceInfo {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(CustomResourceInfo.class);
+  // Is this used somewhere upstream?
+  @Deprecated
   public static final boolean DESCRIBE_TYPE_DEFS = false;
   private final String group;
   private final String version;
