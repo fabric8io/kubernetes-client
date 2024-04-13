@@ -27,6 +27,8 @@ import io.fabric8.kubernetes.client.internal.SSLUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.net.ssl.KeyManager;
+import javax.net.ssl.TrustManager;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -43,9 +45,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
-
-import javax.net.ssl.KeyManager;
-import javax.net.ssl.TrustManager;
 
 /**
  * Utility class for OpenID token refresh.
@@ -102,17 +101,34 @@ public class OpenIDConnectionUtils {
               return accessToken;
             }
 
-            // Persist new config and if successful, update the in memory config.
             try {
+              //update in memory config
+              updateInMemoryConfigWithUpdatedToken(currentConfig, map);
+              //persist kubeConfig
               persistKubeConfigWithUpdatedToken(currentConfig, map);
             } catch (IOException e) {
-              LOGGER.warn("oidc: failure while persisting new tokens into KUBECONFIG", e);
+              LOGGER.warn("oidc: failure while persisting new tokens into KUBECONFIG and in-memory config", e);
             }
 
             return String.valueOf(token);
           });
     }
     return CompletableFuture.completedFuture(accessToken);
+  }
+
+  /**
+   *  update Updated Access and Refresh token in memory config.
+   * @param currentConfig config
+   * @param map updated access and refresh token
+   */
+  private static void updateInMemoryConfigWithUpdatedToken(Config currentConfig, Map<String, Object> map) {
+    Map<String, String> authProviderConfig = currentConfig.getAuthProvider().getConfig();
+    if (map.containsKey(ID_TOKEN_PARAM)) {
+      authProviderConfig.put(ID_TOKEN_KUBECONFIG, String.valueOf(map.get(ID_TOKEN_PARAM)));
+    }
+    if (map.containsKey(REFRESH_TOKEN_PARAM)) {
+      authProviderConfig.put(REFRESH_TOKEN_KUBECONFIG, String.valueOf(map.get(REFRESH_TOKEN_PARAM)));
+    }
   }
 
   /**
