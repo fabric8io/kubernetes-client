@@ -30,6 +30,21 @@
   <packaging>pom</packaging>
   <name>Fabric8 :: CRD generator :: Parent</name>
 
+  <properties>
+    <keycloak-version>24.0.2</keycloak-version>
+  </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <!-- used for testing -->
+      <dependency>
+        <groupId>org.keycloak</groupId>
+        <artifactId>keycloak-core</artifactId>
+        <version>${keycloak-version}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
   <modules>
     <module>apt</module>
     <module>api</module>
