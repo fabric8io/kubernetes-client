@@ -36,6 +36,7 @@ public class Config {
   public static final String DEFAULT_SER_DATETIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ssVV";
   public static final String DEFAULT_DESER_DATETIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss[XXX][VV]";
   public static final Map<String, String> DEFAULT_EXISTING_JAVA_TYPES_OVERRIDES = new HashMap<>();
+  public static final Map<String, List<String>> DEFAULT_ADDITIONAL_INTERFACES_OVERRIDES = new HashMap<>();
 
   private Boolean uppercaseEnums = DEFAULT_UPPERCASE_ENUM;
   private Boolean objectExtraAnnotations = DEFAULT_ADD_EXTRA_ANNOTATIONS;
@@ -46,6 +47,7 @@ public class Config {
   private String serDatetimeFormat = DEFAULT_SER_DATETIME_FORMAT;
   private String deserDatetimeFormat = DEFAULT_DESER_DATETIME_FORMAT;
   private Map<String, String> existingJavaTypes = DEFAULT_EXISTING_JAVA_TYPES_OVERRIDES;
+  private Map<String, List<String>> additionalInterfaces = DEFAULT_ADDITIONAL_INTERFACES_OVERRIDES;
 
   public Config(
       Boolean uppercaseEnums,
@@ -131,7 +133,8 @@ public class Config {
       List<String> filesSuffixes,
       String serDatetimeFormat,
       String deserDatetimeFormat,
-      Map<String, String> existingJavaTypes) {
+      Map<String, String> existingJavaTypes,
+      Map<String, List<String>> additionalInterfaces) {
     if (uppercaseEnums != null) {
       this.uppercaseEnums = uppercaseEnums;
     }
@@ -158,6 +161,9 @@ public class Config {
     }
     if (existingJavaTypes != null) {
       this.existingJavaTypes = existingJavaTypes;
+    }
+    if (additionalInterfaces != null) {
+      this.additionalInterfaces = additionalInterfaces;
     }
   }
 
@@ -211,5 +217,11 @@ public class Config {
     return (existingJavaTypes == null || existingJavaTypes.isEmpty())
         ? DEFAULT_EXISTING_JAVA_TYPES_OVERRIDES
         : existingJavaTypes;
+  }
+
+  public Map<String, List<String>> getAdditionalInterfaces() {
+    return (additionalInterfaces == null || additionalInterfaces.isEmpty())
+        ? DEFAULT_ADDITIONAL_INTERFACES_OVERRIDES
+        : additionalInterfaces;
   }
 }

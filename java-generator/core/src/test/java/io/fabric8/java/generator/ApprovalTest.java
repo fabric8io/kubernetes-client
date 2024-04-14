@@ -26,6 +26,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -48,7 +49,10 @@ class ApprovalTest {
         Arguments.of("testCalicoIPPoolCrd", "calico-ippool-crd.yml", "IPPool", "CalicoIPPoolCr", new Config()),
         Arguments.of("testExistingJavaType", "existing-java-type-crd.yml", "ExistingJavaType", "ExistingJavaTypeCr",
             Config.builder().existingJavaTypes(Collections.singletonMap(
-                "org.test.v1.existingjavatypespec.Affinity", "io.fabric8.kubernetes.api.model.Affinity")).build()));
+                "org.test.v1.existingjavatypespec.Affinity", "io.fabric8.kubernetes.api.model.Affinity")).build()),
+        Arguments.of("testAdditionalInterfaces", "crontab-crd.yml", "CronTab", "AdditionalInterfacesCr", Config.builder()
+            .additionalInterfaces(Collections.singletonMap("org.test.v1.CronTab", Arrays.asList("InterfaceA", "InterfaceB")))
+            .build()));
   }
 
   @ParameterizedTest

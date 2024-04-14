@@ -27,7 +27,7 @@ import io.fabric8.java.generator.Config;
 
 import java.util.Collections;
 
-public class JCRObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnnotations {
+public class JCRObject extends AbstractJSONSchema2Pojo implements JObjectAdditionalInterfaces, JObjectExtraAnnotations {
 
   private final String pkg;
   private final String type;
@@ -146,6 +146,7 @@ public class JCRObject extends AbstractJSONSchema2Pojo implements JObjectExtraAn
     if (config.isObjectExtraAnnotations()) {
       addExtraAnnotations(clz);
     }
+    addAdditionalInterfaces(clz, config.getAdditionalInterfaces().getOrDefault(this.type, Collections.emptyList()));
     return new GeneratorResult(
         Collections.singletonList(new GeneratorResult.ClassResult(className, cu)));
   }

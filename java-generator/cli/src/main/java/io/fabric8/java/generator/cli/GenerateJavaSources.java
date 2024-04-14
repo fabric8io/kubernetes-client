@@ -87,6 +87,10 @@ public class GenerateJavaSources implements Runnable {
       "--existing-java-types" }, description = "Mapping from fully qualified generated type to fully qualified existing Java type", required = false)
   Map<String, String> existingJavaTypes = null;
 
+  @Option(names = { "-additional-interfaces",
+      "--additional-interfaces" }, description = "Mappings from fully qualified generated type to fully qualified additional interface it implements", required = false, parameterConsumer = MapOfStringToListOfStringParameterConsumer.class, paramLabel = "<String=String>")
+  Map<String, List<String>> additionalInterfaces = null;
+
   @Override
   public void run() {
     final Boolean noGeneratedAnnotations = (skipGeneratedAnnotations != null) ? skipGeneratedAnnotations : false;
@@ -99,7 +103,8 @@ public class GenerateJavaSources implements Runnable {
         filesSuffixes,
         serializationDateTimeFormat,
         deserializationDateTimeFormat,
-        existingJavaTypes);
+        existingJavaTypes,
+        additionalInterfaces);
 
     List<JavaGenerator> runners = new ArrayList<>();
 

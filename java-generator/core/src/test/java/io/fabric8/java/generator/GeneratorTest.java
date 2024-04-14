@@ -698,7 +698,7 @@ class GeneratorTest {
   @Test
   void testConfigToGeneratePreservedUnknownFields() {
     // Arrange
-    Config config = new Config(null, null, null, true, new HashMap<>(), new ArrayList<>(), null, null, null);
+    Config config = new Config(null, null, null, true, new HashMap<>(), new ArrayList<>(), null, null, null, null);
     JObject obj = new JObject(
         null,
         "t",

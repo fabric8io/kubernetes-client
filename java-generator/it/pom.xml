@@ -134,6 +134,8 @@
           <systemPropertyVariables>
             <itDir>${project.basedir}</itDir>
             <kubernetesClientVersion>${project.version}</kubernetesClientVersion>
+            <lombokVersion>${lombok.version}</lombokVersion>
+            <sundrioVersion>${sundrio.version}</sundrioVersion>
           </systemPropertyVariables>
         </configuration>
       </plugin>

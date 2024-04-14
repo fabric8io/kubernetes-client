@@ -32,6 +32,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
+import java.util.stream.Collectors;
 
 @Mojo(name = "generate", defaultPhase = LifecyclePhase.GENERATE_SOURCES)
 public class JavaGeneratorMojo extends AbstractMojo {
@@ -129,6 +131,13 @@ public class JavaGeneratorMojo extends AbstractMojo {
   @Parameter(property = "fabric8.java-generator.existing-java-types", required = false)
   Map<String, String> existingJavaTypes = null;
 
+  /**
+   * Sequence of properties mapping from fully qualified generated type to fully qualified additional interface it implements
+   *
+   */
+  @Parameter(property = "fabric8.java-generator.additional-interfaces", required = false)
+  List<Properties> additionalInterfaces = null;
+
   @Override
   public void execute() throws MojoExecutionException {
     final Config config = Config.builder()
@@ -141,6 +150,7 @@ public class JavaGeneratorMojo extends AbstractMojo {
         .serDatetimeFormat(datetimeSerializationFormat)
         .deserDatetimeFormat(datetimeDeserializationFormat)
         .existingJavaTypes(existingJavaTypes)
+        .additionalInterfaces(propertiesListToMap(additionalInterfaces))
         .build();
 
     List<JavaGenerator> runners = new ArrayList<>();
@@ -170,5 +180,13 @@ public class JavaGeneratorMojo extends AbstractMojo {
 
     runners.forEach(r -> r.run(target));
     project.addCompileSourceRoot(target.getAbsolutePath());
+  }
+
+  static Map<String, List<String>> propertiesListToMap(List<Properties> propertiesList) {
+    return propertiesList == null ? null
+        : propertiesList.stream()
+            .flatMap(properties -> properties.entrySet().stream())
+            .collect(Collectors.groupingBy(entry -> entry.getKey().toString(),
+                Collectors.mapping(entry -> entry.getValue().toString(), Collectors.toList())));
   }
 }

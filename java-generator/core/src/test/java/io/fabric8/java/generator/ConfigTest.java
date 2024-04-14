@@ -23,7 +23,7 @@ class ConfigTest {
 
   @Test
   void defaultValuesWithAllArgsConstructor() {
-    final Config result = new Config(null, null, null, null, null, null, null, null, null);
+    final Config result = new Config(null, null, null, null, null, null, null, null, null, null);
     assertThat(result)
         .returns(Config.DEFAULT_UPPERCASE_ENUM, Config::isUppercaseEnums)
         .returns(Config.DEFAULT_ADD_EXTRA_ANNOTATIONS, Config::isObjectExtraAnnotations)

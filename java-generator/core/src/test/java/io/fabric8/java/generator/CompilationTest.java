@@ -18,7 +18,9 @@ package io.fabric8.java.generator;
 import com.google.testing.compile.Compilation;
 import com.google.testing.compile.JavaFileObjects;
 import io.fabric8.java.generator.exceptions.JavaGeneratorException;
+import io.sundr.builder.internal.processor.BuildableProcessor;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -31,7 +33,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -106,6 +111,33 @@ class CompilationTest {
     assertTrue(compilation.errors().isEmpty());
     assertEquals(3, compilation.sourceFiles().size());
     assertEquals(Compilation.Status.SUCCESS, compilation.status());
+  }
+
+  static Stream<Arguments> testCrontabCRDCompilesWithGivenConfig() {
+    Function<String, Config> additionalInterface = name -> new Config().toBuilder()
+        .additionalInterfaces(Collections.singletonMap("com.example.stable.v1.CronTab", Arrays.asList(name))).build();
+    return Stream.of(
+        Arguments.of(additionalInterface.apply("NoSuchInterface"), false),
+        Arguments.of(additionalInterface.apply("Cloneable"), true));
+  }
+
+  @Disabled("Requires support from sundrio to work with compile-testing, see sundrio PR #469")
+  @MethodSource
+  @ParameterizedTest
+  void testCrontabCRDCompilesWithGivenConfig(Config config, boolean success) throws Exception {
+    // Arrange
+    File crd = getCRD("crontab-crd.yml");
+
+    // Act
+    new FileJavaGenerator(config, crd).run(tempDir);
+    Compilation compilation = javac()
+        .withProcessors(new BuildableProcessor())
+        .compile(getSources(tempDir));
+
+    // Assert
+    assertEquals(success, compilation.errors().isEmpty());
+    assertEquals(3, compilation.sourceFiles().size());
+    assertEquals(success ? Compilation.Status.SUCCESS : Compilation.Status.FAILURE, compilation.status());
   }
 
   @Test

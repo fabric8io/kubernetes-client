@@ -11,6 +11,7 @@
 
 #### Improvements
 * Fix #5843: Support existingJavaTypes extension in java-generator
+* Fix #5900: (java-generator) Support additional interfaces
 
 #### Dependency Upgrade
 

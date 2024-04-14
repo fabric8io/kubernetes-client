@@ -84,12 +84,16 @@ Usage: java-gen [-hV] [-add-extra-annotations] [-always-preserve-unknown]
                 [-deserialization-datetime-format=<deserializationDateTimeFormat
                 >] [-dt=<downloadTarget>] [-s=<source>]
                 [-serialization-datetime-format=<serializationDateTimeFormat>]
-                -t=<target> [-existing-java-types=<String=String>]...
+                -t=<target> [-additional-interfaces=<String=String>]...
+                [-existing-java-types=<String=String>]...
                 [-files-suffixes=<filesSuffixes>]...
                 [-package-overrides=<String=String>]... [-u=<urls>]...
       -add-extra-annotations, --add-extra-annotations
                           Add extra lombok and sundrio annotation to the
                             generated classes
+      -additional-interfaces, --additional-interfaces=<String=String>
+                          Mappings from fully qualified generated type to fully
+                            qualified additional interface it implements
       -always-preserve-unknown, --always-preserve-unknown
                           Always preserve unknown fields in the generated
                             classes by emitting an additionalProperties field
@@ -125,6 +129,11 @@ Usage: java-gen [-hV] [-add-extra-annotations] [-always-preserve-unknown]
 And the corresponding configurations of the Maven plugin are (output of `mvn help:describe -DgroupId=io.fabric8 -DartifactId=java-generator-maven-plugin -Dversion=<version> -Ddetail`):
 
 ```
+    additionalInterfaces
+      User property: fabric8.java-generator.additional-interfaces
+      Sequence of properties mapping from fully qualified generated type to
+      fully qualified additional interface it implements
+
     alwaysPreserveUnknown
       User property: fabric8.java-generator.always-preserve-unknown
       Always preserve unknown fields in the generated classes by emitting an

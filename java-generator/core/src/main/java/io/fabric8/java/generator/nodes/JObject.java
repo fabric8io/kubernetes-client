@@ -42,7 +42,7 @@ import java.util.stream.Collectors;
 import static io.fabric8.java.generator.nodes.JPrimitiveNameAndType.DATETIME_NAME;
 import static io.fabric8.java.generator.nodes.JPrimitiveNameAndType.INT_OR_STRING;
 
-public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnnotations {
+public class JObject extends AbstractJSONSchema2Pojo implements JObjectAdditionalInterfaces, JObjectExtraAnnotations {
 
   public static final String DEPRECATED_FIELD_MARKER = "deprecated";
   private final String type;
@@ -185,6 +185,7 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
     if (config.isObjectExtraAnnotations()) {
       addExtraAnnotations(clz);
     }
+    addAdditionalInterfaces(clz, config.getAdditionalInterfaces().getOrDefault(this.type, Collections.emptyList()));
 
     clz.addImplementedType(new ClassOrInterfaceType(null, "io.fabric8.kubernetes.api.model.KubernetesResource"));
 

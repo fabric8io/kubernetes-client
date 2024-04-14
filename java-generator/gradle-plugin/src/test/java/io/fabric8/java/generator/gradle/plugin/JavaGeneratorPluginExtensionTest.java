@@ -61,7 +61,12 @@ public class JavaGeneratorPluginExtensionTest {
         Arguments.of(Config.DEFAULT_PACKAGE_OVERRIDES,
             Collections.singletonMap(UUID.randomUUID().toString(), UUID.randomUUID().toString()), Collections.emptyMap(),
             (Supplier<Map<String, String>>) extension::getPackageOverrides,
-            (Consumer<Map<String, String>>) extension::setPackageOverrides));
+            (Consumer<Map<String, String>>) extension::setPackageOverrides),
+        Arguments.of(Config.DEFAULT_ADDITIONAL_INTERFACES_OVERRIDES,
+            Collections.singletonMap(UUID.randomUUID().toString(), Collections.singletonList(UUID.randomUUID().toString())),
+            Collections.emptyMap(),
+            (Supplier<Map<String, List<String>>>) extension::getAdditionalInterfaces,
+            (Consumer<Map<String, List<String>>>) extension::setAdditionalInterfaces));
   }
 
   @ParameterizedTest

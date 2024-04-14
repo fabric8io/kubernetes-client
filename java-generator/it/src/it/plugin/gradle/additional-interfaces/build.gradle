@@ -42,8 +42,11 @@ sourceSets {
 }
 
 dependencies {
-  implementation  "io.fabric8:kubernetes-client:${kubernetesClientVersion}"
-  implementation  "io.fabric8:generator-annotations:${kubernetesClientVersion}"
+  annotationProcessor "io.sundr:builder-annotations:${sundrioVersion}"
+  compileOnly         "io.sundr:builder-annotations:${sundrioVersion}"
+  compileOnly         "org.projectlombok:lombok:${lombokVersion}"
+  implementation      "io.fabric8:kubernetes-client:${kubernetesClientVersion}"
+  implementation      "io.fabric8:generator-annotations:${kubernetesClientVersion}"
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
@@ -54,6 +57,10 @@ java {
 }
 
 javaGen {
-    source = file('src/main/resources/broker_activemqartemis_crd.yaml')
+    source = file('src/main/resources')
+    additionalInterfaces = [
+      "com.example.stable.v1.CronTab": ["io.fabric8.test.InterfaceA", "io.fabric8.test.InterfaceB"],
+      "com.example.stable.v1.CronTabSpec": ["io.fabric8.test.InterfaceA"],
+      "com.example.stable.v1.CronTabStatus": ["io.fabric8.test.InterfaceB"],
+    ]
 }
-

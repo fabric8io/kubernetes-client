@@ -97,15 +97,7 @@ public abstract class JavaGeneratorPluginExtension {
   }
 
   public void setEnumUppercase(final Boolean isEnumUppercase) {
-    javaGeneratorConfig = new Config(isEnumUppercase,
-        javaGeneratorConfig.isObjectExtraAnnotations(),
-        javaGeneratorConfig.isGeneratedAnnotations(),
-        javaGeneratorConfig.isAlwaysPreserveUnknown(),
-        javaGeneratorConfig.getPackageOverrides(),
-        javaGeneratorConfig.getFilesSuffixes(),
-        javaGeneratorConfig.getSerDatetimeFormat(),
-        javaGeneratorConfig.getDeserDatetimeFormat(),
-        javaGeneratorConfig.getExistingJavaTypes());
+    javaGeneratorConfig = javaGeneratorConfig.toBuilder().uppercaseEnums(isEnumUppercase).build();
   }
 
   /**
@@ -117,15 +109,7 @@ public abstract class JavaGeneratorPluginExtension {
   }
 
   public void setExtraAnnotations(final Boolean isExtraAnnotations) {
-    javaGeneratorConfig = new Config(javaGeneratorConfig.isUppercaseEnums(),
-        isExtraAnnotations,
-        javaGeneratorConfig.isGeneratedAnnotations(),
-        javaGeneratorConfig.isAlwaysPreserveUnknown(),
-        javaGeneratorConfig.getPackageOverrides(),
-        javaGeneratorConfig.getFilesSuffixes(),
-        javaGeneratorConfig.getSerDatetimeFormat(),
-        javaGeneratorConfig.getDeserDatetimeFormat(),
-        javaGeneratorConfig.getExistingJavaTypes());
+    javaGeneratorConfig = javaGeneratorConfig.toBuilder().objectExtraAnnotations(isExtraAnnotations).build();
   }
 
   /**
@@ -137,15 +121,7 @@ public abstract class JavaGeneratorPluginExtension {
   }
 
   public void setGeneratedAnnotations(final Boolean isGeneratedAnnotations) {
-    javaGeneratorConfig = new Config(javaGeneratorConfig.isUppercaseEnums(),
-        javaGeneratorConfig.isObjectExtraAnnotations(),
-        isGeneratedAnnotations,
-        javaGeneratorConfig.isAlwaysPreserveUnknown(),
-        javaGeneratorConfig.getPackageOverrides(),
-        javaGeneratorConfig.getFilesSuffixes(),
-        javaGeneratorConfig.getSerDatetimeFormat(),
-        javaGeneratorConfig.getDeserDatetimeFormat(),
-        javaGeneratorConfig.getExistingJavaTypes());
+    javaGeneratorConfig = javaGeneratorConfig.toBuilder().generatedAnnotations(isGeneratedAnnotations).build();
   }
 
   /**
@@ -157,15 +133,7 @@ public abstract class JavaGeneratorPluginExtension {
   }
 
   public void setAlwaysPreserveUnknown(final Boolean isAlwaysPreserveUnknown) {
-    javaGeneratorConfig = new Config(javaGeneratorConfig.isUppercaseEnums(),
-        javaGeneratorConfig.isObjectExtraAnnotations(),
-        javaGeneratorConfig.isGeneratedAnnotations(),
-        isAlwaysPreserveUnknown,
-        javaGeneratorConfig.getPackageOverrides(),
-        javaGeneratorConfig.getFilesSuffixes(),
-        javaGeneratorConfig.getSerDatetimeFormat(),
-        javaGeneratorConfig.getDeserDatetimeFormat(),
-        javaGeneratorConfig.getExistingJavaTypes());
+    javaGeneratorConfig = javaGeneratorConfig.toBuilder().alwaysPreserveUnknown(isAlwaysPreserveUnknown).build();
   }
 
   /**
@@ -177,15 +145,7 @@ public abstract class JavaGeneratorPluginExtension {
   }
 
   public void setPackageOverrides(final Map<String, String> packageOverrides) {
-    javaGeneratorConfig = new Config(javaGeneratorConfig.isUppercaseEnums(),
-        javaGeneratorConfig.isObjectExtraAnnotations(),
-        javaGeneratorConfig.isGeneratedAnnotations(),
-        javaGeneratorConfig.isAlwaysPreserveUnknown(),
-        packageOverrides,
-        javaGeneratorConfig.getFilesSuffixes(),
-        javaGeneratorConfig.getSerDatetimeFormat(),
-        javaGeneratorConfig.getDeserDatetimeFormat(),
-        javaGeneratorConfig.getExistingJavaTypes());
+    javaGeneratorConfig = javaGeneratorConfig.toBuilder().packageOverrides(packageOverrides).build();
   }
 
   /**
@@ -197,15 +157,7 @@ public abstract class JavaGeneratorPluginExtension {
   }
 
   public void setFilesSuffixes(final List<String> filesSuffixes) {
-    javaGeneratorConfig = new Config(javaGeneratorConfig.isUppercaseEnums(),
-        javaGeneratorConfig.isObjectExtraAnnotations(),
-        javaGeneratorConfig.isGeneratedAnnotations(),
-        javaGeneratorConfig.isAlwaysPreserveUnknown(),
-        javaGeneratorConfig.getPackageOverrides(),
-        filesSuffixes,
-        javaGeneratorConfig.getSerDatetimeFormat(),
-        javaGeneratorConfig.getDeserDatetimeFormat(),
-        javaGeneratorConfig.getExistingJavaTypes());
+    javaGeneratorConfig = javaGeneratorConfig.toBuilder().filesSuffixes(filesSuffixes).build();
   }
 
   /**
@@ -217,15 +169,7 @@ public abstract class JavaGeneratorPluginExtension {
   }
 
   public void setSerializationDatetimeFormat(final String serDatetimeFmt) {
-    javaGeneratorConfig = new Config(javaGeneratorConfig.isUppercaseEnums(),
-        javaGeneratorConfig.isObjectExtraAnnotations(),
-        javaGeneratorConfig.isGeneratedAnnotations(),
-        javaGeneratorConfig.isAlwaysPreserveUnknown(),
-        javaGeneratorConfig.getPackageOverrides(),
-        javaGeneratorConfig.getFilesSuffixes(),
-        serDatetimeFmt,
-        javaGeneratorConfig.getDeserDatetimeFormat(),
-        javaGeneratorConfig.getExistingJavaTypes());
+    javaGeneratorConfig = javaGeneratorConfig.toBuilder().serDatetimeFormat(serDatetimeFmt).build();
   }
 
   /**
@@ -237,15 +181,7 @@ public abstract class JavaGeneratorPluginExtension {
   }
 
   public void setDeserializationDatetimeFormat(final String deserDatetimeFmt) {
-    javaGeneratorConfig = new Config(javaGeneratorConfig.isUppercaseEnums(),
-        javaGeneratorConfig.isObjectExtraAnnotations(),
-        javaGeneratorConfig.isGeneratedAnnotations(),
-        javaGeneratorConfig.isAlwaysPreserveUnknown(),
-        javaGeneratorConfig.getPackageOverrides(),
-        javaGeneratorConfig.getFilesSuffixes(),
-        javaGeneratorConfig.getSerDatetimeFormat(),
-        deserDatetimeFmt,
-        javaGeneratorConfig.getExistingJavaTypes());
+    javaGeneratorConfig = javaGeneratorConfig.toBuilder().deserDatetimeFormat(deserDatetimeFmt).build();
   }
 
   /**
@@ -257,14 +193,18 @@ public abstract class JavaGeneratorPluginExtension {
   }
 
   public void setExistingJavaTypes(final Map<String, String> existingJavaTypes) {
-    javaGeneratorConfig = new Config(javaGeneratorConfig.isUppercaseEnums(),
-        javaGeneratorConfig.isObjectExtraAnnotations(),
-        javaGeneratorConfig.isGeneratedAnnotations(),
-        javaGeneratorConfig.isAlwaysPreserveUnknown(),
-        javaGeneratorConfig.getPackageOverrides(),
-        javaGeneratorConfig.getFilesSuffixes(),
-        javaGeneratorConfig.getSerDatetimeFormat(),
-        javaGeneratorConfig.getDeserDatetimeFormat(),
-        existingJavaTypes);
+    javaGeneratorConfig = javaGeneratorConfig.toBuilder().existingJavaTypes(existingJavaTypes).build();
+  }
+
+  /**
+   * Mapping from fully qualified generated type to list of fully qualified additional interfaces it implements
+   *
+   */
+  public Map<String, List<String>> getAdditionalInterfaces() {
+    return javaGeneratorConfig.getAdditionalInterfaces();
+  }
+
+  public void setAdditionalInterfaces(final Map<String, List<String>> additionalInterfaces) {
+    javaGeneratorConfig = javaGeneratorConfig.toBuilder().additionalInterfaces(additionalInterfaces).build();
   }
 }
