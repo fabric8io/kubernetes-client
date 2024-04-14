@@ -123,7 +123,7 @@ public class OpenIDConnectionUtils {
    * @param currentConfig config
    * @param map updated access and refresh token
    */
-  private static void updateInMemoryConfigWithUpdatedToken(Config currentConfig, Map<String, Object> map) {
+  static void updateInMemoryConfigWithUpdatedToken(Config currentConfig, Map<String, Object> map) {
     Map<String, String> authProviderConfig = currentConfig.getAuthProvider().getConfig();
     if (map.containsKey(ID_TOKEN_PARAM)) {
       authProviderConfig.put(ID_TOKEN_KUBECONFIG, String.valueOf(map.get(ID_TOKEN_PARAM)));

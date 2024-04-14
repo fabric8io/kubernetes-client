@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.client.utils;
 
+import io.fabric8.kubernetes.api.model.AuthProviderConfig;
 import io.fabric8.kubernetes.api.model.AuthProviderConfigBuilder;
 import io.fabric8.kubernetes.api.model.NamedContext;
 import io.fabric8.kubernetes.client.Config;
@@ -156,6 +157,18 @@ class OpenIDConnectionUtilsTest {
     // Then
     assertNotNull(newAccessToken);
     assertEquals("thisisatesttoken", newAccessToken);
+  }
+
+  @Test
+  void testUpdateInMemoryConfigWithUpdatedToken() {
+    Config config = new Config();
+    config.setAuthProvider(new AuthProviderConfig(new HashMap<>(), "test"));
+    Map<String, Object> openIdProviderResponse = new HashMap<>();
+    openIdProviderResponse.put(ID_TOKEN_PARAM, "id-token-updated");
+    openIdProviderResponse.put(REFRESH_TOKEN_PARAM, "refresh-token-updated");
+    OpenIDConnectionUtils.updateInMemoryConfigWithUpdatedToken(config, openIdProviderResponse);
+    assertEquals("id-token-updated", config.getAuthProvider().getConfig().get(ID_TOKEN_KUBECONFIG));
+    assertEquals("refresh-token-updated", config.getAuthProvider().getConfig().get(REFRESH_TOKEN_KUBECONFIG));
   }
 
   @Test
