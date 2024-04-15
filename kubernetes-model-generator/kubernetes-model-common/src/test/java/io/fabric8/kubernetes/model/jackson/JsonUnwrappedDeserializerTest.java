@@ -21,11 +21,19 @@ import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.DEDUCTION;
+import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NONE;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class JsonUnwrappedDeserializerTest {
 
@@ -33,24 +41,130 @@ class JsonUnwrappedDeserializerTest {
   private static final String EXPECTED_VALUE_B = "Value B";
   private static final String EXPECTED_VALUE_C = "Value C";
 
-  @Test
-  void shouldDeserializeInterfacesWithJsonWrapped() throws JsonProcessingException {
-    ObjectMapper mapper = new ObjectMapper();
-    RootClass instance = mapper.readValue("{ \"stringField\": \"" + EXPECTED_VALUE_A + "\", "
-        + "\"extendedField\": \"" + EXPECTED_VALUE_B + "\", "
-        + "\"nestedField\": \"" + EXPECTED_VALUE_C + "\" }", RootClass.class);
-    // Verify normal fields works along to the json-wrapped fields
-    assertEquals(EXPECTED_VALUE_A, instance.stringField);
+  private ObjectMapper mapper;
 
-    // Verify interfaces are supported at root level
-    assertNotNull(instance.rootInterface, "Interface was not deserialized!");
-    assertTrue(instance.rootInterface instanceof RootImplementation);
-    RootImplementation rootImplementation = ((RootImplementation) instance.rootInterface);
-    assertEquals(EXPECTED_VALUE_B, rootImplementation.extendedField);
+  @BeforeEach
+  void initMapper() {
+    mapper = new ObjectMapper();
+  }
 
-    // Verify nested interfaces are also supported
-    assertTrue(rootImplementation.nestedInterface instanceof NestedImplementation);
-    assertEquals(EXPECTED_VALUE_C, ((NestedImplementation) rootImplementation.nestedInterface).nestedField);
+  @Nested
+  class Deserialize {
+
+    @Test
+    @DisplayName("Single @JsonUnwrapped polymorphic type")
+    void singleInterfaceWithJsonWrapped() throws JsonProcessingException {
+      RootClass instance = mapper.readValue("{ \"stringField\": \"" + EXPECTED_VALUE_A + "\", "
+          + "\"extendedField\": \"" + EXPECTED_VALUE_B + "\", "
+          + "\"nestedField\": \"" + EXPECTED_VALUE_C + "\" }", RootClass.class);
+      // Verify normal fields works along to the json-wrapped fields
+      assertEquals(EXPECTED_VALUE_A, instance.stringField);
+
+      // Verify interfaces are supported at root level
+      assertNotNull(instance.rootInterface, "Interface was not deserialized!");
+      assertInstanceOf(RootImplementation.class, instance.rootInterface);
+      RootImplementation rootImplementation = ((RootImplementation) instance.rootInterface);
+      assertEquals(EXPECTED_VALUE_B, rootImplementation.extendedField);
+
+      // Verify nested interfaces are also supported
+      assertInstanceOf(NestedImplementation.class, rootImplementation.nestedInterface);
+      assertEquals(EXPECTED_VALUE_C, ((NestedImplementation) rootImplementation.nestedInterface).nestedField);
+    }
+
+    @Test
+    @DisplayName("Multiple @JsonUnwrapped fields")
+    void multipleJsonUnwrappedFields() throws JsonProcessingException {
+      final MultipleJsonUnwrapped result = mapper.readValue("{" +
+          "\"foo\": \"foo-value\"," +
+          "\"bar\": \"bar-value\"," +
+          "\"control\": \"pass\"" +
+          "}", MultipleJsonUnwrapped.class);
+      assertThat(result)
+          .hasFieldOrPropertyWithValue("foo.foo", "foo-value")
+          .hasFieldOrPropertyWithValue("bar.bar", "bar-value")
+          .hasFieldOrPropertyWithValue("control", "pass");
+    }
+
+    @Test
+    @DisplayName("Multiple polymorphic fields")
+    void multiplePolymorphicFields() throws JsonProcessingException {
+      final MultiplePolymorphicFields result = mapper.readValue("{" +
+          "\"foo\": {\"foo\": \"foo-value\"}," +
+          "\"bar\": {\"bar\": \"bar-value\"}," +
+          "\"control\": \"pass\"" +
+          "}", MultiplePolymorphicFields.class);
+      assertThat(result)
+          .hasFieldOrPropertyWithValue("foo.foo", "foo-value")
+          .hasFieldOrPropertyWithValue("bar.bar", "bar-value")
+          .hasFieldOrPropertyWithValue("control", "pass");
+    }
+
+    @Test
+    @DisplayName("Multiple @JsonUnwrapped polymorphic fields")
+    void multipleJsonUnwrappedPolymorphicFields() throws JsonProcessingException {
+      final MultipleJsonUnwrappedPolymorphicFields result = mapper.readValue("{" +
+          "\"foo\": \"foo-value\"," +
+          "\"bar\": \"bar-value\"," +
+          "\"control\": \"pass\"" +
+          "}", MultipleJsonUnwrappedPolymorphicFields.class);
+      assertThat(result)
+          .hasFieldOrPropertyWithValue("foo.foo", "foo-value")
+          .hasFieldOrPropertyWithValue("bar.bar", "bar-value")
+          .hasFieldOrPropertyWithValue("control", "pass");
+    }
+
+  }
+
+  @Data
+  public static class MultipleJsonUnwrapped {
+    @JsonUnwrapped
+    private FooImpl foo;
+    @JsonUnwrapped
+    private BarImpl bar;
+    private String control;
+  }
+
+  @Data
+  public static class MultiplePolymorphicFields {
+    private Foo foo;
+    private Bar bar;
+    private String control;
+  }
+
+  @Data
+  @JsonDeserialize(using = io.fabric8.kubernetes.model.jackson.JsonUnwrappedDeserializer.class)
+  public static class MultipleJsonUnwrappedPolymorphicFields {
+    @JsonUnwrapped
+    private Foo foo;
+    @JsonUnwrapped
+    private Bar bar;
+    private String control;
+  }
+
+  @JsonSubTypes(@JsonSubTypes.Type(FooImpl.class))
+  @JsonTypeInfo(use = DEDUCTION)
+  public interface Foo {
+    String getFoo();
+  }
+
+  @JsonSubTypes(@JsonSubTypes.Type(BarImpl.class))
+  @JsonTypeInfo(use = DEDUCTION)
+  public interface Bar {
+    String getBar();
+  }
+
+  @Data
+  @NoArgsConstructor
+  @JsonTypeInfo(use = NONE)
+  public static class FooImpl implements Foo {
+    private String foo;
+  }
+
+  @Data
+  @NoArgsConstructor
+  @JsonTypeInfo(use = NONE)
+  public static class BarImpl implements Bar {
+    private String bar;
   }
 
   @JsonDeserialize(using = io.fabric8.kubernetes.model.jackson.JsonUnwrappedDeserializer.class)
@@ -83,7 +197,7 @@ class JsonUnwrappedDeserializerTest {
   }
 
   @JsonSubTypes(@JsonSubTypes.Type(RootImplementation.class))
-  @JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
+  @JsonTypeInfo(use = DEDUCTION)
   interface RootInterface {
 
   }
@@ -109,7 +223,7 @@ class JsonUnwrappedDeserializerTest {
   }
 
   @JsonSubTypes(@JsonSubTypes.Type(NestedImplementation.class))
-  @JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
+  @JsonTypeInfo(use = DEDUCTION)
   interface NestedInterface {
 
   }
