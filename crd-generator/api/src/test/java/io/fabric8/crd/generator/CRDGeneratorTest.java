@@ -281,10 +281,10 @@ class CRDGeneratorTest {
   @Test
   void testHeaderOverride() {
     CRDGenerator generator = newCRDGenerator()
-      .customResourceClasses(Joke.class)
-      .forCRDVersions("v1")
-      .withHeader("my-header")
-      .withOutput(output);
+        .customResourceClasses(Joke.class)
+        .forCRDVersions("v1")
+        .withHeader("my-header")
+        .withOutput(output);
 
     generator.detailedGenerate();
 
