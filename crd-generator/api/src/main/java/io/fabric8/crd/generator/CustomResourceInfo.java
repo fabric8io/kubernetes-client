@@ -33,7 +33,9 @@ import java.util.Set;
 public class CustomResourceInfo {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(CustomResourceInfo.class);
-  // Is this used somewhere upstream?
+  /**
+   * Is this used somewhere upstream?
+   */
   @Deprecated
   public static final boolean DESCRIBE_TYPE_DEFS = false;
   private final String group;
@@ -159,13 +161,17 @@ public class CustomResourceInfo {
   }
 
   public static CustomResourceInfo fromClass(Class<? extends CustomResource<?, ?>> customResource) {
+    return fromClass(customResource, false);
+  }
+
+  public static CustomResourceInfo fromClass(Class<? extends CustomResource<?, ?>> customResource, boolean describeTypeDefs) {
     try {
       final CustomResource<?, ?> instance = customResource.getDeclaredConstructor().newInstance();
 
       final String[] shortNames = CustomResource.getShortNames(customResource);
 
       final TypeDef definition = Types.typeDefFrom(customResource);
-      if (DESCRIBE_TYPE_DEFS) {
+      if (describeTypeDefs) {
         Types.output(definition);
       }
 
