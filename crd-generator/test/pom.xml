@@ -37,6 +37,8 @@
     <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>crd-generator-apt</artifactId>
+      <optional>true</optional>
+      <version>${project.version}</version>
     </dependency>
 
     <dependency>
