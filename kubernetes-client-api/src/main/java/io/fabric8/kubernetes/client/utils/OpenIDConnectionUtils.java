@@ -16,6 +16,7 @@
 package io.fabric8.kubernetes.client.utils;
 
 import io.fabric8.kubernetes.api.model.AuthInfo;
+import io.fabric8.kubernetes.api.model.AuthProviderConfig;
 import io.fabric8.kubernetes.api.model.NamedAuthInfo;
 import io.fabric8.kubernetes.api.model.NamedContext;
 import io.fabric8.kubernetes.client.Config;
@@ -37,10 +38,7 @@ import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 import java.security.spec.InvalidKeySpecException;
 import java.time.Instant;
-import java.util.Base64;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
@@ -102,35 +100,17 @@ public class OpenIDConnectionUtils {
               return accessToken;
             }
 
+            // Persist new config and if successful, update the in memory config.
             try {
-              //update in memory config
-              updateInMemoryConfigWithUpdatedToken(currentConfig, map);
-              //persist kubeConfig
               persistKubeConfigWithUpdatedToken(currentConfig, map);
             } catch (IOException e) {
-              LOGGER.warn("oidc: failure while persisting new tokens into KUBECONFIG and in-memory config", e);
+              LOGGER.warn("oidc: failure while persisting new tokens into KUBECONFIG", e);
             }
 
             return String.valueOf(token);
           });
     }
     return CompletableFuture.completedFuture(accessToken);
-  }
-
-  /**
-   * update Updated Access and Refresh token in memory config.
-   * 
-   * @param currentConfig config
-   * @param map updated access and refresh token
-   */
-  static void updateInMemoryConfigWithUpdatedToken(Config currentConfig, Map<String, Object> map) {
-    Map<String, String> authProviderConfig = currentConfig.getAuthProvider().getConfig();
-    if (map.containsKey(ID_TOKEN_PARAM)) {
-      authProviderConfig.put(ID_TOKEN_KUBECONFIG, String.valueOf(map.get(ID_TOKEN_PARAM)));
-    }
-    if (map.containsKey(REFRESH_TOKEN_PARAM)) {
-      authProviderConfig.put(REFRESH_TOKEN_KUBECONFIG, String.valueOf(map.get(REFRESH_TOKEN_PARAM)));
-    }
   }
 
   /**
@@ -260,6 +240,12 @@ public class OpenIDConnectionUtils {
    */
   public static boolean persistKubeConfigWithUpdatedAuthInfo(Config currentConfig, Consumer<AuthInfo> updateAction)
       throws IOException {
+    AuthInfo authInfo = new AuthInfo();
+    authInfo.setAuthProvider(new AuthProviderConfig(new HashMap<>(2), currentConfig.getAuthProvider().getName()));
+    updateAction.accept(authInfo);
+    //update new auth info to in-memory config
+    currentConfig.getAuthProvider().getConfig().putAll(authInfo.getAuthProvider().getConfig());
+
     if (currentConfig.getFile() == null) {
       return false;
     }
@@ -277,10 +263,13 @@ public class OpenIDConnectionUtils {
           config.getUsers().add(result);
           return result;
         });
+    //update new auth info to kubeConfig
     if (namedAuthInfo.getUser() == null) {
-      namedAuthInfo.setUser(new AuthInfo());
+      namedAuthInfo.setUser(authInfo);
+    } else {
+      Optional.of(authInfo.getToken()).ifPresent(t -> namedAuthInfo.getUser().setToken(t));
+      namedAuthInfo.getUser().getAuthProvider().getConfig().putAll(authInfo.getAuthProvider().getConfig());
     }
-    updateAction.accept(namedAuthInfo.getUser());
     // Persist changes to KUBECONFIG
     KubeConfigUtils.persistKubeConfigIntoFile(config, currentConfig.getFile().getAbsolutePath());
     return true;

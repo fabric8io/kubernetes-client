@@ -15,7 +15,6 @@
  */
 package io.fabric8.kubernetes.client.utils;
 
-import io.fabric8.kubernetes.api.model.AuthProviderConfig;
 import io.fabric8.kubernetes.api.model.AuthProviderConfigBuilder;
 import io.fabric8.kubernetes.api.model.NamedContext;
 import io.fabric8.kubernetes.client.Config;
@@ -160,18 +159,6 @@ class OpenIDConnectionUtilsTest {
   }
 
   @Test
-  void testUpdateInMemoryConfigWithUpdatedToken() {
-    Config config = new Config();
-    config.setAuthProvider(new AuthProviderConfig(new HashMap<>(), "test"));
-    Map<String, Object> openIdProviderResponse = new HashMap<>();
-    openIdProviderResponse.put(ID_TOKEN_PARAM, "id-token-updated");
-    openIdProviderResponse.put(REFRESH_TOKEN_PARAM, "refresh-token-updated");
-    OpenIDConnectionUtils.updateInMemoryConfigWithUpdatedToken(config, openIdProviderResponse);
-    assertEquals("id-token-updated", config.getAuthProvider().getConfig().get(ID_TOKEN_KUBECONFIG));
-    assertEquals("refresh-token-updated", config.getAuthProvider().getConfig().get(REFRESH_TOKEN_KUBECONFIG));
-  }
-
-  @Test
   void testPersistKubeConfigWithUpdatedToken() throws IOException {
     // Given
     Map<String, Object> openIdProviderResponse = new HashMap<>();
@@ -196,10 +183,16 @@ class OpenIDConnectionUtilsTest {
     assertNotNull(currentNamedContext);
     int currentUserIndex = KubeConfigUtils.getNamedUserIndexFromConfig(config, currentNamedContext.getContext().getUser());
     assertTrue(currentUserIndex > 0);
-    Map<String, String> authProviderConfig = config.getUsers().get(currentUserIndex).getUser().getAuthProvider().getConfig();
-    assertFalse(authProviderConfig.isEmpty());
-    assertEquals("id-token-updated", authProviderConfig.get(ID_TOKEN_KUBECONFIG));
-    assertEquals("refresh-token-updated", authProviderConfig.get(REFRESH_TOKEN_KUBECONFIG));
+    Map<String, String> authProviderConfigInFile = config.getUsers().get(currentUserIndex).getUser().getAuthProvider()
+        .getConfig();
+    assertFalse(authProviderConfigInFile.isEmpty());
+    Map<String, String> authProviderConfigInMemory = theConfig.getAuthProvider().getConfig();
+    //auth info should be updated in memory
+    assertEquals("id-token-updated", authProviderConfigInMemory.get(ID_TOKEN_KUBECONFIG));
+    assertEquals("refresh-token-updated", authProviderConfigInMemory.get(REFRESH_TOKEN_KUBECONFIG));
+    //auth info should be updated in kubeConfig
+    assertEquals("id-token-updated", authProviderConfigInFile.get(ID_TOKEN_KUBECONFIG));
+    assertEquals("refresh-token-updated", authProviderConfigInFile.get(REFRESH_TOKEN_KUBECONFIG));
   }
 
   @Test
