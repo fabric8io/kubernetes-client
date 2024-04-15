@@ -6,6 +6,8 @@
 
 #### Improvements
 
+* Fix #5896: (crd-generator) Allow to configure CustomResourceAnnotationProcessor
+
 #### Dependency Upgrade
 
 #### New Features
