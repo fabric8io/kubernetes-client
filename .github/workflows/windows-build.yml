@@ -41,7 +41,7 @@ jobs:
     runs-on: windows-latest
     strategy:
       matrix:
-        java: [11]
+        java: [17]
     steps:
       - name: Checkout
         uses: actions/checkout@v4

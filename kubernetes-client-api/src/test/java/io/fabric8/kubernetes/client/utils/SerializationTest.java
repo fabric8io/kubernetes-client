@@ -16,7 +16,6 @@
 package io.fabric8.kubernetes.client.utils;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
@@ -79,7 +78,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class SerializationTest {
 
   static class WithNull {
-    @JsonInclude(value = Include.ALWAYS)
+    @JsonInclude
     public Integer field;
   }
 
@@ -88,7 +87,7 @@ class SerializationTest {
   }
 
   @Test
-  void testNullSerialization() throws Exception {
+  void testNullSerialization() {
     assertEquals("---\nfield: null\n", Serialization.asYaml(new WithNull()));
     assertEquals("{\"field\":null}", Serialization.asJson(new WithNull()));
     assertEquals("--- {}\n", Serialization.asYaml(new WithoutNull()));
@@ -168,7 +167,8 @@ class SerializationTest {
         .hasFieldOrPropertyWithValue("spec.securityContext.runAsGroup", 1000L)
         .hasFieldOrPropertyWithValue("spec.securityContext.runAsUser", 1000L)
         .extracting(Pod::getSpec)
-        .returns(Arrays.asList(new Toleration("NoSchedule", "nodeType", "Equal", null, "build")), PodSpec::getTolerations)
+        .returns(Collections.singletonList(new Toleration("NoSchedule", "nodeType", "Equal", null, "build")),
+            PodSpec::getTolerations)
         .extracting(PodSpec::getContainers).asList()
         .hasSize(2)
         .extracting("name", "image", "resources.requests.cpu")

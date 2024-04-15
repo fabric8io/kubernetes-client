@@ -58,7 +58,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @EnableKubernetesMockClient
-public class ResourceListTest {
+class ResourceListTest {
 
   KubernetesMockServer server;
   KubernetesClient client;

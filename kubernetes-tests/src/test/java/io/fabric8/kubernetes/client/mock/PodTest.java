@@ -822,7 +822,8 @@ class PodTest {
           // On windows an exception is thrown when connection is reset during read
           // It can only be distinguished via message, and that message is localized
           // So let's at least handle English
-          if (!io.getMessage().startsWith("An existing connection was forcibly closed")) {
+          if (!io.getMessage().startsWith("An existing connection was forcibly closed") &&
+              !io.getMessage().startsWith("Connection reset")) {
             throw io;
           }
           read = -1;
