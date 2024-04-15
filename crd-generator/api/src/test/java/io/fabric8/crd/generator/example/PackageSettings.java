@@ -13,14 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.crd.generator;
+package io.fabric8.crd.generator.example;
+
+import org.approvaltests.core.ApprovalFailureReporter;
+import org.approvaltests.reporters.QuietReporter;
 
 /**
- * Use Approval tests, see package example
+ * @see <a href=
+ *      "https://github.com/approvals/ApprovalTests.Java/blob/master/approvaltests/docs/explanations/BestConfigurationPractices.md">
+ *      ApprovalTests - Best Configuration Practices</a>
  */
-@Deprecated
-public class ParallelCRDGeneratorExamplesTest extends CRDGeneratorExamplesTest {
-  public ParallelCRDGeneratorExamplesTest() {
-    parallelCRDGeneration = true;
-  }
+public class PackageSettings {
+  /**
+   * Disable Diff-Reporter
+   */
+  @SuppressWarnings("unused")
+  public static ApprovalFailureReporter UseReporter = new QuietReporter();
 }

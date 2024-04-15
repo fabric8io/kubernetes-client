@@ -13,14 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.crd.generator;
+package io.fabric8.crd.generator.example;
 
-/**
- * Use Approval tests, see package example
- */
-@Deprecated
-public class ParallelCRDGeneratorExamplesTest extends CRDGeneratorExamplesTest {
-  public ParallelCRDGeneratorExamplesTest() {
-    parallelCRDGeneration = true;
+import io.fabric8.kubernetes.client.CustomResource;
+
+public class K8sValidationTest extends AbstractCRDGeneratorApprovalTest {
+
+  protected Class<? extends CustomResource<?, ?>>[] crClasses() {
+    return new Class[] {
+        io.fabric8.crd.example.k8svalidation.K8sValidation.class
+    };
+  }
+
+  protected String[] expectedCRDs() {
+    return new String[] {
+        "k8svalidations.samples.fabric8.io"
+    };
   }
 }

@@ -59,7 +59,6 @@
       <scope>compile</scope>
     </dependency>
 
-
     <!-- Testing -->
     <dependency>
       <groupId>org.junit.jupiter</groupId>
@@ -74,7 +73,11 @@
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-simple</artifactId>
-      <version>${slf4j.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.approvaltests</groupId>
+      <artifactId>approvaltests</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>

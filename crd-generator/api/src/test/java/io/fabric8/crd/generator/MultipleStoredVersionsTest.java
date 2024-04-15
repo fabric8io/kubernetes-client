@@ -15,29 +15,18 @@
  */
 package io.fabric8.crd.generator;
 
-import io.fabric8.crd.example.k8svalidation.K8sValidation;
 import io.fabric8.crd.example.multiple.v2.MultipleSpec;
 import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
-import static io.fabric8.crd.generator.CRDGeneratorAssertions.assertCRDOutputEquals;
+import java.io.File;
+
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-/**
- * Use Approval tests, see package example
- */
-@Deprecated
-class CRDGeneratorExamplesTest {
-
-  protected boolean parallelCRDGeneration;
-
-  @Test
-  void multiple() {
-    assertCRDOutputEquals(newCRDGenerator(),
-        io.fabric8.crd.example.multiple.v1.Multiple.class, io.fabric8.crd.example.multiple.v2.Multiple.class);
-  }
+public class MultipleStoredVersionsTest {
 
   @Group("sample.fabric8.io")
   @Version(value = "v3")
@@ -45,20 +34,32 @@ class CRDGeneratorExamplesTest {
   }
 
   @Test
-  void multipleStorage_thenFail() {
-    CRDGenerator crdGenerator = newCRDGenerator();
-    assertThrows(IllegalStateException.class, () -> assertCRDOutputEquals(crdGenerator,
-        io.fabric8.crd.example.multiple.v2.Multiple.class, Multiple.class));
+  public void generateV1_expectException(@TempDir File tmpDir) {
+    test("v1", false, tmpDir);
   }
 
   @Test
-  void k8sValidation() {
-    assertCRDOutputEquals(newCRDGenerator(), K8sValidation.class);
+  public void generateV1beta1_expectException(@TempDir File tmpDir) {
+    test("v1beta1", false, tmpDir);
   }
 
-  private CRDGenerator newCRDGenerator() {
-    return new CRDGenerator()
-        .withParallelGenerationEnabled(parallelCRDGeneration);
+  @Test
+  public void generateV1Parallel_expectException(@TempDir File tmpDir) {
+    test("v1", true, tmpDir);
   }
 
+  @Test
+  public void generateV1beta1Parallel_expectException(@TempDir File tmpDir) {
+    test("v1beta1", true, tmpDir);
+  }
+
+  public void test(String crdVersion, boolean parallel, File tmpDir) {
+    final CRDGenerator crdGenerator = new CRDGenerator()
+        .inOutputDir(tmpDir)
+        .withParallelGenerationEnabled(parallel)
+        .forCRDVersions(crdVersion)
+        .customResourceClasses(io.fabric8.crd.example.multiple.v2.Multiple.class, Multiple.class);
+
+    assertThrows(IllegalStateException.class, crdGenerator::generate);
+  }
 }
