@@ -113,7 +113,7 @@
     <awaitility.version>4.2.1</awaitility.version>
     <approvaltests.version>23.0.1</approvaltests.version>
     <mockito.version>4.11.0</mockito.version>
-    <mockito-inline.version>4.11.0</mockito-inline.version>
+    <mockito-inline.version>5.2.0</mockito-inline.version>
     <spock.version>2.4-M4-groovy-4.0</spock.version>
 
     <conscrypt-openjdk-uber.bundle.version>1.4.2_1</conscrypt-openjdk-uber.bundle.version>
