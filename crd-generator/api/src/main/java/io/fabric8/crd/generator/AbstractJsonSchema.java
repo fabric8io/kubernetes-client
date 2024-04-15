@@ -287,8 +287,11 @@ public abstract class AbstractJsonSchema<T, B> {
       case ANNOTATION_VALIDATION_RULE:
         return Stream.of(KubernetesValidationRule.from(annotationRef));
       case ANNOTATION_VALIDATION_RULES:
-        return Arrays.stream(((ValidationRule[]) annotationRef.getParameters().get(VALUE)))
-            .map(KubernetesValidationRule::from);
+        Object obj = annotationRef.getParameters().get(VALUE);
+        if (obj instanceof ValidationRule[]) {
+          return Arrays.stream(((ValidationRule[]) obj))
+              .map(KubernetesValidationRule::from);
+        }
       default:
         return Stream.empty();
     }

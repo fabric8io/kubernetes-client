@@ -17,8 +17,6 @@ package io.fabric8.crd.generator;
 
 import io.fabric8.crd.generator.visitor.ClassDependenciesVisitor;
 
-import java.io.File;
-import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,9 +33,9 @@ public class CRDGenerationInfo {
     return crdNameToVersionToCRDInfoMap;
   }
 
-  void add(String crdName, String version, URI fileURI) {
+  void add(String crdName, String version, String filePath) {
     crdNameToVersionToCRDInfoMap.computeIfAbsent(crdName, k -> new HashMap<>())
-        .put(version, new CRDInfo(crdName, version, new File(fileURI).getAbsolutePath(),
+        .put(version, new CRDInfo(crdName, version, filePath,
             ClassDependenciesVisitor.getDependentClassesFromCRDName(crdName)));
   }
 

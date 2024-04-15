@@ -29,18 +29,80 @@
   <artifactId>crd-generator-apt</artifactId>
   <name>Fabric8 :: CRD generator :: Annotation Processor</name>
 
+  <properties>
+    <compile-testing.version>0.21.0</compile-testing.version>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>crd-generator-api</artifactId>
       <version>${project.version}</version>
     </dependency>
+
+    <!-- Testing -->
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.google.testing.compile</groupId>
+      <artifactId>compile-testing</artifactId>
+      <version>${compile-testing.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.approvaltests</groupId>
+      <artifactId>approvaltests</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- Enable debug output during testing -->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+
+    <!-- Keycloak model (only for testing) -->
+    <dependency>
+      <groupId>org.keycloak</groupId>
+      <artifactId>keycloak-core</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- Lombok (only for testing) -->
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <scope>test</scope>
+    </dependency>
+
   </dependencies>
+
   <build>
+    <testResources>
+      <!-- required to find source files during compiler tests (and get the IDE happy at the same time) -->
+      <testResource>
+        <directory>src/test/java</directory>
+      </testResource>
+    </testResources>
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
+          <!--
+          It's important to disable the CustomResourceAnnotationProcessor in its own module.
+          But disabling all annotation processors with the following snippet at once is ignored by IDEA:
+          <compilerArgument>-proc:none</compilerArgument>
+          See https://youtrack.jetbrains.com/issue/IDEA-279848/java-User-specified-option-procnone-is-ignored-for-annotation-processors.-This-compilation-parameter-is-set-automatically
+          Workarounds are based on the idea to configure explicit annotation processors so that IDEA
+          only picks up those and not our own.
+          TL;DR The BuildableProcessor must be configured here even it's not used (yet).
+          -->
           <annotationProcessors>
             <processor>io.sundr.builder.internal.processor.BuildableProcessor</processor>
           </annotationProcessors>

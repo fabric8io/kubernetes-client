@@ -197,7 +197,7 @@ public class CRDGenerator {
           }
           YAML_MAPPER.writeValue(outputStream, crd);
           final URI fileURI = output.crdURI(outputName);
-          crdGenerationInfo.add(crdName, version, fileURI);
+          crdGenerationInfo.add(crdName, version, toStringWithFallback(fileURI));
         }
       } catch (IOException e) {
         throw new RuntimeException(e);
@@ -265,6 +265,28 @@ public class CRDGenerator {
     @Override
     public URI crdURI(String crdName) {
       return getCRDFile(crdName).toURI();
+    }
+  }
+
+  /**
+   * Returns the absolute file path of a given URI.
+   * If this is not possible, it returns the URI itself as string.
+   * <p>
+   * The fallback is required during compiler testing because in this case
+   * the URI can be an in memory file like the following example:
+   * </p>
+   * <p>
+   * {@code mem:///CLASS_OUTPUT/META-INF/fabric8/multiples.sample.fabric8.io-v1.yml}
+   * </p>
+   *
+   * @param fileURI the URI
+   * @return the string representation
+   */
+  private static String toStringWithFallback(URI fileURI) {
+    try {
+      return new File(fileURI).getAbsolutePath();
+    } catch (IllegalArgumentException e) {
+      return fileURI.toString();
     }
   }
 }
