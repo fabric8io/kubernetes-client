@@ -279,6 +279,20 @@ class CRDGeneratorTest {
   }
 
   @Test
+  void testHeaderOverride() {
+    CRDGenerator generator = newCRDGenerator()
+      .customResourceClasses(Joke.class)
+      .forCRDVersions("v1")
+      .withHeader("my-header")
+      .withOutput(output);
+
+    generator.detailedGenerate();
+
+    String crdFileContent = output.getStreamFor("jokes.samples.javaoperatorsdk.io-v1").toString();
+    assertTrue(crdFileContent.startsWith("# my-header\n"));
+  }
+
+  @Test
   void generatingACycleShouldFail() {
     final CRDGenerator generator = newCRDGenerator()
         .customResourceClasses(Cyclic.class)
