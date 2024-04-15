@@ -192,33 +192,44 @@ class CustomResourceAnnotationProcessorOptions {
   public static CustomResourceAnnotationProcessorOptions from(ProcessingEnvironment processingEnv) {
     final Map<String, String> options = new HashMap<>();
     findCrdGeneratorPropertiesFile(processingEnv)
-        .ifPresent(fileObject -> {
-          try (InputStream in = fileObject.openInputStream()) {
-            final Properties properties = new Properties();
-            properties.load(in);
-            options.putAll(readProperties(properties));
-            processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, "Found " + PROPERTIES_FILENAME);
-          } catch (IOException ignored) {
-          }
+        .ifPresent(properties -> {
+          options.putAll(readProperties(properties));
+          processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, "Found " + PROPERTIES_FILENAME);
         });
 
     options.putAll(processingEnv.getOptions());
     return new CustomResourceAnnotationProcessorOptions(options);
   }
 
-  private static Optional<FileObject> findCrdGeneratorPropertiesFile(ProcessingEnvironment processingEnv) {
+  private static Optional<Properties> findCrdGeneratorPropertiesFile(ProcessingEnvironment processingEnv) {
     try {
-      return Optional.of(processingEnv.getFiler()
-          .getResource(StandardLocation.CLASS_OUTPUT, "", PROPERTIES_FILENAME));
-    } catch (IOException ignored) {
+      FileObject file = processingEnv.getFiler()
+          .getResource(StandardLocation.SOURCE_PATH, "", PROPERTIES_FILENAME);
+      return Optional.of(readPropertiesFile(file));
+    } catch (Exception cannotGetFromSourcePath) {
       try {
-        return Optional.of(processingEnv.getFiler()
-            .getResource(StandardLocation.CLASS_PATH, "", PROPERTIES_FILENAME));
-      } catch (IOException ignored2) {
+        FileObject file = processingEnv.getFiler()
+            .getResource(StandardLocation.CLASS_OUTPUT, "", PROPERTIES_FILENAME);
+        return Optional.of(readPropertiesFile(file));
+      } catch (Exception cannotGetFromClassOutput) {
+        try {
+          FileObject file = processingEnv.getFiler()
+              .getResource(StandardLocation.CLASS_PATH, "", PROPERTIES_FILENAME);
+          return Optional.of(readPropertiesFile(file));
+        } catch (Exception ignored) {
+        }
       }
     }
 
     return Optional.empty();
+  }
+
+  private static Properties readPropertiesFile(FileObject fileObject) throws IOException {
+    try (InputStream in = fileObject.openInputStream()) {
+      Properties properties = new Properties();
+      properties.load(in);
+      return properties;
+    }
   }
 
 }
