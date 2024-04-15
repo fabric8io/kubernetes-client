@@ -292,6 +292,7 @@ public abstract class AbstractJsonSchema<T, B> {
           return Arrays.stream(((ValidationRule[]) obj))
               .map(KubernetesValidationRule::from);
         }
+        return Stream.empty();
       default:
         return Stream.empty();
     }

@@ -64,6 +64,9 @@ import javax.tools.StandardLocation;
 @SupportedAnnotationTypes({ "io.fabric8.kubernetes.model.annotation.Version" })
 public class CustomResourceAnnotationProcessor extends AbstractProcessor {
 
+  /**
+   * use CustomResourceAnnotationProcessorOptions.OPTION_PARALLEL instead
+   */
   @Deprecated
   public static final String PROCESSOR_OPTION_PARALLEL = CustomResourceAnnotationProcessorOptions.OPTION_PARALLEL;
 

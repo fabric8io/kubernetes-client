@@ -17,7 +17,7 @@ package io.fabric8.crd.generator.example;
 
 import io.fabric8.kubernetes.client.CustomResource;
 
-public class MultipleVersionsTest extends AbstractCRDGeneratorApprovalTest {
+class MultipleVersionsTest extends AbstractCRDGeneratorApprovalTest {
 
   protected Class<? extends CustomResource<?, ?>>[] crClasses() {
     return new Class[] {

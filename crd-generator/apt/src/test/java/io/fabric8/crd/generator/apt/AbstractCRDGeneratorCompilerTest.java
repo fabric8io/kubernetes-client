@@ -153,7 +153,7 @@ public abstract class AbstractCRDGeneratorCompilerTest {
       compilation.errors().forEach(diagnostic -> System.out.println(diagnostic.toString()));
     }
 
-    assertEquals(compilation.status(), Compilation.Status.SUCCESS);
+    assertEquals(Compilation.Status.SUCCESS, compilation.status());
 
     for (String expectedCRDFile : getExpectedCRDs()) {
       String crd = getGeneratedCRD(compilation, getOutputPath() + expectedCRDFile);
@@ -174,7 +174,7 @@ public abstract class AbstractCRDGeneratorCompilerTest {
     Optional<JavaFileObject> maybeFileObject = compilation.generatedFile(StandardLocation.CLASS_OUTPUT, expectedCRD);
     assertTrue(maybeFileObject.isPresent());
     JavaFileObject fileObject = maybeFileObject.get();
-    assertEquals(fileObject.getKind(), JavaFileObject.Kind.OTHER);
+    assertEquals(JavaFileObject.Kind.OTHER, fileObject.getKind());
     try {
       return readFile(fileObject);
     } catch (IOException e) {

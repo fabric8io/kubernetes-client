@@ -26,7 +26,7 @@ import java.io.File;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class MultipleStoredVersionsTest {
+class MultipleStoredVersionsTest {
 
   @Group("sample.fabric8.io")
   @Version(value = "v3")
@@ -34,26 +34,26 @@ public class MultipleStoredVersionsTest {
   }
 
   @Test
-  public void generateV1_expectException(@TempDir File tmpDir) {
+  void generateV1_expectException(@TempDir File tmpDir) {
     test("v1", false, tmpDir);
   }
 
   @Test
-  public void generateV1beta1_expectException(@TempDir File tmpDir) {
+  void generateV1beta1_expectException(@TempDir File tmpDir) {
     test("v1beta1", false, tmpDir);
   }
 
   @Test
-  public void generateV1Parallel_expectException(@TempDir File tmpDir) {
+  void generateV1Parallel_expectException(@TempDir File tmpDir) {
     test("v1", true, tmpDir);
   }
 
   @Test
-  public void generateV1beta1Parallel_expectException(@TempDir File tmpDir) {
+  void generateV1beta1Parallel_expectException(@TempDir File tmpDir) {
     test("v1beta1", true, tmpDir);
   }
 
-  public void test(String crdVersion, boolean parallel, File tmpDir) {
+  private void test(String crdVersion, boolean parallel, File tmpDir) {
     final CRDGenerator crdGenerator = new CRDGenerator()
         .inOutputDir(tmpDir)
         .withParallelGenerationEnabled(parallel)

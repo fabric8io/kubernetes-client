@@ -53,7 +53,7 @@ public class CRDGeneratorPropertiesTest {
 
     compilation.diagnostics().forEach(d -> System.out.println(d.toString()));
 
-    assertEquals(compilation.status(), Compilation.Status.SUCCESS);
+    assertEquals(Compilation.Status.SUCCESS, compilation.status());
     assertTrue(compilation.notes().stream()
         .anyMatch(diagnostic -> "Found crd-generator.properties".equals(diagnostic.getMessage(Locale.US))));
   }
