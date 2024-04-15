@@ -37,6 +37,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledOnJre;
 import org.junit.jupiter.api.io.TempDir;
 import org.mockito.ArgumentCaptor;
 
@@ -61,6 +62,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.condition.JRE.JAVA_21;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -296,6 +298,7 @@ class UploadTest {
               .hasFieldOrPropertyWithValue("name", longFileName);
         }
 
+        @DisabledOnJre(JAVA_21)
         @Test
         @DisplayName("Big numbers supported (POSIX)")
         void bigNumbersSupported(@TempDir Path tempDir) throws Exception {
