@@ -16,6 +16,7 @@
 package io.fabric8.kubernetes.client.utils;
 
 import io.fabric8.kubernetes.api.model.AuthInfo;
+import io.fabric8.kubernetes.api.model.AuthProviderConfig;
 import io.fabric8.kubernetes.api.model.NamedAuthInfo;
 import io.fabric8.kubernetes.api.model.NamedContext;
 import io.fabric8.kubernetes.client.Config;
@@ -37,10 +38,7 @@ import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 import java.security.spec.InvalidKeySpecException;
 import java.time.Instant;
-import java.util.Base64;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
@@ -242,6 +240,12 @@ public class OpenIDConnectionUtils {
    */
   public static boolean persistKubeConfigWithUpdatedAuthInfo(Config currentConfig, Consumer<AuthInfo> updateAction)
       throws IOException {
+    AuthInfo authInfo = new AuthInfo();
+    authInfo.setAuthProvider(new AuthProviderConfig(new HashMap<>(2), currentConfig.getAuthProvider().getName()));
+    updateAction.accept(authInfo);
+    //update new auth info to in-memory config
+    currentConfig.getAuthProvider().getConfig().putAll(authInfo.getAuthProvider().getConfig());
+
     if (currentConfig.getFile() == null) {
       return false;
     }
@@ -259,10 +263,13 @@ public class OpenIDConnectionUtils {
           config.getUsers().add(result);
           return result;
         });
+    //update new auth info to kubeConfig
     if (namedAuthInfo.getUser() == null) {
-      namedAuthInfo.setUser(new AuthInfo());
+      namedAuthInfo.setUser(authInfo);
+    } else {
+      Optional.ofNullable(authInfo.getToken()).ifPresent(t -> namedAuthInfo.getUser().setToken(t));
+      namedAuthInfo.getUser().getAuthProvider().getConfig().putAll(authInfo.getAuthProvider().getConfig());
     }
-    updateAction.accept(namedAuthInfo.getUser());
     // Persist changes to KUBECONFIG
     KubeConfigUtils.persistKubeConfigIntoFile(config, currentConfig.getFile().getAbsolutePath());
     return true;
