@@ -162,10 +162,11 @@ public class JsonUnwrappedDeserializer<T> extends JsonDeserializer<T> implements
 
       boolean replaced = false;
       for (UnwrappedInfo unwrapped : unwrappedInfos) {
-        final ObjectNode unwrappedNode = unwrappedNodes.computeIfAbsent(unwrapped,
-            k -> deserializationContext.getNodeFactory().objectNode());
         final String transformed = unwrapped.nameTransformer.reverse(key);
+        final ObjectNode unwrappedNode = unwrappedNodes.getOrDefault(unwrapped,
+            deserializationContext.getNodeFactory().objectNode());
         if (transformed != null && !ownPropertyNames.contains(key) && unwrapped.beanPropertyNames.contains(transformed)) {
+          unwrappedNodes.putIfAbsent(unwrapped, unwrappedNode);
           unwrappedNode.replace(transformed, value);
           replaced = true;
         }
