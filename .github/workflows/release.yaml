@@ -98,13 +98,14 @@ jobs:
           gpg-private-key: ${{ secrets.SIGNINGKEY }}
           gpg-passphrase: SIGNINGPASSWORD
       - name: Build and release Java 11 modules
-        run: ./mvnw ${MAVEN_ARGS} ${RELEASE_MAVEN_ARGS}                                                                 \
-          -pl "httpclient-jdk"                                                                                          \
-          -pl "httpclient-jetty"                                                                                        \
-          -pl "junit/kube-api-test"                                                                                     \
-          -pl "junit/kube-api-test/core"                                                                                \
-          -pl "junit/kube-api-test/client-inject"                                                                       \
-          clean deploy
+        run: |
+          ./mvnw ${MAVEN_ARGS} ${RELEASE_MAVEN_ARGS}                                                                    \
+            -pl "httpclient-jdk"                                                                                        \
+            -pl "httpclient-jetty"                                                                                      \
+            -pl "junit/kube-api-test"                                                                                   \
+            -pl "junit/kube-api-test/core"                                                                              \
+            -pl "junit/kube-api-test/client-inject"                                                                     \
+            clean deploy
       - name: Build and release BOM
         run: |
           ./mvnw ${MAVEN_ARGS} ${RELEASE_MAVEN_ARGS} clean sundr:generate-bom                                                                                                                                                                                                                                                                              &&
