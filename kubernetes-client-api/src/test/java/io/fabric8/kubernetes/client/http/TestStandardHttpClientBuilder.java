@@ -32,6 +32,9 @@ public class TestStandardHttpClientBuilder
 
   @Override
   public TestStandardHttpClient build() {
+    if (clientFactory.getMode() == TestStandardHttpClientFactory.Mode.SINGLETON && instances.size() == 1) {
+      return instances.peek();
+    }
     final TestStandardHttpClient instance = new TestStandardHttpClient(this,
         Optional.ofNullable(instances.peek()).map(TestStandardHttpClient::getClosed).orElse(new AtomicBoolean()));
     instances.add(instance);

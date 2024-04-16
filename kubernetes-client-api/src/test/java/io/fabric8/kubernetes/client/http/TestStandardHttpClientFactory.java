@@ -21,10 +21,36 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+@Getter
 public class TestStandardHttpClientFactory implements HttpClient.Factory {
 
-  @Getter
-  private final ConcurrentLinkedQueue<TestStandardHttpClient> instances = new ConcurrentLinkedQueue<>();
+  public enum Mode {
+    /**
+     * A new instance of the HttpClient is created for each build.
+     */
+    MULTIPLE,
+    /**
+     * The factory and builder share a single instance of the HttpClient whenever it's built.
+     * Useful for mocking or setting expectations before a client is built using the factory's builder.
+     */
+    SINGLETON
+  }
+
+  private final Mode mode;
+  private final ConcurrentLinkedQueue<TestStandardHttpClient> instances;
+
+  public TestStandardHttpClientFactory() {
+    this(Mode.MULTIPLE);
+  }
+
+  public TestStandardHttpClientFactory(Mode mode) {
+    this.mode = mode == null ? Mode.MULTIPLE : mode;
+    instances = new ConcurrentLinkedQueue<>();
+    if (mode == Mode.SINGLETON) {
+      // Create the singleton instance (will be automatically added to the instances queue)
+      newBuilder().build();
+    }
+  }
 
   @Override
   public TestStandardHttpClientBuilder newBuilder() {
