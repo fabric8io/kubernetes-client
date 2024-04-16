@@ -315,8 +315,6 @@ public abstract class AbstractJsonSchema<T, B> {
     // index potential accessors by name for faster lookup
     final Map<String, Method> accessors = indexPotentialAccessors(definition);
 
-    System.out.println("Definition: " + definition.getFullyQualifiedName() + " properties: " + definition.getProperties()
-        .stream().map(v -> v.getName() + " - " + v.getTypeRef().getName()).collect(Collectors.joining("\n")));
     for (Property property : definition.getProperties()) {
       if (isJsonNode) {
         break;
