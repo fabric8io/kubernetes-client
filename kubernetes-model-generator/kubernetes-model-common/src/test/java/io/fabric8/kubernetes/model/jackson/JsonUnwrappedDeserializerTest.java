@@ -23,6 +23,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -31,15 +32,8 @@ import org.junit.jupiter.api.Test;
 import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.DEDUCTION;
 import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NONE;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class JsonUnwrappedDeserializerTest {
-
-  private static final String EXPECTED_VALUE_A = "Value A";
-  private static final String EXPECTED_VALUE_B = "Value B";
-  private static final String EXPECTED_VALUE_C = "Value C";
 
   private ObjectMapper mapper;
 
@@ -53,22 +47,39 @@ class JsonUnwrappedDeserializerTest {
 
     @Test
     @DisplayName("Single @JsonUnwrapped polymorphic type")
-    void singleInterfaceWithJsonWrapped() throws JsonProcessingException {
-      RootClass instance = mapper.readValue("{ \"stringField\": \"" + EXPECTED_VALUE_A + "\", "
-          + "\"extendedField\": \"" + EXPECTED_VALUE_B + "\", "
-          + "\"nestedField\": \"" + EXPECTED_VALUE_C + "\" }", RootClass.class);
-      // Verify normal fields works along to the json-wrapped fields
-      assertEquals(EXPECTED_VALUE_A, instance.stringField);
+    void singleJsonWrappedPolymorphicField() throws JsonProcessingException {
+      final RootClass result = mapper.readValue("{" +
+          "\"stringField\": \"string-field-value\", " +
+          "\"extendedField\": \"extended-field-value\", " +
+          "\"nestedField\": \"nested-field-value\"" +
+          "}", RootClass.class);
+      assertThat(result)
+          // Verify normal fields works along to the json-wrapped fields
+          .hasFieldOrPropertyWithValue("stringField", "string-field-value")
+          // Verify interfaces are supported at root level
+          .extracting(RootClass::getRootInterface)
+          .isNotNull()
+          .asInstanceOf(InstanceOfAssertFactories.type(RootImplementation.class))
+          .hasFieldOrPropertyWithValue("extendedField", "extended-field-value")
+          // Verify nested interfaces are also supported
+          .extracting(RootImplementation::getNestedInterface)
+          .isNotNull()
+          .asInstanceOf(InstanceOfAssertFactories.type(NestedImplementation.class))
+          .hasFieldOrPropertyWithValue("nestedField", "nested-field-value");
+    }
 
-      // Verify interfaces are supported at root level
-      assertNotNull(instance.rootInterface, "Interface was not deserialized!");
-      assertInstanceOf(RootImplementation.class, instance.rootInterface);
-      RootImplementation rootImplementation = ((RootImplementation) instance.rootInterface);
-      assertEquals(EXPECTED_VALUE_B, rootImplementation.extendedField);
-
-      // Verify nested interfaces are also supported
-      assertInstanceOf(NestedImplementation.class, rootImplementation.nestedInterface);
-      assertEquals(EXPECTED_VALUE_C, ((NestedImplementation) rootImplementation.nestedInterface).nestedField);
+    @Test
+    @DisplayName("Single @JsonUnwrapped polymorphic field with missing data")
+    void singleJsonWrappedPolymorphicFieldWithMissingDataForUnwrapped() throws JsonProcessingException {
+      final RootClass result = mapper.readValue("{" +
+          "\"stringField\": \"string-field-value\"" +
+          "}", RootClass.class);
+      assertThat(result)
+          // Verify normal fields works along to the json-wrapped fields
+          .hasFieldOrPropertyWithValue("stringField", "string-field-value")
+          // Verify interfaces are supported at root level
+          .extracting(RootClass::getRootInterface)
+          .isNull();
     }
 
     @Test
@@ -167,6 +178,8 @@ class JsonUnwrappedDeserializerTest {
     private String bar;
   }
 
+  @Data
+  @NoArgsConstructor
   @JsonDeserialize(using = io.fabric8.kubernetes.model.jackson.JsonUnwrappedDeserializer.class)
   public static class RootClass {
 
@@ -175,25 +188,6 @@ class JsonUnwrappedDeserializerTest {
     @JsonUnwrapped
     private RootInterface rootInterface;
 
-    public RootClass() {
-
-    }
-
-    public String getStringField() {
-      return stringField;
-    }
-
-    public void setStringField(String stringField) {
-      this.stringField = stringField;
-    }
-
-    public RootInterface getRootInterface() {
-      return rootInterface;
-    }
-
-    public void setRootInterface(RootInterface rootInterface) {
-      this.rootInterface = rootInterface;
-    }
   }
 
   @JsonSubTypes(@JsonSubTypes.Type(RootImplementation.class))
@@ -202,24 +196,14 @@ class JsonUnwrappedDeserializerTest {
 
   }
 
+  @Data
+  @NoArgsConstructor
   @JsonDeserialize(using = io.fabric8.kubernetes.model.jackson.JsonUnwrappedDeserializer.class)
   public static class RootImplementation implements RootInterface {
 
     private String extendedField;
     @JsonUnwrapped
     private NestedInterface nestedInterface;
-
-    public RootImplementation() {
-
-    }
-
-    public String getExtendedField() {
-      return extendedField;
-    }
-
-    public void setExtendedField(String extendedField) {
-      this.extendedField = extendedField;
-    }
   }
 
   @JsonSubTypes(@JsonSubTypes.Type(NestedImplementation.class))
@@ -228,19 +212,9 @@ class JsonUnwrappedDeserializerTest {
 
   }
 
+  @Data
+  @NoArgsConstructor
   public static class NestedImplementation implements NestedInterface {
     private String nestedField;
-
-    public NestedImplementation() {
-
-    }
-
-    public String getNestedField() {
-      return nestedField;
-    }
-
-    public void setNestedField(String nestedField) {
-      this.nestedField = nestedField;
-    }
   }
 }
