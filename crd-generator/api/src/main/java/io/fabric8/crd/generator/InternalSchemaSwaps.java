@@ -18,12 +18,20 @@ package io.fabric8.crd.generator;
 import io.sundr.model.ClassRef;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.StringJoiner;
 import java.util.stream.Collectors;
 
 public class InternalSchemaSwaps {
+  private static final Set<Value> ALLOWED_UNMATCHED_SCHEMA_SWAPS = new HashSet<>();
+  static {
+    ALLOWED_UNMATCHED_SCHEMA_SWAPS
+        .add(new Value(null, ClassRef.forName("java.time.zone.ZoneRules"), "lastRulesCache", null, 0));
+  }
+
   // swaps applicable above this point
   private final Map<Key, Value> parentSwaps;
   // swaps applicable to the current context
@@ -94,8 +102,14 @@ public class InternalSchemaSwaps {
     return new SwapResult(null, false);
   }
 
+  private static boolean isIgnored(Value value) {
+    return ALLOWED_UNMATCHED_SCHEMA_SWAPS
+        .stream()
+        .anyMatch(v -> v.originalType.equals(value.originalType) && v.fieldName.equals(value.fieldName));
+  }
+
   public void throwIfUnmatchedSwaps() {
-    String unmatchedSchemaSwaps = swaps.values().stream().filter(value -> !value.used)
+    String unmatchedSchemaSwaps = swaps.values().stream().filter(value -> !value.used && !isIgnored(value))
         .map(Object::toString)
         .collect(Collectors.joining(", "));
     if (!unmatchedSchemaSwaps.isEmpty()) {
