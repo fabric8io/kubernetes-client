@@ -267,7 +267,7 @@ public class OpenIDConnectionUtils {
     if (namedAuthInfo.getUser() == null) {
       namedAuthInfo.setUser(authInfo);
     } else {
-      Optional.of(authInfo.getToken()).ifPresent(t -> namedAuthInfo.getUser().setToken(t));
+      Optional.ofNullable(authInfo.getToken()).ifPresent(t -> namedAuthInfo.getUser().setToken(t));
       namedAuthInfo.getUser().getAuthProvider().getConfig().putAll(authInfo.getAuthProvider().getConfig());
     }
     // Persist changes to KUBECONFIG
