@@ -27,16 +27,22 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.ContextualDeserializer;
 import com.fasterxml.jackson.databind.deser.ResolvableDeserializer;
 import com.fasterxml.jackson.databind.introspect.BeanPropertyDefinition;
+import com.fasterxml.jackson.databind.jsontype.NamedType;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TreeTraversingParser;
 import com.fasterxml.jackson.databind.util.NameTransformer;
 
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Desc: this is a workaround on the problem that Jackson's @JsonUnwrapped doesn't work with
@@ -45,7 +51,7 @@ import java.util.stream.Collectors;
  */
 public class JsonUnwrappedDeserializer<T> extends JsonDeserializer<T> implements ContextualDeserializer {
 
-  private static JsonUnwrapped cancelUnwrappedAnnotation;
+  private static final JsonUnwrapped cancelUnwrappedAnnotation;
 
   static {
     try {
@@ -58,8 +64,7 @@ public class JsonUnwrappedDeserializer<T> extends JsonDeserializer<T> implements
 
   private JsonDeserializer<T> beanDeserializer;
   private Set<String> ownPropertyNames;
-  private String unwrappedPropertyName;
-  private NameTransformer nameTransformer;
+  private List<UnwrappedInfo> unwrappedInfos;
 
   /*
    * Needed by Jackson
@@ -72,15 +77,12 @@ public class JsonUnwrappedDeserializer<T> extends JsonDeserializer<T> implements
 
     BeanDescription description = deserializationContext.getConfig().introspect(type);
 
-    final JsonUnwrapped[] tempUnwrappedAnnotation = { null };
-
     List<BeanPropertyDefinition> unwrappedProperties = description.findProperties().stream()
-        .filter(prop -> Arrays.asList(prop.getConstructorParameter(), prop.getMutator(), prop.getField()).stream()
+        .filter(prop -> Stream.of(prop.getConstructorParameter(), prop.getMutator(), prop.getField())
             .filter(Objects::nonNull)
             .anyMatch(member -> {
               JsonUnwrapped unwrappedAnnotation = member.getAnnotation(JsonUnwrapped.class);
               if (unwrappedAnnotation != null) {
-                tempUnwrappedAnnotation[0] = unwrappedAnnotation;
                 member.getAllAnnotations().add(cancelUnwrappedAnnotation);
               }
               return unwrappedAnnotation != null;
@@ -89,25 +91,57 @@ public class JsonUnwrappedDeserializer<T> extends JsonDeserializer<T> implements
 
     if (unwrappedProperties.isEmpty()) {
       throw new UnsupportedOperationException("@JsonUnwrapped properties not found in " + type.getTypeName());
-    } else if (unwrappedProperties.size() > 1) {
-      throw new UnsupportedOperationException("Multiple @JsonUnwrapped properties found in " + type.getTypeName());
     }
 
-    BeanPropertyDefinition unwrappedProperty = unwrappedProperties.get(0);
-
-    nameTransformer = NameTransformer.simpleTransformer(tempUnwrappedAnnotation[0].prefix(),
-        tempUnwrappedAnnotation[0].suffix());
-
-    unwrappedPropertyName = unwrappedProperty.getName();
-
-    ownPropertyNames = description.findProperties().stream().map(BeanPropertyDefinition::getName).collect(Collectors.toSet());
-    ownPropertyNames.remove(unwrappedPropertyName);
+    ownPropertyNames = description.findProperties().stream()
+        .map(BeanPropertyDefinition::getName)
+        .collect(Collectors.toSet());
     ownPropertyNames.removeAll(description.getIgnoredPropertyNames());
 
     JsonDeserializer<Object> rawBeanDeserializer = deserializationContext.getFactory()
         .createBeanDeserializer(deserializationContext, type, description);
     ((ResolvableDeserializer) rawBeanDeserializer).resolve(deserializationContext);
     beanDeserializer = (JsonDeserializer<T>) rawBeanDeserializer;
+
+    unwrappedInfos = new ArrayList<>();
+    for (BeanPropertyDefinition unwrappedProperty : unwrappedProperties) {
+      unwrappedInfos.add(new UnwrappedInfo(deserializationContext, unwrappedProperty));
+      ownPropertyNames.remove(unwrappedProperty.getName());
+    }
+  }
+
+  private static final class UnwrappedInfo {
+    final String propertyName;
+    final NameTransformer nameTransformer;
+    final Set<String> beanPropertyNames;
+
+    public UnwrappedInfo(DeserializationContext context, BeanPropertyDefinition unwrappedProperty) {
+      propertyName = unwrappedProperty.getName();
+      final JsonUnwrapped annotation = unwrappedProperty.getField().getAnnotation(JsonUnwrapped.class);
+      nameTransformer = NameTransformer.simpleTransformer(annotation.prefix(), annotation.suffix());
+      beanPropertyNames = new HashSet<>();
+      // Extract viable property names for deserialization and nested deserialization
+      final Set<Class<?>> processedTypes = new HashSet<>();
+      extractPropertiesDeep(context, processedTypes, beanPropertyNames, unwrappedProperty);
+    }
+
+    private static void extractPropertiesDeep(DeserializationContext context, Set<Class<?>> processedTypes,
+        Set<String> properties, BeanPropertyDefinition bean) {
+      final Collection<NamedType> types = context.getConfig().getSubtypeResolver()
+          .collectAndResolveSubtypesByClass(context.getConfig(),
+              context.getConfig().introspect(bean.getPrimaryType()).getClassInfo());
+      for (NamedType type : types) {
+        if (!processedTypes.add(type.getType())) {
+          continue;
+        }
+        for (BeanPropertyDefinition property : context.getConfig().introspect(context.constructType(type.getType()))
+            .findProperties()) {
+          properties.add(property.getName());
+          extractPropertiesDeep(context, processedTypes, properties, property);
+        }
+      }
+    }
+
   }
 
   @Override
@@ -118,25 +152,32 @@ public class JsonUnwrappedDeserializer<T> extends JsonDeserializer<T> implements
 
   @Override
   public T deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-    ObjectNode node = jsonParser.readValueAsTree();
-
-    ObjectNode ownNode = deserializationContext.getNodeFactory().objectNode();
-    ObjectNode unwrappedNode = deserializationContext.getNodeFactory().objectNode();
+    final ObjectNode node = jsonParser.readValueAsTree();
+    final ObjectNode ownNode = deserializationContext.getNodeFactory().objectNode();
+    final Map<UnwrappedInfo, ObjectNode> unwrappedNodes = new HashMap<>();
 
     node.fields().forEachRemaining(entry -> {
-      String key = entry.getKey();
-      JsonNode value = entry.getValue();
+      final String key = entry.getKey();
+      final JsonNode value = entry.getValue();
 
-      String transformed = nameTransformer.reverse(key);
-
-      if (transformed != null && !ownPropertyNames.contains(key)) {
-        unwrappedNode.replace(transformed, value);
-      } else {
+      boolean replaced = false;
+      for (UnwrappedInfo unwrapped : unwrappedInfos) {
+        final ObjectNode unwrappedNode = unwrappedNodes.computeIfAbsent(unwrapped,
+            k -> deserializationContext.getNodeFactory().objectNode());
+        final String transformed = unwrapped.nameTransformer.reverse(key);
+        if (transformed != null && !ownPropertyNames.contains(key) && unwrapped.beanPropertyNames.contains(transformed)) {
+          unwrappedNode.replace(transformed, value);
+          replaced = true;
+        }
+      }
+      if (!replaced && ownPropertyNames.contains(key)) {
         ownNode.replace(key, value);
       }
     });
 
-    ownNode.replace(unwrappedPropertyName, unwrappedNode);
+    for (Map.Entry<UnwrappedInfo, ObjectNode> entry : unwrappedNodes.entrySet()) {
+      ownNode.replace(entry.getKey().propertyName, entry.getValue());
+    }
 
     try (TreeTraversingParser syntheticParser = new TreeTraversingParser(ownNode, jsonParser.getCodec())) {
       syntheticParser.nextToken();
