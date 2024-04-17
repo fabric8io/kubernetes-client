@@ -17,7 +17,6 @@ package io.fabric8.kubernetes.client.http;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.opentest4j.AssertionFailedError;
 
 import java.net.URI;
 import java.nio.ByteBuffer;
@@ -67,7 +66,7 @@ public class TestStandardHttpClient
       future = find(standardWebSocketBuilder.asHttpRequest().uri()).wsFutures.poll()
           .get(standardWebSocketBuilder, listener);
     } catch (Exception e) {
-      throw new AssertionFailedError("Unexpected exception", e);
+      throw new AssertionError("Unexpected exception", e);
     }
     recordedBuildWebSocketDirects.add(new RecordedBuildWebSocketDirect(standardWebSocketBuilder, listener, future));
     return future;
@@ -80,7 +79,7 @@ public class TestStandardHttpClient
     try {
       future = find(request.uri()).futures.poll().get(request, consumer);
     } catch (Exception e) {
-      throw new AssertionFailedError("Unexpected exception", e);
+      throw new AssertionError("Unexpected exception", e);
     }
     recordedConsumeBytesDirects.add(new RecordedConsumeBytesDirect(request, consumer, future));
     return future;
@@ -98,7 +97,7 @@ public class TestStandardHttpClient
         return e.getValue();
       }
     }
-    throw new AssertionFailedError("Missing expectation for path: " + path);
+    throw new AssertionError("Missing expectation for path: " + path);
   }
 
   public final TestStandardHttpClient expect(String pathRegex, Throwable exception) {
