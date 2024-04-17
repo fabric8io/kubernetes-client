@@ -38,7 +38,12 @@ import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 import java.security.spec.InvalidKeySpecException;
 import java.time.Instant;
-import java.util.*;
+import java.util.Base64;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
@@ -133,7 +138,6 @@ public class OpenIDConnectionUtils {
    * @param clientSecret client secret
    * @param tokenURL OpenID Connection provider's token refresh url
    * @return response as HashMap
-   * @throws IOException in case of any error in contacting OIDC provider
    */
   static CompletableFuture<Map<String, Object>> refreshOidcToken(HttpClient client, String clientId, String refreshToken,
       String clientSecret, String tokenURL) {
@@ -169,7 +173,7 @@ public class OpenIDConnectionUtils {
    * @return a HashMap of Discovery document
    */
   static CompletableFuture<Map<String, Object>> getOIDCDiscoveryDocumentAsMap(HttpClient client, String issuer) {
-    HttpRequest request = client.newHttpRequestBuilder().uri(getWellKnownUrlForOpenIDIssuer(issuer)).build();
+    HttpRequest request = client.newHttpRequestBuilder().uri(resolveWellKnownUrlForOpenIDIssuer(issuer)).build();
     return client.sendAsync(request, String.class).thenApply(response -> {
       try {
         if (response.isSuccessful() && response.body() != null) {
@@ -193,7 +197,7 @@ public class OpenIDConnectionUtils {
    * @param issuer issuing authority URL
    * @return well known URL for corresponding OpenID provider
    */
-  static String getWellKnownUrlForOpenIDIssuer(String issuer) {
+  private static String resolveWellKnownUrlForOpenIDIssuer(String issuer) {
     return URLUtils.join(issuer, "/", WELL_KNOWN_OPENID_CONFIGURATION);
   }
 
