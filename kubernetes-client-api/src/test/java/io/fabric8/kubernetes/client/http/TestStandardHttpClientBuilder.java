@@ -19,6 +19,8 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import javax.net.ssl.TrustManager;
+
 public class TestStandardHttpClientBuilder
     extends StandardHttpClientBuilder<TestStandardHttpClient, TestStandardHttpClientFactory, TestStandardHttpClientBuilder> {
 
@@ -51,4 +53,7 @@ public class TestStandardHttpClientBuilder
     return (TestStandardHttpClientBuilder) super.tag(value);
   }
 
+  public final TrustManager[] getTrustManagers() {
+    return trustManagers;
+  }
 }
