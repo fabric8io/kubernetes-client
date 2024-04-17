@@ -20,6 +20,7 @@ import io.fabric8.kubernetes.api.model.AuthProviderConfig;
 import io.fabric8.kubernetes.api.model.NamedAuthInfo;
 import io.fabric8.kubernetes.api.model.NamedContext;
 import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.HttpResponse;
@@ -96,7 +97,8 @@ public class OpenIDConnectionUtils {
     String clientSecret = currentAuthProviderConfig.getOrDefault(CLIENT_SECRET_KUBECONFIG, "");
     String idpCert = currentAuthProviderConfig.getOrDefault(IDP_CERT_DATA, getClientCertDataFromConfig(currentConfig));
     if (isTokenRefreshSupported(currentAuthProviderConfig)) {
-      return getOIDCProviderTokenEndpointAndRefreshToken(issuer, clientId, refreshToken, clientSecret, idpCert, clientBuilder)
+      final HttpClient httpClient = initHttpClientWithPemCert(idpCert, clientBuilder);
+      return getOIDCProviderTokenEndpointAndRefreshToken(issuer, clientId, refreshToken, clientSecret, httpClient)
           .thenApply(map -> {
             Object token = map.get(ID_TOKEN_PARAM);
             if (token == null) {
@@ -283,22 +285,19 @@ public class OpenIDConnectionUtils {
     return Serialization.unmarshal(jsonString, Map.class);
   }
 
-  private static HttpClient getDefaultHttpClientWithPemCert(String idpCert, HttpClient.Builder clientBuilder) {
-    TrustManager[] trustManagers = null;
-    KeyManager[] keyManagers = null;
+  private static HttpClient initHttpClientWithPemCert(String idpCert, HttpClient.Builder clientBuilder) {
     // fist, lets get the pem
     String pemCert = new String(java.util.Base64.getDecoder().decode(idpCert));
-
     try {
-      trustManagers = SSLUtils.trustManagers(pemCert, null, false, null, null);
-      keyManagers = SSLUtils.keyManagers(pemCert, null, null, null, null, null, null, null);
+      final TrustManager[] trustManagers = SSLUtils.trustManagers(pemCert, null, false, null, null);
+      final KeyManager[] keyManagers = SSLUtils.keyManagers(pemCert, null, null, null, null, null, null, null);
+
+      clientBuilder.sslContext(keyManagers, trustManagers);
+      return clientBuilder.build();
     } catch (KeyStoreException | InvalidKeySpecException | NoSuchAlgorithmException | IOException | UnrecoverableKeyException
         | CertificateException e) {
-      throw new RuntimeException("Could not import idp certificate", e);
+      throw KubernetesClientException.launderThrowable("Could not import idp certificate", e);
     }
-
-    clientBuilder.sslContext(keyManagers, trustManagers);
-    return clientBuilder.build();
   }
 
   private static HttpRequest getTokenRefreshHttpRequest(HttpClient client, String tokenEndpointUrl, String clientId,
@@ -324,15 +323,14 @@ public class OpenIDConnectionUtils {
   }
 
   private static CompletableFuture<Map<String, Object>> getOIDCProviderTokenEndpointAndRefreshToken(String issuer,
-      String clientId, String refreshToken, String clientSecret, String idpCert, HttpClient.Builder clientBuilder) {
-    HttpClient newClient = getDefaultHttpClientWithPemCert(idpCert, clientBuilder);
-    CompletableFuture<Map<String, Object>> result = getOIDCDiscoveryDocumentAsMap(newClient, issuer)
+      String clientId, String refreshToken, String clientSecret, HttpClient httpClient) {
+    CompletableFuture<Map<String, Object>> result = getOIDCDiscoveryDocumentAsMap(httpClient, issuer)
         .thenCompose(wellKnownOpenIdConfiguration -> {
           String oidcTokenEndpoint = getParametersFromDiscoveryResponse(wellKnownOpenIdConfiguration, TOKEN_ENDPOINT_PARAM);
 
-          return refreshOidcToken(newClient, clientId, refreshToken, clientSecret, oidcTokenEndpoint);
+          return refreshOidcToken(httpClient, clientId, refreshToken, clientSecret, oidcTokenEndpoint);
         });
-    result.whenComplete((s, t) -> newClient.close());
+    result.whenComplete((s, t) -> httpClient.close());
     return result;
   }
 
