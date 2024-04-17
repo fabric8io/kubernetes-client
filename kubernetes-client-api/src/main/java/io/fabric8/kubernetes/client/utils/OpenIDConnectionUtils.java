@@ -23,7 +23,6 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.HttpRequest;
-import io.fabric8.kubernetes.client.http.HttpResponse;
 import io.fabric8.kubernetes.client.internal.KubeConfigUtils;
 import io.fabric8.kubernetes.client.internal.SSLUtils;
 import org.slf4j.Logger;
@@ -57,7 +56,6 @@ import javax.net.ssl.TrustManager;
 public class OpenIDConnectionUtils {
   private static final Logger LOGGER = LoggerFactory.getLogger(OpenIDConnectionUtils.class);
 
-  public static final String EMPTY = "";
   public static final String ID_TOKEN_KUBECONFIG = "id-token";
   public static final String ISSUER_KUBECONFIG = "idp-issuer-url";
   public static final String REFRESH_TOKEN_KUBECONFIG = "refresh-token";
@@ -66,15 +64,14 @@ public class OpenIDConnectionUtils {
   public static final String CLIENT_ID_PARAM = "client_id";
   public static final String CLIENT_SECRET_PARAM = "client_secret";
   public static final String ID_TOKEN_PARAM = "id_token";
-  public static final String ACCESS_TOKEN_PARAM = "access_token";
   public static final String CLIENT_ID_KUBECONFIG = "client-id";
   public static final String CLIENT_SECRET_KUBECONFIG = "client-secret";
-  public static final String IDP_CERT_DATA = "idp-certificate-authority-data";
-  public static final String TOKEN_ENDPOINT_PARAM = "token_endpoint";
-  public static final String WELL_KNOWN_OPENID_CONFIGURATION = ".well-known/openid-configuration";
-  public static final String GRANT_TYPE_REFRESH_TOKEN = "refresh_token";
+  private static final String IDP_CERT_DATA = "idp-certificate-authority-data";
+  private static final String TOKEN_ENDPOINT_PARAM = "token_endpoint";
+  private static final String WELL_KNOWN_OPENID_CONFIGURATION = ".well-known/openid-configuration";
+  private static final String GRANT_TYPE_REFRESH_TOKEN = "refresh_token";
   private static final String JWT_TOKEN_EXPIRY_TIMESTAMP_KEY = "exp";
-  public static final String JWT_PARTS_DELIMITER_REGEX = "\\.";
+  private static final String JWT_PARTS_DELIMITER_REGEX = "\\.";
   private static final int TOKEN_EXPIRY_DELTA = 10;
 
   private OpenIDConnectionUtils() {
@@ -87,18 +84,14 @@ public class OpenIDConnectionUtils {
    * @param currentAuthProviderConfig current AuthInfo's AuthProvider config as a map
    * @return access token for interacting with Kubernetes API
    */
-  public static CompletableFuture<String> resolveOIDCTokenFromAuthConfig(Config currentConfig,
-      Map<String, String> currentAuthProviderConfig,
-      HttpClient.Builder clientBuilder) {
+  public static CompletableFuture<String> resolveOIDCTokenFromAuthConfig(
+      Config currentConfig, Map<String, String> currentAuthProviderConfig, HttpClient.Builder clientBuilder) {
     String accessToken = currentAuthProviderConfig.get(ID_TOKEN_KUBECONFIG);
-    String issuer = currentAuthProviderConfig.get(ISSUER_KUBECONFIG);
-    String clientId = currentAuthProviderConfig.get(CLIENT_ID_KUBECONFIG);
-    String refreshToken = currentAuthProviderConfig.get(REFRESH_TOKEN_KUBECONFIG);
-    String clientSecret = currentAuthProviderConfig.getOrDefault(CLIENT_SECRET_KUBECONFIG, "");
     String idpCert = currentAuthProviderConfig.getOrDefault(IDP_CERT_DATA, getClientCertDataFromConfig(currentConfig));
     if (isTokenRefreshSupported(currentAuthProviderConfig)) {
       final HttpClient httpClient = initHttpClientWithPemCert(idpCert, clientBuilder);
-      return getOIDCProviderTokenEndpointAndRefreshToken(issuer, clientId, refreshToken, clientSecret, httpClient)
+      final CompletableFuture<String> result = getOpenIdConfiguration(httpClient, currentAuthProviderConfig)
+          .thenCompose(openIdConfiguration -> refreshOpenIdToken(httpClient, currentAuthProviderConfig, openIdConfiguration))
           .thenApply(map -> {
             Object token = map.get(ID_TOKEN_PARAM);
             if (token == null) {
@@ -116,6 +109,8 @@ public class OpenIDConnectionUtils {
 
             return String.valueOf(token);
           });
+      result.whenComplete((s, t) -> httpClient.close());
+      return result;
     }
     return CompletableFuture.completedFuture(accessToken);
   }
@@ -132,20 +127,47 @@ public class OpenIDConnectionUtils {
   }
 
   /**
-   * Issue Token Refresh HTTP Request to OIDC Provider
+   * OpenID providers publish their metadata at a well-known URL which looks like this:
+   * https://[base-server-url]/.well-known/openid-configuration
    *
-   * @param client Http Client for issuing HTTP request
-   * @param clientId client id
-   * @param refreshToken refresh token
-   * @param clientSecret client secret
-   * @param tokenURL OpenID Connection provider's token refresh url
-   * @return response as HashMap
+   * This method performs an HTTP GET at this public URL and fetches response as a Map.
+   *
+   * @param client HttpClient for doing HTTP Get to well known URL of OpenID provider
+   * @param authProviderConfig OpenID Connect provider information
+   * @return a HashMap of Discovery document
    */
-  static CompletableFuture<Map<String, Object>> refreshOidcToken(HttpClient client, String clientId, String refreshToken,
-      String clientSecret, String tokenURL) {
-    HttpRequest request = getTokenRefreshHttpRequest(client, tokenURL, clientId, refreshToken, clientSecret);
-    CompletableFuture<HttpResponse<String>> response = client.sendAsync(request, String.class);
-    return response.thenApply(r -> {
+  private static CompletableFuture<Map<String, Object>> getOpenIdConfiguration(HttpClient client,
+      Map<String, String> authProviderConfig) {
+    final HttpRequest request = client.newHttpRequestBuilder()
+        .uri(resolveWellKnownUrlForOpenIDIssuer(authProviderConfig)).build();
+    return client.sendAsync(request, String.class).thenApply(response -> {
+      try {
+        if (response.isSuccessful() && response.body() != null) {
+          return (Map<String, Object>) Serialization.unmarshal(response.body(), Map.class);
+        } else {
+          // Don't produce an error that's too huge (e.g. if we get HTML back for some reason).
+          String responseBody = response.body();
+          LOGGER.warn("oidc: failed to query metadata endpoint: {} {}", response.code(), responseBody);
+        }
+      } catch (Exception e) {
+        LOGGER.warn("Could not refresh OIDC token, failure in getting refresh URL", e);
+      }
+      return Collections.emptyMap();
+    });
+  }
+
+  /**
+   * Issue Token Refresh HTTP Request to OIDC Provider
+   */
+  private static CompletableFuture<Map<String, Object>> refreshOpenIdToken(
+      HttpClient httpClient, Map<String, String> authProviderConfig, Map<String, Object> openIdConfiguration) {
+    if (!openIdConfiguration.containsKey(TOKEN_ENDPOINT_PARAM)) {
+      LOGGER.warn("oidc: discovery object doesn't contain a {}", TOKEN_ENDPOINT_PARAM);
+      return CompletableFuture.completedFuture(Collections.emptyMap());
+    }
+    final String tokenRefreshUrl = String.valueOf(openIdConfiguration.get(TOKEN_ENDPOINT_PARAM));
+    final HttpRequest request = initTokenRefreshHttpRequest(httpClient, authProviderConfig, tokenRefreshUrl);
+    return httpClient.sendAsync(request, String.class).thenApply(r -> {
       String body = r.body();
       if (body != null) {
         // Get response body as string
@@ -166,61 +188,14 @@ public class OpenIDConnectionUtils {
   }
 
   /**
-   * OpenID providers publish their metadata at a well-known URL OpenID providers publish their metadata
-   * at a well-known URL which looks like this: https://[base-server-url]/.well-known/openid-configuration
-   * This method performs an Http Get at this public URL and fetches response as a HashMap
-   *
-   * @param client HttpClient for doing HTTP Get to well known URL of OpenID provider
-   * @param issuer OpenID Connect provider issuer URL
-   * @return a HashMap of Discovery document
-   */
-  static CompletableFuture<Map<String, Object>> getOIDCDiscoveryDocumentAsMap(HttpClient client, String issuer) {
-    HttpRequest request = client.newHttpRequestBuilder().uri(resolveWellKnownUrlForOpenIDIssuer(issuer)).build();
-    return client.sendAsync(request, String.class).thenApply(response -> {
-      try {
-        if (response.isSuccessful() && response.body() != null) {
-          return (Map<String, Object>) Serialization.unmarshal(response.body(), Map.class);
-        } else {
-          // Don't produce an error that's too huge (e.g. if we get HTML back for some reason).
-          String responseBody = response.body();
-          LOGGER.warn("oidc: failed to query metadata endpoint: {} {}", response.code(), responseBody);
-        }
-      } catch (Exception e) {
-        LOGGER.warn("Could not refresh OIDC token, failure in getting refresh URL", e);
-      }
-      return Collections.emptyMap();
-    });
-  }
-
-  /**
    * Well known URL for getting OpenID Connect metadata.
    * https://openid.net/specs/openid-connect-discovery-1_0.html#ProviderConfig
    *
-   * @param issuer issuing authority URL
+   * @param authProviderConfig containing the issuing authority URL
    * @return well known URL for corresponding OpenID provider
    */
-  private static String resolveWellKnownUrlForOpenIDIssuer(String issuer) {
-    return URLUtils.join(issuer, "/", WELL_KNOWN_OPENID_CONFIGURATION);
-  }
-
-  /**
-   * Parses a specified parameter from OpenID Connect Discovery document
-   *
-   * @param responseAsJson discovery document as HashMap
-   * @param key parameter whose value needs to be fetched
-   * @return value of parameter passed.
-   */
-  static String getParametersFromDiscoveryResponse(Map<String, Object> responseAsJson, String key) {
-    // Metadata object. We only care about the token_endpoint, the thing endpoint
-    // we'll be refreshing against.
-    //
-    // https://openid.net/specs/openid-connect-discovery-1_0.html#ProviderMetadata
-    if (responseAsJson.containsKey(key)) {
-      return String.valueOf(responseAsJson.get(key));
-    } else {
-      LOGGER.warn("oidc: oidc: discovery object doesn't contain a {}", key);
-    }
-    return EMPTY;
+  private static String resolveWellKnownUrlForOpenIDIssuer(Map<String, String> authProviderConfig) {
+    return URLUtils.join(authProviderConfig.get(ISSUER_KUBECONFIG), "/", WELL_KNOWN_OPENID_CONFIGURATION);
   }
 
   /**
@@ -296,38 +271,24 @@ public class OpenIDConnectionUtils {
     }
   }
 
-  private static HttpRequest getTokenRefreshHttpRequest(HttpClient client, String tokenEndpointUrl, String clientId,
-      String refreshToken, String clientSecret) {
-    HttpRequest.Builder httpRequestBuilder = client.newHttpRequestBuilder().uri(tokenEndpointUrl);
+  private static HttpRequest initTokenRefreshHttpRequest(
+      HttpClient client, Map<String, String> authProviderConfig, String tokenRefreshUrl) {
 
-    Map<String, String> requestBody = getRequestBodyContentForRefresh(clientId, refreshToken, clientSecret);
-    String credentials = java.util.Base64.getEncoder()
-        .encodeToString((clientId + ':' + clientSecret).getBytes(StandardCharsets.UTF_8));
+    final String clientId = authProviderConfig.get(CLIENT_ID_KUBECONFIG);
+    final String clientSecret = authProviderConfig.getOrDefault(CLIENT_SECRET_KUBECONFIG, "");
+    final HttpRequest.Builder httpRequestBuilder = client.newHttpRequestBuilder().uri(tokenRefreshUrl);
+    final String credentials = java.util.Base64.getEncoder().encodeToString((clientId + ':' + clientSecret)
+        .getBytes(StandardCharsets.UTF_8));
     httpRequestBuilder.header("Authorization", "Basic " + credentials);
+
+    final Map<String, String> requestBody = new LinkedHashMap<>();
+    requestBody.put(REFRESH_TOKEN_PARAM, authProviderConfig.get(REFRESH_TOKEN_KUBECONFIG));
+    requestBody.put(GRANT_TYPE_PARAM, GRANT_TYPE_REFRESH_TOKEN);
+    requestBody.put(CLIENT_ID_PARAM, clientId);
+    requestBody.put(CLIENT_SECRET_PARAM, clientSecret);
+
     httpRequestBuilder.post(requestBody);
     return httpRequestBuilder.build();
-  }
-
-  private static Map<String, String> getRequestBodyContentForRefresh(String clientId, String refreshToken,
-      String clientSecret) {
-    Map<String, String> result = new LinkedHashMap<>();
-    result.put(REFRESH_TOKEN_PARAM, refreshToken);
-    result.put(GRANT_TYPE_PARAM, GRANT_TYPE_REFRESH_TOKEN);
-    result.put(CLIENT_ID_PARAM, clientId);
-    result.put(CLIENT_SECRET_PARAM, clientSecret);
-    return result;
-  }
-
-  private static CompletableFuture<Map<String, Object>> getOIDCProviderTokenEndpointAndRefreshToken(String issuer,
-      String clientId, String refreshToken, String clientSecret, HttpClient httpClient) {
-    CompletableFuture<Map<String, Object>> result = getOIDCDiscoveryDocumentAsMap(httpClient, issuer)
-        .thenCompose(wellKnownOpenIdConfiguration -> {
-          String oidcTokenEndpoint = getParametersFromDiscoveryResponse(wellKnownOpenIdConfiguration, TOKEN_ENDPOINT_PARAM);
-
-          return refreshOidcToken(httpClient, clientId, refreshToken, clientSecret, oidcTokenEndpoint);
-        });
-    result.whenComplete((s, t) -> httpClient.close());
-    return result;
   }
 
   public static boolean idTokenExpired(Config config) {
