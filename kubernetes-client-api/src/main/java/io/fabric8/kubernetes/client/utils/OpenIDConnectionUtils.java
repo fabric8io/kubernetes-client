@@ -152,7 +152,7 @@ public class OpenIDConnectionUtils {
         if (r.isSuccessful()) {
           // Deserialize response body into a Map and return
           try {
-            return convertJsonStringToMap(body);
+            return (Map<String, Object>) Serialization.unmarshal(body, Map.class);
           } catch (Exception e) {
             LOGGER.warn("Failure in fetching refresh token: ", e);
           }
@@ -179,7 +179,7 @@ public class OpenIDConnectionUtils {
     return client.sendAsync(request, String.class).thenApply(response -> {
       try {
         if (response.isSuccessful() && response.body() != null) {
-          return convertJsonStringToMap(response.body());
+          return (Map<String, Object>) Serialization.unmarshal(response.body(), Map.class);
         } else {
           // Don't produce an error that's too huge (e.g. if we get HTML back for some reason).
           String responseBody = response.body();
@@ -279,10 +279,6 @@ public class OpenIDConnectionUtils {
     // Persist changes to KUBECONFIG
     KubeConfigUtils.persistKubeConfigIntoFile(config, currentConfig.getFile().getAbsolutePath());
     return true;
-  }
-
-  private static Map<String, Object> convertJsonStringToMap(String jsonString) {
-    return Serialization.unmarshal(jsonString, Map.class);
   }
 
   private static HttpClient initHttpClientWithPemCert(String idpCert, HttpClient.Builder clientBuilder) {
