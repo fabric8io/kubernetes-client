@@ -11,6 +11,7 @@
 
 #### Improvements
 * Fix #5843: Support existingJavaTypes extension in java-generator
+* Fix #5867: (java-generator) Generate crd-generator annotation for source type
 
 #### Dependency Upgrade
 

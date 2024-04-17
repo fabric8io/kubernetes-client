@@ -233,6 +233,12 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
               new NameExpr("pattern = \"" + config.getDeserDatetimeFormat() + "\"")));
         }
 
+        if (prop.getFromCrdType() != null) {
+          objField.addAnnotation(
+              new SingleMemberAnnotationExpr(
+                  new Name("io.fabric8.crd.generator.annotation.SchemaFrom"),
+                  new NameExpr("type = " + prop.getFromCrdType() + ".class")));
+        }
         if (isRequired) {
           objField.addAnnotation("io.fabric8.generator.annotation.Required");
         }

@@ -65,6 +65,7 @@ public class CronTabSpec implements io.fabric8.kubernetes.api.model.KubernetesRe
     }
 
     @com.fasterxml.jackson.annotation.JsonProperty("issuedAt")
+    @io.fabric8.crd.generator.annotation.SchemaFrom(type = String.class)
     @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
     private java.time.ZonedDateTime issuedAt;
 

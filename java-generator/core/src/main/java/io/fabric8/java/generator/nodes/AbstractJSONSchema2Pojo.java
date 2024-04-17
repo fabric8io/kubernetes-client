@@ -72,6 +72,10 @@ public abstract class AbstractJSONSchema2Pojo {
 
   public abstract String getType();
 
+  public String getFromCrdType() {
+    return null;
+  }
+
   public abstract GeneratorResult generateJava();
 
   /** Takes a string and return the corresponding package name */
@@ -228,7 +232,7 @@ public abstract class AbstractJSONSchema2Pojo {
         case STRING_CRD_TYPE:
           switch (getRefinedStringType(prop.getFormat())) {
             case DATETIME_CRD_TYPE:
-              return fromJsonSchema.apply(JPrimitiveNameAndType.DATETIME);
+              return fromJsonSchema.apply(JPrimitiveNameAndType.DATETIME_FROM_STRING);
             case STRING_CRD_TYPE:
             default:
               return fromJsonSchema.apply(JPrimitiveNameAndType.STRING);
@@ -261,6 +265,7 @@ public abstract class AbstractJSONSchema2Pojo {
       case PRIMITIVE:
         return new JPrimitive(
             nt.getName(),
+            nt.getFromCrdType(),
             config,
             prop.getDescription(),
             isNullable,

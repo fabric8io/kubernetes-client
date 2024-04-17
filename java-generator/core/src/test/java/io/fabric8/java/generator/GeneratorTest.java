@@ -165,6 +165,7 @@ class GeneratorTest {
     // Arrange
     JPrimitive primitive = new JPrimitive(
         "test",
+        null,
         defaultConfig,
         null,
         Boolean.FALSE,
@@ -191,6 +192,7 @@ class GeneratorTest {
         .build();
     JPrimitive primitive = new JPrimitive(
         "test",
+        null,
         defaultConfig,
         null,
         Boolean.FALSE,
@@ -218,6 +220,7 @@ class GeneratorTest {
         .build();
     JPrimitive primitive = new JPrimitive(
         "test",
+        null,
         defaultConfig,
         null,
         Boolean.FALSE,
@@ -241,6 +244,7 @@ class GeneratorTest {
     JArray array = new JArray(
         new JPrimitive(
             "primitive",
+            null,
             defaultConfig,
             null,
             Boolean.FALSE,
@@ -265,6 +269,7 @@ class GeneratorTest {
     JMap map = new JMap(
         new JPrimitive(
             "primitive",
+            null,
             defaultConfig,
             null,
             Boolean.FALSE,

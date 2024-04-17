@@ -25,11 +25,21 @@ public class JavaNameAndType {
     return name;
   }
 
+  public String getFromCrdType() {
+    return fromCrdType;
+  }
+
   private final JavaType type;
   private final String name;
+  private final String fromCrdType;
 
   public JavaNameAndType(String name, JavaType type) {
+    this(name, type, null);
+  }
+
+  public JavaNameAndType(String name, JavaType type, String fromCrdType) {
     this.name = name;
     this.type = type;
+    this.fromCrdType = fromCrdType;
   }
 }

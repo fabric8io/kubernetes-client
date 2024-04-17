@@ -22,18 +22,26 @@ import java.util.ArrayList;
 
 public class JPrimitive extends AbstractJSONSchema2Pojo {
   private final String type;
+  private final String fromCrdType;
 
   private static final GeneratorResult empty = new GeneratorResult(new ArrayList<>(), new ArrayList<>());
 
-  public JPrimitive(String type, Config config, String description, final boolean isNullable, JsonNode defaultValue,
+  public JPrimitive(String type, String fromCrdType, Config config, String description, final boolean isNullable,
+      JsonNode defaultValue,
       final ValidationProperties validationProperties) {
     super(config, description, isNullable, defaultValue, validationProperties);
     this.type = type;
+    this.fromCrdType = fromCrdType;
   }
 
   @Override
   public String getType() {
     return type;
+  }
+
+  @Override
+  public String getFromCrdType() {
+    return fromCrdType;
   }
 
   @Override
