@@ -50,7 +50,6 @@ import static io.fabric8.kubernetes.client.utils.OpenIDConnectionUtils.ID_TOKEN_
 import static io.fabric8.kubernetes.client.utils.OpenIDConnectionUtils.ISSUER_KUBECONFIG;
 import static io.fabric8.kubernetes.client.utils.OpenIDConnectionUtils.REFRESH_TOKEN_KUBECONFIG;
 import static io.fabric8.kubernetes.client.utils.OpenIDConnectionUtils.REFRESH_TOKEN_PARAM;
-import static io.fabric8.kubernetes.client.utils.OpenIDConnectionUtils.TOKEN_ENDPOINT_PARAM;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -71,79 +70,6 @@ class OpenIDConnectionUtilsTest {
     final TestStandardHttpClientFactory factory = new TestStandardHttpClientFactory(SINGLETON);
     httpClient = factory.newBuilder().build();
     singletonHttpClientBuilder = factory.newBuilder();
-  }
-
-  @Test
-  void loadTokenURL() throws Exception {
-    // Given
-    httpClient.expect("/.well-known/openid-configuration", 200,
-        "{\"issuer\": \"https://accounts.example.com\",\"token_endpoint\": \"https://oauth2.exampleapis.com/token\"}");
-    // When
-    Map<String, Object> result = OpenIDConnectionUtils.getOIDCDiscoveryDocumentAsMap(httpClient, "https://accounts.example.com")
-        .get();
-    // Then
-    assertThat(result)
-        .isNotNull()
-        .containsEntry("token_endpoint", "https://oauth2.exampleapis.com/token");
-  }
-
-  @Test
-  void loadTokenURLWhenNotFound() throws Exception {
-    // Given
-    httpClient.expect("/.well-known/openid-configuration", 404);
-    // When
-    Map<String, Object> result = OpenIDConnectionUtils.getOIDCDiscoveryDocumentAsMap(httpClient, "https://accounts.example.com")
-        .get();
-    // Then
-    assertThat(result).isEmpty();
-  }
-
-  @Test
-  void refreshOidcToken() throws Exception {
-    // Given
-    String clientId = "test-client-id";
-    String refreshToken = "test-refresh-token";
-    String clientSecret = "test-client-secret";
-    String tokenEndpointUrl = "https://oauth2.exampleapis.com/token";
-    httpClient.expect("/token", 200, "{" +
-        "\"id_token\":\"thisisatesttoken\"," +
-        "\"access_token\":\"thisisrefreshtoken\"," +
-        "\"expires_in\":3599," +
-        "\"scope\":\"openid https://www.exampleapis.com/auth/userinfo.email\"," +
-        "\"token_type\":\"Bearer\"" +
-        "}");
-    // When
-    Map<String, Object> result = OpenIDConnectionUtils
-        .refreshOidcToken(httpClient, clientId, refreshToken, clientSecret, tokenEndpointUrl).get();
-    // Then
-    assertThat(result)
-        .isNotNull()
-        .containsEntry("id_token", "thisisatesttoken");
-  }
-
-  @Test
-  void fetchOIDCProviderDiscoveryDocumentAndRefreshToken() throws Exception {
-    // Given
-    Map<String, Object> discoveryDocument = new HashMap<>();
-    discoveryDocument.put("token_endpoint", "https://oauth2.exampleapis.com/token");
-    String clientId = "test-client-id";
-    String refreshToken = "test-refresh-token";
-    String clientSecret = "test-client-secret";
-    httpClient.expect("/token", 200, "{" +
-        "\"id_token\":\"thisisatesttoken\"," +
-        "\"access_token\":\"thisisrefreshtoken\"," +
-        "\"expires_in\":3599," +
-        "\"scope\":\"openid https://www.exampleapis.com/auth/userinfo.email\"," +
-        "\"token_type\":\"Bearer\"" +
-        "}");
-    // When
-    Map<String, Object> result = OpenIDConnectionUtils.refreshOidcToken(httpClient,
-        clientId, refreshToken, clientSecret,
-        OpenIDConnectionUtils.getParametersFromDiscoveryResponse(discoveryDocument, "token_endpoint")).get();
-    // Then
-    assertThat(result)
-        .isNotNull()
-        .containsEntry("id_token", "thisisatesttoken");
   }
 
   @Test
@@ -272,20 +198,6 @@ class OpenIDConnectionUtilsTest {
       sslUtilsMockedStatic.verify(
           () -> SSLUtils.keyManagers(eq("cert"), isNull(), isNull(), isNull(), isNull(), isNull(), isNull(), isNull()));
     }
-  }
-
-  @Test
-  void getParametersFromDiscoveryResponse() {
-    // Given
-    Map<String, Object> discoveryDocument = new HashMap<>();
-    discoveryDocument.put("issuer", "https://api.login.example.com");
-    discoveryDocument.put("token_endpoint", "https//api.login.example.com/oauth2/get_token");
-    discoveryDocument.put("jwks_uri", "https//api.login.example.com/openid/v1/certs");
-
-    // When + Then
-    assertEquals("https//api.login.example.com/oauth2/get_token",
-        OpenIDConnectionUtils.getParametersFromDiscoveryResponse(discoveryDocument, TOKEN_ENDPOINT_PARAM));
-    assertEquals("", OpenIDConnectionUtils.getParametersFromDiscoveryResponse(discoveryDocument, "userinfo_endpoint"));
   }
 
   @Test
