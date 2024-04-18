@@ -33,10 +33,7 @@ import io.fabric8.openshift.api.model.ResourceAccessReview;
 import io.fabric8.openshift.api.model.SelfSubjectRulesReview;
 import io.fabric8.openshift.api.model.SubjectAccessReview;
 import io.fabric8.openshift.api.model.SubjectRulesReview;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Instant;
@@ -55,8 +52,6 @@ import static java.net.HttpURLConnection.HTTP_UNAUTHORIZED;
  * config / token provider.
  */
 public class OpenShiftOAuthInterceptor extends TokenRefreshInterceptor {
-
-  private static final Logger LOGGER = LoggerFactory.getLogger(OpenShiftOAuthInterceptor.class);
 
   private static final String AUTHORIZATION = "Authorization";
   private static final String LOCATION = "Location";
@@ -153,13 +148,8 @@ public class OpenShiftOAuthInterceptor extends TokenRefreshInterceptor {
 
   private static String persistNewOAuthTokenIntoKubeConfig(Config config, String token) {
     if (token != null) {
-      try {
-        OpenIDConnectionUtils.persistKubeConfigWithUpdatedAuthInfo(config, a -> a.setToken(token));
-      } catch (IOException e) {
-        LOGGER.warn("failure while persisting new token into KUBECONFIG", e);
-      }
+      OpenIDConnectionUtils.persistOAuthToken(config, null, token);
     }
-
     return token;
   }
 

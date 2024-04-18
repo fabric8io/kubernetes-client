@@ -25,6 +25,7 @@ import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.http.TestStandardHttpClient;
 import io.fabric8.kubernetes.client.http.TestStandardHttpClientBuilder;
 import io.fabric8.kubernetes.client.http.TestStandardHttpClientFactory;
+import io.fabric8.kubernetes.client.internal.KubeConfigUtils;
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.bouncycastle.asn1.x500.X500Name;
 import org.bouncycastle.cert.X509CertificateHolder;
@@ -39,6 +40,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.math.BigInteger;
@@ -59,9 +61,11 @@ import java.util.concurrent.TimeUnit;
 import javax.net.ssl.X509ExtendedTrustManager;
 
 import static io.fabric8.kubernetes.client.http.TestStandardHttpClientFactory.Mode.SINGLETON;
+import static io.fabric8.kubernetes.client.utils.OpenIDConnectionUtils.persistOAuthToken;
 import static io.fabric8.kubernetes.client.utils.OpenIDConnectionUtils.resolveOIDCTokenFromAuthConfig;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.data.MapEntry.entry;
 
 class OpenIDConnectionUtilsBehaviorTest {
 
@@ -387,5 +391,130 @@ class OpenIDConnectionUtilsBehaviorTest {
         }
       }
     }
+  }
+
+  @Nested
+  @DisplayName("persistOAuthToken()")
+  class PersistOAuthToken {
+
+    @TempDir
+    private Path tempDir;
+    private File kubeConfig;
+    private Config originalConfig;
+    private OpenIDConnectionUtils.OAuthToken oAuthTokenResponse;
+
+    @BeforeEach
+    void setUp() {
+      kubeConfig = tempDir.resolve("kubeconfig").toFile();
+      originalConfig = Config.empty();
+      oAuthTokenResponse = new OpenIDConnectionUtils.OAuthToken();
+      oAuthTokenResponse.setIdToken("new-token");
+      oAuthTokenResponse.setRefreshToken("new-refresh-token");
+    }
+
+    @Test
+    void skipsInMemoryWhenNoOAuthToken() {
+      persistOAuthToken(originalConfig, null, "fake.token");
+      assertThat(originalConfig)
+          .returns(null, Config::getAuthProvider);
+    }
+
+    @Test
+    void skipsInMemoryWhenOriginalConfigHasNoAuthProvider() {
+      persistOAuthToken(originalConfig, oAuthTokenResponse, "fake.token");
+      assertThat(originalConfig)
+          .returns(null, Config::getAuthProvider);
+    }
+
+    @Test
+    void updatesInMemory() {
+      originalConfig = new ConfigBuilder(originalConfig).withAuthProvider(new AuthProviderConfig()).build();
+      persistOAuthToken(originalConfig, oAuthTokenResponse, "fake.token");
+      assertThat(originalConfig)
+          .extracting(c -> c.getAuthProvider().getConfig())
+          .asInstanceOf(InstanceOfAssertFactories.map(String.class, String.class))
+          .containsOnly(
+              entry("id-token", "new-token"),
+              entry("refresh-token", "new-refresh-token"));
+    }
+
+    @Test
+    void skipsInFileWhenOriginalConfigHasNoFile() {
+      persistOAuthToken(originalConfig, oAuthTokenResponse, "fake.token");
+      assertThat(kubeConfig).doesNotExist();
+    }
+
+    @Test
+    void skipsInFileWhenOriginalConfigHasNoCurrentContext() {
+      originalConfig.setFile(kubeConfig);
+      persistOAuthToken(originalConfig, oAuthTokenResponse, "fake.token");
+      assertThat(kubeConfig).doesNotExist();
+    }
+
+    @Test
+    void logsWarningIfReferencedFileIsMissing() {
+      originalConfig.setFile(kubeConfig);
+      originalConfig = new ConfigBuilder(originalConfig)
+          .withCurrentContext(new NamedContextBuilder().withName("context").build()).build();
+      persistOAuthToken(originalConfig, oAuthTokenResponse, "fake.token");
+      assertThat(systemErr.toString())
+          .contains("oidc: failure while persisting new tokens into KUBECONFIG")
+          .contains("FileNotFoundException");
+    }
+
+    @Nested
+    @DisplayName("With valid kube config")
+    class WithValidKubeConfig {
+      @BeforeEach
+      void setUp() throws IOException {
+        Files.write(kubeConfig.toPath(), ("---" +
+            "users:\n" +
+            "- name: user\n").getBytes(StandardCharsets.UTF_8));
+      }
+
+      @Test
+      void persistsTokenInFile() throws IOException {
+        originalConfig.setFile(kubeConfig);
+        originalConfig = new ConfigBuilder(originalConfig)
+            .withCurrentContext(new NamedContextBuilder()
+                .withName("context")
+                .withNewContext().withUser("user").endContext().build())
+            .build();
+        persistOAuthToken(originalConfig, oAuthTokenResponse, "fake.token");
+        assertThat(KubeConfigUtils.parseConfig(kubeConfig))
+            .returns("fake.token", c -> c.getUsers().iterator().next().getUser().getToken());
+      }
+
+      @Test
+      void skipsTokenInFileIfNull() throws IOException {
+        originalConfig.setFile(kubeConfig);
+        originalConfig = new ConfigBuilder(originalConfig)
+            .withCurrentContext(new NamedContextBuilder()
+                .withName("context")
+                .withNewContext().withUser("user").endContext().build())
+            .build();
+        persistOAuthToken(originalConfig, oAuthTokenResponse, null);
+        assertThat(KubeConfigUtils.parseConfig(kubeConfig))
+            .returns(null, c -> c.getUsers().iterator().next().getUser().getToken());
+      }
+
+      @Test
+      void persistsOAuthTokenInFile() throws IOException {
+        originalConfig.setFile(kubeConfig);
+        originalConfig = new ConfigBuilder(originalConfig)
+            .withCurrentContext(new NamedContextBuilder()
+                .withName("context")
+                .withNewContext().withUser("user").endContext().build())
+            .build();
+        persistOAuthToken(originalConfig, oAuthTokenResponse, "fake.token");
+        assertThat(KubeConfigUtils.parseConfig(kubeConfig))
+            .extracting(c -> c.getUsers().iterator().next().getUser().getAuthProvider().getConfig())
+            .asInstanceOf(InstanceOfAssertFactories.map(String.class, String.class))
+            .containsOnly(
+                entry("id-token", "new-token"),
+                entry("refresh-token", "new-refresh-token"));
+      }
+    }
+
   }
 }
