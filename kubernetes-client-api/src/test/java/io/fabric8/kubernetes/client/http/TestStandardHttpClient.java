@@ -48,8 +48,6 @@ public class TestStandardHttpClient
 
   @Override
   public void doClose() {
-    recordedConsumeBytesDirects.clear();
-    recordedBuildWebSocketDirects.clear();
     expectations.values().forEach(e -> {
       e.futures.clear();
       e.wsFutures.clear();

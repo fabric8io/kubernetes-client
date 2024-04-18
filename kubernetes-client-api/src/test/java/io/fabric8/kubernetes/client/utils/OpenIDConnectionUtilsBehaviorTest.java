@@ -22,6 +22,7 @@ import io.fabric8.kubernetes.api.model.NamedClusterBuilder;
 import io.fabric8.kubernetes.api.model.NamedContextBuilder;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
+import io.fabric8.kubernetes.client.http.TestStandardHttpClient;
 import io.fabric8.kubernetes.client.http.TestStandardHttpClientBuilder;
 import io.fabric8.kubernetes.client.http.TestStandardHttpClientFactory;
 import org.assertj.core.api.InstanceOfAssertFactories;
@@ -116,6 +117,7 @@ class OpenIDConnectionUtilsBehaviorTest {
     authProviderConfig.put("id-token", "original-token");
     authProviderConfig.put("idp-issuer-url", "https://auth.fabric8.example.com");
     authProviderConfig.put("client-id", "id-of-test-client");
+    authProviderConfig.put("client-secret", "secret-of-test-client");
   }
 
   @AfterEach
@@ -359,7 +361,7 @@ class OpenIDConnectionUtilsBehaviorTest {
 
         @Test
         @DisplayName("Certificate is loaded into HttpClient trust manager")
-        void certificateIsLoadedIntoHttpClientTrustManager() throws Exception {
+        void certificateIsLoadedIntoHttpClientTrustManager() {
           assertThat(httpClientBuilder.getTrustManagers())
               .singleElement()
               .asInstanceOf(InstanceOfAssertFactories.type(X509ExtendedTrustManager.class))
@@ -368,6 +370,20 @@ class OpenIDConnectionUtilsBehaviorTest {
               .extracting(X509Certificate::getSubjectDN)
               .extracting(Principal::getName)
               .contains("CN=auth.fabric8.example.com");
+        }
+
+        @Test
+        @DisplayName("Token refresh request contains valid auth and form data")
+        void tokenRefreshRequestContainsValidFormData() {
+          assertThat(httpClientBuilder.build().getRecordedConsumeBytesDirects())
+              .filteredOn(r -> r.getRequest().uri().getPath().equals("/token"))
+              .singleElement()
+              .extracting(TestStandardHttpClient.RecordedConsumeBytesDirect::getRequest)
+              .hasFieldOrPropertyWithValue("method", "POST")
+              .hasFieldOrPropertyWithValue("contentType", "application/x-www-form-urlencoded")
+              .hasFieldOrPropertyWithValue("bodyString",
+                  "refresh_token=original-refresh-token&grant_type=refresh_token&client_id=id-of-test-client&client_secret=secret-of-test-client")
+              .returns("Basic aWQtb2YtdGVzdC1jbGllbnQ6c2VjcmV0LW9mLXRlc3QtY2xpZW50", r -> r.header("Authorization"));
         }
       }
     }
