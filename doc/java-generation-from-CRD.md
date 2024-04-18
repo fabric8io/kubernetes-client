@@ -30,22 +30,53 @@ jbang io.fabric8:java-generator-cli:<version>
 The Java generator Maven plugin can be used from your project `pom.xml` adding a section like:
 
 ```xml
-<plugin>
-  <groupId>io.fabric8</groupId>
-  <artifactId>java-generator-maven-plugin</artifactId>
-  <version>${kubernetes-client.version}</version>
-  <executions>
-    <execution>
-      <goals>
-        <goal>generate</goal>
-      </goals>
-    </execution>
-  </executions>
-  <configuration>
-    <source>src/main/resources/kubernetes</source>
-    ...
-  </configuration>
-</plugin>
+  <dependencies>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>kubernetes-client</artifactId>
+      <version>${kubernetes-client.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>generator-annotations</artifactId>
+      <version>${kubernetes-client.version}</version>
+    </dependency>
+
+    <!-- extraAnnotations requires these additional dependencies -->
+    <dependency>
+      <groupId>io.sundr</groupId>
+      <artifactId>builder-annotations</artifactId>
+      <version>${sundrio.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>${lombok.version}</version>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>io.fabric8</groupId>
+        <artifactId>java-generator-maven-plugin</artifactId>
+        <version>${kubernetes-client.version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <source>src/main/resources/kubernetes</source>
+          <!-- .. .-->
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 ```
 
 ## Quick start Gradle
