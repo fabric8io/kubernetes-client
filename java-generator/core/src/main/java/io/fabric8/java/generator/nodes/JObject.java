@@ -225,12 +225,13 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
         MethodDeclaration fieldSetter = objField.createSetter();
 
         if (prop.getClassType().equals(DATETIME_NAME)) {
+          final String jsonFormat = "com.fasterxml.jackson.annotation.JsonFormat";
           fieldGetter.addAnnotation(new SingleMemberAnnotationExpr(
-              new Name("com.fasterxml.jackson.annotation.JsonFormat"),
-              new NameExpr("pattern = \"" + config.getSerDatetimeFormat() + "\"")));
+              new Name(jsonFormat),
+              new NameExpr("shape = " + jsonFormat + ".Shape.STRING, pattern = \"" + config.getSerDatetimeFormat() + "\"")));
           fieldSetter.addAnnotation(new SingleMemberAnnotationExpr(
-              new Name("com.fasterxml.jackson.annotation.JsonFormat"),
-              new NameExpr("pattern = \"" + config.getDeserDatetimeFormat() + "\"")));
+              new Name(jsonFormat),
+              new NameExpr("shape = " + jsonFormat + ".Shape.STRING, pattern = \"" + config.getDeserDatetimeFormat() + "\"")));
         }
 
         if (isRequired) {
