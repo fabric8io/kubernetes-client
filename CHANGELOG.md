@@ -1,16 +1,11 @@
 ## CHANGELOG
 
-### 6.13-SNAPSHOT
+### 6.12.1  (2024-04-18)
 
 #### Bugs
-
-#### Improvements
-
-#### Dependency Upgrade
-
-#### New Features
-
-#### _**Note**_: Breaking changes
+* Fix #5880: OpenID Connect token refreshed in loaded Config
+* Fix #5911: (crd-generator) Improve error message for detected cycles
+* Fix #5898: Kube API module resolvable from Maven Central
 
 ### 6.12.0 (2024-04-12)
 
