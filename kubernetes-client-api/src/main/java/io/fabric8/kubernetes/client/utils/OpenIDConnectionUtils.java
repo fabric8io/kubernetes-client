@@ -20,7 +20,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.fabric8.kubernetes.api.model.AuthInfo;
 import io.fabric8.kubernetes.api.model.AuthProviderConfig;
 import io.fabric8.kubernetes.api.model.NamedAuthInfo;
-import io.fabric8.kubernetes.api.model.NamedContext;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.http.HttpClient;
@@ -47,7 +46,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
-import java.util.function.Consumer;
 
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.TrustManager;
@@ -92,20 +90,13 @@ public class OpenIDConnectionUtils {
       final HttpClient httpClient = initHttpClientWithPemCert(idpCert, clientBuilder);
       final CompletableFuture<String> result = getOpenIdConfiguration(httpClient, currentAuthProviderConfig)
           .thenCompose(openIdConfiguration -> refreshOpenIdToken(httpClient, currentAuthProviderConfig, openIdConfiguration))
+          .thenApply(oAuthToken -> persistOAuthToken(currentConfig, oAuthToken, null))
           .thenApply(oAuthToken -> {
             if (oAuthToken == null || Utils.isNullOrEmpty(oAuthToken.idToken)) {
               LOGGER.warn("token response did not contain an id_token, either the scope \\\"openid\\\" wasn't " +
                   "requested upon login, or the provider doesn't support id_tokens as part of the refresh response.");
               return originalToken;
             }
-
-            // Persist new config and if successful, update the in memory config.
-            try {
-              persistKubeConfigWithUpdatedToken(currentConfig, oAuthToken);
-            } catch (IOException e) {
-              LOGGER.warn("oidc: failure while persisting new tokens into KUBECONFIG", e);
-            }
-
             return oAuthToken.idToken;
           });
       result.whenComplete((s, t) -> httpClient.close());
@@ -187,6 +178,53 @@ public class OpenIDConnectionUtils {
   }
 
   /**
+   * Save Updated Access and Refresh token in local KubeConfig file and in-memory Config object.
+   *
+   * @param currentConfig current Config object.
+   * @param oAuthToken OAuth token information as received from OpenID provider.
+   * @param token new token to be persisted in KubeConfig (if not null).
+   * @return the oAuthToken for chaining and further processing.
+   */
+  public static OAuthToken persistOAuthToken(Config currentConfig, OAuthToken oAuthToken, String token) {
+    final Map<String, String> authProviderConfig = new HashMap<>();
+    if (oAuthToken != null) {
+      authProviderConfig.put(ID_TOKEN_KUBECONFIG, oAuthToken.idToken);
+      authProviderConfig.put(REFRESH_TOKEN_KUBECONFIG, oAuthToken.refreshToken);
+      // Persist in memory
+      Optional.of(currentConfig).map(Config::getAuthProvider).map(AuthProviderConfig::getConfig)
+          .ifPresent(c -> c.putAll(authProviderConfig));
+    }
+    // Persist in file
+    if (currentConfig.getFile() != null && currentConfig.getCurrentContext() != null) {
+      try {
+        final io.fabric8.kubernetes.api.model.Config kubeConfig = KubeConfigUtils.parseConfig(currentConfig.getFile());
+        final String userName = currentConfig.getCurrentContext().getContext().getUser();
+        NamedAuthInfo namedAuthInfo = kubeConfig.getUsers().stream().filter(n -> n.getName().equals(userName)).findFirst()
+            .orElseGet(() -> {
+              NamedAuthInfo result = new NamedAuthInfo(userName, new AuthInfo());
+              kubeConfig.getUsers().add(result);
+              return result;
+            });
+        if (namedAuthInfo.getUser() == null) {
+          namedAuthInfo.setUser(new AuthInfo());
+        }
+        if (namedAuthInfo.getUser().getAuthProvider() == null) {
+          namedAuthInfo.getUser().setAuthProvider(new AuthProviderConfig());
+        }
+        namedAuthInfo.getUser().getAuthProvider().getConfig().putAll(authProviderConfig);
+        if (Utils.isNotNullOrEmpty(token)) {
+          namedAuthInfo.getUser().setToken(token);
+        }
+        KubeConfigUtils.persistKubeConfigIntoFile(kubeConfig, currentConfig.getFile().getAbsolutePath());
+      } catch (IOException ex) {
+        LOGGER.warn("oidc: failure while persisting new tokens into KUBECONFIG", ex);
+      }
+    }
+
+    return oAuthToken;
+  }
+
+  /**
    * Well known URL for getting OpenID Connect metadata.
    * https://openid.net/specs/openid-connect-discovery-1_0.html#ProviderConfig
    *
@@ -195,65 +233,6 @@ public class OpenIDConnectionUtils {
    */
   private static String resolveWellKnownUrlForOpenIDIssuer(Map<String, String> authProviderConfig) {
     return URLUtils.join(authProviderConfig.get(ISSUER_KUBECONFIG), "/", WELL_KNOWN_OPENID_CONFIGURATION);
-  }
-
-  /**
-   * Save Updated Access and Refresh token in local KubeConfig file.
-   *
-   * @param currentConfig current KubeConfig object
-   * @param oAuthToken OAuth token information as received from OpenID provider
-   * @return boolean value whether update was successful or not
-   * @throws IOException in case of any failure while writing file
-   */
-  static boolean persistKubeConfigWithUpdatedToken(Config currentConfig, OAuthToken oAuthToken)
-      throws IOException {
-    return persistKubeConfigWithUpdatedAuthInfo(currentConfig, a -> {
-      Map<String, String> authProviderConfig = a.getAuthProvider().getConfig();
-      authProviderConfig.put(ID_TOKEN_KUBECONFIG, oAuthToken.idToken);
-      authProviderConfig.put(REFRESH_TOKEN_KUBECONFIG, oAuthToken.refreshToken);
-    });
-  }
-
-  /**
-   * Return true if the Config can be updated. false if not for a variety of reasons:
-   * - a kubeconfig file was not used
-   * - there's no current context
-   */
-  public static boolean persistKubeConfigWithUpdatedAuthInfo(Config currentConfig, Consumer<AuthInfo> updateAction)
-      throws IOException {
-    AuthInfo authInfo = new AuthInfo();
-    authInfo.setAuthProvider(new AuthProviderConfig(new HashMap<>(2), currentConfig.getAuthProvider().getName()));
-    updateAction.accept(authInfo);
-    //update new auth info to in-memory config
-    currentConfig.getAuthProvider().getConfig().putAll(authInfo.getAuthProvider().getConfig());
-
-    if (currentConfig.getFile() == null) {
-      return false;
-    }
-    io.fabric8.kubernetes.api.model.Config config = KubeConfigUtils.parseConfig(currentConfig.getFile());
-    NamedContext currentNamedContext = currentConfig.getCurrentContext();
-
-    if (currentNamedContext == null) {
-      return false;
-    }
-    String userName = currentNamedContext.getContext().getUser();
-
-    NamedAuthInfo namedAuthInfo = config.getUsers().stream().filter(n -> n.getName().equals(userName)).findFirst()
-        .orElseGet(() -> {
-          NamedAuthInfo result = new NamedAuthInfo(userName, new AuthInfo());
-          config.getUsers().add(result);
-          return result;
-        });
-    //update new auth info to kubeConfig
-    if (namedAuthInfo.getUser() == null) {
-      namedAuthInfo.setUser(authInfo);
-    } else {
-      Optional.ofNullable(authInfo.getToken()).ifPresent(t -> namedAuthInfo.getUser().setToken(t));
-      namedAuthInfo.getUser().getAuthProvider().getConfig().putAll(authInfo.getAuthProvider().getConfig());
-    }
-    // Persist changes to KUBECONFIG
-    KubeConfigUtils.persistKubeConfigIntoFile(config, currentConfig.getFile().getAbsolutePath());
-    return true;
   }
 
   private static HttpClient initHttpClientWithPemCert(String idpCert, HttpClient.Builder clientBuilder) {

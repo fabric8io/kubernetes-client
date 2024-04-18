@@ -31,11 +31,10 @@ import org.junit.jupiter.api.io.TempDir;
 import org.mockito.MockedStatic;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.time.Instant;
 import java.util.Base64;
@@ -71,24 +70,23 @@ class OpenIDConnectionUtilsTest {
   }
 
   @Test
-  void persistKubeConfigWithUpdatedToken() throws IOException {
+  // TODO: remove in favor of specific tests, kept for checking compatibility
+  void persistOAuthTokenWithUpdatedToken(@TempDir Path tempDir) throws IOException {
     // Given
     final OpenIDConnectionUtils.OAuthToken oAuthTokenResponse = new OpenIDConnectionUtils.OAuthToken();
     oAuthTokenResponse.setIdToken("id-token-updated");
     oAuthTokenResponse.setRefreshToken("refresh-token-updated");
-    File tempFile = Files.createTempFile("test", "kubeconfig").toFile();
-    Files.copy(getClass().getResourceAsStream("/test-kubeconfig-oidc"), Paths.get(tempFile.getPath()),
+    Path kubeConfig = Files.createTempFile(tempDir, "test", "kubeconfig");
+    Files.copy(OpenIDConnectionUtilsTest.class.getResourceAsStream("/test-kubeconfig-oidc"), kubeConfig,
         StandardCopyOption.REPLACE_EXISTING);
-
-    Config theConfig = Config.fromKubeconfig(null, IOHelpers.readFully(new FileInputStream(tempFile), StandardCharsets.UTF_8),
-        tempFile.getAbsolutePath());
+    Config originalConfig = Config.fromKubeconfig(null, new String(Files.readAllBytes(kubeConfig), StandardCharsets.UTF_8),
+        kubeConfig.toFile().getAbsolutePath());
 
     // When
-    boolean isPersisted = OpenIDConnectionUtils.persistKubeConfigWithUpdatedToken(theConfig, oAuthTokenResponse);
+    OpenIDConnectionUtils.persistOAuthToken(originalConfig, oAuthTokenResponse, null);
 
     // Then
-    assertTrue(isPersisted);
-    io.fabric8.kubernetes.api.model.Config config = KubeConfigUtils.parseConfig(tempFile);
+    io.fabric8.kubernetes.api.model.Config config = KubeConfigUtils.parseConfig(kubeConfig.toFile());
     assertNotNull(config);
     NamedContext currentNamedContext = KubeConfigUtils.getCurrentContext(config);
     assertNotNull(currentNamedContext);
@@ -97,7 +95,7 @@ class OpenIDConnectionUtilsTest {
     Map<String, String> authProviderConfigInFile = config.getUsers().get(currentUserIndex).getUser().getAuthProvider()
         .getConfig();
     assertFalse(authProviderConfigInFile.isEmpty());
-    Map<String, String> authProviderConfigInMemory = theConfig.getAuthProvider().getConfig();
+    Map<String, String> authProviderConfigInMemory = originalConfig.getAuthProvider().getConfig();
     //auth info should be updated in memory
     assertEquals("id-token-updated", authProviderConfigInMemory.get(ID_TOKEN_KUBECONFIG));
     assertEquals("refresh-token-updated", authProviderConfigInMemory.get(REFRESH_TOKEN_KUBECONFIG));
