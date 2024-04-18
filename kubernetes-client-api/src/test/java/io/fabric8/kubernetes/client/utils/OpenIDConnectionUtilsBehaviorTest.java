@@ -33,7 +33,6 @@ import org.bouncycastle.cert.jcajce.JcaX509v3CertificateBuilder;
 import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -201,20 +200,59 @@ class OpenIDConnectionUtilsBehaviorTest {
 
     @Nested
     @DisplayName("With 404 OpenID Connect Discovery response")
-    @Disabled("This scenario is not implemented") // TODO
     class WithNotFoundOpenIDConnectDiscovery {
+
+      private String result;
+
       @BeforeEach
-      void setUp() {
+      void setUp() throws Exception {
         httpClientFactory.expect("/.well-known/openid-configuration",
             404, "Not Found /.well-known/openid-configuration");
+        result = resolveOIDCTokenFromAuthConfig(originalConfig, authProviderConfig, httpClientBuilder)
+            .get(10, TimeUnit.SECONDS);
       }
 
       @Test
       @DisplayName("Resolves token from auth provider config (fallback)")
-      void fallbacksToOriginalToken() throws Exception {
-        final String result = resolveOIDCTokenFromAuthConfig(originalConfig, authProviderConfig, httpClientBuilder)
-            .get(10, TimeUnit.SECONDS);
+      void fallbacksToOriginalToken() {
         assertThat(result).isEqualTo("original-token");
+      }
+
+      @Test
+      @DisplayName("Logs OpenID Connect Discovery fallback warning")
+      void logsTokenFallbackWarning() {
+        assertThat(systemErr.toString())
+            .contains("oidc: failed to query metadata endpoint: 404 Not Found /.well-known/openid-configuration");
+      }
+    }
+
+    @Nested
+    @DisplayName("With malformed OpenID Connect Discovery response")
+    class WithMalformedOpenIDConnectDiscoveryResponse {
+
+      private String result;
+
+      @BeforeEach
+      void setUp() throws Exception {
+        httpClientFactory.expect("/.well-known/openid-configuration",
+            200, "this-is-not-json");
+        result = resolveOIDCTokenFromAuthConfig(originalConfig, authProviderConfig, httpClientBuilder)
+            .get(10, TimeUnit.SECONDS);
+      }
+
+      @Test
+      @DisplayName("Resolves token from auth provider config (fallback)")
+      void fallbacksToOriginalToken() {
+        assertThat(result).isEqualTo("original-token");
+      }
+
+      @Test
+      @DisplayName("Logs OpenID Connect Discovery fallback warning")
+      void logsTokenFallbackWarning() {
+        assertThat(systemErr.toString())
+            .contains("Could not refresh OIDC token, failure in getting refresh URL")
+            .contains(
+                "Cannot construct instance of `io.fabric8.kubernetes.client.utils.OpenIDConnectionUtils$OpenIdConfiguration`");
       }
     }
 
