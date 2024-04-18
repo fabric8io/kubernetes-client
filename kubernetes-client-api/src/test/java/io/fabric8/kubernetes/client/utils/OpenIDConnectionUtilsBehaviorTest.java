@@ -221,8 +221,9 @@ class OpenIDConnectionUtilsBehaviorTest {
       @BeforeEach
       void setUp() {
         httpClientFactory.expect("/.well-known/openid-configuration", 200, "{" +
-            "\"issuer\": \"https://auth.example.com\"," +
-            "\"token_endpoint\": \"https://auth.example.com/token\"," +
+            "\"issuer\": \"https://auth.fabric8.example.com\"," +
+            "\"authorization_endpoint\": \"https://auth.fabric8.example.com/authorize\"," +
+            "\"token_endpoint\": \"https://auth.fabric8.example.com/token\"," +
             "\"response_types_supported\": [\"code\",\"id_token\"]" +
             "}");
       }
@@ -255,9 +256,8 @@ class OpenIDConnectionUtilsBehaviorTest {
         @Test
         @DisplayName("Logs token fallback warning")
         void logsTokenFallbackWarning() {
-          assertThat(systemErr.toString())
-              .contains(
-                  "token response did not contain an id_token, either the scope \\\"openid\\\" wasn't requested upon login, or the provider doesn't support id_tokens as part of the refresh response.");
+          assertThat(systemErr.toString()).contains(
+              "token response did not contain an id_token, either the scope \\\"openid\\\" wasn't requested upon login, or the provider doesn't support id_tokens as part of the refresh response.");
         }
       }
 
@@ -285,7 +285,7 @@ class OpenIDConnectionUtilsBehaviorTest {
         void logsJsonParsingError() {
           assertThat(systemErr.toString())
               .contains("Failure in fetching refresh token:")
-              .contains("Cannot construct instance of `java.util.LinkedHashMap`");
+              .contains("Cannot construct instance of `io.fabric8.kubernetes.client.utils.OpenIDConnectionUtils$OAuthToken`");
         }
 
         @Test

@@ -46,10 +46,8 @@ import static io.fabric8.kubernetes.client.http.TestStandardHttpClientFactory.Mo
 import static io.fabric8.kubernetes.client.utils.OpenIDConnectionUtils.CLIENT_ID_KUBECONFIG;
 import static io.fabric8.kubernetes.client.utils.OpenIDConnectionUtils.CLIENT_SECRET_KUBECONFIG;
 import static io.fabric8.kubernetes.client.utils.OpenIDConnectionUtils.ID_TOKEN_KUBECONFIG;
-import static io.fabric8.kubernetes.client.utils.OpenIDConnectionUtils.ID_TOKEN_PARAM;
 import static io.fabric8.kubernetes.client.utils.OpenIDConnectionUtils.ISSUER_KUBECONFIG;
 import static io.fabric8.kubernetes.client.utils.OpenIDConnectionUtils.REFRESH_TOKEN_KUBECONFIG;
-import static io.fabric8.kubernetes.client.utils.OpenIDConnectionUtils.REFRESH_TOKEN_PARAM;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -75,9 +73,9 @@ class OpenIDConnectionUtilsTest {
   @Test
   void persistKubeConfigWithUpdatedToken() throws IOException {
     // Given
-    Map<String, Object> openIdProviderResponse = new HashMap<>();
-    openIdProviderResponse.put(ID_TOKEN_PARAM, "id-token-updated");
-    openIdProviderResponse.put(REFRESH_TOKEN_PARAM, "refresh-token-updated");
+    final OpenIDConnectionUtils.OAuthToken oAuthTokenResponse = new OpenIDConnectionUtils.OAuthToken();
+    oAuthTokenResponse.setIdToken("id-token-updated");
+    oAuthTokenResponse.setRefreshToken("refresh-token-updated");
     File tempFile = Files.createTempFile("test", "kubeconfig").toFile();
     Files.copy(getClass().getResourceAsStream("/test-kubeconfig-oidc"), Paths.get(tempFile.getPath()),
         StandardCopyOption.REPLACE_EXISTING);
@@ -86,8 +84,7 @@ class OpenIDConnectionUtilsTest {
         tempFile.getAbsolutePath());
 
     // When
-    boolean isPersisted = OpenIDConnectionUtils.persistKubeConfigWithUpdatedToken(theConfig,
-        openIdProviderResponse);
+    boolean isPersisted = OpenIDConnectionUtils.persistKubeConfigWithUpdatedToken(theConfig, oAuthTokenResponse);
 
     // Then
     assertTrue(isPersisted);
