@@ -5,6 +5,7 @@
 #### Bugs
 
 #### Improvements
+* Fix #5878: (java-generator) Add implements Editable for extraAnnotations
 
 #### Dependency Upgrade
 
@@ -30,7 +31,6 @@
 
 #### Improvements
 * Fix #5843: Support existingJavaTypes extension in java-generator
-* Fix #5878: (java-generator) Add implements Editable for extraAnnotations
 
 ### 6.11.0 (2024-03-25)
 
