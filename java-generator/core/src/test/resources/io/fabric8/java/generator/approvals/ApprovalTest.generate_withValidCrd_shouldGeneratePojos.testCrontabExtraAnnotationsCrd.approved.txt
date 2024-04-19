@@ -17,7 +17,12 @@ CrontabJavaExtraAnnotationsCr[0] = package org.test.v1;
     @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.Volume.class),
     @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.VolumeMount.class)
 })
-public class CronTab extends io.fabric8.kubernetes.client.CustomResource<org.test.v1.CronTabSpec, org.test.v1.CronTabStatus> implements io.fabric8.kubernetes.api.model.Namespaced {
+public class CronTab extends io.fabric8.kubernetes.client.CustomResource<org.test.v1.CronTabSpec, org.test.v1.CronTabStatus> implements io.fabric8.kubernetes.api.model.Namespaced, io.fabric8.kubernetes.api.builder.Editable<CronTabBuilder> {
+
+    @java.lang.Override
+    public CronTabBuilder edit() {
+        return new CronTabBuilder(this);
+    }
 }
 
 CrontabJavaExtraAnnotationsCr[1] = package org.test.v1;
@@ -38,7 +43,12 @@ CrontabJavaExtraAnnotationsCr[1] = package org.test.v1;
     @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.Volume.class),
     @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.VolumeMount.class)
 })
-public class CronTabSpec implements io.fabric8.kubernetes.api.model.KubernetesResource {
+public class CronTabSpec implements io.fabric8.kubernetes.api.builder.Editable<CronTabSpecBuilder>, io.fabric8.kubernetes.api.model.KubernetesResource {
+
+    @java.lang.Override
+    public CronTabSpecBuilder edit() {
+        return new CronTabSpecBuilder(this);
+    }
 
     @com.fasterxml.jackson.annotation.JsonProperty("cronSpec")
     @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
@@ -109,7 +119,12 @@ CrontabJavaExtraAnnotationsCr[2] = package org.test.v1;
     @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.Volume.class),
     @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.VolumeMount.class)
 })
-public class CronTabStatus implements io.fabric8.kubernetes.api.model.KubernetesResource {
+public class CronTabStatus implements io.fabric8.kubernetes.api.builder.Editable<CronTabStatusBuilder>, io.fabric8.kubernetes.api.model.KubernetesResource {
+
+    @java.lang.Override
+    public CronTabStatusBuilder edit() {
+        return new CronTabStatusBuilder(this);
+    }
 
     @com.fasterxml.jackson.annotation.JsonProperty("labelSelector")
     @com.fasterxml.jackson.annotation.JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)

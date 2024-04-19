@@ -13,14 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package existingjavatypes;
+package io.fabric8.test;
 
-import com.example.v1.ExistingJavaTypeSpec;
-import io.fabric8.kubernetes.api.model.Affinity;
+import com.example.v1.ExistingJavaTypeSpec;      // Generated
+import io.fabric8.kubernetes.api.model.Affinity; // Existing
 
 public class ExistingJavaTypes {
   public void example() {
     ExistingJavaTypeSpec existingJavaTypeSpec = new ExistingJavaTypeSpec();
+    // Setter method is generated to accept existing type Affinity.
     existingJavaTypeSpec.setAffinity(new Affinity());
   }
 }

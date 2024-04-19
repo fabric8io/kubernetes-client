@@ -15,7 +15,12 @@ package io.cert_manager.v1.issuerspec.vault;
     @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.Volume.class),
     @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.VolumeMount.class)
 })
-public class Auth implements io.fabric8.kubernetes.api.model.KubernetesResource {
+public class Auth implements io.fabric8.kubernetes.api.builder.Editable<AuthBuilder>, io.fabric8.kubernetes.api.model.KubernetesResource {
+
+    @java.lang.Override
+    public AuthBuilder edit() {
+        return new AuthBuilder(this);
+    }
 
     /**
      * AppRole authenticates with Vault using the App Role auth mechanism, with the role and secret stored in a Kubernetes Secret resource.
@@ -65,3 +70,4 @@ public class Auth implements io.fabric8.kubernetes.api.model.KubernetesResource 
         this.tokenSecretRef = tokenSecretRef;
     }
 }
+
