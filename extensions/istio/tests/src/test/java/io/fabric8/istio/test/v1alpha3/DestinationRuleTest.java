@@ -26,7 +26,7 @@ import org.junit.jupiter.api.Test;
 import java.io.InputStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 /**
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>
@@ -39,10 +39,10 @@ class DestinationRuleTest {
     final DestinationRule destinationRule = Serialization.yamlMapper().readValue(inputStream, DestinationRule.class);
 
     final IsLoadBalancerSettingsLbPolicy policy = destinationRule.getSpec().getTrafficPolicy().getLoadBalancer().getLbPolicy();
-    assertTrue(policy instanceof LoadBalancerSettingsConsistentHash);
+    assertInstanceOf(LoadBalancerSettingsConsistentHash.class, policy);
     final LoadBalancerSettingsConsistentHash consistentHashLbPolicy = (LoadBalancerSettingsConsistentHash) policy;
     final IsLoadBalancerSettingsConsistentHashLBHashKey hashKey = consistentHashLbPolicy.getConsistentHash().getHashKey();
-    assertTrue(hashKey instanceof LoadBalancerSettingsConsistentHashLBHttpCookie);
+    assertInstanceOf(LoadBalancerSettingsConsistentHashLBHttpCookie.class, hashKey);
     final LoadBalancerSettingsConsistentHashLBHttpCookie httpCookieHashKey = (LoadBalancerSettingsConsistentHashLBHttpCookie) hashKey;
     assertEquals("user", httpCookieHashKey.getHttpCookie().getName());
   }

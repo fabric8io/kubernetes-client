@@ -41,7 +41,8 @@ import lombok.experimental.Accessors;
     "kind",
     "metadata",
     "LbPolicy",
-    "localityLbSetting"
+    "localityLbSetting",
+    "warmupDurationSecs"
 })
 @ToString
 @EqualsAndHashCode
@@ -74,6 +75,8 @@ public class LoadBalancerSettings implements Editable<LoadBalancerSettingsBuilde
     private IsLoadBalancerSettingsLbPolicy lbPolicy;
     @JsonProperty("localityLbSetting")
     private LocalityLoadBalancerSetting localityLbSetting;
+    @JsonProperty("warmupDurationSecs")
+    private String warmupDurationSecs;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -84,10 +87,11 @@ public class LoadBalancerSettings implements Editable<LoadBalancerSettingsBuilde
     public LoadBalancerSettings() {
     }
 
-    public LoadBalancerSettings(IsLoadBalancerSettingsLbPolicy lbPolicy, LocalityLoadBalancerSetting localityLbSetting) {
+    public LoadBalancerSettings(IsLoadBalancerSettingsLbPolicy lbPolicy, LocalityLoadBalancerSetting localityLbSetting, String warmupDurationSecs) {
         super();
         this.lbPolicy = lbPolicy;
         this.localityLbSetting = localityLbSetting;
+        this.warmupDurationSecs = warmupDurationSecs;
     }
 
     @JsonProperty("LbPolicy")
@@ -108,6 +112,16 @@ public class LoadBalancerSettings implements Editable<LoadBalancerSettingsBuilde
     @JsonProperty("localityLbSetting")
     public void setLocalityLbSetting(LocalityLoadBalancerSetting localityLbSetting) {
         this.localityLbSetting = localityLbSetting;
+    }
+
+    @JsonProperty("warmupDurationSecs")
+    public String getWarmupDurationSecs() {
+        return warmupDurationSecs;
+    }
+
+    @JsonProperty("warmupDurationSecs")
+    public void setWarmupDurationSecs(String warmupDurationSecs) {
+        this.warmupDurationSecs = warmupDurationSecs;
     }
 
     @JsonIgnore

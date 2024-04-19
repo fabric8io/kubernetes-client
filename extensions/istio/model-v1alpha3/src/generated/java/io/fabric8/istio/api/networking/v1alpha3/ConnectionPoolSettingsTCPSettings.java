@@ -40,6 +40,8 @@ import lombok.experimental.Accessors;
     "kind",
     "metadata",
     "connectTimeout",
+    "idleTimeout",
+    "maxConnectionDuration",
     "maxConnections",
     "tcpKeepalive"
 })
@@ -71,6 +73,10 @@ public class ConnectionPoolSettingsTCPSettings implements Editable<ConnectionPoo
 
     @JsonProperty("connectTimeout")
     private String connectTimeout;
+    @JsonProperty("idleTimeout")
+    private String idleTimeout;
+    @JsonProperty("maxConnectionDuration")
+    private String maxConnectionDuration;
     @JsonProperty("maxConnections")
     private Integer maxConnections;
     @JsonProperty("tcpKeepalive")
@@ -85,9 +91,11 @@ public class ConnectionPoolSettingsTCPSettings implements Editable<ConnectionPoo
     public ConnectionPoolSettingsTCPSettings() {
     }
 
-    public ConnectionPoolSettingsTCPSettings(String connectTimeout, Integer maxConnections, ConnectionPoolSettingsTCPSettingsTcpKeepalive tcpKeepalive) {
+    public ConnectionPoolSettingsTCPSettings(String connectTimeout, String idleTimeout, String maxConnectionDuration, Integer maxConnections, ConnectionPoolSettingsTCPSettingsTcpKeepalive tcpKeepalive) {
         super();
         this.connectTimeout = connectTimeout;
+        this.idleTimeout = idleTimeout;
+        this.maxConnectionDuration = maxConnectionDuration;
         this.maxConnections = maxConnections;
         this.tcpKeepalive = tcpKeepalive;
     }
@@ -100,6 +108,26 @@ public class ConnectionPoolSettingsTCPSettings implements Editable<ConnectionPoo
     @JsonProperty("connectTimeout")
     public void setConnectTimeout(String connectTimeout) {
         this.connectTimeout = connectTimeout;
+    }
+
+    @JsonProperty("idleTimeout")
+    public String getIdleTimeout() {
+        return idleTimeout;
+    }
+
+    @JsonProperty("idleTimeout")
+    public void setIdleTimeout(String idleTimeout) {
+        this.idleTimeout = idleTimeout;
+    }
+
+    @JsonProperty("maxConnectionDuration")
+    public String getMaxConnectionDuration() {
+        return maxConnectionDuration;
+    }
+
+    @JsonProperty("maxConnectionDuration")
+    public void setMaxConnectionDuration(String maxConnectionDuration) {
+        this.maxConnectionDuration = maxConnectionDuration;
     }
 
     @JsonProperty("maxConnections")

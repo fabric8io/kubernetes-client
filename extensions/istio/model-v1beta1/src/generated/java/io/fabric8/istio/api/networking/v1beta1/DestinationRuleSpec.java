@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.istio.api.type.v1beta1.WorkloadSelector;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -44,7 +45,8 @@ import lombok.experimental.Accessors;
     "exportTo",
     "host",
     "subsets",
-    "trafficPolicy"
+    "trafficPolicy",
+    "workloadSelector"
 })
 @ToString
 @EqualsAndHashCode
@@ -82,6 +84,8 @@ public class DestinationRuleSpec implements Editable<DestinationRuleSpecBuilder>
     private List<Subset> subsets = new ArrayList<Subset>();
     @JsonProperty("trafficPolicy")
     private TrafficPolicy trafficPolicy;
+    @JsonProperty("workloadSelector")
+    private WorkloadSelector workloadSelector;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -92,12 +96,13 @@ public class DestinationRuleSpec implements Editable<DestinationRuleSpecBuilder>
     public DestinationRuleSpec() {
     }
 
-    public DestinationRuleSpec(List<String> exportTo, String host, List<Subset> subsets, TrafficPolicy trafficPolicy) {
+    public DestinationRuleSpec(List<String> exportTo, String host, List<Subset> subsets, TrafficPolicy trafficPolicy, WorkloadSelector workloadSelector) {
         super();
         this.exportTo = exportTo;
         this.host = host;
         this.subsets = subsets;
         this.trafficPolicy = trafficPolicy;
+        this.workloadSelector = workloadSelector;
     }
 
     @JsonProperty("exportTo")
@@ -138,6 +143,16 @@ public class DestinationRuleSpec implements Editable<DestinationRuleSpecBuilder>
     @JsonProperty("trafficPolicy")
     public void setTrafficPolicy(TrafficPolicy trafficPolicy) {
         this.trafficPolicy = trafficPolicy;
+    }
+
+    @JsonProperty("workloadSelector")
+    public WorkloadSelector getWorkloadSelector() {
+        return workloadSelector;
+    }
+
+    @JsonProperty("workloadSelector")
+    public void setWorkloadSelector(WorkloadSelector workloadSelector) {
+        this.workloadSelector = workloadSelector;
     }
 
     @JsonIgnore

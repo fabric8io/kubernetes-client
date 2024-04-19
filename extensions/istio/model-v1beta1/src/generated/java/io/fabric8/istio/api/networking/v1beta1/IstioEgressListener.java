@@ -80,7 +80,7 @@ public class IstioEgressListener implements Editable<IstioEgressListenerBuilder>
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> hosts = new ArrayList<String>();
     @JsonProperty("port")
-    private Port port;
+    private SidecarPort port;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -91,7 +91,7 @@ public class IstioEgressListener implements Editable<IstioEgressListenerBuilder>
     public IstioEgressListener() {
     }
 
-    public IstioEgressListener(String bind, CaptureMode captureMode, List<String> hosts, Port port) {
+    public IstioEgressListener(String bind, CaptureMode captureMode, List<String> hosts, SidecarPort port) {
         super();
         this.bind = bind;
         this.captureMode = captureMode;
@@ -130,12 +130,12 @@ public class IstioEgressListener implements Editable<IstioEgressListenerBuilder>
     }
 
     @JsonProperty("port")
-    public Port getPort() {
+    public SidecarPort getPort() {
         return port;
     }
 
     @JsonProperty("port")
-    public void setPort(Port port) {
+    public void setPort(SidecarPort port) {
         this.port = port;
     }
 

@@ -45,7 +45,9 @@ import lombok.experimental.Accessors;
     "loadBalancer",
     "outlierDetection",
     "portLevelSettings",
-    "tls"
+    "proxyProtocol",
+    "tls",
+    "tunnel"
 })
 @ToString
 @EqualsAndHashCode
@@ -82,8 +84,12 @@ public class TrafficPolicy implements Editable<TrafficPolicyBuilder> , Kubernete
     @JsonProperty("portLevelSettings")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<TrafficPolicyPortTrafficPolicy> portLevelSettings = new ArrayList<TrafficPolicyPortTrafficPolicy>();
+    @JsonProperty("proxyProtocol")
+    private TrafficPolicyProxyProtocol proxyProtocol;
     @JsonProperty("tls")
     private ClientTLSSettings tls;
+    @JsonProperty("tunnel")
+    private TrafficPolicyTunnelSettings tunnel;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -94,13 +100,15 @@ public class TrafficPolicy implements Editable<TrafficPolicyBuilder> , Kubernete
     public TrafficPolicy() {
     }
 
-    public TrafficPolicy(ConnectionPoolSettings connectionPool, LoadBalancerSettings loadBalancer, OutlierDetection outlierDetection, List<TrafficPolicyPortTrafficPolicy> portLevelSettings, ClientTLSSettings tls) {
+    public TrafficPolicy(ConnectionPoolSettings connectionPool, LoadBalancerSettings loadBalancer, OutlierDetection outlierDetection, List<TrafficPolicyPortTrafficPolicy> portLevelSettings, TrafficPolicyProxyProtocol proxyProtocol, ClientTLSSettings tls, TrafficPolicyTunnelSettings tunnel) {
         super();
         this.connectionPool = connectionPool;
         this.loadBalancer = loadBalancer;
         this.outlierDetection = outlierDetection;
         this.portLevelSettings = portLevelSettings;
+        this.proxyProtocol = proxyProtocol;
         this.tls = tls;
+        this.tunnel = tunnel;
     }
 
     @JsonProperty("connectionPool")
@@ -143,6 +151,16 @@ public class TrafficPolicy implements Editable<TrafficPolicyBuilder> , Kubernete
         this.portLevelSettings = portLevelSettings;
     }
 
+    @JsonProperty("proxyProtocol")
+    public TrafficPolicyProxyProtocol getProxyProtocol() {
+        return proxyProtocol;
+    }
+
+    @JsonProperty("proxyProtocol")
+    public void setProxyProtocol(TrafficPolicyProxyProtocol proxyProtocol) {
+        this.proxyProtocol = proxyProtocol;
+    }
+
     @JsonProperty("tls")
     public ClientTLSSettings getTls() {
         return tls;
@@ -151,6 +169,16 @@ public class TrafficPolicy implements Editable<TrafficPolicyBuilder> , Kubernete
     @JsonProperty("tls")
     public void setTls(ClientTLSSettings tls) {
         this.tls = tls;
+    }
+
+    @JsonProperty("tunnel")
+    public TrafficPolicyTunnelSettings getTunnel() {
+        return tunnel;
+    }
+
+    @JsonProperty("tunnel")
+    public void setTunnel(TrafficPolicyTunnelSettings tunnel) {
+        this.tunnel = tunnel;
     }
 
     @JsonIgnore

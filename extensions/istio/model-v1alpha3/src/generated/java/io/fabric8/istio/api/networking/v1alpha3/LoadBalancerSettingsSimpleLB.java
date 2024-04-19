@@ -9,10 +9,12 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 @Generated("jsonschema2pojo")
 public enum LoadBalancerSettingsSimpleLB {
 
-    ROUND_ROBIN(0),
+    UNSPECIFIED(0),
     LEAST_CONN(1),
     RANDOM(2),
-    PASSTHROUGH(3);
+    PASSTHROUGH(3),
+    ROUND_ROBIN(4),
+    LEAST_REQUEST(5);
     private final Integer value;
     private final static Map<Integer, LoadBalancerSettingsSimpleLB> CONSTANTS = new HashMap<Integer, LoadBalancerSettingsSimpleLB>();
     private final static Map<String, LoadBalancerSettingsSimpleLB> NAME_CONSTANTS = new HashMap<String, LoadBalancerSettingsSimpleLB>();

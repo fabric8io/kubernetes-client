@@ -19,7 +19,8 @@ public enum EnvoyFilterApplyTo {
     HTTP_ROUTE(7),
     CLUSTER(8),
     EXTENSION_CONFIG(9),
-    BOOTSTRAP(10);
+    BOOTSTRAP(10),
+    LISTENER_FILTER(11);
     private final Integer value;
     private final static Map<Integer, EnvoyFilterApplyTo> CONSTANTS = new HashMap<Integer, EnvoyFilterApplyTo>();
     private final static Map<String, EnvoyFilterApplyTo> NAME_CONSTANTS = new HashMap<String, EnvoyFilterApplyTo>();

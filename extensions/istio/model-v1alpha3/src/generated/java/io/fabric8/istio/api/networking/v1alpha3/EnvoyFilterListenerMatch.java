@@ -40,6 +40,7 @@ import lombok.experimental.Accessors;
     "kind",
     "metadata",
     "filterChain",
+    "listenerFilter",
     "name",
     "portName",
     "portNumber"
@@ -72,6 +73,8 @@ public class EnvoyFilterListenerMatch implements Editable<EnvoyFilterListenerMat
 
     @JsonProperty("filterChain")
     private EnvoyFilterListenerMatchFilterChainMatch filterChain;
+    @JsonProperty("listenerFilter")
+    private String listenerFilter;
     @JsonProperty("name")
     private String name;
     @JsonProperty("portName")
@@ -88,9 +91,10 @@ public class EnvoyFilterListenerMatch implements Editable<EnvoyFilterListenerMat
     public EnvoyFilterListenerMatch() {
     }
 
-    public EnvoyFilterListenerMatch(EnvoyFilterListenerMatchFilterChainMatch filterChain, String name, String portName, Integer portNumber) {
+    public EnvoyFilterListenerMatch(EnvoyFilterListenerMatchFilterChainMatch filterChain, String listenerFilter, String name, String portName, Integer portNumber) {
         super();
         this.filterChain = filterChain;
+        this.listenerFilter = listenerFilter;
         this.name = name;
         this.portName = portName;
         this.portNumber = portNumber;
@@ -104,6 +108,16 @@ public class EnvoyFilterListenerMatch implements Editable<EnvoyFilterListenerMat
     @JsonProperty("filterChain")
     public void setFilterChain(EnvoyFilterListenerMatchFilterChainMatch filterChain) {
         this.filterChain = filterChain;
+    }
+
+    @JsonProperty("listenerFilter")
+    public String getListenerFilter() {
+        return listenerFilter;
+    }
+
+    @JsonProperty("listenerFilter")
+    public void setListenerFilter(String listenerFilter) {
+        this.listenerFilter = listenerFilter;
     }
 
     @JsonProperty("name")

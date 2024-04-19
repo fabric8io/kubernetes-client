@@ -43,12 +43,14 @@ import lombok.experimental.Accessors;
     "metadata",
     "corsPolicy",
     "delegate",
+    "directResponse",
     "fault",
     "headers",
     "match",
     "mirror",
     "mirrorPercent",
     "mirrorPercentage",
+    "mirrors",
     "name",
     "redirect",
     "retries",
@@ -86,6 +88,8 @@ public class HTTPRoute implements Editable<HTTPRouteBuilder> , KubernetesResourc
     private CorsPolicy corsPolicy;
     @JsonProperty("delegate")
     private Delegate delegate;
+    @JsonProperty("directResponse")
+    private HTTPDirectResponse directResponse;
     @JsonProperty("fault")
     private HTTPFaultInjection fault;
     @JsonProperty("headers")
@@ -99,6 +103,9 @@ public class HTTPRoute implements Editable<HTTPRouteBuilder> , KubernetesResourc
     private Integer mirrorPercent;
     @JsonProperty("mirrorPercentage")
     private Percent mirrorPercentage;
+    @JsonProperty("mirrors")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<HTTPMirrorPolicy> mirrors = new ArrayList<HTTPMirrorPolicy>();
     @JsonProperty("name")
     private String name;
     @JsonProperty("redirect")
@@ -122,16 +129,18 @@ public class HTTPRoute implements Editable<HTTPRouteBuilder> , KubernetesResourc
     public HTTPRoute() {
     }
 
-    public HTTPRoute(CorsPolicy corsPolicy, Delegate delegate, HTTPFaultInjection fault, Headers headers, List<HTTPMatchRequest> match, Destination mirror, Integer mirrorPercent, Percent mirrorPercentage, String name, HTTPRedirect redirect, HTTPRetry retries, HTTPRewrite rewrite, List<HTTPRouteDestination> route, String timeout) {
+    public HTTPRoute(CorsPolicy corsPolicy, Delegate delegate, HTTPDirectResponse directResponse, HTTPFaultInjection fault, Headers headers, List<HTTPMatchRequest> match, Destination mirror, Integer mirrorPercent, Percent mirrorPercentage, List<HTTPMirrorPolicy> mirrors, String name, HTTPRedirect redirect, HTTPRetry retries, HTTPRewrite rewrite, List<HTTPRouteDestination> route, String timeout) {
         super();
         this.corsPolicy = corsPolicy;
         this.delegate = delegate;
+        this.directResponse = directResponse;
         this.fault = fault;
         this.headers = headers;
         this.match = match;
         this.mirror = mirror;
         this.mirrorPercent = mirrorPercent;
         this.mirrorPercentage = mirrorPercentage;
+        this.mirrors = mirrors;
         this.name = name;
         this.redirect = redirect;
         this.retries = retries;
@@ -158,6 +167,16 @@ public class HTTPRoute implements Editable<HTTPRouteBuilder> , KubernetesResourc
     @JsonProperty("delegate")
     public void setDelegate(Delegate delegate) {
         this.delegate = delegate;
+    }
+
+    @JsonProperty("directResponse")
+    public HTTPDirectResponse getDirectResponse() {
+        return directResponse;
+    }
+
+    @JsonProperty("directResponse")
+    public void setDirectResponse(HTTPDirectResponse directResponse) {
+        this.directResponse = directResponse;
     }
 
     @JsonProperty("fault")
@@ -218,6 +237,16 @@ public class HTTPRoute implements Editable<HTTPRouteBuilder> , KubernetesResourc
     @JsonProperty("mirrorPercentage")
     public void setMirrorPercentage(Percent mirrorPercentage) {
         this.mirrorPercentage = mirrorPercentage;
+    }
+
+    @JsonProperty("mirrors")
+    public List<HTTPMirrorPolicy> getMirrors() {
+        return mirrors;
+    }
+
+    @JsonProperty("mirrors")
+    public void setMirrors(List<HTTPMirrorPolicy> mirrors) {
+        this.mirrors = mirrors;
     }
 
     @JsonProperty("name")

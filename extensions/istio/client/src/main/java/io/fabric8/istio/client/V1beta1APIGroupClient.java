@@ -19,6 +19,8 @@ import io.fabric8.istio.api.networking.v1beta1.DestinationRule;
 import io.fabric8.istio.api.networking.v1beta1.DestinationRuleList;
 import io.fabric8.istio.api.networking.v1beta1.Gateway;
 import io.fabric8.istio.api.networking.v1beta1.GatewayList;
+import io.fabric8.istio.api.networking.v1beta1.ProxyConfig;
+import io.fabric8.istio.api.networking.v1beta1.ProxyConfigList;
 import io.fabric8.istio.api.networking.v1beta1.ServiceEntry;
 import io.fabric8.istio.api.networking.v1beta1.ServiceEntryList;
 import io.fabric8.istio.api.networking.v1beta1.Sidecar;
@@ -27,6 +29,8 @@ import io.fabric8.istio.api.networking.v1beta1.VirtualService;
 import io.fabric8.istio.api.networking.v1beta1.VirtualServiceList;
 import io.fabric8.istio.api.networking.v1beta1.WorkloadEntry;
 import io.fabric8.istio.api.networking.v1beta1.WorkloadEntryList;
+import io.fabric8.istio.api.networking.v1beta1.WorkloadGroup;
+import io.fabric8.istio.api.networking.v1beta1.WorkloadGroupList;
 import io.fabric8.istio.api.security.v1beta1.AuthorizationPolicy;
 import io.fabric8.istio.api.security.v1beta1.AuthorizationPolicyList;
 import io.fabric8.istio.api.security.v1beta1.PeerAuthentication;
@@ -92,6 +96,11 @@ public class V1beta1APIGroupClient extends ClientAdapter<V1beta1APIGroupClient> 
   }
 
   @Override
+  public MixedOperation<ProxyConfig, ProxyConfigList, Resource<ProxyConfig>> proxyConfigs() {
+    return resources(ProxyConfig.class, ProxyConfigList.class);
+  }
+
+  @Override
   public MixedOperation<RequestAuthentication, RequestAuthenticationList, Resource<RequestAuthentication>> requestAuthentications() {
     return resources(RequestAuthentication.class, RequestAuthenticationList.class);
   }
@@ -99,5 +108,10 @@ public class V1beta1APIGroupClient extends ClientAdapter<V1beta1APIGroupClient> 
   @Override
   public MixedOperation<AuthorizationPolicy, AuthorizationPolicyList, Resource<AuthorizationPolicy>> authorizationPolicies() {
     return resources(AuthorizationPolicy.class, AuthorizationPolicyList.class);
+  }
+
+  @Override
+  public MixedOperation<WorkloadGroup, WorkloadGroupList, Resource<WorkloadGroup>> workloadGroups() {
+    return resources(WorkloadGroup.class, WorkloadGroupList.class);
   }
 }

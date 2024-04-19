@@ -53,6 +53,8 @@ type JavaNameStrategyMapping struct {
 	// By default, we will still use the one from `json`, if this flag is true,
 	// it will then use the one from the protobuf.
 	ResolveFieldNameFromProtobufFirst bool
+	// Skip fields that don't have any tags
+	SkipFieldWithEmptyTag bool
 	// To provide a custom generic rule that applies to all java, interface, enum
 	CustomJavaNameRule func(packageName *string, javaName *string)
 	// To manually map a golang class to a Java class
@@ -133,6 +135,13 @@ func (g *schemaGenerator) jsonFieldName(f reflect.StructField) string {
 			fieldName := protobufTag[strings.LastIndex(protobufTag, "json=")+5:]
 			return fieldName[:strings.Index(fieldName, ",")]
 		}
+		if len(protobufTag) > 0 && strings.Contains(protobufTag, "name=") {
+			fieldName := protobufTag[strings.LastIndex(protobufTag, "name=")+5:]
+			if strings.Contains(fieldName, ",") {
+				return fieldName[:strings.Index(fieldName, ",")]
+			}
+			return fieldName
+		}
 	}
 
 	json := f.Tag.Get("json")
@@ -207,7 +216,7 @@ func (g *schemaGenerator) jsonDescriptor(t reflect.Type) *JSONDescriptor {
 		return &JSONDescriptor{Type: "object"}
 	}
 
-	panic("Nothing for " + t.Name())
+	panic("Nothing for " + t.Name() + " " + t.PkgPath() + " kind " + t.Kind().String())
 }
 
 func (g *schemaGenerator) existingJavaTypeDescriptor(t reflect.Type) *ExistingJavaTypeDescriptor {
@@ -287,7 +296,7 @@ func (g *schemaGenerator) javaType(t reflect.Type) string {
 		return "Object"
 	}
 
-	panic("No type mapping for " + t.PkgPath() + "." + t.Name())
+	panic("No type mapping for " + t.PkgPath() + "." + t.Name() + " " + t.Kind().String())
 }
 
 func (g *schemaGenerator) javaInterfaces(t reflect.Type) []string {
@@ -497,7 +506,9 @@ func (g *schemaGenerator) getFields(t reflect.Type) []reflect.StructField {
 
 	for i := 0; i < t.NumField(); i++ {
 		field := t.Field(i)
-
+		if g.javaNameStrategy.SkipFieldWithEmptyTag && field.Tag == "" {
+			continue
+		}
 		fieldType := g.fieldCategory(field)
 
 		if fieldType == EMBEDDED {
@@ -561,7 +572,7 @@ func (g *schemaGenerator) getEnumDescriptor(t reflect.Type) EnumDescriptor {
 			end = true
 		} else {
 			enumValues = append(enumValues, EnumValueDescriptor{
-				Name: enumJavaName,
+				Name:  enumJavaName,
 				Value: index,
 			})
 		}
@@ -719,7 +730,6 @@ func isSimpleJavaType(fieldType reflect.Type) bool {
 }
 
 func (g *schemaGenerator) handleType(t reflect.Type) {
-
 	t = g.resolvePointer(t)
 
 	// no need to include simple types or excluded types
@@ -952,7 +962,7 @@ func (g *schemaGenerator) propertyDescriptorForList(field reflect.StructField) J
 		if listValueType.Kind() == reflect.Uint8 { // Handle case for byte[]
 			return JSONPropertyDescriptor{
 				JSONDescriptor: &JSONDescriptor{
-					Type:        "string",
+					Type:          "string",
 					JavaOmitEmpty: omitIfEmpty,
 				},
 			}
