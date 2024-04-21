@@ -15,6 +15,9 @@
  */
 package io.fabric8.crd.example.cyclic;
 
+import lombok.Data;
+
+@Data
 public class CyclicSpec {
   private Ref ref;
 }

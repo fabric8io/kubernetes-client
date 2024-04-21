@@ -15,8 +15,11 @@
  */
 package io.fabric8.crd.example.inherited;
 
+import lombok.Data;
+
 import java.util.Map;
 
+@Data
 public class ChildSpec extends BaseSpec {
   private Map<String, Object> unsupported;
   private Map<String, String> supported;

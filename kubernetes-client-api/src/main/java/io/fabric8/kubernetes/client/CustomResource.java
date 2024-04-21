@@ -118,22 +118,22 @@ public abstract class CustomResource<S, T> implements HasMetadata {
     this.status = initStatus();
   }
 
-  public static boolean getServed(Class<? extends CustomResource> clazz) {
+  public static boolean getServed(Class<?> clazz) {
     final Version annotation = clazz.getAnnotation(Version.class);
     return annotation == null || annotation.served();
   }
 
-  public static boolean getStorage(Class<? extends CustomResource> clazz) {
+  public static boolean getStorage(Class<?> clazz) {
     final Version annotation = clazz.getAnnotation(Version.class);
     return annotation == null || annotation.storage();
   }
 
-  public static boolean getDeprecated(Class<? extends CustomResource> clazz) {
+  public static boolean getDeprecated(Class<?> clazz) {
     final Version annotation = clazz.getAnnotation(Version.class);
     return annotation == null || annotation.deprecated();
   }
 
-  public static String getDeprecationWarning(Class<? extends CustomResource> clazz) {
+  public static String getDeprecationWarning(Class<?> clazz) {
     final Version annotation = clazz.getAnnotation(Version.class);
     return annotation != null && Utils.isNotNullOrEmpty(annotation.deprecationWarning())
         ? annotation.deprecationWarning()
@@ -255,7 +255,7 @@ public abstract class CustomResource<S, T> implements HasMetadata {
    * @param clazz the CustomResource class which short names we want to retrieve
    * @return the short names associated with this CustomResource or an empty array if none was provided
    */
-  public static String[] getShortNames(Class<? extends CustomResource> clazz) {
+  public static String[] getShortNames(Class<?> clazz) {
     return Optional.ofNullable(clazz.getAnnotation(ShortNames.class))
         .map(ShortNames::value)
         .orElse(new String[] {});

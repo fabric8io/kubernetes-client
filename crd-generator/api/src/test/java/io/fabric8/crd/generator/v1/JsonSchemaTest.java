@@ -15,8 +15,15 @@
  */
 package io.fabric8.crd.generator.v1;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import io.fabric8.crd.example.annotated.Annotated;
 import io.fabric8.crd.example.basic.Basic;
 import io.fabric8.crd.example.extraction.CollectionCyclicSchemaSwap;
@@ -29,14 +36,18 @@ import io.fabric8.crd.example.extraction.MultipleSchemaSwaps;
 import io.fabric8.crd.example.extraction.NestedSchemaSwap;
 import io.fabric8.crd.example.json.ContainingJson;
 import io.fabric8.crd.example.person.Person;
-import io.fabric8.crd.generator.utils.Types;
+import io.fabric8.crd.generator.annotation.SchemaSwap;
 import io.fabric8.kubernetes.api.model.AnyType;
+import io.fabric8.kubernetes.api.model.ServicePort;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.ValidationRule;
-import io.sundr.model.TypeDef;
+import io.fabric8.kubernetes.api.model.coordination.v1.LeaseSpec;
 import org.junit.jupiter.api.Test;
+import org.w3c.dom.Node;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -52,18 +63,15 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class JsonSchemaTest {
 
   @Test
-  void shouldCreatAnyTypeWithoutProperties() {
-    TypeDef any = Types.typeDefFrom(AnyType.class);
-    JSONSchemaProps schema = JsonSchema.from(any);
-    assertNotNull(any);
+  void shouldCreateAnyTypeWithoutProperties() {
+    JSONSchemaProps schema = JsonSchema.from(AnyType.class);
     assertSchemaHasNumberOfProperties(schema, 0);
     assertTrue(schema.getXKubernetesPreserveUnknownFields());
   }
 
   @Test
   void shouldCreateJsonSchemaFromClass() {
-    TypeDef person = Types.typeDefFrom(Person.class);
-    JSONSchemaProps schema = JsonSchema.from(person);
+    JSONSchemaProps schema = JsonSchema.from(Person.class);
     assertNotNull(schema);
     Map<String, JSONSchemaProps> properties = assertSchemaHasNumberOfProperties(schema, 7);
     final List<String> personTypes = properties.get("type").getEnum().stream().map(JsonNode::asText)
@@ -81,8 +89,7 @@ class JsonSchemaTest {
     assertTrue(addressTypes.contains("home"));
     assertTrue(addressTypes.contains("work"));
 
-    final TypeDef def = Types.typeDefFrom(Basic.class);
-    schema = JsonSchema.from(def);
+    schema = JsonSchema.from(Basic.class);
     assertNotNull(schema);
     properties = schema.getProperties();
     assertNotNull(properties);
@@ -98,8 +105,7 @@ class JsonSchemaTest {
 
   @Test
   void shouldAugmentPropertiesSchemaFromAnnotations() throws JsonProcessingException {
-    TypeDef annotated = Types.typeDefFrom(Annotated.class);
-    JSONSchemaProps schema = JsonSchema.from(annotated);
+    JSONSchemaProps schema = JsonSchema.from(Annotated.class);
     assertNotNull(schema);
     Map<String, JSONSchemaProps> properties = assertSchemaHasNumberOfProperties(schema, 2);
     final JSONSchemaProps specSchema = properties.get("spec");
@@ -210,8 +216,7 @@ class JsonSchemaTest {
 
   @Test
   void shouldProduceKubernetesPreserveFields() {
-    TypeDef containingJson = Types.typeDefFrom(ContainingJson.class);
-    JSONSchemaProps schema = JsonSchema.from(containingJson);
+    JSONSchemaProps schema = JsonSchema.from(ContainingJson.class);
     assertNotNull(schema);
     Map<String, JSONSchemaProps> properties = assertSchemaHasNumberOfProperties(schema, 2);
     final JSONSchemaProps specSchema = properties.get("spec");
@@ -239,8 +244,7 @@ class JsonSchemaTest {
 
   @Test
   void shouldExtractPropertiesSchemaFromExtractValueAnnotation() {
-    TypeDef extraction = Types.typeDefFrom(Extraction.class);
-    JSONSchemaProps schema = JsonSchema.from(extraction);
+    JSONSchemaProps schema = JsonSchema.from(Extraction.class);
     assertNotNull(schema);
     Map<String, JSONSchemaProps> properties = assertSchemaHasNumberOfProperties(schema, 2);
     final JSONSchemaProps specSchema = properties.get("spec");
@@ -274,8 +278,7 @@ class JsonSchemaTest {
 
   @Test
   void shouldExtractPropertiesSchemaFromSchemaSwapAnnotations() {
-    TypeDef extraction = Types.typeDefFrom(MultipleSchemaSwaps.class);
-    JSONSchemaProps schema = JsonSchema.from(extraction);
+    JSONSchemaProps schema = JsonSchema.from(MultipleSchemaSwaps.class);
     assertNotNull(schema);
     Map<String, JSONSchemaProps> properties = assertSchemaHasNumberOfProperties(schema, 2);
     final JSONSchemaProps specSchema = properties.get("spec");
@@ -302,8 +305,7 @@ class JsonSchemaTest {
 
   @Test
   void shouldApplySchemaSwapsMultipleTimesInDeepClassHierarchy() {
-    TypeDef extraction = Types.typeDefFrom(DeeplyNestedSchemaSwaps.class);
-    JSONSchemaProps schema = JsonSchema.from(extraction);
+    JSONSchemaProps schema = JsonSchema.from(DeeplyNestedSchemaSwaps.class);
     assertNotNull(schema);
     Map<String, JSONSchemaProps> properties = assertSchemaHasNumberOfProperties(schema, 2);
     Map<String, JSONSchemaProps> spec = assertSchemaHasNumberOfProperties(properties.get("spec"), 2);
@@ -328,8 +330,7 @@ class JsonSchemaTest {
 
   @Test
   void shouldApplyCyclicSchemaSwaps() {
-    TypeDef extraction = Types.typeDefFrom(CyclicSchemaSwap.class);
-    JSONSchemaProps schema = JsonSchema.from(extraction);
+    JSONSchemaProps schema = JsonSchema.from(CyclicSchemaSwap.class);
     assertNotNull(schema);
 
     Map<String, JSONSchemaProps> properties = assertSchemaHasNumberOfProperties(schema, 2);
@@ -344,10 +345,157 @@ class JsonSchemaTest {
     assertNull(spec.get("root").getProperties().get("level").getProperties().get("level"));
   }
 
+  public static class PreserveUnknown {
+
+    @JsonIgnore
+    private Map<String, Object> values = new HashMap<>();
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.values;
+    }
+
+    @JsonAnySetter
+    public void setAdditionalProperty(String name, Object value) {
+        this.values.put(name, value);
+    }
+
+    public Map<String, Object> getValues() {
+      return values;
+    }
+
+    public void setValues(Map<String, Object> values) {
+      this.values = values;
+    }
+
+  }
+
+  @Test
+  void testPreserveUnknown() {
+    JSONSchemaProps schema = JsonSchema.from(PreserveUnknown.class);
+    assertNotNull(schema);
+    assertEquals(0, schema.getProperties().size());
+    assertEquals(Boolean.TRUE, schema.getXKubernetesPreserveUnknownFields());
+  }
+
+  // implicitly uses AnySchema
+  private static class MySerializer extends StdSerializer<Object> {
+
+    public MySerializer() {
+      super(Object.class);
+    }
+
+    @Override
+    public void serialize(Object value, JsonGenerator gen, SerializerProvider provider) throws IOException {
+
+    }
+
+  }
+
+  public static class AnyTestTypes {
+    @JsonSerialize(using = MySerializer.class)
+    public Object value;
+    public Node nodeValue;
+  }
+
+  @Test
+  void testAnySchemaTypes() {
+    JSONSchemaProps schema = JsonSchema.from(AnyTestTypes.class);
+    assertNotNull(schema);
+    assertNull(schema.getProperties().get("nodeValue").getType());
+    assertEquals(Boolean.TRUE, schema.getProperties().get("nodeValue").getXKubernetesPreserveUnknownFields());
+    assertEquals(Boolean.TRUE, schema.getProperties().get("value").getXKubernetesPreserveUnknownFields());
+  }
+
+  @Test
+  void testLeaseSpec() {
+    JSONSchemaProps schema = JsonSchema.from(LeaseSpec.class);
+    assertNotNull(schema);
+    JSONSchemaProps renewTime = schema.getProperties().get("renewTime");
+    assertEquals("string", renewTime.getType());
+    assertEquals("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'", renewTime.getPattern());
+    assertEquals("date-time", renewTime.getFormat());
+  }
+
+  @Test
+  void testServicePort() {
+    JSONSchemaProps schema = JsonSchema.from(ServicePort.class);
+    assertNotNull(schema);
+    JSONSchemaProps targetPort = schema.getProperties().get("targetPort");
+    assertEquals(2, targetPort.getAnyOf().size());
+    assertEquals(true, targetPort.getXKubernetesIntOrString());
+  }
+
+  private static class MapProperty {
+
+    public Map<Long, Boolean> map;
+
+  }
+
+  @Test
+  void testMapProperty() {
+    JSONSchemaProps schema = JsonSchema.from(MapProperty.class);
+    assertNotNull(schema);
+    JSONSchemaProps map = schema.getProperties().get("map");
+    assertTrue(map.getProperties().isEmpty());
+    assertEquals("boolean", map.getAdditionalProperties().getSchema().getType());
+  }
+
+  private static class Cyclic1 {
+
+    public Cyclic1 parent;
+
+  }
+
+  private static class Cyclic2 {
+
+    public Cyclic2 parent[];
+
+  }
+
+  private static class Cyclic3 {
+
+    public Map<String, Cyclic3> parent;
+
+  }
+
+  @Test
+  void testCyclicProperties() {
+    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+        () -> JsonSchema.from(Cyclic1.class));
+    assertEquals("Found a cyclic reference involving the field of type io.fabric8.crd.generator.v1.JsonSchemaTest$Cyclic1 starting a field parent >>\n"
+        + "io.fabric8.crd.generator.v1.JsonSchemaTest$Cyclic1.parent", exception.getMessage());
+
+    exception = assertThrows(IllegalArgumentException.class,
+        () -> JsonSchema.from(Cyclic2.class));
+    assertEquals("Found a cyclic reference involving the field of type io.fabric8.crd.generator.v1.JsonSchemaTest$Cyclic2 starting a field parent >>\n"
+        + "io.fabric8.crd.generator.v1.JsonSchemaTest$Cyclic2.parent", exception.getMessage());
+
+    exception = assertThrows(IllegalArgumentException.class,
+        () -> JsonSchema.from(Cyclic3.class));
+    assertEquals("Found a cyclic reference involving the field of type io.fabric8.crd.generator.v1.JsonSchemaTest$Cyclic3 starting a field parent >>\n"
+        + "io.fabric8.crd.generator.v1.JsonSchemaTest$Cyclic3.parent", exception.getMessage());
+  }
+
+  @SchemaSwap(originalType = Cyclic3.class, fieldName = "parent")
+  private static class Cyclic4 {
+
+    public Cyclic3 parent;
+    public int value;
+
+  }
+
+  @Test
+  void testSchemaSwapZeroDepth() {
+    JSONSchemaProps schema = JsonSchema.from(Cyclic4.class);
+    assertNotNull(schema);
+    JSONSchemaProps parent = schema.getProperties().get("parent");
+    assertTrue(parent.getProperties().isEmpty());
+  }
+
   @Test
   void shouldApplyCollectionCyclicSchemaSwaps() {
-    TypeDef extraction = Types.typeDefFrom(CollectionCyclicSchemaSwap.class);
-    JSONSchemaProps schema = JsonSchema.from(extraction);
+    JSONSchemaProps schema = JsonSchema.from(CollectionCyclicSchemaSwap.class);
     assertNotNull(schema);
 
     Map<String, JSONSchemaProps> properties = assertSchemaHasNumberOfProperties(schema, 2);
@@ -373,9 +521,8 @@ class JsonSchemaTest {
 
   @Test
   void shouldThrowIfSchemaSwapHasUnmatchedField() {
-    TypeDef incorrectExtraction = Types.typeDefFrom(IncorrectExtraction.class);
     IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
-        () -> JsonSchema.from(incorrectExtraction));
+        () -> JsonSchema.from(IncorrectExtraction.class));
     assertEquals(
         "Unmatched SchemaSwaps: @SchemaSwap(originalType=io.fabric8.crd.example.extraction.ExtractionSpec, fieldName=\"FOO\", targetType=io"
             + ".fabric8.crd.example.extraction.FooExtractor) on io.fabric8.crd.example.extraction.IncorrectExtraction",
@@ -384,9 +531,8 @@ class JsonSchemaTest {
 
   @Test
   void shouldThrowIfSchemaSwapHasUnmatchedClass() {
-    TypeDef incorrectExtraction2 = Types.typeDefFrom(IncorrectExtraction2.class);
     IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
-        () -> JsonSchema.from(incorrectExtraction2));
+        () -> JsonSchema.from(IncorrectExtraction2.class));
     assertEquals(
         "Unmatched SchemaSwaps: @SchemaSwap(originalType=io.fabric8.crd.example.basic.BasicSpec, fieldName=\"bar\", targetType=io.fabric8.crd"
             + ".example.extraction.FooExtractor) on io.fabric8.crd.example.extraction.IncorrectExtraction2",
@@ -395,13 +541,29 @@ class JsonSchemaTest {
 
   @Test
   void shouldThrowIfSchemaSwapNested() {
-    TypeDef nested = Types.typeDefFrom(NestedSchemaSwap.class);
     IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
-        () -> JsonSchema.from(nested));
+        () -> JsonSchema.from(NestedSchemaSwap.class));
     assertEquals(
-        "Nested SchemaSwap: @SchemaSwap(originalType=io.fabric8.crd.example.extraction.NestedSchemaSwap.End, fieldName=\"value\", targetType=java.lang.Void) "
-            + "on io.fabric8.crd.example.extraction.NestedSchemaSwap.Intermediate",
+        "Nested SchemaSwap: @SchemaSwap(originalType=io.fabric8.crd.example.extraction.NestedSchemaSwap$End, fieldName=\"value\", targetType=java.lang.Void) "
+            + "on io.fabric8.crd.example.extraction.NestedSchemaSwap$Intermediate",
         exception.getMessage());
+  }
+
+  @io.fabric8.generator.annotation.ValidationRule(value = "base", messageExpression = "something", reason = "FieldValueForbidden")
+  private static class Base {
+    public String value;
+  }
+
+  @io.fabric8.generator.annotation.ValidationRule(value = "parent", messageExpression = "something else", reason = "FieldValueForbidden")
+  private static class Parent extends Base {
+
+  }
+
+  @Test
+  void testValidationRuleHierarchy() {
+    JSONSchemaProps schema = JsonSchema.from(Parent.class);
+    assertNotNull(schema);
+    assertEquals(2, schema.getXKubernetesValidations().size());
   }
 
   private static Map<String, JSONSchemaProps> assertSchemaHasNumberOfProperties(JSONSchemaProps specSchema, int expected) {

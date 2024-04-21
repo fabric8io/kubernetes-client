@@ -2,25 +2,18 @@
 
 ## Quick start
 
-Import the Annotation Processor into your build.
+TBD
 
 with Maven:
 
 ```xml
-<dependency>
-    <groupId>io.fabric8</groupId>
-    <artifactId>crd-generator-apt</artifactId>
-    <scope>provided</scope>
-</dependency>
+TBD
 ```
 
 with Gradle:
 
 ```groovy
-dependencies {
-    annotationProcessor 'io.fabric8:crd-generator-apt:<version>'
-    ...
-}
+TBD
 ```
 
 Now you can define a `class` that extends `io.fabric8.kubernetes.client.CustomResource`

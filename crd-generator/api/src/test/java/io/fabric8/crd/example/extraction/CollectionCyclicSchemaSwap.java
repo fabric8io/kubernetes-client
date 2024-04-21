@@ -25,16 +25,16 @@ import java.util.List;
 public class CollectionCyclicSchemaSwap extends CustomResource<CollectionCyclicSchemaSwap.Spec, Void> {
 
   public static class Spec {
-    private MyObject myObject;
-    private List<Level> levels;
+    public MyObject myObject;
+    public List<Level> levels;
   }
 
   public static class Level {
-    private MyObject myObject;
-    private List<Level> levels;
+    public MyObject myObject;
+    public List<Level> levels;
   }
 
   public static class MyObject {
-    private int value;
+    public int value;
   }
 }

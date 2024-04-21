@@ -22,28 +22,28 @@ import io.fabric8.kubernetes.client.CustomResource;
 public class DeeplyNestedSchemaSwaps extends CustomResource<DeeplyNestedSchemaSwaps.Spec, Void> {
 
   public static class Spec {
-    private MyObject myObject;
-    private Level1 level1;
+    public MyObject myObject;
+    public Level1 level1;
   }
 
   private static class Level1 {
-    private Level2 level2a;
-    private MyObject myObject;
-    private Level2 level2b;
+    public Level2 level2a;
+    public MyObject myObject;
+    public Level2 level2b;
   }
 
   private static class Level2 {
-    private MyObject myObject1;
-    private Level3 level3;
-    private MyObject myObject2;
+    public MyObject myObject1;
+    public Level3 level3;
+    public MyObject myObject2;
   }
 
   private static class Level3 {
-    private MyObject myObject1;
-    private MyObject myObject2;
+    public MyObject myObject1;
+    public MyObject myObject2;
   }
 
   public static class MyObject {
-    private int shouldBeString;
+    public int shouldBeString;
   }
 }

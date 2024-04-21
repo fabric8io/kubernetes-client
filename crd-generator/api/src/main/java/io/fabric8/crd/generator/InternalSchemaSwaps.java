@@ -15,8 +15,6 @@
  */
 package io.fabric8.crd.generator;
 
-import io.sundr.model.ClassRef;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -53,7 +51,7 @@ public class InternalSchemaSwaps {
     return new InternalSchemaSwaps(new HashMap<>(), this.swapDepths, combined);
   }
 
-  public void registerSwap(ClassRef definitionType, ClassRef originalType, String fieldName, ClassRef targetType,
+  public void registerSwap(Class<?> definitionType, Class<?> originalType, String fieldName, Class<?> targetType,
       int depth) {
     Value value = new Value(definitionType, originalType, fieldName, targetType, depth);
     Key key = new Key(originalType, fieldName);
@@ -67,16 +65,16 @@ public class InternalSchemaSwaps {
   }
 
   static class SwapResult {
-    final ClassRef classRef;
+    final Class<?> classRef;
     final boolean onGoing;
 
-    public SwapResult(ClassRef classRef, boolean onGoing) {
+    public SwapResult(Class<?> classRef, boolean onGoing) {
       this.classRef = classRef;
       this.onGoing = onGoing;
     }
   }
 
-  public SwapResult lookupAndMark(ClassRef originalType, String name) {
+  public SwapResult lookupAndMark(Class<?> originalType, String name) {
     Key key = new Key(originalType, name);
     Value value = swaps.getOrDefault(key, parentSwaps.get(key));
     if (value != null) {
@@ -104,20 +102,12 @@ public class InternalSchemaSwaps {
   }
 
   private static final class Key {
-    private final ClassRef originalType;
+    private final Class<?> originalType;
     private final String fieldName;
 
-    public Key(ClassRef originalType, String fieldName) {
+    public Key(Class<?> originalType, String fieldName) {
       this.originalType = originalType;
       this.fieldName = fieldName;
-    }
-
-    public ClassRef getOriginalType() {
-      return originalType;
-    }
-
-    public String getFieldName() {
-      return fieldName;
     }
 
     @Override
@@ -140,21 +130,21 @@ public class InternalSchemaSwaps {
     @Override
     public String toString() {
       return new StringJoiner(", ", Key.class.getSimpleName() + "[", "]")
-          .add("originalType=" + originalType)
+          .add("originalType=" + originalType.getName())
           .add("fieldName='" + fieldName + "'")
           .toString();
     }
   }
 
   private static class Value {
-    private final ClassRef originalType;
+    private final Class<?> originalType;
     private final String fieldName;
-    private final ClassRef targetType;
+    private final Class<?> targetType;
     private boolean used;
-    private final ClassRef definitionType;
+    private final Class<?> definitionType;
     private final int depth;
 
-    public Value(ClassRef definitionType, ClassRef originalType, String fieldName, ClassRef targetType, int depth) {
+    public Value(Class<?> definitionType, Class<?> originalType, String fieldName, Class<?> targetType, int depth) {
       this.definitionType = definitionType;
       this.originalType = originalType;
       this.fieldName = fieldName;
@@ -167,26 +157,14 @@ public class InternalSchemaSwaps {
       this.used = true;
     }
 
-    public ClassRef getOriginalType() {
-      return originalType;
-    }
-
-    public String getFieldName() {
-      return fieldName;
-    }
-
-    public ClassRef getTargetType() {
+    public Class<?> getTargetType() {
       return targetType;
-    }
-
-    public boolean isUsed() {
-      return used;
     }
 
     @Override
     public String toString() {
-      return "@SchemaSwap(originalType=" + originalType + ", fieldName=\"" + fieldName + "\", targetType=" + targetType
-          + ") on " + definitionType;
+      return "@SchemaSwap(originalType=" + originalType.getName() + ", fieldName=\"" + fieldName + "\", targetType=" + targetType.getName()
+          + ") on " + definitionType.getName();
     }
   }
 }

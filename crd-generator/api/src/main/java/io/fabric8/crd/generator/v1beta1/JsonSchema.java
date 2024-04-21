@@ -15,94 +15,78 @@
  */
 package io.fabric8.crd.generator.v1beta1;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.fabric8.crd.generator.AbstractJsonSchema;
+import io.fabric8.crd.generator.ResolvingContext;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaProps;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaPropsBuilder;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.ValidationRule;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.ValidationRuleBuilder;
-import io.sundr.model.Property;
-import io.sundr.model.TypeDef;
-import io.sundr.model.TypeRef;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import static io.fabric8.crd.generator.CRDGenerator.YAML_MAPPER;
+public class JsonSchema extends AbstractJsonSchema<JSONSchemaProps, JSONSchemaPropsBuilder, ValidationRule> {
 
-public class JsonSchema extends AbstractJsonSchema<JSONSchemaProps, JSONSchemaPropsBuilder> {
-
-  private static final JsonSchema instance = new JsonSchema();
-
-  public static final JSONSchemaProps JSON_SCHEMA_INT_OR_STRING = new JSONSchemaPropsBuilder()
+  private static final JSONSchemaProps JSON_SCHEMA_INT_OR_STRING = new JSONSchemaPropsBuilder()
       .withXKubernetesIntOrString(true)
       .withAnyOf(
           new JSONSchemaPropsBuilder().withType("integer").build(),
           new JSONSchemaPropsBuilder().withType("string").build())
       .build();
 
-  /**
-   * Creates the JSON schema for the particular {@link TypeDef}.
-   *
-   * @param definition The definition.
-   * @param ignore an optional list of property names to ignore
-   * @return The schema.
-   */
-  public static JSONSchemaProps from(
-      TypeDef definition, String... ignore) {
-    return instance.internalFrom(definition, ignore);
+  public JsonSchema(ResolvingContext resolvingContext, Class<?> definition) {
+    super(resolvingContext, definition);
   }
 
   @Override
   public JSONSchemaPropsBuilder newBuilder() {
-    return newBuilder("object");
+    return new JSONSchemaPropsBuilder().withType("object");
   }
 
   @Override
-  public JSONSchemaPropsBuilder newBuilder(String type) {
-    final JSONSchemaPropsBuilder builder = new JSONSchemaPropsBuilder();
-    builder.withType(type);
-    return builder;
+  protected void setDefault(JSONSchemaProps schema, JsonNode node) {
+    schema.setDefault(node);
   }
 
   @Override
-  public void addProperty(Property property, JSONSchemaPropsBuilder builder,
-      JSONSchemaProps schema, SchemaPropsOptions options) {
-    if (schema != null) {
-      options.getDefault().ifPresent(s -> {
-        try {
-          schema.setDefault(YAML_MAPPER.readTree(s));
-        } catch (JsonProcessingException e) {
-          throw new IllegalArgumentException("Cannot parse default value: '" + s + "' as valid YAML.");
-        }
-      });
-      options.getMin().ifPresent(schema::setMinimum);
-      options.getMax().ifPresent(schema::setMaximum);
-      options.getPattern().ifPresent(schema::setPattern);
+  protected void setMin(JSONSchemaProps schema, Double min) {
+    schema.setMinimum(min);
+  }
 
-      List<ValidationRule> validationRulesFromProperty = options.getValidationRules().stream()
-          .map(this::mapValidationRule)
-          .collect(Collectors.toList());
+  @Override
+  protected void setMax(JSONSchemaProps schema, Double max) {
+    schema.setMaximum(max);
+  }
 
-      List<ValidationRule> resultingValidationRules = new ArrayList<>(schema.getXKubernetesValidations());
-      resultingValidationRules.addAll(validationRulesFromProperty);
+  @Override
+  protected void setFormat(JSONSchemaProps schema, String format) {
+    schema.setFormat(format);
+  }
 
-      if (!resultingValidationRules.isEmpty()) {
-        schema.setXKubernetesValidations(resultingValidationRules);
-      }
+  @Override
+  protected void setPattern(JSONSchemaProps schema, String pattern) {
+    schema.setPattern(pattern);
+  }
 
-      if (options.isNullable()) {
-        schema.setNullable(true);
-      }
+  @Override
+  protected void setNullable(JSONSchemaProps schema, Boolean nullable) {
+    schema.setNullable(nullable);
+  }
 
-      if (options.isPreserveUnknownFields()) {
-        schema.setXKubernetesPreserveUnknownFields(true);
-      }
+  @Override
+  protected void setPreserveUnknown(JSONSchemaProps schema, Boolean preserveUnknown) {
+    schema.setXKubernetesPreserveUnknownFields(preserveUnknown);
+  }
 
-      builder.addToProperties(property.getName(), schema);
-    }
+  @Override
+  protected JSONSchemaProps addToValidationRules(JSONSchemaProps schema, List<ValidationRule> validationRules) {
+    return schema.edit().addAllToXKubernetesValidations(validationRules).build();
+  }
+
+  @Override
+  protected void addProperty(String name, JSONSchemaPropsBuilder builder,
+      JSONSchemaProps schema) {
+    builder.addToProperties(name, schema);
   }
 
   @Override
@@ -138,13 +122,11 @@ public class JsonSchema extends AbstractJsonSchema<JSONSchemaProps, JSONSchemaPr
 
   @Override
   protected JSONSchemaProps singleProperty(String typeName) {
-    return new JSONSchemaPropsBuilder()
-        .withType(typeName)
-        .build();
+    return new JSONSchemaPropsBuilder().withType(typeName).build();
   }
 
   @Override
-  protected JSONSchemaProps mappedProperty(TypeRef ref) {
+  protected JSONSchemaProps intOrString() {
     return JSON_SCHEMA_INT_OR_STRING;
   }
 
@@ -160,13 +142,8 @@ public class JsonSchema extends AbstractJsonSchema<JSONSchemaProps, JSONSchemaPr
         .build();
   }
 
-  private List<ValidationRule> mapValidationRules(List<KubernetesValidationRule> validationRules) {
-    return validationRules.stream()
-        .map(this::mapValidationRule)
-        .collect(Collectors.toList());
-  }
-
-  private ValidationRule mapValidationRule(KubernetesValidationRule validationRule) {
+  @Override
+  protected ValidationRule mapValidationRule(KubernetesValidationRule validationRule) {
     return new ValidationRuleBuilder()
         .withRule(validationRule.getRule())
         .withMessage(validationRule.getMessage())
@@ -175,5 +152,10 @@ public class JsonSchema extends AbstractJsonSchema<JSONSchemaProps, JSONSchemaPr
         .withFieldPath(validationRule.getFieldPath())
         .withOptionalOldSelf(validationRule.getOptionalOldSelf())
         .build();
+  }
+
+  @Override
+  protected String getType(JSONSchemaProps schema) {
+    return schema.getType();
   }
 }

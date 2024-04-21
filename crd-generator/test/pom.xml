@@ -36,9 +36,9 @@
   <dependencies>
     <dependency>
       <groupId>io.fabric8</groupId>
-      <artifactId>crd-generator-apt</artifactId>
+      <artifactId>crd-generator-api</artifactId>
     </dependency>
-
+    
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>

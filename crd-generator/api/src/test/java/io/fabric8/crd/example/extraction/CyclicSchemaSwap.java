@@ -24,17 +24,17 @@ import java.util.List;
 public class CyclicSchemaSwap extends CustomResource<CyclicSchemaSwap.Spec, Void> {
 
   public static class Spec {
-    private MyObject myObject;
-    private Level root;
-    private List<Level> roots; // should not interfere with the rendering depth of level of its sibling
+    public MyObject myObject;
+    public Level root;
+    public List<Level> roots; // should not interfere with the rendering depth of level of its sibling
   }
 
   public static class Level {
-    private MyObject myObject;
-    private Level level;
+    public MyObject myObject;
+    public Level level;
   }
 
   public static class MyObject {
-    private int value;
+    public int value;
   }
 }

@@ -15,10 +15,13 @@
  */
 package io.fabric8.crd.example.map;
 
+import lombok.Data;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Data
 public class ContainingMapsSpec {
 
   private Map<String, List<String>> test = null;

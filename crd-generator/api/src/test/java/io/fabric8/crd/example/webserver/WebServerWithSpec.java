@@ -15,6 +15,9 @@
  */
 package io.fabric8.crd.example.webserver;
 
+import lombok.Data;
+
+@Data
 public class WebServerWithSpec {
 
   private String name;

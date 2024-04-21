@@ -15,8 +15,10 @@
  */
 package io.fabric8.crd.example.webserver;
 
-import io.fabric8.crd.alt.StatusReplicas;
+import io.fabric8.kubernetes.model.annotation.StatusReplicas;
+import lombok.Data;
 
+@Data
 public class WebServerStatus {
 
   @StatusReplicas

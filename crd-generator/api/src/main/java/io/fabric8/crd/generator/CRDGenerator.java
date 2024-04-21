@@ -21,7 +21,6 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
-import io.fabric8.crd.generator.utils.Types;
 import io.fabric8.crd.generator.v1.CustomResourceHandler;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.client.CustomResource;
@@ -58,6 +57,7 @@ public class CRDGenerator {
   private boolean parallel;
   private Map<String, CustomResourceInfo> infos;
 
+  // TODO: why not rely on the standard fabric8 yaml mapping
   public static final ObjectMapper YAML_MAPPER = JsonMapper.builder(new YAMLFactory()
       .enable(YAMLGenerator.Feature.MINIMIZE_QUOTES)
       .enable(YAMLGenerator.Feature.ALWAYS_QUOTE_NUMBERS_AS_STRINGS)
@@ -71,7 +71,6 @@ public class CRDGenerator {
 
   public CRDGenerator() {
     resources = new Resources();
-    Types.resetGenerationContext(); // make sure the new generator starts up with a clean slate
   }
 
   public CRDGenerator inOutputDir(File outputDir) {

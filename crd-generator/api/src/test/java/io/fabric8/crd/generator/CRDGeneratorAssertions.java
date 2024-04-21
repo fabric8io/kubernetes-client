@@ -121,6 +121,7 @@ public class CRDGeneratorAssertions {
       // skip license headers
       String expectedLine = skipCommentsAndEmptyLines(expectedReader);
       String actualLine = skipCommentsAndEmptyLines(actualReader);
+
       // compare both files
       final String message = String.format("Expected %s and actual %s files are not equal", expectedFile, actualFile);
       while (expectedLine != null || actualLine != null) {

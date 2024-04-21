@@ -17,10 +17,12 @@ package io.fabric8.crd.generator;
 
 import io.fabric8.crd.generator.utils.Types;
 import io.fabric8.crd.generator.utils.Types.SpecAndStatus;
+import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.dsl.base.ResourceDefinitionContext;
+import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.kubernetes.model.Scope;
-import io.sundr.model.TypeDef;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,7 +35,6 @@ import java.util.Set;
 public class CustomResourceInfo {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(CustomResourceInfo.class);
-  public static final boolean DESCRIBE_TYPE_DEFS = false;
   private final String group;
   private final String version;
   private final String kind;
@@ -45,7 +46,7 @@ public class CustomResourceInfo {
   private final boolean deprecated;
   private final String deprecationWarning;
   private final Scope scope;
-  private final TypeDef definition;
+  private final Class<?> definition;
   private final String crClassName;
   private final String specClassName;
   private final String statusClassName;
@@ -57,7 +58,7 @@ public class CustomResourceInfo {
 
   public CustomResourceInfo(String group, String version, String kind, String singular,
       String plural, String[] shortNames, boolean storage, boolean served, boolean deprecated, String deprecationWarning,
-      Scope scope, TypeDef definition, String crClassName,
+      Scope scope, Class<?> definition, String crClassName,
       String specClassName, String statusClassName, String[] annotations, String[] labels) {
     this.group = group;
     this.version = version;
@@ -144,7 +145,7 @@ public class CustomResourceInfo {
     return Optional.ofNullable(statusClassName);
   }
 
-  public TypeDef definition() {
+  public Class<?> definition() {
     return definition;
   }
 
@@ -156,30 +157,42 @@ public class CustomResourceInfo {
     return labels;
   }
 
-  public static CustomResourceInfo fromClass(Class<? extends CustomResource<?, ?>> customResource) {
+  public static CustomResourceInfo fromClass(Class<? extends HasMetadata> customResource) {
     try {
-      final CustomResource<?, ?> instance = customResource.getDeclaredConstructor().newInstance();
+      final HasMetadata instance = customResource.getDeclaredConstructor().newInstance();
 
       final String[] shortNames = CustomResource.getShortNames(customResource);
 
-      final TypeDef definition = Types.typeDefFrom(customResource);
-      if (DESCRIBE_TYPE_DEFS) {
-        Types.output(definition);
-      }
+      final Scope scope = Utils.isResourceNamespaced(customResource) ? Scope.NAMESPACED : Scope.CLUSTER;
 
-      final Scope scope = Types.isNamespaced(definition) ? Scope.NAMESPACED : Scope.CLUSTER;
-
-      SpecAndStatus specAndStatus = Types.resolveSpecAndStatusTypes(definition);
+      SpecAndStatus specAndStatus = Types.resolveSpecAndStatusTypes(customResource);
       if (specAndStatus.isUnreliable()) {
         LOGGER.warn(
             "Cannot reliably determine status types for {} because it isn't parameterized with only spec and status types. Status replicas detection will be deactivated.",
             customResource.getCanonicalName());
       }
 
-      return new CustomResourceInfo(instance.getGroup(), instance.getVersion(), instance.getKind(),
-          instance.getSingular(), instance.getPlural(), shortNames, instance.isStorage(), instance.isServed(),
-          instance.isDeprecated(), instance.getDeprecationWarning(),
-          scope, definition,
+      ResourceDefinitionContext rdc = ResourceDefinitionContext.fromResourceType(customResource);
+      String singular = HasMetadata.getSingular(customResource);
+      boolean deprecated = CustomResource.getDeprecated(customResource);
+      String deprecationWarning = CustomResource.getDeprecationWarning(customResource);
+      boolean storage = CustomResource.getStorage(customResource);
+      boolean served = CustomResource.getServed(customResource);
+
+      // instance level methods - TODO: deprecate?
+      if (instance instanceof CustomResource) {
+        CustomResource<?, ?> cr = (CustomResource)instance;
+        singular = cr.getSingular();
+        deprecated = cr.isDeprecated();
+        deprecationWarning = cr.getDeprecationWarning();
+        storage = cr.isStorage();
+        served = cr.isServed();
+      }
+
+      return new CustomResourceInfo(rdc.getGroup(), rdc.getVersion(), rdc.getKind(),
+          singular, rdc.getPlural(), shortNames, storage, served,
+          deprecated, deprecationWarning,
+          scope, customResource,
           customResource.getCanonicalName(), specAndStatus.getSpecClassName(),
           specAndStatus.getStatusClassName(), toStringArray(instance.getMetadata().getAnnotations()),
           toStringArray(instance.getMetadata().getLabels()));

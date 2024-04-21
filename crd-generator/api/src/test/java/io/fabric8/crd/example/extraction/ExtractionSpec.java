@@ -21,9 +21,9 @@ import io.fabric8.crd.generator.annotation.SchemaFrom;
 public class ExtractionSpec {
 
   @SchemaFrom(type = FooExtractor.class)
-  private Foo foo;
+  public Foo foo;
 
   @PreserveUnknownFields
-  private Foo bar;
+  public Foo bar;
 
 }

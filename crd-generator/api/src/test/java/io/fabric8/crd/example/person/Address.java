@@ -16,11 +16,11 @@
 package io.fabric8.crd.example.person;
 
 public class Address {
-  private String street;
-  private int number;
-  private String zip;
-  private String country;
-  private Type type;
+  public String street;
+  public int number;
+  public String zip;
+  public String country;
+  public Type type;
 
   public enum Type {
     home,

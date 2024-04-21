@@ -22,16 +22,16 @@ public class NestedSchemaSwap extends CustomResource<NestedSchemaSwap.Spec, Void
 
   @SchemaSwap(originalType = End.class, fieldName = "value", targetType = String.class)
   public static class Spec {
-    private Intermediate one;
-    private Intermediate another;
+    public Intermediate one;
+    public Intermediate another;
   }
 
   @SchemaSwap(originalType = End.class, fieldName = "value", targetType = Void.class)
   public static class Intermediate {
-    private End one;
+    public End one;
   }
 
   public static class End {
-    private int value;
+    public int value;
   }
 }

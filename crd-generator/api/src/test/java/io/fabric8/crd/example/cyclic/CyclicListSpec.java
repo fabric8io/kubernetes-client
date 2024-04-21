@@ -15,8 +15,11 @@
  */
 package io.fabric8.crd.example.cyclic;
 
+import lombok.Data;
+
 import java.util.List;
 
+@Data
 public class CyclicListSpec {
   private List<RefList> ref;
 }

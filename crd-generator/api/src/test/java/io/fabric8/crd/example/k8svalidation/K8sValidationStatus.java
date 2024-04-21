@@ -15,6 +15,9 @@
  */
 package io.fabric8.crd.example.k8svalidation;
 
+import lombok.Data;
+
+@Data
 public class K8sValidationStatus {
   Integer availableReplicas;
 }

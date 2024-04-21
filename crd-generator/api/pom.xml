@@ -51,20 +51,6 @@
       <artifactId>kubernetes-model-common</artifactId>
     </dependency>
 
-    <dependency>
-      <groupId>io.sundr</groupId>
-      <artifactId>sundr-adapter-reflect</artifactId>
-      <version>${sundrio.version}</version>
-      <scope>compile</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>io.sundr</groupId>
-      <artifactId>builder-annotations</artifactId>
-      <scope>compile</scope>
-    </dependency>
-
-
     <!-- Testing -->
     <dependency>
       <groupId>org.junit.jupiter</groupId>

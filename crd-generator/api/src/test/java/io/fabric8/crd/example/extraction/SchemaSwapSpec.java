@@ -16,20 +16,20 @@
 package io.fabric8.crd.example.extraction;
 
 public class SchemaSwapSpec {
-  private SomeObject first;
-  private SomeObject second;
-  private AnotherObject third;
-  private YetAnotherObject fourth;
+  public SomeObject first;
+  public SomeObject second;
+  public AnotherObject third;
+  public YetAnotherObject fourth;
 
   static class SomeObject {
-    private int shouldBeString;
+    public int shouldBeString;
   }
 
   static class AnotherObject {
-    private String shouldBeInt;
+    public String shouldBeInt;
   }
 
   static class YetAnotherObject {
-    private String shouldBeSkipped;
+    public String shouldBeSkipped;
   }
 }

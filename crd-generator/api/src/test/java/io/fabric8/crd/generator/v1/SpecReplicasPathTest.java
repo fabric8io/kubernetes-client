@@ -13,39 +13,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.crd.generator.visitor;
+package io.fabric8.crd.generator.v1;
 
 import io.fabric8.crd.example.webserver.WebServerWithSpec;
 import io.fabric8.crd.example.webserver.WebServerWithStatusProperty;
-import io.sundr.adapter.api.AdapterContext;
-import io.sundr.adapter.api.Adapters;
-import io.sundr.model.TypeDef;
-import io.sundr.model.TypeDefBuilder;
-import io.sundr.model.repo.DefinitionRepository;
+import io.fabric8.crd.generator.ResolvingContext;
+import io.fabric8.kubernetes.model.annotation.SpecReplicas;
 import org.junit.jupiter.api.Test;
+
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class SpecReplicasPathDetectorTest {
-
-  public static final AdapterContext CONTEXT = AdapterContext.create(DefinitionRepository.getRepository());
+class SpecReplicasPathTest {
 
   @Test
   public void shoudDetectSpecReplicasPath() throws Exception {
-    TypeDef def = Adapters.adaptType(WebServerWithStatusProperty.class, CONTEXT);
-    SpecReplicasPathDetector detector = new SpecReplicasPathDetector();
-    def = new TypeDefBuilder(def).accept(detector).build();
-    assertTrue(detector.getPath().isPresent());
-    assertEquals(".replicas", detector.getPath().get());
+    JsonSchema resolver = new JsonSchema(ResolvingContext.defaultResolvingContext(), WebServerWithStatusProperty.class);
+    Optional<String> path = resolver.getSinglePath(SpecReplicas.class);
+    assertTrue(path.isPresent());
+    assertEquals(".replicas", path.get());
   }
 
   @Test
   public void shoudDetectNestedSpecReplicasPath() throws Exception {
-    TypeDef def = Adapters.adaptType(WebServerWithSpec.class, CONTEXT);
-    SpecReplicasPathDetector detector = new SpecReplicasPathDetector();
-    def = new TypeDefBuilder(def).accept(detector).build();
-    assertTrue(detector.getPath().isPresent());
-    assertEquals(".spec.replicas", detector.getPath().get());
+    JsonSchema resolver = new JsonSchema(ResolvingContext.defaultResolvingContext(), WebServerWithSpec.class);
+    Optional<String> path = resolver.getSinglePath(SpecReplicas.class);
+    assertTrue(path.isPresent());
+    assertEquals(".spec.replicas", path.get());
   }
 }
