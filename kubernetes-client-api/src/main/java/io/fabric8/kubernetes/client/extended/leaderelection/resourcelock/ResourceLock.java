@@ -23,9 +23,11 @@ import io.fabric8.kubernetes.client.dsl.base.PatchContext;
 import io.fabric8.kubernetes.client.dsl.base.PatchType;
 
 import java.util.Objects;
+import java.util.concurrent.locks.ReentrantLock;
 
 public abstract class ResourceLock<T extends HasMetadata> implements Lock {
 
+  private final ReentrantLock lock = new ReentrantLock();
   private final ObjectMeta meta;
   private final String identity;
   private T resource;
@@ -44,24 +46,39 @@ public abstract class ResourceLock<T extends HasMetadata> implements Lock {
   protected abstract Class<T> getKind();
 
   @Override
-  public synchronized LeaderElectionRecord get(KubernetesClient client) {
-    resource = client.resources(getKind()).inNamespace(meta.getNamespace()).withName(meta.getName()).get();
-    if (resource != null) {
-      return toRecord(resource);
+  public LeaderElectionRecord get(KubernetesClient client) {
+    try {
+      lock.lock();
+      resource = client.resources(getKind()).inNamespace(meta.getNamespace()).withName(meta.getName()).get();
+      if (resource != null) {
+        return toRecord(resource);
+      }
+      return null;
+    } finally {
+      lock.unlock();
     }
-    return null;
   }
 
   @Override
-  public synchronized void create(KubernetesClient client, LeaderElectionRecord leaderElectionRecord) {
-    resource = client.resource(toResource(leaderElectionRecord, getObjectMeta(null))).create();
+  public void create(KubernetesClient client, LeaderElectionRecord leaderElectionRecord) {
+    try {
+      lock.lock();
+      resource = client.resource(toResource(leaderElectionRecord, getObjectMeta(null))).create();
+    } finally {
+      lock.unlock();
+    }
   }
 
   @Override
-  public synchronized void update(KubernetesClient client, LeaderElectionRecord leaderElectionRecord) {
-    Objects.requireNonNull(resource, "get or create must be called first");
-    client.resource(toResource(leaderElectionRecord, getObjectMeta(resource.getMetadata().getResourceVersion())))
+  public void update(KubernetesClient client, LeaderElectionRecord leaderElectionRecord) {
+    try {
+      lock.lock();
+      Objects.requireNonNull(resource, "get or create must be called first");
+      client.resource(toResource(leaderElectionRecord, getObjectMeta(resource.getMetadata().getResourceVersion())))
         .patch(PatchContext.of(PatchType.JSON_MERGE));
+    } finally {
+      lock.unlock();
+    }
   }
 
   /**
