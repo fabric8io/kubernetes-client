@@ -32,7 +32,7 @@ public class LeaderElectionConfig {
   private final String name;
 
   public LeaderElectionConfig(Lock lock, Duration leaseDuration, Duration renewDeadline, Duration retryPeriod,
-                              LeaderCallbacks leaderCallbacks, boolean releaseOnCancel, String name) {
+      LeaderCallbacks leaderCallbacks, boolean releaseOnCancel, String name) {
     this.lock = lock;
     this.leaseDuration = leaseDuration;
     this.renewDeadline = renewDeadline;
