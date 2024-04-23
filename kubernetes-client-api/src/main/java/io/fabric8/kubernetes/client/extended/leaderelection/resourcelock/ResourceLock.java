@@ -34,7 +34,7 @@ public abstract class ResourceLock<T extends HasMetadata> implements Lock {
     this(new ObjectMetaBuilder().withNamespace(namespace).withName(name).build(), identity);
   }
 
-  public ResourceLock(ObjectMeta meta, String identity) {
+  private ResourceLock(ObjectMeta meta, String identity) {
     this.meta = meta;
     Objects.requireNonNull(meta.getNamespace(), "namespace is required");
     Objects.requireNonNull(meta.getName(), "name is required");

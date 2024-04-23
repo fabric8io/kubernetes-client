@@ -30,10 +30,6 @@ public class LeaseLock extends ResourceLock<Lease> {
     super(leaseNamespace, leaseName, identity);
   }
 
-  public LeaseLock(ObjectMeta meta, String identity) {
-    super(meta, identity);
-  }
-
   @Override
   protected Class<Lease> getKind() {
     return Lease.class;
