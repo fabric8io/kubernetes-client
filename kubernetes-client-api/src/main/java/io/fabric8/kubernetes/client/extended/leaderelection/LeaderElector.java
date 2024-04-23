@@ -37,9 +37,9 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Consumer;
 import java.util.function.LongSupplier;
-import java.util.concurrent.locks.ReentrantLock;
 
 public class LeaderElector {
 
@@ -170,11 +170,11 @@ public class LeaderElector {
       }
       ZonedDateTime now = now();
       final LeaderElectionRecord newLeaderElectionRecord = new LeaderElectionRecord(
-        "",
-        Duration.ofSeconds(1),
-        now,
-        now,
-        current.getLeaderTransitions());
+          "",
+          Duration.ofSeconds(1),
+          now,
+          now,
+          current.getLeaderTransitions());
 
       leaderElectionConfig.getLock().update(kubernetesClient, newLeaderElectionRecord);
       updateObserved(newLeaderElectionRecord);

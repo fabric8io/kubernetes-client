@@ -75,7 +75,7 @@ public abstract class ResourceLock<T extends HasMetadata> implements Lock {
       lock.lock();
       Objects.requireNonNull(resource, "get or create must be called first");
       client.resource(toResource(leaderElectionRecord, getObjectMeta(resource.getMetadata().getResourceVersion())))
-        .patch(PatchContext.of(PatchType.JSON_MERGE));
+          .patch(PatchContext.of(PatchType.JSON_MERGE));
     } finally {
       lock.unlock();
     }
