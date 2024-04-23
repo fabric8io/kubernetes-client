@@ -46,10 +46,9 @@ public class LeaderElector {
 
   protected static final Double JITTER_FACTOR = 1.2;
 
-  private KubernetesClient kubernetesClient;
-  private LeaderElectionConfig leaderElectionConfig;
+  private final KubernetesClient kubernetesClient;
+  private final LeaderElectionConfig leaderElectionConfig;
   private final AtomicReference<LeaderElectionRecord> observedRecord = new AtomicReference<>();
-  private final AtomicReference<LocalDateTime> observedTime = new AtomicReference<>();
   private final Executor executor;
   private boolean started;
   private boolean stopped;
@@ -254,7 +253,6 @@ public class LeaderElector {
   private void updateObserved(LeaderElectionRecord leaderElectionRecord) {
     final LeaderElectionRecord current = observedRecord.getAndSet(leaderElectionRecord);
     if (!Objects.equals(leaderElectionRecord, current)) {
-      observedTime.set(LocalDateTime.now());
       final String currentLeader = current == null ? null : current.getHolderIdentity();
       final String newLeader = leaderElectionRecord.getHolderIdentity();
       if (!Objects.equals(newLeader, currentLeader)) {

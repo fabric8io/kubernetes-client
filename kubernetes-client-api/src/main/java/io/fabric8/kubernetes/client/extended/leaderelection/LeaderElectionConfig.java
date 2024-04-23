@@ -17,9 +17,11 @@ package io.fabric8.kubernetes.client.extended.leaderelection;
 
 import io.fabric8.kubernetes.client.extended.leaderelection.resourcelock.Lock;
 import io.sundr.builder.annotations.Buildable;
+import lombok.Getter;
 
 import java.time.Duration;
 
+@Getter
 @Buildable(editableEnabled = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 public class LeaderElectionConfig {
 
@@ -40,34 +42,6 @@ public class LeaderElectionConfig {
     this.leaderCallbacks = leaderCallbacks;
     this.releaseOnCancel = releaseOnCancel;
     this.name = name;
-  }
-
-  public Lock getLock() {
-    return lock;
-  }
-
-  public Duration getLeaseDuration() {
-    return leaseDuration;
-  }
-
-  public Duration getRenewDeadline() {
-    return renewDeadline;
-  }
-
-  public Duration getRetryPeriod() {
-    return retryPeriod;
-  }
-
-  public LeaderCallbacks getLeaderCallbacks() {
-    return leaderCallbacks;
-  }
-
-  public boolean isReleaseOnCancel() {
-    return releaseOnCancel;
-  }
-
-  public String getName() {
-    return name;
   }
 
 }
