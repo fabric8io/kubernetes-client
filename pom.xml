@@ -886,6 +886,11 @@
         <artifactId>picocli</artifactId>
         <version>${picocli.version}</version>
       </dependency>
+      <dependency>
+        <groupId>com.squareup.okio</groupId>
+        <artifactId>okio</artifactId>
+        <version>${okio.version}</version>
+      </dependency>
 
       <!-- Testing and Mocking -->
       <dependency>
