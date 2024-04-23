@@ -1251,6 +1251,8 @@
                 <exclude>kubernetes-client/src/test/resources/mockito-extensions/*</exclude>
                 <exclude>**/src/test/resources/ssl/*</exclude>
                 <exclude>**/src/test/resources/io/fabric8/java/generator/approvals/*.*.approved.txt</exclude>
+                <exclude>crd-generator/api/src/test/java/**/*.approved.yml</exclude>
+                <exclude>crd-generator/apt/src/test/java/**/*.approved.yml</exclude>
                 <exclude>**/it/**/expected/**/*.expected</exclude>
                 <exclude>Jenkinsfile</exclude>
                 <exclude>.mvn/**/*</exclude>

@@ -13,10 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.crd.generator;
+package io.fabric8.crd.generator.approvaltests.complex;
 
-public class ParallelCRDGeneratorExamplesTest extends CRDGeneratorExamplesTest {
-  public ParallelCRDGeneratorExamplesTest() {
-    parallelCRDGeneration = true;
+import io.fabric8.crd.generator.approvaltests.AbstractCRDGeneratorApprovalTest;
+import io.fabric8.kubernetes.client.CustomResource;
+
+public class ComplexApprovalTest extends AbstractCRDGeneratorApprovalTest {
+  protected Class<? extends CustomResource<?, ?>>[] crClasses() {
+    return new Class[] {
+        io.fabric8.crd.generator.approvaltests.complex.api.Complex.class
+    };
+  }
+
+  protected String[] expectedCRDs() {
+    return new String[] {
+        "complexkinds.samples.fabric8.io"
+    };
   }
 }
