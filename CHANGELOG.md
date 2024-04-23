@@ -6,6 +6,7 @@
 
 #### Improvements
 * Fix #5878: (java-generator) Add implements Editable for extraAnnotations
+* Fix #5878: (java-generator) Update documentation to include dependencies
 
 #### Dependency Upgrade
 
