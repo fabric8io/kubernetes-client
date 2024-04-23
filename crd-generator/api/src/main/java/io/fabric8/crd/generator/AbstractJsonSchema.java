@@ -16,7 +16,11 @@
 package io.fabric8.crd.generator;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.module.jsonSchema.JsonSchema;
+import com.fasterxml.jackson.module.jsonSchema.JsonSchemaGenerator;
+import com.fasterxml.jackson.module.jsonSchema.types.ArraySchema.Items;
 import io.fabric8.crd.generator.InternalSchemaSwaps.SwapResult;
 import io.fabric8.crd.generator.annotation.SchemaSwap;
 import io.fabric8.crd.generator.utils.Types;
@@ -24,6 +28,7 @@ import io.fabric8.generator.annotation.ValidationRule;
 import io.fabric8.kubernetes.api.model.Duration;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.Quantity;
+import io.fabric8.kubernetes.client.utils.KubernetesSerialization;
 import io.sundr.builder.internal.functions.TypeAs;
 import io.sundr.model.AnnotationRef;
 import io.sundr.model.ClassRef;
@@ -43,6 +48,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
@@ -122,6 +128,9 @@ public abstract class AbstractJsonSchema<T, B> {
   public static final String JSON_NODE_TYPE = "com.fasterxml.jackson.databind.JsonNode";
   public static final String ANY_TYPE = "io.fabric8.kubernetes.api.model.AnyType";
 
+  private static final JsonSchemaGenerator GENERATOR;
+  private static final Set<String> COMPLEX_JAVA_TYPES = new HashSet<>();
+
   static {
     COMMON_MAPPINGS.put(STRING_REF, STRING_MARKER);
     COMMON_MAPPINGS.put(DATE_REF, STRING_MARKER);
@@ -138,6 +147,10 @@ public abstract class AbstractJsonSchema<T, B> {
     COMMON_MAPPINGS.put(QUANTITY_REF, INT_OR_STRING_MARKER);
     COMMON_MAPPINGS.put(INT_OR_STRING_REF, INT_OR_STRING_MARKER);
     COMMON_MAPPINGS.put(DURATION_REF, STRING_MARKER);
+    ObjectMapper mapper = new ObjectMapper();
+    // initialize with client defaults
+    new KubernetesSerialization(mapper, false);
+    GENERATOR = new JsonSchemaGenerator(mapper);
   }
 
   public static String getSchemaTypeFor(TypeRef typeRef) {
@@ -853,16 +866,65 @@ public abstract class AbstractJsonSchema<T, B> {
 
   private T resolveNestedClass(String name, TypeDef def, LinkedHashMap<String, String> visited,
       InternalSchemaSwaps schemaSwaps) {
-    if (visited.put(def.getFullyQualifiedName(), name) != null) {
+    String fullyQualifiedName = def.getFullyQualifiedName();
+    T res = resolveJavaClass(fullyQualifiedName);
+    if (res != null) {
+      return res;
+    }
+    if (visited.put(fullyQualifiedName, name) != null) {
       throw new IllegalArgumentException(
-          "Found a cyclic reference involving the field of type " + def.getFullyQualifiedName() + " starting a field "
+          "Found a cyclic reference involving the field of type " + fullyQualifiedName + " starting a field "
               + visited.entrySet().stream().map(e -> e.getValue() + " >>\n" + e.getKey()).collect(Collectors.joining(".")) + "."
               + name);
     }
 
-    T res = internalFromImpl(def, visited, schemaSwaps);
-    visited.remove(def.getFullyQualifiedName());
+    res = internalFromImpl(def, visited, schemaSwaps);
+    visited.remove(fullyQualifiedName);
     return res;
+  }
+
+  private T resolveJavaClass(String fullyQualifiedName) {
+    if ((!fullyQualifiedName.startsWith("java.") && !fullyQualifiedName.startsWith("javax."))
+        || COMPLEX_JAVA_TYPES.contains(fullyQualifiedName)) {
+      return null;
+    }
+    String mapping = null;
+    boolean array = false;
+    try {
+      Class<?> clazz = Class.forName(fullyQualifiedName);
+      JsonSchema schema = GENERATOR.generateSchema(clazz);
+      if (schema.isArraySchema()) {
+        Items items = schema.asArraySchema().getItems();
+        if (items.isSingleItems()) {
+          array = true;
+          schema = items.asSingleItems().getSchema();
+        }
+      }
+      if (schema.isIntegerSchema()) {
+        mapping = INTEGER_MARKER;
+      } else if (schema.isNumberSchema()) {
+        mapping = NUMBER_MARKER;
+      } else if (schema.isBooleanSchema()) {
+        mapping = BOOLEAN_MARKER;
+      } else if (schema.isStringSchema()) {
+        mapping = STRING_MARKER;
+      }
+    } catch (Exception e) {
+      LOGGER.debug(
+          "Something went wrong with detecting java type schema for {}, will use full introspection instead",
+          fullyQualifiedName, e);
+    }
+    // cache the result for subsequent calls
+    if (mapping != null) {
+      if (array) {
+        return arrayLikeProperty(singleProperty(mapping));
+      }
+      COMMON_MAPPINGS.put(TypeDef.forName(fullyQualifiedName).toReference(), mapping);
+      return singleProperty(mapping);
+    }
+
+    COMPLEX_JAVA_TYPES.add(fullyQualifiedName);
+    return null;
   }
 
   /**

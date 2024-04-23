@@ -3,6 +3,7 @@
 ### 6.13-SNAPSHOT
 
 #### Bugs
+* Fix #5866: Addressed cycle in crd generation with Java 19+ and ZonedDateTime
 
 #### Improvements
 * Fix #5878: (java-generator) Add implements Editable for extraAnnotations
