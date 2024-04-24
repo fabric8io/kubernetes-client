@@ -37,7 +37,7 @@ public class CRDGeneratorAssertions {
   }
 
   /**
-   * Generates CRD files for v1 and v1beta1 and compares them with files in classpath.
+   * Generates CRD files for v1 and compares them with files in classpath.
    *
    * @param crClasses custom resource classes under test
    * @param crdGenerator a CRDGenerator instance
@@ -50,7 +50,7 @@ public class CRDGeneratorAssertions {
   }
 
   /**
-   * Generates CRD files for v1 and v1beta1 and compares them with files in classpath.
+   * Generates CRD files for v1 and compares them with files in classpath.
    *
    * @param crClasses custom resource classes under test
    * @param crdGenerator a CRDGenerator instance
@@ -84,7 +84,7 @@ public class CRDGeneratorAssertions {
     final CRDGenerationInfo crdInfo = crdGenerator
         .inOutputDir(outputDir)
         .customResourceClasses(crClasses)
-        .forCRDVersions("v1", "v1beta1")
+        .forCRDVersions("v1")
         .detailedGenerate();
     final File actualCRDFile = new File(crdInfo.getCRDInfos(crdName).get("v1").getFilePath());
 

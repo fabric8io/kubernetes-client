@@ -92,7 +92,7 @@ class CRDGeneratorTest {
     assertTrue(handlers.containsKey(version));
 
     // v1beta1 not supported
-    generator.forCRDVersions(version, "v1beta1", version, "v3", null);
+    generator.forCRDVersions(version, version, "v3", null);
     handlers = generator.getHandlers();
     assertEquals(1, handlers.size());
     assertTrue(handlers.containsKey(version));
@@ -247,7 +247,7 @@ class CRDGeneratorTest {
   void generatingACycleInListShouldFail() {
     final CRDGenerator generator = newCRDGenerator()
         .customResourceClasses(CyclicList.class)
-        .forCRDVersions("v1", "v1beta1")
+        .forCRDVersions("v1")
         .withOutput(output);
 
     assertThrows(
@@ -428,7 +428,7 @@ class CRDGeneratorTest {
     final String crdName = CustomResourceInfo.fromClass(Complex.class).crdName();
     final CRDGenerationInfo crdInfo = newCRDGenerator()
         .inOutputDir(outputDir)
-        .forCRDVersions("v1", "v1beta1")
+        .forCRDVersions("v1")
         .customResourceClasses(Complex.class)
         .detailedGenerate();
     final File crdFile = new File(crdInfo.getCRDInfos(crdName).get("v1").getFilePath());
@@ -458,7 +458,7 @@ class CRDGeneratorTest {
         .inOutputDir(outputDir)
         .customResourceClasses(Multiple.class,
             io.fabric8.crdv2.example.multiple.v2.Multiple.class)
-        .forCRDVersions("v1", "v1beta1")
+        .forCRDVersions("v1")
         .detailedGenerate();
 
     final File crdFile = new File(crdInfo.getCRDInfos(crdName).get("v1").getFilePath());
@@ -484,7 +484,7 @@ class CRDGeneratorTest {
     final CRDGenerationInfo crdInfo = newCRDGenerator()
         .inOutputDir(outputDir)
         .customResourceClasses(K8sValidation.class)
-        .forCRDVersions("v1", "v1beta1")
+        .forCRDVersions("v1")
         .detailedGenerate();
 
     final File crdFile = new File(crdInfo.getCRDInfos(crdName).get("v1").getFilePath());

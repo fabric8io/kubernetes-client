@@ -23,7 +23,7 @@ import io.fabric8.kubernetes.client.utils.Utils;
 import java.util.Map;
 
 /**
- * This class encapsulates the common behavior between v1beta1 and v1 CRD generation logic. The
+ * This class encapsulates the common behavior between different CRD generation logic. The
  * intent is that each CRD spec version is implemented as a sub-class of this one.
  */
 public abstract class AbstractCustomResourceHandler {
