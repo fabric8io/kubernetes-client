@@ -75,8 +75,8 @@ public class ResolvingContext {
       // TODO: jackson should pass in directly here if there's an anyGetter / setter
       // so that we may directly mark preserve unknown
       JsonObjectFormatVisitor result = super.expectObjectFormat(convertedType);
-      ((GeneratorObjectSchema)schema).javaType = convertedType;
-      seen.putIfAbsent(this.visitorContext.getSeenSchemaUri(convertedType), (GeneratorObjectSchema)schema);
+      ((GeneratorObjectSchema) schema).javaType = convertedType;
+      seen.putIfAbsent(this.visitorContext.getSeenSchemaUri(convertedType), (GeneratorObjectSchema) schema);
       return result;
     }
   }

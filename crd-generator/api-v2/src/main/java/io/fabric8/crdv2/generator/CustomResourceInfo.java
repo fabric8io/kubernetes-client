@@ -181,7 +181,7 @@ public class CustomResourceInfo {
 
       // instance level methods - TODO: deprecate?
       if (instance instanceof CustomResource) {
-        CustomResource<?, ?> cr = (CustomResource)instance;
+        CustomResource<?, ?> cr = (CustomResource) instance;
         singular = cr.getSingular();
         deprecated = cr.isDeprecated();
         deprecationWarning = cr.getDeprecationWarning();

@@ -38,7 +38,7 @@ public abstract class AbstractCustomResourceHandler {
 
   protected void handlePrinterColumns(String name, String version, Map<String, AnnotationMetadata> additionalPrinterColumns) {
     additionalPrinterColumns.forEach((path, property) -> {
-      PrinterColumn printerColumn = ((PrinterColumn)property.annotation);
+      PrinterColumn printerColumn = ((PrinterColumn) property.annotation);
       String column = printerColumn.name();
       if (Utils.isNullOrEmpty(column)) {
         column = path.substring(path.lastIndexOf("."));

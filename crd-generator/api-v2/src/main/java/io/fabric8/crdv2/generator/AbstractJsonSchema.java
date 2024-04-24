@@ -144,13 +144,15 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
     if (schema instanceof GeneratorObjectSchema) {
       return resolveObject(new LinkedHashMap<>(), schemaSwaps, schema, "kind", "apiVersion", "metadata");
     }
-    return resolveProperty(new LinkedHashMap<>(), schemaSwaps, null, resolvingContext.serializationConfig.constructType(definition), schema);
+    return resolveProperty(new LinkedHashMap<>(), schemaSwaps, null,
+        resolvingContext.serializationConfig.constructType(definition), schema);
   }
 
   /**
    * Walks up the class hierarchy to consume the repeating annotation
    */
-  private static <A extends Annotation> void consumeRepeatingAnnotation(Class<?> beanClass, Class<A> annotation, Consumer<A> consumer) {
+  private static <A extends Annotation> void consumeRepeatingAnnotation(Class<?> beanClass, Class<A> annotation,
+      Consumer<A> consumer) {
     while (beanClass != null && beanClass != Object.class) {
       Stream.of(beanClass.getAnnotationsByType(annotation)).forEach(consumer);
       beanClass = beanClass.getSuperclass();
@@ -163,7 +165,7 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
     // nor does jackson provide the field
     if (beanProperty.getMember() instanceof AnnotatedMethod) {
       // field first
-      Method m = ((AnnotatedMethod)beanProperty.getMember()).getMember();
+      Method m = ((AnnotatedMethod) beanProperty.getMember()).getMember();
       String name = m.getName();
       if (name.startsWith("get") || name.startsWith("set")) {
         name = name.substring(3);
@@ -279,7 +281,7 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
     schemaSwaps = schemaSwaps.branchAnnotations();
     final InternalSchemaSwaps swaps = schemaSwaps;
 
-    GeneratorObjectSchema gos = (GeneratorObjectSchema)jacksonSchema.asObjectSchema();
+    GeneratorObjectSchema gos = (GeneratorObjectSchema) jacksonSchema.asObjectSchema();
     AnnotationIntrospector ai = resolvingContext.serializationConfig.getAnnotationIntrospector();
     BeanDescription bd = resolvingContext.serializationConfig.introspect(gos.javaType);
     boolean preserveUnknownFields = bd.findAnyGetter() != null || bd.findAnySetterAccessor() != null;
@@ -420,7 +422,7 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
       throw new IllegalStateException("not yet supported");
     } else if (jacksonSchema instanceof ReferenceSchema) {
       // de-reference the reference schema - these can be naturally non-cyclic, for example siblings
-      ReferenceSchema ref = (ReferenceSchema)jacksonSchema;
+      ReferenceSchema ref = (ReferenceSchema) jacksonSchema;
       GeneratorObjectSchema referenced = resolvingContext.seen.get(ref.get$ref());
       Utils.checkNotNull(referenced, "Could not find previously generated schema");
       jacksonSchema = referenced;
@@ -432,7 +434,8 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
       }
 
       final JavaType valueType = type.getContentType();
-      JsonSchema mapValueSchema = ((SchemaAdditionalProperties)((ObjectSchema)jacksonSchema).getAdditionalProperties()).getJsonSchema();
+      JsonSchema mapValueSchema = ((SchemaAdditionalProperties) ((ObjectSchema) jacksonSchema).getAdditionalProperties())
+          .getJsonSchema();
       T component = resolveProperty(visited, schemaSwaps, name, valueType, mapValueSchema);
       return mapLikeProperty(component);
     }
@@ -469,7 +472,8 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
         // hack to figure out the enum constant
         try {
           Object value = field.get(null);
-          toIgnore.add(resolvingContext.kubernetesSerialization.unmarshal(resolvingContext.kubernetesSerialization.asJson(value), String.class));
+          toIgnore.add(resolvingContext.kubernetesSerialization
+              .unmarshal(resolvingContext.kubernetesSerialization.asJson(value), String.class));
         } catch (IllegalArgumentException | IllegalAccessException e) {
         }
       }

@@ -163,7 +163,8 @@ public class InternalSchemaSwaps {
 
     @Override
     public String toString() {
-      return "@SchemaSwap(originalType=" + originalType.getName() + ", fieldName=\"" + fieldName + "\", targetType=" + targetType.getName()
+      return "@SchemaSwap(originalType=" + originalType.getName() + ", fieldName=\"" + fieldName + "\", targetType="
+          + targetType.getName()
           + ") on " + definitionType.getName();
     }
   }

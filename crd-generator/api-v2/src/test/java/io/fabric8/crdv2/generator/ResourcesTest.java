@@ -15,7 +15,6 @@
  */
 package io.fabric8.crdv2.generator;
 
-import io.fabric8.crdv2.generator.Resources;
 import io.fabric8.crdv2.generator.v1.decorator.AddAdditionPrinterColumnDecorator;
 import io.fabric8.crdv2.generator.v1.decorator.SortPrinterColumnsDecorator;
 import org.junit.jupiter.api.Test;

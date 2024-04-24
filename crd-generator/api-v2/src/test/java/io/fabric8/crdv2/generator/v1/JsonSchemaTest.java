@@ -138,7 +138,8 @@ class JsonSchemaTest {
     assertEquals(type.apply("string").withDefault(TextNode.valueOf("my-value")).build(), spec.get("defaultValue"));
     assertEquals(type.apply("string").withDefault(TextNode.valueOf("my-value2")).build(), spec.get("defaultValue2"));
     assertEquals(type.apply("string").withEnum(TextNode.valueOf("non"), TextNode.valueOf("oui")).build(), spec.get("anEnum"));
-    assertEquals(type.apply("string").withFormat("date-time").withPattern("yyyy-MM-dd'T'HH:mm:ssVV").build(), spec.get("issuedAt"));
+    assertEquals(type.apply("string").withFormat("date-time").withPattern("yyyy-MM-dd'T'HH:mm:ssVV").build(),
+        spec.get("issuedAt"));
     // the shape does not influence the type in these cases
     assertEquals(type.apply("string").build(), spec.get("bool"));
     assertEquals(type.apply("string").build(), spec.get("num"));
@@ -323,12 +324,12 @@ class JsonSchemaTest {
 
     @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
-        return this.values;
+      return this.values;
     }
 
     @JsonAnySetter
     public void setAdditionalProperty(String name, Object value) {
-        this.values.put(name, value);
+      this.values.put(name, value);
     }
 
     public Map<String, Object> getValues() {
@@ -457,18 +458,24 @@ class JsonSchemaTest {
   void testCyclicProperties() {
     IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
         () -> JsonSchema.from(Cyclic1.class));
-    assertEquals("Found a cyclic reference involving the field of type io.fabric8.crdv2.generator.v1.JsonSchemaTest$Cyclic1 starting a field parent >>\n"
-        + "io.fabric8.crdv2.generator.v1.JsonSchemaTest$Cyclic1.parent", exception.getMessage());
+    assertEquals(
+        "Found a cyclic reference involving the field of type io.fabric8.crdv2.generator.v1.JsonSchemaTest$Cyclic1 starting a field parent >>\n"
+            + "io.fabric8.crdv2.generator.v1.JsonSchemaTest$Cyclic1.parent",
+        exception.getMessage());
 
     exception = assertThrows(IllegalArgumentException.class,
         () -> JsonSchema.from(Cyclic2.class));
-    assertEquals("Found a cyclic reference involving the field of type io.fabric8.crdv2.generator.v1.JsonSchemaTest$Cyclic2 starting a field parent >>\n"
-        + "io.fabric8.crdv2.generator.v1.JsonSchemaTest$Cyclic2.parent", exception.getMessage());
+    assertEquals(
+        "Found a cyclic reference involving the field of type io.fabric8.crdv2.generator.v1.JsonSchemaTest$Cyclic2 starting a field parent >>\n"
+            + "io.fabric8.crdv2.generator.v1.JsonSchemaTest$Cyclic2.parent",
+        exception.getMessage());
 
     exception = assertThrows(IllegalArgumentException.class,
         () -> JsonSchema.from(Cyclic3.class));
-    assertEquals("Found a cyclic reference involving the field of type io.fabric8.crdv2.generator.v1.JsonSchemaTest$Cyclic3 starting a field parent >>\n"
-        + "io.fabric8.crdv2.generator.v1.JsonSchemaTest$Cyclic3.parent", exception.getMessage());
+    assertEquals(
+        "Found a cyclic reference involving the field of type io.fabric8.crdv2.generator.v1.JsonSchemaTest$Cyclic3 starting a field parent >>\n"
+            + "io.fabric8.crdv2.generator.v1.JsonSchemaTest$Cyclic3.parent",
+        exception.getMessage());
   }
 
   @SchemaSwap(originalType = Cyclic3.class, fieldName = "parent")
