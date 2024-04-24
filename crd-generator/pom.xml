@@ -33,17 +33,7 @@
   <modules>
     <module>apt</module>
     <module>api</module>
+    <module>api-v2</module>
+    <module>test</module>
   </modules>
-  <!-- TODO: Remove after a fix for #5877 is implemented -->
-  <profiles>
-    <profile>
-      <id>tests</id>
-      <activation>
-        <jdk>(,17]</jdk>
-      </activation>
-      <modules>
-        <module>test</module>
-      </modules>
-    </profile>
-  </profiles>
 </project>

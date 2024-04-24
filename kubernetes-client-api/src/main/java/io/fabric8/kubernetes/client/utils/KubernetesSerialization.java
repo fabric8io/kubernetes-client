@@ -379,7 +379,7 @@ public class KubernetesSerialization {
     return unmatchedFieldTypeModule;
   }
 
-  ObjectMapper getMapper() {
+  protected ObjectMapper getMapper() {
     return mapper;
   }
 
