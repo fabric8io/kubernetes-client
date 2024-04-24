@@ -15,6 +15,7 @@
  */
 package io.fabric8.crd.example.annotated;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
@@ -26,6 +27,8 @@ import io.fabric8.generator.annotation.Pattern;
 import io.fabric8.generator.annotation.Required;
 import io.fabric8.generator.annotation.ValidationRule;
 import lombok.Data;
+
+import java.time.ZonedDateTime;
 
 @Data
 public class AnnotatedSpec {
@@ -49,6 +52,11 @@ public class AnnotatedSpec {
   private AnnotatedEnum anEnum;
   @javax.validation.constraints.Min(0) // a non-string value attribute
   private int sizedField;
+  private String bool;
+  private String num;
+  private String numInt;
+  private String numFloat;
+  private ZonedDateTime issuedAt;
 
   @JsonIgnore
   private int ignoredFoo;
@@ -112,6 +120,31 @@ public class AnnotatedSpec {
   @JsonProperty
   public void setEmptySetter2(boolean emptySetter2) {
     this.emptySetter2 = emptySetter2;
+  }
+
+  @JsonFormat(shape = JsonFormat.Shape.BOOLEAN)
+  public String getBool() {
+    return bool;
+  }
+
+  @JsonFormat(shape = JsonFormat.Shape.NUMBER)
+  public String getNum() {
+    return num;
+  }
+
+  @JsonFormat(shape = JsonFormat.Shape.NUMBER_FLOAT)
+  public String getNumFloat() {
+    return numFloat;
+  }
+
+  @JsonFormat(shape = JsonFormat.Shape.NUMBER_INT)
+  public String getNumInt() {
+    return numInt;
+  }
+
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssVV")
+  public java.time.ZonedDateTime getIssuedAt() {
+    return issuedAt;
   }
 
   public enum AnnotatedEnum {

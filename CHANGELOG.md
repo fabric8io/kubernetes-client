@@ -8,6 +8,8 @@
 #### Improvements
 * Fix #5878: (java-generator) Add implements Editable for extraAnnotations
 * Fix #5878: (java-generator) Update documentation to include dependencies
+* Fix #5867: (crd-generator) Imply schemaFrom via JsonFormat shape (SchemaFrom takes precedence)
+* Fix #5867: (java-generator) Add JsonFormat shape to date-time
 
 #### Dependency Upgrade
 

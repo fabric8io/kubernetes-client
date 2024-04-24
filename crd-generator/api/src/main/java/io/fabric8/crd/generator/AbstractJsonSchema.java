@@ -15,6 +15,7 @@
  */
 package io.fabric8.crd.generator;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
@@ -91,6 +92,8 @@ public abstract class AbstractJsonSchema<T, B> {
   protected static final TypeDef DATE = TypeDef.forName(Date.class.getName());
   protected static final TypeRef DATE_REF = DATE.toReference();
 
+  private static final String JSON_FORMAT_SHAPE = "shape";
+  private static final Map<JsonFormat.Shape, TypeRef> JSON_FORMAT_SHAPE_MAPPING = new HashMap<>();
   private static final String VALUE = "value";
 
   private static final String INT_OR_STRING_MARKER = "int_or_string";
@@ -107,6 +110,7 @@ public abstract class AbstractJsonSchema<T, B> {
       .build();
 
   private static final Map<TypeRef, String> COMMON_MAPPINGS = new HashMap<>();
+  public static final String ANNOTATION_JSON_FORMAT = "com.fasterxml.jackson.annotation.JsonFormat";
   public static final String ANNOTATION_JSON_PROPERTY = "com.fasterxml.jackson.annotation.JsonProperty";
   public static final String ANNOTATION_JSON_PROPERTY_DESCRIPTION = "com.fasterxml.jackson.annotation.JsonPropertyDescription";
   public static final String ANNOTATION_JSON_IGNORE = "com.fasterxml.jackson.annotation.JsonIgnore";
@@ -151,6 +155,12 @@ public abstract class AbstractJsonSchema<T, B> {
     // initialize with client defaults
     new KubernetesSerialization(mapper, false);
     GENERATOR = new JsonSchemaGenerator(mapper);
+
+    JSON_FORMAT_SHAPE_MAPPING.put(JsonFormat.Shape.BOOLEAN, Types.typeDefFrom(Boolean.class).toReference());
+    JSON_FORMAT_SHAPE_MAPPING.put(JsonFormat.Shape.NUMBER, Types.typeDefFrom(Double.class).toReference());
+    JSON_FORMAT_SHAPE_MAPPING.put(JsonFormat.Shape.NUMBER_FLOAT, Types.typeDefFrom(Double.class).toReference());
+    JSON_FORMAT_SHAPE_MAPPING.put(JsonFormat.Shape.NUMBER_INT, Types.typeDefFrom(Long.class).toReference());
+    JSON_FORMAT_SHAPE_MAPPING.put(JsonFormat.Shape.STRING, Types.typeDefFrom(String.class).toReference());
   }
 
   public static String getSchemaTypeFor(TypeRef typeRef) {
@@ -455,6 +465,11 @@ public abstract class AbstractJsonSchema<T, B> {
             break;
           case ANNOTATION_REQUIRED:
             required = true;
+            break;
+          case ANNOTATION_JSON_FORMAT:
+            if (schemaFrom == null) {
+              schemaFrom = JSON_FORMAT_SHAPE_MAPPING.get((JsonFormat.Shape) a.getParameters().get(JSON_FORMAT_SHAPE));
+            }
             break;
           case ANNOTATION_JSON_PROPERTY:
             final String nameFromAnnotation = (String) a.getParameters().get(VALUE);
