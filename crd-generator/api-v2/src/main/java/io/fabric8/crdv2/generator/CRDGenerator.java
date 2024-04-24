@@ -23,7 +23,6 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
 import io.fabric8.crdv2.generator.v1.CustomResourceHandler;
 import io.fabric8.kubernetes.api.model.HasMetadata;
-import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.client.utils.ApiVersionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -118,7 +117,7 @@ public class CRDGenerator {
   // this is public API, so we cannot change the signature, so there is no way to prevent the possible heap pollution
   // (we also cannot use @SafeVarargs, because that requires the method to be final, which is another signature change)
   @SuppressWarnings("unchecked")
-  public final CRDGenerator customResourceClasses(Class<? extends CustomResource<?, ?>>... crClasses) {
+  public final CRDGenerator customResourceClasses(Class<? extends HasMetadata>... crClasses) {
     return customResources(Stream.of(crClasses).map(CustomResourceInfo::fromClass).toArray(CustomResourceInfo[]::new));
   }
 
@@ -206,7 +205,7 @@ public class CRDGenerator {
   }
 
   public abstract static class AbstractCRDOutput<T extends OutputStream> implements CRDOutput<T> {
-    private final Map<String, T> crds = new HashMap<>(7);
+    private final Map<String, T> crds = new HashMap<>();
 
     @Override
     public T outputFor(String crdName) throws IOException {

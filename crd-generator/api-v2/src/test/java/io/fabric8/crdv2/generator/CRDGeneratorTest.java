@@ -377,7 +377,7 @@ class CRDGeneratorTest {
       assertEquals("jokeCategory", columnDefinition.getName());
       assertEquals(1, columnDefinition.getPriority());
       columnDefinition = printerColumns.get(1);
-      assertEquals("string", columnDefinition.getType());
+      assertEquals("array", columnDefinition.getType());
       assertEquals(".spec.excluded", columnDefinition.getJsonPath());
       assertEquals("excludedTopics", columnDefinition.getName());
       assertEquals(0, columnDefinition.getPriority());
