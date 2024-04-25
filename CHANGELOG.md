@@ -10,6 +10,7 @@
 * Fix #5878: (java-generator) Update documentation to include dependencies
 * Fix #5867: (crd-generator) Imply schemaFrom via JsonFormat shape (SchemaFrom takes precedence)
 * Fix #5867: (java-generator) Add JsonFormat shape to date-time
+* Fix #5954: (crd-generator) Sort required properties to ensure deterministic output
 
 #### Dependency Upgrade
 
