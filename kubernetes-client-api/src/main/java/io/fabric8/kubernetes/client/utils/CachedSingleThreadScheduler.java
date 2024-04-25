@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.client.utils;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Maintains a single thread daemon scheduler, which will terminate the thread
@@ -34,6 +35,8 @@ public class CachedSingleThreadScheduler {
 
   public static final long DEFAULT_TTL_MILLIS = TimeUnit.SECONDS.toMillis(10);
 
+  private static final ReentrantLock lock = new ReentrantLock();
+
   private final long ttlMillis;
   private ScheduledThreadPoolExecutor executor;
 
@@ -45,19 +48,29 @@ public class CachedSingleThreadScheduler {
     this.ttlMillis = ttlMillis;
   }
 
-  public synchronized ScheduledFuture<?> scheduleWithFixedDelay(Runnable command,
+  public ScheduledFuture<?> scheduleWithFixedDelay(Runnable command,
       long initialDelay,
       long delay,
       TimeUnit unit) {
-    startExecutor();
-    return executor.scheduleWithFixedDelay(command, initialDelay, delay, unit);
+    try {
+      lock.lock();
+      startExecutor();
+      return executor.scheduleWithFixedDelay(command, initialDelay, delay, unit);
+    } finally {
+      lock.unlock();
+    }
   }
 
-  public synchronized ScheduledFuture<?> schedule(Runnable command,
+  public ScheduledFuture<?> schedule(Runnable command,
       long delay,
       TimeUnit unit) {
-    startExecutor();
-    return executor.schedule(command, delay, unit);
+    try {
+      lock.lock();
+      startExecutor();
+      return executor.schedule(command, delay, unit);
+    } finally {
+      lock.unlock();
+    }
   }
 
   private void startExecutor() {
@@ -74,15 +87,25 @@ public class CachedSingleThreadScheduler {
    * since there is only a single thread, that means this running task is holding
    * it, so we can shut ourselves down
    */
-  private synchronized void shutdownCheck() {
-    if (executor.getQueue().isEmpty()) {
-      executor.shutdownNow();
-      executor = null;
+  private void shutdownCheck() {
+    try {
+      lock.lock();
+      if (executor.getQueue().isEmpty()) {
+        executor.shutdownNow();
+        executor = null;
+      }
+    } finally {
+      lock.unlock();
     }
   }
 
-  synchronized boolean hasExecutor() {
-    return executor != null;
+  boolean hasExecutor() {
+    try {
+      lock.lock();
+      return executor != null;
+    } finally {
+      lock.unlock();
+    }
   }
 
 }
