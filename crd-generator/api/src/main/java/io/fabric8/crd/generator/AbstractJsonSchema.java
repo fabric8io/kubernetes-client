@@ -400,7 +400,11 @@ public abstract class AbstractJsonSchema<T, B> {
         .collect(Collectors.toList());
 
     swaps.throwIfUnmatchedSwaps();
-    return build(builder, required, validationRules, preserveUnknownFields);
+
+    List<String> sortedRequiredProperties = required.stream().sorted()
+        .collect(Collectors.toList());
+
+    return build(builder, sortedRequiredProperties, validationRules, preserveUnknownFields);
   }
 
   private Map<String, Method> indexPotentialAccessors(TypeDef definition) {
