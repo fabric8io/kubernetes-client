@@ -29,4 +29,5 @@ public class PackageSettings {
    */
   @SuppressWarnings("unused")
   public static ApprovalFailureReporter UseReporter = new QuietReporter();
+  public String ApprovalBaseDirectory = "../resources";
 }
