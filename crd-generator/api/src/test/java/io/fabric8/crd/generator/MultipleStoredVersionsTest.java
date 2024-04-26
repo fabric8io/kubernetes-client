@@ -19,12 +19,16 @@ import io.fabric8.crd.example.multiple.v2.MultipleSpec;
 import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.io.TempDir;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.File;
+import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 
 class MultipleStoredVersionsTest {
 
@@ -33,33 +37,24 @@ class MultipleStoredVersionsTest {
   public static class Multiple extends CustomResource<MultipleSpec, Void> {
   }
 
-  @Test
-  void generateV1_expectException(@TempDir File tmpDir) {
-    test("v1", false, tmpDir);
-  }
-
-  @Test
-  void generateV1beta1_expectException(@TempDir File tmpDir) {
-    test("v1beta1", false, tmpDir);
-  }
-
-  @Test
-  void generateV1Parallel_expectException(@TempDir File tmpDir) {
-    test("v1", true, tmpDir);
-  }
-
-  @Test
-  void generateV1beta1Parallel_expectException(@TempDir File tmpDir) {
-    test("v1beta1", true, tmpDir);
-  }
-
-  private void test(String crdVersion, boolean parallel, File tmpDir) {
+  @ParameterizedTest(name = "{index}: version: {0}, parallel: {1}")
+  @DisplayName("Generate CRD for multiple stored versions throws exception")
+  @MethodSource("multipleCrdVersions")
+  void generateMultipleThrowsException(String crdVersion, boolean parallel, @TempDir File tmpDir) {
     final CRDGenerator crdGenerator = new CRDGenerator()
         .inOutputDir(tmpDir)
         .withParallelGenerationEnabled(parallel)
         .forCRDVersions(crdVersion)
         .customResourceClasses(io.fabric8.crd.example.multiple.v2.Multiple.class, Multiple.class);
+    assertThatIllegalStateException()
+        .isThrownBy(crdGenerator::generate)
+        .withMessageContaining("Only one version can be marked as storage per custom resource.");
+  }
 
-    assertThrows(IllegalStateException.class, crdGenerator::generate);
+  static Stream<Arguments> multipleCrdVersions() {
+    return Stream.of("v1", "v1beta1")
+        .flatMap(crdVersion -> Stream.of(
+            Arguments.of(crdVersion, false),
+            Arguments.of(crdVersion, true)));
   }
 }
