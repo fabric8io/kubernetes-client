@@ -52,17 +52,17 @@ class TypeMappingsTest {
   private static Stream<Arguments> targetTypeCases() {
     return Stream.of(
         Arguments.of("date", "string"),
-        Arguments.of("localDate", "array"), // to review
-        Arguments.of("localDateTime", "array"), // to review
-        Arguments.of("zonedDateTime", "number"), // to review
-        Arguments.of("offsetDateTime", "number"), // to review
-        Arguments.of("offsetTime", "array"), // to review
-        Arguments.of("yearMonth", "array"), // to review
-        Arguments.of("monthDay", "array"), // to review
-        Arguments.of("instant", "number"), // to review
-        Arguments.of("duration", "integer"), // to review
+        Arguments.of("localDate", "string"),
+        Arguments.of("localDateTime", "string"),
+        Arguments.of("zonedDateTime", "string"),
+        Arguments.of("offsetDateTime", "string"),
+        Arguments.of("offsetTime", "string"),
+        Arguments.of("yearMonth", "string"),
+        Arguments.of("monthDay", "string"),
+        Arguments.of("instant", "string"),
+        Arguments.of("duration", "string"),
         Arguments.of("period", "string"),
-        Arguments.of("timestamp", "integer"), // to review
+        Arguments.of("timestamp", "string"), // to review
         // Arguments.of("aShort", "integer"), // TODO: Not even present in the CRD
         Arguments.of("aShortObj", "integer"),
         Arguments.of("aInt", "integer"),
