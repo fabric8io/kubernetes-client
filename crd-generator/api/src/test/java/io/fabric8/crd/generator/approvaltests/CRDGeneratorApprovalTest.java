@@ -17,13 +17,13 @@ package io.fabric8.crd.generator.approvaltests;
 
 import io.fabric8.crd.generator.CRDGenerator;
 import io.fabric8.crd.generator.CRDInfo;
-import io.fabric8.crd.generator.approvaltests.annotated.api.Annotated;
-import io.fabric8.crd.generator.approvaltests.complex.api.Complex;
-import io.fabric8.crd.generator.approvaltests.inherited.api.Child;
-import io.fabric8.crd.generator.approvaltests.json.api.ContainingJson;
-import io.fabric8.crd.generator.approvaltests.k8svalidation.api.K8sValidation;
-import io.fabric8.crd.generator.approvaltests.map.api.ContainingMaps;
-import io.fabric8.crd.generator.approvaltests.nocyclic.api.NoCyclic;
+import io.fabric8.crd.generator.approvaltests.annotated.Annotated;
+import io.fabric8.crd.generator.approvaltests.complex.Complex;
+import io.fabric8.crd.generator.approvaltests.inherited.Child;
+import io.fabric8.crd.generator.approvaltests.json.ContainingJson;
+import io.fabric8.crd.generator.approvaltests.k8svalidation.K8sValidation;
+import io.fabric8.crd.generator.approvaltests.map.ContainingMaps;
+import io.fabric8.crd.generator.approvaltests.nocyclic.NoCyclic;
 import io.fabric8.kubernetes.client.CustomResource;
 import org.approvaltests.Approvals;
 import org.junit.jupiter.api.io.TempDir;
@@ -83,8 +83,8 @@ class CRDGeneratorApprovalTest {
         cases.add(new TestCase("k8svalidations.samples.fabric8.io", crdVersion, parallel, K8sValidation.class));
         cases.add(new TestCase("containingmaps.sample.fabric8.io", crdVersion, parallel, ContainingMaps.class));
         cases.add(new TestCase("multiples.sample.fabric8.io", crdVersion, parallel,
-            io.fabric8.crd.generator.approvaltests.multipleversions.api.v1.Multiple.class,
-            io.fabric8.crd.generator.approvaltests.multipleversions.api.v2.Multiple.class));
+            io.fabric8.crd.generator.approvaltests.multipleversions.v1.Multiple.class,
+            io.fabric8.crd.generator.approvaltests.multipleversions.v2.Multiple.class));
         cases.add(new TestCase("nocyclics.sample.fabric8.io", crdVersion, parallel, NoCyclic.class));
       }
     }
