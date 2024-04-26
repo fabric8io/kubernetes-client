@@ -15,19 +15,46 @@
  */
 package io.fabric8.crd.generator.keycloak;
 
+import io.fabric8.crdv2.generator.CRDGenerator;
+import io.fabric8.crdv2.generator.CRDGenerator.AbstractCRDOutput;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinition;
+import io.fabric8.kubernetes.client.utils.IOHelpers;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class KeycloakRealmCRDTest {
 
   @Test
-  void testCrd() {
-    CustomResourceDefinition d = Serialization.unmarshal(getClass().getClassLoader()
+  void testCrd() throws IOException {
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    CRDGenerator generator = new CRDGenerator().withOutput(new AbstractCRDOutput() {
+
+      @Override
+      protected OutputStream createStreamFor(String crdName) throws IOException {
+        return baos;
+      }
+
+    });
+    generator.customResourceClasses(KeycloakRealm.class);
+    generator.generate();
+    String result = baos.toString();
+
+    CustomResourceDefinition d1 = Serialization.unmarshal(result,
+        CustomResourceDefinition.class);
+
+    CustomResourceDefinition d2 = Serialization.unmarshal(getClass().getClassLoader()
         .getResourceAsStream("META-INF/fabric8/keycloakrealms.sample.fabric8.io-v1.yml"),
         CustomResourceDefinition.class);
-    assertNotNull(d); // just make sure it generates
+
+    assertEquals(IOHelpers.readFully(getClass().getClassLoader()
+        .getResourceAsStream("META-INF/fabric8/keycloakrealms.sample.fabric8.io-v1.yml")), result);
+
+    //assertNotNull(d); // just make sure it generates
   }
 }

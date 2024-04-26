@@ -17,91 +17,145 @@ package io.fabric8.crdv2.generator.v1;
 
 import io.fabric8.crd.generator.annotation.PrinterColumn;
 import io.fabric8.crdv2.generator.AbstractCustomResourceHandler;
+import io.fabric8.crdv2.generator.AbstractJsonSchema.AnnotationMetadata;
+import io.fabric8.crdv2.generator.CRDUtils;
 import io.fabric8.crdv2.generator.CustomResourceInfo;
 import io.fabric8.crdv2.generator.ResolvingContext;
-import io.fabric8.crdv2.generator.Resources;
-import io.fabric8.crdv2.generator.decorator.Decorator;
-import io.fabric8.crdv2.generator.v1.decorator.AddAdditionPrinterColumnDecorator;
-import io.fabric8.crdv2.generator.v1.decorator.AddCustomResourceDefinitionResourceDecorator;
-import io.fabric8.crdv2.generator.v1.decorator.AddCustomResourceDefinitionVersionDecorator;
-import io.fabric8.crdv2.generator.v1.decorator.AddLabelSelectorPathDecorator;
-import io.fabric8.crdv2.generator.v1.decorator.AddSchemaToCustomResourceDefinitionVersionDecorator;
-import io.fabric8.crdv2.generator.v1.decorator.AddSpecReplicasPathDecorator;
-import io.fabric8.crdv2.generator.v1.decorator.AddStatusReplicasPathDecorator;
-import io.fabric8.crdv2.generator.v1.decorator.AddStatusSubresourceDecorator;
-import io.fabric8.crdv2.generator.v1.decorator.AddSubresourcesDecorator;
-import io.fabric8.crdv2.generator.v1.decorator.EnsureSingleStorageVersionDecorator;
-import io.fabric8.crdv2.generator.v1.decorator.SetDeprecatedVersionDecorator;
-import io.fabric8.crdv2.generator.v1.decorator.SetServedVersionDecorator;
-import io.fabric8.crdv2.generator.v1.decorator.SetStorageVersionDecorator;
-import io.fabric8.crdv2.generator.v1.decorator.SortCustomResourceDefinitionVersionDecorator;
-import io.fabric8.crdv2.generator.v1.decorator.SortPrinterColumnsDecorator;
+import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinition;
+import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionBuilder;
+import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionVersion;
+import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionVersionBuilder;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps;
+import io.fabric8.kubernetes.client.utils.KubernetesVersionPriority;
+import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.kubernetes.model.annotation.LabelSelector;
 import io.fabric8.kubernetes.model.annotation.SpecReplicas;
 import io.fabric8.kubernetes.model.annotation.StatusReplicas;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.TreeMap;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 public class CustomResourceHandler extends AbstractCustomResourceHandler {
 
+  private List<CustomResourceDefinition> crds = new CopyOnWriteArrayList<>();
+
   public static final String VERSION = "v1";
-
-  public CustomResourceHandler(Resources resources) {
-    super(resources);
-  }
-
-  @Override
-  protected Decorator<?> getPrinterColumnDecorator(String name,
-      String version, String path,
-      String type, String column, String description, String format, int priority) {
-    return new AddAdditionPrinterColumnDecorator(name, version, type, column, path, format,
-        description, priority);
-  }
 
   @Override
   public void handle(CustomResourceInfo config) {
     final String name = config.crdName();
     final String version = config.version();
-    resources.decorate(
-        new AddCustomResourceDefinitionResourceDecorator(name, config.group(), config.kind(),
-            config.scope().value(), config.shortNames(), config.plural(), config.singular(), config.annotations(),
-            config.labels()));
-
-    resources.decorate(new AddCustomResourceDefinitionVersionDecorator(name, version));
 
     JsonSchema resolver = new JsonSchema(ResolvingContext.defaultResolvingContext(), config.definition());
     JSONSchemaProps schema = resolver.getSchema();
 
-    resources.decorate(new AddSchemaToCustomResourceDefinitionVersionDecorator(name, version,
-        schema));
+    CustomResourceDefinitionVersionBuilder builder = new CustomResourceDefinitionVersionBuilder()
+        .withName(version)
+        .withStorage(config.storage())
+        .withServed(config.served())
+        .withDeprecated(config.deprecated() ? true : null)
+        .withDeprecationWarning(config.deprecationWarning())
+        .withNewSchema()
+        .withOpenAPIV3Schema(schema)
+        .endSchema();
+
+    TreeMap<String, AnnotationMetadata> sortedCols = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+    sortedCols.putAll(resolver.getAllPaths(PrinterColumn.class));
+    sortedCols.forEach((path, property) -> {
+      PrinterColumn printerColumn = ((PrinterColumn) property.annotation);
+      String column = printerColumn.name();
+      if (Utils.isNullOrEmpty(column)) {
+        column = path.substring(path.lastIndexOf("."));
+      }
+      String format = printerColumn.format();
+      int priority = printerColumn.priority();
+
+      // TODO: add description to the annotation? The previous logic considered the comments, which are not available here
+      String description = property.description;
+
+      builder.addNewAdditionalPrinterColumn()
+          .withType(property.type)
+          .withName(column)
+          .withJsonPath(path)
+          .withFormat(Utils.isNotNullOrEmpty(format) ? format : null)
+          .withDescription(Utils.isNotNullOrEmpty(description) ? description : null)
+          .withPriority(priority)
+          .endAdditionalPrinterColumn();
+    });
 
     resolver.getSinglePath(SpecReplicas.class).ifPresent(path -> {
-      resources.decorate(new AddSubresourcesDecorator(name, version));
-      resources.decorate(new AddSpecReplicasPathDecorator(name, version, path));
+      builder.editOrNewSubresources().editOrNewScale().withSpecReplicasPath(path).endScale().endSubresources();
     });
 
     resolver.getSinglePath(StatusReplicas.class).ifPresent(path -> {
-      resources.decorate(new AddSubresourcesDecorator(name, version));
-      resources.decorate(new AddStatusReplicasPathDecorator(name, version, path));
+      builder.editOrNewSubresources().editOrNewScale().withStatusReplicasPath(path).endScale().endSubresources();
     });
 
     resolver.getSinglePath(LabelSelector.class).ifPresent(path -> {
-      resources.decorate(new AddSubresourcesDecorator(name, version));
-      resources.decorate(new AddLabelSelectorPathDecorator(name, version, path));
+      builder.editOrNewSubresources().editOrNewScale().withLabelSelectorPath(path).endScale().endSubresources();
     });
 
-    handlePrinterColumns(name, version, resolver.getAllPaths(PrinterColumn.class));
-
     if (config.statusClassName().isPresent()) {
-      resources.decorate(new AddSubresourcesDecorator(name, version));
-      resources.decorate(new AddStatusSubresourceDecorator(name, version));
+      builder.editOrNewSubresources().withNewStatus().endStatus().endSubresources();
     }
 
-    resources.decorate(new SetServedVersionDecorator(name, version, config.served()));
-    resources.decorate(new SetStorageVersionDecorator(name, version, config.storage()));
-    resources.decorate(new SetDeprecatedVersionDecorator(name, version, config.deprecated(), config.deprecationWarning()));
-    resources.decorate(new EnsureSingleStorageVersionDecorator(name));
-    resources.decorate(new SortCustomResourceDefinitionVersionDecorator(name));
-    resources.decorate(new SortPrinterColumnsDecorator(name, version));
+    CustomResourceDefinition crd = new CustomResourceDefinitionBuilder()
+        .withNewMetadata()
+        .withName(name)
+        .withAnnotations(CRDUtils.toMap(config.annotations()))
+        .withLabels(CRDUtils.toMap(config.labels()))
+        .endMetadata()
+        .withNewSpec()
+        .withScope(config.scope().value())
+        .withGroup(config.group())
+        .withNewNames()
+        .withKind(config.kind())
+        .withShortNames(config.shortNames())
+        .withPlural(config.plural())
+        .withSingular(config.singular())
+        .endNames()
+        .addToVersions(builder.build())
+        .endSpec()
+        .build();
+
+    crds.add(crd);
+  }
+
+  @Override
+  public Stream<HasMetadata> finish() {
+    return crds.stream().collect(Collectors.groupingBy(crd -> crd.getMetadata().getName())).values().stream()
+        .map(this::combine);
+  }
+
+  private CustomResourceDefinition combine(List<CustomResourceDefinition> definitions) {
+    CustomResourceDefinition primary = definitions.get(0);
+    if (definitions.size() == 1) {
+      return primary;
+    }
+
+    List<CustomResourceDefinitionVersion> versions = definitions.stream().flatMap(crd -> crd.getSpec().getVersions().stream())
+        .collect(Collectors.toList());
+
+    List<String> storageVersions = versions.stream()
+        .filter(v -> Optional.ofNullable(v.getStorage()).orElse(true))
+        .map(CustomResourceDefinitionVersion::getName)
+        .collect(Collectors.toList());
+
+     if (storageVersions.size() > 1) {
+      throw new IllegalStateException(String.format(
+          "'%s' custom resource has versions %s marked as storage. Only one version can be marked as storage per custom resource.",
+          primary.getMetadata().getName(), storageVersions));
+     }
+
+     versions = KubernetesVersionPriority.sortByPriority(versions, CustomResourceDefinitionVersion::getName);
+
+     //TODO: we could double check that the top-level metadata is consistent across all versions
+     return new CustomResourceDefinitionBuilder(primary).editSpec().withVersions(versions).endSpec().build();
   }
 
 }

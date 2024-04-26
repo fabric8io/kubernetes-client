@@ -15,12 +15,9 @@
  */
 package io.fabric8.crdv2.generator;
 
-import io.fabric8.crd.generator.annotation.PrinterColumn;
-import io.fabric8.crdv2.generator.AbstractJsonSchema.AnnotationMetadata;
-import io.fabric8.crdv2.generator.decorator.Decorator;
-import io.fabric8.kubernetes.client.utils.Utils;
+import io.fabric8.kubernetes.api.model.HasMetadata;
 
-import java.util.Map;
+import java.util.stream.Stream;
 
 /**
  * This class encapsulates the common behavior between different CRD generation logic. The
@@ -28,45 +25,8 @@ import java.util.Map;
  */
 public abstract class AbstractCustomResourceHandler {
 
-  protected final Resources resources;
-
-  protected AbstractCustomResourceHandler(Resources resources) {
-    this.resources = resources;
-  }
-
   public abstract void handle(CustomResourceInfo config);
 
-  protected void handlePrinterColumns(String name, String version, Map<String, AnnotationMetadata> additionalPrinterColumns) {
-    additionalPrinterColumns.forEach((path, property) -> {
-      PrinterColumn printerColumn = ((PrinterColumn) property.annotation);
-      String column = printerColumn.name();
-      if (Utils.isNullOrEmpty(column)) {
-        column = path.substring(path.lastIndexOf("."));
-      }
-      String format = printerColumn.format();
-      int priority = printerColumn.priority();
-
-      // TODO: add description to the annotation? The previous logic considered the comments, which are not available here
-      String description = property.description;
-
-      resources.decorate(
-          getPrinterColumnDecorator(name, version, path, property.type, column, description, format, priority));
-    });
-  }
-
-  /**
-   * Provides the decorator implementation associated with the CRD generation version.
-   *
-   * @param name the resource name
-   * @param version the associated version
-   * @param path the path from which the printer column is extracted
-   * @param type the data type of the printer column
-   * @param column the name of the column
-   * @param description the description of the column
-   * @param format the format of the printer column
-   * @return the concrete decorator implementing the addition of a printer column to the currently built CRD
-   */
-  protected abstract Decorator<?> getPrinterColumnDecorator(String name, String version, String path,
-      String type, String column, String description, String format, int priority);
+  public abstract Stream<HasMetadata> finish();
 
 }

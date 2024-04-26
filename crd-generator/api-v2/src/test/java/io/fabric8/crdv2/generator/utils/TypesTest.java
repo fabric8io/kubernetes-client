@@ -16,7 +16,8 @@
 package io.fabric8.crdv2.generator.utils;
 
 import io.fabric8.crdv2.example.inherited.Child;
-import io.fabric8.crdv2.generator.utils.Types.SpecAndStatus;
+import io.fabric8.crdv2.generator.CRDUtils;
+import io.fabric8.crdv2.generator.CRDUtils.SpecAndStatus;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -25,7 +26,7 @@ public class TypesTest {
 
   @Test
   void shouldFindInheritedStatusProperty() {
-    final SpecAndStatus specAndStatus = Types.resolveSpecAndStatusTypes(Child.class);
+    final SpecAndStatus specAndStatus = CRDUtils.resolveSpecAndStatusTypes(Child.class);
     assertEquals("io.fabric8.crdv2.example.inherited.ChildStatus", specAndStatus.getStatusClassName());
     assertEquals("io.fabric8.crdv2.example.inherited.ChildSpec", specAndStatus.getSpecClassName());
   }

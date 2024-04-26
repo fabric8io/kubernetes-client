@@ -15,8 +15,7 @@
  */
 package io.fabric8.crdv2.generator;
 
-import io.fabric8.crdv2.generator.utils.Types;
-import io.fabric8.crdv2.generator.utils.Types.SpecAndStatus;
+import io.fabric8.crdv2.generator.CRDUtils.SpecAndStatus;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.client.KubernetesClientException;
@@ -165,7 +164,7 @@ public class CustomResourceInfo {
 
       final Scope scope = Utils.isResourceNamespaced(customResource) ? Scope.NAMESPACED : Scope.CLUSTER;
 
-      SpecAndStatus specAndStatus = Types.resolveSpecAndStatusTypes(customResource);
+      SpecAndStatus specAndStatus = CRDUtils.resolveSpecAndStatusTypes(customResource);
       if (specAndStatus.isUnreliable()) {
         LOGGER.warn(
             "Cannot reliably determine status types for {} because it isn't parameterized with only spec and status types. Status replicas detection will be deactivated.",

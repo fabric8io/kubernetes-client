@@ -13,15 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.crdv2.generator.utils;
+package io.fabric8.crdv2.generator;
 
 import com.fasterxml.jackson.databind.BeanDescription;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationConfig;
 import com.fasterxml.jackson.databind.introspect.BeanPropertyDefinition;
 
-public class Types {
-  private Types() {
+import java.util.HashMap;
+import java.util.Map;
+
+public class CRDUtils {
+  private CRDUtils() {
     throw new IllegalStateException("Utility class");
   }
 
@@ -70,6 +73,22 @@ public class Types {
       }
     }
     return new SpecAndStatus(specClassName, statusClassName);
+  }
+
+  public static Map<String, String> toMap(String[] arr) {
+    Map<String, String> res = new HashMap<>();
+    if (arr != null) {
+      for (String e : arr) {
+        String[] splitted = e.split("\\=");
+        if (splitted.length >= 2) {
+          res.put(splitted[0], e.substring(splitted[0].length() + 1));
+        } else {
+          throw new IllegalArgumentException(
+              "Invalid value: " + e + " cannot be parsed as a key-value pair. Expected format is 'key=value'.");
+        }
+      }
+    }
+    return res;
   }
 
 }
