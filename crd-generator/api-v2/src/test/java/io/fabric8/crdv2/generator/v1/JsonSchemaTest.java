@@ -38,6 +38,7 @@ import io.fabric8.crdv2.example.extraction.MultipleSchemaSwaps;
 import io.fabric8.crdv2.example.extraction.NestedSchemaSwap;
 import io.fabric8.crdv2.example.json.ContainingJson;
 import io.fabric8.crdv2.example.person.Person;
+import io.fabric8.crdv2.generator.ResolvingContext;
 import io.fabric8.kubernetes.api.model.AnyType;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Quantity;
@@ -188,7 +189,7 @@ class JsonSchemaTest {
 
   @Test
   void shouldProduceKubernetesPreserveFields() {
-    JSONSchemaProps schema = JsonSchema.from(ContainingJson.class);
+    JSONSchemaProps schema = new JsonSchema(ResolvingContext.defaultResolvingContext(true), ContainingJson.class).getSchema();
     assertNotNull(schema);
     Map<String, JSONSchemaProps> properties = assertSchemaHasNumberOfProperties(schema, 2);
     final JSONSchemaProps specSchema = properties.get("spec");
@@ -344,7 +345,7 @@ class JsonSchemaTest {
 
   @Test
   void testPreserveUnknown() {
-    JSONSchemaProps schema = JsonSchema.from(PreserveUnknown.class);
+    JSONSchemaProps schema = new JsonSchema(ResolvingContext.defaultResolvingContext(true), PreserveUnknown.class).getSchema();
     assertNotNull(schema);
     assertEquals(0, schema.getProperties().size());
     assertEquals(Boolean.TRUE, schema.getXKubernetesPreserveUnknownFields());

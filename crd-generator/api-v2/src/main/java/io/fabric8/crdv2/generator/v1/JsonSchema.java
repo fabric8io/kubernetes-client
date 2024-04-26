@@ -41,7 +41,7 @@ public class JsonSchema extends AbstractJsonSchema<V1JSONSchemaProps, V1Validati
   }
 
   public static JSONSchemaProps from(Class<?> definition) {
-    return new JsonSchema(ResolvingContext.defaultResolvingContext(), definition).getSchema();
+    return new JsonSchema(ResolvingContext.defaultResolvingContext(false), definition).getSchema();
   }
 
   public JsonSchema(ResolvingContext resolvingContext, Class<?> definition) {

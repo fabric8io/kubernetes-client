@@ -30,7 +30,7 @@ class SpecReplicasPathTest {
 
   @Test
   public void shoudDetectSpecReplicasPath() throws Exception {
-    JsonSchema resolver = new JsonSchema(ResolvingContext.defaultResolvingContext(), WebServerWithStatusProperty.class);
+    JsonSchema resolver = new JsonSchema(ResolvingContext.defaultResolvingContext(false), WebServerWithStatusProperty.class);
     Optional<String> path = resolver.getSinglePath(SpecReplicas.class);
     assertTrue(path.isPresent());
     assertEquals(".replicas", path.get());
@@ -38,7 +38,7 @@ class SpecReplicasPathTest {
 
   @Test
   public void shoudDetectNestedSpecReplicasPath() throws Exception {
-    JsonSchema resolver = new JsonSchema(ResolvingContext.defaultResolvingContext(), WebServerWithSpec.class);
+    JsonSchema resolver = new JsonSchema(ResolvingContext.defaultResolvingContext(false), WebServerWithSpec.class);
     Optional<String> path = resolver.getSinglePath(SpecReplicas.class);
     assertTrue(path.isPresent());
     assertEquals(".spec.replicas", path.get());

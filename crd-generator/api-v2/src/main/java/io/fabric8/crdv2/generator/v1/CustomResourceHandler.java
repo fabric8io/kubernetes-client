@@ -35,23 +35,24 @@ import io.fabric8.kubernetes.model.annotation.StatusReplicas;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Queue;
 import java.util.TreeMap;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class CustomResourceHandler extends AbstractCustomResourceHandler {
 
-  private List<CustomResourceDefinition> crds = new CopyOnWriteArrayList<>();
+  private Queue<CustomResourceDefinition> crds = new ConcurrentLinkedQueue<>();
 
   public static final String VERSION = "v1";
 
   @Override
-  public void handle(CustomResourceInfo config) {
+  public void handle(CustomResourceInfo config, ResolvingContext resolvingContext) {
     final String name = config.crdName();
     final String version = config.version();
 
-    JsonSchema resolver = new JsonSchema(ResolvingContext.defaultResolvingContext(), config.definition());
+    JsonSchema resolver = new JsonSchema(resolvingContext, config.definition());
     JSONSchemaProps schema = resolver.getSchema();
 
     CustomResourceDefinitionVersionBuilder builder = new CustomResourceDefinitionVersionBuilder()
@@ -146,16 +147,16 @@ public class CustomResourceHandler extends AbstractCustomResourceHandler {
         .map(CustomResourceDefinitionVersion::getName)
         .collect(Collectors.toList());
 
-     if (storageVersions.size() > 1) {
+    if (storageVersions.size() > 1) {
       throw new IllegalStateException(String.format(
           "'%s' custom resource has versions %s marked as storage. Only one version can be marked as storage per custom resource.",
           primary.getMetadata().getName(), storageVersions));
-     }
+    }
 
-     versions = KubernetesVersionPriority.sortByPriority(versions, CustomResourceDefinitionVersion::getName);
+    versions = KubernetesVersionPriority.sortByPriority(versions, CustomResourceDefinitionVersion::getName);
 
-     //TODO: we could double check that the top-level metadata is consistent across all versions
-     return new CustomResourceDefinitionBuilder(primary).editSpec().withVersions(versions).endSpec().build();
+    //TODO: we could double check that the top-level metadata is consistent across all versions
+    return new CustomResourceDefinitionBuilder(primary).editSpec().withVersions(versions).endSpec().build();
   }
 
 }

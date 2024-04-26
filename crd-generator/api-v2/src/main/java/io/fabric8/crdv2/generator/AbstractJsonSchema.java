@@ -145,7 +145,7 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
       return resolveObject(new LinkedHashMap<>(), schemaSwaps, schema, "kind", "apiVersion", "metadata");
     }
     return resolveProperty(new LinkedHashMap<>(), schemaSwaps, null,
-        resolvingContext.serializationConfig.constructType(definition), schema);
+        resolvingContext.objectMapper.getSerializationConfig().constructType(definition), schema);
   }
 
   /**
@@ -282,9 +282,12 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
     final InternalSchemaSwaps swaps = schemaSwaps;
 
     GeneratorObjectSchema gos = (GeneratorObjectSchema) jacksonSchema.asObjectSchema();
-    AnnotationIntrospector ai = resolvingContext.serializationConfig.getAnnotationIntrospector();
-    BeanDescription bd = resolvingContext.serializationConfig.introspect(gos.javaType);
-    boolean preserveUnknownFields = bd.findAnyGetter() != null || bd.findAnySetterAccessor() != null;
+    AnnotationIntrospector ai = resolvingContext.objectMapper.getSerializationConfig().getAnnotationIntrospector();
+    BeanDescription bd = resolvingContext.objectMapper.getSerializationConfig().introspect(gos.javaType);
+    boolean preserveUnknownFields = false;
+    if (resolvingContext.implicitPreserveUnknownFields) {
+      preserveUnknownFields = bd.findAnyGetter() != null || bd.findAnySetterAccessor() != null;
+    }
 
     consumeRepeatingAnnotation(gos.javaType.getRawClass(), SchemaSwap.class, ss -> {
       swaps.registerSwap(gos.javaType.getRawClass(),
@@ -333,7 +336,7 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
           continue;
         }
         propertySchema = toJsonSchema(propertyMetadata.schemaFrom);
-        type = resolvingContext.serializationConfig.constructType(propertyMetadata.schemaFrom);
+        type = resolvingContext.objectMapper.getSerializationConfig().constructType(propertyMetadata.schemaFrom);
       }
 
       T schema = resolveProperty(visited, schemaSwaps, name, type, propertySchema);
@@ -423,7 +426,7 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
     } else if (jacksonSchema instanceof ReferenceSchema) {
       // de-reference the reference schema - these can be naturally non-cyclic, for example siblings
       ReferenceSchema ref = (ReferenceSchema) jacksonSchema;
-      GeneratorObjectSchema referenced = resolvingContext.seen.get(ref.get$ref());
+      GeneratorObjectSchema referenced = resolvingContext.uriToJacksonSchema.get(ref.get$ref());
       Utils.checkNotNull(referenced, "Could not find previously generated schema");
       jacksonSchema = referenced;
     } else if (type.isMapLikeType()) {
@@ -469,11 +472,10 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
     Set<String> toIgnore = new HashSet<>();
     for (Field field : fields) {
       if (field.isEnumConstant() && field.getAnnotation(JsonIgnore.class) != null) {
-        // hack to figure out the enum constant
+        // hack to figure out the enum constant - this guards against some using both JsonIgnore and JsonProperty
         try {
           Object value = field.get(null);
-          toIgnore.add(resolvingContext.kubernetesSerialization
-              .unmarshal(resolvingContext.kubernetesSerialization.asJson(value), String.class));
+          toIgnore.add(resolvingContext.objectMapper.convertValue(value, String.class));
         } catch (IllegalArgumentException | IllegalAccessException e) {
         }
       }

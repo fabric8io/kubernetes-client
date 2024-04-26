@@ -25,7 +25,7 @@ import java.util.stream.Stream;
  */
 public abstract class AbstractCustomResourceHandler {
 
-  public abstract void handle(CustomResourceInfo config);
+  public abstract void handle(CustomResourceInfo config, ResolvingContext resolvingContext);
 
   public abstract Stream<HasMetadata> finish();
 

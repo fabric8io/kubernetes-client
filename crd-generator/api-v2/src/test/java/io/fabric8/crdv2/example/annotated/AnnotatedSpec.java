@@ -151,6 +151,7 @@ public class AnnotatedSpec {
     non("N"),
     @JsonProperty("oui")
     es("O"),
+    @JsonProperty("foo")
     @JsonIgnore
     Maybe("Maybe");
 

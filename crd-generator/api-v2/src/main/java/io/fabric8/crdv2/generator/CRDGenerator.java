@@ -41,6 +41,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.ForkJoinTask;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
@@ -53,6 +56,8 @@ public class CRDGenerator {
   private final Map<String, AbstractCustomResourceHandler> handlers = new HashMap<>(2);
   private CRDOutput<? extends OutputStream> output;
   private boolean parallel;
+  private boolean implicitPreserveUnknownFields;
+  private ObjectMapper objectMapper;
   private Map<String, CustomResourceInfo> infos;
 
   // TODO: why not rely on the standard fabric8 yaml mapping
@@ -77,8 +82,18 @@ public class CRDGenerator {
     return this;
   }
 
+  public CRDGenerator withImplicitPreserveUnknownFields(boolean implicitPreserveUnknownFields) {
+    this.implicitPreserveUnknownFields = implicitPreserveUnknownFields;
+    return this;
+  }
+
   public CRDGenerator withParallelGenerationEnabled(boolean parallel) {
     this.parallel = parallel;
+    return this;
+  }
+
+  public CRDGenerator withObjectMapper(ObjectMapper mapper) {
+    this.objectMapper = mapper;
     return this;
   }
 
@@ -154,6 +169,13 @@ public class CRDGenerator {
       forCRDVersions(CustomResourceHandler.VERSION);
     }
 
+    final ResolvingContext context;
+    if (this.objectMapper == null) {
+      context = ResolvingContext.defaultResolvingContext(implicitPreserveUnknownFields);
+    } else {
+      context = new ResolvingContext(this.objectMapper, implicitPreserveUnknownFields);
+    }
+
     for (CustomResourceInfo info : infos.values()) {
       if (info != null) {
         if (LOGGER.isInfoEnabled()) {
@@ -162,7 +184,13 @@ public class CRDGenerator {
               info.specClassName().orElse("undetermined"),
               info.statusClassName().orElse("undetermined"));
         }
-        handlers.values().forEach(h -> h.handle(info));
+
+        if (parallel) {
+          handlers.values().stream().map(h -> ForkJoinPool.commonPool().submit(() -> h.handle(info, context.forkContext())))
+              .collect(Collectors.toList()).stream().forEach(ForkJoinTask::join);
+        } else {
+          handlers.values().stream().forEach(h -> h.handle(info, context));
+        }
       }
     }
 
