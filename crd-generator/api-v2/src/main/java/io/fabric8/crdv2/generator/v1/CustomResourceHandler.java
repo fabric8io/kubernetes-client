@@ -71,7 +71,7 @@ public class CustomResourceHandler extends AbstractCustomResourceHandler {
       PrinterColumn printerColumn = ((PrinterColumn) property.annotation);
       String column = printerColumn.name();
       if (Utils.isNullOrEmpty(column)) {
-        column = path.substring(path.lastIndexOf("."));
+        column = path.substring(path.lastIndexOf(".") + 1).toUpperCase();
       }
       String format = printerColumn.format();
       int priority = printerColumn.priority();
