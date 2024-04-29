@@ -13,10 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.crd.generator;
+package io.fabric8.crd.generator.approvaltests.multipleversions.v2;
 
-public class ParallelCRDGeneratorExamplesTest extends CRDGeneratorExamplesTest {
-  public ParallelCRDGeneratorExamplesTest() {
-    parallelCRDGeneration = true;
+public class MultipleSpec {
+  private String v2;
+
+  public String getV2() {
+    return v2;
   }
 }

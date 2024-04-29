@@ -3,6 +3,7 @@
 ### 6.13-SNAPSHOT
 
 #### Bugs
+* Fix #5960: The serialization of time related types should be string
 * Fix #5866: Addressed cycle in crd generation with Java 19+ and ZonedDateTime
 
 #### Improvements
@@ -10,12 +11,14 @@
 * Fix #5878: (java-generator) Update documentation to include dependencies
 * Fix #5867: (crd-generator) Imply schemaFrom via JsonFormat shape (SchemaFrom takes precedence)
 * Fix #5867: (java-generator) Add JsonFormat shape to date-time
+* Fix #5954: (crd-generator) Sort required properties to ensure deterministic output
 
 #### Dependency Upgrade
 
 #### New Features
 
 #### _**Note**_: Breaking changes
+* Fix #5960: The KubernetesSerializer will now by default serialize time related types to strings - rather than object, integer, number, or arrays of integer / number. If you are using these types in a custom object and were not including JsonFormat annotations to adjust the serialization they were likely being serialized in a non-standard way that would not be usable other Kubernetes clients, nor match the generated custom resource definition if one was being produced. Please open an issue if you need the previous behavior for whatever reason - there is a workaround by creating a customized KubernetesSerializer.
 
 ### 6.12.1  (2024-04-18)
 
