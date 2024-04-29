@@ -467,7 +467,7 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
    * we've added support for ignoring an enum values, which complicates this processing
    * as that is something not supported directly by jackson
    */
-  private Set<String> findIngoredEnumConstants(JavaType type) {
+  private Set<String> findIgnoredEnumConstants(JavaType type) {
     Field[] fields = type.getRawClass().getFields();
     Set<String> toIgnore = new HashSet<>();
     for (Field field : fields) {
