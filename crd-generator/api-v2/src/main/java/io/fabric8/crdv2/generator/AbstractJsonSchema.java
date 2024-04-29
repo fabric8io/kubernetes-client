@@ -397,7 +397,7 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
       // currently on string enums are supported
       StringSchema stringSchema = jacksonSchema.asStringSchema();
       if (!stringSchema.getEnums().isEmpty()) {
-        Set<String> ignores = type.isEnumType() ? findIngoredEnumConstants(type) : Collections.emptySet();
+        Set<String> ignores = type.isEnumType() ? findIgnoredEnumConstants(type) : Collections.emptySet();
         final JsonNode[] enumValues = stringSchema.getEnums().stream()
             .sorted()
             .filter(s -> !ignores.contains(s))

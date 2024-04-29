@@ -29,7 +29,7 @@ spec:
   versions:
   - additionalPrinterColumns:
     - jsonPath: .status.message
-      name: Message
+      name: MESSAGE
       priority: 0
       type: string
     - jsonPath: .status.state

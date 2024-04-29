@@ -40,7 +40,7 @@ public class ComplexStatus {
   private State state;
 
   @JsonProperty("message")
-  @PrinterColumn(name = "Message")
+  @PrinterColumn()
   private String message;
 
   public State getState() {
