@@ -123,18 +123,18 @@ spec:
               x-kubernetes-validations:
               - rule: self.startsWith('simple-')
           required:
-          - minReplicas
-          - onAttributeAndGetter
-          - replicas
           - deepLevel1
-          - onAttributeAndClass
-          - simple
-          - multiple
-          - onAbstractClass
-          - onGetter
           - maxReplicas
-          - priority
+          - minReplicas
+          - multiple
           - namePrefix
+          - onAbstractClass
+          - onAttributeAndClass
+          - onAttributeAndGetter
+          - onGetter
+          - priority
+          - replicas
+          - simple
           type: object
           x-kubernetes-validations:
           - fieldPath: .replicas
