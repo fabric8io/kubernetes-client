@@ -87,6 +87,7 @@ public class ResolvingContext {
 
   final JsonSchemaGenerator generator;
   final ObjectMapper objectMapper;
+  final KubernetesSerialization kubernetesSerialization;
   final Map<String, GeneratorObjectSchema> uriToJacksonSchema;
   final boolean implicitPreserveUnknownFields;
 
@@ -105,21 +106,25 @@ public class ResolvingContext {
     if (DEFAULT_KUBERNETES_SERIALIZATION == null) {
       DEFAULT_KUBERNETES_SERIALIZATION = new AccessibleKubernetesSerialization();
     }
-    return new ResolvingContext(DEFAULT_KUBERNETES_SERIALIZATION.getMapper(), implicitPreserveUnknownFields);
+    return new ResolvingContext(DEFAULT_KUBERNETES_SERIALIZATION.getMapper(), DEFAULT_KUBERNETES_SERIALIZATION,
+        implicitPreserveUnknownFields);
   }
 
   public ResolvingContext forkContext() {
-    return new ResolvingContext(objectMapper, uriToJacksonSchema, implicitPreserveUnknownFields);
+    return new ResolvingContext(objectMapper, kubernetesSerialization, uriToJacksonSchema, implicitPreserveUnknownFields);
   }
 
-  public ResolvingContext(ObjectMapper mapper, boolean implicitPreserveUnknownFields) {
-    this(mapper, new ConcurrentHashMap<>(), implicitPreserveUnknownFields);
+  public ResolvingContext(ObjectMapper mapper, KubernetesSerialization kubernetesSerialization,
+      boolean implicitPreserveUnknownFields) {
+    this(mapper, kubernetesSerialization, new ConcurrentHashMap<>(), implicitPreserveUnknownFields);
   }
 
-  private ResolvingContext(ObjectMapper mapper, Map<String, GeneratorObjectSchema> uriToJacksonSchema,
+  private ResolvingContext(ObjectMapper mapper, KubernetesSerialization kubernetesSerialization,
+      Map<String, GeneratorObjectSchema> uriToJacksonSchema,
       boolean implicitPreserveUnknownFields) {
     this.uriToJacksonSchema = uriToJacksonSchema;
     this.objectMapper = mapper;
+    this.kubernetesSerialization = kubernetesSerialization;
     this.implicitPreserveUnknownFields = implicitPreserveUnknownFields;
     generator = new JsonSchemaGenerator(mapper, new WrapperFactory() {
 

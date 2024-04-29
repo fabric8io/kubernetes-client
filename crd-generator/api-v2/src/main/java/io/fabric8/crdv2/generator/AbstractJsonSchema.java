@@ -17,7 +17,6 @@ package io.fabric8.crdv2.generator;
 
 import com.fasterxml.jackson.annotation.JsonFormat.Value;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.AnnotationIntrospector;
 import com.fasterxml.jackson.databind.BeanDescription;
 import com.fasterxml.jackson.databind.BeanProperty;
@@ -79,7 +78,6 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static io.fabric8.crdv2.generator.CRDGenerator.YAML_MAPPER;
 import static java.util.Optional.ofNullable;
 
 /**
@@ -226,7 +224,7 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
       if (value.isStringSchema()) {
         StringSchema stringSchema = value.asStringSchema();
         // only set if ValidationSchemaFactoryWrapper is used
-        this.pattern = stringSchema.getPattern(); // looks for the Pattern annotation
+        this.pattern = stringSchema.getPattern();
         this.max = ofNullable(stringSchema.getMaxLength()).map(Integer::doubleValue).orElse(null);
         this.min = ofNullable(stringSchema.getMinLength()).map(Integer::doubleValue).orElse(null);
       } else {
@@ -252,9 +250,9 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
 
       if (defaultValue != null) {
         try {
-          schema.setDefault(YAML_MAPPER.readTree(defaultValue));
-        } catch (JsonProcessingException e) {
-          throw new IllegalArgumentException("Cannot parse default value: '" + defaultValue + "' as valid YAML.");
+          schema.setDefault(resolvingContext.kubernetesSerialization.convertValue(defaultValue, JsonNode.class));
+        } catch (IllegalArgumentException e) {
+          throw new IllegalArgumentException("Cannot parse default value: '" + defaultValue + "' as valid YAML.", e);
         }
       }
       if (nullable) {
