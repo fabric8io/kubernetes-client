@@ -18,6 +18,8 @@ package io.fabric8.crdv2.generator.v1;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -349,6 +351,21 @@ class JsonSchemaTest {
     assertNotNull(schema);
     assertEquals(0, schema.getProperties().size());
     assertEquals(Boolean.TRUE, schema.getXKubernetesPreserveUnknownFields());
+  }
+
+  private static class WithDefaultAndDescription {
+    @JsonProperty(defaultValue = "xzy")
+    @JsonPropertyDescription("I'm x")
+    public String x;
+  }
+
+  @Test
+  void testDefaultAndDescription() {
+    JSONSchemaProps schema = JsonSchema.from(WithDefaultAndDescription.class);
+    assertNotNull(schema);
+    JSONSchemaProps x = schema.getProperties().get("x");
+    assertEquals("xzy", x.getDefault().textValue());
+    assertEquals("I'm x", x.getDescription());
   }
 
   // implicitly uses AnySchema

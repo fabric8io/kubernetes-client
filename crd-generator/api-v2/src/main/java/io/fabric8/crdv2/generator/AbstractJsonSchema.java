@@ -216,6 +216,7 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
       defaultValue = beanProperty.getMetadata().getDefaultValue();
 
       schemaFrom = ofNullable(beanProperty.getAnnotation(SchemaFrom.class)).map(SchemaFrom::type).orElse(null);
+      preserveUnknownFields = beanProperty.getAnnotation(PreserveUnknownFields.class) != null;
 
       if (value.isValueTypeSchema()) {
         ValueTypeSchema valueTypeSchema = value.asValueTypeSchema();
@@ -244,7 +245,6 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
       required = beanProperty.getAnnotation(Required.class) != null;
       defaultValue = ofNullable(beanProperty.getAnnotation(Default.class)).map(Default::value).orElse(defaultValue);
       pattern = ofNullable(beanProperty.getAnnotation(Pattern.class)).map(Pattern::value).orElse(pattern);
-      preserveUnknownFields = beanProperty.getAnnotation(PreserveUnknownFields.class) != null;
     }
 
     public void updateSchema(T schema) {
