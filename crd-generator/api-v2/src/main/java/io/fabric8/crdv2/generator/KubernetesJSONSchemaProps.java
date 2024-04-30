@@ -24,6 +24,10 @@ public interface KubernetesJSONSchemaProps {
 
   String getType();
 
+  String getFormat();
+
+  String getDescription();
+
   void setXKubernetesPreserveUnknownFields(Boolean b);
 
   void setMaximum(Double max);

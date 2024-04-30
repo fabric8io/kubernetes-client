@@ -15,9 +15,7 @@
  */
 package io.fabric8.crdv2.generator.v1;
 
-import io.fabric8.crd.generator.annotation.PrinterColumn;
 import io.fabric8.crdv2.generator.AbstractCustomResourceHandler;
-import io.fabric8.crdv2.generator.AbstractJsonSchema.AnnotationMetadata;
 import io.fabric8.crdv2.generator.CRDUtils;
 import io.fabric8.crdv2.generator.CustomResourceInfo;
 import io.fabric8.crdv2.generator.ResolvingContext;
@@ -36,7 +34,6 @@ import io.fabric8.kubernetes.model.annotation.StatusReplicas;
 import java.util.List;
 import java.util.Optional;
 import java.util.Queue;
-import java.util.TreeMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -65,28 +62,18 @@ public class CustomResourceHandler extends AbstractCustomResourceHandler {
         .withOpenAPIV3Schema(schema)
         .endSchema();
 
-    TreeMap<String, AnnotationMetadata> sortedCols = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
-    sortedCols.putAll(resolver.getAllPaths(PrinterColumn.class));
-    sortedCols.forEach((path, property) -> {
-      PrinterColumn printerColumn = ((PrinterColumn) property.annotation);
-      String column = printerColumn.name();
-      if (Utils.isNullOrEmpty(column)) {
-        column = path.substring(path.lastIndexOf(".") + 1).toUpperCase();
+    handlePrinterColumns(resolver, new PrinterColumnHandler() {
+      @Override
+      public void addPrinterColumn(String path, String column, String format, int priority, String type, String description) {
+        builder.addNewAdditionalPrinterColumn()
+            .withType(type)
+            .withName(column)
+            .withJsonPath(path)
+            .withFormat(Utils.isNotNullOrEmpty(format) ? format : null)
+            .withDescription(Utils.isNotNullOrEmpty(description) ? description : null)
+            .withPriority(priority)
+            .endAdditionalPrinterColumn();
       }
-      String format = printerColumn.format();
-      int priority = printerColumn.priority();
-
-      // TODO: add description to the annotation? The previous logic considered the comments, which are not available here
-      String description = property.description;
-
-      builder.addNewAdditionalPrinterColumn()
-          .withType(property.type)
-          .withName(column)
-          .withJsonPath(path)
-          .withFormat(Utils.isNotNullOrEmpty(format) ? format : null)
-          .withDescription(Utils.isNotNullOrEmpty(description) ? description : null)
-          .withPriority(priority)
-          .endAdditionalPrinterColumn();
     });
 
     resolver.getSinglePath(SpecReplicas.class).ifPresent(path -> {

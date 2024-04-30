@@ -95,13 +95,11 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
 
   public static class AnnotationMetadata {
     public final Annotation annotation;
-    public final String description;
-    public final String type;
+    public final KubernetesJSONSchemaProps schema;
 
-    public AnnotationMetadata(Annotation annotation, String description, String type) {
+    public AnnotationMetadata(Annotation annotation, KubernetesJSONSchemaProps schema) {
       this.annotation = annotation;
-      this.description = description;
-      this.type = type;
+      this.schema = schema;
     }
   }
 
@@ -339,15 +337,15 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
 
       T schema = resolveProperty(visited, schemaSwaps, name, type, propertySchema);
 
+      propertyMetadata.updateSchema(schema);
+
       if (!swapResult.onGoing) {
         for (Entry<Class<? extends Annotation>, LinkedHashMap<String, AnnotationMetadata>> entry : pathMetadata.entrySet()) {
           ofNullable(beanProperty.getAnnotation(entry.getKey())).ifPresent(
               ann -> entry.getValue().put(toFQN(savedVisited, name),
-                  new AnnotationMetadata(ann, propertyMetadata.description, schema.getType())));
+                  new AnnotationMetadata(ann, schema)));
         }
       }
-
-      propertyMetadata.updateSchema(schema);
 
       visited = savedVisited;
 
