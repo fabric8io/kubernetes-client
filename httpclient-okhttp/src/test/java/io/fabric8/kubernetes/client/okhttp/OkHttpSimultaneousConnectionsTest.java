@@ -17,8 +17,11 @@ package io.fabric8.kubernetes.client.okhttp;
 
 import io.fabric8.kubernetes.client.http.AbstractSimultaneousConnectionsTest;
 import io.fabric8.kubernetes.client.http.HttpClient;
+import org.junit.jupiter.api.condition.DisabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 
 @SuppressWarnings("java:S2187")
+@DisabledOnOs(OS.MAC) // TODO: Enable when OkHttp 4
 public class OkHttpSimultaneousConnectionsTest extends AbstractSimultaneousConnectionsTest {
   @Override
   protected HttpClient.Factory getHttpClientFactory() {
