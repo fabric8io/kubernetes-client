@@ -18,6 +18,7 @@ package io.fabric8.crdv2.generator;
 
 import com.fasterxml.jackson.databind.BeanProperty;
 import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonObjectFormatVisitor;
@@ -141,6 +142,14 @@ public class ResolvingContext {
       }
 
     });
+  }
+
+  JsonSchema toJsonSchema(Class<?> clazz) {
+    try {
+      return generator.generateSchema(clazz);
+    } catch (JsonMappingException e) {
+      throw new RuntimeException(e);
+    }
   }
 
 }

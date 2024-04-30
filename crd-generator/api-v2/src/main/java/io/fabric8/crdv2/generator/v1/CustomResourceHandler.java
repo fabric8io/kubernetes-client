@@ -31,16 +31,20 @@ import io.fabric8.kubernetes.model.annotation.LabelSelector;
 import io.fabric8.kubernetes.model.annotation.SpecReplicas;
 import io.fabric8.kubernetes.model.annotation.StatusReplicas;
 
+import java.util.AbstractMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.Queue;
+import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class CustomResourceHandler extends AbstractCustomResourceHandler {
 
-  private Queue<CustomResourceDefinition> crds = new ConcurrentLinkedQueue<>();
+  private Queue<Map.Entry<CustomResourceDefinition, Set<String>>> crds = new ConcurrentLinkedQueue<>();
 
   public static final String VERSION = "v1";
 
@@ -111,23 +115,27 @@ public class CustomResourceHandler extends AbstractCustomResourceHandler {
         .endSpec()
         .build();
 
-    crds.add(crd);
+    crds.add(new AbstractMap.SimpleEntry<>(crd, resolver.getDependentClasses()));
   }
 
   @Override
-  public Stream<HasMetadata> finish() {
-    return crds.stream().collect(Collectors.groupingBy(crd -> crd.getMetadata().getName())).values().stream()
+  public Stream<Entry<? extends HasMetadata, Set<String>>> finish() {
+    return crds.stream().collect(Collectors.groupingBy(crd -> crd.getKey().getMetadata().getName())).values().stream()
         .map(this::combine);
   }
 
-  private CustomResourceDefinition combine(List<CustomResourceDefinition> definitions) {
-    CustomResourceDefinition primary = definitions.get(0);
+  private Map.Entry<CustomResourceDefinition, Set<String>> combine(
+      List<Map.Entry<CustomResourceDefinition, Set<String>>> definitions) {
+    Map.Entry<CustomResourceDefinition, Set<String>> primary = definitions.get(0);
     if (definitions.size() == 1) {
       return primary;
     }
 
-    List<CustomResourceDefinitionVersion> versions = definitions.stream().flatMap(crd -> crd.getSpec().getVersions().stream())
+    List<CustomResourceDefinitionVersion> versions = definitions.stream()
+        .flatMap(crd -> crd.getKey().getSpec().getVersions().stream())
         .collect(Collectors.toList());
+
+    Set<String> allDependentClasses = definitions.stream().flatMap(crd -> crd.getValue().stream()).collect(Collectors.toSet());
 
     List<String> storageVersions = versions.stream()
         .filter(v -> Optional.ofNullable(v.getStorage()).orElse(true))
@@ -137,13 +145,15 @@ public class CustomResourceHandler extends AbstractCustomResourceHandler {
     if (storageVersions.size() > 1) {
       throw new IllegalStateException(String.format(
           "'%s' custom resource has versions %s marked as storage. Only one version can be marked as storage per custom resource.",
-          primary.getMetadata().getName(), storageVersions));
+          primary.getKey().getMetadata().getName(), storageVersions));
     }
 
     versions = KubernetesVersionPriority.sortByPriority(versions, CustomResourceDefinitionVersion::getName);
 
     //TODO: we could double check that the top-level metadata is consistent across all versions
-    return new CustomResourceDefinitionBuilder(primary).editSpec().withVersions(versions).endSpec().build();
+    return new AbstractMap.SimpleEntry<>(
+        new CustomResourceDefinitionBuilder(primary.getKey()).editSpec().withVersions(versions).endSpec().build(),
+        allDependentClasses);
   }
 
 }

@@ -15,15 +15,19 @@
  */
 package io.fabric8.crdv2.generator;
 
+import java.util.Set;
+
 public class CRDInfo {
   private final String crdName;
   private final String crdSpecVersion;
   private final String filePath;
+  private final Set<String> dependentClassNames;
 
-  public CRDInfo(String crdName, String crdSpecVersion, String filePath) {
+  public CRDInfo(String crdName, String crdSpecVersion, String filePath, Set<String> dependentClassNames) {
     this.crdName = crdName;
     this.crdSpecVersion = crdSpecVersion;
     this.filePath = filePath;
+    this.dependentClassNames = dependentClassNames;
   }
 
   public String getCrdName() {
@@ -36,6 +40,10 @@ public class CRDInfo {
 
   public String getFilePath() {
     return filePath;
+  }
+
+  public Set<String> getDependentClassNames() {
+    return dependentClassNames;
   }
 
 }

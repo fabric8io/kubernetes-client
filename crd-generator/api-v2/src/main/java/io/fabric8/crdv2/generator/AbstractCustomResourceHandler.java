@@ -22,6 +22,8 @@ import io.fabric8.kubernetes.client.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 import java.util.stream.Stream;
 
@@ -68,6 +70,6 @@ public abstract class AbstractCustomResourceHandler {
     });
   }
 
-  public abstract Stream<HasMetadata> finish();
+  public abstract Stream<Map.Entry<? extends HasMetadata, Set<String>>> finish();
 
 }

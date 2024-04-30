@@ -21,7 +21,6 @@ import com.fasterxml.jackson.databind.AnnotationIntrospector;
 import com.fasterxml.jackson.databind.BeanDescription;
 import com.fasterxml.jackson.databind.BeanProperty;
 import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.introspect.AnnotatedMethod;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
@@ -92,6 +91,7 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
 
   private ResolvingContext resolvingContext;
   private T root;
+  private Set<String> dependentClasses = new HashSet<>();
 
   public static class AnnotationMetadata {
     public final Annotation annotation;
@@ -118,6 +118,10 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
     return root;
   }
 
+  public Set<String> getDependentClasses() {
+    return dependentClasses;
+  }
+
   public Optional<String> getSinglePath(Class<? extends Annotation> clazz) {
     return ofNullable(pathMetadata.get(clazz)).flatMap(m -> m.keySet().stream().findFirst());
   }
@@ -136,7 +140,7 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
    */
   private T resolveRoot(Class<?> definition) {
     InternalSchemaSwaps schemaSwaps = new InternalSchemaSwaps();
-    JsonSchema schema = toJsonSchema(definition);
+    JsonSchema schema = resolvingContext.toJsonSchema(definition);
     if (schema instanceof GeneratorObjectSchema) {
       return resolveObject(new LinkedHashMap<>(), schemaSwaps, schema, "kind", "apiVersion", "metadata");
     }
@@ -285,8 +289,11 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
       preserveUnknownFields = bd.findAnyGetter() != null || bd.findAnySetterAccessor() != null;
     }
 
-    consumeRepeatingAnnotation(gos.javaType.getRawClass(), SchemaSwap.class, ss -> {
-      swaps.registerSwap(gos.javaType.getRawClass(),
+    Class<?> rawClass = gos.javaType.getRawClass();
+    collectDependentClasses(rawClass);
+
+    consumeRepeatingAnnotation(rawClass, SchemaSwap.class, ss -> {
+      swaps.registerSwap(rawClass,
           ss.originalType(),
           ss.fieldName(),
           ss.targetType(), ss.depth());
@@ -300,7 +307,7 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
         continue;
       }
       schemaSwaps = schemaSwaps.branchDepths();
-      SwapResult swapResult = schemaSwaps.lookupAndMark(gos.javaType.getRawClass(), name);
+      SwapResult swapResult = schemaSwaps.lookupAndMark(rawClass, name);
       LinkedHashMap<String, String> savedVisited = visited;
       if (swapResult.onGoing) {
         visited = new LinkedHashMap<>();
@@ -331,7 +338,7 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
           // fully omit - this is a little inconsistent with the NullSchema handling
           continue;
         }
-        propertySchema = toJsonSchema(propertyMetadata.schemaFrom);
+        propertySchema = resolvingContext.toJsonSchema(propertyMetadata.schemaFrom);
         type = resolvingContext.objectMapper.getSerializationConfig().constructType(propertyMetadata.schemaFrom);
       }
 
@@ -359,10 +366,17 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
       objectSchema.setXKubernetesPreserveUnknownFields(true);
     }
     List<V> validationRules = new ArrayList<>();
-    consumeRepeatingAnnotation(gos.javaType.getRawClass(), ValidationRule.class,
+    consumeRepeatingAnnotation(rawClass, ValidationRule.class,
         v -> validationRules.add(from(v)));
     addToValidationRules(objectSchema, validationRules);
     return objectSchema;
+  }
+
+  private void collectDependentClasses(Class<?> rawClass) {
+    if (rawClass != null && !rawClass.getName().startsWith("java.") && dependentClasses.add(rawClass.getName())) {
+      Stream.of(rawClass.getInterfaces()).forEach(this::collectDependentClasses);
+      collectDependentClasses(rawClass.getSuperclass());
+    }
   }
 
   static String toFQN(LinkedHashMap<String, String> visited, String name) {
@@ -492,14 +506,6 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
 
   private static String mapNotEmpty(String s) {
     return Utils.isNullOrEmpty(s) ? null : s;
-  }
-
-  private JsonSchema toJsonSchema(Class<?> clazz) {
-    try {
-      return resolvingContext.generator.generateSchema(clazz);
-    } catch (JsonMappingException e) {
-      throw new RuntimeException(e);
-    }
   }
 
   protected abstract V newKubernetesValidationRule();

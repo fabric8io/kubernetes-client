@@ -19,6 +19,7 @@ import java.io.File;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class CRDGenerationInfo {
 
@@ -33,9 +34,9 @@ public class CRDGenerationInfo {
     return crdNameToVersionToCRDInfoMap;
   }
 
-  void add(String crdName, String version, URI fileURI) {
+  void add(String crdName, String version, URI fileURI, Set<String> dependentClassNames) {
     crdNameToVersionToCRDInfoMap.computeIfAbsent(crdName, k -> new HashMap<>())
-        .put(version, new CRDInfo(crdName, version, new File(fileURI).getAbsolutePath()));
+        .put(version, new CRDInfo(crdName, version, new File(fileURI).getAbsolutePath(), dependentClassNames));
   }
 
   public int numberOfGeneratedCRDs() {
