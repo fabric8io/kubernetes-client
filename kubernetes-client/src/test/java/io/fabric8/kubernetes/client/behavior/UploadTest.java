@@ -38,6 +38,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnJre;
+import org.junit.jupiter.api.condition.DisabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 import org.junit.jupiter.api.io.TempDir;
 import org.mockito.ArgumentCaptor;
 
@@ -299,6 +301,7 @@ class UploadTest {
         }
 
         @DisabledOnJre(JAVA_21)
+        @DisabledOnOs(OS.MAC) // TODO: find another way to verify POSIX is enabled
         @Test
         @DisplayName("Big numbers supported (POSIX)")
         void bigNumbersSupported(@TempDir Path tempDir) throws Exception {
