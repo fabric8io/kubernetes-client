@@ -14,7 +14,7 @@
 # limitations under the License.
 #
 
-name: Go Build
+name: Go Generate Model
 
 on:
   push:
@@ -35,15 +35,23 @@ permissions:
   contents: read
 
 jobs:
-  build:
+  generate-model:
     name: Kubernetes Model Generator Build
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Build Project
-        run: |
-          ./kubernetes-model-generator/generateModelDocker.sh
+      - name: Setup Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: 1.22
+      - name: Setup Java 11
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      - name: Generate model
+        run: make generate-model
       - name: Check No Schema file modified
         run: |
           git add .
