@@ -92,23 +92,15 @@ public class ResolvingContext {
   final Map<String, GeneratorObjectSchema> uriToJacksonSchema;
   final boolean implicitPreserveUnknownFields;
 
-  private static class AccessibleKubernetesSerialization extends KubernetesSerialization {
-
-    @Override
-    public ObjectMapper getMapper() {
-      return super.getMapper();
-    };
-
-  }
-
-  private static AccessibleKubernetesSerialization DEFAULT_KUBERNETES_SERIALIZATION;
+  private static KubernetesSerialization KUBERNETES_SERIALIZATION;
+  private static ObjectMapper OBJECT_MAPPER;
 
   public static ResolvingContext defaultResolvingContext(boolean implicitPreserveUnknownFields) {
-    if (DEFAULT_KUBERNETES_SERIALIZATION == null) {
-      DEFAULT_KUBERNETES_SERIALIZATION = new AccessibleKubernetesSerialization();
+    if (KUBERNETES_SERIALIZATION == null) {
+      OBJECT_MAPPER = new ObjectMapper();
+      KUBERNETES_SERIALIZATION = new KubernetesSerialization(OBJECT_MAPPER, false);
     }
-    return new ResolvingContext(DEFAULT_KUBERNETES_SERIALIZATION.getMapper(), DEFAULT_KUBERNETES_SERIALIZATION,
-        implicitPreserveUnknownFields);
+    return new ResolvingContext(OBJECT_MAPPER, KUBERNETES_SERIALIZATION, implicitPreserveUnknownFields);
   }
 
   public ResolvingContext forkContext() {
