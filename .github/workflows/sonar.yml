@@ -17,7 +17,7 @@
 name: Sonar Scanner
 
 env:
-  MAVEN_ARGS: -B -C -V -ntp -Dhttp.keepAlive=false -e
+  MAVEN_OPTIONS: -B -C -V -ntp -Dhttp.keepAlive=false -e
 
 on:
   push:
@@ -55,5 +55,5 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-      - name: Maven Sonar
-        run: ./mvnw ${MAVEN_ARGS} clean install sonar:sonar -Psonar
+      - name: Sonar
+        run: make clean sonar
