@@ -14,7 +14,7 @@
 # limitations under the License.
 #
 
-MAVEN_OPTIONS=
+MAVEN_OPTIONS ?=
 
 .PHONY: clean-java
 clean-java:
@@ -26,3 +26,7 @@ clean: clean-java
 .PHONY: generate-model
 generate-model:
 	cd kubernetes-model-generator && ./generateModel.sh
+
+.PHONY: sonar
+sonar:
+	mvn $(MAVEN_OPTIONS) clean install sonar:sonar -Psonar
