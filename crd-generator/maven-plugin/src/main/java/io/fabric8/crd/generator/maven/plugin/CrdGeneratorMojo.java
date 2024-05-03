@@ -41,7 +41,7 @@ public class CrdGeneratorMojo extends AbstractMojo {
   private MavenProject mavenProject;
 
   /**
-   * The input directory to be used to scan for CustomResource classes
+   * The input directory to be used to scan for Custom Resource classes
    */
   @Parameter(property = "fabric8.crd-generator.classesToIndex", defaultValue = "${project.build.outputDirectory}", readonly = true)
   private File classesToIndex;
@@ -54,7 +54,7 @@ public class CrdGeneratorMojo extends AbstractMojo {
   private List<String> customResourceClasses = new LinkedList<>();
 
   /**
-   * Dependencies which should be scanned for custom resources.
+   * Dependencies which should be scanned for Custom Resources.
    */
   @Parameter(property = "fabric8.crd-generator.dependenciesToIndex")
   private List<Dependency> dependenciesToIndex = new LinkedList<>();
