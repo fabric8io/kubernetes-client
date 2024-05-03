@@ -17,7 +17,6 @@ package io.fabric8.crd.generator.collector;
 
 import io.fabric8.crdv2.generator.CustomResourceInfo;
 import io.fabric8.kubernetes.api.model.HasMetadata;
-import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import org.jboss.jandex.ClassInfo;
@@ -52,6 +51,8 @@ import java.util.zip.ZipFile;
 public class CustomResourceCollector {
 
   private static final Logger log = LoggerFactory.getLogger(CustomResourceCollector.class);
+
+  private static final String DEFAULT_JANDEX_INDEX = "META-INF/jandex.idx";
 
   private final CustomResourceClassLoader customResourceClassLoader = new CustomResourceClassLoader();
 
@@ -264,7 +265,7 @@ public class CustomResourceCollector {
         .reduce(Predicate::and)
         .orElse(s -> true);
 
-    Predicate<String> classNameExcludePredicate = classNameIncludes.stream()
+    Predicate<String> classNameExcludePredicate = classNameExcludes.stream()
         .reduce(Predicate::and)
         .orElse(s -> false)
         .negate();
@@ -293,9 +294,6 @@ public class CustomResourceCollector {
   }
 
   private List<ClassInfo> findCustomResourceClasses(IndexView index) {
-    index.getKnownClasses()
-        .forEach(classInfo -> log.info("Indexed class: {}", classInfo.toString()));
-
     // Only works if HasMetadata itself has been indexed
     return index.getAllKnownImplementors(HasMetadata.class)
         .stream()
@@ -325,11 +323,11 @@ public class CustomResourceCollector {
   }
 
   private boolean isDirectoryWithIndex(File file) {
-    return file.isDirectory() && new File(file, "META-INF/jandex.idx").exists();
+    return file.isDirectory() && new File(file, DEFAULT_JANDEX_INDEX).exists();
   }
 
   private Index getIndexFromDirectory(File dir) {
-    try (InputStream in = Files.newInputStream(new File(dir, "META-INF/jandex.idx").toPath())) {
+    try (InputStream in = Files.newInputStream(new File(dir, DEFAULT_JANDEX_INDEX).toPath())) {
       IndexReader reader = new IndexReader(in);
       return reader.read();
     } catch (IOException e) {
@@ -340,7 +338,7 @@ public class CustomResourceCollector {
   private boolean isArchiveWithIndex(File file) {
     if (file.isFile() && file.getName().endsWith(".jar")) {
       try (ZipFile zip = new ZipFile(file)) {
-        ZipEntry entry = zip.getEntry("META-INF/jandex.idx");
+        ZipEntry entry = zip.getEntry(DEFAULT_JANDEX_INDEX);
         return entry != null;
       } catch (IOException e) {
         throw new RuntimeException(e);
@@ -351,7 +349,7 @@ public class CustomResourceCollector {
 
   private Index getIndexFromArchive(File file) {
     try (ZipFile zip = new ZipFile(file)) {
-      ZipEntry entry = zip.getEntry("META-INF/jandex.idx");
+      ZipEntry entry = zip.getEntry(DEFAULT_JANDEX_INDEX);
       try (InputStream in = zip.getInputStream(entry)) {
         IndexReader reader = new IndexReader(in);
         return reader.read();
