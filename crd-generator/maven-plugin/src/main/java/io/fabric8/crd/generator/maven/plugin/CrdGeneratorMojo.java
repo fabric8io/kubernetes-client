@@ -102,7 +102,7 @@ public class CrdGeneratorMojo extends AbstractMojo {
   /**
    * If enabled, the CRDs will be generated in parallel.
    */
-  @Parameter(property = "fabric8.crd-generator.parallel", defaultValue = "false")
+  @Parameter(property = "fabric8.crd-generator.parallel", defaultValue = "true")
   private boolean parallel;
 
   /**
