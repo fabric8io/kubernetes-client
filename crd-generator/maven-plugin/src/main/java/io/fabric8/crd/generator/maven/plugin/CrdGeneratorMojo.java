@@ -200,7 +200,7 @@ public class CrdGeneratorMojo extends AbstractMojo {
       File archive = artifact.getFile();
       if (archive == null) {
         getLog().warn(
-            "Skipping indexing dependency, artifact file does not exist for dependency: " + dependency);
+            "Skip indexing dependency, artifact file does not exist for dependency: " + dependency);
         break;
       }
       archives.add(archive);
