@@ -94,6 +94,12 @@ public class CrdGeneratorMojo extends AbstractMojo {
   private File outputDirectory;
 
   /**
+   * If true, a Jandex index will be created even if the directory or JAR file contains an existing index.
+   */
+  @Parameter(property = "fabric8.crd-generator.forceIndex", defaultValue = "false")
+  private boolean forceIndex;
+
+  /**
    * If enabled, the CRDs will be generated in parallel.
    */
   @Parameter(property = "fabric8.crd-generator.parallel", defaultValue = "false")
@@ -134,6 +140,7 @@ public class CrdGeneratorMojo extends AbstractMojo {
         .withParentClassLoader(Thread.currentThread().getContextClassLoader())
         .withClasspaths(classpath.getClasspathElements(mavenProject))
         .withFilesToIndex(filesToIndex)
+        .withForceIndex(forceIndex)
         .withIncludePackages(inclusions.getPackages())
         .withIncludeGroups(inclusions.getGroups())
         .withIncludeVersions(inclusions.getVersions())
@@ -143,8 +150,6 @@ public class CrdGeneratorMojo extends AbstractMojo {
         .withCustomResourceClasses(customResourceClasses);
 
     CustomResourceInfo[] customResourceInfos = customResourceCollector.findCustomResources();
-
-    getLog().info("Found " + customResourceInfos.length + " CustomResources");
 
     try {
       Files.createDirectories(outputDirectory.toPath());
