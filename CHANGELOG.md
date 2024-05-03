@@ -7,6 +7,7 @@
 * Fix #5866: Addressed cycle in crd generation with Java 19+ and ZonedDateTime
 
 #### Improvements
+* Fix #5605: proxy configs support proxy URLs without a scheme
 * Fix #5878: (java-generator) Add implements Editable for extraAnnotations
 * Fix #5878: (java-generator) Update documentation to include dependencies
 * Fix #5867: (crd-generator) Imply schemaFrom via JsonFormat shape (SchemaFrom takes precedence)

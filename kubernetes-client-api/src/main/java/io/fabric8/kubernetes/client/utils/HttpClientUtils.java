@@ -86,7 +86,14 @@ public class HttpClientUtils {
       proxy = config.getHttpProxy();
     }
     if (proxy != null) {
-      URI proxyUrl = new URI(proxy);
+      final String completedProxy;
+      if (proxy.contains("://")) {
+        completedProxy = proxy;
+      } else {
+        // No protocol specified, default to cluster requirements
+        completedProxy = master.getProtocol() + "://" + proxy;
+      }
+      final URI proxyUrl = new URI(completedProxy);
       if (proxyUrl.getPort() < 0) {
         throw new IllegalArgumentException("Failure in creating proxy URL. Proxy port is required!");
       }
