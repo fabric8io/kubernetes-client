@@ -65,7 +65,7 @@ public class CustomResourceCollector {
   private final List<Predicate<CustomResourceInfo>> customResourceInfoIncludes = new LinkedList<>();
   private final List<Predicate<CustomResourceInfo>> customResourceInfoExcludes = new LinkedList<>();
 
-  private boolean forceScan = false;
+  private boolean forceIndex = false;
 
   public CustomResourceCollector withParentClassLoader(ClassLoader classLoader) {
     if (classLoader != null) {
@@ -202,6 +202,11 @@ public class CustomResourceCollector {
     return this;
   }
 
+  public CustomResourceCollector withForceIndex(boolean forceIndex) {
+    this.forceIndex = forceIndex;
+    return this;
+  }
+
   public CustomResourceInfo[] findCustomResources() {
     Set<String> customResourcesClassNames = new HashSet<>(customResourceClassNames);
 
@@ -215,7 +220,7 @@ public class CustomResourceCollector {
       if (!filesToIndex.isEmpty()) {
         Set<File> filesToIndex = new HashSet<>(this.filesToIndex);
 
-        if (!forceScan) {
+        if (!forceIndex) {
           List<File> directoriesWithIndex = filesToIndex.stream()
               .filter(this::isDirectoryWithIndex)
               .collect(Collectors.toList());
@@ -224,7 +229,7 @@ public class CustomResourceCollector {
               .map(this::getIndexFromDirectory)
               .forEach(indices::add);
 
-          log.info("Found {} directories with existing indices", directoriesWithIndex.size());
+          log.debug("Found {} directories with existing indices", directoriesWithIndex.size());
 
           directoriesWithIndex.forEach(filesToIndex::remove);
 
@@ -236,12 +241,12 @@ public class CustomResourceCollector {
               .map(this::getIndexFromArchive)
               .forEach(indices::add);
 
-          log.info("Found {} archives with existing indices", archivesWithIndex.size());
+          log.debug("Found {} archives with existing indices", archivesWithIndex.size());
 
           archivesWithIndex.forEach(filesToIndex::remove);
         }
 
-        log.info("Creating {} indices", filesToIndex.size());
+        log.debug("Creating {} indices", filesToIndex.size());
         indices.add(JandexIndexer.indexFor(filesToIndex));
       }
 
@@ -250,9 +255,9 @@ public class CustomResourceCollector {
           .map(ClassInfo::toString)
           .forEach(customResourcesClassNames::add);
 
-      log.info("Found {} custom resource classes before filtering", customResourcesClassNames.size());
+      log.debug("Found {} custom resource classes before filtering", customResourcesClassNames.size());
     } else {
-      log.info("Using explicit {} custom resource classes and skip scanning", customResourcesClassNames);
+      log.debug("Using explicit {} custom resource classes and skip scanning", customResourcesClassNames);
     }
 
     Predicate<String> classNameIncludePredicate = classNameIncludes.stream()

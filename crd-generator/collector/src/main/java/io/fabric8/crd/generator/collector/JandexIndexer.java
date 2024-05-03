@@ -85,7 +85,7 @@ public class JandexIndexer {
   private void scanClassFileAndAddToIndex(File file, Indexer indexer) {
     try (InputStream in = Files.newInputStream(file.toPath())) {
       ClassSummary info = indexer.indexWithSummary(in);
-      log.trace("Indexed: {} ({} Annotations)", info.name(), info.annotationsCount());
+      log.debug("Indexed: {} ({} Annotations)", info.name(), info.annotationsCount());
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -100,7 +100,7 @@ public class JandexIndexer {
           if (entry.getName().endsWith(".class")) {
             try (InputStream in = zip.getInputStream(entry)) {
               ClassSummary info = indexer.indexWithSummary(in);
-              log.trace("Indexed: {} ({} Annotations)", info.name(), info.annotationsCount());
+              log.debug("Indexed: {} ({} Annotations)", info.name(), info.annotationsCount());
             } catch (Exception e) {
               throw new RuntimeException(e);
             }
@@ -120,7 +120,7 @@ public class JandexIndexer {
           .forEach(file -> {
             try (InputStream in = Files.newInputStream(file)) {
               ClassSummary info = indexer.indexWithSummary(in);
-              log.trace("Indexed: {} ({} Annotations)", info.name(), info.annotationsCount());
+              log.debug("Indexed: {} ({} Annotations)", info.name(), info.annotationsCount());
             } catch (Exception e) {
               throw new RuntimeException(e);
             }
