@@ -17,9 +17,9 @@ package io.fabric8.crdv2.generator.approvaltests.nocyclic;
 
 public class Ref {
 
-  private int ref;
+  public int ref;
 
-  protected Inner inner;
+  public Inner inner;
 
   public static class Inner {
   }

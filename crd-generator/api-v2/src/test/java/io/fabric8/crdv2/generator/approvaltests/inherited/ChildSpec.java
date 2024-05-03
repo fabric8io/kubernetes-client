@@ -18,7 +18,7 @@ package io.fabric8.crdv2.generator.approvaltests.inherited;
 import java.util.Map;
 
 public class ChildSpec extends BaseSpec {
-  private Map<String, Object> unsupported;
-  private Map<String, String> supported;
-  private Map unsupported2;
+  public Map<String, Object> unsupported;
+  public Map<String, String> supported;
+  public Map unsupported2;
 }

@@ -16,6 +16,6 @@
 package io.fabric8.crdv2.generator.approvaltests.nocyclic;
 
 public class NoCyclicSpec {
-  private Ref ref1;
-  private Ref ref2;
+  public Ref ref1;
+  public Ref ref2;
 }

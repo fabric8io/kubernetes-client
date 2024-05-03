@@ -29,6 +29,6 @@ public class ContainingMaps extends CustomResource<ContainingMapsSpec, Void> {
     BAR
   }
 
-  private EnumMap<Foo, String> enumToStringMap;
+  public EnumMap<Foo, String> enumToStringMap;
 
 }

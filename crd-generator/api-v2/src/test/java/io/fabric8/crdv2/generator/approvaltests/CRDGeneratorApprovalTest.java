@@ -74,7 +74,7 @@ class CRDGeneratorApprovalTest {
 
   static Stream<Arguments> crdApprovalTests() {
     final List<TestCase> cases = new ArrayList<>();
-    for (String crdVersion : new String[] { "v1", "v1beta1" }) {
+    for (String crdVersion : new String[] { "v1" }) {
       for (boolean parallel : new boolean[] { false, true }) {
         cases.add(new TestCase("annotateds.samples.fabric8.io", crdVersion, parallel, Annotated.class));
         cases.add(new TestCase("complexkinds.samples.fabric8.io", crdVersion, parallel, Complex.class));
