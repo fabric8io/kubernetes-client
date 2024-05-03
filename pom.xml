@@ -133,7 +133,7 @@
     <bcpkix-fips.version>1.0.7</bcpkix-fips.version>
     <commons-compress.version>1.26.1</commons-compress.version>
     <commons-io.version>2.16.1</commons-io.version> <!-- Required by Gradle Testing Toolkit -->
-    <guava.version>33.1.0-jre</guava.version> <!-- Required by Gradle Testing Toolkit -->
+    <guava.version>33.2.0-jre</guava.version> <!-- Required by Gradle Testing Toolkit -->
     <scr.annotations.version>1.12.0</scr.annotations.version>
     <jsonschema2pojo.version>1.2.1</jsonschema2pojo.version>
     <picocli.version>4.7.5</picocli.version>
