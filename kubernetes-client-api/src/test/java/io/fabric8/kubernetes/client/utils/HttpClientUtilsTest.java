@@ -65,12 +65,12 @@ import static org.mockito.Mockito.when;
 class HttpClientUtilsTest {
 
   @Test
-  void toProxyTypeTestUnknown() throws MalformedURLException {
+  void toProxyTypeTestUnknown() {
     assertThrows(MalformedURLException.class, () -> HttpClientUtils.toProxyType("unknown"));
   }
 
   @Test
-  void toProxyTypeTestNull() throws MalformedURLException {
+  void toProxyTypeTestNull() {
     assertThrows(MalformedURLException.class, () -> HttpClientUtils.toProxyType(null));
   }
 
@@ -160,7 +160,7 @@ class HttpClientUtilsTest {
     @ParameterizedTest(name = "{index}: Master hostname ''{0}'' matched by No Proxy ''{1}'' ")
     @MethodSource("masterHostnameDoesMatchNoProxyInput")
     void masterHostnameDoesMatchNoProxy(String masterHostname, String[] noProxy)
-        throws MalformedURLException, URISyntaxException {
+        throws MalformedURLException {
       assertTrue(HttpClientUtils.isHostMatchedByNoProxy(masterHostname, noProxy));
     }
 
@@ -235,6 +235,19 @@ class HttpClientUtilsTest {
       URI url = HttpClientUtils.getProxyUri(new URL("http://localhost"), config);
       // Then
       assertThat(url).isNull();
+    }
+
+    @Test
+    void whenIncompleteHttpProxyUrlProvided_shouldInferProtocol() throws MalformedURLException, URISyntaxException {
+      // Given
+      Config config = configBuilder.withHttpProxy("example.com:8080").build();
+      // When
+      URI url = HttpClientUtils.getProxyUri(new URL("http://localhost"), config);
+      // Then
+      assertThat(url)
+          .hasScheme("http")
+          .hasHost("example.com")
+          .hasPort(8080);
     }
   }
 
