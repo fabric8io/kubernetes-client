@@ -16,10 +16,19 @@
 package io.fabric8.crd.generator.maven.plugin;
 
 public class Dependency {
+  /**
+   * The mandatory GroupId of the dependency.
+   */
   private String groupId;
 
+  /**
+   * The mandatory ArtifactId of the dependency.
+   */
   private String artifactId;
 
+  /**
+   * An optional artifact classifier to distinguish the archive of the dependency.
+   */
   private String classifier;
 
   public String getGroupId() {
