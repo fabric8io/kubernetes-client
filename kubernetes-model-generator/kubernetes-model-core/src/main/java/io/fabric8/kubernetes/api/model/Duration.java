@@ -18,10 +18,13 @@ package io.fabric8.kubernetes.api.model;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonFormatVisitorWrapper;
+import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
@@ -178,11 +181,20 @@ public class Duration implements KubernetesResource {
     return new Duration(accumulator);
   }
 
-  public static class Serializer extends JsonSerializer<Duration> {
+  public static class Serializer extends StdSerializer<Duration> {
+
+    public Serializer() {
+      super(Duration.class);
+    }
 
     @Override
     public void serialize(Duration duration, JsonGenerator jgen, SerializerProvider provider) throws IOException {
       jgen.writeString(String.format("%sns", duration.getValue()));
+    }
+
+    @Override
+    public void acceptJsonFormatVisitor(JsonFormatVisitorWrapper visitor, JavaType typeHint) throws JsonMappingException {
+      visitor.expectStringFormat(typeHint);
     }
   }
 
