@@ -318,9 +318,6 @@ public class CustomResourceCollector {
     try {
       Indexer indexer = new Indexer();
       indexer.indexClass(HasMetadata.class);
-      indexer.indexClass(CustomResource.class);
-      indexer.indexClass(Group.class);
-      indexer.indexClass(Version.class);
       return indexer.complete();
     } catch (IOException e) {
       throw new RuntimeException(e);
