@@ -62,10 +62,8 @@ public class CustomResourceCollector {
   private final Collection<IndexView> indexes = new LinkedList<>();
   private final Set<File> filesToIndex = new HashSet<>();
 
-  private final List<Predicate<String>> classNameIncludes = new LinkedList<>();
-  private final List<Predicate<String>> classNameExcludes = new LinkedList<>();
-  private final List<Predicate<CustomResourceInfo>> customResourceInfoIncludes = new LinkedList<>();
-  private final List<Predicate<CustomResourceInfo>> customResourceInfoExcludes = new LinkedList<>();
+  private final List<Predicate<String>> classNamePredicates = new LinkedList<>();
+  private final List<Predicate<CustomResourceInfo>> customResourceInfoPredicates = new LinkedList<>();
 
   private boolean forceIndex = false;
 
@@ -144,7 +142,7 @@ public class CustomResourceCollector {
           .filter(Objects::nonNull)
           .map(pkg -> (Predicate<String>) s -> s.startsWith(pkg))
           .reduce(Predicate::or)
-          .ifPresent(this.classNameIncludes::add);
+          .ifPresent(this.classNamePredicates::add);
     }
     return this;
   }
@@ -153,9 +151,9 @@ public class CustomResourceCollector {
     if (packages != null) {
       packages.stream()
           .filter(Objects::nonNull)
-          .map(pkg -> (Predicate<String>) s -> s.startsWith(pkg))
+          .map(pkg -> (Predicate<String>) s -> !s.startsWith(pkg))
           .reduce(Predicate::or)
-          .ifPresent(this.classNameExcludes::add);
+          .ifPresent(this.classNamePredicates::add);
     }
     return this;
   }
@@ -166,7 +164,7 @@ public class CustomResourceCollector {
           .filter(Objects::nonNull)
           .map(group -> (Predicate<CustomResourceInfo>) cr -> group.equals(cr.group()))
           .reduce(Predicate::or)
-          .ifPresent(customResourceInfoIncludes::add);
+          .ifPresent(customResourceInfoPredicates::add);
     }
     return this;
   }
@@ -175,9 +173,9 @@ public class CustomResourceCollector {
     if (groups != null) {
       groups.stream()
           .filter(Objects::nonNull)
-          .map(groupToFilter -> (Predicate<CustomResourceInfo>) cr -> groupToFilter.equals(cr.group()))
+          .map(groupToFilter -> (Predicate<CustomResourceInfo>) cr -> !groupToFilter.equals(cr.group()))
           .reduce(Predicate::or)
-          .ifPresent(customResourceInfoExcludes::add);
+          .ifPresent(customResourceInfoPredicates::add);
     }
     return this;
   }
@@ -188,7 +186,7 @@ public class CustomResourceCollector {
           .filter(Objects::nonNull)
           .map(versionToFilter -> (Predicate<CustomResourceInfo>) cr -> versionToFilter.equals(cr.version()))
           .reduce(Predicate::or)
-          .ifPresent(customResourceInfoIncludes::add);
+          .ifPresent(customResourceInfoPredicates::add);
     }
     return this;
   }
@@ -197,9 +195,9 @@ public class CustomResourceCollector {
     if (versions != null) {
       versions.stream()
           .filter(Objects::nonNull)
-          .map(versionToFilter -> (Predicate<CustomResourceInfo>) cr -> versionToFilter.equals(cr.version()))
+          .map(versionToFilter -> (Predicate<CustomResourceInfo>) cr -> !versionToFilter.equals(cr.version()))
           .reduce(Predicate::or)
-          .ifPresent(customResourceInfoExcludes::add);
+          .ifPresent(customResourceInfoPredicates::add);
     }
     return this;
   }
@@ -262,31 +260,19 @@ public class CustomResourceCollector {
       log.debug("Using explicit {} custom resource classes and skip scanning", customResourcesClassNames);
     }
 
-    Predicate<String> classNameIncludePredicate = classNameIncludes.stream()
+    Predicate<String> classNamePredicate = classNamePredicates.stream()
         .reduce(Predicate::and)
-        .orElse(s -> true);
+        .orElse(className -> true);
 
-    Predicate<String> classNameExcludePredicate = classNameExcludes.stream()
+    Predicate<CustomResourceInfo> customResourceInfoPredicate = customResourceInfoPredicates.stream()
         .reduce(Predicate::and)
-        .orElse(s -> false)
-        .negate();
-
-    Predicate<CustomResourceInfo> customResourceInfoIncludePredicate = customResourceInfoIncludes.stream()
-        .reduce(Predicate::and)
-        .orElse(x -> true);
-
-    Predicate<CustomResourceInfo> customResourceInfoExcludePredicate = customResourceInfoExcludes.stream()
-        .reduce(Predicate::and)
-        .orElse(x -> false)
-        .negate();
+        .orElse(info -> true);
 
     CustomResourceInfo[] infos = customResourcesClassNames.stream()
-        .filter(classNameIncludePredicate)
-        .filter(classNameExcludePredicate)
+        .filter(classNamePredicate)
         .map(customResourceClassLoader::loadCustomResourceClass)
         .map(this::createCustomResourceInfo)
-        .filter(customResourceInfoIncludePredicate)
-        .filter(customResourceInfoExcludePredicate)
+        .filter(customResourceInfoPredicate)
         .toArray(CustomResourceInfo[]::new);
 
     log.debug("Found {} custom resource classes after filtering", infos.length);
@@ -320,7 +306,7 @@ public class CustomResourceCollector {
       indexer.indexClass(CustomResource.class);
       return indexer.complete();
     } catch (IOException e) {
-      throw new RuntimeException(e);
+      throw new CustomResourceCollectorException(e);
     }
   }
 
@@ -333,7 +319,7 @@ public class CustomResourceCollector {
       IndexReader reader = new IndexReader(in);
       return reader.read();
     } catch (IOException e) {
-      throw new RuntimeException(e);
+      throw new CustomResourceCollectorException(e);
     }
   }
 
@@ -343,7 +329,7 @@ public class CustomResourceCollector {
         ZipEntry entry = zip.getEntry(DEFAULT_JANDEX_INDEX);
         return entry != null;
       } catch (IOException e) {
-        throw new RuntimeException(e);
+        throw new CustomResourceCollectorException(e);
       }
     }
     return false;
@@ -357,7 +343,7 @@ public class CustomResourceCollector {
         return reader.read();
       }
     } catch (IOException e) {
-      throw new RuntimeException(e);
+      throw new CustomResourceCollectorException(e);
     }
   }
 

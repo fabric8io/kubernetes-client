@@ -59,7 +59,7 @@ class CustomResourceClassLoader {
     try {
       return getClassLoader().loadClass(className);
     } catch (ClassNotFoundException e) {
-      throw new RuntimeException(e);
+      throw new CustomResourceCollectorException(e);
     }
   }
 
