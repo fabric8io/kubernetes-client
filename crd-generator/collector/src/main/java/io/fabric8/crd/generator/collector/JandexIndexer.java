@@ -44,6 +44,9 @@ public class JandexIndexer {
 
   private static final Logger log = LoggerFactory.getLogger(JandexIndexer.class);
 
+  private static final String CLASS_FILE_SUFFIX = ".class";
+  private static final String JAR_FILE_SUFFIX = ".jar";
+
   private final List<File> files = new ArrayList<>();
 
   public JandexIndexer withFile(File... file) {
@@ -72,9 +75,9 @@ public class JandexIndexer {
     for (File file : files) {
       if (file.isDirectory()) {
         scanDirectoryAndAddToIndex(file, indexer);
-      } else if (file.isFile() && file.getName().endsWith(".class")) {
+      } else if (file.isFile() && file.getName().endsWith(CLASS_FILE_SUFFIX)) {
         scanClassFileAndAddToIndex(file, indexer);
-      } else if (file.isFile() && file.getName().endsWith(".jar")) {
+      } else if (file.isFile() && file.getName().endsWith(JAR_FILE_SUFFIX)) {
         scanJarFileAndAddToIndex(file, indexer);
       } else {
         throw new IllegalArgumentException("Not a class file, JAR file or directory: " + file);
@@ -84,10 +87,9 @@ public class JandexIndexer {
 
   private void scanClassFileAndAddToIndex(File file, Indexer indexer) {
     try (InputStream in = Files.newInputStream(file.toPath())) {
-      ClassSummary info = indexer.indexWithSummary(in);
-      log.debug("Indexed: {} ({} Annotations)", info.name(), info.annotationsCount());
+      addToIndex(in, indexer);
     } catch (IOException e) {
-      throw new RuntimeException(e);
+      throw new CustomResourceCollectorException(e);
     }
   }
 
@@ -97,18 +99,17 @@ public class JandexIndexer {
       while (entries.hasMoreElements()) {
         ZipEntry entry = entries.nextElement();
         if (!entry.isDirectory()) {
-          if (entry.getName().endsWith(".class")) {
+          if (entry.getName().endsWith(CLASS_FILE_SUFFIX)) {
             try (InputStream in = zip.getInputStream(entry)) {
-              ClassSummary info = indexer.indexWithSummary(in);
-              log.debug("Indexed: {} ({} Annotations)", info.name(), info.annotationsCount());
+              addToIndex(in, indexer);
             } catch (Exception e) {
-              throw new RuntimeException(e);
+              throw new CustomResourceCollectorException(e);
             }
           }
         }
       }
     } catch (IOException e) {
-      throw new RuntimeException(e);
+      throw new CustomResourceCollectorException(e);
     }
   }
 
@@ -116,18 +117,22 @@ public class JandexIndexer {
     try (Stream<Path> stream = Files.walk(directory.toPath())) {
       stream
           .filter(Files::isRegularFile)
-          .filter(file -> file.toString().endsWith(".class"))
+          .filter(file -> file.toString().endsWith(CLASS_FILE_SUFFIX))
           .forEach(file -> {
             try (InputStream in = Files.newInputStream(file)) {
-              ClassSummary info = indexer.indexWithSummary(in);
-              log.debug("Indexed: {} ({} Annotations)", info.name(), info.annotationsCount());
+              addToIndex(in, indexer);
             } catch (Exception e) {
               throw new RuntimeException(e);
             }
           });
     } catch (IOException e) {
-      throw new RuntimeException(e);
+      throw new CustomResourceCollectorException(e);
     }
+  }
+
+  private void addToIndex(InputStream inputStream, Indexer indexer) throws IOException {
+    ClassSummary info = indexer.indexWithSummary(inputStream);
+    log.debug("Indexed: {} ({} Annotations)", info.name(), info.annotationsCount());
   }
 
   public static Index indexFor(Collection<File> files) {
