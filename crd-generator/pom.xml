@@ -31,9 +31,10 @@
   <name>Fabric8 :: CRD generator :: Parent</name>
 
   <modules>
-    <module>apt</module>
     <module>api</module>
     <module>api-v2</module>
+    <module>apt</module>
     <module>test</module>
+    <module>test-apt</module>
   </modules>
 </project>
