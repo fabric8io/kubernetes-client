@@ -26,6 +26,7 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
+    "appArmorProfile",
     "fsGroup",
     "fsGroupChangePolicy",
     "runAsGroup",
@@ -49,6 +50,8 @@ import lombok.experimental.Accessors;
 public class PodSecurityContext implements Editable<PodSecurityContextBuilder> , KubernetesResource
 {
 
+    @JsonProperty("appArmorProfile")
+    private AppArmorProfile appArmorProfile;
     @JsonProperty("fsGroup")
     private Long fsGroup;
     @JsonProperty("fsGroupChangePolicy")
@@ -81,8 +84,9 @@ public class PodSecurityContext implements Editable<PodSecurityContextBuilder> ,
     public PodSecurityContext() {
     }
 
-    public PodSecurityContext(Long fsGroup, String fsGroupChangePolicy, Long runAsGroup, Boolean runAsNonRoot, Long runAsUser, SELinuxOptions seLinuxOptions, SeccompProfile seccompProfile, List<Long> supplementalGroups, List<Sysctl> sysctls, WindowsSecurityContextOptions windowsOptions) {
+    public PodSecurityContext(AppArmorProfile appArmorProfile, Long fsGroup, String fsGroupChangePolicy, Long runAsGroup, Boolean runAsNonRoot, Long runAsUser, SELinuxOptions seLinuxOptions, SeccompProfile seccompProfile, List<Long> supplementalGroups, List<Sysctl> sysctls, WindowsSecurityContextOptions windowsOptions) {
         super();
+        this.appArmorProfile = appArmorProfile;
         this.fsGroup = fsGroup;
         this.fsGroupChangePolicy = fsGroupChangePolicy;
         this.runAsGroup = runAsGroup;
@@ -93,6 +97,16 @@ public class PodSecurityContext implements Editable<PodSecurityContextBuilder> ,
         this.supplementalGroups = supplementalGroups;
         this.sysctls = sysctls;
         this.windowsOptions = windowsOptions;
+    }
+
+    @JsonProperty("appArmorProfile")
+    public AppArmorProfile getAppArmorProfile() {
+        return appArmorProfile;
+    }
+
+    @JsonProperty("appArmorProfile")
+    public void setAppArmorProfile(AppArmorProfile appArmorProfile) {
+        this.appArmorProfile = appArmorProfile;
     }
 
     @JsonProperty("fsGroup")

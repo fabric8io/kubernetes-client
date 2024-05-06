@@ -25,6 +25,7 @@ import lombok.experimental.Accessors;
     "kind",
     "metadata",
     "allowPrivilegeEscalation",
+    "appArmorProfile",
     "capabilities",
     "privileged",
     "procMount",
@@ -50,6 +51,8 @@ public class SecurityContext implements Editable<SecurityContextBuilder> , Kuber
 
     @JsonProperty("allowPrivilegeEscalation")
     private Boolean allowPrivilegeEscalation;
+    @JsonProperty("appArmorProfile")
+    private AppArmorProfile appArmorProfile;
     @JsonProperty("capabilities")
     private Capabilities capabilities;
     @JsonProperty("privileged")
@@ -80,9 +83,10 @@ public class SecurityContext implements Editable<SecurityContextBuilder> , Kuber
     public SecurityContext() {
     }
 
-    public SecurityContext(Boolean allowPrivilegeEscalation, Capabilities capabilities, Boolean privileged, String procMount, Boolean readOnlyRootFilesystem, Long runAsGroup, Boolean runAsNonRoot, Long runAsUser, SELinuxOptions seLinuxOptions, SeccompProfile seccompProfile, WindowsSecurityContextOptions windowsOptions) {
+    public SecurityContext(Boolean allowPrivilegeEscalation, AppArmorProfile appArmorProfile, Capabilities capabilities, Boolean privileged, String procMount, Boolean readOnlyRootFilesystem, Long runAsGroup, Boolean runAsNonRoot, Long runAsUser, SELinuxOptions seLinuxOptions, SeccompProfile seccompProfile, WindowsSecurityContextOptions windowsOptions) {
         super();
         this.allowPrivilegeEscalation = allowPrivilegeEscalation;
+        this.appArmorProfile = appArmorProfile;
         this.capabilities = capabilities;
         this.privileged = privileged;
         this.procMount = procMount;
@@ -103,6 +107,16 @@ public class SecurityContext implements Editable<SecurityContextBuilder> , Kuber
     @JsonProperty("allowPrivilegeEscalation")
     public void setAllowPrivilegeEscalation(Boolean allowPrivilegeEscalation) {
         this.allowPrivilegeEscalation = allowPrivilegeEscalation;
+    }
+
+    @JsonProperty("appArmorProfile")
+    public AppArmorProfile getAppArmorProfile() {
+        return appArmorProfile;
+    }
+
+    @JsonProperty("appArmorProfile")
+    public void setAppArmorProfile(AppArmorProfile appArmorProfile) {
+        this.appArmorProfile = appArmorProfile;
     }
 
     @JsonProperty("capabilities")

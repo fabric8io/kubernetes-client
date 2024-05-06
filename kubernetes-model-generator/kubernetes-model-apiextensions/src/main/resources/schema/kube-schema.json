@@ -347,6 +347,14 @@
           "$ref": "#/definitions/kubernetes_apiextensions_v1_CustomResourceValidation",
           "existingJavaType": "io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceValidation"
         },
+        "selectableFields": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_apiextensions_v1_SelectableField",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.apiextensions.v1.SelectableField"
+          }
+        },
         "served": {
           "type": "boolean"
         },
@@ -719,6 +727,19 @@
       "serializer": "io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaPropsOrStringArraySerDe.Serializer.class",
       "deserializer": "io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaPropsOrStringArraySerDe.Deserializer.class"
     },
+    "kubernetes_apiextensions_v1_SelectableField": {
+      "type": "object",
+      "properties": {
+        "jsonPath": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.apiextensions.v1.SelectableField",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "kubernetes_apiextensions_v1_ServiceReference": {
       "type": "object",
       "properties": {
@@ -1015,6 +1036,14 @@
         "scope": {
           "type": "string"
         },
+        "selectableFields": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_apiextensions_v1beta1_SelectableField",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.apiextensions.v1beta1.SelectableField"
+          }
+        },
         "subresources": {
           "$ref": "#/definitions/kubernetes_apiextensions_v1beta1_CustomResourceSubresources",
           "existingJavaType": "io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceSubresources"
@@ -1091,6 +1120,14 @@
         "schema": {
           "$ref": "#/definitions/kubernetes_apiextensions_v1beta1_CustomResourceValidation",
           "existingJavaType": "io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceValidation"
+        },
+        "selectableFields": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_apiextensions_v1beta1_SelectableField",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.apiextensions.v1beta1.SelectableField"
+          }
         },
         "served": {
           "type": "boolean"
@@ -1463,6 +1500,19 @@
       ],
       "serializer": "io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaPropsOrStringArraySerDe.Serializer.class",
       "deserializer": "io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaPropsOrStringArraySerDe.Deserializer.class"
+    },
+    "kubernetes_apiextensions_v1beta1_SelectableField": {
+      "type": "object",
+      "properties": {
+        "jsonPath": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.apiextensions.v1beta1.SelectableField",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
     },
     "kubernetes_apiextensions_v1beta1_ServiceReference": {
       "type": "object",

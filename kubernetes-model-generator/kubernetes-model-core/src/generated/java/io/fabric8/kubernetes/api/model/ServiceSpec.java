@@ -44,6 +44,7 @@ import lombok.experimental.Accessors;
     "selector",
     "sessionAffinity",
     "sessionAffinityConfig",
+    "trafficDistribution",
     "type"
 })
 @ToString
@@ -100,6 +101,8 @@ public class ServiceSpec implements Editable<ServiceSpecBuilder> , KubernetesRes
     private java.lang.String sessionAffinity;
     @JsonProperty("sessionAffinityConfig")
     private SessionAffinityConfig sessionAffinityConfig;
+    @JsonProperty("trafficDistribution")
+    private java.lang.String trafficDistribution;
     @JsonProperty("type")
     private java.lang.String type;
     @JsonIgnore
@@ -112,7 +115,7 @@ public class ServiceSpec implements Editable<ServiceSpecBuilder> , KubernetesRes
     public ServiceSpec() {
     }
 
-    public ServiceSpec(Boolean allocateLoadBalancerNodePorts, java.lang.String clusterIP, List<java.lang.String> clusterIPs, List<java.lang.String> externalIPs, java.lang.String externalName, java.lang.String externalTrafficPolicy, Integer healthCheckNodePort, java.lang.String internalTrafficPolicy, List<java.lang.String> ipFamilies, java.lang.String ipFamilyPolicy, java.lang.String loadBalancerClass, java.lang.String loadBalancerIP, List<java.lang.String> loadBalancerSourceRanges, List<ServicePort> ports, Boolean publishNotReadyAddresses, Map<String, String> selector, java.lang.String sessionAffinity, SessionAffinityConfig sessionAffinityConfig, java.lang.String type) {
+    public ServiceSpec(Boolean allocateLoadBalancerNodePorts, java.lang.String clusterIP, List<java.lang.String> clusterIPs, List<java.lang.String> externalIPs, java.lang.String externalName, java.lang.String externalTrafficPolicy, Integer healthCheckNodePort, java.lang.String internalTrafficPolicy, List<java.lang.String> ipFamilies, java.lang.String ipFamilyPolicy, java.lang.String loadBalancerClass, java.lang.String loadBalancerIP, List<java.lang.String> loadBalancerSourceRanges, List<ServicePort> ports, Boolean publishNotReadyAddresses, Map<String, String> selector, java.lang.String sessionAffinity, SessionAffinityConfig sessionAffinityConfig, java.lang.String trafficDistribution, java.lang.String type) {
         super();
         this.allocateLoadBalancerNodePorts = allocateLoadBalancerNodePorts;
         this.clusterIP = clusterIP;
@@ -132,6 +135,7 @@ public class ServiceSpec implements Editable<ServiceSpecBuilder> , KubernetesRes
         this.selector = selector;
         this.sessionAffinity = sessionAffinity;
         this.sessionAffinityConfig = sessionAffinityConfig;
+        this.trafficDistribution = trafficDistribution;
         this.type = type;
     }
 
@@ -313,6 +317,16 @@ public class ServiceSpec implements Editable<ServiceSpecBuilder> , KubernetesRes
     @JsonProperty("sessionAffinityConfig")
     public void setSessionAffinityConfig(SessionAffinityConfig sessionAffinityConfig) {
         this.sessionAffinityConfig = sessionAffinityConfig;
+    }
+
+    @JsonProperty("trafficDistribution")
+    public java.lang.String getTrafficDistribution() {
+        return trafficDistribution;
+    }
+
+    @JsonProperty("trafficDistribution")
+    public void setTrafficDistribution(java.lang.String trafficDistribution) {
+        this.trafficDistribution = trafficDistribution;
     }
 
     @JsonProperty("type")

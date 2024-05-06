@@ -15,11 +15,13 @@
 * Fix #5954: (crd-generator) Sort required properties to ensure deterministic output
 
 #### Dependency Upgrade
+* Fix #5695: Upgrade Fabric8 Kubernetes Model to Kubernetes v1.30.0
 
 #### New Features
 
 #### _**Note**_: Breaking changes
 * Fix #5960: The KubernetesSerializer will now by default serialize time related types to strings - rather than object, integer, number, or arrays of integer / number. If you are using these types in a custom object and were not including JsonFormat annotations to adjust the serialization they were likely being serialized in a non-standard way that would not be usable other Kubernetes clients, nor match the generated custom resource definition if one was being produced. Please open an issue if you need the previous behavior for whatever reason - there is a workaround by creating a customized KubernetesSerializer.
+* `storagemigration.k8s.io/v1alpha1` `StorageVersionMigration` introduced in Kubernetes 1.30.0 is added to [kubernetes-model-storageclass](https://github.com/fabric8io/kubernetes-client/tree/main/kubernetes-model-generator/kubernetes-model-storageclass) module. A dedicated module hasn't been created for this new ApiGroup.
 
 ### 6.12.1  (2024-04-18)
 

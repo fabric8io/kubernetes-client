@@ -36,7 +36,8 @@ import lombok.experimental.Accessors;
     "kind",
     "metadata",
     "data",
-    "driverName"
+    "driverName",
+    "structuredData"
 })
 @ToString
 @EqualsAndHashCode
@@ -64,6 +65,8 @@ public class ResourceHandle implements Editable<ResourceHandleBuilder> , Kuberne
     private String data;
     @JsonProperty("driverName")
     private String driverName;
+    @JsonProperty("structuredData")
+    private StructuredResourceHandle structuredData;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -74,10 +77,11 @@ public class ResourceHandle implements Editable<ResourceHandleBuilder> , Kuberne
     public ResourceHandle() {
     }
 
-    public ResourceHandle(String data, String driverName) {
+    public ResourceHandle(String data, String driverName, StructuredResourceHandle structuredData) {
         super();
         this.data = data;
         this.driverName = driverName;
+        this.structuredData = structuredData;
     }
 
     @JsonProperty("data")
@@ -98,6 +102,16 @@ public class ResourceHandle implements Editable<ResourceHandleBuilder> , Kuberne
     @JsonProperty("driverName")
     public void setDriverName(String driverName) {
         this.driverName = driverName;
+    }
+
+    @JsonProperty("structuredData")
+    public StructuredResourceHandle getStructuredData() {
+        return structuredData;
+    }
+
+    @JsonProperty("structuredData")
+    public void setStructuredData(StructuredResourceHandle structuredData) {
+        this.structuredData = structuredData;
     }
 
     @JsonIgnore

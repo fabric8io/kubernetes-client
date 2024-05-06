@@ -35,6 +35,7 @@ import lombok.experimental.Accessors;
     "images",
     "nodeInfo",
     "phase",
+    "runtimeHandlers",
     "volumesAttached",
     "volumesInUse"
 })
@@ -73,6 +74,9 @@ public class NodeStatus implements Editable<NodeStatusBuilder> , KubernetesResou
     private NodeSystemInfo nodeInfo;
     @JsonProperty("phase")
     private java.lang.String phase;
+    @JsonProperty("runtimeHandlers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<NodeRuntimeHandler> runtimeHandlers = new ArrayList<NodeRuntimeHandler>();
     @JsonProperty("volumesAttached")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<AttachedVolume> volumesAttached = new ArrayList<AttachedVolume>();
@@ -89,7 +93,7 @@ public class NodeStatus implements Editable<NodeStatusBuilder> , KubernetesResou
     public NodeStatus() {
     }
 
-    public NodeStatus(List<NodeAddress> addresses, Map<String, io.fabric8.kubernetes.api.model.Quantity> allocatable, Map<String, io.fabric8.kubernetes.api.model.Quantity> capacity, List<NodeCondition> conditions, NodeConfigStatus config, NodeDaemonEndpoints daemonEndpoints, List<ContainerImage> images, NodeSystemInfo nodeInfo, java.lang.String phase, List<AttachedVolume> volumesAttached, List<java.lang.String> volumesInUse) {
+    public NodeStatus(List<NodeAddress> addresses, Map<String, io.fabric8.kubernetes.api.model.Quantity> allocatable, Map<String, io.fabric8.kubernetes.api.model.Quantity> capacity, List<NodeCondition> conditions, NodeConfigStatus config, NodeDaemonEndpoints daemonEndpoints, List<ContainerImage> images, NodeSystemInfo nodeInfo, java.lang.String phase, List<NodeRuntimeHandler> runtimeHandlers, List<AttachedVolume> volumesAttached, List<java.lang.String> volumesInUse) {
         super();
         this.addresses = addresses;
         this.allocatable = allocatable;
@@ -100,6 +104,7 @@ public class NodeStatus implements Editable<NodeStatusBuilder> , KubernetesResou
         this.images = images;
         this.nodeInfo = nodeInfo;
         this.phase = phase;
+        this.runtimeHandlers = runtimeHandlers;
         this.volumesAttached = volumesAttached;
         this.volumesInUse = volumesInUse;
     }
@@ -192,6 +197,16 @@ public class NodeStatus implements Editable<NodeStatusBuilder> , KubernetesResou
     @JsonProperty("phase")
     public void setPhase(java.lang.String phase) {
         this.phase = phase;
+    }
+
+    @JsonProperty("runtimeHandlers")
+    public List<NodeRuntimeHandler> getRuntimeHandlers() {
+        return runtimeHandlers;
+    }
+
+    @JsonProperty("runtimeHandlers")
+    public void setRuntimeHandlers(List<NodeRuntimeHandler> runtimeHandlers) {
+        this.runtimeHandlers = runtimeHandlers;
     }
 
     @JsonProperty("volumesAttached")

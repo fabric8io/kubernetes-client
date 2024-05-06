@@ -20,6 +20,7 @@ import (
   "encoding/json"
   "fmt"
   v1alpha2resource "k8s.io/api/resource/v1alpha2"
+  "k8s.io/apimachinery/pkg/runtime"
 
   "log"
   "reflect"
@@ -34,12 +35,18 @@ import (
 type Schema struct {
   ResourceClaim                                  v1alpha2resource.ResourceClaim
   ResourceClaimList                              v1alpha2resource.ResourceClaimList
-  ResourceClass                                  v1alpha2resource.ResourceClaim
+  ResourceClass                                  v1alpha2resource.ResourceClass
   PodSchedulingContext                           v1alpha2resource.PodSchedulingContext
   PodSchedulingContextList                       v1alpha2resource.PodSchedulingContextList
   ResourceClassList                              v1alpha2resource.ResourceClassList
   ResourceClaimTemplate                          v1alpha2resource.ResourceClaimTemplate
   ResourceClaimTemplateList                      v1alpha2resource.ResourceClaimTemplateList
+  ResourceSlice                                  v1alpha2resource.ResourceSlice
+  ResourceSliceList                              v1alpha2resource.ResourceSliceList
+  ResourceClaimParameters                        v1alpha2resource.ResourceClaimParameters
+  ResourceClaimParametersList                    v1alpha2resource.ResourceClaimParametersList
+  ResourceClassParameters                        v1alpha2resource.ResourceClassParameters
+  ResourceClassParametersList                    v1alpha2resource.ResourceClassParametersList
 }
 
 func main() {
@@ -55,7 +62,10 @@ func main() {
     reflect.TypeOf(time.Time{}): reflect.TypeOf(""),
     reflect.TypeOf(struct{}{}):  reflect.TypeOf(""),
   }
-  schema, err := schemagen.GenerateSchema(reflect.TypeOf(Schema{}), packages, typeMap, map[reflect.Type]string{}, "resource")
+  manualTypeMap := map[reflect.Type]string {
+    reflect.TypeOf(runtime.RawExtension{}): "java.util.Map<String, Object>",
+  }
+  schema, err := schemagen.GenerateSchema(reflect.TypeOf(Schema{}), packages, typeMap, manualTypeMap, "resource")
   if err != nil {
     fmt.Fprintf(os.Stderr, "An error occurred: %v", err)
     return

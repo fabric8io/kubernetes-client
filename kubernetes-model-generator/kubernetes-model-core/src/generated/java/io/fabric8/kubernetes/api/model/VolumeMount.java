@@ -28,6 +28,7 @@ import lombok.experimental.Accessors;
     "mountPropagation",
     "name",
     "readOnly",
+    "recursiveReadOnly",
     "subPath",
     "subPathExpr"
 })
@@ -51,6 +52,8 @@ public class VolumeMount implements Editable<VolumeMountBuilder> , KubernetesRes
     private String name;
     @JsonProperty("readOnly")
     private Boolean readOnly;
+    @JsonProperty("recursiveReadOnly")
+    private String recursiveReadOnly;
     @JsonProperty("subPath")
     private String subPath;
     @JsonProperty("subPathExpr")
@@ -65,12 +68,13 @@ public class VolumeMount implements Editable<VolumeMountBuilder> , KubernetesRes
     public VolumeMount() {
     }
 
-    public VolumeMount(String mountPath, String mountPropagation, String name, Boolean readOnly, String subPath, String subPathExpr) {
+    public VolumeMount(String mountPath, String mountPropagation, String name, Boolean readOnly, String recursiveReadOnly, String subPath, String subPathExpr) {
         super();
         this.mountPath = mountPath;
         this.mountPropagation = mountPropagation;
         this.name = name;
         this.readOnly = readOnly;
+        this.recursiveReadOnly = recursiveReadOnly;
         this.subPath = subPath;
         this.subPathExpr = subPathExpr;
     }
@@ -113,6 +117,16 @@ public class VolumeMount implements Editable<VolumeMountBuilder> , KubernetesRes
     @JsonProperty("readOnly")
     public void setReadOnly(Boolean readOnly) {
         this.readOnly = readOnly;
+    }
+
+    @JsonProperty("recursiveReadOnly")
+    public String getRecursiveReadOnly() {
+        return recursiveReadOnly;
+    }
+
+    @JsonProperty("recursiveReadOnly")
+    public void setRecursiveReadOnly(String recursiveReadOnly) {
+        this.recursiveReadOnly = recursiveReadOnly;
     }
 
     @JsonProperty("subPath")

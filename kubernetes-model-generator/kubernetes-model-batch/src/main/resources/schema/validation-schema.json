@@ -1057,6 +1057,9 @@
         "completions": {
           "type": "integer"
         },
+        "managedBy": {
+          "type": "string"
+        },
         "manualSelector": {
           "type": "boolean"
         },
@@ -1076,6 +1079,10 @@
         "selector": {
           "$ref": "#/definitions/kubernetes_apimachinery_LabelSelector",
           "existingJavaType": "io.fabric8.kubernetes.api.model.LabelSelector"
+        },
+        "successPolicy": {
+          "$ref": "#/definitions/kubernetes_batch_v1_SuccessPolicy",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.batch.v1.SuccessPolicy"
         },
         "suspend": {
           "type": "boolean"
@@ -1238,6 +1245,39 @@
       },
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.batch.v1.PodFailurePolicyRule",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_batch_v1_SuccessPolicy": {
+      "type": "object",
+      "properties": {
+        "rules": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/kubernetes_batch_v1_SuccessPolicyRule",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.batch.v1.SuccessPolicyRule"
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.batch.v1.SuccessPolicy",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_batch_v1_SuccessPolicyRule": {
+      "type": "object",
+      "properties": {
+        "succeededCount": {
+          "type": "integer"
+        },
+        "succeededIndexes": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.batch.v1.SuccessPolicyRule",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -1451,6 +1491,22 @@
       },
       "additionalProperties": true,
       "existingJavaType": "io.fabric8.kubernetes.api.model.Affinity",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_core_AppArmorProfile": {
+      "type": "object",
+      "properties": {
+        "localhostProfile": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "existingJavaType": "io.fabric8.kubernetes.api.model.AppArmorProfile",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -3156,6 +3212,10 @@
     "kubernetes_core_PodSecurityContext": {
       "type": "object",
       "properties": {
+        "appArmorProfile": {
+          "$ref": "#/definitions/kubernetes_core_AppArmorProfile",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.AppArmorProfile"
+        },
         "fsGroup": {
           "type": "integer",
           "existingJavaType": "Long"
@@ -3883,6 +3943,10 @@
         "allowPrivilegeEscalation": {
           "type": "boolean"
         },
+        "appArmorProfile": {
+          "$ref": "#/definitions/kubernetes_core_AppArmorProfile",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.AppArmorProfile"
+        },
         "capabilities": {
           "$ref": "#/definitions/kubernetes_core_Capabilities",
           "existingJavaType": "io.fabric8.kubernetes.api.model.Capabilities"
@@ -4286,6 +4350,9 @@
         },
         "readOnly": {
           "type": "boolean"
+        },
+        "recursiveReadOnly": {
+          "type": "string"
         },
         "subPath": {
           "type": "string"
@@ -4717,6 +4784,17 @@
           "type": "string",
           "default": "APIGroupList",
           "required": true
+        }
+      },
+      "additionalProperties": true
+    },
+    "apparmorprofile": {
+      "properties": {
+        "localhostProfile": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
         }
       },
       "additionalProperties": true
@@ -6067,6 +6145,9 @@
         "completions": {
           "type": "integer"
         },
+        "managedBy": {
+          "type": "string"
+        },
         "manualSelector": {
           "type": "boolean"
         },
@@ -6086,6 +6167,10 @@
         "selector": {
           "$ref": "#/definitions/kubernetes_apimachinery_LabelSelector",
           "existingJavaType": "io.fabric8.kubernetes.api.model.LabelSelector"
+        },
+        "successPolicy": {
+          "$ref": "#/definitions/kubernetes_batch_v1_SuccessPolicy",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.batch.v1.SuccessPolicy"
         },
         "suspend": {
           "type": "boolean"
@@ -6915,6 +7000,10 @@
     },
     "podsecuritycontext": {
       "properties": {
+        "appArmorProfile": {
+          "$ref": "#/definitions/kubernetes_core_AppArmorProfile",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.AppArmorProfile"
+        },
         "fsGroup": {
           "type": "integer",
           "existingJavaType": "Long"
@@ -7552,6 +7641,10 @@
         "allowPrivilegeEscalation": {
           "type": "boolean"
         },
+        "appArmorProfile": {
+          "$ref": "#/definitions/kubernetes_core_AppArmorProfile",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.AppArmorProfile"
+        },
         "capabilities": {
           "$ref": "#/definitions/kubernetes_core_Capabilities",
           "existingJavaType": "io.fabric8.kubernetes.api.model.Capabilities"
@@ -7736,6 +7829,29 @@
           "type": "string"
         },
         "volumeNamespace": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "successpolicy": {
+      "properties": {
+        "rules": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/kubernetes_batch_v1_SuccessPolicyRule",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.batch.v1.SuccessPolicyRule"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "successpolicyrule": {
+      "properties": {
+        "succeededCount": {
+          "type": "integer"
+        },
+        "succeededIndexes": {
           "type": "string"
         }
       },
@@ -8066,6 +8182,9 @@
         },
         "readOnly": {
           "type": "boolean"
+        },
+        "recursiveReadOnly": {
+          "type": "string"
         },
         "subPath": {
           "type": "string"

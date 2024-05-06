@@ -860,6 +860,22 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "kubernetes_core_AppArmorProfile": {
+      "type": "object",
+      "properties": {
+        "localhostProfile": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "existingJavaType": "io.fabric8.kubernetes.api.model.AppArmorProfile",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "kubernetes_core_AzureDiskVolumeSource": {
       "type": "object",
       "properties": {
@@ -2561,6 +2577,10 @@
     "kubernetes_core_PodSecurityContext": {
       "type": "object",
       "properties": {
+        "appArmorProfile": {
+          "$ref": "#/definitions/kubernetes_core_AppArmorProfile",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.AppArmorProfile"
+        },
         "fsGroup": {
           "type": "integer",
           "existingJavaType": "Long"
@@ -3259,6 +3279,10 @@
         "allowPrivilegeEscalation": {
           "type": "boolean"
         },
+        "appArmorProfile": {
+          "$ref": "#/definitions/kubernetes_core_AppArmorProfile",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.AppArmorProfile"
+        },
         "capabilities": {
           "$ref": "#/definitions/kubernetes_core_Capabilities",
           "existingJavaType": "io.fabric8.kubernetes.api.model.Capabilities"
@@ -3662,6 +3686,9 @@
         },
         "readOnly": {
           "type": "boolean"
+        },
+        "recursiveReadOnly": {
+          "type": "string"
         },
         "subPath": {
           "type": "string"

@@ -2451,10 +2451,11 @@
         "message": {
           "type": "string"
         },
-        "reason": {
-          "type": "string"
+        "observedGeneration": {
+          "type": "integer",
+          "existingJavaType": "Long"
         },
-        "severity": {
+        "reason": {
           "type": "string"
         },
         "status": {
@@ -3733,21 +3734,6 @@
     "rootvolume": {
       "properties": {
         "availabilityZone": {
-          "type": "string"
-        },
-        "deviceType": {
-          "type": "string"
-        },
-        "diskSize": {
-          "type": "integer"
-        },
-        "sourceType": {
-          "type": "string"
-        },
-        "sourceUUID": {
-          "type": "string"
-        },
-        "volumeType": {
           "type": "string"
         }
       },

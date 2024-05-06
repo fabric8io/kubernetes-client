@@ -100,6 +100,10 @@ type Schema struct {
 	V1ValidatingWebhookConfigurationList        admissionregistrationv1.ValidatingWebhookConfigurationList
 	V1MutatingWebhookConfiguration              admissionregistrationv1.MutatingWebhookConfiguration
 	V1MutatingWebhookConfigurationList          admissionregistrationv1.MutatingWebhookConfigurationList
+	V1ValidatingAdmissionPolicy                 admissionregistrationv1.ValidatingAdmissionPolicy
+	V1ValidatingAdmissionPolicyList             admissionregistrationv1.ValidatingAdmissionPolicyList
+	V1ValidatingAdmissionPolicyBinding          admissionregistrationv1.ValidatingAdmissionPolicyBinding
+	V1ValidatingAdmissionPolicyBindingList      admissionregistrationv1.ValidatingAdmissionPolicyBindingList
 	V1RuleWithOperations                        admissionregistrationv1.RuleWithOperations
 	V1ServiceReference                          admissionregistrationv1.ServiceReference
 	K8sSubjectAccessReview                      k8sauthapi.SubjectAccessReview
