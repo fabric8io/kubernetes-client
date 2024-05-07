@@ -17,22 +17,11 @@ package io.fabric8.crd.generator.collector;
 
 import io.fabric8.crdv2.generator.CustomResourceInfo;
 import io.fabric8.kubernetes.api.model.HasMetadata;
-import io.fabric8.kubernetes.client.CustomResource;
-import io.fabric8.kubernetes.model.annotation.Group;
-import io.fabric8.kubernetes.model.annotation.Version;
-import org.jboss.jandex.ClassInfo;
-import org.jboss.jandex.CompositeIndex;
-import org.jboss.jandex.Index;
-import org.jboss.jandex.IndexReader;
 import org.jboss.jandex.IndexView;
-import org.jboss.jandex.Indexer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
@@ -41,50 +30,35 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 
 /**
- * Collects CustomResource class files from various places and loads them by using
+ * Collects Custom Resource class files from various places and loads them by using
  * {@link CustomResourceCollector#findCustomResources()}.
  */
 public class CustomResourceCollector {
 
   private static final Logger log = LoggerFactory.getLogger(CustomResourceCollector.class);
 
-  private static final String DEFAULT_JANDEX_INDEX = "META-INF/jandex.idx";
-
   private final CustomResourceClassLoader customResourceClassLoader = new CustomResourceClassLoader();
+  private final CustomResourceJandexCollector jandexCollector = new CustomResourceJandexCollector();
 
   private final Set<String> customResourceClassNames = new HashSet<>();
-
-  private final Collection<IndexView> indexes = new LinkedList<>();
-  private final Set<File> filesToIndex = new HashSet<>();
 
   private final List<Predicate<String>> classNamePredicates = new LinkedList<>();
   private final List<Predicate<CustomResourceInfo>> customResourceInfoPredicates = new LinkedList<>();
 
-  private boolean forceIndex = false;
-
   public CustomResourceCollector withParentClassLoader(ClassLoader classLoader) {
-    if (classLoader != null) {
-      this.customResourceClassLoader.withParentClassLoader(classLoader);
-    }
+    this.customResourceClassLoader.withParentClassLoader(classLoader);
     return this;
   }
 
-  public CustomResourceCollector withClasspath(String... classpath) {
-    if (classpath != null) {
-      this.customResourceClassLoader.withClasspath(classpath);
-    }
+  public CustomResourceCollector withClasspathElement(String... classpathElement) {
+    this.customResourceClassLoader.withClasspathElement(classpathElement);
     return this;
   }
 
-  public CustomResourceCollector withClasspaths(Collection<String> classpaths) {
-    if (classpaths != null) {
-      this.customResourceClassLoader.withClasspaths(classpaths);
-    }
+  public CustomResourceCollector withClasspathElements(Collection<String> classpathElements) {
+    this.customResourceClassLoader.withClasspathElements(classpathElements);
     return this;
   }
 
@@ -105,34 +79,27 @@ public class CustomResourceCollector {
   }
 
   public CustomResourceCollector withIndex(IndexView... index) {
-    if (index != null) {
-      withIndices(Arrays.asList(index));
-    }
+    jandexCollector.withIndex(index);
     return this;
   }
 
   public CustomResourceCollector withIndices(Collection<IndexView> indices) {
-    if (indices != null) {
-      indices.stream()
-          .filter(Objects::nonNull)
-          .forEach(this.indexes::add);
-    }
+    jandexCollector.withIndices(indices);
     return this;
   }
 
   public CustomResourceCollector withFileToIndex(File... files) {
-    if (files != null) {
-      withFilesToIndex(Arrays.asList(files));
-    }
+    jandexCollector.withFileToIndex(files);
     return this;
   }
 
   public CustomResourceCollector withFilesToIndex(Collection<File> files) {
-    if (files != null) {
-      files.stream()
-          .filter(Objects::nonNull)
-          .forEach(this.filesToIndex::add);
-    }
+    jandexCollector.withFilesToIndex(files);
+    return this;
+  }
+
+  public CustomResourceCollector withForceIndex(boolean forceIndex) {
+    jandexCollector.withForceIndex(forceIndex);
     return this;
   }
 
@@ -202,59 +169,12 @@ public class CustomResourceCollector {
     return this;
   }
 
-  public CustomResourceCollector withForceIndex(boolean forceIndex) {
-    this.forceIndex = forceIndex;
-    return this;
-  }
-
   public CustomResourceInfo[] findCustomResources() {
     Set<String> customResourcesClassNames = new HashSet<>(customResourceClassNames);
 
-    // create / consider indices only if custom resource are not explicitly named
+    // use indices only if custom resource class names are not explicitly given
     if (customResourcesClassNames.isEmpty()) {
-      Collection<IndexView> indices = new LinkedList<>();
-
-      indices.add(createBaseIndex());
-      indices.addAll(this.indexes);
-
-      if (!filesToIndex.isEmpty()) {
-        Set<File> filesToIndex = new HashSet<>(this.filesToIndex);
-
-        if (!forceIndex) {
-          List<File> directoriesWithIndex = filesToIndex.stream()
-              .filter(this::isDirectoryWithIndex)
-              .collect(Collectors.toList());
-
-          directoriesWithIndex.stream()
-              .map(this::getIndexFromDirectory)
-              .forEach(indices::add);
-
-          log.debug("Found {} directories with existing indices", directoriesWithIndex.size());
-
-          directoriesWithIndex.forEach(filesToIndex::remove);
-
-          List<File> archivesWithIndex = filesToIndex.stream()
-              .filter(this::isArchiveWithIndex)
-              .collect(Collectors.toList());
-
-          archivesWithIndex.stream()
-              .map(this::getIndexFromArchive)
-              .forEach(indices::add);
-
-          log.debug("Found {} archives with existing indices", archivesWithIndex.size());
-
-          archivesWithIndex.forEach(filesToIndex::remove);
-        }
-
-        log.debug("Creating {} indices", filesToIndex.size());
-        indices.add(JandexIndexer.indexFor(filesToIndex));
-      }
-
-      CompositeIndex compositeIndex = CompositeIndex.create(indices);
-      findCustomResourceClasses(compositeIndex).stream()
-          .map(ClassInfo::toString)
-          .forEach(customResourcesClassNames::add);
-
+      customResourcesClassNames.addAll(jandexCollector.findCustomResourceClasses());
       log.debug("Found {} custom resource classes before filtering", customResourcesClassNames.size());
     } else {
       log.debug("Using explicit {} custom resource classes and skip scanning", customResourcesClassNames);
@@ -276,75 +196,11 @@ public class CustomResourceCollector {
         .toArray(CustomResourceInfo[]::new);
 
     log.debug("Found {} custom resource classes after filtering", infos.length);
-
     return infos;
   }
 
-  private List<ClassInfo> findCustomResourceClasses(IndexView index) {
-    // Only works if HasMetadata itself has been indexed
-    return index.getAllKnownImplementors(HasMetadata.class)
-        .stream()
-        .filter(classInfo -> classInfo.hasAnnotation(Group.class))
-        .filter(classInfo -> classInfo.hasAnnotation(Version.class))
-        .collect(Collectors.toList());
-  }
-
-  private CustomResourceInfo createCustomResourceInfo(
-      Class<? extends HasMetadata> customResourceClass) {
+  private CustomResourceInfo createCustomResourceInfo(Class<? extends HasMetadata> customResourceClass) {
     return CustomResourceInfo.fromClass(customResourceClass);
-  }
-
-  /**
-   * Creates the base index required to scan for custom resources.
-   *
-   * @return the base index.
-   */
-  private Index createBaseIndex() {
-    try {
-      Indexer indexer = new Indexer();
-      indexer.indexClass(HasMetadata.class);
-      indexer.indexClass(CustomResource.class);
-      return indexer.complete();
-    } catch (IOException e) {
-      throw new CustomResourceCollectorException(e);
-    }
-  }
-
-  private boolean isDirectoryWithIndex(File file) {
-    return file.isDirectory() && new File(file, DEFAULT_JANDEX_INDEX).exists();
-  }
-
-  private Index getIndexFromDirectory(File dir) {
-    try (InputStream in = Files.newInputStream(new File(dir, DEFAULT_JANDEX_INDEX).toPath())) {
-      IndexReader reader = new IndexReader(in);
-      return reader.read();
-    } catch (IOException e) {
-      throw new CustomResourceCollectorException(e);
-    }
-  }
-
-  private boolean isArchiveWithIndex(File file) {
-    if (file.isFile() && file.getName().endsWith(".jar")) {
-      try (ZipFile zip = new ZipFile(file)) {
-        ZipEntry entry = zip.getEntry(DEFAULT_JANDEX_INDEX);
-        return entry != null;
-      } catch (IOException e) {
-        throw new CustomResourceCollectorException(e);
-      }
-    }
-    return false;
-  }
-
-  private Index getIndexFromArchive(File file) {
-    try (ZipFile zip = new ZipFile(file)) {
-      ZipEntry entry = zip.getEntry(DEFAULT_JANDEX_INDEX);
-      try (InputStream in = zip.getInputStream(entry)) {
-        IndexReader reader = new IndexReader(in);
-        return reader.read();
-      }
-    } catch (IOException e) {
-      throw new CustomResourceCollectorException(e);
-    }
   }
 
 }

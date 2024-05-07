@@ -15,7 +15,7 @@
  */
 package io.fabric8.crd.generator.collector;
 
-import io.fabric8.kubernetes.client.CustomResource;
+import io.fabric8.kubernetes.api.model.HasMetadata;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -25,10 +25,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 class CustomResourceClassLoader {
 
-  private final List<String> classpathList = new ArrayList<>();
+  private final List<String> classpathElements = new ArrayList<>();
 
   private ClassLoader parentClassLoader;
 
@@ -39,20 +40,29 @@ class CustomResourceClassLoader {
     return this;
   }
 
-  public CustomResourceClassLoader withClasspath(String... classpaths) {
-    withClasspaths(Arrays.asList(classpaths));
+  public CustomResourceClassLoader withClasspathElement(String... classpathElements) {
+    if (classpathElements != null) {
+      withClasspathElements(Arrays.asList(classpathElements));
+    }
     return this;
   }
 
-  public CustomResourceClassLoader withClasspaths(Collection<String> classpaths) {
-    classpathList.addAll(classpaths);
+  public CustomResourceClassLoader withClasspathElements(Collection<String> classpathElements) {
+    if (classpathElements != null) {
+      classpathElements.stream()
+          .filter(Objects::nonNull)
+          .forEach(this.classpathElements::add);
+    }
     return this;
   }
 
-  @SuppressWarnings("unchecked")
-  public Class<CustomResource<?, ?>> loadCustomResourceClass(String className) {
+  public Class<? extends HasMetadata> loadCustomResourceClass(String className) {
     Class<?> clazz = loadClass(className);
-    return (Class<CustomResource<?, ?>>) clazz;
+    if (HasMetadata.class.isAssignableFrom(clazz)) {
+      return clazz.asSubclass(HasMetadata.class);
+    }
+    throw new CustomResourceCollectorException(
+        "Could not load Custom Resource. Class does not implement HasMetadata: " + className);
   }
 
   private Class<?> loadClass(String className) {
@@ -68,8 +78,8 @@ class CustomResourceClassLoader {
       return classLoader;
     }
 
-    if (!classpathList.isEmpty()) {
-      URL[] urls = classpathList.stream()
+    if (!classpathElements.isEmpty()) {
+      URL[] urls = classpathElements.stream()
           .map(s -> {
             try {
               return new File(s).toURI().toURL();
@@ -83,13 +93,12 @@ class CustomResourceClassLoader {
       } else {
         this.classLoader = new URLClassLoader(urls);
       }
-      return classLoader;
-    }
-
-    if (parentClassLoader != null) {
-      this.classLoader = parentClassLoader;
     } else {
-      this.classLoader = Thread.currentThread().getContextClassLoader();
+      if (parentClassLoader != null) {
+        this.classLoader = parentClassLoader;
+      } else {
+        this.classLoader = Thread.currentThread().getContextClassLoader();
+      }
     }
 
     return classLoader;

@@ -21,6 +21,7 @@ import org.jboss.jandex.Indexer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,15 +33,15 @@ import java.util.Collection;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Objects;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 import java.util.stream.Stream;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 
 /**
  * Allows to create a Jandex index based on given class files, directories and JAR archives.
  * Unlike {@link Index#of(File...)}, this implementation performs a recursive scan of the directories.
  */
-public class JandexIndexer {
+class JandexIndexer {
 
   private static final Logger log = LoggerFactory.getLogger(JandexIndexer.class);
 
@@ -48,6 +49,10 @@ public class JandexIndexer {
   private static final String JAR_FILE_SUFFIX = ".jar";
 
   private final List<File> files = new ArrayList<>();
+
+  private int maxJarEntries = 10000;
+  private long maxBytesReadFromJar = 100000000; // 100 MB
+  private long maxClassFileSize = 1000000; // 1 MB
 
   public JandexIndexer withFile(File... file) {
     if (file != null) {
@@ -65,27 +70,48 @@ public class JandexIndexer {
     return this;
   }
 
+  public JandexIndexer withMaxJarEntries(int maxJarEntries) {
+    if (maxJarEntries < 1)
+      throw new IllegalArgumentException("maxJarEntries must be greater than 0");
+    this.maxJarEntries = maxJarEntries;
+    return this;
+  }
+
+  public JandexIndexer withMaxClassFileSize(int maxClassFileSize) {
+    if (maxClassFileSize < 10)
+      throw new IllegalArgumentException("maxClassFileSize must be greater than 10 B (1 KB)");
+    this.maxClassFileSize = maxClassFileSize;
+    return this;
+  }
+
+  public JandexIndexer withMaxBytesReadFromJar(long maxBytesReadFromJar) {
+    if (maxBytesReadFromJar < 10)
+      throw new IllegalArgumentException("maxBytesReadFromJar must be greater than 10 B (1 KB)");
+    this.maxBytesReadFromJar = maxBytesReadFromJar;
+    return this;
+  }
+
   public Index createIndex() {
     Indexer indexer = new Indexer();
     appendToIndex(indexer);
     return indexer.complete();
   }
 
-  void appendToIndex(Indexer indexer) {
+  private void appendToIndex(Indexer indexer) {
     for (File file : files) {
       if (file.isDirectory()) {
         scanDirectoryAndAddToIndex(file, indexer);
       } else if (file.isFile() && file.getName().endsWith(CLASS_FILE_SUFFIX)) {
-        scanClassFileAndAddToIndex(file, indexer);
+        addClassFileToIndex(file, indexer);
       } else if (file.isFile() && file.getName().endsWith(JAR_FILE_SUFFIX)) {
         scanJarFileAndAddToIndex(file, indexer);
       } else {
-        throw new IllegalArgumentException("Not a class file, JAR file or directory: " + file);
+        throw new CustomResourceCollectorException("Not a class file, JAR file or directory: " + file);
       }
     }
   }
 
-  private void scanClassFileAndAddToIndex(File file, Indexer indexer) {
+  private void addClassFileToIndex(File file, Indexer indexer) {
     try (InputStream in = Files.newInputStream(file.toPath())) {
       addToIndex(in, indexer);
     } catch (IOException e) {
@@ -94,22 +120,27 @@ public class JandexIndexer {
   }
 
   private void scanJarFileAndAddToIndex(File file, Indexer indexer) {
-    try (ZipFile zip = new ZipFile(file)) {
-      Enumeration<? extends ZipEntry> entries = zip.entries();
+    try (JarFile jar = new JarFile(file)) {
+      Enumeration<? extends JarEntry> entries = jar.entries();
+      int totalEntries = 0;
+      long totalBytesRead = 0;
       while (entries.hasMoreElements()) {
-        ZipEntry entry = entries.nextElement();
-        if (!entry.isDirectory()) {
-          if (entry.getName().endsWith(CLASS_FILE_SUFFIX)) {
-            try (InputStream in = zip.getInputStream(entry)) {
-              addToIndex(in, indexer);
-            } catch (Exception e) {
-              throw new CustomResourceCollectorException(e);
-            }
-          }
+        totalEntries++;
+        JarEntry entry = entries.nextElement();
+        if (!entry.isDirectory() && entry.getName().endsWith(CLASS_FILE_SUFFIX)) {
+          long bytesRead = addToIndex(jar, entry, indexer);
+          totalBytesRead = totalBytesRead + bytesRead;
+        }
+        if (totalEntries > maxJarEntries) {
+          throw new CustomResourceCollectorException("Limit for total JAR file entries exceeded: " + totalEntries);
+        }
+        if (totalBytesRead > maxBytesReadFromJar) {
+          throw new CustomResourceCollectorException(
+              "Limit for total bytes read from JAR file exceeded: " + totalBytesRead + " bytes");
         }
       }
     } catch (IOException e) {
-      throw new CustomResourceCollectorException(e);
+      throw new CustomResourceCollectorException("Could not index JAR file " + file, e);
     }
   }
 
@@ -118,27 +149,75 @@ public class JandexIndexer {
       stream
           .filter(Files::isRegularFile)
           .filter(file -> file.toString().endsWith(CLASS_FILE_SUFFIX))
-          .forEach(file -> {
-            try (InputStream in = Files.newInputStream(file)) {
-              addToIndex(in, indexer);
-            } catch (Exception e) {
-              throw new RuntimeException(e);
-            }
-          });
+          .forEach(file -> addToIndex(file, indexer));
     } catch (IOException e) {
       throw new CustomResourceCollectorException(e);
     }
   }
 
-  private void addToIndex(InputStream inputStream, Indexer indexer) throws IOException {
-    ClassSummary info = indexer.indexWithSummary(inputStream);
-    log.debug("Indexed: {} ({} Annotations)", info.name(), info.annotationsCount());
+  private long addToIndex(JarFile zip, JarEntry entry, Indexer indexer) {
+    try (InputStream in = zip.getInputStream(entry)) {
+      return addToIndex(in, indexer);
+    } catch (IOException e) {
+      throw new CustomResourceCollectorException("Could not index " + entry.getName() + " from JAR file " + zip.getName(), e);
+    }
+  }
+
+  private long addToIndex(Path file, Indexer indexer) {
+    try (InputStream in = Files.newInputStream(file)) {
+      return addToIndex(in, indexer);
+    } catch (IOException e) {
+      throw new CustomResourceCollectorException("Could not index " + file, e);
+    }
+  }
+
+  private long addToIndex(InputStream inputStream, Indexer indexer) throws IOException {
+    try (BoundedInputStream boundedInputStream = new BoundedInputStream(inputStream, maxClassFileSize);
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(boundedInputStream)) {
+      ClassSummary info = indexer.indexWithSummary(bufferedInputStream);
+      log.debug("Indexed: {} ({} Annotations)", info.name(), info.annotationsCount());
+      return boundedInputStream.getBytesRead();
+    }
   }
 
   public static Index indexFor(Collection<File> files) {
     return new JandexIndexer()
         .withFiles(files)
         .createIndex();
+  }
+
+  static class BoundedInputStream extends InputStream implements AutoCloseable {
+    private final long maxBytes;
+    private final InputStream inputStream;
+
+    private long bytesRead = 0;
+
+    public BoundedInputStream(InputStream inputStream, long maxBytes) {
+      this.inputStream = inputStream;
+      this.maxBytes = maxBytes;
+    }
+
+    public long getBytesRead() {
+      return bytesRead;
+    }
+
+    @Override
+    public int read() throws IOException {
+      if (bytesRead >= maxBytes) {
+        throw new IOException("Read limit of " + maxBytes + " bytes reached");
+      }
+      int result = inputStream.read();
+      if (result != -1) {
+        bytesRead++;
+      }
+      return result;
+    }
+
+    @Override
+    public void close() throws IOException {
+      inputStream.close();
+      super.close();
+    }
   }
 
 }
