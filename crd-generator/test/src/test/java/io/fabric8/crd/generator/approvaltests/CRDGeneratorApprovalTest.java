@@ -15,6 +15,9 @@
  */
 package io.fabric8.crd.generator.approvaltests;
 
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
+import com.spun.util.tests.TestUtils;
 import io.fabric8.crd.generator.CRDGenerator;
 import io.fabric8.crd.generator.CRDInfo;
 import io.fabric8.crd.generator.approvaltests.annotated.Annotated;
@@ -25,15 +28,19 @@ import io.fabric8.crd.generator.approvaltests.k8svalidation.K8sValidation;
 import io.fabric8.crd.generator.approvaltests.map.ContainingMaps;
 import io.fabric8.crd.generator.approvaltests.nocyclic.NoCyclic;
 import io.fabric8.kubernetes.client.CustomResource;
+import io.sundr.utils.Strings;
 import org.approvaltests.Approvals;
+import org.approvaltests.namer.StackTraceNamer;
+import org.approvaltests.writers.FileApprovalWriter;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -46,12 +53,27 @@ class CRDGeneratorApprovalTest {
   @TempDir
   File tempDir;
 
+  private boolean minimizeQuotes;
+
+  @BeforeEach
+  void setUp() {
+    Approvals.settings().allowMultipleVerifyCallsForThisClass();
+    minimizeQuotes = ((YAMLFactory) CRDGenerator.YAML_MAPPER.getFactory()).isEnabled(YAMLGenerator.Feature.MINIMIZE_QUOTES);
+    ((YAMLFactory) CRDGenerator.YAML_MAPPER.getFactory()).disable(YAMLGenerator.Feature.MINIMIZE_QUOTES);
+  }
+
+  @AfterEach
+  void tearDown() {
+    if (minimizeQuotes) {
+      ((YAMLFactory) CRDGenerator.YAML_MAPPER.getFactory()).enable(YAMLGenerator.Feature.MINIMIZE_QUOTES);
+    }
+  }
+
   @ParameterizedTest(name = "{1}.{2} parallel={3}")
   @MethodSource("crdApprovalTests")
-  void approvalTest(
-      Class<? extends CustomResource<?, ?>>[] crClasses, String expectedCrd, String version, boolean parallel)
-      throws IOException {
-    Approvals.settings().allowMultipleVerifyCallsForThisMethod();
+  @DisplayName("CRD Generator V1 Approval Tests")
+  void v1ApprovalTest(
+      Class<? extends CustomResource<?, ?>>[] crClasses, String expectedCrd, String version, boolean parallel) {
     final Map<String, Map<String, CRDInfo>> result = new CRDGenerator()
         .withParallelGenerationEnabled(parallel)
         .inOutputDir(tempDir)
@@ -68,8 +90,8 @@ class CRDGeneratorApprovalTest {
         .isNotNull();
 
     Approvals.verify(
-        new String(Files.readAllBytes(new File(result.get(expectedCrd).get(version).getFilePath()).toPath())),
-        Approvals.NAMES.withParameters(expectedCrd, version));
+        new FileApprovalWriter(new File(result.get(expectedCrd).get(version).getFilePath())),
+        new Namer(expectedCrd, version));
   }
 
   static Stream<Arguments> crdApprovalTests() {
@@ -92,16 +114,30 @@ class CRDGeneratorApprovalTest {
   }
 
   private static final class TestCase {
-    private Class<? extends CustomResource<?, ?>>[] crClasses;
-    private String expectedCrd;
-    private String version;
-    private boolean parallel;
+    private final Class<? extends CustomResource<?, ?>>[] crClasses;
+    private final String expectedCrd;
+    private final String version;
+    private final boolean parallel;
 
     public TestCase(String expectedCrd, String version, boolean parallel, Class<? extends CustomResource<?, ?>>... crClasses) {
       this.expectedCrd = expectedCrd;
       this.version = version;
       this.parallel = parallel;
       this.crClasses = crClasses;
+    }
+  }
+
+  private static final class Namer extends StackTraceNamer {
+    private final String additionalInformation;
+
+    public Namer(String... parameters) {
+      super(TestUtils.getCurrentFileForMethod(0), null);
+      additionalInformation = Strings.join(parameters, ".");
+    }
+
+    @Override
+    public String getApprovalName() {
+      return String.format("%s.approvalTest.%s", CRDGeneratorApprovalTest.class.getSimpleName(), additionalInformation);
     }
   }
 

@@ -15,19 +15,12 @@
  */
 package io.fabric8.crd.generator.approvaltests;
 
-import org.approvaltests.core.ApprovalFailureReporter;
-import org.approvaltests.reporters.QuietReporter;
-
 /**
  * @see <a href=
  *      "https://github.com/approvals/ApprovalTests.Java/blob/master/approvaltests/docs/explanations/BestConfigurationPractices.md">
  *      ApprovalTests - Best Configuration Practices</a>
  */
 public class PackageSettings {
-  /**
-   * Disable Diff-Reporter
-   */
   @SuppressWarnings("unused")
-  public static ApprovalFailureReporter UseReporter = new QuietReporter();
   public String ApprovalBaseDirectory = "../resources";
 }
