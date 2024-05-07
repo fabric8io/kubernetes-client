@@ -33,6 +33,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Mojo(name = "generate", defaultPhase = LifecyclePhase.PROCESS_CLASSES, requiresDependencyCollection = ResolutionScope.COMPILE_PLUS_RUNTIME, requiresDependencyResolution = ResolutionScope.COMPILE_PLUS_RUNTIME, threadSafe = true)
 public class CrdGeneratorMojo extends AbstractMojo {
@@ -138,7 +141,7 @@ public class CrdGeneratorMojo extends AbstractMojo {
 
     CustomResourceCollector customResourceCollector = new CustomResourceCollector()
         .withParentClassLoader(Thread.currentThread().getContextClassLoader())
-        .withClasspaths(classpath.getClasspathElements(mavenProject))
+        .withClasspathElements(classpath.getClasspathElements(mavenProject))
         .withFilesToIndex(filesToIndex)
         .withForceIndex(forceIndex)
         .withIncludePackages(inclusions.getPackages())
@@ -181,32 +184,30 @@ public class CrdGeneratorMojo extends AbstractMojo {
    * @return the archive files
    */
   private List<File> getDependencyArchives() {
-    List<File> archives = new LinkedList<>();
-    for (Dependency dependency : dependenciesToIndex) {
-      Artifact artifact = null;
-      for (Artifact candidate : mavenProject.getArtifacts()) {
-        if (candidate.getGroupId().equals(dependency.getGroupId())
-            && candidate.getArtifactId().equals(dependency.getArtifactId())
-            && (dependency.getClassifier() == null || candidate.getClassifier()
-                .equals(dependency.getClassifier()))) {
-          artifact = candidate;
-          break;
-        }
-      }
-      if (artifact == null) {
-        getLog().warn("Skip indexing dependency, artifact for dependency not found: " + dependency);
-        break;
-      }
-      File archive = artifact.getFile();
-      if (archive == null) {
-        getLog().warn(
-            "Skip indexing dependency, artifact file does not exist for dependency: " + dependency);
-        break;
-      }
-      archives.add(archive);
-    }
+    return dependenciesToIndex.stream()
+        .map(this::getDependencyArchive)
+        .flatMap(o -> o.map(Stream::of).orElseGet(Stream::empty))
+        .collect(Collectors.toList());
+  }
 
-    return archives;
+  private Optional<File> getDependencyArchive(Dependency dependency) {
+    for (Artifact artifact : mavenProject.getArtifacts()) {
+      if (artifact.getGroupId().equals(dependency.getGroupId())
+          && artifact.getArtifactId().equals(dependency.getArtifactId())
+          && (dependency.getClassifier() == null || artifact.getClassifier()
+              .equals(dependency.getClassifier()))) {
+        File jarFile = artifact.getFile();
+        if (jarFile == null) {
+          getLog().warn(
+              "Skip indexing dependency, artifact file does not exist for dependency: " + dependency);
+          return Optional.empty();
+        }
+
+        return Optional.of(jarFile);
+      }
+    }
+    getLog().warn("Skip indexing dependency, artifact for dependency not found: " + dependency);
+    return Optional.empty();
   }
 
 }

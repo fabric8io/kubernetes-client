@@ -158,26 +158,7 @@ class CustomResourceCollectorTest {
 
   @Test
   void classDirWithCRsAndIndexAndForceScan_thenFindAll(@TempDir File tempDir) throws IOException {
-    File sourceCustomResourceClassFile1 = new File(
-        "target/test-classes/io/fabric8/crd/generator/collector/examples/MyCustomResource.class");
-    File targetCustomResourceClassFile1 = new File(tempDir.getAbsolutePath(),
-        "io/fabric8/crd/generator/collector/examples/MyCustomResource.class");
-    File sourceCustomResourceClassFile2 = new File(
-        "target/test-classes/io/fabric8/crd/generator/collector/examples/MyOtherCustomResource.class");
-    File targetCustomResourceClassFile2 = new File(tempDir.getAbsolutePath(),
-        "io/fabric8/crd/generator/collector/examples/MyOtherCustomResource.class");
-
-    targetCustomResourceClassFile1.getParentFile().mkdirs();
-    Files.copy(sourceCustomResourceClassFile1.toPath(), targetCustomResourceClassFile1.toPath());
-    Files.copy(sourceCustomResourceClassFile2.toPath(), targetCustomResourceClassFile2.toPath());
-
-    File jandexIndexFile = new File(tempDir.getAbsolutePath(), "META-INF/jandex.idx");
-    jandexIndexFile.getParentFile().mkdirs();
-    try (OutputStream out = Files.newOutputStream(jandexIndexFile.toPath())) {
-      // index contains only one custom resource
-      new IndexWriter(out).write(Index.of(sourceCustomResourceClassFile1));
-    }
-
+    TestUtils.prepareDirectoryWithClassesAndIncompleteIndex(tempDir);
     CustomResourceCollector collector = new CustomResourceCollector();
     collector.withFileToIndex(tempDir);
     collector.withForceIndex(true);
@@ -200,12 +181,18 @@ class CustomResourceCollectorTest {
     CustomResourceCollector collector = new CustomResourceCollector();
 
     collector.withParentClassLoader(null);
-    collector.withClasspath((String) null);
-    collector.withClasspaths(null);
+    collector.withClasspathElement((String) null);
+    collector.withClasspathElements(null);
 
+    collector.withCustomResourceClass((String[]) null);
+    collector.withCustomResourceClass((String) null);
+    collector.withCustomResourceClasses(null);
+
+    collector.withIndex((IndexView[]) null);
     collector.withIndex((IndexView) null);
     collector.withIndices(null);
 
+    collector.withFileToIndex((File[]) null);
     collector.withFileToIndex((File) null);
     collector.withFilesToIndex(null);
 
