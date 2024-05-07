@@ -15,9 +15,12 @@
  */
 package io.fabric8.crd.generator.approvaltests.inherited;
 
+import lombok.Data;
+
 /**
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>
  */
+@Data
 public class BaseStatus {
 
 }

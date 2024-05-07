@@ -15,6 +15,9 @@
  */
 package io.fabric8.crd.generator.approvaltests.nocyclic;
 
+import lombok.Data;
+
+@Data
 public class NoCyclicStatus {
   private String message;
   private Ref ref1;

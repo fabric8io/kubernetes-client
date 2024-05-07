@@ -15,23 +15,18 @@
  */
 package io.fabric8.crd.generator.approvaltests.map;
 
+import lombok.Data;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Data
 public class ContainingMapsSpec {
 
   private Map<String, List<String>> test = null;
 
-  public Map<String, List<String>> getTest() {
-    return test;
-  }
-
   private Map<String, Map<String, List<Boolean>>> test2 = null;
-
-  public Map<String, Map<String, List<Boolean>>> getTest2() {
-    return test2;
-  }
 
   private MultiHashMap<String, Integer> stringToIntMultiMap1;
   private MultiMap<String, Integer> stringToIntMultiMap2;
@@ -56,7 +51,7 @@ public class ContainingMapsSpec {
   interface RedundantParametersStringToIntMultiMap<K, V> extends Map<String, List<Integer>> {
   }
 
-  static class StringKeyedMultiHashMap<V> extends MultiHashMap<String, V> {
+  static final class StringKeyedMultiHashMap<V> extends MultiHashMap<String, V> {
   }
 
   interface IntValuedMultiMap<K> extends MultiMap<K, Integer> {

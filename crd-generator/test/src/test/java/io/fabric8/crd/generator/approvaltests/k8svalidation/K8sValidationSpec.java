@@ -17,8 +17,10 @@ package io.fabric8.crd.generator.approvaltests.k8svalidation;
 
 import io.fabric8.generator.annotation.Required;
 import io.fabric8.generator.annotation.ValidationRule;
+import lombok.Data;
 
 @ValidationRule(value = "self.minReplicas <= self.replicas && self.replicas <= self.maxReplicas", fieldPath = ".replicas")
+@Data
 public class K8sValidationSpec {
   @Required
   String namePrefix;
@@ -82,7 +84,8 @@ public class K8sValidationSpec {
     high
   }
 
-  static class DeepLevel1 {
+  @Data
+  static final class DeepLevel1 {
     @Required
     private String valueL1;
 
@@ -90,7 +93,8 @@ public class K8sValidationSpec {
     private DeepLevel2 deepLevel2;
   }
 
-  static class DeepLevel2 {
+  @Data
+  static final class DeepLevel2 {
     @Required
     private String valueL2;
 
@@ -100,7 +104,8 @@ public class K8sValidationSpec {
   }
 
   @ValidationRule("self.dummy.startsWith('on-class-')")
-  static class OnClass {
+  @Data
+  static final class OnClass {
     @Required
     private String dummy;
   }
@@ -110,6 +115,7 @@ public class K8sValidationSpec {
   }
 
   @ValidationRule("self.dummy.startsWith('abstract-')")
+  @Data
   static abstract class AbstractBase {
     @Required
     private String dummy;

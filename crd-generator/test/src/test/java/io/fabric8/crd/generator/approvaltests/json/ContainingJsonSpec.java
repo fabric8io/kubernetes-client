@@ -16,25 +16,15 @@
 package io.fabric8.crd.generator.approvaltests.json;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import lombok.Data;
 
+@Data
 public class ContainingJsonSpec {
 
   private int field;
 
-  public int getField() {
-    return field;
-  }
-
   private JsonNode free;
 
-  public JsonNode getFree() {
-    return free;
-  }
-
   private Foo foo;
-
-  public Foo getFoo() {
-    return foo;
-  }
 
 }

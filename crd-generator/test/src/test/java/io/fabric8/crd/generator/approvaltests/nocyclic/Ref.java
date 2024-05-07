@@ -15,13 +15,16 @@
  */
 package io.fabric8.crd.generator.approvaltests.nocyclic;
 
+import lombok.Data;
+
+@Data
 public class Ref {
 
   private int ref;
 
   protected Inner inner;
 
-  public static class Inner {
+  public static final class Inner {
   }
 
 }
