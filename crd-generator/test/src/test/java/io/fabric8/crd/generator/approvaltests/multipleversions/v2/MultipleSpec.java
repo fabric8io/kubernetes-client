@@ -15,10 +15,9 @@
  */
 package io.fabric8.crd.generator.approvaltests.multipleversions.v2;
 
+import lombok.Data;
+
+@Data
 public class MultipleSpec {
   private String v2;
-
-  public String getV2() {
-    return v2;
-  }
 }

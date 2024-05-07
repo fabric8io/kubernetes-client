@@ -15,14 +15,9 @@
  */
 package io.fabric8.crd.generator.approvaltests.inherited;
 
+import lombok.Data;
+
+@Data
 public class BaseSpec {
   private int baseInt;
-
-  public int getBaseInt() {
-    return baseInt;
-  }
-
-  public void setBaseInt(int baseInt) {
-    this.baseInt = baseInt;
-  }
 }

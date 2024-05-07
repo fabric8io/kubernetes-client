@@ -18,11 +18,13 @@ package io.fabric8.crd.generator.approvaltests.map;
 import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
+import lombok.Data;
 
 import java.util.EnumMap;
 
 @Group("sample.fabric8.io")
 @Version("v1alpha1")
+@Data
 public class ContainingMaps extends CustomResource<ContainingMapsSpec, Void> {
 
   public enum Foo {
