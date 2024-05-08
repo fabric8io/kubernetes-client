@@ -39,7 +39,7 @@ import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
 
-public class CrdGeneratorMojoTest {
+class CrdGeneratorMojoTest {
 
   @Test
   void checkFindingJarArchiveForDependency(@TempDir File tempDir) throws MojoExecutionException, IOException {
