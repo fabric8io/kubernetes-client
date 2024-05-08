@@ -29,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
-public class ClasspathTypeTest {
+class ClasspathTypeTest {
 
   private static final String RUNTIME_PATH = "/runtime";
   private static final String COMPILE_PATH = "/compile";
@@ -39,7 +39,7 @@ public class ClasspathTypeTest {
   private MavenProject project;
 
   @BeforeEach
-  public void setUp() throws DependencyResolutionRequiredException {
+  void setUp() throws DependencyResolutionRequiredException {
     this.project = Mockito.mock(MavenProject.class);
     when(this.project.getRuntimeClasspathElements())
         .thenReturn(Collections.singletonList(RUNTIME_PATH));
@@ -54,21 +54,21 @@ public class ClasspathTypeTest {
   }
 
   @Test
-  public void testGetUrlsCompile() {
+  void testGetUrlsCompile() {
     Set<String> urls = ClasspathType.WITH_COMPILE_DEPENDENCIES.getClasspathElements(this.project);
     assertEquals(1, urls.size());
     assertTrue(urls.contains(COMPILE_PATH));
   }
 
   @Test
-  public void testGetUrlsRuntime() {
+  void testGetUrlsRuntime() {
     Set<String> urls = ClasspathType.WITH_RUNTIME_DEPENDENCIES.getClasspathElements(this.project);
     assertEquals(1, urls.size());
     assertTrue(urls.contains(RUNTIME_PATH));
   }
 
   @Test
-  public void testGetUrlsAll() {
+  void testGetUrlsAll() {
     Set<String> urls = ClasspathType.WITH_ALL_DEPENDENCIES.getClasspathElements(this.project);
     assertEquals(2, urls.size());
     assertTrue(urls.contains(RUNTIME_PATH));
@@ -76,7 +76,7 @@ public class ClasspathTypeTest {
   }
 
   @Test
-  public void testGetUrlsAllAndTests() {
+  void testGetUrlsAllAndTests() {
     Set<String> urls = ClasspathType.WITH_ALL_DEPENDENCIES_AND_TESTS.getClasspathElements(this.project);
     assertEquals(3, urls.size());
     assertTrue(urls.contains(RUNTIME_PATH));
@@ -85,7 +85,7 @@ public class ClasspathTypeTest {
   }
 
   @Test
-  public void testGetUrlsProject() {
+  void testGetUrlsProject() {
     Set<String> urls = ClasspathType.PROJECT_ONLY.getClasspathElements(this.project);
     assertEquals(1, urls.size());
     assertTrue(urls.contains(PROJECT_PATH));
