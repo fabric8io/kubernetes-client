@@ -86,11 +86,7 @@ class CrdGeneratorMojoTest {
           given(mock.withForceIndex(anyBoolean())).willReturn(mock);
           given(mock.withCustomResourceClasses(any())).willReturn(mock);
           given(mock.withIncludePackages(any())).willReturn(mock);
-          given(mock.withIncludeGroups(any())).willReturn(mock);
-          given(mock.withIncludeVersions(any())).willReturn(mock);
           given(mock.withExcludePackages(any())).willReturn(mock);
-          given(mock.withExcludeGroups(any())).willReturn(mock);
-          given(mock.withExcludeVersions(any())).willReturn(mock);
         })) {
       crdGeneratorMojo.execute();
       assertTrue(captor.getValue().contains(dummyJar));

@@ -16,7 +16,7 @@
 package io.fabric8.crd.generator.collector;
 
 import io.fabric8.crd.generator.collector.examples.MyCustomResource;
-import io.fabric8.crdv2.generator.CustomResourceInfo;
+import io.fabric8.kubernetes.api.model.HasMetadata;
 import org.jboss.jandex.Index;
 import org.jboss.jandex.IndexView;
 import org.jboss.jandex.IndexWriter;
@@ -36,15 +36,13 @@ class CustomResourceCollectorTest {
   // must be adjusted if new test custom resources are added
   private static final int CR_COUNT_ALL = 7;
   private static final int CR_COUNT_V1_PKG = 2;
-  private static final int CR_COUNT_V1_VERSION = 2;
-  private static final int CR_COUNT_OTHER_GROUP = 1;
 
   @Test
   void explicitClass_thenNoScanAndFind() {
     CustomResourceCollector collector = new CustomResourceCollector();
     collector.withFileToIndex(new File("target/classes"));
     collector.withCustomResourceClass(MyCustomResource.class.getName());
-    CustomResourceInfo[] infos = collector.findCustomResources();
+    Class<? extends HasMetadata>[] infos = collector.findCustomResourceClasses();
     assertEquals(1, infos.length);
   }
 
@@ -52,7 +50,7 @@ class CustomResourceCollectorTest {
   void scanClassDirWithNoCRs_thenFindZero() {
     CustomResourceCollector collector = new CustomResourceCollector();
     collector.withFileToIndex(new File("target/classes"));
-    CustomResourceInfo[] infos = collector.findCustomResources();
+    Class<? extends HasMetadata>[] infos = collector.findCustomResourceClasses();
     assertEquals(0, infos.length);
   }
 
@@ -60,7 +58,7 @@ class CustomResourceCollectorTest {
   void scanClassDirWithCRs_thenFindAll() {
     CustomResourceCollector collector = new CustomResourceCollector();
     collector.withFileToIndex(new File("target/test-classes"));
-    CustomResourceInfo[] infos = collector.findCustomResources();
+    Class<? extends HasMetadata>[] infos = collector.findCustomResourceClasses();
     assertEquals(CR_COUNT_ALL, infos.length);
   }
 
@@ -70,7 +68,7 @@ class CustomResourceCollectorTest {
     collector.withFileToIndex(new File("target/test-classes"));
     collector.withIncludePackages(
         Collections.singletonList("io.fabric8.crd.generator.collector.examples.v1"));
-    CustomResourceInfo[] infos = collector.findCustomResources();
+    Class<? extends HasMetadata>[] infos = collector.findCustomResourceClasses();
     assertEquals(CR_COUNT_V1_PKG, infos.length);
   }
 
@@ -80,51 +78,15 @@ class CustomResourceCollectorTest {
     collector.withFileToIndex(new File("target/test-classes"));
     collector.withExcludePackages(
         Collections.singletonList("io.fabric8.crd.generator.collector.examples.v1"));
-    CustomResourceInfo[] infos = collector.findCustomResources();
+    Class<? extends HasMetadata>[] infos = collector.findCustomResourceClasses();
     assertEquals(CR_COUNT_ALL - CR_COUNT_V1_PKG, infos.length);
-  }
-
-  @Test
-  void scanClassDirWithCRsAndFilterByVersionIncludes_thenFind() {
-    CustomResourceCollector collector = new CustomResourceCollector();
-    collector.withFileToIndex(new File("target/test-classes"));
-    collector.withIncludeVersions(Collections.singletonList("v1"));
-    CustomResourceInfo[] infos = collector.findCustomResources();
-    assertEquals(CR_COUNT_V1_VERSION, infos.length);
-  }
-
-  @Test
-  void scanClassDirWithCRsAndFilterByVersionExcludes_thenFind() {
-    CustomResourceCollector collector = new CustomResourceCollector();
-    collector.withFileToIndex(new File("target/test-classes"));
-    collector.withExcludeVersions(Collections.singletonList("v1"));
-    CustomResourceInfo[] infos = collector.findCustomResources();
-    assertEquals(CR_COUNT_ALL - CR_COUNT_V1_VERSION, infos.length);
-  }
-
-  @Test
-  void scanClassDirWithCRsAndFilterByGroupIncludes_thenFind() {
-    CustomResourceCollector collector = new CustomResourceCollector();
-    collector.withFileToIndex(new File("target/test-classes"));
-    collector.withIncludeGroups(Collections.singletonList("other.samples.fabric8.io"));
-    CustomResourceInfo[] infos = collector.findCustomResources();
-    assertEquals(CR_COUNT_OTHER_GROUP, infos.length);
-  }
-
-  @Test
-  void scanClassDirWithCRsAndFilterByGroupExcludes_thenFind() {
-    CustomResourceCollector collector = new CustomResourceCollector();
-    collector.withFileToIndex(new File("target/test-classes"));
-    collector.withExcludeGroups(Collections.singletonList("other.samples.fabric8.io"));
-    CustomResourceInfo[] infos = collector.findCustomResources();
-    assertEquals(CR_COUNT_ALL - CR_COUNT_OTHER_GROUP, infos.length);
   }
 
   @Test
   void indexWithCR_thenFindCRFromIndex() throws IOException {
     CustomResourceCollector collector = new CustomResourceCollector();
     collector.withIndex(Index.of(MyCustomResource.class));
-    CustomResourceInfo[] infos = collector.findCustomResources();
+    Class<? extends HasMetadata>[] infos = collector.findCustomResourceClasses();
     assertEquals(1, infos.length);
   }
 
@@ -152,7 +114,7 @@ class CustomResourceCollectorTest {
     CustomResourceCollector collector = new CustomResourceCollector();
     collector.withFileToIndex(tempDir);
 
-    CustomResourceInfo[] infos = collector.findCustomResources();
+    Class<? extends HasMetadata>[] infos = collector.findCustomResourceClasses();
     assertEquals(1, infos.length);
   }
 
@@ -163,7 +125,7 @@ class CustomResourceCollectorTest {
     collector.withFileToIndex(tempDir);
     collector.withForceIndex(true);
 
-    CustomResourceInfo[] infos = collector.findCustomResources();
+    Class<? extends HasMetadata>[] infos = collector.findCustomResourceClasses();
     assertEquals(2, infos.length);
   }
 
@@ -172,7 +134,7 @@ class CustomResourceCollectorTest {
     CustomResourceCollector collector = new CustomResourceCollector();
     collector.withIndex(Index.of(MyCustomResource.class));
     collector.withForceIndex(true);
-    CustomResourceInfo[] infos = collector.findCustomResources();
+    Class<? extends HasMetadata>[] infos = collector.findCustomResourceClasses();
     assertEquals(1, infos.length);
   }
 
@@ -198,12 +160,8 @@ class CustomResourceCollectorTest {
 
     collector.withIncludePackages(null);
     collector.withExcludePackages(null);
-    collector.withIncludeGroups(null);
-    collector.withExcludeGroups(null);
-    collector.withIncludeVersions(null);
-    collector.withExcludeVersions(null);
 
-    CustomResourceInfo[] infos = collector.findCustomResources();
+    Class<? extends HasMetadata>[] infos = collector.findCustomResourceClasses();
     assertEquals(0, infos.length);
   }
 

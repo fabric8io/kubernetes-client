@@ -15,7 +15,6 @@
  */
 package io.fabric8.crd.generator.collector;
 
-import io.fabric8.crdv2.generator.CustomResourceInfo;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import org.jboss.jandex.IndexView;
 import org.slf4j.Logger;
@@ -30,10 +29,11 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
  * Collects Custom Resource class files from various places and loads them by using
- * {@link CustomResourceCollector#findCustomResources()}.
+ * {@link CustomResourceCollector#findCustomResourceClasses()}.
  */
 public class CustomResourceCollector {
 
@@ -45,7 +45,6 @@ public class CustomResourceCollector {
   private final Set<String> customResourceClassNames = new HashSet<>();
 
   private final List<Predicate<String>> classNamePredicates = new LinkedList<>();
-  private final List<Predicate<CustomResourceInfo>> customResourceInfoPredicates = new LinkedList<>();
 
   public CustomResourceCollector withParentClassLoader(ClassLoader classLoader) {
     this.customResourceClassLoader.withParentClassLoader(classLoader);
@@ -125,51 +124,7 @@ public class CustomResourceCollector {
     return this;
   }
 
-  public CustomResourceCollector withIncludeGroups(Collection<String> groups) {
-    if (groups != null) {
-      groups.stream()
-          .filter(Objects::nonNull)
-          .map(group -> (Predicate<CustomResourceInfo>) cr -> group.equals(cr.group()))
-          .reduce(Predicate::or)
-          .ifPresent(customResourceInfoPredicates::add);
-    }
-    return this;
-  }
-
-  public CustomResourceCollector withExcludeGroups(Collection<String> groups) {
-    if (groups != null) {
-      groups.stream()
-          .filter(Objects::nonNull)
-          .map(groupToFilter -> (Predicate<CustomResourceInfo>) cr -> !groupToFilter.equals(cr.group()))
-          .reduce(Predicate::or)
-          .ifPresent(customResourceInfoPredicates::add);
-    }
-    return this;
-  }
-
-  public CustomResourceCollector withIncludeVersions(Collection<String> versions) {
-    if (versions != null) {
-      versions.stream()
-          .filter(Objects::nonNull)
-          .map(versionToFilter -> (Predicate<CustomResourceInfo>) cr -> versionToFilter.equals(cr.version()))
-          .reduce(Predicate::or)
-          .ifPresent(customResourceInfoPredicates::add);
-    }
-    return this;
-  }
-
-  public CustomResourceCollector withExcludeVersions(Collection<String> versions) {
-    if (versions != null) {
-      versions.stream()
-          .filter(Objects::nonNull)
-          .map(versionToFilter -> (Predicate<CustomResourceInfo>) cr -> !versionToFilter.equals(cr.version()))
-          .reduce(Predicate::or)
-          .ifPresent(customResourceInfoPredicates::add);
-    }
-    return this;
-  }
-
-  public CustomResourceInfo[] findCustomResources() {
+  private List<Class<? extends HasMetadata>> findCustomResourceClassesAsList() {
     Set<String> customResourcesClassNames = new HashSet<>(customResourceClassNames);
 
     // use indices only if custom resource class names are not explicitly given
@@ -184,23 +139,20 @@ public class CustomResourceCollector {
         .reduce(Predicate::and)
         .orElse(className -> true);
 
-    Predicate<CustomResourceInfo> customResourceInfoPredicate = customResourceInfoPredicates.stream()
-        .reduce(Predicate::and)
-        .orElse(info -> true);
-
-    CustomResourceInfo[] infos = customResourcesClassNames.stream()
+    List<Class<? extends HasMetadata>> customResourceClasses = customResourcesClassNames.stream()
         .filter(classNamePredicate)
         .map(customResourceClassLoader::loadCustomResourceClass)
-        .map(this::createCustomResourceInfo)
-        .filter(customResourceInfoPredicate)
-        .toArray(CustomResourceInfo[]::new);
+        .collect(Collectors.toList());
 
-    log.debug("Found {} custom resource classes after filtering", infos.length);
-    return infos;
+    log.debug("Found {} custom resource classes after filtering", customResourceClasses.size());
+    return customResourceClasses;
   }
 
-  private CustomResourceInfo createCustomResourceInfo(Class<? extends HasMetadata> customResourceClass) {
-    return CustomResourceInfo.fromClass(customResourceClass);
+  public Class<? extends HasMetadata>[] findCustomResourceClasses() {
+    Collection<Class<? extends HasMetadata>> customResourceClasses = findCustomResourceClassesAsList();
+    @SuppressWarnings("unchecked")
+    Class<? extends HasMetadata>[] array = (Class<? extends HasMetadata>[]) new Class<?>[customResourceClasses.size()];
+    return customResourceClasses.toArray(array);
   }
 
 }
