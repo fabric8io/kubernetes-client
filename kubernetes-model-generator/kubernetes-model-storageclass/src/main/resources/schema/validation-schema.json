@@ -2703,6 +2703,153 @@
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
+    },
+    "kubernetes_storagemigration_v1alpha1_GroupVersionResource": {
+      "type": "object",
+      "properties": {
+        "group": {
+          "type": "string"
+        },
+        "resource": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.storagemigration.v1alpha1.GroupVersionResource",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_storagemigration_v1alpha1_MigrationCondition": {
+      "type": "object",
+      "properties": {
+        "lastUpdateTime": {
+          "$ref": "#/definitions/kubernetes_apimachinery_Time",
+          "existingJavaType": "String"
+        },
+        "message": {
+          "type": "string"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.storagemigration.v1alpha1.MigrationCondition",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_storagemigration_v1alpha1_StorageVersionMigration": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "storagemigration.k8s.io/v1alpha1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "StorageVersionMigration",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/kubernetes_storagemigration_v1alpha1_StorageVersionMigrationSpec",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.storagemigration.v1alpha1.StorageVersionMigrationSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/kubernetes_storagemigration_v1alpha1_StorageVersionMigrationStatus",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.storagemigration.v1alpha1.StorageVersionMigrationStatus"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.storagemigration.v1alpha1.StorageVersionMigration",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata"
+      ]
+    },
+    "kubernetes_storagemigration_v1alpha1_StorageVersionMigrationList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "storagemigration.k8s.io/v1alpha1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/kubernetes_storagemigration_v1alpha1_StorageVersionMigration",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.storagemigration.v1alpha1.StorageVersionMigration"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "StorageVersionMigrationList",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ListMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.storagemigration.v1alpha1.StorageVersionMigrationList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kubernetes.api.model.storagemigration.v1alpha1.StorageVersionMigration\u003e"
+      ]
+    },
+    "kubernetes_storagemigration_v1alpha1_StorageVersionMigrationSpec": {
+      "type": "object",
+      "properties": {
+        "continueToken": {
+          "type": "string"
+        },
+        "resource": {
+          "$ref": "#/definitions/kubernetes_storagemigration_v1alpha1_GroupVersionResource",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.storagemigration.v1alpha1.GroupVersionResource"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.storagemigration.v1alpha1.StorageVersionMigrationSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_storagemigration_v1alpha1_StorageVersionMigrationStatus": {
+      "type": "object",
+      "properties": {
+        "conditions": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_storagemigration_v1alpha1_MigrationCondition",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.storagemigration.v1alpha1.MigrationCondition"
+          }
+        },
+        "resourceVersion": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.storagemigration.v1alpha1.StorageVersionMigrationStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
     }
   },
   "type": "object",
@@ -2798,6 +2945,14 @@
     "StorageClassList": {
       "$ref": "#/definitions/kubernetes_storageclass_StorageClassList",
       "existingJavaType": "io.fabric8.kubernetes.api.model.storage.StorageClassList"
+    },
+    "StorageVersionMigration": {
+      "$ref": "#/definitions/kubernetes_storagemigration_v1alpha1_StorageVersionMigration",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.storagemigration.v1alpha1.StorageVersionMigration"
+    },
+    "StorageVersionMigrationList": {
+      "$ref": "#/definitions/kubernetes_storagemigration_v1alpha1_StorageVersionMigrationList",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.storagemigration.v1alpha1.StorageVersionMigrationList"
     },
     "Time": {
       "$ref": "#/definitions/kubernetes_apimachinery_Time",
@@ -3116,8 +3271,8 @@
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/kubernetes_storageclass_TokenRequest",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.storage.TokenRequest"
+            "$ref": "#/definitions/kubernetes_storageclass_v1beta1_TokenRequest",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.storage.v1beta1.TokenRequest"
           }
         },
         "volumeLifecycleModes": {
@@ -3134,7 +3289,7 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "storage.k8s.io/v1beta1",
+          "default": "storage.k8s.io/v1",
           "required": true
         },
         "kind": {
@@ -3147,8 +3302,8 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
-          "$ref": "#/definitions/kubernetes_storageclass_v1beta1_CSINodeSpec",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.storage.v1beta1.CSINodeSpec"
+          "$ref": "#/definitions/kubernetes_storageclass_CSINodeSpec",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.storage.CSINodeSpec"
         }
       },
       "additionalProperties": true
@@ -3156,8 +3311,8 @@
     "csinodedriver": {
       "properties": {
         "allocatable": {
-          "$ref": "#/definitions/kubernetes_storageclass_VolumeNodeResources",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.storage.VolumeNodeResources"
+          "$ref": "#/definitions/kubernetes_storageclass_v1beta1_VolumeNodeResources",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.storage.v1beta1.VolumeNodeResources"
         },
         "name": {
           "type": "string"
@@ -3178,14 +3333,14 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "storage.k8s.io/v1beta1",
+          "default": "storage.k8s.io/v1",
           "required": true
         },
         "items": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/kubernetes_storageclass_v1beta1_CSINode",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.storage.v1beta1.CSINode"
+            "$ref": "#/definitions/kubernetes_storageclass_CSINode",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.storage.CSINode"
           }
         },
         "kind": {
@@ -3482,6 +3637,20 @@
       },
       "additionalProperties": true
     },
+    "groupversionresource": {
+      "properties": {
+        "group": {
+          "type": "string"
+        },
+        "resource": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
     "hostpathvolumesource": {
       "properties": {
         "path": {
@@ -3732,6 +3901,27 @@
         "time": {
           "$ref": "#/definitions/kubernetes_apimachinery_Time",
           "existingJavaType": "String"
+        }
+      },
+      "additionalProperties": true
+    },
+    "migrationcondition": {
+      "properties": {
+        "lastUpdateTime": {
+          "$ref": "#/definitions/kubernetes_apimachinery_Time",
+          "existingJavaType": "String"
+        },
+        "message": {
+          "type": "string"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
         }
       },
       "additionalProperties": true
@@ -4534,6 +4724,87 @@
           "type": "string"
         },
         "volumeNamespace": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "storageversionmigration": {
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "storagemigration.k8s.io/v1alpha1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "StorageVersionMigration",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/kubernetes_storagemigration_v1alpha1_StorageVersionMigrationSpec",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.storagemigration.v1alpha1.StorageVersionMigrationSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/kubernetes_storagemigration_v1alpha1_StorageVersionMigrationStatus",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.storagemigration.v1alpha1.StorageVersionMigrationStatus"
+        }
+      },
+      "additionalProperties": true
+    },
+    "storageversionmigrationlist": {
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "storagemigration.k8s.io/v1alpha1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/kubernetes_storagemigration_v1alpha1_StorageVersionMigration",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.storagemigration.v1alpha1.StorageVersionMigration"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "StorageVersionMigrationList",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ListMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "additionalProperties": true
+    },
+    "storageversionmigrationspec": {
+      "properties": {
+        "continueToken": {
+          "type": "string"
+        },
+        "resource": {
+          "$ref": "#/definitions/kubernetes_storagemigration_v1alpha1_GroupVersionResource",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.storagemigration.v1alpha1.GroupVersionResource"
+        }
+      },
+      "additionalProperties": true
+    },
+    "storageversionmigrationstatus": {
+      "properties": {
+        "conditions": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_storagemigration_v1alpha1_MigrationCondition",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.storagemigration.v1alpha1.MigrationCondition"
+          }
+        },
+        "resourceVersion": {
           "type": "string"
         }
       },

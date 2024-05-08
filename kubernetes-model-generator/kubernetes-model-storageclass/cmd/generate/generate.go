@@ -28,6 +28,7 @@ import (
   storageclassapi "k8s.io/api/storage/v1"
   storageclassapiv1beta1 "k8s.io/api/storage/v1beta1"
   storageclassapiv1alpha1 "k8s.io/api/storage/v1alpha1"
+  storageversionmigrationv1alpha1 "k8s.io/api/storagemigration/v1alpha1"
 
   "log"
   "reflect"
@@ -77,6 +78,8 @@ type Schema struct {
   CSIStorageCapacityList                   storageclassapiv1beta1.CSIStorageCapacityList
   VolumeAttributesClass                    storageclassapiv1alpha1.VolumeAttributesClass
   VolumeAttributesClassList                storageclassapiv1alpha1.VolumeAttributesClassList
+  StorageVersionMigration                  storageversionmigrationv1alpha1.StorageVersionMigration
+  StorageVersionMigrationList              storageversionmigrationv1alpha1.StorageVersionMigrationList
 }
 
 func main() {
@@ -90,6 +93,7 @@ func main() {
     {"k8s.io/api/storage/v1", "storage.k8s.io", "io.fabric8.kubernetes.api.model.storage", "kubernetes_storageclass_", true},
     {"k8s.io/api/storage/v1beta1", "storage.k8s.io", "io.fabric8.kubernetes.api.model.storage.v1beta1", "kubernetes_storageclass_v1beta1_", true},
     {"k8s.io/api/storage/v1alpha1", "storage.k8s.io", "io.fabric8.kubernetes.api.model.storage.v1alpha1", "kubernetes_storageclass_v1alpha1_", true},
+    {"k8s.io/api/storagemigration/v1alpha1", "storagemigration.k8s.io", "io.fabric8.kubernetes.api.model.storagemigration.v1alpha1", "kubernetes_storagemigration_v1alpha1_", true},
   }
 
   typeMap := map[reflect.Type]reflect.Type{

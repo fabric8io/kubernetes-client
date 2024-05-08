@@ -1555,6 +1555,22 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "kubernetes_core_AppArmorProfile": {
+      "type": "object",
+      "properties": {
+        "localhostProfile": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.AppArmorProfile",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "kubernetes_core_AttachedVolume": {
       "type": "object",
       "properties": {
@@ -2529,6 +2545,14 @@
         "state": {
           "$ref": "#/definitions/kubernetes_core_ContainerState",
           "existingJavaType": "io.fabric8.kubernetes.api.model.ContainerState"
+        },
+        "volumeMounts": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_core_VolumeMountStatus",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.VolumeMountStatus"
+          }
         }
       },
       "additionalProperties": true,
@@ -4284,6 +4308,36 @@
         "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kubernetes.api.model.Node\u003e"
       ]
     },
+    "kubernetes_core_NodeRuntimeHandler": {
+      "type": "object",
+      "properties": {
+        "features": {
+          "$ref": "#/definitions/kubernetes_core_NodeRuntimeHandlerFeatures",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.NodeRuntimeHandlerFeatures"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.NodeRuntimeHandler",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_core_NodeRuntimeHandlerFeatures": {
+      "type": "object",
+      "properties": {
+        "recursiveReadOnlyMounts": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.NodeRuntimeHandlerFeatures",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "kubernetes_core_NodeSelector": {
       "type": "object",
       "properties": {
@@ -4448,6 +4502,14 @@
         },
         "phase": {
           "type": "string"
+        },
+        "runtimeHandlers": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_core_NodeRuntimeHandler",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.NodeRuntimeHandler"
+          }
         },
         "volumesAttached": {
           "type": "array",
@@ -5497,6 +5559,10 @@
     "kubernetes_core_PodSecurityContext": {
       "type": "object",
       "properties": {
+        "appArmorProfile": {
+          "$ref": "#/definitions/kubernetes_core_AppArmorProfile",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.AppArmorProfile"
+        },
         "fsGroup": {
           "type": "integer",
           "existingJavaType": "Long"
@@ -6854,6 +6920,10 @@
         "allowPrivilegeEscalation": {
           "type": "boolean"
         },
+        "appArmorProfile": {
+          "$ref": "#/definitions/kubernetes_core_AppArmorProfile",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.AppArmorProfile"
+        },
         "capabilities": {
           "$ref": "#/definitions/kubernetes_core_Capabilities",
           "existingJavaType": "io.fabric8.kubernetes.api.model.Capabilities"
@@ -7171,6 +7241,9 @@
         "sessionAffinityConfig": {
           "$ref": "#/definitions/kubernetes_core_SessionAffinityConfig",
           "existingJavaType": "io.fabric8.kubernetes.api.model.SessionAffinityConfig"
+        },
+        "trafficDistribution": {
+          "type": "string"
         },
         "type": {
           "type": "string"
@@ -7645,6 +7718,9 @@
         "readOnly": {
           "type": "boolean"
         },
+        "recursiveReadOnly": {
+          "type": "string"
+        },
         "subPath": {
           "type": "string"
         },
@@ -7654,6 +7730,28 @@
       },
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.VolumeMount",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_core_VolumeMountStatus": {
+      "type": "object",
+      "properties": {
+        "mountPath": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "readOnly": {
+          "type": "boolean"
+        },
+        "recursiveReadOnly": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.VolumeMountStatus",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -8447,6 +8545,17 @@
             "$ref": "#/definitions/kubernetes_aggregator_APIServiceCondition",
             "existingJavaType": "io.fabric8.kubernetes.api.model.APIServiceCondition"
           }
+        }
+      },
+      "additionalProperties": true
+    },
+    "apparmorprofile": {
+      "properties": {
+        "localhostProfile": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
         }
       },
       "additionalProperties": true
@@ -9392,6 +9501,14 @@
         "state": {
           "$ref": "#/definitions/kubernetes_core_ContainerState",
           "existingJavaType": "io.fabric8.kubernetes.api.model.ContainerState"
+        },
+        "volumeMounts": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_core_VolumeMountStatus",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.VolumeMountStatus"
+          }
         }
       },
       "additionalProperties": true
@@ -11349,6 +11466,26 @@
       },
       "additionalProperties": true
     },
+    "noderuntimehandler": {
+      "properties": {
+        "features": {
+          "$ref": "#/definitions/kubernetes_core_NodeRuntimeHandlerFeatures",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.NodeRuntimeHandlerFeatures"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "noderuntimehandlerfeatures": {
+      "properties": {
+        "recursiveReadOnlyMounts": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": true
+    },
     "nodeselector": {
       "properties": {
         "nodeSelectorTerms": {
@@ -11492,6 +11629,14 @@
         },
         "phase": {
           "type": "string"
+        },
+        "runtimeHandlers": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_core_NodeRuntimeHandler",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.NodeRuntimeHandler"
+          }
         },
         "volumesAttached": {
           "type": "array",
@@ -12511,6 +12656,10 @@
     },
     "podsecuritycontext": {
       "properties": {
+        "appArmorProfile": {
+          "$ref": "#/definitions/kubernetes_core_AppArmorProfile",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.AppArmorProfile"
+        },
         "fsGroup": {
           "type": "integer",
           "existingJavaType": "Long"
@@ -13692,6 +13841,10 @@
         "allowPrivilegeEscalation": {
           "type": "boolean"
         },
+        "appArmorProfile": {
+          "$ref": "#/definitions/kubernetes_core_AppArmorProfile",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.AppArmorProfile"
+        },
         "capabilities": {
           "$ref": "#/definitions/kubernetes_core_Capabilities",
           "existingJavaType": "io.fabric8.kubernetes.api.model.Capabilities"
@@ -14012,6 +14165,9 @@
         "sessionAffinityConfig": {
           "$ref": "#/definitions/kubernetes_core_SessionAffinityConfig",
           "existingJavaType": "io.fabric8.kubernetes.api.model.SessionAffinityConfig"
+        },
+        "trafficDistribution": {
+          "type": "string"
         },
         "type": {
           "type": "string"
@@ -14525,10 +14681,30 @@
         "readOnly": {
           "type": "boolean"
         },
+        "recursiveReadOnly": {
+          "type": "string"
+        },
         "subPath": {
           "type": "string"
         },
         "subPathExpr": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "volumemountstatus": {
+      "properties": {
+        "mountPath": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "readOnly": {
+          "type": "boolean"
+        },
+        "recursiveReadOnly": {
           "type": "string"
         }
       },

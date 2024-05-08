@@ -1,7 +1,9 @@
 
 package io.fabric8.kubernetes.api.model;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -34,7 +36,8 @@ import lombok.experimental.Accessors;
     "resources",
     "restartCount",
     "started",
-    "state"
+    "state",
+    "volumeMounts"
 })
 @ToString
 @EqualsAndHashCode
@@ -71,6 +74,9 @@ public class ContainerStatus implements Editable<ContainerStatusBuilder> , Kuber
     private Boolean started;
     @JsonProperty("state")
     private ContainerState state;
+    @JsonProperty("volumeMounts")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<VolumeMountStatus> volumeMounts = new ArrayList<VolumeMountStatus>();
     @JsonIgnore
     private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 
@@ -81,7 +87,7 @@ public class ContainerStatus implements Editable<ContainerStatusBuilder> , Kuber
     public ContainerStatus() {
     }
 
-    public ContainerStatus(Map<String, Quantity> allocatedResources, java.lang.String containerID, java.lang.String image, java.lang.String imageID, ContainerState lastState, java.lang.String name, Boolean ready, ResourceRequirements resources, Integer restartCount, Boolean started, ContainerState state) {
+    public ContainerStatus(Map<String, Quantity> allocatedResources, java.lang.String containerID, java.lang.String image, java.lang.String imageID, ContainerState lastState, java.lang.String name, Boolean ready, ResourceRequirements resources, Integer restartCount, Boolean started, ContainerState state, List<VolumeMountStatus> volumeMounts) {
         super();
         this.allocatedResources = allocatedResources;
         this.containerID = containerID;
@@ -94,6 +100,7 @@ public class ContainerStatus implements Editable<ContainerStatusBuilder> , Kuber
         this.restartCount = restartCount;
         this.started = started;
         this.state = state;
+        this.volumeMounts = volumeMounts;
     }
 
     @JsonProperty("allocatedResources")
@@ -204,6 +211,16 @@ public class ContainerStatus implements Editable<ContainerStatusBuilder> , Kuber
     @JsonProperty("state")
     public void setState(ContainerState state) {
         this.state = state;
+    }
+
+    @JsonProperty("volumeMounts")
+    public List<VolumeMountStatus> getVolumeMounts() {
+        return volumeMounts;
+    }
+
+    @JsonProperty("volumeMounts")
+    public void setVolumeMounts(List<VolumeMountStatus> volumeMounts) {
+        this.volumeMounts = volumeMounts;
     }
 
     @JsonIgnore

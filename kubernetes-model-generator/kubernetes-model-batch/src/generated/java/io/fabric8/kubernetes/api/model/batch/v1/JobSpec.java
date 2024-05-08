@@ -38,12 +38,14 @@ import lombok.experimental.Accessors;
     "backoffLimitPerIndex",
     "completionMode",
     "completions",
+    "managedBy",
     "manualSelector",
     "maxFailedIndexes",
     "parallelism",
     "podFailurePolicy",
     "podReplacementPolicy",
     "selector",
+    "successPolicy",
     "suspend",
     "template",
     "ttlSecondsAfterFinished"
@@ -80,6 +82,8 @@ public class JobSpec implements Editable<JobSpecBuilder> , KubernetesResource
     private String completionMode;
     @JsonProperty("completions")
     private Integer completions;
+    @JsonProperty("managedBy")
+    private String managedBy;
     @JsonProperty("manualSelector")
     private Boolean manualSelector;
     @JsonProperty("maxFailedIndexes")
@@ -92,6 +96,8 @@ public class JobSpec implements Editable<JobSpecBuilder> , KubernetesResource
     private String podReplacementPolicy;
     @JsonProperty("selector")
     private io.fabric8.kubernetes.api.model.LabelSelector selector;
+    @JsonProperty("successPolicy")
+    private SuccessPolicy successPolicy;
     @JsonProperty("suspend")
     private Boolean suspend;
     @JsonProperty("template")
@@ -108,19 +114,21 @@ public class JobSpec implements Editable<JobSpecBuilder> , KubernetesResource
     public JobSpec() {
     }
 
-    public JobSpec(Long activeDeadlineSeconds, Integer backoffLimit, Integer backoffLimitPerIndex, String completionMode, Integer completions, Boolean manualSelector, Integer maxFailedIndexes, Integer parallelism, PodFailurePolicy podFailurePolicy, String podReplacementPolicy, io.fabric8.kubernetes.api.model.LabelSelector selector, Boolean suspend, io.fabric8.kubernetes.api.model.PodTemplateSpec template, Integer ttlSecondsAfterFinished) {
+    public JobSpec(Long activeDeadlineSeconds, Integer backoffLimit, Integer backoffLimitPerIndex, String completionMode, Integer completions, String managedBy, Boolean manualSelector, Integer maxFailedIndexes, Integer parallelism, PodFailurePolicy podFailurePolicy, String podReplacementPolicy, io.fabric8.kubernetes.api.model.LabelSelector selector, SuccessPolicy successPolicy, Boolean suspend, io.fabric8.kubernetes.api.model.PodTemplateSpec template, Integer ttlSecondsAfterFinished) {
         super();
         this.activeDeadlineSeconds = activeDeadlineSeconds;
         this.backoffLimit = backoffLimit;
         this.backoffLimitPerIndex = backoffLimitPerIndex;
         this.completionMode = completionMode;
         this.completions = completions;
+        this.managedBy = managedBy;
         this.manualSelector = manualSelector;
         this.maxFailedIndexes = maxFailedIndexes;
         this.parallelism = parallelism;
         this.podFailurePolicy = podFailurePolicy;
         this.podReplacementPolicy = podReplacementPolicy;
         this.selector = selector;
+        this.successPolicy = successPolicy;
         this.suspend = suspend;
         this.template = template;
         this.ttlSecondsAfterFinished = ttlSecondsAfterFinished;
@@ -174,6 +182,16 @@ public class JobSpec implements Editable<JobSpecBuilder> , KubernetesResource
     @JsonProperty("completions")
     public void setCompletions(Integer completions) {
         this.completions = completions;
+    }
+
+    @JsonProperty("managedBy")
+    public String getManagedBy() {
+        return managedBy;
+    }
+
+    @JsonProperty("managedBy")
+    public void setManagedBy(String managedBy) {
+        this.managedBy = managedBy;
     }
 
     @JsonProperty("manualSelector")
@@ -234,6 +252,16 @@ public class JobSpec implements Editable<JobSpecBuilder> , KubernetesResource
     @JsonProperty("selector")
     public void setSelector(io.fabric8.kubernetes.api.model.LabelSelector selector) {
         this.selector = selector;
+    }
+
+    @JsonProperty("successPolicy")
+    public SuccessPolicy getSuccessPolicy() {
+        return successPolicy;
+    }
+
+    @JsonProperty("successPolicy")
+    public void setSuccessPolicy(SuccessPolicy successPolicy) {
+        this.successPolicy = successPolicy;
     }
 
     @JsonProperty("suspend")

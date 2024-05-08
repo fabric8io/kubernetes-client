@@ -14,6 +14,8 @@ import io.fabric8.kubernetes.api.model.storage.VolumeAttachment;
 import io.fabric8.kubernetes.api.model.storage.VolumeAttachmentList;
 import io.fabric8.kubernetes.api.model.storage.v1alpha1.VolumeAttributesClass;
 import io.fabric8.kubernetes.api.model.storage.v1alpha1.VolumeAttributesClassList;
+import io.fabric8.kubernetes.api.model.storagemigration.v1alpha1.StorageVersionMigration;
+import io.fabric8.kubernetes.api.model.storagemigration.v1alpha1.StorageVersionMigrationList;
 import io.fabric8.kubernetes.api.model.version.Info;
 
 @Generated("jsonschema2pojo")
@@ -42,6 +44,8 @@ public class ValidationSchema {
     private Status status;
     private StorageClass storageClass;
     private StorageClassList storageClassList;
+    private StorageVersionMigration storageVersionMigration;
+    private StorageVersionMigrationList storageVersionMigrationList;
     private String time;
     private TypeMeta typeMeta;
     private UpdateOptions updateOptions;
@@ -65,7 +69,7 @@ public class ValidationSchema {
     public ValidationSchema() {
     }
 
-    public ValidationSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, KubernetesList baseKubernetesList, io.fabric8.kubernetes.api.model.storage.v1beta1.CSIDriver cSIDriver, io.fabric8.kubernetes.api.model.storage.v1beta1.CSIDriverList cSIDriverList, io.fabric8.kubernetes.api.model.storage.v1beta1.CSINode cSINode, io.fabric8.kubernetes.api.model.storage.v1beta1.CSINodeList cSINodeList, io.fabric8.kubernetes.api.model.storage.v1beta1.CSIStorageCapacity cSIStorageCapacity, io.fabric8.kubernetes.api.model.storage.v1beta1.CSIStorageCapacityList cSIStorageCapacityList, CreateOptions createOptions, DeleteOptions deleteOptions, GetOptions getOptions, Info info, ListOptions listOptions, ObjectMeta objectMeta, ObjectReference objectReference, Patch patch, PatchOptions patchOptions, Quantity quantity, RootPaths rootPaths, Status status, StorageClass storageClass, StorageClassList storageClassList, String time, TypeMeta typeMeta, UpdateOptions updateOptions, io.fabric8.kubernetes.api.model.storage.CSIDriver v1CSIDriver, io.fabric8.kubernetes.api.model.storage.CSIDriverList v1CSIDriverList, io.fabric8.kubernetes.api.model.storage.CSINode v1CSINode, io.fabric8.kubernetes.api.model.storage.CSINodeList v1CSINodeList, io.fabric8.kubernetes.api.model.storage.CSIStorageCapacity v1CSIStorageCapacity, io.fabric8.kubernetes.api.model.storage.CSIStorageCapacityList v1CSIStorageCapacityList, VolumeAttachment volumeAttachment, VolumeAttachmentList volumeAttachmentList, VolumeAttributesClass volumeAttributesClass, VolumeAttributesClassList volumeAttributesClassList) {
+    public ValidationSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, KubernetesList baseKubernetesList, io.fabric8.kubernetes.api.model.storage.v1beta1.CSIDriver cSIDriver, io.fabric8.kubernetes.api.model.storage.v1beta1.CSIDriverList cSIDriverList, io.fabric8.kubernetes.api.model.storage.v1beta1.CSINode cSINode, io.fabric8.kubernetes.api.model.storage.v1beta1.CSINodeList cSINodeList, io.fabric8.kubernetes.api.model.storage.v1beta1.CSIStorageCapacity cSIStorageCapacity, io.fabric8.kubernetes.api.model.storage.v1beta1.CSIStorageCapacityList cSIStorageCapacityList, CreateOptions createOptions, DeleteOptions deleteOptions, GetOptions getOptions, Info info, ListOptions listOptions, ObjectMeta objectMeta, ObjectReference objectReference, Patch patch, PatchOptions patchOptions, Quantity quantity, RootPaths rootPaths, Status status, StorageClass storageClass, StorageClassList storageClassList, StorageVersionMigration storageVersionMigration, StorageVersionMigrationList storageVersionMigrationList, String time, TypeMeta typeMeta, UpdateOptions updateOptions, io.fabric8.kubernetes.api.model.storage.CSIDriver v1CSIDriver, io.fabric8.kubernetes.api.model.storage.CSIDriverList v1CSIDriverList, io.fabric8.kubernetes.api.model.storage.CSINode v1CSINode, io.fabric8.kubernetes.api.model.storage.CSINodeList v1CSINodeList, io.fabric8.kubernetes.api.model.storage.CSIStorageCapacity v1CSIStorageCapacity, io.fabric8.kubernetes.api.model.storage.CSIStorageCapacityList v1CSIStorageCapacityList, VolumeAttachment volumeAttachment, VolumeAttachmentList volumeAttachmentList, VolumeAttributesClass volumeAttributesClass, VolumeAttributesClassList volumeAttributesClassList) {
         super();
         this.aPIGroup = aPIGroup;
         this.aPIGroupList = aPIGroupList;
@@ -90,6 +94,8 @@ public class ValidationSchema {
         this.status = status;
         this.storageClass = storageClass;
         this.storageClassList = storageClassList;
+        this.storageVersionMigration = storageVersionMigration;
+        this.storageVersionMigrationList = storageVersionMigrationList;
         this.time = time;
         this.typeMeta = typeMeta;
         this.updateOptions = updateOptions;
@@ -333,6 +339,26 @@ public class ValidationSchema {
     @JsonProperty("StorageClassList")
     public void setStorageClassList(StorageClassList storageClassList) {
         this.storageClassList = storageClassList;
+    }
+
+    @JsonProperty("StorageVersionMigration")
+    public StorageVersionMigration getStorageVersionMigration() {
+        return storageVersionMigration;
+    }
+
+    @JsonProperty("StorageVersionMigration")
+    public void setStorageVersionMigration(StorageVersionMigration storageVersionMigration) {
+        this.storageVersionMigration = storageVersionMigration;
+    }
+
+    @JsonProperty("StorageVersionMigrationList")
+    public StorageVersionMigrationList getStorageVersionMigrationList() {
+        return storageVersionMigrationList;
+    }
+
+    @JsonProperty("StorageVersionMigrationList")
+    public void setStorageVersionMigrationList(StorageVersionMigrationList storageVersionMigrationList) {
+        this.storageVersionMigrationList = storageVersionMigrationList;
     }
 
     @JsonProperty("Time")

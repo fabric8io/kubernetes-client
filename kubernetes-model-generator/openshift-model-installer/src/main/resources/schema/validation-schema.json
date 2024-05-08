@@ -3400,29 +3400,6 @@
       "additionalProperties": true
     },
     "machinepool": {
-      "properties": {
-        "coresPerSocket": {
-          "type": "integer"
-        },
-        "cpus": {
-          "type": "integer"
-        },
-        "memoryMB": {
-          "type": "integer",
-          "existingJavaType": "Long"
-        },
-        "osDisk": {
-          "$ref": "#/definitions/os_installer_vsphere_v1_OSDisk",
-          "existingJavaType": "io.fabric8.openshift.api.model.installer.vsphere.v1.OSDisk"
-        },
-        "zones": {
-          "type": "array",
-          "javaOmitEmpty": true,
-          "items": {
-            "type": "string"
-          }
-        }
-      },
       "additionalProperties": true
     },
     "machinepoolplatform": {
@@ -3722,8 +3699,9 @@
     },
     "osdisk": {
       "properties": {
-        "diskSizeGB": {
-          "type": "integer"
+        "diskSizeGiB": {
+          "type": "integer",
+          "existingJavaType": "Long"
         }
       },
       "additionalProperties": true

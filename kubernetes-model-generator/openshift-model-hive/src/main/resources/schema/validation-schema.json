@@ -587,6 +587,22 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "kubernetes_core_AppArmorProfile": {
+      "type": "object",
+      "properties": {
+        "localhostProfile": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "existingJavaType": "io.fabric8.kubernetes.api.model.AppArmorProfile",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "kubernetes_core_AzureDiskVolumeSource": {
       "type": "object",
       "properties": {
@@ -2257,6 +2273,10 @@
     "kubernetes_core_PodSecurityContext": {
       "type": "object",
       "properties": {
+        "appArmorProfile": {
+          "$ref": "#/definitions/kubernetes_core_AppArmorProfile",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.AppArmorProfile"
+        },
         "fsGroup": {
           "type": "integer",
           "existingJavaType": "Long"
@@ -2937,6 +2957,10 @@
         "allowPrivilegeEscalation": {
           "type": "boolean"
         },
+        "appArmorProfile": {
+          "$ref": "#/definitions/kubernetes_core_AppArmorProfile",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.AppArmorProfile"
+        },
         "capabilities": {
           "$ref": "#/definitions/kubernetes_core_Capabilities",
           "existingJavaType": "io.fabric8.kubernetes.api.model.Capabilities"
@@ -3363,6 +3387,9 @@
         },
         "readOnly": {
           "type": "boolean"
+        },
+        "recursiveReadOnly": {
+          "type": "string"
         },
         "subPath": {
           "type": "string"
@@ -9126,6 +9153,17 @@
       },
       "additionalProperties": true
     },
+    "apparmorprofile": {
+      "properties": {
+        "localhostProfile": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
     "argocdconfig": {
       "properties": {
         "enabled": {
@@ -12778,27 +12816,23 @@
     },
     "machinepool": {
       "properties": {
-        "apiVersion": {
-          "type": "string",
-          "default": "hive.openshift.io/v1",
-          "required": true
+        "osDisk": {
+          "$ref": "#/definitions/os_hive_azure_v1_OSDisk",
+          "existingJavaType": "io.fabric8.openshift.api.model.hive.azure.v1.OSDisk"
         },
-        "kind": {
-          "type": "string",
-          "default": "MachinePool",
-          "required": true
+        "osImage": {
+          "$ref": "#/definitions/os_hive_azure_v1_OSImage",
+          "existingJavaType": "io.fabric8.openshift.api.model.hive.azure.v1.OSImage"
         },
-        "metadata": {
-          "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        "type": {
+          "type": "string"
         },
-        "spec": {
-          "$ref": "#/definitions/os_hive_v1_MachinePoolSpec",
-          "existingJavaType": "io.fabric8.openshift.api.model.hive.v1.MachinePoolSpec"
-        },
-        "status": {
-          "$ref": "#/definitions/os_hive_v1_MachinePoolStatus",
-          "existingJavaType": "io.fabric8.openshift.api.model.hive.v1.MachinePoolStatus"
+        "zones": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
         }
       },
       "additionalProperties": true
@@ -13154,7 +13188,7 @@
     },
     "metadata": {
       "properties": {
-        "resourceGroupName": {
+        "hostedZoneRole": {
           "type": "string"
         }
       },
@@ -13472,7 +13506,15 @@
     "osdisk": {
       "properties": {
         "diskSizeGB": {
-          "type": "integer"
+          "type": "integer",
+          "existingJavaType": "Long"
+        },
+        "diskType": {
+          "type": "string"
+        },
+        "encryptionKey": {
+          "$ref": "#/definitions/os_hive_gcp_v1_EncryptionKeyReference",
+          "existingJavaType": "io.fabric8.openshift.api.model.hive.gcp.v1.EncryptionKeyReference"
         }
       },
       "additionalProperties": true
@@ -13640,9 +13682,9 @@
     },
     "platformstatus": {
       "properties": {
-        "aws": {
-          "$ref": "#/definitions/os_hive_aws_v1_PlatformStatus",
-          "existingJavaType": "io.fabric8.openshift.api.model.hive.aws.v1.AwsPlatformStatus"
+        "privateLink": {
+          "$ref": "#/definitions/os_hive_aws_v1_PrivateLinkAccessStatus",
+          "existingJavaType": "io.fabric8.openshift.api.model.hive.aws.v1.PrivateLinkAccessStatus"
         }
       },
       "additionalProperties": true
@@ -13802,6 +13844,10 @@
     },
     "podsecuritycontext": {
       "properties": {
+        "appArmorProfile": {
+          "$ref": "#/definitions/kubernetes_core_AppArmorProfile",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.AppArmorProfile"
+        },
         "fsGroup": {
           "type": "integer",
           "existingJavaType": "Long"
@@ -14556,6 +14602,10 @@
       "properties": {
         "allowPrivilegeEscalation": {
           "type": "boolean"
+        },
+        "appArmorProfile": {
+          "$ref": "#/definitions/kubernetes_core_AppArmorProfile",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.AppArmorProfile"
         },
         "capabilities": {
           "$ref": "#/definitions/kubernetes_core_Capabilities",
@@ -15514,6 +15564,9 @@
         },
         "readOnly": {
           "type": "boolean"
+        },
+        "recursiveReadOnly": {
+          "type": "string"
         },
         "subPath": {
           "type": "string"

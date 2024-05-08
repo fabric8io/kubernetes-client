@@ -41,6 +41,7 @@ import lombok.experimental.Accessors;
     "metadata",
     "driverName",
     "parametersRef",
+    "structuredParameters",
     "suitableNodes"
 })
 @ToString
@@ -90,6 +91,8 @@ public class ResourceClass implements Editable<ResourceClassBuilder> , HasMetada
     private io.fabric8.kubernetes.api.model.ObjectMeta metadata;
     @JsonProperty("parametersRef")
     private ResourceClassParametersReference parametersRef;
+    @JsonProperty("structuredParameters")
+    private Boolean structuredParameters;
     @JsonProperty("suitableNodes")
     private NodeSelector suitableNodes;
     @JsonIgnore
@@ -102,13 +105,14 @@ public class ResourceClass implements Editable<ResourceClassBuilder> , HasMetada
     public ResourceClass() {
     }
 
-    public ResourceClass(String apiVersion, String driverName, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, ResourceClassParametersReference parametersRef, NodeSelector suitableNodes) {
+    public ResourceClass(String apiVersion, String driverName, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, ResourceClassParametersReference parametersRef, Boolean structuredParameters, NodeSelector suitableNodes) {
         super();
         this.apiVersion = apiVersion;
         this.driverName = driverName;
         this.kind = kind;
         this.metadata = metadata;
         this.parametersRef = parametersRef;
+        this.structuredParameters = structuredParameters;
         this.suitableNodes = suitableNodes;
     }
 
@@ -180,6 +184,16 @@ public class ResourceClass implements Editable<ResourceClassBuilder> , HasMetada
     @JsonProperty("parametersRef")
     public void setParametersRef(ResourceClassParametersReference parametersRef) {
         this.parametersRef = parametersRef;
+    }
+
+    @JsonProperty("structuredParameters")
+    public Boolean getStructuredParameters() {
+        return structuredParameters;
+    }
+
+    @JsonProperty("structuredParameters")
+    public void setStructuredParameters(Boolean structuredParameters) {
+        this.structuredParameters = structuredParameters;
     }
 
     @JsonProperty("suitableNodes")

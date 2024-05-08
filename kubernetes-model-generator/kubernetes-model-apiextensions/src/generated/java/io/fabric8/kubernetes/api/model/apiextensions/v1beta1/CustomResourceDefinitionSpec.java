@@ -43,6 +43,7 @@ import lombok.experimental.Accessors;
     "names",
     "preserveUnknownFields",
     "scope",
+    "selectableFields",
     "subresources",
     "validation",
     "version",
@@ -83,6 +84,9 @@ public class CustomResourceDefinitionSpec implements Editable<CustomResourceDefi
     private Boolean preserveUnknownFields;
     @JsonProperty("scope")
     private String scope;
+    @JsonProperty("selectableFields")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<SelectableField> selectableFields = new ArrayList<SelectableField>();
     @JsonProperty("subresources")
     private CustomResourceSubresources subresources;
     @JsonProperty("validation")
@@ -102,7 +106,7 @@ public class CustomResourceDefinitionSpec implements Editable<CustomResourceDefi
     public CustomResourceDefinitionSpec() {
     }
 
-    public CustomResourceDefinitionSpec(List<CustomResourceColumnDefinition> additionalPrinterColumns, CustomResourceConversion conversion, String group, CustomResourceDefinitionNames names, Boolean preserveUnknownFields, String scope, CustomResourceSubresources subresources, CustomResourceValidation validation, String version, List<CustomResourceDefinitionVersion> versions) {
+    public CustomResourceDefinitionSpec(List<CustomResourceColumnDefinition> additionalPrinterColumns, CustomResourceConversion conversion, String group, CustomResourceDefinitionNames names, Boolean preserveUnknownFields, String scope, List<SelectableField> selectableFields, CustomResourceSubresources subresources, CustomResourceValidation validation, String version, List<CustomResourceDefinitionVersion> versions) {
         super();
         this.additionalPrinterColumns = additionalPrinterColumns;
         this.conversion = conversion;
@@ -110,6 +114,7 @@ public class CustomResourceDefinitionSpec implements Editable<CustomResourceDefi
         this.names = names;
         this.preserveUnknownFields = preserveUnknownFields;
         this.scope = scope;
+        this.selectableFields = selectableFields;
         this.subresources = subresources;
         this.validation = validation;
         this.version = version;
@@ -174,6 +179,16 @@ public class CustomResourceDefinitionSpec implements Editable<CustomResourceDefi
     @JsonProperty("scope")
     public void setScope(String scope) {
         this.scope = scope;
+    }
+
+    @JsonProperty("selectableFields")
+    public List<SelectableField> getSelectableFields() {
+        return selectableFields;
+    }
+
+    @JsonProperty("selectableFields")
+    public void setSelectableFields(List<SelectableField> selectableFields) {
+        this.selectableFields = selectableFields;
     }
 
     @JsonProperty("subresources")

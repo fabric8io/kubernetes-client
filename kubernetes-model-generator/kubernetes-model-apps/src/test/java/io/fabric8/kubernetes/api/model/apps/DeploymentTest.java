@@ -192,7 +192,7 @@ class DeploymentTest {
         .withTerminationMessagePath("/tmp/my-log")
         .withTerminationMessagePolicy("FallbackToLogsOnError")
         .withTty(false)
-        .addToVolumeMounts(new VolumeMount("/cache", "", "cache-volume", true, null, null))
+        .addToVolumeMounts(new VolumeMount("/cache", "", "cache-volume", true, null, null, null))
         .withWorkingDir("/workdir")
         .endContainer()
         .withDnsPolicy("ClusterFirst")
