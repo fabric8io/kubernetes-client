@@ -79,14 +79,14 @@ class JandexIndexer {
 
   public JandexIndexer withMaxClassFileSize(int maxClassFileSize) {
     if (maxClassFileSize < 10)
-      throw new IllegalArgumentException("maxClassFileSize must be greater than 10 B (1 KB)");
+      throw new IllegalArgumentException("maxClassFileSize must be greater than 10");
     this.maxClassFileSize = maxClassFileSize;
     return this;
   }
 
   public JandexIndexer withMaxBytesReadFromJar(long maxBytesReadFromJar) {
     if (maxBytesReadFromJar < 10)
-      throw new IllegalArgumentException("maxBytesReadFromJar must be greater than 10 B (1 KB)");
+      throw new IllegalArgumentException("maxBytesReadFromJar must be greater than 10");
     this.maxBytesReadFromJar = maxBytesReadFromJar;
     return this;
   }
@@ -204,13 +204,40 @@ class JandexIndexer {
     @Override
     public int read() throws IOException {
       if (bytesRead >= maxBytes) {
-        throw new IOException("Read limit of " + maxBytes + " bytes reached");
+        throw new IOException("Read limit of " + maxBytes + " bytes exceeded");
       }
       int result = inputStream.read();
       if (result != -1) {
         bytesRead++;
       }
       return result;
+    }
+
+    @Override
+    public int read(byte[] b, int off, int len) throws IOException {
+      if (bytesRead >= maxBytes) {
+        throw new IOException("Read limit of " + maxBytes + " bytes exceeded");
+      }
+      long bytesRemaining = maxBytes - bytesRead;
+      if (len > bytesRemaining) {
+        len = (int) bytesRemaining; // Reduce len to the maximum allowable bytes
+      }
+      int count = inputStream.read(b, off, len);
+      if (count > 0) {
+        bytesRead += count;
+      }
+      return count;
+    }
+
+    @Override
+    public int available() throws IOException {
+      long available = inputStream.available();
+      long bytesRemaining = maxBytes - bytesRead;
+      if (available > bytesRemaining) {
+        return (int) bytesRemaining;
+      } else {
+        return (int) available;
+      }
     }
 
     @Override

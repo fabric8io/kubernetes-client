@@ -41,13 +41,13 @@ import java.util.stream.Stream;
 public class CrdGeneratorMojo extends AbstractMojo {
 
   @Parameter(defaultValue = "${project}", required = true, readonly = true)
-  private MavenProject mavenProject;
+  MavenProject mavenProject;
 
   /**
    * The input directory to be used to scan for Custom Resource classes
    */
   @Parameter(property = "fabric8.crd-generator.classesToIndex", defaultValue = "${project.build.outputDirectory}", readonly = true)
-  private File classesToIndex;
+  File classesToIndex;
 
   /**
    * Custom Resource classes, which should be considered to generate the CRDs.
@@ -60,7 +60,7 @@ public class CrdGeneratorMojo extends AbstractMojo {
    * Dependencies which should be scanned for Custom Resources.
    */
   @Parameter(property = "fabric8.crd-generator.dependenciesToIndex")
-  private List<Dependency> dependenciesToIndex = new LinkedList<>();
+  List<Dependency> dependenciesToIndex = new LinkedList<>();
 
   /**
    * Inclusions, used to filter Custom Resource classes after scanning.
@@ -88,13 +88,13 @@ public class CrdGeneratorMojo extends AbstractMojo {
    * </ul>
    */
   @Parameter(property = "fabric8.crd-generator.classpath", defaultValue = "WITH_RUNTIME_DEPENDENCIES")
-  private ClasspathType classpath;
+  ClasspathType classpath;
 
   /**
    * The output directory where the CRDs are emitted.
    */
   @Parameter(property = "fabric8.crd-generator.outputDirectory", defaultValue = "${project.build.outputDirectory}/META-INF/fabric8/")
-  private File outputDirectory;
+  File outputDirectory;
 
   /**
    * If true, a Jandex index will be created even if the directory or JAR file contains an existing index.
@@ -113,12 +113,6 @@ public class CrdGeneratorMojo extends AbstractMojo {
    */
   @Parameter(property = "fabric8.crd-generator.implicitPreserveUnknownFields", defaultValue = "false")
   private boolean implicitPreserveUnknownFields;
-
-  /**
-   * Print verbose output (debug output without needing to enable -X for the whole build).
-   */
-  @Parameter(property = "fabric8.crd-generator.verbose", defaultValue = "false")
-  private boolean verbose;
 
   /**
    * Skip execution if set.
@@ -172,10 +166,6 @@ public class CrdGeneratorMojo extends AbstractMojo {
       versionToInfo.forEach(
           (version, info) -> getLog().info(" " + version + " -> " + info.getFilePath()));
     });
-  }
-
-  private boolean isVerbose() {
-    return verbose || getLog().isDebugEnabled();
   }
 
   /**

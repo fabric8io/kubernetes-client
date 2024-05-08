@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class CustomResourceClassLoaderTest {
+class CustomResourceClassLoaderTest {
 
   @Test
   void checkNullsafe() {
@@ -35,7 +35,7 @@ public class CustomResourceClassLoaderTest {
     loader.withClasspathElement((String) null);
     loader.withClasspathElements(null);
     loader.withParentClassLoader(null);
-    loader.loadCustomResourceClass(MyCustomResource.class.getName());
+    assertNotNull(loader.loadCustomResourceClass(MyCustomResource.class.getName()));
   }
 
   @Test
@@ -49,8 +49,9 @@ public class CustomResourceClassLoaderTest {
   @Test
   void loadNotCustomResource_thenError() {
     CustomResourceClassLoader loader = new CustomResourceClassLoader();
-    CustomResourceCollectorException e = assertThrows(CustomResourceCollectorException.class,
-        () -> loader.loadCustomResourceClass(String.class.getName()));
+    String notACustomResourceClassName = String.class.getName();
+    assertThrows(CustomResourceCollectorException.class,
+        () -> loader.loadCustomResourceClass(notACustomResourceClassName));
   }
 
   @Test

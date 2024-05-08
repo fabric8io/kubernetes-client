@@ -18,9 +18,8 @@ package io.fabric8.crd.generator.maven.plugin;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.project.MavenProject;
 
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
+import java.util.Set;
 
 public enum ClasspathType {
   /**
@@ -44,34 +43,30 @@ public enum ClasspathType {
    */
   WITH_ALL_DEPENDENCIES_AND_TESTS;
 
-  public Collection<String> getClasspathElements(MavenProject project) {
-    Collection<String> classpathElements;
+  public Set<String> getClasspathElements(MavenProject project) {
+    Set<String> classpathElements = new HashSet<>();
     try {
       switch (this) {
         case PROJECT_ONLY:
-          classpathElements = Collections.singleton(project.getBuild().getOutputDirectory());
+          classpathElements.add(project.getBuild().getOutputDirectory());
           break;
         case WITH_COMPILE_DEPENDENCIES:
-          classpathElements = project.getCompileClasspathElements();
+          classpathElements.addAll(project.getCompileClasspathElements());
           break;
         case WITH_RUNTIME_DEPENDENCIES:
-          classpathElements = project.getRuntimeClasspathElements();
+          classpathElements.addAll(project.getRuntimeClasspathElements());
           break;
         case WITH_ALL_DEPENDENCIES:
           // to remove duplicates
-          classpathElements = new HashSet<>();
           classpathElements.addAll(project.getRuntimeClasspathElements());
           classpathElements.addAll(project.getCompileClasspathElements());
           break;
         case WITH_ALL_DEPENDENCIES_AND_TESTS:
           // to remove duplicates
-          classpathElements = new HashSet<>();
           classpathElements.addAll(project.getRuntimeClasspathElements());
           classpathElements.addAll(project.getCompileClasspathElements());
           classpathElements.addAll(project.getTestClasspathElements());
           break;
-        default:
-          throw new IllegalArgumentException("ClasspathType " + this + " not supported");
       }
     } catch (DependencyResolutionRequiredException e) {
       throw new IllegalStateException("Failed to resolve classpathType elements", e);

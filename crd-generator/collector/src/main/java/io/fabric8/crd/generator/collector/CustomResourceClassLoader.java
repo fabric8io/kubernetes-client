@@ -84,7 +84,7 @@ class CustomResourceClassLoader {
             try {
               return new File(s).toURI().toURL();
             } catch (MalformedURLException e) {
-              throw new RuntimeException(e);
+              throw new CustomResourceCollectorException("Could not transform file to URL: " + s, e);
             }
           }).toArray(URL[]::new);
 
