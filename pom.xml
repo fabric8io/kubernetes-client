@@ -165,7 +165,7 @@
     <maven.plugin.plugin.version>3.13.0</maven.plugin.plugin.version>
     <gmavenplus-plugin.version>3.0.2</gmavenplus-plugin.version>
     <gradle-api-maven-plugin.version>0.0.5</gradle-api-maven-plugin.version>
-    <jandex.plugin.version>3.1.7</jandex.plugin.version>
+    <jandex.plugin.version>3.1.8</jandex.plugin.version>
     <jacoco-maven-plugin.version>0.8.12</jacoco-maven-plugin.version>
     <jkube.version>1.16.2</jkube.version>
     <sonar-maven-plugin.version>3.11.0.3922</sonar-maven-plugin.version>
