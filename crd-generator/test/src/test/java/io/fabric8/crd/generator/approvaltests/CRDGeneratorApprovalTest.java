@@ -72,7 +72,7 @@ class CRDGeneratorApprovalTest {
   @ParameterizedTest(name = "{1}.{2} parallel={3}")
   @MethodSource("crdApprovalTests")
   @DisplayName("CRD Generator V1 Approval Tests")
-  void v1ApprovalTest(
+  void apiV1ApprovalTest(
       Class<? extends CustomResource<?, ?>>[] crClasses, String expectedCrd, String version, boolean parallel) {
     final Map<String, Map<String, CRDInfo>> result = new CRDGenerator()
         .withParallelGenerationEnabled(parallel)
@@ -94,23 +94,58 @@ class CRDGeneratorApprovalTest {
         new Namer(expectedCrd, version));
   }
 
+  @ParameterizedTest(name = "{1}.{2} parallel={3}")
+  @MethodSource("crdV1ApprovalTests")
+  @DisplayName("CRD Generator V2 Approval Tests")
+  void apiV2ApprovalTest(
+      Class<? extends CustomResource<?, ?>>[] crClasses, String expectedCrd, String version, boolean parallel) {
+    Approvals.settings().allowMultipleVerifyCallsForThisMethod();
+    final Map<String, Map<String, io.fabric8.crdv2.generator.CRDInfo>> result = new io.fabric8.crdv2.generator.CRDGenerator()
+        .withParallelGenerationEnabled(parallel)
+        .inOutputDir(tempDir)
+        .customResourceClasses(crClasses)
+        .forCRDVersions(version)
+        .detailedGenerate()
+        .getCRDDetailsPerNameAndVersion();
+
+    assertThat(result)
+        .withFailMessage(() -> "Could not find expected CRD " + expectedCrd
+            + " in results. Found instead: " + result.keySet())
+        .containsKey(expectedCrd)
+        .extractingByKey(expectedCrd)
+        .isNotNull();
+
+    Approvals.verify(
+        new FileApprovalWriter(new File(result.get(expectedCrd).get(version).getFilePath())),
+        new Namer(expectedCrd, version));
+  }
+
   static Stream<Arguments> crdApprovalTests() {
+    return Stream.concat(
+        crdApprovalBaseCases("v1"),
+        crdApprovalBaseCases("v1beta1")).map(tc -> Arguments.of(tc.crClasses, tc.expectedCrd, tc.version, tc.parallel));
+  }
+
+  static Stream<Arguments> crdV1ApprovalTests() {
+    return crdApprovalBaseCases("v1")
+        .map(tc -> Arguments.of(tc.crClasses, tc.expectedCrd, tc.version, tc.parallel));
+  }
+
+  static Stream<TestCase> crdApprovalBaseCases(String crdVersion) {
     final List<TestCase> cases = new ArrayList<>();
-    for (String crdVersion : new String[] { "v1", "v1beta1" }) {
-      for (boolean parallel : new boolean[] { false, true }) {
-        cases.add(new TestCase("annotateds.samples.fabric8.io", crdVersion, parallel, Annotated.class));
-        cases.add(new TestCase("complexkinds.samples.fabric8.io", crdVersion, parallel, Complex.class));
-        cases.add(new TestCase("children.sample.fabric8.io", crdVersion, parallel, Child.class));
-        cases.add(new TestCase("containingjsons.sample.fabric8.io", crdVersion, parallel, ContainingJson.class));
-        cases.add(new TestCase("k8svalidations.samples.fabric8.io", crdVersion, parallel, K8sValidation.class));
-        cases.add(new TestCase("containingmaps.sample.fabric8.io", crdVersion, parallel, ContainingMaps.class));
-        cases.add(new TestCase("multiples.sample.fabric8.io", crdVersion, parallel,
-            io.fabric8.crd.generator.approvaltests.multipleversions.v1.Multiple.class,
-            io.fabric8.crd.generator.approvaltests.multipleversions.v2.Multiple.class));
-        cases.add(new TestCase("nocyclics.sample.fabric8.io", crdVersion, parallel, NoCyclic.class));
-      }
+    for (boolean parallel : new boolean[] { false, true }) {
+      cases.add(new TestCase("annotateds.samples.fabric8.io", crdVersion, parallel, Annotated.class));
+      cases.add(new TestCase("complexkinds.samples.fabric8.io", crdVersion, parallel, Complex.class));
+      cases.add(new TestCase("children.sample.fabric8.io", crdVersion, parallel, Child.class));
+      cases.add(new TestCase("containingjsons.sample.fabric8.io", crdVersion, parallel, ContainingJson.class));
+      cases.add(new TestCase("k8svalidations.samples.fabric8.io", crdVersion, parallel, K8sValidation.class));
+      cases.add(new TestCase("containingmaps.sample.fabric8.io", crdVersion, parallel, ContainingMaps.class));
+      cases.add(new TestCase("multiples.sample.fabric8.io", crdVersion, parallel,
+          io.fabric8.crd.generator.approvaltests.multipleversions.v1.Multiple.class,
+          io.fabric8.crd.generator.approvaltests.multipleversions.v2.Multiple.class));
+      cases.add(new TestCase("nocyclics.sample.fabric8.io", crdVersion, parallel, NoCyclic.class));
     }
-    return cases.stream().map(tc -> Arguments.of(tc.crClasses, tc.expectedCrd, tc.version, tc.parallel));
+    return cases.stream();
   }
 
   private static final class TestCase {
@@ -119,6 +154,7 @@ class CRDGeneratorApprovalTest {
     private final String version;
     private final boolean parallel;
 
+    @SafeVarargs
     public TestCase(String expectedCrd, String version, boolean parallel, Class<? extends CustomResource<?, ?>>... crClasses) {
       this.expectedCrd = expectedCrd;
       this.version = version;
