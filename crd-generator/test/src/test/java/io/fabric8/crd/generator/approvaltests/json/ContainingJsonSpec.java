@@ -25,6 +25,4 @@ public class ContainingJsonSpec {
 
   private JsonNode free;
 
-  private Foo foo;
-
 }
