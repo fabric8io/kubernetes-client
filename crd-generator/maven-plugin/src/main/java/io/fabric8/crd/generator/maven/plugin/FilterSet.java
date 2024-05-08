@@ -19,8 +19,6 @@ import java.util.List;
 
 public class FilterSet {
   private List<String> packages;
-  private List<String> versions;
-  private List<String> groups;
 
   public List<String> getPackages() {
     return packages;
@@ -28,21 +26,5 @@ public class FilterSet {
 
   public void setPackages(List<String> packages) {
     this.packages = packages;
-  }
-
-  public List<String> getVersions() {
-    return versions;
-  }
-
-  public void setVersions(List<String> versions) {
-    this.versions = versions;
-  }
-
-  public List<String> getGroups() {
-    return groups;
-  }
-
-  public void setGroups(List<String> groups) {
-    this.groups = groups;
   }
 }

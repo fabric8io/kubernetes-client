@@ -18,7 +18,7 @@ package io.fabric8.crd.generator.maven.plugin;
 import io.fabric8.crd.generator.collector.CustomResourceCollector;
 import io.fabric8.crdv2.generator.CRDGenerationInfo;
 import io.fabric8.crdv2.generator.CRDGenerator;
-import io.fabric8.crdv2.generator.CustomResourceInfo;
+import io.fabric8.kubernetes.api.model.HasMetadata;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -54,7 +54,7 @@ public class CrdGeneratorMojo extends AbstractMojo {
    * If set, scanning is disabled.
    */
   @Parameter(property = "fabric8.crd-generator.customResourceClasses")
-  private List<String> customResourceClasses = new LinkedList<>();
+  private List<String> customResourceClassNames = new LinkedList<>();
 
   /**
    * Dependencies which should be scanned for Custom Resources.
@@ -139,14 +139,10 @@ public class CrdGeneratorMojo extends AbstractMojo {
         .withFilesToIndex(filesToIndex)
         .withForceIndex(forceIndex)
         .withIncludePackages(inclusions.getPackages())
-        .withIncludeGroups(inclusions.getGroups())
-        .withIncludeVersions(inclusions.getVersions())
         .withExcludePackages(exclusions.getPackages())
-        .withExcludeGroups(exclusions.getGroups())
-        .withExcludeVersions(exclusions.getVersions())
-        .withCustomResourceClasses(customResourceClasses);
+        .withCustomResourceClasses(customResourceClassNames);
 
-    CustomResourceInfo[] customResourceInfos = customResourceCollector.findCustomResources();
+    Class<? extends HasMetadata>[] customResourceClasses = customResourceCollector.findCustomResourceClasses();
 
     try {
       Files.createDirectories(outputDirectory.toPath());
@@ -155,7 +151,7 @@ public class CrdGeneratorMojo extends AbstractMojo {
     }
 
     CRDGenerator crdGenerator = new CRDGenerator()
-        .customResources(customResourceInfos)
+        .customResourceClasses(customResourceClasses)
         .withParallelGenerationEnabled(parallel)
         .withImplicitPreserveUnknownFields(implicitPreserveUnknownFields)
         .inOutputDir(outputDirectory);
