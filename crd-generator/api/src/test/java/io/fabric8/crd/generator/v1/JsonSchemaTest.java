@@ -130,10 +130,10 @@ class JsonSchemaTest {
     assertEquals(type.apply("string").withDefault(TextNode.valueOf("my-value")).build(), spec.get("defaultValue"));
     assertEquals(type.apply("string").withDefault(TextNode.valueOf("my-value2")).build(), spec.get("defaultValue2"));
     assertEquals(type.apply("string").withEnum(TextNode.valueOf("non"), TextNode.valueOf("oui")).build(), spec.get("anEnum"));
-    assertEquals(type.apply("boolean").build(), spec.get("bool"));
-    assertEquals(type.apply("number").build(), spec.get("num"));
-    assertEquals(type.apply("number").build(), spec.get("numFloat"));
-    assertEquals(type.apply("integer").build(), spec.get("numInt"));
+    assertEquals(type.apply("string").build(), spec.get("bool"));
+    assertEquals(type.apply("string").build(), spec.get("num"));
+    assertEquals(type.apply("string").build(), spec.get("numFloat"));
+    assertEquals(type.apply("string").build(), spec.get("numInt"));
     assertEquals(type.apply("string").build(), spec.get("issuedAt"));
 
     // check required list, should register properties with their modified name if needed

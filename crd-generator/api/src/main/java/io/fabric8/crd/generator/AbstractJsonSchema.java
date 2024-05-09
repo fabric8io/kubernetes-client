@@ -156,10 +156,6 @@ public abstract class AbstractJsonSchema<T, B> {
     new KubernetesSerialization(mapper, false);
     GENERATOR = new JsonSchemaGenerator(mapper);
 
-    JSON_FORMAT_SHAPE_MAPPING.put(JsonFormat.Shape.BOOLEAN, Types.typeDefFrom(Boolean.class).toReference());
-    JSON_FORMAT_SHAPE_MAPPING.put(JsonFormat.Shape.NUMBER, Types.typeDefFrom(Double.class).toReference());
-    JSON_FORMAT_SHAPE_MAPPING.put(JsonFormat.Shape.NUMBER_FLOAT, Types.typeDefFrom(Double.class).toReference());
-    JSON_FORMAT_SHAPE_MAPPING.put(JsonFormat.Shape.NUMBER_INT, Types.typeDefFrom(Long.class).toReference());
     JSON_FORMAT_SHAPE_MAPPING.put(JsonFormat.Shape.STRING, Types.typeDefFrom(String.class).toReference());
   }
 
