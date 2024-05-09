@@ -32,7 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class JandexUtilsTest {
 
   @Test
-  void checkDirectoryWithIndex(@TempDir File tempDir) throws IOException {
+  void directoryWithIndex_whenFindExistingIndex(@TempDir File tempDir) throws IOException {
     List<String> expectedClasses = TestUtils.prepareDirectoryWithClassesAndIndex(tempDir);
     Optional<Index> index = JandexUtils.findExistingIndex(tempDir);
     assertTrue(index.isPresent());
@@ -40,13 +40,13 @@ class JandexUtilsTest {
   }
 
   @Test
-  void checkDirectoryWithoutIndex(@TempDir File tempDir) {
+  void directoryWithoutIndex_whenFindExistingIndex(@TempDir File tempDir) {
     Optional<Index> index = JandexUtils.findExistingIndex(tempDir);
     assertFalse(index.isPresent());
   }
 
   @Test
-  void checkJarFileWithIndex(@TempDir File tempDir) throws IOException {
+  void jarFileWithIndex_whenFindExistingIndex(@TempDir File tempDir) throws IOException {
     File jarFile = new File(tempDir, "my-dependency.jar");
     List<String> expectedClasses = TestUtils.prepareJarFileWithClassesAndIndex(jarFile);
     Optional<Index> index = JandexUtils.findExistingIndex(jarFile);
@@ -55,7 +55,7 @@ class JandexUtilsTest {
   }
 
   @Test
-  void checkJarFileWithoutIndex(@TempDir File tempDir) throws IOException {
+  void jarFileWithoutIndex_whenFindExistingIndex(@TempDir File tempDir) throws IOException {
     File jarFile = new File(tempDir, "my-dependency.jar");
     TestUtils.prepareJarFileWithClasses(jarFile);
     Optional<Index> index = JandexUtils.findExistingIndex(jarFile);
@@ -63,10 +63,10 @@ class JandexUtilsTest {
   }
 
   @Test
-  void checkJarFileWithInvalidIndex(@TempDir File tempDir) throws IOException {
+  void jarFileWithInvalidIndex_whenFindExistingIndex(@TempDir File tempDir) throws IOException {
     File jarFile = new File(tempDir, "my-dependency.jar");
     TestUtils.prepareJarFileWithInvalidIndex(jarFile);
-    assertThrows(CustomResourceCollectorException.class, () -> JandexUtils.findExistingIndex(jarFile));
+    assertThrows(JandexException.class, () -> JandexUtils.findExistingIndex(jarFile));
   }
 
 }

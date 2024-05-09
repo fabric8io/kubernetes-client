@@ -15,22 +15,32 @@
  */
 package io.fabric8.crd.generator.collector;
 
+import org.jboss.jandex.CompositeIndex;
 import org.jboss.jandex.Index;
 import org.jboss.jandex.IndexReader;
+import org.jboss.jandex.IndexView;
 import org.jboss.jandex.UnsupportedVersion;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Optional;
+import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 /**
- * Utility methods to find an existing Jandex index in a directory or JAR file.
+ * Utility methods for Jandex
  */
 class JandexUtils {
+
+  private static final Logger log = LoggerFactory.getLogger(JandexIndexer.class);
 
   static final String JAR_FILE_SUFFIX = ".jar";
   private static final String DEFAULT_JANDEX_INDEX = "META-INF/jandex.idx";
@@ -38,11 +48,58 @@ class JandexUtils {
   private JandexUtils() {
   }
 
+  /**
+   * Creates a composite index from given Jandex indices, class files, directories of class files
+   * and JAR files containing class files.
+   * <p>
+   * If not forced, the implementation uses an existing Jandex index if found in the source.
+   * Otherwise, the index will be created on the fly.
+   * </p>
+   *
+   * @param indices Jandex indices
+   * @param filesToIndex files to index
+   * @param forceIndex If <code>true</code>, indices will always be created even if an index
+   *        exists at the source.
+   * @return the composite index
+   */
+  static IndexView createIndex(Collection<IndexView> indices, Collection<File> filesToIndex,
+      boolean forceIndex) {
+    Collection<IndexView> allIndices = new LinkedList<>(indices);
+    if (!filesToIndex.isEmpty()) {
+      Set<File> actualFilesToIndex = new HashSet<>();
+      for (File file : filesToIndex) {
+        if (forceIndex) {
+          // skip finding existing index and always create new index
+          actualFilesToIndex.add(file);
+        } else {
+          // use existing index if exist otherwise create new index
+          Optional<Index> index = findExistingIndex(file);
+          if (index.isPresent()) {
+            allIndices.add(index.get());
+          } else {
+            actualFilesToIndex.add(file);
+          }
+        }
+      }
+
+      log.debug("Creating {} indices", actualFilesToIndex.size());
+      allIndices.add(new JandexIndexer().createIndex(actualFilesToIndex));
+    }
+    return CompositeIndex.create(allIndices);
+  }
+
   static Optional<Index> findExistingIndex(File file) {
     return findExistingIndexInDirectory(file).map(Optional::of)
         .orElseGet(() -> findExistingIndexInJarFile(file));
   }
 
+  /**
+   * Returns the index from the given file if the file is a directory and the index exists.
+   *
+   * @param file the file
+   * @return the index
+   * @throws JandexException if a fatal error occurs
+   */
   static Optional<Index> findExistingIndexInDirectory(File file) {
     if (!file.isDirectory()) {
       return Optional.empty();
@@ -55,11 +112,18 @@ class JandexUtils {
     try (InputStream in = Files.newInputStream(jandexIndexFile.toPath())) {
       return Optional.of(readIndex(in));
     } catch (IOException e) {
-      throw new CustomResourceCollectorException(
+      throw new JandexException(
           "Could not read Jandex index from directory: " + file, e);
     }
   }
 
+  /**
+   * Returns the index from the given file if the file is a JAR file and the index exists.
+   *
+   * @param file the file
+   * @return the index
+   * @throws JandexException if a fatal error occurs
+   */
   static Optional<Index> findExistingIndexInJarFile(File file) {
     if (!file.isFile() || !file.getName().endsWith(JAR_FILE_SUFFIX)) {
       return Optional.empty();
@@ -72,7 +136,7 @@ class JandexUtils {
       }
       return Optional.of(readIndex(zip.getInputStream(entry)));
     } catch (IOException | IllegalArgumentException | UnsupportedVersion e) {
-      throw new CustomResourceCollectorException(
+      throw new JandexException(
           "Could not read Jandex index from JAR file " + file, e);
     }
   }

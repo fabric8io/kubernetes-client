@@ -40,7 +40,7 @@ public class CustomResourceCollector {
   private static final Logger log = LoggerFactory.getLogger(CustomResourceCollector.class);
 
   private final CustomResourceClassLoader customResourceClassLoader = new CustomResourceClassLoader();
-  private final CustomResourceJandexCollector jandexCollector = new CustomResourceJandexCollector();
+  private final JandexCustomResourceClassScanner jandexCustomResourceClassScanner = new JandexCustomResourceClassScanner();
 
   private final Set<String> customResourceClassNames = new HashSet<>();
 
@@ -78,27 +78,27 @@ public class CustomResourceCollector {
   }
 
   public CustomResourceCollector withIndex(IndexView... index) {
-    jandexCollector.withIndex(index);
+    jandexCustomResourceClassScanner.withIndex(index);
     return this;
   }
 
   public CustomResourceCollector withIndices(Collection<IndexView> indices) {
-    jandexCollector.withIndices(indices);
+    jandexCustomResourceClassScanner.withIndices(indices);
     return this;
   }
 
   public CustomResourceCollector withFileToIndex(File... files) {
-    jandexCollector.withFileToIndex(files);
+    jandexCustomResourceClassScanner.withFileToIndex(files);
     return this;
   }
 
   public CustomResourceCollector withFilesToIndex(Collection<File> files) {
-    jandexCollector.withFilesToIndex(files);
+    jandexCustomResourceClassScanner.withFilesToIndex(files);
     return this;
   }
 
   public CustomResourceCollector withForceIndex(boolean forceIndex) {
-    jandexCollector.withForceIndex(forceIndex);
+    jandexCustomResourceClassScanner.withForceIndex(forceIndex);
     return this;
   }
 
@@ -127,10 +127,10 @@ public class CustomResourceCollector {
   private List<Class<? extends HasMetadata>> findCustomResourceClassesAsList() {
     Set<String> customResourcesClassNames = new HashSet<>(customResourceClassNames);
 
-    // use indices only if custom resource class names are not explicitly given
+    // search only if custom resource class names are not explicitly given
     if (customResourcesClassNames.isEmpty()) {
-      customResourcesClassNames.addAll(jandexCollector.findCustomResourceClasses());
-      log.debug("Found {} custom resource classes before filtering", customResourcesClassNames.size());
+      customResourcesClassNames.addAll(jandexCustomResourceClassScanner.findCustomResourceClasses());
+      log.debug("Found {} custom resource classes", customResourcesClassNames.size());
     } else {
       log.debug("Using explicit {} custom resource classes and skip scanning", customResourcesClassNames);
     }

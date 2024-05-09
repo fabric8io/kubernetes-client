@@ -27,19 +27,19 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Enumeration;
-import java.util.List;
-import java.util.Objects;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.stream.Stream;
 
 /**
  * Allows to create a Jandex index based on given class files, directories and JAR archives.
- * Unlike {@link Index#of(File...)}, this implementation performs a recursive scan of the directories.
+ * <p>
+ * Unlike {@link Index#of(File...)}, this implementation performs a recursive scan
+ * of the directories and enforces some limits.
+ * </p>
  */
 class JandexIndexer {
 
@@ -48,27 +48,9 @@ class JandexIndexer {
   private static final String CLASS_FILE_SUFFIX = ".class";
   private static final String JAR_FILE_SUFFIX = ".jar";
 
-  private final List<File> files = new ArrayList<>();
-
-  private int maxJarEntries = 10000;
+  private int maxJarEntries = 100000;
   private long maxBytesReadFromJar = 100000000; // 100 MB
   private long maxClassFileSize = 1000000; // 1 MB
-
-  public JandexIndexer withFile(File... file) {
-    if (file != null) {
-      withFiles(Arrays.asList(file));
-    }
-    return this;
-  }
-
-  public JandexIndexer withFiles(Collection<File> files) {
-    if (files != null) {
-      files.stream()
-          .filter(Objects::nonNull)
-          .forEach(this.files::add);
-    }
-    return this;
-  }
 
   public JandexIndexer withMaxJarEntries(int maxJarEntries) {
     if (maxJarEntries < 1)
@@ -91,13 +73,17 @@ class JandexIndexer {
     return this;
   }
 
-  public Index createIndex() {
+  public Index createIndex(File... files) {
+    return createIndex(Arrays.asList(files));
+  }
+
+  public Index createIndex(Collection<File> files) {
     Indexer indexer = new Indexer();
-    appendToIndex(indexer);
+    appendToIndex(files, indexer);
     return indexer.complete();
   }
 
-  private void appendToIndex(Indexer indexer) {
+  private void appendToIndex(Collection<File> files, Indexer indexer) {
     for (File file : files) {
       if (file.isDirectory()) {
         scanDirectoryAndAddToIndex(file, indexer);
@@ -178,12 +164,6 @@ class JandexIndexer {
       log.debug("Indexed: {} ({} Annotations)", info.name(), info.annotationsCount());
       return boundedInputStream.getBytesRead();
     }
-  }
-
-  public static Index indexFor(Collection<File> files) {
-    return new JandexIndexer()
-        .withFiles(files)
-        .createIndex();
   }
 
   static class BoundedInputStream extends InputStream implements AutoCloseable {
