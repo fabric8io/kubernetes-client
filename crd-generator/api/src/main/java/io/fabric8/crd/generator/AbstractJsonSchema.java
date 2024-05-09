@@ -119,6 +119,7 @@ public abstract class AbstractJsonSchema<T, B> {
   public static final String ANNOTATION_DEFAULT = "io.fabric8.generator.annotation.Default";
   public static final String ANNOTATION_MIN = "io.fabric8.generator.annotation.Min";
   public static final String ANNOTATION_MAX = "io.fabric8.generator.annotation.Max";
+  public static final String ANNOTATION_FORMAT = "io.fabric8.generator.annotation.Format";
   public static final String ANNOTATION_PATTERN = "io.fabric8.generator.annotation.Pattern";
   public static final String ANNOTATION_NULLABLE = "io.fabric8.generator.annotation.Nullable";
   public static final String ANNOTATION_REQUIRED = "io.fabric8.generator.annotation.Required";
@@ -177,6 +178,7 @@ public abstract class AbstractJsonSchema<T, B> {
     final String defaultValue;
     final Double min;
     final Double max;
+    final String format;
     final String pattern;
     final boolean nullable;
     final boolean required;
@@ -187,6 +189,7 @@ public abstract class AbstractJsonSchema<T, B> {
       defaultValue = null;
       min = null;
       max = null;
+      format = null;
       pattern = null;
       nullable = false;
       required = false;
@@ -194,12 +197,13 @@ public abstract class AbstractJsonSchema<T, B> {
       validationRules = null;
     }
 
-    public SchemaPropsOptions(String defaultValue, Double min, Double max, String pattern,
+    public SchemaPropsOptions(String defaultValue, Double min, Double max, String format, String pattern,
         List<KubernetesValidationRule> validationRules,
         boolean nullable, boolean required, boolean preserveUnknownFields) {
       this.defaultValue = defaultValue;
       this.min = min;
       this.max = max;
+      this.format = format;
       this.pattern = pattern;
       this.nullable = nullable;
       this.required = required;
@@ -217,6 +221,10 @@ public abstract class AbstractJsonSchema<T, B> {
 
     public Optional<Double> getMax() {
       return Optional.ofNullable(max);
+    }
+
+    public Optional<String> getFormat() {
+      return Optional.ofNullable(format);
     }
 
     public Optional<String> getPattern() {
@@ -383,6 +391,7 @@ public abstract class AbstractJsonSchema<T, B> {
           facade.defaultValue,
           facade.min,
           facade.max,
+          facade.format,
           facade.pattern,
           facade.validationRules,
           facade.nullable,
@@ -425,6 +434,7 @@ public abstract class AbstractJsonSchema<T, B> {
     private String defaultValue;
     private Double min;
     private Double max;
+    private String format;
     private String pattern;
     private List<KubernetesValidationRule> validationRules;
     private boolean nullable;
@@ -463,6 +473,9 @@ public abstract class AbstractJsonSchema<T, B> {
             break;
           case ANNOTATION_MIN:
             min = (Double) a.getParameters().get(VALUE);
+            break;
+          case ANNOTATION_FORMAT:
+            format = (String) a.getParameters().get(VALUE);
             break;
           case ANNOTATION_PATTERN:
             pattern = (String) a.getParameters().get(VALUE);
@@ -526,6 +539,10 @@ public abstract class AbstractJsonSchema<T, B> {
       return Optional.ofNullable(min);
     }
 
+    public Optional<String> getFormat() {
+      return Optional.ofNullable(format);
+    }
+
     public Optional<String> getPattern() {
       return Optional.ofNullable(pattern);
     }
@@ -579,6 +596,7 @@ public abstract class AbstractJsonSchema<T, B> {
     private String defaultValue;
     private Double min;
     private Double max;
+    private String format;
     private String pattern;
     private boolean nullable;
     private boolean required;
@@ -611,6 +629,7 @@ public abstract class AbstractJsonSchema<T, B> {
       defaultValue = null;
       min = null;
       max = null;
+      format = null;
       pattern = null;
       validationRules = new LinkedList<>();
     }
@@ -641,6 +660,7 @@ public abstract class AbstractJsonSchema<T, B> {
         defaultValue = p.getDefault().orElse(defaultValue);
         min = p.getMin().orElse(min);
         max = p.getMax().orElse(max);
+        format = p.getFormat().orElse(format);
         pattern = p.getPattern().orElse(pattern);
         p.getValidationRules().ifPresent(rules -> validationRules.addAll(rules));
 

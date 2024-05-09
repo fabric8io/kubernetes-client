@@ -249,6 +249,12 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
                   new Name("io.fabric8.generator.annotation.Min"),
                   new DoubleLiteralExpr(prop.getMinimum())));
         }
+        if (prop.getFormat() != null) {
+          objField.addAnnotation(
+              new SingleMemberAnnotationExpr(
+                  new Name("io.fabric8.generator.annotation.Format"),
+                  new StringLiteralExpr(StringEscapeUtils.escapeJava(prop.getFormat()))));
+        }
         if (prop.getPattern() != null) {
           objField.addAnnotation(
               new SingleMemberAnnotationExpr(

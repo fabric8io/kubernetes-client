@@ -20,6 +20,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 import io.fabric8.generator.annotation.Default;
+import io.fabric8.generator.annotation.Format;
 import io.fabric8.generator.annotation.Max;
 import io.fabric8.generator.annotation.Min;
 import io.fabric8.generator.annotation.Nullable;
@@ -57,6 +58,7 @@ public class AnnotatedSpec {
   private String numInt;
   private String numFloat;
   private ZonedDateTime issuedAt;
+  private String password;
 
   @JsonIgnore
   private int ignoredFoo;
@@ -95,6 +97,11 @@ public class AnnotatedSpec {
   @Min(-5)
   public int getMin() {
     return 1;
+  }
+
+  @Format("password")
+  public String getPassword() {
+    return password;
   }
 
   @Pattern("\\b[1-9]\\b")

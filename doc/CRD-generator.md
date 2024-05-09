@@ -231,6 +231,30 @@ The field will have the `maximum` property in the generated CRD, such as:
             type: object
 ```
 
+### io.fabric8.generator.annotation.Format
+
+If a field or one of its accessors is annotated with `io.fabric8.generator.annotation.Format`
+
+```java
+public class ExampleSpec {
+  @Format("password")
+  String someValue;
+}
+```
+
+The field will have the `format` property in the generated CRD, such as:
+
+```yaml
+          spec:
+            properties:
+              someValue:
+                format: password
+                type: string
+            required:
+            - someValue
+            type: object
+```
+
 ### io.fabric8.generator.annotation.Pattern
 
 If a field or one of its accessors is annotated with `io.fabric8.generator.annotation.Pattern`
