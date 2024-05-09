@@ -15,9 +15,7 @@
  */
 package io.fabric8.crdv2.generator;
 
-import com.fasterxml.jackson.annotation.JsonFormat.Value;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.databind.AnnotationIntrospector;
 import com.fasterxml.jackson.databind.BeanDescription;
 import com.fasterxml.jackson.databind.BeanProperty;
 import com.fasterxml.jackson.databind.JavaType;
@@ -282,7 +280,6 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
     final InternalSchemaSwaps swaps = schemaSwaps;
 
     GeneratorObjectSchema gos = (GeneratorObjectSchema) jacksonSchema.asObjectSchema();
-    AnnotationIntrospector ai = resolvingContext.objectMapper.getSerializationConfig().getAnnotationIntrospector();
     BeanDescription bd = resolvingContext.objectMapper.getSerializationConfig().introspect(gos.javaType);
     boolean preserveUnknownFields = false;
     if (resolvingContext.implicitPreserveUnknownFields) {
@@ -318,12 +315,6 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
 
       JsonSchema propertySchema = property.getValue();
       PropertyMetadata propertyMetadata = new PropertyMetadata(propertySchema, beanProperty);
-
-      // fallback to the JsonFormat pattern - currently not handled by the Jackson schema logic
-      if (propertyMetadata.pattern == null) {
-        propertyMetadata.pattern = ofNullable(ai.findFormat(beanProperty.getMember())).map(Value::getPattern)
-            .filter(Utils::isNotNullOrEmpty).orElse(null);
-      }
 
       if (propertyMetadata.required) {
         required.add(name);

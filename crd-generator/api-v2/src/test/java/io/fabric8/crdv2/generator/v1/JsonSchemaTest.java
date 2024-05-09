@@ -141,8 +141,7 @@ class JsonSchemaTest {
     assertEquals(type.apply("string").withDefault(TextNode.valueOf("my-value")).build(), spec.get("defaultValue"));
     assertEquals(type.apply("string").withDefault(TextNode.valueOf("my-value2")).build(), spec.get("defaultValue2"));
     assertEquals(type.apply("string").withEnum(TextNode.valueOf("non"), TextNode.valueOf("oui")).build(), spec.get("anEnum"));
-    assertEquals(type.apply("string").withFormat("date-time").withPattern("yyyy-MM-dd'T'HH:mm:ssVV").build(),
-        spec.get("issuedAt"));
+    assertEquals(type.apply("string").withFormat("date-time").build(), spec.get("issuedAt"));
     // the shape does not influence the type in these cases
     assertEquals(type.apply("string").build(), spec.get("bool"));
     assertEquals(type.apply("string").build(), spec.get("num"));
@@ -403,7 +402,7 @@ class JsonSchemaTest {
     assertNotNull(schema);
     JSONSchemaProps renewTime = schema.getProperties().get("renewTime");
     assertEquals("string", renewTime.getType());
-    assertEquals("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'", renewTime.getPattern());
+    assertNull(renewTime.getPattern());
     assertEquals("date-time", renewTime.getFormat());
   }
 
