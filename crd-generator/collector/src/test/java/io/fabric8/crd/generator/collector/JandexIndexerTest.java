@@ -41,16 +41,14 @@ class JandexIndexerTest {
         "target/test-classes/io/fabric8/crd/generator/collector/examples/MyCustomResource.class");
 
     JandexIndexer indexer = new JandexIndexer();
-    indexer.withFile(customResourceClassFile1);
-    Index index = indexer.createIndex();
+    Index index = indexer.createIndex(customResourceClassFile1);
     assertEquals(1, index.getKnownClasses().size());
   }
 
   @Test
   void checkDirectoryWithNoClassFiles(@TempDir File tempDir) {
     JandexIndexer indexer = new JandexIndexer();
-    indexer.withFile(tempDir);
-    Index index = indexer.createIndex();
+    Index index = indexer.createIndex(tempDir);
     assertEquals(0, index.getKnownClasses().size());
   }
 
@@ -58,8 +56,7 @@ class JandexIndexerTest {
   void checkDirectoryWithClassFiles(@TempDir File tempDir) throws IOException {
     List<String> expectedClasses = TestUtils.prepareDirectoryWithClasses(tempDir);
     JandexIndexer indexer = new JandexIndexer();
-    indexer.withFile(tempDir);
-    Index index = indexer.createIndex();
+    Index index = indexer.createIndex(tempDir);
     expectedClasses.forEach(s -> assertNotNull(index.getClassByName(s)));
   }
 
@@ -68,8 +65,7 @@ class JandexIndexerTest {
     File jarFile = new File(tempDir, "my-dependency.jar");
     TestUtils.prepareEmptyJarFile(jarFile);
     JandexIndexer indexer = new JandexIndexer();
-    indexer.withFile(jarFile);
-    Index index = indexer.createIndex();
+    Index index = indexer.createIndex(jarFile);
     assertEquals(0, index.getKnownClasses().size());
   }
 
@@ -78,19 +74,8 @@ class JandexIndexerTest {
     File jarFile = new File(tempDir, "my-dependency.jar");
     List<String> expectedClasses = TestUtils.prepareJarFileWithClasses(jarFile);
     JandexIndexer indexer = new JandexIndexer();
-    indexer.withFile(jarFile);
-    Index index = indexer.createIndex();
+    Index index = indexer.createIndex(jarFile);
     expectedClasses.forEach(s -> assertNotNull(index.getClassByName(s)));
-  }
-
-  @Test
-  void checkNullsafe() {
-    JandexIndexer indexer = new JandexIndexer();
-    indexer.withFile((File[]) null);
-    indexer.withFile((File) null);
-    indexer.withFiles(null);
-    Index index = indexer.createIndex();
-    assertNotNull(index);
   }
 
   @Test
@@ -99,8 +84,7 @@ class JandexIndexerTest {
     TestUtils.prepareJarFileWithClasses(jarFile);
     JandexIndexer indexer = new JandexIndexer();
     indexer.withMaxJarEntries(1);
-    indexer.withFile(jarFile);
-    assertThrows(CustomResourceCollectorException.class, indexer::createIndex);
+    assertThrows(CustomResourceCollectorException.class, () -> indexer.createIndex(jarFile));
   }
 
   @Test
@@ -109,8 +93,7 @@ class JandexIndexerTest {
     TestUtils.prepareJarFileWithClasses(jarFile);
     JandexIndexer indexer = new JandexIndexer();
     indexer.withMaxBytesReadFromJar(10);
-    indexer.withFile(jarFile);
-    assertThrows(CustomResourceCollectorException.class, indexer::createIndex);
+    assertThrows(CustomResourceCollectorException.class, () -> indexer.createIndex(jarFile));
   }
 
   @Test
@@ -119,8 +102,7 @@ class JandexIndexerTest {
     TestUtils.prepareJarFileWithClasses(jarFile);
     JandexIndexer indexer = new JandexIndexer();
     indexer.withMaxClassFileSize(10);
-    indexer.withFile(jarFile);
-    assertThrows(CustomResourceCollectorException.class, indexer::createIndex);
+    assertThrows(CustomResourceCollectorException.class, () -> indexer.createIndex(jarFile));
   }
 
   @Test

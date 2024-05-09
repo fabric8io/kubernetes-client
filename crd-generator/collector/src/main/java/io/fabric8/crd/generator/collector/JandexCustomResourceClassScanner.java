@@ -20,54 +20,57 @@ import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import org.jboss.jandex.ClassInfo;
-import org.jboss.jandex.CompositeIndex;
 import org.jboss.jandex.Index;
 import org.jboss.jandex.IndexView;
 import org.jboss.jandex.Indexer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * Collects multiple Jandex index sources and allows to find Custom Resource class names by using
- * {@link CustomResourceJandexCollector#findCustomResourceClasses()} in the resulting composite index.
+ * Collects multiple Jandex index sources and allows to find Custom Resource class names in the
+ * resulting composite index by using {@link JandexCustomResourceClassScanner#findCustomResourceClasses()}.
+ * <p>
+ * If not overridden by {@link JandexCustomResourceClassScanner#forceIndex}, the implementation uses an
+ * existing Jandex index if found in the source. Otherwise, the index will be created on the fly.
+ * </p>
  *
  * @see Index
  * @see JandexIndexer
+ * @see JandexUtils
  */
-class CustomResourceJandexCollector {
-
-  private static final Logger log = LoggerFactory.getLogger(CustomResourceJandexCollector.class);
+public class JandexCustomResourceClassScanner {
 
   private final List<IndexView> indices = new LinkedList<>();
   private final Set<File> filesToIndex = new HashSet<>();
 
+  /**
+   * If <code>true</code>, indices will always be created even if an index exists at the source.
+   */
   private boolean forceIndex = false;
 
-  public CustomResourceJandexCollector withForceIndex(boolean forceIndex) {
+  public JandexCustomResourceClassScanner withForceIndex(boolean forceIndex) {
     this.forceIndex = forceIndex;
     return this;
   }
 
-  public CustomResourceJandexCollector withIndex(IndexView... index) {
+  public JandexCustomResourceClassScanner withIndex(IndexView... index) {
     if (index != null) {
       withIndices(Arrays.asList(index));
     }
     return this;
   }
 
-  public CustomResourceJandexCollector withIndices(Collection<IndexView> indices) {
+  public JandexCustomResourceClassScanner withIndices(Collection<IndexView> indices) {
     if (indices != null) {
       indices.stream()
           .filter(Objects::nonNull)
@@ -76,14 +79,14 @@ class CustomResourceJandexCollector {
     return this;
   }
 
-  public CustomResourceJandexCollector withFileToIndex(File... files) {
+  public JandexCustomResourceClassScanner withFileToIndex(File... files) {
     if (files != null) {
       withFilesToIndex(Arrays.asList(files));
     }
     return this;
   }
 
-  public CustomResourceJandexCollector withFilesToIndex(Collection<File> files) {
+  public JandexCustomResourceClassScanner withFilesToIndex(Collection<File> files) {
     if (files != null) {
       files.stream()
           .filter(Objects::nonNull)
@@ -92,39 +95,33 @@ class CustomResourceJandexCollector {
     return this;
   }
 
-  public List<String> findCustomResourceClasses() {
-    Collection<IndexView> allIndices = new LinkedList<>();
-    allIndices.add(createBaseIndex());
-    allIndices.addAll(this.indices);
+  /**
+   * Finds Custom Resource classes in the pre-configured scope.
+   *
+   * @return the Custom Resource classes
+   */
+  public Collection<String> findCustomResourceClasses() {
+    List<IndexView> actualIndices = new ArrayList<>(indices);
+    actualIndices.add(createBaseIndex());
 
-    if (!filesToIndex.isEmpty()) {
-      Set<File> actualFilesToIndex = new HashSet<>();
-      for (File file : filesToIndex) {
-        if (forceIndex) {
-          // no lookup for existing indices
-          actualFilesToIndex.add(file);
-        } else {
-          Optional<Index> index = JandexUtils.findExistingIndex(file);
-          if (index.isPresent()) {
-            allIndices.add(index.get());
-          } else {
-            actualFilesToIndex.add(file);
-          }
-        }
-      }
+    IndexView index = JandexUtils.createIndex(actualIndices, filesToIndex, forceIndex);
 
-      log.debug("Creating {} indices", actualFilesToIndex.size());
-      allIndices.add(JandexIndexer.indexFor(actualFilesToIndex));
-    }
-
-    CompositeIndex compositeIndex = CompositeIndex.create(allIndices);
-    return findCustomResourceClasses(compositeIndex).stream()
+    return findCustomResourceClasses(index).stream()
         .map(ClassInfo::toString)
         .collect(Collectors.toList());
   }
 
+  /**
+   * Finds Custom Resource classes in an index.
+   *
+   * @param index the index
+   * @return the Custom Resource classes
+   *
+   * @see JandexCustomResourceClassScanner#createBaseIndex()
+   */
   private List<ClassInfo> findCustomResourceClasses(IndexView index) {
-    // Only works if HasMetadata and all intermediate classes (like CustomResource) have been indexed
+    // Only works if HasMetadata and all intermediate classes (like CustomResource)
+    // are included in given index.
     return index.getAllKnownImplementors(HasMetadata.class)
         .stream()
         .filter(classInfo -> classInfo.hasAnnotation(Group.class))
@@ -133,9 +130,11 @@ class CustomResourceJandexCollector {
   }
 
   /**
-   * Creates the base index required to scan for custom resources.
+   * Creates the base index required to scan for Custom Resource classes.
    *
    * @return the base index.
+   *
+   * @see JandexCustomResourceClassScanner#findCustomResourceClasses(IndexView)
    */
   private Index createBaseIndex() {
     try {
