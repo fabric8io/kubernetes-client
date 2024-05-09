@@ -33,7 +33,7 @@ class CustomResourceClassLoader {
 
   private ClassLoader parentClassLoader;
 
-  private ClassLoader classLoader;
+  private ClassLoader cachedClassLoader;
 
   public CustomResourceClassLoader withParentClassLoader(ClassLoader parentClassLoader) {
     this.parentClassLoader = parentClassLoader;
@@ -74,8 +74,8 @@ class CustomResourceClassLoader {
   }
 
   private ClassLoader getClassLoader() {
-    if (classLoader != null) {
-      return classLoader;
+    if (cachedClassLoader != null) {
+      return cachedClassLoader;
     }
 
     if (!classpathElements.isEmpty()) {
@@ -89,19 +89,19 @@ class CustomResourceClassLoader {
           }).toArray(URL[]::new);
 
       if (parentClassLoader != null) {
-        this.classLoader = new URLClassLoader(urls, parentClassLoader);
+        this.cachedClassLoader = new URLClassLoader(urls, parentClassLoader);
       } else {
-        this.classLoader = new URLClassLoader(urls);
+        this.cachedClassLoader = new URLClassLoader(urls);
       }
     } else {
       if (parentClassLoader != null) {
-        this.classLoader = parentClassLoader;
+        this.cachedClassLoader = parentClassLoader;
       } else {
-        this.classLoader = Thread.currentThread().getContextClassLoader();
+        this.cachedClassLoader = Thread.currentThread().getContextClassLoader();
       }
     }
 
-    return classLoader;
+    return cachedClassLoader;
   }
 
 }
