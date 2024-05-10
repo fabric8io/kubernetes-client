@@ -51,7 +51,7 @@ import java.util.stream.Collectors;
 public class JandexCustomResourceClassScanner {
 
   private final List<IndexView> indices = new LinkedList<>();
-  private final Set<File> filesToIndex = new HashSet<>();
+  private final Set<File> filesToScan = new HashSet<>();
 
   /**
    * If <code>true</code>, indices will always be created even if an index exists at the source.
@@ -79,18 +79,18 @@ public class JandexCustomResourceClassScanner {
     return this;
   }
 
-  public JandexCustomResourceClassScanner withFileToIndex(File... files) {
+  public JandexCustomResourceClassScanner withFileToScan(File... files) {
     if (files != null) {
-      withFilesToIndex(Arrays.asList(files));
+      withFilesToScan(Arrays.asList(files));
     }
     return this;
   }
 
-  public JandexCustomResourceClassScanner withFilesToIndex(Collection<File> files) {
+  public JandexCustomResourceClassScanner withFilesToScan(Collection<File> files) {
     if (files != null) {
       files.stream()
           .filter(Objects::nonNull)
-          .forEach(this.filesToIndex::add);
+          .forEach(this.filesToScan::add);
     }
     return this;
   }
@@ -104,7 +104,7 @@ public class JandexCustomResourceClassScanner {
     List<IndexView> actualIndices = new ArrayList<>(indices);
     actualIndices.add(createBaseIndex());
 
-    IndexView index = JandexUtils.createIndex(actualIndices, filesToIndex, forceIndex);
+    IndexView index = JandexUtils.createIndex(actualIndices, filesToScan, forceIndex);
 
     return findCustomResourceClasses(index).stream()
         .map(ClassInfo::toString)
@@ -120,8 +120,8 @@ public class JandexCustomResourceClassScanner {
    * @see JandexCustomResourceClassScanner#createBaseIndex()
    */
   private List<ClassInfo> findCustomResourceClasses(IndexView index) {
-    // Only works if HasMetadata and all intermediate classes (like CustomResource)
-    // are included in given index.
+    // Only works if HasMetadata and all intermediate classes
+    // (like CustomResource) are included in given index.
     return index.getAllKnownImplementors(HasMetadata.class)
         .stream()
         .filter(classInfo -> classInfo.hasAnnotation(Group.class))
@@ -143,8 +143,14 @@ public class JandexCustomResourceClassScanner {
       indexer.indexClass(CustomResource.class);
       return indexer.complete();
     } catch (IOException e) {
-      throw new CustomResourceCollectorException("Could not create base index", e);
+      throw new JandexException("Could not create base index", e);
     }
+  }
+
+  public void reset() {
+    indices.clear();
+    filesToScan.clear();
+    forceIndex = false;
   }
 
 }

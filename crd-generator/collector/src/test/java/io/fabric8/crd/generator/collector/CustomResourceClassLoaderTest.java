@@ -24,6 +24,8 @@ import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class CustomResourceClassLoaderTest {
@@ -41,7 +43,7 @@ class CustomResourceClassLoaderTest {
   @Test
   void loadNotExisting_thenError() {
     CustomResourceClassLoader loader = new CustomResourceClassLoader();
-    CustomResourceCollectorException e = assertThrows(CustomResourceCollectorException.class,
+    CustomResourceClassLoaderException e = assertThrows(CustomResourceClassLoaderException.class,
         () -> loader.loadCustomResourceClass("io.fabric8.crd.generator.collector.examples.MyNotExistingCustomResource"));
     assertEquals(e.getCause().getClass(), ClassNotFoundException.class);
   }
@@ -50,13 +52,20 @@ class CustomResourceClassLoaderTest {
   void loadNotCustomResource_thenError() {
     CustomResourceClassLoader loader = new CustomResourceClassLoader();
     String notACustomResourceClassName = String.class.getName();
-    assertThrows(CustomResourceCollectorException.class,
+    assertThrows(CustomResourceClassLoaderException.class,
         () -> loader.loadCustomResourceClass(notACustomResourceClassName));
   }
 
   @Test
-  void loadExisting() {
+  void loadExistingWithDefaultClassLoader() {
     CustomResourceClassLoader loader = new CustomResourceClassLoader();
+    assertNotNull(loader.loadCustomResourceClass(MyCustomResource.class.getName()));
+  }
+
+  @Test
+  void loadExistingWithParentClassLoader() {
+    CustomResourceClassLoader loader = new CustomResourceClassLoader();
+    loader.withParentClassLoader(Thread.currentThread().getContextClassLoader());
     assertNotNull(loader.loadCustomResourceClass(MyCustomResource.class.getName()));
   }
 
@@ -64,7 +73,6 @@ class CustomResourceClassLoaderTest {
   void loadWithAdditionalClasspath(@TempDir File tempDir) throws IOException {
     TestUtils.prepareDirectoryWithClasses(tempDir);
     CustomResourceClassLoader loader = new CustomResourceClassLoader();
-    loader.withParentClassLoader(null);
     loader.withClasspathElement(tempDir.toString());
     assertNotNull(loader.loadCustomResourceClass(MyCustomResource.class.getName()));
   }
@@ -77,4 +85,24 @@ class CustomResourceClassLoaderTest {
     loader.withClasspathElement(tempDir.toString());
     assertNotNull(loader.loadCustomResourceClass(MyCustomResource.class.getName()));
   }
+
+  @Test
+  void checkClassLoaderCaching(@TempDir File tempDir) throws IOException {
+    TestUtils.prepareDirectoryWithClasses(tempDir);
+    CustomResourceClassLoader loader = new CustomResourceClassLoader();
+    loader.withClasspathElement(tempDir.toString());
+    assertSame(loader.getClassLoader(), loader.getClassLoader());
+  }
+
+  @Test
+  void checkReset(@TempDir File tempDir) throws IOException {
+    TestUtils.prepareDirectoryWithClasses(tempDir);
+    CustomResourceClassLoader loader = new CustomResourceClassLoader();
+    loader.withClasspathElement(tempDir.toString());
+    ClassLoader classLoaderBeforeReset = loader.getClassLoader();
+    loader.reset();
+    ClassLoader classLoaderAfterReset = loader.getClassLoader();
+    assertNotSame(classLoaderBeforeReset, classLoaderAfterReset);
+  }
+
 }

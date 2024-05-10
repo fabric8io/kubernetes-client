@@ -84,7 +84,7 @@ class JandexIndexerTest {
     TestUtils.prepareJarFileWithClasses(jarFile);
     JandexIndexer indexer = new JandexIndexer();
     indexer.withMaxJarEntries(1);
-    assertThrows(CustomResourceCollectorException.class, () -> indexer.createIndex(jarFile));
+    assertThrows(JandexException.class, () -> indexer.createIndex(jarFile));
   }
 
   @Test
@@ -93,7 +93,7 @@ class JandexIndexerTest {
     TestUtils.prepareJarFileWithClasses(jarFile);
     JandexIndexer indexer = new JandexIndexer();
     indexer.withMaxBytesReadFromJar(10);
-    assertThrows(CustomResourceCollectorException.class, () -> indexer.createIndex(jarFile));
+    assertThrows(JandexException.class, () -> indexer.createIndex(jarFile));
   }
 
   @Test
@@ -102,7 +102,7 @@ class JandexIndexerTest {
     TestUtils.prepareJarFileWithClasses(jarFile);
     JandexIndexer indexer = new JandexIndexer();
     indexer.withMaxClassFileSize(10);
-    assertThrows(CustomResourceCollectorException.class, () -> indexer.createIndex(jarFile));
+    assertThrows(JandexException.class, () -> indexer.createIndex(jarFile));
   }
 
   @Test
