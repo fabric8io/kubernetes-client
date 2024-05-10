@@ -16,13 +16,15 @@
 package io.fabric8.crd.generator.maven.plugin;
 
 import io.fabric8.crd.generator.collector.CustomResourceCollector;
+import io.fabric8.crdv2.generator.CRDGenerationInfo;
+import io.fabric8.crdv2.generator.CRDGenerator;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.mockito.ArgumentCaptor;
-import org.mockito.MockedConstruction;
 import org.mockito.Mockito;
 
 import java.io.File;
@@ -36,20 +38,49 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
-import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
 
 class CrdGeneratorMojoTest {
 
-  @Test
-  void checkFindingJarArchiveForDependency(@TempDir File tempDir) throws MojoExecutionException, IOException {
-    CrdGeneratorMojo crdGeneratorMojo = new CrdGeneratorMojo();
+  CrdGeneratorMojo crdGeneratorMojo;
+  MavenProject mavenProject;
+  CustomResourceCollector customResourceCollector;
+  CRDGenerator crdGenerator;
+  CRDGenerationInfo crdGenerationInfo;
+
+  File tempDir;
+
+  @BeforeEach
+  void setup(@TempDir File tempDir) {
+    customResourceCollector = Mockito.mock(CustomResourceCollector.class);
+    when(customResourceCollector.withParentClassLoader(any())).thenReturn(customResourceCollector);
+    when(customResourceCollector.withClasspathElements(any())).thenReturn(customResourceCollector);
+    when(customResourceCollector.withFilesToScan(any())).thenReturn(customResourceCollector);
+    when(customResourceCollector.withForceIndex(anyBoolean())).thenReturn(customResourceCollector);
+    when(customResourceCollector.withForceScan(anyBoolean())).thenReturn(customResourceCollector);
+    when(customResourceCollector.withCustomResourceClasses(any())).thenReturn(customResourceCollector);
+    when(customResourceCollector.withIncludePackages(any())).thenReturn(customResourceCollector);
+    when(customResourceCollector.withExcludePackages(any())).thenReturn(customResourceCollector);
+
+    crdGenerator = Mockito.mock(CRDGenerator.class);
+    when(crdGenerator.inOutputDir(any())).thenReturn(crdGenerator);
+    when(crdGenerator.withParallelGenerationEnabled(anyBoolean())).thenReturn(crdGenerator);
+    when(crdGenerator.withImplicitPreserveUnknownFields(anyBoolean())).thenReturn(crdGenerator);
+    when(crdGenerator.customResourceClasses(any())).thenReturn(crdGenerator);
+    crdGenerationInfo = Mockito.mock(CRDGenerationInfo.class);
+    when(crdGenerator.detailedGenerate()).thenReturn(crdGenerationInfo);
+
+    crdGeneratorMojo = new CrdGeneratorMojo(customResourceCollector, crdGenerator);
     crdGeneratorMojo.mavenProject = Mockito.mock(MavenProject.class);
     crdGeneratorMojo.classpath = Mockito.mock(ClasspathType.class);
 
-    crdGeneratorMojo.classesToIndex = tempDir;
+    crdGeneratorMojo.classesToScan = tempDir;
     crdGeneratorMojo.outputDirectory = tempDir;
+    this.tempDir = tempDir;
+  }
 
+  @Test
+  void checkFindingJarArchiveForDependency() throws MojoExecutionException, IOException {
     File dummyJar = new File(tempDir, "test.jar");
     Files.write(dummyJar.toPath(), "dummy".getBytes());
 
@@ -73,23 +104,13 @@ class CrdGeneratorMojoTest {
     Dependency dependency = new Dependency();
     dependency.setGroupId("mygroup");
     dependency.setArtifactId("myartifact");
-    crdGeneratorMojo.dependenciesToIndex = Collections.singletonList(dependency);
+    crdGeneratorMojo.dependenciesToScan = Collections.singletonList(dependency);
 
     @SuppressWarnings("unchecked")
     ArgumentCaptor<List<File>> captor = ArgumentCaptor.forClass(List.class);
+    when(customResourceCollector.withFilesToScan(captor.capture())).thenReturn(customResourceCollector);
 
-    try (MockedConstruction<CustomResourceCollector> mockedConstruction = Mockito
-        .mockConstruction(CustomResourceCollector.class, (mock, context) -> {
-          given(mock.withParentClassLoader(any())).willReturn(mock);
-          given(mock.withClasspathElements(any())).willReturn(mock);
-          given(mock.withFilesToIndex(captor.capture())).willReturn(mock);
-          given(mock.withForceIndex(anyBoolean())).willReturn(mock);
-          given(mock.withCustomResourceClasses(any())).willReturn(mock);
-          given(mock.withIncludePackages(any())).willReturn(mock);
-          given(mock.withExcludePackages(any())).willReturn(mock);
-        })) {
-      crdGeneratorMojo.execute();
-      assertTrue(captor.getValue().contains(dummyJar));
-    }
+    crdGeneratorMojo.execute();
+    assertTrue(captor.getValue().contains(dummyJar));
   }
 }

@@ -15,12 +15,17 @@
  */
 package io.fabric8.crd.generator.collector;
 
+import io.fabric8.crd.generator.collector.examples.MyCustomResource;
+import io.fabric8.crd.generator.collector.examples.MyOtherCustomResource;
 import org.jboss.jandex.Index;
+import org.jboss.jandex.IndexView;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,41 +37,77 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class JandexUtilsTest {
 
   @Test
-  void directoryWithIndex_whenFindExistingIndex(@TempDir File tempDir) throws IOException {
+  void directoryWithIndex_whenFindIndex(@TempDir File tempDir) throws IOException {
     List<String> expectedClasses = TestUtils.prepareDirectoryWithClassesAndIndex(tempDir);
-    Optional<Index> index = JandexUtils.findExistingIndex(tempDir);
+    Optional<Index> index = JandexUtils.findIndex(tempDir);
     assertTrue(index.isPresent());
     expectedClasses.forEach(s -> assertNotNull(index.get().getClassByName(s)));
   }
 
   @Test
-  void directoryWithoutIndex_whenFindExistingIndex(@TempDir File tempDir) {
-    Optional<Index> index = JandexUtils.findExistingIndex(tempDir);
+  void directoryWithoutIndex_whenFindIndex(@TempDir File tempDir) {
+    Optional<Index> index = JandexUtils.findIndex(tempDir);
     assertFalse(index.isPresent());
   }
 
   @Test
-  void jarFileWithIndex_whenFindExistingIndex(@TempDir File tempDir) throws IOException {
+  void jarFileWithIndex_whenFindIndex(@TempDir File tempDir) throws IOException {
     File jarFile = new File(tempDir, "my-dependency.jar");
     List<String> expectedClasses = TestUtils.prepareJarFileWithClassesAndIndex(jarFile);
-    Optional<Index> index = JandexUtils.findExistingIndex(jarFile);
+    Optional<Index> index = JandexUtils.findIndex(jarFile);
     assertTrue(index.isPresent());
     expectedClasses.forEach(s -> assertNotNull(index.get().getClassByName(s)));
   }
 
   @Test
-  void jarFileWithoutIndex_whenFindExistingIndex(@TempDir File tempDir) throws IOException {
+  void jarFileWithoutIndex_whenFindIndex(@TempDir File tempDir) throws IOException {
     File jarFile = new File(tempDir, "my-dependency.jar");
     TestUtils.prepareJarFileWithClasses(jarFile);
-    Optional<Index> index = JandexUtils.findExistingIndex(jarFile);
+    Optional<Index> index = JandexUtils.findIndex(jarFile);
     assertFalse(index.isPresent());
   }
 
   @Test
-  void jarFileWithInvalidIndex_whenFindExistingIndex(@TempDir File tempDir) throws IOException {
+  void jarFileWithInvalidIndex_whenFindIndex(@TempDir File tempDir) throws IOException {
     File jarFile = new File(tempDir, "my-dependency.jar");
     TestUtils.prepareJarFileWithInvalidIndex(jarFile);
-    assertThrows(JandexException.class, () -> JandexUtils.findExistingIndex(jarFile));
+    assertThrows(JandexException.class, () -> JandexUtils.findIndex(jarFile));
+  }
+
+  @Test
+  void directoryWithIndex_whenCreateIndex(@TempDir File tempDir) throws IOException {
+    List<String> expectedClasses = TestUtils.prepareDirectoryWithClassesAndIndex(tempDir);
+    IndexView index = JandexUtils.createIndex(Collections.emptyList(),
+        Collections.singletonList(tempDir), false);
+    assertNotNull(index);
+    expectedClasses.forEach(s -> assertNotNull(index.getClassByName(s)));
+  }
+
+  @Test
+  void directoryWithIndexAndForce_whenCreateIndex(@TempDir File tempDir) throws IOException {
+    List<String> expectedClasses = TestUtils.prepareDirectoryWithClassesAndIndex(tempDir);
+    IndexView index = JandexUtils.createIndex(Collections.emptyList(),
+        Collections.singletonList(tempDir), true);
+    assertNotNull(index);
+    expectedClasses.forEach(s -> assertNotNull(index.getClassByName(s)));
+  }
+
+  @Test
+  void directoryWithoutIndex_whenCreateIndex(@TempDir File tempDir) throws IOException {
+    List<String> expectedClasses = TestUtils.prepareDirectoryWithClasses(tempDir);
+    IndexView index = JandexUtils.createIndex(Collections.emptyList(),
+        Collections.singletonList(tempDir), false);
+    assertNotNull(index);
+    expectedClasses.forEach(s -> assertNotNull(index.getClassByName(s)));
+  }
+
+  @Test
+  void indicesOnly_whenCreateIndex() throws IOException {
+    IndexView index = JandexUtils.createIndex(
+        Arrays.asList(Index.of(MyCustomResource.class), Index.of(MyOtherCustomResource.class)), Collections.emptyList(), false);
+    assertNotNull(index);
+    assertNotNull(index.getClassByName(MyCustomResource.class));
+    assertNotNull(index.getClassByName(MyOtherCustomResource.class));
   }
 
 }

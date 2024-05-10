@@ -15,154 +15,196 @@
  */
 package io.fabric8.crd.generator.collector;
 
-import io.fabric8.crd.generator.collector.examples.MyCustomResource;
 import io.fabric8.kubernetes.api.model.HasMetadata;
-import org.jboss.jandex.Index;
 import org.jboss.jandex.IndexView;
-import org.jboss.jandex.IndexWriter;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
+import org.mockito.Mockito;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.nio.file.Files;
+import java.util.Arrays;
 import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyCollection;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 class CustomResourceCollectorTest {
 
-  // must be adjusted if new test custom resources are added
-  private static final int CR_COUNT_ALL = 7;
-  private static final int CR_COUNT_V1_PKG = 2;
+  CustomResourceClassLoader customResourceClassLoader;
+  JandexCustomResourceClassScanner jandexCustomResourceClassScanner;
 
-  @Test
-  void explicitClass_thenNoScanAndFind() {
-    CustomResourceCollector collector = new CustomResourceCollector();
-    collector.withFileToIndex(new File("target/classes"));
-    collector.withCustomResourceClass(MyCustomResource.class.getName());
-    Class<? extends HasMetadata>[] infos = collector.findCustomResourceClasses();
-    assertEquals(1, infos.length);
+  CustomResourceCollector customResourceCollector;
+
+  @BeforeEach
+  void setUp() {
+    customResourceClassLoader = Mockito.mock(CustomResourceClassLoader.class);
+    jandexCustomResourceClassScanner = Mockito.mock(JandexCustomResourceClassScanner.class);
+    customResourceCollector = new CustomResourceCollector(customResourceClassLoader, jandexCustomResourceClassScanner);
   }
 
   @Test
-  void scanClassDirWithNoCRs_thenFindZero() {
-    CustomResourceCollector collector = new CustomResourceCollector();
-    collector.withFileToIndex(new File("target/classes"));
-    Class<? extends HasMetadata>[] infos = collector.findCustomResourceClasses();
-    assertEquals(0, infos.length);
+  void givenClassName_thenLoadClassAndSkipScan() {
+    customResourceCollector.withCustomResourceClass("com.example.Test");
+
+    Class<? extends HasMetadata>[] classes = customResourceCollector.findCustomResourceClasses();
+    verify(customResourceClassLoader, times(1)).loadCustomResourceClass(eq("com.example.Test"));
+    verify(jandexCustomResourceClassScanner, times(0)).findCustomResourceClasses();
+    assertEquals(1, classes.length);
   }
 
   @Test
-  void scanClassDirWithCRs_thenFindAll() {
-    CustomResourceCollector collector = new CustomResourceCollector();
-    collector.withFileToIndex(new File("target/test-classes"));
-    Class<? extends HasMetadata>[] infos = collector.findCustomResourceClasses();
-    assertEquals(CR_COUNT_ALL, infos.length);
+  void givenClassNameAndFileToScan_thenLoadClassAndSkipScan() {
+    customResourceCollector.withCustomResourceClass("com.example.Test");
+    customResourceCollector.withFileToScan(Mockito.mock(File.class));
+
+    Class<? extends HasMetadata>[] classes = customResourceCollector.findCustomResourceClasses();
+    verify(customResourceClassLoader, times(1)).loadCustomResourceClass(eq("com.example.Test"));
+    verify(jandexCustomResourceClassScanner, times(0)).findCustomResourceClasses();
+    assertEquals(1, classes.length);
   }
 
   @Test
-  void scanClassDirWithCRsAndFilterByPackageIncludes_thenFind() {
-    CustomResourceCollector collector = new CustomResourceCollector();
-    collector.withFileToIndex(new File("target/test-classes"));
-    collector.withIncludePackages(
-        Collections.singletonList("io.fabric8.crd.generator.collector.examples.v1"));
-    Class<? extends HasMetadata>[] infos = collector.findCustomResourceClasses();
-    assertEquals(CR_COUNT_V1_PKG, infos.length);
+  void givenClassNameAndFileToScanAndForceScan_thenScan() {
+    customResourceCollector.withCustomResourceClass("com.example.Test");
+    customResourceCollector.withFileToScan(Mockito.mock(File.class));
+    customResourceCollector.withForceScan(true);
+
+    when(jandexCustomResourceClassScanner.findCustomResourceClasses())
+        .thenReturn(Arrays.asList("com.example.Test1", "com.example.Test2"));
+
+    Class<? extends HasMetadata>[] classes = customResourceCollector.findCustomResourceClasses();
+    verify(customResourceClassLoader, times(1)).loadCustomResourceClass(eq("com.example.Test"));
+    verify(jandexCustomResourceClassScanner, times(1)).findCustomResourceClasses();
+    assertEquals(3, classes.length);
   }
 
   @Test
-  void scanClassDirWithCRsAndFilterByPackageExcludes_thenFind() {
-    CustomResourceCollector collector = new CustomResourceCollector();
-    collector.withFileToIndex(new File("target/test-classes"));
-    collector.withExcludePackages(
-        Collections.singletonList("io.fabric8.crd.generator.collector.examples.v1"));
-    Class<? extends HasMetadata>[] infos = collector.findCustomResourceClasses();
-    assertEquals(CR_COUNT_ALL - CR_COUNT_V1_PKG, infos.length);
+  void givenFileToScan_thenScan() {
+    customResourceCollector.withFileToScan(Mockito.mock(File.class));
+
+    when(jandexCustomResourceClassScanner.findCustomResourceClasses())
+        .thenReturn(Arrays.asList("com.example.Test1", "com.example.Test2"));
+
+    Class<? extends HasMetadata>[] classes = customResourceCollector.findCustomResourceClasses();
+    verify(jandexCustomResourceClassScanner, times(1)).findCustomResourceClasses();
+    assertEquals(2, classes.length);
   }
 
   @Test
-  void indexWithCR_thenFindCRFromIndex() throws IOException {
-    CustomResourceCollector collector = new CustomResourceCollector();
-    collector.withIndex(Index.of(MyCustomResource.class));
-    Class<? extends HasMetadata>[] infos = collector.findCustomResourceClasses();
-    assertEquals(1, infos.length);
+  void givenClassNameAndExcludePackage_thenNoLoading() {
+    customResourceCollector.withCustomResourceClass("com.example.Test");
+    customResourceCollector.withExcludePackages(Collections.singletonList("com.example"));
+
+    Class<? extends HasMetadata>[] classes = customResourceCollector.findCustomResourceClasses();
+    verify(customResourceClassLoader, times(0)).loadCustomResourceClass(anyString());
+    assertEquals(0, classes.length);
   }
 
   @Test
-  void classDirWithCRsAndIndex_thenFindOnlyCRFromIndex(@TempDir File tempDir) throws IOException {
-    File sourceCustomResourceClassFile1 = new File(
-        "target/test-classes/io/fabric8/crd/generator/collector/examples/MyCustomResource.class");
-    File targetCustomResourceClassFile1 = new File(tempDir.getAbsolutePath(),
-        "io/fabric8/crd/generator/collector/examples/MyCustomResource.class");
-    File sourceCustomResourceClassFile2 = new File(
-        "target/test-classes/io/fabric8/crd/generator/collector/examples/MyOtherCustomResource.class");
-    File targetCustomResourceClassFile2 = new File(tempDir.getAbsolutePath(),
-        "io/fabric8/crd/generator/collector/examples/MyOtherCustomResource.class");
+  void givenClassNamesAndIncludePackage_thenLoad() {
+    customResourceCollector.withCustomResourceClass("com.example.Test", "com.other.Test");
+    customResourceCollector.withIncludePackages(Collections.singletonList("com.example"));
 
-    targetCustomResourceClassFile1.getParentFile().mkdirs();
-    Files.copy(sourceCustomResourceClassFile1.toPath(), targetCustomResourceClassFile1.toPath());
-    Files.copy(sourceCustomResourceClassFile2.toPath(), targetCustomResourceClassFile2.toPath());
-
-    File jandexIndexFile = new File(tempDir.getAbsolutePath(), "META-INF/jandex.idx");
-    jandexIndexFile.getParentFile().mkdirs();
-    try (OutputStream out = Files.newOutputStream(jandexIndexFile.toPath())) {
-      // index contains only one custom resource
-      new IndexWriter(out).write(Index.of(sourceCustomResourceClassFile1));
-    }
-    CustomResourceCollector collector = new CustomResourceCollector();
-    collector.withFileToIndex(tempDir);
-
-    Class<? extends HasMetadata>[] infos = collector.findCustomResourceClasses();
-    assertEquals(1, infos.length);
-  }
-
-  @Test
-  void classDirWithCRsAndIndexAndForceScan_thenFindAll(@TempDir File tempDir) throws IOException {
-    TestUtils.prepareDirectoryWithClassesAndIncompleteIndex(tempDir);
-    CustomResourceCollector collector = new CustomResourceCollector();
-    collector.withFileToIndex(tempDir);
-    collector.withForceIndex(true);
-
-    Class<? extends HasMetadata>[] infos = collector.findCustomResourceClasses();
-    assertEquals(2, infos.length);
-  }
-
-  @Test
-  void provideIndexWithCRAndForceScan_thenFindOnlyCRFromIndex() throws IOException {
-    CustomResourceCollector collector = new CustomResourceCollector();
-    collector.withIndex(Index.of(MyCustomResource.class));
-    collector.withForceIndex(true);
-    Class<? extends HasMetadata>[] infos = collector.findCustomResourceClasses();
-    assertEquals(1, infos.length);
+    Class<? extends HasMetadata>[] classes = customResourceCollector.findCustomResourceClasses();
+    verify(customResourceClassLoader, times(1)).loadCustomResourceClass(anyString());
+    assertEquals(1, classes.length);
   }
 
   @Test
   void checkNullsafe() {
     CustomResourceCollector collector = new CustomResourceCollector();
 
-    collector.withParentClassLoader(null);
-    collector.withClasspathElement((String) null);
-    collector.withClasspathElements(null);
-
     collector.withCustomResourceClass((String[]) null);
     collector.withCustomResourceClass((String) null);
     collector.withCustomResourceClasses(null);
+
+    collector.withParentClassLoader(null);
+    collector.withClasspathElement((String) null);
+    collector.withClasspathElements(null);
 
     collector.withIndex((IndexView[]) null);
     collector.withIndex((IndexView) null);
     collector.withIndices(null);
 
-    collector.withFileToIndex((File[]) null);
-    collector.withFileToIndex((File) null);
-    collector.withFilesToIndex(null);
+    collector.withFileToScan((File[]) null);
+    collector.withFileToScan((File) null);
+    collector.withFilesToScan(null);
 
     collector.withIncludePackages(null);
     collector.withExcludePackages(null);
 
+    collector.withForceIndex(true);
+
     Class<? extends HasMetadata>[] infos = collector.findCustomResourceClasses();
     assertEquals(0, infos.length);
+  }
+
+  @Test
+  void checkReset() {
+    customResourceCollector.withCustomResourceClass("com.example.Test");
+    customResourceCollector.reset();
+    verify(customResourceClassLoader, times(1)).reset();
+    verify(jandexCustomResourceClassScanner, times(1)).reset();
+
+    Class<? extends HasMetadata>[] classes = customResourceCollector.findCustomResourceClasses();
+    verify(customResourceClassLoader, times(0)).loadCustomResourceClass(anyString());
+    assertEquals(0, classes.length);
+  }
+
+  @Test
+  void withParentClassLoader() {
+    ClassLoader classLoader = mock(ClassLoader.class);
+    assertEquals(customResourceCollector, customResourceCollector.withParentClassLoader(classLoader));
+  }
+
+  @Test
+  void withParentClassLoader_thenDelegate() {
+    customResourceCollector.withParentClassLoader(mock(ClassLoader.class));
+    verify(customResourceClassLoader, times(1)).withParentClassLoader(any());
+  }
+
+  @Test
+  void withClasspathElement_thenDelegate() {
+    customResourceCollector.withClasspathElement("path");
+    verify(customResourceClassLoader, times(1)).withClasspathElement(eq("path"));
+  }
+
+  @Test
+  void withClasspathElements_thenDelegate() {
+    customResourceCollector.withClasspathElements(Arrays.asList("path1", "path2"));
+    customResourceCollector.findCustomResourceClasses();
+    verify(customResourceClassLoader, times(1)).withClasspathElements(anyCollection());
+  }
+
+  @Test
+  void withIndex_thenDelegate() {
+    customResourceCollector.withIndex(mock(IndexView.class));
+    verify(jandexCustomResourceClassScanner, times(1)).withIndex(any());
+  }
+
+  @Test
+  void withIndices_thenDelegate() {
+    customResourceCollector.withIndices(Arrays.asList(mock(IndexView.class), mock(IndexView.class)));
+    verify(jandexCustomResourceClassScanner, times(1)).withIndices(anyCollection());
+  }
+
+  @Test
+  void withFileToScan_thenDelegate() {
+    customResourceCollector.withFileToScan(mock(File.class));
+    verify(jandexCustomResourceClassScanner, times(1)).withFileToScan(any());
+  }
+
+  @Test
+  void withFilesToScan_thenDelegate() {
+    customResourceCollector.withFilesToScan(Arrays.asList(mock(File.class), mock(File.class)));
+    verify(jandexCustomResourceClassScanner, times(1)).withFilesToScan(anyCollection());
   }
 
 }

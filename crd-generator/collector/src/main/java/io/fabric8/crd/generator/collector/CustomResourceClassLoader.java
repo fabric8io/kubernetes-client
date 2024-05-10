@@ -16,20 +16,28 @@
 package io.fabric8.crd.generator.collector;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
+import java.util.LinkedHashSet;
 import java.util.Objects;
+import java.util.Set;
 
+/**
+ * Allows to build a class loader to load Custom Resource classes.
+ * The actual class loader is built lazy and is cached once used.
+ */
 class CustomResourceClassLoader {
 
-  private final List<String> classpathElements = new ArrayList<>();
+  private static final Logger log = LoggerFactory.getLogger(CustomResourceClassLoader.class);
+
+  private final Set<String> classpathElements = new LinkedHashSet<>();
 
   private ClassLoader parentClassLoader;
 
@@ -56,12 +64,18 @@ class CustomResourceClassLoader {
     return this;
   }
 
+  /**
+   * Load a Custom Resource class by its name and the previously configured class loader.
+   *
+   * @param className the class name of the Custom Resource class
+   * @return the Custom Resource class
+   */
   public Class<? extends HasMetadata> loadCustomResourceClass(String className) {
     Class<?> clazz = loadClass(className);
     if (HasMetadata.class.isAssignableFrom(clazz)) {
       return clazz.asSubclass(HasMetadata.class);
     }
-    throw new CustomResourceCollectorException(
+    throw new CustomResourceClassLoaderException(
         "Could not load Custom Resource. Class does not implement HasMetadata: " + className);
   }
 
@@ -69,39 +83,53 @@ class CustomResourceClassLoader {
     try {
       return getClassLoader().loadClass(className);
     } catch (ClassNotFoundException e) {
-      throw new CustomResourceCollectorException(e);
+      throw new CustomResourceClassLoaderException(e);
     }
   }
 
-  private ClassLoader getClassLoader() {
-    if (cachedClassLoader != null) {
-      return cachedClassLoader;
+  ClassLoader getClassLoader() {
+    if (cachedClassLoader == null) {
+      cachedClassLoader = createClassLoader();
     }
+    return cachedClassLoader;
+  }
 
+  private ClassLoader createClassLoader() {
     if (!classpathElements.isEmpty()) {
       URL[] urls = classpathElements.stream()
           .map(s -> {
             try {
               return new File(s).toURI().toURL();
             } catch (MalformedURLException e) {
-              throw new CustomResourceCollectorException("Could not transform file to URL: " + s, e);
+              throw new CustomResourceClassLoaderException("Could not transform file to URL: " + s, e);
             }
           }).toArray(URL[]::new);
-
       if (parentClassLoader != null) {
-        this.cachedClassLoader = new URLClassLoader(urls, parentClassLoader);
+        log.trace("Using URLClassLoader with parent ClassLoader {} and {}", parentClassLoader, Arrays.toString(urls));
+        return new URLClassLoader(urls, parentClassLoader);
       } else {
-        this.cachedClassLoader = new URLClassLoader(urls);
+        log.trace("Using URLClassLoader with {}", Arrays.toString(urls));
+        return new URLClassLoader(urls);
       }
     } else {
       if (parentClassLoader != null) {
-        this.cachedClassLoader = parentClassLoader;
+        log.trace("Using given ClassLoader {}", parentClassLoader);
+        return parentClassLoader;
       } else {
-        this.cachedClassLoader = Thread.currentThread().getContextClassLoader();
+        log.trace("Using default ClassLoader");
+        return getDefaultClassLoader();
       }
     }
+  }
 
-    return cachedClassLoader;
+  private ClassLoader getDefaultClassLoader() {
+    return Thread.currentThread().getContextClassLoader();
+  }
+
+  public void reset() {
+    classpathElements.clear();
+    parentClassLoader = null;
+    cachedClassLoader = null;
   }
 
 }

@@ -15,17 +15,17 @@
  */
 package io.fabric8.crd.generator.collector;
 
-public class CustomResourceCollectorException extends RuntimeException {
+public class CustomResourceClassLoaderException extends RuntimeException {
 
-  public CustomResourceCollectorException(String message) {
+  public CustomResourceClassLoaderException(String message) {
     super(message);
   }
 
-  public CustomResourceCollectorException(String message, Throwable cause) {
+  public CustomResourceClassLoaderException(String message, Throwable cause) {
     super(message, cause);
   }
 
-  public CustomResourceCollectorException(Throwable cause) {
+  public CustomResourceClassLoaderException(Throwable cause) {
     super(cause);
   }
 }

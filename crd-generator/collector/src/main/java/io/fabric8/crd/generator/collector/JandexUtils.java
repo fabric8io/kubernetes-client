@@ -57,50 +57,72 @@ class JandexUtils {
    * </p>
    *
    * @param indices Jandex indices
-   * @param filesToIndex files to index
+   * @param filesToScan files to index
    * @param forceIndex If <code>true</code>, indices will always be created even if an index
    *        exists at the source.
    * @return the composite index
    */
-  static IndexView createIndex(Collection<IndexView> indices, Collection<File> filesToIndex,
+  static IndexView createIndex(Collection<IndexView> indices, Collection<File> filesToScan,
       boolean forceIndex) {
     Collection<IndexView> allIndices = new LinkedList<>(indices);
-    if (!filesToIndex.isEmpty()) {
-      Set<File> actualFilesToIndex = new HashSet<>();
-      for (File file : filesToIndex) {
+    if (!filesToScan.isEmpty()) {
+      Set<File> actualFilesToScan = new HashSet<>();
+      for (File file : filesToScan) {
         if (forceIndex) {
           // skip finding existing index and always create new index
-          actualFilesToIndex.add(file);
+          actualFilesToScan.add(file);
         } else {
           // use existing index if exist otherwise create new index
-          Optional<Index> index = findExistingIndex(file);
+          Optional<Index> index = findIndex(file);
           if (index.isPresent()) {
+            log.trace("Found existing index for {}", file);
             allIndices.add(index.get());
           } else {
-            actualFilesToIndex.add(file);
+            actualFilesToScan.add(file);
           }
         }
       }
 
-      log.debug("Creating {} indices", actualFilesToIndex.size());
-      allIndices.add(new JandexIndexer().createIndex(actualFilesToIndex));
+      if (!actualFilesToScan.isEmpty()) {
+        log.debug("Creating {} indices", actualFilesToScan.size());
+        allIndices.add(createIndex(actualFilesToScan));
+      }
     }
+    log.trace("Using {} indices", allIndices.size());
     return CompositeIndex.create(allIndices);
   }
 
-  static Optional<Index> findExistingIndex(File file) {
-    return findExistingIndexInDirectory(file).map(Optional::of)
-        .orElseGet(() -> findExistingIndexInJarFile(file));
+  /**
+   * Create a Jandex index based on given class files, directories and JAR archives.
+   *
+   * @param files the files which should be indexed
+   * @return the index
+   */
+  static Index createIndex(Collection<File> files) {
+    return new JandexIndexer().createIndex(files);
+  }
+
+  /**
+   * Returns the index from the given file if the file is a directory or JAR file
+   * and the index exists under the well-known location.
+   *
+   * @param file the directory or JAR file
+   * @return the index, if found
+   * @throws JandexException if a fatal error occurs
+   */
+  static Optional<Index> findIndex(File file) {
+    return findIndexInDirectory(file).map(Optional::of)
+        .orElseGet(() -> findIndexInJarFile(file));
   }
 
   /**
    * Returns the index from the given file if the file is a directory and the index exists.
    *
    * @param file the file
-   * @return the index
+   * @return the index, if found
    * @throws JandexException if a fatal error occurs
    */
-  static Optional<Index> findExistingIndexInDirectory(File file) {
+  static Optional<Index> findIndexInDirectory(File file) {
     if (!file.isDirectory()) {
       return Optional.empty();
     }
@@ -121,10 +143,10 @@ class JandexUtils {
    * Returns the index from the given file if the file is a JAR file and the index exists.
    *
    * @param file the file
-   * @return the index
+   * @return the index, if found
    * @throws JandexException if a fatal error occurs
    */
-  static Optional<Index> findExistingIndexInJarFile(File file) {
+  static Optional<Index> findIndexInJarFile(File file) {
     if (!file.isFile() || !file.getName().endsWith(JAR_FILE_SUFFIX)) {
       return Optional.empty();
     }
