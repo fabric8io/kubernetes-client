@@ -31,6 +31,8 @@ import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import static java.util.Optional.ofNullable;
+
 /**
  * Collects Custom Resource class files from various places and loads them by using
  * {@link CustomResourceCollector#findCustomResourceClasses()}.
@@ -39,12 +41,28 @@ public class CustomResourceCollector {
 
   private static final Logger log = LoggerFactory.getLogger(CustomResourceCollector.class);
 
-  private final CustomResourceClassLoader customResourceClassLoader = new CustomResourceClassLoader();
-  private final JandexCustomResourceClassScanner jandexCustomResourceClassScanner = new JandexCustomResourceClassScanner();
+  private final CustomResourceClassLoader customResourceClassLoader;
+  private final JandexCustomResourceClassScanner jandexCustomResourceClassScanner;
 
   private final Set<String> customResourceClassNames = new HashSet<>();
 
   private final List<Predicate<String>> classNamePredicates = new LinkedList<>();
+
+  private boolean forceScan = false;
+
+  public CustomResourceCollector() {
+    this(null, null);
+  }
+
+  CustomResourceCollector(
+      CustomResourceClassLoader customResourceClassLoader,
+      JandexCustomResourceClassScanner jandexCustomResourceClassScanner) {
+
+    this.customResourceClassLoader = ofNullable(customResourceClassLoader)
+        .orElseGet(CustomResourceClassLoader::new);
+    this.jandexCustomResourceClassScanner = ofNullable(jandexCustomResourceClassScanner)
+        .orElseGet(JandexCustomResourceClassScanner::new);
+  }
 
   public CustomResourceCollector withParentClassLoader(ClassLoader classLoader) {
     this.customResourceClassLoader.withParentClassLoader(classLoader);
@@ -87,18 +105,23 @@ public class CustomResourceCollector {
     return this;
   }
 
-  public CustomResourceCollector withFileToIndex(File... files) {
-    jandexCustomResourceClassScanner.withFileToIndex(files);
+  public CustomResourceCollector withFileToScan(File... files) {
+    jandexCustomResourceClassScanner.withFileToScan(files);
     return this;
   }
 
-  public CustomResourceCollector withFilesToIndex(Collection<File> files) {
-    jandexCustomResourceClassScanner.withFilesToIndex(files);
+  public CustomResourceCollector withFilesToScan(Collection<File> files) {
+    jandexCustomResourceClassScanner.withFilesToScan(files);
     return this;
   }
 
   public CustomResourceCollector withForceIndex(boolean forceIndex) {
     jandexCustomResourceClassScanner.withForceIndex(forceIndex);
+    return this;
+  }
+
+  public CustomResourceCollector withForceScan(boolean forceScan) {
+    this.forceScan = forceScan;
     return this;
   }
 
@@ -124,15 +147,25 @@ public class CustomResourceCollector {
     return this;
   }
 
+  /**
+   * Find and load Custom Resource classes in the previously defined context.
+   * <p>
+   * If at least one Custom Resource class name is given, scanning for classes is skipped.
+   * Otherwise Custom Resource classes are searched in locations provided by
+   * {@link #withFileToScan(File...)} or {@link #withFilesToScan(Collection)}.
+   * </p>
+   *
+   * @return the Custom Resource classes
+   */
   private List<Class<? extends HasMetadata>> findCustomResourceClassesAsList() {
     Set<String> customResourcesClassNames = new HashSet<>(customResourceClassNames);
 
-    // search only if custom resource class names are not explicitly given
-    if (customResourcesClassNames.isEmpty()) {
+    if (forceScan || customResourcesClassNames.isEmpty()) {
+      // search only if custom resource class names are not explicitly given
       customResourcesClassNames.addAll(jandexCustomResourceClassScanner.findCustomResourceClasses());
       log.debug("Found {} custom resource classes", customResourcesClassNames.size());
     } else {
-      log.debug("Using explicit {} custom resource classes and skip scanning", customResourcesClassNames);
+      log.debug("Using explicit {} custom resource classes and skip scanning", customResourcesClassNames.size());
     }
 
     Predicate<String> classNamePredicate = classNamePredicates.stream()
@@ -148,11 +181,32 @@ public class CustomResourceCollector {
     return customResourceClasses;
   }
 
+  /**
+   * Find and load Custom Resource classes in the previously defined context.
+   * <p>
+   * If at least one Custom Resource class name is given, scanning for classes is skipped.
+   * Otherwise Custom Resource classes are searched in locations provided by
+   * {@link #withFileToScan(File...)} or {@link #withFilesToScan(Collection)}.
+   * </p>
+   *
+   * @return the Custom Resource classes
+   */
   public Class<? extends HasMetadata>[] findCustomResourceClasses() {
     Collection<Class<? extends HasMetadata>> customResourceClasses = findCustomResourceClassesAsList();
     @SuppressWarnings("unchecked")
     Class<? extends HasMetadata>[] array = (Class<? extends HasMetadata>[]) new Class<?>[customResourceClasses.size()];
     return customResourceClasses.toArray(array);
+  }
+
+  /**
+   * Resets all internal states to defaults.
+   */
+  public void reset() {
+    customResourceClassLoader.reset();
+    jandexCustomResourceClassScanner.reset();
+    customResourceClassNames.clear();
+    classNamePredicates.clear();
+    forceScan = false;
   }
 
 }

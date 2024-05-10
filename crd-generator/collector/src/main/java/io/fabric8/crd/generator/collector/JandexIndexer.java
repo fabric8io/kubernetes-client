@@ -73,10 +73,22 @@ class JandexIndexer {
     return this;
   }
 
+  /**
+   * Create a Jandex index based on given class files, directories and JAR archives.
+   *
+   * @param files the files which should be indexed
+   * @return the index
+   */
   public Index createIndex(File... files) {
     return createIndex(Arrays.asList(files));
   }
 
+  /**
+   * Create a Jandex index based on given class files, directories and JAR archives.
+   *
+   * @param files the files which should be indexed
+   * @return the index
+   */
   public Index createIndex(Collection<File> files) {
     Indexer indexer = new Indexer();
     appendToIndex(files, indexer);
@@ -92,7 +104,7 @@ class JandexIndexer {
       } else if (file.isFile() && file.getName().endsWith(JAR_FILE_SUFFIX)) {
         scanJarFileAndAddToIndex(file, indexer);
       } else {
-        throw new CustomResourceCollectorException("Not a class file, JAR file or directory: " + file);
+        throw new JandexException("Not a class file, JAR file or directory: " + file);
       }
     }
   }
@@ -101,7 +113,7 @@ class JandexIndexer {
     try (InputStream in = Files.newInputStream(file.toPath())) {
       addToIndex(in, indexer);
     } catch (IOException e) {
-      throw new CustomResourceCollectorException(e);
+      throw new JandexException(e);
     }
   }
 
@@ -118,15 +130,15 @@ class JandexIndexer {
           totalBytesRead = totalBytesRead + bytesRead;
         }
         if (totalEntries > maxJarEntries) {
-          throw new CustomResourceCollectorException("Limit for total JAR file entries exceeded: " + totalEntries);
+          throw new JandexException("Limit for total JAR file entries exceeded: " + totalEntries);
         }
         if (totalBytesRead > maxBytesReadFromJar) {
-          throw new CustomResourceCollectorException(
+          throw new JandexException(
               "Limit for total bytes read from JAR file exceeded: " + totalBytesRead + " bytes");
         }
       }
     } catch (IOException e) {
-      throw new CustomResourceCollectorException("Could not index JAR file " + file, e);
+      throw new JandexException("Could not index JAR file " + file, e);
     }
   }
 
@@ -137,7 +149,7 @@ class JandexIndexer {
           .filter(file -> file.toString().endsWith(CLASS_FILE_SUFFIX))
           .forEach(file -> addToIndex(file, indexer));
     } catch (IOException e) {
-      throw new CustomResourceCollectorException(e);
+      throw new JandexException(e);
     }
   }
 
@@ -145,7 +157,7 @@ class JandexIndexer {
     try (InputStream in = zip.getInputStream(entry)) {
       return addToIndex(in, indexer);
     } catch (IOException e) {
-      throw new CustomResourceCollectorException("Could not index " + entry.getName() + " from JAR file " + zip.getName(), e);
+      throw new JandexException("Could not index " + entry.getName() + " from JAR file " + zip.getName(), e);
     }
   }
 
@@ -153,7 +165,7 @@ class JandexIndexer {
     try (InputStream in = Files.newInputStream(file)) {
       return addToIndex(in, indexer);
     } catch (IOException e) {
-      throw new CustomResourceCollectorException("Could not index " + file, e);
+      throw new JandexException("Could not index " + file, e);
     }
   }
 

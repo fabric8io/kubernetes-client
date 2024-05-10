@@ -37,6 +37,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static java.util.Optional.ofNullable;
+
 @Mojo(name = "generate", defaultPhase = LifecyclePhase.PROCESS_CLASSES, requiresDependencyCollection = ResolutionScope.COMPILE_PLUS_RUNTIME, requiresDependencyResolution = ResolutionScope.COMPILE_PLUS_RUNTIME, threadSafe = true)
 public class CrdGeneratorMojo extends AbstractMojo {
 
@@ -46,33 +48,33 @@ public class CrdGeneratorMojo extends AbstractMojo {
   /**
    * The input directory to be used to scan for Custom Resource classes
    */
-  @Parameter(property = "fabric8.crd-generator.classesToIndex", defaultValue = "${project.build.outputDirectory}", readonly = true)
-  File classesToIndex;
+  @Parameter(property = "fabric8.crd-generator.classesToScan", defaultValue = "${project.build.outputDirectory}", readonly = true)
+  File classesToScan;
 
   /**
    * Custom Resource classes, which should be considered to generate the CRDs.
    * If set, scanning is disabled.
    */
   @Parameter(property = "fabric8.crd-generator.customResourceClasses")
-  private List<String> customResourceClassNames = new LinkedList<>();
+  List<String> customResourceClasses = new LinkedList<>();
 
   /**
    * Dependencies which should be scanned for Custom Resources.
    */
-  @Parameter(property = "fabric8.crd-generator.dependenciesToIndex")
-  List<Dependency> dependenciesToIndex = new LinkedList<>();
+  @Parameter(property = "fabric8.crd-generator.dependenciesToScan")
+  List<Dependency> dependenciesToScan = new LinkedList<>();
 
   /**
    * Inclusions, used to filter Custom Resource classes after scanning.
    */
   @Parameter(property = "fabric8.crd-generator.inclusions")
-  private FilterSet inclusions = new FilterSet();
+  FilterSet inclusions = new FilterSet();
 
   /**
    * Exclusions, used to filter Custom Resource classes after scanning.
    */
   @Parameter(property = "fabric8.crd-generator.exclusions")
-  private FilterSet exclusions = new FilterSet();
+  FilterSet exclusions = new FilterSet();
 
   /**
    * The classpath which should be used during the CRD generation.
@@ -97,28 +99,49 @@ public class CrdGeneratorMojo extends AbstractMojo {
   File outputDirectory;
 
   /**
-   * If true, a Jandex index will be created even if the directory or JAR file contains an existing index.
+   * If {@code true}, a Jandex index will be created even if the directory or JAR file contains an existing index.
    */
   @Parameter(property = "fabric8.crd-generator.forceIndex", defaultValue = "false")
-  private boolean forceIndex;
+  boolean forceIndex;
 
   /**
-   * If enabled, the CRDs will be generated in parallel.
+   * If {@code true}, directories and JAR files are scanned even if Custom Resource classes are given.
+   */
+  @Parameter(property = "fabric8.crd-generator.forceScan", defaultValue = "false")
+  boolean forceScan;
+
+  /**
+   * If {@code true}, the CRDs will be generated in parallel.
    */
   @Parameter(property = "fabric8.crd-generator.parallel", defaultValue = "true")
-  private boolean parallel;
+  boolean parallel;
 
   /**
-   * If enabled, all objects are implicitly marked with x-kubernetes-preserve-unknown-fields: true.
+   * If {@code true}, {@code x-kubernetes-preserve-unknown-fields: true} will be added on objects
+   * which contain an any-setter or any-getter.
    */
   @Parameter(property = "fabric8.crd-generator.implicitPreserveUnknownFields", defaultValue = "false")
-  private boolean implicitPreserveUnknownFields;
+  boolean implicitPreserveUnknownFields;
 
   /**
-   * Skip execution if set.
+   * If {@code true}, execution will be skipped.
    */
   @Parameter(property = "fabric8.crd-generator.skip", defaultValue = "false")
-  private boolean skip;
+  boolean skip;
+
+  private final CustomResourceCollector customResourceCollector;
+  private final CRDGenerator crdGenerator;
+
+  public CrdGeneratorMojo() {
+    this(null, null);
+  }
+
+  CrdGeneratorMojo(CustomResourceCollector customResourceCollector, CRDGenerator crdGenerator) {
+    this.customResourceCollector = ofNullable(customResourceCollector)
+        .orElseGet(CustomResourceCollector::new);
+    this.crdGenerator = ofNullable(crdGenerator)
+        .orElseGet(CRDGenerator::new);
+  }
 
   @Override
   public void execute() throws MojoExecutionException {
@@ -127,22 +150,23 @@ public class CrdGeneratorMojo extends AbstractMojo {
       return;
     }
 
-    List<File> filesToIndex = new LinkedList<>();
-    if (classesToIndex.exists()) {
-      filesToIndex.add(classesToIndex);
+    List<File> filesToScan = new LinkedList<>();
+    if (classesToScan.exists()) {
+      filesToScan.add(classesToScan);
     }
-    filesToIndex.addAll(getDependencyArchives());
+    filesToScan.addAll(getDependencyArchives());
 
-    CustomResourceCollector customResourceCollector = new CustomResourceCollector()
+    customResourceCollector
         .withParentClassLoader(Thread.currentThread().getContextClassLoader())
         .withClasspathElements(classpath.getClasspathElements(mavenProject))
-        .withFilesToIndex(filesToIndex)
+        .withFilesToScan(filesToScan)
         .withForceIndex(forceIndex)
+        .withForceScan(forceScan)
         .withIncludePackages(inclusions.getPackages())
         .withExcludePackages(exclusions.getPackages())
-        .withCustomResourceClasses(customResourceClassNames);
+        .withCustomResourceClasses(customResourceClasses);
 
-    Class<? extends HasMetadata>[] customResourceClasses = customResourceCollector.findCustomResourceClasses();
+    Class<? extends HasMetadata>[] customResourceClassesLoaded = customResourceCollector.findCustomResourceClasses();
 
     try {
       Files.createDirectories(outputDirectory.toPath());
@@ -150,8 +174,8 @@ public class CrdGeneratorMojo extends AbstractMojo {
       throw new MojoExecutionException("Could not create output directory: " + e.getMessage());
     }
 
-    CRDGenerator crdGenerator = new CRDGenerator()
-        .customResourceClasses(customResourceClasses)
+    crdGenerator
+        .customResourceClasses(customResourceClassesLoaded)
         .withParallelGenerationEnabled(parallel)
         .withImplicitPreserveUnknownFields(implicitPreserveUnknownFields)
         .inOutputDir(outputDirectory);
@@ -170,7 +194,7 @@ public class CrdGeneratorMojo extends AbstractMojo {
    * @return the archive files
    */
   private List<File> getDependencyArchives() {
-    return dependenciesToIndex.stream()
+    return dependenciesToScan.stream()
         .map(this::getDependencyArchive)
         .flatMap(o -> o.map(Stream::of).orElseGet(Stream::empty))
         .collect(Collectors.toList());
@@ -185,14 +209,14 @@ public class CrdGeneratorMojo extends AbstractMojo {
         File jarFile = artifact.getFile();
         if (jarFile == null) {
           getLog().warn(
-              "Skip indexing dependency, artifact file does not exist for dependency: " + dependency);
+              "Skip scanning dependency, artifact file does not exist for dependency: " + dependency);
           return Optional.empty();
         }
 
         return Optional.of(jarFile);
       }
     }
-    getLog().warn("Skip indexing dependency, artifact for dependency not found: " + dependency);
+    getLog().warn("Skip scanning dependency, artifact for dependency not found: " + dependency);
     return Optional.empty();
   }
 
