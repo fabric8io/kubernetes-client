@@ -20,6 +20,8 @@ import org.apache.maven.model.Build;
 import org.apache.maven.project.MavenProject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledForJreRange;
+import org.junit.jupiter.api.condition.JRE;
 import org.mockito.Mockito;
 
 import java.util.Collections;
@@ -29,6 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
+@EnabledForJreRange(min = JRE.JAVA_17)
 class ClasspathTypeTest {
 
   private static final String RUNTIME_PATH = "/runtime";
