@@ -18,15 +18,15 @@ package io.fabric8.crd.generator.maven.plugin;
 import io.fabric8.crd.generator.collector.CustomResourceCollector;
 import io.fabric8.crdv2.generator.CRDGenerationInfo;
 import io.fabric8.crdv2.generator.CRDGenerator;
-import io.fabric8.kubernetes.api.model.HasMetadata;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledForJreRange;
+import org.junit.jupiter.api.condition.JRE;
 import org.junit.jupiter.api.io.TempDir;
 import org.mockito.ArgumentCaptor;
-import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 
 import java.io.File;
@@ -40,12 +40,13 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.anyCollection;
 import static org.mockito.Mockito.when;
 
+@EnabledForJreRange(min = JRE.JAVA_17)
 class CrdGeneratorMojoTest {
 
   CrdGeneratorMojo crdGeneratorMojo;
-  MavenProject mavenProject;
   CustomResourceCollector customResourceCollector;
   CRDGenerator crdGenerator;
   CRDGenerationInfo crdGenerationInfo;
@@ -56,8 +57,8 @@ class CrdGeneratorMojoTest {
   void setup(@TempDir File tempDir) {
     customResourceCollector = Mockito.mock(CustomResourceCollector.class);
     when(customResourceCollector.withParentClassLoader(any())).thenReturn(customResourceCollector);
-    when(customResourceCollector.withClasspathElements(any())).thenReturn(customResourceCollector);
-    when(customResourceCollector.withFilesToScan(any())).thenReturn(customResourceCollector);
+    when(customResourceCollector.withClasspathElements(anyCollection())).thenReturn(customResourceCollector);
+    when(customResourceCollector.withFilesToScan(anyCollection())).thenReturn(customResourceCollector);
     when(customResourceCollector.withForceIndex(anyBoolean())).thenReturn(customResourceCollector);
     when(customResourceCollector.withForceScan(anyBoolean())).thenReturn(customResourceCollector);
     when(customResourceCollector.withCustomResourceClasses(any())).thenReturn(customResourceCollector);
@@ -68,7 +69,7 @@ class CrdGeneratorMojoTest {
     when(crdGenerator.inOutputDir(any())).thenReturn(crdGenerator);
     when(crdGenerator.withParallelGenerationEnabled(anyBoolean())).thenReturn(crdGenerator);
     when(crdGenerator.withImplicitPreserveUnknownFields(anyBoolean())).thenReturn(crdGenerator);
-    when(crdGenerator.customResourceClasses(ArgumentMatchers.<Class<? extends HasMetadata>> any())).thenReturn(crdGenerator);
+    when(crdGenerator.customResourceClasses(any())).thenReturn(crdGenerator);
     crdGenerationInfo = Mockito.mock(CRDGenerationInfo.class);
     when(crdGenerator.detailedGenerate()).thenReturn(crdGenerationInfo);
 
