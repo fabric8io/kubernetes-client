@@ -104,11 +104,12 @@ class CustomResourceClassLoader {
               throw new CustomResourceClassLoaderException("Could not transform file to URL: " + s, e);
             }
           }).toArray(URL[]::new);
+      String urlsAsString = Arrays.toString(urls);
       if (parentClassLoader != null) {
-        log.trace("Using URLClassLoader with parent ClassLoader {} and {}", parentClassLoader, Arrays.toString(urls));
+        log.trace("Using URLClassLoader with parent ClassLoader {} and {}", parentClassLoader, urlsAsString);
         return new URLClassLoader(urls, parentClassLoader);
       } else {
-        log.trace("Using URLClassLoader with {}", Arrays.toString(urls));
+        log.trace("Using URLClassLoader with {}", urlsAsString);
         return new URLClassLoader(urls);
       }
     } else {

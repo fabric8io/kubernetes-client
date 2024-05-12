@@ -40,7 +40,7 @@ import java.util.jar.JarFile;
  */
 class JandexUtils {
 
-  private static final Logger log = LoggerFactory.getLogger(JandexIndexer.class);
+  private static final Logger log = LoggerFactory.getLogger(JandexUtils.class);
 
   static final String JAR_FILE_SUFFIX = ".jar";
   private static final String DEFAULT_JANDEX_INDEX = "META-INF/jandex.idx";
