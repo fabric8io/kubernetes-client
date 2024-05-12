@@ -18,6 +18,7 @@ package io.fabric8.crd.generator.maven.plugin;
 import io.fabric8.crd.generator.collector.CustomResourceCollector;
 import io.fabric8.crdv2.generator.CRDGenerationInfo;
 import io.fabric8.crdv2.generator.CRDGenerator;
+import io.fabric8.kubernetes.api.model.HasMetadata;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
@@ -25,6 +26,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.mockito.ArgumentCaptor;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 
 import java.io.File;
@@ -66,7 +68,7 @@ class CrdGeneratorMojoTest {
     when(crdGenerator.inOutputDir(any())).thenReturn(crdGenerator);
     when(crdGenerator.withParallelGenerationEnabled(anyBoolean())).thenReturn(crdGenerator);
     when(crdGenerator.withImplicitPreserveUnknownFields(anyBoolean())).thenReturn(crdGenerator);
-    when(crdGenerator.customResourceClasses(any())).thenReturn(crdGenerator);
+    when(crdGenerator.customResourceClasses(ArgumentMatchers.<Class<? extends HasMetadata>>any())).thenReturn(crdGenerator);
     crdGenerationInfo = Mockito.mock(CRDGenerationInfo.class);
     when(crdGenerator.detailedGenerate()).thenReturn(crdGenerationInfo);
 
