@@ -68,7 +68,7 @@ class CrdGeneratorMojoTest {
     when(crdGenerator.inOutputDir(any())).thenReturn(crdGenerator);
     when(crdGenerator.withParallelGenerationEnabled(anyBoolean())).thenReturn(crdGenerator);
     when(crdGenerator.withImplicitPreserveUnknownFields(anyBoolean())).thenReturn(crdGenerator);
-    when(crdGenerator.customResourceClasses(ArgumentMatchers.<Class<? extends HasMetadata>>any())).thenReturn(crdGenerator);
+    when(crdGenerator.customResourceClasses(ArgumentMatchers.<Class<? extends HasMetadata>> any())).thenReturn(crdGenerator);
     crdGenerationInfo = Mockito.mock(CRDGenerationInfo.class);
     when(crdGenerator.detailedGenerate()).thenReturn(crdGenerationInfo);
 

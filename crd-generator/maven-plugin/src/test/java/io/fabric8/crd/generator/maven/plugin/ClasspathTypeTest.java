@@ -54,21 +54,21 @@ class ClasspathTypeTest {
   }
 
   @Test
-  void testGetUrlsCompile() {
+  void checkGetClasspathElementsCompile() {
     Set<String> urls = ClasspathType.WITH_COMPILE_DEPENDENCIES.getClasspathElements(this.project);
     assertEquals(1, urls.size());
     assertTrue(urls.contains(COMPILE_PATH));
   }
 
   @Test
-  void testGetUrlsRuntime() {
+  void checkGetClasspathElementsRuntime() {
     Set<String> urls = ClasspathType.WITH_RUNTIME_DEPENDENCIES.getClasspathElements(this.project);
     assertEquals(1, urls.size());
     assertTrue(urls.contains(RUNTIME_PATH));
   }
 
   @Test
-  void testGetUrlsAll() {
+  void checkGetClasspathElementsAll() {
     Set<String> urls = ClasspathType.WITH_ALL_DEPENDENCIES.getClasspathElements(this.project);
     assertEquals(2, urls.size());
     assertTrue(urls.contains(RUNTIME_PATH));
@@ -76,7 +76,7 @@ class ClasspathTypeTest {
   }
 
   @Test
-  void testGetUrlsAllAndTests() {
+  void checkGetClasspathElementsAllAndTests() {
     Set<String> urls = ClasspathType.WITH_ALL_DEPENDENCIES_AND_TESTS.getClasspathElements(this.project);
     assertEquals(3, urls.size());
     assertTrue(urls.contains(RUNTIME_PATH));
@@ -85,7 +85,7 @@ class ClasspathTypeTest {
   }
 
   @Test
-  void testGetUrlsProject() {
+  void checkGetClasspathElementsProject() {
     Set<String> urls = ClasspathType.PROJECT_ONLY.getClasspathElements(this.project);
     assertEquals(1, urls.size());
     assertTrue(urls.contains(PROJECT_PATH));

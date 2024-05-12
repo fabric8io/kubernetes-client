@@ -29,7 +29,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyCollection;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -54,7 +53,7 @@ class CustomResourceCollectorTest {
     customResourceCollector.withCustomResourceClass("com.example.Test");
 
     Class<? extends HasMetadata>[] classes = customResourceCollector.findCustomResourceClasses();
-    verify(customResourceClassLoader, times(1)).loadCustomResourceClass(eq("com.example.Test"));
+    verify(customResourceClassLoader, times(1)).loadCustomResourceClass("com.example.Test");
     verify(jandexCustomResourceClassScanner, times(0)).findCustomResourceClasses();
     assertEquals(1, classes.length);
   }
@@ -65,7 +64,7 @@ class CustomResourceCollectorTest {
     customResourceCollector.withFileToScan(Mockito.mock(File.class));
 
     Class<? extends HasMetadata>[] classes = customResourceCollector.findCustomResourceClasses();
-    verify(customResourceClassLoader, times(1)).loadCustomResourceClass(eq("com.example.Test"));
+    verify(customResourceClassLoader, times(1)).loadCustomResourceClass("com.example.Test");
     verify(jandexCustomResourceClassScanner, times(0)).findCustomResourceClasses();
     assertEquals(1, classes.length);
   }
@@ -80,7 +79,7 @@ class CustomResourceCollectorTest {
         .thenReturn(Arrays.asList("com.example.Test1", "com.example.Test2"));
 
     Class<? extends HasMetadata>[] classes = customResourceCollector.findCustomResourceClasses();
-    verify(customResourceClassLoader, times(1)).loadCustomResourceClass(eq("com.example.Test"));
+    verify(customResourceClassLoader, times(1)).loadCustomResourceClass("com.example.Test");
     verify(jandexCustomResourceClassScanner, times(1)).findCustomResourceClasses();
     assertEquals(3, classes.length);
   }
@@ -173,7 +172,7 @@ class CustomResourceCollectorTest {
   @Test
   void withClasspathElement_thenDelegate() {
     customResourceCollector.withClasspathElement("path");
-    verify(customResourceClassLoader, times(1)).withClasspathElement(eq("path"));
+    verify(customResourceClassLoader, times(1)).withClasspathElement("path");
   }
 
   @Test
