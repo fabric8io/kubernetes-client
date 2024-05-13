@@ -31,10 +31,6 @@
 
   <packaging>jar</packaging>
 
-  <properties>
-    <jandex.version>3.1.7</jandex.version>
-  </properties>
-
   <dependencies>
     <dependency>
       <groupId>io.fabric8</groupId>
@@ -43,7 +39,6 @@
     <dependency>
       <groupId>io.smallrye</groupId>
       <artifactId>jandex</artifactId>
-      <version>${jandex.version}</version>
     </dependency>
 
     <!-- Testing -->
