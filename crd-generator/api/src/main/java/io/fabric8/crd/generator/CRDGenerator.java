@@ -104,6 +104,7 @@ public class CRDGenerator {
                   s -> new CustomResourceHandler(resources, parallel));
               break;
             case io.fabric8.crd.generator.v1beta1.CustomResourceHandler.VERSION:
+              LOGGER.warn("CRD generator for v1beta1 is deprecated, consider using v1 instead.");
               handlers.computeIfAbsent(io.fabric8.crd.generator.v1beta1.CustomResourceHandler.VERSION,
                   s -> new io.fabric8.crd.generator.v1beta1.CustomResourceHandler(resources, parallel));
               break;

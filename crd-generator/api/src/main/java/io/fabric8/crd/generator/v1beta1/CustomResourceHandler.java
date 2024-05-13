@@ -39,7 +39,16 @@ import io.sundr.model.TypeDef;
 
 import java.util.Optional;
 
+/**
+ * @deprecated Use {@link io.fabric8.crd.generator.v1.CustomResourceHandler} instead.
+ */
+@Deprecated
 public class CustomResourceHandler extends AbstractCustomResourceHandler {
+
+  /**
+   * @deprecated Use {@link io.fabric8.crd.generator.v1.CustomResourceHandler#VERSION} instead.
+   */
+  @Deprecated
   public static final String VERSION = "v1beta1";
 
   public CustomResourceHandler(Resources resources, boolean parallel) {

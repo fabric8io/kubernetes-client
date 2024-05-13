@@ -32,6 +32,10 @@ import java.util.stream.Collectors;
 
 import static io.fabric8.crd.generator.CRDGenerator.YAML_MAPPER;
 
+/**
+ * @deprecated Use {@link io.fabric8.crd.generator.v1.JsonSchema} instead.
+ */
+@Deprecated
 public class JsonSchema extends AbstractJsonSchema<JSONSchemaProps, JSONSchemaPropsBuilder> {
 
   private static final JsonSchema instance = new JsonSchema();
