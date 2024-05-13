@@ -23,12 +23,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.Executor;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Consumer;
 
 /**
  * Wraps a {@link Cache} and a {@link SharedProcessor} to distribute events related to changes and syncs
  */
-public class ProcessorStore<T extends HasMetadata> implements SyncableStore<T> {
+public class ProcessorStore<T extends HasMetadata> {
 
   private CacheImpl<T> cache;
   private SharedProcessor<T> processor;
@@ -40,12 +42,10 @@ public class ProcessorStore<T extends HasMetadata> implements SyncableStore<T> {
     this.processor = processor;
   }
 
-  @Override
   public void add(T obj) {
     update(obj);
   }
 
-  @Override
   public void update(List<T> items) {
     items.stream().map(this::updateInternal).filter(Objects::nonNull).forEach(n -> this.processor.distribute(n, false));
   }
@@ -65,7 +65,6 @@ public class ProcessorStore<T extends HasMetadata> implements SyncableStore<T> {
     return notification;
   }
 
-  @Override
   public void update(T obj) {
     Notification<T> notification = updateInternal(obj);
     if (notification != null) {
@@ -73,7 +72,6 @@ public class ProcessorStore<T extends HasMetadata> implements SyncableStore<T> {
     }
   }
 
-  @Override
   public void delete(T obj) {
     Object oldObj = this.cache.remove(obj);
     if (oldObj != null) {
@@ -81,28 +79,23 @@ public class ProcessorStore<T extends HasMetadata> implements SyncableStore<T> {
     }
   }
 
-  @Override
   public List<T> list() {
     return cache.list();
   }
 
-  @Override
   public List<String> listKeys() {
     return cache.listKeys();
   }
 
-  @Override
   public T get(T object) {
     return cache.get(object);
   }
 
-  @Override
   public T getByKey(String key) {
     return cache.getByKey(key);
   }
 
-  @Override
-  public void retainAll(Set<String> nextKeys) {
+  public void retainAll(Set<String> nextKeys, Consumer<Executor> cacheStateComplete) {
     if (synced.compareAndSet(false, true)) {
       deferredAdd.stream().map(cache::getByKey).filter(Objects::nonNull)
           .forEach(v -> this.processor.distribute(new ProcessorListener.AddNotification<>(v), false));
@@ -111,7 +104,6 @@ public class ProcessorStore<T extends HasMetadata> implements SyncableStore<T> {
     List<T> current = cache.list();
     if (nextKeys.isEmpty() && current.isEmpty()) {
       this.processor.distribute(l -> l.getHandler().onNothing(), false);
-      return;
     }
     current.forEach(v -> {
       String key = cache.getKey(v);
@@ -120,14 +112,15 @@ public class ProcessorStore<T extends HasMetadata> implements SyncableStore<T> {
         this.processor.distribute(new ProcessorListener.DeleteNotification<>(v, true), false);
       }
     });
+    if (cacheStateComplete != null) {
+      cacheStateComplete.accept(this.processor::execute);
+    }
   }
 
-  @Override
   public String getKey(T obj) {
     return cache.getKey(obj);
   }
 
-  @Override
   public void resync() {
     // lock to ensure the ordering wrt other events
     synchronized (cache.getLockObject()) {
