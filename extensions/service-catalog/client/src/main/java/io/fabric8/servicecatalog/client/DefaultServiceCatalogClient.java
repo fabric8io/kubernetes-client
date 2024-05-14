@@ -47,6 +47,10 @@ import io.fabric8.servicecatalog.client.dsl.ClusterServicePlanResource;
 import io.fabric8.servicecatalog.client.dsl.ServiceBindingResource;
 import io.fabric8.servicecatalog.client.dsl.ServiceInstanceResource;
 
+/**
+ * @deprecated This extension is deprecated and will be removed in a future release.
+ */
+@Deprecated
 public class DefaultServiceCatalogClient extends ExtensionRootClientAdapter<DefaultServiceCatalogClient>
     implements NamespacedServiceCatalogClient, SupportTestingClient {
 

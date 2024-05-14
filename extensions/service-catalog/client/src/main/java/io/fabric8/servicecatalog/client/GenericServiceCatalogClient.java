@@ -20,6 +20,10 @@ import io.fabric8.kubernetes.client.dsl.AnyNamespaceable;
 import io.fabric8.kubernetes.client.dsl.Namespaceable;
 import io.fabric8.kubernetes.client.dsl.RequestConfigurable;
 
+/**
+ * @deprecated This extension is deprecated and will be removed in a future release.
+ */
+@Deprecated
 public interface GenericServiceCatalogClient<C extends Client> extends Client, ServiceCatalogClient,
     Namespaceable<C>,
     AnyNamespaceable<C>,

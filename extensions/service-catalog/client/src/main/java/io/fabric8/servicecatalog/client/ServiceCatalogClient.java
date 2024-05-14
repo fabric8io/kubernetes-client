@@ -43,7 +43,10 @@ import io.fabric8.servicecatalog.client.dsl.ServiceInstanceResource;
 
 /**
  * Main interface for Service Catalog Client.
+ * 
+ * @deprecated This extension is deprecated and will be removed in a future release.
  */
+@Deprecated
 public interface ServiceCatalogClient extends Client {
 
   /**

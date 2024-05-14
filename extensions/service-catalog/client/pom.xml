@@ -26,7 +26,7 @@
 
   <artifactId>servicecatalog-client</artifactId>
   <packaging>bundle</packaging>
-  <name>Fabric8 :: Service Catalog :: Client</name>
+  <name>Fabric8 :: Service Catalog :: Client (Deprecated)</name>
 
   <properties>
     <useIncrementalCompilation>false</useIncrementalCompilation>
@@ -57,7 +57,7 @@
       <groupId>io.fabric8</groupId>
       <artifactId>servicecatalog-model</artifactId>
     </dependency>
-    
+
     <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>kubernetes-client</artifactId>
