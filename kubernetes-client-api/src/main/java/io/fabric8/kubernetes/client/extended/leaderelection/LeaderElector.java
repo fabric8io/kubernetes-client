@@ -275,7 +275,7 @@ public class LeaderElector {
 
   protected final boolean canBecomeLeader(LeaderElectionRecord leaderElectionRecord) {
     return Utils.isNullOrEmpty(leaderElectionRecord.getHolderIdentity())
-        || !leaderElectionRecord.getRenewTime().plus(leaderElectionConfig.getLeaseDuration()).isAfter(now());
+        || now().isAfter(leaderElectionRecord.getRenewTime().plus(leaderElectionConfig.getLeaseDuration()));
   }
 
   /**
