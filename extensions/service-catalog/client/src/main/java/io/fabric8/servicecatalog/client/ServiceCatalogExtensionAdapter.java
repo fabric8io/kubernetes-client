@@ -28,6 +28,10 @@ import io.fabric8.servicecatalog.client.internal.ClusterServicePlanOperationsImp
 import io.fabric8.servicecatalog.client.internal.ServiceBindingOperationsImpl;
 import io.fabric8.servicecatalog.client.internal.ServiceInstanceOperationsImpl;
 
+/**
+ * @deprecated This extension is deprecated and will be removed in a future release.
+ */
+@Deprecated
 public class ServiceCatalogExtensionAdapter implements ExtensionAdapter<ServiceCatalogClient> {
 
   @Override

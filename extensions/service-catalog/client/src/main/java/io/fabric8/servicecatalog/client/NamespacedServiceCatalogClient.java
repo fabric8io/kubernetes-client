@@ -15,6 +15,10 @@
  */
 package io.fabric8.servicecatalog.client;
 
+/**
+ * @deprecated This extension is deprecated and will be removed in a future release.
+ */
+@Deprecated
 public interface NamespacedServiceCatalogClient extends ServiceCatalogClient,
     GenericServiceCatalogClient<NamespacedServiceCatalogClient> {
 }
