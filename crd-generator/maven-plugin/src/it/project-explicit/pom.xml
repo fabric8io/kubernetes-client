@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
 
     Copyright (C) 2015 Red Hat, Inc.
@@ -15,59 +16,57 @@
     limitations under the License.
 
 -->
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xmlns="http://maven.apache.org/POM/4.0.0"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
 
-    <groupId>io.fabric8.crd.generator.samples</groupId>
-    <artifactId>project-explicit</artifactId>
-    <version>0.1-SNAPSHOT</version>
-    <packaging>jar</packaging>
+  <groupId>io.fabric8.crd.generator.samples</groupId>
+  <artifactId>project-explicit</artifactId>
+  <version>0.1-SNAPSHOT</version>
+  <packaging>jar</packaging>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <scope>provided</scope>
-            <version>@lombok.version@</version>
-        </dependency>
-        <dependency>
-          <groupId>io.fabric8</groupId>
-          <artifactId>kubernetes-client-api</artifactId>
-          <version>@fabric8-client.version@</version>
-        </dependency>
-    </dependencies>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>io.fabric8</groupId>
-                <artifactId>crd-generator-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                        <configuration>
-                            <customResourceClasses>
-                                <customResourceClass>io.fabric8.crd.maven.example.explicit.v1.Multiple</customResourceClass>
-                                <customResourceClass>io.fabric8.crd.maven.example.explicit.v2.Multiple</customResourceClass>
-                            </customResourceClasses>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
+  <dependencies>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>kubernetes-client-api</artifactId>
+      <version>@fabric8-client.version@</version>
+    </dependency>
+  </dependencies>
 
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-compiler-plugin</artifactId>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>io.fabric8</groupId>
+        <artifactId>crd-generator-maven-plugin</artifactId>
+        <version>@fabric8-client.version@</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>generate</goal>
+            </goals>
             <configuration>
-              <source>1.8</source>
-              <target>1.8</target>
+              <customResourceClasses>
+                <customResourceClass>io.fabric8.crd.maven.example.v1.Multiple</customResourceClass>
+                <customResourceClass>io.fabric8.crd.maven.example.v2.Multiple</customResourceClass>
+              </customResourceClasses>
             </configuration>
-          </plugin>
-        </plugins>
-    </build>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>@maven.compiler.plugin.version@</version>
+        <configuration>
+          <source>1.8</source>
+          <target>1.8</target>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 
 </project>

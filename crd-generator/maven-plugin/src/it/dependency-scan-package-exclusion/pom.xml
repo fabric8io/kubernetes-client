@@ -20,7 +20,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>io.fabric8.crd.generator.samples</groupId>
-  <artifactId>scan-project</artifactId>
+  <artifactId>dependency-scan-package-exclusion</artifactId>
   <version>0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
 
@@ -33,6 +33,11 @@
       <groupId>io.fabric8</groupId>
       <artifactId>kubernetes-client-api</artifactId>
       <version>@fabric8-client.version@</version>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8.crd.generator.maven.it</groupId>
+      <artifactId>custom-resources</artifactId>
+      <version>0.1-SNAPSHOT</version>
     </dependency>
   </dependencies>
 
@@ -47,6 +52,19 @@
             <goals>
               <goal>generate</goal>
             </goals>
+            <configuration>
+              <exclusions>
+                <packages>
+                  <package>io.fabric8.crd.maven.example.api.other</package>
+                </packages>
+              </exclusions>
+              <dependenciesToScan>
+                <dependency>
+                  <groupId>io.fabric8.crd.generator.maven.it</groupId>
+                  <artifactId>custom-resources</artifactId>
+                </dependency>
+              </dependenciesToScan>
+            </configuration>
           </execution>
         </executions>
       </plugin>
@@ -62,5 +80,4 @@
       </plugin>
     </plugins>
   </build>
-
 </project>

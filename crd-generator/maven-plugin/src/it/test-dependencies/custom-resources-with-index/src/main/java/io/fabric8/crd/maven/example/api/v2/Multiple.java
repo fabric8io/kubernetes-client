@@ -13,15 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import io.fabric8.crd.generator.maven.plugin.Verify
+package io.fabric8.crd.maven.example.api.v2;
 
+import io.fabric8.kubernetes.client.CustomResource;
+import io.fabric8.kubernetes.model.annotation.Group;
+import io.fabric8.kubernetes.model.annotation.Version;
 
-[
-	"multiples.sample.fabric8.io-v1"
-].each {
-  Verify.verifyContentEquals(
-    new File(basedir, sprintf("/target/classes/META-INF/fabric8/%s.yml",it)),
-    new File(basedir, sprintf("/expected/%s.yml",it)))
+@Group("sample.fabric8.io")
+@Version("v2")
+public class Multiple extends CustomResource<MultipleSpec, Void> {
 }
-
-true
