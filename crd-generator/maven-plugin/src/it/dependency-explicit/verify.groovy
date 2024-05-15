@@ -24,4 +24,10 @@ import io.fabric8.crd.generator.maven.plugin.Verify
     new File(basedir, sprintf("/expected/%s.yml",it)))
 }
 
+[
+  "mycustomresources.other.sample.fabric8.io-v1"
+].each {
+  Verify.verifyAbsent(new File(basedir, sprintf("/target/classes/META-INF/fabric8/%s.yml", it)))
+}
+
 true
