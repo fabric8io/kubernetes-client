@@ -19,29 +19,21 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>io.fabric8.crd.generator.maven.it</groupId>
-  <artifactId>test-dependencies</artifactId>
-  <version>0.1-SNAPSHOT</version>
-  <packaging>pom</packaging>
+  <parent>
+    <groupId>io.fabric8.crd.generator.maven.it</groupId>
+    <artifactId>test-dependencies</artifactId>
+    <version>0.1-SNAPSHOT</version>
+  </parent>
 
-  <modules>
-    <module>custom-resources</module>
-    <module>custom-resources-with-index</module>
-    <module>intermediate-custom-resource-classes</module>
-  </modules>
+  <artifactId>intermediate-custom-resource-classes</artifactId>
+  <packaging>jar</packaging>
 
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>@maven.compiler.plugin.version@</version>
-        <configuration>
-          <source>1.8</source>
-          <target>1.8</target>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
+  <dependencies>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>kubernetes-client-api</artifactId>
+      <version>@fabric8-client.version@</version>
+    </dependency>
+  </dependencies>
 
 </project>

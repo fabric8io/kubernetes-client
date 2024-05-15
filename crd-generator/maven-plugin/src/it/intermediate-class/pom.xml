@@ -19,19 +19,46 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>io.fabric8.crd.generator.maven.it</groupId>
-  <artifactId>test-dependencies</artifactId>
+  <groupId>io.fabric8.crd.generator.samples</groupId>
+  <artifactId>scan-project</artifactId>
   <version>0.1-SNAPSHOT</version>
-  <packaging>pom</packaging>
+  <packaging>jar</packaging>
 
-  <modules>
-    <module>custom-resources</module>
-    <module>custom-resources-with-index</module>
-    <module>intermediate-custom-resource-classes</module>
-  </modules>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>io.fabric8.crd.generator.maven.it</groupId>
+      <artifactId>intermediate-custom-resource-classes</artifactId>
+      <version>0.1-SNAPSHOT</version>
+    </dependency>
+  </dependencies>
 
   <build>
     <plugins>
+      <plugin>
+        <groupId>io.fabric8</groupId>
+        <artifactId>crd-generator-maven-plugin</artifactId>
+        <version>@fabric8-client.version@</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <configuration>
+              <dependenciesToScan>
+                <dependency>
+                  <groupId>io.fabric8.crd.generator.maven.it</groupId>
+                  <artifactId>intermediate-custom-resource-classes</artifactId>
+                </dependency>
+              </dependenciesToScan>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
