@@ -20,8 +20,6 @@ import org.apache.maven.model.Build;
 import org.apache.maven.project.MavenProject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.EnabledForJreRange;
-import org.junit.jupiter.api.condition.JRE;
 import org.mockito.Mockito;
 
 import java.util.Collections;
@@ -31,7 +29,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
-@EnabledForJreRange(min = JRE.JAVA_17)
 class ClasspathTypeTest {
 
   private static final String RUNTIME_PATH = "/runtime";
@@ -43,36 +40,36 @@ class ClasspathTypeTest {
 
   @BeforeEach
   void setUp() throws DependencyResolutionRequiredException {
-    this.project = Mockito.mock(MavenProject.class);
-    when(this.project.getRuntimeClasspathElements())
+    project = Mockito.mock(MavenProject.class);
+    when(project.getRuntimeClasspathElements())
         .thenReturn(Collections.singletonList(RUNTIME_PATH));
-    when(this.project.getCompileClasspathElements())
+    when(project.getCompileClasspathElements())
         .thenReturn(Collections.singletonList(COMPILE_PATH));
-    when(this.project.getTestClasspathElements())
+    when(project.getTestClasspathElements())
         .thenReturn(Collections.singletonList(TEST_PATH));
 
-    Build build = new Build();
-    build.setOutputDirectory(PROJECT_PATH);
-    when(this.project.getBuild()).thenReturn(build);
+    Build build = Mockito.mock(Build.class);
+    when(build.getOutputDirectory()).thenReturn(PROJECT_PATH);
+    when(project.getBuild()).thenReturn(build);
   }
 
   @Test
   void checkGetClasspathElementsCompile() {
-    Set<String> urls = ClasspathType.WITH_COMPILE_DEPENDENCIES.getClasspathElements(this.project);
+    Set<String> urls = ClasspathType.WITH_COMPILE_DEPENDENCIES.getClasspathElements(project);
     assertEquals(1, urls.size());
     assertTrue(urls.contains(COMPILE_PATH));
   }
 
   @Test
   void checkGetClasspathElementsRuntime() {
-    Set<String> urls = ClasspathType.WITH_RUNTIME_DEPENDENCIES.getClasspathElements(this.project);
+    Set<String> urls = ClasspathType.WITH_RUNTIME_DEPENDENCIES.getClasspathElements(project);
     assertEquals(1, urls.size());
     assertTrue(urls.contains(RUNTIME_PATH));
   }
 
   @Test
   void checkGetClasspathElementsAll() {
-    Set<String> urls = ClasspathType.WITH_ALL_DEPENDENCIES.getClasspathElements(this.project);
+    Set<String> urls = ClasspathType.WITH_ALL_DEPENDENCIES.getClasspathElements(project);
     assertEquals(2, urls.size());
     assertTrue(urls.contains(RUNTIME_PATH));
     assertTrue(urls.contains(COMPILE_PATH));
@@ -80,7 +77,7 @@ class ClasspathTypeTest {
 
   @Test
   void checkGetClasspathElementsAllAndTests() {
-    Set<String> urls = ClasspathType.WITH_ALL_DEPENDENCIES_AND_TESTS.getClasspathElements(this.project);
+    Set<String> urls = ClasspathType.WITH_ALL_DEPENDENCIES_AND_TESTS.getClasspathElements(project);
     assertEquals(3, urls.size());
     assertTrue(urls.contains(RUNTIME_PATH));
     assertTrue(urls.contains(COMPILE_PATH));
@@ -89,7 +86,7 @@ class ClasspathTypeTest {
 
   @Test
   void checkGetClasspathElementsProject() {
-    Set<String> urls = ClasspathType.PROJECT_ONLY.getClasspathElements(this.project);
+    Set<String> urls = ClasspathType.PROJECT_ONLY.getClasspathElements(project);
     assertEquals(1, urls.size());
     assertTrue(urls.contains(PROJECT_PATH));
   }
