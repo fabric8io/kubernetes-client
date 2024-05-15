@@ -13,15 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import io.fabric8.crd.generator.maven.plugin.Verify
+package io.fabric8.crd.maven.example.v2;
 
+public class MultipleSpec {
+  private String v2;
 
-[
-	"multiples.sample.fabric8.io-v1"
-].each {
-  Verify.verifyContentEquals(
-    new File(basedir, sprintf("/target/classes/META-INF/fabric8/%s.yml",it)),
-    new File(basedir, sprintf("/expected/%s.yml",it)))
+  public String getV2() {
+    return v2;
+  }
 }
-
-true

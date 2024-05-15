@@ -1253,6 +1253,7 @@
                 <exclude>**/src/test/resources/ssl/*</exclude>
                 <exclude>**/src/test/resources/io/fabric8/java/generator/approvals/*.*.approved.txt</exclude>
                 <exclude>crd-generator/**/src/test/resources/**/*.approved.yml</exclude>
+                <exclude>crd-generator/maven-plugin/src/it/**/expected/*.yml</exclude>
                 <exclude>**/it/**/expected/**/*.expected</exclude>
                 <exclude>Jenkinsfile</exclude>
                 <exclude>.mvn/**/*</exclude>

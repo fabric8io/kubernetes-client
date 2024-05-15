@@ -34,6 +34,11 @@
       <artifactId>kubernetes-client-api</artifactId>
       <version>@fabric8-client.version@</version>
     </dependency>
+    <dependency>
+      <groupId>io.fabric8.crd.generator.maven.it</groupId>
+      <artifactId>custom-resources</artifactId>
+      <version>0.1-SNAPSHOT</version>
+    </dependency>
   </dependencies>
 
   <build>
@@ -47,6 +52,15 @@
             <goals>
               <goal>generate</goal>
             </goals>
+            <configuration>
+              <forceScan>true</forceScan>
+              <dependenciesToScan>
+                <dependency>
+                  <groupId>io.fabric8.crd.generator.maven.it</groupId>
+                  <artifactId>custom-resources</artifactId>
+                </dependency>
+              </dependenciesToScan>
+            </configuration>
           </execution>
         </executions>
       </plugin>
