@@ -31,6 +31,11 @@
 
   <packaging>maven-plugin</packaging>
 
+  <properties>
+    <!-- required for integration tests -->
+    <fabric8-client.version>${project.version}</fabric8-client.version>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>org.apache.maven</groupId>
@@ -87,6 +92,36 @@
             <id>generated-helpmojo</id>
             <goals>
               <goal>helpmojo</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-invoker-plugin</artifactId>
+        <configuration>
+          <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
+          <cloneClean>true</cloneClean>
+          <!--<localRepositoryPath>${project.build.directory}/local-repo</localRepositoryPath>-->
+          <settingsFile>src/it/settings.xml</settingsFile>
+          <postBuildHookScript>verify</postBuildHookScript>
+          <addTestClassPath>true</addTestClassPath>
+          <skipInvocation>${skipTests}</skipInvocation>
+          <streamLogs>true</streamLogs>
+          <invokerPropertiesFile>invoker.properties</invokerPropertiesFile>
+          <scriptVariables>
+            <version>${project.version}</version>
+            <artifactId>${project.artifactId}</artifactId>
+            <groupId>${project.groupId}</groupId>
+          </scriptVariables>
+        </configuration>
+        <executions>
+          <execution>
+            <id>integration-tests</id>
+            <goals>
+              <goal>install</goal>
+              <goal>run</goal>
             </goals>
           </execution>
         </executions>
