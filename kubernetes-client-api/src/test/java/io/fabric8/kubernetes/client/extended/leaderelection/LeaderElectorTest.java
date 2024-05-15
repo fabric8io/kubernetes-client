@@ -63,7 +63,7 @@ class LeaderElectorTest {
   @Test
   void runShouldAbortAfterRenewDeadlineExpired() throws Exception {
     // Given
-    final Long renewDeadlineMillis = 1000L;
+    final long renewDeadlineMillis = 1000L;
     final LeaderElectionConfig lec = mockLeaderElectionConfiguration();
     when(lec.getRenewDeadline()).thenReturn(Duration.ofMillis(renewDeadlineMillis));
     final Lock mockedLock = lec.getLock();
@@ -349,12 +349,11 @@ class LeaderElectorTest {
     assertTrue(result.toMillis() > 1000L);
   }
 
-  private LeaderElectionConfig mockLeaderElectionConfiguration() throws Exception {
+  private LeaderElectionConfig mockLeaderElectionConfiguration() {
     return mockLeaderElectionConfiguration(new AtomicReference<>());
   }
 
-  private LeaderElectionConfig mockLeaderElectionConfiguration(AtomicReference<LeaderElectionRecord> activeLer)
-      throws Exception {
+  private LeaderElectionConfig mockLeaderElectionConfiguration(AtomicReference<LeaderElectionRecord> activeLer) {
     final LeaderElectionConfig lec = mock(LeaderElectionConfig.class, Answers.RETURNS_DEEP_STUBS);
     when(lec.getLeaseDuration()).thenReturn(Duration.ofSeconds(2L));
     when(lec.getRenewDeadline()).thenReturn(Duration.ofSeconds(1L));
