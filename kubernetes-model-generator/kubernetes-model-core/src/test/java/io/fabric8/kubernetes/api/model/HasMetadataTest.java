@@ -22,12 +22,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class HasMetadataTest {
   @Test
@@ -233,6 +228,104 @@ class HasMetadataTest {
     namespaced2.getMetadata().setNamespace("namespace2");
 
     assertThrows(IllegalArgumentException.class, () -> namespaced1.addOwnerReference(namespaced2));
+  }
+
+  @Test
+  void testInitNameAndNamespaceFromNamespacedResource() {
+    TestNamespacedHasMetadata original = new TestNamespacedHasMetadata();
+    ObjectMeta originalMetadata = new ObjectMetaBuilder()
+        .withName("testName")
+        .withNamespace("testNamespace")
+        .withGeneration(100000L)
+        .build();
+    original.setMetadata(originalMetadata);
+
+    TestNamespacedHasMetadata copy = new TestNamespacedHasMetadata();
+    copy.initNameAndNamespaceFrom(original);
+
+    final ObjectMeta metadata = copy.getMetadata();
+    assertEquals(originalMetadata.getName(), metadata.getName());
+    assertEquals(originalMetadata.getNamespace(), metadata.getNamespace());
+    assertNull(metadata.getGeneration());
+  }
+
+  @Test
+  void testInitNameAndNamespaceFromClusteredResource() {
+    TestHasMetadata original = new TestHasMetadata();
+    ObjectMeta originalMetadata = new ObjectMetaBuilder()
+        .withName("testName")
+        .withGeneration(100000L)
+        .build();
+    original.setMetadata(originalMetadata);
+
+    TestHasMetadata copy = new TestHasMetadata();
+    copy.initNameAndNamespaceFrom(original);
+
+    final ObjectMeta metadata = copy.getMetadata();
+    assertEquals(originalMetadata.getName(), metadata.getName());
+    assertNull(metadata.getNamespace());
+    assertNull(metadata.getGeneration());
+  }
+
+  @Test
+  void initNameAndNamespaceFromWithNullMetadataShouldFail() {
+    TestHasMetadata original = new TestHasMetadata();
+    original.setMetadata(null);
+
+    final TestHasMetadata test = new TestHasMetadata();
+    Exception exception = assertThrows(NullPointerException.class,
+        () -> test.initNameAndNamespaceFrom(original));
+    assertEquals(HasMetadata.REQUIRES_NON_NULL_METADATA, exception.getMessage());
+  }
+
+  @Test
+  void initNameAndNamespaceFromWithMissingNameShouldFail() {
+    TestNamespacedHasMetadata original = new TestNamespacedHasMetadata();
+    ObjectMeta originalMetadata = new ObjectMetaBuilder()
+        .withNamespace("testNamespace")
+        .build();
+    original.setMetadata(originalMetadata);
+
+    final TestNamespacedHasMetadata test = new TestNamespacedHasMetadata();
+    Exception exception = assertThrows(NullPointerException.class,
+        () -> test.initNameAndNamespaceFrom(original));
+    assertEquals(HasMetadata.REQUIRES_NON_NULL_NAME, exception.getMessage());
+  }
+
+  @Test
+  void initNameAndNamespaceFromWithMissingNamespaceShouldFail() {
+    TestNamespacedHasMetadata original = new TestNamespacedHasMetadata();
+    ObjectMeta originalMetadata = new ObjectMetaBuilder()
+        .withName("testName")
+        .build();
+    original.setMetadata(originalMetadata);
+
+    final TestNamespacedHasMetadata test = new TestNamespacedHasMetadata();
+    Exception exception = assertThrows(NullPointerException.class,
+        () -> test.initNameAndNamespaceFrom(original));
+    assertEquals(HasMetadata.REQUIRES_NON_NULL_NAMESPACE, exception.getMessage());
+  }
+
+  static class TestHasMetadata implements HasMetadata {
+    private ObjectMeta metadata;
+
+    @Override
+    public ObjectMeta getMetadata() {
+      return metadata;
+    }
+
+    @Override
+    public void setMetadata(ObjectMeta metadata) {
+      this.metadata = metadata;
+    }
+
+    @Override
+    public void setApiVersion(String version) {
+    }
+  }
+
+  static class TestNamespacedHasMetadata extends TestHasMetadata implements Namespaced {
+    // No additional fields or methods needed for this simple test implementation
   }
 
   @Group("fabric8.io")
