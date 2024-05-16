@@ -102,7 +102,6 @@
         <configuration>
           <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
           <cloneClean>true</cloneClean>
-          <!--<localRepositoryPath>${project.build.directory}/local-repo</localRepositoryPath>-->
           <settingsFile>src/it/settings.xml</settingsFile>
           <postBuildHookScript>verify</postBuildHookScript>
           <addTestClassPath>true</addTestClassPath>
@@ -144,6 +143,13 @@
             <includes>src/it/**/pom.xml</includes>
             <sortPom/>
           </pom>
+          <groovy>
+            <includes>
+              <include>src/it/**/*.groovy</include>
+            </includes>
+            <importOrder/>
+            <greclipse/>
+          </groovy>
         </configuration>
       </plugin>
     </plugins>

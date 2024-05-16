@@ -17,18 +17,17 @@ import io.fabric8.crd.generator.maven.plugin.Verify
 
 
 [
-  "mycustomresources.other.sample.fabric8.io-v1"
-
+	"mycustomresources.other.sample.fabric8.io-v1"
 ].each {
-  Verify.verifyContentEquals(
-    new File(basedir, sprintf("/target/classes/META-INF/fabric8/%s.yml",it)),
-    new File(basedir, sprintf("/expected/%s.yml",it)))
+	Verify.verifyContentEquals(
+			new File(basedir, sprintf("/target/classes/META-INF/fabric8/%s.yml",it)),
+			new File(basedir, sprintf("/expected/%s.yml",it)))
 }
 
 [
-  "multiples.sample.fabric8.io-v1"
+	"multiples.sample.fabric8.io-v1"
 ].each {
-  Verify.verifyAbsent(new File(basedir, sprintf("/target/classes/META-INF/fabric8/%s.yml", it)))
+	Verify.verifyAbsent(new File(basedir, sprintf("/target/classes/META-INF/fabric8/%s.yml", it)))
 }
 
 true
