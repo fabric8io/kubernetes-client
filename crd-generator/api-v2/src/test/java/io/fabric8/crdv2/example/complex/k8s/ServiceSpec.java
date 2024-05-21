@@ -24,6 +24,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -88,7 +89,7 @@ public class ServiceSpec implements KubernetesResource {
   private String loadBalancerIP;
   @JsonProperty("loadBalancerSourceRanges")
   @JsonInclude(JsonInclude.Include.NON_EMPTY)
-  private List<String> loadBalancerSourceRanges = new ArrayList<>();
+  private Collection<String> loadBalancerSourceRanges = new ArrayList<>();
   @JsonProperty("publishNotReadyAddresses")
   private Boolean publishNotReadyAddresses;
   @JsonProperty("selector")
@@ -225,12 +226,12 @@ public class ServiceSpec implements KubernetesResource {
   }
 
   @JsonProperty("loadBalancerSourceRanges")
-  public List<String> getLoadBalancerSourceRanges() {
+  public Collection<String> getLoadBalancerSourceRanges() {
     return loadBalancerSourceRanges;
   }
 
   @JsonProperty("loadBalancerSourceRanges")
-  public void setLoadBalancerSourceRanges(List<String> loadBalancerSourceRanges) {
+  public void setLoadBalancerSourceRanges(Collection<String> loadBalancerSourceRanges) {
     this.loadBalancerSourceRanges = loadBalancerSourceRanges;
   }
 
