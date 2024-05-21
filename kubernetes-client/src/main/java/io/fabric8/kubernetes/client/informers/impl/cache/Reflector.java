@@ -47,7 +47,7 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
 
   private volatile String lastSyncResourceVersion;
   private final ListerWatcher<T, L> listerWatcher;
-  private final SyncableStore<T> store;
+  private final ProcessorStore<T> store;
   private final ReflectorWatcher watcher;
   private volatile boolean watching;
   private volatile CompletableFuture<AbstractWatchManager<T>> watchFuture;
@@ -64,11 +64,11 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
 
   private boolean cachedListing = true;
 
-  public Reflector(ListerWatcher<T, L> listerWatcher, SyncableStore<T> store) {
+  public Reflector(ListerWatcher<T, L> listerWatcher, ProcessorStore<T> store) {
     this(listerWatcher, store, Runnable::run);
   }
 
-  public Reflector(ListerWatcher<T, L> listerWatcher, SyncableStore<T> store, Executor executor) {
+  public Reflector(ListerWatcher<T, L> listerWatcher, ProcessorStore<T> store, Executor executor) {
     this.listerWatcher = listerWatcher;
     this.store = store;
     this.watcher = new ReflectorWatcher();
@@ -124,11 +124,19 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
     }
     Set<String> nextKeys = new ConcurrentSkipListSet<>();
     CompletableFuture<Void> theFuture = processList(nextKeys, null).thenCompose(result -> {
-      store.retainAll(nextKeys);
       final String latestResourceVersion = result.getMetadata().getResourceVersion();
-      lastSyncResourceVersion = latestResourceVersion;
       log.debug("Listing items ({}) for {} at v{}", nextKeys.size(), this, latestResourceVersion);
-      return startWatcher(latestResourceVersion);
+      CompletableFuture<?> cf = new CompletableFuture<>();
+      store.retainAll(nextKeys, executor -> {
+        boolean startWatchImmediately = cachedListing && lastSyncResourceVersion == null;
+        lastSyncResourceVersion = latestResourceVersion;
+        if (startWatchImmediately) {
+          cf.complete(null);
+        } else {
+          executor.execute(() -> cf.complete(null));
+        }
+      });
+      return cf.thenCompose(ignored -> startWatcher(latestResourceVersion));
     }).thenAccept(w -> {
       if (w != null) {
         if (!isStopped()) {

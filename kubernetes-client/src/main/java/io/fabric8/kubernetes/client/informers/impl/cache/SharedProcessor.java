@@ -174,4 +174,8 @@ public class SharedProcessor<T> {
       lock.writeLock().unlock();
     }
   }
+
+  public void execute(Runnable runnable) {
+    this.executor.execute(runnable);
+  }
 }
