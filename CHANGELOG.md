@@ -15,6 +15,7 @@
 * Fix #5954: (crd-generator) Sort required properties to ensure deterministic output
 * Fix #5973: CacheImpl locking for reading indexes (Cache.byIndex|indexKeys|index) was reduced
 * Fix #5953: Made informer watch starting deterministic with respect to list processing
+* Fix #6012: Add convenience methods on HasMetadata to help with SSA
 
 #### Dependency Upgrade
 * Fix #5695: Upgrade Fabric8 Kubernetes Model to Kubernetes v1.30.0

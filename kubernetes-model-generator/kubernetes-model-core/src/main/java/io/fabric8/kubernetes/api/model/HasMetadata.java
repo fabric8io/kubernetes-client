@@ -48,10 +48,9 @@ public interface HasMetadata extends KubernetesResource {
   Pattern FINALIZER_NAME_MATCHER = Pattern.compile(
       "^((" + DNS_LABEL_REGEXP + "\\.)+" + DNS_LABEL_START + 2 + DNS_LABEL_END + ")/"
           + DNS_LABEL_REGEXP);
-
-  ObjectMeta getMetadata();
-
-  void setMetadata(ObjectMeta metadata);
+  String REQUIRES_NON_NULL_METADATA = "requires non-null metadata";
+  String REQUIRES_NON_NULL_NAME = "requires non-null name";
+  String REQUIRES_NON_NULL_NAMESPACE = "requires non-null namespace";
 
   /**
    * Retrieves the kind associated with the specified HasMetadata implementation. If the implementation is annotated with
@@ -63,10 +62,6 @@ public interface HasMetadata extends KubernetesResource {
   static String getKind(Class<?> clazz) {
     final Kind kind = clazz.getAnnotation(Kind.class);
     return kind != null ? kind.value() : clazz.getSimpleName();
-  }
-
-  default String getKind() {
-    return getKind(getClass());
   }
 
   /**
@@ -113,12 +108,6 @@ public interface HasMetadata extends KubernetesResource {
     return version != null ? version.value() : null;
   }
 
-  default String getApiVersion() {
-    return getApiVersion(getClass());
-  }
-
-  void setApiVersion(String version);
-
   /**
    * Retrieves the plural form associated with the specified class if annotated with {@link
    * Plural} or computes a default value using the value returned by {@link #getSingular(Class)} as
@@ -131,11 +120,6 @@ public interface HasMetadata extends KubernetesResource {
     final Plural fromAnnotation = clazz.getAnnotation(Plural.class);
     return (fromAnnotation != null ? fromAnnotation.value().toLowerCase(Locale.ROOT)
         : Pluralize.toPlural(getSingular(clazz)));
-  }
-
-  @JsonIgnore
-  default String getPlural() {
-    return getPlural(getClass());
   }
 
   /**
@@ -153,11 +137,6 @@ public interface HasMetadata extends KubernetesResource {
         .toLowerCase(Locale.ROOT);
   }
 
-  @JsonIgnore
-  default String getSingular() {
-    return getSingular(getClass());
-  }
-
   static String getFullResourceName(Class<?> clazz) {
     final String plural = getPlural(clazz);
     final String group = getGroup(clazz);
@@ -173,6 +152,98 @@ public interface HasMetadata extends KubernetesResource {
     Objects.requireNonNull(plural);
     Objects.requireNonNull(group);
     return group.isEmpty() ? plural : plural + "." + group;
+  }
+
+  /**
+   * Determines whether the specified finalizer is valid according to the
+   * <a href=
+   * 'https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#finalizers'>finalizer
+   * specification</a>.
+   *
+   * @param finalizer the identifier of the finalizer which validity we want to check
+   * @return {@code true} if the identifier is valid, {@code false} otherwise
+   */
+  static boolean validateFinalizer(String finalizer) {
+    if (finalizer == null) {
+      return false;
+    }
+    final Matcher matcher = FINALIZER_NAME_MATCHER.matcher(finalizer);
+    if (matcher.matches()) {
+      final String group = matcher.group(1);
+      return group.length() < 256;
+    } else {
+      return false;
+    }
+  }
+
+  /**
+   * Sanitizes and validates the specified {@link OwnerReference}, presumably to add it
+   *
+   * @param ownerReference the {@link OwnerReference} to sanitize and validate
+   * @return the sanitized and validated {@link OwnerReference} which should be used instead of the original one
+   */
+  static OwnerReference sanitizeAndValidate(OwnerReference ownerReference) {
+    // validate required fields are present
+    final StringBuilder error = new StringBuilder(100);
+    error.append("Owner is missing required field(s): ");
+    final BiFunction<String, String, Optional<String>> trimmedFieldIfValid = (field, value) -> {
+      boolean isError = false;
+      if (value == null) {
+        isError = true;
+      } else {
+        value = value.trim();
+        if (value.isEmpty()) {
+          isError = true;
+        }
+      }
+      if (isError) {
+        error.append(field).append(" ");
+        return Optional.empty();
+      } else {
+        return Optional.of(value);
+      }
+    };
+    final Supplier<IllegalArgumentException> exceptionSupplier = () -> new IllegalArgumentException(
+        error.toString());
+
+    final Optional<String> uid = trimmedFieldIfValid.apply("uid", ownerReference.getUid());
+    final Optional<String> apiVersion = trimmedFieldIfValid.apply("apiVersion",
+        ownerReference.getApiVersion());
+    final Optional<String> name = trimmedFieldIfValid.apply("name", ownerReference.getName());
+    final Optional<String> kind = trimmedFieldIfValid.apply("kind", ownerReference.getKind());
+
+    // check that required values are present
+    ownerReference = new OwnerReferenceBuilder(ownerReference)
+        .withUid(uid.orElseThrow(exceptionSupplier))
+        .withApiVersion(apiVersion.orElseThrow(exceptionSupplier))
+        .withName(name.orElseThrow(exceptionSupplier))
+        .withKind(kind.orElseThrow(exceptionSupplier))
+        .build();
+    return ownerReference;
+  }
+
+  ObjectMeta getMetadata();
+
+  void setMetadata(ObjectMeta metadata);
+
+  default String getKind() {
+    return getKind(getClass());
+  }
+
+  default String getApiVersion() {
+    return getApiVersion(getClass());
+  }
+
+  void setApiVersion(String version);
+
+  @JsonIgnore
+  default String getPlural() {
+    return getPlural(getClass());
+  }
+
+  @JsonIgnore
+  default String getSingular() {
+    return getSingular(getClass());
   }
 
   @JsonIgnore
@@ -238,32 +309,9 @@ public interface HasMetadata extends KubernetesResource {
   }
 
   /**
-   * Determines whether the specified finalizer is valid according to the
-   * <a href=
-   * 'https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#finalizers'>finalizer
-   * specification</a>.
-   *
    * @param finalizer the identifier of the finalizer which validity we want to check
    * @return {@code true} if the identifier is valid, {@code false} otherwise
-   */
-  static boolean validateFinalizer(String finalizer) {
-    if (finalizer == null) {
-      return false;
-    }
-    final Matcher matcher = FINALIZER_NAME_MATCHER.matcher(finalizer);
-    if (matcher.matches()) {
-      final String group = matcher.group(1);
-      return group.length() < 256;
-    } else {
-      return false;
-    }
-  }
-
-  /**
    * @see HasMetadata#validateFinalizer(String)
-   *
-   * @param finalizer the identifier of the finalizer which validity we want to check
-   * @return {@code true} if the identifier is valid, {@code false} otherwise
    */
   default boolean isFinalizerValid(String finalizer) {
     return HasMetadata.validateFinalizer(finalizer);
@@ -418,52 +466,6 @@ public interface HasMetadata extends KubernetesResource {
   }
 
   /**
-   * Sanitizes and validates the specified {@link OwnerReference}, presumably to add it
-   *
-   * @param ownerReference the {@link OwnerReference} to sanitize and validate
-   * @return the sanitized and validated {@link OwnerReference} which should be used instead of the original one
-   */
-  static OwnerReference sanitizeAndValidate(OwnerReference ownerReference) {
-    // validate required fields are present
-    final StringBuilder error = new StringBuilder(100);
-    error.append("Owner is missing required field(s): ");
-    final BiFunction<String, String, Optional<String>> trimmedFieldIfValid = (field, value) -> {
-      boolean isError = false;
-      if (value == null) {
-        isError = true;
-      } else {
-        value = value.trim();
-        if (value.isEmpty()) {
-          isError = true;
-        }
-      }
-      if (isError) {
-        error.append(field).append(" ");
-        return Optional.empty();
-      } else {
-        return Optional.of(value);
-      }
-    };
-    final Supplier<IllegalArgumentException> exceptionSupplier = () -> new IllegalArgumentException(
-        error.toString());
-
-    final Optional<String> uid = trimmedFieldIfValid.apply("uid", ownerReference.getUid());
-    final Optional<String> apiVersion = trimmedFieldIfValid.apply("apiVersion",
-        ownerReference.getApiVersion());
-    final Optional<String> name = trimmedFieldIfValid.apply("name", ownerReference.getName());
-    final Optional<String> kind = trimmedFieldIfValid.apply("kind", ownerReference.getKind());
-
-    // check that required values are present
-    ownerReference = new OwnerReferenceBuilder(ownerReference)
-        .withUid(uid.orElseThrow(exceptionSupplier))
-        .withApiVersion(apiVersion.orElseThrow(exceptionSupplier))
-        .withName(name.orElseThrow(exceptionSupplier))
-        .withKind(kind.orElseThrow(exceptionSupplier))
-        .build();
-    return ownerReference;
-  }
-
-  /**
    * Removes the {@link OwnerReference} identified by the specified UID if it's part of this {@code HasMetadata}'s owner
    * references
    *
@@ -492,5 +494,41 @@ public interface HasMetadata extends KubernetesResource {
 
   default Optional<ObjectMeta> optionalMetadata() {
     return Optional.ofNullable(getMetadata());
+  }
+
+  /**
+   * Initializes this {@link ObjectMeta} field with name and namespace (if this instance represents a namespaced resource)
+   * provided by the specified HasMetadata instance. This is a convenience method to avoid boilerplate, notably when using
+   * Server-Side Apply, when creating a new instance with only some fields of the original one. Calls
+   * {@link #setMetadata(ObjectMeta)} when done, if you want to further configure this instance's metadata, please use
+   * {@link #initMetadataBuilderNameAndNamespaceFrom(HasMetadata)} instead, which <em>doesn't</em> sets the metadata, leaving it
+   * up to the user once configuration is finished.
+   *
+   * @param original a HasMetadata instance from which to retrieve the name and namespace
+   */
+  default void initNameAndNamespaceFrom(HasMetadata original) {
+    Objects.requireNonNull(original);
+    final ObjectMeta meta = initMetadataBuilderNameAndNamespaceFrom(original).build();
+    setMetadata(meta);
+  }
+
+  /**
+   * Creates and initializes a new {@link ObjectMetaBuilder} with name and namespace (if the provided instance to initialize
+   * from represents a namespaced resource) provided by the specified HasMetadata instance. This is a convenience method to
+   * avoid boilerplate, notably when using Server-Side Apply, when creating a new instance with only some fields of the original
+   * one. This method assumes that further configuration will occur on the newly created ObjectMetaBuilder.
+   *
+   * @param original an HasMetadata instance from which to retrieve the name and namespace
+   * @return a new ObjectMetaBuilder instance initialized with the name and namespace (if needed) of the specified HasMetadata
+   */
+  static ObjectMetaBuilder initMetadataBuilderNameAndNamespaceFrom(HasMetadata original) {
+    Objects.requireNonNull(original);
+    final ObjectMeta metadata = Objects.requireNonNull(original.getMetadata(), REQUIRES_NON_NULL_METADATA);
+    final ObjectMetaBuilder metaBuilder = new ObjectMetaBuilder();
+    metaBuilder.withName(Objects.requireNonNull(metadata.getName(), REQUIRES_NON_NULL_NAME));
+    if (original instanceof Namespaced) {
+      metaBuilder.withNamespace(Objects.requireNonNull(metadata.getNamespace(), REQUIRES_NON_NULL_NAMESPACE));
+    }
+    return metaBuilder;
   }
 }
