@@ -169,7 +169,7 @@
     <jacoco-maven-plugin.version>0.8.12</jacoco-maven-plugin.version>
     <jkube.version>1.16.2</jkube.version>
     <sonar-maven-plugin.version>3.11.0.3922</sonar-maven-plugin.version>
-    <nexus-staging-maven-plugin>1.6.13</nexus-staging-maven-plugin>
+    <nexus-staging-maven-plugin>1.7.0</nexus-staging-maven-plugin>
     <spotless-maven-plugin.version>2.43.0</spotless-maven-plugin.version>
 
     <!-- Other options -->
