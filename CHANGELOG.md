@@ -1,5 +1,18 @@
 ## CHANGELOG
 
+### 7.0-SNAPSHOT
+
+#### Bugs
+
+#### Improvements
+
+#### Dependency Upgrade
+
+#### New Features
+
+#### _**Note**_: Breaking changes
+* Check detailed migration documentation for breaking changes in [7.0.0](./doc/MIGRATION-v7.md)
+
 ### 6.13.0 (2024-05-29)
 
 #### Bugs
