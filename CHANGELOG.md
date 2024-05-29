@@ -1,32 +1,30 @@
 ## CHANGELOG
 
-### 6.13-SNAPSHOT
+### 6.13.0 (2024-05-29)
 
 #### Bugs
-* Fix #5960: The serialization of time related types should be string
 * Fix #5866: Addressed cycle in crd generation with Java 19+ and ZonedDateTime
+* Fix #5960: The serialization of time related types should be string
 
 #### Improvements
 * Fix #5605: proxy configs support proxy URLs without a scheme
-* Fix #5878: (java-generator) Add implements Editable for extraAnnotations
-* Fix #5878: (java-generator) Update documentation to include dependencies
 * Fix #5867: (crd-generator) Imply schemaFrom via JsonFormat shape (SchemaFrom takes precedence)
 * Fix #5867: (java-generator) Add JsonFormat shape to date-time
+* Fix #5878: (java-generator) Add implements Editable for extraAnnotations
+* Fix #5878: (java-generator) Update documentation to include dependencies
+* Fix #5953: Made informer watch starting deterministic with respect to list processing
 * Fix #5954: (crd-generator) Sort required properties to ensure deterministic output
 * Fix #5973: CacheImpl locking for reading indexes (Cache.byIndex|indexKeys|index) was reduced
-* Fix #5953: Made informer watch starting deterministic with respect to list processing
 * Fix #6012: Add convenience methods on HasMetadata to help with SSA
 
 #### Dependency Upgrade
 * Fix #5695: Upgrade Fabric8 Kubernetes Model to Kubernetes v1.30.0
 
-#### New Features
-
 #### _**Note**_: Breaking changes
+* Fix #5947: CRD generation using the v1beta1 version is deprecated. Please use only v1 instead.
 * Fix #5960: The KubernetesSerializer will now by default serialize time related types to strings - rather than object, integer, number, or arrays of integer / number. If you are using these types in a custom object and were not including JsonFormat annotations to adjust the serialization they were likely being serialized in a non-standard way that would not be usable other Kubernetes clients, nor match the generated custom resource definition if one was being produced. Please open an issue if you need the previous behavior for whatever reason - there is a workaround by creating a customized KubernetesSerializer.
 * `storagemigration.k8s.io/v1alpha1` `StorageVersionMigration` introduced in Kubernetes 1.30.0 is added to [kubernetes-model-storageclass](https://github.com/fabric8io/kubernetes-client/tree/main/kubernetes-model-generator/kubernetes-model-storageclass) module. A dedicated module hasn't been created for this new ApiGroup.
-* Fix #5947: CRD generation using the v1beta1 version is deprecated. Please use only v1 instead.
-* Fix #6006: Service Catalog extension is deprecated following its deperecation in Kubernetes.
+* Fix #6006: Service Catalog extension is deprecated following its deprecation in Kubernetes.
 
 ### 6.12.1  (2024-04-18)
 
