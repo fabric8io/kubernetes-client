@@ -14,20 +14,22 @@
  * limitations under the License.
  */
 import io.fabric8.crd.generator.maven.plugin.Verify
+import java.nio.file.Path
+Path basedirPath = basedir.toPath();
 
 
 [
 	"multiples.sample.fabric8.io-v1"
 ].each {
 	Verify.verifyContentEquals(
-			new File(basedir, sprintf("/target/classes/META-INF/fabric8/%s.yml",it)),
-			new File(basedir, sprintf("/expected/%s.yml",it)))
+			basedirPath.resolve(Path.of("target", "classes", "META-INF", "fabric8", it + ".yml")),
+			basedirPath.resolve(Path.of("expected",  it + ".yml")))
 }
 
 [
 	"mycustomresources.other.sample.fabric8.io-v1"
 ].each {
-	Verify.verifyAbsent(new File(basedir, sprintf("/target/classes/META-INF/fabric8/%s.yml", it)))
+	Verify.verifyAbsent(basedirPath.resolve(Path.of("target", "classes", "META-INF", "fabric8", it + ".yml")))
 }
 
 true
