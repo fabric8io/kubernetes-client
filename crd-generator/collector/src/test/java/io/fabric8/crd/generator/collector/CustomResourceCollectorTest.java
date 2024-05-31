@@ -24,6 +24,7 @@ import org.mockito.Mockito;
 import java.io.File;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -52,10 +53,10 @@ class CustomResourceCollectorTest {
   void givenClassName_thenLoadClassAndSkipScan() {
     customResourceCollector.withCustomResourceClass("com.example.Test");
 
-    Class<? extends HasMetadata>[] classes = customResourceCollector.findCustomResourceClasses();
+    List<Class<? extends HasMetadata>> classes = customResourceCollector.findCustomResourceClasses();
     verify(customResourceClassLoader, times(1)).loadCustomResourceClass("com.example.Test");
     verify(jandexCustomResourceClassScanner, times(0)).findCustomResourceClasses();
-    assertEquals(1, classes.length);
+    assertEquals(1, classes.size());
   }
 
   @Test
@@ -63,10 +64,10 @@ class CustomResourceCollectorTest {
     customResourceCollector.withCustomResourceClass("com.example.Test");
     customResourceCollector.withFileToScan(Mockito.mock(File.class));
 
-    Class<? extends HasMetadata>[] classes = customResourceCollector.findCustomResourceClasses();
+    List<Class<? extends HasMetadata>> classes = customResourceCollector.findCustomResourceClasses();
     verify(customResourceClassLoader, times(1)).loadCustomResourceClass("com.example.Test");
     verify(jandexCustomResourceClassScanner, times(0)).findCustomResourceClasses();
-    assertEquals(1, classes.length);
+    assertEquals(1, classes.size());
   }
 
   @Test
@@ -78,10 +79,10 @@ class CustomResourceCollectorTest {
     when(jandexCustomResourceClassScanner.findCustomResourceClasses())
         .thenReturn(Arrays.asList("com.example.Test1", "com.example.Test2"));
 
-    Class<? extends HasMetadata>[] classes = customResourceCollector.findCustomResourceClasses();
+    List<Class<? extends HasMetadata>> classes = customResourceCollector.findCustomResourceClasses();
     verify(customResourceClassLoader, times(1)).loadCustomResourceClass("com.example.Test");
     verify(jandexCustomResourceClassScanner, times(1)).findCustomResourceClasses();
-    assertEquals(3, classes.length);
+    assertEquals(3, classes.size());
   }
 
   @Test
@@ -91,9 +92,9 @@ class CustomResourceCollectorTest {
     when(jandexCustomResourceClassScanner.findCustomResourceClasses())
         .thenReturn(Arrays.asList("com.example.Test1", "com.example.Test2"));
 
-    Class<? extends HasMetadata>[] classes = customResourceCollector.findCustomResourceClasses();
+    List<Class<? extends HasMetadata>> classes = customResourceCollector.findCustomResourceClasses();
     verify(jandexCustomResourceClassScanner, times(1)).findCustomResourceClasses();
-    assertEquals(2, classes.length);
+    assertEquals(2, classes.size());
   }
 
   @Test
@@ -101,9 +102,9 @@ class CustomResourceCollectorTest {
     customResourceCollector.withCustomResourceClass("com.example.Test");
     customResourceCollector.withExcludePackages(Collections.singletonList("com.example"));
 
-    Class<? extends HasMetadata>[] classes = customResourceCollector.findCustomResourceClasses();
+    List<Class<? extends HasMetadata>> classes = customResourceCollector.findCustomResourceClasses();
     verify(customResourceClassLoader, times(0)).loadCustomResourceClass(anyString());
-    assertEquals(0, classes.length);
+    assertEquals(0, classes.size());
   }
 
   @Test
@@ -111,9 +112,9 @@ class CustomResourceCollectorTest {
     customResourceCollector.withCustomResourceClass("com.example.Test", "com.other.Test");
     customResourceCollector.withIncludePackages(Collections.singletonList("com.example"));
 
-    Class<? extends HasMetadata>[] classes = customResourceCollector.findCustomResourceClasses();
+    List<Class<? extends HasMetadata>> classes = customResourceCollector.findCustomResourceClasses();
     verify(customResourceClassLoader, times(1)).loadCustomResourceClass(anyString());
-    assertEquals(1, classes.length);
+    assertEquals(1, classes.size());
   }
 
   @Test
@@ -141,8 +142,8 @@ class CustomResourceCollectorTest {
 
     collector.withForceIndex(true);
 
-    Class<? extends HasMetadata>[] infos = collector.findCustomResourceClasses();
-    assertEquals(0, infos.length);
+    List<Class<? extends HasMetadata>> classes = customResourceCollector.findCustomResourceClasses();
+    assertEquals(0, classes.size());
   }
 
   @Test
@@ -152,9 +153,9 @@ class CustomResourceCollectorTest {
     verify(customResourceClassLoader, times(1)).reset();
     verify(jandexCustomResourceClassScanner, times(1)).reset();
 
-    Class<? extends HasMetadata>[] classes = customResourceCollector.findCustomResourceClasses();
+    List<Class<? extends HasMetadata>> classes = customResourceCollector.findCustomResourceClasses();
     verify(customResourceClassLoader, times(0)).loadCustomResourceClass(anyString());
-    assertEquals(0, classes.length);
+    assertEquals(0, classes.size());
   }
 
   @Test

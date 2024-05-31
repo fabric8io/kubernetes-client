@@ -157,7 +157,7 @@ public class CustomResourceCollector {
    *
    * @return the Custom Resource classes
    */
-  private List<Class<? extends HasMetadata>> findCustomResourceClassesAsList() {
+  public List<Class<? extends HasMetadata>> findCustomResourceClasses() {
     Set<String> customResourcesClassNames = new HashSet<>(customResourceClassNames);
 
     if (forceScan || customResourcesClassNames.isEmpty()) {
@@ -179,23 +179,6 @@ public class CustomResourceCollector {
 
     log.debug("Found {} custom resource classes after filtering", customResourceClasses.size());
     return customResourceClasses;
-  }
-
-  /**
-   * Find and load Custom Resource classes in the previously defined context.
-   * <p>
-   * If at least one Custom Resource class name is given, scanning for classes is skipped.
-   * Otherwise Custom Resource classes are searched in locations provided by
-   * {@link #withFileToScan(File...)} or {@link #withFilesToScan(Collection)}.
-   * </p>
-   *
-   * @return the Custom Resource classes
-   */
-  public Class<? extends HasMetadata>[] findCustomResourceClasses() {
-    Collection<Class<? extends HasMetadata>> customResourceClasses = findCustomResourceClassesAsList();
-    @SuppressWarnings("unchecked")
-    Class<? extends HasMetadata>[] array = (Class<? extends HasMetadata>[]) new Class<?>[customResourceClasses.size()];
-    return customResourceClasses.toArray(array);
   }
 
   /**
