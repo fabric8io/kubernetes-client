@@ -166,7 +166,7 @@ public class CrdGeneratorMojo extends AbstractMojo {
         .withExcludePackages(exclusions.getPackages())
         .withCustomResourceClasses(customResourceClasses);
 
-    Class<? extends HasMetadata>[] customResourceClassesLoaded = customResourceCollector.findCustomResourceClasses();
+    List<Class<? extends HasMetadata>> customResourceClassesLoaded = customResourceCollector.findCustomResourceClasses();
 
     try {
       Files.createDirectories(outputDirectory.toPath());

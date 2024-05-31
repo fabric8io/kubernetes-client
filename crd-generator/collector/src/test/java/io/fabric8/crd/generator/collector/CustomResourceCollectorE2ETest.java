@@ -21,7 +21,6 @@ import org.junit.jupiter.api.io.TempDir;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -34,9 +33,9 @@ class CustomResourceCollectorE2ETest {
     List<String> expectedClasses = TestUtils.prepareDirectoryWithClasses(tempDir);
     CustomResourceCollector collector = new CustomResourceCollector();
     collector.withFileToScan(tempDir);
-    Class<? extends HasMetadata>[] classes = collector.findCustomResourceClasses();
-    assertEquals(expectedClasses.size(), classes.length);
-    Arrays.stream(classes).forEach(aClass -> assertTrue(expectedClasses.contains(aClass.getName())));
+    List<Class<? extends HasMetadata>> classes = collector.findCustomResourceClasses();
+    assertEquals(expectedClasses.size(), classes.size());
+    classes.forEach(aClass -> assertTrue(expectedClasses.contains(aClass.getName())));
   }
 
   @Test
@@ -45,9 +44,9 @@ class CustomResourceCollectorE2ETest {
     List<String> expectedClasses = TestUtils.prepareJarFileWithClasses(jarFile);
     CustomResourceCollector collector = new CustomResourceCollector();
     collector.withFileToScan(jarFile);
-    Class<? extends HasMetadata>[] classes = collector.findCustomResourceClasses();
-    assertEquals(expectedClasses.size(), classes.length);
-    Arrays.stream(classes).forEach(aClass -> assertTrue(expectedClasses.contains(aClass.getName())));
+    List<Class<? extends HasMetadata>> classes = collector.findCustomResourceClasses();
+    assertEquals(expectedClasses.size(), classes.size());
+    classes.forEach(aClass -> assertTrue(expectedClasses.contains(aClass.getName())));
   }
 
 }
