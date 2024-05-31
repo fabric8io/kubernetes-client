@@ -16,8 +16,8 @@
 package io.fabric8.java.generator.gradle.plugin;
 
 import io.fabric8.java.generator.Config;
-import org.gradle.api.Project;
 import org.gradle.api.file.DirectoryProperty;
+import org.gradle.api.file.ProjectLayout;
 import org.gradle.api.file.RegularFileProperty;
 import org.gradle.api.provider.ListProperty;
 
@@ -29,12 +29,12 @@ import java.util.Map;
 public abstract class JavaGeneratorPluginExtension {
 
   public static final String NAME = "javaGen";
-  protected Project gradleProject;
+  protected final ProjectLayout layout;
 
   private Config javaGeneratorConfig = Config.builder().build();
 
-  public JavaGeneratorPluginExtension(Project gradleProject) {
-    this.gradleProject = gradleProject;
+  public JavaGeneratorPluginExtension(ProjectLayout layout) {
+    this.layout = layout;
   }
 
   public Config getConfig() {
@@ -68,7 +68,7 @@ public abstract class JavaGeneratorPluginExtension {
 
   public File getDownloadTargetOrDefault() {
     return this.getDownloadTarget().getAsFile()
-        .getOrElse(this.gradleProject.getLayout().getProjectDirectory()
+        .getOrElse(layout.getProjectDirectory()
             .dir("build")
             .dir("crds")
             .getAsFile());
@@ -82,7 +82,7 @@ public abstract class JavaGeneratorPluginExtension {
 
   public File getTargetOrDefault() {
     return this.getTarget().getAsFile()
-        .getOrElse(this.gradleProject.getLayout().getProjectDirectory()
+        .getOrElse(layout.getProjectDirectory()
             .dir("build")
             .dir("generated")
             .dir("sources").getAsFile());

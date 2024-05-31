@@ -23,7 +23,7 @@ public class JavaGeneratorPlugin implements Plugin<Project> {
   @Override
   public void apply(Project project) {
     // create an extension for the plugin
-    project.getExtensions().create(JavaGeneratorPluginExtension.NAME, JavaGeneratorPluginExtension.class, project);
+    project.getExtensions().create(JavaGeneratorPluginExtension.NAME, JavaGeneratorPluginExtension.class);
     // register tasks
     project.getTasks().register(JavaGeneratorCrd2JavaTask.NAME, JavaGeneratorCrd2JavaTask.class,
         JavaGeneratorPluginExtension.class);

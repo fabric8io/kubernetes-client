@@ -32,7 +32,7 @@ class JavaGeneratorPluginTest {
     new JavaGeneratorPlugin().apply(project);
     // Then
     verify(project.getExtensions(), times(1))
-        .create(JavaGeneratorPluginExtension.NAME, JavaGeneratorPluginExtension.class, project);
+        .create(JavaGeneratorPluginExtension.NAME, JavaGeneratorPluginExtension.class);
     verify(project.getTasks(), times(1))
         .register(JavaGeneratorCrd2JavaTask.NAME, JavaGeneratorCrd2JavaTask.class, JavaGeneratorPluginExtension.class);
   }
