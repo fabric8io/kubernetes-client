@@ -5,6 +5,7 @@
 #### Bugs
 
 #### Improvements
+* Fix #6008: removing the optional dependency on bouncy castle
 
 #### Dependency Upgrade
 
