@@ -183,6 +183,8 @@ public class TemplateOperationsImpl
             parameterValue = valuesMap.get(parameterName);
           } else if (Utils.isNotNullOrEmpty(parameter.getValue())) {
             parameterValue = parameter.getValue();
+          } else if (EXPRESSION.equals(parameter.getGenerate())) {
+            parameterValue = parameter.getFrom();
           } else if (parameter.getRequired() == null || !parameter.getRequired()) {
             parameterValue = "";
           } else {
