@@ -3,6 +3,7 @@
 ### 7.0-SNAPSHOT
 
 #### Bugs
+* Fix #6038: Support for Gradle configuration cache
 
 #### Improvements
 
