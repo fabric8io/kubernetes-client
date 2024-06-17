@@ -1,0 +1,6 @@
+INPUT,OUTPUT
+[a-zA-Z0-9_]{10},aJ46KXFq2b
+test[0-9]{1}x,test8x
+[0-1]{8},00011001
+0x[A-F0-9]{4},0x8DEE
+[a-zA-Z0-9]{8},aJ46KXFq
