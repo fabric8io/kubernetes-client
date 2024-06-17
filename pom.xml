@@ -97,7 +97,7 @@
     <okio.bundle.version>1.15.0_1</okio.bundle.version>
     <jackson.version>2.17.1</jackson.version>
     <jetty.version>11.0.21</jetty.version>
-    <maven-core.version>3.9.7</maven-core.version>
+    <maven-core.version>3.9.8</maven-core.version>
     <maven-plugin-annotations.version>3.13.1</maven-plugin-annotations.version>
     <vertx.version>4.5.8</vertx.version>
     <zjsonpatch.version>0.3.0</zjsonpatch.version>
