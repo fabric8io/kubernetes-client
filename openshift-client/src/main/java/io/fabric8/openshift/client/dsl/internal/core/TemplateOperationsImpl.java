@@ -16,7 +16,6 @@
 package io.fabric8.openshift.client.dsl.internal.core;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.mifmif.common.regex.Generex;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
@@ -50,6 +49,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ThreadLocalRandom;
 
 import static io.fabric8.openshift.client.OpenShiftAPIGroups.TEMPLATE;
 
@@ -185,8 +185,8 @@ public class TemplateOperationsImpl
           } else if (Utils.isNotNullOrEmpty(parameter.getValue())) {
             parameterValue = parameter.getValue();
           } else if (EXPRESSION.equals(parameter.getGenerate())) {
-            Generex generex = new Generex(parameter.getFrom());
-            parameterValue = generex.random();
+            ExpressionValueGenerator valueGenerator = new ExpressionValueGenerator(ThreadLocalRandom.current());
+            parameterValue = valueGenerator.generateValue(parameter.getFrom());
           } else if (parameter.getRequired() == null || !parameter.getRequired()) {
             parameterValue = "";
           } else {
