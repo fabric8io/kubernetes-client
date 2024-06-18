@@ -8,6 +8,7 @@
 #### Improvements
 
 #### Dependency Upgrade
+* Fix #6052: Removed dependency on no longer maintained com.github.mifmif:generex
 
 #### New Features
 
