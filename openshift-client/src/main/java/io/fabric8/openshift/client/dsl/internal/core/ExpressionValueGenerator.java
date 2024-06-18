@@ -18,8 +18,8 @@ package io.fabric8.openshift.client.dsl.internal.core;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.regex.Pattern;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class ExpressionValueGenerator {
@@ -47,12 +47,11 @@ public class ExpressionValueGenerator {
       int length = Integer.parseInt(getLength(matched));
 
       result = replaceWithGenerated(
-        result,
-        matched,
-        findExpressionPos(ranges),
-        length,
-        random
-      );
+          result,
+          matched,
+          findExpressionPos(ranges),
+          length,
+          random);
       matcher = GENERATORS_EXP.matcher(result);
     }
     return result;
@@ -98,9 +97,9 @@ public class ExpressionValueGenerator {
 
   protected static String removeDuplicateChars(String input) {
     return input.chars()
-      .distinct()
-      .mapToObj(c -> String.valueOf((char) c))
-      .collect(Collectors.joining());
+        .distinct()
+        .mapToObj(c -> String.valueOf((char) c))
+        .collect(Collectors.joining());
   }
 
   private static List<CharRange> findExpressionPos(String s) {
@@ -108,12 +107,11 @@ public class ExpressionValueGenerator {
     List<CharRange> result = new ArrayList<>();
     while (matcher.find()) {
       result.add(
-        CharRange
-          .builder()
-          .withStart(s.charAt(matcher.start()))
-          .withEnd(s.charAt(matcher.end() - 1))
-          .build()
-      );
+          CharRange
+              .builder()
+              .withStart(s.charAt(matcher.start()))
+              .withEnd(s.charAt(matcher.end() - 1))
+              .build());
     }
     return result;
   }

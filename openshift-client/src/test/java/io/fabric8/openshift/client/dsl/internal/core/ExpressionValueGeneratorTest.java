@@ -35,19 +35,18 @@ public class ExpressionValueGeneratorTest {
     @Override
     public Stream<? extends Arguments> provideArguments(ExtensionContext extensionContext) throws Exception {
       return Stream.of(
-        Arguments.of("test[0-9]{1}x", "test6x"),
-        Arguments.of("[0-1]{8}", "11100011"),
-        Arguments.of("0x[A-F0-9]{4}", "0x545A"),
-        Arguments.of("[a-zA-Z0-9]{8}", "KaP00gmR"),
-        Arguments.of("test[A-Z0-9]{4}template", "testQU7Etemplate"),
-        Arguments.of("[\\d]{3}", "645"),
-        Arguments.of("[\\w]{20}", "0V86t3tosHvHdzUwQKTB"),
-        Arguments.of("[\\a]{10}", "KaP00gmRS2"),
-        Arguments.of("[\\A]{10}", ">|>~-{'>,]"),
-        Arguments.of("strongPassword[\\w]{3}[\\A]{3}", "strongPassword0V8~-{"),
-        Arguments.of("admin[0-9]{2}[A-Z]{2}", "admin64DK"),
-        Arguments.of("admin[0-9]{2}test[A-Z]{2}", "admin64testDK")
-      );
+          Arguments.of("test[0-9]{1}x", "test6x"),
+          Arguments.of("[0-1]{8}", "11100011"),
+          Arguments.of("0x[A-F0-9]{4}", "0x545A"),
+          Arguments.of("[a-zA-Z0-9]{8}", "KaP00gmR"),
+          Arguments.of("test[A-Z0-9]{4}template", "testQU7Etemplate"),
+          Arguments.of("[\\d]{3}", "645"),
+          Arguments.of("[\\w]{20}", "0V86t3tosHvHdzUwQKTB"),
+          Arguments.of("[\\a]{10}", "KaP00gmRS2"),
+          Arguments.of("[\\A]{10}", ">|>~-{'>,]"),
+          Arguments.of("strongPassword[\\w]{3}[\\A]{3}", "strongPassword0V8~-{"),
+          Arguments.of("admin[0-9]{2}[A-Z]{2}", "admin64DK"),
+          Arguments.of("admin[0-9]{2}test[A-Z]{2}", "admin64testDK"));
     }
   }
 
@@ -70,12 +69,11 @@ public class ExpressionValueGeneratorTest {
     @Override
     public Stream<? extends Arguments> provideArguments(ExtensionContext extensionContext) throws Exception {
       return Stream.of(
-        Arguments.of("abcdefgh", "abcdefgh"),
-        Arguments.of("abcabc", "abc"),
-        Arguments.of("1111111", "1"),
-        Arguments.of("1234567890", "1234567890"),
-        Arguments.of("test@@", "tes@")
-      );
+          Arguments.of("abcdefgh", "abcdefgh"),
+          Arguments.of("abcabc", "abc"),
+          Arguments.of("1111111", "1"),
+          Arguments.of("1234567890", "1234567890"),
+          Arguments.of("test@@", "tes@"));
     }
   }
 
@@ -99,7 +97,7 @@ public class ExpressionValueGeneratorTest {
 
     // Act
     IllegalArgumentException result = assertThrows(IllegalArgumentException.class,
-      () -> generator.generateValue("[ABC]{3}"));
+        () -> generator.generateValue("[ABC]{3}"));
 
     // Assert
     assertTrue(result.getMessage().contains("malformed"));
@@ -113,7 +111,7 @@ public class ExpressionValueGeneratorTest {
 
     // Act
     IllegalArgumentException result = assertThrows(IllegalArgumentException.class,
-      () -> generator.generateValue("[Z-A]{3}"));
+        () -> generator.generateValue("[Z-A]{3}"));
 
     // Assert
     assertTrue(result.getMessage().contains("invalid"));
@@ -127,7 +125,7 @@ public class ExpressionValueGeneratorTest {
 
     // Act
     IllegalArgumentException result = assertThrows(IllegalArgumentException.class,
-      () -> generator.generateValue("[A-Z]{300}"));
+        () -> generator.generateValue("[A-Z]{300}"));
 
     // Assert
     assertTrue(result.getMessage().contains("invalid"));
@@ -141,7 +139,7 @@ public class ExpressionValueGeneratorTest {
 
     // Act
     IllegalArgumentException result = assertThrows(IllegalArgumentException.class,
-      () -> generator.generateValue("[A-Z]{0}"));
+        () -> generator.generateValue("[A-Z]{0}"));
 
     // Assert
     assertTrue(result.getMessage().contains("invalid"));

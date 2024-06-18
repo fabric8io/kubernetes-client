@@ -33,7 +33,7 @@ final class CharRange {
   }
 
   public String rangeStr() {
-    return new String(new char[]{start, end});
+    return new String(new char[] { start, end });
   }
 
   public static Builder builder() {
@@ -44,7 +44,8 @@ final class CharRange {
     private char start;
     private char end;
 
-    Builder() {}
+    Builder() {
+    }
 
     public Builder withStart(char start) {
       this.start = start;
