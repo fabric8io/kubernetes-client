@@ -18,16 +18,6 @@ By default kubernetes-client has a runtime dependency on OkHttp (kubernetes-http
 
 If you wish to use another HttpClient implementation typically you will exclude kubernetes-httpclient-okhttp and include the other runtime or compile dependency instead.
 
-### What is Bouncy Castle Optional dependency and When is it required?
-[BouncyCastle](https://bouncycastle.org/) is a Java library that complements the default Java Cryptographic Extension (JCE) and it is required for using some KubernetesClient features. To use support for EC Keys you must explicitly add this dependency to classpath. For example, in case of a Maven project add the required dependencies to `pom.xml` file such as:
-```xml
-<dependency>
-    <groupId>org.bouncycastle</groupId>
-    <artifactId>bcpkix-jdk18on</artifactId>
-    <version>${bouncycastle.version}</version>
-</dependency>
-```
-
 ### I've tried adding a dependency to kubernetes-client, but I'm still getting weird class loading issues, what gives?
 
 More than likely your project already has transitive dependencies to a conflicting version of the Fabric8 Kubernetes Client.  For example spring-cloud-dependencies already depends upon the client.  You should fully override the client version in this case via the kubernetes-client-bom:

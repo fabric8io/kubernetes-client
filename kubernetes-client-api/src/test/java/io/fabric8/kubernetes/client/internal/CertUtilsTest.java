@@ -214,9 +214,9 @@ class CertUtilsTest {
     String privateKeyPath = Utils.filePath(getClass().getResource("/ssl-test/empty"));
     String certPath = Utils.filePath(getClass().getResource("/ssl-test/empty"));
 
-    assertThatExceptionOfType(KubernetesClientException.class)
+    assertThatExceptionOfType(IOException.class)
         .isThrownBy(() -> CertUtils.createKeyStore(null, certPath, null, privateKeyPath, "EC", "foo", null, null))
-        .withMessage("Got null PEM object from EC key's input stream.");
+        .withMessage("PEM is invalid: no begin marker");
   }
 
   @Test
@@ -226,7 +226,7 @@ class CertUtilsTest {
 
     assertThatExceptionOfType(KubernetesClientException.class)
         .isThrownBy(() -> CertUtils.createKeyStore(null, certPath, null, privateKeyPath, "EC", "foo", null, null))
-        .withMessageContaining("Don't know what to do with a");
+        .withMessageContaining("Invalid DER");
   }
 
   @Test

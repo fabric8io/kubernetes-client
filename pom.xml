@@ -97,7 +97,7 @@
     <okio.bundle.version>1.15.0_1</okio.bundle.version>
     <jackson.version>2.17.1</jackson.version>
     <jetty.version>11.0.21</jetty.version>
-    <maven-core.version>3.9.7</maven-core.version>
+    <maven-core.version>3.9.8</maven-core.version>
     <maven-plugin-annotations.version>3.13.1</maven-plugin-annotations.version>
     <vertx.version>4.5.8</vertx.version>
     <zjsonpatch.version>0.3.0</zjsonpatch.version>
@@ -146,10 +146,10 @@
     <maven.bundle.plugin.version>5.1.9</maven.bundle.plugin.version>
     <maven.buildhelper.plugin.version>3.6.0</maven.buildhelper.plugin.version>
     <maven.jar.plugin.version>3.4.1</maven.jar.plugin.version>
-    <maven.surefire.plugin.version>3.2.5</maven.surefire.plugin.version>
+    <maven.surefire.plugin.version>3.3.0</maven.surefire.plugin.version>
     <maven.scr.plugin.version>1.26.4</maven.scr.plugin.version>
     <maven.resources.plugin.version>3.3.1</maven.resources.plugin.version>
-    <maven.release.plugin.version>3.0.1</maven.release.plugin.version>
+    <maven.release.plugin.version>3.1.0</maven.release.plugin.version>
     <maven.javadoc.plugin.version>3.7.0</maven.javadoc.plugin.version>
     <maven.source.plugin.version>3.3.1</maven.source.plugin.version>
     <maven.enforcer.plugin.version>3.5.0</maven.enforcer.plugin.version>
@@ -163,7 +163,7 @@
     <maven.plugin.plugin.version>3.13.1</maven.plugin.plugin.version>
     <gmavenplus-plugin.version>3.0.2</gmavenplus-plugin.version>
     <gradle-api-maven-plugin.version>0.0.5</gradle-api-maven-plugin.version>
-    <jandex.plugin.version>3.1.8</jandex.plugin.version>
+    <jandex.plugin.version>3.2.0</jandex.plugin.version>
     <jacoco-maven-plugin.version>0.8.12</jacoco-maven-plugin.version>
     <jkube.version>1.16.2</jkube.version>
     <sonar-maven-plugin.version>4.0.0.4121</sonar-maven-plugin.version>
@@ -804,13 +804,13 @@
         <groupId>org.bouncycastle</groupId>
         <artifactId>bcprov-jdk18on</artifactId>
         <version>${bouncycastle.version}</version>
-        <optional>true</optional>
+        <scope>test</scope>
       </dependency>
       <dependency>
         <groupId>org.bouncycastle</groupId>
         <artifactId>bcpkix-jdk18on</artifactId>
         <version>${bouncycastle.version}</version>
-        <optional>true</optional>
+        <scope>test</scope>
       </dependency>
       <dependency>
         <groupId>org.eclipse.jetty</groupId>

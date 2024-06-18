@@ -15,13 +15,7 @@
  */
 package io.fabric8.kubernetes.client.internal;
 
-import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.utils.Utils;
-import org.bouncycastle.asn1.pkcs.PrivateKeyInfo;
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.bouncycastle.openssl.PEMKeyPair;
-import org.bouncycastle.openssl.PEMParser;
-import org.bouncycastle.openssl.jcajce.JcaPEMKeyConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,7 +34,6 @@ import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
-import java.security.Security;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
@@ -52,7 +45,6 @@ import java.security.spec.RSAPrivateCrtKeySpec;
 import java.util.Base64;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.concurrent.Callable;
 import java.util.stream.Collectors;
 
 public class CertUtils {
@@ -168,56 +160,30 @@ public class CertUtils {
     if (clientKeyAlgo == null) {
       clientKeyAlgo = "RSA"; // by default let's assume it's RSA
     }
-    if (clientKeyAlgo.equals("EC")) {
-      return handleECKey(keyInputStream);
-    } else if (clientKeyAlgo.equals("RSA")) {
-      return handleOtherKeys(keyInputStream, clientKeyAlgo);
+    byte[] keyBytes = decodePem(keyInputStream);
+    if (clientKeyAlgo.equals("EC") || clientKeyAlgo.equals("RSA")) {
+      try {
+        return handleOtherKeys(keyBytes, clientKeyAlgo);
+      } catch (IOException e) {
+        // could be a version 1 key
+        if (clientKeyAlgo.equals("EC")) {
+          return handleECKey(keyBytes);
+        } else {
+          throw e;
+        }
+      }
     }
 
     throw new InvalidKeySpecException("Unknown type of PKCS8 Private Key, tried RSA and ECDSA");
   }
 
-  private static PrivateKey handleECKey(InputStream keyInputStream) {
-    // Let's wrap the code to a callable inner class to avoid NoClassDef when loading this class.
-    try {
-      return new Callable<PrivateKey>() {
-        @Override
-        public PrivateKey call() throws IOException {
-          if (Security.getProvider("BC") == null && Security.getProvider("BCFIPS") == null) {
-            // org.bouncycastle.jce.provider.BouncyCastleProvider needs to be wrapped with a Callable otherwise
-            // runtime won't even evaluate this whole block. This happens even when above condition testing if
-            // block evaluates to false
-            new Callable<String>() {
-              @Override
-              public String call() {
-                Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
-                return null;
-              }
-            }.call();
-          }
-          Object pemObject = new PEMParser(new InputStreamReader(keyInputStream)).readObject();
-          if (pemObject == null) {
-            throw new KubernetesClientException("Got null PEM object from EC key's input stream.");
-          } else if (pemObject instanceof PEMKeyPair) {
-            return new JcaPEMKeyConverter().getKeyPair((PEMKeyPair) pemObject).getPrivate();
-          } else if (pemObject instanceof PrivateKeyInfo) {
-            return BouncyCastleProvider.getPrivateKey((PrivateKeyInfo) pemObject);
-          } else {
-            throw new KubernetesClientException("Don't know what to do with a " + pemObject.getClass().getName());
-          }
-        }
-      }.call();
-    } catch (NoClassDefFoundError e) {
-      throw new KubernetesClientException(
-          "JcaPEMKeyConverter is provided by BouncyCastle, an optional dependency. To use support for EC Keys you must explicitly add this dependency to classpath.");
-    } catch (IOException e) {
-      throw new KubernetesClientException(e.getMessage());
-    }
+  private static PrivateKey handleECKey(byte[] keyBytes)
+      throws IOException, InvalidKeySpecException, NoSuchAlgorithmException {
+    return KeyFactory.getInstance("EC").generatePrivate(PKCS1Util.getECKeySpec(keyBytes));
   }
 
-  private static PrivateKey handleOtherKeys(InputStream keyInputStream, String clientKeyAlgo)
+  private static PrivateKey handleOtherKeys(byte[] keyBytes, String clientKeyAlgo)
       throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
-    byte[] keyBytes = decodePem(keyInputStream);
     try {
       // First let's try PKCS8
       return KeyFactory.getInstance(clientKeyAlgo).generatePrivate(new PKCS8EncodedKeySpec(keyBytes));
