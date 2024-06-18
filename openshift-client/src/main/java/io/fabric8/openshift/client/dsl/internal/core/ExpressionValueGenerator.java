@@ -1,3 +1,18 @@
+/*
+ * Copyright (C) 2015 Red Hat, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package io.fabric8.openshift.client.dsl.internal.core;
 
 import java.util.ArrayList;
@@ -8,14 +23,14 @@ import java.util.regex.Matcher;
 import java.util.stream.Collectors;
 
 public class ExpressionValueGenerator {
-  private static final String Alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  private static final String Numerals = "0123456789";
-  private static final String Symbols = "~!@#$%^&*()-_+={}[]\\|<,>.?/\"';:`";
-  private static final String ASCII = Alphabet + Numerals + Symbols;
+  private static final String ALPHABET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  private static final String NUMERALS = "0123456789";
+  private static final String SYMBOLS = "~!@#$%^&*()-_+={}[]\\|<,>.?/\"';:`";
+  private static final String ASCII = ALPHABET + NUMERALS + SYMBOLS;
 
-  private static final Pattern rangeExp = Pattern.compile("([\\\\]?[a-zA-Z0-9]\\-?[a-zA-Z0-9]?)");
-  private static final Pattern generatorsExp = Pattern.compile("\\[([a-zA-Z0-9\\-\\\\]+)\\](\\{([0-9]+)\\})");
-  private static final Pattern expressionExp = Pattern.compile("\\[(\\\\w|\\\\d|\\\\a|\\\\A)|([a-zA-Z0-9]\\-[a-zA-Z0-9])+\\]");
+  private static final Pattern RANGE_EXP = Pattern.compile("([\\\\]?[a-zA-Z0-9]\\-?[a-zA-Z0-9]?)");
+  private static final Pattern GENERATORS_EXP = Pattern.compile("\\[([a-zA-Z0-9\\-\\\\]+)\\](\\{([0-9]+)\\})");
+  private static final Pattern EXPRESSION_EXP = Pattern.compile("\\[(\\\\w|\\\\d|\\\\a|\\\\A)|([a-zA-Z0-9]\\-[a-zA-Z0-9])+\\]");
 
   private final Random random;
 
@@ -25,12 +40,11 @@ public class ExpressionValueGenerator {
 
   public String generateValue(final String expression) {
     String result = expression;
-    Matcher matcher = generatorsExp.matcher(result);
+    Matcher matcher = GENERATORS_EXP.matcher(result);
     while (matcher.find()) {
       String matched = result.substring(matcher.start(), matcher.end());
-      String[] rangeAndLength = rangesAndLength(matched);
-      String ranges = rangeAndLength[0];
-      int length = Integer.parseInt(rangeAndLength[1]);
+      String ranges = getRange(matched);
+      int length = Integer.parseInt(getLength(matched));
 
       result = replaceWithGenerated(
         result,
@@ -39,7 +53,7 @@ public class ExpressionValueGenerator {
         length,
         random
       );
-      matcher = generatorsExp.matcher(result);
+      matcher = GENERATORS_EXP.matcher(result);
     }
     return result;
   }
@@ -53,25 +67,24 @@ public class ExpressionValueGenerator {
     return ASCII.substring(leftPos, rightPos);
   }
 
-  private static String replaceWithGenerated(String s, String expression, List<byte[]> ranges, int length, Random random) {
+  private static String replaceWithGenerated(String s, String expression, List<CharRange> ranges, int length, Random random) {
     StringBuilder alphabet = new StringBuilder();
-    for (byte[] r : ranges) {
-      String rangeStr = new String(r);
-      switch (rangeStr) {
+    for (CharRange r : ranges) {
+      switch (r.rangeStr()) {
         case "\\w":
-          alphabet.append(Alphabet).append(Numerals).append("_");
+          alphabet.append(ALPHABET).append(NUMERALS).append("_");
           break;
         case "\\d":
-          alphabet.append(Numerals);
+          alphabet.append(NUMERALS);
           break;
         case "\\a":
-          alphabet.append(Alphabet).append(Numerals);
+          alphabet.append(ALPHABET).append(NUMERALS);
           break;
         case "\\A":
-          alphabet.append(Symbols);
+          alphabet.append(SYMBOLS);
           break;
         default:
-          alphabet.append(alphabetSlice((char) r[0], (char) r[1]));
+          alphabet.append(alphabetSlice(r.start(), r.end()));
           break;
       }
     }
@@ -83,34 +96,45 @@ public class ExpressionValueGenerator {
     return s.replace(expression, result.toString());
   }
 
-  private static String removeDuplicateChars(String input) {
+  protected static String removeDuplicateChars(String input) {
     return input.chars()
       .distinct()
       .mapToObj(c -> String.valueOf((char) c))
       .collect(Collectors.joining());
   }
 
-  private static List<byte[]> findExpressionPos(String s) {
-    Matcher matcher = rangeExp.matcher(s);
-    List<byte[]> result = new ArrayList<>();
+  private static List<CharRange> findExpressionPos(String s) {
+    Matcher matcher = RANGE_EXP.matcher(s);
+    List<CharRange> result = new ArrayList<>();
     while (matcher.find()) {
-      result.add(new byte[]{(byte) s.charAt(matcher.start()), (byte) s.charAt(matcher.end() - 1)});
+      result.add(
+        CharRange
+          .builder()
+          .withStart(s.charAt(matcher.start()))
+          .withEnd(s.charAt(matcher.end() - 1))
+          .build()
+      );
     }
     return result;
   }
 
-  private static String[] rangesAndLength(String s) {
+  private static String getRange(String s) {
     int lastOpenCurly = s.lastIndexOf("{");
     String expr = s.substring(0, lastOpenCurly);
-    if (!expressionExp.matcher(expr).find()) {
-      throw new IllegalArgumentException("malformed expresion syntax: " + expr);
+    if (!EXPRESSION_EXP.matcher(expr).find()) {
+      throw new IllegalArgumentException("malformed expression syntax: " + expr);
     }
+    return expr;
+  }
+
+  private static String getLength(String s) {
+    int lastOpenCurly = s.lastIndexOf("{");
     String lengthStr = s.substring(lastOpenCurly + 1, s.length() - 1);
     int length = Integer.parseInt(lengthStr);
     if (length > 0 && length <= 255) {
-      return new String[]{expr, lengthStr};
+      return lengthStr;
     }
-    throw new IllegalArgumentException("range must be within [1-255] characters (" + length + ")");
+    throw new IllegalArgumentException("invalid range: must be within [1-255] characters (" + length + ")");
   }
 
 }
