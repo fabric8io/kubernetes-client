@@ -106,12 +106,7 @@ public class ExpressionValueGenerator {
     Matcher matcher = RANGE_EXP.matcher(s);
     List<CharRange> result = new ArrayList<>();
     while (matcher.find()) {
-      result.add(
-          CharRange
-              .builder()
-              .withStart(s.charAt(matcher.start()))
-              .withEnd(s.charAt(matcher.end() - 1))
-              .build());
+      result.add(new CharRange(s.charAt(matcher.start()), s.charAt(matcher.end() - 1)));
     }
     return result;
   }
