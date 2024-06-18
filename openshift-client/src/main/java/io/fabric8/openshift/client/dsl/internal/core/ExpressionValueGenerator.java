@@ -22,6 +22,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+// from: https://github.com/openshift/library-go/blob/aed018c215a122871be1768155cf9f3e658278fc/pkg/template/generator/expressionvalue.go
 public class ExpressionValueGenerator {
   private static final String ALPHABET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
   private static final String NUMERALS = "0123456789";
