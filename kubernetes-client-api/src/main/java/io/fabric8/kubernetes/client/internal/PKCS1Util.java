@@ -15,8 +15,20 @@
  */
 package io.fabric8.kubernetes.client.internal;
 
-import java.io.*;
+import io.fabric8.kubernetes.client.KubernetesClientException;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigInteger;
+import java.security.GeneralSecurityException;
+import java.security.KeyPairGenerator;
+import java.security.Provider;
+import java.security.Security;
+import java.security.interfaces.ECPublicKey;
+import java.security.spec.ECGenParameterSpec;
+import java.security.spec.ECParameterSpec;
+import java.security.spec.ECPrivateKeySpec;
 import java.security.spec.RSAPrivateCrtKeySpec;
 
 /**
@@ -57,9 +69,12 @@ class PKCS1Util {
 
   static class DerParser {
 
+    private final static int SEQUENCE = 0x10;
+    private final static int INTEGER = 0x02;
+    private final static int OBJECT_IDENTIFIER = 0x06;
     private InputStream in;
 
-    DerParser(byte[] bytes) throws IOException {
+    DerParser(byte[] bytes) {
       this.in = new ByteArrayInputStream(bytes);
     }
 
@@ -136,4 +151,83 @@ class PKCS1Util {
       }
     }
   }
+
+  // adapted from io.vertx.core.net.impl.pkcs1.PrivateKeyParser
+
+  public static ECPrivateKeySpec getECKeySpec(byte[] keyBytes) throws IOException {
+    DerParser parser = new DerParser(keyBytes);
+
+    Asn1Object sequence = parser.read();
+    if (sequence.type != DerParser.SEQUENCE) {
+      throw new KubernetesClientException("Invalid DER: not a sequence");
+    }
+
+    // Parse inside the sequence
+    parser = new DerParser(sequence.value);
+
+    Asn1Object version = parser.read();
+    if (version.type != DerParser.INTEGER) {
+      throw new KubernetesClientException(String.format(
+          "Invalid DER: 'version' field must be of type INTEGER (2) but found type `%d`",
+          version.type));
+    } else if (version.getInteger().intValue() != 1) {
+      throw new KubernetesClientException(String.format(
+          "Invalid DER: expected 'version' field to have value '1' but found '%d'",
+          version.getInteger().intValue()));
+    }
+    byte[] privateValue = parser.read().getValue();
+    parser = new DerParser(parser.read().getValue());
+    Asn1Object params = parser.read();
+    // ECParameters are mandatory according to RFC 5915, Section 3
+    if (params.type != DerParser.OBJECT_IDENTIFIER) {
+      throw new KubernetesClientException(String.format(
+          "Invalid DER: expected to find an OBJECT_IDENTIFIER (6) in 'parameters' but found type '%d'",
+          params.type));
+    }
+    byte[] namedCurveOid = params.getValue();
+    ECParameterSpec spec = getECParameterSpec(oidToString(namedCurveOid));
+    return new ECPrivateKeySpec(new BigInteger(1, privateValue), spec);
+  }
+
+  private static ECParameterSpec getECParameterSpec(String curveName) {
+    Provider[] providers = Security.getProviders();
+    GeneralSecurityException ex = null;
+    // scan through the providers to see if anyone supports this
+    for (Provider provider : providers) {
+      try {
+        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("EC", provider);
+        keyPairGenerator.initialize(new ECGenParameterSpec(curveName));
+        ECPublicKey publicKey = (ECPublicKey) keyPairGenerator.generateKeyPair().getPublic();
+        return publicKey.getParams();
+      } catch (GeneralSecurityException e) {
+        ex = e;
+      }
+    }
+    boolean bcProvider = Security.getProvider("BC") != null || Security.getProvider("BCFIPS") != null;
+    throw new KubernetesClientException("Cannot determine EC parameter spec for curve name/OID" + (bcProvider ? ""
+        : ". A BouncyCastle provider is not installed, it may be needed for this EC algorithm."), ex);
+  }
+
+  private static String oidToString(byte[] oid) {
+    StringBuilder result = new StringBuilder();
+    int value = oid[0] & 0xff;
+    result.append(value / 40).append(".").append(value % 40);
+    for (int index = 1; index < oid.length; ++index) {
+      byte bValue = oid[index];
+      if (bValue < 0) {
+        value = (bValue & 0b01111111);
+        ++index;
+        if (index == oid.length) {
+          throw new IllegalArgumentException("Invalid OID");
+        }
+        value <<= 7;
+        value |= (oid[index] & 0b01111111);
+        result.append(".").append(value);
+      } else {
+        result.append(".").append(bValue);
+      }
+    }
+    return result.toString();
+  }
+
 }

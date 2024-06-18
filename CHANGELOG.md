@@ -6,6 +6,7 @@
 * Fix #6038: Support for Gradle configuration cache
 
 #### Improvements
+* Fix #6008: removing the optional dependency on bouncy castle
 
 #### Dependency Upgrade
 
