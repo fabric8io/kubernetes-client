@@ -15,12 +15,11 @@
  */
 package io.fabric8.openshift.client.server.mock;
 
+import io.fabric8.kubernetes.client.Client;
 import io.fabric8.openshift.client.OpenShiftClient;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @EnableOpenShiftMockClient(crud = true)
 class OpenShiftMockServerExtensionTests {
@@ -28,9 +27,15 @@ class OpenShiftMockServerExtensionTests {
 
   @Test
   void testOpenShiftClientGetsInitialized() {
-    assertNotNull(client);
-    assertNull(client.getConfiguration().getOauthToken());
-    assertNull(client.getConfiguration().getCurrentContext());
-    assertTrue(client.getConfiguration().getContexts().isEmpty());
+    assertThat(client)
+        .isNotNull()
+        .extracting(Client::getConfiguration)
+        .hasFieldOrPropertyWithValue("oauthToken", "secret")
+        .hasFieldOrPropertyWithValue("username", "fabric8-mockserver-testuser")
+        .hasFieldOrPropertyWithValue("currentContext.name", "fabric8-mockserver-context")
+        .hasFieldOrPropertyWithValue("currentContext.context.namespace", "test")
+        .hasFieldOrPropertyWithValue("currentContext.context.user", "fabric8-mockserver-testuser")
+        .satisfies(c -> assertThat(c.getCurrentContext().getContext().getCluster()).startsWith("localhost:"))
+        .satisfies(c -> assertThat(c.getContexts()).hasSize(1));
   }
 }

@@ -5,6 +5,7 @@
 #### Bugs
 * Fix #6038: Support for Gradle configuration cache
 * Fix #6059: Swallow rejected execution from internal usage of the informer executor
+* Fix #6068: KubernetesMockServer provides incomplete Configuration while creating test Config for KubernetesClient
 
 #### Improvements
 * Fix #6008: removing the optional dependency on bouncy castle

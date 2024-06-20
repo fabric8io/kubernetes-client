@@ -18,6 +18,7 @@ package io.fabric8.openshift.client;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import io.fabric8.kubernetes.api.model.NamedContext;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.OAuthTokenProvider;
 import io.fabric8.kubernetes.client.http.TlsVersion;
@@ -87,7 +88,7 @@ public class OpenShiftConfig extends Config {
       String[] impersonateGroups, Map<String, List<String>> impersonateExtras, OAuthTokenProvider oauthTokenProvider,
       Map<String, String> customHeaders, int requestRetryBackoffLimit, int requestRetryBackoffInterval,
       int uploadRequestTimeout, boolean onlyHttpWatches, long buildTimeout,
-      boolean disableApiGroupCheck) {
+      boolean disableApiGroupCheck, NamedContext currentContext, List<NamedContext> contexts) {
     super(masterUrl, apiVersion, namespace, trustCerts, disableHostnameVerification, caCertFile, caCertData,
         clientCertFile,
         clientCertData, clientKeyFile, clientKeyData, clientKeyAlgo, clientKeyPassphrase, username, password,
@@ -99,7 +100,7 @@ public class OpenShiftConfig extends Config {
         impersonateExtras, oauthTokenProvider, customHeaders,
         requestRetryBackoffLimit,
         requestRetryBackoffInterval,
-        uploadRequestTimeout, onlyHttpWatches);
+        uploadRequestTimeout, onlyHttpWatches, currentContext, contexts);
     this.setOapiVersion(oapiVersion);
     this.setBuildTimeout(buildTimeout);
     this.setDisableApiGroupCheck(disableApiGroupCheck);
@@ -141,7 +142,9 @@ public class OpenShiftConfig extends Config {
         kubernetesConfig.getUploadRequestTimeout(),
         kubernetesConfig.isOnlyHttpWatches(),
         buildTimeout,
-        false);
+        false,
+        kubernetesConfig.getCurrentContext(),
+        kubernetesConfig.getContexts());
   }
 
   public static OpenShiftConfig wrap(Config config) {

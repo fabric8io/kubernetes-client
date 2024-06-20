@@ -15,9 +15,9 @@
  */
 package io.fabric8.kubernetes.client.server.mock;
 
+import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.VersionInfo;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -30,10 +30,16 @@ class KubernetesMockServerExtensionTest {
 
   @Test
   void testExample() {
-    Assertions.assertNotNull(client);
-    Assertions.assertNull(client.getConfiguration().getOauthToken());
-    Assertions.assertNull(client.getConfiguration().getCurrentContext());
-    Assertions.assertTrue(client.getConfiguration().getContexts().isEmpty());
+    assertThat(client)
+        .isNotNull()
+        .extracting(Client::getConfiguration)
+        .hasFieldOrPropertyWithValue("oauthToken", "secret")
+        .hasFieldOrPropertyWithValue("username", "fabric8-mockserver-testuser")
+        .hasFieldOrPropertyWithValue("currentContext.name", "fabric8-mockserver-context")
+        .hasFieldOrPropertyWithValue("currentContext.context.namespace", "test")
+        .hasFieldOrPropertyWithValue("currentContext.context.user", "fabric8-mockserver-testuser")
+        .satisfies(c -> assertThat(c.getCurrentContext().getContext().getCluster()).startsWith("localhost:"))
+        .satisfies(c -> assertThat(c.getContexts()).hasSize(1));
   }
 
   @Test
