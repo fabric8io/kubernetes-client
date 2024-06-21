@@ -62,12 +62,6 @@
       <artifactId>openshift-client-api</artifactId>
     </dependency>
 
-    <dependency>
-      <groupId>com.github.mifmif</groupId>
-      <artifactId>generex</artifactId>
-      <version>${generex.version}</version>
-    </dependency>
-
     <!-- Compile Only Dependencies -->
     <dependency>
       <groupId>io.sundr</groupId>
@@ -124,6 +118,11 @@
    <dependency>
      <groupId>org.junit.jupiter</groupId>
      <artifactId>junit-jupiter-engine</artifactId>
+     <scope>test</scope>
+   </dependency>
+   <dependency>
+     <groupId>org.junit.jupiter</groupId>
+     <artifactId>junit-jupiter-params</artifactId>
      <scope>test</scope>
    </dependency>
 

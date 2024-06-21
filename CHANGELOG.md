@@ -9,6 +9,7 @@
 * Fix #6008: removing the optional dependency on bouncy castle
 
 #### Dependency Upgrade
+* Fix #6052: Removed dependency on no longer maintained com.github.mifmif:generex
 
 #### New Features
 
