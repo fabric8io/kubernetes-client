@@ -648,7 +648,6 @@ class ConfigTest {
         .hasFieldOrPropertyWithValue("impersonateExtras", Collections.emptyMap())
         .hasFieldOrPropertyWithValue("http2Disable", false)
         .hasFieldOrPropertyWithValue("tlsVersions", new TlsVersion[] { TlsVersion.TLS_1_3, TlsVersion.TLS_1_2 })
-        .hasFieldOrPropertyWithValue("errorMessages", Collections.emptyMap())
         .satisfies(e -> assertThat(e.getCurrentContext()).isNull())
         .satisfies(e -> assertThat(e.getImpersonateGroups()).isEmpty())
         .satisfies(e -> assertThat(e.getUserAgent()).isNotNull());
@@ -693,7 +692,6 @@ class ConfigTest {
 
     assertEquals(120, config.getMaxConcurrentRequests());
     assertEquals(20, config.getMaxConcurrentRequestsPerHost());
-    assertThat(config.getErrorMessages()).isEmpty();
   }
 
   @Test
