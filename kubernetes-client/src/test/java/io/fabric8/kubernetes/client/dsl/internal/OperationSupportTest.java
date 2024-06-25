@@ -122,22 +122,6 @@ class OperationSupportTest {
   }
 
   @Test
-  @DisplayName("assertResponse, with client error and custom message, should throw exception")
-  void assertResponseCodeClientErrorAndCustomMessage() throws Exception {
-    // Given
-    operationSupport.getConfig().getErrorMessages().put(400, "Custom message");
-    final HttpRequest request = new StandardHttpRequest.Builder().method("GET", null, null).uri(new URI("https://example.com"))
-        .build();
-    final HttpResponse<String> response = new TestHttpResponse<String>().withCode(400);
-    // When
-    final KubernetesClientException result = assertThrows(KubernetesClientException.class,
-        () -> operationSupport.assertResponseCode(request, response));
-    // Then
-    assertThat(result)
-        .hasMessageContaining("Failure executing: GET at: https://example.com. Message: Custom message Bad Request.");
-  }
-
-  @Test
   @DisplayName("assertResponse, with client error, should throw exception with server response body")
   void assertResponseCodeClientErrorAndStatus() throws Exception {
     // Given

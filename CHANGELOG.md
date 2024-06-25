@@ -7,6 +7,7 @@
 
 #### Improvements
 * Fix #6008: removing the optional dependency on bouncy castle
+* Fix #5264: Remove deprecated `Config.errorMessages` field
 
 #### Dependency Upgrade
 * Fix #6052: Removed dependency on no longer maintained com.github.mifmif:generex
@@ -15,6 +16,7 @@
 
 #### _**Note**_: Breaking changes
 * Check detailed migration documentation for breaking changes in [7.0.0](./doc/MIGRATION-v7.md)
+* `Config.errorMessages` has been removed. Please use Kubernetes status messages directly.
 
 ### 6.13.0 (2024-05-29)
 

@@ -222,12 +222,6 @@ public class Config {
   private boolean onlyHttpWatches;
 
   /**
-   * @deprecated Use Kubernetes Status directly for extracting error messages.
-   */
-  @Deprecated
-  private Map<Integer, String> errorMessages = new HashMap<>();
-
-  /**
    * custom headers
    */
   private Map<String, String> customHeaders = null;
@@ -335,7 +329,7 @@ public class Config {
         autoOAuthToken,
         watchReconnectInterval, watchReconnectLimit, connectionTimeout, requestTimeout, scaleTimeout,
         loggingInterval, maxConcurrentRequests, maxConcurrentRequestsPerHost, false, httpProxy, httpsProxy, noProxy,
-        errorMessages, userAgent, tlsVersions, websocketPingInterval, proxyUsername, proxyPassword,
+        userAgent, tlsVersions, websocketPingInterval, proxyUsername, proxyPassword,
         trustStoreFile, trustStorePassphrase, keyStoreFile, keyStorePassphrase, impersonateUsername, impersonateGroups,
         impersonateExtras, null, null, DEFAULT_REQUEST_RETRY_BACKOFFLIMIT, DEFAULT_REQUEST_RETRY_BACKOFFINTERVAL,
         DEFAULT_UPLOAD_REQUEST_TIMEOUT, false);
@@ -348,7 +342,7 @@ public class Config {
       String oauthToken, String autoOAuthToken, int watchReconnectInterval, int watchReconnectLimit, int connectionTimeout,
       int requestTimeout,
       long scaleTimeout, int loggingInterval, int maxConcurrentRequests, int maxConcurrentRequestsPerHost,
-      boolean http2Disable, String httpProxy, String httpsProxy, String[] noProxy, Map<Integer, String> errorMessages,
+      boolean http2Disable, String httpProxy, String httpsProxy, String[] noProxy,
       String userAgent, TlsVersion[] tlsVersions, long websocketPingInterval, String proxyUsername,
       String proxyPassword, String trustStoreFile, String trustStorePassphrase, String keyStoreFile, String keyStorePassphrase,
       String impersonateUsername, String[] impersonateGroups, Map<String, List<String>> impersonateExtras,
@@ -385,7 +379,6 @@ public class Config {
     this.noProxy = noProxy;
     this.proxyUsername = proxyUsername;
     this.proxyPassword = proxyPassword;
-    this.errorMessages = errorMessages;
     this.userAgent = userAgent;
     this.tlsVersions = tlsVersions;
     this.trustStoreFile = trustStoreFile;
@@ -1184,20 +1177,6 @@ public class Config {
 
   public void setWatchReconnectLimit(int watchReconnectLimit) {
     this.requestConfig.setWatchReconnectLimit(watchReconnectLimit);
-  }
-
-  /**
-   * @deprecated Use Kubernetes status messages directly
-   * @return map of error codes to message mappings
-   */
-  @Deprecated
-  @JsonProperty("errorMessages")
-  public Map<Integer, String> getErrorMessages() {
-    return errorMessages;
-  }
-
-  public void setErrorMessages(Map<Integer, String> errorMessages) {
-    this.errorMessages = errorMessages;
   }
 
   public static ConfigBuilder builder() {

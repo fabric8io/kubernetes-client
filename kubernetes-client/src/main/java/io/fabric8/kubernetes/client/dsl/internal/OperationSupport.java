@@ -579,25 +579,7 @@ public class OperationSupport {
       return;
     }
 
-    int statusCode = response.code();
-    String customMessage = config.getErrorMessages().get(statusCode);
-
-    if (customMessage != null) {
-      throw requestFailure(request,
-          createStatus(statusCode, combineMessages(customMessage, createStatus(response, getKubernetesSerialization()))));
-    } else {
-      throw requestFailure(request, createStatus(response, getKubernetesSerialization()));
-    }
-  }
-
-  private String combineMessages(String customMessage, Status defaultStatus) {
-    if (defaultStatus != null) {
-      String message = defaultStatus.getMessage();
-      if (message != null && message.length() > 0) {
-        return customMessage + " " + message;
-      }
-    }
-    return customMessage;
+    throw requestFailure(request, createStatus(response, getKubernetesSerialization()));
   }
 
   public static Status createStatus(HttpResponse<?> response, KubernetesSerialization kubernetesSerialization) {
