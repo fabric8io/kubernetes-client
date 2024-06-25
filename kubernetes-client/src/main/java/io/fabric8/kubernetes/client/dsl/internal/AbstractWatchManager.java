@@ -439,7 +439,7 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
     if (t instanceof IOException || t instanceof KubernetesClientException) {
       // could introspect the KubernetesClientException - it may represent something that should have elevated logging
       if (occurrences > INFO_LOG_CONNECTION_ERRORS) {
-        logger.info("Watch connection error recieved {} times without progress, will reconnect if possible", occurrences, t);
+        logger.info("Watch connection error received {} times without progress, will reconnect if possible", occurrences, t);
       } else {
         logger.debug("Watch connection error, will reconnect if possible", t);
       }
