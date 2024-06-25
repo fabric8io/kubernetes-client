@@ -175,7 +175,11 @@ public class SharedProcessor<T> {
     }
   }
 
-  public void execute(Runnable runnable) {
-    this.executor.execute(runnable);
+  public void executeIfPossible(Runnable runnable) {
+    try {
+      this.executor.execute(runnable);
+    } catch (RejectedExecutionException e) {
+      // already shutdown
+    }
   }
 }

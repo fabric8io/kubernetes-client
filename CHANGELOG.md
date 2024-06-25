@@ -1,5 +1,10 @@
 ## CHANGELOG
 
+### 6.13.1 (2024-07-02)
+
+#### Bugs
+* Fix #6059: Swallow rejected execution from internal usage of the informer executor
+
 ### 6.13.0 (2024-05-29)
 
 #### Bugs
