@@ -19,6 +19,8 @@ import io.fabric8.kubernetes.api.model.APIResource;
 import io.fabric8.kubernetes.api.model.APIResourceBuilder;
 import io.fabric8.kubernetes.api.model.APIResourceList;
 import io.fabric8.kubernetes.api.model.APIResourceListBuilder;
+import io.fabric8.kubernetes.api.model.NamedContext;
+import io.fabric8.kubernetes.api.model.NamedContextBuilder;
 import io.fabric8.kubernetes.api.model.RootPathsBuilder;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.Config;
@@ -205,12 +207,24 @@ public class KubernetesMockServer extends DefaultMockServer implements Resetable
   }
 
   protected Config initConfig() {
+    final NamedContext mockServerContext = new NamedContextBuilder()
+        .withName("fabric8-mock-server-context")
+        .withNewContext()
+        .withNamespace("test")
+        .withCluster(String.format("localhost:%d", getPort()))
+        .withUser("fabric8-mock-server-user")
+        .endContext()
+        .build();
     return new ConfigBuilder(Config.empty())
         .withMasterUrl(url("/"))
         .withTrustCerts(true)
         .withTlsVersions(TlsVersion.TLS_1_2)
         .withNamespace("test")
         .withHttp2Disable(true)
+        .addToContexts(mockServerContext)
+        .withCurrentContext(mockServerContext)
+        .withUsername("fabric8-mock-server-user")
+        .withOauthToken("secret")
         .build();
   }
 

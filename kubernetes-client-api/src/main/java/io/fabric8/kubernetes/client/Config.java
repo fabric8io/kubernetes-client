@@ -52,6 +52,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -338,7 +339,7 @@ public class Config {
         errorMessages, userAgent, tlsVersions, websocketPingInterval, proxyUsername, proxyPassword,
         trustStoreFile, trustStorePassphrase, keyStoreFile, keyStorePassphrase, impersonateUsername, impersonateGroups,
         impersonateExtras, null, null, DEFAULT_REQUEST_RETRY_BACKOFFLIMIT, DEFAULT_REQUEST_RETRY_BACKOFFINTERVAL,
-        DEFAULT_UPLOAD_REQUEST_TIMEOUT, false);
+        DEFAULT_UPLOAD_REQUEST_TIMEOUT, false, null, Collections.emptyList());
   }
 
   @Buildable(builderPackage = "io.fabric8.kubernetes.api.builder", editableEnabled = false)
@@ -353,7 +354,8 @@ public class Config {
       String proxyPassword, String trustStoreFile, String trustStorePassphrase, String keyStoreFile, String keyStorePassphrase,
       String impersonateUsername, String[] impersonateGroups, Map<String, List<String>> impersonateExtras,
       OAuthTokenProvider oauthTokenProvider, Map<String, String> customHeaders, int requestRetryBackoffLimit,
-      int requestRetryBackoffInterval, int uploadRequestTimeout, boolean onlyHttpWatches) {
+      int requestRetryBackoffInterval, int uploadRequestTimeout, boolean onlyHttpWatches, NamedContext currentContext,
+      List<NamedContext> contexts) {
     this.apiVersion = apiVersion;
     this.namespace = namespace;
     this.trustCerts = trustCerts;
@@ -403,6 +405,8 @@ public class Config {
     this.maxConcurrentRequestsPerHost = maxConcurrentRequestsPerHost;
     this.autoOAuthToken = autoOAuthToken;
     this.onlyHttpWatches = onlyHttpWatches;
+    this.contexts = contexts;
+    this.currentContext = currentContext;
   }
 
   public static void configFromSysPropsOrEnvVars(Config config) {
