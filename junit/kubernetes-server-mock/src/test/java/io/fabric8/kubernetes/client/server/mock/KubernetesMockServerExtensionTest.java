@@ -29,22 +29,22 @@ class KubernetesMockServerExtensionTest {
   KubernetesClient client;
 
   @Test
-  void testExample() {
+  void mockServerConfiguration() {
     assertThat(client)
         .isNotNull()
         .extracting(Client::getConfiguration)
         .hasFieldOrPropertyWithValue("oauthToken", "secret")
-        .hasFieldOrPropertyWithValue("username", "fabric8-mockserver-testuser")
-        .hasFieldOrPropertyWithValue("currentContext.name", "fabric8-mockserver-context")
+        .hasFieldOrPropertyWithValue("username", "fabric8-mock-server-user")
+        .hasFieldOrPropertyWithValue("currentContext.name", "fabric8-mock-server-context")
         .hasFieldOrPropertyWithValue("currentContext.context.namespace", "test")
-        .hasFieldOrPropertyWithValue("currentContext.context.user", "fabric8-mockserver-testuser")
+        .hasFieldOrPropertyWithValue("currentContext.context.user", "fabric8-mock-server-user")
         .satisfies(c -> assertThat(c.getCurrentContext().getContext().getCluster()).startsWith("localhost:"))
         .satisfies(c -> assertThat(c.getContexts()).hasSize(1));
   }
 
   @Test
   @DisplayName("KubernetesMockServerExtension uses KubernetesMixedDispatcher and provides expectation for GET /version")
-  void testGetKubernetesVersion() {
+  void getKubernetesVersion() {
     // When
     final VersionInfo result = client.getKubernetesVersion();
     // Then

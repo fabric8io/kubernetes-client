@@ -31,10 +31,10 @@ class OpenShiftMockServerExtensionTests {
         .isNotNull()
         .extracting(Client::getConfiguration)
         .hasFieldOrPropertyWithValue("oauthToken", "secret")
-        .hasFieldOrPropertyWithValue("username", "fabric8-mockserver-testuser")
-        .hasFieldOrPropertyWithValue("currentContext.name", "fabric8-mockserver-context")
+        .hasFieldOrPropertyWithValue("username", "fabric8-mock-server-user")
+        .hasFieldOrPropertyWithValue("currentContext.name", "fabric8-mock-server-context")
         .hasFieldOrPropertyWithValue("currentContext.context.namespace", "test")
-        .hasFieldOrPropertyWithValue("currentContext.context.user", "fabric8-mockserver-testuser")
+        .hasFieldOrPropertyWithValue("currentContext.context.user", "fabric8-mock-server-user")
         .satisfies(c -> assertThat(c.getCurrentContext().getContext().getCluster()).startsWith("localhost:"))
         .satisfies(c -> assertThat(c.getContexts()).hasSize(1));
   }

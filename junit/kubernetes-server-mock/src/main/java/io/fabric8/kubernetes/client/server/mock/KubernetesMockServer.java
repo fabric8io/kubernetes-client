@@ -207,12 +207,12 @@ public class KubernetesMockServer extends DefaultMockServer implements Resetable
   }
 
   protected Config initConfig() {
-    NamedContext mockServerContext = new NamedContextBuilder()
-        .withName("fabric8-mockserver-context")
+    final NamedContext mockServerContext = new NamedContextBuilder()
+        .withName("fabric8-mock-server-context")
         .withNewContext()
         .withNamespace("test")
         .withCluster(String.format("localhost:%d", getPort()))
-        .withUser("fabric8-mockserver-testuser")
+        .withUser("fabric8-mock-server-user")
         .endContext()
         .build();
     return new ConfigBuilder(Config.empty())
@@ -223,7 +223,7 @@ public class KubernetesMockServer extends DefaultMockServer implements Resetable
         .withHttp2Disable(true)
         .addToContexts(mockServerContext)
         .withCurrentContext(mockServerContext)
-        .withUsername("fabric8-mockserver-testuser")
+        .withUsername("fabric8-mock-server-user")
         .withOauthToken("secret")
         .build();
   }
