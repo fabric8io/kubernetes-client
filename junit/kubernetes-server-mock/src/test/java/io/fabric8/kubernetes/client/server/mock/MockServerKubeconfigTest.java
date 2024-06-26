@@ -15,13 +15,16 @@
  */
 package io.fabric8.kubernetes.client.server.mock;
 
+import io.fabric8.kubernetes.api.model.NamedContext;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Objects;
+
+import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 class MockServerKubeconfigTest {
 
@@ -39,10 +42,16 @@ class MockServerKubeconfigTest {
     KubernetesClient client = server.createClient();
 
     // Then
-    Assertions.assertNotNull(client);
-    Assertions.assertNull(client.getConfiguration().getOauthToken());
-    Assertions.assertNull(client.getConfiguration().getCurrentContext());
-    Assertions.assertTrue(client.getConfiguration().getContexts().isEmpty());
+    assertThat(client).isNotNull();
+    assertThat(client.getConfiguration())
+        .isNotNull()
+        .satisfies(c -> assertThat(c.getCurrentContext().getName()).isNotEqualTo("default/api-crc-testing:6443/kubeadmin"))
+        .satisfies(c -> assertThat(c.getOauthToken()).isNotEqualTo("sha256~iYtvbJNJEE0_QSxYE0Wl1MJJxpSvDUsNyYfzkCIoDkw"))
+        .satisfies(c -> assertThat(c.getContexts())
+            .hasSize(1)
+            .singleElement(InstanceOfAssertFactories.type(NamedContext.class))
+            .extracting(NamedContext::getName)
+            .isNotEqualTo("default/api-crc-testing:6443/kubeadmin"));
   }
 
   @AfterEach
