@@ -88,6 +88,7 @@ public class HelmRepo implements Editable<HelmRepoBuilder> , KubernetesResource
     }
 
     @JsonProperty("urls")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getUrls() {
         return urls;
     }

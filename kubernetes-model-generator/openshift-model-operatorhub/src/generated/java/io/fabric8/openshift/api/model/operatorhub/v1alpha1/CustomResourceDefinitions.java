@@ -85,6 +85,7 @@ public class CustomResourceDefinitions implements Editable<CustomResourceDefinit
     }
 
     @JsonProperty("owned")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<CRDDescription> getOwned() {
         return owned;
     }
@@ -95,6 +96,7 @@ public class CustomResourceDefinitions implements Editable<CustomResourceDefinit
     }
 
     @JsonProperty("required")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<CRDDescription> getRequired() {
         return required;
     }

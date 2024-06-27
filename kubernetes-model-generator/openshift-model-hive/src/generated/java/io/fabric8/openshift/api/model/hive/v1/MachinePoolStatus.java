@@ -99,6 +99,7 @@ public class MachinePoolStatus implements Editable<MachinePoolStatusBuilder> , K
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<MachinePoolCondition> getConditions() {
         return conditions;
     }
@@ -109,6 +110,7 @@ public class MachinePoolStatus implements Editable<MachinePoolStatusBuilder> , K
     }
 
     @JsonProperty("machineSets")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<MachineSetStatus> getMachineSets() {
         return machineSets;
     }
@@ -119,6 +121,7 @@ public class MachinePoolStatus implements Editable<MachinePoolStatusBuilder> , K
     }
 
     @JsonProperty("ownedLabels")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getOwnedLabels() {
         return ownedLabels;
     }
@@ -129,6 +132,7 @@ public class MachinePoolStatus implements Editable<MachinePoolStatusBuilder> , K
     }
 
     @JsonProperty("ownedTaints")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TaintIdentifier> getOwnedTaints() {
         return ownedTaints;
     }

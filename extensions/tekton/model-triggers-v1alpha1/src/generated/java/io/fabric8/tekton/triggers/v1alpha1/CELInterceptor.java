@@ -102,6 +102,7 @@ public class CELInterceptor implements Editable<CELInterceptorBuilder> , Kuberne
     }
 
     @JsonProperty("overlays")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<CELOverlay> getOverlays() {
         return overlays;
     }

@@ -116,6 +116,7 @@ public class SkippedTask implements Editable<SkippedTaskBuilder> , KubernetesRes
     }
 
     @JsonProperty("whenExpressions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<WhenExpression> getWhenExpressions() {
         return whenExpressions;
     }

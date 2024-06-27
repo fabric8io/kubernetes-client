@@ -92,6 +92,7 @@ public class ClusterPoolStatus implements Editable<ClusterPoolStatusBuilder> , K
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ClusterPoolCondition> getConditions() {
         return conditions;
     }

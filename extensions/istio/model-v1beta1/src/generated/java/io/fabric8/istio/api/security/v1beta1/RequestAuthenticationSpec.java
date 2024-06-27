@@ -98,6 +98,7 @@ public class RequestAuthenticationSpec implements Editable<RequestAuthentication
     }
 
     @JsonProperty("jwtRules")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<JWTRule> getJwtRules() {
         return jwtRules;
     }

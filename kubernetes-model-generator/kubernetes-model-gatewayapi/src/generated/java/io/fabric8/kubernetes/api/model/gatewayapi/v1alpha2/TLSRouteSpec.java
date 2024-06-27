@@ -91,6 +91,7 @@ public class TLSRouteSpec implements Editable<TLSRouteSpecBuilder> , KubernetesR
     }
 
     @JsonProperty("hostnames")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getHostnames() {
         return hostnames;
     }
@@ -101,6 +102,7 @@ public class TLSRouteSpec implements Editable<TLSRouteSpecBuilder> , KubernetesR
     }
 
     @JsonProperty("parentRefs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ParentReference> getParentRefs() {
         return parentRefs;
     }

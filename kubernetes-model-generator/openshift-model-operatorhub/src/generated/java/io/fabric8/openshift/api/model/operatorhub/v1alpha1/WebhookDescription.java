@@ -157,6 +157,7 @@ public class WebhookDescription implements Editable<WebhookDescriptionBuilder> ,
     }
 
     @JsonProperty("conversionCRDs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getConversionCRDs() {
         return conversionCRDs;
     }
@@ -227,6 +228,7 @@ public class WebhookDescription implements Editable<WebhookDescriptionBuilder> ,
     }
 
     @JsonProperty("rules")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<RuleWithOperations> getRules() {
         return rules;
     }

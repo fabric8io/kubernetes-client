@@ -80,6 +80,7 @@ public class ServiceCIDRSpec implements Editable<ServiceCIDRSpecBuilder> , Kuber
     }
 
     @JsonProperty("cidrs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getCidrs() {
         return cidrs;
     }

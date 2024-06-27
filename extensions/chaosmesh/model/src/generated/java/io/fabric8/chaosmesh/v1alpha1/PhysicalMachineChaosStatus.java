@@ -92,6 +92,7 @@ public class PhysicalMachineChaosStatus implements Editable<PhysicalMachineChaos
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ChaosCondition> getConditions() {
         return conditions;
     }

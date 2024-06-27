@@ -142,6 +142,7 @@ public class ChildStatusReference implements Editable<ChildStatusReferenceBuilde
     }
 
     @JsonProperty("whenExpressions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<WhenExpression> getWhenExpressions() {
         return whenExpressions;
     }

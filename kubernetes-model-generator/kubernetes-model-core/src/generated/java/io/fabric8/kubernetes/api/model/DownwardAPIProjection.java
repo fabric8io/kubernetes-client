@@ -59,6 +59,7 @@ public class DownwardAPIProjection implements Editable<DownwardAPIProjectionBuil
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<DownwardAPIVolumeFile> getItems() {
         return items;
     }

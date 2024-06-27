@@ -132,6 +132,7 @@ public class RequestHeaderIdentityProvider implements Editable<RequestHeaderIden
     }
 
     @JsonProperty("clientCommonNames")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getClientCommonNames() {
         return clientCommonNames;
     }

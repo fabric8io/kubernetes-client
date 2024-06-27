@@ -67,6 +67,7 @@ public class SecretProjection implements Editable<SecretProjectionBuilder> , Kub
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<KeyToPath> getItems() {
         return items;
     }

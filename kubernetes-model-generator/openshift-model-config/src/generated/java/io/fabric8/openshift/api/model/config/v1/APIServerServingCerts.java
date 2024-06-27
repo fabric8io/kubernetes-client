@@ -80,6 +80,7 @@ public class APIServerServingCerts implements Editable<APIServerServingCertsBuil
     }
 
     @JsonProperty("namedCertificates")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<APIServerNamedServingCert> getNamedCertificates() {
         return namedCertificates;
     }

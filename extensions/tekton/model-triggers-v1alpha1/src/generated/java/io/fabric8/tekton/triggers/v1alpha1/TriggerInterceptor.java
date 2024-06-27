@@ -166,6 +166,7 @@ public class TriggerInterceptor implements Editable<TriggerInterceptorBuilder> ,
     }
 
     @JsonProperty("params")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<InterceptorParams> getParams() {
         return params;
     }

@@ -111,6 +111,7 @@ public class TelemetrySpec implements Editable<TelemetrySpecBuilder> , Kubernete
     }
 
     @JsonProperty("accessLogging")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<AccessLogging> getAccessLogging() {
         return accessLogging;
     }
@@ -121,6 +122,7 @@ public class TelemetrySpec implements Editable<TelemetrySpecBuilder> , Kubernete
     }
 
     @JsonProperty("metrics")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Metrics> getMetrics() {
         return metrics;
     }
@@ -151,6 +153,7 @@ public class TelemetrySpec implements Editable<TelemetrySpecBuilder> , Kubernete
     }
 
     @JsonProperty("tracing")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Tracing> getTracing() {
         return tracing;
     }

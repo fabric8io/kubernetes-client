@@ -115,6 +115,7 @@ public class MultiClusterHubStatus implements Editable<MultiClusterHubStatusBuil
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<HubCondition> getConditions() {
         return conditions;
     }

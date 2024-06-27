@@ -115,6 +115,7 @@ public class ExecNewPodHook implements Editable<ExecNewPodHookBuilder> , Kuberne
     }
 
     @JsonProperty("env")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<EnvVar> getEnv() {
         return env;
     }
@@ -125,6 +126,7 @@ public class ExecNewPodHook implements Editable<ExecNewPodHookBuilder> , Kuberne
     }
 
     @JsonProperty("volumes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getVolumes() {
         return volumes;
     }

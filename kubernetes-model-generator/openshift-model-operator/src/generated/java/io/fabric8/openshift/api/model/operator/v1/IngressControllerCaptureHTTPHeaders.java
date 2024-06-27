@@ -85,6 +85,7 @@ public class IngressControllerCaptureHTTPHeaders implements Editable<IngressCont
     }
 
     @JsonProperty("request")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<IngressControllerCaptureHTTPHeader> getRequest() {
         return request;
     }
@@ -95,6 +96,7 @@ public class IngressControllerCaptureHTTPHeaders implements Editable<IngressCont
     }
 
     @JsonProperty("response")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<IngressControllerCaptureHTTPHeader> getResponse() {
         return response;
     }

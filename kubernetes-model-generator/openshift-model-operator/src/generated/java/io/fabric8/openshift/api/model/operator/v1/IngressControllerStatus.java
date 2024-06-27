@@ -122,6 +122,7 @@ public class IngressControllerStatus implements Editable<IngressControllerStatus
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<OperatorCondition> getConditions() {
         return conditions;
     }

@@ -116,6 +116,7 @@ public class GitHub implements Editable<GitHubBuilder> , KubernetesResource
     }
 
     @JsonProperty("urls")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getUrls() {
         return urls;
     }

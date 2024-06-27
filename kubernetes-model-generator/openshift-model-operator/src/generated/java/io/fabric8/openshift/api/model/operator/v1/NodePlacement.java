@@ -94,6 +94,7 @@ public class NodePlacement implements Editable<NodePlacementBuilder> , Kubernete
     }
 
     @JsonProperty("tolerations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Toleration> getTolerations() {
         return tolerations;
     }

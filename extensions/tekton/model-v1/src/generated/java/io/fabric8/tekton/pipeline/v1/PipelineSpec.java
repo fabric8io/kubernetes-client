@@ -146,6 +146,7 @@ public class PipelineSpec implements Editable<PipelineSpecBuilder> , KubernetesR
     }
 
     @JsonProperty("params")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ParamSpec> getParams() {
         return params;
     }
@@ -156,6 +157,7 @@ public class PipelineSpec implements Editable<PipelineSpecBuilder> , KubernetesR
     }
 
     @JsonProperty("results")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PipelineResult> getResults() {
         return results;
     }
@@ -166,6 +168,7 @@ public class PipelineSpec implements Editable<PipelineSpecBuilder> , KubernetesR
     }
 
     @JsonProperty("tasks")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PipelineTask> getTasks() {
         return tasks;
     }
@@ -176,6 +179,7 @@ public class PipelineSpec implements Editable<PipelineSpecBuilder> , KubernetesR
     }
 
     @JsonProperty("workspaces")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PipelineWorkspaceDeclaration> getWorkspaces() {
         return workspaces;
     }

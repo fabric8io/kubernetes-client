@@ -88,6 +88,7 @@ public class ExecHealthCheckConfig implements Editable<ExecHealthCheckConfigBuil
     }
 
     @JsonProperty("command")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getCommand() {
         return command;
     }

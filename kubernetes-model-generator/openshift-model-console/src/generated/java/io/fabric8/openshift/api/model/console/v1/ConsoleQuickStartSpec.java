@@ -125,6 +125,7 @@ public class ConsoleQuickStartSpec implements Editable<ConsoleQuickStartSpecBuil
     }
 
     @JsonProperty("accessReviewResources")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ResourceAttributes> getAccessReviewResources() {
         return accessReviewResources;
     }
@@ -195,6 +196,7 @@ public class ConsoleQuickStartSpec implements Editable<ConsoleQuickStartSpecBuil
     }
 
     @JsonProperty("nextQuickStart")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getNextQuickStart() {
         return nextQuickStart;
     }
@@ -205,6 +207,7 @@ public class ConsoleQuickStartSpec implements Editable<ConsoleQuickStartSpecBuil
     }
 
     @JsonProperty("prerequisites")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getPrerequisites() {
         return prerequisites;
     }
@@ -215,6 +218,7 @@ public class ConsoleQuickStartSpec implements Editable<ConsoleQuickStartSpecBuil
     }
 
     @JsonProperty("tags")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getTags() {
         return tags;
     }

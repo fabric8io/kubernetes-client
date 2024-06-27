@@ -84,6 +84,7 @@ public class ExternalIPConfig implements Editable<ExternalIPConfigBuilder> , Kub
     }
 
     @JsonProperty("autoAssignCIDRs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getAutoAssignCIDRs() {
         return autoAssignCIDRs;
     }

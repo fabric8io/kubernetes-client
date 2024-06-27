@@ -125,6 +125,7 @@ public class ServiceEntrySpec implements Editable<ServiceEntrySpecBuilder> , Kub
     }
 
     @JsonProperty("addresses")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getAddresses() {
         return addresses;
     }
@@ -135,6 +136,7 @@ public class ServiceEntrySpec implements Editable<ServiceEntrySpecBuilder> , Kub
     }
 
     @JsonProperty("endpoints")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<WorkloadEntrySpec> getEndpoints() {
         return endpoints;
     }
@@ -145,6 +147,7 @@ public class ServiceEntrySpec implements Editable<ServiceEntrySpecBuilder> , Kub
     }
 
     @JsonProperty("exportTo")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getExportTo() {
         return exportTo;
     }
@@ -155,6 +158,7 @@ public class ServiceEntrySpec implements Editable<ServiceEntrySpecBuilder> , Kub
     }
 
     @JsonProperty("hosts")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getHosts() {
         return hosts;
     }
@@ -175,6 +179,7 @@ public class ServiceEntrySpec implements Editable<ServiceEntrySpecBuilder> , Kub
     }
 
     @JsonProperty("ports")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ServicePort> getPorts() {
         return ports;
     }
@@ -195,6 +200,7 @@ public class ServiceEntrySpec implements Editable<ServiceEntrySpecBuilder> , Kub
     }
 
     @JsonProperty("subjectAltNames")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getSubjectAltNames() {
         return subjectAltNames;
     }

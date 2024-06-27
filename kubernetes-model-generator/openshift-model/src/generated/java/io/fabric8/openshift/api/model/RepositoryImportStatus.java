@@ -90,6 +90,7 @@ public class RepositoryImportStatus implements Editable<RepositoryImportStatusBu
     }
 
     @JsonProperty("additionalTags")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getAdditionalTags() {
         return additionalTags;
     }
@@ -100,6 +101,7 @@ public class RepositoryImportStatus implements Editable<RepositoryImportStatusBu
     }
 
     @JsonProperty("images")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ImageImportStatus> getImages() {
         return images;
     }

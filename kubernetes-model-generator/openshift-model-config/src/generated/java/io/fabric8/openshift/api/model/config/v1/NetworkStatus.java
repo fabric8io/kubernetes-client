@@ -97,6 +97,7 @@ public class NetworkStatus implements Editable<NetworkStatusBuilder> , Kubernete
     }
 
     @JsonProperty("clusterNetwork")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ClusterNetworkEntry> getClusterNetwork() {
         return clusterNetwork;
     }
@@ -137,6 +138,7 @@ public class NetworkStatus implements Editable<NetworkStatusBuilder> , Kubernete
     }
 
     @JsonProperty("serviceNetwork")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getServiceNetwork() {
         return serviceNetwork;
     }

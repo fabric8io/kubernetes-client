@@ -84,6 +84,7 @@ public class PrivateLinkAccess implements Editable<PrivateLinkAccessBuilder> , K
     }
 
     @JsonProperty("additionalAllowedPrincipals")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getAdditionalAllowedPrincipals() {
         return additionalAllowedPrincipals;
     }

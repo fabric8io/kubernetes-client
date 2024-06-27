@@ -114,6 +114,7 @@ public class CRDDescription implements Editable<CRDDescriptionBuilder> , Kuberne
     }
 
     @JsonProperty("actionDescriptors")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ActionDescriptor> getActionDescriptors() {
         return actionDescriptors;
     }
@@ -164,6 +165,7 @@ public class CRDDescription implements Editable<CRDDescriptionBuilder> , Kuberne
     }
 
     @JsonProperty("resources")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<APIResourceReference> getResources() {
         return resources;
     }
@@ -174,6 +176,7 @@ public class CRDDescription implements Editable<CRDDescriptionBuilder> , Kuberne
     }
 
     @JsonProperty("specDescriptors")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<SpecDescriptor> getSpecDescriptors() {
         return specDescriptors;
     }
@@ -184,6 +187,7 @@ public class CRDDescription implements Editable<CRDDescriptionBuilder> , Kuberne
     }
 
     @JsonProperty("statusDescriptors")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<StatusDescriptor> getStatusDescriptors() {
         return statusDescriptors;
     }

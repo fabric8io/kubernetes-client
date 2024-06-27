@@ -92,6 +92,7 @@ public class PrioritizerPolicy implements Editable<PrioritizerPolicyBuilder> , K
     }
 
     @JsonProperty("configurations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PrioritizerConfig> getConfigurations() {
         return configurations;
     }

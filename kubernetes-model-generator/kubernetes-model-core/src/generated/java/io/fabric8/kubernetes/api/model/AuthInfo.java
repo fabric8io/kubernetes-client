@@ -217,6 +217,7 @@ public class AuthInfo implements Editable<AuthInfoBuilder> , KubernetesResource
     }
 
     @JsonProperty("extensions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<NamedExtension> getExtensions() {
         return extensions;
     }

@@ -100,6 +100,7 @@ public class PolicyAncestorStatus implements Editable<PolicyAncestorStatusBuilde
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }

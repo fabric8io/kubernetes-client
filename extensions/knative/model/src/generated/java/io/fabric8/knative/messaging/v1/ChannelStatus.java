@@ -137,6 +137,7 @@ public class ChannelStatus implements Editable<ChannelStatusBuilder> , Kubernete
     }
 
     @JsonProperty("addresses")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Addressable> getAddresses() {
         return addresses;
     }
@@ -167,6 +168,7 @@ public class ChannelStatus implements Editable<ChannelStatusBuilder> , Kubernete
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }
@@ -207,6 +209,7 @@ public class ChannelStatus implements Editable<ChannelStatusBuilder> , Kubernete
     }
 
     @JsonProperty("subscribers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<SubscriberStatus> getSubscribers() {
         return subscribers;
     }

@@ -87,6 +87,7 @@ public class BackendTLSPolicyConfig implements Editable<BackendTLSPolicyConfigBu
     }
 
     @JsonProperty("caCertRefs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.gatewayapi.v1.LocalObjectReference> getCaCertRefs() {
         return caCertRefs;
     }

@@ -247,6 +247,7 @@ public class InstallConfig implements Editable<InstallConfigBuilder> , HasMetada
     }
 
     @JsonProperty("compute")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<MachinePool> getCompute() {
         return compute;
     }
@@ -307,6 +308,7 @@ public class InstallConfig implements Editable<InstallConfigBuilder> , HasMetada
     }
 
     @JsonProperty("imageContentSources")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ImageContentSource> getImageContentSources() {
         return imageContentSources;
     }

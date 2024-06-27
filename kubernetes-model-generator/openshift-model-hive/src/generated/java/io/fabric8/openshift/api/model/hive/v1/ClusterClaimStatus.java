@@ -85,6 +85,7 @@ public class ClusterClaimStatus implements Editable<ClusterClaimStatusBuilder> ,
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ClusterClaimCondition> getConditions() {
         return conditions;
     }

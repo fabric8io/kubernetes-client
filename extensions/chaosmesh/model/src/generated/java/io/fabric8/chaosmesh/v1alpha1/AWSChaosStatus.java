@@ -92,6 +92,7 @@ public class AWSChaosStatus implements Editable<AWSChaosStatusBuilder> , Kuberne
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ChaosCondition> getConditions() {
         return conditions;
     }

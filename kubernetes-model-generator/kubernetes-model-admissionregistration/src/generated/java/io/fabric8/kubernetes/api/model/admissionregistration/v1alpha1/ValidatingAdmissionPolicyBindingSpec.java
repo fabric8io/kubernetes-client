@@ -122,6 +122,7 @@ public class ValidatingAdmissionPolicyBindingSpec implements Editable<Validating
     }
 
     @JsonProperty("validationActions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getValidationActions() {
         return validationActions;
     }

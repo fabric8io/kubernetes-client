@@ -209,6 +209,7 @@ public class ServiceMonitorSpec implements Editable<ServiceMonitorSpecBuilder> ,
     }
 
     @JsonProperty("podTargetLabels")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getPodTargetLabels() {
         return podTargetLabels;
     }
@@ -239,6 +240,7 @@ public class ServiceMonitorSpec implements Editable<ServiceMonitorSpecBuilder> ,
     }
 
     @JsonProperty("targetLabels")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getTargetLabels() {
         return targetLabels;
     }

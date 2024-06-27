@@ -81,6 +81,7 @@ public class TLSRouteRule implements Editable<TLSRouteRuleBuilder> , KubernetesR
     }
 
     @JsonProperty("backendRefs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<BackendRef> getBackendRefs() {
         return backendRefs;
     }

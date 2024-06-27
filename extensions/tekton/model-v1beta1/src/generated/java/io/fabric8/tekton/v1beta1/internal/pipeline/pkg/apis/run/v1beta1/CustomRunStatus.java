@@ -141,6 +141,7 @@ public class CustomRunStatus implements Editable<CustomRunStatusBuilder> , Kuber
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }
@@ -171,6 +172,7 @@ public class CustomRunStatus implements Editable<CustomRunStatusBuilder> , Kuber
     }
 
     @JsonProperty("results")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<CustomRunResult> getResults() {
         return results;
     }
@@ -181,6 +183,7 @@ public class CustomRunStatus implements Editable<CustomRunStatusBuilder> , Kuber
     }
 
     @JsonProperty("retriesStatus")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<CustomRunStatus> getRetriesStatus() {
         return retriesStatus;
     }

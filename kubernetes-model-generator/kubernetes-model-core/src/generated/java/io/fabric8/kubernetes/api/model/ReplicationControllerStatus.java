@@ -89,6 +89,7 @@ public class ReplicationControllerStatus implements Editable<ReplicationControll
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ReplicationControllerCondition> getConditions() {
         return conditions;
     }

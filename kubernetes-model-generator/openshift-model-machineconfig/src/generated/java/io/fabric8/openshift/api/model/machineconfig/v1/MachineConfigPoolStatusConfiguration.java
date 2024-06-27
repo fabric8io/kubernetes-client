@@ -204,6 +204,7 @@ public class MachineConfigPoolStatusConfiguration implements Editable<MachineCon
     }
 
     @JsonProperty("source")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.ObjectReference> getSource() {
         return source;
     }

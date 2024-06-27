@@ -136,6 +136,7 @@ public class StatefulSetStatus implements Editable<StatefulSetStatusBuilder> , K
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<StatefulSetCondition> getConditions() {
         return conditions;
     }

@@ -112,6 +112,7 @@ public class SubnetParam implements Editable<SubnetParamBuilder> , KubernetesRes
     }
 
     @JsonProperty("portTags")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getPortTags() {
         return portTags;
     }

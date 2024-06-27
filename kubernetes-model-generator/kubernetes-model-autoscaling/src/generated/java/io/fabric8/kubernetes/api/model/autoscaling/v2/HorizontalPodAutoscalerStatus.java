@@ -101,6 +101,7 @@ public class HorizontalPodAutoscalerStatus implements Editable<HorizontalPodAuto
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<HorizontalPodAutoscalerCondition> getConditions() {
         return conditions;
     }

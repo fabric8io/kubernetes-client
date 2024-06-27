@@ -126,6 +126,7 @@ public class ClusterAutoscalerSpec implements Editable<ClusterAutoscalerSpecBuil
     }
 
     @JsonProperty("balancingIgnoredLabels")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getBalancingIgnoredLabels() {
         return balancingIgnoredLabels;
     }

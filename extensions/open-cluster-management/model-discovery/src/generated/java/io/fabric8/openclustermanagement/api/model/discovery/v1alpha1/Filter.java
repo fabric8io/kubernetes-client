@@ -102,6 +102,7 @@ public class Filter implements Editable<FilterBuilder> , KubernetesResource
     }
 
     @JsonProperty("openShiftVersions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getOpenShiftVersions() {
         return openShiftVersions;
     }

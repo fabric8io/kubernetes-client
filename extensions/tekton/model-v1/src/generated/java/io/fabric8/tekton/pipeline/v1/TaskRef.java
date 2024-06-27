@@ -132,6 +132,7 @@ public class TaskRef implements Editable<TaskRefBuilder> , KubernetesResource
     }
 
     @JsonProperty("params")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Param> getParams() {
         return params;
     }

@@ -80,6 +80,7 @@ public class PowerVSPlatformSpec implements Editable<PowerVSPlatformSpecBuilder>
     }
 
     @JsonProperty("serviceEndpoints")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PowerVSServiceEndpoint> getServiceEndpoints() {
         return serviceEndpoints;
     }

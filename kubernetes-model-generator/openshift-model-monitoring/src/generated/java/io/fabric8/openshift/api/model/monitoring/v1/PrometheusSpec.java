@@ -504,6 +504,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder> , Kuberne
     }
 
     @JsonProperty("additionalArgs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Argument> getAdditionalArgs() {
         return additionalArgs;
     }
@@ -594,6 +595,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder> , Kuberne
     }
 
     @JsonProperty("configMaps")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getConfigMaps() {
         return configMaps;
     }
@@ -604,6 +606,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder> , Kuberne
     }
 
     @JsonProperty("containers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.Container> getContainers() {
         return containers;
     }
@@ -634,6 +637,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder> , Kuberne
     }
 
     @JsonProperty("enableFeatures")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getEnableFeatures() {
         return enableFeatures;
     }
@@ -744,6 +748,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder> , Kuberne
     }
 
     @JsonProperty("excludedFromEnforcement")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.monitoring.v1.ObjectReference> getExcludedFromEnforcement() {
         return excludedFromEnforcement;
     }
@@ -784,6 +789,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder> , Kuberne
     }
 
     @JsonProperty("hostAliases")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<HostAlias> getHostAliases() {
         return hostAliases;
     }
@@ -834,6 +840,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder> , Kuberne
     }
 
     @JsonProperty("imagePullSecrets")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.LocalObjectReference> getImagePullSecrets() {
         return imagePullSecrets;
     }
@@ -844,6 +851,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder> , Kuberne
     }
 
     @JsonProperty("initContainers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.Container> getInitContainers() {
         return initContainers;
     }
@@ -1004,6 +1012,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder> , Kuberne
     }
 
     @JsonProperty("podTargetLabels")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getPodTargetLabels() {
         return podTargetLabels;
     }
@@ -1064,6 +1073,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder> , Kuberne
     }
 
     @JsonProperty("prometheusRulesExcludedFromEnforce")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PrometheusRuleExcludeConfig> getPrometheusRulesExcludedFromEnforce() {
         return prometheusRulesExcludedFromEnforce;
     }
@@ -1094,6 +1104,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder> , Kuberne
     }
 
     @JsonProperty("remoteRead")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<RemoteReadSpec> getRemoteRead() {
         return remoteRead;
     }
@@ -1104,6 +1115,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder> , Kuberne
     }
 
     @JsonProperty("remoteWrite")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<RemoteWriteSpec> getRemoteWrite() {
         return remoteWrite;
     }
@@ -1254,6 +1266,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder> , Kuberne
     }
 
     @JsonProperty("secrets")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getSecrets() {
         return secrets;
     }
@@ -1364,6 +1377,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder> , Kuberne
     }
 
     @JsonProperty("tolerations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Toleration> getTolerations() {
         return tolerations;
     }
@@ -1374,6 +1388,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder> , Kuberne
     }
 
     @JsonProperty("topologySpreadConstraints")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TopologySpreadConstraint> getTopologySpreadConstraints() {
         return topologySpreadConstraints;
     }
@@ -1414,6 +1429,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder> , Kuberne
     }
 
     @JsonProperty("volumeMounts")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<VolumeMount> getVolumeMounts() {
         return volumeMounts;
     }
@@ -1424,6 +1440,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder> , Kuberne
     }
 
     @JsonProperty("volumes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Volume> getVolumes() {
         return volumes;
     }

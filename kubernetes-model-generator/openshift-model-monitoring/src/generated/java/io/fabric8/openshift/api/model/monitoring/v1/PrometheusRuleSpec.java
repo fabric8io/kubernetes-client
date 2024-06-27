@@ -80,6 +80,7 @@ public class PrometheusRuleSpec implements Editable<PrometheusRuleSpecBuilder> ,
     }
 
     @JsonProperty("groups")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<RuleGroup> getGroups() {
         return groups;
     }

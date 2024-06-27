@@ -167,6 +167,7 @@ public class SlackConfig implements Editable<SlackConfigBuilder> , KubernetesRes
     }
 
     @JsonProperty("actions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<SlackAction> getActions() {
         return actions;
     }
@@ -227,6 +228,7 @@ public class SlackConfig implements Editable<SlackConfigBuilder> , KubernetesRes
     }
 
     @JsonProperty("fields")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<SlackField> getFields() {
         return fields;
     }
@@ -297,6 +299,7 @@ public class SlackConfig implements Editable<SlackConfigBuilder> , KubernetesRes
     }
 
     @JsonProperty("mrkdwnIn")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getMrkdwnIn() {
         return mrkdwnIn;
     }

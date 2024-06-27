@@ -103,6 +103,7 @@ public class IssuerStatus implements Editable<IssuerStatusBuilder> , KubernetesR
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<IssuerCondition> getConditions() {
         return conditions;
     }

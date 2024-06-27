@@ -114,6 +114,7 @@ public class HelmChart implements Editable<HelmChartBuilder> , KubernetesResourc
     }
 
     @JsonProperty("additionalValuesFiles")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getAdditionalValuesFiles() {
         return additionalValuesFiles;
     }
@@ -124,6 +125,7 @@ public class HelmChart implements Editable<HelmChartBuilder> , KubernetesResourc
     }
 
     @JsonProperty("apiVersions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getApiVersions() {
         return apiVersions;
     }

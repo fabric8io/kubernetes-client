@@ -94,6 +94,7 @@ public class CertificateSigningRequestStatus implements Editable<CertificateSign
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<CertificateSigningRequestCondition> getConditions() {
         return conditions;
     }

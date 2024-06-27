@@ -108,6 +108,7 @@ public class ImageStreamSpec implements Editable<ImageStreamSpecBuilder> , Kuber
     }
 
     @JsonProperty("tags")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TagReference> getTags() {
         return tags;
     }

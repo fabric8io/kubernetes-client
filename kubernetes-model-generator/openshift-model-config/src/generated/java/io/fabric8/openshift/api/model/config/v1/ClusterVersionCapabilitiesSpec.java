@@ -84,6 +84,7 @@ public class ClusterVersionCapabilitiesSpec implements Editable<ClusterVersionCa
     }
 
     @JsonProperty("additionalEnabledCapabilities")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getAdditionalEnabledCapabilities() {
         return additionalEnabledCapabilities;
     }

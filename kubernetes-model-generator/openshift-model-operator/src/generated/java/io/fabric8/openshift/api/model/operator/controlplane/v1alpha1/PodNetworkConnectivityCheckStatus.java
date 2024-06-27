@@ -95,6 +95,7 @@ public class PodNetworkConnectivityCheckStatus implements Editable<PodNetworkCon
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PodNetworkConnectivityCheckCondition> getConditions() {
         return conditions;
     }
@@ -105,6 +106,7 @@ public class PodNetworkConnectivityCheckStatus implements Editable<PodNetworkCon
     }
 
     @JsonProperty("failures")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<LogEntry> getFailures() {
         return failures;
     }
@@ -115,6 +117,7 @@ public class PodNetworkConnectivityCheckStatus implements Editable<PodNetworkCon
     }
 
     @JsonProperty("outages")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<OutageEntry> getOutages() {
         return outages;
     }
@@ -125,6 +128,7 @@ public class PodNetworkConnectivityCheckStatus implements Editable<PodNetworkCon
     }
 
     @JsonProperty("successes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<LogEntry> getSuccesses() {
         return successes;
     }

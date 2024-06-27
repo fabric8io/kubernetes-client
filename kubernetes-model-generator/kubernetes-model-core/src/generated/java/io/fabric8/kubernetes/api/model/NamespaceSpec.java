@@ -59,6 +59,7 @@ public class NamespaceSpec implements Editable<NamespaceSpecBuilder> , Kubernete
     }
 
     @JsonProperty("finalizers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getFinalizers() {
         return finalizers;
     }

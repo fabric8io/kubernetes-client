@@ -88,6 +88,7 @@ public class NamespaceSelector implements Editable<NamespaceSelectorBuilder> , K
     }
 
     @JsonProperty("matchNames")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getMatchNames() {
         return matchNames;
     }

@@ -128,6 +128,7 @@ public class DeploymentStatus implements Editable<DeploymentStatusBuilder> , Kub
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<DeploymentCondition> getConditions() {
         return conditions;
     }

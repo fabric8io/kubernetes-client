@@ -92,6 +92,7 @@ public class TokenReviewStatus implements Editable<TokenReviewStatusBuilder> , K
     }
 
     @JsonProperty("audiences")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getAudiences() {
         return audiences;
     }

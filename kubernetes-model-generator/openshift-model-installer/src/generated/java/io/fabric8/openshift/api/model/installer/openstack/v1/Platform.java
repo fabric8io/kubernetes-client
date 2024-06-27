@@ -176,6 +176,7 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     }
 
     @JsonProperty("apiVIPs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getApiVIPs() {
         return apiVIPs;
     }
@@ -276,6 +277,7 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     }
 
     @JsonProperty("ingressVIPs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getIngressVIPs() {
         return ingressVIPs;
     }

@@ -156,6 +156,7 @@ public class User implements Editable<UserBuilder> , HasMetadata
     }
 
     @JsonProperty("identities")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getIdentities() {
         return identities;
     }

@@ -101,6 +101,7 @@ public class CredentialsRequestStatus implements Editable<CredentialsRequestStat
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<CredentialsRequestCondition> getConditions() {
         return conditions;
     }

@@ -85,6 +85,7 @@ public class APIServiceDefinitions implements Editable<APIServiceDefinitionsBuil
     }
 
     @JsonProperty("owned")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<APIServiceDescription> getOwned() {
         return owned;
     }
@@ -95,6 +96,7 @@ public class APIServiceDefinitions implements Editable<APIServiceDefinitionsBuil
     }
 
     @JsonProperty("required")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<APIServiceDescription> getRequired() {
         return required;
     }

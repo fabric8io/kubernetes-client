@@ -93,6 +93,7 @@ public class ExternalNextHops implements Editable<ExternalNextHopsBuilder> , Kub
     }
 
     @JsonProperty("dynamic")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<DynamicHop> getDynamic() {
         return dynamic;
     }

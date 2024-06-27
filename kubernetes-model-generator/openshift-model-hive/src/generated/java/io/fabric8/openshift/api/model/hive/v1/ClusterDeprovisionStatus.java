@@ -94,6 +94,7 @@ public class ClusterDeprovisionStatus implements Editable<ClusterDeprovisionStat
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ClusterDeprovisionCondition> getConditions() {
         return conditions;
     }

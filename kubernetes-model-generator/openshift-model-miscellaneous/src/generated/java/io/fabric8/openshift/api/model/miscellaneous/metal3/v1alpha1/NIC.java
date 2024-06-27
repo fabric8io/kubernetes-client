@@ -178,6 +178,7 @@ public class NIC implements Editable<NICBuilder> , KubernetesResource
     }
 
     @JsonProperty("vlans")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<VLAN> getVlans() {
         return vlans;
     }

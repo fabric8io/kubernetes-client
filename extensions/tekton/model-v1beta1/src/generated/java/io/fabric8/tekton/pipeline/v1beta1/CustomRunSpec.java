@@ -142,6 +142,7 @@ public class CustomRunSpec implements Editable<CustomRunSpecBuilder> , Kubernete
     }
 
     @JsonProperty("params")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Param> getParams() {
         return params;
     }
@@ -202,6 +203,7 @@ public class CustomRunSpec implements Editable<CustomRunSpecBuilder> , Kubernete
     }
 
     @JsonProperty("workspaces")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<WorkspaceBinding> getWorkspaces() {
         return workspaces;
     }

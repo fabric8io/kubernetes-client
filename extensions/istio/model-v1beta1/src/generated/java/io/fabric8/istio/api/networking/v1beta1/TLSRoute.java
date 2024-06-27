@@ -93,6 +93,7 @@ public class TLSRoute implements Editable<TLSRouteBuilder> , KubernetesResource
     }
 
     @JsonProperty("match")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TLSMatchAttributes> getMatch() {
         return match;
     }
@@ -103,6 +104,7 @@ public class TLSRoute implements Editable<TLSRouteBuilder> , KubernetesResource
     }
 
     @JsonProperty("route")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<RouteDestination> getRoute() {
         return route;
     }

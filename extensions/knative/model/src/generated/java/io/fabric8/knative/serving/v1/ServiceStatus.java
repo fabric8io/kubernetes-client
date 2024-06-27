@@ -140,6 +140,7 @@ public class ServiceStatus implements Editable<ServiceStatusBuilder> , Kubernete
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }
@@ -180,6 +181,7 @@ public class ServiceStatus implements Editable<ServiceStatusBuilder> , Kubernete
     }
 
     @JsonProperty("traffic")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TrafficTarget> getTraffic() {
         return traffic;
     }

@@ -88,6 +88,7 @@ public class RouteSpec implements Editable<RouteSpecBuilder> , KubernetesResourc
     }
 
     @JsonProperty("traffic")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TrafficTarget> getTraffic() {
         return traffic;
     }

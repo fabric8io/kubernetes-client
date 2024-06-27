@@ -93,6 +93,7 @@ public class CatalogRestrictions implements Editable<CatalogRestrictionsBuilder>
     }
 
     @JsonProperty("serviceClass")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getServiceClass() {
         return serviceClass;
     }
@@ -103,6 +104,7 @@ public class CatalogRestrictions implements Editable<CatalogRestrictionsBuilder>
     }
 
     @JsonProperty("servicePlan")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getServicePlan() {
         return servicePlan;
     }

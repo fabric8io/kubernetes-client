@@ -262,6 +262,7 @@ public class BuildConfigSpec implements Editable<BuildConfigSpecBuilder> , Kuber
     }
 
     @JsonProperty("triggers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<BuildTriggerPolicy> getTriggers() {
         return triggers;
     }

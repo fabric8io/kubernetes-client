@@ -179,6 +179,7 @@ public class StepTemplate implements Editable<StepTemplateBuilder> , KubernetesR
     }
 
     @JsonProperty("args")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getArgs() {
         return args;
     }
@@ -189,6 +190,7 @@ public class StepTemplate implements Editable<StepTemplateBuilder> , KubernetesR
     }
 
     @JsonProperty("command")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getCommand() {
         return command;
     }
@@ -199,6 +201,7 @@ public class StepTemplate implements Editable<StepTemplateBuilder> , KubernetesR
     }
 
     @JsonProperty("env")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.EnvVar> getEnv() {
         return env;
     }
@@ -209,6 +212,7 @@ public class StepTemplate implements Editable<StepTemplateBuilder> , KubernetesR
     }
 
     @JsonProperty("envFrom")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<EnvFromSource> getEnvFrom() {
         return envFrom;
     }
@@ -269,6 +273,7 @@ public class StepTemplate implements Editable<StepTemplateBuilder> , KubernetesR
     }
 
     @JsonProperty("ports")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.ContainerPort> getPorts() {
         return ports;
     }
@@ -369,6 +374,7 @@ public class StepTemplate implements Editable<StepTemplateBuilder> , KubernetesR
     }
 
     @JsonProperty("volumeDevices")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<VolumeDevice> getVolumeDevices() {
         return volumeDevices;
     }
@@ -379,6 +385,7 @@ public class StepTemplate implements Editable<StepTemplateBuilder> , KubernetesR
     }
 
     @JsonProperty("volumeMounts")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.VolumeMount> getVolumeMounts() {
         return volumeMounts;
     }

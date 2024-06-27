@@ -85,6 +85,7 @@ public class ProjectStatus implements Editable<ProjectStatusBuilder> , Kubernete
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<NamespaceCondition> getConditions() {
         return conditions;
     }

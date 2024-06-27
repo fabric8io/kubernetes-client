@@ -158,6 +158,7 @@ public class PipelineRunStatus implements Editable<PipelineRunStatusBuilder> , K
     }
 
     @JsonProperty("childReferences")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ChildStatusReference> getChildReferences() {
         return childReferences;
     }
@@ -178,6 +179,7 @@ public class PipelineRunStatus implements Editable<PipelineRunStatusBuilder> , K
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }
@@ -208,6 +210,7 @@ public class PipelineRunStatus implements Editable<PipelineRunStatusBuilder> , K
     }
 
     @JsonProperty("pipelineResults")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PipelineRunResult> getPipelineResults() {
         return pipelineResults;
     }
@@ -248,6 +251,7 @@ public class PipelineRunStatus implements Editable<PipelineRunStatusBuilder> , K
     }
 
     @JsonProperty("skippedTasks")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<SkippedTask> getSkippedTasks() {
         return skippedTasks;
     }

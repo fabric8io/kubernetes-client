@@ -90,6 +90,7 @@ public class ServerURL implements Editable<ServerURLBuilder> , KubernetesResourc
     }
 
     @JsonProperty("caBundle")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public String getCaBundle() {
         return caBundle;
     }

@@ -64,6 +64,7 @@ public class PodAffinity implements Editable<PodAffinityBuilder> , KubernetesRes
     }
 
     @JsonProperty("preferredDuringSchedulingIgnoredDuringExecution")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<WeightedPodAffinityTerm> getPreferredDuringSchedulingIgnoredDuringExecution() {
         return preferredDuringSchedulingIgnoredDuringExecution;
     }
@@ -74,6 +75,7 @@ public class PodAffinity implements Editable<PodAffinityBuilder> , KubernetesRes
     }
 
     @JsonProperty("requiredDuringSchedulingIgnoredDuringExecution")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PodAffinityTerm> getRequiredDuringSchedulingIgnoredDuringExecution() {
         return requiredDuringSchedulingIgnoredDuringExecution;
     }

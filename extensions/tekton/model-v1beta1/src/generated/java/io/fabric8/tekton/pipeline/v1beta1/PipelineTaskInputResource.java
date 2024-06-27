@@ -96,6 +96,7 @@ public class PipelineTaskInputResource implements Editable<PipelineTaskInputReso
     }
 
     @JsonProperty("from")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getFrom() {
         return from;
     }

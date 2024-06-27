@@ -80,6 +80,7 @@ public class IPFIXConfig implements Editable<IPFIXConfigBuilder> , KubernetesRes
     }
 
     @JsonProperty("collectors")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getCollectors() {
         return collectors;
     }

@@ -144,6 +144,7 @@ public class HostSubnet implements Editable<HostSubnetBuilder> , HasMetadata
     }
 
     @JsonProperty("egressCIDRs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getEgressCIDRs() {
         return egressCIDRs;
     }
@@ -154,6 +155,7 @@ public class HostSubnet implements Editable<HostSubnetBuilder> , HasMetadata
     }
 
     @JsonProperty("egressIPs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getEgressIPs() {
         return egressIPs;
     }

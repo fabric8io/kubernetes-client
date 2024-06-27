@@ -84,6 +84,7 @@ public class AllowedRoutes implements Editable<AllowedRoutesBuilder> , Kubernete
     }
 
     @JsonProperty("kinds")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<RouteGroupKind> getKinds() {
         return kinds;
     }

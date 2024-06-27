@@ -189,6 +189,7 @@ public class MultiClusterObservabilitySpec implements Editable<MultiClusterObser
     }
 
     @JsonProperty("tolerations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Toleration> getTolerations() {
         return tolerations;
     }

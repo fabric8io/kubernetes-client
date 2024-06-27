@@ -162,6 +162,7 @@ public class PipelineTaskRunSpec implements Editable<PipelineTaskRunSpecBuilder>
     }
 
     @JsonProperty("sidecarSpecs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TaskRunSidecarSpec> getSidecarSpecs() {
         return sidecarSpecs;
     }
@@ -172,6 +173,7 @@ public class PipelineTaskRunSpec implements Editable<PipelineTaskRunSpecBuilder>
     }
 
     @JsonProperty("stepSpecs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TaskRunStepSpec> getStepSpecs() {
         return stepSpecs;
     }

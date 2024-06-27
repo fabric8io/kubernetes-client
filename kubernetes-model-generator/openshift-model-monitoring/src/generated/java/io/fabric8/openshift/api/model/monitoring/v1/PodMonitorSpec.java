@@ -204,6 +204,7 @@ public class PodMonitorSpec implements Editable<PodMonitorSpecBuilder> , Kuberne
     }
 
     @JsonProperty("podTargetLabels")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getPodTargetLabels() {
         return podTargetLabels;
     }

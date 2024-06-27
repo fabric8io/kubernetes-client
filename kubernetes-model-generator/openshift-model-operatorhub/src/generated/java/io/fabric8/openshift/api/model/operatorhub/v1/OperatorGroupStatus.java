@@ -93,6 +93,7 @@ public class OperatorGroupStatus implements Editable<OperatorGroupStatusBuilder>
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }
@@ -113,6 +114,7 @@ public class OperatorGroupStatus implements Editable<OperatorGroupStatusBuilder>
     }
 
     @JsonProperty("namespaces")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getNamespaces() {
         return namespaces;
     }

@@ -124,6 +124,7 @@ public class Storage implements Editable<StorageBuilder> , KubernetesResource
     }
 
     @JsonProperty("alternateNames")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getAlternateNames() {
         return alternateNames;
     }

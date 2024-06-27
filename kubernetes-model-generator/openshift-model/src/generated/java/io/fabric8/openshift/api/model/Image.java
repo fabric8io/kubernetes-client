@@ -177,6 +177,7 @@ public class Image implements Editable<ImageBuilder> , HasMetadata
     }
 
     @JsonProperty("dockerImageLayers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ImageLayer> getDockerImageLayers() {
         return dockerImageLayers;
     }
@@ -207,6 +208,7 @@ public class Image implements Editable<ImageBuilder> , HasMetadata
     }
 
     @JsonProperty("dockerImageManifests")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ImageManifest> getDockerImageManifests() {
         return dockerImageManifests;
     }
@@ -247,6 +249,7 @@ public class Image implements Editable<ImageBuilder> , HasMetadata
     }
 
     @JsonProperty("dockerImageSignatures")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getDockerImageSignatures() {
         return dockerImageSignatures;
     }
@@ -287,6 +290,7 @@ public class Image implements Editable<ImageBuilder> , HasMetadata
     }
 
     @JsonProperty("signatures")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ImageSignature> getSignatures() {
         return signatures;
     }

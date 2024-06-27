@@ -89,6 +89,7 @@ public class GatewayTLSConfig implements Editable<GatewayTLSConfigBuilder> , Kub
     }
 
     @JsonProperty("certificateRefs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<SecretObjectReference> getCertificateRefs() {
         return certificateRefs;
     }

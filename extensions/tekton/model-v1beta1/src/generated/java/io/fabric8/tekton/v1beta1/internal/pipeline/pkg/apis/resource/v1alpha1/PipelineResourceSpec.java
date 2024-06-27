@@ -121,6 +121,7 @@ public class PipelineResourceSpec implements Editable<PipelineResourceSpecBuilde
     }
 
     @JsonProperty("secrets")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<SecretParam> getSecrets() {
         return secrets;
     }

@@ -112,6 +112,7 @@ public class CreateOptions implements Editable<CreateOptionsBuilder> , Kubernete
     }
 
     @JsonProperty("dryRun")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getDryRun() {
         return dryRun;
     }

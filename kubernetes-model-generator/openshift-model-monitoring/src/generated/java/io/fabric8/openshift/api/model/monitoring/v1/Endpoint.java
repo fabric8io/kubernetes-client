@@ -262,6 +262,7 @@ public class Endpoint implements Editable<EndpointBuilder> , KubernetesResource
     }
 
     @JsonProperty("metricRelabelings")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<RelabelConfig> getMetricRelabelings() {
         return metricRelabelings;
     }
@@ -322,6 +323,7 @@ public class Endpoint implements Editable<EndpointBuilder> , KubernetesResource
     }
 
     @JsonProperty("relabelings")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<RelabelConfig> getRelabelings() {
         return relabelings;
     }

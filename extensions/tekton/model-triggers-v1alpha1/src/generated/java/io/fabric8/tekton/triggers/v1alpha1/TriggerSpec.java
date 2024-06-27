@@ -115,6 +115,7 @@ public class TriggerSpec implements Editable<TriggerSpecBuilder> , KubernetesRes
     }
 
     @JsonProperty("interceptors")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TriggerInterceptor> getInterceptors() {
         return interceptors;
     }

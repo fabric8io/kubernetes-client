@@ -126,6 +126,7 @@ public class ServiceAccount implements Editable<ServiceAccountBuilder> , HasMeta
     }
 
     @JsonProperty("imagePullSecrets")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<LocalObjectReference> getImagePullSecrets() {
         return imagePullSecrets;
     }
@@ -166,6 +167,7 @@ public class ServiceAccount implements Editable<ServiceAccountBuilder> , HasMeta
     }
 
     @JsonProperty("secrets")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ObjectReference> getSecrets() {
         return secrets;
     }

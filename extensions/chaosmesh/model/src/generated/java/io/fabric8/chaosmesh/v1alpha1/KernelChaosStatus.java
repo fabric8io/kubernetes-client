@@ -92,6 +92,7 @@ public class KernelChaosStatus implements Editable<KernelChaosStatusBuilder> , K
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ChaosCondition> getConditions() {
         return conditions;
     }

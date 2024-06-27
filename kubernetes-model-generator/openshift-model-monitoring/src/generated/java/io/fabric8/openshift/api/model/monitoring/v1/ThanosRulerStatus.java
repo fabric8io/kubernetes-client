@@ -110,6 +110,7 @@ public class ThanosRulerStatus implements Editable<ThanosRulerStatusBuilder> , K
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }

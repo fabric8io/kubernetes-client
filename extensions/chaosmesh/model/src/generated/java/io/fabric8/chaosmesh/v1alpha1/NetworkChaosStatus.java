@@ -97,6 +97,7 @@ public class NetworkChaosStatus implements Editable<NetworkChaosStatusBuilder> ,
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ChaosCondition> getConditions() {
         return conditions;
     }

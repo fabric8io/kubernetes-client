@@ -80,6 +80,7 @@ public class SFlowConfig implements Editable<SFlowConfigBuilder> , KubernetesRes
     }
 
     @JsonProperty("collectors")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getCollectors() {
         return collectors;
     }

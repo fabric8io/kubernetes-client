@@ -108,6 +108,7 @@ public class Status implements Editable<StatusBuilder> , KubernetesResource
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }

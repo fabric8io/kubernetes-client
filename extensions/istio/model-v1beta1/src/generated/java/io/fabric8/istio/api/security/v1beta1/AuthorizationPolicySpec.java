@@ -128,6 +128,7 @@ public class AuthorizationPolicySpec implements Editable<AuthorizationPolicySpec
     }
 
     @JsonProperty("rules")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Rule> getRules() {
         return rules;
     }

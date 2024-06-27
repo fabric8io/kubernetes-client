@@ -108,6 +108,7 @@ public class HeadersHeaderOperations implements Editable<HeadersHeaderOperations
     }
 
     @JsonProperty("remove")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getRemove() {
         return remove;
     }

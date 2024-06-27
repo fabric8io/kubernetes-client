@@ -96,6 +96,7 @@ public class RouteIngress implements Editable<RouteIngressBuilder> , KubernetesR
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<RouteIngressCondition> getConditions() {
         return conditions;
     }

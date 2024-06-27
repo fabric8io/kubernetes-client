@@ -73,6 +73,7 @@ public class TargetSelector implements Editable<TargetSelectorBuilder> , Kuberne
     }
 
     @JsonProperty("fieldPaths")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getFieldPaths() {
         return fieldPaths;
     }
@@ -93,6 +94,7 @@ public class TargetSelector implements Editable<TargetSelectorBuilder> , Kuberne
     }
 
     @JsonProperty("reject")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Selector> getReject() {
         return reject;
     }

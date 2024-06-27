@@ -142,6 +142,7 @@ public class PipelineTaskRunSpec implements Editable<PipelineTaskRunSpecBuilder>
     }
 
     @JsonProperty("sidecarOverrides")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TaskRunSidecarOverride> getSidecarOverrides() {
         return sidecarOverrides;
     }
@@ -152,6 +153,7 @@ public class PipelineTaskRunSpec implements Editable<PipelineTaskRunSpecBuilder>
     }
 
     @JsonProperty("stepOverrides")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TaskRunStepOverride> getStepOverrides() {
         return stepOverrides;
     }

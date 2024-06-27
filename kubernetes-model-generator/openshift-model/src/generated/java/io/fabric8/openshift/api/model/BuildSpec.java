@@ -220,6 +220,7 @@ public class BuildSpec implements Editable<BuildSpecBuilder> , KubernetesResourc
     }
 
     @JsonProperty("triggeredBy")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<BuildTriggerCause> getTriggeredBy() {
         return triggeredBy;
     }

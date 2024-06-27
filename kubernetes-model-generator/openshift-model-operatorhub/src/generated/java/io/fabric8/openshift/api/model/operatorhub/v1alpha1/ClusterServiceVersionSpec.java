@@ -238,6 +238,7 @@ public class ClusterServiceVersionSpec implements Editable<ClusterServiceVersion
     }
 
     @JsonProperty("icon")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Icon> getIcon() {
         return icon;
     }
@@ -258,6 +259,7 @@ public class ClusterServiceVersionSpec implements Editable<ClusterServiceVersion
     }
 
     @JsonProperty("installModes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<InstallMode> getInstallModes() {
         return installModes;
     }
@@ -268,6 +270,7 @@ public class ClusterServiceVersionSpec implements Editable<ClusterServiceVersion
     }
 
     @JsonProperty("keywords")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getKeywords() {
         return keywords;
     }
@@ -288,6 +291,7 @@ public class ClusterServiceVersionSpec implements Editable<ClusterServiceVersion
     }
 
     @JsonProperty("links")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<AppLink> getLinks() {
         return links;
     }
@@ -298,6 +302,7 @@ public class ClusterServiceVersionSpec implements Editable<ClusterServiceVersion
     }
 
     @JsonProperty("maintainers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Maintainer> getMaintainers() {
         return maintainers;
     }
@@ -328,6 +333,7 @@ public class ClusterServiceVersionSpec implements Editable<ClusterServiceVersion
     }
 
     @JsonProperty("nativeAPIs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<GroupVersionKind> getNativeAPIs() {
         return nativeAPIs;
     }
@@ -348,6 +354,7 @@ public class ClusterServiceVersionSpec implements Editable<ClusterServiceVersion
     }
 
     @JsonProperty("relatedImages")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<RelatedImage> getRelatedImages() {
         return relatedImages;
     }
@@ -378,6 +385,7 @@ public class ClusterServiceVersionSpec implements Editable<ClusterServiceVersion
     }
 
     @JsonProperty("skips")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getSkips() {
         return skips;
     }
@@ -398,6 +406,7 @@ public class ClusterServiceVersionSpec implements Editable<ClusterServiceVersion
     }
 
     @JsonProperty("webhookdefinitions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<WebhookDescription> getWebhookdefinitions() {
         return webhookdefinitions;
     }

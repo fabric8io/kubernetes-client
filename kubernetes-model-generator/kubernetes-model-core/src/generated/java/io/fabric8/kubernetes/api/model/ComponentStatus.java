@@ -107,6 +107,7 @@ public class ComponentStatus implements Editable<ComponentStatusBuilder> , HasMe
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ComponentCondition> getConditions() {
         return conditions;
     }

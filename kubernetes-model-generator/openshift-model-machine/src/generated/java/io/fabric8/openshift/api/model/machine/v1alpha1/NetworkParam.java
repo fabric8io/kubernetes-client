@@ -154,6 +154,7 @@ public class NetworkParam implements Editable<NetworkParamBuilder> , KubernetesR
     }
 
     @JsonProperty("portTags")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getPortTags() {
         return portTags;
     }
@@ -174,6 +175,7 @@ public class NetworkParam implements Editable<NetworkParamBuilder> , KubernetesR
     }
 
     @JsonProperty("subnets")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<SubnetParam> getSubnets() {
         return subnets;
     }

@@ -107,6 +107,7 @@ public class TunedRecommend implements Editable<TunedRecommendBuilder> , Kuberne
     }
 
     @JsonProperty("match")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TunedMatch> getMatch() {
         return match;
     }

@@ -200,6 +200,7 @@ public class HTTPRoute implements Editable<HTTPRouteBuilder> , KubernetesResourc
     }
 
     @JsonProperty("match")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<HTTPMatchRequest> getMatch() {
         return match;
     }
@@ -240,6 +241,7 @@ public class HTTPRoute implements Editable<HTTPRouteBuilder> , KubernetesResourc
     }
 
     @JsonProperty("mirrors")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<HTTPMirrorPolicy> getMirrors() {
         return mirrors;
     }
@@ -290,6 +292,7 @@ public class HTTPRoute implements Editable<HTTPRouteBuilder> , KubernetesResourc
     }
 
     @JsonProperty("route")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<HTTPRouteDestination> getRoute() {
         return route;
     }

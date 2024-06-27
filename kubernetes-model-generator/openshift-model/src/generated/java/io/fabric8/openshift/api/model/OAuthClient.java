@@ -157,6 +157,7 @@ public class OAuthClient implements Editable<OAuthClientBuilder> , HasMetadata
     }
 
     @JsonProperty("additionalSecrets")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getAdditionalSecrets() {
         return additionalSecrets;
     }
@@ -227,6 +228,7 @@ public class OAuthClient implements Editable<OAuthClientBuilder> , HasMetadata
     }
 
     @JsonProperty("redirectURIs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getRedirectURIs() {
         return redirectURIs;
     }
@@ -247,6 +249,7 @@ public class OAuthClient implements Editable<OAuthClientBuilder> , HasMetadata
     }
 
     @JsonProperty("scopeRestrictions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ScopeRestriction> getScopeRestrictions() {
         return scopeRestrictions;
     }

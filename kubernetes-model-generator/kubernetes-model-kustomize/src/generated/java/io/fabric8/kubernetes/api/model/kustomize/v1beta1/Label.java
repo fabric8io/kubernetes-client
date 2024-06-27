@@ -73,6 +73,7 @@ public class Label implements Editable<LabelBuilder> , KubernetesResource
     }
 
     @JsonProperty("fields")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<FieldSpec> getFields() {
         return fields;
     }

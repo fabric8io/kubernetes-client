@@ -116,6 +116,7 @@ public class SubscriptionsAPIFilter implements Editable<SubscriptionsAPIFilterBu
     }
 
     @JsonProperty("all")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<SubscriptionsAPIFilter> getAll() {
         return all;
     }
@@ -126,6 +127,7 @@ public class SubscriptionsAPIFilter implements Editable<SubscriptionsAPIFilterBu
     }
 
     @JsonProperty("any")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<SubscriptionsAPIFilter> getAny() {
         return any;
     }

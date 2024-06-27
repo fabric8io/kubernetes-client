@@ -117,6 +117,7 @@ public class Cluster implements Editable<ClusterBuilder> , KubernetesResource
     }
 
     @JsonProperty("extensions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<NamedExtension> getExtensions() {
         return extensions;
     }

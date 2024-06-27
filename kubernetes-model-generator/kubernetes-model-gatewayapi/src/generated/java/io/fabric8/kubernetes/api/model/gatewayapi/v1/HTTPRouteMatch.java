@@ -93,6 +93,7 @@ public class HTTPRouteMatch implements Editable<HTTPRouteMatchBuilder> , Kuberne
     }
 
     @JsonProperty("headers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<HTTPHeaderMatch> getHeaders() {
         return headers;
     }
@@ -123,6 +124,7 @@ public class HTTPRouteMatch implements Editable<HTTPRouteMatchBuilder> , Kuberne
     }
 
     @JsonProperty("queryParams")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<HTTPQueryParamMatch> getQueryParams() {
         return queryParams;
     }

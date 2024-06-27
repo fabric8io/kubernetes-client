@@ -132,6 +132,7 @@ public class InMemoryChannelStatus implements Editable<InMemoryChannelStatusBuil
     }
 
     @JsonProperty("addresses")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Addressable> getAddresses() {
         return addresses;
     }
@@ -152,6 +153,7 @@ public class InMemoryChannelStatus implements Editable<InMemoryChannelStatusBuil
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }
@@ -192,6 +194,7 @@ public class InMemoryChannelStatus implements Editable<InMemoryChannelStatusBuil
     }
 
     @JsonProperty("subscribers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<SubscriberStatus> getSubscribers() {
         return subscribers;
     }

@@ -107,6 +107,7 @@ public class PodHttpChaosPatchActions implements Editable<PodHttpChaosPatchActio
     }
 
     @JsonProperty("headers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<List<String>> getHeaders() {
         return headers;
     }
@@ -117,6 +118,7 @@ public class PodHttpChaosPatchActions implements Editable<PodHttpChaosPatchActio
     }
 
     @JsonProperty("queries")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<List<String>> getQueries() {
         return queries;
     }

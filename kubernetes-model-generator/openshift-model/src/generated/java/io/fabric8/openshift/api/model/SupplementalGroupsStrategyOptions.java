@@ -84,6 +84,7 @@ public class SupplementalGroupsStrategyOptions implements Editable<SupplementalG
     }
 
     @JsonProperty("ranges")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<IDRange> getRanges() {
         return ranges;
     }

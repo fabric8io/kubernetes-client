@@ -84,6 +84,7 @@ public class ImageStatus implements Editable<ImageStatusBuilder> , KubernetesRes
     }
 
     @JsonProperty("externalRegistryHostnames")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getExternalRegistryHostnames() {
         return externalRegistryHostnames;
     }

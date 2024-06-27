@@ -80,6 +80,7 @@ public class NetFlowConfig implements Editable<NetFlowConfigBuilder> , Kubernete
     }
 
     @JsonProperty("collectors")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getCollectors() {
         return collectors;
     }

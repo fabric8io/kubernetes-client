@@ -121,6 +121,7 @@ public class SelectorSyncSetSpec implements Editable<SelectorSyncSetSpecBuilder>
     }
 
     @JsonProperty("patches")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<SyncObjectPatch> getPatches() {
         return patches;
     }
@@ -141,6 +142,7 @@ public class SelectorSyncSetSpec implements Editable<SelectorSyncSetSpecBuilder>
     }
 
     @JsonProperty("resources")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Map<String, Object>> getResources() {
         return resources;
     }
@@ -151,6 +153,7 @@ public class SelectorSyncSetSpec implements Editable<SelectorSyncSetSpecBuilder>
     }
 
     @JsonProperty("secretMappings")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<SecretMapping> getSecretMappings() {
         return secretMappings;
     }

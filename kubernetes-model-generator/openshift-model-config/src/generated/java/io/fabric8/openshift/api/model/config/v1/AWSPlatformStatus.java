@@ -99,6 +99,7 @@ public class AWSPlatformStatus implements Editable<AWSPlatformStatusBuilder> , K
     }
 
     @JsonProperty("resourceTags")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<AWSResourceTag> getResourceTags() {
         return resourceTags;
     }
@@ -109,6 +110,7 @@ public class AWSPlatformStatus implements Editable<AWSPlatformStatusBuilder> , K
     }
 
     @JsonProperty("serviceEndpoints")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<AWSServiceEndpoint> getServiceEndpoints() {
         return serviceEndpoints;
     }

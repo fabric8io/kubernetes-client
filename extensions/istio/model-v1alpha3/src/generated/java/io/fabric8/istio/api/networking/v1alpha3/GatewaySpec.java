@@ -103,6 +103,7 @@ public class GatewaySpec implements Editable<GatewaySpecBuilder> , KubernetesRes
     }
 
     @JsonProperty("servers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Server> getServers() {
         return servers;
     }

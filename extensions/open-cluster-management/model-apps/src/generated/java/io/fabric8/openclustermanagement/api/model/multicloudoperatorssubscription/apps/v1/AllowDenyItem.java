@@ -101,6 +101,7 @@ public class AllowDenyItem implements Editable<AllowDenyItemBuilder> , Kubernete
     }
 
     @JsonProperty("kinds")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getKinds() {
         return kinds;
     }

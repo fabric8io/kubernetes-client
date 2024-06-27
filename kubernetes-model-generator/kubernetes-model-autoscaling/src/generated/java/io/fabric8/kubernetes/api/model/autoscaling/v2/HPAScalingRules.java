@@ -88,6 +88,7 @@ public class HPAScalingRules implements Editable<HPAScalingRulesBuilder> , Kuber
     }
 
     @JsonProperty("policies")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<HPAScalingPolicy> getPolicies() {
         return policies;
     }

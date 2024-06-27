@@ -88,6 +88,7 @@ public class RecommendedPodResources implements Editable<RecommendedPodResources
     }
 
     @JsonProperty("containerRecommendations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<RecommendedContainerResources> getContainerRecommendations() {
         return containerRecommendations;
     }

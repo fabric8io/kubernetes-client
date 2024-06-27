@@ -85,6 +85,7 @@ public class NetworkPolicyIngressRule implements Editable<NetworkPolicyIngressRu
     }
 
     @JsonProperty("from")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<NetworkPolicyPeer> getFrom() {
         return from;
     }
@@ -95,6 +96,7 @@ public class NetworkPolicyIngressRule implements Editable<NetworkPolicyIngressRu
     }
 
     @JsonProperty("ports")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<NetworkPolicyPort> getPorts() {
         return ports;
     }

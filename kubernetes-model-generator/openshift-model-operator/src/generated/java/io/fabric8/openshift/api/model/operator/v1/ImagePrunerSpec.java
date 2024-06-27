@@ -251,6 +251,7 @@ public class ImagePrunerSpec implements Editable<ImagePrunerSpecBuilder> , Kuber
     }
 
     @JsonProperty("tolerations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Toleration> getTolerations() {
         return tolerations;
     }

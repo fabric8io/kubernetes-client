@@ -93,6 +93,7 @@ public class PipelineTaskResources implements Editable<PipelineTaskResourcesBuil
     }
 
     @JsonProperty("inputs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PipelineTaskInputResource> getInputs() {
         return inputs;
     }
@@ -103,6 +104,7 @@ public class PipelineTaskResources implements Editable<PipelineTaskResourcesBuil
     }
 
     @JsonProperty("outputs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PipelineTaskOutputResource> getOutputs() {
         return outputs;
     }

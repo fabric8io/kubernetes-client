@@ -188,6 +188,7 @@ public class EmbeddedTask implements Editable<EmbeddedTaskBuilder> , KubernetesR
     }
 
     @JsonProperty("params")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ParamSpec> getParams() {
         return params;
     }
@@ -198,6 +199,7 @@ public class EmbeddedTask implements Editable<EmbeddedTaskBuilder> , KubernetesR
     }
 
     @JsonProperty("results")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TaskResult> getResults() {
         return results;
     }
@@ -208,6 +210,7 @@ public class EmbeddedTask implements Editable<EmbeddedTaskBuilder> , KubernetesR
     }
 
     @JsonProperty("sidecars")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Sidecar> getSidecars() {
         return sidecars;
     }
@@ -238,6 +241,7 @@ public class EmbeddedTask implements Editable<EmbeddedTaskBuilder> , KubernetesR
     }
 
     @JsonProperty("steps")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Step> getSteps() {
         return steps;
     }
@@ -248,6 +252,7 @@ public class EmbeddedTask implements Editable<EmbeddedTaskBuilder> , KubernetesR
     }
 
     @JsonProperty("volumes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.Volume> getVolumes() {
         return volumes;
     }
@@ -258,6 +263,7 @@ public class EmbeddedTask implements Editable<EmbeddedTaskBuilder> , KubernetesR
     }
 
     @JsonProperty("workspaces")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<WorkspaceDeclaration> getWorkspaces() {
         return workspaces;
     }

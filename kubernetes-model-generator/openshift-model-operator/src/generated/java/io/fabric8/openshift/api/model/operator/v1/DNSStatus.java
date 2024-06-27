@@ -108,6 +108,7 @@ public class DNSStatus implements Editable<DNSStatusBuilder> , KubernetesResourc
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<OperatorCondition> getConditions() {
         return conditions;
     }

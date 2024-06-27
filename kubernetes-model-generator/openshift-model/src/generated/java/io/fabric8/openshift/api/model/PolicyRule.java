@@ -108,6 +108,7 @@ public class PolicyRule implements Editable<PolicyRuleBuilder> , KubernetesResou
     }
 
     @JsonProperty("apiGroups")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getApiGroups() {
         return apiGroups;
     }
@@ -128,6 +129,7 @@ public class PolicyRule implements Editable<PolicyRuleBuilder> , KubernetesResou
     }
 
     @JsonProperty("nonResourceURLs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getNonResourceURLs() {
         return nonResourceURLs;
     }
@@ -138,6 +140,7 @@ public class PolicyRule implements Editable<PolicyRuleBuilder> , KubernetesResou
     }
 
     @JsonProperty("resourceNames")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getResourceNames() {
         return resourceNames;
     }

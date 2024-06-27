@@ -130,6 +130,7 @@ public class RunSpec implements Editable<RunSpecBuilder> , KubernetesResource
     }
 
     @JsonProperty("params")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Param> getParams() {
         return params;
     }
@@ -220,6 +221,7 @@ public class RunSpec implements Editable<RunSpecBuilder> , KubernetesResource
     }
 
     @JsonProperty("workspaces")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<WorkspaceBinding> getWorkspaces() {
         return workspaces;
     }

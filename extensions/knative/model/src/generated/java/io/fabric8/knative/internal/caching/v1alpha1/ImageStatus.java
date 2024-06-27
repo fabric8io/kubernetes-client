@@ -108,6 +108,7 @@ public class ImageStatus implements Editable<ImageStatusBuilder> , KubernetesRes
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }

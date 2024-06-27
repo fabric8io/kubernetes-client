@@ -113,6 +113,7 @@ public class ClusterManagerStatus implements Editable<ClusterManagerStatusBuilde
     }
 
     @JsonProperty("generations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<GenerationStatus> getGenerations() {
         return generations;
     }
@@ -133,6 +134,7 @@ public class ClusterManagerStatus implements Editable<ClusterManagerStatusBuilde
     }
 
     @JsonProperty("relatedResources")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<RelatedResourceMeta> getRelatedResources() {
         return relatedResources;
     }

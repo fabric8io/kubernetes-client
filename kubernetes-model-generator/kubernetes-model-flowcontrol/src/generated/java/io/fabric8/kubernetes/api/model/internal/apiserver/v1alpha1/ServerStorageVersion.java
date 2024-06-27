@@ -103,6 +103,7 @@ public class ServerStorageVersion implements Editable<ServerStorageVersionBuilde
     }
 
     @JsonProperty("decodableVersions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getDecodableVersions() {
         return decodableVersions;
     }
@@ -123,6 +124,7 @@ public class ServerStorageVersion implements Editable<ServerStorageVersionBuilde
     }
 
     @JsonProperty("servedVersions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getServedVersions() {
         return servedVersions;
     }

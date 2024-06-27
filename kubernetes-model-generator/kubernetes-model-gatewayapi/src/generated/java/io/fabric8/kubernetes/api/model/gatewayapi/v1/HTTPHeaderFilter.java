@@ -90,6 +90,7 @@ public class HTTPHeaderFilter implements Editable<HTTPHeaderFilterBuilder> , Kub
     }
 
     @JsonProperty("add")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<HTTPHeader> getAdd() {
         return add;
     }
@@ -100,6 +101,7 @@ public class HTTPHeaderFilter implements Editable<HTTPHeaderFilterBuilder> , Kub
     }
 
     @JsonProperty("remove")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getRemove() {
         return remove;
     }
@@ -110,6 +112,7 @@ public class HTTPHeaderFilter implements Editable<HTTPHeaderFilterBuilder> , Kub
     }
 
     @JsonProperty("set")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<HTTPHeader> getSet() {
         return set;
     }

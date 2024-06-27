@@ -141,6 +141,7 @@ public class PrometheusSourceStatus implements Editable<PrometheusSourceStatusBu
     }
 
     @JsonProperty("ceAttributes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<CloudEventAttributes> getCeAttributes() {
         return ceAttributes;
     }
@@ -151,6 +152,7 @@ public class PrometheusSourceStatus implements Editable<PrometheusSourceStatusBu
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }

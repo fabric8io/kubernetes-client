@@ -100,6 +100,7 @@ public class TimeInterval implements Editable<TimeIntervalBuilder> , KubernetesR
     }
 
     @JsonProperty("daysOfMonth")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<DayOfMonthRange> getDaysOfMonth() {
         return daysOfMonth;
     }
@@ -110,6 +111,7 @@ public class TimeInterval implements Editable<TimeIntervalBuilder> , KubernetesR
     }
 
     @JsonProperty("months")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getMonths() {
         return months;
     }
@@ -120,6 +122,7 @@ public class TimeInterval implements Editable<TimeIntervalBuilder> , KubernetesR
     }
 
     @JsonProperty("times")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TimeRange> getTimes() {
         return times;
     }
@@ -130,6 +133,7 @@ public class TimeInterval implements Editable<TimeIntervalBuilder> , KubernetesR
     }
 
     @JsonProperty("weekdays")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getWeekdays() {
         return weekdays;
     }
@@ -140,6 +144,7 @@ public class TimeInterval implements Editable<TimeIntervalBuilder> , KubernetesR
     }
 
     @JsonProperty("years")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getYears() {
         return years;
     }

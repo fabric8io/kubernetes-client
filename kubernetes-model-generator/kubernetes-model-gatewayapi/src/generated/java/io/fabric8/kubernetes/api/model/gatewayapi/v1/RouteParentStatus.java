@@ -89,6 +89,7 @@ public class RouteParentStatus implements Editable<RouteParentStatusBuilder> , K
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }

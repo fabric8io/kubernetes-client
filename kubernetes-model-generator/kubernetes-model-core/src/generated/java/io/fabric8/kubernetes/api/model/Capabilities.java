@@ -64,6 +64,7 @@ public class Capabilities implements Editable<CapabilitiesBuilder> , KubernetesR
     }
 
     @JsonProperty("add")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getAdd() {
         return add;
     }
@@ -74,6 +75,7 @@ public class Capabilities implements Editable<CapabilitiesBuilder> , KubernetesR
     }
 
     @JsonProperty("drop")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getDrop() {
         return drop;
     }

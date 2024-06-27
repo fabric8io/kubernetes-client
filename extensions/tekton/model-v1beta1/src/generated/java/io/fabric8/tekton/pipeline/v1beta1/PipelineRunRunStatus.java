@@ -117,6 +117,7 @@ public class PipelineRunRunStatus implements Editable<PipelineRunRunStatusBuilde
     }
 
     @JsonProperty("whenExpressions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<WhenExpression> getWhenExpressions() {
         return whenExpressions;
     }

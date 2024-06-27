@@ -112,6 +112,7 @@ public class CertificateStatus implements Editable<CertificateStatusBuilder> , K
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<CertificateCondition> getConditions() {
         return conditions;
     }

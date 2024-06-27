@@ -86,6 +86,7 @@ public class TCPRouteSpec implements Editable<TCPRouteSpecBuilder> , KubernetesR
     }
 
     @JsonProperty("parentRefs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ParentReference> getParentRefs() {
         return parentRefs;
     }

@@ -226,6 +226,7 @@ public class ClusterPoolSpec implements Editable<ClusterPoolSpecBuilder> , Kuber
     }
 
     @JsonProperty("inventory")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<InventoryEntry> getInventory() {
         return inventory;
     }

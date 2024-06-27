@@ -102,6 +102,7 @@ public class AddressStatus implements Editable<AddressStatusBuilder> , Kubernete
     }
 
     @JsonProperty("addresses")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Addressable> getAddresses() {
         return addresses;
     }

@@ -305,6 +305,7 @@ public class RemoteWriteSpec implements Editable<RemoteWriteSpecBuilder> , Kuber
     }
 
     @JsonProperty("writeRelabelConfigs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<RelabelConfig> getWriteRelabelConfigs() {
         return writeRelabelConfigs;
     }

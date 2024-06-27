@@ -86,6 +86,7 @@ public class BuildOutput implements Editable<BuildOutputBuilder> , KubernetesRes
     }
 
     @JsonProperty("imageLabels")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ImageLabel> getImageLabels() {
         return imageLabels;
     }

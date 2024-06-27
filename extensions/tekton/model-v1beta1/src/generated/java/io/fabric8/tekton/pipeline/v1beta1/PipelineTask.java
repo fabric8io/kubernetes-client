@@ -180,6 +180,7 @@ public class PipelineTask implements Editable<PipelineTaskBuilder> , KubernetesR
     }
 
     @JsonProperty("params")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Param> getParams() {
         return params;
     }
@@ -210,6 +211,7 @@ public class PipelineTask implements Editable<PipelineTaskBuilder> , KubernetesR
     }
 
     @JsonProperty("runAfter")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getRunAfter() {
         return runAfter;
     }
@@ -250,6 +252,7 @@ public class PipelineTask implements Editable<PipelineTaskBuilder> , KubernetesR
     }
 
     @JsonProperty("when")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<WhenExpression> getWhen() {
         return when;
     }
@@ -260,6 +263,7 @@ public class PipelineTask implements Editable<PipelineTaskBuilder> , KubernetesR
     }
 
     @JsonProperty("workspaces")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<WorkspacePipelineTaskBinding> getWorkspaces() {
         return workspaces;
     }

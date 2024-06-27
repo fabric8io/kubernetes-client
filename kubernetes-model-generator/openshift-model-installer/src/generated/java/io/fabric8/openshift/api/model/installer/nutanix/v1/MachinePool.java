@@ -116,6 +116,7 @@ public class MachinePool implements Editable<MachinePoolBuilder> , KubernetesRes
     }
 
     @JsonProperty("categories")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<NutanixCategory> getCategories() {
         return categories;
     }

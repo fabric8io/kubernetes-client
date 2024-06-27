@@ -105,6 +105,7 @@ public class ImageSpec implements Editable<ImageSpecBuilder> , KubernetesResourc
     }
 
     @JsonProperty("imagePullSecrets")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.LocalObjectReference> getImagePullSecrets() {
         return imagePullSecrets;
     }

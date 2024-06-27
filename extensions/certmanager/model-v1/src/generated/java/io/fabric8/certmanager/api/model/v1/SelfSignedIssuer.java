@@ -88,6 +88,7 @@ public class SelfSignedIssuer implements Editable<SelfSignedIssuerBuilder> , Kub
     }
 
     @JsonProperty("crlDistributionPoints")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getCrlDistributionPoints() {
         return crlDistributionPoints;
     }

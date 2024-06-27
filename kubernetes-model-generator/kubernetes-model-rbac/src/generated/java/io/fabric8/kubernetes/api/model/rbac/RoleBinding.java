@@ -172,6 +172,7 @@ public class RoleBinding implements Editable<RoleBindingBuilder> , HasMetadata, 
     }
 
     @JsonProperty("subjects")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Subject> getSubjects() {
         return subjects;
     }

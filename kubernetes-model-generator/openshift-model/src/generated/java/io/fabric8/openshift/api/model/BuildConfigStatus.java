@@ -84,6 +84,7 @@ public class BuildConfigStatus implements Editable<BuildConfigStatusBuilder> , K
     }
 
     @JsonProperty("imageChangeTriggers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ImageChangeTriggerStatus> getImageChangeTriggers() {
         return imageChangeTriggers;
     }

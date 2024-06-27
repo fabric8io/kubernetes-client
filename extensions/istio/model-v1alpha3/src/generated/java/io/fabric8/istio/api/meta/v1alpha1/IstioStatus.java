@@ -98,6 +98,7 @@ public class IstioStatus implements Editable<IstioStatusBuilder> , KubernetesRes
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<IstioCondition> getConditions() {
         return conditions;
     }
@@ -118,6 +119,7 @@ public class IstioStatus implements Editable<IstioStatusBuilder> , KubernetesRes
     }
 
     @JsonProperty("validationMessages")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<AnalysisMessageBase> getValidationMessages() {
         return validationMessages;
     }

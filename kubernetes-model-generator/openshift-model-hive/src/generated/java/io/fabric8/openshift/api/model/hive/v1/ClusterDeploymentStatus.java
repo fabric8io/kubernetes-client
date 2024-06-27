@@ -138,6 +138,7 @@ public class ClusterDeploymentStatus implements Editable<ClusterDeploymentStatus
     }
 
     @JsonProperty("certificateBundles")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<CertificateBundleStatus> getCertificateBundles() {
         return certificateBundles;
     }
@@ -158,6 +159,7 @@ public class ClusterDeploymentStatus implements Editable<ClusterDeploymentStatus
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ClusterDeploymentCondition> getConditions() {
         return conditions;
     }

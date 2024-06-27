@@ -103,6 +103,7 @@ public class TemplateInstanceRequester implements Editable<TemplateInstanceReque
     }
 
     @JsonProperty("groups")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getGroups() {
         return groups;
     }

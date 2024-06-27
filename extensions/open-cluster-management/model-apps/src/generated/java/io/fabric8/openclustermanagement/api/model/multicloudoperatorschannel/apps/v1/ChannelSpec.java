@@ -161,6 +161,7 @@ public class ChannelSpec implements Editable<ChannelSpecBuilder> , KubernetesRes
     }
 
     @JsonProperty("sourceNamespaces")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getSourceNamespaces() {
         return sourceNamespaces;
     }

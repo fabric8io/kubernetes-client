@@ -97,6 +97,7 @@ public class KubeStorageVersionMigratorStatus implements Editable<KubeStorageVer
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<OperatorCondition> getConditions() {
         return conditions;
     }
@@ -107,6 +108,7 @@ public class KubeStorageVersionMigratorStatus implements Editable<KubeStorageVer
     }
 
     @JsonProperty("generations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<GenerationStatus> getGenerations() {
         return generations;
     }

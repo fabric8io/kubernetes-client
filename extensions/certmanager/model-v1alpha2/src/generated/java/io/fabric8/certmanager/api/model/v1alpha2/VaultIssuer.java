@@ -112,6 +112,7 @@ public class VaultIssuer implements Editable<VaultIssuerBuilder> , KubernetesRes
     }
 
     @JsonProperty("caBundle")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public String getCaBundle() {
         return caBundle;
     }

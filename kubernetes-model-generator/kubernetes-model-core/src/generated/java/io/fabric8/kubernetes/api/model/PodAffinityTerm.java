@@ -91,6 +91,7 @@ public class PodAffinityTerm implements Editable<PodAffinityTermBuilder> , Kuber
     }
 
     @JsonProperty("matchLabelKeys")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getMatchLabelKeys() {
         return matchLabelKeys;
     }
@@ -101,6 +102,7 @@ public class PodAffinityTerm implements Editable<PodAffinityTermBuilder> , Kuber
     }
 
     @JsonProperty("mismatchLabelKeys")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getMismatchLabelKeys() {
         return mismatchLabelKeys;
     }
@@ -121,6 +123,7 @@ public class PodAffinityTerm implements Editable<PodAffinityTermBuilder> , Kuber
     }
 
     @JsonProperty("namespaces")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getNamespaces() {
         return namespaces;
     }

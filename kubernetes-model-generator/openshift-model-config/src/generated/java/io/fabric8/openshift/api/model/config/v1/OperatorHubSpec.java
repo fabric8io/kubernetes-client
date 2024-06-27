@@ -94,6 +94,7 @@ public class OperatorHubSpec implements Editable<OperatorHubSpecBuilder> , Kuber
     }
 
     @JsonProperty("sources")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<HubSource> getSources() {
         return sources;
     }

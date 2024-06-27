@@ -91,6 +91,7 @@ public class GRPCRouteSpec implements Editable<GRPCRouteSpecBuilder> , Kubernete
     }
 
     @JsonProperty("hostnames")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getHostnames() {
         return hostnames;
     }
@@ -101,6 +102,7 @@ public class GRPCRouteSpec implements Editable<GRPCRouteSpecBuilder> , Kubernete
     }
 
     @JsonProperty("parentRefs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ParentReference> getParentRefs() {
         return parentRefs;
     }
@@ -111,6 +113,7 @@ public class GRPCRouteSpec implements Editable<GRPCRouteSpecBuilder> , Kubernete
     }
 
     @JsonProperty("rules")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<GRPCRouteRule> getRules() {
         return rules;
     }

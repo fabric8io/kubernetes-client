@@ -88,6 +88,7 @@ public class PodResourcePolicy implements Editable<PodResourcePolicyBuilder> , K
     }
 
     @JsonProperty("containerPolicies")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ContainerResourcePolicy> getContainerPolicies() {
         return containerPolicies;
     }

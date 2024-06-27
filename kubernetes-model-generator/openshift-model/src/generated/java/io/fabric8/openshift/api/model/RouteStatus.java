@@ -80,6 +80,7 @@ public class RouteStatus implements Editable<RouteStatusBuilder> , KubernetesRes
     }
 
     @JsonProperty("ingress")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<RouteIngress> getIngress() {
         return ingress;
     }

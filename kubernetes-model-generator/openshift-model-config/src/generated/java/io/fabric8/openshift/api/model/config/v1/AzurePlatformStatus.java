@@ -136,6 +136,7 @@ public class AzurePlatformStatus implements Editable<AzurePlatformStatusBuilder>
     }
 
     @JsonProperty("resourceTags")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<AzureResourceTag> getResourceTags() {
         return resourceTags;
     }

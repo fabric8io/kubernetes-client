@@ -95,6 +95,7 @@ public class ResourceRule implements Editable<ResourceRuleBuilder> , KubernetesR
     }
 
     @JsonProperty("apiGroups")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getApiGroups() {
         return apiGroups;
     }
@@ -105,6 +106,7 @@ public class ResourceRule implements Editable<ResourceRuleBuilder> , KubernetesR
     }
 
     @JsonProperty("resourceNames")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getResourceNames() {
         return resourceNames;
     }
@@ -115,6 +117,7 @@ public class ResourceRule implements Editable<ResourceRuleBuilder> , KubernetesR
     }
 
     @JsonProperty("resources")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getResources() {
         return resources;
     }

@@ -80,6 +80,7 @@ public class AWSPlatformSpec implements Editable<AWSPlatformSpecBuilder> , Kuber
     }
 
     @JsonProperty("serviceEndpoints")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<AWSServiceEndpoint> getServiceEndpoints() {
         return serviceEndpoints;
     }

@@ -214,6 +214,7 @@ public class ContainerStatus implements Editable<ContainerStatusBuilder> , Kuber
     }
 
     @JsonProperty("volumeMounts")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<VolumeMountStatus> getVolumeMounts() {
         return volumeMounts;
     }

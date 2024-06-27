@@ -201,6 +201,7 @@ public class IOChaosSpec implements Editable<IOChaosSpecBuilder> , KubernetesRes
     }
 
     @JsonProperty("methods")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getMethods() {
         return methods;
     }

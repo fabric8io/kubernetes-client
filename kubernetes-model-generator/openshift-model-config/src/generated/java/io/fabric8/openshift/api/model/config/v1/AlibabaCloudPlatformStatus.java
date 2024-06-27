@@ -108,6 +108,7 @@ public class AlibabaCloudPlatformStatus implements Editable<AlibabaCloudPlatform
     }
 
     @JsonProperty("resourceTags")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<AlibabaCloudResourceTag> getResourceTags() {
         return resourceTags;
     }

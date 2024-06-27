@@ -214,6 +214,7 @@ public class CatalogSourceSpec implements Editable<CatalogSourceSpecBuilder> , K
     }
 
     @JsonProperty("secrets")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getSecrets() {
         return secrets;
     }

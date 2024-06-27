@@ -94,6 +94,7 @@ public class HTTPRouteRule implements Editable<HTTPRouteRuleBuilder> , Kubernete
     }
 
     @JsonProperty("backendRefs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<HTTPBackendRef> getBackendRefs() {
         return backendRefs;
     }
@@ -104,6 +105,7 @@ public class HTTPRouteRule implements Editable<HTTPRouteRuleBuilder> , Kubernete
     }
 
     @JsonProperty("filters")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<HTTPRouteFilter> getFilters() {
         return filters;
     }
@@ -114,6 +116,7 @@ public class HTTPRouteRule implements Editable<HTTPRouteRuleBuilder> , Kubernete
     }
 
     @JsonProperty("matches")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<HTTPRouteMatch> getMatches() {
         return matches;
     }

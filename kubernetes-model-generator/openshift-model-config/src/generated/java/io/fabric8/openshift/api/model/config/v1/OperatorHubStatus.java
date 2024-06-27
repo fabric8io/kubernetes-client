@@ -80,6 +80,7 @@ public class OperatorHubStatus implements Editable<OperatorHubStatusBuilder> , K
     }
 
     @JsonProperty("sources")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<HubSourceStatus> getSources() {
         return sources;
     }

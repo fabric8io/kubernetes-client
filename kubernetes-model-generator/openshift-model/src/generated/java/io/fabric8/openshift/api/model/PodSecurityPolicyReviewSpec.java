@@ -83,6 +83,7 @@ public class PodSecurityPolicyReviewSpec implements Editable<PodSecurityPolicyRe
     }
 
     @JsonProperty("serviceAccountNames")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getServiceAccountNames() {
         return serviceAccountNames;
     }

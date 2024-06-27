@@ -90,6 +90,7 @@ public class HTTPRouteSpec implements Editable<HTTPRouteSpecBuilder> , Kubernete
     }
 
     @JsonProperty("hostnames")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getHostnames() {
         return hostnames;
     }
@@ -100,6 +101,7 @@ public class HTTPRouteSpec implements Editable<HTTPRouteSpecBuilder> , Kubernete
     }
 
     @JsonProperty("parentRefs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ParentReference> getParentRefs() {
         return parentRefs;
     }
@@ -110,6 +112,7 @@ public class HTTPRouteSpec implements Editable<HTTPRouteSpecBuilder> , Kubernete
     }
 
     @JsonProperty("rules")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<HTTPRouteRule> getRules() {
         return rules;
     }

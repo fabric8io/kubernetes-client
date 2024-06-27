@@ -107,6 +107,7 @@ public class MachinePool implements Editable<MachinePoolBuilder> , KubernetesRes
     }
 
     @JsonProperty("additionalNetworkIDs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getAdditionalNetworkIDs() {
         return additionalNetworkIDs;
     }
@@ -117,6 +118,7 @@ public class MachinePool implements Editable<MachinePoolBuilder> , KubernetesRes
     }
 
     @JsonProperty("additionalSecurityGroupIDs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getAdditionalSecurityGroupIDs() {
         return additionalSecurityGroupIDs;
     }
@@ -127,6 +129,7 @@ public class MachinePool implements Editable<MachinePoolBuilder> , KubernetesRes
     }
 
     @JsonProperty("failureDomains")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<FailureDomain> getFailureDomains() {
         return failureDomains;
     }
@@ -167,6 +170,7 @@ public class MachinePool implements Editable<MachinePoolBuilder> , KubernetesRes
     }
 
     @JsonProperty("zones")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getZones() {
         return zones;
     }

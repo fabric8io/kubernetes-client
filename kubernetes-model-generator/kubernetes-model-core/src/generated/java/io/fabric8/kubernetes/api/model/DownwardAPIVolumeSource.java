@@ -73,6 +73,7 @@ public class DownwardAPIVolumeSource implements Editable<DownwardAPIVolumeSource
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<DownwardAPIVolumeFile> getItems() {
         return items;
     }

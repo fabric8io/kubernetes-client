@@ -152,6 +152,7 @@ public class ObjectMeta implements Editable<ObjectMetaBuilder> , KubernetesResou
     }
 
     @JsonProperty("ownerReferences")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<OwnerReference> getOwnerReferences() {
         return ownerReferences;
     }

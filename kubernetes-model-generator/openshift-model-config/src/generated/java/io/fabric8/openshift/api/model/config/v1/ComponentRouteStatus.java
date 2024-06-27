@@ -107,6 +107,7 @@ public class ComponentRouteStatus implements Editable<ComponentRouteStatusBuilde
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }
@@ -117,6 +118,7 @@ public class ComponentRouteStatus implements Editable<ComponentRouteStatusBuilde
     }
 
     @JsonProperty("consumingUsers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getConsumingUsers() {
         return consumingUsers;
     }
@@ -127,6 +129,7 @@ public class ComponentRouteStatus implements Editable<ComponentRouteStatusBuilde
     }
 
     @JsonProperty("currentHostnames")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getCurrentHostnames() {
         return currentHostnames;
     }

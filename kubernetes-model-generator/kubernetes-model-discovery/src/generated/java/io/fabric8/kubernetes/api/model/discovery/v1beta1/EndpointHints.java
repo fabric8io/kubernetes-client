@@ -80,6 +80,7 @@ public class EndpointHints implements Editable<EndpointHintsBuilder> , Kubernete
     }
 
     @JsonProperty("forZones")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ForZone> getForZones() {
         return forZones;
     }

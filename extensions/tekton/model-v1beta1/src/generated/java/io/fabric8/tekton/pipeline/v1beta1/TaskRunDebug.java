@@ -88,6 +88,7 @@ public class TaskRunDebug implements Editable<TaskRunDebugBuilder> , KubernetesR
     }
 
     @JsonProperty("breakpoint")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getBreakpoint() {
         return breakpoint;
     }

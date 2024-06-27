@@ -107,6 +107,7 @@ public class GCPChaosStatus implements Editable<GCPChaosStatusBuilder> , Kuberne
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ChaosCondition> getConditions() {
         return conditions;
     }

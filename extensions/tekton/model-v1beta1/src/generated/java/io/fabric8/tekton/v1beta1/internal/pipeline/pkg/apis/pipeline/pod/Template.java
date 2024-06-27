@@ -211,6 +211,7 @@ public class Template implements Editable<TemplateBuilder> , KubernetesResource
     }
 
     @JsonProperty("env")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.EnvVar> getEnv() {
         return env;
     }
@@ -221,6 +222,7 @@ public class Template implements Editable<TemplateBuilder> , KubernetesResource
     }
 
     @JsonProperty("hostAliases")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<HostAlias> getHostAliases() {
         return hostAliases;
     }
@@ -241,6 +243,7 @@ public class Template implements Editable<TemplateBuilder> , KubernetesResource
     }
 
     @JsonProperty("imagePullSecrets")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.LocalObjectReference> getImagePullSecrets() {
         return imagePullSecrets;
     }
@@ -301,6 +304,7 @@ public class Template implements Editable<TemplateBuilder> , KubernetesResource
     }
 
     @JsonProperty("tolerations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Toleration> getTolerations() {
         return tolerations;
     }
@@ -311,6 +315,7 @@ public class Template implements Editable<TemplateBuilder> , KubernetesResource
     }
 
     @JsonProperty("topologySpreadConstraints")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TopologySpreadConstraint> getTopologySpreadConstraints() {
         return topologySpreadConstraints;
     }
@@ -321,6 +326,7 @@ public class Template implements Editable<TemplateBuilder> , KubernetesResource
     }
 
     @JsonProperty("volumes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.Volume> getVolumes() {
         return volumes;
     }

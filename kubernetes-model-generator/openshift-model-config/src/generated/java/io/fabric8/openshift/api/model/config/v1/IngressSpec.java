@@ -107,6 +107,7 @@ public class IngressSpec implements Editable<IngressSpecBuilder> , KubernetesRes
     }
 
     @JsonProperty("componentRoutes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ComponentRouteSpec> getComponentRoutes() {
         return componentRoutes;
     }
@@ -137,6 +138,7 @@ public class IngressSpec implements Editable<IngressSpecBuilder> , KubernetesRes
     }
 
     @JsonProperty("requiredHSTSPolicies")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<RequiredHSTSPolicy> getRequiredHSTSPolicies() {
         return requiredHSTSPolicies;
     }

@@ -189,6 +189,7 @@ public class PagerDutyConfig implements Editable<PagerDutyConfigBuilder> , Kuber
     }
 
     @JsonProperty("details")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<KeyValue> getDetails() {
         return details;
     }
@@ -219,6 +220,7 @@ public class PagerDutyConfig implements Editable<PagerDutyConfigBuilder> , Kuber
     }
 
     @JsonProperty("pagerDutyImageConfigs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PagerDutyImageConfig> getPagerDutyImageConfigs() {
         return pagerDutyImageConfigs;
     }
@@ -229,6 +231,7 @@ public class PagerDutyConfig implements Editable<PagerDutyConfigBuilder> , Kuber
     }
 
     @JsonProperty("pagerDutyLinkConfigs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PagerDutyLinkConfig> getPagerDutyLinkConfigs() {
         return pagerDutyLinkConfigs;
     }

@@ -111,6 +111,7 @@ public class UserInfo implements Editable<UserInfoBuilder> , KubernetesResource
     }
 
     @JsonProperty("groups")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getGroups() {
         return groups;
     }

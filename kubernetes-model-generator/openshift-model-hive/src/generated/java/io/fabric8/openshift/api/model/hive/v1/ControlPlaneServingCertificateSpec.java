@@ -84,6 +84,7 @@ public class ControlPlaneServingCertificateSpec implements Editable<ControlPlane
     }
 
     @JsonProperty("additional")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ControlPlaneAdditionalCertificate> getAdditional() {
         return additional;
     }

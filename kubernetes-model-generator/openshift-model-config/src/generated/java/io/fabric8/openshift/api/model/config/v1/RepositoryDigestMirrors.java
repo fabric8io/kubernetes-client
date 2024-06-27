@@ -98,6 +98,7 @@ public class RepositoryDigestMirrors implements Editable<RepositoryDigestMirrors
     }
 
     @JsonProperty("mirrors")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getMirrors() {
         return mirrors;
     }

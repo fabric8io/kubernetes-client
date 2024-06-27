@@ -80,6 +80,7 @@ public class FlowSchemaStatus implements Editable<FlowSchemaStatusBuilder> , Kub
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<FlowSchemaCondition> getConditions() {
         return conditions;
     }

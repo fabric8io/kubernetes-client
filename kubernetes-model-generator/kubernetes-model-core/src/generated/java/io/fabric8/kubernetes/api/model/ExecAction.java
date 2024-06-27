@@ -59,6 +59,7 @@ public class ExecAction implements Editable<ExecActionBuilder> , KubernetesResou
     }
 
     @JsonProperty("command")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getCommand() {
         return command;
     }

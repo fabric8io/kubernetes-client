@@ -162,6 +162,7 @@ public class EventListenerSpec implements Editable<EventListenerSpecBuilder> , K
     }
 
     @JsonProperty("triggerGroups")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<EventListenerTriggerGroup> getTriggerGroups() {
         return triggerGroups;
     }
@@ -172,6 +173,7 @@ public class EventListenerSpec implements Editable<EventListenerSpecBuilder> , K
     }
 
     @JsonProperty("triggers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<EventListenerTrigger> getTriggers() {
         return triggers;
     }

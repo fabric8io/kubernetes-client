@@ -110,6 +110,7 @@ public class KubeSchedulerStatus implements Editable<KubeSchedulerStatusBuilder>
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<OperatorCondition> getConditions() {
         return conditions;
     }
@@ -120,6 +121,7 @@ public class KubeSchedulerStatus implements Editable<KubeSchedulerStatusBuilder>
     }
 
     @JsonProperty("generations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<GenerationStatus> getGenerations() {
         return generations;
     }
@@ -150,6 +152,7 @@ public class KubeSchedulerStatus implements Editable<KubeSchedulerStatusBuilder>
     }
 
     @JsonProperty("nodeStatuses")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<NodeStatus> getNodeStatuses() {
         return nodeStatuses;
     }

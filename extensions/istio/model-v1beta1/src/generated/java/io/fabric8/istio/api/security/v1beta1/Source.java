@@ -133,6 +133,7 @@ public class Source implements Editable<SourceBuilder> , KubernetesResource
     }
 
     @JsonProperty("ipBlocks")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getIpBlocks() {
         return ipBlocks;
     }
@@ -143,6 +144,7 @@ public class Source implements Editable<SourceBuilder> , KubernetesResource
     }
 
     @JsonProperty("namespaces")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getNamespaces() {
         return namespaces;
     }
@@ -153,6 +155,7 @@ public class Source implements Editable<SourceBuilder> , KubernetesResource
     }
 
     @JsonProperty("notIpBlocks")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getNotIpBlocks() {
         return notIpBlocks;
     }
@@ -163,6 +166,7 @@ public class Source implements Editable<SourceBuilder> , KubernetesResource
     }
 
     @JsonProperty("notNamespaces")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getNotNamespaces() {
         return notNamespaces;
     }
@@ -173,6 +177,7 @@ public class Source implements Editable<SourceBuilder> , KubernetesResource
     }
 
     @JsonProperty("notPrincipals")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getNotPrincipals() {
         return notPrincipals;
     }
@@ -183,6 +188,7 @@ public class Source implements Editable<SourceBuilder> , KubernetesResource
     }
 
     @JsonProperty("notRemoteIpBlocks")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getNotRemoteIpBlocks() {
         return notRemoteIpBlocks;
     }
@@ -193,6 +199,7 @@ public class Source implements Editable<SourceBuilder> , KubernetesResource
     }
 
     @JsonProperty("notRequestPrincipals")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getNotRequestPrincipals() {
         return notRequestPrincipals;
     }
@@ -203,6 +210,7 @@ public class Source implements Editable<SourceBuilder> , KubernetesResource
     }
 
     @JsonProperty("principals")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getPrincipals() {
         return principals;
     }
@@ -213,6 +221,7 @@ public class Source implements Editable<SourceBuilder> , KubernetesResource
     }
 
     @JsonProperty("remoteIpBlocks")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getRemoteIpBlocks() {
         return remoteIpBlocks;
     }
@@ -223,6 +232,7 @@ public class Source implements Editable<SourceBuilder> , KubernetesResource
     }
 
     @JsonProperty("requestPrincipals")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getRequestPrincipals() {
         return requestPrincipals;
     }

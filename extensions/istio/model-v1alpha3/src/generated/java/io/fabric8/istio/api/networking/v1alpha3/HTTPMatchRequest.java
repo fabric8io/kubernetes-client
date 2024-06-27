@@ -154,6 +154,7 @@ public class HTTPMatchRequest implements Editable<HTTPMatchRequestBuilder> , Kub
     }
 
     @JsonProperty("gateways")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getGateways() {
         return gateways;
     }

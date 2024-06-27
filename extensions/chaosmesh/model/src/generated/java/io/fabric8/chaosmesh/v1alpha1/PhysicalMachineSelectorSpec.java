@@ -124,6 +124,7 @@ public class PhysicalMachineSelectorSpec implements Editable<PhysicalMachineSele
     }
 
     @JsonProperty("expressionSelectors")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<LabelSelectorRequirement> getExpressionSelectors() {
         return expressionSelectors;
     }

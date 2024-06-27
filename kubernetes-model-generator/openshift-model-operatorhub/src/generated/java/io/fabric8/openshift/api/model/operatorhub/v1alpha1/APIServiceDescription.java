@@ -126,6 +126,7 @@ public class APIServiceDescription implements Editable<APIServiceDescriptionBuil
     }
 
     @JsonProperty("actionDescriptors")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ActionDescriptor> getActionDescriptors() {
         return actionDescriptors;
     }
@@ -206,6 +207,7 @@ public class APIServiceDescription implements Editable<APIServiceDescriptionBuil
     }
 
     @JsonProperty("resources")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<APIResourceReference> getResources() {
         return resources;
     }
@@ -216,6 +218,7 @@ public class APIServiceDescription implements Editable<APIServiceDescriptionBuil
     }
 
     @JsonProperty("specDescriptors")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<SpecDescriptor> getSpecDescriptors() {
         return specDescriptors;
     }
@@ -226,6 +229,7 @@ public class APIServiceDescription implements Editable<APIServiceDescriptionBuil
     }
 
     @JsonProperty("statusDescriptors")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<StatusDescriptor> getStatusDescriptors() {
         return statusDescriptors;
     }

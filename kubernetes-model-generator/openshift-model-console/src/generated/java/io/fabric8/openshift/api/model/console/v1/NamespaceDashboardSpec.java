@@ -93,6 +93,7 @@ public class NamespaceDashboardSpec implements Editable<NamespaceDashboardSpecBu
     }
 
     @JsonProperty("namespaces")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getNamespaces() {
         return namespaces;
     }

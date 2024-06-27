@@ -99,6 +99,7 @@ public class FailureDomains implements Editable<FailureDomainsBuilder> , Kuberne
     }
 
     @JsonProperty("aws")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<AWSFailureDomain> getAws() {
         return aws;
     }
@@ -109,6 +110,7 @@ public class FailureDomains implements Editable<FailureDomainsBuilder> , Kuberne
     }
 
     @JsonProperty("azure")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<AzureFailureDomain> getAzure() {
         return azure;
     }
@@ -119,6 +121,7 @@ public class FailureDomains implements Editable<FailureDomainsBuilder> , Kuberne
     }
 
     @JsonProperty("gcp")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<GCPFailureDomain> getGcp() {
         return gcp;
     }
@@ -129,6 +132,7 @@ public class FailureDomains implements Editable<FailureDomainsBuilder> , Kuberne
     }
 
     @JsonProperty("openstack")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<OpenStackFailureDomain> getOpenstack() {
         return openstack;
     }

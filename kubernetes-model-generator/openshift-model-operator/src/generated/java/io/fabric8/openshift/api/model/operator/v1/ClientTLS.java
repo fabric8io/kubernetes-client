@@ -89,6 +89,7 @@ public class ClientTLS implements Editable<ClientTLSBuilder> , KubernetesResourc
     }
 
     @JsonProperty("allowedSubjectPatterns")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getAllowedSubjectPatterns() {
         return allowedSubjectPatterns;
     }

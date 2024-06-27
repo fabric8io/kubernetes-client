@@ -146,6 +146,7 @@ public class KafkaChannelSpec implements Editable<KafkaChannelSpecBuilder> , Kub
     }
 
     @JsonProperty("subscribers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<SubscriberSpec> getSubscribers() {
         return subscribers;
     }

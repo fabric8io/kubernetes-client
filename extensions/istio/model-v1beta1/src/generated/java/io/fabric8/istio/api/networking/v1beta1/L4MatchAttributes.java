@@ -110,6 +110,7 @@ public class L4MatchAttributes implements Editable<L4MatchAttributesBuilder> , K
     }
 
     @JsonProperty("destinationSubnets")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getDestinationSubnets() {
         return destinationSubnets;
     }
@@ -120,6 +121,7 @@ public class L4MatchAttributes implements Editable<L4MatchAttributesBuilder> , K
     }
 
     @JsonProperty("gateways")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getGateways() {
         return gateways;
     }

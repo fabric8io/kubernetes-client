@@ -146,6 +146,7 @@ public class NetworkSpec implements Editable<NetworkSpecBuilder> , KubernetesRes
     }
 
     @JsonProperty("additionalNetworks")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<AdditionalNetworkDefinition> getAdditionalNetworks() {
         return additionalNetworks;
     }

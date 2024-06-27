@@ -81,6 +81,7 @@ public class HelmChartRepositoryStatus implements Editable<HelmChartRepositorySt
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }
