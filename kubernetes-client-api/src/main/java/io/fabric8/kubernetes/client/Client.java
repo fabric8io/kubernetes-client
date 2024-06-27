@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.client;
 import io.fabric8.kubernetes.api.model.APIGroup;
 import io.fabric8.kubernetes.api.model.APIGroupList;
 import io.fabric8.kubernetes.api.model.APIResourceList;
+import io.fabric8.kubernetes.api.model.APIVersions;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
@@ -107,6 +108,15 @@ public interface Client extends Closeable {
 
   @Override
   void close();
+
+  /**
+   * Get the available APIversions. APIVersions lists the versions that are available,
+   * to allow clients to discover the API at /api, which is the root path of the
+   * legacy v1 API.
+   *
+   * @return the {@link APIVersions} object
+   */
+  APIVersions getAPIVersions();
 
   /**
    * Returns the api groups. This does not include the core/legacy v1 apiVersion.
