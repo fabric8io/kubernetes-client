@@ -51,6 +51,9 @@ import lombok.experimental.Accessors;
 import org.jsonschema2pojo.GenerationConfig;
 import org.jsonschema2pojo.Jackson2Annotator;
 
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintWriter;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -224,6 +227,33 @@ public class KubernetesCoreTypeAnnotator extends Jackson2Annotator {
     // Annotate JsonUnwrapped for interfaces as they cannot be created when no implementations
     if (propertyNode.hasNonNull(INTERFACE_TYPE_PROPERTY)) {
       field.annotate(JsonUnwrapped.class);
+    }
+  }
+
+  @Override
+  public void propertyGetter(JMethod getter, JDefinedClass clazz, String propertyName) {
+    super.propertyGetter(getter, clazz, propertyName);
+    // https://github.com/fabric8io/kubernetes-client/issues/6085
+    // https://github.com/quarkusio/quarkus/issues/39934
+    final JFieldVar field = clazz.fields().get(propertyName);
+    if (field != null) {
+      for (JAnnotationUse annotation : field.annotations()) {
+        if (annotation.getAnnotationClass().fullName().equals(JsonInclude.class.getName())) {
+          final JAnnotationUse methodAnnotation = getter.annotate(JsonInclude.class);
+          annotation.getAnnotationMembers()
+              .forEach((key, value) -> {
+                final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                final PrintWriter pw = new PrintWriter(new BufferedOutputStream(baos));
+                value.generate(new JFormatter(pw));
+                pw.flush();
+                methodAnnotation.param(key, Enum.valueOf(JsonInclude.Include.class,
+                    baos.toString().replace(JsonInclude.Include.class.getCanonicalName() + ".", "")));
+              });
+        }
+        if (annotation.getAnnotationClass().fullName().equals(JsonUnwrapped.class.getName())) {
+          getter.annotate(JsonUnwrapped.class);
+        }
+      }
     }
   }
 
