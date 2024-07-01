@@ -121,6 +121,7 @@ public class ContainerResourcePolicy implements Editable<ContainerResourcePolicy
     }
 
     @JsonProperty("controlledResources")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getControlledResources() {
         return controlledResources;
     }

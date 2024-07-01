@@ -288,6 +288,7 @@ public class SecurityContextConstraints implements Editable<SecurityContextConst
     }
 
     @JsonProperty("allowedFlexVolumes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<AllowedFlexVolume> getAllowedFlexVolumes() {
         return allowedFlexVolumes;
     }
@@ -298,6 +299,7 @@ public class SecurityContextConstraints implements Editable<SecurityContextConst
     }
 
     @JsonProperty("allowedUnsafeSysctls")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getAllowedUnsafeSysctls() {
         return allowedUnsafeSysctls;
     }
@@ -348,6 +350,7 @@ public class SecurityContextConstraints implements Editable<SecurityContextConst
     }
 
     @JsonProperty("forbiddenSysctls")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getForbiddenSysctls() {
         return forbiddenSysctls;
     }
@@ -458,6 +461,7 @@ public class SecurityContextConstraints implements Editable<SecurityContextConst
     }
 
     @JsonProperty("seccompProfiles")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getSeccompProfiles() {
         return seccompProfiles;
     }

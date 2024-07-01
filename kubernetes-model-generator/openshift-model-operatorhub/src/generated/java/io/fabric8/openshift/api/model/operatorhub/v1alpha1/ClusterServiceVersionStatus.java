@@ -147,6 +147,7 @@ public class ClusterServiceVersionStatus implements Editable<ClusterServiceVersi
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ClusterServiceVersionCondition> getConditions() {
         return conditions;
     }
@@ -207,6 +208,7 @@ public class ClusterServiceVersionStatus implements Editable<ClusterServiceVersi
     }
 
     @JsonProperty("requirementStatus")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<RequirementStatus> getRequirementStatus() {
         return requirementStatus;
     }

@@ -184,6 +184,7 @@ public class EmailConfig implements Editable<EmailConfigBuilder> , KubernetesRes
     }
 
     @JsonProperty("headers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<KeyValue> getHeaders() {
         return headers;
     }

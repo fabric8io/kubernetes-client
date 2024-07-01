@@ -124,6 +124,7 @@ public class ClusterClaimSpec implements Editable<ClusterClaimSpecBuilder> , Kub
     }
 
     @JsonProperty("subjects")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Subject> getSubjects() {
         return subjects;
     }

@@ -133,6 +133,7 @@ public class PipelineRef implements Editable<PipelineRefBuilder> , KubernetesRes
     }
 
     @JsonProperty("params")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Param> getParams() {
         return params;
     }

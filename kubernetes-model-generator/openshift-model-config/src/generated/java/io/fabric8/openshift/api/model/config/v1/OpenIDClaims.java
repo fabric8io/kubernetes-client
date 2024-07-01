@@ -95,6 +95,7 @@ public class OpenIDClaims implements Editable<OpenIDClaimsBuilder> , KubernetesR
     }
 
     @JsonProperty("email")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getEmail() {
         return email;
     }
@@ -105,6 +106,7 @@ public class OpenIDClaims implements Editable<OpenIDClaimsBuilder> , KubernetesR
     }
 
     @JsonProperty("groups")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getGroups() {
         return groups;
     }
@@ -115,6 +117,7 @@ public class OpenIDClaims implements Editable<OpenIDClaimsBuilder> , KubernetesR
     }
 
     @JsonProperty("name")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getName() {
         return name;
     }
@@ -125,6 +128,7 @@ public class OpenIDClaims implements Editable<OpenIDClaimsBuilder> , KubernetesR
     }
 
     @JsonProperty("preferredUsername")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getPreferredUsername() {
         return preferredUsername;
     }

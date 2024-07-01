@@ -85,6 +85,7 @@ public class LifecycleHooks implements Editable<LifecycleHooksBuilder> , Kuberne
     }
 
     @JsonProperty("preDrain")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<LifecycleHook> getPreDrain() {
         return preDrain;
     }
@@ -95,6 +96,7 @@ public class LifecycleHooks implements Editable<LifecycleHooksBuilder> , Kuberne
     }
 
     @JsonProperty("preTerminate")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<LifecycleHook> getPreTerminate() {
         return preTerminate;
     }

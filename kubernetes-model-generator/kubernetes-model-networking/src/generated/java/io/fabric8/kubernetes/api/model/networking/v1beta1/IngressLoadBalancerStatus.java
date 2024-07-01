@@ -80,6 +80,7 @@ public class IngressLoadBalancerStatus implements Editable<IngressLoadBalancerSt
     }
 
     @JsonProperty("ingress")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<IngressLoadBalancerIngress> getIngress() {
         return ingress;
     }

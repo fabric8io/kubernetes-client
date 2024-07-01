@@ -188,6 +188,7 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     }
 
     @JsonProperty("serviceEndpoints")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ServiceEndpoint> getServiceEndpoints() {
         return serviceEndpoints;
     }
@@ -198,6 +199,7 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     }
 
     @JsonProperty("subnets")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getSubnets() {
         return subnets;
     }

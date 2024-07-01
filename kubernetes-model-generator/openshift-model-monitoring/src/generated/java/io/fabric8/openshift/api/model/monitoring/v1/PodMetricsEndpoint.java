@@ -248,6 +248,7 @@ public class PodMetricsEndpoint implements Editable<PodMetricsEndpointBuilder> ,
     }
 
     @JsonProperty("metricRelabelings")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<RelabelConfig> getMetricRelabelings() {
         return metricRelabelings;
     }
@@ -308,6 +309,7 @@ public class PodMetricsEndpoint implements Editable<PodMetricsEndpointBuilder> ,
     }
 
     @JsonProperty("relabelings")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<RelabelConfig> getRelabelings() {
         return relabelings;
     }

@@ -156,6 +156,7 @@ public class ImageSignature implements Editable<ImageSignatureBuilder> , HasMeta
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<SignatureCondition> getConditions() {
         return conditions;
     }

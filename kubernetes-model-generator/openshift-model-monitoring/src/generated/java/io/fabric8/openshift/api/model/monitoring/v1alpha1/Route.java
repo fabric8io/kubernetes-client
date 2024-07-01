@@ -121,6 +121,7 @@ public class Route implements Editable<RouteBuilder> , KubernetesResource
     }
 
     @JsonProperty("activeTimeIntervals")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getActiveTimeIntervals() {
         return activeTimeIntervals;
     }
@@ -141,6 +142,7 @@ public class Route implements Editable<RouteBuilder> , KubernetesResource
     }
 
     @JsonProperty("groupBy")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getGroupBy() {
         return groupBy;
     }
@@ -171,6 +173,7 @@ public class Route implements Editable<RouteBuilder> , KubernetesResource
     }
 
     @JsonProperty("matchers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Matcher> getMatchers() {
         return matchers;
     }
@@ -181,6 +184,7 @@ public class Route implements Editable<RouteBuilder> , KubernetesResource
     }
 
     @JsonProperty("muteTimeIntervals")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getMuteTimeIntervals() {
         return muteTimeIntervals;
     }
@@ -211,6 +215,7 @@ public class Route implements Editable<RouteBuilder> , KubernetesResource
     }
 
     @JsonProperty("routes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<JsonNode> getRoutes() {
         return routes;
     }

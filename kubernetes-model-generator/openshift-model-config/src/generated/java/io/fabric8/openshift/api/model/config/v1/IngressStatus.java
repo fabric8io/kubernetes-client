@@ -84,6 +84,7 @@ public class IngressStatus implements Editable<IngressStatusBuilder> , Kubernete
     }
 
     @JsonProperty("componentRoutes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ComponentRouteStatus> getComponentRoutes() {
         return componentRoutes;
     }

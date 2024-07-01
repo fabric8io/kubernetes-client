@@ -101,6 +101,7 @@ public class TimeWindow implements Editable<TimeWindowBuilder> , KubernetesResou
     }
 
     @JsonProperty("daysofweek")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getDaysofweek() {
         return daysofweek;
     }
@@ -111,6 +112,7 @@ public class TimeWindow implements Editable<TimeWindowBuilder> , KubernetesResou
     }
 
     @JsonProperty("hours")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<HourRange> getHours() {
         return hours;
     }

@@ -114,6 +114,7 @@ public class NodeSpec implements Editable<NodeSpecBuilder> , KubernetesResource
     }
 
     @JsonProperty("podCIDRs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getPodCIDRs() {
         return podCIDRs;
     }
@@ -134,6 +135,7 @@ public class NodeSpec implements Editable<NodeSpecBuilder> , KubernetesResource
     }
 
     @JsonProperty("taints")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Taint> getTaints() {
         return taints;
     }

@@ -107,6 +107,7 @@ public class HiveConfigSpec implements Editable<HiveConfigSpecBuilder> , Kuberne
     }
 
     @JsonProperty("additionalCertificateAuthorities")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.LocalObjectReference> getAdditionalCertificateAuthorities() {
         return additionalCertificateAuthorities;
     }

@@ -80,6 +80,7 @@ public class VSphereCSIDriverConfigSpec implements Editable<VSphereCSIDriverConf
     }
 
     @JsonProperty("topologyCategories")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getTopologyCategories() {
         return topologyCategories;
     }

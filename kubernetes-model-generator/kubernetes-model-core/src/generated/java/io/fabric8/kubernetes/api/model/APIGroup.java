@@ -157,6 +157,7 @@ public class APIGroup implements Editable<APIGroupBuilder> , KubernetesResource
     }
 
     @JsonProperty("serverAddressByClientCIDRs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ServerAddressByClientCIDR> getServerAddressByClientCIDRs() {
         return serverAddressByClientCIDRs;
     }

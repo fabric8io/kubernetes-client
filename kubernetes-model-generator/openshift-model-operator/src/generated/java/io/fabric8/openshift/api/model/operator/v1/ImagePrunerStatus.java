@@ -84,6 +84,7 @@ public class ImagePrunerStatus implements Editable<ImagePrunerStatusBuilder> , K
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<OperatorCondition> getConditions() {
         return conditions;
     }

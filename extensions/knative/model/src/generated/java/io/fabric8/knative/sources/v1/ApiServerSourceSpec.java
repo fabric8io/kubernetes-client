@@ -153,6 +153,7 @@ public class ApiServerSourceSpec implements Editable<ApiServerSourceSpecBuilder>
     }
 
     @JsonProperty("resources")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<APIVersionKindSelector> getResources() {
         return resources;
     }

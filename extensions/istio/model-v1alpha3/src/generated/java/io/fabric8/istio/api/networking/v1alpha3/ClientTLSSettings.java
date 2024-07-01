@@ -186,6 +186,7 @@ public class ClientTLSSettings implements Editable<ClientTLSSettingsBuilder> , K
     }
 
     @JsonProperty("subjectAltNames")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getSubjectAltNames() {
         return subjectAltNames;
     }

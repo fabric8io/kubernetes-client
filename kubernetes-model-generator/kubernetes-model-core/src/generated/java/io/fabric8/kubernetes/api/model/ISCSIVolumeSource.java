@@ -169,6 +169,7 @@ public class ISCSIVolumeSource implements Editable<ISCSIVolumeSourceBuilder> , K
     }
 
     @JsonProperty("portals")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getPortals() {
         return portals;
     }

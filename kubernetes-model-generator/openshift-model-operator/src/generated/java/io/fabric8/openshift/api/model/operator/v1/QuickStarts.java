@@ -80,6 +80,7 @@ public class QuickStarts implements Editable<QuickStartsBuilder> , KubernetesRes
     }
 
     @JsonProperty("disabled")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getDisabled() {
         return disabled;
     }

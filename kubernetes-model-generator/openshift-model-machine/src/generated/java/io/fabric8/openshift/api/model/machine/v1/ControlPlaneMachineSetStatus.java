@@ -101,6 +101,7 @@ public class ControlPlaneMachineSetStatus implements Editable<ControlPlaneMachin
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }

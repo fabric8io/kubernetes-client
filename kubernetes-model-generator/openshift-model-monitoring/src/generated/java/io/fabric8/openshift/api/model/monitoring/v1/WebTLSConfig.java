@@ -124,6 +124,7 @@ public class WebTLSConfig implements Editable<WebTLSConfigBuilder> , KubernetesR
     }
 
     @JsonProperty("cipherSuites")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getCipherSuites() {
         return cipherSuites;
     }
@@ -154,6 +155,7 @@ public class WebTLSConfig implements Editable<WebTLSConfigBuilder> , KubernetesR
     }
 
     @JsonProperty("curvePreferences")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getCurvePreferences() {
         return curvePreferences;
     }

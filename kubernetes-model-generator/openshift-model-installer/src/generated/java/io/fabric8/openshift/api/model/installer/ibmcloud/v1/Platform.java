@@ -105,6 +105,7 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     }
 
     @JsonProperty("computeSubnets")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getComputeSubnets() {
         return computeSubnets;
     }
@@ -115,6 +116,7 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     }
 
     @JsonProperty("controlPlaneSubnets")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getControlPlaneSubnets() {
         return controlPlaneSubnets;
     }

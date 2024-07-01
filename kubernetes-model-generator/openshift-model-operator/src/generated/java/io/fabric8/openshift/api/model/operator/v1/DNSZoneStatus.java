@@ -85,6 +85,7 @@ public class DNSZoneStatus implements Editable<DNSZoneStatusBuilder> , Kubernete
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<DNSZoneCondition> getConditions() {
         return conditions;
     }

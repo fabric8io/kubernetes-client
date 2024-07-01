@@ -93,6 +93,7 @@ public class GatewaySpec implements Editable<GatewaySpecBuilder> , KubernetesRes
     }
 
     @JsonProperty("addresses")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<GatewayAddress> getAddresses() {
         return addresses;
     }

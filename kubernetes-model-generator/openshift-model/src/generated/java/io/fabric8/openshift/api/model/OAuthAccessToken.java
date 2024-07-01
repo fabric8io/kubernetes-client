@@ -249,6 +249,7 @@ public class OAuthAccessToken implements Editable<OAuthAccessTokenBuilder> , Has
     }
 
     @JsonProperty("scopes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getScopes() {
         return scopes;
     }

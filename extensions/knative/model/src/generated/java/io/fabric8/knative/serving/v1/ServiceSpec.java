@@ -102,6 +102,7 @@ public class ServiceSpec implements Editable<ServiceSpecBuilder> , KubernetesRes
     }
 
     @JsonProperty("traffic")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TrafficTarget> getTraffic() {
         return traffic;
     }

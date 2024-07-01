@@ -140,6 +140,7 @@ public class RevisionStatus implements Editable<RevisionStatusBuilder> , Kuberne
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }
@@ -150,6 +151,7 @@ public class RevisionStatus implements Editable<RevisionStatusBuilder> , Kuberne
     }
 
     @JsonProperty("containerStatuses")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ContainerStatus> getContainerStatuses() {
         return containerStatuses;
     }
@@ -170,6 +172,7 @@ public class RevisionStatus implements Editable<RevisionStatusBuilder> , Kuberne
     }
 
     @JsonProperty("initContainerStatuses")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ContainerStatus> getInitContainerStatuses() {
         return initContainerStatuses;
     }

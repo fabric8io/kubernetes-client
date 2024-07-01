@@ -108,6 +108,7 @@ public class RootVolume implements Editable<RootVolumeBuilder> , KubernetesResou
     }
 
     @JsonProperty("zones")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getZones() {
         return zones;
     }

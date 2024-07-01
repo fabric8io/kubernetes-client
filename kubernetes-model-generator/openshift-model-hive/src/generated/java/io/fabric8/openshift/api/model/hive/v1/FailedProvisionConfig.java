@@ -98,6 +98,7 @@ public class FailedProvisionConfig implements Editable<FailedProvisionConfigBuil
     }
 
     @JsonProperty("retryReasons")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getRetryReasons() {
         return retryReasons;
     }

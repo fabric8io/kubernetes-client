@@ -81,6 +81,7 @@ public class ServiceCIDRStatus implements Editable<ServiceCIDRStatusBuilder> , K
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }

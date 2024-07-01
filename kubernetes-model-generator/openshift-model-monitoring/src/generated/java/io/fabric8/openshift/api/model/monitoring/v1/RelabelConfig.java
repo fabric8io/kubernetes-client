@@ -154,6 +154,7 @@ public class RelabelConfig implements Editable<RelabelConfigBuilder> , Kubernete
     }
 
     @JsonProperty("sourceLabels")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getSourceLabels() {
         return sourceLabels;
     }

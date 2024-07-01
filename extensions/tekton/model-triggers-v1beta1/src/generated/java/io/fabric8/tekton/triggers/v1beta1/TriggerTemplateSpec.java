@@ -98,6 +98,7 @@ public class TriggerTemplateSpec implements Editable<TriggerTemplateSpecBuilder>
     }
 
     @JsonProperty("params")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ParamSpec> getParams() {
         return params;
     }
@@ -108,6 +109,7 @@ public class TriggerTemplateSpec implements Editable<TriggerTemplateSpecBuilder>
     }
 
     @JsonProperty("resourcetemplates")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<HasMetadata> getResourcetemplates() {
         return resourcetemplates;
     }

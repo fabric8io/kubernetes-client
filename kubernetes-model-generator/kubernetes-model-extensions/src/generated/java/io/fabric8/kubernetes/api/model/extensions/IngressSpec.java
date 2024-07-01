@@ -113,6 +113,7 @@ public class IngressSpec implements Editable<IngressSpecBuilder> , KubernetesRes
     }
 
     @JsonProperty("rules")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<IngressRule> getRules() {
         return rules;
     }
@@ -123,6 +124,7 @@ public class IngressSpec implements Editable<IngressSpecBuilder> , KubernetesRes
     }
 
     @JsonProperty("tls")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<IngressTLS> getTls() {
         return tls;
     }

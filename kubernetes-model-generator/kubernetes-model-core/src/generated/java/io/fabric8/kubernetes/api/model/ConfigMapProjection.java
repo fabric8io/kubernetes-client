@@ -67,6 +67,7 @@ public class ConfigMapProjection implements Editable<ConfigMapProjectionBuilder>
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<KeyToPath> getItems() {
         return items;
     }

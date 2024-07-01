@@ -85,6 +85,7 @@ public class DockerStrategyOptions implements Editable<DockerStrategyOptionsBuil
     }
 
     @JsonProperty("buildArgs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<EnvVar> getBuildArgs() {
         return buildArgs;
     }

@@ -122,6 +122,7 @@ public class X509Subject implements Editable<X509SubjectBuilder> , KubernetesRes
     }
 
     @JsonProperty("countries")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getCountries() {
         return countries;
     }
@@ -132,6 +133,7 @@ public class X509Subject implements Editable<X509SubjectBuilder> , KubernetesRes
     }
 
     @JsonProperty("localities")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getLocalities() {
         return localities;
     }
@@ -142,6 +144,7 @@ public class X509Subject implements Editable<X509SubjectBuilder> , KubernetesRes
     }
 
     @JsonProperty("organizationalUnits")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getOrganizationalUnits() {
         return organizationalUnits;
     }
@@ -152,6 +155,7 @@ public class X509Subject implements Editable<X509SubjectBuilder> , KubernetesRes
     }
 
     @JsonProperty("organizations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getOrganizations() {
         return organizations;
     }
@@ -162,6 +166,7 @@ public class X509Subject implements Editable<X509SubjectBuilder> , KubernetesRes
     }
 
     @JsonProperty("postalCodes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getPostalCodes() {
         return postalCodes;
     }
@@ -172,6 +177,7 @@ public class X509Subject implements Editable<X509SubjectBuilder> , KubernetesRes
     }
 
     @JsonProperty("provinces")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getProvinces() {
         return provinces;
     }
@@ -192,6 +198,7 @@ public class X509Subject implements Editable<X509SubjectBuilder> , KubernetesRes
     }
 
     @JsonProperty("streetAddresses")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getStreetAddresses() {
         return streetAddresses;
     }

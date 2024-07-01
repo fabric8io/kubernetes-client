@@ -94,6 +94,7 @@ public class MuteTimeInterval implements Editable<MuteTimeIntervalBuilder> , Kub
     }
 
     @JsonProperty("timeIntervals")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TimeInterval> getTimeIntervals() {
         return timeIntervals;
     }

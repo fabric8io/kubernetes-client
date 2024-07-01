@@ -93,6 +93,7 @@ public class Matrix implements Editable<MatrixBuilder> , KubernetesResource
     }
 
     @JsonProperty("include")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<IncludeParams> getInclude() {
         return include;
     }
@@ -103,6 +104,7 @@ public class Matrix implements Editable<MatrixBuilder> , KubernetesResource
     }
 
     @JsonProperty("params")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Param> getParams() {
         return params;
     }

@@ -97,6 +97,7 @@ public class IOChaosStatus implements Editable<IOChaosStatusBuilder> , Kubernete
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ChaosCondition> getConditions() {
         return conditions;
     }

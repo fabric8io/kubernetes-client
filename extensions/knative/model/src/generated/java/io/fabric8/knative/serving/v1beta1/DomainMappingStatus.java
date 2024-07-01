@@ -127,6 +127,7 @@ public class DomainMappingStatus implements Editable<DomainMappingStatusBuilder>
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }

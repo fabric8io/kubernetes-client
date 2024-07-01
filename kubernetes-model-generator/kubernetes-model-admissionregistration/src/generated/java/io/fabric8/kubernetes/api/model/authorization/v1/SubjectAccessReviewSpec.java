@@ -111,6 +111,7 @@ public class SubjectAccessReviewSpec implements Editable<SubjectAccessReviewSpec
     }
 
     @JsonProperty("groups")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getGroups() {
         return groups;
     }

@@ -129,6 +129,7 @@ public class OrderSpec implements Editable<OrderSpecBuilder> , KubernetesResourc
     }
 
     @JsonProperty("dnsNames")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getDnsNames() {
         return dnsNames;
     }
@@ -149,6 +150,7 @@ public class OrderSpec implements Editable<OrderSpecBuilder> , KubernetesResourc
     }
 
     @JsonProperty("ipAddresses")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getIpAddresses() {
         return ipAddresses;
     }

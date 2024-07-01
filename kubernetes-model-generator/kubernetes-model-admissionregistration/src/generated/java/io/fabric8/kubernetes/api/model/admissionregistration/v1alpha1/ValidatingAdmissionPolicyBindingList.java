@@ -130,6 +130,7 @@ public class ValidatingAdmissionPolicyBindingList implements Editable<Validating
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.admissionregistration.v1alpha1.ValidatingAdmissionPolicyBinding> getItems() {
         return items;
     }

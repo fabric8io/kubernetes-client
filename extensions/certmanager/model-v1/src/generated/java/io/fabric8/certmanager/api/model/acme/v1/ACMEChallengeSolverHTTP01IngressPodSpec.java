@@ -121,6 +121,7 @@ public class ACMEChallengeSolverHTTP01IngressPodSpec implements Editable<ACMECha
     }
 
     @JsonProperty("imagePullSecrets")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.LocalObjectReference> getImagePullSecrets() {
         return imagePullSecrets;
     }
@@ -161,6 +162,7 @@ public class ACMEChallengeSolverHTTP01IngressPodSpec implements Editable<ACMECha
     }
 
     @JsonProperty("tolerations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Toleration> getTolerations() {
         return tolerations;
     }

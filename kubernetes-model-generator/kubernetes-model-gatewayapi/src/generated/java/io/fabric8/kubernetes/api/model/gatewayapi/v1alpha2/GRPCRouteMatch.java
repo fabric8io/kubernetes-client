@@ -84,6 +84,7 @@ public class GRPCRouteMatch implements Editable<GRPCRouteMatchBuilder> , Kuberne
     }
 
     @JsonProperty("headers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<GRPCHeaderMatch> getHeaders() {
         return headers;
     }

@@ -88,6 +88,7 @@ public class ReplacementField implements Editable<ReplacementFieldBuilder> , Kub
     }
 
     @JsonProperty("targets")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TargetSelector> getTargets() {
         return targets;
     }

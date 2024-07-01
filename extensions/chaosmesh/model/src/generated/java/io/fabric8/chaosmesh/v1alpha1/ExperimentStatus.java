@@ -92,6 +92,7 @@ public class ExperimentStatus implements Editable<ExperimentStatusBuilder> , Kub
     }
 
     @JsonProperty("containerRecords")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Record> getContainerRecords() {
         return containerRecords;
     }

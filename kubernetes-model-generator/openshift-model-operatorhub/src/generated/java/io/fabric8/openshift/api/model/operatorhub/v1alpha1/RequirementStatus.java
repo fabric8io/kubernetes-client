@@ -107,6 +107,7 @@ public class RequirementStatus implements Editable<RequirementStatusBuilder> , K
     }
 
     @JsonProperty("dependents")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<DependentStatus> getDependents() {
         return dependents;
     }

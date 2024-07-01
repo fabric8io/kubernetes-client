@@ -127,6 +127,7 @@ public class SubscriptionStatus implements Editable<SubscriptionStatusBuilder> ,
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }

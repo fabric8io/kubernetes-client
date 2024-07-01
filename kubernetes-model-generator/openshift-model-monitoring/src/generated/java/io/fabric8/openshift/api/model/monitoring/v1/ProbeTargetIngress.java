@@ -97,6 +97,7 @@ public class ProbeTargetIngress implements Editable<ProbeTargetIngressBuilder> ,
     }
 
     @JsonProperty("relabelingConfigs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<RelabelConfig> getRelabelingConfigs() {
         return relabelingConfigs;
     }

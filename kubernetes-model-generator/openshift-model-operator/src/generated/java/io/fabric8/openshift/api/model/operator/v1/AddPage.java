@@ -80,6 +80,7 @@ public class AddPage implements Editable<AddPageBuilder> , KubernetesResource
     }
 
     @JsonProperty("disabledActions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getDisabledActions() {
         return disabledActions;
     }

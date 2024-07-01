@@ -123,6 +123,7 @@ public class InterceptorStatus implements Editable<InterceptorStatusBuilder> , K
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }

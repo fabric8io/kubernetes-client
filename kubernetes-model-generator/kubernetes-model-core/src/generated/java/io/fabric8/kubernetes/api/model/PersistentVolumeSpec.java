@@ -181,6 +181,7 @@ public class PersistentVolumeSpec implements Editable<PersistentVolumeSpecBuilde
     }
 
     @JsonProperty("accessModes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getAccessModes() {
         return accessModes;
     }
@@ -351,6 +352,7 @@ public class PersistentVolumeSpec implements Editable<PersistentVolumeSpecBuilde
     }
 
     @JsonProperty("mountOptions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getMountOptions() {
         return mountOptions;
     }

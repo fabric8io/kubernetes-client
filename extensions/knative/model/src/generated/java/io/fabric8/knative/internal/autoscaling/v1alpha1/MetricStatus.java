@@ -108,6 +108,7 @@ public class MetricStatus implements Editable<MetricStatusBuilder> , KubernetesR
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }

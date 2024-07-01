@@ -84,6 +84,7 @@ public class ProfileStatus implements Editable<ProfileStatusBuilder> , Kubernete
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ProfileStatusCondition> getConditions() {
         return conditions;
     }

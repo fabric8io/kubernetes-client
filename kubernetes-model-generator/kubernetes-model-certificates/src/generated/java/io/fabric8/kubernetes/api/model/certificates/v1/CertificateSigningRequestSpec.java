@@ -130,6 +130,7 @@ public class CertificateSigningRequestSpec implements Editable<CertificateSignin
     }
 
     @JsonProperty("groups")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getGroups() {
         return groups;
     }
@@ -170,6 +171,7 @@ public class CertificateSigningRequestSpec implements Editable<CertificateSignin
     }
 
     @JsonProperty("usages")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getUsages() {
         return usages;
     }

@@ -224,6 +224,7 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     }
 
     @JsonProperty("vpcSubnets")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getVpcSubnets() {
         return vpcSubnets;
     }

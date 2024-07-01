@@ -122,6 +122,7 @@ public class SyncSetSpec implements Editable<SyncSetSpecBuilder> , KubernetesRes
     }
 
     @JsonProperty("patches")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<SyncObjectPatch> getPatches() {
         return patches;
     }
@@ -142,6 +143,7 @@ public class SyncSetSpec implements Editable<SyncSetSpecBuilder> , KubernetesRes
     }
 
     @JsonProperty("resources")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Map<String, Object>> getResources() {
         return resources;
     }
@@ -152,6 +154,7 @@ public class SyncSetSpec implements Editable<SyncSetSpecBuilder> , KubernetesRes
     }
 
     @JsonProperty("secretMappings")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<SecretMapping> getSecretMappings() {
         return secretMappings;
     }

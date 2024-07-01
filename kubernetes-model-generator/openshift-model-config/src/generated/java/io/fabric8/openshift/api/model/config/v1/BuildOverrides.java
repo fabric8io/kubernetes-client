@@ -105,6 +105,7 @@ public class BuildOverrides implements Editable<BuildOverridesBuilder> , Kuberne
     }
 
     @JsonProperty("imageLabels")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ImageLabel> getImageLabels() {
         return imageLabels;
     }
@@ -125,6 +126,7 @@ public class BuildOverrides implements Editable<BuildOverridesBuilder> , Kuberne
     }
 
     @JsonProperty("tolerations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Toleration> getTolerations() {
         return tolerations;
     }

@@ -150,6 +150,7 @@ public class JobStatus implements Editable<JobStatusBuilder> , KubernetesResourc
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<JobCondition> getConditions() {
         return conditions;
     }

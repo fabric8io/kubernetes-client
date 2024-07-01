@@ -80,6 +80,7 @@ public class TypeChecking implements Editable<TypeCheckingBuilder> , KubernetesR
     }
 
     @JsonProperty("expressionWarnings")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ExpressionWarning> getExpressionWarnings() {
         return expressionWarnings;
     }

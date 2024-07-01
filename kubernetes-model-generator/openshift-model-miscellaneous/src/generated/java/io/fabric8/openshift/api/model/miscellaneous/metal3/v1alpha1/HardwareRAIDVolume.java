@@ -144,6 +144,7 @@ public class HardwareRAIDVolume implements Editable<HardwareRAIDVolumeBuilder> ,
     }
 
     @JsonProperty("physicalDisks")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getPhysicalDisks() {
         return physicalDisks;
     }

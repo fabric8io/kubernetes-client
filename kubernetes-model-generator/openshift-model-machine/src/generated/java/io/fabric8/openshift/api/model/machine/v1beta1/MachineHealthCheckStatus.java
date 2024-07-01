@@ -92,6 +92,7 @@ public class MachineHealthCheckStatus implements Editable<MachineHealthCheckStat
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }

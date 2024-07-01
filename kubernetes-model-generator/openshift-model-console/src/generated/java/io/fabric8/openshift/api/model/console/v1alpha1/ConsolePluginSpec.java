@@ -98,6 +98,7 @@ public class ConsolePluginSpec implements Editable<ConsolePluginSpecBuilder> , K
     }
 
     @JsonProperty("proxy")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ConsolePluginProxy> getProxy() {
         return proxy;
     }

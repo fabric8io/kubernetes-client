@@ -110,6 +110,7 @@ public class NodeStatus implements Editable<NodeStatusBuilder> , KubernetesResou
     }
 
     @JsonProperty("addresses")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<NodeAddress> getAddresses() {
         return addresses;
     }
@@ -140,6 +141,7 @@ public class NodeStatus implements Editable<NodeStatusBuilder> , KubernetesResou
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<NodeCondition> getConditions() {
         return conditions;
     }
@@ -170,6 +172,7 @@ public class NodeStatus implements Editable<NodeStatusBuilder> , KubernetesResou
     }
 
     @JsonProperty("images")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ContainerImage> getImages() {
         return images;
     }
@@ -200,6 +203,7 @@ public class NodeStatus implements Editable<NodeStatusBuilder> , KubernetesResou
     }
 
     @JsonProperty("runtimeHandlers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<NodeRuntimeHandler> getRuntimeHandlers() {
         return runtimeHandlers;
     }
@@ -210,6 +214,7 @@ public class NodeStatus implements Editable<NodeStatusBuilder> , KubernetesResou
     }
 
     @JsonProperty("volumesAttached")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<AttachedVolume> getVolumesAttached() {
         return volumesAttached;
     }
@@ -220,6 +225,7 @@ public class NodeStatus implements Editable<NodeStatusBuilder> , KubernetesResou
     }
 
     @JsonProperty("volumesInUse")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getVolumesInUse() {
         return volumesInUse;
     }

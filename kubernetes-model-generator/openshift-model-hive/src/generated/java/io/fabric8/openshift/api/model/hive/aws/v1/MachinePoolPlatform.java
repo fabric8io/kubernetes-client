@@ -106,6 +106,7 @@ public class MachinePoolPlatform implements Editable<MachinePoolPlatformBuilder>
     }
 
     @JsonProperty("additionalSecurityGroupIDs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getAdditionalSecurityGroupIDs() {
         return additionalSecurityGroupIDs;
     }
@@ -146,6 +147,7 @@ public class MachinePoolPlatform implements Editable<MachinePoolPlatformBuilder>
     }
 
     @JsonProperty("subnets")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getSubnets() {
         return subnets;
     }
@@ -166,6 +168,7 @@ public class MachinePoolPlatform implements Editable<MachinePoolPlatformBuilder>
     }
 
     @JsonProperty("zones")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getZones() {
         return zones;
     }

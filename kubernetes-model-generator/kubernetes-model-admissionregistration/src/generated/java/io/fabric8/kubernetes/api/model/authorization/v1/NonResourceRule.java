@@ -85,6 +85,7 @@ public class NonResourceRule implements Editable<NonResourceRuleBuilder> , Kuber
     }
 
     @JsonProperty("nonResourceURLs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getNonResourceURLs() {
         return nonResourceURLs;
     }

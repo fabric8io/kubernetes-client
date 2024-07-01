@@ -97,6 +97,7 @@ public class StressChaosStatus implements Editable<StressChaosStatusBuilder> , K
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ChaosCondition> getConditions() {
         return conditions;
     }

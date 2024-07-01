@@ -92,6 +92,7 @@ public class AWSPrivateLinkConfig implements Editable<AWSPrivateLinkConfigBuilde
     }
 
     @JsonProperty("associatedVPCs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<AWSAssociatedVPC> getAssociatedVPCs() {
         return associatedVPCs;
     }
@@ -122,6 +123,7 @@ public class AWSPrivateLinkConfig implements Editable<AWSPrivateLinkConfigBuilde
     }
 
     @JsonProperty("endpointVPCInventory")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<AWSPrivateLinkInventory> getEndpointVPCInventory() {
         return endpointVPCInventory;
     }

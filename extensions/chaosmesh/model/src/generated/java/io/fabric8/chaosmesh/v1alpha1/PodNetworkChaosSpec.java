@@ -98,6 +98,7 @@ public class PodNetworkChaosSpec implements Editable<PodNetworkChaosSpecBuilder>
     }
 
     @JsonProperty("ipsets")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<RawIPSet> getIpsets() {
         return ipsets;
     }
@@ -108,6 +109,7 @@ public class PodNetworkChaosSpec implements Editable<PodNetworkChaosSpecBuilder>
     }
 
     @JsonProperty("iptables")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<RawIptables> getIptables() {
         return iptables;
     }
@@ -118,6 +120,7 @@ public class PodNetworkChaosSpec implements Editable<PodNetworkChaosSpecBuilder>
     }
 
     @JsonProperty("tcs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<RawTrafficControl> getTcs() {
         return tcs;
     }

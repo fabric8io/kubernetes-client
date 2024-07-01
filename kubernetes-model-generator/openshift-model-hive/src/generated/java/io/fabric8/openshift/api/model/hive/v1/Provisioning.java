@@ -133,6 +133,7 @@ public class Provisioning implements Editable<ProvisioningBuilder> , KubernetesR
     }
 
     @JsonProperty("installerEnv")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<EnvVar> getInstallerEnv() {
         return installerEnv;
     }
@@ -183,6 +184,7 @@ public class Provisioning implements Editable<ProvisioningBuilder> , KubernetesR
     }
 
     @JsonProperty("sshKnownHosts")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getSshKnownHosts() {
         return sshKnownHosts;
     }

@@ -319,6 +319,7 @@ public class OpenstackProviderSpec implements Editable<OpenstackProviderSpecBuil
     }
 
     @JsonProperty("networks")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<NetworkParam> getNetworks() {
         return networks;
     }
@@ -329,6 +330,7 @@ public class OpenstackProviderSpec implements Editable<OpenstackProviderSpecBuil
     }
 
     @JsonProperty("ports")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PortOpts> getPorts() {
         return ports;
     }
@@ -359,6 +361,7 @@ public class OpenstackProviderSpec implements Editable<OpenstackProviderSpecBuil
     }
 
     @JsonProperty("securityGroups")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<SecurityGroupParam> getSecurityGroups() {
         return securityGroups;
     }
@@ -409,6 +412,7 @@ public class OpenstackProviderSpec implements Editable<OpenstackProviderSpecBuil
     }
 
     @JsonProperty("tags")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getTags() {
         return tags;
     }

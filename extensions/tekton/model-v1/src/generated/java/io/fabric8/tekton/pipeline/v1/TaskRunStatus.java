@@ -163,6 +163,7 @@ public class TaskRunStatus implements Editable<TaskRunStatusBuilder> , Kubernete
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }
@@ -203,6 +204,7 @@ public class TaskRunStatus implements Editable<TaskRunStatusBuilder> , Kubernete
     }
 
     @JsonProperty("results")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TaskRunResult> getResults() {
         return results;
     }
@@ -213,6 +215,7 @@ public class TaskRunStatus implements Editable<TaskRunStatusBuilder> , Kubernete
     }
 
     @JsonProperty("retriesStatus")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TaskRunStatus> getRetriesStatus() {
         return retriesStatus;
     }
@@ -223,6 +226,7 @@ public class TaskRunStatus implements Editable<TaskRunStatusBuilder> , Kubernete
     }
 
     @JsonProperty("sidecars")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<SidecarState> getSidecars() {
         return sidecars;
     }
@@ -253,6 +257,7 @@ public class TaskRunStatus implements Editable<TaskRunStatusBuilder> , Kubernete
     }
 
     @JsonProperty("steps")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<StepState> getSteps() {
         return steps;
     }

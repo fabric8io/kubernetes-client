@@ -88,6 +88,7 @@ public class CustomResourceConversion implements Editable<CustomResourceConversi
     }
 
     @JsonProperty("conversionReviewVersions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getConversionReviewVersions() {
         return conversionReviewVersions;
     }

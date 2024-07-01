@@ -69,6 +69,7 @@ public class ResourceRequirements implements Editable<ResourceRequirementsBuilde
     }
 
     @JsonProperty("claims")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ResourceClaim> getClaims() {
         return claims;
     }

@@ -123,6 +123,7 @@ public class Operation implements Editable<OperationBuilder> , KubernetesResourc
     }
 
     @JsonProperty("hosts")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getHosts() {
         return hosts;
     }
@@ -133,6 +134,7 @@ public class Operation implements Editable<OperationBuilder> , KubernetesResourc
     }
 
     @JsonProperty("methods")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getMethods() {
         return methods;
     }
@@ -143,6 +145,7 @@ public class Operation implements Editable<OperationBuilder> , KubernetesResourc
     }
 
     @JsonProperty("notHosts")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getNotHosts() {
         return notHosts;
     }
@@ -153,6 +156,7 @@ public class Operation implements Editable<OperationBuilder> , KubernetesResourc
     }
 
     @JsonProperty("notMethods")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getNotMethods() {
         return notMethods;
     }
@@ -163,6 +167,7 @@ public class Operation implements Editable<OperationBuilder> , KubernetesResourc
     }
 
     @JsonProperty("notPaths")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getNotPaths() {
         return notPaths;
     }
@@ -173,6 +178,7 @@ public class Operation implements Editable<OperationBuilder> , KubernetesResourc
     }
 
     @JsonProperty("notPorts")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getNotPorts() {
         return notPorts;
     }
@@ -183,6 +189,7 @@ public class Operation implements Editable<OperationBuilder> , KubernetesResourc
     }
 
     @JsonProperty("paths")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getPaths() {
         return paths;
     }
@@ -193,6 +200,7 @@ public class Operation implements Editable<OperationBuilder> , KubernetesResourc
     }
 
     @JsonProperty("ports")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getPorts() {
         return ports;
     }

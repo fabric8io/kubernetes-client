@@ -139,6 +139,7 @@ public class Tracing implements Editable<TracingBuilder> , KubernetesResource
     }
 
     @JsonProperty("providers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ProviderRef> getProviders() {
         return providers;
     }

@@ -299,6 +299,7 @@ public class JSONSchemaProps implements Editable<JSONSchemaPropsBuilder> , Kuber
     }
 
     @JsonProperty("allOf")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<JSONSchemaProps> getAllOf() {
         return allOf;
     }
@@ -309,6 +310,7 @@ public class JSONSchemaProps implements Editable<JSONSchemaPropsBuilder> , Kuber
     }
 
     @JsonProperty("anyOf")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<JSONSchemaProps> getAnyOf() {
         return anyOf;
     }
@@ -549,6 +551,7 @@ public class JSONSchemaProps implements Editable<JSONSchemaPropsBuilder> , Kuber
     }
 
     @JsonProperty("oneOf")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<JSONSchemaProps> getOneOf() {
         return oneOf;
     }
@@ -589,6 +592,7 @@ public class JSONSchemaProps implements Editable<JSONSchemaPropsBuilder> , Kuber
     }
 
     @JsonProperty("required")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getRequired() {
         return required;
     }

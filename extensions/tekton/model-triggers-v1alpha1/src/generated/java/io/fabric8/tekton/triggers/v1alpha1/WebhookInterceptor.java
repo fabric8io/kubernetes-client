@@ -96,6 +96,7 @@ public class WebhookInterceptor implements Editable<WebhookInterceptorBuilder> ,
     }
 
     @JsonProperty("header")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Param> getHeader() {
         return header;
     }

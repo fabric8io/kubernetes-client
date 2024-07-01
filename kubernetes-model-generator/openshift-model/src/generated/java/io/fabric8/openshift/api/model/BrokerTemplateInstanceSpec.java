@@ -87,6 +87,7 @@ public class BrokerTemplateInstanceSpec implements Editable<BrokerTemplateInstan
     }
 
     @JsonProperty("bindingIDs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getBindingIDs() {
         return bindingIDs;
     }

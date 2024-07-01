@@ -114,6 +114,7 @@ public class CustomBuildStrategy implements Editable<CustomBuildStrategyBuilder>
     }
 
     @JsonProperty("env")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<EnvVar> getEnv() {
         return env;
     }
@@ -164,6 +165,7 @@ public class CustomBuildStrategy implements Editable<CustomBuildStrategyBuilder>
     }
 
     @JsonProperty("secrets")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<SecretSpec> getSecrets() {
         return secrets;
     }

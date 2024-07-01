@@ -165,6 +165,7 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     }
 
     @JsonProperty("vswitchIDs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getVswitchIDs() {
         return vswitchIDs;
     }

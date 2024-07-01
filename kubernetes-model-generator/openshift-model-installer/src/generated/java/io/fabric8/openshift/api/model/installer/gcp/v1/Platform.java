@@ -138,6 +138,7 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     }
 
     @JsonProperty("licenses")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getLicenses() {
         return licenses;
     }

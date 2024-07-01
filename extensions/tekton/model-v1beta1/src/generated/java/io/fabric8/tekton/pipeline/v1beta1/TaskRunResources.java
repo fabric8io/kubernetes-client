@@ -93,6 +93,7 @@ public class TaskRunResources implements Editable<TaskRunResourcesBuilder> , Kub
     }
 
     @JsonProperty("inputs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TaskResourceBinding> getInputs() {
         return inputs;
     }
@@ -103,6 +104,7 @@ public class TaskRunResources implements Editable<TaskRunResourcesBuilder> , Kub
     }
 
     @JsonProperty("outputs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TaskResourceBinding> getOutputs() {
         return outputs;
     }

@@ -84,6 +84,7 @@ public class FSGroupStrategyOptions implements Editable<FSGroupStrategyOptionsBu
     }
 
     @JsonProperty("ranges")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<IDRange> getRanges() {
         return ranges;
     }

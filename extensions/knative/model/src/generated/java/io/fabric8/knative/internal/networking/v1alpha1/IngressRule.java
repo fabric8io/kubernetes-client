@@ -96,6 +96,7 @@ public class IngressRule implements Editable<IngressRuleBuilder> , KubernetesRes
     }
 
     @JsonProperty("hosts")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getHosts() {
         return hosts;
     }

@@ -84,6 +84,7 @@ public class Network implements Editable<NetworkBuilder> , KubernetesResource
     }
 
     @JsonProperty("dnsmasqOptions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<DnsmasqOption> getDnsmasqOptions() {
         return dnsmasqOptions;
     }

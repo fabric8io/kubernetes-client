@@ -169,6 +169,7 @@ public class ISCSIPersistentVolumeSource implements Editable<ISCSIPersistentVolu
     }
 
     @JsonProperty("portals")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getPortals() {
         return portals;
     }

@@ -94,6 +94,7 @@ public class RedirectConfig implements Editable<RedirectConfigBuilder> , Kuberne
     }
 
     @JsonProperty("redirectRules")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<L4RedirectRule> getRedirectRules() {
         return redirectRules;
     }

@@ -180,6 +180,7 @@ public class PodSecurityContext implements Editable<PodSecurityContextBuilder> ,
     }
 
     @JsonProperty("supplementalGroups")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Long> getSupplementalGroups() {
         return supplementalGroups;
     }
@@ -190,6 +191,7 @@ public class PodSecurityContext implements Editable<PodSecurityContextBuilder> ,
     }
 
     @JsonProperty("sysctls")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Sysctl> getSysctls() {
         return sysctls;
     }

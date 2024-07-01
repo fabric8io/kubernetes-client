@@ -91,6 +91,7 @@ public class GatewayStatus implements Editable<GatewayStatusBuilder> , Kubernete
     }
 
     @JsonProperty("addresses")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<GatewayStatusAddress> getAddresses() {
         return addresses;
     }
@@ -101,6 +102,7 @@ public class GatewayStatus implements Editable<GatewayStatusBuilder> , Kubernete
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }
@@ -111,6 +113,7 @@ public class GatewayStatus implements Editable<GatewayStatusBuilder> , Kubernete
     }
 
     @JsonProperty("listeners")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ListenerStatus> getListeners() {
         return listeners;
     }

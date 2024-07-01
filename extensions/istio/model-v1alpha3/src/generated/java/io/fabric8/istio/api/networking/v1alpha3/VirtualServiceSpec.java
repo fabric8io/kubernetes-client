@@ -113,6 +113,7 @@ public class VirtualServiceSpec implements Editable<VirtualServiceSpecBuilder> ,
     }
 
     @JsonProperty("exportTo")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getExportTo() {
         return exportTo;
     }
@@ -123,6 +124,7 @@ public class VirtualServiceSpec implements Editable<VirtualServiceSpecBuilder> ,
     }
 
     @JsonProperty("gateways")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getGateways() {
         return gateways;
     }
@@ -133,6 +135,7 @@ public class VirtualServiceSpec implements Editable<VirtualServiceSpecBuilder> ,
     }
 
     @JsonProperty("hosts")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getHosts() {
         return hosts;
     }
@@ -143,6 +146,7 @@ public class VirtualServiceSpec implements Editable<VirtualServiceSpecBuilder> ,
     }
 
     @JsonProperty("http")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<HTTPRoute> getHttp() {
         return http;
     }
@@ -153,6 +157,7 @@ public class VirtualServiceSpec implements Editable<VirtualServiceSpecBuilder> ,
     }
 
     @JsonProperty("tcp")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TCPRoute> getTcp() {
         return tcp;
     }
@@ -163,6 +168,7 @@ public class VirtualServiceSpec implements Editable<VirtualServiceSpecBuilder> ,
     }
 
     @JsonProperty("tls")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TLSRoute> getTls() {
         return tls;
     }

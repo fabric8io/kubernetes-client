@@ -163,6 +163,7 @@ public class KafkaSourceStatus implements Editable<KafkaSourceStatusBuilder> , K
     }
 
     @JsonProperty("ceAttributes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<CloudEventAttributes> getCeAttributes() {
         return ceAttributes;
     }
@@ -183,6 +184,7 @@ public class KafkaSourceStatus implements Editable<KafkaSourceStatusBuilder> , K
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }
@@ -223,6 +225,7 @@ public class KafkaSourceStatus implements Editable<KafkaSourceStatusBuilder> , K
     }
 
     @JsonProperty("placements")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Placement> getPlacements() {
         return placements;
     }

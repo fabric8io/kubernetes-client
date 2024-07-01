@@ -92,6 +92,7 @@ public class Release implements Editable<ReleaseBuilder> , KubernetesResource
     }
 
     @JsonProperty("channels")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getChannels() {
         return channels;
     }

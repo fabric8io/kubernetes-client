@@ -139,6 +139,7 @@ public class SourceStatus implements Editable<SourceStatusBuilder> , KubernetesR
     }
 
     @JsonProperty("ceAttributes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<CloudEventAttributes> getCeAttributes() {
         return ceAttributes;
     }
@@ -149,6 +150,7 @@ public class SourceStatus implements Editable<SourceStatusBuilder> , KubernetesR
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }

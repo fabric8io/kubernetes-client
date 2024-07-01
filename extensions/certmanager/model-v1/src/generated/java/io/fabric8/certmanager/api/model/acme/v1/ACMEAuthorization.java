@@ -104,6 +104,7 @@ public class ACMEAuthorization implements Editable<ACMEAuthorizationBuilder> , K
     }
 
     @JsonProperty("challenges")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ACMEChallenge> getChallenges() {
         return challenges;
     }

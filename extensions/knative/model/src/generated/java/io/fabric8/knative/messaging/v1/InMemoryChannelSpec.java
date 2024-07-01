@@ -104,6 +104,7 @@ public class InMemoryChannelSpec implements Editable<InMemoryChannelSpecBuilder>
     }
 
     @JsonProperty("subscribers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<SubscriberSpec> getSubscribers() {
         return subscribers;
     }

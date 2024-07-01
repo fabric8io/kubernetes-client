@@ -139,6 +139,7 @@ public class Receiver implements Editable<ReceiverBuilder> , KubernetesResource
     }
 
     @JsonProperty("discordConfigs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<DiscordConfig> getDiscordConfigs() {
         return discordConfigs;
     }
@@ -149,6 +150,7 @@ public class Receiver implements Editable<ReceiverBuilder> , KubernetesResource
     }
 
     @JsonProperty("emailConfigs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<EmailConfig> getEmailConfigs() {
         return emailConfigs;
     }
@@ -169,6 +171,7 @@ public class Receiver implements Editable<ReceiverBuilder> , KubernetesResource
     }
 
     @JsonProperty("opsgenieConfigs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<OpsGenieConfig> getOpsgenieConfigs() {
         return opsgenieConfigs;
     }
@@ -179,6 +182,7 @@ public class Receiver implements Editable<ReceiverBuilder> , KubernetesResource
     }
 
     @JsonProperty("pagerdutyConfigs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PagerDutyConfig> getPagerdutyConfigs() {
         return pagerdutyConfigs;
     }
@@ -189,6 +193,7 @@ public class Receiver implements Editable<ReceiverBuilder> , KubernetesResource
     }
 
     @JsonProperty("pushoverConfigs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PushoverConfig> getPushoverConfigs() {
         return pushoverConfigs;
     }
@@ -199,6 +204,7 @@ public class Receiver implements Editable<ReceiverBuilder> , KubernetesResource
     }
 
     @JsonProperty("slackConfigs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<SlackConfig> getSlackConfigs() {
         return slackConfigs;
     }
@@ -209,6 +215,7 @@ public class Receiver implements Editable<ReceiverBuilder> , KubernetesResource
     }
 
     @JsonProperty("snsConfigs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<SNSConfig> getSnsConfigs() {
         return snsConfigs;
     }
@@ -219,6 +226,7 @@ public class Receiver implements Editable<ReceiverBuilder> , KubernetesResource
     }
 
     @JsonProperty("telegramConfigs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TelegramConfig> getTelegramConfigs() {
         return telegramConfigs;
     }
@@ -229,6 +237,7 @@ public class Receiver implements Editable<ReceiverBuilder> , KubernetesResource
     }
 
     @JsonProperty("victoropsConfigs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<VictorOpsConfig> getVictoropsConfigs() {
         return victoropsConfigs;
     }
@@ -239,6 +248,7 @@ public class Receiver implements Editable<ReceiverBuilder> , KubernetesResource
     }
 
     @JsonProperty("webexConfigs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<WebexConfig> getWebexConfigs() {
         return webexConfigs;
     }
@@ -249,6 +259,7 @@ public class Receiver implements Editable<ReceiverBuilder> , KubernetesResource
     }
 
     @JsonProperty("webhookConfigs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<WebhookConfig> getWebhookConfigs() {
         return webhookConfigs;
     }
@@ -259,6 +270,7 @@ public class Receiver implements Editable<ReceiverBuilder> , KubernetesResource
     }
 
     @JsonProperty("wechatConfigs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<WeChatConfig> getWechatConfigs() {
         return wechatConfigs;
     }

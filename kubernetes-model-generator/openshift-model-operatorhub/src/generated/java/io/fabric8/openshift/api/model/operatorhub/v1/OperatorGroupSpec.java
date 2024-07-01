@@ -125,6 +125,7 @@ public class OperatorGroupSpec implements Editable<OperatorGroupSpecBuilder> , K
     }
 
     @JsonProperty("targetNamespaces")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getTargetNamespaces() {
         return targetNamespaces;
     }

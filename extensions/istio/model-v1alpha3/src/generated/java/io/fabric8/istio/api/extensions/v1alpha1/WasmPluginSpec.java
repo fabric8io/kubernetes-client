@@ -183,6 +183,7 @@ public class WasmPluginSpec implements Editable<WasmPluginSpecBuilder> , Kuberne
     }
 
     @JsonProperty("match")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<WasmPluginTrafficSelector> getMatch() {
         return match;
     }

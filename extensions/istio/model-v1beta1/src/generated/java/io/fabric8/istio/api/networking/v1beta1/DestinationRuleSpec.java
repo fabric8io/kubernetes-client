@@ -106,6 +106,7 @@ public class DestinationRuleSpec implements Editable<DestinationRuleSpecBuilder>
     }
 
     @JsonProperty("exportTo")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getExportTo() {
         return exportTo;
     }
@@ -126,6 +127,7 @@ public class DestinationRuleSpec implements Editable<DestinationRuleSpecBuilder>
     }
 
     @JsonProperty("subsets")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Subset> getSubsets() {
         return subsets;
     }

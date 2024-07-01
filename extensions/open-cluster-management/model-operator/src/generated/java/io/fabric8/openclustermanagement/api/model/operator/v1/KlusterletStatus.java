@@ -113,6 +113,7 @@ public class KlusterletStatus implements Editable<KlusterletStatusBuilder> , Kub
     }
 
     @JsonProperty("generations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<GenerationStatus> getGenerations() {
         return generations;
     }
@@ -133,6 +134,7 @@ public class KlusterletStatus implements Editable<KlusterletStatusBuilder> , Kub
     }
 
     @JsonProperty("relatedResources")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<RelatedResourceMeta> getRelatedResources() {
         return relatedResources;
     }

@@ -188,6 +188,7 @@ public class Sidecar implements Editable<SidecarBuilder> , KubernetesResource
     }
 
     @JsonProperty("args")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getArgs() {
         return args;
     }
@@ -198,6 +199,7 @@ public class Sidecar implements Editable<SidecarBuilder> , KubernetesResource
     }
 
     @JsonProperty("command")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getCommand() {
         return command;
     }
@@ -208,6 +210,7 @@ public class Sidecar implements Editable<SidecarBuilder> , KubernetesResource
     }
 
     @JsonProperty("env")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.EnvVar> getEnv() {
         return env;
     }
@@ -218,6 +221,7 @@ public class Sidecar implements Editable<SidecarBuilder> , KubernetesResource
     }
 
     @JsonProperty("envFrom")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<EnvFromSource> getEnvFrom() {
         return envFrom;
     }
@@ -278,6 +282,7 @@ public class Sidecar implements Editable<SidecarBuilder> , KubernetesResource
     }
 
     @JsonProperty("ports")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.ContainerPort> getPorts() {
         return ports;
     }
@@ -388,6 +393,7 @@ public class Sidecar implements Editable<SidecarBuilder> , KubernetesResource
     }
 
     @JsonProperty("volumeDevices")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<VolumeDevice> getVolumeDevices() {
         return volumeDevices;
     }
@@ -398,6 +404,7 @@ public class Sidecar implements Editable<SidecarBuilder> , KubernetesResource
     }
 
     @JsonProperty("volumeMounts")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.VolumeMount> getVolumeMounts() {
         return volumeMounts;
     }
@@ -418,6 +425,7 @@ public class Sidecar implements Editable<SidecarBuilder> , KubernetesResource
     }
 
     @JsonProperty("workspaces")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<WorkspaceUsage> getWorkspaces() {
         return workspaces;
     }

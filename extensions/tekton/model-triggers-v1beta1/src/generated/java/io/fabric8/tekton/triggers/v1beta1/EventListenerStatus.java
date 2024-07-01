@@ -127,6 +127,7 @@ public class EventListenerStatus implements Editable<EventListenerStatusBuilder>
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }

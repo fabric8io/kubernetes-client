@@ -243,6 +243,7 @@ public class Kustomization implements Editable<KustomizationBuilder> , Kubernete
     }
 
     @JsonProperty("bases")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getBases() {
         return bases;
     }
@@ -253,6 +254,7 @@ public class Kustomization implements Editable<KustomizationBuilder> , Kubernete
     }
 
     @JsonProperty("buildMetadata")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getBuildMetadata() {
         return buildMetadata;
     }
@@ -283,6 +285,7 @@ public class Kustomization implements Editable<KustomizationBuilder> , Kubernete
     }
 
     @JsonProperty("components")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getComponents() {
         return components;
     }
@@ -293,6 +296,7 @@ public class Kustomization implements Editable<KustomizationBuilder> , Kubernete
     }
 
     @JsonProperty("configMapGenerator")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ConfigMapArgs> getConfigMapGenerator() {
         return configMapGenerator;
     }
@@ -303,6 +307,7 @@ public class Kustomization implements Editable<KustomizationBuilder> , Kubernete
     }
 
     @JsonProperty("configurations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getConfigurations() {
         return configurations;
     }
@@ -313,6 +318,7 @@ public class Kustomization implements Editable<KustomizationBuilder> , Kubernete
     }
 
     @JsonProperty("crds")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getCrds() {
         return crds;
     }
@@ -333,6 +339,7 @@ public class Kustomization implements Editable<KustomizationBuilder> , Kubernete
     }
 
     @JsonProperty("generators")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getGenerators() {
         return generators;
     }
@@ -343,6 +350,7 @@ public class Kustomization implements Editable<KustomizationBuilder> , Kubernete
     }
 
     @JsonProperty("helmChartInflationGenerator")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<HelmChartArgs> getHelmChartInflationGenerator() {
         return helmChartInflationGenerator;
     }
@@ -353,6 +361,7 @@ public class Kustomization implements Editable<KustomizationBuilder> , Kubernete
     }
 
     @JsonProperty("helmCharts")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<HelmChart> getHelmCharts() {
         return helmCharts;
     }
@@ -373,6 +382,7 @@ public class Kustomization implements Editable<KustomizationBuilder> , Kubernete
     }
 
     @JsonProperty("imageTags")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Image> getImageTags() {
         return imageTags;
     }
@@ -383,6 +393,7 @@ public class Kustomization implements Editable<KustomizationBuilder> , Kubernete
     }
 
     @JsonProperty("images")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Image> getImages() {
         return images;
     }
@@ -413,6 +424,7 @@ public class Kustomization implements Editable<KustomizationBuilder> , Kubernete
     }
 
     @JsonProperty("labels")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Label> getLabels() {
         return labels;
     }
@@ -473,6 +485,7 @@ public class Kustomization implements Editable<KustomizationBuilder> , Kubernete
     }
 
     @JsonProperty("patches")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Patch> getPatches() {
         return patches;
     }
@@ -483,6 +496,7 @@ public class Kustomization implements Editable<KustomizationBuilder> , Kubernete
     }
 
     @JsonProperty("patchesJson6902")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Patch> getPatchesJson6902() {
         return patchesJson6902;
     }
@@ -493,6 +507,7 @@ public class Kustomization implements Editable<KustomizationBuilder> , Kubernete
     }
 
     @JsonProperty("patchesStrategicMerge")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getPatchesStrategicMerge() {
         return patchesStrategicMerge;
     }
@@ -503,6 +518,7 @@ public class Kustomization implements Editable<KustomizationBuilder> , Kubernete
     }
 
     @JsonProperty("replacements")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ReplacementField> getReplacements() {
         return replacements;
     }
@@ -513,6 +529,7 @@ public class Kustomization implements Editable<KustomizationBuilder> , Kubernete
     }
 
     @JsonProperty("replicas")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Replica> getReplicas() {
         return replicas;
     }
@@ -523,6 +540,7 @@ public class Kustomization implements Editable<KustomizationBuilder> , Kubernete
     }
 
     @JsonProperty("resources")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getResources() {
         return resources;
     }
@@ -533,6 +551,7 @@ public class Kustomization implements Editable<KustomizationBuilder> , Kubernete
     }
 
     @JsonProperty("secretGenerator")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<SecretArgs> getSecretGenerator() {
         return secretGenerator;
     }
@@ -553,6 +572,7 @@ public class Kustomization implements Editable<KustomizationBuilder> , Kubernete
     }
 
     @JsonProperty("transformers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getTransformers() {
         return transformers;
     }
@@ -563,6 +583,7 @@ public class Kustomization implements Editable<KustomizationBuilder> , Kubernete
     }
 
     @JsonProperty("validators")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getValidators() {
         return validators;
     }
@@ -573,6 +594,7 @@ public class Kustomization implements Editable<KustomizationBuilder> , Kubernete
     }
 
     @JsonProperty("vars")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Var> getVars() {
         return vars;
     }

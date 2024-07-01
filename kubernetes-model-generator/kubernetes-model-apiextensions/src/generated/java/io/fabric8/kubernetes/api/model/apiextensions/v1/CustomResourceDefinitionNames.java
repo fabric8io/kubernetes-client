@@ -100,6 +100,7 @@ public class CustomResourceDefinitionNames implements Editable<CustomResourceDef
     }
 
     @JsonProperty("categories")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getCategories() {
         return categories;
     }
@@ -140,6 +141,7 @@ public class CustomResourceDefinitionNames implements Editable<CustomResourceDef
     }
 
     @JsonProperty("shortNames")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getShortNames() {
         return shortNames;
     }

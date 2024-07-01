@@ -87,6 +87,7 @@ public class VmConfig implements Editable<VmConfigBuilder> , KubernetesResource
     }
 
     @JsonProperty("env")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.istio.api.networking.v1alpha1.EnvVar> getEnv() {
         return env;
     }

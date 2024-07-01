@@ -104,6 +104,7 @@ public class WasmPluginTrafficSelector implements Editable<WasmPluginTrafficSele
     }
 
     @JsonProperty("ports")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PortSelector> getPorts() {
         return ports;
     }

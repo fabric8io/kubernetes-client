@@ -83,6 +83,7 @@ public class ClusterProvisionStatus implements Editable<ClusterProvisionStatusBu
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ClusterProvisionCondition> getConditions() {
         return conditions;
     }

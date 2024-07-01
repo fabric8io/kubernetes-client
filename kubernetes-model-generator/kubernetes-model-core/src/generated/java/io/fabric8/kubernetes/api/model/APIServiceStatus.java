@@ -59,6 +59,7 @@ public class APIServiceStatus implements Editable<APIServiceStatusBuilder> , Kub
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<APIServiceCondition> getConditions() {
         return conditions;
     }

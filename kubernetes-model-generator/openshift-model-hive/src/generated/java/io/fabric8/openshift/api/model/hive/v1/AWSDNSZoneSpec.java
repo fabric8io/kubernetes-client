@@ -92,6 +92,7 @@ public class AWSDNSZoneSpec implements Editable<AWSDNSZoneSpecBuilder> , Kuberne
     }
 
     @JsonProperty("additionalTags")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<AWSResourceTag> getAdditionalTags() {
         return additionalTags;
     }

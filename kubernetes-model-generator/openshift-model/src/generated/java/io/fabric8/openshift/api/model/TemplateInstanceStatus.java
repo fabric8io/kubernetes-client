@@ -85,6 +85,7 @@ public class TemplateInstanceStatus implements Editable<TemplateInstanceStatusBu
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TemplateInstanceCondition> getConditions() {
         return conditions;
     }
@@ -95,6 +96,7 @@ public class TemplateInstanceStatus implements Editable<TemplateInstanceStatusBu
     }
 
     @JsonProperty("objects")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TemplateInstanceObject> getObjects() {
         return objects;
     }

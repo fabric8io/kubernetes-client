@@ -99,6 +99,7 @@ public class DriverRequests implements Editable<DriverRequestsBuilder> , Kuberne
     }
 
     @JsonProperty("requests")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ResourceRequest> getRequests() {
         return requests;
     }

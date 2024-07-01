@@ -131,6 +131,7 @@ public class SubscriptionConfig implements Editable<SubscriptionConfigBuilder> ,
     }
 
     @JsonProperty("env")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<EnvVar> getEnv() {
         return env;
     }
@@ -141,6 +142,7 @@ public class SubscriptionConfig implements Editable<SubscriptionConfigBuilder> ,
     }
 
     @JsonProperty("envFrom")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<EnvFromSource> getEnvFrom() {
         return envFrom;
     }
@@ -181,6 +183,7 @@ public class SubscriptionConfig implements Editable<SubscriptionConfigBuilder> ,
     }
 
     @JsonProperty("tolerations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Toleration> getTolerations() {
         return tolerations;
     }
@@ -191,6 +194,7 @@ public class SubscriptionConfig implements Editable<SubscriptionConfigBuilder> ,
     }
 
     @JsonProperty("volumeMounts")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<VolumeMount> getVolumeMounts() {
         return volumeMounts;
     }
@@ -201,6 +205,7 @@ public class SubscriptionConfig implements Editable<SubscriptionConfigBuilder> ,
     }
 
     @JsonProperty("volumes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Volume> getVolumes() {
         return volumes;
     }

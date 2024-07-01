@@ -88,6 +88,7 @@ public class PodHttpChaosSpec implements Editable<PodHttpChaosSpecBuilder> , Kub
     }
 
     @JsonProperty("rules")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PodHttpChaosRule> getRules() {
         return rules;
     }

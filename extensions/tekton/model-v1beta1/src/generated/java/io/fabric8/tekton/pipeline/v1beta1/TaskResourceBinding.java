@@ -111,6 +111,7 @@ public class TaskResourceBinding implements Editable<TaskResourceBindingBuilder>
     }
 
     @JsonProperty("paths")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getPaths() {
         return paths;
     }

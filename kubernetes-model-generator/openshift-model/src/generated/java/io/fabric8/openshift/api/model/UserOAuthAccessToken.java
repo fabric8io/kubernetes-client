@@ -249,6 +249,7 @@ public class UserOAuthAccessToken implements Editable<UserOAuthAccessTokenBuilde
     }
 
     @JsonProperty("scopes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getScopes() {
         return scopes;
     }

@@ -129,6 +129,7 @@ public class ApplicationSpec implements Editable<ApplicationSpecBuilder> , Kuber
     }
 
     @JsonProperty("componentKinds")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<GroupKind> getComponentKinds() {
         return componentKinds;
     }
@@ -149,6 +150,7 @@ public class ApplicationSpec implements Editable<ApplicationSpecBuilder> , Kuber
     }
 
     @JsonProperty("info")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<InfoItem> getInfo() {
         return info;
     }

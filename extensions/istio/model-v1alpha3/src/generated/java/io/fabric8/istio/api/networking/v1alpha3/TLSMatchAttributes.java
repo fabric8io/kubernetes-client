@@ -111,6 +111,7 @@ public class TLSMatchAttributes implements Editable<TLSMatchAttributesBuilder> ,
     }
 
     @JsonProperty("destinationSubnets")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getDestinationSubnets() {
         return destinationSubnets;
     }
@@ -121,6 +122,7 @@ public class TLSMatchAttributes implements Editable<TLSMatchAttributesBuilder> ,
     }
 
     @JsonProperty("gateways")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getGateways() {
         return gateways;
     }
@@ -141,6 +143,7 @@ public class TLSMatchAttributes implements Editable<TLSMatchAttributesBuilder> ,
     }
 
     @JsonProperty("sniHosts")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getSniHosts() {
         return sniHosts;
     }

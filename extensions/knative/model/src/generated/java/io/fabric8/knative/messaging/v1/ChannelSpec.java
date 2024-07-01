@@ -118,6 +118,7 @@ public class ChannelSpec implements Editable<ChannelSpecBuilder> , KubernetesRes
     }
 
     @JsonProperty("subscribers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<SubscriberSpec> getSubscribers() {
         return subscribers;
     }

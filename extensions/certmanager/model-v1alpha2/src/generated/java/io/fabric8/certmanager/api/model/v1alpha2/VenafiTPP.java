@@ -93,6 +93,7 @@ public class VenafiTPP implements Editable<VenafiTPPBuilder> , KubernetesResourc
     }
 
     @JsonProperty("caBundle")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public String getCaBundle() {
         return caBundle;
     }

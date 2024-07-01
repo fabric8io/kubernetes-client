@@ -126,6 +126,7 @@ public class CPU implements Editable<CPUBuilder> , KubernetesResource
     }
 
     @JsonProperty("flags")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getFlags() {
         return flags;
     }

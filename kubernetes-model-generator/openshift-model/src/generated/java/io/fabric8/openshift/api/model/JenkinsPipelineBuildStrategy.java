@@ -89,6 +89,7 @@ public class JenkinsPipelineBuildStrategy implements Editable<JenkinsPipelineBui
     }
 
     @JsonProperty("env")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<EnvVar> getEnv() {
         return env;
     }

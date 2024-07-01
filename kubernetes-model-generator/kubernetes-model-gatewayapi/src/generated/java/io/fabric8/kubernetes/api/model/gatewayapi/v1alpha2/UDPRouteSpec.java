@@ -86,6 +86,7 @@ public class UDPRouteSpec implements Editable<UDPRouteSpecBuilder> , KubernetesR
     }
 
     @JsonProperty("parentRefs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ParentReference> getParentRefs() {
         return parentRefs;
     }

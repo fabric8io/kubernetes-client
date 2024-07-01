@@ -80,6 +80,7 @@ public class ProjectSpec implements Editable<ProjectSpecBuilder> , KubernetesRes
     }
 
     @JsonProperty("finalizers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getFinalizers() {
         return finalizers;
     }

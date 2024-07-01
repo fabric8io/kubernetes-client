@@ -89,6 +89,7 @@ public class ResolutionRequestSpec implements Editable<ResolutionRequestSpecBuil
     }
 
     @JsonProperty("params")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Param> getParams() {
         return params;
     }

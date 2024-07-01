@@ -95,6 +95,7 @@ public class LDAPAttributeMapping implements Editable<LDAPAttributeMappingBuilde
     }
 
     @JsonProperty("email")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getEmail() {
         return email;
     }
@@ -115,6 +116,7 @@ public class LDAPAttributeMapping implements Editable<LDAPAttributeMappingBuilde
     }
 
     @JsonProperty("name")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getName() {
         return name;
     }
@@ -125,6 +127,7 @@ public class LDAPAttributeMapping implements Editable<LDAPAttributeMappingBuilde
     }
 
     @JsonProperty("preferredUsername")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getPreferredUsername() {
         return preferredUsername;
     }

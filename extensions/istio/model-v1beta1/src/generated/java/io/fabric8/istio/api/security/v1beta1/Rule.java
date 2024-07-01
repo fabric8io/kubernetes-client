@@ -98,6 +98,7 @@ public class Rule implements Editable<RuleBuilder> , KubernetesResource
     }
 
     @JsonProperty("from")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<RuleFrom> getFrom() {
         return from;
     }
@@ -108,6 +109,7 @@ public class Rule implements Editable<RuleBuilder> , KubernetesResource
     }
 
     @JsonProperty("to")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<RuleTo> getTo() {
         return to;
     }
@@ -118,6 +120,7 @@ public class Rule implements Editable<RuleBuilder> , KubernetesResource
     }
 
     @JsonProperty("when")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getWhen() {
         return when;
     }

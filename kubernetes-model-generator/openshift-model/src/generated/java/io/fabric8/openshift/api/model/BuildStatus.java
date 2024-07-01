@@ -148,6 +148,7 @@ public class BuildStatus implements Editable<BuildStatusBuilder> , KubernetesRes
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<BuildCondition> getConditions() {
         return conditions;
     }
@@ -238,6 +239,7 @@ public class BuildStatus implements Editable<BuildStatusBuilder> , KubernetesRes
     }
 
     @JsonProperty("stages")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<StageInfo> getStages() {
         return stages;
     }

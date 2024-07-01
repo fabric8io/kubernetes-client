@@ -96,6 +96,7 @@ public class MatchResources implements Editable<MatchResourcesBuilder> , Kuberne
     }
 
     @JsonProperty("excludeResourceRules")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<NamedRuleWithOperations> getExcludeResourceRules() {
         return excludeResourceRules;
     }
@@ -136,6 +137,7 @@ public class MatchResources implements Editable<MatchResourcesBuilder> , Kuberne
     }
 
     @JsonProperty("resourceRules")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<NamedRuleWithOperations> getResourceRules() {
         return resourceRules;
     }

@@ -88,6 +88,7 @@ public class OAuthSpec implements Editable<OAuthSpecBuilder> , KubernetesResourc
     }
 
     @JsonProperty("identityProviders")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<IdentityProvider> getIdentityProviders() {
         return identityProviders;
     }

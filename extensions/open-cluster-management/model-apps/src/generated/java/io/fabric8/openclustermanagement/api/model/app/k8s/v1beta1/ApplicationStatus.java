@@ -101,6 +101,7 @@ public class ApplicationStatus implements Editable<ApplicationStatusBuilder> , K
     }
 
     @JsonProperty("components")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ObjectStatus> getComponents() {
         return components;
     }
@@ -121,6 +122,7 @@ public class ApplicationStatus implements Editable<ApplicationStatusBuilder> , K
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }

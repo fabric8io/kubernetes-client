@@ -113,6 +113,7 @@ public class OrderStatus implements Editable<OrderStatusBuilder> , KubernetesRes
     }
 
     @JsonProperty("authorizations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ACMEAuthorization> getAuthorizations() {
         return authorizations;
     }
@@ -123,6 +124,7 @@ public class OrderStatus implements Editable<OrderStatusBuilder> , KubernetesRes
     }
 
     @JsonProperty("certificate")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public String getCertificate() {
         return certificate;
     }

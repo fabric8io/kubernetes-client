@@ -96,6 +96,7 @@ public class APIResource implements Editable<APIResourceBuilder> , KubernetesRes
     }
 
     @JsonProperty("categories")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getCategories() {
         return categories;
     }
@@ -146,6 +147,7 @@ public class APIResource implements Editable<APIResourceBuilder> , KubernetesRes
     }
 
     @JsonProperty("shortNames")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getShortNames() {
         return shortNames;
     }

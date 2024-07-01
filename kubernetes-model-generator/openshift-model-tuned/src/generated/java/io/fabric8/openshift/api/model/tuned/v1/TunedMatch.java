@@ -102,6 +102,7 @@ public class TunedMatch implements Editable<TunedMatchBuilder> , KubernetesResou
     }
 
     @JsonProperty("match")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TunedMatch> getMatch() {
         return match;
     }

@@ -145,6 +145,7 @@ public class ServerTLSSettings implements Editable<ServerTLSSettingsBuilder> , K
     }
 
     @JsonProperty("cipherSuites")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getCipherSuites() {
         return cipherSuites;
     }
@@ -225,6 +226,7 @@ public class ServerTLSSettings implements Editable<ServerTLSSettingsBuilder> , K
     }
 
     @JsonProperty("subjectAltNames")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getSubjectAltNames() {
         return subjectAltNames;
     }
@@ -235,6 +237,7 @@ public class ServerTLSSettings implements Editable<ServerTLSSettingsBuilder> , K
     }
 
     @JsonProperty("verifyCertificateHash")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getVerifyCertificateHash() {
         return verifyCertificateHash;
     }
@@ -245,6 +248,7 @@ public class ServerTLSSettings implements Editable<ServerTLSSettingsBuilder> , K
     }
 
     @JsonProperty("verifyCertificateSpki")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getVerifyCertificateSpki() {
         return verifyCertificateSpki;
     }

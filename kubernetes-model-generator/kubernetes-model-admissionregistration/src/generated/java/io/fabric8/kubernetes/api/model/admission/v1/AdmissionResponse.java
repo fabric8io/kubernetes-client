@@ -166,6 +166,7 @@ public class AdmissionResponse implements Editable<AdmissionResponseBuilder> , K
     }
 
     @JsonProperty("warnings")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getWarnings() {
         return warnings;
     }

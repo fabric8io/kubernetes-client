@@ -136,6 +136,7 @@ public class TriggerSpec implements Editable<TriggerSpecBuilder> , KubernetesRes
     }
 
     @JsonProperty("filters")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<SubscriptionsAPIFilter> getFilters() {
         return filters;
     }

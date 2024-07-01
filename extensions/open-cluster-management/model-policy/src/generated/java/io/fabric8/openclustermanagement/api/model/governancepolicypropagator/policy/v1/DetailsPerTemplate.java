@@ -105,6 +105,7 @@ public class DetailsPerTemplate implements Editable<DetailsPerTemplateBuilder> ,
     }
 
     @JsonProperty("history")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ComplianceHistory> getHistory() {
         return history;
     }

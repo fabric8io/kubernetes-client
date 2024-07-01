@@ -5,6 +5,7 @@
 #### Bugs
 * Fix #6059: Swallow rejected execution from internal usage of the informer executor
 * Fix #6068: KubernetesMockServer provides incomplete Configuration while creating test Config for KubernetesClient
+* Fix #6085: model getters have same annotations as fields (breaks native)
 
 ### 6.13.0 (2024-05-29)
 

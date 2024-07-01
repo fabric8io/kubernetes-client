@@ -114,6 +114,7 @@ public class MachineStatus implements Editable<MachineStatusBuilder> , Kubernete
     }
 
     @JsonProperty("addresses")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<NodeAddress> getAddresses() {
         return addresses;
     }
@@ -124,6 +125,7 @@ public class MachineStatus implements Editable<MachineStatusBuilder> , Kubernete
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }

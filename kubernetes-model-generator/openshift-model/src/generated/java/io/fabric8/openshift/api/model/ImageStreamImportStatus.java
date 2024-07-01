@@ -88,6 +88,7 @@ public class ImageStreamImportStatus implements Editable<ImageStreamImportStatus
     }
 
     @JsonProperty("images")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ImageImportStatus> getImages() {
         return images;
     }

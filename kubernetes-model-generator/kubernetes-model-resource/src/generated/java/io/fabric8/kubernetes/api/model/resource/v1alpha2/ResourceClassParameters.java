@@ -137,6 +137,7 @@ public class ResourceClassParameters implements Editable<ResourceClassParameters
     }
 
     @JsonProperty("filters")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ResourceFilter> getFilters() {
         return filters;
     }
@@ -187,6 +188,7 @@ public class ResourceClassParameters implements Editable<ResourceClassParameters
     }
 
     @JsonProperty("vendorParameters")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<VendorParameters> getVendorParameters() {
         return vendorParameters;
     }

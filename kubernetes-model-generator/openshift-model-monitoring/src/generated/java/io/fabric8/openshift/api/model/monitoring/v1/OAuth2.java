@@ -128,6 +128,7 @@ public class OAuth2 implements Editable<OAuth2Builder> , KubernetesResource
     }
 
     @JsonProperty("scopes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getScopes() {
         return scopes;
     }

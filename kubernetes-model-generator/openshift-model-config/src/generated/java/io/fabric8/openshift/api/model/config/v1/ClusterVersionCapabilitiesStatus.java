@@ -85,6 +85,7 @@ public class ClusterVersionCapabilitiesStatus implements Editable<ClusterVersion
     }
 
     @JsonProperty("enabledCapabilities")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getEnabledCapabilities() {
         return enabledCapabilities;
     }
@@ -95,6 +96,7 @@ public class ClusterVersionCapabilitiesStatus implements Editable<ClusterVersion
     }
 
     @JsonProperty("knownCapabilities")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getKnownCapabilities() {
         return knownCapabilities;
     }

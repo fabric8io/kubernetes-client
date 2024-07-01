@@ -80,6 +80,7 @@ public class ProjectAccess implements Editable<ProjectAccessBuilder> , Kubernete
     }
 
     @JsonProperty("availableClusterRoles")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getAvailableClusterRoles() {
         return availableClusterRoles;
     }

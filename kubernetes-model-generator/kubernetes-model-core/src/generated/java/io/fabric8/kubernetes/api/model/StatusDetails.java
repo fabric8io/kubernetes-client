@@ -78,6 +78,7 @@ public class StatusDetails implements Editable<StatusDetailsBuilder> , Kubernete
     }
 
     @JsonProperty("causes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<StatusCause> getCauses() {
         return causes;
     }

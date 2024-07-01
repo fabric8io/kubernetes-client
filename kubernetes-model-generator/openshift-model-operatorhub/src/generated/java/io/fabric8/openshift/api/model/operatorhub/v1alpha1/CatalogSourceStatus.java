@@ -105,6 +105,7 @@ public class CatalogSourceStatus implements Editable<CatalogSourceStatusBuilder>
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }

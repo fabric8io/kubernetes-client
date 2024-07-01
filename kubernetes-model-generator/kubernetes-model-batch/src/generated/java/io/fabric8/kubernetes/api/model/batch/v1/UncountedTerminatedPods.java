@@ -85,6 +85,7 @@ public class UncountedTerminatedPods implements Editable<UncountedTerminatedPods
     }
 
     @JsonProperty("failed")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getFailed() {
         return failed;
     }
@@ -95,6 +96,7 @@ public class UncountedTerminatedPods implements Editable<UncountedTerminatedPods
     }
 
     @JsonProperty("succeeded")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getSucceeded() {
         return succeeded;
     }

@@ -163,6 +163,7 @@ public class HiveConfigSpec implements Editable<HiveConfigSpecBuilder> , Kuberne
     }
 
     @JsonProperty("additionalCertificateAuthoritiesSecretRef")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.LocalObjectReference> getAdditionalCertificateAuthoritiesSecretRef() {
         return additionalCertificateAuthoritiesSecretRef;
     }
@@ -223,6 +224,7 @@ public class HiveConfigSpec implements Editable<HiveConfigSpecBuilder> , Kuberne
     }
 
     @JsonProperty("deploymentConfig")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<DeploymentConfig> getDeploymentConfig() {
         return deploymentConfig;
     }
@@ -243,6 +245,7 @@ public class HiveConfigSpec implements Editable<HiveConfigSpecBuilder> , Kuberne
     }
 
     @JsonProperty("disabledControllers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getDisabledControllers() {
         return disabledControllers;
     }
@@ -313,6 +316,7 @@ public class HiveConfigSpec implements Editable<HiveConfigSpecBuilder> , Kuberne
     }
 
     @JsonProperty("managedDomains")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ManageDNSConfig> getManagedDomains() {
         return managedDomains;
     }

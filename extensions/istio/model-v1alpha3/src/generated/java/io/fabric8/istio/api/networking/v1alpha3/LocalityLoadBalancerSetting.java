@@ -102,6 +102,7 @@ public class LocalityLoadBalancerSetting implements Editable<LocalityLoadBalance
     }
 
     @JsonProperty("distribute")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<LocalityLoadBalancerSettingDistribute> getDistribute() {
         return distribute;
     }
@@ -122,6 +123,7 @@ public class LocalityLoadBalancerSetting implements Editable<LocalityLoadBalance
     }
 
     @JsonProperty("failover")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<LocalityLoadBalancerSettingFailover> getFailover() {
         return failover;
     }
@@ -132,6 +134,7 @@ public class LocalityLoadBalancerSetting implements Editable<LocalityLoadBalance
     }
 
     @JsonProperty("failoverPriority")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getFailoverPriority() {
         return failoverPriority;
     }

@@ -88,6 +88,7 @@ public class PlacementRuleStatus implements Editable<PlacementRuleStatusBuilder>
     }
 
     @JsonProperty("decisions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PlacementDecision> getDecisions() {
         return decisions;
     }

@@ -98,6 +98,7 @@ public class IngressControllerHTTPHeaders implements Editable<IngressControllerH
     }
 
     @JsonProperty("headerNameCaseAdjustments")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getHeaderNameCaseAdjustments() {
         return headerNameCaseAdjustments;
     }

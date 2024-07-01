@@ -104,6 +104,7 @@ public class SourceBuildStrategy implements Editable<SourceBuildStrategyBuilder>
     }
 
     @JsonProperty("env")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<EnvVar> getEnv() {
         return env;
     }
@@ -164,6 +165,7 @@ public class SourceBuildStrategy implements Editable<SourceBuildStrategyBuilder>
     }
 
     @JsonProperty("volumes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<BuildVolume> getVolumes() {
         return volumes;
     }

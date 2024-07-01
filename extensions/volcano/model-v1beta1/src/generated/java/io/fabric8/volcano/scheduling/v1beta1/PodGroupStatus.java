@@ -104,6 +104,7 @@ public class PodGroupStatus implements Editable<PodGroupStatusBuilder> , Kuberne
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PodGroupCondition> getConditions() {
         return conditions;
     }

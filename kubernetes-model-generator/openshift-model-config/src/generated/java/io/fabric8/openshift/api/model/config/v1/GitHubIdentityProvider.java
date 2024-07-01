@@ -141,6 +141,7 @@ public class GitHubIdentityProvider implements Editable<GitHubIdentityProviderBu
     }
 
     @JsonProperty("organizations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getOrganizations() {
         return organizations;
     }
@@ -151,6 +152,7 @@ public class GitHubIdentityProvider implements Editable<GitHubIdentityProviderBu
     }
 
     @JsonProperty("teams")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getTeams() {
         return teams;
     }

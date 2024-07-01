@@ -135,6 +135,7 @@ public class MachineSpec implements Editable<MachineSpecBuilder> , KubernetesRes
     }
 
     @JsonProperty("taints")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Taint> getTaints() {
         return taints;
     }

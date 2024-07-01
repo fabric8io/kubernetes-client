@@ -88,6 +88,7 @@ public class ResourceQuotaSpec implements Editable<ResourceQuotaSpecBuilder> , K
     }
 
     @JsonProperty("scopes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getScopes() {
         return scopes;
     }

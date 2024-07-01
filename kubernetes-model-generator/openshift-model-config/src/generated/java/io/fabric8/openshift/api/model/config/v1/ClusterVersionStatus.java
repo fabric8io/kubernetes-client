@@ -131,6 +131,7 @@ public class ClusterVersionStatus implements Editable<ClusterVersionStatusBuilde
     }
 
     @JsonProperty("conditionalUpdates")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ConditionalUpdate> getConditionalUpdates() {
         return conditionalUpdates;
     }
@@ -141,6 +142,7 @@ public class ClusterVersionStatus implements Editable<ClusterVersionStatusBuilde
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ClusterOperatorStatusCondition> getConditions() {
         return conditions;
     }
@@ -161,6 +163,7 @@ public class ClusterVersionStatus implements Editable<ClusterVersionStatusBuilde
     }
 
     @JsonProperty("history")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<UpdateHistory> getHistory() {
         return history;
     }

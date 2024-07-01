@@ -89,6 +89,7 @@ public class MultiClusterObservabilityStatus implements Editable<MultiClusterObs
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }

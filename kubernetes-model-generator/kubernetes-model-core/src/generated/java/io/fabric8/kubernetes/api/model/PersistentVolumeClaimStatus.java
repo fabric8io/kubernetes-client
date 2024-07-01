@@ -91,6 +91,7 @@ public class PersistentVolumeClaimStatus implements Editable<PersistentVolumeCla
     }
 
     @JsonProperty("accessModes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getAccessModes() {
         return accessModes;
     }
@@ -131,6 +132,7 @@ public class PersistentVolumeClaimStatus implements Editable<PersistentVolumeCla
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PersistentVolumeClaimCondition> getConditions() {
         return conditions;
     }

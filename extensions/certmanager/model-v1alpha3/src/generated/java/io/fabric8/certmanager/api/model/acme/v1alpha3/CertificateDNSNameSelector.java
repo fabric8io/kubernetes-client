@@ -98,6 +98,7 @@ public class CertificateDNSNameSelector implements Editable<CertificateDNSNameSe
     }
 
     @JsonProperty("dnsNames")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getDnsNames() {
         return dnsNames;
     }
@@ -108,6 +109,7 @@ public class CertificateDNSNameSelector implements Editable<CertificateDNSNameSe
     }
 
     @JsonProperty("dnsZones")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getDnsZones() {
         return dnsZones;
     }

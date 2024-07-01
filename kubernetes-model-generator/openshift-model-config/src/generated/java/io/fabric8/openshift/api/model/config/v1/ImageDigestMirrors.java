@@ -98,6 +98,7 @@ public class ImageDigestMirrors implements Editable<ImageDigestMirrorsBuilder> ,
     }
 
     @JsonProperty("mirrors")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getMirrors() {
         return mirrors;
     }

@@ -81,6 +81,7 @@ public class SecretVolumeSource implements Editable<SecretVolumeSourceBuilder> ,
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<KeyToPath> getItems() {
         return items;
     }

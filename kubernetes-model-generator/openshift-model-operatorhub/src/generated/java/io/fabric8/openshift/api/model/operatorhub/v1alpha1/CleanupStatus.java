@@ -80,6 +80,7 @@ public class CleanupStatus implements Editable<CleanupStatusBuilder> , Kubernete
     }
 
     @JsonProperty("pendingDeletion")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ResourceList> getPendingDeletion() {
         return pendingDeletion;
     }

@@ -108,6 +108,7 @@ public class Placement implements Editable<PlacementBuilder> , KubernetesResourc
     }
 
     @JsonProperty("clusters")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<GenericClusterReference> getClusters() {
         return clusters;
     }

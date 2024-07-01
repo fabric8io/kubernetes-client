@@ -145,6 +145,7 @@ public class GitHubSourceStatus implements Editable<GitHubSourceStatusBuilder> ,
     }
 
     @JsonProperty("ceAttributes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<CloudEventAttributes> getCeAttributes() {
         return ceAttributes;
     }
@@ -155,6 +156,7 @@ public class GitHubSourceStatus implements Editable<GitHubSourceStatusBuilder> ,
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }

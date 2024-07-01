@@ -115,6 +115,7 @@ public class PrometheusStatus implements Editable<PrometheusStatusBuilder> , Kub
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }
@@ -145,6 +146,7 @@ public class PrometheusStatus implements Editable<PrometheusStatusBuilder> , Kub
     }
 
     @JsonProperty("shardStatuses")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ShardStatus> getShardStatuses() {
         return shardStatuses;
     }

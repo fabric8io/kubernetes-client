@@ -113,6 +113,7 @@ public class CustomResourceDefinitionVersion implements Editable<CustomResourceD
     }
 
     @JsonProperty("additionalPrinterColumns")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<CustomResourceColumnDefinition> getAdditionalPrinterColumns() {
         return additionalPrinterColumns;
     }
@@ -163,6 +164,7 @@ public class CustomResourceDefinitionVersion implements Editable<CustomResourceD
     }
 
     @JsonProperty("selectableFields")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<SelectableField> getSelectableFields() {
         return selectableFields;
     }

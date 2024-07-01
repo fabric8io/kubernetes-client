@@ -116,6 +116,7 @@ public class Overrides implements Editable<OverridesBuilder> , KubernetesResourc
     }
 
     @JsonProperty("packageOverrides")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Map<String, Object>> getPackageOverrides() {
         return packageOverrides;
     }

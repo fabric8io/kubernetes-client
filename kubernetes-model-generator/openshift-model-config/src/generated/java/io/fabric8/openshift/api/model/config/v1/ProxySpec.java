@@ -126,6 +126,7 @@ public class ProxySpec implements Editable<ProxySpecBuilder> , KubernetesResourc
     }
 
     @JsonProperty("readinessEndpoints")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getReadinessEndpoints() {
         return readinessEndpoints;
     }

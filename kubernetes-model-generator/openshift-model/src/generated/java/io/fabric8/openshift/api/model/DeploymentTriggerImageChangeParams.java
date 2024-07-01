@@ -101,6 +101,7 @@ public class DeploymentTriggerImageChangeParams implements Editable<DeploymentTr
     }
 
     @JsonProperty("containerNames")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getContainerNames() {
         return containerNames;
     }

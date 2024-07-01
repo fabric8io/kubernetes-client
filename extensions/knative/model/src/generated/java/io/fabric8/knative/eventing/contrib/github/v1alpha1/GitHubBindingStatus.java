@@ -141,6 +141,7 @@ public class GitHubBindingStatus implements Editable<GitHubBindingStatusBuilder>
     }
 
     @JsonProperty("ceAttributes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<CloudEventAttributes> getCeAttributes() {
         return ceAttributes;
     }
@@ -151,6 +152,7 @@ public class GitHubBindingStatus implements Editable<GitHubBindingStatusBuilder>
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }

@@ -109,6 +109,7 @@ public class BundleLookup implements Editable<BundleLookupBuilder> , KubernetesR
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<BundleLookupCondition> getConditions() {
         return conditions;
     }

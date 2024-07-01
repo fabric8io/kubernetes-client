@@ -90,6 +90,7 @@ public class ConditionalUpdate implements Editable<ConditionalUpdateBuilder> , K
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }

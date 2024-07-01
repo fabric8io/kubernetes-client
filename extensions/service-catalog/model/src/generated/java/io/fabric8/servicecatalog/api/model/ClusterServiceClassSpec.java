@@ -221,6 +221,7 @@ public class ClusterServiceClassSpec implements Editable<ClusterServiceClassSpec
     }
 
     @JsonProperty("requires")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getRequires() {
         return requires;
     }
@@ -231,6 +232,7 @@ public class ClusterServiceClassSpec implements Editable<ClusterServiceClassSpec
     }
 
     @JsonProperty("tags")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getTags() {
         return tags;
     }

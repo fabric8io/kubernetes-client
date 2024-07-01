@@ -85,6 +85,7 @@ public class CustomFeatureGates implements Editable<CustomFeatureGatesBuilder> ,
     }
 
     @JsonProperty("disabled")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getDisabled() {
         return disabled;
     }
@@ -95,6 +96,7 @@ public class CustomFeatureGates implements Editable<CustomFeatureGatesBuilder> ,
     }
 
     @JsonProperty("enabled")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getEnabled() {
         return enabled;
     }

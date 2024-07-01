@@ -92,6 +92,7 @@ public class TimeChaosStatus implements Editable<TimeChaosStatusBuilder> , Kuber
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ChaosCondition> getConditions() {
         return conditions;
     }

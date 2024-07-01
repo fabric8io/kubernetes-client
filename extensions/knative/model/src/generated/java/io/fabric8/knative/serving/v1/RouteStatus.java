@@ -132,6 +132,7 @@ public class RouteStatus implements Editable<RouteStatusBuilder> , KubernetesRes
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }
@@ -152,6 +153,7 @@ public class RouteStatus implements Editable<RouteStatusBuilder> , KubernetesRes
     }
 
     @JsonProperty("traffic")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TrafficTarget> getTraffic() {
         return traffic;
     }

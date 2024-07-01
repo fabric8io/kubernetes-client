@@ -98,6 +98,7 @@ public class Perspective implements Editable<PerspectiveBuilder> , KubernetesRes
     }
 
     @JsonProperty("pinnedResources")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PinnedResourceReference> getPinnedResources() {
         return pinnedResources;
     }

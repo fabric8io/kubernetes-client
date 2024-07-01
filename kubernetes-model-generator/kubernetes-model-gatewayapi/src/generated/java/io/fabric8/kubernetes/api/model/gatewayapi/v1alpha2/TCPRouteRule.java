@@ -81,6 +81,7 @@ public class TCPRouteRule implements Editable<TCPRouteRuleBuilder> , KubernetesR
     }
 
     @JsonProperty("backendRefs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<BackendRef> getBackendRefs() {
         return backendRefs;
     }

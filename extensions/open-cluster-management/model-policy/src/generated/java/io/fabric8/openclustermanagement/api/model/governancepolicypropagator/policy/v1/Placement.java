@@ -101,6 +101,7 @@ public class Placement implements Editable<PlacementBuilder> , KubernetesResourc
     }
 
     @JsonProperty("decisions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PlacementDecision> getDecisions() {
         return decisions;
     }

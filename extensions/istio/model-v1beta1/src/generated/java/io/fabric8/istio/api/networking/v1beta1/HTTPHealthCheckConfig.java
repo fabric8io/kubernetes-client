@@ -114,6 +114,7 @@ public class HTTPHealthCheckConfig implements Editable<HTTPHealthCheckConfigBuil
     }
 
     @JsonProperty("httpHeaders")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<HTTPHeader> getHttpHeaders() {
         return httpHeaders;
     }

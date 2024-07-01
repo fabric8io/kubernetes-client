@@ -337,6 +337,7 @@ public class BareMetalHostSpec implements Editable<BareMetalHostSpecBuilder> , K
     }
 
     @JsonProperty("taints")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Taint> getTaints() {
         return taints;
     }

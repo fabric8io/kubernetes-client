@@ -69,6 +69,7 @@ public class PodDNSConfig implements Editable<PodDNSConfigBuilder> , KubernetesR
     }
 
     @JsonProperty("nameservers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getNameservers() {
         return nameservers;
     }
@@ -79,6 +80,7 @@ public class PodDNSConfig implements Editable<PodDNSConfigBuilder> , KubernetesR
     }
 
     @JsonProperty("options")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PodDNSConfigOption> getOptions() {
         return options;
     }
@@ -89,6 +91,7 @@ public class PodDNSConfig implements Editable<PodDNSConfigBuilder> , KubernetesR
     }
 
     @JsonProperty("searches")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getSearches() {
         return searches;
     }

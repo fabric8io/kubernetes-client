@@ -130,6 +130,7 @@ public class AccessLogging implements Editable<AccessLoggingBuilder> , Kubernete
     }
 
     @JsonProperty("providers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ProviderRef> getProviders() {
         return providers;
     }

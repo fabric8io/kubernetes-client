@@ -102,6 +102,7 @@ public class ResourceLimits implements Editable<ResourceLimitsBuilder> , Kuberne
     }
 
     @JsonProperty("gpus")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<GPULimit> getGpus() {
         return gpus;
     }

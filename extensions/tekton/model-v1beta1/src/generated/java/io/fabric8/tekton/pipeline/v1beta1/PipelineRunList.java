@@ -138,6 +138,7 @@ public class PipelineRunList implements Editable<PipelineRunListBuilder> , Kuber
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.tekton.pipeline.v1beta1.PipelineRun> getItems() {
         return items;
     }
