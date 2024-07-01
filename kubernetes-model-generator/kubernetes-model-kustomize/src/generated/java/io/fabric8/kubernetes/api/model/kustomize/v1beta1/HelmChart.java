@@ -53,37 +53,37 @@ public class HelmChart implements Editable<HelmChartBuilder> , KubernetesResourc
 
     @JsonProperty("additionalValuesFiles")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> additionalValuesFiles = new ArrayList<java.lang.String>();
+    private List<String> additionalValuesFiles = new ArrayList<String>();
     @JsonProperty("apiVersions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> apiVersions = new ArrayList<java.lang.String>();
+    private List<String> apiVersions = new ArrayList<String>();
     @JsonProperty("includeCRDs")
     private Boolean includeCRDs;
     @JsonProperty("name")
-    private java.lang.String name;
+    private String name;
     @JsonProperty("nameTemplate")
-    private java.lang.String nameTemplate;
+    private String nameTemplate;
     @JsonProperty("namespace")
-    private java.lang.String namespace;
+    private String namespace;
     @JsonProperty("releaseName")
-    private java.lang.String releaseName;
+    private String releaseName;
     @JsonProperty("repo")
-    private java.lang.String repo;
+    private String repo;
     @JsonProperty("skipHooks")
     private Boolean skipHooks;
     @JsonProperty("skipTests")
     private Boolean skipTests;
     @JsonProperty("valuesFile")
-    private java.lang.String valuesFile;
+    private String valuesFile;
     @JsonProperty("valuesInline")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, Object> valuesInline = new LinkedHashMap<String, Object>();
     @JsonProperty("valuesMerge")
-    private java.lang.String valuesMerge;
+    private String valuesMerge;
     @JsonProperty("version")
-    private java.lang.String version;
+    private String version;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -92,7 +92,7 @@ public class HelmChart implements Editable<HelmChartBuilder> , KubernetesResourc
     public HelmChart() {
     }
 
-    public HelmChart(List<java.lang.String> additionalValuesFiles, List<java.lang.String> apiVersions, Boolean includeCRDs, java.lang.String name, java.lang.String nameTemplate, java.lang.String namespace, java.lang.String releaseName, java.lang.String repo, Boolean skipHooks, Boolean skipTests, java.lang.String valuesFile, Map<String, Object> valuesInline, java.lang.String valuesMerge, java.lang.String version) {
+    public HelmChart(List<String> additionalValuesFiles, List<String> apiVersions, Boolean includeCRDs, String name, String nameTemplate, String namespace, String releaseName, String repo, Boolean skipHooks, Boolean skipTests, String valuesFile, Map<String, Object> valuesInline, String valuesMerge, String version) {
         super();
         this.additionalValuesFiles = additionalValuesFiles;
         this.apiVersions = apiVersions;
@@ -112,23 +112,23 @@ public class HelmChart implements Editable<HelmChartBuilder> , KubernetesResourc
 
     @JsonProperty("additionalValuesFiles")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<java.lang.String> getAdditionalValuesFiles() {
+    public List<String> getAdditionalValuesFiles() {
         return additionalValuesFiles;
     }
 
     @JsonProperty("additionalValuesFiles")
-    public void setAdditionalValuesFiles(List<java.lang.String> additionalValuesFiles) {
+    public void setAdditionalValuesFiles(List<String> additionalValuesFiles) {
         this.additionalValuesFiles = additionalValuesFiles;
     }
 
     @JsonProperty("apiVersions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<java.lang.String> getApiVersions() {
+    public List<String> getApiVersions() {
         return apiVersions;
     }
 
     @JsonProperty("apiVersions")
-    public void setApiVersions(List<java.lang.String> apiVersions) {
+    public void setApiVersions(List<String> apiVersions) {
         this.apiVersions = apiVersions;
     }
 
@@ -143,52 +143,52 @@ public class HelmChart implements Editable<HelmChartBuilder> , KubernetesResourc
     }
 
     @JsonProperty("name")
-    public java.lang.String getName() {
+    public String getName() {
         return name;
     }
 
     @JsonProperty("name")
-    public void setName(java.lang.String name) {
+    public void setName(String name) {
         this.name = name;
     }
 
     @JsonProperty("nameTemplate")
-    public java.lang.String getNameTemplate() {
+    public String getNameTemplate() {
         return nameTemplate;
     }
 
     @JsonProperty("nameTemplate")
-    public void setNameTemplate(java.lang.String nameTemplate) {
+    public void setNameTemplate(String nameTemplate) {
         this.nameTemplate = nameTemplate;
     }
 
     @JsonProperty("namespace")
-    public java.lang.String getNamespace() {
+    public String getNamespace() {
         return namespace;
     }
 
     @JsonProperty("namespace")
-    public void setNamespace(java.lang.String namespace) {
+    public void setNamespace(String namespace) {
         this.namespace = namespace;
     }
 
     @JsonProperty("releaseName")
-    public java.lang.String getReleaseName() {
+    public String getReleaseName() {
         return releaseName;
     }
 
     @JsonProperty("releaseName")
-    public void setReleaseName(java.lang.String releaseName) {
+    public void setReleaseName(String releaseName) {
         this.releaseName = releaseName;
     }
 
     @JsonProperty("repo")
-    public java.lang.String getRepo() {
+    public String getRepo() {
         return repo;
     }
 
     @JsonProperty("repo")
-    public void setRepo(java.lang.String repo) {
+    public void setRepo(String repo) {
         this.repo = repo;
     }
 
@@ -213,12 +213,12 @@ public class HelmChart implements Editable<HelmChartBuilder> , KubernetesResourc
     }
 
     @JsonProperty("valuesFile")
-    public java.lang.String getValuesFile() {
+    public String getValuesFile() {
         return valuesFile;
     }
 
     @JsonProperty("valuesFile")
-    public void setValuesFile(java.lang.String valuesFile) {
+    public void setValuesFile(String valuesFile) {
         this.valuesFile = valuesFile;
     }
 
@@ -233,22 +233,22 @@ public class HelmChart implements Editable<HelmChartBuilder> , KubernetesResourc
     }
 
     @JsonProperty("valuesMerge")
-    public java.lang.String getValuesMerge() {
+    public String getValuesMerge() {
         return valuesMerge;
     }
 
     @JsonProperty("valuesMerge")
-    public void setValuesMerge(java.lang.String valuesMerge) {
+    public void setValuesMerge(String valuesMerge) {
         this.valuesMerge = valuesMerge;
     }
 
     @JsonProperty("version")
-    public java.lang.String getVersion() {
+    public String getVersion() {
         return version;
     }
 
     @JsonProperty("version")
-    public void setVersion(java.lang.String version) {
+    public void setVersion(String version) {
         this.version = version;
     }
 
@@ -263,12 +263,12 @@ public class HelmChart implements Editable<HelmChartBuilder> , KubernetesResourc
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 

@@ -60,14 +60,14 @@ public class ProxyConfig implements Editable<ProxyConfigBuilder> , KubernetesRes
 {
 
     @JsonProperty("bindAddress")
-    private java.lang.String bindAddress;
+    private String bindAddress;
     @JsonProperty("iptablesSyncPeriod")
-    private java.lang.String iptablesSyncPeriod;
+    private String iptablesSyncPeriod;
     @JsonProperty("proxyArguments")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, ArrayList<String>> proxyArguments = new LinkedHashMap<String, ArrayList<String>>();
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -76,7 +76,7 @@ public class ProxyConfig implements Editable<ProxyConfigBuilder> , KubernetesRes
     public ProxyConfig() {
     }
 
-    public ProxyConfig(java.lang.String bindAddress, java.lang.String iptablesSyncPeriod, Map<String, ArrayList<String>> proxyArguments) {
+    public ProxyConfig(String bindAddress, String iptablesSyncPeriod, Map<String, ArrayList<String>> proxyArguments) {
         super();
         this.bindAddress = bindAddress;
         this.iptablesSyncPeriod = iptablesSyncPeriod;
@@ -84,22 +84,22 @@ public class ProxyConfig implements Editable<ProxyConfigBuilder> , KubernetesRes
     }
 
     @JsonProperty("bindAddress")
-    public java.lang.String getBindAddress() {
+    public String getBindAddress() {
         return bindAddress;
     }
 
     @JsonProperty("bindAddress")
-    public void setBindAddress(java.lang.String bindAddress) {
+    public void setBindAddress(String bindAddress) {
         this.bindAddress = bindAddress;
     }
 
     @JsonProperty("iptablesSyncPeriod")
-    public java.lang.String getIptablesSyncPeriod() {
+    public String getIptablesSyncPeriod() {
         return iptablesSyncPeriod;
     }
 
     @JsonProperty("iptablesSyncPeriod")
-    public void setIptablesSyncPeriod(java.lang.String iptablesSyncPeriod) {
+    public void setIptablesSyncPeriod(String iptablesSyncPeriod) {
         this.iptablesSyncPeriod = iptablesSyncPeriod;
     }
 
@@ -124,12 +124,12 @@ public class ProxyConfig implements Editable<ProxyConfigBuilder> , KubernetesRes
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 

@@ -87,7 +87,7 @@ public class PodSpec implements Editable<PodSpecBuilder> , KubernetesResource
     @JsonProperty("dnsConfig")
     private PodDNSConfig dnsConfig;
     @JsonProperty("dnsPolicy")
-    private java.lang.String dnsPolicy;
+    private String dnsPolicy;
     @JsonProperty("enableServiceLinks")
     private Boolean enableServiceLinks;
     @JsonProperty("ephemeralContainers")
@@ -105,7 +105,7 @@ public class PodSpec implements Editable<PodSpecBuilder> , KubernetesResource
     @JsonProperty("hostUsers")
     private Boolean hostUsers;
     @JsonProperty("hostname")
-    private java.lang.String hostname;
+    private String hostname;
     @JsonProperty("imagePullSecrets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<LocalObjectReference> imagePullSecrets = new ArrayList<LocalObjectReference>();
@@ -113,7 +113,7 @@ public class PodSpec implements Editable<PodSpecBuilder> , KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Container> initContainers = new ArrayList<Container>();
     @JsonProperty("nodeName")
-    private java.lang.String nodeName;
+    private String nodeName;
     @JsonProperty("nodeSelector")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> nodeSelector = new LinkedHashMap<String, String>();
@@ -123,11 +123,11 @@ public class PodSpec implements Editable<PodSpecBuilder> , KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, Quantity> overhead = new LinkedHashMap<String, Quantity>();
     @JsonProperty("preemptionPolicy")
-    private java.lang.String preemptionPolicy;
+    private String preemptionPolicy;
     @JsonProperty("priority")
     private Integer priority;
     @JsonProperty("priorityClassName")
-    private java.lang.String priorityClassName;
+    private String priorityClassName;
     @JsonProperty("readinessGates")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<PodReadinessGate> readinessGates = new ArrayList<PodReadinessGate>();
@@ -135,26 +135,26 @@ public class PodSpec implements Editable<PodSpecBuilder> , KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<PodResourceClaim> resourceClaims = new ArrayList<PodResourceClaim>();
     @JsonProperty("restartPolicy")
-    private java.lang.String restartPolicy;
+    private String restartPolicy;
     @JsonProperty("runtimeClassName")
-    private java.lang.String runtimeClassName;
+    private String runtimeClassName;
     @JsonProperty("schedulerName")
-    private java.lang.String schedulerName;
+    private String schedulerName;
     @JsonProperty("schedulingGates")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<PodSchedulingGate> schedulingGates = new ArrayList<PodSchedulingGate>();
     @JsonProperty("securityContext")
     private PodSecurityContext securityContext;
     @JsonProperty("serviceAccount")
-    private java.lang.String serviceAccount;
+    private String serviceAccount;
     @JsonProperty("serviceAccountName")
-    private java.lang.String serviceAccountName;
+    private String serviceAccountName;
     @JsonProperty("setHostnameAsFQDN")
     private Boolean setHostnameAsFQDN;
     @JsonProperty("shareProcessNamespace")
     private Boolean shareProcessNamespace;
     @JsonProperty("subdomain")
-    private java.lang.String subdomain;
+    private String subdomain;
     @JsonProperty("terminationGracePeriodSeconds")
     private Long terminationGracePeriodSeconds;
     @JsonProperty("tolerations")
@@ -167,7 +167,7 @@ public class PodSpec implements Editable<PodSpecBuilder> , KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Volume> volumes = new ArrayList<Volume>();
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -176,7 +176,7 @@ public class PodSpec implements Editable<PodSpecBuilder> , KubernetesResource
     public PodSpec() {
     }
 
-    public PodSpec(Long activeDeadlineSeconds, Affinity affinity, Boolean automountServiceAccountToken, List<Container> containers, PodDNSConfig dnsConfig, java.lang.String dnsPolicy, Boolean enableServiceLinks, List<EphemeralContainer> ephemeralContainers, List<HostAlias> hostAliases, Boolean hostIPC, Boolean hostNetwork, Boolean hostPID, Boolean hostUsers, java.lang.String hostname, List<LocalObjectReference> imagePullSecrets, List<Container> initContainers, java.lang.String nodeName, Map<String, String> nodeSelector, PodOS os, Map<String, Quantity> overhead, java.lang.String preemptionPolicy, Integer priority, java.lang.String priorityClassName, List<PodReadinessGate> readinessGates, List<PodResourceClaim> resourceClaims, java.lang.String restartPolicy, java.lang.String runtimeClassName, java.lang.String schedulerName, List<PodSchedulingGate> schedulingGates, PodSecurityContext securityContext, java.lang.String serviceAccount, java.lang.String serviceAccountName, Boolean setHostnameAsFQDN, Boolean shareProcessNamespace, java.lang.String subdomain, Long terminationGracePeriodSeconds, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, List<Volume> volumes) {
+    public PodSpec(Long activeDeadlineSeconds, Affinity affinity, Boolean automountServiceAccountToken, List<Container> containers, PodDNSConfig dnsConfig, String dnsPolicy, Boolean enableServiceLinks, List<EphemeralContainer> ephemeralContainers, List<HostAlias> hostAliases, Boolean hostIPC, Boolean hostNetwork, Boolean hostPID, Boolean hostUsers, String hostname, List<LocalObjectReference> imagePullSecrets, List<Container> initContainers, String nodeName, Map<String, String> nodeSelector, PodOS os, Map<String, Quantity> overhead, String preemptionPolicy, Integer priority, String priorityClassName, List<PodReadinessGate> readinessGates, List<PodResourceClaim> resourceClaims, String restartPolicy, String runtimeClassName, String schedulerName, List<PodSchedulingGate> schedulingGates, PodSecurityContext securityContext, String serviceAccount, String serviceAccountName, Boolean setHostnameAsFQDN, Boolean shareProcessNamespace, String subdomain, Long terminationGracePeriodSeconds, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, List<Volume> volumes) {
         super();
         this.activeDeadlineSeconds = activeDeadlineSeconds;
         this.affinity = affinity;
@@ -270,12 +270,12 @@ public class PodSpec implements Editable<PodSpecBuilder> , KubernetesResource
     }
 
     @JsonProperty("dnsPolicy")
-    public java.lang.String getDnsPolicy() {
+    public String getDnsPolicy() {
         return dnsPolicy;
     }
 
     @JsonProperty("dnsPolicy")
-    public void setDnsPolicy(java.lang.String dnsPolicy) {
+    public void setDnsPolicy(String dnsPolicy) {
         this.dnsPolicy = dnsPolicy;
     }
 
@@ -352,12 +352,12 @@ public class PodSpec implements Editable<PodSpecBuilder> , KubernetesResource
     }
 
     @JsonProperty("hostname")
-    public java.lang.String getHostname() {
+    public String getHostname() {
         return hostname;
     }
 
     @JsonProperty("hostname")
-    public void setHostname(java.lang.String hostname) {
+    public void setHostname(String hostname) {
         this.hostname = hostname;
     }
 
@@ -384,12 +384,12 @@ public class PodSpec implements Editable<PodSpecBuilder> , KubernetesResource
     }
 
     @JsonProperty("nodeName")
-    public java.lang.String getNodeName() {
+    public String getNodeName() {
         return nodeName;
     }
 
     @JsonProperty("nodeName")
-    public void setNodeName(java.lang.String nodeName) {
+    public void setNodeName(String nodeName) {
         this.nodeName = nodeName;
     }
 
@@ -424,12 +424,12 @@ public class PodSpec implements Editable<PodSpecBuilder> , KubernetesResource
     }
 
     @JsonProperty("preemptionPolicy")
-    public java.lang.String getPreemptionPolicy() {
+    public String getPreemptionPolicy() {
         return preemptionPolicy;
     }
 
     @JsonProperty("preemptionPolicy")
-    public void setPreemptionPolicy(java.lang.String preemptionPolicy) {
+    public void setPreemptionPolicy(String preemptionPolicy) {
         this.preemptionPolicy = preemptionPolicy;
     }
 
@@ -444,12 +444,12 @@ public class PodSpec implements Editable<PodSpecBuilder> , KubernetesResource
     }
 
     @JsonProperty("priorityClassName")
-    public java.lang.String getPriorityClassName() {
+    public String getPriorityClassName() {
         return priorityClassName;
     }
 
     @JsonProperty("priorityClassName")
-    public void setPriorityClassName(java.lang.String priorityClassName) {
+    public void setPriorityClassName(String priorityClassName) {
         this.priorityClassName = priorityClassName;
     }
 
@@ -476,32 +476,32 @@ public class PodSpec implements Editable<PodSpecBuilder> , KubernetesResource
     }
 
     @JsonProperty("restartPolicy")
-    public java.lang.String getRestartPolicy() {
+    public String getRestartPolicy() {
         return restartPolicy;
     }
 
     @JsonProperty("restartPolicy")
-    public void setRestartPolicy(java.lang.String restartPolicy) {
+    public void setRestartPolicy(String restartPolicy) {
         this.restartPolicy = restartPolicy;
     }
 
     @JsonProperty("runtimeClassName")
-    public java.lang.String getRuntimeClassName() {
+    public String getRuntimeClassName() {
         return runtimeClassName;
     }
 
     @JsonProperty("runtimeClassName")
-    public void setRuntimeClassName(java.lang.String runtimeClassName) {
+    public void setRuntimeClassName(String runtimeClassName) {
         this.runtimeClassName = runtimeClassName;
     }
 
     @JsonProperty("schedulerName")
-    public java.lang.String getSchedulerName() {
+    public String getSchedulerName() {
         return schedulerName;
     }
 
     @JsonProperty("schedulerName")
-    public void setSchedulerName(java.lang.String schedulerName) {
+    public void setSchedulerName(String schedulerName) {
         this.schedulerName = schedulerName;
     }
 
@@ -527,22 +527,22 @@ public class PodSpec implements Editable<PodSpecBuilder> , KubernetesResource
     }
 
     @JsonProperty("serviceAccount")
-    public java.lang.String getServiceAccount() {
+    public String getServiceAccount() {
         return serviceAccount;
     }
 
     @JsonProperty("serviceAccount")
-    public void setServiceAccount(java.lang.String serviceAccount) {
+    public void setServiceAccount(String serviceAccount) {
         this.serviceAccount = serviceAccount;
     }
 
     @JsonProperty("serviceAccountName")
-    public java.lang.String getServiceAccountName() {
+    public String getServiceAccountName() {
         return serviceAccountName;
     }
 
     @JsonProperty("serviceAccountName")
-    public void setServiceAccountName(java.lang.String serviceAccountName) {
+    public void setServiceAccountName(String serviceAccountName) {
         this.serviceAccountName = serviceAccountName;
     }
 
@@ -567,12 +567,12 @@ public class PodSpec implements Editable<PodSpecBuilder> , KubernetesResource
     }
 
     @JsonProperty("subdomain")
-    public java.lang.String getSubdomain() {
+    public String getSubdomain() {
         return subdomain;
     }
 
     @JsonProperty("subdomain")
-    public void setSubdomain(java.lang.String subdomain) {
+    public void setSubdomain(String subdomain) {
         this.subdomain = subdomain;
     }
 
@@ -630,12 +630,12 @@ public class PodSpec implements Editable<PodSpecBuilder> , KubernetesResource
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 

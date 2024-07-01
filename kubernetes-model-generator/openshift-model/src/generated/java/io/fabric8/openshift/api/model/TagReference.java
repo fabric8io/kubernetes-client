@@ -71,13 +71,13 @@ public class TagReference implements Editable<TagReferenceBuilder> , KubernetesR
     @JsonProperty("importPolicy")
     private TagImportPolicy importPolicy;
     @JsonProperty("name")
-    private java.lang.String name;
+    private String name;
     @JsonProperty("reference")
     private Boolean reference;
     @JsonProperty("referencePolicy")
     private TagReferencePolicy referencePolicy;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -86,7 +86,7 @@ public class TagReference implements Editable<TagReferenceBuilder> , KubernetesR
     public TagReference() {
     }
 
-    public TagReference(Map<String, String> annotations, io.fabric8.kubernetes.api.model.ObjectReference from, Long generation, TagImportPolicy importPolicy, java.lang.String name, Boolean reference, TagReferencePolicy referencePolicy) {
+    public TagReference(Map<String, String> annotations, io.fabric8.kubernetes.api.model.ObjectReference from, Long generation, TagImportPolicy importPolicy, String name, Boolean reference, TagReferencePolicy referencePolicy) {
         super();
         this.annotations = annotations;
         this.from = from;
@@ -138,12 +138,12 @@ public class TagReference implements Editable<TagReferenceBuilder> , KubernetesR
     }
 
     @JsonProperty("name")
-    public java.lang.String getName() {
+    public String getName() {
         return name;
     }
 
     @JsonProperty("name")
-    public void setName(java.lang.String name) {
+    public void setName(String name) {
         this.name = name;
     }
 
@@ -178,12 +178,12 @@ public class TagReference implements Editable<TagReferenceBuilder> , KubernetesR
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 

@@ -64,12 +64,12 @@ public class GatewayTLSConfig implements Editable<GatewayTLSConfigBuilder> , Kub
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<SecretObjectReference> certificateRefs = new ArrayList<SecretObjectReference>();
     @JsonProperty("mode")
-    private java.lang.String mode;
+    private String mode;
     @JsonProperty("options")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> options = new LinkedHashMap<String, String>();
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -78,7 +78,7 @@ public class GatewayTLSConfig implements Editable<GatewayTLSConfigBuilder> , Kub
     public GatewayTLSConfig() {
     }
 
-    public GatewayTLSConfig(List<SecretObjectReference> certificateRefs, java.lang.String mode, Map<String, String> options) {
+    public GatewayTLSConfig(List<SecretObjectReference> certificateRefs, String mode, Map<String, String> options) {
         super();
         this.certificateRefs = certificateRefs;
         this.mode = mode;
@@ -97,12 +97,12 @@ public class GatewayTLSConfig implements Editable<GatewayTLSConfigBuilder> , Kub
     }
 
     @JsonProperty("mode")
-    public java.lang.String getMode() {
+    public String getMode() {
         return mode;
     }
 
     @JsonProperty("mode")
-    public void setMode(java.lang.String mode) {
+    public void setMode(String mode) {
         this.mode = mode;
     }
 
@@ -127,12 +127,12 @@ public class GatewayTLSConfig implements Editable<GatewayTLSConfigBuilder> , Kub
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 

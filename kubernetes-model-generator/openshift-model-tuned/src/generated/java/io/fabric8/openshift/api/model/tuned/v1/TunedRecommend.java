@@ -73,9 +73,9 @@ public class TunedRecommend implements Editable<TunedRecommendBuilder> , Kuberne
     @JsonProperty("priority")
     private Long priority;
     @JsonProperty("profile")
-    private java.lang.String profile;
+    private String profile;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -84,7 +84,7 @@ public class TunedRecommend implements Editable<TunedRecommendBuilder> , Kuberne
     public TunedRecommend() {
     }
 
-    public TunedRecommend(Map<String, String> machineConfigLabels, List<TunedMatch> match, OperandConfig operand, Long priority, java.lang.String profile) {
+    public TunedRecommend(Map<String, String> machineConfigLabels, List<TunedMatch> match, OperandConfig operand, Long priority, String profile) {
         super();
         this.machineConfigLabels = machineConfigLabels;
         this.match = match;
@@ -135,12 +135,12 @@ public class TunedRecommend implements Editable<TunedRecommendBuilder> , Kuberne
     }
 
     @JsonProperty("profile")
-    public java.lang.String getProfile() {
+    public String getProfile() {
         return profile;
     }
 
     @JsonProperty("profile")
-    public void setProfile(java.lang.String profile) {
+    public void setProfile(String profile) {
         this.profile = profile;
     }
 
@@ -155,12 +155,12 @@ public class TunedRecommend implements Editable<TunedRecommendBuilder> , Kuberne
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 

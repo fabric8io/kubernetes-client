@@ -68,30 +68,30 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
 {
 
     @JsonProperty("amiID")
-    private java.lang.String amiID;
+    private String amiID;
     @JsonProperty("defaultMachinePlatform")
     private MachinePool defaultMachinePlatform;
     @JsonProperty("experimentalPropagateUserTags")
     private Boolean experimentalPropagateUserTags;
     @JsonProperty("hostedZone")
-    private java.lang.String hostedZone;
+    private String hostedZone;
     @JsonProperty("lbType")
-    private java.lang.String lbType;
+    private String lbType;
     @JsonProperty("propagateUserTags")
     private Boolean propagateUserTags;
     @JsonProperty("region")
-    private java.lang.String region;
+    private String region;
     @JsonProperty("serviceEndpoints")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ServiceEndpoint> serviceEndpoints = new ArrayList<ServiceEndpoint>();
     @JsonProperty("subnets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> subnets = new ArrayList<java.lang.String>();
+    private List<String> subnets = new ArrayList<String>();
     @JsonProperty("userTags")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> userTags = new LinkedHashMap<String, String>();
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -100,7 +100,7 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     public Platform() {
     }
 
-    public Platform(java.lang.String amiID, MachinePool defaultMachinePlatform, Boolean experimentalPropagateUserTags, java.lang.String hostedZone, java.lang.String lbType, Boolean propagateUserTags, java.lang.String region, List<ServiceEndpoint> serviceEndpoints, List<java.lang.String> subnets, Map<String, String> userTags) {
+    public Platform(String amiID, MachinePool defaultMachinePlatform, Boolean experimentalPropagateUserTags, String hostedZone, String lbType, Boolean propagateUserTags, String region, List<ServiceEndpoint> serviceEndpoints, List<String> subnets, Map<String, String> userTags) {
         super();
         this.amiID = amiID;
         this.defaultMachinePlatform = defaultMachinePlatform;
@@ -115,12 +115,12 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     }
 
     @JsonProperty("amiID")
-    public java.lang.String getAmiID() {
+    public String getAmiID() {
         return amiID;
     }
 
     @JsonProperty("amiID")
-    public void setAmiID(java.lang.String amiID) {
+    public void setAmiID(String amiID) {
         this.amiID = amiID;
     }
 
@@ -145,22 +145,22 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     }
 
     @JsonProperty("hostedZone")
-    public java.lang.String getHostedZone() {
+    public String getHostedZone() {
         return hostedZone;
     }
 
     @JsonProperty("hostedZone")
-    public void setHostedZone(java.lang.String hostedZone) {
+    public void setHostedZone(String hostedZone) {
         this.hostedZone = hostedZone;
     }
 
     @JsonProperty("lbType")
-    public java.lang.String getLbType() {
+    public String getLbType() {
         return lbType;
     }
 
     @JsonProperty("lbType")
-    public void setLbType(java.lang.String lbType) {
+    public void setLbType(String lbType) {
         this.lbType = lbType;
     }
 
@@ -175,12 +175,12 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     }
 
     @JsonProperty("region")
-    public java.lang.String getRegion() {
+    public String getRegion() {
         return region;
     }
 
     @JsonProperty("region")
-    public void setRegion(java.lang.String region) {
+    public void setRegion(String region) {
         this.region = region;
     }
 
@@ -197,12 +197,12 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
 
     @JsonProperty("subnets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<java.lang.String> getSubnets() {
+    public List<String> getSubnets() {
         return subnets;
     }
 
     @JsonProperty("subnets")
-    public void setSubnets(List<java.lang.String> subnets) {
+    public void setSubnets(List<String> subnets) {
         this.subnets = subnets;
     }
 
@@ -227,12 +227,12 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 

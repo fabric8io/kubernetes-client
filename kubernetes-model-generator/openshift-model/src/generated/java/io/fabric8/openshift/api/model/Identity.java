@@ -75,7 +75,7 @@ public class Identity implements Editable<IdentityBuilder> , HasMetadata
      * 
      */
     @JsonProperty("apiVersion")
-    private java.lang.String apiVersion = "user.openshift.io/v1";
+    private String apiVersion = "user.openshift.io/v1";
     @JsonProperty("extra")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> extra = new LinkedHashMap<String, String>();
@@ -85,17 +85,17 @@ public class Identity implements Editable<IdentityBuilder> , HasMetadata
      * 
      */
     @JsonProperty("kind")
-    private java.lang.String kind = "Identity";
+    private String kind = "Identity";
     @JsonProperty("metadata")
     private io.fabric8.kubernetes.api.model.ObjectMeta metadata;
     @JsonProperty("providerName")
-    private java.lang.String providerName;
+    private String providerName;
     @JsonProperty("providerUserName")
-    private java.lang.String providerUserName;
+    private String providerUserName;
     @JsonProperty("user")
     private io.fabric8.kubernetes.api.model.ObjectReference user;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -104,7 +104,7 @@ public class Identity implements Editable<IdentityBuilder> , HasMetadata
     public Identity() {
     }
 
-    public Identity(java.lang.String apiVersion, Map<String, String> extra, java.lang.String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, java.lang.String providerName, java.lang.String providerUserName, io.fabric8.kubernetes.api.model.ObjectReference user) {
+    public Identity(String apiVersion, Map<String, String> extra, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, String providerName, String providerUserName, io.fabric8.kubernetes.api.model.ObjectReference user) {
         super();
         this.apiVersion = apiVersion;
         this.extra = extra;
@@ -121,7 +121,7 @@ public class Identity implements Editable<IdentityBuilder> , HasMetadata
      * 
      */
     @JsonProperty("apiVersion")
-    public java.lang.String getApiVersion() {
+    public String getApiVersion() {
         return apiVersion;
     }
 
@@ -131,7 +131,7 @@ public class Identity implements Editable<IdentityBuilder> , HasMetadata
      * 
      */
     @JsonProperty("apiVersion")
-    public void setApiVersion(java.lang.String apiVersion) {
+    public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
     }
 
@@ -151,7 +151,7 @@ public class Identity implements Editable<IdentityBuilder> , HasMetadata
      * 
      */
     @JsonProperty("kind")
-    public java.lang.String getKind() {
+    public String getKind() {
         return kind;
     }
 
@@ -161,7 +161,7 @@ public class Identity implements Editable<IdentityBuilder> , HasMetadata
      * 
      */
     @JsonProperty("kind")
-    public void setKind(java.lang.String kind) {
+    public void setKind(String kind) {
         this.kind = kind;
     }
 
@@ -176,22 +176,22 @@ public class Identity implements Editable<IdentityBuilder> , HasMetadata
     }
 
     @JsonProperty("providerName")
-    public java.lang.String getProviderName() {
+    public String getProviderName() {
         return providerName;
     }
 
     @JsonProperty("providerName")
-    public void setProviderName(java.lang.String providerName) {
+    public void setProviderName(String providerName) {
         this.providerName = providerName;
     }
 
     @JsonProperty("providerUserName")
-    public java.lang.String getProviderUserName() {
+    public String getProviderUserName() {
         return providerUserName;
     }
 
     @JsonProperty("providerUserName")
-    public void setProviderUserName(java.lang.String providerUserName) {
+    public void setProviderUserName(String providerUserName) {
         this.providerUserName = providerUserName;
     }
 
@@ -216,12 +216,12 @@ public class Identity implements Editable<IdentityBuilder> , HasMetadata
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 

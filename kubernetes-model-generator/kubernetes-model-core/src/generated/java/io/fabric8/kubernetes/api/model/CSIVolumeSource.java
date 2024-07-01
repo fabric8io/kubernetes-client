@@ -40,9 +40,9 @@ public class CSIVolumeSource implements Editable<CSIVolumeSourceBuilder> , Kuber
 {
 
     @JsonProperty("driver")
-    private java.lang.String driver;
+    private String driver;
     @JsonProperty("fsType")
-    private java.lang.String fsType;
+    private String fsType;
     @JsonProperty("nodePublishSecretRef")
     private LocalObjectReference nodePublishSecretRef;
     @JsonProperty("readOnly")
@@ -51,7 +51,7 @@ public class CSIVolumeSource implements Editable<CSIVolumeSourceBuilder> , Kuber
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> volumeAttributes = new LinkedHashMap<String, String>();
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -60,7 +60,7 @@ public class CSIVolumeSource implements Editable<CSIVolumeSourceBuilder> , Kuber
     public CSIVolumeSource() {
     }
 
-    public CSIVolumeSource(java.lang.String driver, java.lang.String fsType, LocalObjectReference nodePublishSecretRef, Boolean readOnly, Map<String, String> volumeAttributes) {
+    public CSIVolumeSource(String driver, String fsType, LocalObjectReference nodePublishSecretRef, Boolean readOnly, Map<String, String> volumeAttributes) {
         super();
         this.driver = driver;
         this.fsType = fsType;
@@ -70,22 +70,22 @@ public class CSIVolumeSource implements Editable<CSIVolumeSourceBuilder> , Kuber
     }
 
     @JsonProperty("driver")
-    public java.lang.String getDriver() {
+    public String getDriver() {
         return driver;
     }
 
     @JsonProperty("driver")
-    public void setDriver(java.lang.String driver) {
+    public void setDriver(String driver) {
         this.driver = driver;
     }
 
     @JsonProperty("fsType")
-    public java.lang.String getFsType() {
+    public String getFsType() {
         return fsType;
     }
 
     @JsonProperty("fsType")
-    public void setFsType(java.lang.String fsType) {
+    public void setFsType(String fsType) {
         this.fsType = fsType;
     }
 
@@ -130,12 +130,12 @@ public class CSIVolumeSource implements Editable<CSIVolumeSourceBuilder> , Kuber
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 

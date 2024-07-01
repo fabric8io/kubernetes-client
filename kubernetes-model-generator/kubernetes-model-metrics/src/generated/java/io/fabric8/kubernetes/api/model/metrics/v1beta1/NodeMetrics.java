@@ -91,7 +91,7 @@ public class NodeMetrics implements Editable<NodeMetricsBuilder> , HasMetadata
     private String timestamp;
     @JsonProperty("usage")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Quantity> usage = new LinkedHashMap<String, Quantity>();
+    private Map<java.lang.String, Quantity> usage = new LinkedHashMap<java.lang.String, Quantity>();
     @JsonProperty("window")
     private Duration window;
     @JsonIgnore
@@ -104,7 +104,7 @@ public class NodeMetrics implements Editable<NodeMetricsBuilder> , HasMetadata
     public NodeMetrics() {
     }
 
-    public NodeMetrics(java.lang.String apiVersion, java.lang.String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, String timestamp, Map<String, Quantity> usage, Duration window) {
+    public NodeMetrics(java.lang.String apiVersion, java.lang.String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, String timestamp, Map<java.lang.String, Quantity> usage, Duration window) {
         super();
         this.apiVersion = apiVersion;
         this.kind = kind;
@@ -175,12 +175,12 @@ public class NodeMetrics implements Editable<NodeMetricsBuilder> , HasMetadata
     }
 
     @JsonProperty("usage")
-    public Map<String, Quantity> getUsage() {
+    public Map<java.lang.String, Quantity> getUsage() {
         return usage;
     }
 
     @JsonProperty("usage")
-    public void setUsage(Map<String, Quantity> usage) {
+    public void setUsage(Map<java.lang.String, Quantity> usage) {
         this.usage = usage;
     }
 

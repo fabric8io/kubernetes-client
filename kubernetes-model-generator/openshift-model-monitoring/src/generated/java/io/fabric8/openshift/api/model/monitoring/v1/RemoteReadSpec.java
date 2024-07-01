@@ -75,9 +75,9 @@ public class RemoteReadSpec implements Editable<RemoteReadSpecBuilder> , Kuberne
     @JsonProperty("basicAuth")
     private BasicAuth basicAuth;
     @JsonProperty("bearerToken")
-    private java.lang.String bearerToken;
+    private String bearerToken;
     @JsonProperty("bearerTokenFile")
-    private java.lang.String bearerTokenFile;
+    private String bearerTokenFile;
     @JsonProperty("filterExternalLabels")
     private Boolean filterExternalLabels;
     @JsonProperty("followRedirects")
@@ -86,24 +86,24 @@ public class RemoteReadSpec implements Editable<RemoteReadSpecBuilder> , Kuberne
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> headers = new LinkedHashMap<String, String>();
     @JsonProperty("name")
-    private java.lang.String name;
+    private String name;
     @JsonProperty("oauth2")
     private OAuth2 oauth2;
     @JsonProperty("proxyUrl")
-    private java.lang.String proxyUrl;
+    private String proxyUrl;
     @JsonProperty("readRecent")
     private Boolean readRecent;
     @JsonProperty("remoteTimeout")
-    private java.lang.String remoteTimeout;
+    private String remoteTimeout;
     @JsonProperty("requiredMatchers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> requiredMatchers = new LinkedHashMap<String, String>();
     @JsonProperty("tlsConfig")
     private TLSConfig tlsConfig;
     @JsonProperty("url")
-    private java.lang.String url;
+    private String url;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -112,7 +112,7 @@ public class RemoteReadSpec implements Editable<RemoteReadSpecBuilder> , Kuberne
     public RemoteReadSpec() {
     }
 
-    public RemoteReadSpec(Authorization authorization, BasicAuth basicAuth, java.lang.String bearerToken, java.lang.String bearerTokenFile, Boolean filterExternalLabels, Boolean followRedirects, Map<String, String> headers, java.lang.String name, OAuth2 oauth2, java.lang.String proxyUrl, Boolean readRecent, java.lang.String remoteTimeout, Map<String, String> requiredMatchers, TLSConfig tlsConfig, java.lang.String url) {
+    public RemoteReadSpec(Authorization authorization, BasicAuth basicAuth, String bearerToken, String bearerTokenFile, Boolean filterExternalLabels, Boolean followRedirects, Map<String, String> headers, String name, OAuth2 oauth2, String proxyUrl, Boolean readRecent, String remoteTimeout, Map<String, String> requiredMatchers, TLSConfig tlsConfig, String url) {
         super();
         this.authorization = authorization;
         this.basicAuth = basicAuth;
@@ -152,22 +152,22 @@ public class RemoteReadSpec implements Editable<RemoteReadSpecBuilder> , Kuberne
     }
 
     @JsonProperty("bearerToken")
-    public java.lang.String getBearerToken() {
+    public String getBearerToken() {
         return bearerToken;
     }
 
     @JsonProperty("bearerToken")
-    public void setBearerToken(java.lang.String bearerToken) {
+    public void setBearerToken(String bearerToken) {
         this.bearerToken = bearerToken;
     }
 
     @JsonProperty("bearerTokenFile")
-    public java.lang.String getBearerTokenFile() {
+    public String getBearerTokenFile() {
         return bearerTokenFile;
     }
 
     @JsonProperty("bearerTokenFile")
-    public void setBearerTokenFile(java.lang.String bearerTokenFile) {
+    public void setBearerTokenFile(String bearerTokenFile) {
         this.bearerTokenFile = bearerTokenFile;
     }
 
@@ -202,12 +202,12 @@ public class RemoteReadSpec implements Editable<RemoteReadSpecBuilder> , Kuberne
     }
 
     @JsonProperty("name")
-    public java.lang.String getName() {
+    public String getName() {
         return name;
     }
 
     @JsonProperty("name")
-    public void setName(java.lang.String name) {
+    public void setName(String name) {
         this.name = name;
     }
 
@@ -222,12 +222,12 @@ public class RemoteReadSpec implements Editable<RemoteReadSpecBuilder> , Kuberne
     }
 
     @JsonProperty("proxyUrl")
-    public java.lang.String getProxyUrl() {
+    public String getProxyUrl() {
         return proxyUrl;
     }
 
     @JsonProperty("proxyUrl")
-    public void setProxyUrl(java.lang.String proxyUrl) {
+    public void setProxyUrl(String proxyUrl) {
         this.proxyUrl = proxyUrl;
     }
 
@@ -242,12 +242,12 @@ public class RemoteReadSpec implements Editable<RemoteReadSpecBuilder> , Kuberne
     }
 
     @JsonProperty("remoteTimeout")
-    public java.lang.String getRemoteTimeout() {
+    public String getRemoteTimeout() {
         return remoteTimeout;
     }
 
     @JsonProperty("remoteTimeout")
-    public void setRemoteTimeout(java.lang.String remoteTimeout) {
+    public void setRemoteTimeout(String remoteTimeout) {
         this.remoteTimeout = remoteTimeout;
     }
 
@@ -272,12 +272,12 @@ public class RemoteReadSpec implements Editable<RemoteReadSpecBuilder> , Kuberne
     }
 
     @JsonProperty("url")
-    public java.lang.String getUrl() {
+    public String getUrl() {
         return url;
     }
 
     @JsonProperty("url")
-    public void setUrl(java.lang.String url) {
+    public void setUrl(String url) {
         this.url = url;
     }
 
@@ -292,12 +292,12 @@ public class RemoteReadSpec implements Editable<RemoteReadSpecBuilder> , Kuberne
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 

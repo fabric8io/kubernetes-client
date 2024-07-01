@@ -101,9 +101,9 @@ public class JSONSchemaProps implements Editable<JSONSchemaPropsBuilder> , Kuber
 {
 
     @JsonProperty("$ref")
-    private java.lang.String $ref;
+    private String $ref;
     @JsonProperty("$schema")
-    private java.lang.String $schema;
+    private String $schema;
     @JsonProperty("additionalItems")
     private JSONSchemaPropsOrBool additionalItems;
     @JsonProperty("additionalProperties")
@@ -123,7 +123,7 @@ public class JSONSchemaProps implements Editable<JSONSchemaPropsBuilder> , Kuber
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, JSONSchemaPropsOrStringArray> dependencies = new LinkedHashMap<String, JSONSchemaPropsOrStringArray>();
     @JsonProperty("description")
-    private java.lang.String description;
+    private String description;
     @JsonProperty("enum")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<JsonNode> _enum = new ArrayList<JsonNode>();
@@ -136,9 +136,9 @@ public class JSONSchemaProps implements Editable<JSONSchemaPropsBuilder> , Kuber
     @JsonProperty("externalDocs")
     private ExternalDocumentation externalDocs;
     @JsonProperty("format")
-    private java.lang.String format;
+    private String format;
     @JsonProperty("id")
-    private java.lang.String id;
+    private String id;
     @JsonProperty("items")
     private JSONSchemaPropsOrArray items;
     @JsonProperty("maxItems")
@@ -167,7 +167,7 @@ public class JSONSchemaProps implements Editable<JSONSchemaPropsBuilder> , Kuber
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<JSONSchemaProps> oneOf = new ArrayList<JSONSchemaProps>();
     @JsonProperty("pattern")
-    private java.lang.String pattern;
+    private String pattern;
     @JsonProperty("patternProperties")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaProps> patternProperties = new LinkedHashMap<String, io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaProps>();
@@ -176,11 +176,11 @@ public class JSONSchemaProps implements Editable<JSONSchemaPropsBuilder> , Kuber
     private Map<String, io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaProps> properties = new LinkedHashMap<String, io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaProps>();
     @JsonProperty("required")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> required = new ArrayList<java.lang.String>();
+    private List<String> required = new ArrayList<String>();
     @JsonProperty("title")
-    private java.lang.String title;
+    private String title;
     @JsonProperty("type")
-    private java.lang.String type;
+    private String type;
     @JsonProperty("uniqueItems")
     private Boolean uniqueItems;
     @JsonProperty("x-kubernetes-embedded-resource")
@@ -189,11 +189,11 @@ public class JSONSchemaProps implements Editable<JSONSchemaPropsBuilder> , Kuber
     private Boolean xKubernetesIntOrString;
     @JsonProperty("x-kubernetes-list-map-keys")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> xKubernetesListMapKeys = new ArrayList<java.lang.String>();
+    private List<String> xKubernetesListMapKeys = new ArrayList<String>();
     @JsonProperty("x-kubernetes-list-type")
-    private java.lang.String xKubernetesListType;
+    private String xKubernetesListType;
     @JsonProperty("x-kubernetes-map-type")
-    private java.lang.String xKubernetesMapType;
+    private String xKubernetesMapType;
     @JsonProperty("x-kubernetes-preserve-unknown-fields")
     private Boolean xKubernetesPreserveUnknownFields;
     @JsonProperty("x-kubernetes-validations")
@@ -207,7 +207,7 @@ public class JSONSchemaProps implements Editable<JSONSchemaPropsBuilder> , Kuber
     public JSONSchemaProps() {
     }
 
-    public JSONSchemaProps(java.lang.String $ref, java.lang.String $schema, JSONSchemaPropsOrBool additionalItems, JSONSchemaPropsOrBool additionalProperties, List<JSONSchemaProps> allOf, List<JSONSchemaProps> anyOf, JsonNode _default, Map<String, io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaProps> definitions, Map<String, JSONSchemaPropsOrStringArray> dependencies, java.lang.String description, List<JsonNode> _enum, JsonNode example, Boolean exclusiveMaximum, Boolean exclusiveMinimum, ExternalDocumentation externalDocs, java.lang.String format, java.lang.String id, JSONSchemaPropsOrArray items, Long maxItems, Long maxLength, Long maxProperties, Double maximum, Long minItems, Long minLength, Long minProperties, Double minimum, Double multipleOf, JSONSchemaProps not, Boolean nullable, List<JSONSchemaProps> oneOf, java.lang.String pattern, Map<String, io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaProps> patternProperties, Map<String, io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaProps> properties, List<java.lang.String> required, java.lang.String title, java.lang.String type, Boolean uniqueItems, Boolean xKubernetesEmbeddedResource, Boolean xKubernetesIntOrString, List<java.lang.String> xKubernetesListMapKeys, java.lang.String xKubernetesListType, java.lang.String xKubernetesMapType, Boolean xKubernetesPreserveUnknownFields, List<ValidationRule> xKubernetesValidations) {
+    public JSONSchemaProps(String $ref, String $schema, JSONSchemaPropsOrBool additionalItems, JSONSchemaPropsOrBool additionalProperties, List<JSONSchemaProps> allOf, List<JSONSchemaProps> anyOf, JsonNode _default, Map<String, io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaProps> definitions, Map<String, JSONSchemaPropsOrStringArray> dependencies, String description, List<JsonNode> _enum, JsonNode example, Boolean exclusiveMaximum, Boolean exclusiveMinimum, ExternalDocumentation externalDocs, String format, String id, JSONSchemaPropsOrArray items, Long maxItems, Long maxLength, Long maxProperties, Double maximum, Long minItems, Long minLength, Long minProperties, Double minimum, Double multipleOf, JSONSchemaProps not, Boolean nullable, List<JSONSchemaProps> oneOf, String pattern, Map<String, io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaProps> patternProperties, Map<String, io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaProps> properties, List<String> required, String title, String type, Boolean uniqueItems, Boolean xKubernetesEmbeddedResource, Boolean xKubernetesIntOrString, List<String> xKubernetesListMapKeys, String xKubernetesListType, String xKubernetesMapType, Boolean xKubernetesPreserveUnknownFields, List<ValidationRule> xKubernetesValidations) {
         super();
         this.$ref = $ref;
         this.$schema = $schema;
@@ -256,22 +256,22 @@ public class JSONSchemaProps implements Editable<JSONSchemaPropsBuilder> , Kuber
     }
 
     @JsonProperty("$ref")
-    public java.lang.String get$ref() {
+    public String get$ref() {
         return $ref;
     }
 
     @JsonProperty("$ref")
-    public void set$ref(java.lang.String $ref) {
+    public void set$ref(String $ref) {
         this.$ref = $ref;
     }
 
     @JsonProperty("$schema")
-    public java.lang.String get$schema() {
+    public String get$schema() {
         return $schema;
     }
 
     @JsonProperty("$schema")
-    public void set$schema(java.lang.String $schema) {
+    public void set$schema(String $schema) {
         this.$schema = $schema;
     }
 
@@ -348,12 +348,12 @@ public class JSONSchemaProps implements Editable<JSONSchemaPropsBuilder> , Kuber
     }
 
     @JsonProperty("description")
-    public java.lang.String getDescription() {
+    public String getDescription() {
         return description;
     }
 
     @JsonProperty("description")
-    public void setDescription(java.lang.String description) {
+    public void setDescription(String description) {
         this.description = description;
     }
 
@@ -408,22 +408,22 @@ public class JSONSchemaProps implements Editable<JSONSchemaPropsBuilder> , Kuber
     }
 
     @JsonProperty("format")
-    public java.lang.String getFormat() {
+    public String getFormat() {
         return format;
     }
 
     @JsonProperty("format")
-    public void setFormat(java.lang.String format) {
+    public void setFormat(String format) {
         this.format = format;
     }
 
     @JsonProperty("id")
-    public java.lang.String getId() {
+    public String getId() {
         return id;
     }
 
     @JsonProperty("id")
-    public void setId(java.lang.String id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -559,12 +559,12 @@ public class JSONSchemaProps implements Editable<JSONSchemaPropsBuilder> , Kuber
     }
 
     @JsonProperty("pattern")
-    public java.lang.String getPattern() {
+    public String getPattern() {
         return pattern;
     }
 
     @JsonProperty("pattern")
-    public void setPattern(java.lang.String pattern) {
+    public void setPattern(String pattern) {
         this.pattern = pattern;
     }
 
@@ -590,32 +590,32 @@ public class JSONSchemaProps implements Editable<JSONSchemaPropsBuilder> , Kuber
 
     @JsonProperty("required")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<java.lang.String> getRequired() {
+    public List<String> getRequired() {
         return required;
     }
 
     @JsonProperty("required")
-    public void setRequired(List<java.lang.String> required) {
+    public void setRequired(List<String> required) {
         this.required = required;
     }
 
     @JsonProperty("title")
-    public java.lang.String getTitle() {
+    public String getTitle() {
         return title;
     }
 
     @JsonProperty("title")
-    public void setTitle(java.lang.String title) {
+    public void setTitle(String title) {
         this.title = title;
     }
 
     @JsonProperty("type")
-    public java.lang.String getType() {
+    public String getType() {
         return type;
     }
 
     @JsonProperty("type")
-    public void setType(java.lang.String type) {
+    public void setType(String type) {
         this.type = type;
     }
 
@@ -650,32 +650,32 @@ public class JSONSchemaProps implements Editable<JSONSchemaPropsBuilder> , Kuber
     }
 
     @JsonProperty("x-kubernetes-list-map-keys")
-    public List<java.lang.String> getXKubernetesListMapKeys() {
+    public List<String> getXKubernetesListMapKeys() {
         return xKubernetesListMapKeys;
     }
 
     @JsonProperty("x-kubernetes-list-map-keys")
-    public void setXKubernetesListMapKeys(List<java.lang.String> xKubernetesListMapKeys) {
+    public void setXKubernetesListMapKeys(List<String> xKubernetesListMapKeys) {
         this.xKubernetesListMapKeys = xKubernetesListMapKeys;
     }
 
     @JsonProperty("x-kubernetes-list-type")
-    public java.lang.String getXKubernetesListType() {
+    public String getXKubernetesListType() {
         return xKubernetesListType;
     }
 
     @JsonProperty("x-kubernetes-list-type")
-    public void setXKubernetesListType(java.lang.String xKubernetesListType) {
+    public void setXKubernetesListType(String xKubernetesListType) {
         this.xKubernetesListType = xKubernetesListType;
     }
 
     @JsonProperty("x-kubernetes-map-type")
-    public java.lang.String getXKubernetesMapType() {
+    public String getXKubernetesMapType() {
         return xKubernetesMapType;
     }
 
     @JsonProperty("x-kubernetes-map-type")
-    public void setXKubernetesMapType(java.lang.String xKubernetesMapType) {
+    public void setXKubernetesMapType(String xKubernetesMapType) {
         this.xKubernetesMapType = xKubernetesMapType;
     }
 

@@ -68,9 +68,9 @@ public class ProbeTargetStaticConfig implements Editable<ProbeTargetStaticConfig
     private List<RelabelConfig> relabelingConfigs = new ArrayList<RelabelConfig>();
     @JsonProperty("static")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> _static = new ArrayList<java.lang.String>();
+    private List<String> _static = new ArrayList<String>();
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -79,7 +79,7 @@ public class ProbeTargetStaticConfig implements Editable<ProbeTargetStaticConfig
     public ProbeTargetStaticConfig() {
     }
 
-    public ProbeTargetStaticConfig(Map<String, String> labels, List<RelabelConfig> relabelingConfigs, List<java.lang.String> _static) {
+    public ProbeTargetStaticConfig(Map<String, String> labels, List<RelabelConfig> relabelingConfigs, List<String> _static) {
         super();
         this.labels = labels;
         this.relabelingConfigs = relabelingConfigs;
@@ -108,12 +108,12 @@ public class ProbeTargetStaticConfig implements Editable<ProbeTargetStaticConfig
     }
 
     @JsonProperty("static")
-    public List<java.lang.String> getStatic() {
+    public List<String> getStatic() {
         return _static;
     }
 
     @JsonProperty("static")
-    public void setStatic(List<java.lang.String> _static) {
+    public void setStatic(List<String> _static) {
         this._static = _static;
     }
 
@@ -128,12 +128,12 @@ public class ProbeTargetStaticConfig implements Editable<ProbeTargetStaticConfig
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 

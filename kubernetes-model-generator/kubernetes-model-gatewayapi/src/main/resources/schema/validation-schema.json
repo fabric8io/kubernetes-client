@@ -57,7 +57,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         }
       },
       "additionalProperties": true,
@@ -153,7 +153,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "creationTimestamp": {
           "$ref": "#/definitions/kubernetes_apimachinery_Time",
@@ -186,7 +186,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "managedFields": {
           "type": "array",
@@ -546,14 +546,14 @@
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "labels": {
           "type": "object",
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         }
       },
       "additionalProperties": true,
@@ -695,7 +695,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         }
       },
       "additionalProperties": true,
@@ -3178,7 +3178,7 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "gateway.networking.k8s.io/v1alpha2",
+          "default": "gateway.networking.k8s.io/v1",
           "required": true
         },
         "kind": {
@@ -3205,14 +3205,14 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "gateway.networking.k8s.io/v1beta1",
+          "default": "gateway.networking.k8s.io/v1",
           "required": true
         },
         "items": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_GatewayClass",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.GatewayClass"
+            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1_GatewayClass",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1.GatewayClass"
           }
         },
         "kind": {
@@ -3269,14 +3269,14 @@
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "labels": {
           "type": "object",
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         }
       },
       "additionalProperties": true
@@ -3285,14 +3285,14 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "gateway.networking.k8s.io/v1",
+          "default": "gateway.networking.k8s.io/v1beta1",
           "required": true
         },
         "items": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1_Gateway",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1.Gateway"
+            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_Gateway",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.Gateway"
           }
         },
         "kind": {
@@ -3392,7 +3392,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         }
       },
       "additionalProperties": true
@@ -3780,7 +3780,7 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "gateway.networking.k8s.io/v1alpha2",
+          "default": "gateway.networking.k8s.io/v1",
           "required": true
         },
         "kind": {
@@ -3839,14 +3839,14 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "gateway.networking.k8s.io/v1",
+          "default": "gateway.networking.k8s.io/v1alpha2",
           "required": true
         },
         "items": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1_HTTPRoute",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1.HTTPRoute"
+            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_HTTPRoute",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.HTTPRoute"
           }
         },
         "kind": {
@@ -4000,7 +4000,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         }
       },
       "additionalProperties": true
@@ -4140,7 +4140,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "creationTimestamp": {
           "$ref": "#/definitions/kubernetes_apimachinery_Time",
@@ -4173,7 +4173,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "managedFields": {
           "type": "array",
@@ -4386,14 +4386,14 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "gateway.networking.k8s.io/v1alpha2",
+          "default": "gateway.networking.k8s.io/v1beta1",
           "required": true
         },
         "items": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1alpha2_ReferenceGrant",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.ReferenceGrant"
+            "$ref": "#/definitions/kubernetes_sigs_gatewayapi_v1beta1_ReferenceGrant",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.ReferenceGrant"
           }
         },
         "kind": {

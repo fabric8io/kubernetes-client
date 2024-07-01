@@ -51,35 +51,35 @@ public class HelmChartArgs implements Editable<HelmChartArgsBuilder> , Kubernete
 {
 
     @JsonProperty("chartHome")
-    private java.lang.String chartHome;
+    private String chartHome;
     @JsonProperty("chartName")
-    private java.lang.String chartName;
+    private String chartName;
     @JsonProperty("chartRepoName")
-    private java.lang.String chartRepoName;
+    private String chartRepoName;
     @JsonProperty("chartRepoUrl")
-    private java.lang.String chartRepoUrl;
+    private String chartRepoUrl;
     @JsonProperty("chartVersion")
-    private java.lang.String chartVersion;
+    private String chartVersion;
     @JsonProperty("extraArgs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> extraArgs = new ArrayList<java.lang.String>();
+    private List<String> extraArgs = new ArrayList<String>();
     @JsonProperty("helmBin")
-    private java.lang.String helmBin;
+    private String helmBin;
     @JsonProperty("helmHome")
-    private java.lang.String helmHome;
+    private String helmHome;
     @JsonProperty("releaseName")
-    private java.lang.String releaseName;
+    private String releaseName;
     @JsonProperty("releaseNamespace")
-    private java.lang.String releaseNamespace;
+    private String releaseNamespace;
     @JsonProperty("values")
-    private java.lang.String values;
+    private String values;
     @JsonProperty("valuesLocal")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, Object> valuesLocal = new LinkedHashMap<String, Object>();
     @JsonProperty("valuesMerge")
-    private java.lang.String valuesMerge;
+    private String valuesMerge;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -88,7 +88,7 @@ public class HelmChartArgs implements Editable<HelmChartArgsBuilder> , Kubernete
     public HelmChartArgs() {
     }
 
-    public HelmChartArgs(java.lang.String chartHome, java.lang.String chartName, java.lang.String chartRepoName, java.lang.String chartRepoUrl, java.lang.String chartVersion, List<java.lang.String> extraArgs, java.lang.String helmBin, java.lang.String helmHome, java.lang.String releaseName, java.lang.String releaseNamespace, java.lang.String values, Map<String, Object> valuesLocal, java.lang.String valuesMerge) {
+    public HelmChartArgs(String chartHome, String chartName, String chartRepoName, String chartRepoUrl, String chartVersion, List<String> extraArgs, String helmBin, String helmHome, String releaseName, String releaseNamespace, String values, Map<String, Object> valuesLocal, String valuesMerge) {
         super();
         this.chartHome = chartHome;
         this.chartName = chartName;
@@ -106,113 +106,113 @@ public class HelmChartArgs implements Editable<HelmChartArgsBuilder> , Kubernete
     }
 
     @JsonProperty("chartHome")
-    public java.lang.String getChartHome() {
+    public String getChartHome() {
         return chartHome;
     }
 
     @JsonProperty("chartHome")
-    public void setChartHome(java.lang.String chartHome) {
+    public void setChartHome(String chartHome) {
         this.chartHome = chartHome;
     }
 
     @JsonProperty("chartName")
-    public java.lang.String getChartName() {
+    public String getChartName() {
         return chartName;
     }
 
     @JsonProperty("chartName")
-    public void setChartName(java.lang.String chartName) {
+    public void setChartName(String chartName) {
         this.chartName = chartName;
     }
 
     @JsonProperty("chartRepoName")
-    public java.lang.String getChartRepoName() {
+    public String getChartRepoName() {
         return chartRepoName;
     }
 
     @JsonProperty("chartRepoName")
-    public void setChartRepoName(java.lang.String chartRepoName) {
+    public void setChartRepoName(String chartRepoName) {
         this.chartRepoName = chartRepoName;
     }
 
     @JsonProperty("chartRepoUrl")
-    public java.lang.String getChartRepoUrl() {
+    public String getChartRepoUrl() {
         return chartRepoUrl;
     }
 
     @JsonProperty("chartRepoUrl")
-    public void setChartRepoUrl(java.lang.String chartRepoUrl) {
+    public void setChartRepoUrl(String chartRepoUrl) {
         this.chartRepoUrl = chartRepoUrl;
     }
 
     @JsonProperty("chartVersion")
-    public java.lang.String getChartVersion() {
+    public String getChartVersion() {
         return chartVersion;
     }
 
     @JsonProperty("chartVersion")
-    public void setChartVersion(java.lang.String chartVersion) {
+    public void setChartVersion(String chartVersion) {
         this.chartVersion = chartVersion;
     }
 
     @JsonProperty("extraArgs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<java.lang.String> getExtraArgs() {
+    public List<String> getExtraArgs() {
         return extraArgs;
     }
 
     @JsonProperty("extraArgs")
-    public void setExtraArgs(List<java.lang.String> extraArgs) {
+    public void setExtraArgs(List<String> extraArgs) {
         this.extraArgs = extraArgs;
     }
 
     @JsonProperty("helmBin")
-    public java.lang.String getHelmBin() {
+    public String getHelmBin() {
         return helmBin;
     }
 
     @JsonProperty("helmBin")
-    public void setHelmBin(java.lang.String helmBin) {
+    public void setHelmBin(String helmBin) {
         this.helmBin = helmBin;
     }
 
     @JsonProperty("helmHome")
-    public java.lang.String getHelmHome() {
+    public String getHelmHome() {
         return helmHome;
     }
 
     @JsonProperty("helmHome")
-    public void setHelmHome(java.lang.String helmHome) {
+    public void setHelmHome(String helmHome) {
         this.helmHome = helmHome;
     }
 
     @JsonProperty("releaseName")
-    public java.lang.String getReleaseName() {
+    public String getReleaseName() {
         return releaseName;
     }
 
     @JsonProperty("releaseName")
-    public void setReleaseName(java.lang.String releaseName) {
+    public void setReleaseName(String releaseName) {
         this.releaseName = releaseName;
     }
 
     @JsonProperty("releaseNamespace")
-    public java.lang.String getReleaseNamespace() {
+    public String getReleaseNamespace() {
         return releaseNamespace;
     }
 
     @JsonProperty("releaseNamespace")
-    public void setReleaseNamespace(java.lang.String releaseNamespace) {
+    public void setReleaseNamespace(String releaseNamespace) {
         this.releaseNamespace = releaseNamespace;
     }
 
     @JsonProperty("values")
-    public java.lang.String getValues() {
+    public String getValues() {
         return values;
     }
 
     @JsonProperty("values")
-    public void setValues(java.lang.String values) {
+    public void setValues(String values) {
         this.values = values;
     }
 
@@ -227,12 +227,12 @@ public class HelmChartArgs implements Editable<HelmChartArgsBuilder> , Kubernete
     }
 
     @JsonProperty("valuesMerge")
-    public java.lang.String getValuesMerge() {
+    public String getValuesMerge() {
         return valuesMerge;
     }
 
     @JsonProperty("valuesMerge")
-    public void setValuesMerge(java.lang.String valuesMerge) {
+    public void setValuesMerge(String valuesMerge) {
         this.valuesMerge = valuesMerge;
     }
 
@@ -247,12 +247,12 @@ public class HelmChartArgs implements Editable<HelmChartArgsBuilder> , Kubernete
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 

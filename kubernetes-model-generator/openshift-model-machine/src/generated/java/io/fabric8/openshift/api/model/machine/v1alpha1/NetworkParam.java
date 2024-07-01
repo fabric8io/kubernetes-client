@@ -69,14 +69,14 @@ public class NetworkParam implements Editable<NetworkParamBuilder> , KubernetesR
     @JsonProperty("filter")
     private Filter filter;
     @JsonProperty("fixedIp")
-    private java.lang.String fixedIp;
+    private String fixedIp;
     @JsonProperty("noAllowedAddressPairs")
     private Boolean noAllowedAddressPairs;
     @JsonProperty("portSecurity")
     private Boolean portSecurity;
     @JsonProperty("portTags")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> portTags = new ArrayList<java.lang.String>();
+    private List<String> portTags = new ArrayList<String>();
     @JsonProperty("profile")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> profile = new LinkedHashMap<String, String>();
@@ -84,11 +84,11 @@ public class NetworkParam implements Editable<NetworkParamBuilder> , KubernetesR
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<SubnetParam> subnets = new ArrayList<SubnetParam>();
     @JsonProperty("uuid")
-    private java.lang.String uuid;
+    private String uuid;
     @JsonProperty("vnicType")
-    private java.lang.String vnicType;
+    private String vnicType;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -97,7 +97,7 @@ public class NetworkParam implements Editable<NetworkParamBuilder> , KubernetesR
     public NetworkParam() {
     }
 
-    public NetworkParam(Filter filter, java.lang.String fixedIp, Boolean noAllowedAddressPairs, Boolean portSecurity, List<java.lang.String> portTags, Map<String, String> profile, List<SubnetParam> subnets, java.lang.String uuid, java.lang.String vnicType) {
+    public NetworkParam(Filter filter, String fixedIp, Boolean noAllowedAddressPairs, Boolean portSecurity, List<String> portTags, Map<String, String> profile, List<SubnetParam> subnets, String uuid, String vnicType) {
         super();
         this.filter = filter;
         this.fixedIp = fixedIp;
@@ -121,12 +121,12 @@ public class NetworkParam implements Editable<NetworkParamBuilder> , KubernetesR
     }
 
     @JsonProperty("fixedIp")
-    public java.lang.String getFixedIp() {
+    public String getFixedIp() {
         return fixedIp;
     }
 
     @JsonProperty("fixedIp")
-    public void setFixedIp(java.lang.String fixedIp) {
+    public void setFixedIp(String fixedIp) {
         this.fixedIp = fixedIp;
     }
 
@@ -152,12 +152,12 @@ public class NetworkParam implements Editable<NetworkParamBuilder> , KubernetesR
 
     @JsonProperty("portTags")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<java.lang.String> getPortTags() {
+    public List<String> getPortTags() {
         return portTags;
     }
 
     @JsonProperty("portTags")
-    public void setPortTags(List<java.lang.String> portTags) {
+    public void setPortTags(List<String> portTags) {
         this.portTags = portTags;
     }
 
@@ -183,22 +183,22 @@ public class NetworkParam implements Editable<NetworkParamBuilder> , KubernetesR
     }
 
     @JsonProperty("uuid")
-    public java.lang.String getUuid() {
+    public String getUuid() {
         return uuid;
     }
 
     @JsonProperty("uuid")
-    public void setUuid(java.lang.String uuid) {
+    public void setUuid(String uuid) {
         this.uuid = uuid;
     }
 
     @JsonProperty("vnicType")
-    public java.lang.String getVnicType() {
+    public String getVnicType() {
         return vnicType;
     }
 
     @JsonProperty("vnicType")
-    public void setVnicType(java.lang.String vnicType) {
+    public void setVnicType(String vnicType) {
         this.vnicType = vnicType;
     }
 
@@ -213,12 +213,12 @@ public class NetworkParam implements Editable<NetworkParamBuilder> , KubernetesR
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 

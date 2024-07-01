@@ -72,11 +72,11 @@ public class OAuth2 implements Editable<OAuth2Builder> , KubernetesResource
     private Map<String, String> endpointParams = new LinkedHashMap<String, String>();
     @JsonProperty("scopes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> scopes = new ArrayList<java.lang.String>();
+    private List<String> scopes = new ArrayList<String>();
     @JsonProperty("tokenUrl")
-    private java.lang.String tokenUrl;
+    private String tokenUrl;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -85,7 +85,7 @@ public class OAuth2 implements Editable<OAuth2Builder> , KubernetesResource
     public OAuth2() {
     }
 
-    public OAuth2(SecretOrConfigMap clientId, SecretKeySelector clientSecret, Map<String, String> endpointParams, List<java.lang.String> scopes, java.lang.String tokenUrl) {
+    public OAuth2(SecretOrConfigMap clientId, SecretKeySelector clientSecret, Map<String, String> endpointParams, List<String> scopes, String tokenUrl) {
         super();
         this.clientId = clientId;
         this.clientSecret = clientSecret;
@@ -126,22 +126,22 @@ public class OAuth2 implements Editable<OAuth2Builder> , KubernetesResource
 
     @JsonProperty("scopes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<java.lang.String> getScopes() {
+    public List<String> getScopes() {
         return scopes;
     }
 
     @JsonProperty("scopes")
-    public void setScopes(List<java.lang.String> scopes) {
+    public void setScopes(List<String> scopes) {
         this.scopes = scopes;
     }
 
     @JsonProperty("tokenUrl")
-    public java.lang.String getTokenUrl() {
+    public String getTokenUrl() {
         return tokenUrl;
     }
 
     @JsonProperty("tokenUrl")
-    public void setTokenUrl(java.lang.String tokenUrl) {
+    public void setTokenUrl(String tokenUrl) {
         this.tokenUrl = tokenUrl;
     }
 
@@ -156,12 +156,12 @@ public class OAuth2 implements Editable<OAuth2Builder> , KubernetesResource
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 

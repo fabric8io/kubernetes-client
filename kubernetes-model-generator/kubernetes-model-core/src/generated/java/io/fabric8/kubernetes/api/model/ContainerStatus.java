@@ -52,15 +52,15 @@ public class ContainerStatus implements Editable<ContainerStatusBuilder> , Kuber
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, Quantity> allocatedResources = new LinkedHashMap<String, Quantity>();
     @JsonProperty("containerID")
-    private java.lang.String containerID;
+    private String containerID;
     @JsonProperty("image")
-    private java.lang.String image;
+    private String image;
     @JsonProperty("imageID")
-    private java.lang.String imageID;
+    private String imageID;
     @JsonProperty("lastState")
     private ContainerState lastState;
     @JsonProperty("name")
-    private java.lang.String name;
+    private String name;
     @JsonProperty("ready")
     private Boolean ready;
     @JsonProperty("resources")
@@ -75,7 +75,7 @@ public class ContainerStatus implements Editable<ContainerStatusBuilder> , Kuber
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<VolumeMountStatus> volumeMounts = new ArrayList<VolumeMountStatus>();
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -84,7 +84,7 @@ public class ContainerStatus implements Editable<ContainerStatusBuilder> , Kuber
     public ContainerStatus() {
     }
 
-    public ContainerStatus(Map<String, Quantity> allocatedResources, java.lang.String containerID, java.lang.String image, java.lang.String imageID, ContainerState lastState, java.lang.String name, Boolean ready, ResourceRequirements resources, Integer restartCount, Boolean started, ContainerState state, List<VolumeMountStatus> volumeMounts) {
+    public ContainerStatus(Map<String, Quantity> allocatedResources, String containerID, String image, String imageID, ContainerState lastState, String name, Boolean ready, ResourceRequirements resources, Integer restartCount, Boolean started, ContainerState state, List<VolumeMountStatus> volumeMounts) {
         super();
         this.allocatedResources = allocatedResources;
         this.containerID = containerID;
@@ -111,32 +111,32 @@ public class ContainerStatus implements Editable<ContainerStatusBuilder> , Kuber
     }
 
     @JsonProperty("containerID")
-    public java.lang.String getContainerID() {
+    public String getContainerID() {
         return containerID;
     }
 
     @JsonProperty("containerID")
-    public void setContainerID(java.lang.String containerID) {
+    public void setContainerID(String containerID) {
         this.containerID = containerID;
     }
 
     @JsonProperty("image")
-    public java.lang.String getImage() {
+    public String getImage() {
         return image;
     }
 
     @JsonProperty("image")
-    public void setImage(java.lang.String image) {
+    public void setImage(String image) {
         this.image = image;
     }
 
     @JsonProperty("imageID")
-    public java.lang.String getImageID() {
+    public String getImageID() {
         return imageID;
     }
 
     @JsonProperty("imageID")
-    public void setImageID(java.lang.String imageID) {
+    public void setImageID(String imageID) {
         this.imageID = imageID;
     }
 
@@ -151,12 +151,12 @@ public class ContainerStatus implements Editable<ContainerStatusBuilder> , Kuber
     }
 
     @JsonProperty("name")
-    public java.lang.String getName() {
+    public String getName() {
         return name;
     }
 
     @JsonProperty("name")
-    public void setName(java.lang.String name) {
+    public void setName(String name) {
         this.name = name;
     }
 
@@ -232,12 +232,12 @@ public class ContainerStatus implements Editable<ContainerStatusBuilder> , Kuber
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 

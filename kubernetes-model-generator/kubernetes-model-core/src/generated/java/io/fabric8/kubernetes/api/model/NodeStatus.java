@@ -70,7 +70,7 @@ public class NodeStatus implements Editable<NodeStatusBuilder> , KubernetesResou
     @JsonProperty("nodeInfo")
     private NodeSystemInfo nodeInfo;
     @JsonProperty("phase")
-    private java.lang.String phase;
+    private String phase;
     @JsonProperty("runtimeHandlers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<NodeRuntimeHandler> runtimeHandlers = new ArrayList<NodeRuntimeHandler>();
@@ -79,9 +79,9 @@ public class NodeStatus implements Editable<NodeStatusBuilder> , KubernetesResou
     private List<AttachedVolume> volumesAttached = new ArrayList<AttachedVolume>();
     @JsonProperty("volumesInUse")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> volumesInUse = new ArrayList<java.lang.String>();
+    private List<String> volumesInUse = new ArrayList<String>();
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -90,7 +90,7 @@ public class NodeStatus implements Editable<NodeStatusBuilder> , KubernetesResou
     public NodeStatus() {
     }
 
-    public NodeStatus(List<NodeAddress> addresses, Map<String, io.fabric8.kubernetes.api.model.Quantity> allocatable, Map<String, io.fabric8.kubernetes.api.model.Quantity> capacity, List<NodeCondition> conditions, NodeConfigStatus config, NodeDaemonEndpoints daemonEndpoints, List<ContainerImage> images, NodeSystemInfo nodeInfo, java.lang.String phase, List<NodeRuntimeHandler> runtimeHandlers, List<AttachedVolume> volumesAttached, List<java.lang.String> volumesInUse) {
+    public NodeStatus(List<NodeAddress> addresses, Map<String, io.fabric8.kubernetes.api.model.Quantity> allocatable, Map<String, io.fabric8.kubernetes.api.model.Quantity> capacity, List<NodeCondition> conditions, NodeConfigStatus config, NodeDaemonEndpoints daemonEndpoints, List<ContainerImage> images, NodeSystemInfo nodeInfo, String phase, List<NodeRuntimeHandler> runtimeHandlers, List<AttachedVolume> volumesAttached, List<String> volumesInUse) {
         super();
         this.addresses = addresses;
         this.allocatable = allocatable;
@@ -190,12 +190,12 @@ public class NodeStatus implements Editable<NodeStatusBuilder> , KubernetesResou
     }
 
     @JsonProperty("phase")
-    public java.lang.String getPhase() {
+    public String getPhase() {
         return phase;
     }
 
     @JsonProperty("phase")
-    public void setPhase(java.lang.String phase) {
+    public void setPhase(String phase) {
         this.phase = phase;
     }
 
@@ -223,12 +223,12 @@ public class NodeStatus implements Editable<NodeStatusBuilder> , KubernetesResou
 
     @JsonProperty("volumesInUse")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<java.lang.String> getVolumesInUse() {
+    public List<String> getVolumesInUse() {
         return volumesInUse;
     }
 
     @JsonProperty("volumesInUse")
-    public void setVolumesInUse(List<java.lang.String> volumesInUse) {
+    public void setVolumesInUse(List<String> volumesInUse) {
         this.volumesInUse = volumesInUse;
     }
 
@@ -243,12 +243,12 @@ public class NodeStatus implements Editable<NodeStatusBuilder> , KubernetesResou
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 

@@ -77,13 +77,13 @@ public class Kustomization implements Editable<KustomizationBuilder> , Kubernete
      * 
      */
     @JsonProperty("apiVersion")
-    private java.lang.String apiVersion;
+    private String apiVersion;
     @JsonProperty("bases")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> bases = new ArrayList<java.lang.String>();
+    private List<String> bases = new ArrayList<String>();
     @JsonProperty("buildMetadata")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> buildMetadata = new ArrayList<java.lang.String>();
+    private List<String> buildMetadata = new ArrayList<String>();
     @JsonProperty("commonAnnotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> commonAnnotations = new LinkedHashMap<String, String>();
@@ -92,21 +92,21 @@ public class Kustomization implements Editable<KustomizationBuilder> , Kubernete
     private Map<String, String> commonLabels = new LinkedHashMap<String, String>();
     @JsonProperty("components")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> components = new ArrayList<java.lang.String>();
+    private List<String> components = new ArrayList<String>();
     @JsonProperty("configMapGenerator")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ConfigMapArgs> configMapGenerator = new ArrayList<ConfigMapArgs>();
     @JsonProperty("configurations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> configurations = new ArrayList<java.lang.String>();
+    private List<String> configurations = new ArrayList<String>();
     @JsonProperty("crds")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> crds = new ArrayList<java.lang.String>();
+    private List<String> crds = new ArrayList<String>();
     @JsonProperty("generatorOptions")
     private GeneratorOptions generatorOptions;
     @JsonProperty("generators")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> generators = new ArrayList<java.lang.String>();
+    private List<String> generators = new ArrayList<String>();
     @JsonProperty("helmChartInflationGenerator")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<HelmChartArgs> helmChartInflationGenerator = new ArrayList<HelmChartArgs>();
@@ -127,18 +127,18 @@ public class Kustomization implements Editable<KustomizationBuilder> , Kubernete
      * 
      */
     @JsonProperty("kind")
-    private java.lang.String kind = "Kustomization";
+    private String kind = "Kustomization";
     @JsonProperty("labels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Label> labels = new ArrayList<Label>();
     @JsonProperty("metadata")
     private ObjectMeta metadata;
     @JsonProperty("namePrefix")
-    private java.lang.String namePrefix;
+    private String namePrefix;
     @JsonProperty("nameSuffix")
-    private java.lang.String nameSuffix;
+    private String nameSuffix;
     @JsonProperty("namespace")
-    private java.lang.String namespace;
+    private String namespace;
     @JsonProperty("openapi")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> openapi = new LinkedHashMap<String, String>();
@@ -150,7 +150,7 @@ public class Kustomization implements Editable<KustomizationBuilder> , Kubernete
     private List<Patch> patchesJson6902 = new ArrayList<Patch>();
     @JsonProperty("patchesStrategicMerge")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> patchesStrategicMerge = new ArrayList<java.lang.String>();
+    private List<String> patchesStrategicMerge = new ArrayList<String>();
     @JsonProperty("replacements")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ReplacementField> replacements = new ArrayList<ReplacementField>();
@@ -159,7 +159,7 @@ public class Kustomization implements Editable<KustomizationBuilder> , Kubernete
     private List<Replica> replicas = new ArrayList<Replica>();
     @JsonProperty("resources")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> resources = new ArrayList<java.lang.String>();
+    private List<String> resources = new ArrayList<String>();
     @JsonProperty("secretGenerator")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<SecretArgs> secretGenerator = new ArrayList<SecretArgs>();
@@ -167,15 +167,15 @@ public class Kustomization implements Editable<KustomizationBuilder> , Kubernete
     private SortOptions sortOptions;
     @JsonProperty("transformers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> transformers = new ArrayList<java.lang.String>();
+    private List<String> transformers = new ArrayList<String>();
     @JsonProperty("validators")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> validators = new ArrayList<java.lang.String>();
+    private List<String> validators = new ArrayList<String>();
     @JsonProperty("vars")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Var> vars = new ArrayList<Var>();
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -184,7 +184,7 @@ public class Kustomization implements Editable<KustomizationBuilder> , Kubernete
     public Kustomization() {
     }
 
-    public Kustomization(java.lang.String apiVersion, List<java.lang.String> bases, List<java.lang.String> buildMetadata, Map<String, String> commonAnnotations, Map<String, String> commonLabels, List<java.lang.String> components, List<ConfigMapArgs> configMapGenerator, List<java.lang.String> configurations, List<java.lang.String> crds, GeneratorOptions generatorOptions, List<java.lang.String> generators, List<HelmChartArgs> helmChartInflationGenerator, List<HelmChart> helmCharts, HelmGlobals helmGlobals, List<Image> imageTags, List<Image> images, java.lang.String kind, List<Label> labels, ObjectMeta metadata, java.lang.String namePrefix, java.lang.String nameSuffix, java.lang.String namespace, Map<String, String> openapi, List<Patch> patches, List<Patch> patchesJson6902, List<java.lang.String> patchesStrategicMerge, List<ReplacementField> replacements, List<Replica> replicas, List<java.lang.String> resources, List<SecretArgs> secretGenerator, SortOptions sortOptions, List<java.lang.String> transformers, List<java.lang.String> validators, List<Var> vars) {
+    public Kustomization(String apiVersion, List<String> bases, List<String> buildMetadata, Map<String, String> commonAnnotations, Map<String, String> commonLabels, List<String> components, List<ConfigMapArgs> configMapGenerator, List<String> configurations, List<String> crds, GeneratorOptions generatorOptions, List<String> generators, List<HelmChartArgs> helmChartInflationGenerator, List<HelmChart> helmCharts, HelmGlobals helmGlobals, List<Image> imageTags, List<Image> images, String kind, List<Label> labels, ObjectMeta metadata, String namePrefix, String nameSuffix, String namespace, Map<String, String> openapi, List<Patch> patches, List<Patch> patchesJson6902, List<String> patchesStrategicMerge, List<ReplacementField> replacements, List<Replica> replicas, List<String> resources, List<SecretArgs> secretGenerator, SortOptions sortOptions, List<String> transformers, List<String> validators, List<Var> vars) {
         super();
         this.apiVersion = apiVersion;
         this.bases = bases;
@@ -228,7 +228,7 @@ public class Kustomization implements Editable<KustomizationBuilder> , Kubernete
      * 
      */
     @JsonProperty("apiVersion")
-    public java.lang.String getApiVersion() {
+    public String getApiVersion() {
         return apiVersion;
     }
 
@@ -238,29 +238,29 @@ public class Kustomization implements Editable<KustomizationBuilder> , Kubernete
      * 
      */
     @JsonProperty("apiVersion")
-    public void setApiVersion(java.lang.String apiVersion) {
+    public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
     }
 
     @JsonProperty("bases")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<java.lang.String> getBases() {
+    public List<String> getBases() {
         return bases;
     }
 
     @JsonProperty("bases")
-    public void setBases(List<java.lang.String> bases) {
+    public void setBases(List<String> bases) {
         this.bases = bases;
     }
 
     @JsonProperty("buildMetadata")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<java.lang.String> getBuildMetadata() {
+    public List<String> getBuildMetadata() {
         return buildMetadata;
     }
 
     @JsonProperty("buildMetadata")
-    public void setBuildMetadata(List<java.lang.String> buildMetadata) {
+    public void setBuildMetadata(List<String> buildMetadata) {
         this.buildMetadata = buildMetadata;
     }
 
@@ -286,12 +286,12 @@ public class Kustomization implements Editable<KustomizationBuilder> , Kubernete
 
     @JsonProperty("components")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<java.lang.String> getComponents() {
+    public List<String> getComponents() {
         return components;
     }
 
     @JsonProperty("components")
-    public void setComponents(List<java.lang.String> components) {
+    public void setComponents(List<String> components) {
         this.components = components;
     }
 
@@ -308,23 +308,23 @@ public class Kustomization implements Editable<KustomizationBuilder> , Kubernete
 
     @JsonProperty("configurations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<java.lang.String> getConfigurations() {
+    public List<String> getConfigurations() {
         return configurations;
     }
 
     @JsonProperty("configurations")
-    public void setConfigurations(List<java.lang.String> configurations) {
+    public void setConfigurations(List<String> configurations) {
         this.configurations = configurations;
     }
 
     @JsonProperty("crds")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<java.lang.String> getCrds() {
+    public List<String> getCrds() {
         return crds;
     }
 
     @JsonProperty("crds")
-    public void setCrds(List<java.lang.String> crds) {
+    public void setCrds(List<String> crds) {
         this.crds = crds;
     }
 
@@ -340,12 +340,12 @@ public class Kustomization implements Editable<KustomizationBuilder> , Kubernete
 
     @JsonProperty("generators")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<java.lang.String> getGenerators() {
+    public List<String> getGenerators() {
         return generators;
     }
 
     @JsonProperty("generators")
-    public void setGenerators(List<java.lang.String> generators) {
+    public void setGenerators(List<String> generators) {
         this.generators = generators;
     }
 
@@ -409,7 +409,7 @@ public class Kustomization implements Editable<KustomizationBuilder> , Kubernete
      * 
      */
     @JsonProperty("kind")
-    public java.lang.String getKind() {
+    public String getKind() {
         return kind;
     }
 
@@ -419,7 +419,7 @@ public class Kustomization implements Editable<KustomizationBuilder> , Kubernete
      * 
      */
     @JsonProperty("kind")
-    public void setKind(java.lang.String kind) {
+    public void setKind(String kind) {
         this.kind = kind;
     }
 
@@ -445,32 +445,32 @@ public class Kustomization implements Editable<KustomizationBuilder> , Kubernete
     }
 
     @JsonProperty("namePrefix")
-    public java.lang.String getNamePrefix() {
+    public String getNamePrefix() {
         return namePrefix;
     }
 
     @JsonProperty("namePrefix")
-    public void setNamePrefix(java.lang.String namePrefix) {
+    public void setNamePrefix(String namePrefix) {
         this.namePrefix = namePrefix;
     }
 
     @JsonProperty("nameSuffix")
-    public java.lang.String getNameSuffix() {
+    public String getNameSuffix() {
         return nameSuffix;
     }
 
     @JsonProperty("nameSuffix")
-    public void setNameSuffix(java.lang.String nameSuffix) {
+    public void setNameSuffix(String nameSuffix) {
         this.nameSuffix = nameSuffix;
     }
 
     @JsonProperty("namespace")
-    public java.lang.String getNamespace() {
+    public String getNamespace() {
         return namespace;
     }
 
     @JsonProperty("namespace")
-    public void setNamespace(java.lang.String namespace) {
+    public void setNamespace(String namespace) {
         this.namespace = namespace;
     }
 
@@ -508,12 +508,12 @@ public class Kustomization implements Editable<KustomizationBuilder> , Kubernete
 
     @JsonProperty("patchesStrategicMerge")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<java.lang.String> getPatchesStrategicMerge() {
+    public List<String> getPatchesStrategicMerge() {
         return patchesStrategicMerge;
     }
 
     @JsonProperty("patchesStrategicMerge")
-    public void setPatchesStrategicMerge(List<java.lang.String> patchesStrategicMerge) {
+    public void setPatchesStrategicMerge(List<String> patchesStrategicMerge) {
         this.patchesStrategicMerge = patchesStrategicMerge;
     }
 
@@ -541,12 +541,12 @@ public class Kustomization implements Editable<KustomizationBuilder> , Kubernete
 
     @JsonProperty("resources")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<java.lang.String> getResources() {
+    public List<String> getResources() {
         return resources;
     }
 
     @JsonProperty("resources")
-    public void setResources(List<java.lang.String> resources) {
+    public void setResources(List<String> resources) {
         this.resources = resources;
     }
 
@@ -573,23 +573,23 @@ public class Kustomization implements Editable<KustomizationBuilder> , Kubernete
 
     @JsonProperty("transformers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<java.lang.String> getTransformers() {
+    public List<String> getTransformers() {
         return transformers;
     }
 
     @JsonProperty("transformers")
-    public void setTransformers(List<java.lang.String> transformers) {
+    public void setTransformers(List<String> transformers) {
         this.transformers = transformers;
     }
 
     @JsonProperty("validators")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<java.lang.String> getValidators() {
+    public List<String> getValidators() {
         return validators;
     }
 
     @JsonProperty("validators")
-    public void setValidators(List<java.lang.String> validators) {
+    public void setValidators(List<String> validators) {
         this.validators = validators;
     }
 
@@ -615,12 +615,12 @@ public class Kustomization implements Editable<KustomizationBuilder> , Kubernete
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 

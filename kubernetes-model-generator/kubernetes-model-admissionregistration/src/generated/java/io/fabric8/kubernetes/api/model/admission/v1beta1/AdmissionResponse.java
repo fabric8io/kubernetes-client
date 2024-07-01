@@ -71,18 +71,18 @@ public class AdmissionResponse implements Editable<AdmissionResponseBuilder> , K
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> auditAnnotations = new LinkedHashMap<String, String>();
     @JsonProperty("patch")
-    private java.lang.String patch;
+    private String patch;
     @JsonProperty("patchType")
-    private java.lang.String patchType;
+    private String patchType;
     @JsonProperty("status")
     private Status status;
     @JsonProperty("uid")
-    private java.lang.String uid;
+    private String uid;
     @JsonProperty("warnings")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> warnings = new ArrayList<java.lang.String>();
+    private List<String> warnings = new ArrayList<String>();
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -91,7 +91,7 @@ public class AdmissionResponse implements Editable<AdmissionResponseBuilder> , K
     public AdmissionResponse() {
     }
 
-    public AdmissionResponse(Boolean allowed, Map<String, String> auditAnnotations, java.lang.String patch, java.lang.String patchType, Status status, java.lang.String uid, List<java.lang.String> warnings) {
+    public AdmissionResponse(Boolean allowed, Map<String, String> auditAnnotations, String patch, String patchType, Status status, String uid, List<String> warnings) {
         super();
         this.allowed = allowed;
         this.auditAnnotations = auditAnnotations;
@@ -123,22 +123,22 @@ public class AdmissionResponse implements Editable<AdmissionResponseBuilder> , K
     }
 
     @JsonProperty("patch")
-    public java.lang.String getPatch() {
+    public String getPatch() {
         return patch;
     }
 
     @JsonProperty("patch")
-    public void setPatch(java.lang.String patch) {
+    public void setPatch(String patch) {
         this.patch = patch;
     }
 
     @JsonProperty("patchType")
-    public java.lang.String getPatchType() {
+    public String getPatchType() {
         return patchType;
     }
 
     @JsonProperty("patchType")
-    public void setPatchType(java.lang.String patchType) {
+    public void setPatchType(String patchType) {
         this.patchType = patchType;
     }
 
@@ -153,23 +153,23 @@ public class AdmissionResponse implements Editable<AdmissionResponseBuilder> , K
     }
 
     @JsonProperty("uid")
-    public java.lang.String getUid() {
+    public String getUid() {
         return uid;
     }
 
     @JsonProperty("uid")
-    public void setUid(java.lang.String uid) {
+    public void setUid(String uid) {
         this.uid = uid;
     }
 
     @JsonProperty("warnings")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<java.lang.String> getWarnings() {
+    public List<String> getWarnings() {
         return warnings;
     }
 
     @JsonProperty("warnings")
-    public void setWarnings(List<java.lang.String> warnings) {
+    public void setWarnings(List<String> warnings) {
         this.warnings = warnings;
     }
 
@@ -184,12 +184,12 @@ public class AdmissionResponse implements Editable<AdmissionResponseBuilder> , K
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 

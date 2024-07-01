@@ -55,7 +55,7 @@ public class ConfigMap implements Editable<ConfigMapBuilder> , HasMetadata, Name
      * 
      */
     @JsonProperty("apiVersion")
-    private java.lang.String apiVersion = "v1";
+    private String apiVersion = "v1";
     @JsonProperty("binaryData")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> binaryData = new LinkedHashMap<String, String>();
@@ -70,11 +70,11 @@ public class ConfigMap implements Editable<ConfigMapBuilder> , HasMetadata, Name
      * 
      */
     @JsonProperty("kind")
-    private java.lang.String kind = "ConfigMap";
+    private String kind = "ConfigMap";
     @JsonProperty("metadata")
     private ObjectMeta metadata;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -83,7 +83,7 @@ public class ConfigMap implements Editable<ConfigMapBuilder> , HasMetadata, Name
     public ConfigMap() {
     }
 
-    public ConfigMap(java.lang.String apiVersion, Map<String, String> binaryData, Map<String, String> data, Boolean immutable, java.lang.String kind, ObjectMeta metadata) {
+    public ConfigMap(String apiVersion, Map<String, String> binaryData, Map<String, String> data, Boolean immutable, String kind, ObjectMeta metadata) {
         super();
         this.apiVersion = apiVersion;
         this.binaryData = binaryData;
@@ -99,7 +99,7 @@ public class ConfigMap implements Editable<ConfigMapBuilder> , HasMetadata, Name
      * 
      */
     @JsonProperty("apiVersion")
-    public java.lang.String getApiVersion() {
+    public String getApiVersion() {
         return apiVersion;
     }
 
@@ -109,7 +109,7 @@ public class ConfigMap implements Editable<ConfigMapBuilder> , HasMetadata, Name
      * 
      */
     @JsonProperty("apiVersion")
-    public void setApiVersion(java.lang.String apiVersion) {
+    public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
     }
 
@@ -149,7 +149,7 @@ public class ConfigMap implements Editable<ConfigMapBuilder> , HasMetadata, Name
      * 
      */
     @JsonProperty("kind")
-    public java.lang.String getKind() {
+    public String getKind() {
         return kind;
     }
 
@@ -159,7 +159,7 @@ public class ConfigMap implements Editable<ConfigMapBuilder> , HasMetadata, Name
      * 
      */
     @JsonProperty("kind")
-    public void setKind(java.lang.String kind) {
+    public void setKind(String kind) {
         this.kind = kind;
     }
 
@@ -184,12 +184,12 @@ public class ConfigMap implements Editable<ConfigMapBuilder> , HasMetadata, Name
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 

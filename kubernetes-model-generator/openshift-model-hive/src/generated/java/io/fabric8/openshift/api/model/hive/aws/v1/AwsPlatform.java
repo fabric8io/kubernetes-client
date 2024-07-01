@@ -66,12 +66,12 @@ public class AwsPlatform implements Editable<AwsPlatformBuilder> , KubernetesRes
     @JsonProperty("privateLink")
     private PrivateLinkAccess privateLink;
     @JsonProperty("region")
-    private java.lang.String region;
+    private String region;
     @JsonProperty("userTags")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> userTags = new LinkedHashMap<String, String>();
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -80,7 +80,7 @@ public class AwsPlatform implements Editable<AwsPlatformBuilder> , KubernetesRes
     public AwsPlatform() {
     }
 
-    public AwsPlatform(AssumeRole credentialsAssumeRole, io.fabric8.kubernetes.api.model.LocalObjectReference credentialsSecretRef, PrivateLinkAccess privateLink, java.lang.String region, Map<String, String> userTags) {
+    public AwsPlatform(AssumeRole credentialsAssumeRole, io.fabric8.kubernetes.api.model.LocalObjectReference credentialsSecretRef, PrivateLinkAccess privateLink, String region, Map<String, String> userTags) {
         super();
         this.credentialsAssumeRole = credentialsAssumeRole;
         this.credentialsSecretRef = credentialsSecretRef;
@@ -120,12 +120,12 @@ public class AwsPlatform implements Editable<AwsPlatformBuilder> , KubernetesRes
     }
 
     @JsonProperty("region")
-    public java.lang.String getRegion() {
+    public String getRegion() {
         return region;
     }
 
     @JsonProperty("region")
-    public void setRegion(java.lang.String region) {
+    public void setRegion(String region) {
         this.region = region;
     }
 
@@ -150,12 +150,12 @@ public class AwsPlatform implements Editable<AwsPlatformBuilder> , KubernetesRes
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
