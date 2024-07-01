@@ -51,9 +51,6 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "apiVersion",
-    "kind",
-    "metadata",
     "github_com_open-cluster-management_governance-policy-propagator_api_v1_ComplianceHistory",
     "github_com_open-cluster-management_governance-policy-propagator_api_v1_CompliancePerClusterStatus",
     "github_com_open-cluster-management_governance-policy-propagator_api_v1_DetailsPerTemplate",

@@ -29,7 +29,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "apiVersion",
     "kind",
-    "metadata",
     "dryRun",
     "gracePeriodSeconds",
     "orphanDependents",

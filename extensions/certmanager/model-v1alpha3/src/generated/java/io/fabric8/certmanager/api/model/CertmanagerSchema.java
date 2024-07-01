@@ -96,9 +96,6 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "apiVersion",
-    "kind",
-    "metadata",
     "github_com_jetstack_cert-manager_pkg_apis_acme_v1alpha3_ACMEAuthorization",
     "github_com_jetstack_cert-manager_pkg_apis_acme_v1alpha3_ACMEChallenge",
     "github_com_jetstack_cert-manager_pkg_apis_acme_v1alpha3_ACMEChallengeSolver",

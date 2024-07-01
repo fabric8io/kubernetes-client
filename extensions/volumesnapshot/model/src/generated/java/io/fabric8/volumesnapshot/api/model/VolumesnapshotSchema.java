@@ -31,9 +31,6 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "apiVersion",
-    "kind",
-    "metadata",
     "github_com_kubernetes-csi_external-snapshotter_client_v4_apis_volumesnapshot_v1_VolumeSnapshot",
     "github_com_kubernetes-csi_external-snapshotter_client_v4_apis_volumesnapshot_v1_VolumeSnapshotClass",
     "github_com_kubernetes-csi_external-snapshotter_client_v4_apis_volumesnapshot_v1_VolumeSnapshotClassList",

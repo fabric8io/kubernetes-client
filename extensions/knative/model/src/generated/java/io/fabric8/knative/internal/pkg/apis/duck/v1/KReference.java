@@ -38,7 +38,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "apiVersion",
     "kind",
-    "metadata",
     "address",
     "group",
     "name",
