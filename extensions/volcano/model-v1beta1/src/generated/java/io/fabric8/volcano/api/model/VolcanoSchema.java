@@ -40,9 +40,6 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "apiVersion",
-    "kind",
-    "metadata",
     "volcano_sh_apis_pkg_apis_scheduling_v1beta1_PodGroup",
     "volcano_sh_apis_pkg_apis_scheduling_v1beta1_PodGroupCondition",
     "volcano_sh_apis_pkg_apis_scheduling_v1beta1_PodGroupList",

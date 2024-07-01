@@ -60,9 +60,6 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "apiVersion",
-    "kind",
-    "metadata",
     "github_com_ovn-org_ovn-kubernetes_go-controller_pkg_crd_adminpolicybasedroute_v1_AdminPolicyBasedExternalRoute",
     "github_com_ovn-org_ovn-kubernetes_go-controller_pkg_crd_adminpolicybasedroute_v1_AdminPolicyBasedExternalRouteList",
     "github_com_ovn-org_ovn-kubernetes_go-controller_pkg_crd_adminpolicybasedroute_v1_AdminPolicyBasedExternalRouteSpec",

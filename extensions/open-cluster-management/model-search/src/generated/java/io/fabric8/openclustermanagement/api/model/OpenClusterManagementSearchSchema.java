@@ -41,9 +41,6 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "apiVersion",
-    "kind",
-    "metadata",
     "github_com_open-cluster-management_search-operator_api_v1alpha1_ImageOverrides",
     "github_com_open-cluster-management_search-operator_api_v1alpha1_PodResource",
     "github_com_open-cluster-management_search-operator_api_v1alpha1_SearchCustomization",

@@ -3735,6 +3735,21 @@
       "properties": {
         "availabilityZone": {
           "type": "string"
+        },
+        "deviceType": {
+          "type": "string"
+        },
+        "diskSize": {
+          "type": "integer"
+        },
+        "sourceType": {
+          "type": "string"
+        },
+        "sourceUUID": {
+          "type": "string"
+        },
+        "volumeType": {
+          "type": "string"
         }
       },
       "additionalProperties": true

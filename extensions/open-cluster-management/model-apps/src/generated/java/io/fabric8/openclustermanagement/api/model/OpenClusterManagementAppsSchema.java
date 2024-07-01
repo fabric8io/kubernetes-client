@@ -79,9 +79,6 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "apiVersion",
-    "kind",
-    "metadata",
     "open-cluster-management_io_multicloud-operators-channel_pkg_apis_apps_v1_Channel",
     "open-cluster-management_io_multicloud-operators-channel_pkg_apis_apps_v1_ChannelGate",
     "open-cluster-management_io_multicloud-operators-channel_pkg_apis_apps_v1_ChannelList",

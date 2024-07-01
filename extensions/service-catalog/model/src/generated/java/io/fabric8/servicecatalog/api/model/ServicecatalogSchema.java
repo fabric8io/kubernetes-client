@@ -29,9 +29,6 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "apiVersion",
-    "kind",
-    "metadata",
     "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_AddKeyTransform",
     "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_AddKeysFromTransform",
     "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_BasicAuthConfig",

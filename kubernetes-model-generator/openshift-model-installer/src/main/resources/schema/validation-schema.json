@@ -3400,6 +3400,38 @@
       "additionalProperties": true
     },
     "machinepool": {
+      "properties": {
+        "confidentialCompute": {
+          "type": "string"
+        },
+        "onHostMaintenance": {
+          "type": "string"
+        },
+        "osDisk": {
+          "$ref": "#/definitions/os_installer_gcp_v1_OSDisk",
+          "existingJavaType": "io.fabric8.openshift.api.model.installer.gcp.v1.OSDisk"
+        },
+        "secureBoot": {
+          "type": "string"
+        },
+        "tags": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "type": {
+          "type": "string"
+        },
+        "zones": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        }
+      },
       "additionalProperties": true
     },
     "machinepoolplatform": {
@@ -3699,9 +3731,8 @@
     },
     "osdisk": {
       "properties": {
-        "diskSizeGiB": {
-          "type": "integer",
-          "existingJavaType": "Long"
+        "diskSizeGB": {
+          "type": "integer"
         }
       },
       "additionalProperties": true
@@ -3759,51 +3790,48 @@
     },
     "platform": {
       "properties": {
-        "affinityGroups": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/os_installer_ovirt_v1_AffinityGroup",
-            "existingJavaType": "io.fabric8.openshift.api.model.installer.ovirt.v1.AffinityGroup"
-          }
-        },
-        "api_vip": {
+        "armEndpoint": {
           "type": "string"
         },
-        "api_vips": {
-          "type": "array",
-          "javaOmitEmpty": true,
-          "items": {
-            "type": "string"
-          }
+        "baseDomainResourceGroupName": {
+          "type": "string"
+        },
+        "cloudName": {
+          "type": "string"
+        },
+        "clusterOSImage": {
+          "type": "string"
+        },
+        "computeSubnet": {
+          "type": "string"
+        },
+        "controlPlaneSubnet": {
+          "type": "string"
         },
         "defaultMachinePlatform": {
-          "$ref": "#/definitions/os_installer_ovirt_v1_MachinePool",
-          "existingJavaType": "io.fabric8.openshift.api.model.installer.ovirt.v1.MachinePool"
+          "$ref": "#/definitions/os_installer_azure_v1_MachinePool",
+          "existingJavaType": "io.fabric8.openshift.api.model.installer.azure.v1.MachinePool"
         },
-        "ingress_vip": {
+        "networkResourceGroupName": {
           "type": "string"
         },
-        "ingress_vips": {
-          "type": "array",
-          "javaOmitEmpty": true,
-          "items": {
+        "outboundType": {
+          "type": "string"
+        },
+        "region": {
+          "type": "string"
+        },
+        "resourceGroupName": {
+          "type": "string"
+        },
+        "userTags": {
+          "type": "object",
+          "additionalProperties": {
             "type": "string"
-          }
+          },
+          "existingJavaType": "java.util.Map\u003cString, String\u003e"
         },
-        "loadBalancer": {
-          "$ref": "#/definitions/os_config_v1_OvirtPlatformLoadBalancer",
-          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.OvirtPlatformLoadBalancer"
-        },
-        "ovirt_cluster_id": {
-          "type": "string"
-        },
-        "ovirt_network_name": {
-          "type": "string"
-        },
-        "ovirt_storage_domain_id": {
-          "type": "string"
-        },
-        "vnicProfileID": {
+        "virtualNetwork": {
           "type": "string"
         }
       },

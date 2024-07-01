@@ -147,9 +147,6 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "apiVersion",
-    "kind",
-    "metadata",
     "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_AWSChaos",
     "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_AWSChaosList",
     "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_AWSChaosSpec",

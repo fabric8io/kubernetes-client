@@ -36,9 +36,6 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaPropsOrArraySerDe.Deserializer.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "apiVersion",
-    "kind",
-    "metadata",
     "JSONSchemas",
     "Schema"
 })

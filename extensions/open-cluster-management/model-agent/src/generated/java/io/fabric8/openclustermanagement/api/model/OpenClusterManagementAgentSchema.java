@@ -37,9 +37,6 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "apiVersion",
-    "kind",
-    "metadata",
     "github_com_open-cluster-management_klusterlet-addon-controller_pkg_apis_agent_v1_KlusterletAddonAgentConfigSpec",
     "github_com_open-cluster-management_klusterlet-addon-controller_pkg_apis_agent_v1_KlusterletAddonConfig",
     "github_com_open-cluster-management_klusterlet-addon-controller_pkg_apis_agent_v1_KlusterletAddonConfigList",

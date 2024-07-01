@@ -44,9 +44,6 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "apiVersion",
-    "kind",
-    "metadata",
     "github_com_open-cluster-management_multicloud-integrations_pkg_apis_apps_v1beta1_ArgoServerSpec",
     "github_com_open-cluster-management_multicloud-integrations_pkg_apis_apps_v1beta1_GitOpsCluster",
     "github_com_open-cluster-management_multicloud-integrations_pkg_apis_apps_v1beta1_GitOpsClusterList",

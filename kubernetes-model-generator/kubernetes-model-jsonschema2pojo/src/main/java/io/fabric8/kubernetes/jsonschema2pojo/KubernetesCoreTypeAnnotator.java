@@ -56,13 +56,18 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintWriter;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Spliterator;
+import java.util.Spliterators;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 public class KubernetesCoreTypeAnnotator extends Jackson2Annotator {
 
@@ -98,17 +103,17 @@ public class KubernetesCoreTypeAnnotator extends Jackson2Annotator {
     }
     handledClasses.add(clazz.fullName());
 
-    JAnnotationArrayMember annotationValue = clazz.annotate(JsonPropertyOrder.class).paramArray(ANNOTATION_VALUE);
-
-    annotationValue.param(API_VERSION);
-    annotationValue.param(KIND);
-    annotationValue.param(METADATA);
-    for (Iterator<String> properties = propertiesNode.fieldNames(); properties.hasNext();) {
-      String next = properties.next();
-      if (!next.equals(API_VERSION) && !next.equals(KIND) && !next.equals(METADATA)) {
-        annotationValue.param(next);
+    final JAnnotationArrayMember jsonPropertyOrder = clazz.annotate(JsonPropertyOrder.class).paramArray(ANNOTATION_VALUE);
+    final List<String> fieldNames = StreamSupport
+        .stream(Spliterators.spliteratorUnknownSize(propertiesNode.fieldNames(), Spliterator.ORDERED), false)
+        .collect(Collectors.toList());
+    final List<String> topFields = Arrays.asList(API_VERSION, KIND, METADATA);
+    for (String topField : topFields) {
+      if (fieldNames.contains(topField)) {
+        jsonPropertyOrder.param(topField);
       }
     }
+    fieldNames.stream().filter(f -> !topFields.contains(f)).forEach(jsonPropertyOrder::param);
 
     clazz.annotate(ToString.class);
     clazz.annotate(EqualsAndHashCode.class);
