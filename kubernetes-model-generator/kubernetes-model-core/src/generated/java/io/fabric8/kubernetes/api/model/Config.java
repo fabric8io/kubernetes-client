@@ -25,7 +25,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "apiVersion",
     "kind",
-    "metadata",
     "clusters",
     "contexts",
     "current-context",

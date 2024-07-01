@@ -40,7 +40,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "apiVersion",
     "kind",
-    "metadata",
     "bundle",
     "name",
     "params",

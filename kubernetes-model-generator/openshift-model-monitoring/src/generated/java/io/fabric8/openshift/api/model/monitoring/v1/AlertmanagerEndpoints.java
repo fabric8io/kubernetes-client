@@ -32,8 +32,6 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "apiVersion",
-    "kind",
-    "metadata",
     "authorization",
     "basicAuth",
     "bearerTokenFile",

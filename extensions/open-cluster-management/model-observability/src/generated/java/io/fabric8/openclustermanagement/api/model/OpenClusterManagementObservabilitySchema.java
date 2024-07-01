@@ -50,9 +50,6 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "apiVersion",
-    "kind",
-    "metadata",
     "github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_shared_Condition",
     "github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_shared_ObservabilityAddonSpec",
     "github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_shared_PreConfiguredStorage",

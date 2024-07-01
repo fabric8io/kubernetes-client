@@ -23,7 +23,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "apiVersion",
     "kind",
-    "metadata",
     "blockOwnerDeletion",
     "controller",
     "name",
