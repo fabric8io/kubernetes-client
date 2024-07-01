@@ -96,30 +96,30 @@ public class OpenstackProviderSpec implements Editable<OpenstackProviderSpecBuil
      * 
      */
     @JsonProperty("apiVersion")
-    private java.lang.String apiVersion = "machine.openshift.io/v1alpha1";
+    private String apiVersion = "machine.openshift.io/v1alpha1";
     @JsonProperty("availabilityZone")
-    private java.lang.String availabilityZone;
+    private String availabilityZone;
     @JsonProperty("cloudName")
-    private java.lang.String cloudName;
+    private String cloudName;
     @JsonProperty("cloudsSecret")
     private SecretReference cloudsSecret;
     @JsonProperty("configDrive")
     private Boolean configDrive;
     @JsonProperty("flavor")
-    private java.lang.String flavor;
+    private String flavor;
     @JsonProperty("floatingIP")
-    private java.lang.String floatingIP;
+    private String floatingIP;
     @JsonProperty("image")
-    private java.lang.String image;
+    private String image;
     @JsonProperty("keyName")
-    private java.lang.String keyName;
+    private String keyName;
     /**
      * 
      * (Required)
      * 
      */
     @JsonProperty("kind")
-    private java.lang.String kind = "OpenstackProviderSpec";
+    private String kind = "OpenstackProviderSpec";
     @JsonProperty("metadata")
     private io.fabric8.kubernetes.api.model.ObjectMeta metadata;
     @JsonProperty("networks")
@@ -129,30 +129,30 @@ public class OpenstackProviderSpec implements Editable<OpenstackProviderSpecBuil
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<PortOpts> ports = new ArrayList<PortOpts>();
     @JsonProperty("primarySubnet")
-    private java.lang.String primarySubnet;
+    private String primarySubnet;
     @JsonProperty("rootVolume")
     private RootVolume rootVolume;
     @JsonProperty("securityGroups")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<SecurityGroupParam> securityGroups = new ArrayList<SecurityGroupParam>();
     @JsonProperty("serverGroupID")
-    private java.lang.String serverGroupID;
+    private String serverGroupID;
     @JsonProperty("serverGroupName")
-    private java.lang.String serverGroupName;
+    private String serverGroupName;
     @JsonProperty("serverMetadata")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> serverMetadata = new LinkedHashMap<String, String>();
     @JsonProperty("sshUserName")
-    private java.lang.String sshUserName;
+    private String sshUserName;
     @JsonProperty("tags")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> tags = new ArrayList<java.lang.String>();
+    private List<String> tags = new ArrayList<String>();
     @JsonProperty("trunk")
     private Boolean trunk;
     @JsonProperty("userDataSecret")
     private SecretReference userDataSecret;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -161,7 +161,7 @@ public class OpenstackProviderSpec implements Editable<OpenstackProviderSpecBuil
     public OpenstackProviderSpec() {
     }
 
-    public OpenstackProviderSpec(java.lang.String apiVersion, java.lang.String availabilityZone, java.lang.String cloudName, SecretReference cloudsSecret, Boolean configDrive, java.lang.String flavor, java.lang.String floatingIP, java.lang.String image, java.lang.String keyName, java.lang.String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, List<NetworkParam> networks, List<PortOpts> ports, java.lang.String primarySubnet, RootVolume rootVolume, List<SecurityGroupParam> securityGroups, java.lang.String serverGroupID, java.lang.String serverGroupName, Map<String, String> serverMetadata, java.lang.String sshUserName, List<java.lang.String> tags, Boolean trunk, SecretReference userDataSecret) {
+    public OpenstackProviderSpec(String apiVersion, String availabilityZone, String cloudName, SecretReference cloudsSecret, Boolean configDrive, String flavor, String floatingIP, String image, String keyName, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, List<NetworkParam> networks, List<PortOpts> ports, String primarySubnet, RootVolume rootVolume, List<SecurityGroupParam> securityGroups, String serverGroupID, String serverGroupName, Map<String, String> serverMetadata, String sshUserName, List<String> tags, Boolean trunk, SecretReference userDataSecret) {
         super();
         this.apiVersion = apiVersion;
         this.availabilityZone = availabilityZone;
@@ -194,7 +194,7 @@ public class OpenstackProviderSpec implements Editable<OpenstackProviderSpecBuil
      * 
      */
     @JsonProperty("apiVersion")
-    public java.lang.String getApiVersion() {
+    public String getApiVersion() {
         return apiVersion;
     }
 
@@ -204,27 +204,27 @@ public class OpenstackProviderSpec implements Editable<OpenstackProviderSpecBuil
      * 
      */
     @JsonProperty("apiVersion")
-    public void setApiVersion(java.lang.String apiVersion) {
+    public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
     }
 
     @JsonProperty("availabilityZone")
-    public java.lang.String getAvailabilityZone() {
+    public String getAvailabilityZone() {
         return availabilityZone;
     }
 
     @JsonProperty("availabilityZone")
-    public void setAvailabilityZone(java.lang.String availabilityZone) {
+    public void setAvailabilityZone(String availabilityZone) {
         this.availabilityZone = availabilityZone;
     }
 
     @JsonProperty("cloudName")
-    public java.lang.String getCloudName() {
+    public String getCloudName() {
         return cloudName;
     }
 
     @JsonProperty("cloudName")
-    public void setCloudName(java.lang.String cloudName) {
+    public void setCloudName(String cloudName) {
         this.cloudName = cloudName;
     }
 
@@ -249,42 +249,42 @@ public class OpenstackProviderSpec implements Editable<OpenstackProviderSpecBuil
     }
 
     @JsonProperty("flavor")
-    public java.lang.String getFlavor() {
+    public String getFlavor() {
         return flavor;
     }
 
     @JsonProperty("flavor")
-    public void setFlavor(java.lang.String flavor) {
+    public void setFlavor(String flavor) {
         this.flavor = flavor;
     }
 
     @JsonProperty("floatingIP")
-    public java.lang.String getFloatingIP() {
+    public String getFloatingIP() {
         return floatingIP;
     }
 
     @JsonProperty("floatingIP")
-    public void setFloatingIP(java.lang.String floatingIP) {
+    public void setFloatingIP(String floatingIP) {
         this.floatingIP = floatingIP;
     }
 
     @JsonProperty("image")
-    public java.lang.String getImage() {
+    public String getImage() {
         return image;
     }
 
     @JsonProperty("image")
-    public void setImage(java.lang.String image) {
+    public void setImage(String image) {
         this.image = image;
     }
 
     @JsonProperty("keyName")
-    public java.lang.String getKeyName() {
+    public String getKeyName() {
         return keyName;
     }
 
     @JsonProperty("keyName")
-    public void setKeyName(java.lang.String keyName) {
+    public void setKeyName(String keyName) {
         this.keyName = keyName;
     }
 
@@ -294,7 +294,7 @@ public class OpenstackProviderSpec implements Editable<OpenstackProviderSpecBuil
      * 
      */
     @JsonProperty("kind")
-    public java.lang.String getKind() {
+    public String getKind() {
         return kind;
     }
 
@@ -304,7 +304,7 @@ public class OpenstackProviderSpec implements Editable<OpenstackProviderSpecBuil
      * 
      */
     @JsonProperty("kind")
-    public void setKind(java.lang.String kind) {
+    public void setKind(String kind) {
         this.kind = kind;
     }
 
@@ -341,12 +341,12 @@ public class OpenstackProviderSpec implements Editable<OpenstackProviderSpecBuil
     }
 
     @JsonProperty("primarySubnet")
-    public java.lang.String getPrimarySubnet() {
+    public String getPrimarySubnet() {
         return primarySubnet;
     }
 
     @JsonProperty("primarySubnet")
-    public void setPrimarySubnet(java.lang.String primarySubnet) {
+    public void setPrimarySubnet(String primarySubnet) {
         this.primarySubnet = primarySubnet;
     }
 
@@ -372,22 +372,22 @@ public class OpenstackProviderSpec implements Editable<OpenstackProviderSpecBuil
     }
 
     @JsonProperty("serverGroupID")
-    public java.lang.String getServerGroupID() {
+    public String getServerGroupID() {
         return serverGroupID;
     }
 
     @JsonProperty("serverGroupID")
-    public void setServerGroupID(java.lang.String serverGroupID) {
+    public void setServerGroupID(String serverGroupID) {
         this.serverGroupID = serverGroupID;
     }
 
     @JsonProperty("serverGroupName")
-    public java.lang.String getServerGroupName() {
+    public String getServerGroupName() {
         return serverGroupName;
     }
 
     @JsonProperty("serverGroupName")
-    public void setServerGroupName(java.lang.String serverGroupName) {
+    public void setServerGroupName(String serverGroupName) {
         this.serverGroupName = serverGroupName;
     }
 
@@ -402,23 +402,23 @@ public class OpenstackProviderSpec implements Editable<OpenstackProviderSpecBuil
     }
 
     @JsonProperty("sshUserName")
-    public java.lang.String getSshUserName() {
+    public String getSshUserName() {
         return sshUserName;
     }
 
     @JsonProperty("sshUserName")
-    public void setSshUserName(java.lang.String sshUserName) {
+    public void setSshUserName(String sshUserName) {
         this.sshUserName = sshUserName;
     }
 
     @JsonProperty("tags")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<java.lang.String> getTags() {
+    public List<String> getTags() {
         return tags;
     }
 
     @JsonProperty("tags")
-    public void setTags(List<java.lang.String> tags) {
+    public void setTags(List<String> tags) {
         this.tags = tags;
     }
 
@@ -453,12 +453,12 @@ public class OpenstackProviderSpec implements Editable<OpenstackProviderSpecBuil
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 

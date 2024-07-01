@@ -74,23 +74,23 @@ public class VolumeAttributesClass implements Editable<VolumeAttributesClassBuil
      * 
      */
     @JsonProperty("apiVersion")
-    private java.lang.String apiVersion = "storage.k8s.io/v1alpha1";
+    private String apiVersion = "storage.k8s.io/v1alpha1";
     @JsonProperty("driverName")
-    private java.lang.String driverName;
+    private String driverName;
     /**
      * 
      * (Required)
      * 
      */
     @JsonProperty("kind")
-    private java.lang.String kind = "VolumeAttributesClass";
+    private String kind = "VolumeAttributesClass";
     @JsonProperty("metadata")
     private io.fabric8.kubernetes.api.model.ObjectMeta metadata;
     @JsonProperty("parameters")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> parameters = new LinkedHashMap<String, String>();
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -99,7 +99,7 @@ public class VolumeAttributesClass implements Editable<VolumeAttributesClassBuil
     public VolumeAttributesClass() {
     }
 
-    public VolumeAttributesClass(java.lang.String apiVersion, java.lang.String driverName, java.lang.String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, Map<String, String> parameters) {
+    public VolumeAttributesClass(String apiVersion, String driverName, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, Map<String, String> parameters) {
         super();
         this.apiVersion = apiVersion;
         this.driverName = driverName;
@@ -114,7 +114,7 @@ public class VolumeAttributesClass implements Editable<VolumeAttributesClassBuil
      * 
      */
     @JsonProperty("apiVersion")
-    public java.lang.String getApiVersion() {
+    public String getApiVersion() {
         return apiVersion;
     }
 
@@ -124,17 +124,17 @@ public class VolumeAttributesClass implements Editable<VolumeAttributesClassBuil
      * 
      */
     @JsonProperty("apiVersion")
-    public void setApiVersion(java.lang.String apiVersion) {
+    public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
     }
 
     @JsonProperty("driverName")
-    public java.lang.String getDriverName() {
+    public String getDriverName() {
         return driverName;
     }
 
     @JsonProperty("driverName")
-    public void setDriverName(java.lang.String driverName) {
+    public void setDriverName(String driverName) {
         this.driverName = driverName;
     }
 
@@ -144,7 +144,7 @@ public class VolumeAttributesClass implements Editable<VolumeAttributesClassBuil
      * 
      */
     @JsonProperty("kind")
-    public java.lang.String getKind() {
+    public String getKind() {
         return kind;
     }
 
@@ -154,7 +154,7 @@ public class VolumeAttributesClass implements Editable<VolumeAttributesClassBuil
      * 
      */
     @JsonProperty("kind")
-    public void setKind(java.lang.String kind) {
+    public void setKind(String kind) {
         this.kind = kind;
     }
 
@@ -189,12 +189,12 @@ public class VolumeAttributesClass implements Editable<VolumeAttributesClassBuil
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 

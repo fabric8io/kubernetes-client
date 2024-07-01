@@ -72,20 +72,20 @@ public class CertificateSigningRequestSpec implements Editable<CertificateSignin
     private Map<String, ArrayList<String>> extra = new LinkedHashMap<String, ArrayList<String>>();
     @JsonProperty("groups")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> groups = new ArrayList<java.lang.String>();
+    private List<String> groups = new ArrayList<String>();
     @JsonProperty("request")
-    private java.lang.String request;
+    private String request;
     @JsonProperty("signerName")
-    private java.lang.String signerName;
+    private String signerName;
     @JsonProperty("uid")
-    private java.lang.String uid;
+    private String uid;
     @JsonProperty("usages")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> usages = new ArrayList<java.lang.String>();
+    private List<String> usages = new ArrayList<String>();
     @JsonProperty("username")
-    private java.lang.String username;
+    private String username;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -94,7 +94,7 @@ public class CertificateSigningRequestSpec implements Editable<CertificateSignin
     public CertificateSigningRequestSpec() {
     }
 
-    public CertificateSigningRequestSpec(Integer expirationSeconds, Map<String, ArrayList<String>> extra, List<java.lang.String> groups, java.lang.String request, java.lang.String signerName, java.lang.String uid, List<java.lang.String> usages, java.lang.String username) {
+    public CertificateSigningRequestSpec(Integer expirationSeconds, Map<String, ArrayList<String>> extra, List<String> groups, String request, String signerName, String uid, List<String> usages, String username) {
         super();
         this.expirationSeconds = expirationSeconds;
         this.extra = extra;
@@ -128,63 +128,63 @@ public class CertificateSigningRequestSpec implements Editable<CertificateSignin
 
     @JsonProperty("groups")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<java.lang.String> getGroups() {
+    public List<String> getGroups() {
         return groups;
     }
 
     @JsonProperty("groups")
-    public void setGroups(List<java.lang.String> groups) {
+    public void setGroups(List<String> groups) {
         this.groups = groups;
     }
 
     @JsonProperty("request")
-    public java.lang.String getRequest() {
+    public String getRequest() {
         return request;
     }
 
     @JsonProperty("request")
-    public void setRequest(java.lang.String request) {
+    public void setRequest(String request) {
         this.request = request;
     }
 
     @JsonProperty("signerName")
-    public java.lang.String getSignerName() {
+    public String getSignerName() {
         return signerName;
     }
 
     @JsonProperty("signerName")
-    public void setSignerName(java.lang.String signerName) {
+    public void setSignerName(String signerName) {
         this.signerName = signerName;
     }
 
     @JsonProperty("uid")
-    public java.lang.String getUid() {
+    public String getUid() {
         return uid;
     }
 
     @JsonProperty("uid")
-    public void setUid(java.lang.String uid) {
+    public void setUid(String uid) {
         this.uid = uid;
     }
 
     @JsonProperty("usages")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<java.lang.String> getUsages() {
+    public List<String> getUsages() {
         return usages;
     }
 
     @JsonProperty("usages")
-    public void setUsages(List<java.lang.String> usages) {
+    public void setUsages(List<String> usages) {
         this.usages = usages;
     }
 
     @JsonProperty("username")
-    public java.lang.String getUsername() {
+    public String getUsername() {
         return username;
     }
 
     @JsonProperty("username")
-    public void setUsername(java.lang.String username) {
+    public void setUsername(String username) {
         this.username = username;
     }
 
@@ -199,12 +199,12 @@ public class CertificateSigningRequestSpec implements Editable<CertificateSignin
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 

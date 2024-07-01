@@ -67,21 +67,21 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     @JsonProperty("defaultMachinePlatform")
     private MachinePool defaultMachinePlatform;
     @JsonProperty("privateZoneID")
-    private java.lang.String privateZoneID;
+    private String privateZoneID;
     @JsonProperty("region")
-    private java.lang.String region;
+    private String region;
     @JsonProperty("resourceGroupID")
-    private java.lang.String resourceGroupID;
+    private String resourceGroupID;
     @JsonProperty("tags")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> tags = new LinkedHashMap<String, String>();
     @JsonProperty("vpcID")
-    private java.lang.String vpcID;
+    private String vpcID;
     @JsonProperty("vswitchIDs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> vswitchIDs = new ArrayList<java.lang.String>();
+    private List<String> vswitchIDs = new ArrayList<String>();
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -90,7 +90,7 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     public Platform() {
     }
 
-    public Platform(MachinePool defaultMachinePlatform, java.lang.String privateZoneID, java.lang.String region, java.lang.String resourceGroupID, Map<String, String> tags, java.lang.String vpcID, List<java.lang.String> vswitchIDs) {
+    public Platform(MachinePool defaultMachinePlatform, String privateZoneID, String region, String resourceGroupID, Map<String, String> tags, String vpcID, List<String> vswitchIDs) {
         super();
         this.defaultMachinePlatform = defaultMachinePlatform;
         this.privateZoneID = privateZoneID;
@@ -112,32 +112,32 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     }
 
     @JsonProperty("privateZoneID")
-    public java.lang.String getPrivateZoneID() {
+    public String getPrivateZoneID() {
         return privateZoneID;
     }
 
     @JsonProperty("privateZoneID")
-    public void setPrivateZoneID(java.lang.String privateZoneID) {
+    public void setPrivateZoneID(String privateZoneID) {
         this.privateZoneID = privateZoneID;
     }
 
     @JsonProperty("region")
-    public java.lang.String getRegion() {
+    public String getRegion() {
         return region;
     }
 
     @JsonProperty("region")
-    public void setRegion(java.lang.String region) {
+    public void setRegion(String region) {
         this.region = region;
     }
 
     @JsonProperty("resourceGroupID")
-    public java.lang.String getResourceGroupID() {
+    public String getResourceGroupID() {
         return resourceGroupID;
     }
 
     @JsonProperty("resourceGroupID")
-    public void setResourceGroupID(java.lang.String resourceGroupID) {
+    public void setResourceGroupID(String resourceGroupID) {
         this.resourceGroupID = resourceGroupID;
     }
 
@@ -152,23 +152,23 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     }
 
     @JsonProperty("vpcID")
-    public java.lang.String getVpcID() {
+    public String getVpcID() {
         return vpcID;
     }
 
     @JsonProperty("vpcID")
-    public void setVpcID(java.lang.String vpcID) {
+    public void setVpcID(String vpcID) {
         this.vpcID = vpcID;
     }
 
     @JsonProperty("vswitchIDs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<java.lang.String> getVswitchIDs() {
+    public List<String> getVswitchIDs() {
         return vswitchIDs;
     }
 
     @JsonProperty("vswitchIDs")
-    public void setVswitchIDs(List<java.lang.String> vswitchIDs) {
+    public void setVswitchIDs(List<String> vswitchIDs) {
         this.vswitchIDs = vswitchIDs;
     }
 
@@ -183,12 +183,12 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 

@@ -66,13 +66,13 @@ public class TemplateInstanceRequester implements Editable<TemplateInstanceReque
     private Map<String, ArrayList<String>> extra = new LinkedHashMap<String, ArrayList<String>>();
     @JsonProperty("groups")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> groups = new ArrayList<java.lang.String>();
+    private List<String> groups = new ArrayList<String>();
     @JsonProperty("uid")
-    private java.lang.String uid;
+    private String uid;
     @JsonProperty("username")
-    private java.lang.String username;
+    private String username;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -81,7 +81,7 @@ public class TemplateInstanceRequester implements Editable<TemplateInstanceReque
     public TemplateInstanceRequester() {
     }
 
-    public TemplateInstanceRequester(Map<String, ArrayList<String>> extra, List<java.lang.String> groups, java.lang.String uid, java.lang.String username) {
+    public TemplateInstanceRequester(Map<String, ArrayList<String>> extra, List<String> groups, String uid, String username) {
         super();
         this.extra = extra;
         this.groups = groups;
@@ -101,32 +101,32 @@ public class TemplateInstanceRequester implements Editable<TemplateInstanceReque
 
     @JsonProperty("groups")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<java.lang.String> getGroups() {
+    public List<String> getGroups() {
         return groups;
     }
 
     @JsonProperty("groups")
-    public void setGroups(List<java.lang.String> groups) {
+    public void setGroups(List<String> groups) {
         this.groups = groups;
     }
 
     @JsonProperty("uid")
-    public java.lang.String getUid() {
+    public String getUid() {
         return uid;
     }
 
     @JsonProperty("uid")
-    public void setUid(java.lang.String uid) {
+    public void setUid(String uid) {
         this.uid = uid;
     }
 
     @JsonProperty("username")
-    public java.lang.String getUsername() {
+    public String getUsername() {
         return username;
     }
 
     @JsonProperty("username")
-    public void setUsername(java.lang.String username) {
+    public void setUsername(String username) {
         this.username = username;
     }
 
@@ -141,12 +141,12 @@ public class TemplateInstanceRequester implements Editable<TemplateInstanceReque
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 

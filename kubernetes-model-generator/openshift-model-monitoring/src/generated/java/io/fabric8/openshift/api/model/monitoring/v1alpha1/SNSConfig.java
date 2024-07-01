@@ -67,28 +67,28 @@ public class SNSConfig implements Editable<SNSConfigBuilder> , KubernetesResourc
 {
 
     @JsonProperty("apiURL")
-    private java.lang.String apiURL;
+    private String apiURL;
     @JsonProperty("attributes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> attributes = new LinkedHashMap<String, String>();
     @JsonProperty("httpConfig")
     private HTTPConfig httpConfig;
     @JsonProperty("message")
-    private java.lang.String message;
+    private String message;
     @JsonProperty("phoneNumber")
-    private java.lang.String phoneNumber;
+    private String phoneNumber;
     @JsonProperty("sendResolved")
     private Boolean sendResolved;
     @JsonProperty("sigv4")
     private Sigv4 sigv4;
     @JsonProperty("subject")
-    private java.lang.String subject;
+    private String subject;
     @JsonProperty("targetARN")
-    private java.lang.String targetARN;
+    private String targetARN;
     @JsonProperty("topicARN")
-    private java.lang.String topicARN;
+    private String topicARN;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -97,7 +97,7 @@ public class SNSConfig implements Editable<SNSConfigBuilder> , KubernetesResourc
     public SNSConfig() {
     }
 
-    public SNSConfig(java.lang.String apiURL, Map<String, String> attributes, HTTPConfig httpConfig, java.lang.String message, java.lang.String phoneNumber, Boolean sendResolved, Sigv4 sigv4, java.lang.String subject, java.lang.String targetARN, java.lang.String topicARN) {
+    public SNSConfig(String apiURL, Map<String, String> attributes, HTTPConfig httpConfig, String message, String phoneNumber, Boolean sendResolved, Sigv4 sigv4, String subject, String targetARN, String topicARN) {
         super();
         this.apiURL = apiURL;
         this.attributes = attributes;
@@ -112,12 +112,12 @@ public class SNSConfig implements Editable<SNSConfigBuilder> , KubernetesResourc
     }
 
     @JsonProperty("apiURL")
-    public java.lang.String getApiURL() {
+    public String getApiURL() {
         return apiURL;
     }
 
     @JsonProperty("apiURL")
-    public void setApiURL(java.lang.String apiURL) {
+    public void setApiURL(String apiURL) {
         this.apiURL = apiURL;
     }
 
@@ -142,22 +142,22 @@ public class SNSConfig implements Editable<SNSConfigBuilder> , KubernetesResourc
     }
 
     @JsonProperty("message")
-    public java.lang.String getMessage() {
+    public String getMessage() {
         return message;
     }
 
     @JsonProperty("message")
-    public void setMessage(java.lang.String message) {
+    public void setMessage(String message) {
         this.message = message;
     }
 
     @JsonProperty("phoneNumber")
-    public java.lang.String getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 
     @JsonProperty("phoneNumber")
-    public void setPhoneNumber(java.lang.String phoneNumber) {
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
@@ -182,32 +182,32 @@ public class SNSConfig implements Editable<SNSConfigBuilder> , KubernetesResourc
     }
 
     @JsonProperty("subject")
-    public java.lang.String getSubject() {
+    public String getSubject() {
         return subject;
     }
 
     @JsonProperty("subject")
-    public void setSubject(java.lang.String subject) {
+    public void setSubject(String subject) {
         this.subject = subject;
     }
 
     @JsonProperty("targetARN")
-    public java.lang.String getTargetARN() {
+    public String getTargetARN() {
         return targetARN;
     }
 
     @JsonProperty("targetARN")
-    public void setTargetARN(java.lang.String targetARN) {
+    public void setTargetARN(String targetARN) {
         this.targetARN = targetARN;
     }
 
     @JsonProperty("topicARN")
-    public java.lang.String getTopicARN() {
+    public String getTopicARN() {
         return topicARN;
     }
 
     @JsonProperty("topicARN")
-    public void setTopicARN(java.lang.String topicARN) {
+    public void setTopicARN(String topicARN) {
         this.topicARN = topicARN;
     }
 
@@ -222,12 +222,12 @@ public class SNSConfig implements Editable<SNSConfigBuilder> , KubernetesResourc
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 

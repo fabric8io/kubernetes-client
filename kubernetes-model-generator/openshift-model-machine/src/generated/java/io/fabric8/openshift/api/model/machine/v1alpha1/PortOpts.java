@@ -79,39 +79,39 @@ public class PortOpts implements Editable<PortOptsBuilder> , KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<AddressPair> allowedAddressPairs = new ArrayList<AddressPair>();
     @JsonProperty("description")
-    private java.lang.String description;
+    private String description;
     @JsonProperty("fixedIPs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<FixedIPs> fixedIPs = new ArrayList<FixedIPs>();
     @JsonProperty("hostID")
-    private java.lang.String hostID;
+    private String hostID;
     @JsonProperty("macAddress")
-    private java.lang.String macAddress;
+    private String macAddress;
     @JsonProperty("nameSuffix")
-    private java.lang.String nameSuffix;
+    private String nameSuffix;
     @JsonProperty("networkID")
-    private java.lang.String networkID;
+    private String networkID;
     @JsonProperty("portSecurity")
     private Boolean portSecurity;
     @JsonProperty("profile")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> profile = new LinkedHashMap<String, String>();
     @JsonProperty("projectID")
-    private java.lang.String projectID;
+    private String projectID;
     @JsonProperty("securityGroups")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> securityGroups = new ArrayList<java.lang.String>();
+    private List<String> securityGroups = new ArrayList<String>();
     @JsonProperty("tags")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> tags = new ArrayList<java.lang.String>();
+    private List<String> tags = new ArrayList<String>();
     @JsonProperty("tenantID")
-    private java.lang.String tenantID;
+    private String tenantID;
     @JsonProperty("trunk")
     private Boolean trunk;
     @JsonProperty("vnicType")
-    private java.lang.String vnicType;
+    private String vnicType;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -120,7 +120,7 @@ public class PortOpts implements Editable<PortOptsBuilder> , KubernetesResource
     public PortOpts() {
     }
 
-    public PortOpts(Boolean adminStateUp, List<AddressPair> allowedAddressPairs, java.lang.String description, List<FixedIPs> fixedIPs, java.lang.String hostID, java.lang.String macAddress, java.lang.String nameSuffix, java.lang.String networkID, Boolean portSecurity, Map<String, String> profile, java.lang.String projectID, List<java.lang.String> securityGroups, List<java.lang.String> tags, java.lang.String tenantID, Boolean trunk, java.lang.String vnicType) {
+    public PortOpts(Boolean adminStateUp, List<AddressPair> allowedAddressPairs, String description, List<FixedIPs> fixedIPs, String hostID, String macAddress, String nameSuffix, String networkID, Boolean portSecurity, Map<String, String> profile, String projectID, List<String> securityGroups, List<String> tags, String tenantID, Boolean trunk, String vnicType) {
         super();
         this.adminStateUp = adminStateUp;
         this.allowedAddressPairs = allowedAddressPairs;
@@ -162,12 +162,12 @@ public class PortOpts implements Editable<PortOptsBuilder> , KubernetesResource
     }
 
     @JsonProperty("description")
-    public java.lang.String getDescription() {
+    public String getDescription() {
         return description;
     }
 
     @JsonProperty("description")
-    public void setDescription(java.lang.String description) {
+    public void setDescription(String description) {
         this.description = description;
     }
 
@@ -183,42 +183,42 @@ public class PortOpts implements Editable<PortOptsBuilder> , KubernetesResource
     }
 
     @JsonProperty("hostID")
-    public java.lang.String getHostID() {
+    public String getHostID() {
         return hostID;
     }
 
     @JsonProperty("hostID")
-    public void setHostID(java.lang.String hostID) {
+    public void setHostID(String hostID) {
         this.hostID = hostID;
     }
 
     @JsonProperty("macAddress")
-    public java.lang.String getMacAddress() {
+    public String getMacAddress() {
         return macAddress;
     }
 
     @JsonProperty("macAddress")
-    public void setMacAddress(java.lang.String macAddress) {
+    public void setMacAddress(String macAddress) {
         this.macAddress = macAddress;
     }
 
     @JsonProperty("nameSuffix")
-    public java.lang.String getNameSuffix() {
+    public String getNameSuffix() {
         return nameSuffix;
     }
 
     @JsonProperty("nameSuffix")
-    public void setNameSuffix(java.lang.String nameSuffix) {
+    public void setNameSuffix(String nameSuffix) {
         this.nameSuffix = nameSuffix;
     }
 
     @JsonProperty("networkID")
-    public java.lang.String getNetworkID() {
+    public String getNetworkID() {
         return networkID;
     }
 
     @JsonProperty("networkID")
-    public void setNetworkID(java.lang.String networkID) {
+    public void setNetworkID(String networkID) {
         this.networkID = networkID;
     }
 
@@ -243,44 +243,44 @@ public class PortOpts implements Editable<PortOptsBuilder> , KubernetesResource
     }
 
     @JsonProperty("projectID")
-    public java.lang.String getProjectID() {
+    public String getProjectID() {
         return projectID;
     }
 
     @JsonProperty("projectID")
-    public void setProjectID(java.lang.String projectID) {
+    public void setProjectID(String projectID) {
         this.projectID = projectID;
     }
 
     @JsonProperty("securityGroups")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<java.lang.String> getSecurityGroups() {
+    public List<String> getSecurityGroups() {
         return securityGroups;
     }
 
     @JsonProperty("securityGroups")
-    public void setSecurityGroups(List<java.lang.String> securityGroups) {
+    public void setSecurityGroups(List<String> securityGroups) {
         this.securityGroups = securityGroups;
     }
 
     @JsonProperty("tags")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<java.lang.String> getTags() {
+    public List<String> getTags() {
         return tags;
     }
 
     @JsonProperty("tags")
-    public void setTags(List<java.lang.String> tags) {
+    public void setTags(List<String> tags) {
         this.tags = tags;
     }
 
     @JsonProperty("tenantID")
-    public java.lang.String getTenantID() {
+    public String getTenantID() {
         return tenantID;
     }
 
     @JsonProperty("tenantID")
-    public void setTenantID(java.lang.String tenantID) {
+    public void setTenantID(String tenantID) {
         this.tenantID = tenantID;
     }
 
@@ -295,12 +295,12 @@ public class PortOpts implements Editable<PortOptsBuilder> , KubernetesResource
     }
 
     @JsonProperty("vnicType")
-    public java.lang.String getVnicType() {
+    public String getVnicType() {
         return vnicType;
     }
 
     @JsonProperty("vnicType")
-    public void setVnicType(java.lang.String vnicType) {
+    public void setVnicType(String vnicType) {
         this.vnicType = vnicType;
     }
 
@@ -315,12 +315,12 @@ public class PortOpts implements Editable<PortOptsBuilder> , KubernetesResource
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 

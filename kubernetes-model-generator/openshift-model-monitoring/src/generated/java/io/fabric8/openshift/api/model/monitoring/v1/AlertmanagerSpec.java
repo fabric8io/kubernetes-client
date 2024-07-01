@@ -108,7 +108,7 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder> , Kub
 
     @JsonProperty("additionalPeers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> additionalPeers = new ArrayList<java.lang.String>();
+    private List<String> additionalPeers = new ArrayList<String>();
     @JsonProperty("affinity")
     private Affinity affinity;
     @JsonProperty("alertmanagerConfigMatcherStrategy")
@@ -122,34 +122,34 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder> , Kub
     @JsonProperty("automountServiceAccountToken")
     private Boolean automountServiceAccountToken;
     @JsonProperty("baseImage")
-    private java.lang.String baseImage;
+    private String baseImage;
     @JsonProperty("clusterAdvertiseAddress")
-    private java.lang.String clusterAdvertiseAddress;
+    private String clusterAdvertiseAddress;
     @JsonProperty("clusterGossipInterval")
-    private java.lang.String clusterGossipInterval;
+    private String clusterGossipInterval;
     @JsonProperty("clusterPeerTimeout")
-    private java.lang.String clusterPeerTimeout;
+    private String clusterPeerTimeout;
     @JsonProperty("clusterPushpullInterval")
-    private java.lang.String clusterPushpullInterval;
+    private String clusterPushpullInterval;
     @JsonProperty("configMaps")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> configMaps = new ArrayList<java.lang.String>();
+    private List<String> configMaps = new ArrayList<String>();
     @JsonProperty("configSecret")
-    private java.lang.String configSecret;
+    private String configSecret;
     @JsonProperty("containers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.kubernetes.api.model.Container> containers = new ArrayList<io.fabric8.kubernetes.api.model.Container>();
     @JsonProperty("externalUrl")
-    private java.lang.String externalUrl;
+    private String externalUrl;
     @JsonProperty("forceEnableClusterMode")
     private Boolean forceEnableClusterMode;
     @JsonProperty("hostAliases")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<HostAlias> hostAliases = new ArrayList<HostAlias>();
     @JsonProperty("image")
-    private java.lang.String image;
+    private String image;
     @JsonProperty("imagePullPolicy")
-    private java.lang.String imagePullPolicy;
+    private String imagePullPolicy;
     @JsonProperty("imagePullSecrets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.kubernetes.api.model.LocalObjectReference> imagePullSecrets = new ArrayList<io.fabric8.kubernetes.api.model.LocalObjectReference>();
@@ -159,9 +159,9 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder> , Kub
     @JsonProperty("listenLocal")
     private Boolean listenLocal;
     @JsonProperty("logFormat")
-    private java.lang.String logFormat;
+    private String logFormat;
     @JsonProperty("logLevel")
-    private java.lang.String logLevel;
+    private String logLevel;
     @JsonProperty("minReadySeconds")
     private Integer minReadySeconds;
     @JsonProperty("nodeSelector")
@@ -172,30 +172,30 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder> , Kub
     @JsonProperty("podMetadata")
     private EmbeddedObjectMetadata podMetadata;
     @JsonProperty("portName")
-    private java.lang.String portName;
+    private String portName;
     @JsonProperty("priorityClassName")
-    private java.lang.String priorityClassName;
+    private String priorityClassName;
     @JsonProperty("replicas")
     private Integer replicas;
     @JsonProperty("resources")
     private io.fabric8.kubernetes.api.model.ResourceRequirements resources;
     @JsonProperty("retention")
-    private java.lang.String retention;
+    private String retention;
     @JsonProperty("routePrefix")
-    private java.lang.String routePrefix;
+    private String routePrefix;
     @JsonProperty("secrets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> secrets = new ArrayList<java.lang.String>();
+    private List<String> secrets = new ArrayList<String>();
     @JsonProperty("securityContext")
     private PodSecurityContext securityContext;
     @JsonProperty("serviceAccountName")
-    private java.lang.String serviceAccountName;
+    private String serviceAccountName;
     @JsonProperty("sha")
-    private java.lang.String sha;
+    private String sha;
     @JsonProperty("storage")
     private StorageSpec storage;
     @JsonProperty("tag")
-    private java.lang.String tag;
+    private String tag;
     @JsonProperty("tolerations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Toleration> tolerations = new ArrayList<Toleration>();
@@ -203,7 +203,7 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder> , Kub
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<TopologySpreadConstraint> topologySpreadConstraints = new ArrayList<TopologySpreadConstraint>();
     @JsonProperty("version")
-    private java.lang.String version;
+    private String version;
     @JsonProperty("volumeMounts")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<VolumeMount> volumeMounts = new ArrayList<VolumeMount>();
@@ -213,7 +213,7 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder> , Kub
     @JsonProperty("web")
     private AlertmanagerWebSpec web;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -222,7 +222,7 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder> , Kub
     public AlertmanagerSpec() {
     }
 
-    public AlertmanagerSpec(List<java.lang.String> additionalPeers, Affinity affinity, AlertmanagerConfigMatcherStrategy alertmanagerConfigMatcherStrategy, io.fabric8.kubernetes.api.model.LabelSelector alertmanagerConfigNamespaceSelector, io.fabric8.kubernetes.api.model.LabelSelector alertmanagerConfigSelector, AlertmanagerConfiguration alertmanagerConfiguration, Boolean automountServiceAccountToken, java.lang.String baseImage, java.lang.String clusterAdvertiseAddress, java.lang.String clusterGossipInterval, java.lang.String clusterPeerTimeout, java.lang.String clusterPushpullInterval, List<java.lang.String> configMaps, java.lang.String configSecret, List<io.fabric8.kubernetes.api.model.Container> containers, java.lang.String externalUrl, Boolean forceEnableClusterMode, List<HostAlias> hostAliases, java.lang.String image, java.lang.String imagePullPolicy, List<io.fabric8.kubernetes.api.model.LocalObjectReference> imagePullSecrets, List<io.fabric8.kubernetes.api.model.Container> initContainers, Boolean listenLocal, java.lang.String logFormat, java.lang.String logLevel, Integer minReadySeconds, Map<String, String> nodeSelector, Boolean paused, EmbeddedObjectMetadata podMetadata, java.lang.String portName, java.lang.String priorityClassName, Integer replicas, io.fabric8.kubernetes.api.model.ResourceRequirements resources, java.lang.String retention, java.lang.String routePrefix, List<java.lang.String> secrets, PodSecurityContext securityContext, java.lang.String serviceAccountName, java.lang.String sha, StorageSpec storage, java.lang.String tag, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, java.lang.String version, List<VolumeMount> volumeMounts, List<Volume> volumes, AlertmanagerWebSpec web) {
+    public AlertmanagerSpec(List<String> additionalPeers, Affinity affinity, AlertmanagerConfigMatcherStrategy alertmanagerConfigMatcherStrategy, io.fabric8.kubernetes.api.model.LabelSelector alertmanagerConfigNamespaceSelector, io.fabric8.kubernetes.api.model.LabelSelector alertmanagerConfigSelector, AlertmanagerConfiguration alertmanagerConfiguration, Boolean automountServiceAccountToken, String baseImage, String clusterAdvertiseAddress, String clusterGossipInterval, String clusterPeerTimeout, String clusterPushpullInterval, List<String> configMaps, String configSecret, List<io.fabric8.kubernetes.api.model.Container> containers, String externalUrl, Boolean forceEnableClusterMode, List<HostAlias> hostAliases, String image, String imagePullPolicy, List<io.fabric8.kubernetes.api.model.LocalObjectReference> imagePullSecrets, List<io.fabric8.kubernetes.api.model.Container> initContainers, Boolean listenLocal, String logFormat, String logLevel, Integer minReadySeconds, Map<String, String> nodeSelector, Boolean paused, EmbeddedObjectMetadata podMetadata, String portName, String priorityClassName, Integer replicas, io.fabric8.kubernetes.api.model.ResourceRequirements resources, String retention, String routePrefix, List<String> secrets, PodSecurityContext securityContext, String serviceAccountName, String sha, StorageSpec storage, String tag, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, String version, List<VolumeMount> volumeMounts, List<Volume> volumes, AlertmanagerWebSpec web) {
         super();
         this.additionalPeers = additionalPeers;
         this.affinity = affinity;
@@ -275,12 +275,12 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder> , Kub
 
     @JsonProperty("additionalPeers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<java.lang.String> getAdditionalPeers() {
+    public List<String> getAdditionalPeers() {
         return additionalPeers;
     }
 
     @JsonProperty("additionalPeers")
-    public void setAdditionalPeers(List<java.lang.String> additionalPeers) {
+    public void setAdditionalPeers(List<String> additionalPeers) {
         this.additionalPeers = additionalPeers;
     }
 
@@ -345,73 +345,73 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder> , Kub
     }
 
     @JsonProperty("baseImage")
-    public java.lang.String getBaseImage() {
+    public String getBaseImage() {
         return baseImage;
     }
 
     @JsonProperty("baseImage")
-    public void setBaseImage(java.lang.String baseImage) {
+    public void setBaseImage(String baseImage) {
         this.baseImage = baseImage;
     }
 
     @JsonProperty("clusterAdvertiseAddress")
-    public java.lang.String getClusterAdvertiseAddress() {
+    public String getClusterAdvertiseAddress() {
         return clusterAdvertiseAddress;
     }
 
     @JsonProperty("clusterAdvertiseAddress")
-    public void setClusterAdvertiseAddress(java.lang.String clusterAdvertiseAddress) {
+    public void setClusterAdvertiseAddress(String clusterAdvertiseAddress) {
         this.clusterAdvertiseAddress = clusterAdvertiseAddress;
     }
 
     @JsonProperty("clusterGossipInterval")
-    public java.lang.String getClusterGossipInterval() {
+    public String getClusterGossipInterval() {
         return clusterGossipInterval;
     }
 
     @JsonProperty("clusterGossipInterval")
-    public void setClusterGossipInterval(java.lang.String clusterGossipInterval) {
+    public void setClusterGossipInterval(String clusterGossipInterval) {
         this.clusterGossipInterval = clusterGossipInterval;
     }
 
     @JsonProperty("clusterPeerTimeout")
-    public java.lang.String getClusterPeerTimeout() {
+    public String getClusterPeerTimeout() {
         return clusterPeerTimeout;
     }
 
     @JsonProperty("clusterPeerTimeout")
-    public void setClusterPeerTimeout(java.lang.String clusterPeerTimeout) {
+    public void setClusterPeerTimeout(String clusterPeerTimeout) {
         this.clusterPeerTimeout = clusterPeerTimeout;
     }
 
     @JsonProperty("clusterPushpullInterval")
-    public java.lang.String getClusterPushpullInterval() {
+    public String getClusterPushpullInterval() {
         return clusterPushpullInterval;
     }
 
     @JsonProperty("clusterPushpullInterval")
-    public void setClusterPushpullInterval(java.lang.String clusterPushpullInterval) {
+    public void setClusterPushpullInterval(String clusterPushpullInterval) {
         this.clusterPushpullInterval = clusterPushpullInterval;
     }
 
     @JsonProperty("configMaps")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<java.lang.String> getConfigMaps() {
+    public List<String> getConfigMaps() {
         return configMaps;
     }
 
     @JsonProperty("configMaps")
-    public void setConfigMaps(List<java.lang.String> configMaps) {
+    public void setConfigMaps(List<String> configMaps) {
         this.configMaps = configMaps;
     }
 
     @JsonProperty("configSecret")
-    public java.lang.String getConfigSecret() {
+    public String getConfigSecret() {
         return configSecret;
     }
 
     @JsonProperty("configSecret")
-    public void setConfigSecret(java.lang.String configSecret) {
+    public void setConfigSecret(String configSecret) {
         this.configSecret = configSecret;
     }
 
@@ -427,12 +427,12 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder> , Kub
     }
 
     @JsonProperty("externalUrl")
-    public java.lang.String getExternalUrl() {
+    public String getExternalUrl() {
         return externalUrl;
     }
 
     @JsonProperty("externalUrl")
-    public void setExternalUrl(java.lang.String externalUrl) {
+    public void setExternalUrl(String externalUrl) {
         this.externalUrl = externalUrl;
     }
 
@@ -458,22 +458,22 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder> , Kub
     }
 
     @JsonProperty("image")
-    public java.lang.String getImage() {
+    public String getImage() {
         return image;
     }
 
     @JsonProperty("image")
-    public void setImage(java.lang.String image) {
+    public void setImage(String image) {
         this.image = image;
     }
 
     @JsonProperty("imagePullPolicy")
-    public java.lang.String getImagePullPolicy() {
+    public String getImagePullPolicy() {
         return imagePullPolicy;
     }
 
     @JsonProperty("imagePullPolicy")
-    public void setImagePullPolicy(java.lang.String imagePullPolicy) {
+    public void setImagePullPolicy(String imagePullPolicy) {
         this.imagePullPolicy = imagePullPolicy;
     }
 
@@ -510,22 +510,22 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder> , Kub
     }
 
     @JsonProperty("logFormat")
-    public java.lang.String getLogFormat() {
+    public String getLogFormat() {
         return logFormat;
     }
 
     @JsonProperty("logFormat")
-    public void setLogFormat(java.lang.String logFormat) {
+    public void setLogFormat(String logFormat) {
         this.logFormat = logFormat;
     }
 
     @JsonProperty("logLevel")
-    public java.lang.String getLogLevel() {
+    public String getLogLevel() {
         return logLevel;
     }
 
     @JsonProperty("logLevel")
-    public void setLogLevel(java.lang.String logLevel) {
+    public void setLogLevel(String logLevel) {
         this.logLevel = logLevel;
     }
 
@@ -570,22 +570,22 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder> , Kub
     }
 
     @JsonProperty("portName")
-    public java.lang.String getPortName() {
+    public String getPortName() {
         return portName;
     }
 
     @JsonProperty("portName")
-    public void setPortName(java.lang.String portName) {
+    public void setPortName(String portName) {
         this.portName = portName;
     }
 
     @JsonProperty("priorityClassName")
-    public java.lang.String getPriorityClassName() {
+    public String getPriorityClassName() {
         return priorityClassName;
     }
 
     @JsonProperty("priorityClassName")
-    public void setPriorityClassName(java.lang.String priorityClassName) {
+    public void setPriorityClassName(String priorityClassName) {
         this.priorityClassName = priorityClassName;
     }
 
@@ -610,33 +610,33 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder> , Kub
     }
 
     @JsonProperty("retention")
-    public java.lang.String getRetention() {
+    public String getRetention() {
         return retention;
     }
 
     @JsonProperty("retention")
-    public void setRetention(java.lang.String retention) {
+    public void setRetention(String retention) {
         this.retention = retention;
     }
 
     @JsonProperty("routePrefix")
-    public java.lang.String getRoutePrefix() {
+    public String getRoutePrefix() {
         return routePrefix;
     }
 
     @JsonProperty("routePrefix")
-    public void setRoutePrefix(java.lang.String routePrefix) {
+    public void setRoutePrefix(String routePrefix) {
         this.routePrefix = routePrefix;
     }
 
     @JsonProperty("secrets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<java.lang.String> getSecrets() {
+    public List<String> getSecrets() {
         return secrets;
     }
 
     @JsonProperty("secrets")
-    public void setSecrets(List<java.lang.String> secrets) {
+    public void setSecrets(List<String> secrets) {
         this.secrets = secrets;
     }
 
@@ -651,22 +651,22 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder> , Kub
     }
 
     @JsonProperty("serviceAccountName")
-    public java.lang.String getServiceAccountName() {
+    public String getServiceAccountName() {
         return serviceAccountName;
     }
 
     @JsonProperty("serviceAccountName")
-    public void setServiceAccountName(java.lang.String serviceAccountName) {
+    public void setServiceAccountName(String serviceAccountName) {
         this.serviceAccountName = serviceAccountName;
     }
 
     @JsonProperty("sha")
-    public java.lang.String getSha() {
+    public String getSha() {
         return sha;
     }
 
     @JsonProperty("sha")
-    public void setSha(java.lang.String sha) {
+    public void setSha(String sha) {
         this.sha = sha;
     }
 
@@ -681,12 +681,12 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder> , Kub
     }
 
     @JsonProperty("tag")
-    public java.lang.String getTag() {
+    public String getTag() {
         return tag;
     }
 
     @JsonProperty("tag")
-    public void setTag(java.lang.String tag) {
+    public void setTag(String tag) {
         this.tag = tag;
     }
 
@@ -713,12 +713,12 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder> , Kub
     }
 
     @JsonProperty("version")
-    public java.lang.String getVersion() {
+    public String getVersion() {
         return version;
     }
 
     @JsonProperty("version")
-    public void setVersion(java.lang.String version) {
+    public void setVersion(String version) {
         this.version = version;
     }
 
@@ -765,12 +765,12 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder> , Kub
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 

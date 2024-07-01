@@ -85,9 +85,9 @@ public class CSVDescription implements Editable<CSVDescriptionBuilder> , Kuberne
     @JsonProperty("customresourcedefinitions")
     private CustomResourceDefinitions customresourcedefinitions;
     @JsonProperty("description")
-    private java.lang.String description;
+    private String description;
     @JsonProperty("displayName")
-    private java.lang.String displayName;
+    private String displayName;
     @JsonProperty("icon")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Icon> icon = new ArrayList<Icon>();
@@ -96,7 +96,7 @@ public class CSVDescription implements Editable<CSVDescriptionBuilder> , Kuberne
     private List<InstallMode> installModes = new ArrayList<InstallMode>();
     @JsonProperty("keywords")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> keywords = new ArrayList<java.lang.String>();
+    private List<String> keywords = new ArrayList<String>();
     @JsonProperty("links")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<AppLink> links = new ArrayList<AppLink>();
@@ -104,9 +104,9 @@ public class CSVDescription implements Editable<CSVDescriptionBuilder> , Kuberne
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Maintainer> maintainers = new ArrayList<Maintainer>();
     @JsonProperty("maturity")
-    private java.lang.String maturity;
+    private String maturity;
     @JsonProperty("minKubeVersion")
-    private java.lang.String minKubeVersion;
+    private String minKubeVersion;
     @JsonProperty("nativeApis")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<GroupVersionKind> nativeApis = new ArrayList<GroupVersionKind>();
@@ -114,11 +114,11 @@ public class CSVDescription implements Editable<CSVDescriptionBuilder> , Kuberne
     private AppLink provider;
     @JsonProperty("relatedImages")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> relatedImages = new ArrayList<java.lang.String>();
+    private List<String> relatedImages = new ArrayList<String>();
     @JsonProperty("version")
-    private java.lang.String version;
+    private String version;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -127,7 +127,7 @@ public class CSVDescription implements Editable<CSVDescriptionBuilder> , Kuberne
     public CSVDescription() {
     }
 
-    public CSVDescription(Map<String, String> annotations, APIServiceDefinitions apiservicedefinitions, CustomResourceDefinitions customresourcedefinitions, java.lang.String description, java.lang.String displayName, List<Icon> icon, List<InstallMode> installModes, List<java.lang.String> keywords, List<AppLink> links, List<Maintainer> maintainers, java.lang.String maturity, java.lang.String minKubeVersion, List<GroupVersionKind> nativeApis, AppLink provider, List<java.lang.String> relatedImages, java.lang.String version) {
+    public CSVDescription(Map<String, String> annotations, APIServiceDefinitions apiservicedefinitions, CustomResourceDefinitions customresourcedefinitions, String description, String displayName, List<Icon> icon, List<InstallMode> installModes, List<String> keywords, List<AppLink> links, List<Maintainer> maintainers, String maturity, String minKubeVersion, List<GroupVersionKind> nativeApis, AppLink provider, List<String> relatedImages, String version) {
         super();
         this.annotations = annotations;
         this.apiservicedefinitions = apiservicedefinitions;
@@ -178,22 +178,22 @@ public class CSVDescription implements Editable<CSVDescriptionBuilder> , Kuberne
     }
 
     @JsonProperty("description")
-    public java.lang.String getDescription() {
+    public String getDescription() {
         return description;
     }
 
     @JsonProperty("description")
-    public void setDescription(java.lang.String description) {
+    public void setDescription(String description) {
         this.description = description;
     }
 
     @JsonProperty("displayName")
-    public java.lang.String getDisplayName() {
+    public String getDisplayName() {
         return displayName;
     }
 
     @JsonProperty("displayName")
-    public void setDisplayName(java.lang.String displayName) {
+    public void setDisplayName(String displayName) {
         this.displayName = displayName;
     }
 
@@ -221,12 +221,12 @@ public class CSVDescription implements Editable<CSVDescriptionBuilder> , Kuberne
 
     @JsonProperty("keywords")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<java.lang.String> getKeywords() {
+    public List<String> getKeywords() {
         return keywords;
     }
 
     @JsonProperty("keywords")
-    public void setKeywords(List<java.lang.String> keywords) {
+    public void setKeywords(List<String> keywords) {
         this.keywords = keywords;
     }
 
@@ -253,22 +253,22 @@ public class CSVDescription implements Editable<CSVDescriptionBuilder> , Kuberne
     }
 
     @JsonProperty("maturity")
-    public java.lang.String getMaturity() {
+    public String getMaturity() {
         return maturity;
     }
 
     @JsonProperty("maturity")
-    public void setMaturity(java.lang.String maturity) {
+    public void setMaturity(String maturity) {
         this.maturity = maturity;
     }
 
     @JsonProperty("minKubeVersion")
-    public java.lang.String getMinKubeVersion() {
+    public String getMinKubeVersion() {
         return minKubeVersion;
     }
 
     @JsonProperty("minKubeVersion")
-    public void setMinKubeVersion(java.lang.String minKubeVersion) {
+    public void setMinKubeVersion(String minKubeVersion) {
         this.minKubeVersion = minKubeVersion;
     }
 
@@ -295,22 +295,22 @@ public class CSVDescription implements Editable<CSVDescriptionBuilder> , Kuberne
 
     @JsonProperty("relatedImages")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<java.lang.String> getRelatedImages() {
+    public List<String> getRelatedImages() {
         return relatedImages;
     }
 
     @JsonProperty("relatedImages")
-    public void setRelatedImages(List<java.lang.String> relatedImages) {
+    public void setRelatedImages(List<String> relatedImages) {
         this.relatedImages = relatedImages;
     }
 
     @JsonProperty("version")
-    public java.lang.String getVersion() {
+    public String getVersion() {
         return version;
     }
 
     @JsonProperty("version")
-    public void setVersion(java.lang.String version) {
+    public void setVersion(String version) {
         this.version = version;
     }
 
@@ -325,12 +325,12 @@ public class CSVDescription implements Editable<CSVDescriptionBuilder> , Kuberne
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 

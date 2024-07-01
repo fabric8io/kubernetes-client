@@ -167,7 +167,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "disableNameSuffixHash": {
           "type": "boolean"
@@ -180,7 +180,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         }
       },
       "additionalProperties": true,
@@ -236,7 +236,7 @@
         "valuesInline": {
           "type": "object",
           "additionalProperties": {},
-          "existingJavaType": "java.util.Map\u003cString, java.lang.Object\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.Object\u003e"
         },
         "valuesMerge": {
           "type": "string"
@@ -294,7 +294,7 @@
         "valuesLocal": {
           "type": "object",
           "additionalProperties": {},
-          "existingJavaType": "java.util.Map\u003cString, java.lang.Object\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.Object\u003e"
         },
         "valuesMerge": {
           "type": "string"
@@ -373,14 +373,14 @@
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "commonLabels": {
           "type": "object",
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "components": {
           "type": "array",
@@ -489,7 +489,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "patches": {
           "type": "array",
@@ -634,7 +634,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         }
       },
       "additionalProperties": true,
@@ -673,14 +673,14 @@
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "labels": {
           "type": "object",
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "name": {
           "type": "string"
@@ -705,7 +705,7 @@
           "additionalProperties": {
             "type": "boolean"
           },
-          "existingJavaType": "java.util.Map\u003cString, Boolean\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, Boolean\u003e"
         },
         "patch": {
           "type": "string"

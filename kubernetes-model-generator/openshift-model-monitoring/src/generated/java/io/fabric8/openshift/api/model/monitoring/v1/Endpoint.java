@@ -83,7 +83,7 @@ public class Endpoint implements Editable<EndpointBuilder> , KubernetesResource
     @JsonProperty("basicAuth")
     private BasicAuth basicAuth;
     @JsonProperty("bearerTokenFile")
-    private java.lang.String bearerTokenFile;
+    private String bearerTokenFile;
     @JsonProperty("bearerTokenSecret")
     private SecretKeySelector bearerTokenSecret;
     @JsonProperty("enableHttp2")
@@ -97,7 +97,7 @@ public class Endpoint implements Editable<EndpointBuilder> , KubernetesResource
     @JsonProperty("honorTimestamps")
     private Boolean honorTimestamps;
     @JsonProperty("interval")
-    private java.lang.String interval;
+    private String interval;
     @JsonProperty("metricRelabelings")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<RelabelConfig> metricRelabelings = new ArrayList<RelabelConfig>();
@@ -107,24 +107,24 @@ public class Endpoint implements Editable<EndpointBuilder> , KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, ArrayList<String>> params = new LinkedHashMap<String, ArrayList<String>>();
     @JsonProperty("path")
-    private java.lang.String path;
+    private String path;
     @JsonProperty("port")
-    private java.lang.String port;
+    private String port;
     @JsonProperty("proxyUrl")
-    private java.lang.String proxyUrl;
+    private String proxyUrl;
     @JsonProperty("relabelings")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<RelabelConfig> relabelings = new ArrayList<RelabelConfig>();
     @JsonProperty("scheme")
-    private java.lang.String scheme;
+    private String scheme;
     @JsonProperty("scrapeTimeout")
-    private java.lang.String scrapeTimeout;
+    private String scrapeTimeout;
     @JsonProperty("targetPort")
     private io.fabric8.kubernetes.api.model.IntOrString targetPort;
     @JsonProperty("tlsConfig")
     private TLSConfig tlsConfig;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -133,7 +133,7 @@ public class Endpoint implements Editable<EndpointBuilder> , KubernetesResource
     public Endpoint() {
     }
 
-    public Endpoint(SafeAuthorization authorization, BasicAuth basicAuth, java.lang.String bearerTokenFile, SecretKeySelector bearerTokenSecret, Boolean enableHttp2, Boolean filterRunning, Boolean followRedirects, Boolean honorLabels, Boolean honorTimestamps, java.lang.String interval, List<RelabelConfig> metricRelabelings, OAuth2 oauth2, Map<String, ArrayList<String>> params, java.lang.String path, java.lang.String port, java.lang.String proxyUrl, List<RelabelConfig> relabelings, java.lang.String scheme, java.lang.String scrapeTimeout, io.fabric8.kubernetes.api.model.IntOrString targetPort, TLSConfig tlsConfig) {
+    public Endpoint(SafeAuthorization authorization, BasicAuth basicAuth, String bearerTokenFile, SecretKeySelector bearerTokenSecret, Boolean enableHttp2, Boolean filterRunning, Boolean followRedirects, Boolean honorLabels, Boolean honorTimestamps, String interval, List<RelabelConfig> metricRelabelings, OAuth2 oauth2, Map<String, ArrayList<String>> params, String path, String port, String proxyUrl, List<RelabelConfig> relabelings, String scheme, String scrapeTimeout, io.fabric8.kubernetes.api.model.IntOrString targetPort, TLSConfig tlsConfig) {
         super();
         this.authorization = authorization;
         this.basicAuth = basicAuth;
@@ -179,12 +179,12 @@ public class Endpoint implements Editable<EndpointBuilder> , KubernetesResource
     }
 
     @JsonProperty("bearerTokenFile")
-    public java.lang.String getBearerTokenFile() {
+    public String getBearerTokenFile() {
         return bearerTokenFile;
     }
 
     @JsonProperty("bearerTokenFile")
-    public void setBearerTokenFile(java.lang.String bearerTokenFile) {
+    public void setBearerTokenFile(String bearerTokenFile) {
         this.bearerTokenFile = bearerTokenFile;
     }
 
@@ -249,12 +249,12 @@ public class Endpoint implements Editable<EndpointBuilder> , KubernetesResource
     }
 
     @JsonProperty("interval")
-    public java.lang.String getInterval() {
+    public String getInterval() {
         return interval;
     }
 
     @JsonProperty("interval")
-    public void setInterval(java.lang.String interval) {
+    public void setInterval(String interval) {
         this.interval = interval;
     }
 
@@ -290,32 +290,32 @@ public class Endpoint implements Editable<EndpointBuilder> , KubernetesResource
     }
 
     @JsonProperty("path")
-    public java.lang.String getPath() {
+    public String getPath() {
         return path;
     }
 
     @JsonProperty("path")
-    public void setPath(java.lang.String path) {
+    public void setPath(String path) {
         this.path = path;
     }
 
     @JsonProperty("port")
-    public java.lang.String getPort() {
+    public String getPort() {
         return port;
     }
 
     @JsonProperty("port")
-    public void setPort(java.lang.String port) {
+    public void setPort(String port) {
         this.port = port;
     }
 
     @JsonProperty("proxyUrl")
-    public java.lang.String getProxyUrl() {
+    public String getProxyUrl() {
         return proxyUrl;
     }
 
     @JsonProperty("proxyUrl")
-    public void setProxyUrl(java.lang.String proxyUrl) {
+    public void setProxyUrl(String proxyUrl) {
         this.proxyUrl = proxyUrl;
     }
 
@@ -331,22 +331,22 @@ public class Endpoint implements Editable<EndpointBuilder> , KubernetesResource
     }
 
     @JsonProperty("scheme")
-    public java.lang.String getScheme() {
+    public String getScheme() {
         return scheme;
     }
 
     @JsonProperty("scheme")
-    public void setScheme(java.lang.String scheme) {
+    public void setScheme(String scheme) {
         this.scheme = scheme;
     }
 
     @JsonProperty("scrapeTimeout")
-    public java.lang.String getScrapeTimeout() {
+    public String getScrapeTimeout() {
         return scrapeTimeout;
     }
 
     @JsonProperty("scrapeTimeout")
-    public void setScrapeTimeout(java.lang.String scrapeTimeout) {
+    public void setScrapeTimeout(String scrapeTimeout) {
         this.scrapeTimeout = scrapeTimeout;
     }
 
@@ -381,12 +381,12 @@ public class Endpoint implements Editable<EndpointBuilder> , KubernetesResource
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 

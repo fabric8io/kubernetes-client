@@ -53,7 +53,7 @@ public class ObjectMeta implements Editable<ObjectMetaBuilder> , KubernetesResou
 
     @JsonProperty("annotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> annotations = new LinkedHashMap<String, String>();
+    private Map<java.lang.String, java.lang.String> annotations = new LinkedHashMap<java.lang.String, java.lang.String>();
     @JsonProperty("creationTimestamp")
     private String creationTimestamp;
     @JsonProperty("deletionGracePeriodSeconds")
@@ -69,7 +69,7 @@ public class ObjectMeta implements Editable<ObjectMetaBuilder> , KubernetesResou
     private Long generation;
     @JsonProperty("labels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> labels = new LinkedHashMap<String, String>();
+    private Map<java.lang.String, java.lang.String> labels = new LinkedHashMap<java.lang.String, java.lang.String>();
     @JsonProperty("managedFields")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ManagedFieldsEntry> managedFields = new ArrayList<ManagedFieldsEntry>();
@@ -96,7 +96,7 @@ public class ObjectMeta implements Editable<ObjectMetaBuilder> , KubernetesResou
     public ObjectMeta() {
     }
 
-    public ObjectMeta(Map<String, String> annotations, String creationTimestamp, Long deletionGracePeriodSeconds, String deletionTimestamp, List<java.lang.String> finalizers, java.lang.String generateName, Long generation, Map<String, String> labels, List<ManagedFieldsEntry> managedFields, java.lang.String name, java.lang.String namespace, List<OwnerReference> ownerReferences, java.lang.String resourceVersion, java.lang.String selfLink, java.lang.String uid) {
+    public ObjectMeta(Map<java.lang.String, java.lang.String> annotations, String creationTimestamp, Long deletionGracePeriodSeconds, String deletionTimestamp, List<java.lang.String> finalizers, java.lang.String generateName, Long generation, Map<java.lang.String, java.lang.String> labels, List<ManagedFieldsEntry> managedFields, java.lang.String name, java.lang.String namespace, List<OwnerReference> ownerReferences, java.lang.String resourceVersion, java.lang.String selfLink, java.lang.String uid) {
         super();
         this.annotations = annotations;
         this.creationTimestamp = creationTimestamp;
@@ -116,12 +116,12 @@ public class ObjectMeta implements Editable<ObjectMetaBuilder> , KubernetesResou
     }
 
     @JsonProperty("annotations")
-    public Map<String, String> getAnnotations() {
+    public Map<java.lang.String, java.lang.String> getAnnotations() {
         return annotations;
     }
 
     @JsonProperty("annotations")
-    public void setAnnotations(Map<String, String> annotations) {
+    public void setAnnotations(Map<java.lang.String, java.lang.String> annotations) {
         this.annotations = annotations;
     }
 
@@ -187,12 +187,12 @@ public class ObjectMeta implements Editable<ObjectMetaBuilder> , KubernetesResou
     }
 
     @JsonProperty("labels")
-    public Map<String, String> getLabels() {
+    public Map<java.lang.String, java.lang.String> getLabels() {
         return labels;
     }
 
     @JsonProperty("labels")
-    public void setLabels(Map<String, String> labels) {
+    public void setLabels(Map<java.lang.String, java.lang.String> labels) {
         this.labels = labels;
     }
 

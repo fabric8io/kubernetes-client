@@ -59,33 +59,33 @@ public class ServiceSpec implements Editable<ServiceSpecBuilder> , KubernetesRes
     @JsonProperty("allocateLoadBalancerNodePorts")
     private Boolean allocateLoadBalancerNodePorts;
     @JsonProperty("clusterIP")
-    private java.lang.String clusterIP;
+    private String clusterIP;
     @JsonProperty("clusterIPs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> clusterIPs = new ArrayList<java.lang.String>();
+    private List<String> clusterIPs = new ArrayList<String>();
     @JsonProperty("externalIPs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> externalIPs = new ArrayList<java.lang.String>();
+    private List<String> externalIPs = new ArrayList<String>();
     @JsonProperty("externalName")
-    private java.lang.String externalName;
+    private String externalName;
     @JsonProperty("externalTrafficPolicy")
-    private java.lang.String externalTrafficPolicy;
+    private String externalTrafficPolicy;
     @JsonProperty("healthCheckNodePort")
     private Integer healthCheckNodePort;
     @JsonProperty("internalTrafficPolicy")
-    private java.lang.String internalTrafficPolicy;
+    private String internalTrafficPolicy;
     @JsonProperty("ipFamilies")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> ipFamilies = new ArrayList<java.lang.String>();
+    private List<String> ipFamilies = new ArrayList<String>();
     @JsonProperty("ipFamilyPolicy")
-    private java.lang.String ipFamilyPolicy;
+    private String ipFamilyPolicy;
     @JsonProperty("loadBalancerClass")
-    private java.lang.String loadBalancerClass;
+    private String loadBalancerClass;
     @JsonProperty("loadBalancerIP")
-    private java.lang.String loadBalancerIP;
+    private String loadBalancerIP;
     @JsonProperty("loadBalancerSourceRanges")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> loadBalancerSourceRanges = new ArrayList<java.lang.String>();
+    private List<String> loadBalancerSourceRanges = new ArrayList<String>();
     @JsonProperty("ports")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ServicePort> ports = new ArrayList<ServicePort>();
@@ -95,15 +95,15 @@ public class ServiceSpec implements Editable<ServiceSpecBuilder> , KubernetesRes
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> selector = new LinkedHashMap<String, String>();
     @JsonProperty("sessionAffinity")
-    private java.lang.String sessionAffinity;
+    private String sessionAffinity;
     @JsonProperty("sessionAffinityConfig")
     private SessionAffinityConfig sessionAffinityConfig;
     @JsonProperty("trafficDistribution")
-    private java.lang.String trafficDistribution;
+    private String trafficDistribution;
     @JsonProperty("type")
-    private java.lang.String type;
+    private String type;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -112,7 +112,7 @@ public class ServiceSpec implements Editable<ServiceSpecBuilder> , KubernetesRes
     public ServiceSpec() {
     }
 
-    public ServiceSpec(Boolean allocateLoadBalancerNodePorts, java.lang.String clusterIP, List<java.lang.String> clusterIPs, List<java.lang.String> externalIPs, java.lang.String externalName, java.lang.String externalTrafficPolicy, Integer healthCheckNodePort, java.lang.String internalTrafficPolicy, List<java.lang.String> ipFamilies, java.lang.String ipFamilyPolicy, java.lang.String loadBalancerClass, java.lang.String loadBalancerIP, List<java.lang.String> loadBalancerSourceRanges, List<ServicePort> ports, Boolean publishNotReadyAddresses, Map<String, String> selector, java.lang.String sessionAffinity, SessionAffinityConfig sessionAffinityConfig, java.lang.String trafficDistribution, java.lang.String type) {
+    public ServiceSpec(Boolean allocateLoadBalancerNodePorts, String clusterIP, List<String> clusterIPs, List<String> externalIPs, String externalName, String externalTrafficPolicy, Integer healthCheckNodePort, String internalTrafficPolicy, List<String> ipFamilies, String ipFamilyPolicy, String loadBalancerClass, String loadBalancerIP, List<String> loadBalancerSourceRanges, List<ServicePort> ports, Boolean publishNotReadyAddresses, Map<String, String> selector, String sessionAffinity, SessionAffinityConfig sessionAffinityConfig, String trafficDistribution, String type) {
         super();
         this.allocateLoadBalancerNodePorts = allocateLoadBalancerNodePorts;
         this.clusterIP = clusterIP;
@@ -147,54 +147,54 @@ public class ServiceSpec implements Editable<ServiceSpecBuilder> , KubernetesRes
     }
 
     @JsonProperty("clusterIP")
-    public java.lang.String getClusterIP() {
+    public String getClusterIP() {
         return clusterIP;
     }
 
     @JsonProperty("clusterIP")
-    public void setClusterIP(java.lang.String clusterIP) {
+    public void setClusterIP(String clusterIP) {
         this.clusterIP = clusterIP;
     }
 
     @JsonProperty("clusterIPs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<java.lang.String> getClusterIPs() {
+    public List<String> getClusterIPs() {
         return clusterIPs;
     }
 
     @JsonProperty("clusterIPs")
-    public void setClusterIPs(List<java.lang.String> clusterIPs) {
+    public void setClusterIPs(List<String> clusterIPs) {
         this.clusterIPs = clusterIPs;
     }
 
     @JsonProperty("externalIPs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<java.lang.String> getExternalIPs() {
+    public List<String> getExternalIPs() {
         return externalIPs;
     }
 
     @JsonProperty("externalIPs")
-    public void setExternalIPs(List<java.lang.String> externalIPs) {
+    public void setExternalIPs(List<String> externalIPs) {
         this.externalIPs = externalIPs;
     }
 
     @JsonProperty("externalName")
-    public java.lang.String getExternalName() {
+    public String getExternalName() {
         return externalName;
     }
 
     @JsonProperty("externalName")
-    public void setExternalName(java.lang.String externalName) {
+    public void setExternalName(String externalName) {
         this.externalName = externalName;
     }
 
     @JsonProperty("externalTrafficPolicy")
-    public java.lang.String getExternalTrafficPolicy() {
+    public String getExternalTrafficPolicy() {
         return externalTrafficPolicy;
     }
 
     @JsonProperty("externalTrafficPolicy")
-    public void setExternalTrafficPolicy(java.lang.String externalTrafficPolicy) {
+    public void setExternalTrafficPolicy(String externalTrafficPolicy) {
         this.externalTrafficPolicy = externalTrafficPolicy;
     }
 
@@ -209,64 +209,64 @@ public class ServiceSpec implements Editable<ServiceSpecBuilder> , KubernetesRes
     }
 
     @JsonProperty("internalTrafficPolicy")
-    public java.lang.String getInternalTrafficPolicy() {
+    public String getInternalTrafficPolicy() {
         return internalTrafficPolicy;
     }
 
     @JsonProperty("internalTrafficPolicy")
-    public void setInternalTrafficPolicy(java.lang.String internalTrafficPolicy) {
+    public void setInternalTrafficPolicy(String internalTrafficPolicy) {
         this.internalTrafficPolicy = internalTrafficPolicy;
     }
 
     @JsonProperty("ipFamilies")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<java.lang.String> getIpFamilies() {
+    public List<String> getIpFamilies() {
         return ipFamilies;
     }
 
     @JsonProperty("ipFamilies")
-    public void setIpFamilies(List<java.lang.String> ipFamilies) {
+    public void setIpFamilies(List<String> ipFamilies) {
         this.ipFamilies = ipFamilies;
     }
 
     @JsonProperty("ipFamilyPolicy")
-    public java.lang.String getIpFamilyPolicy() {
+    public String getIpFamilyPolicy() {
         return ipFamilyPolicy;
     }
 
     @JsonProperty("ipFamilyPolicy")
-    public void setIpFamilyPolicy(java.lang.String ipFamilyPolicy) {
+    public void setIpFamilyPolicy(String ipFamilyPolicy) {
         this.ipFamilyPolicy = ipFamilyPolicy;
     }
 
     @JsonProperty("loadBalancerClass")
-    public java.lang.String getLoadBalancerClass() {
+    public String getLoadBalancerClass() {
         return loadBalancerClass;
     }
 
     @JsonProperty("loadBalancerClass")
-    public void setLoadBalancerClass(java.lang.String loadBalancerClass) {
+    public void setLoadBalancerClass(String loadBalancerClass) {
         this.loadBalancerClass = loadBalancerClass;
     }
 
     @JsonProperty("loadBalancerIP")
-    public java.lang.String getLoadBalancerIP() {
+    public String getLoadBalancerIP() {
         return loadBalancerIP;
     }
 
     @JsonProperty("loadBalancerIP")
-    public void setLoadBalancerIP(java.lang.String loadBalancerIP) {
+    public void setLoadBalancerIP(String loadBalancerIP) {
         this.loadBalancerIP = loadBalancerIP;
     }
 
     @JsonProperty("loadBalancerSourceRanges")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<java.lang.String> getLoadBalancerSourceRanges() {
+    public List<String> getLoadBalancerSourceRanges() {
         return loadBalancerSourceRanges;
     }
 
     @JsonProperty("loadBalancerSourceRanges")
-    public void setLoadBalancerSourceRanges(List<java.lang.String> loadBalancerSourceRanges) {
+    public void setLoadBalancerSourceRanges(List<String> loadBalancerSourceRanges) {
         this.loadBalancerSourceRanges = loadBalancerSourceRanges;
     }
 
@@ -302,12 +302,12 @@ public class ServiceSpec implements Editable<ServiceSpecBuilder> , KubernetesRes
     }
 
     @JsonProperty("sessionAffinity")
-    public java.lang.String getSessionAffinity() {
+    public String getSessionAffinity() {
         return sessionAffinity;
     }
 
     @JsonProperty("sessionAffinity")
-    public void setSessionAffinity(java.lang.String sessionAffinity) {
+    public void setSessionAffinity(String sessionAffinity) {
         this.sessionAffinity = sessionAffinity;
     }
 
@@ -322,22 +322,22 @@ public class ServiceSpec implements Editable<ServiceSpecBuilder> , KubernetesRes
     }
 
     @JsonProperty("trafficDistribution")
-    public java.lang.String getTrafficDistribution() {
+    public String getTrafficDistribution() {
         return trafficDistribution;
     }
 
     @JsonProperty("trafficDistribution")
-    public void setTrafficDistribution(java.lang.String trafficDistribution) {
+    public void setTrafficDistribution(String trafficDistribution) {
         this.trafficDistribution = trafficDistribution;
     }
 
     @JsonProperty("type")
-    public java.lang.String getType() {
+    public String getType() {
         return type;
     }
 
     @JsonProperty("type")
-    public void setType(java.lang.String type) {
+    public void setType(String type) {
         this.type = type;
     }
 
@@ -352,12 +352,12 @@ public class ServiceSpec implements Editable<ServiceSpecBuilder> , KubernetesRes
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 

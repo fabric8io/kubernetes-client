@@ -96,7 +96,7 @@ public class ImageRegistrySpec implements Editable<ImageRegistrySpecBuilder> , K
     private java.lang.String managementState;
     @JsonProperty("nodeSelector")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> nodeSelector = new LinkedHashMap<String, String>();
+    private Map<java.lang.String, java.lang.String> nodeSelector = new LinkedHashMap<java.lang.String, java.lang.String>();
     @JsonProperty("observedConfig")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, Object> observedConfig = new LinkedHashMap<String, Object>();
@@ -138,7 +138,7 @@ public class ImageRegistrySpec implements Editable<ImageRegistrySpecBuilder> , K
     public ImageRegistrySpec() {
     }
 
-    public ImageRegistrySpec(Affinity affinity, Boolean defaultRoute, Boolean disableRedirect, java.lang.String httpSecret, java.lang.String logLevel, Long logging, java.lang.String managementState, Map<String, String> nodeSelector, Map<String, Object> observedConfig, java.lang.String operatorLogLevel, ImageRegistryConfigProxy proxy, Boolean readOnly, Integer replicas, ImageRegistryConfigRequests requests, io.fabric8.kubernetes.api.model.ResourceRequirements resources, java.lang.String rolloutStrategy, List<ImageRegistryConfigRoute> routes, ImageRegistryConfigStorage storage, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, Map<String, Object> unsupportedConfigOverrides) {
+    public ImageRegistrySpec(Affinity affinity, Boolean defaultRoute, Boolean disableRedirect, java.lang.String httpSecret, java.lang.String logLevel, Long logging, java.lang.String managementState, Map<java.lang.String, java.lang.String> nodeSelector, Map<String, Object> observedConfig, java.lang.String operatorLogLevel, ImageRegistryConfigProxy proxy, Boolean readOnly, Integer replicas, ImageRegistryConfigRequests requests, io.fabric8.kubernetes.api.model.ResourceRequirements resources, java.lang.String rolloutStrategy, List<ImageRegistryConfigRoute> routes, ImageRegistryConfigStorage storage, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, Map<String, Object> unsupportedConfigOverrides) {
         super();
         this.affinity = affinity;
         this.defaultRoute = defaultRoute;
@@ -234,12 +234,12 @@ public class ImageRegistrySpec implements Editable<ImageRegistrySpecBuilder> , K
     }
 
     @JsonProperty("nodeSelector")
-    public Map<String, String> getNodeSelector() {
+    public Map<java.lang.String, java.lang.String> getNodeSelector() {
         return nodeSelector;
     }
 
     @JsonProperty("nodeSelector")
-    public void setNodeSelector(Map<String, String> nodeSelector) {
+    public void setNodeSelector(Map<java.lang.String, java.lang.String> nodeSelector) {
         this.nodeSelector = nodeSelector;
     }
 

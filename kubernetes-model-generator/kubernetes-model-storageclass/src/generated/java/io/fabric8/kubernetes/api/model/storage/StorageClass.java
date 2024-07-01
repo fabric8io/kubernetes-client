@@ -87,30 +87,30 @@ public class StorageClass implements Editable<StorageClassBuilder> , HasMetadata
      * 
      */
     @JsonProperty("apiVersion")
-    private java.lang.String apiVersion = "storage.k8s.io/v1";
+    private String apiVersion = "storage.k8s.io/v1";
     /**
      * 
      * (Required)
      * 
      */
     @JsonProperty("kind")
-    private java.lang.String kind = "StorageClass";
+    private String kind = "StorageClass";
     @JsonProperty("metadata")
     private io.fabric8.kubernetes.api.model.ObjectMeta metadata;
     @JsonProperty("mountOptions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> mountOptions = new ArrayList<java.lang.String>();
+    private List<String> mountOptions = new ArrayList<String>();
     @JsonProperty("parameters")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> parameters = new LinkedHashMap<String, String>();
     @JsonProperty("provisioner")
-    private java.lang.String provisioner;
+    private String provisioner;
     @JsonProperty("reclaimPolicy")
-    private java.lang.String reclaimPolicy;
+    private String reclaimPolicy;
     @JsonProperty("volumeBindingMode")
-    private java.lang.String volumeBindingMode;
+    private String volumeBindingMode;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -119,7 +119,7 @@ public class StorageClass implements Editable<StorageClassBuilder> , HasMetadata
     public StorageClass() {
     }
 
-    public StorageClass(Boolean allowVolumeExpansion, List<TopologySelectorTerm> allowedTopologies, java.lang.String apiVersion, java.lang.String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, List<java.lang.String> mountOptions, Map<String, String> parameters, java.lang.String provisioner, java.lang.String reclaimPolicy, java.lang.String volumeBindingMode) {
+    public StorageClass(Boolean allowVolumeExpansion, List<TopologySelectorTerm> allowedTopologies, String apiVersion, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, List<String> mountOptions, Map<String, String> parameters, String provisioner, String reclaimPolicy, String volumeBindingMode) {
         super();
         this.allowVolumeExpansion = allowVolumeExpansion;
         this.allowedTopologies = allowedTopologies;
@@ -160,7 +160,7 @@ public class StorageClass implements Editable<StorageClassBuilder> , HasMetadata
      * 
      */
     @JsonProperty("apiVersion")
-    public java.lang.String getApiVersion() {
+    public String getApiVersion() {
         return apiVersion;
     }
 
@@ -170,7 +170,7 @@ public class StorageClass implements Editable<StorageClassBuilder> , HasMetadata
      * 
      */
     @JsonProperty("apiVersion")
-    public void setApiVersion(java.lang.String apiVersion) {
+    public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
     }
 
@@ -180,7 +180,7 @@ public class StorageClass implements Editable<StorageClassBuilder> , HasMetadata
      * 
      */
     @JsonProperty("kind")
-    public java.lang.String getKind() {
+    public String getKind() {
         return kind;
     }
 
@@ -190,7 +190,7 @@ public class StorageClass implements Editable<StorageClassBuilder> , HasMetadata
      * 
      */
     @JsonProperty("kind")
-    public void setKind(java.lang.String kind) {
+    public void setKind(String kind) {
         this.kind = kind;
     }
 
@@ -206,12 +206,12 @@ public class StorageClass implements Editable<StorageClassBuilder> , HasMetadata
 
     @JsonProperty("mountOptions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<java.lang.String> getMountOptions() {
+    public List<String> getMountOptions() {
         return mountOptions;
     }
 
     @JsonProperty("mountOptions")
-    public void setMountOptions(List<java.lang.String> mountOptions) {
+    public void setMountOptions(List<String> mountOptions) {
         this.mountOptions = mountOptions;
     }
 
@@ -226,32 +226,32 @@ public class StorageClass implements Editable<StorageClassBuilder> , HasMetadata
     }
 
     @JsonProperty("provisioner")
-    public java.lang.String getProvisioner() {
+    public String getProvisioner() {
         return provisioner;
     }
 
     @JsonProperty("provisioner")
-    public void setProvisioner(java.lang.String provisioner) {
+    public void setProvisioner(String provisioner) {
         this.provisioner = provisioner;
     }
 
     @JsonProperty("reclaimPolicy")
-    public java.lang.String getReclaimPolicy() {
+    public String getReclaimPolicy() {
         return reclaimPolicy;
     }
 
     @JsonProperty("reclaimPolicy")
-    public void setReclaimPolicy(java.lang.String reclaimPolicy) {
+    public void setReclaimPolicy(String reclaimPolicy) {
         this.reclaimPolicy = reclaimPolicy;
     }
 
     @JsonProperty("volumeBindingMode")
-    public java.lang.String getVolumeBindingMode() {
+    public String getVolumeBindingMode() {
         return volumeBindingMode;
     }
 
     @JsonProperty("volumeBindingMode")
-    public void setVolumeBindingMode(java.lang.String volumeBindingMode) {
+    public void setVolumeBindingMode(String volumeBindingMode) {
         this.volumeBindingMode = volumeBindingMode;
     }
 
@@ -266,12 +266,12 @@ public class StorageClass implements Editable<StorageClassBuilder> , HasMetadata
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 

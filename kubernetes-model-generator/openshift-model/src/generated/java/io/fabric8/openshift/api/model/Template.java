@@ -83,19 +83,19 @@ public class Template implements Editable<TemplateBuilder> , HasMetadata, Namesp
      * 
      */
     @JsonProperty("apiVersion")
-    private java.lang.String apiVersion = "template.openshift.io/v1";
+    private String apiVersion = "template.openshift.io/v1";
     /**
      * 
      * (Required)
      * 
      */
     @JsonProperty("kind")
-    private java.lang.String kind = "Template";
+    private String kind = "Template";
     @JsonProperty("labels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> labels = new LinkedHashMap<String, String>();
     @JsonProperty("message")
-    private java.lang.String message;
+    private String message;
     @JsonProperty("metadata")
     private io.fabric8.kubernetes.api.model.ObjectMeta metadata;
     @JsonProperty("objects")
@@ -105,7 +105,7 @@ public class Template implements Editable<TemplateBuilder> , HasMetadata, Namesp
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Parameter> parameters = new ArrayList<Parameter>();
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -114,7 +114,7 @@ public class Template implements Editable<TemplateBuilder> , HasMetadata, Namesp
     public Template() {
     }
 
-    public Template(java.lang.String apiVersion, java.lang.String kind, Map<String, String> labels, java.lang.String message, io.fabric8.kubernetes.api.model.ObjectMeta metadata, List<HasMetadata> objects, List<Parameter> parameters) {
+    public Template(String apiVersion, String kind, Map<String, String> labels, String message, io.fabric8.kubernetes.api.model.ObjectMeta metadata, List<HasMetadata> objects, List<Parameter> parameters) {
         super();
         this.apiVersion = apiVersion;
         this.kind = kind;
@@ -131,7 +131,7 @@ public class Template implements Editable<TemplateBuilder> , HasMetadata, Namesp
      * 
      */
     @JsonProperty("apiVersion")
-    public java.lang.String getApiVersion() {
+    public String getApiVersion() {
         return apiVersion;
     }
 
@@ -141,7 +141,7 @@ public class Template implements Editable<TemplateBuilder> , HasMetadata, Namesp
      * 
      */
     @JsonProperty("apiVersion")
-    public void setApiVersion(java.lang.String apiVersion) {
+    public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
     }
 
@@ -151,7 +151,7 @@ public class Template implements Editable<TemplateBuilder> , HasMetadata, Namesp
      * 
      */
     @JsonProperty("kind")
-    public java.lang.String getKind() {
+    public String getKind() {
         return kind;
     }
 
@@ -161,7 +161,7 @@ public class Template implements Editable<TemplateBuilder> , HasMetadata, Namesp
      * 
      */
     @JsonProperty("kind")
-    public void setKind(java.lang.String kind) {
+    public void setKind(String kind) {
         this.kind = kind;
     }
 
@@ -176,12 +176,12 @@ public class Template implements Editable<TemplateBuilder> , HasMetadata, Namesp
     }
 
     @JsonProperty("message")
-    public java.lang.String getMessage() {
+    public String getMessage() {
         return message;
     }
 
     @JsonProperty("message")
-    public void setMessage(java.lang.String message) {
+    public void setMessage(String message) {
         this.message = message;
     }
 
@@ -227,12 +227,12 @@ public class Template implements Editable<TemplateBuilder> , HasMetadata, Namesp
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 

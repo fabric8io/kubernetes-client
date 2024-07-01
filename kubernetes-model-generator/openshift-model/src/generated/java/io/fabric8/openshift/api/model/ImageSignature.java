@@ -107,7 +107,7 @@ public class ImageSignature implements Editable<ImageSignatureBuilder> , HasMeta
     private io.fabric8.kubernetes.api.model.ObjectMeta metadata;
     @JsonProperty("signedClaims")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> signedClaims = new LinkedHashMap<String, String>();
+    private Map<java.lang.String, java.lang.String> signedClaims = new LinkedHashMap<java.lang.String, java.lang.String>();
     @JsonProperty("type")
     private java.lang.String type;
     @JsonIgnore
@@ -120,7 +120,7 @@ public class ImageSignature implements Editable<ImageSignatureBuilder> , HasMeta
     public ImageSignature() {
     }
 
-    public ImageSignature(java.lang.String apiVersion, List<SignatureCondition> conditions, java.lang.String content, String created, java.lang.String imageIdentity, SignatureIssuer issuedBy, SignatureSubject issuedTo, java.lang.String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, Map<String, String> signedClaims, java.lang.String type) {
+    public ImageSignature(java.lang.String apiVersion, List<SignatureCondition> conditions, java.lang.String content, String created, java.lang.String imageIdentity, SignatureIssuer issuedBy, SignatureSubject issuedTo, java.lang.String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, Map<java.lang.String, java.lang.String> signedClaims, java.lang.String type) {
         super();
         this.apiVersion = apiVersion;
         this.conditions = conditions;
@@ -247,12 +247,12 @@ public class ImageSignature implements Editable<ImageSignatureBuilder> , HasMeta
     }
 
     @JsonProperty("signedClaims")
-    public Map<String, String> getSignedClaims() {
+    public Map<java.lang.String, java.lang.String> getSignedClaims() {
         return signedClaims;
     }
 
     @JsonProperty("signedClaims")
-    public void setSignedClaims(Map<String, String> signedClaims) {
+    public void setSignedClaims(Map<java.lang.String, java.lang.String> signedClaims) {
         this.signedClaims = signedClaims;
     }
 

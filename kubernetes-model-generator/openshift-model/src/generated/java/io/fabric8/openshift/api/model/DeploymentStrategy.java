@@ -79,9 +79,9 @@ public class DeploymentStrategy implements Editable<DeploymentStrategyBuilder> ,
     @JsonProperty("rollingParams")
     private RollingDeploymentStrategyParams rollingParams;
     @JsonProperty("type")
-    private java.lang.String type;
+    private String type;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -90,7 +90,7 @@ public class DeploymentStrategy implements Editable<DeploymentStrategyBuilder> ,
     public DeploymentStrategy() {
     }
 
-    public DeploymentStrategy(Long activeDeadlineSeconds, Map<String, String> annotations, CustomDeploymentStrategyParams customParams, Map<String, String> labels, RecreateDeploymentStrategyParams recreateParams, io.fabric8.kubernetes.api.model.ResourceRequirements resources, RollingDeploymentStrategyParams rollingParams, java.lang.String type) {
+    public DeploymentStrategy(Long activeDeadlineSeconds, Map<String, String> annotations, CustomDeploymentStrategyParams customParams, Map<String, String> labels, RecreateDeploymentStrategyParams recreateParams, io.fabric8.kubernetes.api.model.ResourceRequirements resources, RollingDeploymentStrategyParams rollingParams, String type) {
         super();
         this.activeDeadlineSeconds = activeDeadlineSeconds;
         this.annotations = annotations;
@@ -173,12 +173,12 @@ public class DeploymentStrategy implements Editable<DeploymentStrategyBuilder> ,
     }
 
     @JsonProperty("type")
-    public java.lang.String getType() {
+    public String getType() {
         return type;
     }
 
     @JsonProperty("type")
-    public void setType(java.lang.String type) {
+    public void setType(String type) {
         this.type = type;
     }
 
@@ -193,12 +193,12 @@ public class DeploymentStrategy implements Editable<DeploymentStrategyBuilder> ,
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 

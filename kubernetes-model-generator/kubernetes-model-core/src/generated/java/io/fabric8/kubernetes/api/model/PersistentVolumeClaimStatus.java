@@ -46,7 +46,7 @@ public class PersistentVolumeClaimStatus implements Editable<PersistentVolumeCla
 
     @JsonProperty("accessModes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> accessModes = new ArrayList<java.lang.String>();
+    private List<String> accessModes = new ArrayList<String>();
     @JsonProperty("allocatedResourceStatuses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> allocatedResourceStatuses = new LinkedHashMap<String, String>();
@@ -60,13 +60,13 @@ public class PersistentVolumeClaimStatus implements Editable<PersistentVolumeCla
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<PersistentVolumeClaimCondition> conditions = new ArrayList<PersistentVolumeClaimCondition>();
     @JsonProperty("currentVolumeAttributesClassName")
-    private java.lang.String currentVolumeAttributesClassName;
+    private String currentVolumeAttributesClassName;
     @JsonProperty("modifyVolumeStatus")
     private ModifyVolumeStatus modifyVolumeStatus;
     @JsonProperty("phase")
-    private java.lang.String phase;
+    private String phase;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -75,7 +75,7 @@ public class PersistentVolumeClaimStatus implements Editable<PersistentVolumeCla
     public PersistentVolumeClaimStatus() {
     }
 
-    public PersistentVolumeClaimStatus(List<java.lang.String> accessModes, Map<String, String> allocatedResourceStatuses, Map<String, io.fabric8.kubernetes.api.model.Quantity> allocatedResources, Map<String, io.fabric8.kubernetes.api.model.Quantity> capacity, List<PersistentVolumeClaimCondition> conditions, java.lang.String currentVolumeAttributesClassName, ModifyVolumeStatus modifyVolumeStatus, java.lang.String phase) {
+    public PersistentVolumeClaimStatus(List<String> accessModes, Map<String, String> allocatedResourceStatuses, Map<String, io.fabric8.kubernetes.api.model.Quantity> allocatedResources, Map<String, io.fabric8.kubernetes.api.model.Quantity> capacity, List<PersistentVolumeClaimCondition> conditions, String currentVolumeAttributesClassName, ModifyVolumeStatus modifyVolumeStatus, String phase) {
         super();
         this.accessModes = accessModes;
         this.allocatedResourceStatuses = allocatedResourceStatuses;
@@ -89,12 +89,12 @@ public class PersistentVolumeClaimStatus implements Editable<PersistentVolumeCla
 
     @JsonProperty("accessModes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<java.lang.String> getAccessModes() {
+    public List<String> getAccessModes() {
         return accessModes;
     }
 
     @JsonProperty("accessModes")
-    public void setAccessModes(List<java.lang.String> accessModes) {
+    public void setAccessModes(List<String> accessModes) {
         this.accessModes = accessModes;
     }
 
@@ -140,12 +140,12 @@ public class PersistentVolumeClaimStatus implements Editable<PersistentVolumeCla
     }
 
     @JsonProperty("currentVolumeAttributesClassName")
-    public java.lang.String getCurrentVolumeAttributesClassName() {
+    public String getCurrentVolumeAttributesClassName() {
         return currentVolumeAttributesClassName;
     }
 
     @JsonProperty("currentVolumeAttributesClassName")
-    public void setCurrentVolumeAttributesClassName(java.lang.String currentVolumeAttributesClassName) {
+    public void setCurrentVolumeAttributesClassName(String currentVolumeAttributesClassName) {
         this.currentVolumeAttributesClassName = currentVolumeAttributesClassName;
     }
 
@@ -160,12 +160,12 @@ public class PersistentVolumeClaimStatus implements Editable<PersistentVolumeCla
     }
 
     @JsonProperty("phase")
-    public java.lang.String getPhase() {
+    public String getPhase() {
         return phase;
     }
 
     @JsonProperty("phase")
-    public void setPhase(java.lang.String phase) {
+    public void setPhase(String phase) {
         this.phase = phase;
     }
 
@@ -180,12 +180,12 @@ public class PersistentVolumeClaimStatus implements Editable<PersistentVolumeCla
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
