@@ -108,6 +108,7 @@ public class StorageStateStatus implements Editable<StorageStateStatusBuilder> ,
     }
 
     @JsonProperty("persistedStorageVersionHashes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getPersistedStorageVersionHashes() {
         return persistedStorageVersionHashes;
     }

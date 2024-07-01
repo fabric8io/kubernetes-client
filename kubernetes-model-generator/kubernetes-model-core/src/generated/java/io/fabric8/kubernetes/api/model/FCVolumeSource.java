@@ -106,6 +106,7 @@ public class FCVolumeSource implements Editable<FCVolumeSourceBuilder> , Kuberne
     }
 
     @JsonProperty("targetWWNs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getTargetWWNs() {
         return targetWWNs;
     }
@@ -116,6 +117,7 @@ public class FCVolumeSource implements Editable<FCVolumeSourceBuilder> , Kuberne
     }
 
     @JsonProperty("wwids")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getWwids() {
         return wwids;
     }

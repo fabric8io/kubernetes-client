@@ -154,6 +154,7 @@ public class PortOpts implements Editable<PortOptsBuilder> , KubernetesResource
     }
 
     @JsonProperty("allowedAddressPairs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<AddressPair> getAllowedAddressPairs() {
         return allowedAddressPairs;
     }
@@ -174,6 +175,7 @@ public class PortOpts implements Editable<PortOptsBuilder> , KubernetesResource
     }
 
     @JsonProperty("fixedIPs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<FixedIPs> getFixedIPs() {
         return fixedIPs;
     }
@@ -254,6 +256,7 @@ public class PortOpts implements Editable<PortOptsBuilder> , KubernetesResource
     }
 
     @JsonProperty("securityGroups")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getSecurityGroups() {
         return securityGroups;
     }
@@ -264,6 +267,7 @@ public class PortOpts implements Editable<PortOptsBuilder> , KubernetesResource
     }
 
     @JsonProperty("tags")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getTags() {
         return tags;
     }

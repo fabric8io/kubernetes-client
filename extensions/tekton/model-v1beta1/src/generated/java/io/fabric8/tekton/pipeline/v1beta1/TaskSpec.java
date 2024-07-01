@@ -148,6 +148,7 @@ public class TaskSpec implements Editable<TaskSpecBuilder> , KubernetesResource
     }
 
     @JsonProperty("params")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ParamSpec> getParams() {
         return params;
     }
@@ -168,6 +169,7 @@ public class TaskSpec implements Editable<TaskSpecBuilder> , KubernetesResource
     }
 
     @JsonProperty("results")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TaskResult> getResults() {
         return results;
     }
@@ -178,6 +180,7 @@ public class TaskSpec implements Editable<TaskSpecBuilder> , KubernetesResource
     }
 
     @JsonProperty("sidecars")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Sidecar> getSidecars() {
         return sidecars;
     }
@@ -198,6 +201,7 @@ public class TaskSpec implements Editable<TaskSpecBuilder> , KubernetesResource
     }
 
     @JsonProperty("steps")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Step> getSteps() {
         return steps;
     }
@@ -208,6 +212,7 @@ public class TaskSpec implements Editable<TaskSpecBuilder> , KubernetesResource
     }
 
     @JsonProperty("volumes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.Volume> getVolumes() {
         return volumes;
     }
@@ -218,6 +223,7 @@ public class TaskSpec implements Editable<TaskSpecBuilder> , KubernetesResource
     }
 
     @JsonProperty("workspaces")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<WorkspaceDeclaration> getWorkspaces() {
         return workspaces;
     }

@@ -147,6 +147,7 @@ public class ACMEChallengeSolverHTTP01IngressPodSpec implements Editable<ACMECha
     }
 
     @JsonProperty("tolerations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Toleration> getTolerations() {
         return tolerations;
     }

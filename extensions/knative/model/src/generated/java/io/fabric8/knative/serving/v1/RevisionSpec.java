@@ -357,6 +357,7 @@ public class RevisionSpec implements Editable<RevisionSpecBuilder> , KubernetesR
     }
 
     @JsonProperty("ephemeralContainers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<EphemeralContainer> getEphemeralContainers() {
         return ephemeralContainers;
     }
@@ -367,6 +368,7 @@ public class RevisionSpec implements Editable<RevisionSpecBuilder> , KubernetesR
     }
 
     @JsonProperty("hostAliases")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<HostAlias> getHostAliases() {
         return hostAliases;
     }
@@ -437,6 +439,7 @@ public class RevisionSpec implements Editable<RevisionSpecBuilder> , KubernetesR
     }
 
     @JsonProperty("imagePullSecrets")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.LocalObjectReference> getImagePullSecrets() {
         return imagePullSecrets;
     }
@@ -447,6 +450,7 @@ public class RevisionSpec implements Editable<RevisionSpecBuilder> , KubernetesR
     }
 
     @JsonProperty("initContainers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.Container> getInitContainers() {
         return initContainers;
     }
@@ -527,6 +531,7 @@ public class RevisionSpec implements Editable<RevisionSpecBuilder> , KubernetesR
     }
 
     @JsonProperty("readinessGates")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PodReadinessGate> getReadinessGates() {
         return readinessGates;
     }
@@ -537,6 +542,7 @@ public class RevisionSpec implements Editable<RevisionSpecBuilder> , KubernetesR
     }
 
     @JsonProperty("resourceClaims")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PodResourceClaim> getResourceClaims() {
         return resourceClaims;
     }
@@ -587,6 +593,7 @@ public class RevisionSpec implements Editable<RevisionSpecBuilder> , KubernetesR
     }
 
     @JsonProperty("schedulingGates")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PodSchedulingGate> getSchedulingGates() {
         return schedulingGates;
     }
@@ -677,6 +684,7 @@ public class RevisionSpec implements Editable<RevisionSpecBuilder> , KubernetesR
     }
 
     @JsonProperty("tolerations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Toleration> getTolerations() {
         return tolerations;
     }
@@ -687,6 +695,7 @@ public class RevisionSpec implements Editable<RevisionSpecBuilder> , KubernetesR
     }
 
     @JsonProperty("topologySpreadConstraints")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TopologySpreadConstraint> getTopologySpreadConstraints() {
         return topologySpreadConstraints;
     }
@@ -697,6 +706,7 @@ public class RevisionSpec implements Editable<RevisionSpecBuilder> , KubernetesR
     }
 
     @JsonProperty("volumes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.Volume> getVolumes() {
         return volumes;
     }

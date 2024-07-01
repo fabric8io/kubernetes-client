@@ -155,6 +155,7 @@ public class OpenIDIdentityProvider implements Editable<OpenIDIdentityProviderBu
     }
 
     @JsonProperty("extraScopes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getExtraScopes() {
         return extraScopes;
     }

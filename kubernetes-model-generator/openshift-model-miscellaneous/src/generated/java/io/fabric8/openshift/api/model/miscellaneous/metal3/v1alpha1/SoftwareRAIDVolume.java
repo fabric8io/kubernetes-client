@@ -98,6 +98,7 @@ public class SoftwareRAIDVolume implements Editable<SoftwareRAIDVolumeBuilder> ,
     }
 
     @JsonProperty("physicalDisks")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<RootDeviceHints> getPhysicalDisks() {
         return physicalDisks;
     }

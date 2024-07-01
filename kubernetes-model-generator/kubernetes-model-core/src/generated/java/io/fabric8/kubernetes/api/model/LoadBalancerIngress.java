@@ -101,6 +101,7 @@ public class LoadBalancerIngress implements Editable<LoadBalancerIngressBuilder>
     }
 
     @JsonProperty("ports")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PortStatus> getPorts() {
         return ports;
     }

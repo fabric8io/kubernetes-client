@@ -103,6 +103,7 @@ public class ImageSpec implements Editable<ImageSpecBuilder> , KubernetesResourc
     }
 
     @JsonProperty("allowedRegistriesForImport")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<RegistryLocation> getAllowedRegistriesForImport() {
         return allowedRegistriesForImport;
     }
@@ -113,6 +114,7 @@ public class ImageSpec implements Editable<ImageSpecBuilder> , KubernetesResourc
     }
 
     @JsonProperty("externalRegistryHostnames")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getExternalRegistryHostnames() {
         return externalRegistryHostnames;
     }

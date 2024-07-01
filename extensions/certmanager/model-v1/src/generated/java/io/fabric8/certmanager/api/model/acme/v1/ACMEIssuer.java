@@ -126,6 +126,7 @@ public class ACMEIssuer implements Editable<ACMEIssuerBuilder> , KubernetesResou
     }
 
     @JsonProperty("caBundle")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public String getCaBundle() {
         return caBundle;
     }
@@ -216,6 +217,7 @@ public class ACMEIssuer implements Editable<ACMEIssuerBuilder> , KubernetesResou
     }
 
     @JsonProperty("solvers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ACMEChallengeSolver> getSolvers() {
         return solvers;
     }

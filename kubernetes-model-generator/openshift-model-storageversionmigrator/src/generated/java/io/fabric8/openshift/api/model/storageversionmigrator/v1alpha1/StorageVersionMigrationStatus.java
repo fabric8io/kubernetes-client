@@ -80,6 +80,7 @@ public class StorageVersionMigrationStatus implements Editable<StorageVersionMig
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<MigrationCondition> getConditions() {
         return conditions;
     }

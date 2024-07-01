@@ -128,6 +128,7 @@ public class JWTRule implements Editable<JWTRuleBuilder> , KubernetesResource
     }
 
     @JsonProperty("audiences")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getAudiences() {
         return audiences;
     }
@@ -148,6 +149,7 @@ public class JWTRule implements Editable<JWTRuleBuilder> , KubernetesResource
     }
 
     @JsonProperty("fromCookies")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getFromCookies() {
         return fromCookies;
     }
@@ -158,6 +160,7 @@ public class JWTRule implements Editable<JWTRuleBuilder> , KubernetesResource
     }
 
     @JsonProperty("fromHeaders")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<JWTHeader> getFromHeaders() {
         return fromHeaders;
     }
@@ -168,6 +171,7 @@ public class JWTRule implements Editable<JWTRuleBuilder> , KubernetesResource
     }
 
     @JsonProperty("fromParams")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getFromParams() {
         return fromParams;
     }
@@ -208,6 +212,7 @@ public class JWTRule implements Editable<JWTRuleBuilder> , KubernetesResource
     }
 
     @JsonProperty("outputClaimToHeaders")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ClaimToHeader> getOutputClaimToHeaders() {
         return outputClaimToHeaders;
     }

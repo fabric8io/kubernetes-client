@@ -97,6 +97,7 @@ public class ServiceCAStatus implements Editable<ServiceCAStatusBuilder> , Kuber
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<OperatorCondition> getConditions() {
         return conditions;
     }
@@ -107,6 +108,7 @@ public class ServiceCAStatus implements Editable<ServiceCAStatusBuilder> , Kuber
     }
 
     @JsonProperty("generations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<GenerationStatus> getGenerations() {
         return generations;
     }

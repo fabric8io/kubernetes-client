@@ -94,6 +94,7 @@ public class ScopeRestriction implements Editable<ScopeRestrictionBuilder> , Kub
     }
 
     @JsonProperty("literals")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getLiterals() {
         return literals;
     }

@@ -90,6 +90,7 @@ public class ClientConfig implements Editable<ClientConfigBuilder> , KubernetesR
     }
 
     @JsonProperty("caBundle")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public String getCaBundle() {
         return caBundle;
     }

@@ -90,6 +90,7 @@ public class InhibitRule implements Editable<InhibitRuleBuilder> , KubernetesRes
     }
 
     @JsonProperty("equal")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getEqual() {
         return equal;
     }
@@ -100,6 +101,7 @@ public class InhibitRule implements Editable<InhibitRuleBuilder> , KubernetesRes
     }
 
     @JsonProperty("sourceMatch")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Matcher> getSourceMatch() {
         return sourceMatch;
     }
@@ -110,6 +112,7 @@ public class InhibitRule implements Editable<InhibitRuleBuilder> , KubernetesRes
     }
 
     @JsonProperty("targetMatch")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Matcher> getTargetMatch() {
         return targetMatch;
     }

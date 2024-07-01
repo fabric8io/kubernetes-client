@@ -90,6 +90,7 @@ public class CustomDeploymentStrategyParams implements Editable<CustomDeployment
     }
 
     @JsonProperty("command")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getCommand() {
         return command;
     }
@@ -100,6 +101,7 @@ public class CustomDeploymentStrategyParams implements Editable<CustomDeployment
     }
 
     @JsonProperty("environment")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<EnvVar> getEnvironment() {
         return environment;
     }

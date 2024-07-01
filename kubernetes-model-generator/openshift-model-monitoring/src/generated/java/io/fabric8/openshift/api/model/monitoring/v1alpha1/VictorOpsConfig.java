@@ -137,6 +137,7 @@ public class VictorOpsConfig implements Editable<VictorOpsConfigBuilder> , Kuber
     }
 
     @JsonProperty("customFields")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<KeyValue> getCustomFields() {
         return customFields;
     }

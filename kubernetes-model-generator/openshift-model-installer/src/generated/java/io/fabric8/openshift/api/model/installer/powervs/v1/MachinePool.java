@@ -135,6 +135,7 @@ public class MachinePool implements Editable<MachinePoolBuilder> , KubernetesRes
     }
 
     @JsonProperty("volumeIDs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getVolumeIDs() {
         return volumeIDs;
     }

@@ -126,6 +126,7 @@ public class BrokerStatus implements Editable<BrokerStatusBuilder> , KubernetesR
     }
 
     @JsonProperty("addresses")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Addressable> getAddresses() {
         return addresses;
     }
@@ -146,6 +147,7 @@ public class BrokerStatus implements Editable<BrokerStatusBuilder> , KubernetesR
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }

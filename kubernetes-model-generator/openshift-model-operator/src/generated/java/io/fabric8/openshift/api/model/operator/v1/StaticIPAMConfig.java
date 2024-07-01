@@ -89,6 +89,7 @@ public class StaticIPAMConfig implements Editable<StaticIPAMConfigBuilder> , Kub
     }
 
     @JsonProperty("addresses")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<StaticIPAMAddresses> getAddresses() {
         return addresses;
     }
@@ -109,6 +110,7 @@ public class StaticIPAMConfig implements Editable<StaticIPAMConfigBuilder> , Kub
     }
 
     @JsonProperty("routes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<StaticIPAMRoutes> getRoutes() {
         return routes;
     }

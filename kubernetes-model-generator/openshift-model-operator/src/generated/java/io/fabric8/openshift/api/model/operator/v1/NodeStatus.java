@@ -152,6 +152,7 @@ public class NodeStatus implements Editable<NodeStatusBuilder> , KubernetesResou
     }
 
     @JsonProperty("lastFailedRevisionErrors")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getLastFailedRevisionErrors() {
         return lastFailedRevisionErrors;
     }

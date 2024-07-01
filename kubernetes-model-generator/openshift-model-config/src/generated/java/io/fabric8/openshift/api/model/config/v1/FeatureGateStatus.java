@@ -86,6 +86,7 @@ public class FeatureGateStatus implements Editable<FeatureGateStatusBuilder> , K
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }

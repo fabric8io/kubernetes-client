@@ -178,6 +178,7 @@ public class OpsGenieConfig implements Editable<OpsGenieConfigBuilder> , Kuberne
     }
 
     @JsonProperty("details")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<KeyValue> getDetails() {
         return details;
     }
@@ -238,6 +239,7 @@ public class OpsGenieConfig implements Editable<OpsGenieConfigBuilder> , Kuberne
     }
 
     @JsonProperty("responders")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<OpsGenieConfigResponder> getResponders() {
         return responders;
     }

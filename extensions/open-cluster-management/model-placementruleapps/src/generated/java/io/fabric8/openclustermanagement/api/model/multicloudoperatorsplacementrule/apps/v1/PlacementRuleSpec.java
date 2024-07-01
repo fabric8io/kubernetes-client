@@ -112,6 +112,7 @@ public class PlacementRuleSpec implements Editable<PlacementRuleSpecBuilder> , K
     }
 
     @JsonProperty("clusterConditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ClusterConditionFilter> getClusterConditions() {
         return clusterConditions;
     }
@@ -142,6 +143,7 @@ public class PlacementRuleSpec implements Editable<PlacementRuleSpecBuilder> , K
     }
 
     @JsonProperty("clusters")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<GenericClusterReference> getClusters() {
         return clusters;
     }
@@ -152,6 +154,7 @@ public class PlacementRuleSpec implements Editable<PlacementRuleSpecBuilder> , K
     }
 
     @JsonProperty("policies")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.ObjectReference> getPolicies() {
         return policies;
     }

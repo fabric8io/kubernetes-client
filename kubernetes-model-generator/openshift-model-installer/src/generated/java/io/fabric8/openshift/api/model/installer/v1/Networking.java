@@ -111,6 +111,7 @@ public class Networking implements Editable<NetworkingBuilder> , KubernetesResou
     }
 
     @JsonProperty("clusterNetwork")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ClusterNetworkEntry> getClusterNetwork() {
         return clusterNetwork;
     }
@@ -121,6 +122,7 @@ public class Networking implements Editable<NetworkingBuilder> , KubernetesResou
     }
 
     @JsonProperty("deprecatedClusterNetworks")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ClusterNetworkEntry> getDeprecatedClusterNetworks() {
         return deprecatedClusterNetworks;
     }
@@ -141,6 +143,7 @@ public class Networking implements Editable<NetworkingBuilder> , KubernetesResou
     }
 
     @JsonProperty("machineNetwork")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<MachineNetworkEntry> getMachineNetwork() {
         return machineNetwork;
     }
@@ -171,6 +174,7 @@ public class Networking implements Editable<NetworkingBuilder> , KubernetesResou
     }
 
     @JsonProperty("serviceNetwork")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getServiceNetwork() {
         return serviceNetwork;
     }

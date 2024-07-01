@@ -239,6 +239,7 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder> , KubernetesResourc
     }
 
     @JsonProperty("metricRelabelings")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<RelabelConfig> getMetricRelabelings() {
         return metricRelabelings;
     }

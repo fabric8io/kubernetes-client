@@ -101,6 +101,7 @@ public class PlacementSpec implements Editable<PlacementSpecBuilder> , Kubernete
     }
 
     @JsonProperty("clusterSets")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getClusterSets() {
         return clusterSets;
     }
@@ -121,6 +122,7 @@ public class PlacementSpec implements Editable<PlacementSpecBuilder> , Kubernete
     }
 
     @JsonProperty("predicates")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ClusterPredicate> getPredicates() {
         return predicates;
     }

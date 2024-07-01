@@ -92,6 +92,7 @@ public class BitbucketInterceptor implements Editable<BitbucketInterceptorBuilde
     }
 
     @JsonProperty("eventTypes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getEventTypes() {
         return eventTypes;
     }

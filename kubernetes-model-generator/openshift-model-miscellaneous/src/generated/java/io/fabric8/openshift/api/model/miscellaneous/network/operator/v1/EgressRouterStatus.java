@@ -80,6 +80,7 @@ public class EgressRouterStatus implements Editable<EgressRouterStatusBuilder> ,
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<EgressRouterStatusCondition> getConditions() {
         return conditions;
     }

@@ -125,6 +125,7 @@ public class PodStatus implements Editable<PodStatusBuilder> , KubernetesResourc
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PodCondition> getConditions() {
         return conditions;
     }
@@ -135,6 +136,7 @@ public class PodStatus implements Editable<PodStatusBuilder> , KubernetesResourc
     }
 
     @JsonProperty("containerStatuses")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ContainerStatus> getContainerStatuses() {
         return containerStatuses;
     }
@@ -145,6 +147,7 @@ public class PodStatus implements Editable<PodStatusBuilder> , KubernetesResourc
     }
 
     @JsonProperty("ephemeralContainerStatuses")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ContainerStatus> getEphemeralContainerStatuses() {
         return ephemeralContainerStatuses;
     }
@@ -165,6 +168,7 @@ public class PodStatus implements Editable<PodStatusBuilder> , KubernetesResourc
     }
 
     @JsonProperty("hostIPs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<HostIP> getHostIPs() {
         return hostIPs;
     }
@@ -175,6 +179,7 @@ public class PodStatus implements Editable<PodStatusBuilder> , KubernetesResourc
     }
 
     @JsonProperty("initContainerStatuses")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ContainerStatus> getInitContainerStatuses() {
         return initContainerStatuses;
     }
@@ -225,6 +230,7 @@ public class PodStatus implements Editable<PodStatusBuilder> , KubernetesResourc
     }
 
     @JsonProperty("podIPs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PodIP> getPodIPs() {
         return podIPs;
     }
@@ -265,6 +271,7 @@ public class PodStatus implements Editable<PodStatusBuilder> , KubernetesResourc
     }
 
     @JsonProperty("resourceClaimStatuses")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PodResourceClaimStatus> getResourceClaimStatuses() {
         return resourceClaimStatuses;
     }

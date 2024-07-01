@@ -211,6 +211,7 @@ public class ServiceClassSpec implements Editable<ServiceClassSpecBuilder> , Kub
     }
 
     @JsonProperty("requires")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getRequires() {
         return requires;
     }
@@ -231,6 +232,7 @@ public class ServiceClassSpec implements Editable<ServiceClassSpecBuilder> , Kub
     }
 
     @JsonProperty("tags")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getTags() {
         return tags;
     }

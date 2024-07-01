@@ -103,6 +103,7 @@ public class NameConstraintItem implements Editable<NameConstraintItemBuilder> ,
     }
 
     @JsonProperty("dnsDomains")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getDnsDomains() {
         return dnsDomains;
     }
@@ -113,6 +114,7 @@ public class NameConstraintItem implements Editable<NameConstraintItemBuilder> ,
     }
 
     @JsonProperty("emailAddresses")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getEmailAddresses() {
         return emailAddresses;
     }
@@ -123,6 +125,7 @@ public class NameConstraintItem implements Editable<NameConstraintItemBuilder> ,
     }
 
     @JsonProperty("ipRanges")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getIpRanges() {
         return ipRanges;
     }
@@ -133,6 +136,7 @@ public class NameConstraintItem implements Editable<NameConstraintItemBuilder> ,
     }
 
     @JsonProperty("uriDomains")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getUriDomains() {
         return uriDomains;
     }

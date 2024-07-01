@@ -160,6 +160,7 @@ public class ServiceSpec implements Editable<ServiceSpecBuilder> , KubernetesRes
     }
 
     @JsonProperty("clusterIPs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getClusterIPs() {
         return clusterIPs;
     }
@@ -170,6 +171,7 @@ public class ServiceSpec implements Editable<ServiceSpecBuilder> , KubernetesRes
     }
 
     @JsonProperty("externalIPs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getExternalIPs() {
         return externalIPs;
     }
@@ -220,6 +222,7 @@ public class ServiceSpec implements Editable<ServiceSpecBuilder> , KubernetesRes
     }
 
     @JsonProperty("ipFamilies")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getIpFamilies() {
         return ipFamilies;
     }
@@ -260,6 +263,7 @@ public class ServiceSpec implements Editable<ServiceSpecBuilder> , KubernetesRes
     }
 
     @JsonProperty("loadBalancerSourceRanges")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getLoadBalancerSourceRanges() {
         return loadBalancerSourceRanges;
     }
@@ -270,6 +274,7 @@ public class ServiceSpec implements Editable<ServiceSpecBuilder> , KubernetesRes
     }
 
     @JsonProperty("ports")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ServicePort> getPorts() {
         return ports;
     }

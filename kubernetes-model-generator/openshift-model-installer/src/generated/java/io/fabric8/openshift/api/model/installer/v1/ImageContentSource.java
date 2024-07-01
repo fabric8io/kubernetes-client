@@ -84,6 +84,7 @@ public class ImageContentSource implements Editable<ImageContentSourceBuilder> ,
     }
 
     @JsonProperty("mirrors")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getMirrors() {
         return mirrors;
     }

@@ -114,6 +114,7 @@ public class SecretArgs implements Editable<SecretArgsBuilder> , KubernetesResou
     }
 
     @JsonProperty("envs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getEnvs() {
         return envs;
     }
@@ -124,6 +125,7 @@ public class SecretArgs implements Editable<SecretArgsBuilder> , KubernetesResou
     }
 
     @JsonProperty("files")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getFiles() {
         return files;
     }
@@ -134,6 +136,7 @@ public class SecretArgs implements Editable<SecretArgsBuilder> , KubernetesResou
     }
 
     @JsonProperty("literals")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getLiterals() {
         return literals;
     }

@@ -89,6 +89,7 @@ public class VSpherePlatformNodeNetworkingSpec implements Editable<VSpherePlatfo
     }
 
     @JsonProperty("excludeNetworkSubnetCidr")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getExcludeNetworkSubnetCidr() {
         return excludeNetworkSubnetCidr;
     }
@@ -109,6 +110,7 @@ public class VSpherePlatformNodeNetworkingSpec implements Editable<VSpherePlatfo
     }
 
     @JsonProperty("networkSubnetCidr")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getNetworkSubnetCidr() {
         return networkSubnetCidr;
     }

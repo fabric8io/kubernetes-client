@@ -113,6 +113,7 @@ public class DeveloperConsoleCatalogCategory implements Editable<DeveloperConsol
     }
 
     @JsonProperty("subcategories")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<DeveloperConsoleCatalogCategoryMeta> getSubcategories() {
         return subcategories;
     }
@@ -123,6 +124,7 @@ public class DeveloperConsoleCatalogCategory implements Editable<DeveloperConsol
     }
 
     @JsonProperty("tags")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getTags() {
         return tags;
     }

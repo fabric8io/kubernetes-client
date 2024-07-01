@@ -140,6 +140,7 @@ public class Topology implements Editable<TopologyBuilder> , KubernetesResource
     }
 
     @JsonProperty("networks")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getNetworks() {
         return networks;
     }

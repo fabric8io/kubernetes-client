@@ -89,6 +89,7 @@ public class ClusterClaimSelector implements Editable<ClusterClaimSelectorBuilde
     }
 
     @JsonProperty("matchExpressions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<LabelSelectorRequirement> getMatchExpressions() {
         return matchExpressions;
     }

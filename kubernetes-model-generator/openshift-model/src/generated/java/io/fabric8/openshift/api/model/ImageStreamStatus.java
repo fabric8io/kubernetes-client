@@ -108,6 +108,7 @@ public class ImageStreamStatus implements Editable<ImageStreamStatusBuilder> , K
     }
 
     @JsonProperty("tags")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<NamedTagEventList> getTags() {
         return tags;
     }

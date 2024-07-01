@@ -136,6 +136,7 @@ public class AuthenticationSpec implements Editable<AuthenticationSpecBuilder> ,
     }
 
     @JsonProperty("webhookTokenAuthenticators")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<DeprecatedWebhookTokenAuthenticator> getWebhookTokenAuthenticators() {
         return webhookTokenAuthenticators;
     }

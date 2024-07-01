@@ -93,6 +93,7 @@ public class TCPRoute implements Editable<TCPRouteBuilder> , KubernetesResource
     }
 
     @JsonProperty("match")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<L4MatchAttributes> getMatch() {
         return match;
     }
@@ -103,6 +104,7 @@ public class TCPRoute implements Editable<TCPRouteBuilder> , KubernetesResource
     }
 
     @JsonProperty("route")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<RouteDestination> getRoute() {
         return route;
     }

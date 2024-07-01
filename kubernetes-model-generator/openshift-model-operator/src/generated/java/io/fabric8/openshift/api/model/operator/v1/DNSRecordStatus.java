@@ -94,6 +94,7 @@ public class DNSRecordStatus implements Editable<DNSRecordStatusBuilder> , Kuber
     }
 
     @JsonProperty("zones")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<DNSZoneStatus> getZones() {
         return zones;
     }

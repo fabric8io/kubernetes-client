@@ -144,6 +144,7 @@ public class ImageStreamTag implements Editable<ImageStreamTagBuilder> , HasMeta
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TagEventCondition> getConditions() {
         return conditions;
     }

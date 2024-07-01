@@ -101,6 +101,7 @@ public class OpenShiftAPIServerStatus implements Editable<OpenShiftAPIServerStat
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<OperatorCondition> getConditions() {
         return conditions;
     }
@@ -111,6 +112,7 @@ public class OpenShiftAPIServerStatus implements Editable<OpenShiftAPIServerStat
     }
 
     @JsonProperty("generations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<GenerationStatus> getGenerations() {
         return generations;
     }

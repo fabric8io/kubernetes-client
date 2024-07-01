@@ -116,6 +116,7 @@ public class ServerlessServiceStatus implements Editable<ServerlessServiceStatus
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }

@@ -110,6 +110,7 @@ public class AlertmanagerStatus implements Editable<AlertmanagerStatusBuilder> ,
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }

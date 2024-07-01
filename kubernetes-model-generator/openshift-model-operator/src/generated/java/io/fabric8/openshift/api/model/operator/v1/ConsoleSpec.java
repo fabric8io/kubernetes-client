@@ -166,6 +166,7 @@ public class ConsoleSpec implements Editable<ConsoleSpecBuilder> , KubernetesRes
     }
 
     @JsonProperty("plugins")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getPlugins() {
         return plugins;
     }

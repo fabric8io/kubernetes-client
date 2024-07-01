@@ -107,6 +107,7 @@ public class Condition implements Editable<ConditionBuilder> , KubernetesResourc
     }
 
     @JsonProperty("notValues")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getNotValues() {
         return notValues;
     }
@@ -117,6 +118,7 @@ public class Condition implements Editable<ConditionBuilder> , KubernetesResourc
     }
 
     @JsonProperty("values")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getValues() {
         return values;
     }

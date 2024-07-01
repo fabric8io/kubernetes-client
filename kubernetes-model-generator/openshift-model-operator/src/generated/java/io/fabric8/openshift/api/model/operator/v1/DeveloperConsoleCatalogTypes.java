@@ -89,6 +89,7 @@ public class DeveloperConsoleCatalogTypes implements Editable<DeveloperConsoleCa
     }
 
     @JsonProperty("disabled")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getDisabled() {
         return disabled;
     }
@@ -99,6 +100,7 @@ public class DeveloperConsoleCatalogTypes implements Editable<DeveloperConsoleCa
     }
 
     @JsonProperty("enabled")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getEnabled() {
         return enabled;
     }

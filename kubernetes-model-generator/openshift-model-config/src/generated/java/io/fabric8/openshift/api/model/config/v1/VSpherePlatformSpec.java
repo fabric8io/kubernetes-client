@@ -89,6 +89,7 @@ public class VSpherePlatformSpec implements Editable<VSpherePlatformSpecBuilder>
     }
 
     @JsonProperty("failureDomains")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<VSpherePlatformFailureDomainSpec> getFailureDomains() {
         return failureDomains;
     }
@@ -109,6 +110,7 @@ public class VSpherePlatformSpec implements Editable<VSpherePlatformSpecBuilder>
     }
 
     @JsonProperty("vcenters")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<VSpherePlatformVCenterSpec> getVcenters() {
         return vcenters;
     }

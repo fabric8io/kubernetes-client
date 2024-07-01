@@ -128,6 +128,7 @@ public class Server implements Editable<ServerBuilder> , KubernetesResource
     }
 
     @JsonProperty("hosts")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getHosts() {
         return hosts;
     }

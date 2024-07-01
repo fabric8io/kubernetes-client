@@ -148,6 +148,7 @@ public class SequenceStatus implements Editable<SequenceStatusBuilder> , Kuberne
     }
 
     @JsonProperty("channelStatuses")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<SequenceChannelStatus> getChannelStatuses() {
         return channelStatuses;
     }
@@ -158,6 +159,7 @@ public class SequenceStatus implements Editable<SequenceStatusBuilder> , Kuberne
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }
@@ -178,6 +180,7 @@ public class SequenceStatus implements Editable<SequenceStatusBuilder> , Kuberne
     }
 
     @JsonProperty("subscriptionStatuses")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<SequenceSubscriptionStatus> getSubscriptionStatuses() {
         return subscriptionStatuses;
     }

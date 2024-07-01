@@ -102,6 +102,7 @@ public class HiveConfigStatus implements Editable<HiveConfigStatusBuilder> , Kub
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<HiveConfigCondition> getConditions() {
         return conditions;
     }

@@ -140,6 +140,7 @@ public class PowerVSPlatformStatus implements Editable<PowerVSPlatformStatusBuil
     }
 
     @JsonProperty("serviceEndpoints")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PowerVSServiceEndpoint> getServiceEndpoints() {
         return serviceEndpoints;
     }

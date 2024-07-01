@@ -129,6 +129,7 @@ public class ManagedClusterStatus implements Editable<ManagedClusterStatusBuilde
     }
 
     @JsonProperty("clusterClaims")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ManagedClusterClaim> getClusterClaims() {
         return clusterClaims;
     }

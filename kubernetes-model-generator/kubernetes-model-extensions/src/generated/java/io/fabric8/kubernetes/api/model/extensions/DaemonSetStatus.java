@@ -126,6 +126,7 @@ public class DaemonSetStatus implements Editable<DaemonSetStatusBuilder> , Kuber
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<DaemonSetCondition> getConditions() {
         return conditions;
     }

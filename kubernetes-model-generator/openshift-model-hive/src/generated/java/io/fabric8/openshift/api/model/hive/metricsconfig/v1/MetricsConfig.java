@@ -95,6 +95,7 @@ public class MetricsConfig implements Editable<MetricsConfigBuilder> , Kubernete
     }
 
     @JsonProperty("metricsWithDuration")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<MetricsWithDuration> getMetricsWithDuration() {
         return metricsWithDuration;
     }

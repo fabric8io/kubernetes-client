@@ -168,6 +168,7 @@ public class TaskRunSpec implements Editable<TaskRunSpecBuilder> , KubernetesRes
     }
 
     @JsonProperty("params")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Param> getParams() {
         return params;
     }
@@ -218,6 +219,7 @@ public class TaskRunSpec implements Editable<TaskRunSpecBuilder> , KubernetesRes
     }
 
     @JsonProperty("sidecarOverrides")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TaskRunSidecarOverride> getSidecarOverrides() {
         return sidecarOverrides;
     }
@@ -248,6 +250,7 @@ public class TaskRunSpec implements Editable<TaskRunSpecBuilder> , KubernetesRes
     }
 
     @JsonProperty("stepOverrides")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TaskRunStepOverride> getStepOverrides() {
         return stepOverrides;
     }
@@ -288,6 +291,7 @@ public class TaskRunSpec implements Editable<TaskRunSpecBuilder> , KubernetesRes
     }
 
     @JsonProperty("workspaces")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<WorkspaceBinding> getWorkspaces() {
         return workspaces;
     }

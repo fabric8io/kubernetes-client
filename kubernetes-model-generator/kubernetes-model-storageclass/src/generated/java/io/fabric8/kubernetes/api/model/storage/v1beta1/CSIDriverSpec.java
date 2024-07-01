@@ -169,6 +169,7 @@ public class CSIDriverSpec implements Editable<CSIDriverSpecBuilder> , Kubernete
     }
 
     @JsonProperty("tokenRequests")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TokenRequest> getTokenRequests() {
         return tokenRequests;
     }
@@ -179,6 +180,7 @@ public class CSIDriverSpec implements Editable<CSIDriverSpecBuilder> , Kubernete
     }
 
     @JsonProperty("volumeLifecycleModes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getVolumeLifecycleModes() {
         return volumeLifecycleModes;
     }

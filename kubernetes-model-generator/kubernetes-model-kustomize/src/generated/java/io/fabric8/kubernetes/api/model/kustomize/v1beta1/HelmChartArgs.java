@@ -159,6 +159,7 @@ public class HelmChartArgs implements Editable<HelmChartArgsBuilder> , Kubernete
     }
 
     @JsonProperty("extraArgs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getExtraArgs() {
         return extraArgs;
     }

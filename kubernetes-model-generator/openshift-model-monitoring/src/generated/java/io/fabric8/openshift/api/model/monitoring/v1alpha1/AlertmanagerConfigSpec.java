@@ -94,6 +94,7 @@ public class AlertmanagerConfigSpec implements Editable<AlertmanagerConfigSpecBu
     }
 
     @JsonProperty("inhibitRules")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<InhibitRule> getInhibitRules() {
         return inhibitRules;
     }
@@ -104,6 +105,7 @@ public class AlertmanagerConfigSpec implements Editable<AlertmanagerConfigSpecBu
     }
 
     @JsonProperty("muteTimeIntervals")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<MuteTimeInterval> getMuteTimeIntervals() {
         return muteTimeIntervals;
     }

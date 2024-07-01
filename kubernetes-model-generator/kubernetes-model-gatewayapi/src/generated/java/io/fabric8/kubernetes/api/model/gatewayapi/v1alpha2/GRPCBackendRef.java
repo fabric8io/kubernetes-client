@@ -108,6 +108,7 @@ public class GRPCBackendRef implements Editable<GRPCBackendRefBuilder> , Kuberne
     }
 
     @JsonProperty("filters")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<GRPCRouteFilter> getFilters() {
         return filters;
     }

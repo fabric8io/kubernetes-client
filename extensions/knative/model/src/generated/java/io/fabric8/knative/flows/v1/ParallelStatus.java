@@ -132,6 +132,7 @@ public class ParallelStatus implements Editable<ParallelStatusBuilder> , Kuberne
     }
 
     @JsonProperty("addresses")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Addressable> getAddresses() {
         return addresses;
     }
@@ -172,6 +173,7 @@ public class ParallelStatus implements Editable<ParallelStatusBuilder> , Kuberne
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }

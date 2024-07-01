@@ -107,6 +107,7 @@ public class BuildDefaults implements Editable<BuildDefaultsBuilder> , Kubernete
     }
 
     @JsonProperty("env")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<EnvVar> getEnv() {
         return env;
     }
@@ -127,6 +128,7 @@ public class BuildDefaults implements Editable<BuildDefaultsBuilder> , Kubernete
     }
 
     @JsonProperty("imageLabels")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ImageLabel> getImageLabels() {
         return imageLabels;
     }

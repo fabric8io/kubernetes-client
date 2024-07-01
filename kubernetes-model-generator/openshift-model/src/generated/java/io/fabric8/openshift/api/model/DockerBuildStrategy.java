@@ -113,6 +113,7 @@ public class DockerBuildStrategy implements Editable<DockerBuildStrategyBuilder>
     }
 
     @JsonProperty("buildArgs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<EnvVar> getBuildArgs() {
         return buildArgs;
     }
@@ -133,6 +134,7 @@ public class DockerBuildStrategy implements Editable<DockerBuildStrategyBuilder>
     }
 
     @JsonProperty("env")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<EnvVar> getEnv() {
         return env;
     }
@@ -193,6 +195,7 @@ public class DockerBuildStrategy implements Editable<DockerBuildStrategyBuilder>
     }
 
     @JsonProperty("volumes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<BuildVolume> getVolumes() {
         return volumes;
     }

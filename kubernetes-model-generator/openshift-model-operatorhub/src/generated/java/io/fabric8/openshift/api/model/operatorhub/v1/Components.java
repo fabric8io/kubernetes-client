@@ -94,6 +94,7 @@ public class Components implements Editable<ComponentsBuilder> , KubernetesResou
     }
 
     @JsonProperty("refs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<JsonNode> getRefs() {
         return refs;
     }

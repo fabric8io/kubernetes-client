@@ -101,6 +101,7 @@ public class AuthenticationStatus implements Editable<AuthenticationStatusBuilde
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<OperatorCondition> getConditions() {
         return conditions;
     }
@@ -111,6 +112,7 @@ public class AuthenticationStatus implements Editable<AuthenticationStatusBuilde
     }
 
     @JsonProperty("generations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<GenerationStatus> getGenerations() {
         return generations;
     }

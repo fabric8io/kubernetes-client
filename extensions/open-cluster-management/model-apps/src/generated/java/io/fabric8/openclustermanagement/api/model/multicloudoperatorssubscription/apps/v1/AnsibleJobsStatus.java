@@ -121,6 +121,7 @@ public class AnsibleJobsStatus implements Editable<AnsibleJobsStatusBuilder> , K
     }
 
     @JsonProperty("posthookjobshistory")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getPosthookjobshistory() {
         return posthookjobshistory;
     }
@@ -131,6 +132,7 @@ public class AnsibleJobsStatus implements Editable<AnsibleJobsStatusBuilder> , K
     }
 
     @JsonProperty("prehookjobshistory")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getPrehookjobshistory() {
         return prehookjobshistory;
     }

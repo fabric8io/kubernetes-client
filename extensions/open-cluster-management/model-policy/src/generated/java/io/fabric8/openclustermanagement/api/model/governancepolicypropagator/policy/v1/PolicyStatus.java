@@ -112,6 +112,7 @@ public class PolicyStatus implements Editable<PolicyStatusBuilder> , KubernetesR
     }
 
     @JsonProperty("details")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<DetailsPerTemplate> getDetails() {
         return details;
     }
@@ -122,6 +123,7 @@ public class PolicyStatus implements Editable<PolicyStatusBuilder> , KubernetesR
     }
 
     @JsonProperty("placement")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Placement> getPlacement() {
         return placement;
     }
@@ -132,6 +134,7 @@ public class PolicyStatus implements Editable<PolicyStatusBuilder> , KubernetesR
     }
 
     @JsonProperty("status")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<CompliancePerClusterStatus> getStatus() {
         return status;
     }

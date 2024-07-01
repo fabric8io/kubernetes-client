@@ -293,6 +293,7 @@ public class PodSpec implements Editable<PodSpecBuilder> , KubernetesResource
     }
 
     @JsonProperty("ephemeralContainers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<EphemeralContainer> getEphemeralContainers() {
         return ephemeralContainers;
     }
@@ -303,6 +304,7 @@ public class PodSpec implements Editable<PodSpecBuilder> , KubernetesResource
     }
 
     @JsonProperty("hostAliases")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<HostAlias> getHostAliases() {
         return hostAliases;
     }
@@ -363,6 +365,7 @@ public class PodSpec implements Editable<PodSpecBuilder> , KubernetesResource
     }
 
     @JsonProperty("imagePullSecrets")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<LocalObjectReference> getImagePullSecrets() {
         return imagePullSecrets;
     }
@@ -373,6 +376,7 @@ public class PodSpec implements Editable<PodSpecBuilder> , KubernetesResource
     }
 
     @JsonProperty("initContainers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Container> getInitContainers() {
         return initContainers;
     }
@@ -453,6 +457,7 @@ public class PodSpec implements Editable<PodSpecBuilder> , KubernetesResource
     }
 
     @JsonProperty("readinessGates")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PodReadinessGate> getReadinessGates() {
         return readinessGates;
     }
@@ -463,6 +468,7 @@ public class PodSpec implements Editable<PodSpecBuilder> , KubernetesResource
     }
 
     @JsonProperty("resourceClaims")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PodResourceClaim> getResourceClaims() {
         return resourceClaims;
     }
@@ -503,6 +509,7 @@ public class PodSpec implements Editable<PodSpecBuilder> , KubernetesResource
     }
 
     @JsonProperty("schedulingGates")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PodSchedulingGate> getSchedulingGates() {
         return schedulingGates;
     }
@@ -583,6 +590,7 @@ public class PodSpec implements Editable<PodSpecBuilder> , KubernetesResource
     }
 
     @JsonProperty("tolerations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Toleration> getTolerations() {
         return tolerations;
     }
@@ -593,6 +601,7 @@ public class PodSpec implements Editable<PodSpecBuilder> , KubernetesResource
     }
 
     @JsonProperty("topologySpreadConstraints")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TopologySpreadConstraint> getTopologySpreadConstraints() {
         return topologySpreadConstraints;
     }
@@ -603,6 +612,7 @@ public class PodSpec implements Editable<PodSpecBuilder> , KubernetesResource
     }
 
     @JsonProperty("volumes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Volume> getVolumes() {
         return volumes;
     }

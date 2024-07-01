@@ -125,6 +125,7 @@ public class DNSZoneStatus implements Editable<DNSZoneStatusBuilder> , Kubernete
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<DNSZoneCondition> getConditions() {
         return conditions;
     }
@@ -165,6 +166,7 @@ public class DNSZoneStatus implements Editable<DNSZoneStatusBuilder> , Kubernete
     }
 
     @JsonProperty("nameServers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getNameServers() {
         return nameServers;
     }

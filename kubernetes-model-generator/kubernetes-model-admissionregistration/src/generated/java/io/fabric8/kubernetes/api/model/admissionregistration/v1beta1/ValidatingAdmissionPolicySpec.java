@@ -107,6 +107,7 @@ public class ValidatingAdmissionPolicySpec implements Editable<ValidatingAdmissi
     }
 
     @JsonProperty("auditAnnotations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<AuditAnnotation> getAuditAnnotations() {
         return auditAnnotations;
     }
@@ -127,6 +128,7 @@ public class ValidatingAdmissionPolicySpec implements Editable<ValidatingAdmissi
     }
 
     @JsonProperty("matchConditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<MatchCondition> getMatchConditions() {
         return matchConditions;
     }
@@ -157,6 +159,7 @@ public class ValidatingAdmissionPolicySpec implements Editable<ValidatingAdmissi
     }
 
     @JsonProperty("validations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Validation> getValidations() {
         return validations;
     }
@@ -167,6 +170,7 @@ public class ValidatingAdmissionPolicySpec implements Editable<ValidatingAdmissi
     }
 
     @JsonProperty("variables")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Variable> getVariables() {
         return variables;
     }

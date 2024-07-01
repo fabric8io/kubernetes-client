@@ -84,6 +84,7 @@ public class ClusterStateStatus implements Editable<ClusterStateStatusBuilder> ,
     }
 
     @JsonProperty("clusterOperators")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ClusterOperatorState> getClusterOperators() {
         return clusterOperators;
     }

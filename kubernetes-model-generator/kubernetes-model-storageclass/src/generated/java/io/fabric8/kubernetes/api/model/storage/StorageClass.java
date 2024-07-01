@@ -144,6 +144,7 @@ public class StorageClass implements Editable<StorageClassBuilder> , HasMetadata
     }
 
     @JsonProperty("allowedTopologies")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TopologySelectorTerm> getAllowedTopologies() {
         return allowedTopologies;
     }
@@ -204,6 +205,7 @@ public class StorageClass implements Editable<StorageClassBuilder> , HasMetadata
     }
 
     @JsonProperty("mountOptions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getMountOptions() {
         return mountOptions;
     }

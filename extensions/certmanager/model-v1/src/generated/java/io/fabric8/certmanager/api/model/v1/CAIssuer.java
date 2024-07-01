@@ -102,6 +102,7 @@ public class CAIssuer implements Editable<CAIssuerBuilder> , KubernetesResource
     }
 
     @JsonProperty("crlDistributionPoints")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getCrlDistributionPoints() {
         return crlDistributionPoints;
     }
@@ -112,6 +113,7 @@ public class CAIssuer implements Editable<CAIssuerBuilder> , KubernetesResource
     }
 
     @JsonProperty("issuingCertificateURLs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getIssuingCertificateURLs() {
         return issuingCertificateURLs;
     }
@@ -122,6 +124,7 @@ public class CAIssuer implements Editable<CAIssuerBuilder> , KubernetesResource
     }
 
     @JsonProperty("ocspServers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getOcspServers() {
         return ocspServers;
     }

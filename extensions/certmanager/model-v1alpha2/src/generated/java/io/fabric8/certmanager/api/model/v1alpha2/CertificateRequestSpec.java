@@ -152,6 +152,7 @@ public class CertificateRequestSpec implements Editable<CertificateRequestSpecBu
     }
 
     @JsonProperty("groups")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getGroups() {
         return groups;
     }
@@ -192,6 +193,7 @@ public class CertificateRequestSpec implements Editable<CertificateRequestSpecBu
     }
 
     @JsonProperty("usages")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getUsages() {
         return usages;
     }

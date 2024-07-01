@@ -239,6 +239,7 @@ public class OAuthAuthorizeToken implements Editable<OAuthAuthorizeTokenBuilder>
     }
 
     @JsonProperty("scopes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getScopes() {
         return scopes;
     }

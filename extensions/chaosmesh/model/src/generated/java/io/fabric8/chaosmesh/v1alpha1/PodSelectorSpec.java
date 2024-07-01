@@ -139,6 +139,7 @@ public class PodSelectorSpec implements Editable<PodSelectorSpecBuilder> , Kuber
     }
 
     @JsonProperty("expressionSelectors")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<LabelSelectorRequirement> getExpressionSelectors() {
         return expressionSelectors;
     }

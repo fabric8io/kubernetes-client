@@ -201,6 +201,7 @@ public class ACMEIssuer implements Editable<ACMEIssuerBuilder> , KubernetesResou
     }
 
     @JsonProperty("solvers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ACMEChallengeSolver> getSolvers() {
         return solvers;
     }

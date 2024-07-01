@@ -135,6 +135,7 @@ public class HardwareDetails implements Editable<HardwareDetailsBuilder> , Kuber
     }
 
     @JsonProperty("nics")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<NIC> getNics() {
         return nics;
     }
@@ -155,6 +156,7 @@ public class HardwareDetails implements Editable<HardwareDetailsBuilder> , Kuber
     }
 
     @JsonProperty("storage")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Storage> getStorage() {
         return storage;
     }

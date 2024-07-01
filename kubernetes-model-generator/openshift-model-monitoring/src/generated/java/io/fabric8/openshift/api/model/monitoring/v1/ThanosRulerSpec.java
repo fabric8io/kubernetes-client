@@ -293,6 +293,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder> , Kuber
     }
 
     @JsonProperty("additionalArgs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Argument> getAdditionalArgs() {
         return additionalArgs;
     }
@@ -313,6 +314,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder> , Kuber
     }
 
     @JsonProperty("alertDropLabels")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getAlertDropLabels() {
         return alertDropLabels;
     }
@@ -363,6 +365,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder> , Kuber
     }
 
     @JsonProperty("alertmanagersUrl")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getAlertmanagersUrl() {
         return alertmanagersUrl;
     }
@@ -373,6 +376,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder> , Kuber
     }
 
     @JsonProperty("containers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.Container> getContainers() {
         return containers;
     }
@@ -403,6 +407,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder> , Kuber
     }
 
     @JsonProperty("excludedFromEnforcement")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.monitoring.v1.ObjectReference> getExcludedFromEnforcement() {
         return excludedFromEnforcement;
     }
@@ -433,6 +438,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder> , Kuber
     }
 
     @JsonProperty("hostAliases")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<HostAlias> getHostAliases() {
         return hostAliases;
     }
@@ -463,6 +469,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder> , Kuber
     }
 
     @JsonProperty("imagePullSecrets")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.LocalObjectReference> getImagePullSecrets() {
         return imagePullSecrets;
     }
@@ -473,6 +480,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder> , Kuber
     }
 
     @JsonProperty("initContainers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.Container> getInitContainers() {
         return initContainers;
     }
@@ -603,6 +611,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder> , Kuber
     }
 
     @JsonProperty("prometheusRulesExcludedFromEnforce")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PrometheusRuleExcludeConfig> getPrometheusRulesExcludedFromEnforce() {
         return prometheusRulesExcludedFromEnforce;
     }
@@ -623,6 +632,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder> , Kuber
     }
 
     @JsonProperty("queryEndpoints")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getQueryEndpoints() {
         return queryEndpoints;
     }
@@ -723,6 +733,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder> , Kuber
     }
 
     @JsonProperty("tolerations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Toleration> getTolerations() {
         return tolerations;
     }
@@ -733,6 +744,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder> , Kuber
     }
 
     @JsonProperty("topologySpreadConstraints")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TopologySpreadConstraint> getTopologySpreadConstraints() {
         return topologySpreadConstraints;
     }
@@ -773,6 +785,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder> , Kuber
     }
 
     @JsonProperty("volumeMounts")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<VolumeMount> getVolumeMounts() {
         return volumeMounts;
     }
@@ -783,6 +796,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder> , Kuber
     }
 
     @JsonProperty("volumes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Volume> getVolumes() {
         return volumes;
     }

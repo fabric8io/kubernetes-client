@@ -179,6 +179,7 @@ public class OAuthClientAuthorization implements Editable<OAuthClientAuthorizati
     }
 
     @JsonProperty("scopes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getScopes() {
         return scopes;
     }

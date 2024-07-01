@@ -122,6 +122,7 @@ public class StageInfo implements Editable<StageInfoBuilder> , KubernetesResourc
     }
 
     @JsonProperty("steps")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<StepInfo> getSteps() {
         return steps;
     }

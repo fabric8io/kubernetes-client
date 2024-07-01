@@ -81,6 +81,7 @@ public class ConfigMapVolumeSource implements Editable<ConfigMapVolumeSourceBuil
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<KeyToPath> getItems() {
         return items;
     }

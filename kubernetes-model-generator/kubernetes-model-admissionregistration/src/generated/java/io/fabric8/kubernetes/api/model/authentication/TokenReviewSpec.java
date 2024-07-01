@@ -84,6 +84,7 @@ public class TokenReviewSpec implements Editable<TokenReviewSpecBuilder> , Kuber
     }
 
     @JsonProperty("audiences")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getAudiences() {
         return audiences;
     }

@@ -90,6 +90,7 @@ public class GRPCRouteRule implements Editable<GRPCRouteRuleBuilder> , Kubernete
     }
 
     @JsonProperty("backendRefs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<GRPCBackendRef> getBackendRefs() {
         return backendRefs;
     }
@@ -100,6 +101,7 @@ public class GRPCRouteRule implements Editable<GRPCRouteRuleBuilder> , Kubernete
     }
 
     @JsonProperty("filters")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<GRPCRouteFilter> getFilters() {
         return filters;
     }
@@ -110,6 +112,7 @@ public class GRPCRouteRule implements Editable<GRPCRouteRuleBuilder> , Kubernete
     }
 
     @JsonProperty("matches")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<GRPCRouteMatch> getMatches() {
         return matches;
     }

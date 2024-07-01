@@ -92,6 +92,7 @@ public class GitLabInterceptor implements Editable<GitLabInterceptorBuilder> , K
     }
 
     @JsonProperty("eventTypes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getEventTypes() {
         return eventTypes;
     }

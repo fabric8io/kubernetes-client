@@ -99,6 +99,7 @@ public class RuleWithOperations implements Editable<RuleWithOperationsBuilder> ,
     }
 
     @JsonProperty("apiGroups")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getApiGroups() {
         return apiGroups;
     }
@@ -109,6 +110,7 @@ public class RuleWithOperations implements Editable<RuleWithOperationsBuilder> ,
     }
 
     @JsonProperty("apiVersions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getApiVersions() {
         return apiVersions;
     }
@@ -119,6 +121,7 @@ public class RuleWithOperations implements Editable<RuleWithOperationsBuilder> ,
     }
 
     @JsonProperty("operations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getOperations() {
         return operations;
     }
@@ -129,6 +132,7 @@ public class RuleWithOperations implements Editable<RuleWithOperationsBuilder> ,
     }
 
     @JsonProperty("resources")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getResources() {
         return resources;
     }

@@ -134,6 +134,7 @@ public class PodAutoscalerStatus implements Editable<PodAutoscalerStatusBuilder>
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }

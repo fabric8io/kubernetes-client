@@ -96,6 +96,7 @@ public class DNSNodePlacement implements Editable<DNSNodePlacementBuilder> , Kub
     }
 
     @JsonProperty("tolerations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Toleration> getTolerations() {
         return tolerations;
     }

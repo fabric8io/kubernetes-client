@@ -95,6 +95,7 @@ public class RegistrySources implements Editable<RegistrySourcesBuilder> , Kuber
     }
 
     @JsonProperty("allowedRegistries")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getAllowedRegistries() {
         return allowedRegistries;
     }
@@ -105,6 +106,7 @@ public class RegistrySources implements Editable<RegistrySourcesBuilder> , Kuber
     }
 
     @JsonProperty("blockedRegistries")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getBlockedRegistries() {
         return blockedRegistries;
     }
@@ -115,6 +117,7 @@ public class RegistrySources implements Editable<RegistrySourcesBuilder> , Kuber
     }
 
     @JsonProperty("containerRuntimeSearchRegistries")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getContainerRuntimeSearchRegistries() {
         return containerRuntimeSearchRegistries;
     }
@@ -125,6 +128,7 @@ public class RegistrySources implements Editable<RegistrySourcesBuilder> , Kuber
     }
 
     @JsonProperty("insecureRegistries")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getInsecureRegistries() {
         return insecureRegistries;
     }

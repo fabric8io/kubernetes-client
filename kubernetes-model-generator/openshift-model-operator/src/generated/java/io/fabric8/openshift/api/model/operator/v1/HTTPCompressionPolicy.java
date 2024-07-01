@@ -80,6 +80,7 @@ public class HTTPCompressionPolicy implements Editable<HTTPCompressionPolicyBuil
     }
 
     @JsonProperty("mimeTypes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getMimeTypes() {
         return mimeTypes;
     }

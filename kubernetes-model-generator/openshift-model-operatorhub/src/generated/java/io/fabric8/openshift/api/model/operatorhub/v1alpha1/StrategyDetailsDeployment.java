@@ -90,6 +90,7 @@ public class StrategyDetailsDeployment implements Editable<StrategyDetailsDeploy
     }
 
     @JsonProperty("clusterPermissions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<StrategyDeploymentPermissions> getClusterPermissions() {
         return clusterPermissions;
     }
@@ -110,6 +111,7 @@ public class StrategyDetailsDeployment implements Editable<StrategyDetailsDeploy
     }
 
     @JsonProperty("permissions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<StrategyDeploymentPermissions> getPermissions() {
         return permissions;
     }

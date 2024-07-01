@@ -217,6 +217,7 @@ public class StatefulSetSpec implements Editable<StatefulSetSpecBuilder> , Kuber
     }
 
     @JsonProperty("volumeClaimTemplates")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.PersistentVolumeClaim> getVolumeClaimTemplates() {
         return volumeClaimTemplates;
     }

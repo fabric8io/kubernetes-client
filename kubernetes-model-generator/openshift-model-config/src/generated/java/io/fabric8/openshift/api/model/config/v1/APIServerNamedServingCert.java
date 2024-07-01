@@ -84,6 +84,7 @@ public class APIServerNamedServingCert implements Editable<APIServerNamedServing
     }
 
     @JsonProperty("names")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getNames() {
         return names;
     }

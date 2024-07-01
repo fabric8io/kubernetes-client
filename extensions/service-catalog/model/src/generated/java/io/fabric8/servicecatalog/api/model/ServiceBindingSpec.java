@@ -143,6 +143,7 @@ public class ServiceBindingSpec implements Editable<ServiceBindingSpecBuilder> ,
     }
 
     @JsonProperty("parametersFrom")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ParametersFromSource> getParametersFrom() {
         return parametersFrom;
     }
@@ -163,6 +164,7 @@ public class ServiceBindingSpec implements Editable<ServiceBindingSpecBuilder> ,
     }
 
     @JsonProperty("secretTransforms")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<SecretTransform> getSecretTransforms() {
         return secretTransforms;
     }

@@ -122,6 +122,7 @@ public class ResourceClaimStatus implements Editable<ResourceClaimStatusBuilder>
     }
 
     @JsonProperty("reservedFor")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ResourceClaimConsumerReference> getReservedFor() {
         return reservedFor;
     }

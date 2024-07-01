@@ -110,6 +110,7 @@ public class ReplicaSetStatus implements Editable<ReplicaSetStatusBuilder> , Kub
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ReplicaSetCondition> getConditions() {
         return conditions;
     }

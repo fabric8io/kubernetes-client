@@ -88,6 +88,7 @@ public class IngressSpec implements Editable<IngressSpecBuilder> , KubernetesRes
     }
 
     @JsonProperty("sslCiphers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getSslCiphers() {
         return sslCiphers;
     }

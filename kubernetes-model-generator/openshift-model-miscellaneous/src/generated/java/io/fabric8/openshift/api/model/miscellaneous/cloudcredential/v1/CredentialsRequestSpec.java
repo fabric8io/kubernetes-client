@@ -122,6 +122,7 @@ public class CredentialsRequestSpec implements Editable<CredentialsRequestSpecBu
     }
 
     @JsonProperty("serviceAccountNames")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getServiceAccountNames() {
         return serviceAccountNames;
     }

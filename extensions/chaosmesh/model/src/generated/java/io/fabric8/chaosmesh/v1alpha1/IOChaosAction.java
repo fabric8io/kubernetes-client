@@ -194,6 +194,7 @@ public class IOChaosAction implements Editable<IOChaosActionBuilder> , Kubernete
     }
 
     @JsonProperty("faults")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<IoFault> getFaults() {
         return faults;
     }
@@ -244,6 +245,7 @@ public class IOChaosAction implements Editable<IOChaosActionBuilder> , Kubernete
     }
 
     @JsonProperty("methods")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getMethods() {
         return methods;
     }

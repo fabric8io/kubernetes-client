@@ -122,6 +122,7 @@ public class ValidatingWebhook implements Editable<ValidatingWebhookBuilder> , K
     }
 
     @JsonProperty("admissionReviewVersions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getAdmissionReviewVersions() {
         return admissionReviewVersions;
     }
@@ -152,6 +153,7 @@ public class ValidatingWebhook implements Editable<ValidatingWebhookBuilder> , K
     }
 
     @JsonProperty("matchConditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<MatchCondition> getMatchConditions() {
         return matchConditions;
     }
@@ -202,6 +204,7 @@ public class ValidatingWebhook implements Editable<ValidatingWebhookBuilder> , K
     }
 
     @JsonProperty("rules")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<RuleWithOperations> getRules() {
         return rules;
     }

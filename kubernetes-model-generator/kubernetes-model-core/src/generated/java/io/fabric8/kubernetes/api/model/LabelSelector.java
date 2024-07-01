@@ -64,6 +64,7 @@ public class LabelSelector implements Editable<LabelSelectorBuilder> , Kubernete
     }
 
     @JsonProperty("matchExpressions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<LabelSelectorRequirement> getMatchExpressions() {
         return matchExpressions;
     }

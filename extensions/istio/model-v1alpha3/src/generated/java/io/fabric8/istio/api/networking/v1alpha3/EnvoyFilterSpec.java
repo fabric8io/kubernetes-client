@@ -96,6 +96,7 @@ public class EnvoyFilterSpec implements Editable<EnvoyFilterSpecBuilder> , Kuber
     }
 
     @JsonProperty("configPatches")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<EnvoyFilterEnvoyConfigObjectPatch> getConfigPatches() {
         return configPatches;
     }

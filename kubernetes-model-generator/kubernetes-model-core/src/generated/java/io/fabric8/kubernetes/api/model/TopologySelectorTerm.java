@@ -59,6 +59,7 @@ public class TopologySelectorTerm implements Editable<TopologySelectorTermBuilde
     }
 
     @JsonProperty("matchLabelExpressions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TopologySelectorLabelRequirement> getMatchLabelExpressions() {
         return matchLabelExpressions;
     }

@@ -163,6 +163,7 @@ public class Step implements Editable<StepBuilder> , KubernetesResource
     }
 
     @JsonProperty("args")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getArgs() {
         return args;
     }
@@ -173,6 +174,7 @@ public class Step implements Editable<StepBuilder> , KubernetesResource
     }
 
     @JsonProperty("command")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getCommand() {
         return command;
     }
@@ -193,6 +195,7 @@ public class Step implements Editable<StepBuilder> , KubernetesResource
     }
 
     @JsonProperty("env")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.EnvVar> getEnv() {
         return env;
     }
@@ -203,6 +206,7 @@ public class Step implements Editable<StepBuilder> , KubernetesResource
     }
 
     @JsonProperty("envFrom")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<EnvFromSource> getEnvFrom() {
         return envFrom;
     }
@@ -303,6 +307,7 @@ public class Step implements Editable<StepBuilder> , KubernetesResource
     }
 
     @JsonProperty("volumeDevices")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<VolumeDevice> getVolumeDevices() {
         return volumeDevices;
     }
@@ -313,6 +318,7 @@ public class Step implements Editable<StepBuilder> , KubernetesResource
     }
 
     @JsonProperty("volumeMounts")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.VolumeMount> getVolumeMounts() {
         return volumeMounts;
     }
@@ -333,6 +339,7 @@ public class Step implements Editable<StepBuilder> , KubernetesResource
     }
 
     @JsonProperty("workspaces")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<WorkspaceUsage> getWorkspaces() {
         return workspaces;
     }

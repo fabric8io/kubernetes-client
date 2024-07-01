@@ -123,6 +123,7 @@ public class ClusterInterceptorStatus implements Editable<ClusterInterceptorStat
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }

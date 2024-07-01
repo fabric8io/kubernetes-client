@@ -201,6 +201,7 @@ public class CSVDescription implements Editable<CSVDescriptionBuilder> , Kuberne
     }
 
     @JsonProperty("icon")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Icon> getIcon() {
         return icon;
     }
@@ -211,6 +212,7 @@ public class CSVDescription implements Editable<CSVDescriptionBuilder> , Kuberne
     }
 
     @JsonProperty("installModes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<InstallMode> getInstallModes() {
         return installModes;
     }
@@ -221,6 +223,7 @@ public class CSVDescription implements Editable<CSVDescriptionBuilder> , Kuberne
     }
 
     @JsonProperty("keywords")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getKeywords() {
         return keywords;
     }
@@ -231,6 +234,7 @@ public class CSVDescription implements Editable<CSVDescriptionBuilder> , Kuberne
     }
 
     @JsonProperty("links")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<AppLink> getLinks() {
         return links;
     }
@@ -241,6 +245,7 @@ public class CSVDescription implements Editable<CSVDescriptionBuilder> , Kuberne
     }
 
     @JsonProperty("maintainers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Maintainer> getMaintainers() {
         return maintainers;
     }
@@ -271,6 +276,7 @@ public class CSVDescription implements Editable<CSVDescriptionBuilder> , Kuberne
     }
 
     @JsonProperty("nativeApis")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<GroupVersionKind> getNativeApis() {
         return nativeApis;
     }
@@ -291,6 +297,7 @@ public class CSVDescription implements Editable<CSVDescriptionBuilder> , Kuberne
     }
 
     @JsonProperty("relatedImages")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getRelatedImages() {
         return relatedImages;
     }

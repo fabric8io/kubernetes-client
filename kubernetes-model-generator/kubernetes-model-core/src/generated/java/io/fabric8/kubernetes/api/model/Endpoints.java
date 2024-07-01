@@ -137,6 +137,7 @@ public class Endpoints implements Editable<EndpointsBuilder> , HasMetadata, Name
     }
 
     @JsonProperty("subsets")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<EndpointSubset> getSubsets() {
         return subsets;
     }

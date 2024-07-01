@@ -93,6 +93,7 @@ public class KlusterletAddonConfigStatus implements Editable<KlusterletAddonConf
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }

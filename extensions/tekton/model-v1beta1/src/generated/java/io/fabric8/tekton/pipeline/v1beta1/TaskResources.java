@@ -93,6 +93,7 @@ public class TaskResources implements Editable<TaskResourcesBuilder> , Kubernete
     }
 
     @JsonProperty("inputs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TaskResource> getInputs() {
         return inputs;
     }
@@ -103,6 +104,7 @@ public class TaskResources implements Editable<TaskResourcesBuilder> , Kubernete
     }
 
     @JsonProperty("outputs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TaskResource> getOutputs() {
         return outputs;
     }

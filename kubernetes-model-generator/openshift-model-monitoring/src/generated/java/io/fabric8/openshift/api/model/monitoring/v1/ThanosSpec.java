@@ -170,6 +170,7 @@ public class ThanosSpec implements Editable<ThanosSpecBuilder> , KubernetesResou
     }
 
     @JsonProperty("additionalArgs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Argument> getAdditionalArgs() {
         return additionalArgs;
     }
@@ -390,6 +391,7 @@ public class ThanosSpec implements Editable<ThanosSpecBuilder> , KubernetesResou
     }
 
     @JsonProperty("volumeMounts")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<VolumeMount> getVolumeMounts() {
         return volumeMounts;
     }

@@ -122,6 +122,7 @@ public class DeploymentConfigStatus implements Editable<DeploymentConfigStatusBu
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<DeploymentCondition> getConditions() {
         return conditions;
     }

@@ -166,6 +166,7 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     }
 
     @JsonProperty("apiVIPs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getApiVIPs() {
         return apiVIPs;
     }
@@ -236,6 +237,7 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     }
 
     @JsonProperty("failureDomains")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<FailureDomain> getFailureDomains() {
         return failureDomains;
     }
@@ -266,6 +268,7 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     }
 
     @JsonProperty("ingressVIPs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getIngressVIPs() {
         return ingressVIPs;
     }
@@ -336,6 +339,7 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     }
 
     @JsonProperty("vcenters")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<VCenter> getVcenters() {
         return vcenters;
     }

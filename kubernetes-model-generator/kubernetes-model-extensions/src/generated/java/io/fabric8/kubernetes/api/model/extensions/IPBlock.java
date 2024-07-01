@@ -94,6 +94,7 @@ public class IPBlock implements Editable<IPBlockBuilder> , KubernetesResource
     }
 
     @JsonProperty("except")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getExcept() {
         return except;
     }

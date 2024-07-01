@@ -88,6 +88,7 @@ public class ListValue implements Editable<ListValueBuilder> , KubernetesResourc
     }
 
     @JsonProperty("values")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Value> getValues() {
         return values;
     }

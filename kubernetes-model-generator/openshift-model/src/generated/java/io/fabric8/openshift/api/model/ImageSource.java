@@ -91,6 +91,7 @@ public class ImageSource implements Editable<ImageSourceBuilder> , KubernetesRes
     }
 
     @JsonProperty("as")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getAs() {
         return as;
     }
@@ -111,6 +112,7 @@ public class ImageSource implements Editable<ImageSourceBuilder> , KubernetesRes
     }
 
     @JsonProperty("paths")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ImageSourcePath> getPaths() {
         return paths;
     }

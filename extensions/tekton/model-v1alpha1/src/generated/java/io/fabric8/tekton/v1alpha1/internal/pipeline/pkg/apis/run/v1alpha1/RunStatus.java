@@ -141,6 +141,7 @@ public class RunStatus implements Editable<RunStatusBuilder> , KubernetesResourc
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }
@@ -171,6 +172,7 @@ public class RunStatus implements Editable<RunStatusBuilder> , KubernetesResourc
     }
 
     @JsonProperty("results")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<RunResult> getResults() {
         return results;
     }
@@ -181,6 +183,7 @@ public class RunStatus implements Editable<RunStatusBuilder> , KubernetesResourc
     }
 
     @JsonProperty("retriesStatus")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<RunStatus> getRetriesStatus() {
         return retriesStatus;
     }

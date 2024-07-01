@@ -104,6 +104,7 @@ public class NamedRuleWithOperations implements Editable<NamedRuleWithOperations
     }
 
     @JsonProperty("apiGroups")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getApiGroups() {
         return apiGroups;
     }
@@ -114,6 +115,7 @@ public class NamedRuleWithOperations implements Editable<NamedRuleWithOperations
     }
 
     @JsonProperty("apiVersions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getApiVersions() {
         return apiVersions;
     }
@@ -124,6 +126,7 @@ public class NamedRuleWithOperations implements Editable<NamedRuleWithOperations
     }
 
     @JsonProperty("operations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getOperations() {
         return operations;
     }
@@ -134,6 +137,7 @@ public class NamedRuleWithOperations implements Editable<NamedRuleWithOperations
     }
 
     @JsonProperty("resourceNames")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getResourceNames() {
         return resourceNames;
     }
@@ -144,6 +148,7 @@ public class NamedRuleWithOperations implements Editable<NamedRuleWithOperations
     }
 
     @JsonProperty("resources")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getResources() {
         return resources;
     }

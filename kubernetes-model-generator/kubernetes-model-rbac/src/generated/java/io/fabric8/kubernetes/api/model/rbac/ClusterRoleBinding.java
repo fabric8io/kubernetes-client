@@ -171,6 +171,7 @@ public class ClusterRoleBinding implements Editable<ClusterRoleBindingBuilder> ,
     }
 
     @JsonProperty("subjects")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Subject> getSubjects() {
         return subjects;
     }

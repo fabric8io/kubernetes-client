@@ -140,6 +140,7 @@ public class ClusterVersionSpec implements Editable<ClusterVersionSpecBuilder> ,
     }
 
     @JsonProperty("overrides")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ComponentOverride> getOverrides() {
         return overrides;
     }

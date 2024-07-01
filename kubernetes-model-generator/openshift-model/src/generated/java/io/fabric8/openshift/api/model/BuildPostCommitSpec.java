@@ -89,6 +89,7 @@ public class BuildPostCommitSpec implements Editable<BuildPostCommitSpecBuilder>
     }
 
     @JsonProperty("args")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getArgs() {
         return args;
     }
@@ -99,6 +100,7 @@ public class BuildPostCommitSpec implements Editable<BuildPostCommitSpecBuilder>
     }
 
     @JsonProperty("command")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getCommand() {
         return command;
     }

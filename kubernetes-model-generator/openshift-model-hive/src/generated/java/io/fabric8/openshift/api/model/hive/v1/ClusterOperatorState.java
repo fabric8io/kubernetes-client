@@ -85,6 +85,7 @@ public class ClusterOperatorState implements Editable<ClusterOperatorStateBuilde
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ClusterOperatorStatusCondition> getConditions() {
         return conditions;
     }

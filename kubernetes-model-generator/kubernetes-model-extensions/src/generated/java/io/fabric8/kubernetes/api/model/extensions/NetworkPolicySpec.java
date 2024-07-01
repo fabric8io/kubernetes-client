@@ -93,6 +93,7 @@ public class NetworkPolicySpec implements Editable<NetworkPolicySpecBuilder> , K
     }
 
     @JsonProperty("egress")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<NetworkPolicyEgressRule> getEgress() {
         return egress;
     }
@@ -103,6 +104,7 @@ public class NetworkPolicySpec implements Editable<NetworkPolicySpecBuilder> , K
     }
 
     @JsonProperty("ingress")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<NetworkPolicyIngressRule> getIngress() {
         return ingress;
     }
@@ -123,6 +125,7 @@ public class NetworkPolicySpec implements Editable<NetworkPolicySpecBuilder> , K
     }
 
     @JsonProperty("policyTypes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getPolicyTypes() {
         return policyTypes;
     }

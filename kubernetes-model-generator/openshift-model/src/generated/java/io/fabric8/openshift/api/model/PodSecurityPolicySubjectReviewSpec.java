@@ -87,6 +87,7 @@ public class PodSecurityPolicySubjectReviewSpec implements Editable<PodSecurityP
     }
 
     @JsonProperty("groups")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getGroups() {
         return groups;
     }

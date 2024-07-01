@@ -89,6 +89,7 @@ public class NamedTagEventList implements Editable<NamedTagEventListBuilder> , K
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TagEventCondition> getConditions() {
         return conditions;
     }

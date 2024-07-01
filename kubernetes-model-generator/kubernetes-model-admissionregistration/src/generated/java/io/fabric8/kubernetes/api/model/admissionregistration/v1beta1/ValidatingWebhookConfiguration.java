@@ -157,6 +157,7 @@ public class ValidatingWebhookConfiguration implements Editable<ValidatingWebhoo
     }
 
     @JsonProperty("webhooks")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ValidatingWebhook> getWebhooks() {
         return webhooks;
     }

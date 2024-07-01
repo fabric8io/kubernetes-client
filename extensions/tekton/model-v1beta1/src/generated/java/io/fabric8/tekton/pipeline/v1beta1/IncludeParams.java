@@ -102,6 +102,7 @@ public class IncludeParams implements Editable<IncludeParamsBuilder> , Kubernete
     }
 
     @JsonProperty("params")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Param> getParams() {
         return params;
     }

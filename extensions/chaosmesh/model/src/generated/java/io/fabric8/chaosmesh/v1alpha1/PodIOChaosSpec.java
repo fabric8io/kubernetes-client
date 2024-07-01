@@ -96,6 +96,7 @@ public class PodIOChaosSpec implements Editable<PodIOChaosSpecBuilder> , Kuberne
     }
 
     @JsonProperty("actions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<IOChaosAction> getActions() {
         return actions;
     }

@@ -94,6 +94,7 @@ public class AWSResourceFilter implements Editable<AWSResourceFilterBuilder> , K
     }
 
     @JsonProperty("values")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getValues() {
         return values;
     }

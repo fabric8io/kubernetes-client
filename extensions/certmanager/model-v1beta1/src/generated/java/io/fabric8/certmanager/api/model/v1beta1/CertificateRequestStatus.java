@@ -102,6 +102,7 @@ public class CertificateRequestStatus implements Editable<CertificateRequestStat
     }
 
     @JsonProperty("ca")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public String getCa() {
         return ca;
     }
@@ -112,6 +113,7 @@ public class CertificateRequestStatus implements Editable<CertificateRequestStat
     }
 
     @JsonProperty("certificate")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public String getCertificate() {
         return certificate;
     }
@@ -122,6 +124,7 @@ public class CertificateRequestStatus implements Editable<CertificateRequestStat
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<CertificateRequestCondition> getConditions() {
         return conditions;
     }

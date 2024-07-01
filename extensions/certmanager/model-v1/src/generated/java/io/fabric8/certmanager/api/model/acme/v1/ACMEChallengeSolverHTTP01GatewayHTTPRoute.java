@@ -108,6 +108,7 @@ public class ACMEChallengeSolverHTTP01GatewayHTTPRoute implements Editable<ACMEC
     }
 
     @JsonProperty("parentRefs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ParentReference> getParentRefs() {
         return parentRefs;
     }

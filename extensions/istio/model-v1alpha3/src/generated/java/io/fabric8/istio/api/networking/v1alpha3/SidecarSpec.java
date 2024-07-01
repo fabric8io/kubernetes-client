@@ -105,6 +105,7 @@ public class SidecarSpec implements Editable<SidecarSpecBuilder> , KubernetesRes
     }
 
     @JsonProperty("egress")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<IstioEgressListener> getEgress() {
         return egress;
     }
@@ -125,6 +126,7 @@ public class SidecarSpec implements Editable<SidecarSpecBuilder> , KubernetesRes
     }
 
     @JsonProperty("ingress")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<IstioIngressListener> getIngress() {
         return ingress;
     }

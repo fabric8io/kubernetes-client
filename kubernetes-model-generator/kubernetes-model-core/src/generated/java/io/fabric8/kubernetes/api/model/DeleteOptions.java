@@ -120,6 +120,7 @@ public class DeleteOptions implements Editable<DeleteOptionsBuilder> , Kubernete
     }
 
     @JsonProperty("dryRun")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getDryRun() {
         return dryRun;
     }

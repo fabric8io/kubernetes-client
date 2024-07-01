@@ -206,6 +206,7 @@ public class Template implements Editable<TemplateBuilder> , HasMetadata, Namesp
     }
 
     @JsonProperty("parameters")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Parameter> getParameters() {
         return parameters;
     }

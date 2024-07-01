@@ -327,6 +327,7 @@ public class ImageRegistrySpec implements Editable<ImageRegistrySpecBuilder> , K
     }
 
     @JsonProperty("routes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ImageRegistryConfigRoute> getRoutes() {
         return routes;
     }
@@ -347,6 +348,7 @@ public class ImageRegistrySpec implements Editable<ImageRegistrySpecBuilder> , K
     }
 
     @JsonProperty("tolerations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Toleration> getTolerations() {
         return tolerations;
     }
@@ -357,6 +359,7 @@ public class ImageRegistrySpec implements Editable<ImageRegistrySpecBuilder> , K
     }
 
     @JsonProperty("topologySpreadConstraints")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TopologySpreadConstraint> getTopologySpreadConstraints() {
         return topologySpreadConstraints;
     }

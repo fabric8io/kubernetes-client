@@ -181,6 +181,7 @@ public class BuildRequest implements Editable<BuildRequestBuilder> , HasMetadata
     }
 
     @JsonProperty("env")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<EnvVar> getEnv() {
         return env;
     }
@@ -261,6 +262,7 @@ public class BuildRequest implements Editable<BuildRequestBuilder> , HasMetadata
     }
 
     @JsonProperty("triggeredBy")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<BuildTriggerCause> getTriggeredBy() {
         return triggeredBy;
     }

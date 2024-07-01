@@ -107,6 +107,7 @@ public class OutageEntry implements Editable<OutageEntryBuilder> , KubernetesRes
     }
 
     @JsonProperty("endLogs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<LogEntry> getEndLogs() {
         return endLogs;
     }
@@ -137,6 +138,7 @@ public class OutageEntry implements Editable<OutageEntryBuilder> , KubernetesRes
     }
 
     @JsonProperty("startLogs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<LogEntry> getStartLogs() {
         return startLogs;
     }

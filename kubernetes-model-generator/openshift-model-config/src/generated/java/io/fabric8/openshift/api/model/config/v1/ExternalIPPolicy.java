@@ -85,6 +85,7 @@ public class ExternalIPPolicy implements Editable<ExternalIPPolicyBuilder> , Kub
     }
 
     @JsonProperty("allowedCIDRs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getAllowedCIDRs() {
         return allowedCIDRs;
     }
@@ -95,6 +96,7 @@ public class ExternalIPPolicy implements Editable<ExternalIPPolicyBuilder> , Kub
     }
 
     @JsonProperty("rejectedCIDRs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getRejectedCIDRs() {
         return rejectedCIDRs;
     }

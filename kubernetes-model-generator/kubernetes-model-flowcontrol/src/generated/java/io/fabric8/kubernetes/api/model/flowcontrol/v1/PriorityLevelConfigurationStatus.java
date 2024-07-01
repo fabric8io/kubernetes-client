@@ -80,6 +80,7 @@ public class PriorityLevelConfigurationStatus implements Editable<PriorityLevelC
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PriorityLevelConfigurationCondition> getConditions() {
         return conditions;
     }

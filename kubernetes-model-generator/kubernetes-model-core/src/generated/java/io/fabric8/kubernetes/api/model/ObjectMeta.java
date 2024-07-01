@@ -159,6 +159,7 @@ public class ObjectMeta implements Editable<ObjectMetaBuilder> , KubernetesResou
     }
 
     @JsonProperty("finalizers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getFinalizers() {
         return finalizers;
     }
@@ -199,6 +200,7 @@ public class ObjectMeta implements Editable<ObjectMetaBuilder> , KubernetesResou
     }
 
     @JsonProperty("managedFields")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ManagedFieldsEntry> getManagedFields() {
         return managedFields;
     }
@@ -229,6 +231,7 @@ public class ObjectMeta implements Editable<ObjectMetaBuilder> , KubernetesResou
     }
 
     @JsonProperty("ownerReferences")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<OwnerReference> getOwnerReferences() {
         return ownerReferences;
     }

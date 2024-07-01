@@ -97,6 +97,7 @@ public class TopologySpreadConstraint implements Editable<TopologySpreadConstrai
     }
 
     @JsonProperty("matchLabelKeys")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getMatchLabelKeys() {
         return matchLabelKeys;
     }

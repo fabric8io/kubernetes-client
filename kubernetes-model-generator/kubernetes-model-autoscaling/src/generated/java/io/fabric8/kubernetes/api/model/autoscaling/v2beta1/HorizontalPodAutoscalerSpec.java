@@ -102,6 +102,7 @@ public class HorizontalPodAutoscalerSpec implements Editable<HorizontalPodAutosc
     }
 
     @JsonProperty("metrics")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<MetricSpec> getMetrics() {
         return metrics;
     }

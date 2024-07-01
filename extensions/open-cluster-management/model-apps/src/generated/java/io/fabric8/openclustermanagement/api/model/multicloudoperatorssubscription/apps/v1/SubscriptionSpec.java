@@ -131,6 +131,7 @@ public class SubscriptionSpec implements Editable<SubscriptionSpecBuilder> , Kub
     }
 
     @JsonProperty("allow")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<AllowDenyItem> getAllow() {
         return allow;
     }
@@ -151,6 +152,7 @@ public class SubscriptionSpec implements Editable<SubscriptionSpecBuilder> , Kub
     }
 
     @JsonProperty("deny")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<AllowDenyItem> getDeny() {
         return deny;
     }
@@ -181,6 +183,7 @@ public class SubscriptionSpec implements Editable<SubscriptionSpecBuilder> , Kub
     }
 
     @JsonProperty("overrides")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ClusterOverrides> getOverrides() {
         return overrides;
     }
@@ -201,6 +204,7 @@ public class SubscriptionSpec implements Editable<SubscriptionSpecBuilder> , Kub
     }
 
     @JsonProperty("packageOverrides")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Overrides> getPackageOverrides() {
         return packageOverrides;
     }

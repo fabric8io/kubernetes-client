@@ -86,6 +86,7 @@ public class GatewayClassStatus implements Editable<GatewayClassStatusBuilder> ,
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }
@@ -96,6 +97,7 @@ public class GatewayClassStatus implements Editable<GatewayClassStatusBuilder> ,
     }
 
     @JsonProperty("supportedFeatures")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getSupportedFeatures() {
         return supportedFeatures;
     }

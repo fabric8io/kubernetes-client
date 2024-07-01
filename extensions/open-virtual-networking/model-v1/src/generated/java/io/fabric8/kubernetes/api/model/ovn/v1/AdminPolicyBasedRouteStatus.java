@@ -106,6 +106,7 @@ public class AdminPolicyBasedRouteStatus implements Editable<AdminPolicyBasedRou
     }
 
     @JsonProperty("messages")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getMessages() {
         return messages;
     }

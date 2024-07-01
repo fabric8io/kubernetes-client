@@ -120,6 +120,7 @@ public class InstallPlanStatus implements Editable<InstallPlanStatusBuilder> , K
     }
 
     @JsonProperty("bundleLookups")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<BundleLookup> getBundleLookups() {
         return bundleLookups;
     }
@@ -140,6 +141,7 @@ public class InstallPlanStatus implements Editable<InstallPlanStatusBuilder> , K
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<InstallPlanCondition> getConditions() {
         return conditions;
     }
@@ -170,6 +172,7 @@ public class InstallPlanStatus implements Editable<InstallPlanStatusBuilder> , K
     }
 
     @JsonProperty("plan")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Step> getPlan() {
         return plan;
     }

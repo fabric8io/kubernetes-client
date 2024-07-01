@@ -118,6 +118,7 @@ public class KlusterletSpec implements Editable<KlusterletSpecBuilder> , Kuberne
     }
 
     @JsonProperty("externalServerURLs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ServerURL> getExternalServerURLs() {
         return externalServerURLs;
     }

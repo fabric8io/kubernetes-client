@@ -80,6 +80,7 @@ public class PodSchedulingContextStatus implements Editable<PodSchedulingContext
     }
 
     @JsonProperty("resourceClaims")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ResourceClaimSchedulingStatus> getResourceClaims() {
         return resourceClaims;
     }

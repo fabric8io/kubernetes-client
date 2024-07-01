@@ -88,6 +88,7 @@ public class TriggerBindingSpec implements Editable<TriggerBindingSpecBuilder> ,
     }
 
     @JsonProperty("params")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Param> getParams() {
         return params;
     }

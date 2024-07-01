@@ -97,6 +97,7 @@ public class Metrics implements Editable<MetricsBuilder> , KubernetesResource
     }
 
     @JsonProperty("overrides")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<MetricsOverrides> getOverrides() {
         return overrides;
     }
@@ -107,6 +108,7 @@ public class Metrics implements Editable<MetricsBuilder> , KubernetesResource
     }
 
     @JsonProperty("providers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ProviderRef> getProviders() {
         return providers;
     }

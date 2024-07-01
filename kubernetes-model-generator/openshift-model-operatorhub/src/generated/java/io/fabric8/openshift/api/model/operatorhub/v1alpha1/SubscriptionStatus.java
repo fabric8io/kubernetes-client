@@ -116,6 +116,7 @@ public class SubscriptionStatus implements Editable<SubscriptionStatusBuilder> ,
     }
 
     @JsonProperty("catalogHealth")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<SubscriptionCatalogHealth> getCatalogHealth() {
         return catalogHealth;
     }
@@ -126,6 +127,7 @@ public class SubscriptionStatus implements Editable<SubscriptionStatusBuilder> ,
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<SubscriptionCondition> getConditions() {
         return conditions;
     }

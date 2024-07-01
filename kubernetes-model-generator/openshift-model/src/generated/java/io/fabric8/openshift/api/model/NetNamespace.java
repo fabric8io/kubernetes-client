@@ -135,6 +135,7 @@ public class NetNamespace implements Editable<NetNamespaceBuilder> , HasMetadata
     }
 
     @JsonProperty("egressIPs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getEgressIPs() {
         return egressIPs;
     }

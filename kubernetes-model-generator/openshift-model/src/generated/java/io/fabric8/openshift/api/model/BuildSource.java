@@ -123,6 +123,7 @@ public class BuildSource implements Editable<BuildSourceBuilder> , KubernetesRes
     }
 
     @JsonProperty("configMaps")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ConfigMapBuildSource> getConfigMaps() {
         return configMaps;
     }
@@ -163,6 +164,7 @@ public class BuildSource implements Editable<BuildSourceBuilder> , KubernetesRes
     }
 
     @JsonProperty("images")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ImageSource> getImages() {
         return images;
     }
@@ -173,6 +175,7 @@ public class BuildSource implements Editable<BuildSourceBuilder> , KubernetesRes
     }
 
     @JsonProperty("secrets")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<SecretBuildSource> getSecrets() {
         return secrets;
     }

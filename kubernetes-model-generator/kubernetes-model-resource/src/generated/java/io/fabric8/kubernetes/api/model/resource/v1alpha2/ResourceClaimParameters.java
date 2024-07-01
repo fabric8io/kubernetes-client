@@ -136,6 +136,7 @@ public class ResourceClaimParameters implements Editable<ResourceClaimParameters
     }
 
     @JsonProperty("driverRequests")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<DriverRequests> getDriverRequests() {
         return driverRequests;
     }

@@ -120,6 +120,7 @@ public class IstioEgressListener implements Editable<IstioEgressListenerBuilder>
     }
 
     @JsonProperty("hosts")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getHosts() {
         return hosts;
     }

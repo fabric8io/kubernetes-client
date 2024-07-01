@@ -142,6 +142,7 @@ public class TrafficPolicy implements Editable<TrafficPolicyBuilder> , Kubernete
     }
 
     @JsonProperty("portLevelSettings")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TrafficPolicyPortTrafficPolicy> getPortLevelSettings() {
         return portLevelSettings;
     }

@@ -80,6 +80,7 @@ public class FeatureGatesEnabled implements Editable<FeatureGatesEnabledBuilder>
     }
 
     @JsonProperty("enabled")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getEnabled() {
         return enabled;
     }

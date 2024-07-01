@@ -100,6 +100,7 @@ public class ProbeTargetStaticConfig implements Editable<ProbeTargetStaticConfig
     }
 
     @JsonProperty("relabelingConfigs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<RelabelConfig> getRelabelingConfigs() {
         return relabelingConfigs;
     }

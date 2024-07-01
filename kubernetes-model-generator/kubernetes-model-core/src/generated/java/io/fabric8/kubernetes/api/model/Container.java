@@ -158,6 +158,7 @@ public class Container implements Editable<ContainerBuilder> , KubernetesResourc
     }
 
     @JsonProperty("args")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getArgs() {
         return args;
     }
@@ -168,6 +169,7 @@ public class Container implements Editable<ContainerBuilder> , KubernetesResourc
     }
 
     @JsonProperty("command")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getCommand() {
         return command;
     }
@@ -178,6 +180,7 @@ public class Container implements Editable<ContainerBuilder> , KubernetesResourc
     }
 
     @JsonProperty("env")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<EnvVar> getEnv() {
         return env;
     }
@@ -188,6 +191,7 @@ public class Container implements Editable<ContainerBuilder> , KubernetesResourc
     }
 
     @JsonProperty("envFrom")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<EnvFromSource> getEnvFrom() {
         return envFrom;
     }
@@ -248,6 +252,7 @@ public class Container implements Editable<ContainerBuilder> , KubernetesResourc
     }
 
     @JsonProperty("ports")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ContainerPort> getPorts() {
         return ports;
     }
@@ -268,6 +273,7 @@ public class Container implements Editable<ContainerBuilder> , KubernetesResourc
     }
 
     @JsonProperty("resizePolicy")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ContainerResizePolicy> getResizePolicy() {
         return resizePolicy;
     }
@@ -368,6 +374,7 @@ public class Container implements Editable<ContainerBuilder> , KubernetesResourc
     }
 
     @JsonProperty("volumeDevices")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<VolumeDevice> getVolumeDevices() {
         return volumeDevices;
     }
@@ -378,6 +385,7 @@ public class Container implements Editable<ContainerBuilder> , KubernetesResourc
     }
 
     @JsonProperty("volumeMounts")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<VolumeMount> getVolumeMounts() {
         return volumeMounts;
     }

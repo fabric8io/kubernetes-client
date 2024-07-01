@@ -64,6 +64,7 @@ public class NodeSelectorTerm implements Editable<NodeSelectorTermBuilder> , Kub
     }
 
     @JsonProperty("matchExpressions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<NodeSelectorRequirement> getMatchExpressions() {
         return matchExpressions;
     }
@@ -74,6 +75,7 @@ public class NodeSelectorTerm implements Editable<NodeSelectorTermBuilder> , Kub
     }
 
     @JsonProperty("matchFields")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<NodeSelectorRequirement> getMatchFields() {
         return matchFields;
     }

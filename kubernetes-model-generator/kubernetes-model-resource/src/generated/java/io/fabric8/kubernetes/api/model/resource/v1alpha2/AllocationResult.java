@@ -99,6 +99,7 @@ public class AllocationResult implements Editable<AllocationResultBuilder> , Kub
     }
 
     @JsonProperty("resourceHandles")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ResourceHandle> getResourceHandles() {
         return resourceHandles;
     }

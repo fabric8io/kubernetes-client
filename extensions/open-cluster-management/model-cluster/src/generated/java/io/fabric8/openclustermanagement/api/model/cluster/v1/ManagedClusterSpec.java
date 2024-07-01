@@ -116,6 +116,7 @@ public class ManagedClusterSpec implements Editable<ManagedClusterSpecBuilder> ,
     }
 
     @JsonProperty("managedClusterClientConfigs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ClientConfig> getManagedClusterClientConfigs() {
         return managedClusterClientConfigs;
     }

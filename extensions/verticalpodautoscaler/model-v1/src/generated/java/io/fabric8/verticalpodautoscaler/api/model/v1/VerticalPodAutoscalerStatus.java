@@ -92,6 +92,7 @@ public class VerticalPodAutoscalerStatus implements Editable<VerticalPodAutoscal
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<VerticalPodAutoscalerCondition> getConditions() {
         return conditions;
     }

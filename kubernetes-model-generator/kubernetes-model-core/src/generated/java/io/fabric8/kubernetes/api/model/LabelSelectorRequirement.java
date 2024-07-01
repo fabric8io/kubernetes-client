@@ -87,6 +87,7 @@ public class LabelSelectorRequirement implements Editable<LabelSelectorRequireme
     }
 
     @JsonProperty("values")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getValues() {
         return values;
     }

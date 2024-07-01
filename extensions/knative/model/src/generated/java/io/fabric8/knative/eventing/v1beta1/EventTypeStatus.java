@@ -108,6 +108,7 @@ public class EventTypeStatus implements Editable<EventTypeStatusBuilder> , Kuber
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }

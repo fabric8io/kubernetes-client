@@ -90,6 +90,7 @@ public class PolicyRulesWithSubjects implements Editable<PolicyRulesWithSubjects
     }
 
     @JsonProperty("nonResourceRules")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<NonResourcePolicyRule> getNonResourceRules() {
         return nonResourceRules;
     }
@@ -100,6 +101,7 @@ public class PolicyRulesWithSubjects implements Editable<PolicyRulesWithSubjects
     }
 
     @JsonProperty("resourceRules")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ResourcePolicyRule> getResourceRules() {
         return resourceRules;
     }

@@ -277,6 +277,7 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder> , Kub
     }
 
     @JsonProperty("additionalPeers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getAdditionalPeers() {
         return additionalPeers;
     }
@@ -397,6 +398,7 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder> , Kub
     }
 
     @JsonProperty("configMaps")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getConfigMaps() {
         return configMaps;
     }
@@ -417,6 +419,7 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder> , Kub
     }
 
     @JsonProperty("containers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.Container> getContainers() {
         return containers;
     }
@@ -447,6 +450,7 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder> , Kub
     }
 
     @JsonProperty("hostAliases")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<HostAlias> getHostAliases() {
         return hostAliases;
     }
@@ -477,6 +481,7 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder> , Kub
     }
 
     @JsonProperty("imagePullSecrets")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.LocalObjectReference> getImagePullSecrets() {
         return imagePullSecrets;
     }
@@ -487,6 +492,7 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder> , Kub
     }
 
     @JsonProperty("initContainers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.Container> getInitContainers() {
         return initContainers;
     }
@@ -627,6 +633,7 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder> , Kub
     }
 
     @JsonProperty("secrets")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getSecrets() {
         return secrets;
     }
@@ -687,6 +694,7 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder> , Kub
     }
 
     @JsonProperty("tolerations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Toleration> getTolerations() {
         return tolerations;
     }
@@ -697,6 +705,7 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder> , Kub
     }
 
     @JsonProperty("topologySpreadConstraints")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TopologySpreadConstraint> getTopologySpreadConstraints() {
         return topologySpreadConstraints;
     }
@@ -717,6 +726,7 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder> , Kub
     }
 
     @JsonProperty("volumeMounts")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<VolumeMount> getVolumeMounts() {
         return volumeMounts;
     }
@@ -727,6 +737,7 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder> , Kub
     }
 
     @JsonProperty("volumes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Volume> getVolumes() {
         return volumes;
     }

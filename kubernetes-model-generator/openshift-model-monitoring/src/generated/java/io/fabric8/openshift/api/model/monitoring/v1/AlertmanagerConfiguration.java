@@ -108,6 +108,7 @@ public class AlertmanagerConfiguration implements Editable<AlertmanagerConfigura
     }
 
     @JsonProperty("templates")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<SecretOrConfigMap> getTemplates() {
         return templates;
     }

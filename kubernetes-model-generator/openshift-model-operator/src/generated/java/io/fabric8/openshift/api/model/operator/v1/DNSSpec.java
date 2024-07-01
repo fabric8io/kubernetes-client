@@ -154,6 +154,7 @@ public class DNSSpec implements Editable<DNSSpecBuilder> , KubernetesResource
     }
 
     @JsonProperty("servers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Server> getServers() {
         return servers;
     }

@@ -157,6 +157,7 @@ public class MutatingWebhookConfiguration implements Editable<MutatingWebhookCon
     }
 
     @JsonProperty("webhooks")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<MutatingWebhook> getWebhooks() {
         return webhooks;
     }

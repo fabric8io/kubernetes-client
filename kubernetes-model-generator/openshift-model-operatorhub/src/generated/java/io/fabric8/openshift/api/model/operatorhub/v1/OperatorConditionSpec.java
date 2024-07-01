@@ -91,6 +91,7 @@ public class OperatorConditionSpec implements Editable<OperatorConditionSpecBuil
     }
 
     @JsonProperty("deployments")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getDeployments() {
         return deployments;
     }
@@ -101,6 +102,7 @@ public class OperatorConditionSpec implements Editable<OperatorConditionSpecBuil
     }
 
     @JsonProperty("overrides")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getOverrides() {
         return overrides;
     }
@@ -111,6 +113,7 @@ public class OperatorConditionSpec implements Editable<OperatorConditionSpecBuil
     }
 
     @JsonProperty("serviceAccounts")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getServiceAccounts() {
         return serviceAccounts;
     }

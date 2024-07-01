@@ -136,6 +136,7 @@ public class RuleGroup implements Editable<RuleGroupBuilder> , KubernetesResourc
     }
 
     @JsonProperty("rules")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Rule> getRules() {
         return rules;
     }

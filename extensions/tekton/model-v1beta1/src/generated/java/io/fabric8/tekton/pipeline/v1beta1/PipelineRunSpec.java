@@ -133,6 +133,7 @@ public class PipelineRunSpec implements Editable<PipelineRunSpecBuilder> , Kuber
     }
 
     @JsonProperty("params")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Param> getParams() {
         return params;
     }
@@ -173,6 +174,7 @@ public class PipelineRunSpec implements Editable<PipelineRunSpecBuilder> , Kuber
     }
 
     @JsonProperty("resources")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PipelineResourceBinding> getResources() {
         return resources;
     }
@@ -203,6 +205,7 @@ public class PipelineRunSpec implements Editable<PipelineRunSpecBuilder> , Kuber
     }
 
     @JsonProperty("taskRunSpecs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PipelineTaskRunSpec> getTaskRunSpecs() {
         return taskRunSpecs;
     }
@@ -233,6 +236,7 @@ public class PipelineRunSpec implements Editable<PipelineRunSpecBuilder> , Kuber
     }
 
     @JsonProperty("workspaces")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<WorkspaceBinding> getWorkspaces() {
         return workspaces;
     }

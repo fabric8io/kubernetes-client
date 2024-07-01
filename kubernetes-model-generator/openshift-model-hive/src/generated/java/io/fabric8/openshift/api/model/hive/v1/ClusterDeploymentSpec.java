@@ -169,6 +169,7 @@ public class ClusterDeploymentSpec implements Editable<ClusterDeploymentSpecBuil
     }
 
     @JsonProperty("certificateBundles")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<CertificateBundleSpec> getCertificateBundles() {
         return certificateBundles;
     }
@@ -239,6 +240,7 @@ public class ClusterDeploymentSpec implements Editable<ClusterDeploymentSpecBuil
     }
 
     @JsonProperty("ingress")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ClusterIngress> getIngress() {
         return ingress;
     }

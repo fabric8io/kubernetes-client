@@ -92,6 +92,7 @@ public class LoadBalancerStrategy implements Editable<LoadBalancerStrategyBuilde
     }
 
     @JsonProperty("allowedSourceRanges")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getAllowedSourceRanges() {
         return allowedSourceRanges;
     }

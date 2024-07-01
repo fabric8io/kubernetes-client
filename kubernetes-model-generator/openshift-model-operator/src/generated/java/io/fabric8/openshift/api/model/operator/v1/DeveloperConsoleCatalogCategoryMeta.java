@@ -108,6 +108,7 @@ public class DeveloperConsoleCatalogCategoryMeta implements Editable<DeveloperCo
     }
 
     @JsonProperty("tags")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getTags() {
         return tags;
     }

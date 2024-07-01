@@ -155,6 +155,7 @@ public class MutatingWebhook implements Editable<MutatingWebhookBuilder> , Kuber
     }
 
     @JsonProperty("matchConditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<MatchCondition> getMatchConditions() {
         return matchConditions;
     }
@@ -215,6 +216,7 @@ public class MutatingWebhook implements Editable<MutatingWebhookBuilder> , Kuber
     }
 
     @JsonProperty("rules")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<RuleWithOperations> getRules() {
         return rules;
     }

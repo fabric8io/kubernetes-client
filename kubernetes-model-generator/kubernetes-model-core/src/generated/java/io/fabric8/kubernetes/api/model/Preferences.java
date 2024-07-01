@@ -73,6 +73,7 @@ public class Preferences implements Editable<PreferencesBuilder> , KubernetesRes
     }
 
     @JsonProperty("extensions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<NamedExtension> getExtensions() {
         return extensions;
     }

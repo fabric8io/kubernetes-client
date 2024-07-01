@@ -174,6 +174,7 @@ public class CertificateSpec implements Editable<CertificateSpecBuilder> , Kuber
     }
 
     @JsonProperty("additionalOutputFormats")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<CertificateAdditionalOutputFormat> getAdditionalOutputFormats() {
         return additionalOutputFormats;
     }
@@ -194,6 +195,7 @@ public class CertificateSpec implements Editable<CertificateSpecBuilder> , Kuber
     }
 
     @JsonProperty("dnsNames")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getDnsNames() {
         return dnsNames;
     }
@@ -214,6 +216,7 @@ public class CertificateSpec implements Editable<CertificateSpecBuilder> , Kuber
     }
 
     @JsonProperty("emailAddresses")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getEmailAddresses() {
         return emailAddresses;
     }
@@ -234,6 +237,7 @@ public class CertificateSpec implements Editable<CertificateSpecBuilder> , Kuber
     }
 
     @JsonProperty("ipAddresses")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getIpAddresses() {
         return ipAddresses;
     }
@@ -294,6 +298,7 @@ public class CertificateSpec implements Editable<CertificateSpecBuilder> , Kuber
     }
 
     @JsonProperty("otherNames")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<OtherName> getOtherNames() {
         return otherNames;
     }
@@ -364,6 +369,7 @@ public class CertificateSpec implements Editable<CertificateSpecBuilder> , Kuber
     }
 
     @JsonProperty("uris")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getUris() {
         return uris;
     }
@@ -374,6 +380,7 @@ public class CertificateSpec implements Editable<CertificateSpecBuilder> , Kuber
     }
 
     @JsonProperty("usages")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getUsages() {
         return usages;
     }

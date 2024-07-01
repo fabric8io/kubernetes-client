@@ -122,6 +122,7 @@ public class FlowSchemaSpec implements Editable<FlowSchemaSpecBuilder> , Kuberne
     }
 
     @JsonProperty("rules")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PolicyRulesWithSubjects> getRules() {
         return rules;
     }

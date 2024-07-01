@@ -99,6 +99,7 @@ public class StorageVersionStatus implements Editable<StorageVersionStatusBuilde
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<StorageVersionCondition> getConditions() {
         return conditions;
     }
@@ -109,6 +110,7 @@ public class StorageVersionStatus implements Editable<StorageVersionStatusBuilde
     }
 
     @JsonProperty("storageVersions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ServerStorageVersion> getStorageVersions() {
         return storageVersions;
     }

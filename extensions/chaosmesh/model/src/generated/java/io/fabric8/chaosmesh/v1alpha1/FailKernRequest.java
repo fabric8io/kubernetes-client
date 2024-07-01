@@ -105,6 +105,7 @@ public class FailKernRequest implements Editable<FailKernRequestBuilder> , Kuber
     }
 
     @JsonProperty("callchain")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Frame> getCallchain() {
         return callchain;
     }

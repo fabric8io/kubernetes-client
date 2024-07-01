@@ -115,6 +115,7 @@ public class KubeAPIServerStatus implements Editable<KubeAPIServerStatusBuilder>
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<OperatorCondition> getConditions() {
         return conditions;
     }
@@ -125,6 +126,7 @@ public class KubeAPIServerStatus implements Editable<KubeAPIServerStatusBuilder>
     }
 
     @JsonProperty("generations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<GenerationStatus> getGenerations() {
         return generations;
     }
@@ -155,6 +157,7 @@ public class KubeAPIServerStatus implements Editable<KubeAPIServerStatusBuilder>
     }
 
     @JsonProperty("nodeStatuses")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<NodeStatus> getNodeStatuses() {
         return nodeStatuses;
     }
@@ -185,6 +188,7 @@ public class KubeAPIServerStatus implements Editable<KubeAPIServerStatusBuilder>
     }
 
     @JsonProperty("serviceAccountIssuers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ServiceAccountIssuerStatus> getServiceAccountIssuers() {
         return serviceAccountIssuers;
     }

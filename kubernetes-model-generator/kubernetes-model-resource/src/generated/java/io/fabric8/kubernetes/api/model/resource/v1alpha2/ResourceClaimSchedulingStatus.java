@@ -94,6 +94,7 @@ public class ResourceClaimSchedulingStatus implements Editable<ResourceClaimSche
     }
 
     @JsonProperty("unsuitableNodes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getUnsuitableNodes() {
         return unsuitableNodes;
     }

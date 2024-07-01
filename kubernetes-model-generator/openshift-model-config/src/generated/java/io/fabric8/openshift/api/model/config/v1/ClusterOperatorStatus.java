@@ -94,6 +94,7 @@ public class ClusterOperatorStatus implements Editable<ClusterOperatorStatusBuil
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ClusterOperatorStatusCondition> getConditions() {
         return conditions;
     }
@@ -114,6 +115,7 @@ public class ClusterOperatorStatus implements Editable<ClusterOperatorStatusBuil
     }
 
     @JsonProperty("relatedObjects")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.config.v1.ObjectReference> getRelatedObjects() {
         return relatedObjects;
     }
@@ -124,6 +126,7 @@ public class ClusterOperatorStatus implements Editable<ClusterOperatorStatusBuil
     }
 
     @JsonProperty("versions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<OperandVersion> getVersions() {
         return versions;
     }

@@ -109,6 +109,7 @@ public class EventListenerTrigger implements Editable<EventListenerTriggerBuilde
     }
 
     @JsonProperty("bindings")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TriggerSpecBinding> getBindings() {
         return bindings;
     }
@@ -119,6 +120,7 @@ public class EventListenerTrigger implements Editable<EventListenerTriggerBuilde
     }
 
     @JsonProperty("interceptors")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TriggerInterceptor> getInterceptors() {
         return interceptors;
     }

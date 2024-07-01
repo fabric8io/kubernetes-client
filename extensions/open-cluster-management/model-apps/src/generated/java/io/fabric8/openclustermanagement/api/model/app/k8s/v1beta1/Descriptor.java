@@ -134,6 +134,7 @@ public class Descriptor implements Editable<DescriptorBuilder> , KubernetesResou
     }
 
     @JsonProperty("icons")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ImageSpec> getIcons() {
         return icons;
     }
@@ -144,6 +145,7 @@ public class Descriptor implements Editable<DescriptorBuilder> , KubernetesResou
     }
 
     @JsonProperty("keywords")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getKeywords() {
         return keywords;
     }
@@ -154,6 +156,7 @@ public class Descriptor implements Editable<DescriptorBuilder> , KubernetesResou
     }
 
     @JsonProperty("links")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Link> getLinks() {
         return links;
     }
@@ -164,6 +167,7 @@ public class Descriptor implements Editable<DescriptorBuilder> , KubernetesResou
     }
 
     @JsonProperty("maintainers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ContactData> getMaintainers() {
         return maintainers;
     }
@@ -184,6 +188,7 @@ public class Descriptor implements Editable<DescriptorBuilder> , KubernetesResou
     }
 
     @JsonProperty("owners")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ContactData> getOwners() {
         return owners;
     }

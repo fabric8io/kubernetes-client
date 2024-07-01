@@ -99,6 +99,7 @@ public class StaticIPAMDNS implements Editable<StaticIPAMDNSBuilder> , Kubernete
     }
 
     @JsonProperty("nameservers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getNameservers() {
         return nameservers;
     }
@@ -109,6 +110,7 @@ public class StaticIPAMDNS implements Editable<StaticIPAMDNSBuilder> , Kubernete
     }
 
     @JsonProperty("search")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getSearch() {
         return search;
     }

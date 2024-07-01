@@ -103,6 +103,7 @@ public class ImageImportStatus implements Editable<ImageImportStatusBuilder> , K
     }
 
     @JsonProperty("manifests")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Image> getManifests() {
         return manifests;
     }

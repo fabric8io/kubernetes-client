@@ -116,6 +116,7 @@ public class ConfigurationStatus implements Editable<ConfigurationStatusBuilder>
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }

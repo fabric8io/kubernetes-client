@@ -110,6 +110,7 @@ public class ConfigMapArgs implements Editable<ConfigMapArgsBuilder> , Kubernete
     }
 
     @JsonProperty("envs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getEnvs() {
         return envs;
     }
@@ -120,6 +121,7 @@ public class ConfigMapArgs implements Editable<ConfigMapArgsBuilder> , Kubernete
     }
 
     @JsonProperty("files")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getFiles() {
         return files;
     }
@@ -130,6 +132,7 @@ public class ConfigMapArgs implements Editable<ConfigMapArgsBuilder> , Kubernete
     }
 
     @JsonProperty("literals")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getLiterals() {
         return literals;
     }

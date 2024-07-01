@@ -108,6 +108,7 @@ public class HTTPBackendRef implements Editable<HTTPBackendRefBuilder> , Kuberne
     }
 
     @JsonProperty("filters")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<HTTPRouteFilter> getFilters() {
         return filters;
     }

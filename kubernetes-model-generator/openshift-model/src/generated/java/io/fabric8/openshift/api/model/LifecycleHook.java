@@ -108,6 +108,7 @@ public class LifecycleHook implements Editable<LifecycleHookBuilder> , Kubernete
     }
 
     @JsonProperty("tagImages")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TagImageHook> getTagImages() {
         return tagImages;
     }

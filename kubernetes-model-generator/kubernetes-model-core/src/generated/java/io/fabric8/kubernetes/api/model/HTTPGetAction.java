@@ -85,6 +85,7 @@ public class HTTPGetAction implements Editable<HTTPGetActionBuilder> , Kubernete
     }
 
     @JsonProperty("httpHeaders")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<HTTPHeader> getHttpHeaders() {
         return httpHeaders;
     }

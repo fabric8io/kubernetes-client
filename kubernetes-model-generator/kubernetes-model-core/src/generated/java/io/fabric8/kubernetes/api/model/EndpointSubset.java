@@ -69,6 +69,7 @@ public class EndpointSubset implements Editable<EndpointSubsetBuilder> , Kuberne
     }
 
     @JsonProperty("addresses")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<EndpointAddress> getAddresses() {
         return addresses;
     }
@@ -79,6 +80,7 @@ public class EndpointSubset implements Editable<EndpointSubsetBuilder> , Kuberne
     }
 
     @JsonProperty("notReadyAddresses")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<EndpointAddress> getNotReadyAddresses() {
         return notReadyAddresses;
     }
@@ -89,6 +91,7 @@ public class EndpointSubset implements Editable<EndpointSubsetBuilder> , Kuberne
     }
 
     @JsonProperty("ports")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<EndpointPort> getPorts() {
         return ports;
     }

@@ -98,6 +98,7 @@ public class ImageTagMirrors implements Editable<ImageTagMirrorsBuilder> , Kuber
     }
 
     @JsonProperty("mirrors")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getMirrors() {
         return mirrors;
     }

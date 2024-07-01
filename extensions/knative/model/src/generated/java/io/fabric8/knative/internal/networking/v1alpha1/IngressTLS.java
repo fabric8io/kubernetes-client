@@ -96,6 +96,7 @@ public class IngressTLS implements Editable<IngressTLSBuilder> , KubernetesResou
     }
 
     @JsonProperty("hosts")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getHosts() {
         return hosts;
     }
