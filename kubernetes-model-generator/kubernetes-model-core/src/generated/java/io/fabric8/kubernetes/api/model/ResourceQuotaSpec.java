@@ -46,9 +46,9 @@ public class ResourceQuotaSpec implements Editable<ResourceQuotaSpecBuilder> , K
     private ScopeSelector scopeSelector;
     @JsonProperty("scopes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> scopes = new ArrayList<java.lang.String>();
+    private List<String> scopes = new ArrayList<String>();
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -57,7 +57,7 @@ public class ResourceQuotaSpec implements Editable<ResourceQuotaSpecBuilder> , K
     public ResourceQuotaSpec() {
     }
 
-    public ResourceQuotaSpec(Map<String, Quantity> hard, ScopeSelector scopeSelector, List<java.lang.String> scopes) {
+    public ResourceQuotaSpec(Map<String, Quantity> hard, ScopeSelector scopeSelector, List<String> scopes) {
         super();
         this.hard = hard;
         this.scopeSelector = scopeSelector;
@@ -86,12 +86,12 @@ public class ResourceQuotaSpec implements Editable<ResourceQuotaSpecBuilder> , K
 
     @JsonProperty("scopes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<java.lang.String> getScopes() {
+    public List<String> getScopes() {
         return scopes;
     }
 
     @JsonProperty("scopes")
-    public void setScopes(List<java.lang.String> scopes) {
+    public void setScopes(List<String> scopes) {
         this.scopes = scopes;
     }
 
@@ -106,12 +106,12 @@ public class ResourceQuotaSpec implements Editable<ResourceQuotaSpecBuilder> , K
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 

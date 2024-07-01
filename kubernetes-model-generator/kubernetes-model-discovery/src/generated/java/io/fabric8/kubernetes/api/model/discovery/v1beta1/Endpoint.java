@@ -65,22 +65,22 @@ public class Endpoint implements Editable<EndpointBuilder> , KubernetesResource
 
     @JsonProperty("addresses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> addresses = new ArrayList<java.lang.String>();
+    private List<String> addresses = new ArrayList<String>();
     @JsonProperty("conditions")
     private EndpointConditions conditions;
     @JsonProperty("hints")
     private EndpointHints hints;
     @JsonProperty("hostname")
-    private java.lang.String hostname;
+    private String hostname;
     @JsonProperty("nodeName")
-    private java.lang.String nodeName;
+    private String nodeName;
     @JsonProperty("targetRef")
     private io.fabric8.kubernetes.api.model.ObjectReference targetRef;
     @JsonProperty("topology")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> topology = new LinkedHashMap<String, String>();
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -89,7 +89,7 @@ public class Endpoint implements Editable<EndpointBuilder> , KubernetesResource
     public Endpoint() {
     }
 
-    public Endpoint(List<java.lang.String> addresses, EndpointConditions conditions, EndpointHints hints, java.lang.String hostname, java.lang.String nodeName, io.fabric8.kubernetes.api.model.ObjectReference targetRef, Map<String, String> topology) {
+    public Endpoint(List<String> addresses, EndpointConditions conditions, EndpointHints hints, String hostname, String nodeName, io.fabric8.kubernetes.api.model.ObjectReference targetRef, Map<String, String> topology) {
         super();
         this.addresses = addresses;
         this.conditions = conditions;
@@ -101,12 +101,12 @@ public class Endpoint implements Editable<EndpointBuilder> , KubernetesResource
     }
 
     @JsonProperty("addresses")
-    public List<java.lang.String> getAddresses() {
+    public List<String> getAddresses() {
         return addresses;
     }
 
     @JsonProperty("addresses")
-    public void setAddresses(List<java.lang.String> addresses) {
+    public void setAddresses(List<String> addresses) {
         this.addresses = addresses;
     }
 
@@ -131,22 +131,22 @@ public class Endpoint implements Editable<EndpointBuilder> , KubernetesResource
     }
 
     @JsonProperty("hostname")
-    public java.lang.String getHostname() {
+    public String getHostname() {
         return hostname;
     }
 
     @JsonProperty("hostname")
-    public void setHostname(java.lang.String hostname) {
+    public void setHostname(String hostname) {
         this.hostname = hostname;
     }
 
     @JsonProperty("nodeName")
-    public java.lang.String getNodeName() {
+    public String getNodeName() {
         return nodeName;
     }
 
     @JsonProperty("nodeName")
-    public void setNodeName(java.lang.String nodeName) {
+    public void setNodeName(String nodeName) {
         this.nodeName = nodeName;
     }
 
@@ -181,12 +181,12 @@ public class Endpoint implements Editable<EndpointBuilder> , KubernetesResource
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 

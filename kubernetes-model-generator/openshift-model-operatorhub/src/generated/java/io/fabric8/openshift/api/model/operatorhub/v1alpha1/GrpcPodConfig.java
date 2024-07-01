@@ -70,14 +70,14 @@ public class GrpcPodConfig implements Editable<GrpcPodConfigBuilder> , Kubernete
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> nodeSelector = new LinkedHashMap<String, String>();
     @JsonProperty("priorityClassName")
-    private java.lang.String priorityClassName;
+    private String priorityClassName;
     @JsonProperty("securityContextConfig")
-    private java.lang.String securityContextConfig;
+    private String securityContextConfig;
     @JsonProperty("tolerations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Toleration> tolerations = new ArrayList<Toleration>();
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -86,7 +86,7 @@ public class GrpcPodConfig implements Editable<GrpcPodConfigBuilder> , Kubernete
     public GrpcPodConfig() {
     }
 
-    public GrpcPodConfig(Affinity affinity, Map<String, String> nodeSelector, java.lang.String priorityClassName, java.lang.String securityContextConfig, List<Toleration> tolerations) {
+    public GrpcPodConfig(Affinity affinity, Map<String, String> nodeSelector, String priorityClassName, String securityContextConfig, List<Toleration> tolerations) {
         super();
         this.affinity = affinity;
         this.nodeSelector = nodeSelector;
@@ -116,22 +116,22 @@ public class GrpcPodConfig implements Editable<GrpcPodConfigBuilder> , Kubernete
     }
 
     @JsonProperty("priorityClassName")
-    public java.lang.String getPriorityClassName() {
+    public String getPriorityClassName() {
         return priorityClassName;
     }
 
     @JsonProperty("priorityClassName")
-    public void setPriorityClassName(java.lang.String priorityClassName) {
+    public void setPriorityClassName(String priorityClassName) {
         this.priorityClassName = priorityClassName;
     }
 
     @JsonProperty("securityContextConfig")
-    public java.lang.String getSecurityContextConfig() {
+    public String getSecurityContextConfig() {
         return securityContextConfig;
     }
 
     @JsonProperty("securityContextConfig")
-    public void setSecurityContextConfig(java.lang.String securityContextConfig) {
+    public void setSecurityContextConfig(String securityContextConfig) {
         this.securityContextConfig = securityContextConfig;
     }
 
@@ -157,12 +157,12 @@ public class GrpcPodConfig implements Editable<GrpcPodConfigBuilder> , Kubernete
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 

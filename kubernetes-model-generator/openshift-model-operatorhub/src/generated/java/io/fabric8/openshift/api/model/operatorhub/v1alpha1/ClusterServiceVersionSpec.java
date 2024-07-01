@@ -90,9 +90,9 @@ public class ClusterServiceVersionSpec implements Editable<ClusterServiceVersion
     @JsonProperty("customresourcedefinitions")
     private CustomResourceDefinitions customresourcedefinitions;
     @JsonProperty("description")
-    private java.lang.String description;
+    private String description;
     @JsonProperty("displayName")
-    private java.lang.String displayName;
+    private String displayName;
     @JsonProperty("icon")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Icon> icon = new ArrayList<Icon>();
@@ -103,7 +103,7 @@ public class ClusterServiceVersionSpec implements Editable<ClusterServiceVersion
     private List<InstallMode> installModes = new ArrayList<InstallMode>();
     @JsonProperty("keywords")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> keywords = new ArrayList<java.lang.String>();
+    private List<String> keywords = new ArrayList<String>();
     @JsonProperty("labels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> labels = new LinkedHashMap<String, String>();
@@ -114,9 +114,9 @@ public class ClusterServiceVersionSpec implements Editable<ClusterServiceVersion
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Maintainer> maintainers = new ArrayList<Maintainer>();
     @JsonProperty("maturity")
-    private java.lang.String maturity;
+    private String maturity;
     @JsonProperty("minKubeVersion")
-    private java.lang.String minKubeVersion;
+    private String minKubeVersion;
     @JsonProperty("nativeAPIs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<GroupVersionKind> nativeAPIs = new ArrayList<GroupVersionKind>();
@@ -126,19 +126,19 @@ public class ClusterServiceVersionSpec implements Editable<ClusterServiceVersion
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<RelatedImage> relatedImages = new ArrayList<RelatedImage>();
     @JsonProperty("replaces")
-    private java.lang.String replaces;
+    private String replaces;
     @JsonProperty("selector")
     private io.fabric8.kubernetes.api.model.LabelSelector selector;
     @JsonProperty("skips")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> skips = new ArrayList<java.lang.String>();
+    private List<String> skips = new ArrayList<String>();
     @JsonProperty("version")
-    private java.lang.String version;
+    private String version;
     @JsonProperty("webhookdefinitions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<WebhookDescription> webhookdefinitions = new ArrayList<WebhookDescription>();
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -147,7 +147,7 @@ public class ClusterServiceVersionSpec implements Editable<ClusterServiceVersion
     public ClusterServiceVersionSpec() {
     }
 
-    public ClusterServiceVersionSpec(Map<String, String> annotations, APIServiceDefinitions apiservicedefinitions, CleanupSpec cleanup, CustomResourceDefinitions customresourcedefinitions, java.lang.String description, java.lang.String displayName, List<Icon> icon, NamedInstallStrategy install, List<InstallMode> installModes, List<java.lang.String> keywords, Map<String, String> labels, List<AppLink> links, List<Maintainer> maintainers, java.lang.String maturity, java.lang.String minKubeVersion, List<GroupVersionKind> nativeAPIs, AppLink provider, List<RelatedImage> relatedImages, java.lang.String replaces, io.fabric8.kubernetes.api.model.LabelSelector selector, List<java.lang.String> skips, java.lang.String version, List<WebhookDescription> webhookdefinitions) {
+    public ClusterServiceVersionSpec(Map<String, String> annotations, APIServiceDefinitions apiservicedefinitions, CleanupSpec cleanup, CustomResourceDefinitions customresourcedefinitions, String description, String displayName, List<Icon> icon, NamedInstallStrategy install, List<InstallMode> installModes, List<String> keywords, Map<String, String> labels, List<AppLink> links, List<Maintainer> maintainers, String maturity, String minKubeVersion, List<GroupVersionKind> nativeAPIs, AppLink provider, List<RelatedImage> relatedImages, String replaces, io.fabric8.kubernetes.api.model.LabelSelector selector, List<String> skips, String version, List<WebhookDescription> webhookdefinitions) {
         super();
         this.annotations = annotations;
         this.apiservicedefinitions = apiservicedefinitions;
@@ -215,22 +215,22 @@ public class ClusterServiceVersionSpec implements Editable<ClusterServiceVersion
     }
 
     @JsonProperty("description")
-    public java.lang.String getDescription() {
+    public String getDescription() {
         return description;
     }
 
     @JsonProperty("description")
-    public void setDescription(java.lang.String description) {
+    public void setDescription(String description) {
         this.description = description;
     }
 
     @JsonProperty("displayName")
-    public java.lang.String getDisplayName() {
+    public String getDisplayName() {
         return displayName;
     }
 
     @JsonProperty("displayName")
-    public void setDisplayName(java.lang.String displayName) {
+    public void setDisplayName(String displayName) {
         this.displayName = displayName;
     }
 
@@ -268,12 +268,12 @@ public class ClusterServiceVersionSpec implements Editable<ClusterServiceVersion
 
     @JsonProperty("keywords")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<java.lang.String> getKeywords() {
+    public List<String> getKeywords() {
         return keywords;
     }
 
     @JsonProperty("keywords")
-    public void setKeywords(List<java.lang.String> keywords) {
+    public void setKeywords(List<String> keywords) {
         this.keywords = keywords;
     }
 
@@ -310,22 +310,22 @@ public class ClusterServiceVersionSpec implements Editable<ClusterServiceVersion
     }
 
     @JsonProperty("maturity")
-    public java.lang.String getMaturity() {
+    public String getMaturity() {
         return maturity;
     }
 
     @JsonProperty("maturity")
-    public void setMaturity(java.lang.String maturity) {
+    public void setMaturity(String maturity) {
         this.maturity = maturity;
     }
 
     @JsonProperty("minKubeVersion")
-    public java.lang.String getMinKubeVersion() {
+    public String getMinKubeVersion() {
         return minKubeVersion;
     }
 
     @JsonProperty("minKubeVersion")
-    public void setMinKubeVersion(java.lang.String minKubeVersion) {
+    public void setMinKubeVersion(String minKubeVersion) {
         this.minKubeVersion = minKubeVersion;
     }
 
@@ -362,12 +362,12 @@ public class ClusterServiceVersionSpec implements Editable<ClusterServiceVersion
     }
 
     @JsonProperty("replaces")
-    public java.lang.String getReplaces() {
+    public String getReplaces() {
         return replaces;
     }
 
     @JsonProperty("replaces")
-    public void setReplaces(java.lang.String replaces) {
+    public void setReplaces(String replaces) {
         this.replaces = replaces;
     }
 
@@ -383,22 +383,22 @@ public class ClusterServiceVersionSpec implements Editable<ClusterServiceVersion
 
     @JsonProperty("skips")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<java.lang.String> getSkips() {
+    public List<String> getSkips() {
         return skips;
     }
 
     @JsonProperty("skips")
-    public void setSkips(List<java.lang.String> skips) {
+    public void setSkips(List<String> skips) {
         this.skips = skips;
     }
 
     @JsonProperty("version")
-    public java.lang.String getVersion() {
+    public String getVersion() {
         return version;
     }
 
     @JsonProperty("version")
-    public void setVersion(java.lang.String version) {
+    public void setVersion(String version) {
         this.version = version;
     }
 
@@ -424,12 +424,12 @@ public class ClusterServiceVersionSpec implements Editable<ClusterServiceVersion
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 

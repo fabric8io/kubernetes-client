@@ -120,7 +120,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         }
       },
       "additionalProperties": true,
@@ -248,7 +248,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "creationTimestamp": {
           "$ref": "#/definitions/kubernetes_apimachinery_Time",
@@ -281,7 +281,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "managedFields": {
           "type": "array",
@@ -689,7 +689,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         }
       },
       "additionalProperties": true,
@@ -1286,7 +1286,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "readOnly": {
           "type": "boolean"
@@ -1810,7 +1810,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "allocatedResources": {
           "type": "object",
@@ -1818,7 +1818,7 @@
             "$ref": "#/definitions/kubernetes_resource_Quantity",
             "existingJavaType": "io.fabric8.kubernetes.api.model.Quantity"
           },
-          "existingJavaType": "java.util.Map\u003cString, io.fabric8.kubernetes.api.model.Quantity\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, io.fabric8.kubernetes.api.model.Quantity\u003e"
         },
         "capacity": {
           "type": "object",
@@ -1826,7 +1826,7 @@
             "$ref": "#/definitions/kubernetes_resource_Quantity",
             "existingJavaType": "io.fabric8.kubernetes.api.model.Quantity"
           },
-          "existingJavaType": "java.util.Map\u003cString, io.fabric8.kubernetes.api.model.Quantity\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, io.fabric8.kubernetes.api.model.Quantity\u003e"
         },
         "conditions": {
           "type": "array",
@@ -2300,7 +2300,7 @@
             "$ref": "#/definitions/kubernetes_resource_Quantity",
             "existingJavaType": "io.fabric8.kubernetes.api.model.Quantity"
           },
-          "existingJavaType": "java.util.Map\u003cString, io.fabric8.kubernetes.api.model.Quantity\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, io.fabric8.kubernetes.api.model.Quantity\u003e"
         },
         "requests": {
           "type": "object",
@@ -2308,7 +2308,7 @@
             "$ref": "#/definitions/kubernetes_resource_Quantity",
             "existingJavaType": "io.fabric8.kubernetes.api.model.Quantity"
           },
-          "existingJavaType": "java.util.Map\u003cString, io.fabric8.kubernetes.api.model.Quantity\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, io.fabric8.kubernetes.api.model.Quantity\u003e"
         }
       },
       "additionalProperties": true,
@@ -2951,7 +2951,7 @@
             "$ref": "#/definitions/kubernetes_resource_Quantity",
             "existingJavaType": "io.fabric8.kubernetes.api.model.Quantity"
           },
-          "existingJavaType": "java.util.Map\u003cString, io.fabric8.kubernetes.api.model.Quantity\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, io.fabric8.kubernetes.api.model.Quantity\u003e"
         },
         "requests": {
           "type": "object",
@@ -2959,7 +2959,7 @@
             "$ref": "#/definitions/kubernetes_resource_Quantity",
             "existingJavaType": "io.fabric8.kubernetes.api.model.Quantity"
           },
-          "existingJavaType": "java.util.Map\u003cString, io.fabric8.kubernetes.api.model.Quantity\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, io.fabric8.kubernetes.api.model.Quantity\u003e"
         }
       },
       "additionalProperties": true,
@@ -3524,7 +3524,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "paused": {
           "type": "boolean"
@@ -3857,7 +3857,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "externalUrl": {
           "type": "string"
@@ -3931,7 +3931,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "overrideHonorLabels": {
           "type": "boolean"
@@ -4141,14 +4141,14 @@
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "labels": {
           "type": "object",
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "name": {
           "type": "string"
@@ -4248,7 +4248,7 @@
               "type": "string"
             }
           },
-          "existingJavaType": "java.util.Map\u003cString, java.util.ArrayList\u003cString\u003e\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.util.ArrayList\u003cjava.lang.String\u003e\u003e"
         },
         "path": {
           "type": "string"
@@ -4462,7 +4462,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "scopes": {
           "type": "array",
@@ -4556,7 +4556,7 @@
               "type": "string"
             }
           },
-          "existingJavaType": "java.util.Map\u003cString, java.util.ArrayList\u003cString\u003e\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.util.ArrayList\u003cjava.lang.String\u003e\u003e"
         },
         "path": {
           "type": "string"
@@ -4953,7 +4953,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "relabelingConfigs": {
           "type": "array",
@@ -5306,7 +5306,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "externalUrl": {
           "type": "string"
@@ -5380,7 +5380,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "overrideHonorLabels": {
           "type": "boolean"
@@ -5665,7 +5665,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "insecure": {
           "type": "boolean"
@@ -5835,7 +5835,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "name": {
           "type": "string"
@@ -5858,7 +5858,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "tlsConfig": {
           "$ref": "#/definitions/os_monitoring_v1_TLSConfig",
@@ -5896,7 +5896,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "metadataConfig": {
           "$ref": "#/definitions/os_monitoring_v1_MetadataConfig",
@@ -5962,7 +5962,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "expr": {
           "$ref": "#/definitions/kubernetes_apimachinery_pkg_util_intstr_IntOrString",
@@ -5979,7 +5979,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "record": {
           "type": "string"
@@ -6547,7 +6547,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "listenLocal": {
           "type": "boolean"
@@ -6566,7 +6566,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "objectStorageConfig": {
           "$ref": "#/definitions/kubernetes_core_SecretKeySelector",
@@ -7682,7 +7682,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "httpConfig": {
           "$ref": "#/definitions/os_monitoring_v1alpha1_HTTPConfig",
@@ -8621,7 +8621,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "paused": {
           "type": "boolean"
@@ -9149,7 +9149,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "externalUrl": {
           "type": "string"
@@ -9223,7 +9223,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "overrideHonorLabels": {
           "type": "boolean"
@@ -9658,7 +9658,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         }
       },
       "additionalProperties": true
@@ -9806,14 +9806,14 @@
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "labels": {
           "type": "object",
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "name": {
           "type": "string"
@@ -9915,7 +9915,7 @@
               "type": "string"
             }
           },
-          "existingJavaType": "java.util.Map\u003cString, java.util.ArrayList\u003cString\u003e\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.util.ArrayList\u003cjava.lang.String\u003e\u003e"
         },
         "path": {
           "type": "string"
@@ -10078,7 +10078,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "readOnly": {
           "type": "boolean"
@@ -10465,7 +10465,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         }
       },
       "additionalProperties": true
@@ -10769,7 +10769,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "scopes": {
           "type": "array",
@@ -10802,7 +10802,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "creationTimestamp": {
           "$ref": "#/definitions/kubernetes_apimachinery_Time",
@@ -10835,7 +10835,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "managedFields": {
           "type": "array",
@@ -11167,7 +11167,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "allocatedResources": {
           "type": "object",
@@ -11175,7 +11175,7 @@
             "$ref": "#/definitions/kubernetes_resource_Quantity",
             "existingJavaType": "io.fabric8.kubernetes.api.model.Quantity"
           },
-          "existingJavaType": "java.util.Map\u003cString, io.fabric8.kubernetes.api.model.Quantity\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, io.fabric8.kubernetes.api.model.Quantity\u003e"
         },
         "capacity": {
           "type": "object",
@@ -11183,7 +11183,7 @@
             "$ref": "#/definitions/kubernetes_resource_Quantity",
             "existingJavaType": "io.fabric8.kubernetes.api.model.Quantity"
           },
-          "existingJavaType": "java.util.Map\u003cString, io.fabric8.kubernetes.api.model.Quantity\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, io.fabric8.kubernetes.api.model.Quantity\u003e"
         },
         "conditions": {
           "type": "array",
@@ -11372,7 +11372,7 @@
               "type": "string"
             }
           },
-          "existingJavaType": "java.util.Map\u003cString, java.util.ArrayList\u003cString\u003e\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.util.ArrayList\u003cjava.lang.String\u003e\u003e"
         },
         "path": {
           "type": "string"
@@ -11841,7 +11841,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "relabelingConfigs": {
           "type": "array",
@@ -12153,7 +12153,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "externalUrl": {
           "type": "string"
@@ -12227,7 +12227,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "overrideHonorLabels": {
           "type": "boolean"
@@ -12502,7 +12502,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "insecure": {
           "type": "boolean"
@@ -12865,7 +12865,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "name": {
           "type": "string"
@@ -12888,7 +12888,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "tlsConfig": {
           "$ref": "#/definitions/os_monitoring_v1_TLSConfig",
@@ -12921,7 +12921,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "metadataConfig": {
           "$ref": "#/definitions/os_monitoring_v1_MetadataConfig",
@@ -13011,7 +13011,7 @@
             "$ref": "#/definitions/kubernetes_resource_Quantity",
             "existingJavaType": "io.fabric8.kubernetes.api.model.Quantity"
           },
-          "existingJavaType": "java.util.Map\u003cString, io.fabric8.kubernetes.api.model.Quantity\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, io.fabric8.kubernetes.api.model.Quantity\u003e"
         },
         "requests": {
           "type": "object",
@@ -13019,7 +13019,7 @@
             "$ref": "#/definitions/kubernetes_resource_Quantity",
             "existingJavaType": "io.fabric8.kubernetes.api.model.Quantity"
           },
-          "existingJavaType": "java.util.Map\u003cString, io.fabric8.kubernetes.api.model.Quantity\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, io.fabric8.kubernetes.api.model.Quantity\u003e"
         }
       },
       "additionalProperties": true
@@ -13091,7 +13091,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "expr": {
           "$ref": "#/definitions/kubernetes_apimachinery_pkg_util_intstr_IntOrString",
@@ -13108,7 +13108,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "record": {
           "type": "string"
@@ -13736,7 +13736,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "httpConfig": {
           "$ref": "#/definitions/os_monitoring_v1alpha1_HTTPConfig",
@@ -14102,7 +14102,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "listenLocal": {
           "type": "boolean"
@@ -14121,7 +14121,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "objectStorageConfig": {
           "$ref": "#/definitions/kubernetes_core_SecretKeySelector",
@@ -14791,7 +14791,7 @@
             "$ref": "#/definitions/kubernetes_resource_Quantity",
             "existingJavaType": "io.fabric8.kubernetes.api.model.Quantity"
           },
-          "existingJavaType": "java.util.Map\u003cString, io.fabric8.kubernetes.api.model.Quantity\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, io.fabric8.kubernetes.api.model.Quantity\u003e"
         },
         "requests": {
           "type": "object",
@@ -14799,7 +14799,7 @@
             "$ref": "#/definitions/kubernetes_resource_Quantity",
             "existingJavaType": "io.fabric8.kubernetes.api.model.Quantity"
           },
-          "existingJavaType": "java.util.Map\u003cString, io.fabric8.kubernetes.api.model.Quantity\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, io.fabric8.kubernetes.api.model.Quantity\u003e"
         }
       },
       "additionalProperties": true

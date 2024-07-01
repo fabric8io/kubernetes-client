@@ -63,11 +63,11 @@ public class StrategyDeploymentSpec implements Editable<StrategyDeploymentSpecBu
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> label = new LinkedHashMap<String, String>();
     @JsonProperty("name")
-    private java.lang.String name;
+    private String name;
     @JsonProperty("spec")
     private DeploymentSpec spec;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -76,7 +76,7 @@ public class StrategyDeploymentSpec implements Editable<StrategyDeploymentSpecBu
     public StrategyDeploymentSpec() {
     }
 
-    public StrategyDeploymentSpec(Map<String, String> label, java.lang.String name, DeploymentSpec spec) {
+    public StrategyDeploymentSpec(Map<String, String> label, String name, DeploymentSpec spec) {
         super();
         this.label = label;
         this.name = name;
@@ -94,12 +94,12 @@ public class StrategyDeploymentSpec implements Editable<StrategyDeploymentSpecBu
     }
 
     @JsonProperty("name")
-    public java.lang.String getName() {
+    public String getName() {
         return name;
     }
 
     @JsonProperty("name")
-    public void setName(java.lang.String name) {
+    public void setName(String name) {
         this.name = name;
     }
 
@@ -124,12 +124,12 @@ public class StrategyDeploymentSpec implements Editable<StrategyDeploymentSpecBu
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 

@@ -85,14 +85,14 @@ public class ImagePrunerSpec implements Editable<ImagePrunerSpecBuilder> , Kuber
     @JsonProperty("keepYoungerThanDuration")
     private Duration keepYoungerThanDuration;
     @JsonProperty("logLevel")
-    private java.lang.String logLevel;
+    private String logLevel;
     @JsonProperty("nodeSelector")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> nodeSelector = new LinkedHashMap<String, String>();
     @JsonProperty("resources")
     private io.fabric8.kubernetes.api.model.ResourceRequirements resources;
     @JsonProperty("schedule")
-    private java.lang.String schedule;
+    private String schedule;
     @JsonProperty("successfulJobsHistoryLimit")
     private Integer successfulJobsHistoryLimit;
     @JsonProperty("suspend")
@@ -101,7 +101,7 @@ public class ImagePrunerSpec implements Editable<ImagePrunerSpecBuilder> , Kuber
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Toleration> tolerations = new ArrayList<Toleration>();
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -110,7 +110,7 @@ public class ImagePrunerSpec implements Editable<ImagePrunerSpecBuilder> , Kuber
     public ImagePrunerSpec() {
     }
 
-    public ImagePrunerSpec(Affinity affinity, Integer failedJobsHistoryLimit, Boolean ignoreInvalidImageReferences, Integer keepTagRevisions, Long keepYoungerThan, Duration keepYoungerThanDuration, java.lang.String logLevel, Map<String, String> nodeSelector, io.fabric8.kubernetes.api.model.ResourceRequirements resources, java.lang.String schedule, Integer successfulJobsHistoryLimit, Boolean suspend, List<Toleration> tolerations) {
+    public ImagePrunerSpec(Affinity affinity, Integer failedJobsHistoryLimit, Boolean ignoreInvalidImageReferences, Integer keepTagRevisions, Long keepYoungerThan, Duration keepYoungerThanDuration, String logLevel, Map<String, String> nodeSelector, io.fabric8.kubernetes.api.model.ResourceRequirements resources, String schedule, Integer successfulJobsHistoryLimit, Boolean suspend, List<Toleration> tolerations) {
         super();
         this.affinity = affinity;
         this.failedJobsHistoryLimit = failedJobsHistoryLimit;
@@ -188,12 +188,12 @@ public class ImagePrunerSpec implements Editable<ImagePrunerSpecBuilder> , Kuber
     }
 
     @JsonProperty("logLevel")
-    public java.lang.String getLogLevel() {
+    public String getLogLevel() {
         return logLevel;
     }
 
     @JsonProperty("logLevel")
-    public void setLogLevel(java.lang.String logLevel) {
+    public void setLogLevel(String logLevel) {
         this.logLevel = logLevel;
     }
 
@@ -218,12 +218,12 @@ public class ImagePrunerSpec implements Editable<ImagePrunerSpecBuilder> , Kuber
     }
 
     @JsonProperty("schedule")
-    public java.lang.String getSchedule() {
+    public String getSchedule() {
         return schedule;
     }
 
     @JsonProperty("schedule")
-    public void setSchedule(java.lang.String schedule) {
+    public void setSchedule(String schedule) {
         this.schedule = schedule;
     }
 
@@ -269,12 +269,12 @@ public class ImagePrunerSpec implements Editable<ImagePrunerSpecBuilder> , Kuber
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 

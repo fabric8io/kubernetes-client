@@ -59,12 +59,12 @@ public class ContainerMetrics implements Editable<ContainerMetricsBuilder> , Kub
 {
 
     @JsonProperty("name")
-    private java.lang.String name;
+    private String name;
     @JsonProperty("usage")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, Quantity> usage = new LinkedHashMap<String, Quantity>();
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -73,19 +73,19 @@ public class ContainerMetrics implements Editable<ContainerMetricsBuilder> , Kub
     public ContainerMetrics() {
     }
 
-    public ContainerMetrics(java.lang.String name, Map<String, Quantity> usage) {
+    public ContainerMetrics(String name, Map<String, Quantity> usage) {
         super();
         this.name = name;
         this.usage = usage;
     }
 
     @JsonProperty("name")
-    public java.lang.String getName() {
+    public String getName() {
         return name;
     }
 
     @JsonProperty("name")
-    public void setName(java.lang.String name) {
+    public void setName(String name) {
         this.name = name;
     }
 
@@ -110,12 +110,12 @@ public class ContainerMetrics implements Editable<ContainerMetricsBuilder> , Kub
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 

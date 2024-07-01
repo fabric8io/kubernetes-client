@@ -56,7 +56,7 @@ public class Secret implements Editable<SecretBuilder> , HasMetadata, Namespaced
      * 
      */
     @JsonProperty("apiVersion")
-    private java.lang.String apiVersion = "v1";
+    private String apiVersion = "v1";
     @JsonProperty("data")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> data = new LinkedHashMap<String, String>();
@@ -68,16 +68,16 @@ public class Secret implements Editable<SecretBuilder> , HasMetadata, Namespaced
      * 
      */
     @JsonProperty("kind")
-    private java.lang.String kind = "Secret";
+    private String kind = "Secret";
     @JsonProperty("metadata")
     private ObjectMeta metadata;
     @JsonProperty("stringData")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> stringData = new LinkedHashMap<String, String>();
     @JsonProperty("type")
-    private java.lang.String type;
+    private String type;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -86,7 +86,7 @@ public class Secret implements Editable<SecretBuilder> , HasMetadata, Namespaced
     public Secret() {
     }
 
-    public Secret(java.lang.String apiVersion, Map<String, String> data, Boolean immutable, java.lang.String kind, ObjectMeta metadata, Map<String, String> stringData, java.lang.String type) {
+    public Secret(String apiVersion, Map<String, String> data, Boolean immutable, String kind, ObjectMeta metadata, Map<String, String> stringData, String type) {
         super();
         this.apiVersion = apiVersion;
         this.data = data;
@@ -103,7 +103,7 @@ public class Secret implements Editable<SecretBuilder> , HasMetadata, Namespaced
      * 
      */
     @JsonProperty("apiVersion")
-    public java.lang.String getApiVersion() {
+    public String getApiVersion() {
         return apiVersion;
     }
 
@@ -113,7 +113,7 @@ public class Secret implements Editable<SecretBuilder> , HasMetadata, Namespaced
      * 
      */
     @JsonProperty("apiVersion")
-    public void setApiVersion(java.lang.String apiVersion) {
+    public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
     }
 
@@ -143,7 +143,7 @@ public class Secret implements Editable<SecretBuilder> , HasMetadata, Namespaced
      * 
      */
     @JsonProperty("kind")
-    public java.lang.String getKind() {
+    public String getKind() {
         return kind;
     }
 
@@ -153,7 +153,7 @@ public class Secret implements Editable<SecretBuilder> , HasMetadata, Namespaced
      * 
      */
     @JsonProperty("kind")
-    public void setKind(java.lang.String kind) {
+    public void setKind(String kind) {
         this.kind = kind;
     }
 
@@ -178,12 +178,12 @@ public class Secret implements Editable<SecretBuilder> , HasMetadata, Namespaced
     }
 
     @JsonProperty("type")
-    public java.lang.String getType() {
+    public String getType() {
         return type;
     }
 
     @JsonProperty("type")
-    public void setType(java.lang.String type) {
+    public void setType(String type) {
         this.type = type;
     }
 
@@ -198,12 +198,12 @@ public class Secret implements Editable<SecretBuilder> , HasMetadata, Namespaced
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 

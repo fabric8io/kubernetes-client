@@ -78,49 +78,49 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
 {
 
     @JsonProperty("apiFloatingIP")
-    private java.lang.String apiFloatingIP;
+    private String apiFloatingIP;
     @JsonProperty("apiVIP")
-    private java.lang.String apiVIP;
+    private String apiVIP;
     @JsonProperty("apiVIPs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> apiVIPs = new ArrayList<java.lang.String>();
+    private List<String> apiVIPs = new ArrayList<String>();
     @JsonProperty("cloud")
-    private java.lang.String cloud;
+    private String cloud;
     @JsonProperty("clusterOSImage")
-    private java.lang.String clusterOSImage;
+    private String clusterOSImage;
     @JsonProperty("clusterOSImageProperties")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> clusterOSImageProperties = new LinkedHashMap<String, String>();
     @JsonProperty("computeFlavor")
-    private java.lang.String computeFlavor;
+    private String computeFlavor;
     @JsonProperty("defaultMachinePlatform")
     private MachinePool defaultMachinePlatform;
     @JsonProperty("externalDNS")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> externalDNS = new ArrayList<java.lang.String>();
+    private List<String> externalDNS = new ArrayList<String>();
     @JsonProperty("externalNetwork")
-    private java.lang.String externalNetwork;
+    private String externalNetwork;
     @JsonProperty("ingressFloatingIP")
-    private java.lang.String ingressFloatingIP;
+    private String ingressFloatingIP;
     @JsonProperty("ingressVIP")
-    private java.lang.String ingressVIP;
+    private String ingressVIP;
     @JsonProperty("ingressVIPs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> ingressVIPs = new ArrayList<java.lang.String>();
+    private List<String> ingressVIPs = new ArrayList<String>();
     @JsonProperty("lbFloatingIP")
-    private java.lang.String lbFloatingIP;
+    private String lbFloatingIP;
     @JsonProperty("loadBalancer")
     private OpenStackPlatformLoadBalancer loadBalancer;
     @JsonProperty("machinesSubnet")
-    private java.lang.String machinesSubnet;
+    private String machinesSubnet;
     @JsonProperty("octaviaSupport")
-    private java.lang.String octaviaSupport;
+    private String octaviaSupport;
     @JsonProperty("region")
-    private java.lang.String region;
+    private String region;
     @JsonProperty("trunkSupport")
-    private java.lang.String trunkSupport;
+    private String trunkSupport;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -129,7 +129,7 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     public Platform() {
     }
 
-    public Platform(java.lang.String apiFloatingIP, java.lang.String apiVIP, List<java.lang.String> apiVIPs, java.lang.String cloud, java.lang.String clusterOSImage, Map<String, String> clusterOSImageProperties, java.lang.String computeFlavor, MachinePool defaultMachinePlatform, List<java.lang.String> externalDNS, java.lang.String externalNetwork, java.lang.String ingressFloatingIP, java.lang.String ingressVIP, List<java.lang.String> ingressVIPs, java.lang.String lbFloatingIP, OpenStackPlatformLoadBalancer loadBalancer, java.lang.String machinesSubnet, java.lang.String octaviaSupport, java.lang.String region, java.lang.String trunkSupport) {
+    public Platform(String apiFloatingIP, String apiVIP, List<String> apiVIPs, String cloud, String clusterOSImage, Map<String, String> clusterOSImageProperties, String computeFlavor, MachinePool defaultMachinePlatform, List<String> externalDNS, String externalNetwork, String ingressFloatingIP, String ingressVIP, List<String> ingressVIPs, String lbFloatingIP, OpenStackPlatformLoadBalancer loadBalancer, String machinesSubnet, String octaviaSupport, String region, String trunkSupport) {
         super();
         this.apiFloatingIP = apiFloatingIP;
         this.apiVIP = apiVIP;
@@ -153,53 +153,53 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     }
 
     @JsonProperty("apiFloatingIP")
-    public java.lang.String getApiFloatingIP() {
+    public String getApiFloatingIP() {
         return apiFloatingIP;
     }
 
     @JsonProperty("apiFloatingIP")
-    public void setApiFloatingIP(java.lang.String apiFloatingIP) {
+    public void setApiFloatingIP(String apiFloatingIP) {
         this.apiFloatingIP = apiFloatingIP;
     }
 
     @JsonProperty("apiVIP")
-    public java.lang.String getApiVIP() {
+    public String getApiVIP() {
         return apiVIP;
     }
 
     @JsonProperty("apiVIP")
-    public void setApiVIP(java.lang.String apiVIP) {
+    public void setApiVIP(String apiVIP) {
         this.apiVIP = apiVIP;
     }
 
     @JsonProperty("apiVIPs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<java.lang.String> getApiVIPs() {
+    public List<String> getApiVIPs() {
         return apiVIPs;
     }
 
     @JsonProperty("apiVIPs")
-    public void setApiVIPs(List<java.lang.String> apiVIPs) {
+    public void setApiVIPs(List<String> apiVIPs) {
         this.apiVIPs = apiVIPs;
     }
 
     @JsonProperty("cloud")
-    public java.lang.String getCloud() {
+    public String getCloud() {
         return cloud;
     }
 
     @JsonProperty("cloud")
-    public void setCloud(java.lang.String cloud) {
+    public void setCloud(String cloud) {
         this.cloud = cloud;
     }
 
     @JsonProperty("clusterOSImage")
-    public java.lang.String getClusterOSImage() {
+    public String getClusterOSImage() {
         return clusterOSImage;
     }
 
     @JsonProperty("clusterOSImage")
-    public void setClusterOSImage(java.lang.String clusterOSImage) {
+    public void setClusterOSImage(String clusterOSImage) {
         this.clusterOSImage = clusterOSImage;
     }
 
@@ -214,12 +214,12 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     }
 
     @JsonProperty("computeFlavor")
-    public java.lang.String getComputeFlavor() {
+    public String getComputeFlavor() {
         return computeFlavor;
     }
 
     @JsonProperty("computeFlavor")
-    public void setComputeFlavor(java.lang.String computeFlavor) {
+    public void setComputeFlavor(String computeFlavor) {
         this.computeFlavor = computeFlavor;
     }
 
@@ -234,63 +234,63 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     }
 
     @JsonProperty("externalDNS")
-    public List<java.lang.String> getExternalDNS() {
+    public List<String> getExternalDNS() {
         return externalDNS;
     }
 
     @JsonProperty("externalDNS")
-    public void setExternalDNS(List<java.lang.String> externalDNS) {
+    public void setExternalDNS(List<String> externalDNS) {
         this.externalDNS = externalDNS;
     }
 
     @JsonProperty("externalNetwork")
-    public java.lang.String getExternalNetwork() {
+    public String getExternalNetwork() {
         return externalNetwork;
     }
 
     @JsonProperty("externalNetwork")
-    public void setExternalNetwork(java.lang.String externalNetwork) {
+    public void setExternalNetwork(String externalNetwork) {
         this.externalNetwork = externalNetwork;
     }
 
     @JsonProperty("ingressFloatingIP")
-    public java.lang.String getIngressFloatingIP() {
+    public String getIngressFloatingIP() {
         return ingressFloatingIP;
     }
 
     @JsonProperty("ingressFloatingIP")
-    public void setIngressFloatingIP(java.lang.String ingressFloatingIP) {
+    public void setIngressFloatingIP(String ingressFloatingIP) {
         this.ingressFloatingIP = ingressFloatingIP;
     }
 
     @JsonProperty("ingressVIP")
-    public java.lang.String getIngressVIP() {
+    public String getIngressVIP() {
         return ingressVIP;
     }
 
     @JsonProperty("ingressVIP")
-    public void setIngressVIP(java.lang.String ingressVIP) {
+    public void setIngressVIP(String ingressVIP) {
         this.ingressVIP = ingressVIP;
     }
 
     @JsonProperty("ingressVIPs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<java.lang.String> getIngressVIPs() {
+    public List<String> getIngressVIPs() {
         return ingressVIPs;
     }
 
     @JsonProperty("ingressVIPs")
-    public void setIngressVIPs(List<java.lang.String> ingressVIPs) {
+    public void setIngressVIPs(List<String> ingressVIPs) {
         this.ingressVIPs = ingressVIPs;
     }
 
     @JsonProperty("lbFloatingIP")
-    public java.lang.String getLbFloatingIP() {
+    public String getLbFloatingIP() {
         return lbFloatingIP;
     }
 
     @JsonProperty("lbFloatingIP")
-    public void setLbFloatingIP(java.lang.String lbFloatingIP) {
+    public void setLbFloatingIP(String lbFloatingIP) {
         this.lbFloatingIP = lbFloatingIP;
     }
 
@@ -305,42 +305,42 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     }
 
     @JsonProperty("machinesSubnet")
-    public java.lang.String getMachinesSubnet() {
+    public String getMachinesSubnet() {
         return machinesSubnet;
     }
 
     @JsonProperty("machinesSubnet")
-    public void setMachinesSubnet(java.lang.String machinesSubnet) {
+    public void setMachinesSubnet(String machinesSubnet) {
         this.machinesSubnet = machinesSubnet;
     }
 
     @JsonProperty("octaviaSupport")
-    public java.lang.String getOctaviaSupport() {
+    public String getOctaviaSupport() {
         return octaviaSupport;
     }
 
     @JsonProperty("octaviaSupport")
-    public void setOctaviaSupport(java.lang.String octaviaSupport) {
+    public void setOctaviaSupport(String octaviaSupport) {
         this.octaviaSupport = octaviaSupport;
     }
 
     @JsonProperty("region")
-    public java.lang.String getRegion() {
+    public String getRegion() {
         return region;
     }
 
     @JsonProperty("region")
-    public void setRegion(java.lang.String region) {
+    public void setRegion(String region) {
         this.region = region;
     }
 
     @JsonProperty("trunkSupport")
-    public java.lang.String getTrunkSupport() {
+    public String getTrunkSupport() {
         return trunkSupport;
     }
 
     @JsonProperty("trunkSupport")
-    public void setTrunkSupport(java.lang.String trunkSupport) {
+    public void setTrunkSupport(String trunkSupport) {
         this.trunkSupport = trunkSupport;
     }
 
@@ -355,12 +355,12 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 

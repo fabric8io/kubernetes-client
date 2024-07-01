@@ -72,7 +72,7 @@ public class MachinePoolSpec implements Editable<MachinePoolSpecBuilder> , Kuber
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> labels = new LinkedHashMap<String, String>();
     @JsonProperty("name")
-    private java.lang.String name;
+    private String name;
     @JsonProperty("platform")
     private MachinePoolPlatform platform;
     @JsonProperty("replicas")
@@ -81,7 +81,7 @@ public class MachinePoolSpec implements Editable<MachinePoolSpecBuilder> , Kuber
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Taint> taints = new ArrayList<Taint>();
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -90,7 +90,7 @@ public class MachinePoolSpec implements Editable<MachinePoolSpecBuilder> , Kuber
     public MachinePoolSpec() {
     }
 
-    public MachinePoolSpec(MachinePoolAutoscaling autoscaling, io.fabric8.kubernetes.api.model.LocalObjectReference clusterDeploymentRef, Map<String, String> labels, java.lang.String name, MachinePoolPlatform platform, Long replicas, List<Taint> taints) {
+    public MachinePoolSpec(MachinePoolAutoscaling autoscaling, io.fabric8.kubernetes.api.model.LocalObjectReference clusterDeploymentRef, Map<String, String> labels, String name, MachinePoolPlatform platform, Long replicas, List<Taint> taints) {
         super();
         this.autoscaling = autoscaling;
         this.clusterDeploymentRef = clusterDeploymentRef;
@@ -132,12 +132,12 @@ public class MachinePoolSpec implements Editable<MachinePoolSpecBuilder> , Kuber
     }
 
     @JsonProperty("name")
-    public java.lang.String getName() {
+    public String getName() {
         return name;
     }
 
     @JsonProperty("name")
-    public void setName(java.lang.String name) {
+    public void setName(String name) {
         this.name = name;
     }
 
@@ -183,12 +183,12 @@ public class MachinePoolSpec implements Editable<MachinePoolSpecBuilder> , Kuber
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 

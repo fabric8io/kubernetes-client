@@ -88,9 +88,9 @@ public class BuildConfigSpec implements Editable<BuildConfigSpecBuilder> , Kuber
     @JsonProperty("revision")
     private SourceRevision revision;
     @JsonProperty("runPolicy")
-    private java.lang.String runPolicy;
+    private String runPolicy;
     @JsonProperty("serviceAccount")
-    private java.lang.String serviceAccount;
+    private String serviceAccount;
     @JsonProperty("source")
     private BuildSource source;
     @JsonProperty("strategy")
@@ -101,7 +101,7 @@ public class BuildConfigSpec implements Editable<BuildConfigSpecBuilder> , Kuber
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<BuildTriggerPolicy> triggers = new ArrayList<BuildTriggerPolicy>();
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -110,7 +110,7 @@ public class BuildConfigSpec implements Editable<BuildConfigSpecBuilder> , Kuber
     public BuildConfigSpec() {
     }
 
-    public BuildConfigSpec(Long completionDeadlineSeconds, Integer failedBuildsHistoryLimit, Boolean mountTrustedCA, Map<String, String> nodeSelector, BuildOutput output, BuildPostCommitSpec postCommit, io.fabric8.kubernetes.api.model.ResourceRequirements resources, SourceRevision revision, java.lang.String runPolicy, java.lang.String serviceAccount, BuildSource source, BuildStrategy strategy, Integer successfulBuildsHistoryLimit, List<BuildTriggerPolicy> triggers) {
+    public BuildConfigSpec(Long completionDeadlineSeconds, Integer failedBuildsHistoryLimit, Boolean mountTrustedCA, Map<String, String> nodeSelector, BuildOutput output, BuildPostCommitSpec postCommit, io.fabric8.kubernetes.api.model.ResourceRequirements resources, SourceRevision revision, String runPolicy, String serviceAccount, BuildSource source, BuildStrategy strategy, Integer successfulBuildsHistoryLimit, List<BuildTriggerPolicy> triggers) {
         super();
         this.completionDeadlineSeconds = completionDeadlineSeconds;
         this.failedBuildsHistoryLimit = failedBuildsHistoryLimit;
@@ -209,22 +209,22 @@ public class BuildConfigSpec implements Editable<BuildConfigSpecBuilder> , Kuber
     }
 
     @JsonProperty("runPolicy")
-    public java.lang.String getRunPolicy() {
+    public String getRunPolicy() {
         return runPolicy;
     }
 
     @JsonProperty("runPolicy")
-    public void setRunPolicy(java.lang.String runPolicy) {
+    public void setRunPolicy(String runPolicy) {
         this.runPolicy = runPolicy;
     }
 
     @JsonProperty("serviceAccount")
-    public java.lang.String getServiceAccount() {
+    public String getServiceAccount() {
         return serviceAccount;
     }
 
     @JsonProperty("serviceAccount")
-    public void setServiceAccount(java.lang.String serviceAccount) {
+    public void setServiceAccount(String serviceAccount) {
         this.serviceAccount = serviceAccount;
     }
 
@@ -280,12 +280,12 @@ public class BuildConfigSpec implements Editable<BuildConfigSpecBuilder> , Kuber
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 

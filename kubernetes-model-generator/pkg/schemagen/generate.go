@@ -152,6 +152,10 @@ func (g *schemaGenerator) javaTypeWrapPrimitive(t reflect.Type) string {
 		return "Float"
 	case "double":
 		return "Double"
+	case "string":
+		return "java.lang.String"
+	case "String":
+		return "java.lang.String"
 	default:
 		return typeName
 	}
@@ -390,7 +394,7 @@ func (g *schemaGenerator) getPropertyDescriptor(t reflect.Type, desc string, omi
 				MapValueType: g.getPropertyDescriptor(t.Elem(), desc, false),
 			},
 			ExistingJavaTypeDescriptor: &ExistingJavaTypeDescriptor{
-				ExistingJavaType: "java.util.Map<String, " + g.javaTypeWrapPrimitive(t.Elem()) + ">",
+				ExistingJavaType: "java.util.Map<java.lang.String, " + g.javaTypeWrapPrimitive(t.Elem()) + ">",
 			},
 		}
 	case reflect.Struct:
@@ -564,7 +568,7 @@ func (g *schemaGenerator) isSubresourceContainingMetadata(t reflect.Type) bool {
 		"MachineSpec",
 		"MachineTemplateSpec",
 		"ResourceClaimTemplateSpec",
-                "OpenShiftMachineV1Beta1MachineTemplate",
+		"OpenShiftMachineV1Beta1MachineTemplate",
 	}
 	return Contains(subResourcesContainingMetadataList, t.Name())
 }
@@ -606,7 +610,7 @@ func (g *schemaGenerator) isClusterScopedResource(t reflect.Type) bool {
 		"k8s.io/api/certificates/v1alpha1/ClusterTrustBundle",
 		"k8s.io/api/certificates/v1beta1/CertificateSigningRequest",
 		"k8s.io/api/certificates/v1/CertificateSigningRequest",
-                "k8s.io/api/storage/v1alpha1/VolumeAttributesClass",
+		"k8s.io/api/storage/v1alpha1/VolumeAttributesClass",
 		"k8s.io/api/storage/v1beta1/CSIDriver",
 		"k8s.io/api/storage/v1beta1/CSINode",
 		"k8s.io/api/storage/v1/CSIDriver",
@@ -695,8 +699,8 @@ func (g *schemaGenerator) isClusterScopedResource(t reflect.Type) bool {
 		"github.com/openshift/api/console/v1/ConsoleQuickStart",
 		"github.com/openshift/api/console/v1alpha1/ConsolePlugin",
 		"github.com/openshift/api/config/v1/Ingress",
-                "github.com/openshift/api/config/v1/ImageDigestMirrorSet",
-                "github.com/openshift/api/config/v1/ImageTagMirrorSet",
+		"github.com/openshift/api/config/v1/ImageDigestMirrorSet",
+		"github.com/openshift/api/config/v1/ImageTagMirrorSet",
 		"github.com/openshift/api/template/v1/BrokerTemplateInstance",
 		"github.com/openshift/api/helm/v1beta1/HelmChartRepository",
 		"github.com/openshift/api/network/v1/HostSubnet",

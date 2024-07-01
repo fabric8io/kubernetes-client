@@ -67,19 +67,19 @@ public class ObjectMeta implements Editable<ObjectMetaBuilder> , KubernetesResou
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> annotations = new LinkedHashMap<String, String>();
     @JsonProperty("generateName")
-    private java.lang.String generateName;
+    private String generateName;
     @JsonProperty("labels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> labels = new LinkedHashMap<String, String>();
     @JsonProperty("name")
-    private java.lang.String name;
+    private String name;
     @JsonProperty("namespace")
-    private java.lang.String namespace;
+    private String namespace;
     @JsonProperty("ownerReferences")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<OwnerReference> ownerReferences = new ArrayList<OwnerReference>();
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -88,7 +88,7 @@ public class ObjectMeta implements Editable<ObjectMetaBuilder> , KubernetesResou
     public ObjectMeta() {
     }
 
-    public ObjectMeta(Map<String, String> annotations, java.lang.String generateName, Map<String, String> labels, java.lang.String name, java.lang.String namespace, List<OwnerReference> ownerReferences) {
+    public ObjectMeta(Map<String, String> annotations, String generateName, Map<String, String> labels, String name, String namespace, List<OwnerReference> ownerReferences) {
         super();
         this.annotations = annotations;
         this.generateName = generateName;
@@ -109,12 +109,12 @@ public class ObjectMeta implements Editable<ObjectMetaBuilder> , KubernetesResou
     }
 
     @JsonProperty("generateName")
-    public java.lang.String getGenerateName() {
+    public String getGenerateName() {
         return generateName;
     }
 
     @JsonProperty("generateName")
-    public void setGenerateName(java.lang.String generateName) {
+    public void setGenerateName(String generateName) {
         this.generateName = generateName;
     }
 
@@ -129,22 +129,22 @@ public class ObjectMeta implements Editable<ObjectMetaBuilder> , KubernetesResou
     }
 
     @JsonProperty("name")
-    public java.lang.String getName() {
+    public String getName() {
         return name;
     }
 
     @JsonProperty("name")
-    public void setName(java.lang.String name) {
+    public void setName(String name) {
         this.name = name;
     }
 
     @JsonProperty("namespace")
-    public java.lang.String getNamespace() {
+    public String getNamespace() {
         return namespace;
     }
 
     @JsonProperty("namespace")
-    public void setNamespace(java.lang.String namespace) {
+    public void setNamespace(String namespace) {
         this.namespace = namespace;
     }
 
@@ -170,12 +170,12 @@ public class ObjectMeta implements Editable<ObjectMetaBuilder> , KubernetesResou
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 

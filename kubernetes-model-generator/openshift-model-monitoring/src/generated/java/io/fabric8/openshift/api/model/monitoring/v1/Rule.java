@@ -62,23 +62,23 @@ public class Rule implements Editable<RuleBuilder> , KubernetesResource
 {
 
     @JsonProperty("alert")
-    private java.lang.String alert;
+    private String alert;
     @JsonProperty("annotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> annotations = new LinkedHashMap<String, String>();
     @JsonProperty("expr")
     private io.fabric8.kubernetes.api.model.IntOrString expr;
     @JsonProperty("for")
-    private java.lang.String _for;
+    private String _for;
     @JsonProperty("keep_firing_for")
-    private java.lang.String keepFiringFor;
+    private String keepFiringFor;
     @JsonProperty("labels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> labels = new LinkedHashMap<String, String>();
     @JsonProperty("record")
-    private java.lang.String record;
+    private String record;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -87,7 +87,7 @@ public class Rule implements Editable<RuleBuilder> , KubernetesResource
     public Rule() {
     }
 
-    public Rule(java.lang.String alert, Map<String, String> annotations, io.fabric8.kubernetes.api.model.IntOrString expr, java.lang.String _for, java.lang.String keepFiringFor, Map<String, String> labels, java.lang.String record) {
+    public Rule(String alert, Map<String, String> annotations, io.fabric8.kubernetes.api.model.IntOrString expr, String _for, String keepFiringFor, Map<String, String> labels, String record) {
         super();
         this.alert = alert;
         this.annotations = annotations;
@@ -99,12 +99,12 @@ public class Rule implements Editable<RuleBuilder> , KubernetesResource
     }
 
     @JsonProperty("alert")
-    public java.lang.String getAlert() {
+    public String getAlert() {
         return alert;
     }
 
     @JsonProperty("alert")
-    public void setAlert(java.lang.String alert) {
+    public void setAlert(String alert) {
         this.alert = alert;
     }
 
@@ -129,22 +129,22 @@ public class Rule implements Editable<RuleBuilder> , KubernetesResource
     }
 
     @JsonProperty("for")
-    public java.lang.String getFor() {
+    public String getFor() {
         return _for;
     }
 
     @JsonProperty("for")
-    public void setFor(java.lang.String _for) {
+    public void setFor(String _for) {
         this._for = _for;
     }
 
     @JsonProperty("keep_firing_for")
-    public java.lang.String getKeepFiringFor() {
+    public String getKeepFiringFor() {
         return keepFiringFor;
     }
 
     @JsonProperty("keep_firing_for")
-    public void setKeepFiringFor(java.lang.String keepFiringFor) {
+    public void setKeepFiringFor(String keepFiringFor) {
         this.keepFiringFor = keepFiringFor;
     }
 
@@ -159,12 +159,12 @@ public class Rule implements Editable<RuleBuilder> , KubernetesResource
     }
 
     @JsonProperty("record")
-    public java.lang.String getRecord() {
+    public String getRecord() {
         return record;
     }
 
     @JsonProperty("record")
-    public void setRecord(java.lang.String record) {
+    public void setRecord(String record) {
         this.record = record;
     }
 
@@ -179,12 +179,12 @@ public class Rule implements Editable<RuleBuilder> , KubernetesResource
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 

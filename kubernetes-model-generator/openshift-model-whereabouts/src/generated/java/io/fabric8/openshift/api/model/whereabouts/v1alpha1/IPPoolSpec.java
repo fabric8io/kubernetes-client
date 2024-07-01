@@ -61,9 +61,9 @@ public class IPPoolSpec implements Editable<IPPoolSpecBuilder> , KubernetesResou
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, IPAllocation> allocations = new LinkedHashMap<String, IPAllocation>();
     @JsonProperty("range")
-    private java.lang.String range;
+    private String range;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -72,7 +72,7 @@ public class IPPoolSpec implements Editable<IPPoolSpecBuilder> , KubernetesResou
     public IPPoolSpec() {
     }
 
-    public IPPoolSpec(Map<String, IPAllocation> allocations, java.lang.String range) {
+    public IPPoolSpec(Map<String, IPAllocation> allocations, String range) {
         super();
         this.allocations = allocations;
         this.range = range;
@@ -89,12 +89,12 @@ public class IPPoolSpec implements Editable<IPPoolSpecBuilder> , KubernetesResou
     }
 
     @JsonProperty("range")
-    public java.lang.String getRange() {
+    public String getRange() {
         return range;
     }
 
     @JsonProperty("range")
-    public void setRange(java.lang.String range) {
+    public void setRange(String range) {
         this.range = range;
     }
 
@@ -109,12 +109,12 @@ public class IPPoolSpec implements Editable<IPPoolSpecBuilder> , KubernetesResou
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 

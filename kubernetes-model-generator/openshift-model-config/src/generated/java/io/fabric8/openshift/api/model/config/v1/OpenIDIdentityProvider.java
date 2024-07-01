@@ -69,7 +69,7 @@ public class OpenIDIdentityProvider implements Editable<OpenIDIdentityProviderBu
     @JsonProperty("claims")
     private OpenIDClaims claims;
     @JsonProperty("clientID")
-    private java.lang.String clientID;
+    private String clientID;
     @JsonProperty("clientSecret")
     private SecretNameReference clientSecret;
     @JsonProperty("extraAuthorizeParameters")
@@ -77,11 +77,11 @@ public class OpenIDIdentityProvider implements Editable<OpenIDIdentityProviderBu
     private Map<String, String> extraAuthorizeParameters = new LinkedHashMap<String, String>();
     @JsonProperty("extraScopes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> extraScopes = new ArrayList<java.lang.String>();
+    private List<String> extraScopes = new ArrayList<String>();
     @JsonProperty("issuer")
-    private java.lang.String issuer;
+    private String issuer;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -90,7 +90,7 @@ public class OpenIDIdentityProvider implements Editable<OpenIDIdentityProviderBu
     public OpenIDIdentityProvider() {
     }
 
-    public OpenIDIdentityProvider(ConfigMapNameReference ca, OpenIDClaims claims, java.lang.String clientID, SecretNameReference clientSecret, Map<String, String> extraAuthorizeParameters, List<java.lang.String> extraScopes, java.lang.String issuer) {
+    public OpenIDIdentityProvider(ConfigMapNameReference ca, OpenIDClaims claims, String clientID, SecretNameReference clientSecret, Map<String, String> extraAuthorizeParameters, List<String> extraScopes, String issuer) {
         super();
         this.ca = ca;
         this.claims = claims;
@@ -122,12 +122,12 @@ public class OpenIDIdentityProvider implements Editable<OpenIDIdentityProviderBu
     }
 
     @JsonProperty("clientID")
-    public java.lang.String getClientID() {
+    public String getClientID() {
         return clientID;
     }
 
     @JsonProperty("clientID")
-    public void setClientID(java.lang.String clientID) {
+    public void setClientID(String clientID) {
         this.clientID = clientID;
     }
 
@@ -153,22 +153,22 @@ public class OpenIDIdentityProvider implements Editable<OpenIDIdentityProviderBu
 
     @JsonProperty("extraScopes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<java.lang.String> getExtraScopes() {
+    public List<String> getExtraScopes() {
         return extraScopes;
     }
 
     @JsonProperty("extraScopes")
-    public void setExtraScopes(List<java.lang.String> extraScopes) {
+    public void setExtraScopes(List<String> extraScopes) {
         this.extraScopes = extraScopes;
     }
 
     @JsonProperty("issuer")
-    public java.lang.String getIssuer() {
+    public String getIssuer() {
         return issuer;
     }
 
     @JsonProperty("issuer")
-    public void setIssuer(java.lang.String issuer) {
+    public void setIssuer(String issuer) {
         this.issuer = issuer;
     }
 
@@ -183,12 +183,12 @@ public class OpenIDIdentityProvider implements Editable<OpenIDIdentityProviderBu
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 

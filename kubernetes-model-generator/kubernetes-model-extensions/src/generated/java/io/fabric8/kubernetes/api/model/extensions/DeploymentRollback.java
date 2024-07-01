@@ -75,23 +75,23 @@ public class DeploymentRollback implements Editable<DeploymentRollbackBuilder> ,
      * 
      */
     @JsonProperty("apiVersion")
-    private java.lang.String apiVersion = "extensions/v1beta1";
+    private String apiVersion = "extensions/v1beta1";
     /**
      * 
      * (Required)
      * 
      */
     @JsonProperty("kind")
-    private java.lang.String kind = "DeploymentRollback";
+    private String kind = "DeploymentRollback";
     @JsonProperty("name")
-    private java.lang.String name;
+    private String name;
     @JsonProperty("rollbackTo")
     private RollbackConfig rollbackTo;
     @JsonProperty("updatedAnnotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> updatedAnnotations = new LinkedHashMap<String, String>();
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -100,7 +100,7 @@ public class DeploymentRollback implements Editable<DeploymentRollbackBuilder> ,
     public DeploymentRollback() {
     }
 
-    public DeploymentRollback(java.lang.String apiVersion, java.lang.String kind, java.lang.String name, RollbackConfig rollbackTo, Map<String, String> updatedAnnotations) {
+    public DeploymentRollback(String apiVersion, String kind, String name, RollbackConfig rollbackTo, Map<String, String> updatedAnnotations) {
         super();
         this.apiVersion = apiVersion;
         this.kind = kind;
@@ -115,7 +115,7 @@ public class DeploymentRollback implements Editable<DeploymentRollbackBuilder> ,
      * 
      */
     @JsonProperty("apiVersion")
-    public java.lang.String getApiVersion() {
+    public String getApiVersion() {
         return apiVersion;
     }
 
@@ -125,7 +125,7 @@ public class DeploymentRollback implements Editable<DeploymentRollbackBuilder> ,
      * 
      */
     @JsonProperty("apiVersion")
-    public void setApiVersion(java.lang.String apiVersion) {
+    public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
     }
 
@@ -135,7 +135,7 @@ public class DeploymentRollback implements Editable<DeploymentRollbackBuilder> ,
      * 
      */
     @JsonProperty("kind")
-    public java.lang.String getKind() {
+    public String getKind() {
         return kind;
     }
 
@@ -145,17 +145,17 @@ public class DeploymentRollback implements Editable<DeploymentRollbackBuilder> ,
      * 
      */
     @JsonProperty("kind")
-    public void setKind(java.lang.String kind) {
+    public void setKind(String kind) {
         this.kind = kind;
     }
 
     @JsonProperty("name")
-    public java.lang.String getName() {
+    public String getName() {
         return name;
     }
 
     @JsonProperty("name")
-    public void setName(java.lang.String name) {
+    public void setName(String name) {
         this.name = name;
     }
 
@@ -190,12 +190,12 @@ public class DeploymentRollback implements Editable<DeploymentRollbackBuilder> ,
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 

@@ -86,7 +86,7 @@ public class DeploymentConfigSpec implements Editable<DeploymentConfigSpecBuilde
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<DeploymentTriggerPolicy> triggers = new ArrayList<DeploymentTriggerPolicy>();
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -209,12 +209,12 @@ public class DeploymentConfigSpec implements Editable<DeploymentConfigSpecBuilde
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 

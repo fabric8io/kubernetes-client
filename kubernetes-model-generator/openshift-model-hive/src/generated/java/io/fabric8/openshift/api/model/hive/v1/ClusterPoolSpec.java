@@ -78,7 +78,7 @@ public class ClusterPoolSpec implements Editable<ClusterPoolSpecBuilder> , Kuber
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> annotations = new LinkedHashMap<String, String>();
     @JsonProperty("baseDomain")
-    private java.lang.String baseDomain;
+    private String baseDomain;
     @JsonProperty("claimLifetime")
     private ClusterPoolClaimLifetime claimLifetime;
     @JsonProperty("hibernateAfter")
@@ -112,7 +112,7 @@ public class ClusterPoolSpec implements Editable<ClusterPoolSpecBuilder> , Kuber
     @JsonProperty("skipMachinePools")
     private Boolean skipMachinePools;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -121,7 +121,7 @@ public class ClusterPoolSpec implements Editable<ClusterPoolSpecBuilder> , Kuber
     public ClusterPoolSpec() {
     }
 
-    public ClusterPoolSpec(Map<String, String> annotations, java.lang.String baseDomain, ClusterPoolClaimLifetime claimLifetime, Duration hibernateAfter, HibernationConfig hibernationConfig, ClusterImageSetReference imageSetRef, Integer installAttemptsLimit, io.fabric8.kubernetes.api.model.LocalObjectReference installConfigSecretTemplateRef, List<InventoryEntry> inventory, Map<String, String> labels, Integer maxConcurrent, Integer maxSize, Platform platform, io.fabric8.kubernetes.api.model.LocalObjectReference pullSecretRef, Integer runningCount, Integer size, Boolean skipMachinePools) {
+    public ClusterPoolSpec(Map<String, String> annotations, String baseDomain, ClusterPoolClaimLifetime claimLifetime, Duration hibernateAfter, HibernationConfig hibernationConfig, ClusterImageSetReference imageSetRef, Integer installAttemptsLimit, io.fabric8.kubernetes.api.model.LocalObjectReference installConfigSecretTemplateRef, List<InventoryEntry> inventory, Map<String, String> labels, Integer maxConcurrent, Integer maxSize, Platform platform, io.fabric8.kubernetes.api.model.LocalObjectReference pullSecretRef, Integer runningCount, Integer size, Boolean skipMachinePools) {
         super();
         this.annotations = annotations;
         this.baseDomain = baseDomain;
@@ -153,12 +153,12 @@ public class ClusterPoolSpec implements Editable<ClusterPoolSpecBuilder> , Kuber
     }
 
     @JsonProperty("baseDomain")
-    public java.lang.String getBaseDomain() {
+    public String getBaseDomain() {
         return baseDomain;
     }
 
     @JsonProperty("baseDomain")
-    public void setBaseDomain(java.lang.String baseDomain) {
+    public void setBaseDomain(String baseDomain) {
         this.baseDomain = baseDomain;
     }
 
@@ -324,12 +324,12 @@ public class ClusterPoolSpec implements Editable<ClusterPoolSpecBuilder> , Kuber
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 

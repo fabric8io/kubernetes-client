@@ -69,7 +69,7 @@ public class PersistentVolumeSpec implements Editable<PersistentVolumeSpecBuilde
 
     @JsonProperty("accessModes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> accessModes = new ArrayList<java.lang.String>();
+    private List<String> accessModes = new ArrayList<String>();
     @JsonProperty("awsElasticBlockStore")
     private AWSElasticBlockStoreVolumeSource awsElasticBlockStore;
     @JsonProperty("azureDisk")
@@ -105,13 +105,13 @@ public class PersistentVolumeSpec implements Editable<PersistentVolumeSpecBuilde
     private LocalVolumeSource local;
     @JsonProperty("mountOptions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> mountOptions = new ArrayList<java.lang.String>();
+    private List<String> mountOptions = new ArrayList<String>();
     @JsonProperty("nfs")
     private NFSVolumeSource nfs;
     @JsonProperty("nodeAffinity")
     private VolumeNodeAffinity nodeAffinity;
     @JsonProperty("persistentVolumeReclaimPolicy")
-    private java.lang.String persistentVolumeReclaimPolicy;
+    private String persistentVolumeReclaimPolicy;
     @JsonProperty("photonPersistentDisk")
     private PhotonPersistentDiskVolumeSource photonPersistentDisk;
     @JsonProperty("portworxVolume")
@@ -123,17 +123,17 @@ public class PersistentVolumeSpec implements Editable<PersistentVolumeSpecBuilde
     @JsonProperty("scaleIO")
     private ScaleIOPersistentVolumeSource scaleIO;
     @JsonProperty("storageClassName")
-    private java.lang.String storageClassName;
+    private String storageClassName;
     @JsonProperty("storageos")
     private StorageOSPersistentVolumeSource storageos;
     @JsonProperty("volumeAttributesClassName")
-    private java.lang.String volumeAttributesClassName;
+    private String volumeAttributesClassName;
     @JsonProperty("volumeMode")
-    private java.lang.String volumeMode;
+    private String volumeMode;
     @JsonProperty("vsphereVolume")
     private VsphereVirtualDiskVolumeSource vsphereVolume;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -142,7 +142,7 @@ public class PersistentVolumeSpec implements Editable<PersistentVolumeSpecBuilde
     public PersistentVolumeSpec() {
     }
 
-    public PersistentVolumeSpec(List<java.lang.String> accessModes, AWSElasticBlockStoreVolumeSource awsElasticBlockStore, AzureDiskVolumeSource azureDisk, AzureFilePersistentVolumeSource azureFile, Map<String, Quantity> capacity, CephFSPersistentVolumeSource cephfs, CinderPersistentVolumeSource cinder, ObjectReference claimRef, CSIPersistentVolumeSource csi, FCVolumeSource fc, FlexPersistentVolumeSource flexVolume, FlockerVolumeSource flocker, GCEPersistentDiskVolumeSource gcePersistentDisk, GlusterfsPersistentVolumeSource glusterfs, HostPathVolumeSource hostPath, ISCSIPersistentVolumeSource iscsi, LocalVolumeSource local, List<java.lang.String> mountOptions, NFSVolumeSource nfs, VolumeNodeAffinity nodeAffinity, java.lang.String persistentVolumeReclaimPolicy, PhotonPersistentDiskVolumeSource photonPersistentDisk, PortworxVolumeSource portworxVolume, QuobyteVolumeSource quobyte, RBDPersistentVolumeSource rbd, ScaleIOPersistentVolumeSource scaleIO, java.lang.String storageClassName, StorageOSPersistentVolumeSource storageos, java.lang.String volumeAttributesClassName, java.lang.String volumeMode, VsphereVirtualDiskVolumeSource vsphereVolume) {
+    public PersistentVolumeSpec(List<String> accessModes, AWSElasticBlockStoreVolumeSource awsElasticBlockStore, AzureDiskVolumeSource azureDisk, AzureFilePersistentVolumeSource azureFile, Map<String, Quantity> capacity, CephFSPersistentVolumeSource cephfs, CinderPersistentVolumeSource cinder, ObjectReference claimRef, CSIPersistentVolumeSource csi, FCVolumeSource fc, FlexPersistentVolumeSource flexVolume, FlockerVolumeSource flocker, GCEPersistentDiskVolumeSource gcePersistentDisk, GlusterfsPersistentVolumeSource glusterfs, HostPathVolumeSource hostPath, ISCSIPersistentVolumeSource iscsi, LocalVolumeSource local, List<String> mountOptions, NFSVolumeSource nfs, VolumeNodeAffinity nodeAffinity, String persistentVolumeReclaimPolicy, PhotonPersistentDiskVolumeSource photonPersistentDisk, PortworxVolumeSource portworxVolume, QuobyteVolumeSource quobyte, RBDPersistentVolumeSource rbd, ScaleIOPersistentVolumeSource scaleIO, String storageClassName, StorageOSPersistentVolumeSource storageos, String volumeAttributesClassName, String volumeMode, VsphereVirtualDiskVolumeSource vsphereVolume) {
         super();
         this.accessModes = accessModes;
         this.awsElasticBlockStore = awsElasticBlockStore;
@@ -179,12 +179,12 @@ public class PersistentVolumeSpec implements Editable<PersistentVolumeSpecBuilde
 
     @JsonProperty("accessModes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<java.lang.String> getAccessModes() {
+    public List<String> getAccessModes() {
         return accessModes;
     }
 
     @JsonProperty("accessModes")
-    public void setAccessModes(List<java.lang.String> accessModes) {
+    public void setAccessModes(List<String> accessModes) {
         this.accessModes = accessModes;
     }
 
@@ -350,12 +350,12 @@ public class PersistentVolumeSpec implements Editable<PersistentVolumeSpecBuilde
 
     @JsonProperty("mountOptions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<java.lang.String> getMountOptions() {
+    public List<String> getMountOptions() {
         return mountOptions;
     }
 
     @JsonProperty("mountOptions")
-    public void setMountOptions(List<java.lang.String> mountOptions) {
+    public void setMountOptions(List<String> mountOptions) {
         this.mountOptions = mountOptions;
     }
 
@@ -380,12 +380,12 @@ public class PersistentVolumeSpec implements Editable<PersistentVolumeSpecBuilde
     }
 
     @JsonProperty("persistentVolumeReclaimPolicy")
-    public java.lang.String getPersistentVolumeReclaimPolicy() {
+    public String getPersistentVolumeReclaimPolicy() {
         return persistentVolumeReclaimPolicy;
     }
 
     @JsonProperty("persistentVolumeReclaimPolicy")
-    public void setPersistentVolumeReclaimPolicy(java.lang.String persistentVolumeReclaimPolicy) {
+    public void setPersistentVolumeReclaimPolicy(String persistentVolumeReclaimPolicy) {
         this.persistentVolumeReclaimPolicy = persistentVolumeReclaimPolicy;
     }
 
@@ -440,12 +440,12 @@ public class PersistentVolumeSpec implements Editable<PersistentVolumeSpecBuilde
     }
 
     @JsonProperty("storageClassName")
-    public java.lang.String getStorageClassName() {
+    public String getStorageClassName() {
         return storageClassName;
     }
 
     @JsonProperty("storageClassName")
-    public void setStorageClassName(java.lang.String storageClassName) {
+    public void setStorageClassName(String storageClassName) {
         this.storageClassName = storageClassName;
     }
 
@@ -460,22 +460,22 @@ public class PersistentVolumeSpec implements Editable<PersistentVolumeSpecBuilde
     }
 
     @JsonProperty("volumeAttributesClassName")
-    public java.lang.String getVolumeAttributesClassName() {
+    public String getVolumeAttributesClassName() {
         return volumeAttributesClassName;
     }
 
     @JsonProperty("volumeAttributesClassName")
-    public void setVolumeAttributesClassName(java.lang.String volumeAttributesClassName) {
+    public void setVolumeAttributesClassName(String volumeAttributesClassName) {
         this.volumeAttributesClassName = volumeAttributesClassName;
     }
 
     @JsonProperty("volumeMode")
-    public java.lang.String getVolumeMode() {
+    public String getVolumeMode() {
         return volumeMode;
     }
 
     @JsonProperty("volumeMode")
-    public void setVolumeMode(java.lang.String volumeMode) {
+    public void setVolumeMode(String volumeMode) {
         this.volumeMode = volumeMode;
     }
 
@@ -500,12 +500,12 @@ public class PersistentVolumeSpec implements Editable<PersistentVolumeSpecBuilde
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 

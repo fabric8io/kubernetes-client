@@ -68,17 +68,17 @@ public class SubjectAccessReviewSpec implements Editable<SubjectAccessReviewSpec
     private Map<String, ArrayList<String>> extra = new LinkedHashMap<String, ArrayList<String>>();
     @JsonProperty("group")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> group = new ArrayList<java.lang.String>();
+    private List<String> group = new ArrayList<String>();
     @JsonProperty("nonResourceAttributes")
     private NonResourceAttributes nonResourceAttributes;
     @JsonProperty("resourceAttributes")
     private ResourceAttributes resourceAttributes;
     @JsonProperty("uid")
-    private java.lang.String uid;
+    private String uid;
     @JsonProperty("user")
-    private java.lang.String user;
+    private String user;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -87,7 +87,7 @@ public class SubjectAccessReviewSpec implements Editable<SubjectAccessReviewSpec
     public SubjectAccessReviewSpec() {
     }
 
-    public SubjectAccessReviewSpec(Map<String, ArrayList<String>> extra, List<java.lang.String> group, NonResourceAttributes nonResourceAttributes, ResourceAttributes resourceAttributes, java.lang.String uid, java.lang.String user) {
+    public SubjectAccessReviewSpec(Map<String, ArrayList<String>> extra, List<String> group, NonResourceAttributes nonResourceAttributes, ResourceAttributes resourceAttributes, String uid, String user) {
         super();
         this.extra = extra;
         this.group = group;
@@ -109,12 +109,12 @@ public class SubjectAccessReviewSpec implements Editable<SubjectAccessReviewSpec
 
     @JsonProperty("group")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<java.lang.String> getGroup() {
+    public List<String> getGroup() {
         return group;
     }
 
     @JsonProperty("group")
-    public void setGroup(List<java.lang.String> group) {
+    public void setGroup(List<String> group) {
         this.group = group;
     }
 
@@ -139,22 +139,22 @@ public class SubjectAccessReviewSpec implements Editable<SubjectAccessReviewSpec
     }
 
     @JsonProperty("uid")
-    public java.lang.String getUid() {
+    public String getUid() {
         return uid;
     }
 
     @JsonProperty("uid")
-    public void setUid(java.lang.String uid) {
+    public void setUid(String uid) {
         this.uid = uid;
     }
 
     @JsonProperty("user")
-    public java.lang.String getUser() {
+    public String getUser() {
         return user;
     }
 
     @JsonProperty("user")
-    public void setUser(java.lang.String user) {
+    public void setUser(String user) {
         this.user = user;
     }
 
@@ -169,12 +169,12 @@ public class SubjectAccessReviewSpec implements Editable<SubjectAccessReviewSpec
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 

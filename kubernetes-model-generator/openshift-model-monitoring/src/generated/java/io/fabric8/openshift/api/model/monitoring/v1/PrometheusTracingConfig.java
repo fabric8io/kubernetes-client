@@ -65,11 +65,11 @@ public class PrometheusTracingConfig implements Editable<PrometheusTracingConfig
 {
 
     @JsonProperty("clientType")
-    private java.lang.String clientType;
+    private String clientType;
     @JsonProperty("compression")
-    private java.lang.String compression;
+    private String compression;
     @JsonProperty("endpoint")
-    private java.lang.String endpoint;
+    private String endpoint;
     @JsonProperty("headers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> headers = new LinkedHashMap<String, String>();
@@ -78,11 +78,11 @@ public class PrometheusTracingConfig implements Editable<PrometheusTracingConfig
     @JsonProperty("samplingFraction")
     private Quantity samplingFraction;
     @JsonProperty("timeout")
-    private java.lang.String timeout;
+    private String timeout;
     @JsonProperty("tlsConfig")
     private TLSConfig tlsConfig;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -91,7 +91,7 @@ public class PrometheusTracingConfig implements Editable<PrometheusTracingConfig
     public PrometheusTracingConfig() {
     }
 
-    public PrometheusTracingConfig(java.lang.String clientType, java.lang.String compression, java.lang.String endpoint, Map<String, String> headers, Boolean insecure, Quantity samplingFraction, java.lang.String timeout, TLSConfig tlsConfig) {
+    public PrometheusTracingConfig(String clientType, String compression, String endpoint, Map<String, String> headers, Boolean insecure, Quantity samplingFraction, String timeout, TLSConfig tlsConfig) {
         super();
         this.clientType = clientType;
         this.compression = compression;
@@ -104,32 +104,32 @@ public class PrometheusTracingConfig implements Editable<PrometheusTracingConfig
     }
 
     @JsonProperty("clientType")
-    public java.lang.String getClientType() {
+    public String getClientType() {
         return clientType;
     }
 
     @JsonProperty("clientType")
-    public void setClientType(java.lang.String clientType) {
+    public void setClientType(String clientType) {
         this.clientType = clientType;
     }
 
     @JsonProperty("compression")
-    public java.lang.String getCompression() {
+    public String getCompression() {
         return compression;
     }
 
     @JsonProperty("compression")
-    public void setCompression(java.lang.String compression) {
+    public void setCompression(String compression) {
         this.compression = compression;
     }
 
     @JsonProperty("endpoint")
-    public java.lang.String getEndpoint() {
+    public String getEndpoint() {
         return endpoint;
     }
 
     @JsonProperty("endpoint")
-    public void setEndpoint(java.lang.String endpoint) {
+    public void setEndpoint(String endpoint) {
         this.endpoint = endpoint;
     }
 
@@ -164,12 +164,12 @@ public class PrometheusTracingConfig implements Editable<PrometheusTracingConfig
     }
 
     @JsonProperty("timeout")
-    public java.lang.String getTimeout() {
+    public String getTimeout() {
         return timeout;
     }
 
     @JsonProperty("timeout")
-    public void setTimeout(java.lang.String timeout) {
+    public void setTimeout(String timeout) {
         this.timeout = timeout;
     }
 
@@ -194,12 +194,12 @@ public class PrometheusTracingConfig implements Editable<PrometheusTracingConfig
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 

@@ -49,9 +49,9 @@ public class CSIPersistentVolumeSource implements Editable<CSIPersistentVolumeSo
     @JsonProperty("controllerPublishSecretRef")
     private SecretReference controllerPublishSecretRef;
     @JsonProperty("driver")
-    private java.lang.String driver;
+    private String driver;
     @JsonProperty("fsType")
-    private java.lang.String fsType;
+    private String fsType;
     @JsonProperty("nodeExpandSecretRef")
     private SecretReference nodeExpandSecretRef;
     @JsonProperty("nodePublishSecretRef")
@@ -64,9 +64,9 @@ public class CSIPersistentVolumeSource implements Editable<CSIPersistentVolumeSo
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> volumeAttributes = new LinkedHashMap<String, String>();
     @JsonProperty("volumeHandle")
-    private java.lang.String volumeHandle;
+    private String volumeHandle;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -75,7 +75,7 @@ public class CSIPersistentVolumeSource implements Editable<CSIPersistentVolumeSo
     public CSIPersistentVolumeSource() {
     }
 
-    public CSIPersistentVolumeSource(SecretReference controllerExpandSecretRef, SecretReference controllerPublishSecretRef, java.lang.String driver, java.lang.String fsType, SecretReference nodeExpandSecretRef, SecretReference nodePublishSecretRef, SecretReference nodeStageSecretRef, Boolean readOnly, Map<String, String> volumeAttributes, java.lang.String volumeHandle) {
+    public CSIPersistentVolumeSource(SecretReference controllerExpandSecretRef, SecretReference controllerPublishSecretRef, String driver, String fsType, SecretReference nodeExpandSecretRef, SecretReference nodePublishSecretRef, SecretReference nodeStageSecretRef, Boolean readOnly, Map<String, String> volumeAttributes, String volumeHandle) {
         super();
         this.controllerExpandSecretRef = controllerExpandSecretRef;
         this.controllerPublishSecretRef = controllerPublishSecretRef;
@@ -110,22 +110,22 @@ public class CSIPersistentVolumeSource implements Editable<CSIPersistentVolumeSo
     }
 
     @JsonProperty("driver")
-    public java.lang.String getDriver() {
+    public String getDriver() {
         return driver;
     }
 
     @JsonProperty("driver")
-    public void setDriver(java.lang.String driver) {
+    public void setDriver(String driver) {
         this.driver = driver;
     }
 
     @JsonProperty("fsType")
-    public java.lang.String getFsType() {
+    public String getFsType() {
         return fsType;
     }
 
     @JsonProperty("fsType")
-    public void setFsType(java.lang.String fsType) {
+    public void setFsType(String fsType) {
         this.fsType = fsType;
     }
 
@@ -180,12 +180,12 @@ public class CSIPersistentVolumeSource implements Editable<CSIPersistentVolumeSo
     }
 
     @JsonProperty("volumeHandle")
-    public java.lang.String getVolumeHandle() {
+    public String getVolumeHandle() {
         return volumeHandle;
     }
 
     @JsonProperty("volumeHandle")
-    public void setVolumeHandle(java.lang.String volumeHandle) {
+    public void setVolumeHandle(String volumeHandle) {
         this.volumeHandle = volumeHandle;
     }
 
@@ -200,12 +200,12 @@ public class CSIPersistentVolumeSource implements Editable<CSIPersistentVolumeSo
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 

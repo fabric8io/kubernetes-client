@@ -58,12 +58,12 @@ public class DNSZone implements Editable<DNSZoneBuilder> , KubernetesResource
 {
 
     @JsonProperty("id")
-    private java.lang.String id;
+    private String id;
     @JsonProperty("tags")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> tags = new LinkedHashMap<String, String>();
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -72,19 +72,19 @@ public class DNSZone implements Editable<DNSZoneBuilder> , KubernetesResource
     public DNSZone() {
     }
 
-    public DNSZone(java.lang.String id, Map<String, String> tags) {
+    public DNSZone(String id, Map<String, String> tags) {
         super();
         this.id = id;
         this.tags = tags;
     }
 
     @JsonProperty("id")
-    public java.lang.String getId() {
+    public String getId() {
         return id;
     }
 
     @JsonProperty("id")
-    public void setId(java.lang.String id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -109,12 +109,12 @@ public class DNSZone implements Editable<DNSZoneBuilder> , KubernetesResource
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 

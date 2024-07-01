@@ -65,9 +65,9 @@ public class EmbeddedObjectMetadata implements Editable<EmbeddedObjectMetadataBu
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> labels = new LinkedHashMap<String, String>();
     @JsonProperty("name")
-    private java.lang.String name;
+    private String name;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -76,7 +76,7 @@ public class EmbeddedObjectMetadata implements Editable<EmbeddedObjectMetadataBu
     public EmbeddedObjectMetadata() {
     }
 
-    public EmbeddedObjectMetadata(Map<String, String> annotations, Map<String, String> labels, java.lang.String name) {
+    public EmbeddedObjectMetadata(Map<String, String> annotations, Map<String, String> labels, String name) {
         super();
         this.annotations = annotations;
         this.labels = labels;
@@ -104,12 +104,12 @@ public class EmbeddedObjectMetadata implements Editable<EmbeddedObjectMetadataBu
     }
 
     @JsonProperty("name")
-    public java.lang.String getName() {
+    public String getName() {
         return name;
     }
 
     @JsonProperty("name")
-    public void setName(java.lang.String name) {
+    public void setName(String name) {
         this.name = name;
     }
 
@@ -124,12 +124,12 @@ public class EmbeddedObjectMetadata implements Editable<EmbeddedObjectMetadataBu
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 

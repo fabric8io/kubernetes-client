@@ -209,7 +209,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         }
       },
       "additionalProperties": true,
@@ -389,7 +389,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "creationTimestamp": {
           "$ref": "#/definitions/kubernetes_apimachinery_Time",
@@ -422,7 +422,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "managedFields": {
           "type": "array",
@@ -892,7 +892,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "volumeHandle": {
           "type": "string"
@@ -1006,7 +1006,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "readOnly": {
           "type": "boolean"
@@ -1404,7 +1404,7 @@
             "$ref": "#/definitions/kubernetes_resource_Quantity",
             "existingJavaType": "io.fabric8.kubernetes.api.model.Quantity"
           },
-          "existingJavaType": "java.util.Map\u003cString, io.fabric8.kubernetes.api.model.Quantity\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, io.fabric8.kubernetes.api.model.Quantity\u003e"
         },
         "cephfs": {
           "$ref": "#/definitions/kubernetes_core_CephFSPersistentVolumeSource",
@@ -2104,7 +2104,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "provisioner": {
           "type": "string"
@@ -2287,7 +2287,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "detachError": {
           "$ref": "#/definitions/kubernetes_storageclass_VolumeError",
@@ -2355,7 +2355,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         }
       },
       "additionalProperties": true,
@@ -3271,8 +3271,8 @@
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/kubernetes_storageclass_v1beta1_TokenRequest",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.storage.v1beta1.TokenRequest"
+            "$ref": "#/definitions/kubernetes_storageclass_TokenRequest",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.storage.TokenRequest"
           }
         },
         "volumeLifecycleModes": {
@@ -3289,7 +3289,7 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "storage.k8s.io/v1beta1",
+          "default": "storage.k8s.io/v1",
           "required": true
         },
         "kind": {
@@ -3302,8 +3302,8 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
-          "$ref": "#/definitions/kubernetes_storageclass_v1beta1_CSINodeSpec",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.storage.v1beta1.CSINodeSpec"
+          "$ref": "#/definitions/kubernetes_storageclass_CSINodeSpec",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.storage.CSINodeSpec"
         }
       },
       "additionalProperties": true
@@ -3333,14 +3333,14 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "storage.k8s.io/v1",
+          "default": "storage.k8s.io/v1beta1",
           "required": true
         },
         "items": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/kubernetes_storageclass_CSINode",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.storage.CSINode"
+            "$ref": "#/definitions/kubernetes_storageclass_v1beta1_CSINode",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.storage.v1beta1.CSINode"
           }
         },
         "kind": {
@@ -3360,8 +3360,8 @@
         "drivers": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/kubernetes_storageclass_CSINodeDriver",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.storage.CSINodeDriver"
+            "$ref": "#/definitions/kubernetes_storageclass_v1beta1_CSINodeDriver",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.storage.v1beta1.CSINodeDriver"
           }
         }
       },
@@ -3403,7 +3403,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "volumeHandle": {
           "type": "string"
@@ -3551,7 +3551,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "readOnly": {
           "type": "boolean"
@@ -3752,7 +3752,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         }
       },
       "additionalProperties": true
@@ -3998,7 +3998,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "creationTimestamp": {
           "$ref": "#/definitions/kubernetes_apimachinery_Time",
@@ -4031,7 +4031,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "managedFields": {
           "type": "array",
@@ -4272,7 +4272,7 @@
             "$ref": "#/definitions/kubernetes_resource_Quantity",
             "existingJavaType": "io.fabric8.kubernetes.api.model.Quantity"
           },
-          "existingJavaType": "java.util.Map\u003cString, io.fabric8.kubernetes.api.model.Quantity\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, io.fabric8.kubernetes.api.model.Quantity\u003e"
         },
         "cephfs": {
           "$ref": "#/definitions/kubernetes_core_CephFSPersistentVolumeSource",
@@ -4668,7 +4668,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "provisioner": {
           "type": "string"
@@ -4990,7 +4990,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "detachError": {
           "$ref": "#/definitions/kubernetes_storageclass_VolumeError",
@@ -5023,7 +5023,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         }
       },
       "additionalProperties": true

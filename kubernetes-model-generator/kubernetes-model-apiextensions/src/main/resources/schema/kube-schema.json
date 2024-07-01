@@ -498,7 +498,7 @@
             "$ref": "#/definitions/kubernetes_apiextensions_v1_JSONSchemaProps",
             "existingJavaType": "io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps"
           },
-          "existingJavaType": "java.util.Map\u003cString, io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps\u003e"
         },
         "dependencies": {
           "type": "object",
@@ -506,7 +506,7 @@
             "$ref": "#/definitions/kubernetes_apiextensions_v1_JSONSchemaPropsOrStringArray",
             "existingJavaType": "io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaPropsOrStringArray"
           },
-          "existingJavaType": "java.util.Map\u003cString, io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaPropsOrStringArray\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaPropsOrStringArray\u003e"
         },
         "description": {
           "type": "string"
@@ -600,7 +600,7 @@
             "$ref": "#/definitions/kubernetes_apiextensions_v1_JSONSchemaProps",
             "existingJavaType": "io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps"
           },
-          "existingJavaType": "java.util.Map\u003cString, io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps\u003e"
         },
         "properties": {
           "type": "object",
@@ -608,7 +608,7 @@
             "$ref": "#/definitions/kubernetes_apiextensions_v1_JSONSchemaProps",
             "existingJavaType": "io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps"
           },
-          "existingJavaType": "java.util.Map\u003cString, io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps\u003e"
         },
         "required": {
           "type": "array",
@@ -1272,7 +1272,7 @@
             "$ref": "#/definitions/kubernetes_apiextensions_v1beta1_JSONSchemaProps",
             "existingJavaType": "io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaProps"
           },
-          "existingJavaType": "java.util.Map\u003cString, io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaProps\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaProps\u003e"
         },
         "dependencies": {
           "type": "object",
@@ -1280,7 +1280,7 @@
             "$ref": "#/definitions/kubernetes_apiextensions_v1beta1_JSONSchemaPropsOrStringArray",
             "existingJavaType": "io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaPropsOrStringArray"
           },
-          "existingJavaType": "java.util.Map\u003cString, io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaPropsOrStringArray\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaPropsOrStringArray\u003e"
         },
         "description": {
           "type": "string"
@@ -1374,7 +1374,7 @@
             "$ref": "#/definitions/kubernetes_apiextensions_v1beta1_JSONSchemaProps",
             "existingJavaType": "io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaProps"
           },
-          "existingJavaType": "java.util.Map\u003cString, io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaProps\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaProps\u003e"
         },
         "properties": {
           "type": "object",
@@ -1382,7 +1382,7 @@
             "$ref": "#/definitions/kubernetes_apiextensions_v1beta1_JSONSchemaProps",
             "existingJavaType": "io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaProps"
           },
-          "existingJavaType": "java.util.Map\u003cString, io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaProps\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaProps\u003e"
         },
         "required": {
           "type": "array",
@@ -1922,7 +1922,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "creationTimestamp": {
           "$ref": "#/definitions/kubernetes_apimachinery_Time",
@@ -1955,7 +1955,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "managedFields": {
           "type": "array",

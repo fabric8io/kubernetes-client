@@ -83,7 +83,7 @@ public class BuildSpec implements Editable<BuildSpecBuilder> , KubernetesResourc
     @JsonProperty("revision")
     private SourceRevision revision;
     @JsonProperty("serviceAccount")
-    private java.lang.String serviceAccount;
+    private String serviceAccount;
     @JsonProperty("source")
     private BuildSource source;
     @JsonProperty("strategy")
@@ -92,7 +92,7 @@ public class BuildSpec implements Editable<BuildSpecBuilder> , KubernetesResourc
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<BuildTriggerCause> triggeredBy = new ArrayList<BuildTriggerCause>();
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -101,7 +101,7 @@ public class BuildSpec implements Editable<BuildSpecBuilder> , KubernetesResourc
     public BuildSpec() {
     }
 
-    public BuildSpec(Long completionDeadlineSeconds, Boolean mountTrustedCA, Map<String, String> nodeSelector, BuildOutput output, BuildPostCommitSpec postCommit, io.fabric8.kubernetes.api.model.ResourceRequirements resources, SourceRevision revision, java.lang.String serviceAccount, BuildSource source, BuildStrategy strategy, List<BuildTriggerCause> triggeredBy) {
+    public BuildSpec(Long completionDeadlineSeconds, Boolean mountTrustedCA, Map<String, String> nodeSelector, BuildOutput output, BuildPostCommitSpec postCommit, io.fabric8.kubernetes.api.model.ResourceRequirements resources, SourceRevision revision, String serviceAccount, BuildSource source, BuildStrategy strategy, List<BuildTriggerCause> triggeredBy) {
         super();
         this.completionDeadlineSeconds = completionDeadlineSeconds;
         this.mountTrustedCA = mountTrustedCA;
@@ -187,12 +187,12 @@ public class BuildSpec implements Editable<BuildSpecBuilder> , KubernetesResourc
     }
 
     @JsonProperty("serviceAccount")
-    public java.lang.String getServiceAccount() {
+    public String getServiceAccount() {
         return serviceAccount;
     }
 
     @JsonProperty("serviceAccount")
-    public void setServiceAccount(java.lang.String serviceAccount) {
+    public void setServiceAccount(String serviceAccount) {
         this.serviceAccount = serviceAccount;
     }
 
@@ -238,12 +238,12 @@ public class BuildSpec implements Editable<BuildSpecBuilder> , KubernetesResourc
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 

@@ -43,13 +43,13 @@ public class Patch implements Editable<PatchBuilder> , KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, Boolean> options = new LinkedHashMap<String, Boolean>();
     @JsonProperty("patch")
-    private java.lang.String patch;
+    private String patch;
     @JsonProperty("path")
-    private java.lang.String path;
+    private String path;
     @JsonProperty("target")
     private Selector target;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -58,7 +58,7 @@ public class Patch implements Editable<PatchBuilder> , KubernetesResource
     public Patch() {
     }
 
-    public Patch(Map<String, Boolean> options, java.lang.String patch, java.lang.String path, Selector target) {
+    public Patch(Map<String, Boolean> options, String patch, String path, Selector target) {
         super();
         this.options = options;
         this.patch = patch;
@@ -77,22 +77,22 @@ public class Patch implements Editable<PatchBuilder> , KubernetesResource
     }
 
     @JsonProperty("patch")
-    public java.lang.String getPatch() {
+    public String getPatch() {
         return patch;
     }
 
     @JsonProperty("patch")
-    public void setPatch(java.lang.String patch) {
+    public void setPatch(String patch) {
         this.patch = patch;
     }
 
     @JsonProperty("path")
-    public java.lang.String getPath() {
+    public String getPath() {
         return path;
     }
 
     @JsonProperty("path")
-    public void setPath(java.lang.String path) {
+    public void setPath(String path) {
         this.path = path;
     }
 
@@ -117,12 +117,12 @@ public class Patch implements Editable<PatchBuilder> , KubernetesResource
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
