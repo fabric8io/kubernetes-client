@@ -97,6 +97,7 @@ public class Config implements Editable<ConfigBuilder> , KubernetesResource
     }
 
     @JsonProperty("clusters")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<NamedCluster> getClusters() {
         return clusters;
     }
@@ -107,6 +108,7 @@ public class Config implements Editable<ConfigBuilder> , KubernetesResource
     }
 
     @JsonProperty("contexts")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<NamedContext> getContexts() {
         return contexts;
     }
@@ -158,6 +160,7 @@ public class Config implements Editable<ConfigBuilder> , KubernetesResource
     }
 
     @JsonProperty("users")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<NamedAuthInfo> getUsers() {
         return users;
     }

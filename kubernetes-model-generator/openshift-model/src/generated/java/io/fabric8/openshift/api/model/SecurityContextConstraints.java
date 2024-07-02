@@ -278,6 +278,7 @@ public class SecurityContextConstraints implements Editable<SecurityContextConst
     }
 
     @JsonProperty("allowedCapabilities")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getAllowedCapabilities() {
         return allowedCapabilities;
     }
@@ -330,6 +331,7 @@ public class SecurityContextConstraints implements Editable<SecurityContextConst
     }
 
     @JsonProperty("defaultAddCapabilities")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getDefaultAddCapabilities() {
         return defaultAddCapabilities;
     }
@@ -371,6 +373,7 @@ public class SecurityContextConstraints implements Editable<SecurityContextConst
     }
 
     @JsonProperty("groups")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getGroups() {
         return groups;
     }
@@ -431,6 +434,7 @@ public class SecurityContextConstraints implements Editable<SecurityContextConst
     }
 
     @JsonProperty("requiredDropCapabilities")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getRequiredDropCapabilities() {
         return requiredDropCapabilities;
     }
@@ -482,6 +486,7 @@ public class SecurityContextConstraints implements Editable<SecurityContextConst
     }
 
     @JsonProperty("users")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getUsers() {
         return users;
     }
@@ -492,6 +497,7 @@ public class SecurityContextConstraints implements Editable<SecurityContextConst
     }
 
     @JsonProperty("volumes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getVolumes() {
         return volumes;
     }

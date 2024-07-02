@@ -81,6 +81,7 @@ public class DeploymentDetails implements Editable<DeploymentDetailsBuilder> , K
     }
 
     @JsonProperty("causes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<DeploymentCause> getCauses() {
         return causes;
     }

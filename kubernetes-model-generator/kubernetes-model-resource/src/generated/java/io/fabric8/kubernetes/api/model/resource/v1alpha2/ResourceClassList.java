@@ -130,6 +130,7 @@ public class ResourceClassList implements Editable<ResourceClassListBuilder> , K
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.resource.v1alpha2.ResourceClass> getItems() {
         return items;
     }

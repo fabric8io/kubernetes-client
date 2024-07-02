@@ -118,6 +118,7 @@ public class ValidatingWebhook implements Editable<ValidatingWebhookBuilder> , K
     }
 
     @JsonProperty("admissionReviewVersions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getAdmissionReviewVersions() {
         return admissionReviewVersions;
     }

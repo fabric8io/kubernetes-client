@@ -109,6 +109,7 @@ public class SyncSetSpec implements Editable<SyncSetSpecBuilder> , KubernetesRes
     }
 
     @JsonProperty("clusterDeploymentRefs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.LocalObjectReference> getClusterDeploymentRefs() {
         return clusterDeploymentRefs;
     }

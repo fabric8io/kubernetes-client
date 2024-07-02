@@ -106,6 +106,7 @@ public class ProxyConfigSpec implements Editable<ProxyConfigSpecBuilder> , Kuber
     }
 
     @JsonProperty("environmentVariables")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getEnvironmentVariables() {
         return environmentVariables;
     }

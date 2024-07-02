@@ -138,6 +138,7 @@ public class EgressFirewallList implements Editable<EgressFirewallListBuilder> ,
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.ovn.v1.EgressFirewall> getItems() {
         return items;
     }

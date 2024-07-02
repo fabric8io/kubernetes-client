@@ -130,6 +130,7 @@ public class ControllerRevisionList implements Editable<ControllerRevisionListBu
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.apps.ControllerRevision> getItems() {
         return items;
     }

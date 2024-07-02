@@ -138,6 +138,7 @@ public class PodGroupList implements Editable<PodGroupListBuilder> , KubernetesR
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.volcano.scheduling.v1beta1.PodGroup> getItems() {
         return items;
     }

@@ -138,6 +138,7 @@ public class TriggerList implements Editable<TriggerListBuilder> , KubernetesRes
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.knative.eventing.v1.Trigger> getItems() {
         return items;
     }

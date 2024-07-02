@@ -135,6 +135,7 @@ public class PipelineRunStatus implements Editable<PipelineRunStatusBuilder> , K
     }
 
     @JsonProperty("annotations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getAnnotations() {
         return annotations;
     }
@@ -239,6 +240,7 @@ public class PipelineRunStatus implements Editable<PipelineRunStatusBuilder> , K
     }
 
     @JsonProperty("spanContext")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getSpanContext() {
         return spanContext;
     }

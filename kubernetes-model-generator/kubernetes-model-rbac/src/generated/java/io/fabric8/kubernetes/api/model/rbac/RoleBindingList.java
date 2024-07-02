@@ -130,6 +130,7 @@ public class RoleBindingList implements Editable<RoleBindingListBuilder> , Kuber
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.rbac.RoleBinding> getItems() {
         return items;
     }

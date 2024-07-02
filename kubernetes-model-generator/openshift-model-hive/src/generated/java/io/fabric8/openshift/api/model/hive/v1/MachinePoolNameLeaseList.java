@@ -130,6 +130,7 @@ public class MachinePoolNameLeaseList implements Editable<MachinePoolNameLeaseLi
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.hive.v1.MachinePoolNameLease> getItems() {
         return items;
     }

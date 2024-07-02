@@ -89,6 +89,7 @@ public class EgressRouterSpec implements Editable<EgressRouterSpecBuilder> , Kub
     }
 
     @JsonProperty("addresses")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<EgressRouterAddress> getAddresses() {
         return addresses;
     }

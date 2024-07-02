@@ -77,6 +77,7 @@ public class PolicyStatus implements Editable<PolicyStatusBuilder> , KubernetesR
     }
 
     @JsonProperty("ancestors")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PolicyAncestorStatus> getAncestors() {
         return ancestors;
     }

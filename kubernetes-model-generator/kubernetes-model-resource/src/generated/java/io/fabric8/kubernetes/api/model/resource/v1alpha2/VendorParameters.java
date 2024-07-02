@@ -89,6 +89,7 @@ public class VendorParameters implements Editable<VendorParametersBuilder> , Kub
     }
 
     @JsonProperty("parameters")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Object> getParameters() {
         return parameters;
     }

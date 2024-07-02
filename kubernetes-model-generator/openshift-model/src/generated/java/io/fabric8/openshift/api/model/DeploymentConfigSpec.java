@@ -149,6 +149,7 @@ public class DeploymentConfigSpec implements Editable<DeploymentConfigSpecBuilde
     }
 
     @JsonProperty("selector")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getSelector() {
         return selector;
     }
@@ -189,6 +190,7 @@ public class DeploymentConfigSpec implements Editable<DeploymentConfigSpecBuilde
     }
 
     @JsonProperty("triggers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<DeploymentTriggerPolicy> getTriggers() {
         return triggers;
     }

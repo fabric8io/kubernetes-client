@@ -130,6 +130,7 @@ public class APIRequestCountList implements Editable<APIRequestCountListBuilder>
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.miscellaneous.apiserver.v1.APIRequestCount> getItems() {
         return items;
     }

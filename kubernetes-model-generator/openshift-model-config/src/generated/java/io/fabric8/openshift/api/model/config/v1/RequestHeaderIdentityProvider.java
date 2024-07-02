@@ -140,6 +140,7 @@ public class RequestHeaderIdentityProvider implements Editable<RequestHeaderIden
     }
 
     @JsonProperty("emailHeaders")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getEmailHeaders() {
         return emailHeaders;
     }
@@ -150,6 +151,7 @@ public class RequestHeaderIdentityProvider implements Editable<RequestHeaderIden
     }
 
     @JsonProperty("headers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getHeaders() {
         return headers;
     }
@@ -170,6 +172,7 @@ public class RequestHeaderIdentityProvider implements Editable<RequestHeaderIden
     }
 
     @JsonProperty("nameHeaders")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getNameHeaders() {
         return nameHeaders;
     }
@@ -180,6 +183,7 @@ public class RequestHeaderIdentityProvider implements Editable<RequestHeaderIden
     }
 
     @JsonProperty("preferredUsernameHeaders")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getPreferredUsernameHeaders() {
         return preferredUsernameHeaders;
     }

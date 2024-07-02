@@ -138,6 +138,7 @@ public class PodHttpChaosList implements Editable<PodHttpChaosListBuilder> , Kub
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.chaosmesh.v1alpha1.PodHttpChaos> getItems() {
         return items;
     }

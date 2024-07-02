@@ -103,6 +103,7 @@ public class CPUStressor implements Editable<CPUStressorBuilder> , KubernetesRes
     }
 
     @JsonProperty("options")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getOptions() {
         return options;
     }

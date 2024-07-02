@@ -111,6 +111,7 @@ public class MetricsOverrides implements Editable<MetricsOverridesBuilder> , Kub
     }
 
     @JsonProperty("tagOverrides")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, MetricsOverridesTagOverride> getTagOverrides() {
         return tagOverrides;
     }

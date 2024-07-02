@@ -80,6 +80,7 @@ public class GatewayInfrastructure implements Editable<GatewayInfrastructureBuil
     }
 
     @JsonProperty("annotations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getAnnotations() {
         return annotations;
     }
@@ -90,6 +91,7 @@ public class GatewayInfrastructure implements Editable<GatewayInfrastructureBuil
     }
 
     @JsonProperty("labels")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getLabels() {
         return labels;
     }

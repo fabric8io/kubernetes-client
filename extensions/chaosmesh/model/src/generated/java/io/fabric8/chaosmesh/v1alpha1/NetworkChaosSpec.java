@@ -221,6 +221,7 @@ public class NetworkChaosSpec implements Editable<NetworkChaosSpecBuilder> , Kub
     }
 
     @JsonProperty("externalTargets")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getExternalTargets() {
         return externalTargets;
     }

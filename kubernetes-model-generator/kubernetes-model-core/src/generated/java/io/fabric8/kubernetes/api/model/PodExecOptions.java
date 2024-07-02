@@ -123,6 +123,7 @@ public class PodExecOptions implements Editable<PodExecOptionsBuilder> , Kuberne
     }
 
     @JsonProperty("command")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getCommand() {
         return command;
     }

@@ -139,6 +139,7 @@ public class L4MatchAttributes implements Editable<L4MatchAttributesBuilder> , K
     }
 
     @JsonProperty("sourceLabels")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getSourceLabels() {
         return sourceLabels;
     }

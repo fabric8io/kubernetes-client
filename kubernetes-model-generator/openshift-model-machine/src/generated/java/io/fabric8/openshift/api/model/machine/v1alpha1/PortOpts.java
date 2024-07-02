@@ -233,6 +233,7 @@ public class PortOpts implements Editable<PortOptsBuilder> , KubernetesResource
     }
 
     @JsonProperty("profile")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getProfile() {
         return profile;
     }

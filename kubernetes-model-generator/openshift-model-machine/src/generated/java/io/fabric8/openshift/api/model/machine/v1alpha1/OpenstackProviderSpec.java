@@ -392,6 +392,7 @@ public class OpenstackProviderSpec implements Editable<OpenstackProviderSpecBuil
     }
 
     @JsonProperty("serverMetadata")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getServerMetadata() {
         return serverMetadata;
     }

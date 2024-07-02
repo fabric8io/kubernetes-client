@@ -130,6 +130,7 @@ public class FeatureGateList implements Editable<FeatureGateListBuilder> , Kuber
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.config.v1.FeatureGate> getItems() {
         return items;
     }

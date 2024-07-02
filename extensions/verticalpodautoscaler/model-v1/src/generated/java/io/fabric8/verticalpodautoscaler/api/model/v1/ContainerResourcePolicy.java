@@ -139,6 +139,7 @@ public class ContainerResourcePolicy implements Editable<ContainerResourcePolicy
     }
 
     @JsonProperty("maxAllowed")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Quantity> getMaxAllowed() {
         return maxAllowed;
     }
@@ -149,6 +150,7 @@ public class ContainerResourcePolicy implements Editable<ContainerResourcePolicy
     }
 
     @JsonProperty("minAllowed")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Quantity> getMinAllowed() {
         return minAllowed;
     }

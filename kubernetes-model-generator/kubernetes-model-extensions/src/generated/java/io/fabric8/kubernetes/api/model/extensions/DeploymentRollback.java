@@ -170,6 +170,7 @@ public class DeploymentRollback implements Editable<DeploymentRollbackBuilder> ,
     }
 
     @JsonProperty("updatedAnnotations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getUpdatedAnnotations() {
         return updatedAnnotations;
     }

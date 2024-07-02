@@ -138,6 +138,7 @@ public class SequenceList implements Editable<SequenceListBuilder> , KubernetesR
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.knative.flows.v1.Sequence> getItems() {
         return items;
     }

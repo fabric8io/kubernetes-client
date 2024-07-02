@@ -77,6 +77,7 @@ public class SelfSubjectRulesReviewSpec implements Editable<SelfSubjectRulesRevi
     }
 
     @JsonProperty("scopes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getScopes() {
         return scopes;
     }

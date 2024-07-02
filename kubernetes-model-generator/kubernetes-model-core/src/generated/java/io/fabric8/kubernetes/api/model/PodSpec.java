@@ -250,6 +250,7 @@ public class PodSpec implements Editable<PodSpecBuilder> , KubernetesResource
     }
 
     @JsonProperty("containers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Container> getContainers() {
         return containers;
     }
@@ -394,6 +395,7 @@ public class PodSpec implements Editable<PodSpecBuilder> , KubernetesResource
     }
 
     @JsonProperty("nodeSelector")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getNodeSelector() {
         return nodeSelector;
     }
@@ -414,6 +416,7 @@ public class PodSpec implements Editable<PodSpecBuilder> , KubernetesResource
     }
 
     @JsonProperty("overhead")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Quantity> getOverhead() {
         return overhead;
     }

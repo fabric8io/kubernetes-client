@@ -138,6 +138,7 @@ public class ChallengeList implements Editable<ChallengeListBuilder> , Kubernete
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.certmanager.api.model.acme.v1beta1.Challenge> getItems() {
         return items;
     }

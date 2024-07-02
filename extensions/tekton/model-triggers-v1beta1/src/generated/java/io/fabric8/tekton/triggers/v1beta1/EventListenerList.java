@@ -138,6 +138,7 @@ public class EventListenerList implements Editable<EventListenerListBuilder> , K
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.tekton.triggers.v1beta1.EventListener> getItems() {
         return items;
     }

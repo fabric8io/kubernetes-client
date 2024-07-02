@@ -130,6 +130,7 @@ public class MachineAutoscalerList implements Editable<MachineAutoscalerListBuil
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.clusterautoscaling.v1beta1.MachineAutoscaler> getItems() {
         return items;
     }

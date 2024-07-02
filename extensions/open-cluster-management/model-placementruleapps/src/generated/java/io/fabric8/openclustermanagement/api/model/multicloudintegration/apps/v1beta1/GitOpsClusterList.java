@@ -138,6 +138,7 @@ public class GitOpsClusterList implements Editable<GitOpsClusterListBuilder> , K
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openclustermanagement.api.model.multicloudintegration.apps.v1beta1.GitOpsCluster> getItems() {
         return items;
     }

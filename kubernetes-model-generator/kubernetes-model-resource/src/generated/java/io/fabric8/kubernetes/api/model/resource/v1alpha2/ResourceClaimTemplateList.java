@@ -130,6 +130,7 @@ public class ResourceClaimTemplateList implements Editable<ResourceClaimTemplate
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.resource.v1alpha2.ResourceClaimTemplate> getItems() {
         return items;
     }

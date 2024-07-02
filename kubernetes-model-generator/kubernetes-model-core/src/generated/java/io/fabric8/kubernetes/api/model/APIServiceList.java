@@ -107,6 +107,7 @@ public class APIServiceList implements Editable<APIServiceListBuilder> , Kuberne
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.APIService> getItems() {
         return items;
     }

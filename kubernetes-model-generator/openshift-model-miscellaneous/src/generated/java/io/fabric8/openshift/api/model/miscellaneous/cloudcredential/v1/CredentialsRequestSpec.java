@@ -99,6 +99,7 @@ public class CredentialsRequestSpec implements Editable<CredentialsRequestSpecBu
     }
 
     @JsonProperty("providerSpec")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Object> getProviderSpec() {
         return providerSpec;
     }

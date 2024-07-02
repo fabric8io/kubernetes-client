@@ -107,6 +107,7 @@ public class DriverRequests implements Editable<DriverRequestsBuilder> , Kuberne
     }
 
     @JsonProperty("vendorParameters")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Object> getVendorParameters() {
         return vendorParameters;
     }

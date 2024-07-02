@@ -130,6 +130,7 @@ public class StorageVersionMigrationList implements Editable<StorageVersionMigra
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.storagemigration.v1alpha1.StorageVersionMigration> getItems() {
         return items;
     }

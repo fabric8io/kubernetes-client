@@ -146,6 +146,7 @@ public class User implements Editable<UserBuilder> , HasMetadata
     }
 
     @JsonProperty("groups")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getGroups() {
         return groups;
     }

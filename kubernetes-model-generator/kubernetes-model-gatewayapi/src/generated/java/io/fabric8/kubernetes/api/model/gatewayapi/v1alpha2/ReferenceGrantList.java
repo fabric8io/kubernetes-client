@@ -130,6 +130,7 @@ public class ReferenceGrantList implements Editable<ReferenceGrantListBuilder> ,
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.ReferenceGrant> getItems() {
         return items;
     }

@@ -94,6 +94,7 @@ public class UDPRouteSpec implements Editable<UDPRouteSpecBuilder> , KubernetesR
     }
 
     @JsonProperty("rules")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<UDPRouteRule> getRules() {
         return rules;
     }

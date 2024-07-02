@@ -108,6 +108,7 @@ public class ClusterVersionStatus implements Editable<ClusterVersionStatusBuilde
     }
 
     @JsonProperty("availableUpdates")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Release> getAvailableUpdates() {
         return availableUpdates;
     }

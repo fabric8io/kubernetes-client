@@ -138,6 +138,7 @@ public class DomainMappingList implements Editable<DomainMappingListBuilder> , K
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.knative.serving.v1beta1.DomainMapping> getItems() {
         return items;
     }

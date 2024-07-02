@@ -183,6 +183,7 @@ public class SubjectAccessReview implements Editable<SubjectAccessReviewBuilder>
     }
 
     @JsonProperty("groups")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getGroups() {
         return groups;
     }
@@ -283,6 +284,7 @@ public class SubjectAccessReview implements Editable<SubjectAccessReviewBuilder>
     }
 
     @JsonProperty("scopes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getScopes() {
         return scopes;
     }

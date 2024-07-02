@@ -138,6 +138,7 @@ public class ClusterServiceClassList implements Editable<ClusterServiceClassList
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.servicecatalog.api.model.ClusterServiceClass> getItems() {
         return items;
     }

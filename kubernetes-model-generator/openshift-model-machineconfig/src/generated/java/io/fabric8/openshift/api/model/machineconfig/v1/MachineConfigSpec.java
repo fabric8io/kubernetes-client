@@ -113,6 +113,7 @@ public class MachineConfigSpec implements Editable<MachineConfigSpecBuilder> , K
     }
 
     @JsonProperty("config")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Object> getConfig() {
         return config;
     }
@@ -123,6 +124,7 @@ public class MachineConfigSpec implements Editable<MachineConfigSpecBuilder> , K
     }
 
     @JsonProperty("extensions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getExtensions() {
         return extensions;
     }
@@ -143,6 +145,7 @@ public class MachineConfigSpec implements Editable<MachineConfigSpecBuilder> , K
     }
 
     @JsonProperty("kernelArguments")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getKernelArguments() {
         return kernelArguments;
     }

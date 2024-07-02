@@ -130,6 +130,7 @@ public class ProbeList implements Editable<ProbeListBuilder> , KubernetesResourc
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.monitoring.v1.Probe> getItems() {
         return items;
     }

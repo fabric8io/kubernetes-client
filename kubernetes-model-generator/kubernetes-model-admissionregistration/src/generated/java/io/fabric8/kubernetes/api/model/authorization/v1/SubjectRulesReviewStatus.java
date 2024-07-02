@@ -110,6 +110,7 @@ public class SubjectRulesReviewStatus implements Editable<SubjectRulesReviewStat
     }
 
     @JsonProperty("nonResourceRules")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<NonResourceRule> getNonResourceRules() {
         return nonResourceRules;
     }
@@ -120,6 +121,7 @@ public class SubjectRulesReviewStatus implements Editable<SubjectRulesReviewStat
     }
 
     @JsonProperty("resourceRules")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ResourceRule> getResourceRules() {
         return resourceRules;
     }

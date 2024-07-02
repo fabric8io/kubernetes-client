@@ -114,6 +114,7 @@ public class RBDPersistentVolumeSource implements Editable<RBDPersistentVolumeSo
     }
 
     @JsonProperty("monitors")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getMonitors() {
         return monitors;
     }

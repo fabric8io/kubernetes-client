@@ -137,6 +137,7 @@ public class ServiceInstancePropertiesState implements Editable<ServiceInstanceP
     }
 
     @JsonProperty("parameters")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Object> getParameters() {
         return parameters;
     }

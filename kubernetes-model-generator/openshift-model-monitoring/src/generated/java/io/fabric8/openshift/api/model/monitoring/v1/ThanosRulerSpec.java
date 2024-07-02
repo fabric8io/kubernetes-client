@@ -488,6 +488,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder> , Kuber
     }
 
     @JsonProperty("labels")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getLabels() {
         return labels;
     }
@@ -538,6 +539,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder> , Kuber
     }
 
     @JsonProperty("nodeSelector")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getNodeSelector() {
         return nodeSelector;
     }

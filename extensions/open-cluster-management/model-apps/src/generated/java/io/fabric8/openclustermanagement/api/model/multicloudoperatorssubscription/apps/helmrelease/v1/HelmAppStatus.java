@@ -89,6 +89,7 @@ public class HelmAppStatus implements Editable<HelmAppStatusBuilder> , Kubernete
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<HelmAppCondition> getConditions() {
         return conditions;
     }

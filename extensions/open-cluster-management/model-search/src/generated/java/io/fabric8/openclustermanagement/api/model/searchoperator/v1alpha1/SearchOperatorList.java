@@ -138,6 +138,7 @@ public class SearchOperatorList implements Editable<SearchOperatorListBuilder> ,
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openclustermanagement.api.model.searchoperator.v1alpha1.SearchOperator> getItems() {
         return items;
     }

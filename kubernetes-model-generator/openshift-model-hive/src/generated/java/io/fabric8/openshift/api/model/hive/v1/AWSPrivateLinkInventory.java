@@ -95,6 +95,7 @@ public class AWSPrivateLinkInventory implements Editable<AWSPrivateLinkInventory
     }
 
     @JsonProperty("subnets")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<AWSPrivateLinkSubnet> getSubnets() {
         return subnets;
     }

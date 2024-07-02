@@ -130,6 +130,7 @@ public class MachineConfigList implements Editable<MachineConfigListBuilder> , K
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.machineconfig.v1.MachineConfig> getItems() {
         return items;
     }

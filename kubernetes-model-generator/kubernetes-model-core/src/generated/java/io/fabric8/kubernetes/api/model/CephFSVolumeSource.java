@@ -76,6 +76,7 @@ public class CephFSVolumeSource implements Editable<CephFSVolumeSourceBuilder> ,
     }
 
     @JsonProperty("monitors")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getMonitors() {
         return monitors;
     }

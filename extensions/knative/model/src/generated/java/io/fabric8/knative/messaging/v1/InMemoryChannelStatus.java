@@ -140,6 +140,7 @@ public class InMemoryChannelStatus implements Editable<InMemoryChannelStatusBuil
     }
 
     @JsonProperty("annotations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getAnnotations() {
         return annotations;
     }

@@ -138,6 +138,7 @@ public class KResourceList implements Editable<KResourceListBuilder> , Kubernete
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.knative.internal.pkg.apis.duck.v1.KResource> getItems() {
         return items;
     }

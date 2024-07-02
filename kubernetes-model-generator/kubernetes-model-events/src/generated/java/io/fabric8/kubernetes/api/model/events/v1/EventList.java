@@ -130,6 +130,7 @@ public class EventList implements Editable<EventListBuilder> , KubernetesResourc
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.events.v1.Event> getItems() {
         return items;
     }

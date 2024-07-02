@@ -130,6 +130,7 @@ public class CheckpointList implements Editable<CheckpointListBuilder> , Kuberne
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.hive.v1.Checkpoint> getItems() {
         return items;
     }

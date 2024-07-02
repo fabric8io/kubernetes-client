@@ -103,6 +103,7 @@ public class HTTPIngressPath implements Editable<HTTPIngressPathBuilder> , Kuber
     }
 
     @JsonProperty("appendHeaders")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getAppendHeaders() {
         return appendHeaders;
     }
@@ -113,6 +114,7 @@ public class HTTPIngressPath implements Editable<HTTPIngressPathBuilder> , Kuber
     }
 
     @JsonProperty("headers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, HeaderMatch> getHeaders() {
         return headers;
     }
@@ -143,6 +145,7 @@ public class HTTPIngressPath implements Editable<HTTPIngressPathBuilder> , Kuber
     }
 
     @JsonProperty("splits")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<IngressBackendSplit> getSplits() {
         return splits;
     }

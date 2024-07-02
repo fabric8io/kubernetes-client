@@ -82,6 +82,7 @@ public class MetricsConfig implements Editable<MetricsConfigBuilder> , Kubernete
     }
 
     @JsonProperty("additionalClusterDeploymentLabels")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getAdditionalClusterDeploymentLabels() {
         return additionalClusterDeploymentLabels;
     }

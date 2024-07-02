@@ -115,6 +115,7 @@ public class TaskResult implements Editable<TaskResultBuilder> , KubernetesResou
     }
 
     @JsonProperty("properties")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, PropertySpec> getProperties() {
         return properties;
     }

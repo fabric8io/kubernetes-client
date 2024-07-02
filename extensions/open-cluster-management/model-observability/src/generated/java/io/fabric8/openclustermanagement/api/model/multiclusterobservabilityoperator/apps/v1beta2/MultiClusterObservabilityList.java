@@ -138,6 +138,7 @@ public class MultiClusterObservabilityList implements Editable<MultiClusterObser
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta2.MultiClusterObservability> getItems() {
         return items;
     }

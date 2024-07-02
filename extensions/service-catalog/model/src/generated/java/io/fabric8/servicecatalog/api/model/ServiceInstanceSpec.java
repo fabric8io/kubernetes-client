@@ -255,6 +255,7 @@ public class ServiceInstanceSpec implements Editable<ServiceInstanceSpecBuilder>
     }
 
     @JsonProperty("parameters")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Object> getParameters() {
         return parameters;
     }

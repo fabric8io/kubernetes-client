@@ -130,6 +130,7 @@ public class ClusterVersionList implements Editable<ClusterVersionListBuilder> ,
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.config.v1.ClusterVersion> getItems() {
         return items;
     }

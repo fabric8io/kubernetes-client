@@ -130,6 +130,7 @@ public class Metal3RemediationList implements Editable<Metal3RemediationListBuil
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.miscellaneous.metal3.v1beta1.Metal3Remediation> getItems() {
         return items;
     }

@@ -103,6 +103,7 @@ public class APIGroupList implements Editable<APIGroupListBuilder> , KubernetesR
     }
 
     @JsonProperty("groups")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<APIGroup> getGroups() {
         return groups;
     }

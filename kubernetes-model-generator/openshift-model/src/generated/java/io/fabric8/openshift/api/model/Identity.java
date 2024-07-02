@@ -136,6 +136,7 @@ public class Identity implements Editable<IdentityBuilder> , HasMetadata
     }
 
     @JsonProperty("extra")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getExtra() {
         return extra;
     }

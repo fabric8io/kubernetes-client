@@ -3401,20 +3401,21 @@
     },
     "machinepool": {
       "properties": {
-        "memoryGiB": {
+        "coresPerSocket": {
           "type": "integer"
         },
-        "procType": {
-          "type": "string"
+        "cpus": {
+          "type": "integer"
         },
-        "processors": {
-          "$ref": "#/definitions/k8s_io_apimachinery_pkg_util_intstr_IntOrString",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.IntOrString"
+        "memoryMB": {
+          "type": "integer",
+          "existingJavaType": "Long"
         },
-        "sysType": {
-          "type": "string"
+        "osDisk": {
+          "$ref": "#/definitions/os_installer_vsphere_v1_OSDisk",
+          "existingJavaType": "io.fabric8.openshift.api.model.installer.vsphere.v1.OSDisk"
         },
-        "volumeIDs": {
+        "zones": {
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
@@ -3787,33 +3788,78 @@
     },
     "platform": {
       "properties": {
-        "computeSubnet": {
+        "apiFloatingIP": {
           "type": "string"
         },
-        "controlPlaneSubnet": {
+        "apiVIP": {
           "type": "string"
         },
-        "defaultMachinePlatform": {
-          "$ref": "#/definitions/os_installer_gcp_v1_MachinePool",
-          "existingJavaType": "io.fabric8.openshift.api.model.installer.gcp.v1.MachinePool"
-        },
-        "licenses": {
+        "apiVIPs": {
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
             "type": "string"
           }
         },
-        "network": {
+        "cloud": {
           "type": "string"
         },
-        "networkProjectID": {
+        "clusterOSImage": {
           "type": "string"
         },
-        "projectID": {
+        "clusterOSImageProperties": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
+        },
+        "computeFlavor": {
+          "type": "string"
+        },
+        "defaultMachinePlatform": {
+          "$ref": "#/definitions/os_installer_openstack_v1_MachinePool",
+          "existingJavaType": "io.fabric8.openshift.api.model.installer.openstack.v1.MachinePool"
+        },
+        "externalDNS": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "externalNetwork": {
+          "type": "string"
+        },
+        "ingressFloatingIP": {
+          "type": "string"
+        },
+        "ingressVIP": {
+          "type": "string"
+        },
+        "ingressVIPs": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "lbFloatingIP": {
+          "type": "string"
+        },
+        "loadBalancer": {
+          "$ref": "#/definitions/os_config_v1_OpenStackPlatformLoadBalancer",
+          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.OpenStackPlatformLoadBalancer"
+        },
+        "machinesSubnet": {
+          "type": "string"
+        },
+        "octaviaSupport": {
           "type": "string"
         },
         "region": {
+          "type": "string"
+        },
+        "trunkSupport": {
           "type": "string"
         }
       },

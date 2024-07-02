@@ -138,6 +138,7 @@ public class PingSourceList implements Editable<PingSourceListBuilder> , Kuberne
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.knative.sources.v1.PingSource> getItems() {
         return items;
     }

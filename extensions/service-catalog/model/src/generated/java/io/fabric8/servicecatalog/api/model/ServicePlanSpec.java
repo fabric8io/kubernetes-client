@@ -145,6 +145,7 @@ public class ServicePlanSpec implements Editable<ServicePlanSpecBuilder> , Kuber
     }
 
     @JsonProperty("defaultProvisionParameters")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Object> getDefaultProvisionParameters() {
         return defaultProvisionParameters;
     }
@@ -175,6 +176,7 @@ public class ServicePlanSpec implements Editable<ServicePlanSpecBuilder> , Kuber
     }
 
     @JsonProperty("externalMetadata")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Object> getExternalMetadata() {
         return externalMetadata;
     }
@@ -205,6 +207,7 @@ public class ServicePlanSpec implements Editable<ServicePlanSpecBuilder> , Kuber
     }
 
     @JsonProperty("instanceCreateParameterSchema")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Object> getInstanceCreateParameterSchema() {
         return instanceCreateParameterSchema;
     }
@@ -215,6 +218,7 @@ public class ServicePlanSpec implements Editable<ServicePlanSpecBuilder> , Kuber
     }
 
     @JsonProperty("instanceUpdateParameterSchema")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Object> getInstanceUpdateParameterSchema() {
         return instanceUpdateParameterSchema;
     }
@@ -225,6 +229,7 @@ public class ServicePlanSpec implements Editable<ServicePlanSpecBuilder> , Kuber
     }
 
     @JsonProperty("serviceBindingCreateParameterSchema")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Object> getServiceBindingCreateParameterSchema() {
         return serviceBindingCreateParameterSchema;
     }
@@ -235,6 +240,7 @@ public class ServicePlanSpec implements Editable<ServicePlanSpecBuilder> , Kuber
     }
 
     @JsonProperty("serviceBindingCreateResponseSchema")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Object> getServiceBindingCreateResponseSchema() {
         return serviceBindingCreateResponseSchema;
     }

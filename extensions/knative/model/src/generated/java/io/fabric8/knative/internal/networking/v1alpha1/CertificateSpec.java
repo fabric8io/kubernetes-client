@@ -93,6 +93,7 @@ public class CertificateSpec implements Editable<CertificateSpecBuilder> , Kuber
     }
 
     @JsonProperty("dnsNames")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getDnsNames() {
         return dnsNames;
     }

@@ -116,6 +116,7 @@ public class TriggerStatus implements Editable<TriggerStatusBuilder> , Kubernete
     }
 
     @JsonProperty("annotations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getAnnotations() {
         return annotations;
     }

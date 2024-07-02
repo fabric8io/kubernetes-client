@@ -138,6 +138,7 @@ public class StressChaosList implements Editable<StressChaosListBuilder> , Kuber
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.chaosmesh.v1alpha1.StressChaos> getItems() {
         return items;
     }

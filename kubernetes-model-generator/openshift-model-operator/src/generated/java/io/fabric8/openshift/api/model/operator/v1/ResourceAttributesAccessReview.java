@@ -83,6 +83,7 @@ public class ResourceAttributesAccessReview implements Editable<ResourceAttribut
     }
 
     @JsonProperty("missing")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ResourceAttributes> getMissing() {
         return missing;
     }
@@ -93,6 +94,7 @@ public class ResourceAttributesAccessReview implements Editable<ResourceAttribut
     }
 
     @JsonProperty("required")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ResourceAttributes> getRequired() {
         return required;
     }

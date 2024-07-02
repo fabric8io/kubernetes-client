@@ -95,6 +95,7 @@ public class ImageStatus implements Editable<ImageStatusBuilder> , KubernetesRes
     }
 
     @JsonProperty("annotations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getAnnotations() {
         return annotations;
     }

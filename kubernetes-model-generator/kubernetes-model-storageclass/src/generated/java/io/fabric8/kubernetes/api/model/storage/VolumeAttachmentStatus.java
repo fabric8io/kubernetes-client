@@ -107,6 +107,7 @@ public class VolumeAttachmentStatus implements Editable<VolumeAttachmentStatusBu
     }
 
     @JsonProperty("attachmentMetadata")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getAttachmentMetadata() {
         return attachmentMetadata;
     }

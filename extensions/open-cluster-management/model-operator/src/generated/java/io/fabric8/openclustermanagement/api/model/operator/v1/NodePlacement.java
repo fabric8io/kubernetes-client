@@ -91,6 +91,7 @@ public class NodePlacement implements Editable<NodePlacementBuilder> , Kubernete
     }
 
     @JsonProperty("nodeSelector")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getNodeSelector() {
         return nodeSelector;
     }

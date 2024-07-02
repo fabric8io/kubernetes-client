@@ -130,6 +130,7 @@ public class ClusterRoleBindingList implements Editable<ClusterRoleBindingListBu
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.rbac.ClusterRoleBinding> getItems() {
         return items;
     }

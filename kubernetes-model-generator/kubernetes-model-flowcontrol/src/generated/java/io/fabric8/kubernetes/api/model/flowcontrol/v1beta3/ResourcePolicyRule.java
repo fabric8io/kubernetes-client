@@ -96,6 +96,7 @@ public class ResourcePolicyRule implements Editable<ResourcePolicyRuleBuilder> ,
     }
 
     @JsonProperty("apiGroups")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getApiGroups() {
         return apiGroups;
     }
@@ -116,6 +117,7 @@ public class ResourcePolicyRule implements Editable<ResourcePolicyRuleBuilder> ,
     }
 
     @JsonProperty("namespaces")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getNamespaces() {
         return namespaces;
     }
@@ -126,6 +128,7 @@ public class ResourcePolicyRule implements Editable<ResourcePolicyRuleBuilder> ,
     }
 
     @JsonProperty("resources")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getResources() {
         return resources;
     }
@@ -136,6 +139,7 @@ public class ResourcePolicyRule implements Editable<ResourcePolicyRuleBuilder> ,
     }
 
     @JsonProperty("verbs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getVerbs() {
         return verbs;
     }

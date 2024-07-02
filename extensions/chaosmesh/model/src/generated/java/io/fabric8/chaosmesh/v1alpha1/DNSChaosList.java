@@ -138,6 +138,7 @@ public class DNSChaosList implements Editable<DNSChaosListBuilder> , KubernetesR
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.chaosmesh.v1alpha1.DNSChaos> getItems() {
         return items;
     }

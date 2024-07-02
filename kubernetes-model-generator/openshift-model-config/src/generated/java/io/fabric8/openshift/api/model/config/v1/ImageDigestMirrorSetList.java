@@ -130,6 +130,7 @@ public class ImageDigestMirrorSetList implements Editable<ImageDigestMirrorSetLi
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.config.v1.ImageDigestMirrorSet> getItems() {
         return items;
     }

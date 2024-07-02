@@ -138,6 +138,7 @@ public class TimeChaosList implements Editable<TimeChaosListBuilder> , Kubernete
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.chaosmesh.v1alpha1.TimeChaos> getItems() {
         return items;
     }

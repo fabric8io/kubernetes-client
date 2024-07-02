@@ -233,6 +233,7 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     }
 
     @JsonProperty("userTags")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getUserTags() {
         return userTags;
     }

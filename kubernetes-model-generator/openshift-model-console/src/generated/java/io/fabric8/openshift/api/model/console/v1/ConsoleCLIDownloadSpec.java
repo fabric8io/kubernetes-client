@@ -105,6 +105,7 @@ public class ConsoleCLIDownloadSpec implements Editable<ConsoleCLIDownloadSpecBu
     }
 
     @JsonProperty("links")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<CLIDownloadLink> getLinks() {
         return links;
     }

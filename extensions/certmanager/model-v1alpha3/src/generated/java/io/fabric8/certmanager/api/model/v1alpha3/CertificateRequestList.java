@@ -138,6 +138,7 @@ public class CertificateRequestList implements Editable<CertificateRequestListBu
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.certmanager.api.model.v1alpha3.CertificateRequest> getItems() {
         return items;
     }

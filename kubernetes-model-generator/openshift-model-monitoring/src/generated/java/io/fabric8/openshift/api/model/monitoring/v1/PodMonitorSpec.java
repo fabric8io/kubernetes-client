@@ -191,6 +191,7 @@ public class PodMonitorSpec implements Editable<PodMonitorSpecBuilder> , Kuberne
     }
 
     @JsonProperty("podMetricsEndpoints")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PodMetricsEndpoint> getPodMetricsEndpoints() {
         return podMetricsEndpoints;
     }

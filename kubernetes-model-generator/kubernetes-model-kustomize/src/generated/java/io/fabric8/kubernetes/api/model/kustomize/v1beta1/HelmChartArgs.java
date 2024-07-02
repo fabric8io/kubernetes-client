@@ -217,6 +217,7 @@ public class HelmChartArgs implements Editable<HelmChartArgsBuilder> , Kubernete
     }
 
     @JsonProperty("valuesLocal")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Object> getValuesLocal() {
         return valuesLocal;
     }

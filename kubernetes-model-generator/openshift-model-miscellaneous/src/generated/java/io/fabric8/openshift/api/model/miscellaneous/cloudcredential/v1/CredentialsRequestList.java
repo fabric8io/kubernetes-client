@@ -130,6 +130,7 @@ public class CredentialsRequestList implements Editable<CredentialsRequestListBu
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.miscellaneous.cloudcredential.v1.CredentialsRequest> getItems() {
         return items;
     }

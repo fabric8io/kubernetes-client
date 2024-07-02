@@ -130,6 +130,7 @@ public class OperatorList implements Editable<OperatorListBuilder> , KubernetesR
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.operatorhub.v1.Operator> getItems() {
         return items;
     }

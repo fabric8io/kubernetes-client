@@ -90,6 +90,7 @@ public class ConversionResponse implements Editable<ConversionResponseBuilder> ,
     }
 
     @JsonProperty("convertedObjects")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<KubernetesResource> getConvertedObjects() {
         return convertedObjects;
     }

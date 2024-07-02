@@ -138,6 +138,7 @@ public class EgressQoSList implements Editable<EgressQoSListBuilder> , Kubernete
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.ovn.v1.EgressQoS> getItems() {
         return items;
     }

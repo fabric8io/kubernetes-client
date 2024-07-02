@@ -138,6 +138,7 @@ public class RevisionList implements Editable<RevisionListBuilder> , KubernetesR
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.knative.serving.v1.Revision> getItems() {
         return items;
     }

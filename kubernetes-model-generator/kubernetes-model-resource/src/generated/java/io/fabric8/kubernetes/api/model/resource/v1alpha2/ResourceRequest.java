@@ -89,6 +89,7 @@ public class ResourceRequest implements Editable<ResourceRequestBuilder> , Kuber
     }
 
     @JsonProperty("vendorParameters")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Object> getVendorParameters() {
         return vendorParameters;
     }

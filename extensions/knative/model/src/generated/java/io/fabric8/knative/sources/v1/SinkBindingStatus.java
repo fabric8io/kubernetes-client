@@ -118,6 +118,7 @@ public class SinkBindingStatus implements Editable<SinkBindingStatusBuilder> , K
     }
 
     @JsonProperty("annotations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getAnnotations() {
         return annotations;
     }

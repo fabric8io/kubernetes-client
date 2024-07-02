@@ -99,6 +99,7 @@ public class ClusterOverrides implements Editable<ClusterOverridesBuilder> , Kub
     }
 
     @JsonProperty("clusterOverrides")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ClusterOverride> getClusterOverrides() {
         return clusterOverrides;
     }

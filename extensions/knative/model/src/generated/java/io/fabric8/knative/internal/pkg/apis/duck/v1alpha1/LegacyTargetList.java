@@ -138,6 +138,7 @@ public class LegacyTargetList implements Editable<LegacyTargetListBuilder> , Kub
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.knative.internal.pkg.apis.duck.v1alpha1.LegacyTarget> getItems() {
         return items;
     }

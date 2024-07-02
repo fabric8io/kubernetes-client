@@ -170,6 +170,7 @@ public class CSIPersistentVolumeSource implements Editable<CSIPersistentVolumeSo
     }
 
     @JsonProperty("volumeAttributes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getVolumeAttributes() {
         return volumeAttributes;
     }

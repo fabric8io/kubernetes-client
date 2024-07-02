@@ -138,6 +138,7 @@ public class RouteList implements Editable<RouteListBuilder> , KubernetesResourc
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.knative.serving.v1.Route> getItems() {
         return items;
     }

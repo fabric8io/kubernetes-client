@@ -130,6 +130,7 @@ public class ReplicaSetList implements Editable<ReplicaSetListBuilder> , Kuberne
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.extensions.ReplicaSet> getItems() {
         return items;
     }

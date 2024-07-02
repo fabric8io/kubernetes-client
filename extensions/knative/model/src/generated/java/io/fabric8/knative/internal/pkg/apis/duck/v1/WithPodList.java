@@ -138,6 +138,7 @@ public class WithPodList implements Editable<WithPodListBuilder> , KubernetesRes
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.knative.internal.pkg.apis.duck.v1.WithPod> getItems() {
         return items;
     }

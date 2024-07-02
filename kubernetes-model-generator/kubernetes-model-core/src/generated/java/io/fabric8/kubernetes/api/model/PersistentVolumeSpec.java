@@ -219,6 +219,7 @@ public class PersistentVolumeSpec implements Editable<PersistentVolumeSpecBuilde
     }
 
     @JsonProperty("capacity")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Quantity> getCapacity() {
         return capacity;
     }

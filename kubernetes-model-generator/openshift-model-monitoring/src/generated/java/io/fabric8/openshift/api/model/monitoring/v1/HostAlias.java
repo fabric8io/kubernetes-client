@@ -81,6 +81,7 @@ public class HostAlias implements Editable<HostAliasBuilder> , KubernetesResourc
     }
 
     @JsonProperty("hostnames")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getHostnames() {
         return hostnames;
     }

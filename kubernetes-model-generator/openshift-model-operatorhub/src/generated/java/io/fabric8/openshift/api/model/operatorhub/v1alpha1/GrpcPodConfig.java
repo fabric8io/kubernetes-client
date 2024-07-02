@@ -106,6 +106,7 @@ public class GrpcPodConfig implements Editable<GrpcPodConfigBuilder> , Kubernete
     }
 
     @JsonProperty("nodeSelector")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getNodeSelector() {
         return nodeSelector;
     }

@@ -167,6 +167,7 @@ public class APIGroup implements Editable<APIGroupBuilder> , KubernetesResource
     }
 
     @JsonProperty("versions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<GroupVersionForDiscovery> getVersions() {
         return versions;
     }

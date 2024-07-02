@@ -111,6 +111,7 @@ public class PhysicalMachineSelectorSpec implements Editable<PhysicalMachineSele
     }
 
     @JsonProperty("annotationSelectors")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getAnnotationSelectors() {
         return annotationSelectors;
     }
@@ -132,6 +133,7 @@ public class PhysicalMachineSelectorSpec implements Editable<PhysicalMachineSele
     }
 
     @JsonProperty("fieldSelectors")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getFieldSelectors() {
         return fieldSelectors;
     }
@@ -142,6 +144,7 @@ public class PhysicalMachineSelectorSpec implements Editable<PhysicalMachineSele
     }
 
     @JsonProperty("labelSelectors")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getLabelSelectors() {
         return labelSelectors;
     }
@@ -152,6 +155,7 @@ public class PhysicalMachineSelectorSpec implements Editable<PhysicalMachineSele
     }
 
     @JsonProperty("namespaces")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getNamespaces() {
         return namespaces;
     }
@@ -162,6 +166,7 @@ public class PhysicalMachineSelectorSpec implements Editable<PhysicalMachineSele
     }
 
     @JsonProperty("physicalMachines")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, List<java.lang.String>> getPhysicalMachines() {
         return physicalMachines;
     }

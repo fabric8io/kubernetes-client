@@ -130,6 +130,7 @@ public class StorageList implements Editable<StorageListBuilder> , KubernetesRes
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.operator.v1.Storage> getItems() {
         return items;
     }

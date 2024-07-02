@@ -118,6 +118,7 @@ public class AwsSqsSourceStatus implements Editable<AwsSqsSourceStatusBuilder> ,
     }
 
     @JsonProperty("annotations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getAnnotations() {
         return annotations;
     }

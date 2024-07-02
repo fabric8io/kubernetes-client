@@ -184,6 +184,7 @@ public class LocalSubjectAccessReview implements Editable<LocalSubjectAccessRevi
     }
 
     @JsonProperty("groups")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getGroups() {
         return groups;
     }
@@ -284,6 +285,7 @@ public class LocalSubjectAccessReview implements Editable<LocalSubjectAccessRevi
     }
 
     @JsonProperty("scopes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getScopes() {
         return scopes;
     }

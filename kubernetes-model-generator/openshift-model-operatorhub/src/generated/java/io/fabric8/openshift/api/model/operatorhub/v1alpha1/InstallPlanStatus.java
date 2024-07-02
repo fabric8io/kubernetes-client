@@ -128,6 +128,7 @@ public class InstallPlanStatus implements Editable<InstallPlanStatusBuilder> , K
     }
 
     @JsonProperty("catalogSources")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getCatalogSources() {
         return catalogSources;
     }

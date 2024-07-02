@@ -199,6 +199,7 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     }
 
     @JsonProperty("prismElements")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PrismElement> getPrismElements() {
         return prismElements;
     }
@@ -209,6 +210,7 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     }
 
     @JsonProperty("subnetUUIDs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getSubnetUUIDs() {
         return subnetUUIDs;
     }

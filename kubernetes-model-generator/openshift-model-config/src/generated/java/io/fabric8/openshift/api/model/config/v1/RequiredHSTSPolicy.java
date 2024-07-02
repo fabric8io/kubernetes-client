@@ -92,6 +92,7 @@ public class RequiredHSTSPolicy implements Editable<RequiredHSTSPolicyBuilder> ,
     }
 
     @JsonProperty("domainPatterns")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getDomainPatterns() {
         return domainPatterns;
     }

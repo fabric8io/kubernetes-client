@@ -130,6 +130,7 @@ public class CSINodeList implements Editable<CSINodeListBuilder> , KubernetesRes
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.storage.CSINode> getItems() {
         return items;
     }

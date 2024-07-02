@@ -77,6 +77,7 @@ public class PodSecurityPolicyReviewStatus implements Editable<PodSecurityPolicy
     }
 
     @JsonProperty("allowedServiceAccounts")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ServiceAccountPodSecurityPolicyReviewStatus> getAllowedServiceAccounts() {
         return allowedServiceAccounts;
     }

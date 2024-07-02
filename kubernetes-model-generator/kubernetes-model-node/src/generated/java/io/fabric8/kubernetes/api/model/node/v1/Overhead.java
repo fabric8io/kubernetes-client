@@ -76,6 +76,7 @@ public class Overhead implements Editable<OverheadBuilder> , KubernetesResource
     }
 
     @JsonProperty("podFixed")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Quantity> getPodFixed() {
         return podFixed;
     }

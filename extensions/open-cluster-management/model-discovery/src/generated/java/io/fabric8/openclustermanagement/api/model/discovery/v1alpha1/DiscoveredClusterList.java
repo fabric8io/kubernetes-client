@@ -138,6 +138,7 @@ public class DiscoveredClusterList implements Editable<DiscoveredClusterListBuil
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openclustermanagement.api.model.discovery.v1alpha1.DiscoveredCluster> getItems() {
         return items;
     }

@@ -167,6 +167,7 @@ public class ComponentRouteStatus implements Editable<ComponentRouteStatusBuilde
     }
 
     @JsonProperty("relatedObjects")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.config.v1.ObjectReference> getRelatedObjects() {
         return relatedObjects;
     }

@@ -148,6 +148,7 @@ public class ServiceInstanceStatus implements Editable<ServiceInstanceStatusBuil
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ServiceInstanceCondition> getConditions() {
         return conditions;
     }
@@ -178,6 +179,7 @@ public class ServiceInstanceStatus implements Editable<ServiceInstanceStatusBuil
     }
 
     @JsonProperty("defaultProvisionParameters")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Object> getDefaultProvisionParameters() {
         return defaultProvisionParameters;
     }

@@ -130,6 +130,7 @@ public class EgressNetworkPolicyList implements Editable<EgressNetworkPolicyList
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.EgressNetworkPolicy> getItems() {
         return items;
     }

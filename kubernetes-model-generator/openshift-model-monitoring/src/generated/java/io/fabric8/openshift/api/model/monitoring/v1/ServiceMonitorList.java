@@ -130,6 +130,7 @@ public class ServiceMonitorList implements Editable<ServiceMonitorListBuilder> ,
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.monitoring.v1.ServiceMonitor> getItems() {
         return items;
     }

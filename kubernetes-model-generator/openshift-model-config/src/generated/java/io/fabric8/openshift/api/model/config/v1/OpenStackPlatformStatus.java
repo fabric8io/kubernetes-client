@@ -112,6 +112,7 @@ public class OpenStackPlatformStatus implements Editable<OpenStackPlatformStatus
     }
 
     @JsonProperty("apiServerInternalIPs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getApiServerInternalIPs() {
         return apiServerInternalIPs;
     }
@@ -142,6 +143,7 @@ public class OpenStackPlatformStatus implements Editable<OpenStackPlatformStatus
     }
 
     @JsonProperty("ingressIPs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getIngressIPs() {
         return ingressIPs;
     }

@@ -130,6 +130,7 @@ public class DNSZoneList implements Editable<DNSZoneListBuilder> , KubernetesRes
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.hive.v1.DNSZone> getItems() {
         return items;
     }

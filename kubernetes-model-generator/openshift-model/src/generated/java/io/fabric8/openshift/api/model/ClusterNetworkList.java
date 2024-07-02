@@ -130,6 +130,7 @@ public class ClusterNetworkList implements Editable<ClusterNetworkListBuilder> ,
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.ClusterNetwork> getItems() {
         return items;
     }

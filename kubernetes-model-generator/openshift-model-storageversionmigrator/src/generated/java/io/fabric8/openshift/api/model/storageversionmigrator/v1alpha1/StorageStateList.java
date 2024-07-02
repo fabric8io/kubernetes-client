@@ -130,6 +130,7 @@ public class StorageStateList implements Editable<StorageStateListBuilder> , Kub
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.storageversionmigrator.v1alpha1.StorageState> getItems() {
         return items;
     }

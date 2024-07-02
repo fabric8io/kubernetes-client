@@ -223,6 +223,7 @@ public class HelmChart implements Editable<HelmChartBuilder> , KubernetesResourc
     }
 
     @JsonProperty("valuesInline")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Object> getValuesInline() {
         return valuesInline;
     }

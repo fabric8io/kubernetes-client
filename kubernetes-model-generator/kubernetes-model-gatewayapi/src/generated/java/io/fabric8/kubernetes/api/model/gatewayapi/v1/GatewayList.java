@@ -130,6 +130,7 @@ public class GatewayList implements Editable<GatewayListBuilder> , KubernetesRes
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.gatewayapi.v1.Gateway> getItems() {
         return items;
     }

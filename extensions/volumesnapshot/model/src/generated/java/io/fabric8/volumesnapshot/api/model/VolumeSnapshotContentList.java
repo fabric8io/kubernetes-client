@@ -138,6 +138,7 @@ public class VolumeSnapshotContentList implements Editable<VolumeSnapshotContent
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.volumesnapshot.api.model.VolumeSnapshotContent> getItems() {
         return items;
     }

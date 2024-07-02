@@ -113,6 +113,7 @@ public class RecommendedContainerResources implements Editable<RecommendedContai
     }
 
     @JsonProperty("lowerBound")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Quantity> getLowerBound() {
         return lowerBound;
     }
@@ -123,6 +124,7 @@ public class RecommendedContainerResources implements Editable<RecommendedContai
     }
 
     @JsonProperty("target")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Quantity> getTarget() {
         return target;
     }
@@ -133,6 +135,7 @@ public class RecommendedContainerResources implements Editable<RecommendedContai
     }
 
     @JsonProperty("uncappedTarget")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Quantity> getUncappedTarget() {
         return uncappedTarget;
     }
@@ -143,6 +146,7 @@ public class RecommendedContainerResources implements Editable<RecommendedContai
     }
 
     @JsonProperty("upperBound")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Quantity> getUpperBound() {
         return upperBound;
     }

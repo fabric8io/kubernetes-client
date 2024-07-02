@@ -130,6 +130,7 @@ public class RouteList implements Editable<RouteListBuilder> , KubernetesResourc
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.Route> getItems() {
         return items;
     }

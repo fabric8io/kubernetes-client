@@ -138,6 +138,7 @@ public class ClusterIssuerList implements Editable<ClusterIssuerListBuilder> , K
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.certmanager.api.model.v1beta1.ClusterIssuer> getItems() {
         return items;
     }

@@ -130,6 +130,7 @@ public class PrometheusRuleList implements Editable<PrometheusRuleListBuilder> ,
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.monitoring.v1.PrometheusRule> getItems() {
         return items;
     }

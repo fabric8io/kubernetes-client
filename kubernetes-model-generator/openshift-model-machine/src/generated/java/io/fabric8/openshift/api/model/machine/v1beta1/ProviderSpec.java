@@ -75,6 +75,7 @@ public class ProviderSpec implements Editable<ProviderSpecBuilder> , KubernetesR
     }
 
     @JsonProperty("value")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Object> getValue() {
         return value;
     }

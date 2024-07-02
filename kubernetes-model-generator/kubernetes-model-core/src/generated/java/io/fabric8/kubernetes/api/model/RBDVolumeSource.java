@@ -114,6 +114,7 @@ public class RBDVolumeSource implements Editable<RBDVolumeSourceBuilder> , Kuber
     }
 
     @JsonProperty("monitors")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getMonitors() {
         return monitors;
     }

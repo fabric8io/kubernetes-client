@@ -130,6 +130,7 @@ public class OverlappingRangeIPReservationList implements Editable<OverlappingRa
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.whereabouts.v1alpha1.OverlappingRangeIPReservation> getItems() {
         return items;
     }

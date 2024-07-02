@@ -138,6 +138,7 @@ public class ServerlessServiceList implements Editable<ServerlessServiceListBuil
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.knative.internal.networking.v1alpha1.ServerlessService> getItems() {
         return items;
     }

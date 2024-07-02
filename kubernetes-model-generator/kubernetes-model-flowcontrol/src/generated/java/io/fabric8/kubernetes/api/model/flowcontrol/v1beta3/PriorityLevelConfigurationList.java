@@ -130,6 +130,7 @@ public class PriorityLevelConfigurationList implements Editable<PriorityLevelCon
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.flowcontrol.v1beta3.PriorityLevelConfiguration> getItems() {
         return items;
     }

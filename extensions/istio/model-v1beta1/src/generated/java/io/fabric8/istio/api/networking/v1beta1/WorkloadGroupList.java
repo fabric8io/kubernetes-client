@@ -138,6 +138,7 @@ public class WorkloadGroupList implements Editable<WorkloadGroupListBuilder> , K
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.istio.api.networking.v1beta1.WorkloadGroup> getItems() {
         return items;
     }

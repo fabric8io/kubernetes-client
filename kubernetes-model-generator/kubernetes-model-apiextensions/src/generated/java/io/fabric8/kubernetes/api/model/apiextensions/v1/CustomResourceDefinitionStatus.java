@@ -96,6 +96,7 @@ public class CustomResourceDefinitionStatus implements Editable<CustomResourceDe
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<CustomResourceDefinitionCondition> getConditions() {
         return conditions;
     }
@@ -106,6 +107,7 @@ public class CustomResourceDefinitionStatus implements Editable<CustomResourceDe
     }
 
     @JsonProperty("storedVersions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getStoredVersions() {
         return storedVersions;
     }

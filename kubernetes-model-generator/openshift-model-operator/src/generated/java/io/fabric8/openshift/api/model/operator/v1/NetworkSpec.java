@@ -154,6 +154,7 @@ public class NetworkSpec implements Editable<NetworkSpecBuilder> , KubernetesRes
     }
 
     @JsonProperty("clusterNetwork")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ClusterNetworkEntry> getClusterNetwork() {
         return clusterNetwork;
     }
@@ -274,6 +275,7 @@ public class NetworkSpec implements Editable<NetworkSpecBuilder> , KubernetesRes
     }
 
     @JsonProperty("serviceNetwork")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getServiceNetwork() {
         return serviceNetwork;
     }

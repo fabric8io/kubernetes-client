@@ -130,6 +130,7 @@ public class ServiceCIDRList implements Editable<ServiceCIDRListBuilder> , Kuber
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.networking.v1alpha1.ServiceCIDR> getItems() {
         return items;
     }

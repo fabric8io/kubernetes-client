@@ -95,6 +95,7 @@ public class APIRequestCountStatus implements Editable<APIRequestCountStatusBuil
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }
@@ -115,6 +116,7 @@ public class APIRequestCountStatus implements Editable<APIRequestCountStatusBuil
     }
 
     @JsonProperty("last24h")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PerResourceAPIRequestLog> getLast24h() {
         return last24h;
     }

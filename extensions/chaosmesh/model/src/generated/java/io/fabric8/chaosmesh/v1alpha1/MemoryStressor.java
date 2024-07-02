@@ -93,6 +93,7 @@ public class MemoryStressor implements Editable<MemoryStressorBuilder> , Kuberne
     }
 
     @JsonProperty("options")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getOptions() {
         return options;
     }

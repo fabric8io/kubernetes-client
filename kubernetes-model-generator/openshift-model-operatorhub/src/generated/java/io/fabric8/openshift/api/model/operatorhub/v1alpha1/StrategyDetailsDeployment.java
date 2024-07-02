@@ -98,6 +98,7 @@ public class StrategyDetailsDeployment implements Editable<StrategyDetailsDeploy
     }
 
     @JsonProperty("deployments")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<StrategyDeploymentSpec> getDeployments() {
         return deployments;
     }

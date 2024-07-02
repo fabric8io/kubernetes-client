@@ -138,6 +138,7 @@ public class VerificationPolicyList implements Editable<VerificationPolicyListBu
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.tekton.pipeline.v1alpha1.VerificationPolicy> getItems() {
         return items;
     }

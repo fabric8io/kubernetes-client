@@ -107,6 +107,7 @@ public class GatewayTLSConfig implements Editable<GatewayTLSConfigBuilder> , Kub
     }
 
     @JsonProperty("options")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getOptions() {
         return options;
     }

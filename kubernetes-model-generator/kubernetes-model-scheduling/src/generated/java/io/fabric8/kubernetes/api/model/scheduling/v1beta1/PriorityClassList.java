@@ -130,6 +130,7 @@ public class PriorityClassList implements Editable<PriorityClassListBuilder> , K
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.scheduling.v1beta1.PriorityClass> getItems() {
         return items;
     }

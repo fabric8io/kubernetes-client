@@ -204,6 +204,7 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     }
 
     @JsonProperty("clusterOSImageProperties")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getClusterOSImageProperties() {
         return clusterOSImageProperties;
     }
@@ -234,6 +235,7 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     }
 
     @JsonProperty("externalDNS")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getExternalDNS() {
         return externalDNS;
     }

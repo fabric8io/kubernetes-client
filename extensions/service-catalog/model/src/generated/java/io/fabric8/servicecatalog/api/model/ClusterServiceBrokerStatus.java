@@ -97,6 +97,7 @@ public class ClusterServiceBrokerStatus implements Editable<ClusterServiceBroker
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ServiceBrokerCondition> getConditions() {
         return conditions;
     }

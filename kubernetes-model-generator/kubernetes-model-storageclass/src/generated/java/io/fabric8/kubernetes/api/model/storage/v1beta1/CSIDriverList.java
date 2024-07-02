@@ -130,6 +130,7 @@ public class CSIDriverList implements Editable<CSIDriverListBuilder> , Kubernete
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.storage.v1beta1.CSIDriver> getItems() {
         return items;
     }

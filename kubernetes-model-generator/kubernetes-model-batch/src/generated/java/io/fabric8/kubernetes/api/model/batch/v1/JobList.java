@@ -130,6 +130,7 @@ public class JobList implements Editable<JobListBuilder> , KubernetesResource, K
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.batch.v1.Job> getItems() {
         return items;
     }

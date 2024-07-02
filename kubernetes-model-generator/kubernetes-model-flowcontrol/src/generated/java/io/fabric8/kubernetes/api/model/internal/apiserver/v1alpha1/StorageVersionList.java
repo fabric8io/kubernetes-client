@@ -130,6 +130,7 @@ public class StorageVersionList implements Editable<StorageVersionListBuilder> ,
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.internal.apiserver.v1alpha1.StorageVersion> getItems() {
         return items;
     }

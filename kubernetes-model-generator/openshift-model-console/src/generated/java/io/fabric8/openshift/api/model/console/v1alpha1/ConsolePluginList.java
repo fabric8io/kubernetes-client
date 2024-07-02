@@ -130,6 +130,7 @@ public class ConsolePluginList implements Editable<ConsolePluginListBuilder> , K
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.console.v1alpha1.ConsolePlugin> getItems() {
         return items;
     }

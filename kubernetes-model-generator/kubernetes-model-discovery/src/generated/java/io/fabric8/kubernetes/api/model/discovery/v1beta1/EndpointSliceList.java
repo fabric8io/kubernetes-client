@@ -130,6 +130,7 @@ public class EndpointSliceList implements Editable<EndpointSliceListBuilder> , K
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.discovery.v1beta1.EndpointSlice> getItems() {
         return items;
     }

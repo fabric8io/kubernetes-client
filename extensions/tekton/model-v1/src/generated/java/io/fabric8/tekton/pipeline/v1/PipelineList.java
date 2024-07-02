@@ -138,6 +138,7 @@ public class PipelineList implements Editable<PipelineListBuilder> , KubernetesR
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.tekton.pipeline.v1.Pipeline> getItems() {
         return items;
     }

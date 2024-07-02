@@ -118,6 +118,7 @@ public class WorkloadEntrySpec implements Editable<WorkloadEntrySpecBuilder> , K
     }
 
     @JsonProperty("labels")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getLabels() {
         return labels;
     }
@@ -148,6 +149,7 @@ public class WorkloadEntrySpec implements Editable<WorkloadEntrySpecBuilder> , K
     }
 
     @JsonProperty("ports")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Long> getPorts() {
         return ports;
     }

@@ -245,6 +245,7 @@ public class ControllerConfigSpec implements Editable<ControllerConfigSpecBuilde
     }
 
     @JsonProperty("imageRegistryBundleData")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ImageRegistryBundle> getImageRegistryBundleData() {
         return imageRegistryBundleData;
     }
@@ -255,6 +256,7 @@ public class ControllerConfigSpec implements Editable<ControllerConfigSpecBuilde
     }
 
     @JsonProperty("imageRegistryBundleUserData")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ImageRegistryBundle> getImageRegistryBundleUserData() {
         return imageRegistryBundleUserData;
     }
@@ -265,6 +267,7 @@ public class ControllerConfigSpec implements Editable<ControllerConfigSpecBuilde
     }
 
     @JsonProperty("images")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getImages() {
         return images;
     }

@@ -138,6 +138,7 @@ public class KlusterletList implements Editable<KlusterletListBuilder> , Kuberne
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openclustermanagement.api.model.operator.v1.Klusterlet> getItems() {
         return items;
     }

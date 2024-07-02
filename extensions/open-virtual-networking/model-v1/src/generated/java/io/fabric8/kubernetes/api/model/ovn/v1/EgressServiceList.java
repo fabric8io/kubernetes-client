@@ -138,6 +138,7 @@ public class EgressServiceList implements Editable<EgressServiceListBuilder> , K
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.ovn.v1.EgressService> getItems() {
         return items;
     }

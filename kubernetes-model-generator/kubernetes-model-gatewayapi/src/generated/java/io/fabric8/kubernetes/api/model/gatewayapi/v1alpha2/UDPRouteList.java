@@ -130,6 +130,7 @@ public class UDPRouteList implements Editable<UDPRouteListBuilder> , KubernetesR
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.UDPRoute> getItems() {
         return items;
     }

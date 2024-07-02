@@ -91,6 +91,7 @@ public class ConfigSource implements Editable<ConfigSourceBuilder> , KubernetesR
     }
 
     @JsonProperty("digest")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getDigest() {
         return digest;
     }

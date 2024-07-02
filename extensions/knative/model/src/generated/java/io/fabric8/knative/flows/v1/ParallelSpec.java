@@ -95,6 +95,7 @@ public class ParallelSpec implements Editable<ParallelSpecBuilder> , KubernetesR
     }
 
     @JsonProperty("branches")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ParallelBranch> getBranches() {
         return branches;
     }

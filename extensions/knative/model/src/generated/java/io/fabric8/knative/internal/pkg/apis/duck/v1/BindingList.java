@@ -138,6 +138,7 @@ public class BindingList implements Editable<BindingListBuilder> , KubernetesRes
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.knative.internal.pkg.apis.duck.v1.Binding> getItems() {
         return items;
     }

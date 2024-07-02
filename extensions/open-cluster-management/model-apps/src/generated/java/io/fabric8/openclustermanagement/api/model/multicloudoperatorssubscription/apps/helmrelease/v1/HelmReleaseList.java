@@ -138,6 +138,7 @@ public class HelmReleaseList implements Editable<HelmReleaseListBuilder> , Kuber
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.helmrelease.v1.HelmRelease> getItems() {
         return items;
     }

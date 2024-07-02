@@ -78,6 +78,7 @@ public class TLSRouteStatus implements Editable<TLSRouteStatusBuilder> , Kuberne
     }
 
     @JsonProperty("parents")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<RouteParentStatus> getParents() {
         return parents;
     }

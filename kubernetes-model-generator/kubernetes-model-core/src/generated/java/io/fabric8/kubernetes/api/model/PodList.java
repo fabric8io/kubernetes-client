@@ -107,6 +107,7 @@ public class PodList implements Editable<PodListBuilder> , KubernetesResource, K
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.Pod> getItems() {
         return items;
     }

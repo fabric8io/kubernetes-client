@@ -119,6 +119,7 @@ public class CSINodeDriver implements Editable<CSINodeDriverBuilder> , Kubernete
     }
 
     @JsonProperty("topologyKeys")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getTopologyKeys() {
         return topologyKeys;
     }

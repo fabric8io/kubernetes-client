@@ -83,6 +83,7 @@ public class WorkloadSelector implements Editable<WorkloadSelectorBuilder> , Kub
     }
 
     @JsonProperty("matchLabels")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getMatchLabels() {
         return matchLabels;
     }

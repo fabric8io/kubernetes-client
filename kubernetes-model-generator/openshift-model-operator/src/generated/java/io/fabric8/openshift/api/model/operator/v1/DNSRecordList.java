@@ -130,6 +130,7 @@ public class DNSRecordList implements Editable<DNSRecordListBuilder> , Kubernete
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.operator.v1.DNSRecord> getItems() {
         return items;
     }

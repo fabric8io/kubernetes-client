@@ -85,6 +85,7 @@ public class BuildVolume implements Editable<BuildVolumeBuilder> , KubernetesRes
     }
 
     @JsonProperty("mounts")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<BuildVolumeMount> getMounts() {
         return mounts;
     }

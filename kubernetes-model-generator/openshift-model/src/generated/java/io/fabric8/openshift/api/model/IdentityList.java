@@ -130,6 +130,7 @@ public class IdentityList implements Editable<IdentityListBuilder> , KubernetesR
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.Identity> getItems() {
         return items;
     }

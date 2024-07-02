@@ -140,6 +140,7 @@ public class ParallelStatus implements Editable<ParallelStatusBuilder> , Kuberne
     }
 
     @JsonProperty("annotations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getAnnotations() {
         return annotations;
     }
@@ -160,6 +161,7 @@ public class ParallelStatus implements Editable<ParallelStatusBuilder> , Kuberne
     }
 
     @JsonProperty("branchStatuses")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ParallelBranchStatus> getBranchStatuses() {
         return branchStatuses;
     }

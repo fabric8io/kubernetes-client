@@ -130,6 +130,7 @@ public class ProjectList implements Editable<ProjectListBuilder> , KubernetesRes
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.config.v1.Project> getItems() {
         return items;
     }

@@ -138,6 +138,7 @@ public class SinkBindingList implements Editable<SinkBindingListBuilder> , Kuber
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.knative.sources.v1.SinkBinding> getItems() {
         return items;
     }

@@ -138,6 +138,7 @@ public class ServiceList implements Editable<ServiceListBuilder> , KubernetesRes
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.knative.serving.v1.Service> getItems() {
         return items;
     }

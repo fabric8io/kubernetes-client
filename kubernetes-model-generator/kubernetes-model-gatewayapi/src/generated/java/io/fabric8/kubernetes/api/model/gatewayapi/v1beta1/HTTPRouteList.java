@@ -130,6 +130,7 @@ public class HTTPRouteList implements Editable<HTTPRouteListBuilder> , Kubernete
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.HTTPRoute> getItems() {
         return items;
     }

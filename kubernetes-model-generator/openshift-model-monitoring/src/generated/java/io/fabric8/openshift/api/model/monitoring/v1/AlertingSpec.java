@@ -77,6 +77,7 @@ public class AlertingSpec implements Editable<AlertingSpecBuilder> , KubernetesR
     }
 
     @JsonProperty("alertmanagers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<AlertmanagerEndpoints> getAlertmanagers() {
         return alertmanagers;
     }

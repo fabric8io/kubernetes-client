@@ -158,6 +158,7 @@ public class Role implements Editable<RoleBuilder> , HasMetadata, Namespaced
     }
 
     @JsonProperty("rules")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PolicyRule> getRules() {
         return rules;
     }

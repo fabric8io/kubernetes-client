@@ -266,6 +266,7 @@ public class PodMetricsEndpoint implements Editable<PodMetricsEndpointBuilder> ,
     }
 
     @JsonProperty("params")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, ArrayList<String>> getParams() {
         return params;
     }

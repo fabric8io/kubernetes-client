@@ -138,6 +138,7 @@ public class WasmPluginList implements Editable<WasmPluginListBuilder> , Kuberne
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.istio.api.extensions.v1alpha1.WasmPlugin> getItems() {
         return items;
     }

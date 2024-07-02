@@ -122,6 +122,7 @@ public class SNSConfig implements Editable<SNSConfigBuilder> , KubernetesResourc
     }
 
     @JsonProperty("attributes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getAttributes() {
         return attributes;
     }

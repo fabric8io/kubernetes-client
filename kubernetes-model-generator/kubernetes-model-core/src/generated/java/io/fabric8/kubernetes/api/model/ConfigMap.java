@@ -114,6 +114,7 @@ public class ConfigMap implements Editable<ConfigMapBuilder> , HasMetadata, Name
     }
 
     @JsonProperty("binaryData")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getBinaryData() {
         return binaryData;
     }
@@ -124,6 +125,7 @@ public class ConfigMap implements Editable<ConfigMapBuilder> , HasMetadata, Name
     }
 
     @JsonProperty("data")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getData() {
         return data;
     }

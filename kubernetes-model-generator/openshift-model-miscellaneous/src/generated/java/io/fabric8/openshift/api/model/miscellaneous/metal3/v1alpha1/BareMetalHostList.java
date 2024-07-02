@@ -130,6 +130,7 @@ public class BareMetalHostList implements Editable<BareMetalHostListBuilder> , K
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.miscellaneous.metal3.v1alpha1.BareMetalHost> getItems() {
         return items;
     }

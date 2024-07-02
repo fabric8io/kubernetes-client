@@ -251,6 +251,7 @@ public class Template implements Editable<TemplateBuilder> , KubernetesResource
     }
 
     @JsonProperty("nodeSelector")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getNodeSelector() {
         return nodeSelector;
     }
