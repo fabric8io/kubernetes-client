@@ -16,7 +16,8 @@
 package io.fabric8.mockwebserver;
 
 import io.fabric8.mockwebserver.dsl.MockServerExpectation;
-import okhttp3.mockwebserver.RecordedRequest;
+import io.fabric8.mockwebserver.http.RecordedRequest;
+import io.vertx.core.net.SelfSignedCertificate;
 
 import java.net.Proxy;
 import java.util.concurrent.TimeUnit;
@@ -36,25 +37,32 @@ public interface MockServer {
   }
 
   /**
-   * The port for the {@link okhttp3.mockwebserver.MockWebServer}.
+   * The port for the {@link MockWebServer}.
    *
    * @return the MockWebServer port.
    */
   int getPort();
 
   /**
-   * The host name for the {@link okhttp3.mockwebserver.MockWebServer}.
-   * 
+   * The host name for the {@link MockWebServer}.
+   *
    * @return the MockWebServer host name;
    */
   String getHostName();
 
   /**
-   * Returns a {@link Proxy} for the {@link okhttp3.mockwebserver.MockWebServer} with the current HostName and Port.
+   * Returns a {@link Proxy} for the {@link MockWebServer} with the current HostName and Port.
    *
    * @return a Proxy for the MockWebServer.
    */
   Proxy toProxyAddress();
+
+  /**
+   * Returns the {@link SelfSignedCertificate} for the Mock Web Server.
+   *
+   * @return the SelfSignedCertificate for the MockWebServer.
+   */
+  SelfSignedCertificate getSelfSignedCertificate();
 
   /**
    * Returns a String URL for connecting to this server.
@@ -97,7 +105,7 @@ public interface MockServer {
   RecordedRequest takeRequest(long timeout, TimeUnit unit) throws InterruptedException;
 
   /**
-   * Returns the last (most recent) HTTP request processed by the {@link okhttp3.mockwebserver.MockWebServer}.
+   * Returns the last (most recent) HTTP request processed by the {@link MockWebServer}.
    *
    * n.b. This method clears the request queue.
    *

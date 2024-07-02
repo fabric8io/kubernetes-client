@@ -24,6 +24,17 @@ public enum HttpMethod {
   DELETE,
   OPTIONS,
   CONNECT,
-  ANY
+  ANY;
+
+  public static HttpMethod fromVertx(io.vertx.core.http.HttpMethod method) {
+    if (method != null) {
+      for (HttpMethod m : HttpMethod.values()) {
+        if (m.toString().equalsIgnoreCase(method.toString())) {
+          return m;
+        }
+      }
+    }
+    return null;
+  }
 
 }
