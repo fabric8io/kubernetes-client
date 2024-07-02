@@ -13,6 +13,7 @@
 * Fix #6052: Removed dependency on no longer maintained com.github.mifmif:generex
 
 #### New Features
+* Fix #6066: Add support for `v1.APIVersions` in KubernetesClient
 
 #### _**Note**_: Breaking changes
 * Check detailed migration documentation for breaking changes in [7.0.0](./doc/MIGRATION-v7.md)

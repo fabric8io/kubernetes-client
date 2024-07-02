@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.client.extension;
 import io.fabric8.kubernetes.api.model.APIGroup;
 import io.fabric8.kubernetes.api.model.APIGroupList;
 import io.fabric8.kubernetes.api.model.APIResourceList;
+import io.fabric8.kubernetes.api.model.APIVersions;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
@@ -115,6 +116,11 @@ public abstract class ClientAdapter<C extends ClientAdapter<C>> implements Clien
   @Override
   public APIGroupList getApiGroups() {
     return client.getApiGroups();
+  }
+
+  @Override
+  public APIVersions getAPIVersions() {
+    return client.getAPIVersions();
   }
 
   @Override
