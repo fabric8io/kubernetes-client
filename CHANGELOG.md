@@ -4,9 +4,6 @@
 
 #### Bugs
 * Fix #6038: Support for Gradle configuration cache
-* Fix #6059: Swallow rejected execution from internal usage of the informer executor
-* Fix #6068: KubernetesMockServer provides incomplete Configuration while creating test Config for KubernetesClient
-* Fix #6085: model getters have same annotations as fields (breaks native)
 
 #### Improvements
 * Fix #6008: removing the optional dependency on bouncy castle
@@ -20,6 +17,13 @@
 #### _**Note**_: Breaking changes
 * Check detailed migration documentation for breaking changes in [7.0.0](./doc/MIGRATION-v7.md)
 * `Config.errorMessages` has been removed. Please use Kubernetes status messages directly.
+
+### 6.13.1 (2024-07-02)
+
+#### Bugs
+* Fix #6059: Swallow rejected execution from internal usage of the informer executor
+* Fix #6068: KubernetesMockServer provides incomplete Configuration while creating test Config for KubernetesClient
+* Fix #6085: model getters have same annotations as fields (breaks native)
 
 ### 6.13.0 (2024-05-29)
 
