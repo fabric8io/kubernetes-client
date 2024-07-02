@@ -29,6 +29,7 @@ import io.fabric8.crdv2.example.multiple.v1.Multiple;
 import io.fabric8.crdv2.example.nocyclic.NoCyclic;
 import io.fabric8.crdv2.example.simplest.Simplest;
 import io.fabric8.crdv2.generator.CRDGenerator.AbstractCRDOutput;
+import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceColumnDefinition;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinition;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionNames;
@@ -51,6 +52,7 @@ import java.io.File;
 import java.net.URL;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -109,10 +111,25 @@ class CRDGeneratorTest {
     generator.customResources();
     assertTrue(generator.getCustomResourceInfos().isEmpty());
 
-    generator.customResources(null);
+    generator.customResources((CustomResourceInfo[]) null);
+    assertTrue(generator.getCustomResourceInfos().isEmpty());
+
+    generator.customResources((CustomResourceInfo) null);
+    assertTrue(generator.getCustomResourceInfos().isEmpty());
+
+    generator.customResources((Collection<CustomResourceInfo>) null);
     assertTrue(generator.getCustomResourceInfos().isEmpty());
 
     generator.customResources(null, null);
+    assertTrue(generator.getCustomResourceInfos().isEmpty());
+
+    generator.customResourceClasses((Class<? extends HasMetadata>[]) null);
+    assertTrue(generator.getCustomResourceInfos().isEmpty());
+
+    generator.customResourceClasses((Class<? extends HasMetadata>) null);
+    assertTrue(generator.getCustomResourceInfos().isEmpty());
+
+    generator.customResourceClasses((Collection<Class<? extends HasMetadata>>) null);
     assertTrue(generator.getCustomResourceInfos().isEmpty());
 
     generator.customResourceClasses(Simplest.class);
