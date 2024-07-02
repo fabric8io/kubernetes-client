@@ -98,6 +98,7 @@ public class UserInfo implements Editable<UserInfoBuilder> , KubernetesResource
     }
 
     @JsonProperty("extra")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, List<String>> getExtra() {
         return extra;
     }

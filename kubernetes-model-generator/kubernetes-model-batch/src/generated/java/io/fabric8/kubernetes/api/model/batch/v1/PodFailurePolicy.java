@@ -77,6 +77,7 @@ public class PodFailurePolicy implements Editable<PodFailurePolicyBuilder> , Kub
     }
 
     @JsonProperty("rules")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PodFailurePolicyRule> getRules() {
         return rules;
     }

@@ -77,6 +77,7 @@ public class HTTPRouteStatus implements Editable<HTTPRouteStatusBuilder> , Kuber
     }
 
     @JsonProperty("parents")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<RouteParentStatus> getParents() {
         return parents;
     }

@@ -82,6 +82,7 @@ public class ReferenceGrantSpec implements Editable<ReferenceGrantSpecBuilder> ,
     }
 
     @JsonProperty("from")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ReferenceGrantFrom> getFrom() {
         return from;
     }
@@ -92,6 +93,7 @@ public class ReferenceGrantSpec implements Editable<ReferenceGrantSpecBuilder> ,
     }
 
     @JsonProperty("to")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ReferenceGrantTo> getTo() {
         return to;
     }

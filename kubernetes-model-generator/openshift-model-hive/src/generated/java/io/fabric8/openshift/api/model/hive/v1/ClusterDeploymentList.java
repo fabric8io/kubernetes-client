@@ -130,6 +130,7 @@ public class ClusterDeploymentList implements Editable<ClusterDeploymentListBuil
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.hive.v1.ClusterDeployment> getItems() {
         return items;
     }

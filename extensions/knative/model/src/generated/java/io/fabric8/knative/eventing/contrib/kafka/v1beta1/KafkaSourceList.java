@@ -138,6 +138,7 @@ public class KafkaSourceList implements Editable<KafkaSourceListBuilder> , Kuber
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.knative.eventing.contrib.kafka.v1beta1.KafkaSource> getItems() {
         return items;
     }

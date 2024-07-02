@@ -138,6 +138,7 @@ public class GitHubBindingList implements Editable<GitHubBindingListBuilder> , K
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.knative.eventing.contrib.github.v1alpha1.GitHubBinding> getItems() {
         return items;
     }

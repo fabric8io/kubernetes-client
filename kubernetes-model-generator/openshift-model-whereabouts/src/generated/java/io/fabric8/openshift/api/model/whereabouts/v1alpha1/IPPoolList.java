@@ -130,6 +130,7 @@ public class IPPoolList implements Editable<IPPoolListBuilder> , KubernetesResou
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.whereabouts.v1alpha1.IPPool> getItems() {
         return items;
     }

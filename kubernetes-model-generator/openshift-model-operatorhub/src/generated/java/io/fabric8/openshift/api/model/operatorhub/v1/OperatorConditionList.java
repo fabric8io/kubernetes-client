@@ -130,6 +130,7 @@ public class OperatorConditionList implements Editable<OperatorConditionListBuil
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.operatorhub.v1.OperatorCondition> getItems() {
         return items;
     }

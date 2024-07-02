@@ -111,6 +111,7 @@ public class EnvoyFilterPatch implements Editable<EnvoyFilterPatchBuilder> , Kub
     }
 
     @JsonProperty("value")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Object> getValue() {
         return value;
     }

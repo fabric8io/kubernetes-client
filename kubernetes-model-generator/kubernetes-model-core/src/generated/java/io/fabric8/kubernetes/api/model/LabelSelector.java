@@ -72,6 +72,7 @@ public class LabelSelector implements Editable<LabelSelectorBuilder> , Kubernete
     }
 
     @JsonProperty("matchLabels")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getMatchLabels() {
         return matchLabels;
     }

@@ -56,6 +56,7 @@ public class NodeSelector implements Editable<NodeSelectorBuilder> , KubernetesR
     }
 
     @JsonProperty("nodeSelectorTerms")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<NodeSelectorTerm> getNodeSelectorTerms() {
         return nodeSelectorTerms;
     }

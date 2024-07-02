@@ -94,6 +94,7 @@ public class KafkaBindingSpec implements Editable<KafkaBindingSpecBuilder> , Kub
     }
 
     @JsonProperty("bootstrapServers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getBootstrapServers() {
         return bootstrapServers;
     }

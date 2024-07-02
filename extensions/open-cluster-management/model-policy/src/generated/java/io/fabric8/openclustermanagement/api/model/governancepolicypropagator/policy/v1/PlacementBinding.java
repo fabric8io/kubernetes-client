@@ -194,6 +194,7 @@ public class PlacementBinding implements Editable<PlacementBindingBuilder> , Has
     }
 
     @JsonProperty("subjects")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Subject> getSubjects() {
         return subjects;
     }

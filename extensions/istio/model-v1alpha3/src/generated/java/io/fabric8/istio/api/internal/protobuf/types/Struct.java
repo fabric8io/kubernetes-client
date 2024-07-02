@@ -83,6 +83,7 @@ public class Struct implements Editable<StructBuilder> , KubernetesResource
     }
 
     @JsonProperty("fields")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Value> getFields() {
         return fields;
     }

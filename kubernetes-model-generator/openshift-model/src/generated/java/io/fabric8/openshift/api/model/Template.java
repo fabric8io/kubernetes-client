@@ -166,6 +166,7 @@ public class Template implements Editable<TemplateBuilder> , HasMetadata, Namesp
     }
 
     @JsonProperty("labels")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getLabels() {
         return labels;
     }
@@ -196,6 +197,7 @@ public class Template implements Editable<TemplateBuilder> , HasMetadata, Namesp
     }
 
     @JsonProperty("objects")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<HasMetadata> getObjects() {
         return objects;
     }

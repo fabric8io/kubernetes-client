@@ -138,6 +138,7 @@ public class InMemoryChannelList implements Editable<InMemoryChannelListBuilder>
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.knative.messaging.v1.InMemoryChannel> getItems() {
         return items;
     }

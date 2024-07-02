@@ -138,6 +138,7 @@ public class GitLabBindingList implements Editable<GitLabBindingListBuilder> , K
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.knative.eventing.contrib.gitlab.v1alpha1.GitLabBinding> getItems() {
         return items;
     }

@@ -137,6 +137,7 @@ public class PodMetrics implements Editable<PodMetricsBuilder> , HasMetadata, Na
     }
 
     @JsonProperty("containers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ContainerMetrics> getContainers() {
         return containers;
     }

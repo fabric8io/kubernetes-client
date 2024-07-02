@@ -130,6 +130,7 @@ public class NetworkAttachmentDefinitionList implements Editable<NetworkAttachme
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.miscellaneous.cncf.cni.v1.NetworkAttachmentDefinition> getItems() {
         return items;
     }

@@ -130,6 +130,7 @@ public class HelmChartRepositoryList implements Editable<HelmChartRepositoryList
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.HelmChartRepository> getItems() {
         return items;
     }

@@ -201,6 +201,7 @@ public class WasmPluginSpec implements Editable<WasmPluginSpecBuilder> , Kuberne
     }
 
     @JsonProperty("pluginConfig")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Object> getPluginConfig() {
         return pluginConfig;
     }

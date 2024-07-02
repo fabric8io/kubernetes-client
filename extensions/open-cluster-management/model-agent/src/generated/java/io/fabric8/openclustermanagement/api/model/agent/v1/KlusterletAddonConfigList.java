@@ -138,6 +138,7 @@ public class KlusterletAddonConfigList implements Editable<KlusterletAddonConfig
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openclustermanagement.api.model.agent.v1.KlusterletAddonConfig> getItems() {
         return items;
     }

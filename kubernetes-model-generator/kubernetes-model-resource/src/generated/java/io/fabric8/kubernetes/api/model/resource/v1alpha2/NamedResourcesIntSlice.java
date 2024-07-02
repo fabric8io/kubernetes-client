@@ -77,6 +77,7 @@ public class NamedResourcesIntSlice implements Editable<NamedResourcesIntSliceBu
     }
 
     @JsonProperty("ints")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Long> getInts() {
         return ints;
     }

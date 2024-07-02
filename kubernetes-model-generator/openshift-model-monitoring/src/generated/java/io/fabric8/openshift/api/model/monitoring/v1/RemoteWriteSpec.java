@@ -182,6 +182,7 @@ public class RemoteWriteSpec implements Editable<RemoteWriteSpecBuilder> , Kuber
     }
 
     @JsonProperty("headers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getHeaders() {
         return headers;
     }

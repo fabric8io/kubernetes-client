@@ -119,6 +119,7 @@ public class PodChaosSpec implements Editable<PodChaosSpecBuilder> , KubernetesR
     }
 
     @JsonProperty("containerNames")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getContainerNames() {
         return containerNames;
     }

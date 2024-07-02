@@ -115,6 +115,7 @@ public class BlockChaosStatus implements Editable<BlockChaosStatusBuilder> , Kub
     }
 
     @JsonProperty("ids")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Integer> getIds() {
         return ids;
     }

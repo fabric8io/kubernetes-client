@@ -87,6 +87,7 @@ public class ProbeTargetStaticConfig implements Editable<ProbeTargetStaticConfig
     }
 
     @JsonProperty("labels")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getLabels() {
         return labels;
     }

@@ -138,6 +138,7 @@ public class ProxyConfigList implements Editable<ProxyConfigListBuilder> , Kuber
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.istio.api.networking.v1beta1.ProxyConfig> getItems() {
         return items;
     }

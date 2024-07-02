@@ -158,6 +158,7 @@ public class ClusterServiceClassSpec implements Editable<ClusterServiceClassSpec
     }
 
     @JsonProperty("defaultProvisionParameters")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Object> getDefaultProvisionParameters() {
         return defaultProvisionParameters;
     }
@@ -188,6 +189,7 @@ public class ClusterServiceClassSpec implements Editable<ClusterServiceClassSpec
     }
 
     @JsonProperty("externalMetadata")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Object> getExternalMetadata() {
         return externalMetadata;
     }

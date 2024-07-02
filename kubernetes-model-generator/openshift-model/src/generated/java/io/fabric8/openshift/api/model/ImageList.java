@@ -130,6 +130,7 @@ public class ImageList implements Editable<ImageListBuilder> , KubernetesResourc
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.Image> getItems() {
         return items;
     }

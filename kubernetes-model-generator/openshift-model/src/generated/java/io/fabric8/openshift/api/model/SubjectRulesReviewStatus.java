@@ -91,6 +91,7 @@ public class SubjectRulesReviewStatus implements Editable<SubjectRulesReviewStat
     }
 
     @JsonProperty("rules")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PolicyRule> getRules() {
         return rules;
     }

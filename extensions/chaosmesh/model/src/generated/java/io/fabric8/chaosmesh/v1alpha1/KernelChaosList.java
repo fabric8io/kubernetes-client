@@ -138,6 +138,7 @@ public class KernelChaosList implements Editable<KernelChaosListBuilder> , Kuber
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.chaosmesh.v1alpha1.KernelChaos> getItems() {
         return items;
     }

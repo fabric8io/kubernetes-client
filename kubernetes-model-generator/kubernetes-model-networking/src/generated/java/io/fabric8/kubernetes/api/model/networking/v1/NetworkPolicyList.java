@@ -130,6 +130,7 @@ public class NetworkPolicyList implements Editable<NetworkPolicyListBuilder> , K
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.networking.v1.NetworkPolicy> getItems() {
         return items;
     }

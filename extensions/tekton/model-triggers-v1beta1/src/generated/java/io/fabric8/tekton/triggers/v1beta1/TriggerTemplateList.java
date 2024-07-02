@@ -138,6 +138,7 @@ public class TriggerTemplateList implements Editable<TriggerTemplateListBuilder>
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.tekton.triggers.v1beta1.TriggerTemplate> getItems() {
         return items;
     }

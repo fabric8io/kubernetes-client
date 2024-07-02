@@ -113,6 +113,7 @@ public class DeploymentStrategy implements Editable<DeploymentStrategyBuilder> ,
     }
 
     @JsonProperty("annotations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getAnnotations() {
         return annotations;
     }
@@ -133,6 +134,7 @@ public class DeploymentStrategy implements Editable<DeploymentStrategyBuilder> ,
     }
 
     @JsonProperty("labels")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getLabels() {
         return labels;
     }

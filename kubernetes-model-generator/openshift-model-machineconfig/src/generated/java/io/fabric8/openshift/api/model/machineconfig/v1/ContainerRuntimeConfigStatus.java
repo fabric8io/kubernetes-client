@@ -81,6 +81,7 @@ public class ContainerRuntimeConfigStatus implements Editable<ContainerRuntimeCo
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ContainerRuntimeConfigCondition> getConditions() {
         return conditions;
     }

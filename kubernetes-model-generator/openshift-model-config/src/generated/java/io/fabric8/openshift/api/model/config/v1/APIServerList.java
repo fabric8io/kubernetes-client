@@ -130,6 +130,7 @@ public class APIServerList implements Editable<APIServerListBuilder> , Kubernete
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.config.v1.APIServer> getItems() {
         return items;
     }

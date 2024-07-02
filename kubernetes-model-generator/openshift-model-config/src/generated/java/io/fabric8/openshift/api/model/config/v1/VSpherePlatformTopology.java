@@ -137,6 +137,7 @@ public class VSpherePlatformTopology implements Editable<VSpherePlatformTopology
     }
 
     @JsonProperty("networks")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getNetworks() {
         return networks;
     }

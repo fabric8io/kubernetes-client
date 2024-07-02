@@ -139,6 +139,7 @@ public class GitHubSourceSpec implements Editable<GitHubSourceSpecBuilder> , Kub
     }
 
     @JsonProperty("eventTypes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getEventTypes() {
         return eventTypes;
     }

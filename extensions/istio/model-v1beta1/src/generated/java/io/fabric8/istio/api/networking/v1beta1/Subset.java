@@ -91,6 +91,7 @@ public class Subset implements Editable<SubsetBuilder> , KubernetesResource
     }
 
     @JsonProperty("labels")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getLabels() {
         return labels;
     }

@@ -85,6 +85,7 @@ public class ObservabilityAddonStatus implements Editable<ObservabilityAddonStat
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<StatusCondition> getConditions() {
         return conditions;
     }

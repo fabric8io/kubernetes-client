@@ -105,6 +105,7 @@ public class Endpoint implements Editable<EndpointBuilder> , KubernetesResource
     }
 
     @JsonProperty("addresses")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getAddresses() {
         return addresses;
     }
@@ -125,6 +126,7 @@ public class Endpoint implements Editable<EndpointBuilder> , KubernetesResource
     }
 
     @JsonProperty("deprecatedTopology")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getDeprecatedTopology() {
         return deprecatedTopology;
     }

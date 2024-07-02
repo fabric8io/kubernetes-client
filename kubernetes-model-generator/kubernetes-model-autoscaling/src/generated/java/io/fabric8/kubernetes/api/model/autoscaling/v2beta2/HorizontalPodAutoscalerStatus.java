@@ -98,6 +98,7 @@ public class HorizontalPodAutoscalerStatus implements Editable<HorizontalPodAuto
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<HorizontalPodAutoscalerCondition> getConditions() {
         return conditions;
     }
@@ -108,6 +109,7 @@ public class HorizontalPodAutoscalerStatus implements Editable<HorizontalPodAuto
     }
 
     @JsonProperty("currentMetrics")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<MetricStatus> getCurrentMetrics() {
         return currentMetrics;
     }

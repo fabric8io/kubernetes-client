@@ -94,6 +94,7 @@ public class TunedRecommend implements Editable<TunedRecommendBuilder> , Kuberne
     }
 
     @JsonProperty("machineConfigLabels")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getMachineConfigLabels() {
         return machineConfigLabels;
     }

@@ -88,6 +88,7 @@ public class LimitRangeItem implements Editable<LimitRangeItemBuilder> , Kuberne
     }
 
     @JsonProperty("defaultRequest")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, io.fabric8.kubernetes.api.model.Quantity> getDefaultRequest() {
         return defaultRequest;
     }
@@ -98,6 +99,7 @@ public class LimitRangeItem implements Editable<LimitRangeItemBuilder> , Kuberne
     }
 
     @JsonProperty("max")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, io.fabric8.kubernetes.api.model.Quantity> getMax() {
         return max;
     }
@@ -108,6 +110,7 @@ public class LimitRangeItem implements Editable<LimitRangeItemBuilder> , Kuberne
     }
 
     @JsonProperty("maxLimitRequestRatio")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, io.fabric8.kubernetes.api.model.Quantity> getMaxLimitRequestRatio() {
         return maxLimitRequestRatio;
     }
@@ -118,6 +121,7 @@ public class LimitRangeItem implements Editable<LimitRangeItemBuilder> , Kuberne
     }
 
     @JsonProperty("min")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, io.fabric8.kubernetes.api.model.Quantity> getMin() {
         return min;
     }

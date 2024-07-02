@@ -138,6 +138,7 @@ public class MultiClusterHubList implements Editable<MultiClusterHubListBuilder>
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openclustermanagement.api.model.multiclusterhub.operator.v1.MultiClusterHub> getItems() {
         return items;
     }

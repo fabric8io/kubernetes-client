@@ -234,6 +234,7 @@ public class ImageRegistrySpec implements Editable<ImageRegistrySpecBuilder> , K
     }
 
     @JsonProperty("nodeSelector")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<java.lang.String, java.lang.String> getNodeSelector() {
         return nodeSelector;
     }
@@ -244,6 +245,7 @@ public class ImageRegistrySpec implements Editable<ImageRegistrySpecBuilder> , K
     }
 
     @JsonProperty("observedConfig")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Object> getObservedConfig() {
         return observedConfig;
     }
@@ -367,6 +369,7 @@ public class ImageRegistrySpec implements Editable<ImageRegistrySpecBuilder> , K
     }
 
     @JsonProperty("unsupportedConfigOverrides")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Object> getUnsupportedConfigOverrides() {
         return unsupportedConfigOverrides;
     }

@@ -129,6 +129,7 @@ public class ACMEChallengeSolverHTTP01IngressPodSpec implements Editable<ACMECha
     }
 
     @JsonProperty("nodeSelector")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getNodeSelector() {
         return nodeSelector;
     }

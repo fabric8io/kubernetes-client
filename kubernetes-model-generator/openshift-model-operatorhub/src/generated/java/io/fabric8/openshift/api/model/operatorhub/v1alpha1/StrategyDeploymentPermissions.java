@@ -82,6 +82,7 @@ public class StrategyDeploymentPermissions implements Editable<StrategyDeploymen
     }
 
     @JsonProperty("rules")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PolicyRule> getRules() {
         return rules;
     }

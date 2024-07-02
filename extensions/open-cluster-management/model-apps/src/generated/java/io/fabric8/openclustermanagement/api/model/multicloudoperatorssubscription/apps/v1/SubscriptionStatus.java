@@ -153,6 +153,7 @@ public class SubscriptionStatus implements Editable<SubscriptionStatusBuilder> ,
     }
 
     @JsonProperty("statuses")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, SubscriptionPerClusterStatus> getStatuses() {
         return statuses;
     }

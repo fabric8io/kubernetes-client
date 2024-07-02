@@ -130,6 +130,7 @@ public class OAuthAuthorizeTokenList implements Editable<OAuthAuthorizeTokenList
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.OAuthAuthorizeToken> getItems() {
         return items;
     }

@@ -110,6 +110,7 @@ public class MachineConfigPoolStatus implements Editable<MachineConfigPoolStatus
     }
 
     @JsonProperty("certExpirys")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<CertExpiry> getCertExpirys() {
         return certExpirys;
     }
@@ -120,6 +121,7 @@ public class MachineConfigPoolStatus implements Editable<MachineConfigPoolStatus
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<MachineConfigPoolCondition> getConditions() {
         return conditions;
     }

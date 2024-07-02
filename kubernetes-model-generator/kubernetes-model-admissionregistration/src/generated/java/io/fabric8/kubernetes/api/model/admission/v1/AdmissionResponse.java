@@ -113,6 +113,7 @@ public class AdmissionResponse implements Editable<AdmissionResponseBuilder> , K
     }
 
     @JsonProperty("auditAnnotations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getAuditAnnotations() {
         return auditAnnotations;
     }

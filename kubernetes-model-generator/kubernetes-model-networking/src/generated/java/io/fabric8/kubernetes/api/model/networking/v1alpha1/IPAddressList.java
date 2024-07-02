@@ -130,6 +130,7 @@ public class IPAddressList implements Editable<IPAddressListBuilder> , Kubernete
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.networking.v1alpha1.IPAddress> getItems() {
         return items;
     }

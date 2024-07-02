@@ -138,6 +138,7 @@ public class AwsSqsSourceList implements Editable<AwsSqsSourceListBuilder> , Kub
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.knative.eventing.contrib.awssqs.v1alpha1.AwsSqsSource> getItems() {
         return items;
     }

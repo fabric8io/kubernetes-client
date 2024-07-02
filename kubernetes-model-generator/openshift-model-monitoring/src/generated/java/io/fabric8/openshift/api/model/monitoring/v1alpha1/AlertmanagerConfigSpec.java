@@ -113,6 +113,7 @@ public class AlertmanagerConfigSpec implements Editable<AlertmanagerConfigSpecBu
     }
 
     @JsonProperty("receivers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Receiver> getReceivers() {
         return receivers;
     }

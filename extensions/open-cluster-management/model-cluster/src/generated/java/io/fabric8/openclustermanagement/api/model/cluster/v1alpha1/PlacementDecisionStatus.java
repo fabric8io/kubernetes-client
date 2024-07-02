@@ -85,6 +85,7 @@ public class PlacementDecisionStatus implements Editable<PlacementDecisionStatus
     }
 
     @JsonProperty("decisions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ClusterDecision> getDecisions() {
         return decisions;
     }

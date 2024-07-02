@@ -130,6 +130,7 @@ public class DaemonSetList implements Editable<DaemonSetListBuilder> , Kubernete
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.apps.DaemonSet> getItems() {
         return items;
     }

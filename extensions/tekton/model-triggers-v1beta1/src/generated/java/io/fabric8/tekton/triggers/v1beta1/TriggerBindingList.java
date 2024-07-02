@@ -138,6 +138,7 @@ public class TriggerBindingList implements Editable<TriggerBindingListBuilder> ,
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.tekton.triggers.v1beta1.TriggerBinding> getItems() {
         return items;
     }

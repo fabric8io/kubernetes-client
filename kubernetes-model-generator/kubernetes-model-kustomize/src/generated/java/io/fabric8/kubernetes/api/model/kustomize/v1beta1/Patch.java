@@ -67,6 +67,7 @@ public class Patch implements Editable<PatchBuilder> , KubernetesResource
     }
 
     @JsonProperty("options")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Boolean> getOptions() {
         return options;
     }

@@ -225,7 +225,13 @@ public class KubernetesCoreTypeAnnotator extends Jackson2Annotator {
     }
     super.propertyField(field, clazz, propertyName, propertyNode);
 
+    // Include NON_EMPTY for jsonschema2pojo configured fields
     if (propertyNode.has("javaOmitEmpty") && propertyNode.get("javaOmitEmpty").asBoolean(false)) {
+      field.annotate(JsonInclude.class).param(ANNOTATION_VALUE, JsonInclude.Include.NON_EMPTY);
+    }
+    // Include NON_EMPTY for Maps and Arrays always
+    else if (field.type().fullName().startsWith(Map.class.getName())
+        || field.type().fullName().startsWith(List.class.getName())) {
       field.annotate(JsonInclude.class).param(ANNOTATION_VALUE, JsonInclude.Include.NON_EMPTY);
     }
 
@@ -274,7 +280,7 @@ public class KubernetesCoreTypeAnnotator extends Jackson2Annotator {
     addBuildableTypes(clazz, types);
     if (!types.isEmpty()) {
       JAnnotationArrayMember arrayMember = buildable.paramArray("refs");
-      types.stream().forEach(s -> {
+      types.forEach(s -> {
         try {
           arrayMember.annotate(BuildableReference.class).param(BUILDABLE_REFERENCE_VALUE,
               new JCodeModel()._class(s));

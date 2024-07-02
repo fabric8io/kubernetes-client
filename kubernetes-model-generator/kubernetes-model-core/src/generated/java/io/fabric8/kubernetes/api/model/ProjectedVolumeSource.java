@@ -70,6 +70,7 @@ public class ProjectedVolumeSource implements Editable<ProjectedVolumeSourceBuil
     }
 
     @JsonProperty("sources")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<VolumeProjection> getSources() {
         return sources;
     }

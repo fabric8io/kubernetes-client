@@ -141,6 +141,7 @@ public class PolicyRule implements Editable<PolicyRuleBuilder> , KubernetesResou
     }
 
     @JsonProperty("verbs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getVerbs() {
         return verbs;
     }

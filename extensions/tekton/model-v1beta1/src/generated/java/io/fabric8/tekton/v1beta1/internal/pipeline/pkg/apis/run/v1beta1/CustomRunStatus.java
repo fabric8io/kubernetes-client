@@ -118,6 +118,7 @@ public class CustomRunStatus implements Editable<CustomRunStatusBuilder> , Kuber
     }
 
     @JsonProperty("annotations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getAnnotations() {
         return annotations;
     }
@@ -149,6 +150,7 @@ public class CustomRunStatus implements Editable<CustomRunStatusBuilder> , Kuber
     }
 
     @JsonProperty("extraFields")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Object> getExtraFields() {
         return extraFields;
     }

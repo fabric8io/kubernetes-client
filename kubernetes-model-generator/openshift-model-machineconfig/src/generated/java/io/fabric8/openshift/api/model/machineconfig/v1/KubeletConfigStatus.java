@@ -81,6 +81,7 @@ public class KubeletConfigStatus implements Editable<KubeletConfigStatusBuilder>
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<KubeletConfigCondition> getConditions() {
         return conditions;
     }

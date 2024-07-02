@@ -198,6 +198,7 @@ public class ImagePrunerSpec implements Editable<ImagePrunerSpecBuilder> , Kuber
     }
 
     @JsonProperty("nodeSelector")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getNodeSelector() {
         return nodeSelector;
     }

@@ -99,6 +99,7 @@ public class ObjectMeta implements Editable<ObjectMetaBuilder> , KubernetesResou
     }
 
     @JsonProperty("annotations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getAnnotations() {
         return annotations;
     }
@@ -119,6 +120,7 @@ public class ObjectMeta implements Editable<ObjectMetaBuilder> , KubernetesResou
     }
 
     @JsonProperty("labels")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getLabels() {
         return labels;
     }

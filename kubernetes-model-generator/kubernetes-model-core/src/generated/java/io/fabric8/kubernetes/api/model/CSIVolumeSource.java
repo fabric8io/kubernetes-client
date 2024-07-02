@@ -110,6 +110,7 @@ public class CSIVolumeSource implements Editable<CSIVolumeSourceBuilder> , Kuber
     }
 
     @JsonProperty("volumeAttributes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getVolumeAttributes() {
         return volumeAttributes;
     }

@@ -86,6 +86,7 @@ public class ManagedClusterSetStatus implements Editable<ManagedClusterSetStatus
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }

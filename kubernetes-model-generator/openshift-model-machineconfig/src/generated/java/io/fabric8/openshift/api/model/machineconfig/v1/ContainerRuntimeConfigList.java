@@ -130,6 +130,7 @@ public class ContainerRuntimeConfigList implements Editable<ContainerRuntimeConf
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.machineconfig.v1.ContainerRuntimeConfig> getItems() {
         return items;
     }

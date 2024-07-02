@@ -130,6 +130,7 @@ public class StorageClassList implements Editable<StorageClassListBuilder> , Kub
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.storage.StorageClass> getItems() {
         return items;
     }

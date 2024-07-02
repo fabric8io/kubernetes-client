@@ -115,6 +115,7 @@ public class StressChaosStatus implements Editable<StressChaosStatusBuilder> , K
     }
 
     @JsonProperty("instances")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, StressInstance> getInstances() {
         return instances;
     }

@@ -192,6 +192,7 @@ public class RemoteReadSpec implements Editable<RemoteReadSpecBuilder> , Kuberne
     }
 
     @JsonProperty("headers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getHeaders() {
         return headers;
     }
@@ -252,6 +253,7 @@ public class RemoteReadSpec implements Editable<RemoteReadSpecBuilder> , Kuberne
     }
 
     @JsonProperty("requiredMatchers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getRequiredMatchers() {
         return requiredMatchers;
     }

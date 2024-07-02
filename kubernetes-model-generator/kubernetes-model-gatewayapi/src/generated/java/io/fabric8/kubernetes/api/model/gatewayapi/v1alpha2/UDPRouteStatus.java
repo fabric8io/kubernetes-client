@@ -78,6 +78,7 @@ public class UDPRouteStatus implements Editable<UDPRouteStatusBuilder> , Kuberne
     }
 
     @JsonProperty("parents")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<RouteParentStatus> getParents() {
         return parents;
     }

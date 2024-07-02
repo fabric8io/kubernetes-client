@@ -156,6 +156,7 @@ public class MultiClusterObservabilitySpec implements Editable<MultiClusterObser
     }
 
     @JsonProperty("nodeSelector")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getNodeSelector() {
         return nodeSelector;
     }

@@ -130,6 +130,7 @@ public class BrokerTemplateInstanceList implements Editable<BrokerTemplateInstan
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.BrokerTemplateInstance> getItems() {
         return items;
     }

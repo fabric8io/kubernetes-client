@@ -97,6 +97,7 @@ public class NamedTagEventList implements Editable<NamedTagEventListBuilder> , K
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TagEvent> getItems() {
         return items;
     }

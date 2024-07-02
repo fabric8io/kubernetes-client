@@ -130,6 +130,7 @@ public class ServiceCatalogAPIServerList implements Editable<ServiceCatalogAPISe
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.operator.v1.ServiceCatalogAPIServer> getItems() {
         return items;
     }

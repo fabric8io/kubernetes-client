@@ -105,6 +105,7 @@ public class PodFailurePolicyOnExitCodesRequirement implements Editable<PodFailu
     }
 
     @JsonProperty("values")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Integer> getValues() {
         return values;
     }

@@ -77,6 +77,7 @@ public class ImageTagMirrorSetSpec implements Editable<ImageTagMirrorSetSpecBuil
     }
 
     @JsonProperty("imageTagMirrors")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ImageTagMirrors> getImageTagMirrors() {
         return imageTagMirrors;
     }

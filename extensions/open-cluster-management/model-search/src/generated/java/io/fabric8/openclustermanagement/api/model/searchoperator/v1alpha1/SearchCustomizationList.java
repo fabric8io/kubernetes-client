@@ -138,6 +138,7 @@ public class SearchCustomizationList implements Editable<SearchCustomizationList
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openclustermanagement.api.model.searchoperator.v1alpha1.SearchCustomization> getItems() {
         return items;
     }

@@ -138,6 +138,7 @@ public class PrometheusSourceList implements Editable<PrometheusSourceListBuilde
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.knative.eventing.contrib.prometheus.v1alpha1.PrometheusSource> getItems() {
         return items;
     }

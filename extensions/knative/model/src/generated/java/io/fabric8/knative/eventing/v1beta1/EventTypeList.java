@@ -138,6 +138,7 @@ public class EventTypeList implements Editable<EventTypeListBuilder> , Kubernete
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.knative.eventing.v1beta1.EventType> getItems() {
         return items;
     }

@@ -123,6 +123,7 @@ public class FailKernRequest implements Editable<FailKernRequestBuilder> , Kuber
     }
 
     @JsonProperty("headers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getHeaders() {
         return headers;
     }

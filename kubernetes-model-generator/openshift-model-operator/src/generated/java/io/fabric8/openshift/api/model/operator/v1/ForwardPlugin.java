@@ -119,6 +119,7 @@ public class ForwardPlugin implements Editable<ForwardPluginBuilder> , Kubernete
     }
 
     @JsonProperty("upstreams")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getUpstreams() {
         return upstreams;
     }

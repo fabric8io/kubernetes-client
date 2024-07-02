@@ -540,6 +540,7 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder> , Kub
     }
 
     @JsonProperty("nodeSelector")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getNodeSelector() {
         return nodeSelector;
     }

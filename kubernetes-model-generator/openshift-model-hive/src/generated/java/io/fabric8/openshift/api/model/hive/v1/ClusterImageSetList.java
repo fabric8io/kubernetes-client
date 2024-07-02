@@ -130,6 +130,7 @@ public class ClusterImageSetList implements Editable<ClusterImageSetListBuilder>
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.hive.v1.ClusterImageSet> getItems() {
         return items;
     }

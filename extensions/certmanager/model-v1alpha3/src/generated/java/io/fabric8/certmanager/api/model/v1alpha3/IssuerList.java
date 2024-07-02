@@ -138,6 +138,7 @@ public class IssuerList implements Editable<IssuerListBuilder> , KubernetesResou
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.certmanager.api.model.v1alpha3.Issuer> getItems() {
         return items;
     }

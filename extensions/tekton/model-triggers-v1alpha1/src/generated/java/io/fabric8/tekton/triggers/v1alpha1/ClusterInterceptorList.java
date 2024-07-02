@@ -138,6 +138,7 @@ public class ClusterInterceptorList implements Editable<ClusterInterceptorListBu
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.tekton.triggers.v1alpha1.ClusterInterceptor> getItems() {
         return items;
     }

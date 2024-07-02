@@ -105,6 +105,7 @@ public class Server implements Editable<ServerBuilder> , KubernetesResource
     }
 
     @JsonProperty("zones")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getZones() {
         return zones;
     }

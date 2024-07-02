@@ -175,6 +175,7 @@ public class NodeMetrics implements Editable<NodeMetricsBuilder> , HasMetadata
     }
 
     @JsonProperty("usage")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<java.lang.String, Quantity> getUsage() {
         return usage;
     }

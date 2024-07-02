@@ -99,6 +99,7 @@ public class ConversionRequest implements Editable<ConversionRequestBuilder> , K
     }
 
     @JsonProperty("objects")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<KubernetesResource> getObjects() {
         return objects;
     }

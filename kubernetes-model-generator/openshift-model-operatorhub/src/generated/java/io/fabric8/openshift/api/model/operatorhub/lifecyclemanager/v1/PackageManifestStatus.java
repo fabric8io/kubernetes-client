@@ -145,6 +145,7 @@ public class PackageManifestStatus implements Editable<PackageManifestStatusBuil
     }
 
     @JsonProperty("channels")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PackageChannel> getChannels() {
         return channels;
     }

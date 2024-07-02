@@ -130,6 +130,7 @@ public class CertificateSigningRequestList implements Editable<CertificateSignin
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequest> getItems() {
         return items;
     }

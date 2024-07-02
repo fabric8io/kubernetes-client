@@ -138,6 +138,7 @@ public class IOChaosList implements Editable<IOChaosListBuilder> , KubernetesRes
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.chaosmesh.v1alpha1.IOChaos> getItems() {
         return items;
     }

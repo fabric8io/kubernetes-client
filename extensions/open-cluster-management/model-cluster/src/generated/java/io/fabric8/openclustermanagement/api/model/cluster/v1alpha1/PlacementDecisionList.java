@@ -138,6 +138,7 @@ public class PlacementDecisionList implements Editable<PlacementDecisionListBuil
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openclustermanagement.api.model.cluster.v1alpha1.PlacementDecision> getItems() {
         return items;
     }

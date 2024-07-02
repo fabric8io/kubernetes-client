@@ -140,6 +140,7 @@ public class ClusterRoleBinding implements Editable<ClusterRoleBindingBuilder> ,
     }
 
     @JsonProperty("groupNames")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getGroupNames() {
         return groupNames;
     }
@@ -190,6 +191,7 @@ public class ClusterRoleBinding implements Editable<ClusterRoleBindingBuilder> ,
     }
 
     @JsonProperty("subjects")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.ObjectReference> getSubjects() {
         return subjects;
     }
@@ -200,6 +202,7 @@ public class ClusterRoleBinding implements Editable<ClusterRoleBindingBuilder> ,
     }
 
     @JsonProperty("userNames")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getUserNames() {
         return userNames;
     }

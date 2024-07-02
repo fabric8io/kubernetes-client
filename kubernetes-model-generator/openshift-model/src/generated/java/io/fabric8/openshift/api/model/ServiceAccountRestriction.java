@@ -82,6 +82,7 @@ public class ServiceAccountRestriction implements Editable<ServiceAccountRestric
     }
 
     @JsonProperty("namespaces")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getNamespaces() {
         return namespaces;
     }
@@ -92,6 +93,7 @@ public class ServiceAccountRestriction implements Editable<ServiceAccountRestric
     }
 
     @JsonProperty("serviceaccounts")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ServiceAccountReference> getServiceaccounts() {
         return serviceaccounts;
     }

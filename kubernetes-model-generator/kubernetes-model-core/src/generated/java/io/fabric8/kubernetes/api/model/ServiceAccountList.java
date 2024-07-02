@@ -107,6 +107,7 @@ public class ServiceAccountList implements Editable<ServiceAccountListBuilder> ,
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.ServiceAccount> getItems() {
         return items;
     }

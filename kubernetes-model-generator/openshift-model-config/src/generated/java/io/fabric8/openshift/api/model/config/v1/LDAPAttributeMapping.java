@@ -103,6 +103,7 @@ public class LDAPAttributeMapping implements Editable<LDAPAttributeMappingBuilde
     }
 
     @JsonProperty("id")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getId() {
         return id;
     }

@@ -93,6 +93,7 @@ public class NonResourceRule implements Editable<NonResourceRuleBuilder> , Kuber
     }
 
     @JsonProperty("verbs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getVerbs() {
         return verbs;
     }

@@ -130,6 +130,7 @@ public class RoleList implements Editable<RoleListBuilder> , KubernetesResource,
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.Role> getItems() {
         return items;
     }

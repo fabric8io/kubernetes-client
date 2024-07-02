@@ -130,6 +130,7 @@ public class PrometheusList implements Editable<PrometheusListBuilder> , Kuberne
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.monitoring.v1.Prometheus> getItems() {
         return items;
     }

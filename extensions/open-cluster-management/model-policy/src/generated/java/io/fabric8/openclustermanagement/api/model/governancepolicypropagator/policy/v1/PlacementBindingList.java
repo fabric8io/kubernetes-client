@@ -138,6 +138,7 @@ public class PlacementBindingList implements Editable<PlacementBindingListBuilde
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1.PlacementBinding> getItems() {
         return items;
     }

@@ -138,6 +138,7 @@ public class RequestAuthenticationList implements Editable<RequestAuthentication
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.istio.api.security.v1beta1.RequestAuthentication> getItems() {
         return items;
     }

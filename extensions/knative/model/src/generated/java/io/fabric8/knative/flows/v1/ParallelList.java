@@ -138,6 +138,7 @@ public class ParallelList implements Editable<ParallelListBuilder> , KubernetesR
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.knative.flows.v1.Parallel> getItems() {
         return items;
     }

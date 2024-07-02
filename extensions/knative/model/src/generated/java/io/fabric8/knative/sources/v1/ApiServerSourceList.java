@@ -138,6 +138,7 @@ public class ApiServerSourceList implements Editable<ApiServerSourceListBuilder>
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.knative.sources.v1.ApiServerSource> getItems() {
         return items;
     }

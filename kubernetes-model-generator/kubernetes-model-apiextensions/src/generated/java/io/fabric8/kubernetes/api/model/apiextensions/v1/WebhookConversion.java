@@ -91,6 +91,7 @@ public class WebhookConversion implements Editable<WebhookConversionBuilder> , K
     }
 
     @JsonProperty("conversionReviewVersions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getConversionReviewVersions() {
         return conversionReviewVersions;
     }

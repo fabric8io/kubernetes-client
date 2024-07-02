@@ -15,7 +15,6 @@
  */
 package io.fabric8.kubernetes.jsonschema2pojo;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JExpr;
@@ -26,7 +25,6 @@ import org.jsonschema2pojo.rules.DefaultRule;
 import org.jsonschema2pojo.rules.RuleFactory;
 
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -57,13 +55,6 @@ public class Fabric8DefaultRule extends DefaultRule {
         field.init(JExpr._new(mapImplClass));
       }
 
-      // maps and some lists are not marked as omitJavaEmpty - it's simplest to just add the annotation here, rather than updating the generator
-      JClass jsonInclude = fieldType.owner().ref(JsonInclude.class);
-      if ((fieldTypeName.startsWith(Map.class.getName()) || fieldTypeName.startsWith(List.class.getName()))
-          && field.annotations().stream()
-              .noneMatch(annotation -> annotation.getAnnotationClass().isAssignableFrom(jsonInclude))) {
-        field.annotate(jsonInclude).param(KubernetesCoreTypeAnnotator.ANNOTATION_VALUE, JsonInclude.Include.NON_EMPTY);
-      }
     }
 
     return super.apply(nodeName, node, parent, field, currentSchema);

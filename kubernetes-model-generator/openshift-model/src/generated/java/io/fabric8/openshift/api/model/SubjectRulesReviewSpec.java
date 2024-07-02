@@ -86,6 +86,7 @@ public class SubjectRulesReviewSpec implements Editable<SubjectRulesReviewSpecBu
     }
 
     @JsonProperty("groups")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getGroups() {
         return groups;
     }
@@ -96,6 +97,7 @@ public class SubjectRulesReviewSpec implements Editable<SubjectRulesReviewSpecBu
     }
 
     @JsonProperty("scopes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getScopes() {
         return scopes;
     }

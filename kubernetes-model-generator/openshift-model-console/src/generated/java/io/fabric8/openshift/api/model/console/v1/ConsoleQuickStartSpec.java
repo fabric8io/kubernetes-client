@@ -226,6 +226,7 @@ public class ConsoleQuickStartSpec implements Editable<ConsoleQuickStartSpecBuil
     }
 
     @JsonProperty("tasks")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ConsoleQuickStartTask> getTasks() {
         return tasks;
     }

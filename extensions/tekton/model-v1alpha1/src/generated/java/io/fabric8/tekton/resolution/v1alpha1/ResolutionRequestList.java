@@ -138,6 +138,7 @@ public class ResolutionRequestList implements Editable<ResolutionRequestListBuil
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.tekton.resolution.v1alpha1.ResolutionRequest> getItems() {
         return items;
     }

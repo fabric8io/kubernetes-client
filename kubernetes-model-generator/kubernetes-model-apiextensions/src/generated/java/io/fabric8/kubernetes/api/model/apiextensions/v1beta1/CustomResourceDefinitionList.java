@@ -130,6 +130,7 @@ public class CustomResourceDefinitionList implements Editable<CustomResourceDefi
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition> getItems() {
         return items;
     }

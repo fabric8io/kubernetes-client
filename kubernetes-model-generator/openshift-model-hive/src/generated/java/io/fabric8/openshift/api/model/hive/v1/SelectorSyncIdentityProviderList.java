@@ -130,6 +130,7 @@ public class SelectorSyncIdentityProviderList implements Editable<SelectorSyncId
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.hive.v1.SelectorSyncIdentityProvider> getItems() {
         return items;
     }

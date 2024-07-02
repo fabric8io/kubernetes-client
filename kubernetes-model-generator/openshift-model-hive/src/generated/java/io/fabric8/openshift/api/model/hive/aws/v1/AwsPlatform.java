@@ -130,6 +130,7 @@ public class AwsPlatform implements Editable<AwsPlatformBuilder> , KubernetesRes
     }
 
     @JsonProperty("userTags")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getUserTags() {
         return userTags;
     }

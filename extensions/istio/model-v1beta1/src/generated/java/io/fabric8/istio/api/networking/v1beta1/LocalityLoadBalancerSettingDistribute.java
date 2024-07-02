@@ -97,6 +97,7 @@ public class LocalityLoadBalancerSettingDistribute implements Editable<LocalityL
     }
 
     @JsonProperty("to")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Long> getTo() {
         return to;
     }

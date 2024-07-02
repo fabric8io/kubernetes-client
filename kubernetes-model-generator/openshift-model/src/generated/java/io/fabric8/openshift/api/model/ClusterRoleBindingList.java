@@ -130,6 +130,7 @@ public class ClusterRoleBindingList implements Editable<ClusterRoleBindingListBu
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.ClusterRoleBinding> getItems() {
         return items;
     }

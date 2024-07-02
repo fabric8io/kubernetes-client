@@ -138,6 +138,7 @@ public class WorkloadEntryList implements Editable<WorkloadEntryListBuilder> , K
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.istio.api.networking.v1alpha3.WorkloadEntry> getItems() {
         return items;
     }

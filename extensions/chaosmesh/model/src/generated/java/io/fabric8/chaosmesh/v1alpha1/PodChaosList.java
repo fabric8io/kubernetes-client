@@ -138,6 +138,7 @@ public class PodChaosList implements Editable<PodChaosListBuilder> , KubernetesR
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.chaosmesh.v1alpha1.PodChaos> getItems() {
         return items;
     }

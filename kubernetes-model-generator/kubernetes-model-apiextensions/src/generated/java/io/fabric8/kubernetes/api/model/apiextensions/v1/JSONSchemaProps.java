@@ -328,6 +328,7 @@ public class JSONSchemaProps implements Editable<JSONSchemaPropsBuilder> , Kuber
     }
 
     @JsonProperty("definitions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps> getDefinitions() {
         return definitions;
     }
@@ -338,6 +339,7 @@ public class JSONSchemaProps implements Editable<JSONSchemaPropsBuilder> , Kuber
     }
 
     @JsonProperty("dependencies")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, JSONSchemaPropsOrStringArray> getDependencies() {
         return dependencies;
     }
@@ -569,6 +571,7 @@ public class JSONSchemaProps implements Editable<JSONSchemaPropsBuilder> , Kuber
     }
 
     @JsonProperty("patternProperties")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps> getPatternProperties() {
         return patternProperties;
     }
@@ -579,6 +582,7 @@ public class JSONSchemaProps implements Editable<JSONSchemaPropsBuilder> , Kuber
     }
 
     @JsonProperty("properties")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps> getProperties() {
         return properties;
     }

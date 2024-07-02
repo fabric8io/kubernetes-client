@@ -89,6 +89,7 @@ public class DNSZone implements Editable<DNSZoneBuilder> , KubernetesResource
     }
 
     @JsonProperty("tags")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getTags() {
         return tags;
     }

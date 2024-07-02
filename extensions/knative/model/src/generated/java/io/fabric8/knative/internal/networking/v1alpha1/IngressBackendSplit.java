@@ -98,6 +98,7 @@ public class IngressBackendSplit implements Editable<IngressBackendSplitBuilder>
     }
 
     @JsonProperty("appendHeaders")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getAppendHeaders() {
         return appendHeaders;
     }

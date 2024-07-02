@@ -113,6 +113,7 @@ public class BuildOverrides implements Editable<BuildOverridesBuilder> , Kuberne
     }
 
     @JsonProperty("nodeSelector")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getNodeSelector() {
         return nodeSelector;
     }

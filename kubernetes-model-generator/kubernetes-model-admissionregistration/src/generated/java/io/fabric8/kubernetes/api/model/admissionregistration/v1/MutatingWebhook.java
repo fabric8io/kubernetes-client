@@ -122,6 +122,7 @@ public class MutatingWebhook implements Editable<MutatingWebhookBuilder> , Kuber
     }
 
     @JsonProperty("admissionReviewVersions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getAdmissionReviewVersions() {
         return admissionReviewVersions;
     }

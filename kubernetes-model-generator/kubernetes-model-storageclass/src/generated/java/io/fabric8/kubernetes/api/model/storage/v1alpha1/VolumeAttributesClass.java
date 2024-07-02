@@ -169,6 +169,7 @@ public class VolumeAttributesClass implements Editable<VolumeAttributesClassBuil
     }
 
     @JsonProperty("parameters")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getParameters() {
         return parameters;
     }

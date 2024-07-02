@@ -107,6 +107,7 @@ public class ReplicationControllerList implements Editable<ReplicationController
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.ReplicationController> getItems() {
         return items;
     }

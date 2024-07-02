@@ -76,6 +76,7 @@ public class CephFSPersistentVolumeSource implements Editable<CephFSPersistentVo
     }
 
     @JsonProperty("monitors")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getMonitors() {
         return monitors;
     }

@@ -138,6 +138,7 @@ public class KafkaChannelList implements Editable<KafkaChannelListBuilder> , Kub
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.knative.eventing.contrib.kafka.v1beta1.KafkaChannel> getItems() {
         return items;
     }

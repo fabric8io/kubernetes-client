@@ -130,6 +130,7 @@ public class ClusterClaimList implements Editable<ClusterClaimListBuilder> , Kub
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.hive.v1.ClusterClaim> getItems() {
         return items;
     }

@@ -170,6 +170,7 @@ public class ConsoleCustomization implements Editable<ConsoleCustomizationBuilde
     }
 
     @JsonProperty("perspectives")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Perspective> getPerspectives() {
         return perspectives;
     }

@@ -115,6 +115,7 @@ public class SequenceSpec implements Editable<SequenceSpecBuilder> , KubernetesR
     }
 
     @JsonProperty("steps")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<SequenceStep> getSteps() {
         return steps;
     }

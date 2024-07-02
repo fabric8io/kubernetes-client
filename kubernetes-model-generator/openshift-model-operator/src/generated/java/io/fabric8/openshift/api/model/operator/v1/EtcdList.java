@@ -130,6 +130,7 @@ public class EtcdList implements Editable<EtcdListBuilder> , KubernetesResource,
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.operator.v1.Etcd> getItems() {
         return items;
     }

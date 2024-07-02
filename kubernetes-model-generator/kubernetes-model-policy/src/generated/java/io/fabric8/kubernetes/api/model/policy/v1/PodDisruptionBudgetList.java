@@ -130,6 +130,7 @@ public class PodDisruptionBudgetList implements Editable<PodDisruptionBudgetList
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.policy.v1.PodDisruptionBudget> getItems() {
         return items;
     }

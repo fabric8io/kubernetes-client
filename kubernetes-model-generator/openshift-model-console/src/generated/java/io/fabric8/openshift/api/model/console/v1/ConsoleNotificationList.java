@@ -130,6 +130,7 @@ public class ConsoleNotificationList implements Editable<ConsoleNotificationList
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.console.v1.ConsoleNotification> getItems() {
         return items;
     }

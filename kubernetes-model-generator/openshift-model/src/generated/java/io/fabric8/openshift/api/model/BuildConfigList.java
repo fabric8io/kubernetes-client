@@ -130,6 +130,7 @@ public class BuildConfigList implements Editable<BuildConfigListBuilder> , Kuber
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.BuildConfig> getItems() {
         return items;
     }

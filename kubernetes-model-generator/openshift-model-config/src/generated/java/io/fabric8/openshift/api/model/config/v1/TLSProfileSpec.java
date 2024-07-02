@@ -81,6 +81,7 @@ public class TLSProfileSpec implements Editable<TLSProfileSpecBuilder> , Kuberne
     }
 
     @JsonProperty("ciphers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getCiphers() {
         return ciphers;
     }

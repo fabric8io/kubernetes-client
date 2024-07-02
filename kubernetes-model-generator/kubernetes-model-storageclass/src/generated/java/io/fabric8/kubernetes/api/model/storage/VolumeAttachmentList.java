@@ -130,6 +130,7 @@ public class VolumeAttachmentList implements Editable<VolumeAttachmentListBuilde
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.storage.VolumeAttachment> getItems() {
         return items;
     }

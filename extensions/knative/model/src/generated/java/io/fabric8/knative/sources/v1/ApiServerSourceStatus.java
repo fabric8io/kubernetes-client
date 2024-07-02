@@ -123,6 +123,7 @@ public class ApiServerSourceStatus implements Editable<ApiServerSourceStatusBuil
     }
 
     @JsonProperty("annotations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getAnnotations() {
         return annotations;
     }
@@ -165,6 +166,7 @@ public class ApiServerSourceStatus implements Editable<ApiServerSourceStatusBuil
     }
 
     @JsonProperty("namespaces")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getNamespaces() {
         return namespaces;
     }

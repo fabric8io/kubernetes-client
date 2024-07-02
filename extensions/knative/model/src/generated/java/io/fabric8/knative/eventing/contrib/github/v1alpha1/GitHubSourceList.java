@@ -138,6 +138,7 @@ public class GitHubSourceList implements Editable<GitHubSourceListBuilder> , Kub
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.knative.eventing.contrib.github.v1alpha1.GitHubSource> getItems() {
         return items;
     }

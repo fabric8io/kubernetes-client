@@ -142,6 +142,7 @@ public class OpenIDIdentityProvider implements Editable<OpenIDIdentityProviderBu
     }
 
     @JsonProperty("extraAuthorizeParameters")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getExtraAuthorizeParameters() {
         return extraAuthorizeParameters;
     }

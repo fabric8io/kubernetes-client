@@ -130,6 +130,7 @@ public class OLMConfigList implements Editable<OLMConfigListBuilder> , Kubernete
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.operatorhub.v1.OLMConfig> getItems() {
         return items;
     }

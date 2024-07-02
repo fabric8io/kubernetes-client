@@ -117,6 +117,7 @@ public class CertificateDNSNameSelector implements Editable<CertificateDNSNameSe
     }
 
     @JsonProperty("matchLabels")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getMatchLabels() {
         return matchLabels;
     }

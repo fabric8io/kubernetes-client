@@ -60,6 +60,7 @@ public class ContainerImage implements Editable<ContainerImageBuilder> , Kuberne
     }
 
     @JsonProperty("names")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getNames() {
         return names;
     }

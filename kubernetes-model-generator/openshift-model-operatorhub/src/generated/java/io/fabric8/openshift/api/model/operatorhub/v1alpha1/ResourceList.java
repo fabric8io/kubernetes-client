@@ -95,6 +95,7 @@ public class ResourceList implements Editable<ResourceListBuilder> , KubernetesR
     }
 
     @JsonProperty("instances")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ResourceInstance> getInstances() {
         return instances;
     }

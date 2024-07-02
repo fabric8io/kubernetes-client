@@ -138,6 +138,7 @@ public class OrderList implements Editable<OrderListBuilder> , KubernetesResourc
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.certmanager.api.model.acme.v1alpha2.Order> getItems() {
         return items;
     }

@@ -133,6 +133,7 @@ public class APIResourceList implements Editable<APIResourceListBuilder> , Kuber
     }
 
     @JsonProperty("resources")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<APIResource> getResources() {
         return resources;
     }

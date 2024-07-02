@@ -121,6 +121,7 @@ public class RawIptables implements Editable<RawIptablesBuilder> , KubernetesRes
     }
 
     @JsonProperty("ipsets")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getIpsets() {
         return ipsets;
     }

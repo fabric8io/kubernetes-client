@@ -130,6 +130,7 @@ public class AppliedClusterResourceQuotaList implements Editable<AppliedClusterR
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.AppliedClusterResourceQuota> getItems() {
         return items;
     }

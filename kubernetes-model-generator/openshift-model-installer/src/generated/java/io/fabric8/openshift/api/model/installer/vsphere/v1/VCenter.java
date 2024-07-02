@@ -93,6 +93,7 @@ public class VCenter implements Editable<VCenterBuilder> , KubernetesResource
     }
 
     @JsonProperty("datacenters")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getDatacenters() {
         return datacenters;
     }

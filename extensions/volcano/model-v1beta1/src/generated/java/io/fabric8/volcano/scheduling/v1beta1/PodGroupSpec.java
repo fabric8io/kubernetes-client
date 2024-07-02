@@ -106,6 +106,7 @@ public class PodGroupSpec implements Editable<PodGroupSpecBuilder> , KubernetesR
     }
 
     @JsonProperty("minResources")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Quantity> getMinResources() {
         return minResources;
     }

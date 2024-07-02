@@ -314,6 +314,7 @@ public class RevisionSpec implements Editable<RevisionSpecBuilder> , KubernetesR
     }
 
     @JsonProperty("containers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.Container> getContainers() {
         return containers;
     }
@@ -468,6 +469,7 @@ public class RevisionSpec implements Editable<RevisionSpecBuilder> , KubernetesR
     }
 
     @JsonProperty("nodeSelector")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getNodeSelector() {
         return nodeSelector;
     }
@@ -488,6 +490,7 @@ public class RevisionSpec implements Editable<RevisionSpecBuilder> , KubernetesR
     }
 
     @JsonProperty("overhead")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Quantity> getOverhead() {
         return overhead;
     }

@@ -138,6 +138,7 @@ public class QueueList implements Editable<QueueListBuilder> , KubernetesResourc
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.volcano.scheduling.v1beta1.Queue> getItems() {
         return items;
     }

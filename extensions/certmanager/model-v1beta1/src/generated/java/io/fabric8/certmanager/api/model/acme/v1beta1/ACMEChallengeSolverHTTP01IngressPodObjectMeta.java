@@ -88,6 +88,7 @@ public class ACMEChallengeSolverHTTP01IngressPodObjectMeta implements Editable<A
     }
 
     @JsonProperty("annotations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getAnnotations() {
         return annotations;
     }
@@ -98,6 +99,7 @@ public class ACMEChallengeSolverHTTP01IngressPodObjectMeta implements Editable<A
     }
 
     @JsonProperty("labels")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getLabels() {
         return labels;
     }

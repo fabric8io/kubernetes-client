@@ -138,6 +138,7 @@ public class PolicyList implements Editable<PolicyListBuilder> , KubernetesResou
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1.Policy> getItems() {
         return items;
     }

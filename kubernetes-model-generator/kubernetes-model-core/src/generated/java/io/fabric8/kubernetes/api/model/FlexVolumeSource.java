@@ -90,6 +90,7 @@ public class FlexVolumeSource implements Editable<FlexVolumeSourceBuilder> , Kub
     }
 
     @JsonProperty("options")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getOptions() {
         return options;
     }

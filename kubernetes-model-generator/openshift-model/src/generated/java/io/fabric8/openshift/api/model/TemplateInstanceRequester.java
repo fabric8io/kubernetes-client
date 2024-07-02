@@ -90,6 +90,7 @@ public class TemplateInstanceRequester implements Editable<TemplateInstanceReque
     }
 
     @JsonProperty("extra")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, ArrayList<String>> getExtra() {
         return extra;
     }

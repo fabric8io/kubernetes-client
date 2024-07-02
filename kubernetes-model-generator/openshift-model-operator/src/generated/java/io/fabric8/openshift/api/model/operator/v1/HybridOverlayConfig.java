@@ -81,6 +81,7 @@ public class HybridOverlayConfig implements Editable<HybridOverlayConfigBuilder>
     }
 
     @JsonProperty("hybridClusterNetwork")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ClusterNetworkEntry> getHybridClusterNetwork() {
         return hybridClusterNetwork;
     }

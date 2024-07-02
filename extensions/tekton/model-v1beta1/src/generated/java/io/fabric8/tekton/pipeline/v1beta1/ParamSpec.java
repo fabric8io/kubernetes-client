@@ -129,6 +129,7 @@ public class ParamSpec implements Editable<ParamSpecBuilder> , KubernetesResourc
     }
 
     @JsonProperty("properties")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, PropertySpec> getProperties() {
         return properties;
     }

@@ -120,6 +120,7 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     }
 
     @JsonProperty("affinityGroups")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<AffinityGroup> getAffinityGroups() {
         return affinityGroups;
     }

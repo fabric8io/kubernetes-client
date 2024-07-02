@@ -197,6 +197,7 @@ public class ClusterProvisionSpec implements Editable<ClusterProvisionSpecBuilde
     }
 
     @JsonProperty("metadata")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Object> getMetadata() {
         return metadata;
     }

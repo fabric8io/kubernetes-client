@@ -81,6 +81,7 @@ public class PerResourceAPIRequestLog implements Editable<PerResourceAPIRequestL
     }
 
     @JsonProperty("byNode")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PerNodeAPIRequestLog> getByNode() {
         return byNode;
     }

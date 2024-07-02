@@ -108,6 +108,7 @@ public class OvirtPlatformStatus implements Editable<OvirtPlatformStatusBuilder>
     }
 
     @JsonProperty("apiServerInternalIPs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getApiServerInternalIPs() {
         return apiServerInternalIPs;
     }
@@ -128,6 +129,7 @@ public class OvirtPlatformStatus implements Editable<OvirtPlatformStatusBuilder>
     }
 
     @JsonProperty("ingressIPs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getIngressIPs() {
         return ingressIPs;
     }

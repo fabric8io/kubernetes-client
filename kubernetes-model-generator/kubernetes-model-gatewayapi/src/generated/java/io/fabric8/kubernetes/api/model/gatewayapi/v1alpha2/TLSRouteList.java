@@ -130,6 +130,7 @@ public class TLSRouteList implements Editable<TLSRouteListBuilder> , KubernetesR
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.TLSRoute> getItems() {
         return items;
     }

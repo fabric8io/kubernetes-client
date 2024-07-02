@@ -94,6 +94,7 @@ public class GCPChaosStatus implements Editable<GCPChaosStatusBuilder> , Kuberne
     }
 
     @JsonProperty("attachedDiskStrings")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getAttachedDiskStrings() {
         return attachedDiskStrings;
     }

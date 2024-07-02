@@ -133,6 +133,7 @@ public class DNSRecordSpec implements Editable<DNSRecordSpecBuilder> , Kubernete
     }
 
     @JsonProperty("targets")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getTargets() {
         return targets;
     }

@@ -91,6 +91,7 @@ public class SelectorSyncIdentityProviderSpec implements Editable<SelectorSyncId
     }
 
     @JsonProperty("identityProviders")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<IdentityProvider> getIdentityProviders() {
         return identityProviders;
     }

@@ -138,6 +138,7 @@ public class NetworkChaosList implements Editable<NetworkChaosListBuilder> , Kub
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.chaosmesh.v1alpha1.NetworkChaos> getItems() {
         return items;
     }

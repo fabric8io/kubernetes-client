@@ -138,6 +138,7 @@ public class VerticalPodAutoscalerList implements Editable<VerticalPodAutoscaler
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.verticalpodautoscaler.api.model.v1.VerticalPodAutoscaler> getItems() {
         return items;
     }

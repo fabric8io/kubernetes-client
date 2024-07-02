@@ -130,6 +130,7 @@ public class ProxyList implements Editable<ProxyListBuilder> , KubernetesResourc
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.config.v1.Proxy> getItems() {
         return items;
     }

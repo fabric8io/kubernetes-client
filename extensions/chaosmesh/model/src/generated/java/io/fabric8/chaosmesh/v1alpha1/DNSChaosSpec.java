@@ -120,6 +120,7 @@ public class DNSChaosSpec implements Editable<DNSChaosSpecBuilder> , KubernetesR
     }
 
     @JsonProperty("containerNames")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getContainerNames() {
         return containerNames;
     }
@@ -150,6 +151,7 @@ public class DNSChaosSpec implements Editable<DNSChaosSpecBuilder> , KubernetesR
     }
 
     @JsonProperty("patterns")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getPatterns() {
         return patterns;
     }

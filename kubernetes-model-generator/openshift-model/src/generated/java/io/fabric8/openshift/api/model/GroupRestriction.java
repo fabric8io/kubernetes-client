@@ -81,6 +81,7 @@ public class GroupRestriction implements Editable<GroupRestrictionBuilder> , Kub
     }
 
     @JsonProperty("groups")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getGroups() {
         return groups;
     }
@@ -91,6 +92,7 @@ public class GroupRestriction implements Editable<GroupRestrictionBuilder> , Kub
     }
 
     @JsonProperty("labels")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.LabelSelector> getLabels() {
         return labels;
     }

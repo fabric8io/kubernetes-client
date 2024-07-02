@@ -90,6 +90,7 @@ public class FlexPersistentVolumeSource implements Editable<FlexPersistentVolume
     }
 
     @JsonProperty("options")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getOptions() {
         return options;
     }

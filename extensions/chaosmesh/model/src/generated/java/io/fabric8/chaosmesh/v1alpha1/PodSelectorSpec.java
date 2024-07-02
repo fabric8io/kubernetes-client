@@ -126,6 +126,7 @@ public class PodSelectorSpec implements Editable<PodSelectorSpecBuilder> , Kuber
     }
 
     @JsonProperty("annotationSelectors")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getAnnotationSelectors() {
         return annotationSelectors;
     }
@@ -147,6 +148,7 @@ public class PodSelectorSpec implements Editable<PodSelectorSpecBuilder> , Kuber
     }
 
     @JsonProperty("fieldSelectors")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getFieldSelectors() {
         return fieldSelectors;
     }
@@ -157,6 +159,7 @@ public class PodSelectorSpec implements Editable<PodSelectorSpecBuilder> , Kuber
     }
 
     @JsonProperty("labelSelectors")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getLabelSelectors() {
         return labelSelectors;
     }
@@ -167,6 +170,7 @@ public class PodSelectorSpec implements Editable<PodSelectorSpecBuilder> , Kuber
     }
 
     @JsonProperty("namespaces")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getNamespaces() {
         return namespaces;
     }
@@ -177,6 +181,7 @@ public class PodSelectorSpec implements Editable<PodSelectorSpecBuilder> , Kuber
     }
 
     @JsonProperty("nodeSelectors")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getNodeSelectors() {
         return nodeSelectors;
     }
@@ -187,6 +192,7 @@ public class PodSelectorSpec implements Editable<PodSelectorSpecBuilder> , Kuber
     }
 
     @JsonProperty("nodes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getNodes() {
         return nodes;
     }
@@ -197,6 +203,7 @@ public class PodSelectorSpec implements Editable<PodSelectorSpecBuilder> , Kuber
     }
 
     @JsonProperty("podPhaseSelectors")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getPodPhaseSelectors() {
         return podPhaseSelectors;
     }
@@ -207,6 +214,7 @@ public class PodSelectorSpec implements Editable<PodSelectorSpecBuilder> , Kuber
     }
 
     @JsonProperty("pods")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, List<java.lang.String>> getPods() {
         return pods;
     }

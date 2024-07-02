@@ -125,6 +125,7 @@ public class EmbeddedCustomRunSpec implements Editable<EmbeddedCustomRunSpecBuil
     }
 
     @JsonProperty("spec")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Object> getSpec() {
         return spec;
     }

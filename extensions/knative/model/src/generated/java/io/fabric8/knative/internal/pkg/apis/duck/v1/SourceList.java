@@ -138,6 +138,7 @@ public class SourceList implements Editable<SourceListBuilder> , KubernetesResou
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.knative.internal.pkg.apis.duck.v1.Source> getItems() {
         return items;
     }

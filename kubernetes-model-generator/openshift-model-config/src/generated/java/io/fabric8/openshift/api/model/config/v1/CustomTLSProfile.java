@@ -81,6 +81,7 @@ public class CustomTLSProfile implements Editable<CustomTLSProfileBuilder> , Kub
     }
 
     @JsonProperty("ciphers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getCiphers() {
         return ciphers;
     }

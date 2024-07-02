@@ -103,6 +103,7 @@ public class IngressStatus implements Editable<IngressStatusBuilder> , Kubernete
     }
 
     @JsonProperty("annotations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getAnnotations() {
         return annotations;
     }

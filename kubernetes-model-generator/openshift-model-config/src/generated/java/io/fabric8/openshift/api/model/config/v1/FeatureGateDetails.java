@@ -86,6 +86,7 @@ public class FeatureGateDetails implements Editable<FeatureGateDetailsBuilder> ,
     }
 
     @JsonProperty("disabled")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<FeatureGateAttributes> getDisabled() {
         return disabled;
     }
@@ -96,6 +97,7 @@ public class FeatureGateDetails implements Editable<FeatureGateDetailsBuilder> ,
     }
 
     @JsonProperty("enabled")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<FeatureGateAttributes> getEnabled() {
         return enabled;
     }

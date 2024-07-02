@@ -124,6 +124,7 @@ public class PodHttpChaosReplaceActions implements Editable<PodHttpChaosReplaceA
     }
 
     @JsonProperty("headers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getHeaders() {
         return headers;
     }
@@ -154,6 +155,7 @@ public class PodHttpChaosReplaceActions implements Editable<PodHttpChaosReplaceA
     }
 
     @JsonProperty("queries")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getQueries() {
         return queries;
     }

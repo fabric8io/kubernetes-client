@@ -106,6 +106,7 @@ public class Tracing implements Editable<TracingBuilder> , KubernetesResource
     }
 
     @JsonProperty("customTags")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, TracingCustomTag> getCustomTags() {
         return customTags;
     }

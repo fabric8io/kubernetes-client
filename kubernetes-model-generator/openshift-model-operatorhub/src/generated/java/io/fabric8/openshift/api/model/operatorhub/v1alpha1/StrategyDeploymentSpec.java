@@ -84,6 +84,7 @@ public class StrategyDeploymentSpec implements Editable<StrategyDeploymentSpecBu
     }
 
     @JsonProperty("label")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getLabel() {
         return label;
     }

@@ -130,6 +130,7 @@ public class ClusterRoleList implements Editable<ClusterRoleListBuilder> , Kuber
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.ClusterRole> getItems() {
         return items;
     }

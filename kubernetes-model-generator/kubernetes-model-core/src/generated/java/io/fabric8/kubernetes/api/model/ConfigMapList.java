@@ -107,6 +107,7 @@ public class ConfigMapList implements Editable<ConfigMapListBuilder> , Kubernete
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.ConfigMap> getItems() {
         return items;
     }

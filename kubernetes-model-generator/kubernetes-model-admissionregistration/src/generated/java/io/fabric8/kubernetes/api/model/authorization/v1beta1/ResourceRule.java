@@ -125,6 +125,7 @@ public class ResourceRule implements Editable<ResourceRuleBuilder> , KubernetesR
     }
 
     @JsonProperty("verbs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getVerbs() {
         return verbs;
     }

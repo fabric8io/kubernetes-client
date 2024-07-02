@@ -138,6 +138,7 @@ public class ServiceEntryList implements Editable<ServiceEntryListBuilder> , Kub
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.istio.api.networking.v1alpha3.ServiceEntry> getItems() {
         return items;
     }
