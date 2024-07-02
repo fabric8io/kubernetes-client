@@ -15,14 +15,16 @@
  */
 import io.fabric8.crd.generator.maven.plugin.Verify
 import java.nio.file.Path
+import java.nio.file.Paths
+
 Path basedirPath = basedir.toPath();
 
 [
 	"multiples.sample.fabric8.io-v1"
 ].each {
 	Verify.verifyContentEquals(
-			basedirPath.resolve(Path.of("target", "classes", "META-INF", "fabric8", it + ".yml")),
-			basedirPath.resolve(Path.of("expected",  it + ".yml")))
+			basedirPath.resolve(Paths.get("target", "classes", "META-INF", "fabric8", it + ".yml")),
+			basedirPath.resolve(Paths.get("expected",  it + ".yml")))
 }
 
 true
