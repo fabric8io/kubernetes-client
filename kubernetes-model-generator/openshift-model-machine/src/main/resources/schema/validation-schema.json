@@ -2451,11 +2451,10 @@
         "message": {
           "type": "string"
         },
-        "observedGeneration": {
-          "type": "integer",
-          "existingJavaType": "Long"
-        },
         "reason": {
+          "type": "string"
+        },
+        "severity": {
           "type": "string"
         },
         "status": {
@@ -3389,8 +3388,31 @@
           },
           "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
+        "creationTimestamp": {
+          "$ref": "#/definitions/kubernetes_apimachinery_Time",
+          "existingJavaType": "String"
+        },
+        "deletionGracePeriodSeconds": {
+          "type": "integer",
+          "existingJavaType": "Long"
+        },
+        "deletionTimestamp": {
+          "$ref": "#/definitions/kubernetes_apimachinery_Time",
+          "existingJavaType": "String"
+        },
+        "finalizers": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
         "generateName": {
           "type": "string"
+        },
+        "generation": {
+          "type": "integer",
+          "existingJavaType": "Long"
         },
         "labels": {
           "type": "object",
@@ -3398,6 +3420,14 @@
             "type": "string"
           },
           "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
+        },
+        "managedFields": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_apimachinery_ManagedFieldsEntry",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.ManagedFieldsEntry"
+          }
         },
         "name": {
           "type": "string"
@@ -3414,6 +3444,15 @@
             "$ref": "#/definitions/kubernetes_apimachinery_OwnerReference",
             "existingJavaType": "io.fabric8.kubernetes.api.model.OwnerReference"
           }
+        },
+        "resourceVersion": {
+          "type": "string"
+        },
+        "selfLink": {
+          "type": "string"
+        },
+        "uid": {
+          "type": "string"
         }
       },
       "additionalProperties": true
@@ -3694,6 +3733,21 @@
     "rootvolume": {
       "properties": {
         "availabilityZone": {
+          "type": "string"
+        },
+        "deviceType": {
+          "type": "string"
+        },
+        "diskSize": {
+          "type": "integer"
+        },
+        "sourceType": {
+          "type": "string"
+        },
+        "sourceUUID": {
+          "type": "string"
+        },
+        "volumeType": {
           "type": "string"
         }
       },

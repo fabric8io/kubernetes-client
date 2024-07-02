@@ -31,7 +31,6 @@ import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
-import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
@@ -42,7 +41,6 @@ import lombok.experimental.Accessors;
 })
 @ToString
 @EqualsAndHashCode
-@Setter
 @Accessors(prefix = {
     "_",
     ""
@@ -113,6 +111,10 @@ public class HTTPIngressRuleValue implements Editable<HTTPIngressRuleValueBuilde
     @JsonAnySetter
     public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
+    }
+
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
+        this.additionalProperties = additionalProperties;
     }
 
 }

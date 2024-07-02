@@ -32,7 +32,6 @@ import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
-import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
@@ -50,7 +49,6 @@ import lombok.experimental.Accessors;
 })
 @ToString
 @EqualsAndHashCode
-@Setter
 @Accessors(prefix = {
     "_",
     ""
@@ -216,6 +214,10 @@ public class SourceStatus implements Editable<SourceStatusBuilder> , KubernetesR
     @JsonAnySetter
     public void setAdditionalProperty(java.lang.String name, Object value) {
         this.additionalProperties.put(name, value);
+    }
+
+    public void setAdditionalProperties(Map<java.lang.String, Object> additionalProperties) {
+        this.additionalProperties = additionalProperties;
     }
 
 }

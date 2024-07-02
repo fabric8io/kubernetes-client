@@ -301,4 +301,8 @@ public class KubeSchema {
         this.additionalProperties.put(name, value);
     }
 
+    public void setAdditionalProperties(Map<java.lang.String, Object> additionalProperties) {
+        this.additionalProperties = additionalProperties;
+    }
+
 }

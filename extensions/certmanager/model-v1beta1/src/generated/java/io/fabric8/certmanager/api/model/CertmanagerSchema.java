@@ -89,7 +89,6 @@ import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
-import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
@@ -168,7 +167,6 @@ import lombok.experimental.Accessors;
 })
 @ToString
 @EqualsAndHashCode
-@Setter
 @Accessors(prefix = {
     "_",
     ""

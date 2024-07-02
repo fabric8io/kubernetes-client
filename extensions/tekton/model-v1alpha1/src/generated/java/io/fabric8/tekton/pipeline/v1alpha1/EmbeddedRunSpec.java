@@ -30,7 +30,6 @@ import io.fabric8.tekton.v1alpha1.internal.pipeline.pkg.apis.pipeline.v1beta1.Pi
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
-import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
@@ -44,7 +43,6 @@ import lombok.experimental.Accessors;
 })
 @ToString
 @EqualsAndHashCode
-@Setter
 @Accessors(prefix = {
     "_",
     ""
@@ -154,6 +152,10 @@ public class EmbeddedRunSpec implements Editable<EmbeddedRunSpecBuilder> , Kuber
     @JsonAnySetter
     public void setAdditionalProperty(java.lang.String name, java.lang.Object value) {
         this.additionalProperties.put(name, value);
+    }
+
+    public void setAdditionalProperties(Map<java.lang.String, java.lang.Object> additionalProperties) {
+        this.additionalProperties = additionalProperties;
     }
 
 }

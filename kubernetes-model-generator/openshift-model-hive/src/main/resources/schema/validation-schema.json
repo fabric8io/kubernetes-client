@@ -13196,7 +13196,7 @@
     },
     "metadata": {
       "properties": {
-        "resourceGroupName": {
+        "hostedZoneRole": {
           "type": "string"
         }
       },
@@ -13513,15 +13513,8 @@
     },
     "osdisk": {
       "properties": {
-        "diskEncryptionSet": {
-          "$ref": "#/definitions/os_hive_azure_v1_DiskEncryptionSet",
-          "existingJavaType": "io.fabric8.openshift.api.model.hive.azure.v1.DiskEncryptionSet"
-        },
         "diskSizeGB": {
           "type": "integer"
-        },
-        "diskType": {
-          "type": "string"
         }
       },
       "additionalProperties": true
@@ -13662,18 +13655,40 @@
     },
     "platform": {
       "properties": {
-        "libvirtSSHPrivateKeySecretRef": {
+        "certificatesSecretRef": {
           "$ref": "#/definitions/kubernetes_core_LocalObjectReference",
           "existingJavaType": "io.fabric8.kubernetes.api.model.LocalObjectReference"
+        },
+        "cluster": {
+          "type": "string"
+        },
+        "credentialsSecretRef": {
+          "$ref": "#/definitions/kubernetes_core_LocalObjectReference",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.LocalObjectReference"
+        },
+        "datacenter": {
+          "type": "string"
+        },
+        "defaultDatastore": {
+          "type": "string"
+        },
+        "folder": {
+          "type": "string"
+        },
+        "network": {
+          "type": "string"
+        },
+        "vCenter": {
+          "type": "string"
         }
       },
       "additionalProperties": true
     },
     "platformstatus": {
       "properties": {
-        "aws": {
-          "$ref": "#/definitions/os_hive_aws_v1_PlatformStatus",
-          "existingJavaType": "io.fabric8.openshift.api.model.hive.aws.v1.AwsPlatformStatus"
+        "privateLink": {
+          "$ref": "#/definitions/os_hive_aws_v1_PrivateLinkAccessStatus",
+          "existingJavaType": "io.fabric8.openshift.api.model.hive.aws.v1.PrivateLinkAccessStatus"
         }
       },
       "additionalProperties": true
