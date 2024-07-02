@@ -130,6 +130,7 @@ public class ControllerConfigList implements Editable<ControllerConfigListBuilde
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.machineconfig.v1.ControllerConfig> getItems() {
         return items;
     }

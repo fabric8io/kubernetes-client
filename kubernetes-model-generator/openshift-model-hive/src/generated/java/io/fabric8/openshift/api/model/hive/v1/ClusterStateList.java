@@ -130,6 +130,7 @@ public class ClusterStateList implements Editable<ClusterStateListBuilder> , Kub
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.hive.v1.ClusterState> getItems() {
         return items;
     }

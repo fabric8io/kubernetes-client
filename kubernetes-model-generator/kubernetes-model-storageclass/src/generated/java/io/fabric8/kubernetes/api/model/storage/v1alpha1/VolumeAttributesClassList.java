@@ -130,6 +130,7 @@ public class VolumeAttributesClassList implements Editable<VolumeAttributesClass
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.storage.v1alpha1.VolumeAttributesClass> getItems() {
         return items;
     }

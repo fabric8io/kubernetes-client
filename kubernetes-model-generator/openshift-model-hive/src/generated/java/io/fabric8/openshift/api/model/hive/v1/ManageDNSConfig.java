@@ -109,6 +109,7 @@ public class ManageDNSConfig implements Editable<ManageDNSConfigBuilder> , Kuber
     }
 
     @JsonProperty("domains")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getDomains() {
         return domains;
     }

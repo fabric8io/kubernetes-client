@@ -138,6 +138,7 @@ public class PolicyAutomationList implements Editable<PolicyAutomationListBuilde
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1beta1.PolicyAutomation> getItems() {
         return items;
     }

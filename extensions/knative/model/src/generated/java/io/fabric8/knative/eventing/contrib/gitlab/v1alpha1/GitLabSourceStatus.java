@@ -122,6 +122,7 @@ public class GitLabSourceStatus implements Editable<GitLabSourceStatusBuilder> ,
     }
 
     @JsonProperty("annotations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getAnnotations() {
         return annotations;
     }

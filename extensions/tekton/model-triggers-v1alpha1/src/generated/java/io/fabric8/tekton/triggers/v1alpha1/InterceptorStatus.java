@@ -110,6 +110,7 @@ public class InterceptorStatus implements Editable<InterceptorStatusBuilder> , K
     }
 
     @JsonProperty("annotations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getAnnotations() {
         return annotations;
     }

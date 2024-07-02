@@ -101,6 +101,7 @@ public class ServiceBindingPropertiesState implements Editable<ServiceBindingPro
     }
 
     @JsonProperty("parameters")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Object> getParameters() {
         return parameters;
     }

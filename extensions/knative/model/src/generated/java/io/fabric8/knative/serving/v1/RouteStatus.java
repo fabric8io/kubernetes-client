@@ -119,6 +119,7 @@ public class RouteStatus implements Editable<RouteStatusBuilder> , KubernetesRes
     }
 
     @JsonProperty("annotations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getAnnotations() {
         return annotations;
     }

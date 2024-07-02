@@ -85,6 +85,7 @@ public class EgressIPStatus implements Editable<EgressIPStatusBuilder> , Kuberne
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<EgressIPStatusItem> getItems() {
         return items;
     }

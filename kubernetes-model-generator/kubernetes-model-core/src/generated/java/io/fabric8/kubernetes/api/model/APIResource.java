@@ -176,6 +176,7 @@ public class APIResource implements Editable<APIResourceBuilder> , KubernetesRes
     }
 
     @JsonProperty("verbs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getVerbs() {
         return verbs;
     }

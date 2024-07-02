@@ -108,6 +108,7 @@ public class VSpherePlatformStatus implements Editable<VSpherePlatformStatusBuil
     }
 
     @JsonProperty("apiServerInternalIPs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getApiServerInternalIPs() {
         return apiServerInternalIPs;
     }
@@ -128,6 +129,7 @@ public class VSpherePlatformStatus implements Editable<VSpherePlatformStatusBuil
     }
 
     @JsonProperty("ingressIPs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getIngressIPs() {
         return ingressIPs;
     }

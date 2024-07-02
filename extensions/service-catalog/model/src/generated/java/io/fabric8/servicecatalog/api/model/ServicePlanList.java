@@ -138,6 +138,7 @@ public class ServicePlanList implements Editable<ServicePlanListBuilder> , Kuber
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.servicecatalog.api.model.ServicePlan> getItems() {
         return items;
     }

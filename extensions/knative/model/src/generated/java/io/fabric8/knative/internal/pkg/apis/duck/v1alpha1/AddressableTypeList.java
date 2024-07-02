@@ -138,6 +138,7 @@ public class AddressableTypeList implements Editable<AddressableTypeListBuilder>
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.knative.internal.pkg.apis.duck.v1alpha1.AddressableType> getItems() {
         return items;
     }

@@ -130,6 +130,7 @@ public class ResourceClassParametersList implements Editable<ResourceClassParame
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.resource.v1alpha2.ResourceClassParameters> getItems() {
         return items;
     }

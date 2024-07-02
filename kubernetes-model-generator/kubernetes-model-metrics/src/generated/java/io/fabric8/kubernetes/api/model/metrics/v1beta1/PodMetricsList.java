@@ -130,6 +130,7 @@ public class PodMetricsList implements Editable<PodMetricsListBuilder> , Kuberne
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.metrics.v1beta1.PodMetrics> getItems() {
         return items;
     }

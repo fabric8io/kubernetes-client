@@ -101,6 +101,7 @@ public class ContainerStatus implements Editable<ContainerStatusBuilder> , Kuber
     }
 
     @JsonProperty("allocatedResources")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Quantity> getAllocatedResources() {
         return allocatedResources;
     }

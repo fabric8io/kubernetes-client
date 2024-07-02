@@ -92,6 +92,7 @@ public class ExecNewPodHook implements Editable<ExecNewPodHookBuilder> , Kuberne
     }
 
     @JsonProperty("command")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getCommand() {
         return command;
     }

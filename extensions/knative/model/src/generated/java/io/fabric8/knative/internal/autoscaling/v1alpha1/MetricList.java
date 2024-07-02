@@ -138,6 +138,7 @@ public class MetricList implements Editable<MetricListBuilder> , KubernetesResou
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.knative.internal.autoscaling.v1alpha1.Metric> getItems() {
         return items;
     }

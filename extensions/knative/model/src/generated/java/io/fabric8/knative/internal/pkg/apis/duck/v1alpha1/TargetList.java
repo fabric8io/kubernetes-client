@@ -138,6 +138,7 @@ public class TargetList implements Editable<TargetListBuilder> , KubernetesResou
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.knative.internal.pkg.apis.duck.v1alpha1.Target> getItems() {
         return items;
     }

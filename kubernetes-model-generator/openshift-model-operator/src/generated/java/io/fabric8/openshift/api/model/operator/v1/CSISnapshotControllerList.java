@@ -130,6 +130,7 @@ public class CSISnapshotControllerList implements Editable<CSISnapshotController
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.operator.v1.CSISnapshotController> getItems() {
         return items;
     }

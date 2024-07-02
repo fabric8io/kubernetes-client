@@ -101,6 +101,7 @@ public class KubeletConfigSpec implements Editable<KubeletConfigSpecBuilder> , K
     }
 
     @JsonProperty("kubeletConfig")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Object> getKubeletConfig() {
         return kubeletConfig;
     }

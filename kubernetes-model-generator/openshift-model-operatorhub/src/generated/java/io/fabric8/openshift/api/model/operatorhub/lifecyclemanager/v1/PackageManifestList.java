@@ -130,6 +130,7 @@ public class PackageManifestList implements Editable<PackageManifestListBuilder>
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.operatorhub.lifecyclemanager.v1.PackageManifest> getItems() {
         return items;
     }

@@ -82,6 +82,7 @@ public class RAIDConfig implements Editable<RAIDConfigBuilder> , KubernetesResou
     }
 
     @JsonProperty("hardwareRAIDVolumes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<HardwareRAIDVolume> getHardwareRAIDVolumes() {
         return hardwareRAIDVolumes;
     }
@@ -92,6 +93,7 @@ public class RAIDConfig implements Editable<RAIDConfigBuilder> , KubernetesResou
     }
 
     @JsonProperty("softwareRAIDVolumes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<SoftwareRAIDVolume> getSoftwareRAIDVolumes() {
         return softwareRAIDVolumes;
     }

@@ -130,6 +130,7 @@ public class ValidatingWebhookConfigurationList implements Editable<ValidatingWe
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.ValidatingWebhookConfiguration> getItems() {
         return items;
     }

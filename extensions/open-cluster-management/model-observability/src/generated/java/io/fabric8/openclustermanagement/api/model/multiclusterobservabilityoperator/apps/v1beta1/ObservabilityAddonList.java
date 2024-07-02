@@ -138,6 +138,7 @@ public class ObservabilityAddonList implements Editable<ObservabilityAddonListBu
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta1.ObservabilityAddon> getItems() {
         return items;
     }

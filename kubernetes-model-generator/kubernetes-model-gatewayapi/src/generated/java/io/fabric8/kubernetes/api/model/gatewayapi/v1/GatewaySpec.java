@@ -121,6 +121,7 @@ public class GatewaySpec implements Editable<GatewaySpecBuilder> , KubernetesRes
     }
 
     @JsonProperty("listeners")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Listener> getListeners() {
         return listeners;
     }

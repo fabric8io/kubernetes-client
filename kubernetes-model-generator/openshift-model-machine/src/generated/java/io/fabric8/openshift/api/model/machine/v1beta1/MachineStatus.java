@@ -193,6 +193,7 @@ public class MachineStatus implements Editable<MachineStatusBuilder> , Kubernete
     }
 
     @JsonProperty("providerStatus")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Object> getProviderStatus() {
         return providerStatus;
     }

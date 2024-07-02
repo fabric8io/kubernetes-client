@@ -91,6 +91,7 @@ public class NutanixPlatformSpec implements Editable<NutanixPlatformSpecBuilder>
     }
 
     @JsonProperty("prismElements")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<NutanixPrismElementEndpoint> getPrismElements() {
         return prismElements;
     }

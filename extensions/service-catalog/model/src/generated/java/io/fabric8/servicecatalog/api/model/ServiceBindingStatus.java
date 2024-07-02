@@ -131,6 +131,7 @@ public class ServiceBindingStatus implements Editable<ServiceBindingStatusBuilde
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ServiceBindingCondition> getConditions() {
         return conditions;
     }

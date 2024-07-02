@@ -107,6 +107,7 @@ public class LimitRangeList implements Editable<LimitRangeListBuilder> , Kuberne
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.LimitRange> getItems() {
         return items;
     }

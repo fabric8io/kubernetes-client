@@ -138,6 +138,7 @@ public class PodAutoscalerList implements Editable<PodAutoscalerListBuilder> , K
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.knative.internal.autoscaling.v1alpha1.PodAutoscaler> getItems() {
         return items;
     }

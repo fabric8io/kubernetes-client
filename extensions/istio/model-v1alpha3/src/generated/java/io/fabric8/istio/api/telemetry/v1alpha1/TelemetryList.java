@@ -138,6 +138,7 @@ public class TelemetryList implements Editable<TelemetryListBuilder> , Kubernete
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.istio.api.telemetry.v1alpha1.Telemetry> getItems() {
         return items;
     }

@@ -138,6 +138,7 @@ public class VirtualServiceList implements Editable<VirtualServiceListBuilder> ,
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.istio.api.networking.v1alpha3.VirtualService> getItems() {
         return items;
     }

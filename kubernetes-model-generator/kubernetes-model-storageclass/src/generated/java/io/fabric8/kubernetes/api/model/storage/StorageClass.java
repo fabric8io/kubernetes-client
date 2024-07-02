@@ -216,6 +216,7 @@ public class StorageClass implements Editable<StorageClassBuilder> , HasMetadata
     }
 
     @JsonProperty("parameters")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getParameters() {
         return parameters;
     }

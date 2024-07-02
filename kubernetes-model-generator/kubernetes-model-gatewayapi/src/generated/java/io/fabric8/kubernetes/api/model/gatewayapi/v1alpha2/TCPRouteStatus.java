@@ -78,6 +78,7 @@ public class TCPRouteStatus implements Editable<TCPRouteStatusBuilder> , Kuberne
     }
 
     @JsonProperty("parents")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<RouteParentStatus> getParents() {
         return parents;
     }

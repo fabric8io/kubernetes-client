@@ -139,6 +139,7 @@ public class KlusterletAddonConfigSpec implements Editable<KlusterletAddonConfig
     }
 
     @JsonProperty("clusterLabels")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getClusterLabels() {
         return clusterLabels;
     }

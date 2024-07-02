@@ -86,6 +86,7 @@ public class ControllerConfigStatus implements Editable<ControllerConfigStatusBu
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ControllerConfigStatusCondition> getConditions() {
         return conditions;
     }
@@ -96,6 +97,7 @@ public class ControllerConfigStatus implements Editable<ControllerConfigStatusBu
     }
 
     @JsonProperty("controllerCertificates")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ControllerCertificate> getControllerCertificates() {
         return controllerCertificates;
     }

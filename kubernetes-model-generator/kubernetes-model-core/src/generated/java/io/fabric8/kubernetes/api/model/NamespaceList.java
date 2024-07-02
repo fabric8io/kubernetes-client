@@ -107,6 +107,7 @@ public class NamespaceList implements Editable<NamespaceListBuilder> , Kubernete
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.Namespace> getItems() {
         return items;
     }

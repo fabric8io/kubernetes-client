@@ -130,6 +130,7 @@ public class MachineSetList implements Editable<MachineSetListBuilder> , Kuberne
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.machine.v1beta1.MachineSet> getItems() {
         return items;
     }

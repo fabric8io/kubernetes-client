@@ -107,6 +107,7 @@ public class PodTemplateList implements Editable<PodTemplateListBuilder> , Kuber
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.PodTemplate> getItems() {
         return items;
     }

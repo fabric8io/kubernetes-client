@@ -130,6 +130,7 @@ public class ProfileList implements Editable<ProfileListBuilder> , KubernetesRes
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.tuned.v1.Profile> getItems() {
         return items;
     }

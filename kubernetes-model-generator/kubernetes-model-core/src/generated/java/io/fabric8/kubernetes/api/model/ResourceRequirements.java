@@ -77,6 +77,7 @@ public class ResourceRequirements implements Editable<ResourceRequirementsBuilde
     }
 
     @JsonProperty("limits")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, io.fabric8.kubernetes.api.model.Quantity> getLimits() {
         return limits;
     }
@@ -87,6 +88,7 @@ public class ResourceRequirements implements Editable<ResourceRequirementsBuilde
     }
 
     @JsonProperty("requests")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, io.fabric8.kubernetes.api.model.Quantity> getRequests() {
         return requests;
     }

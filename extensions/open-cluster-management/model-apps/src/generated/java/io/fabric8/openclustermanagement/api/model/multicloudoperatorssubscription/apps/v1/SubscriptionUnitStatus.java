@@ -139,6 +139,7 @@ public class SubscriptionUnitStatus implements Editable<SubscriptionUnitStatusBu
     }
 
     @JsonProperty("resourceStatus")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Object> getResourceStatus() {
         return resourceStatus;
     }

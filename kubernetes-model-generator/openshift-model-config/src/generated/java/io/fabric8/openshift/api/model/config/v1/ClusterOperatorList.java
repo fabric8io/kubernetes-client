@@ -130,6 +130,7 @@ public class ClusterOperatorList implements Editable<ClusterOperatorListBuilder>
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.config.v1.ClusterOperator> getItems() {
         return items;
     }

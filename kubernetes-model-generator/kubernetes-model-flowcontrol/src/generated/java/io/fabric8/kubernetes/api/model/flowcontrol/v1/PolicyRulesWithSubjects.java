@@ -109,6 +109,7 @@ public class PolicyRulesWithSubjects implements Editable<PolicyRulesWithSubjects
     }
 
     @JsonProperty("subjects")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Subject> getSubjects() {
         return subjects;
     }

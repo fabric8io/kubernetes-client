@@ -92,6 +92,7 @@ public class QueueSpec implements Editable<QueueSpecBuilder> , KubernetesResourc
     }
 
     @JsonProperty("capability")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Quantity> getCapability() {
         return capability;
     }

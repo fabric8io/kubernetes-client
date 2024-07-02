@@ -766,6 +766,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder> , Kuberne
     }
 
     @JsonProperty("externalLabels")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getExternalLabels() {
         return externalLabels;
     }
@@ -939,6 +940,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder> , Kuberne
     }
 
     @JsonProperty("nodeSelector")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getNodeSelector() {
         return nodeSelector;
     }

@@ -58,6 +58,7 @@ public class AuthProviderConfig implements Editable<AuthProviderConfigBuilder> ,
     }
 
     @JsonProperty("config")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getConfig() {
         return config;
     }

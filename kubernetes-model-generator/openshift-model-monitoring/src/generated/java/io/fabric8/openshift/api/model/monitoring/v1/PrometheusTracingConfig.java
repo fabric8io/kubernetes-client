@@ -134,6 +134,7 @@ public class PrometheusTracingConfig implements Editable<PrometheusTracingConfig
     }
 
     @JsonProperty("headers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getHeaders() {
         return headers;
     }

@@ -130,6 +130,7 @@ public class ConsoleYAMLSampleList implements Editable<ConsoleYAMLSampleListBuil
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.console.v1.ConsoleYAMLSample> getItems() {
         return items;
     }

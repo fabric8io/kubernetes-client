@@ -77,6 +77,7 @@ public class NamedResourcesStringSlice implements Editable<NamedResourcesStringS
     }
 
     @JsonProperty("strings")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getStrings() {
         return strings;
     }

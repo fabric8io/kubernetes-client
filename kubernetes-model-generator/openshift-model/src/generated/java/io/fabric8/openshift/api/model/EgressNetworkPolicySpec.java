@@ -77,6 +77,7 @@ public class EgressNetworkPolicySpec implements Editable<EgressNetworkPolicySpec
     }
 
     @JsonProperty("egress")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<EgressNetworkPolicyRule> getEgress() {
         return egress;
     }

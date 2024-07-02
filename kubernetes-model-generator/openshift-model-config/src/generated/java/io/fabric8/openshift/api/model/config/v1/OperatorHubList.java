@@ -130,6 +130,7 @@ public class OperatorHubList implements Editable<OperatorHubListBuilder> , Kuber
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.config.v1.OperatorHub> getItems() {
         return items;
     }

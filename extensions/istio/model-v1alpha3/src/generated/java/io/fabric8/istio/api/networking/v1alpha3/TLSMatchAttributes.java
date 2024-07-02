@@ -151,6 +151,7 @@ public class TLSMatchAttributes implements Editable<TLSMatchAttributesBuilder> ,
     }
 
     @JsonProperty("sourceLabels")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getSourceLabels() {
         return sourceLabels;
     }

@@ -117,6 +117,7 @@ public class InstallPlanSpec implements Editable<InstallPlanSpecBuilder> , Kuber
     }
 
     @JsonProperty("clusterServiceVersionNames")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getClusterServiceVersionNames() {
         return clusterServiceVersionNames;
     }

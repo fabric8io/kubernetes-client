@@ -83,6 +83,7 @@ public class SubscriptionPerClusterStatus implements Editable<SubscriptionPerClu
     }
 
     @JsonProperty("packages")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, SubscriptionUnitStatus> getPackages() {
         return packages;
     }

@@ -138,6 +138,7 @@ public class TaskList implements Editable<TaskListBuilder> , KubernetesResource,
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.tekton.pipeline.v1beta1.Task> getItems() {
         return items;
     }

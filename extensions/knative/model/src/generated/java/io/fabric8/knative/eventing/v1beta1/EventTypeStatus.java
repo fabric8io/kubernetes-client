@@ -95,6 +95,7 @@ public class EventTypeStatus implements Editable<EventTypeStatusBuilder> , Kuber
     }
 
     @JsonProperty("annotations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getAnnotations() {
         return annotations;
     }

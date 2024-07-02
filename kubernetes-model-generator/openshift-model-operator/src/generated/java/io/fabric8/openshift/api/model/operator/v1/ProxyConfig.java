@@ -104,6 +104,7 @@ public class ProxyConfig implements Editable<ProxyConfigBuilder> , KubernetesRes
     }
 
     @JsonProperty("proxyArguments")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, ArrayList<String>> getProxyArguments() {
         return proxyArguments;
     }

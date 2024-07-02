@@ -130,6 +130,7 @@ public class KubeControllerManagerList implements Editable<KubeControllerManager
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.operator.v1.KubeControllerManager> getItems() {
         return items;
     }

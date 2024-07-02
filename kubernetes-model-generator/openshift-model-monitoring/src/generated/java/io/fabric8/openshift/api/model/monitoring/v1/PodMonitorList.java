@@ -130,6 +130,7 @@ public class PodMonitorList implements Editable<PodMonitorListBuilder> , Kuberne
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.monitoring.v1.PodMonitor> getItems() {
         return items;
     }

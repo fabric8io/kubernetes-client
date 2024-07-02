@@ -77,6 +77,7 @@ public class SuccessPolicy implements Editable<SuccessPolicyBuilder> , Kubernete
     }
 
     @JsonProperty("rules")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<SuccessPolicyRule> getRules() {
         return rules;
     }

@@ -140,6 +140,7 @@ public class KafkaChannelStatus implements Editable<KafkaChannelStatusBuilder> ,
     }
 
     @JsonProperty("annotations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getAnnotations() {
         return annotations;
     }

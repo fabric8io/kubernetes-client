@@ -199,6 +199,7 @@ public class PhysicalMachineChaosSpec implements Editable<PhysicalMachineChaosSp
     }
 
     @JsonProperty("address")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getAddress() {
         return address;
     }

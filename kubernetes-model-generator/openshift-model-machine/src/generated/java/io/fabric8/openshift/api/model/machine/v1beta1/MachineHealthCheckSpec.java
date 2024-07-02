@@ -131,6 +131,7 @@ public class MachineHealthCheckSpec implements Editable<MachineHealthCheckSpecBu
     }
 
     @JsonProperty("unhealthyConditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<UnhealthyCondition> getUnhealthyConditions() {
         return unhealthyConditions;
     }

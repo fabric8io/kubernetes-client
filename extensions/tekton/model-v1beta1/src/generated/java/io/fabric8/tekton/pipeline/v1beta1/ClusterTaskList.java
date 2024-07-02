@@ -138,6 +138,7 @@ public class ClusterTaskList implements Editable<ClusterTaskListBuilder> , Kuber
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.tekton.pipeline.v1beta1.ClusterTask> getItems() {
         return items;
     }

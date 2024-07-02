@@ -247,6 +247,7 @@ public class ImageSignature implements Editable<ImageSignatureBuilder> , HasMeta
     }
 
     @JsonProperty("signedClaims")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<java.lang.String, java.lang.String> getSignedClaims() {
         return signedClaims;
     }

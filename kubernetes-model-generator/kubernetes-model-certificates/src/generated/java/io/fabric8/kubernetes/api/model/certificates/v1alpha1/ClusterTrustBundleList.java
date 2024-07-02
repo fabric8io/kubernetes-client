@@ -130,6 +130,7 @@ public class ClusterTrustBundleList implements Editable<ClusterTrustBundleListBu
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.certificates.v1alpha1.ClusterTrustBundle> getItems() {
         return items;
     }

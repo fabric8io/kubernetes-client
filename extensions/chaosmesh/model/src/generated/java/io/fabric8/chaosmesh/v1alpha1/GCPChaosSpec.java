@@ -119,6 +119,7 @@ public class GCPChaosSpec implements Editable<GCPChaosSpecBuilder> , KubernetesR
     }
 
     @JsonProperty("deviceNames")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getDeviceNames() {
         return deviceNames;
     }

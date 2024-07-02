@@ -130,6 +130,7 @@ public class UserList implements Editable<UserListBuilder> , KubernetesResource,
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.User> getItems() {
         return items;
     }

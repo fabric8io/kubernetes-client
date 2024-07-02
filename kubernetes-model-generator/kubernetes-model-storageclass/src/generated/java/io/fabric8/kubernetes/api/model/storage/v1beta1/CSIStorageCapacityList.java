@@ -130,6 +130,7 @@ public class CSIStorageCapacityList implements Editable<CSIStorageCapacityListBu
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.storage.v1beta1.CSIStorageCapacity> getItems() {
         return items;
     }

@@ -130,6 +130,7 @@ public class ThanosRulerList implements Editable<ThanosRulerListBuilder> , Kuber
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.monitoring.v1.ThanosRuler> getItems() {
         return items;
     }

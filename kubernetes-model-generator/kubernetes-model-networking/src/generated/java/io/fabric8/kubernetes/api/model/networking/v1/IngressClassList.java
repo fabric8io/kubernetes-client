@@ -130,6 +130,7 @@ public class IngressClassList implements Editable<IngressClassListBuilder> , Kub
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.networking.v1.IngressClass> getItems() {
         return items;
     }

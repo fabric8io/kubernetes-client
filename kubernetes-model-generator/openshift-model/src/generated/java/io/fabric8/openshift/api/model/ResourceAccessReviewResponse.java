@@ -147,6 +147,7 @@ public class ResourceAccessReviewResponse implements Editable<ResourceAccessRevi
     }
 
     @JsonProperty("groups")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getGroups() {
         return groups;
     }
@@ -187,6 +188,7 @@ public class ResourceAccessReviewResponse implements Editable<ResourceAccessRevi
     }
 
     @JsonProperty("users")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getUsers() {
         return users;
     }

@@ -138,6 +138,7 @@ public class ImageList implements Editable<ImageListBuilder> , KubernetesResourc
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.knative.internal.caching.v1alpha1.Image> getItems() {
         return items;
     }

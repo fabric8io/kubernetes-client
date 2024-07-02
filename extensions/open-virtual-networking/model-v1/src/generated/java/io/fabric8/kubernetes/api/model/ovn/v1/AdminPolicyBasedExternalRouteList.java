@@ -138,6 +138,7 @@ public class AdminPolicyBasedExternalRouteList implements Editable<AdminPolicyBa
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.ovn.v1.AdminPolicyBasedExternalRoute> getItems() {
         return items;
     }

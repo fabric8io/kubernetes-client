@@ -130,6 +130,7 @@ public class OAuthClientList implements Editable<OAuthClientListBuilder> , Kuber
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.OAuthClient> getItems() {
         return items;
     }

@@ -117,6 +117,7 @@ public class MachinePool implements Editable<MachinePoolBuilder> , KubernetesRes
     }
 
     @JsonProperty("affinityGroupsNames")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getAffinityGroupsNames() {
         return affinityGroupsNames;
     }

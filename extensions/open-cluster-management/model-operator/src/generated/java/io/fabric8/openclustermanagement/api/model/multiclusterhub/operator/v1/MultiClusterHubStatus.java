@@ -102,6 +102,7 @@ public class MultiClusterHubStatus implements Editable<MultiClusterHubStatusBuil
     }
 
     @JsonProperty("components")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, StatusCondition> getComponents() {
         return components;
     }

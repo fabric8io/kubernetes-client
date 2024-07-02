@@ -62,6 +62,7 @@ public class LegacySortOptions implements Editable<LegacySortOptionsBuilder> , K
     }
 
     @JsonProperty("orderFirst")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getOrderFirst() {
         return orderFirst;
     }
@@ -72,6 +73,7 @@ public class LegacySortOptions implements Editable<LegacySortOptionsBuilder> , K
     }
 
     @JsonProperty("orderLast")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getOrderLast() {
         return orderLast;
     }

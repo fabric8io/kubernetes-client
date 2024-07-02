@@ -130,6 +130,7 @@ public class OpenShiftControllerManagerList implements Editable<OpenShiftControl
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.operator.v1.OpenShiftControllerManager> getItems() {
         return items;
     }

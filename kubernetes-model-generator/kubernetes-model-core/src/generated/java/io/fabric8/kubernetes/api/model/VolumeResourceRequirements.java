@@ -59,6 +59,7 @@ public class VolumeResourceRequirements implements Editable<VolumeResourceRequir
     }
 
     @JsonProperty("limits")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, io.fabric8.kubernetes.api.model.Quantity> getLimits() {
         return limits;
     }
@@ -69,6 +70,7 @@ public class VolumeResourceRequirements implements Editable<VolumeResourceRequir
     }
 
     @JsonProperty("requests")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, io.fabric8.kubernetes.api.model.Quantity> getRequests() {
         return requests;
     }

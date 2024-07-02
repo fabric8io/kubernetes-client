@@ -79,6 +79,7 @@ public class IPPoolSpec implements Editable<IPPoolSpecBuilder> , KubernetesResou
     }
 
     @JsonProperty("allocations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, IPAllocation> getAllocations() {
         return allocations;
     }

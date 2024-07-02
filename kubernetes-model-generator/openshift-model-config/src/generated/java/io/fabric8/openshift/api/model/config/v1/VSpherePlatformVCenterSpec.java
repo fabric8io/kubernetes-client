@@ -85,6 +85,7 @@ public class VSpherePlatformVCenterSpec implements Editable<VSpherePlatformVCent
     }
 
     @JsonProperty("datacenters")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getDatacenters() {
         return datacenters;
     }

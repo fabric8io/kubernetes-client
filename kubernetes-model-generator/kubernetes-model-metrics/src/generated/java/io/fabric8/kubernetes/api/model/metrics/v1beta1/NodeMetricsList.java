@@ -130,6 +130,7 @@ public class NodeMetricsList implements Editable<NodeMetricsListBuilder> , Kuber
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.metrics.v1beta1.NodeMetrics> getItems() {
         return items;
     }

@@ -101,6 +101,7 @@ public class Label implements Editable<LabelBuilder> , KubernetesResource
     }
 
     @JsonProperty("pairs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getPairs() {
         return pairs;
     }

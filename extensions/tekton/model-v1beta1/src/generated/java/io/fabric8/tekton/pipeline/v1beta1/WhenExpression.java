@@ -113,6 +113,7 @@ public class WhenExpression implements Editable<WhenExpressionBuilder> , Kuberne
     }
 
     @JsonProperty("values")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getValues() {
         return values;
     }

@@ -130,6 +130,7 @@ public class ImageContentSourcePolicyList implements Editable<ImageContentSource
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.operator.v1alpha1.ImageContentSourcePolicy> getItems() {
         return items;
     }

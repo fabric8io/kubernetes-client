@@ -121,6 +121,7 @@ public class KafkaSourceSpec implements Editable<KafkaSourceSpecBuilder> , Kuber
     }
 
     @JsonProperty("bootstrapServers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getBootstrapServers() {
         return bootstrapServers;
     }
@@ -201,6 +202,7 @@ public class KafkaSourceSpec implements Editable<KafkaSourceSpecBuilder> , Kuber
     }
 
     @JsonProperty("topics")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getTopics() {
         return topics;
     }

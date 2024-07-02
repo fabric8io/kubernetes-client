@@ -56,6 +56,7 @@ public class RootPaths implements Editable<RootPathsBuilder> , KubernetesResourc
     }
 
     @JsonProperty("paths")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getPaths() {
         return paths;
     }

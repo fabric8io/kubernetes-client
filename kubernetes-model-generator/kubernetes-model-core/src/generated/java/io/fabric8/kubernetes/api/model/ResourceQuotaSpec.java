@@ -65,6 +65,7 @@ public class ResourceQuotaSpec implements Editable<ResourceQuotaSpecBuilder> , K
     }
 
     @JsonProperty("hard")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Quantity> getHard() {
         return hard;
     }

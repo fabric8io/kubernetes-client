@@ -105,6 +105,7 @@ public class PodFailurePolicyRule implements Editable<PodFailurePolicyRuleBuilde
     }
 
     @JsonProperty("onPodConditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PodFailurePolicyOnPodConditionsPattern> getOnPodConditions() {
         return onPodConditions;
     }

@@ -138,6 +138,7 @@ public class BrokerList implements Editable<BrokerListBuilder> , KubernetesResou
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.knative.eventing.v1.Broker> getItems() {
         return items;
     }

@@ -96,6 +96,7 @@ public class ClusterRoleScopeRestriction implements Editable<ClusterRoleScopeRes
     }
 
     @JsonProperty("namespaces")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getNamespaces() {
         return namespaces;
     }
@@ -106,6 +107,7 @@ public class ClusterRoleScopeRestriction implements Editable<ClusterRoleScopeRes
     }
 
     @JsonProperty("roleNames")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getRoleNames() {
         return roleNames;
     }

@@ -130,6 +130,7 @@ public class ConfigList implements Editable<ConfigListBuilder> , KubernetesResou
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.miscellaneous.imageregistry.operator.v1.Config> getItems() {
         return items;
     }

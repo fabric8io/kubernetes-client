@@ -130,6 +130,7 @@ public class KubeletConfigList implements Editable<KubeletConfigListBuilder> , K
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.machineconfig.v1.KubeletConfig> getItems() {
         return items;
     }

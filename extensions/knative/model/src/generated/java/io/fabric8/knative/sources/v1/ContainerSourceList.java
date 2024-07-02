@@ -138,6 +138,7 @@ public class ContainerSourceList implements Editable<ContainerSourceListBuilder>
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.knative.sources.v1.ContainerSource> getItems() {
         return items;
     }

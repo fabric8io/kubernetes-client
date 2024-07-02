@@ -147,6 +147,7 @@ public class CustomResourceDefinitionSpec implements Editable<CustomResourceDefi
     }
 
     @JsonProperty("versions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<CustomResourceDefinitionVersion> getVersions() {
         return versions;
     }

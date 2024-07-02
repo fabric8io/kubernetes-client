@@ -83,6 +83,7 @@ public class CloudEventOverrides implements Editable<CloudEventOverridesBuilder>
     }
 
     @JsonProperty("extensions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getExtensions() {
         return extensions;
     }

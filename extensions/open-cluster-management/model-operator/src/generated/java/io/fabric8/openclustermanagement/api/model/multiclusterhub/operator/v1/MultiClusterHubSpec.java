@@ -217,6 +217,7 @@ public class MultiClusterHubSpec implements Editable<MultiClusterHubSpecBuilder>
     }
 
     @JsonProperty("nodeSelector")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getNodeSelector() {
         return nodeSelector;
     }

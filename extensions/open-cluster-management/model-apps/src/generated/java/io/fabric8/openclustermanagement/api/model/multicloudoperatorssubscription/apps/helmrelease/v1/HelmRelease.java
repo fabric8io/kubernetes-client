@@ -182,6 +182,7 @@ public class HelmRelease implements Editable<HelmReleaseBuilder> , HasMetadata, 
     }
 
     @JsonProperty("spec")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Object> getSpec() {
         return spec;
     }

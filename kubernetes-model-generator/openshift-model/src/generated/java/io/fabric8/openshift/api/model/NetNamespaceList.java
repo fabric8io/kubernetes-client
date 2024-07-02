@@ -130,6 +130,7 @@ public class NetNamespaceList implements Editable<NetNamespaceListBuilder> , Kub
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.NetNamespace> getItems() {
         return items;
     }

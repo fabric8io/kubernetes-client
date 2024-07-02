@@ -138,6 +138,7 @@ public class RunList implements Editable<RunListBuilder> , KubernetesResource, K
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.tekton.pipeline.v1alpha1.Run> getItems() {
         return items;
     }

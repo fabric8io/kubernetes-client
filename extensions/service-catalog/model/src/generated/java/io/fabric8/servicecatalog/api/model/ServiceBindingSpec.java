@@ -130,6 +130,7 @@ public class ServiceBindingSpec implements Editable<ServiceBindingSpecBuilder> ,
     }
 
     @JsonProperty("parameters")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Object> getParameters() {
         return parameters;
     }

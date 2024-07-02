@@ -94,6 +94,7 @@ public class TCPRouteSpec implements Editable<TCPRouteSpecBuilder> , KubernetesR
     }
 
     @JsonProperty("rules")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TCPRouteRule> getRules() {
         return rules;
     }

@@ -118,6 +118,7 @@ public class PrometheusSourceStatus implements Editable<PrometheusSourceStatusBu
     }
 
     @JsonProperty("annotations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getAnnotations() {
         return annotations;
     }

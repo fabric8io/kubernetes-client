@@ -138,6 +138,7 @@ public class KafkaBindingList implements Editable<KafkaBindingListBuilder> , Kub
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.knative.eventing.contrib.kafka.v1beta1.KafkaBinding> getItems() {
         return items;
     }

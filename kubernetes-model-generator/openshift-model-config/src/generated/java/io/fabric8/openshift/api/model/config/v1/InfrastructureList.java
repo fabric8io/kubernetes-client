@@ -130,6 +130,7 @@ public class InfrastructureList implements Editable<InfrastructureListBuilder> ,
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.config.v1.Infrastructure> getItems() {
         return items;
     }

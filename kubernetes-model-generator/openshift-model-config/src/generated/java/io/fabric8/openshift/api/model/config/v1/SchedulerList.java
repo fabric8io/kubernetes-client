@@ -130,6 +130,7 @@ public class SchedulerList implements Editable<SchedulerListBuilder> , Kubernete
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.config.v1.Scheduler> getItems() {
         return items;
     }

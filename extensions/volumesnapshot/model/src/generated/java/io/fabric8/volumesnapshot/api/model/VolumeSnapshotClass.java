@@ -191,6 +191,7 @@ public class VolumeSnapshotClass implements Editable<VolumeSnapshotClassBuilder>
     }
 
     @JsonProperty("parameters")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getParameters() {
         return parameters;
     }

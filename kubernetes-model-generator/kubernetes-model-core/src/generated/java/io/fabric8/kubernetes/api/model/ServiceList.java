@@ -107,6 +107,7 @@ public class ServiceList implements Editable<ServiceListBuilder> , KubernetesRes
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.Service> getItems() {
         return items;
     }

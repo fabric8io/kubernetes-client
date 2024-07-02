@@ -139,6 +139,7 @@ public class CredentialsRequestStatus implements Editable<CredentialsRequestStat
     }
 
     @JsonProperty("providerStatus")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Object> getProviderStatus() {
         return providerStatus;
     }

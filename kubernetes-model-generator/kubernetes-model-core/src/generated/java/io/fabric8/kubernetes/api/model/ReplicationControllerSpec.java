@@ -86,6 +86,7 @@ public class ReplicationControllerSpec implements Editable<ReplicationController
     }
 
     @JsonProperty("selector")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getSelector() {
         return selector;
     }

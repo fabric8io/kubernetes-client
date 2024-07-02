@@ -85,6 +85,7 @@ public class PerNodeAPIRequestLog implements Editable<PerNodeAPIRequestLogBuilde
     }
 
     @JsonProperty("byUser")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PerUserAPIRequestCount> getByUser() {
         return byUser;
     }

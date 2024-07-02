@@ -118,6 +118,7 @@ public class RunStatus implements Editable<RunStatusBuilder> , KubernetesResourc
     }
 
     @JsonProperty("annotations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getAnnotations() {
         return annotations;
     }
@@ -149,6 +150,7 @@ public class RunStatus implements Editable<RunStatusBuilder> , KubernetesResourc
     }
 
     @JsonProperty("extraFields")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Object> getExtraFields() {
         return extraFields;
     }

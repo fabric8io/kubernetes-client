@@ -130,6 +130,7 @@ public class EgressRouterList implements Editable<EgressRouterListBuilder> , Kub
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.miscellaneous.network.operator.v1.EgressRouter> getItems() {
         return items;
     }

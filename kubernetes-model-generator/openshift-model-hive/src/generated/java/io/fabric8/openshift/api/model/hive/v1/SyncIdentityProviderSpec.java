@@ -82,6 +82,7 @@ public class SyncIdentityProviderSpec implements Editable<SyncIdentityProviderSp
     }
 
     @JsonProperty("clusterDeploymentRefs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.LocalObjectReference> getClusterDeploymentRefs() {
         return clusterDeploymentRefs;
     }
@@ -92,6 +93,7 @@ public class SyncIdentityProviderSpec implements Editable<SyncIdentityProviderSp
     }
 
     @JsonProperty("identityProviders")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<IdentityProvider> getIdentityProviders() {
         return identityProviders;
     }

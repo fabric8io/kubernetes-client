@@ -175,6 +175,7 @@ public class ClusterServiceVersionSpec implements Editable<ClusterServiceVersion
     }
 
     @JsonProperty("annotations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getAnnotations() {
         return annotations;
     }
@@ -278,6 +279,7 @@ public class ClusterServiceVersionSpec implements Editable<ClusterServiceVersion
     }
 
     @JsonProperty("labels")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getLabels() {
         return labels;
     }

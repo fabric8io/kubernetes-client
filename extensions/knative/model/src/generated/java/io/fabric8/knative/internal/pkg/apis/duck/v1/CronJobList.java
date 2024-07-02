@@ -138,6 +138,7 @@ public class CronJobList implements Editable<CronJobListBuilder> , KubernetesRes
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.knative.internal.pkg.apis.duck.v1.CronJob> getItems() {
         return items;
     }

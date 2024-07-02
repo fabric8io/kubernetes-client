@@ -158,6 +158,7 @@ public class IOChaosSpec implements Editable<IOChaosSpecBuilder> , KubernetesRes
     }
 
     @JsonProperty("containerNames")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getContainerNames() {
         return containerNames;
     }

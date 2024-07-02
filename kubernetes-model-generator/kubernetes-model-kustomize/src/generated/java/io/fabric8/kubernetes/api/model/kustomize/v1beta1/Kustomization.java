@@ -265,6 +265,7 @@ public class Kustomization implements Editable<KustomizationBuilder> , Kubernete
     }
 
     @JsonProperty("commonAnnotations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getCommonAnnotations() {
         return commonAnnotations;
     }
@@ -275,6 +276,7 @@ public class Kustomization implements Editable<KustomizationBuilder> , Kubernete
     }
 
     @JsonProperty("commonLabels")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getCommonLabels() {
         return commonLabels;
     }
@@ -475,6 +477,7 @@ public class Kustomization implements Editable<KustomizationBuilder> , Kubernete
     }
 
     @JsonProperty("openapi")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getOpenapi() {
         return openapi;
     }

@@ -83,6 +83,7 @@ public class TriggerFilter implements Editable<TriggerFilterBuilder> , Kubernete
     }
 
     @JsonProperty("attributes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getAttributes() {
         return attributes;
     }

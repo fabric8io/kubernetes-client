@@ -138,6 +138,7 @@ public class SubscriptionList implements Editable<SubscriptionListBuilder> , Kub
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.knative.messaging.v1.Subscription> getItems() {
         return items;
     }

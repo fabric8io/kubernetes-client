@@ -147,6 +147,7 @@ public class EndpointSlice implements Editable<EndpointSliceBuilder> , HasMetada
     }
 
     @JsonProperty("endpoints")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Endpoint> getEndpoints() {
         return endpoints;
     }
@@ -187,6 +188,7 @@ public class EndpointSlice implements Editable<EndpointSliceBuilder> , HasMetada
     }
 
     @JsonProperty("ports")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<EndpointPort> getPorts() {
         return ports;
     }

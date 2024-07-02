@@ -93,6 +93,7 @@ public class EventListenerTriggerGroup implements Editable<EventListenerTriggerG
     }
 
     @JsonProperty("interceptors")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TriggerInterceptor> getInterceptors() {
         return interceptors;
     }

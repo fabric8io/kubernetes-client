@@ -104,6 +104,7 @@ public class NutanixPlatformStatus implements Editable<NutanixPlatformStatusBuil
     }
 
     @JsonProperty("apiServerInternalIPs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getApiServerInternalIPs() {
         return apiServerInternalIPs;
     }
@@ -124,6 +125,7 @@ public class NutanixPlatformStatus implements Editable<NutanixPlatformStatusBuil
     }
 
     @JsonProperty("ingressIPs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getIngressIPs() {
         return ingressIPs;
     }

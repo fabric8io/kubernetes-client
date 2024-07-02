@@ -101,6 +101,7 @@ public class ListenerStatus implements Editable<ListenerStatusBuilder> , Kuberne
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }
@@ -121,6 +122,7 @@ public class ListenerStatus implements Editable<ListenerStatusBuilder> , Kuberne
     }
 
     @JsonProperty("supportedKinds")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<RouteGroupKind> getSupportedKinds() {
         return supportedKinds;
     }

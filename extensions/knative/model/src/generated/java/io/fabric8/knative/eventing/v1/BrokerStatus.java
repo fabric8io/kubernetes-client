@@ -134,6 +134,7 @@ public class BrokerStatus implements Editable<BrokerStatusBuilder> , KubernetesR
     }
 
     @JsonProperty("annotations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getAnnotations() {
         return annotations;
     }

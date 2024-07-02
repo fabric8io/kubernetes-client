@@ -130,6 +130,7 @@ public class TemplateList implements Editable<TemplateListBuilder> , KubernetesR
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.Template> getItems() {
         return items;
     }

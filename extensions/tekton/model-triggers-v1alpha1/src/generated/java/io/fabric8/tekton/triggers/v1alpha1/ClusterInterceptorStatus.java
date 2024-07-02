@@ -110,6 +110,7 @@ public class ClusterInterceptorStatus implements Editable<ClusterInterceptorStat
     }
 
     @JsonProperty("annotations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getAnnotations() {
         return annotations;
     }

@@ -108,6 +108,7 @@ public class PipelineResourceSpec implements Editable<PipelineResourceSpecBuilde
     }
 
     @JsonProperty("params")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ResourceParam> getParams() {
         return params;
     }

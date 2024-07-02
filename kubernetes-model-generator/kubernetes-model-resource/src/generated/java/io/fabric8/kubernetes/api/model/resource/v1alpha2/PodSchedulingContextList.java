@@ -130,6 +130,7 @@ public class PodSchedulingContextList implements Editable<PodSchedulingContextLi
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.resource.v1alpha2.PodSchedulingContext> getItems() {
         return items;
     }

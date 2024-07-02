@@ -59,6 +59,7 @@ public class ResourceQuotaStatus implements Editable<ResourceQuotaStatusBuilder>
     }
 
     @JsonProperty("hard")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, io.fabric8.kubernetes.api.model.Quantity> getHard() {
         return hard;
     }
@@ -69,6 +70,7 @@ public class ResourceQuotaStatus implements Editable<ResourceQuotaStatusBuilder>
     }
 
     @JsonProperty("used")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, io.fabric8.kubernetes.api.model.Quantity> getUsed() {
         return used;
     }

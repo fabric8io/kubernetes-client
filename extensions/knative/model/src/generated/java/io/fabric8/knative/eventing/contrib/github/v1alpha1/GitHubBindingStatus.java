@@ -118,6 +118,7 @@ public class GitHubBindingStatus implements Editable<GitHubBindingStatusBuilder>
     }
 
     @JsonProperty("annotations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getAnnotations() {
         return annotations;
     }

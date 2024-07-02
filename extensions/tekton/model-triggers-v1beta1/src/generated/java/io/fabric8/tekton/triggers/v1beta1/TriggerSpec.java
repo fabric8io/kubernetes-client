@@ -102,6 +102,7 @@ public class TriggerSpec implements Editable<TriggerSpecBuilder> , KubernetesRes
     }
 
     @JsonProperty("bindings")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TriggerSpecBinding> getBindings() {
         return bindings;
     }

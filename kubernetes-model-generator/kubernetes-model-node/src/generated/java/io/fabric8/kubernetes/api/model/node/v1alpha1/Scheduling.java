@@ -83,6 +83,7 @@ public class Scheduling implements Editable<SchedulingBuilder> , KubernetesResou
     }
 
     @JsonProperty("nodeSelector")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getNodeSelector() {
         return nodeSelector;
     }

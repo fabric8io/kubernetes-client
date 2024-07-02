@@ -134,6 +134,7 @@ public class PodDisruptionBudgetStatus implements Editable<PodDisruptionBudgetSt
     }
 
     @JsonProperty("disruptedPods")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getDisruptedPods() {
         return disruptedPods;
     }

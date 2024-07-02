@@ -107,6 +107,7 @@ public class SecretList implements Editable<SecretListBuilder> , KubernetesResou
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.Secret> getItems() {
         return items;
     }

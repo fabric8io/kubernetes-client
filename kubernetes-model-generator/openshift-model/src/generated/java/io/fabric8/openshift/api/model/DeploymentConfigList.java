@@ -130,6 +130,7 @@ public class DeploymentConfigList implements Editable<DeploymentConfigListBuilde
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.DeploymentConfig> getItems() {
         return items;
     }

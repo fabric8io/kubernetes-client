@@ -91,6 +91,7 @@ public class RefSource implements Editable<RefSourceBuilder> , KubernetesResourc
     }
 
     @JsonProperty("digest")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getDigest() {
         return digest;
     }

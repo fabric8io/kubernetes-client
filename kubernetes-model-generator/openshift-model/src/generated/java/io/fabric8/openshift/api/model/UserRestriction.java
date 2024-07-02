@@ -86,6 +86,7 @@ public class UserRestriction implements Editable<UserRestrictionBuilder> , Kuber
     }
 
     @JsonProperty("groups")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getGroups() {
         return groups;
     }
@@ -96,6 +97,7 @@ public class UserRestriction implements Editable<UserRestrictionBuilder> , Kuber
     }
 
     @JsonProperty("labels")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.LabelSelector> getLabels() {
         return labels;
     }
@@ -106,6 +108,7 @@ public class UserRestriction implements Editable<UserRestrictionBuilder> , Kuber
     }
 
     @JsonProperty("users")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getUsers() {
         return users;
     }

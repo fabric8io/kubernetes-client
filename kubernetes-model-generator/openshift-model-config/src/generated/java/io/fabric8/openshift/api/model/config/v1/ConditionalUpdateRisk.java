@@ -89,6 +89,7 @@ public class ConditionalUpdateRisk implements Editable<ConditionalUpdateRiskBuil
     }
 
     @JsonProperty("matchingRules")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ClusterCondition> getMatchingRules() {
         return matchingRules;
     }

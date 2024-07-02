@@ -101,6 +101,7 @@ public class StructuredResourceHandle implements Editable<StructuredResourceHand
     }
 
     @JsonProperty("results")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<DriverAllocationResult> getResults() {
         return results;
     }
@@ -111,6 +112,7 @@ public class StructuredResourceHandle implements Editable<StructuredResourceHand
     }
 
     @JsonProperty("vendorClaimParameters")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Object> getVendorClaimParameters() {
         return vendorClaimParameters;
     }
@@ -121,6 +123,7 @@ public class StructuredResourceHandle implements Editable<StructuredResourceHand
     }
 
     @JsonProperty("vendorClassParameters")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Object> getVendorClassParameters() {
         return vendorClassParameters;
     }

@@ -110,6 +110,7 @@ public class TLSRouteSpec implements Editable<TLSRouteSpecBuilder> , KubernetesR
     }
 
     @JsonProperty("rules")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TLSRouteRule> getRules() {
         return rules;
     }

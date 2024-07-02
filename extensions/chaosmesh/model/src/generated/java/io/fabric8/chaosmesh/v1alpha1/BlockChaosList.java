@@ -138,6 +138,7 @@ public class BlockChaosList implements Editable<BlockChaosListBuilder> , Kuberne
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.chaosmesh.v1alpha1.BlockChaos> getItems() {
         return items;
     }

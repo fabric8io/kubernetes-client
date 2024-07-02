@@ -140,6 +140,7 @@ public class TaskRunStatus implements Editable<TaskRunStatusBuilder> , Kubernete
     }
 
     @JsonProperty("annotations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getAnnotations() {
         return annotations;
     }
@@ -234,6 +235,7 @@ public class TaskRunStatus implements Editable<TaskRunStatusBuilder> , Kubernete
     }
 
     @JsonProperty("spanContext")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getSpanContext() {
         return spanContext;
     }

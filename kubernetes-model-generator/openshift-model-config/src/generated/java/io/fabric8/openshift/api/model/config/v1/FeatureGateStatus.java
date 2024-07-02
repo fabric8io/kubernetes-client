@@ -94,6 +94,7 @@ public class FeatureGateStatus implements Editable<FeatureGateStatusBuilder> , K
     }
 
     @JsonProperty("featureGates")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<FeatureGateDetails> getFeatureGates() {
         return featureGates;
     }

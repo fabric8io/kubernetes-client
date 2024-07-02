@@ -138,6 +138,7 @@ public class ConfigurationList implements Editable<ConfigurationListBuilder> , K
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.knative.serving.v1.Configuration> getItems() {
         return items;
     }

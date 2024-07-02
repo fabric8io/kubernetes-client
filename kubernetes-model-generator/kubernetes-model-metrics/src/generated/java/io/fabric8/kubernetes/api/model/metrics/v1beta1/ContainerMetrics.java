@@ -90,6 +90,7 @@ public class ContainerMetrics implements Editable<ContainerMetricsBuilder> , Kub
     }
 
     @JsonProperty("usage")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Quantity> getUsage() {
         return usage;
     }

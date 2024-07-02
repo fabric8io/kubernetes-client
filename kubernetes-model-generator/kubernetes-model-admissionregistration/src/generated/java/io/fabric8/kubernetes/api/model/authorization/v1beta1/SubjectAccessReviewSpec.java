@@ -98,6 +98,7 @@ public class SubjectAccessReviewSpec implements Editable<SubjectAccessReviewSpec
     }
 
     @JsonProperty("extra")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, ArrayList<String>> getExtra() {
         return extra;
     }

@@ -138,6 +138,7 @@ public class CustomRunList implements Editable<CustomRunListBuilder> , Kubernete
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.tekton.pipeline.v1beta1.CustomRun> getItems() {
         return items;
     }

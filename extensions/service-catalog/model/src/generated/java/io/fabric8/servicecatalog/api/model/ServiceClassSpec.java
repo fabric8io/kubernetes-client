@@ -148,6 +148,7 @@ public class ServiceClassSpec implements Editable<ServiceClassSpecBuilder> , Kub
     }
 
     @JsonProperty("defaultProvisionParameters")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Object> getDefaultProvisionParameters() {
         return defaultProvisionParameters;
     }
@@ -178,6 +179,7 @@ public class ServiceClassSpec implements Editable<ServiceClassSpecBuilder> , Kub
     }
 
     @JsonProperty("externalMetadata")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Object> getExternalMetadata() {
         return externalMetadata;
     }

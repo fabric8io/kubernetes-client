@@ -159,6 +159,7 @@ public class BuildConfigSpec implements Editable<BuildConfigSpecBuilder> , Kuber
     }
 
     @JsonProperty("nodeSelector")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getNodeSelector() {
         return nodeSelector;
     }

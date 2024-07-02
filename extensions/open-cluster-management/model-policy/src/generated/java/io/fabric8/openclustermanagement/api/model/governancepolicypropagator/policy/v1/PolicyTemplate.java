@@ -83,6 +83,7 @@ public class PolicyTemplate implements Editable<PolicyTemplateBuilder> , Kuberne
     }
 
     @JsonProperty("objectDefinition")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Object> getObjectDefinition() {
         return objectDefinition;
     }

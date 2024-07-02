@@ -78,6 +78,7 @@ public class GRPCRouteStatus implements Editable<GRPCRouteStatusBuilder> , Kuber
     }
 
     @JsonProperty("parents")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<RouteParentStatus> getParents() {
         return parents;
     }

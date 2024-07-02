@@ -138,6 +138,7 @@ public class CertificateList implements Editable<CertificateListBuilder> , Kuber
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.certmanager.api.model.v1beta1.Certificate> getItems() {
         return items;
     }

@@ -166,6 +166,7 @@ public class ClusterServicePlanSpec implements Editable<ClusterServicePlanSpecBu
     }
 
     @JsonProperty("defaultProvisionParameters")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Object> getDefaultProvisionParameters() {
         return defaultProvisionParameters;
     }
@@ -196,6 +197,7 @@ public class ClusterServicePlanSpec implements Editable<ClusterServicePlanSpecBu
     }
 
     @JsonProperty("externalMetadata")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Object> getExternalMetadata() {
         return externalMetadata;
     }
@@ -226,6 +228,7 @@ public class ClusterServicePlanSpec implements Editable<ClusterServicePlanSpecBu
     }
 
     @JsonProperty("instanceCreateParameterSchema")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Object> getInstanceCreateParameterSchema() {
         return instanceCreateParameterSchema;
     }
@@ -236,6 +239,7 @@ public class ClusterServicePlanSpec implements Editable<ClusterServicePlanSpecBu
     }
 
     @JsonProperty("instanceUpdateParameterSchema")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Object> getInstanceUpdateParameterSchema() {
         return instanceUpdateParameterSchema;
     }
@@ -246,6 +250,7 @@ public class ClusterServicePlanSpec implements Editable<ClusterServicePlanSpecBu
     }
 
     @JsonProperty("serviceBindingCreateParameterSchema")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Object> getServiceBindingCreateParameterSchema() {
         return serviceBindingCreateParameterSchema;
     }
@@ -256,6 +261,7 @@ public class ClusterServicePlanSpec implements Editable<ClusterServicePlanSpecBu
     }
 
     @JsonProperty("serviceBindingCreateResponseSchema")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Object> getServiceBindingCreateResponseSchema() {
         return serviceBindingCreateResponseSchema;
     }

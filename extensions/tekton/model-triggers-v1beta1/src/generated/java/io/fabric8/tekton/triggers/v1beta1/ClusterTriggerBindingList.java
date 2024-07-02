@@ -138,6 +138,7 @@ public class ClusterTriggerBindingList implements Editable<ClusterTriggerBinding
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.tekton.triggers.v1beta1.ClusterTriggerBinding> getItems() {
         return items;
     }

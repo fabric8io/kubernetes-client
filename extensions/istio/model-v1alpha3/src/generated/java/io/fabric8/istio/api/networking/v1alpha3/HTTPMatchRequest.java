@@ -162,6 +162,7 @@ public class HTTPMatchRequest implements Editable<HTTPMatchRequestBuilder> , Kub
     }
 
     @JsonProperty("headers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, io.fabric8.istio.api.networking.v1alpha3.StringMatch> getHeaders() {
         return headers;
     }
@@ -212,6 +213,7 @@ public class HTTPMatchRequest implements Editable<HTTPMatchRequestBuilder> , Kub
     }
 
     @JsonProperty("queryParams")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, io.fabric8.istio.api.networking.v1alpha3.StringMatch> getQueryParams() {
         return queryParams;
     }
@@ -232,6 +234,7 @@ public class HTTPMatchRequest implements Editable<HTTPMatchRequestBuilder> , Kub
     }
 
     @JsonProperty("sourceLabels")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getSourceLabels() {
         return sourceLabels;
     }
@@ -272,6 +275,7 @@ public class HTTPMatchRequest implements Editable<HTTPMatchRequestBuilder> , Kub
     }
 
     @JsonProperty("withoutHeaders")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, io.fabric8.istio.api.networking.v1alpha3.StringMatch> getWithoutHeaders() {
         return withoutHeaders;
     }

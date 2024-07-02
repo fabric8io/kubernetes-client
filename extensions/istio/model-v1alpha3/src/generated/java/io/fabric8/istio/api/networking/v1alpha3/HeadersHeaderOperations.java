@@ -95,6 +95,7 @@ public class HeadersHeaderOperations implements Editable<HeadersHeaderOperations
     }
 
     @JsonProperty("add")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getAdd() {
         return add;
     }
@@ -116,6 +117,7 @@ public class HeadersHeaderOperations implements Editable<HeadersHeaderOperations
     }
 
     @JsonProperty("set")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getSet() {
         return set;
     }

@@ -106,6 +106,7 @@ public class ManagedClusterStatus implements Editable<ManagedClusterStatusBuilde
     }
 
     @JsonProperty("allocatable")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Quantity> getAllocatable() {
         return allocatable;
     }
@@ -116,6 +117,7 @@ public class ManagedClusterStatus implements Editable<ManagedClusterStatusBuilde
     }
 
     @JsonProperty("capacity")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Quantity> getCapacity() {
         return capacity;
     }
@@ -137,6 +139,7 @@ public class ManagedClusterStatus implements Editable<ManagedClusterStatusBuilde
     }
 
     @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }

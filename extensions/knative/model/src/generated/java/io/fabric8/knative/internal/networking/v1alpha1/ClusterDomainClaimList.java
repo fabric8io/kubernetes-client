@@ -138,6 +138,7 @@ public class ClusterDomainClaimList implements Editable<ClusterDomainClaimListBu
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.knative.internal.networking.v1alpha1.ClusterDomainClaim> getItems() {
         return items;
     }

@@ -94,6 +94,7 @@ public class VerificationPolicySpec implements Editable<VerificationPolicySpecBu
     }
 
     @JsonProperty("authorities")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Authority> getAuthorities() {
         return authorities;
     }
@@ -114,6 +115,7 @@ public class VerificationPolicySpec implements Editable<VerificationPolicySpecBu
     }
 
     @JsonProperty("resources")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ResourcePattern> getResources() {
         return resources;
     }

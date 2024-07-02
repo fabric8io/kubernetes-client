@@ -137,6 +137,7 @@ public class BuildSpec implements Editable<BuildSpecBuilder> , KubernetesResourc
     }
 
     @JsonProperty("nodeSelector")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getNodeSelector() {
         return nodeSelector;
     }

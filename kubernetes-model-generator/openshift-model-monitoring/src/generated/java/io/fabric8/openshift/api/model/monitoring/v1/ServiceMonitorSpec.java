@@ -136,6 +136,7 @@ public class ServiceMonitorSpec implements Editable<ServiceMonitorSpecBuilder> ,
     }
 
     @JsonProperty("endpoints")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Endpoint> getEndpoints() {
         return endpoints;
     }

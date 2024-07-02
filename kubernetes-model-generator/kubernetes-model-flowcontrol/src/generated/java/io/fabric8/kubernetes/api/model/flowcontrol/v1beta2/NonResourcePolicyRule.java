@@ -82,6 +82,7 @@ public class NonResourcePolicyRule implements Editable<NonResourcePolicyRuleBuil
     }
 
     @JsonProperty("nonResourceURLs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getNonResourceURLs() {
         return nonResourceURLs;
     }
@@ -92,6 +93,7 @@ public class NonResourcePolicyRule implements Editable<NonResourcePolicyRuleBuil
     }
 
     @JsonProperty("verbs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getVerbs() {
         return verbs;
     }

@@ -138,6 +138,7 @@ public class CouchDbSourceList implements Editable<CouchDbSourceListBuilder> , K
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.knative.eventing.contrib.couchdb.v1alpha1.CouchDbSource> getItems() {
         return items;
     }

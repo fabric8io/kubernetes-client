@@ -107,6 +107,7 @@ public class NodeList implements Editable<NodeListBuilder> , KubernetesResource,
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.Node> getItems() {
         return items;
     }

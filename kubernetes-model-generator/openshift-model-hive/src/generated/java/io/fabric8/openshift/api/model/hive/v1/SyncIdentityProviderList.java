@@ -130,6 +130,7 @@ public class SyncIdentityProviderList implements Editable<SyncIdentityProviderLi
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.hive.v1.SyncIdentityProvider> getItems() {
         return items;
     }

@@ -96,6 +96,7 @@ public class TunedSpec implements Editable<TunedSpecBuilder> , KubernetesResourc
     }
 
     @JsonProperty("profile")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TunedProfile> getProfile() {
         return profile;
     }
@@ -106,6 +107,7 @@ public class TunedSpec implements Editable<TunedSpecBuilder> , KubernetesResourc
     }
 
     @JsonProperty("recommend")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TunedRecommend> getRecommend() {
         return recommend;
     }

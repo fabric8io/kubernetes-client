@@ -138,6 +138,7 @@ public class TaskRunList implements Editable<TaskRunListBuilder> , KubernetesRes
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.tekton.pipeline.v1beta1.TaskRun> getItems() {
         return items;
     }

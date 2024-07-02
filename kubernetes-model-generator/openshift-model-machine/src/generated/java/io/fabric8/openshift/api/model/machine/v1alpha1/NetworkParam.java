@@ -162,6 +162,7 @@ public class NetworkParam implements Editable<NetworkParamBuilder> , KubernetesR
     }
 
     @JsonProperty("profile")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getProfile() {
         return profile;
     }

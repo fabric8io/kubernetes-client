@@ -130,6 +130,7 @@ public class ImageStreamList implements Editable<ImageStreamListBuilder> , Kuber
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.ImageStream> getItems() {
         return items;
     }

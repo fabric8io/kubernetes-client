@@ -90,6 +90,7 @@ public class GatewaySpec implements Editable<GatewaySpecBuilder> , KubernetesRes
     }
 
     @JsonProperty("selector")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getSelector() {
         return selector;
     }

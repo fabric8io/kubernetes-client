@@ -130,6 +130,7 @@ public class StatefulSetList implements Editable<StatefulSetListBuilder> , Kuber
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.apps.StatefulSet> getItems() {
         return items;
     }

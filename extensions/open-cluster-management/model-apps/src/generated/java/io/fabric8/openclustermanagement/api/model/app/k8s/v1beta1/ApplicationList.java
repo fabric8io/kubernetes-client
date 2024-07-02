@@ -138,6 +138,7 @@ public class ApplicationList implements Editable<ApplicationListBuilder> , Kuber
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openclustermanagement.api.model.app.k8s.v1beta1.Application> getItems() {
         return items;
     }

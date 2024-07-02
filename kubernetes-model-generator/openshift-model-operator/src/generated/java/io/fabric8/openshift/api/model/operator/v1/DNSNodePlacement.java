@@ -83,6 +83,7 @@ public class DNSNodePlacement implements Editable<DNSNodePlacementBuilder> , Kub
     }
 
     @JsonProperty("nodeSelector")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getNodeSelector() {
         return nodeSelector;
     }

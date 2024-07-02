@@ -92,6 +92,7 @@ public class EgressIPSpec implements Editable<EgressIPSpecBuilder> , KubernetesR
     }
 
     @JsonProperty("egressIPs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getEgressIPs() {
         return egressIPs;
     }

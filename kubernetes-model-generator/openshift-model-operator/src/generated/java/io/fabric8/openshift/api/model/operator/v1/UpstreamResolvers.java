@@ -119,6 +119,7 @@ public class UpstreamResolvers implements Editable<UpstreamResolversBuilder> , K
     }
 
     @JsonProperty("upstreams")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Upstream> getUpstreams() {
         return upstreams;
     }

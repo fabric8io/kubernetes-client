@@ -108,6 +108,7 @@ public class ConditionalUpdate implements Editable<ConditionalUpdateBuilder> , K
     }
 
     @JsonProperty("risks")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ConditionalUpdateRisk> getRisks() {
         return risks;
     }

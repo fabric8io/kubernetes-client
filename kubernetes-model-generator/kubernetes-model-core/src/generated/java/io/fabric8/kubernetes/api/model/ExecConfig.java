@@ -91,6 +91,7 @@ public class ExecConfig implements Editable<ExecConfigBuilder> , KubernetesResou
     }
 
     @JsonProperty("args")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getArgs() {
         return args;
     }
@@ -111,6 +112,7 @@ public class ExecConfig implements Editable<ExecConfigBuilder> , KubernetesResou
     }
 
     @JsonProperty("env")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ExecEnvVar> getEnv() {
         return env;
     }

@@ -235,6 +235,7 @@ public class EmbeddedTask implements Editable<EmbeddedTaskBuilder> , KubernetesR
     }
 
     @JsonProperty("spec")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Object> getSpec() {
         return spec;
     }

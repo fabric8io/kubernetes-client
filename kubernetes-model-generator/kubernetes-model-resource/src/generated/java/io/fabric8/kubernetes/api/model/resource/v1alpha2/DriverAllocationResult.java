@@ -89,6 +89,7 @@ public class DriverAllocationResult implements Editable<DriverAllocationResultBu
     }
 
     @JsonProperty("vendorRequestParameters")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Object> getVendorRequestParameters() {
         return vendorRequestParameters;
     }

@@ -117,6 +117,7 @@ public class CertificateSigningRequestSpec implements Editable<CertificateSignin
     }
 
     @JsonProperty("extra")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, ArrayList<String>> getExtra() {
         return extra;
     }

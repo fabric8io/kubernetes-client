@@ -130,6 +130,7 @@ public class ResourceSliceList implements Editable<ResourceSliceListBuilder> , K
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.resource.v1alpha2.ResourceSlice> getItems() {
         return items;
     }

@@ -138,6 +138,7 @@ public class GatewayList implements Editable<GatewayListBuilder> , KubernetesRes
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.istio.api.networking.v1alpha3.Gateway> getItems() {
         return items;
     }

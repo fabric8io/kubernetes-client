@@ -130,6 +130,7 @@ public class MachineList implements Editable<MachineListBuilder> , KubernetesRes
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.machine.v1beta1.Machine> getItems() {
         return items;
     }

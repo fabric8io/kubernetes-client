@@ -138,6 +138,7 @@ public class InterceptorList implements Editable<InterceptorListBuilder> , Kuber
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.tekton.triggers.v1alpha1.Interceptor> getItems() {
         return items;
     }

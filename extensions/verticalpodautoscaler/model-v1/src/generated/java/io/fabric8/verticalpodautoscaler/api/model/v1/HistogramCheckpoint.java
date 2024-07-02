@@ -91,6 +91,7 @@ public class HistogramCheckpoint implements Editable<HistogramCheckpointBuilder>
     }
 
     @JsonProperty("bucketWeights")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<Integer, Long> getBucketWeights() {
         return bucketWeights;
     }

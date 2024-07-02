@@ -151,6 +151,7 @@ public class ClusterNetwork implements Editable<ClusterNetworkBuilder> , HasMeta
     }
 
     @JsonProperty("clusterNetworks")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ClusterNetworkEntry> getClusterNetworks() {
         return clusterNetworks;
     }

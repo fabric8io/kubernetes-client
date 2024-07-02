@@ -145,6 +145,7 @@ public class SubscriptionsAPIFilter implements Editable<SubscriptionsAPIFilterBu
     }
 
     @JsonProperty("exact")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getExact() {
         return exact;
     }
@@ -165,6 +166,7 @@ public class SubscriptionsAPIFilter implements Editable<SubscriptionsAPIFilterBu
     }
 
     @JsonProperty("prefix")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getPrefix() {
         return prefix;
     }
@@ -175,6 +177,7 @@ public class SubscriptionsAPIFilter implements Editable<SubscriptionsAPIFilterBu
     }
 
     @JsonProperty("suffix")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getSuffix() {
         return suffix;
     }

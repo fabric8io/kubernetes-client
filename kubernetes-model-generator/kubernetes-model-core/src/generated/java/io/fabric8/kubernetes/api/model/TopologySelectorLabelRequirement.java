@@ -70,6 +70,7 @@ public class TopologySelectorLabelRequirement implements Editable<TopologySelect
     }
 
     @JsonProperty("values")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getValues() {
         return values;
     }

@@ -130,6 +130,7 @@ public class AlertmanagerList implements Editable<AlertmanagerListBuilder> , Kub
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.monitoring.v1.Alertmanager> getItems() {
         return items;
     }

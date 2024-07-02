@@ -115,6 +115,7 @@ public class OAuth2 implements Editable<OAuth2Builder> , KubernetesResource
     }
 
     @JsonProperty("endpointParams")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getEndpointParams() {
         return endpointParams;
     }

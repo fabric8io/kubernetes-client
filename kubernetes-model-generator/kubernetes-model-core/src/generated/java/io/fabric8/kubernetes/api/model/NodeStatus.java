@@ -118,6 +118,7 @@ public class NodeStatus implements Editable<NodeStatusBuilder> , KubernetesResou
     }
 
     @JsonProperty("allocatable")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, io.fabric8.kubernetes.api.model.Quantity> getAllocatable() {
         return allocatable;
     }
@@ -128,6 +129,7 @@ public class NodeStatus implements Editable<NodeStatusBuilder> , KubernetesResou
     }
 
     @JsonProperty("capacity")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, io.fabric8.kubernetes.api.model.Quantity> getCapacity() {
         return capacity;
     }

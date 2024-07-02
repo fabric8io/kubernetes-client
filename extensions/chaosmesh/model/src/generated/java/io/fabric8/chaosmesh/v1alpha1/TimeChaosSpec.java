@@ -110,6 +110,7 @@ public class TimeChaosSpec implements Editable<TimeChaosSpecBuilder> , Kubernete
     }
 
     @JsonProperty("clockIds")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getClockIds() {
         return clockIds;
     }
@@ -120,6 +121,7 @@ public class TimeChaosSpec implements Editable<TimeChaosSpecBuilder> , Kubernete
     }
 
     @JsonProperty("containerNames")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getContainerNames() {
         return containerNames;
     }

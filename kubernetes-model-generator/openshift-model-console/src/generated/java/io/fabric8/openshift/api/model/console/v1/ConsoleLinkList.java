@@ -130,6 +130,7 @@ public class ConsoleLinkList implements Editable<ConsoleLinkListBuilder> , Kuber
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.console.v1.ConsoleLink> getItems() {
         return items;
     }

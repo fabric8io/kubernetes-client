@@ -130,6 +130,7 @@ public class ConsoleExternalLogLinkList implements Editable<ConsoleExternalLogLi
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.console.v1.ConsoleExternalLogLink> getItems() {
         return items;
     }

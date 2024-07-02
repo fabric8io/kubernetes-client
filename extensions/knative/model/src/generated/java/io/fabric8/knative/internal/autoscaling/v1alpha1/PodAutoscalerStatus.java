@@ -121,6 +121,7 @@ public class PodAutoscalerStatus implements Editable<PodAutoscalerStatusBuilder>
     }
 
     @JsonProperty("annotations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getAnnotations() {
         return annotations;
     }

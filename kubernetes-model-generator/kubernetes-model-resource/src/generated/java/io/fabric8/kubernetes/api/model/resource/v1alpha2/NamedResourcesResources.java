@@ -77,6 +77,7 @@ public class NamedResourcesResources implements Editable<NamedResourcesResources
     }
 
     @JsonProperty("instances")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<NamedResourcesInstance> getInstances() {
         return instances;
     }

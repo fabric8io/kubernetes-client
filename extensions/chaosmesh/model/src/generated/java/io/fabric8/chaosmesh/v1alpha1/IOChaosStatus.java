@@ -115,6 +115,7 @@ public class IOChaosStatus implements Editable<IOChaosStatusBuilder> , Kubernete
     }
 
     @JsonProperty("instances")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Long> getInstances() {
         return instances;
     }

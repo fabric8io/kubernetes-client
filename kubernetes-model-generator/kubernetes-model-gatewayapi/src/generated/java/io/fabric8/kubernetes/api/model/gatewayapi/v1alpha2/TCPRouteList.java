@@ -130,6 +130,7 @@ public class TCPRouteList implements Editable<TCPRouteListBuilder> , KubernetesR
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.TCPRoute> getItems() {
         return items;
     }

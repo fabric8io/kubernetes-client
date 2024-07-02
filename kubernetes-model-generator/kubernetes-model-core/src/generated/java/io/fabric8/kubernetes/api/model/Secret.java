@@ -118,6 +118,7 @@ public class Secret implements Editable<SecretBuilder> , HasMetadata, Namespaced
     }
 
     @JsonProperty("data")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getData() {
         return data;
     }
@@ -168,6 +169,7 @@ public class Secret implements Editable<SecretBuilder> , HasMetadata, Namespaced
     }
 
     @JsonProperty("stringData")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getStringData() {
         return stringData;
     }

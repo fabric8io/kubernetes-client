@@ -130,6 +130,7 @@ public class AlertmanagerConfigList implements Editable<AlertmanagerConfigListBu
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.monitoring.v1alpha1.AlertmanagerConfig> getItems() {
         return items;
     }

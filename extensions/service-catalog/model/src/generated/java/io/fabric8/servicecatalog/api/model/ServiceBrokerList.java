@@ -138,6 +138,7 @@ public class ServiceBrokerList implements Editable<ServiceBrokerListBuilder> , K
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.servicecatalog.api.model.ServiceBroker> getItems() {
         return items;
     }

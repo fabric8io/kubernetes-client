@@ -138,6 +138,7 @@ public class EgressIPList implements Editable<EgressIPListBuilder> , KubernetesR
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.ovn.v1.EgressIP> getItems() {
         return items;
     }

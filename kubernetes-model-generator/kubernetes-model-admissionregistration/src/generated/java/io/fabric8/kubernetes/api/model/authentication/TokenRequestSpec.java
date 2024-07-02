@@ -85,6 +85,7 @@ public class TokenRequestSpec implements Editable<TokenRequestSpecBuilder> , Kub
     }
 
     @JsonProperty("audiences")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getAudiences() {
         return audiences;
     }

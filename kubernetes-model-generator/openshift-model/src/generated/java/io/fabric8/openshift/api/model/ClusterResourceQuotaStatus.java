@@ -82,6 +82,7 @@ public class ClusterResourceQuotaStatus implements Editable<ClusterResourceQuota
     }
 
     @JsonProperty("namespaces")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ResourceQuotaStatusByNamespace> getNamespaces() {
         return namespaces;
     }

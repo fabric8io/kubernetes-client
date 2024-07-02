@@ -95,6 +95,7 @@ public class FailureDomain implements Editable<FailureDomainBuilder> , Kubernete
     }
 
     @JsonProperty("portTargets")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<NamedPortTarget> getPortTargets() {
         return portTargets;
     }

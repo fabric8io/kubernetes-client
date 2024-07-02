@@ -102,6 +102,7 @@ public class PeerAuthenticationSpec implements Editable<PeerAuthenticationSpecBu
     }
 
     @JsonProperty("portLevelMtls")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<Long, io.fabric8.istio.api.security.v1beta1.PeerAuthenticationMutualTLS> getPortLevelMtls() {
         return portLevelMtls;
     }

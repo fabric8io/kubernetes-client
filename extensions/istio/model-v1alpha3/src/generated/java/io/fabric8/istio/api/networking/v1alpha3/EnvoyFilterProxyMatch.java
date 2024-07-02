@@ -87,6 +87,7 @@ public class EnvoyFilterProxyMatch implements Editable<EnvoyFilterProxyMatchBuil
     }
 
     @JsonProperty("metadata")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getMetadata() {
         return metadata;
     }

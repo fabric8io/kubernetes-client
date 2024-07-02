@@ -138,6 +138,7 @@ public class ChannelList implements Editable<ChannelListBuilder> , KubernetesRes
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.knative.messaging.v1.Channel> getItems() {
         return items;
     }

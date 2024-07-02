@@ -12816,27 +12816,27 @@
     },
     "machinepool": {
       "properties": {
-        "apiVersion": {
-          "type": "string",
-          "default": "hive.openshift.io/v1",
-          "required": true
+        "bootVolume": {
+          "$ref": "#/definitions/os_hive_ibmcloud_v1_BootVolume",
+          "existingJavaType": "io.fabric8.openshift.api.model.hive.ibmcloud.v1.BootVolume"
         },
-        "kind": {
-          "type": "string",
-          "default": "MachinePool",
-          "required": true
+        "dedicatedHosts": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/os_hive_ibmcloud_v1_DedicatedHost",
+            "existingJavaType": "io.fabric8.openshift.api.model.hive.ibmcloud.v1.DedicatedHost"
+          }
         },
-        "metadata": {
-          "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        "type": {
+          "type": "string"
         },
-        "spec": {
-          "$ref": "#/definitions/os_hive_v1_MachinePoolSpec",
-          "existingJavaType": "io.fabric8.openshift.api.model.hive.v1.MachinePoolSpec"
-        },
-        "status": {
-          "$ref": "#/definitions/os_hive_v1_MachinePoolStatus",
-          "existingJavaType": "io.fabric8.openshift.api.model.hive.v1.MachinePoolStatus"
+        "zones": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
         }
       },
       "additionalProperties": true
@@ -13513,16 +13513,15 @@
     },
     "osdisk": {
       "properties": {
+        "diskEncryptionSet": {
+          "$ref": "#/definitions/os_hive_azure_v1_DiskEncryptionSet",
+          "existingJavaType": "io.fabric8.openshift.api.model.hive.azure.v1.DiskEncryptionSet"
+        },
         "diskSizeGB": {
-          "type": "integer",
-          "existingJavaType": "Long"
+          "type": "integer"
         },
         "diskType": {
           "type": "string"
-        },
-        "encryptionKey": {
-          "$ref": "#/definitions/os_hive_gcp_v1_EncryptionKeyReference",
-          "existingJavaType": "io.fabric8.openshift.api.model.hive.gcp.v1.EncryptionKeyReference"
         }
       },
       "additionalProperties": true
@@ -13662,13 +13661,19 @@
       "additionalProperties": true
     },
     "platform": {
+      "properties": {
+        "libvirtSSHPrivateKeySecretRef": {
+          "$ref": "#/definitions/kubernetes_core_LocalObjectReference",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.LocalObjectReference"
+        }
+      },
       "additionalProperties": true
     },
     "platformstatus": {
       "properties": {
-        "privateLink": {
-          "$ref": "#/definitions/os_hive_aws_v1_PrivateLinkAccessStatus",
-          "existingJavaType": "io.fabric8.openshift.api.model.hive.aws.v1.PrivateLinkAccessStatus"
+        "aws": {
+          "$ref": "#/definitions/os_hive_aws_v1_PlatformStatus",
+          "existingJavaType": "io.fabric8.openshift.api.model.hive.aws.v1.AwsPlatformStatus"
         }
       },
       "additionalProperties": true

@@ -138,6 +138,7 @@ public class DestinationRuleList implements Editable<DestinationRuleListBuilder>
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.istio.api.networking.v1beta1.DestinationRule> getItems() {
         return items;
     }

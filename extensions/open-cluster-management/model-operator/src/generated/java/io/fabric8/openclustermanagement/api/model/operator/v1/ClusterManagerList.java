@@ -138,6 +138,7 @@ public class ClusterManagerList implements Editable<ClusterManagerListBuilder> ,
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openclustermanagement.api.model.operator.v1.ClusterManager> getItems() {
         return items;
     }

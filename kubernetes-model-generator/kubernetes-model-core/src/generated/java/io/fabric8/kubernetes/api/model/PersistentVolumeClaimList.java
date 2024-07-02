@@ -107,6 +107,7 @@ public class PersistentVolumeClaimList implements Editable<PersistentVolumeClaim
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.PersistentVolumeClaim> getItems() {
         return items;
     }

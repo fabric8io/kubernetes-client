@@ -130,6 +130,7 @@ public class FlowSchemaList implements Editable<FlowSchemaListBuilder> , Kuberne
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.flowcontrol.v1.FlowSchema> getItems() {
         return items;
     }

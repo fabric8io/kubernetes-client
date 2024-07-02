@@ -138,6 +138,7 @@ public class PeerAuthenticationList implements Editable<PeerAuthenticationListBu
     }
 
     @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.istio.api.security.v1beta1.PeerAuthentication> getItems() {
         return items;
     }

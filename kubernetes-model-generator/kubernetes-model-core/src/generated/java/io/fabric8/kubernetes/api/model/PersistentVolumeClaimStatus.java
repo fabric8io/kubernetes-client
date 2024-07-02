@@ -99,6 +99,7 @@ public class PersistentVolumeClaimStatus implements Editable<PersistentVolumeCla
     }
 
     @JsonProperty("allocatedResourceStatuses")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getAllocatedResourceStatuses() {
         return allocatedResourceStatuses;
     }
@@ -109,6 +110,7 @@ public class PersistentVolumeClaimStatus implements Editable<PersistentVolumeCla
     }
 
     @JsonProperty("allocatedResources")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, io.fabric8.kubernetes.api.model.Quantity> getAllocatedResources() {
         return allocatedResources;
     }
@@ -119,6 +121,7 @@ public class PersistentVolumeClaimStatus implements Editable<PersistentVolumeCla
     }
 
     @JsonProperty("capacity")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, io.fabric8.kubernetes.api.model.Quantity> getCapacity() {
         return capacity;
     }
