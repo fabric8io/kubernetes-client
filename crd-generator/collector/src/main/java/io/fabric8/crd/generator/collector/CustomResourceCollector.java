@@ -69,6 +69,7 @@ public class CustomResourceCollector {
     return this;
   }
 
+  @SuppressWarnings("UnusedReturnValue")
   public CustomResourceCollector withClasspathElement(String... classpathElement) {
     this.customResourceClassLoader.withClasspathElement(classpathElement);
     return this;
@@ -79,6 +80,7 @@ public class CustomResourceCollector {
     return this;
   }
 
+  @SuppressWarnings("UnusedReturnValue")
   public CustomResourceCollector withCustomResourceClass(String... className) {
     if (className != null) {
       withCustomResourceClasses(Arrays.asList(className));
@@ -86,6 +88,7 @@ public class CustomResourceCollector {
     return this;
   }
 
+  @SuppressWarnings("UnusedReturnValue")
   public CustomResourceCollector withCustomResourceClasses(Collection<String> classNames) {
     if (classNames != null) {
       classNames.stream()
@@ -95,11 +98,13 @@ public class CustomResourceCollector {
     return this;
   }
 
+  @SuppressWarnings("UnusedReturnValue")
   public CustomResourceCollector withIndex(IndexView... index) {
     jandexCustomResourceClassScanner.withIndex(index);
     return this;
   }
 
+  @SuppressWarnings("UnusedReturnValue")
   public CustomResourceCollector withIndices(Collection<IndexView> indices) {
     jandexCustomResourceClassScanner.withIndices(indices);
     return this;

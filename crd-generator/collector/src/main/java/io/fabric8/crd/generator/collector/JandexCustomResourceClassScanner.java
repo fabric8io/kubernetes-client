@@ -58,11 +58,13 @@ public class JandexCustomResourceClassScanner {
    */
   private boolean forceIndex = false;
 
+  @SuppressWarnings("UnusedReturnValue")
   public JandexCustomResourceClassScanner withForceIndex(boolean forceIndex) {
     this.forceIndex = forceIndex;
     return this;
   }
 
+  @SuppressWarnings("UnusedReturnValue")
   public JandexCustomResourceClassScanner withIndex(IndexView... index) {
     if (index != null) {
       withIndices(Arrays.asList(index));
@@ -70,6 +72,7 @@ public class JandexCustomResourceClassScanner {
     return this;
   }
 
+  @SuppressWarnings("UnusedReturnValue")
   public JandexCustomResourceClassScanner withIndices(Collection<IndexView> indices) {
     if (indices != null) {
       indices.stream()
@@ -79,6 +82,7 @@ public class JandexCustomResourceClassScanner {
     return this;
   }
 
+  @SuppressWarnings("UnusedReturnValue")
   public JandexCustomResourceClassScanner withFileToScan(File... files) {
     if (files != null) {
       withFilesToScan(Arrays.asList(files));
@@ -86,6 +90,7 @@ public class JandexCustomResourceClassScanner {
     return this;
   }
 
+  @SuppressWarnings("UnusedReturnValue")
   public JandexCustomResourceClassScanner withFilesToScan(Collection<File> files) {
     if (files != null) {
       files.stream()
