@@ -147,7 +147,7 @@ public class JandexCustomResourceClassScanner {
     }
   }
 
-  public void reset() {
+  void reset() {
     indices.clear();
     filesToScan.clear();
     forceIndex = false;
