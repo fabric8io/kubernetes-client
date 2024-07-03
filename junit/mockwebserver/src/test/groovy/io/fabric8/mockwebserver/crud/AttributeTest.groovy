@@ -19,37 +19,37 @@ import spock.lang.Specification
 
 class AttributeTest extends Specification {
 
-    def "when key and value equals features should equal"() {
-        given:
-        when:
-        Attribute f11 = new Attribute("key1", "value1")
-        Attribute f11a = new Attribute("key1", "value1")
-        Attribute f12 = new Attribute("key1", "value2")
-        Attribute f22 = new Attribute("key2", "value2")
+	def "when key and value equals features should equal"() {
+		given:
+		when:
+		Attribute f11 = new Attribute("key1", "value1")
+		Attribute f11a = new Attribute("key1", "value1")
+		Attribute f12 = new Attribute("key1", "value2")
+		Attribute f22 = new Attribute("key2", "value2")
 
-        then:
-        assert !f11.equals(f22)
-        assert !f11.equals(f12)
-        assert f11.equals(f11a)
-    }
+		then:
+		assert !f11.equals(f22)
+		assert !f11.equals(f12)
+		assert f11.equals(f11a)
+	}
 
-    def "equals, with same attributes but different type, should be true"() {
-        given:
-        Attribute a1 = new Attribute("key1", "value1", AttributeType.EXISTS)
-        Attribute a2 = new Attribute("key1", "value1", AttributeType.NOT_EXISTS)
-        when:
-        var result = a1 == a2
-        then:
-        assert result
-    }
+	def "equals, with same attributes but different type, should be true"() {
+		given:
+		Attribute a1 = new Attribute("key1", "value1", AttributeType.EXISTS)
+		Attribute a2 = new Attribute("key1", "value1", AttributeType.NOT_EXISTS)
+		when:
+		var result = a1 == a2
+		then:
+		assert result
+	}
 
-    def "hashCode, with same attributes but different type, should be equal"() {
-        given:
-        Attribute a1 = new Attribute("key1", "value1", AttributeType.EXISTS)
-        Attribute a2 = new Attribute("key1", "value1", AttributeType.NOT_EXISTS)
-        when:
-        var result = a1.hashCode() == a2.hashCode()
-        then:
-        assert result
-    }
+	def "hashCode, with same attributes but different type, should be equal"() {
+		given:
+		Attribute a1 = new Attribute("key1", "value1", AttributeType.EXISTS)
+		Attribute a2 = new Attribute("key1", "value1", AttributeType.NOT_EXISTS)
+		when:
+		var result = a1.hashCode() == a2.hashCode()
+		then:
+		assert result
+	}
 }

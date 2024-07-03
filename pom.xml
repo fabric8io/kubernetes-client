@@ -1225,6 +1225,8 @@
           </java>
           <groovy>
             <includes>
+              <include>src/main/groovy/**/*.groovy</include>
+              <include>src/test/groovy/**/*.groovy</include>
               <include>src/it/**/*.groovy</include>
             </includes>
             <importOrder/>

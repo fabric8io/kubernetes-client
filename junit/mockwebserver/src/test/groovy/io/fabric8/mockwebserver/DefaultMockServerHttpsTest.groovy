@@ -21,25 +21,25 @@ import spock.lang.Specification
 
 class DefaultMockServerHttpsTest extends Specification {
 
-  DefaultMockServer server
+	DefaultMockServer server
 
-  @Shared
-  OkHttpClient client = new OkHttpClient()
+	@Shared
+	OkHttpClient client = new OkHttpClient()
 
-  def setup() {
-    server = new DefaultMockServer(true)
-    server.start()
-  }
+	def setup() {
+		server = new DefaultMockServer(true)
+		server.start()
+	}
 
-  def cleanup() {
-    server.shutdown()
-  }
+	def cleanup() {
+		server.shutdown()
+	}
 
-  def "url, with path, returns URL with HTTPS protocol"() {
-    when:
-    def result = server.url("/")
+	def "url, with path, returns URL with HTTPS protocol"() {
+		when:
+		def result = server.url("/")
 
-    then:
-    assert result.startsWith("https://")
-  }
+		then:
+		assert result.startsWith("https://")
+	}
 }

@@ -19,47 +19,47 @@ import spock.lang.Specification
 
 class MockServerExceptionTest extends Specification {
 
-  def "launderThrowable, with null, should throw MockServerException"() {
-    when:
-    MockServerException.launderThrowable(null)
-    then:
-    def result = thrown(MockServerException)
-    assert result.getMessage() == "An error has occurred."
-    assert result.getCause() == null
-  }
+	def "launderThrowable, with null, should throw MockServerException"() {
+		when:
+		MockServerException.launderThrowable(null)
+		then:
+		def result = thrown(MockServerException)
+		assert result.getMessage() == "An error has occurred."
+		assert result.getCause() == null
+	}
 
-  def "launderThrowable, with checked exception, should throw MockServerException"() {
-    when:
-    MockServerException.launderThrowable(new Exception("I'm checked"))
-    then:
-    def result = thrown(MockServerException)
-    assert result.getMessage() == "An error has occurred."
-    assert result.getCause().getClass() == Exception
-    assert result.getCause().getMessage() == "I'm checked"
-  }
+	def "launderThrowable, with checked exception, should throw MockServerException"() {
+		when:
+		MockServerException.launderThrowable(new Exception("I'm checked"))
+		then:
+		def result = thrown(MockServerException)
+		assert result.getMessage() == "An error has occurred."
+		assert result.getCause().getClass() == Exception
+		assert result.getCause().getMessage() == "I'm checked"
+	}
 
-  def "launderThrowable, with unchecked exception, should throw MockServerException"() {
-    when:
-    def result = MockServerException.launderThrowable(new RuntimeException("I'm unchecked"))
-    then:
-    assert result.getMessage() == "I'm unchecked"
-    assert result.getClass() != MockServerException
-  }
+	def "launderThrowable, with unchecked exception, should throw MockServerException"() {
+		when:
+		def result = MockServerException.launderThrowable(new RuntimeException("I'm unchecked"))
+		then:
+		assert result.getMessage() == "I'm unchecked"
+		assert result.getClass() != MockServerException
+	}
 
-  def "launderThrowable, with Error, should not be handled"() {
-    when:
-    MockServerException.launderThrowable(new Error("I'm an Error"))
-    then:
-    def result = thrown(Error)
-    assert result.getMessage() == "I'm an Error"
-  }
+	def "launderThrowable, with Error, should not be handled"() {
+		when:
+		MockServerException.launderThrowable(new Error("I'm an Error"))
+		then:
+		def result = thrown(Error)
+		assert result.getMessage() == "I'm an Error"
+	}
 
-  def "launderThrowable, with Interrupted Exception, should re-interrupt"() {
-    when:
-    MockServerException.launderThrowable(new InterruptedException("I'm interrupted"))
-    then:
-    assert Thread.currentThread().isInterrupted()
-    def result = thrown(MockServerException)
-    assert result.getMessage() == "An error has occurred."
-  }
+	def "launderThrowable, with Interrupted Exception, should re-interrupt"() {
+		when:
+		MockServerException.launderThrowable(new InterruptedException("I'm interrupted"))
+		then:
+		assert Thread.currentThread().isInterrupted()
+		def result = thrown(MockServerException)
+		assert result.getMessage() == "An error has occurred."
+	}
 }
