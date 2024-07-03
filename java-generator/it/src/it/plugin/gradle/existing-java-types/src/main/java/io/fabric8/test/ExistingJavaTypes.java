@@ -15,8 +15,8 @@
  */
 package io.fabric8.test;
 
-import com.example.v1.ExistingJavaTypeSpec;      // Generated
-import io.fabric8.kubernetes.api.model.Affinity; // Existing
+import com.example.v1.ExistingJavaTypeSpec;
+import io.fabric8.kubernetes.api.model.Affinity;
 
 public class ExistingJavaTypes {
   public void example() {
