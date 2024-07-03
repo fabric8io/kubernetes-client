@@ -79,7 +79,7 @@ public class ClusterRoleBindingList implements Editable<ClusterRoleBindingListBu
     private String apiVersion = "rbac.authorization.k8s.io/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.rbac.ClusterRoleBinding> items = new ArrayList<io.fabric8.kubernetes.api.model.rbac.ClusterRoleBinding>();
+    private List<io.fabric8.kubernetes.api.model.rbac.ClusterRoleBinding> items = new ArrayList<>();
     /**
      * 
      * (Required)

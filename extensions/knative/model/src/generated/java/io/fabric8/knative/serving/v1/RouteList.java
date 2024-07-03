@@ -87,7 +87,7 @@ public class RouteList implements Editable<RouteListBuilder> , KubernetesResourc
     private String apiVersion = "serving.knative.dev/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.knative.serving.v1.Route> items = new ArrayList<io.fabric8.knative.serving.v1.Route>();
+    private List<io.fabric8.knative.serving.v1.Route> items = new ArrayList<>();
     /**
      * 
      * (Required)

@@ -68,7 +68,7 @@ public class MachinePoolSpec implements Editable<MachinePoolSpecBuilder> , Kuber
     private io.fabric8.kubernetes.api.model.LocalObjectReference clusterDeploymentRef;
     @JsonProperty("labels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> labels = new LinkedHashMap<String, String>();
+    private Map<String, String> labels = new LinkedHashMap<>();
     @JsonProperty("name")
     private String name;
     @JsonProperty("platform")
@@ -77,7 +77,7 @@ public class MachinePoolSpec implements Editable<MachinePoolSpecBuilder> , Kuber
     private Long replicas;
     @JsonProperty("taints")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Taint> taints = new ArrayList<Taint>();
+    private List<Taint> taints = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

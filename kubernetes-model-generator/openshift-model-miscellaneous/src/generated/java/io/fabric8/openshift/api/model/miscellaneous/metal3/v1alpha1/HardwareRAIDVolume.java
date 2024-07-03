@@ -72,7 +72,7 @@ public class HardwareRAIDVolume implements Editable<HardwareRAIDVolumeBuilder> ,
     private Integer numberOfPhysicalDisks;
     @JsonProperty("physicalDisks")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> physicalDisks = new ArrayList<String>();
+    private List<String> physicalDisks = new ArrayList<>();
     @JsonProperty("rotational")
     private Boolean rotational;
     @JsonProperty("sizeGibibytes")

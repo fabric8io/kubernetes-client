@@ -72,10 +72,10 @@ public class TimeChaosSpec implements Editable<TimeChaosSpecBuilder> , Kubernete
 
     @JsonProperty("clockIds")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> clockIds = new ArrayList<java.lang.String>();
+    private List<java.lang.String> clockIds = new ArrayList<>();
     @JsonProperty("containerNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> containerNames = new ArrayList<java.lang.String>();
+    private List<java.lang.String> containerNames = new ArrayList<>();
     @JsonProperty("duration")
     private String duration;
     @JsonProperty("mode")

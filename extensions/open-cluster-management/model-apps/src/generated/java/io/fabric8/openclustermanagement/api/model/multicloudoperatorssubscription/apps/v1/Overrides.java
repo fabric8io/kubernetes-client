@@ -72,7 +72,7 @@ public class Overrides implements Editable<OverridesBuilder> , KubernetesResourc
     private java.lang.String packageName;
     @JsonProperty("packageOverrides")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Map<String, Object>> packageOverrides = new ArrayList<Map<String, Object>>();
+    private List<Map<String, Object>> packageOverrides = new ArrayList<>();
     @JsonIgnore
     private Map<java.lang.String, java.lang.Object> additionalProperties = new LinkedHashMap<java.lang.String, java.lang.Object>();
 

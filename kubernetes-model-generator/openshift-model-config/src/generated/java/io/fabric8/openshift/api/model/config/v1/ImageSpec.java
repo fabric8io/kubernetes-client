@@ -63,10 +63,10 @@ public class ImageSpec implements Editable<ImageSpecBuilder> , KubernetesResourc
     private ConfigMapNameReference additionalTrustedCA;
     @JsonProperty("allowedRegistriesForImport")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<RegistryLocation> allowedRegistriesForImport = new ArrayList<RegistryLocation>();
+    private List<RegistryLocation> allowedRegistriesForImport = new ArrayList<>();
     @JsonProperty("externalRegistryHostnames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> externalRegistryHostnames = new ArrayList<String>();
+    private List<String> externalRegistryHostnames = new ArrayList<>();
     @JsonProperty("registrySources")
     private RegistrySources registrySources;
     @JsonIgnore

@@ -46,7 +46,7 @@ public class LoadBalancerIngress implements Editable<LoadBalancerIngressBuilder>
     private String ipMode;
     @JsonProperty("ports")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<PortStatus> ports = new ArrayList<PortStatus>();
+    private List<PortStatus> ports = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

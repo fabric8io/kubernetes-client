@@ -79,7 +79,7 @@ public class ContainerRuntimeConfigList implements Editable<ContainerRuntimeConf
     private String apiVersion = "machineconfiguration.openshift.io/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.openshift.api.model.machineconfig.v1.ContainerRuntimeConfig> items = new ArrayList<io.fabric8.openshift.api.model.machineconfig.v1.ContainerRuntimeConfig>();
+    private List<io.fabric8.openshift.api.model.machineconfig.v1.ContainerRuntimeConfig> items = new ArrayList<>();
     /**
      * 
      * (Required)

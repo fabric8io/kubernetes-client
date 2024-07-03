@@ -63,7 +63,7 @@ public class Endpoint implements Editable<EndpointBuilder> , KubernetesResource
 
     @JsonProperty("addresses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> addresses = new ArrayList<String>();
+    private List<String> addresses = new ArrayList<>();
     @JsonProperty("conditions")
     private EndpointConditions conditions;
     @JsonProperty("hints")
@@ -76,7 +76,7 @@ public class Endpoint implements Editable<EndpointBuilder> , KubernetesResource
     private io.fabric8.kubernetes.api.model.ObjectReference targetRef;
     @JsonProperty("topology")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> topology = new LinkedHashMap<String, String>();
+    private Map<String, String> topology = new LinkedHashMap<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

@@ -60,12 +60,12 @@ public class VSpherePlatformNodeNetworkingSpec implements Editable<VSpherePlatfo
 
     @JsonProperty("excludeNetworkSubnetCidr")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> excludeNetworkSubnetCidr = new ArrayList<String>();
+    private List<String> excludeNetworkSubnetCidr = new ArrayList<>();
     @JsonProperty("network")
     private String network;
     @JsonProperty("networkSubnetCidr")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> networkSubnetCidr = new ArrayList<String>();
+    private List<String> networkSubnetCidr = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

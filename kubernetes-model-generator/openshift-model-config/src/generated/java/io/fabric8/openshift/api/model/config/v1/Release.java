@@ -61,7 +61,7 @@ public class Release implements Editable<ReleaseBuilder> , KubernetesResource
 
     @JsonProperty("channels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> channels = new ArrayList<String>();
+    private List<String> channels = new ArrayList<>();
     @JsonProperty("image")
     private String image;
     @JsonProperty("url")

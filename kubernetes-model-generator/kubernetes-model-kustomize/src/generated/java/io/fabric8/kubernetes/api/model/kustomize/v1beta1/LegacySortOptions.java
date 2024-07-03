@@ -39,10 +39,10 @@ public class LegacySortOptions implements Editable<LegacySortOptionsBuilder> , K
 
     @JsonProperty("orderFirst")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> orderFirst = new ArrayList<String>();
+    private List<String> orderFirst = new ArrayList<>();
     @JsonProperty("orderLast")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> orderLast = new ArrayList<String>();
+    private List<String> orderLast = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

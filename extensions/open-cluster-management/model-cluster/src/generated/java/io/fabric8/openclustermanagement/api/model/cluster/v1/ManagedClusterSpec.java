@@ -72,7 +72,7 @@ public class ManagedClusterSpec implements Editable<ManagedClusterSpecBuilder> ,
     private Integer leaseDurationSeconds;
     @JsonProperty("managedClusterClientConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ClientConfig> managedClusterClientConfigs = new ArrayList<ClientConfig>();
+    private List<ClientConfig> managedClusterClientConfigs = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

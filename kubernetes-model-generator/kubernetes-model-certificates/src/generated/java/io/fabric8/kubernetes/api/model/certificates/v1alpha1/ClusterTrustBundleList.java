@@ -79,7 +79,7 @@ public class ClusterTrustBundleList implements Editable<ClusterTrustBundleListBu
     private String apiVersion = "certificates.k8s.io/v1alpha1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.certificates.v1alpha1.ClusterTrustBundle> items = new ArrayList<io.fabric8.kubernetes.api.model.certificates.v1alpha1.ClusterTrustBundle>();
+    private List<io.fabric8.kubernetes.api.model.certificates.v1alpha1.ClusterTrustBundle> items = new ArrayList<>();
     /**
      * 
      * (Required)

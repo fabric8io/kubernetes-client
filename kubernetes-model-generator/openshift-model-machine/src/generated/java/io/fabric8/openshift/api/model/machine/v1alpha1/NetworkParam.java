@@ -74,13 +74,13 @@ public class NetworkParam implements Editable<NetworkParamBuilder> , KubernetesR
     private Boolean portSecurity;
     @JsonProperty("portTags")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> portTags = new ArrayList<String>();
+    private List<String> portTags = new ArrayList<>();
     @JsonProperty("profile")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> profile = new LinkedHashMap<String, String>();
+    private Map<String, String> profile = new LinkedHashMap<>();
     @JsonProperty("subnets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<SubnetParam> subnets = new ArrayList<SubnetParam>();
+    private List<SubnetParam> subnets = new ArrayList<>();
     @JsonProperty("uuid")
     private String uuid;
     @JsonProperty("vnicType")

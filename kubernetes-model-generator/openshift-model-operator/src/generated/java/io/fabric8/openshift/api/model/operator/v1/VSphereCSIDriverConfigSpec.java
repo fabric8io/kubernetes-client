@@ -58,7 +58,7 @@ public class VSphereCSIDriverConfigSpec implements Editable<VSphereCSIDriverConf
 
     @JsonProperty("topologyCategories")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> topologyCategories = new ArrayList<String>();
+    private List<String> topologyCategories = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

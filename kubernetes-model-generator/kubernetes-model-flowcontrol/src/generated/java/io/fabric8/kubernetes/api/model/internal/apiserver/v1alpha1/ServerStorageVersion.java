@@ -63,12 +63,12 @@ public class ServerStorageVersion implements Editable<ServerStorageVersionBuilde
     private String apiServerID;
     @JsonProperty("decodableVersions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> decodableVersions = new ArrayList<String>();
+    private List<String> decodableVersions = new ArrayList<>();
     @JsonProperty("encodingVersion")
     private String encodingVersion;
     @JsonProperty("servedVersions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> servedVersions = new ArrayList<String>();
+    private List<String> servedVersions = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

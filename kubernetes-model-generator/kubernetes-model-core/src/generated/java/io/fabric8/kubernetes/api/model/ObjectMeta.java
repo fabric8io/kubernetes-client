@@ -51,7 +51,7 @@ public class ObjectMeta implements Editable<ObjectMetaBuilder> , KubernetesResou
 
     @JsonProperty("annotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<java.lang.String, java.lang.String> annotations = new LinkedHashMap<java.lang.String, java.lang.String>();
+    private Map<java.lang.String, java.lang.String> annotations = new LinkedHashMap<>();
     @JsonProperty("creationTimestamp")
     private String creationTimestamp;
     @JsonProperty("deletionGracePeriodSeconds")
@@ -60,24 +60,24 @@ public class ObjectMeta implements Editable<ObjectMetaBuilder> , KubernetesResou
     private String deletionTimestamp;
     @JsonProperty("finalizers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> finalizers = new ArrayList<java.lang.String>();
+    private List<java.lang.String> finalizers = new ArrayList<>();
     @JsonProperty("generateName")
     private java.lang.String generateName;
     @JsonProperty("generation")
     private Long generation;
     @JsonProperty("labels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<java.lang.String, java.lang.String> labels = new LinkedHashMap<java.lang.String, java.lang.String>();
+    private Map<java.lang.String, java.lang.String> labels = new LinkedHashMap<>();
     @JsonProperty("managedFields")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ManagedFieldsEntry> managedFields = new ArrayList<ManagedFieldsEntry>();
+    private List<ManagedFieldsEntry> managedFields = new ArrayList<>();
     @JsonProperty("name")
     private java.lang.String name;
     @JsonProperty("namespace")
     private java.lang.String namespace;
     @JsonProperty("ownerReferences")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<OwnerReference> ownerReferences = new ArrayList<OwnerReference>();
+    private List<OwnerReference> ownerReferences = new ArrayList<>();
     @JsonProperty("resourceVersion")
     private java.lang.String resourceVersion;
     @JsonProperty("selfLink")

@@ -73,7 +73,7 @@ public class MachinePool implements Editable<MachinePoolBuilder> , KubernetesRes
     private String type;
     @JsonProperty("zones")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> zones = new ArrayList<String>();
+    private List<String> zones = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

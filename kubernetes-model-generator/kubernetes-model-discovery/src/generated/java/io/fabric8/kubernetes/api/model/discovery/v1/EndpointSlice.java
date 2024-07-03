@@ -81,7 +81,7 @@ public class EndpointSlice implements Editable<EndpointSliceBuilder> , HasMetada
     private String apiVersion = "discovery.k8s.io/v1";
     @JsonProperty("endpoints")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Endpoint> endpoints = new ArrayList<Endpoint>();
+    private List<Endpoint> endpoints = new ArrayList<>();
     /**
      * 
      * (Required)
@@ -93,7 +93,7 @@ public class EndpointSlice implements Editable<EndpointSliceBuilder> , HasMetada
     private io.fabric8.kubernetes.api.model.ObjectMeta metadata;
     @JsonProperty("ports")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<EndpointPort> ports = new ArrayList<EndpointPort>();
+    private List<EndpointPort> ports = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

@@ -70,7 +70,7 @@ public class DNSRecordSpec implements Editable<DNSRecordSpecBuilder> , Kubernete
     private String recordType;
     @JsonProperty("targets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> targets = new ArrayList<String>();
+    private List<String> targets = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

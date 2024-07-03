@@ -71,10 +71,10 @@ public class PipelineResourceSpec implements Editable<PipelineResourceSpecBuilde
     private String description;
     @JsonProperty("params")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ResourceParam> params = new ArrayList<ResourceParam>();
+    private List<ResourceParam> params = new ArrayList<>();
     @JsonProperty("secrets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<SecretParam> secrets = new ArrayList<SecretParam>();
+    private List<SecretParam> secrets = new ArrayList<>();
     @JsonProperty("type")
     private String type;
     @JsonIgnore

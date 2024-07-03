@@ -69,14 +69,14 @@ public class WebTLSConfig implements Editable<WebTLSConfigBuilder> , KubernetesR
     private SecretOrConfigMap cert;
     @JsonProperty("cipherSuites")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> cipherSuites = new ArrayList<String>();
+    private List<String> cipherSuites = new ArrayList<>();
     @JsonProperty("clientAuthType")
     private String clientAuthType;
     @JsonProperty("client_ca")
     private SecretOrConfigMap clientCa;
     @JsonProperty("curvePreferences")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> curvePreferences = new ArrayList<String>();
+    private List<String> curvePreferences = new ArrayList<>();
     @JsonProperty("keySecret")
     private SecretKeySelector keySecret;
     @JsonProperty("maxVersion")

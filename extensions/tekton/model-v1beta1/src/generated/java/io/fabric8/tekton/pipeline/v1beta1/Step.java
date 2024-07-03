@@ -95,16 +95,16 @@ public class Step implements Editable<StepBuilder> , KubernetesResource
 
     @JsonProperty("args")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> args = new ArrayList<String>();
+    private List<String> args = new ArrayList<>();
     @JsonProperty("command")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> command = new ArrayList<String>();
+    private List<String> command = new ArrayList<>();
     @JsonProperty("env")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.EnvVar> env = new ArrayList<io.fabric8.kubernetes.api.model.EnvVar>();
+    private List<io.fabric8.kubernetes.api.model.EnvVar> env = new ArrayList<>();
     @JsonProperty("envFrom")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<EnvFromSource> envFrom = new ArrayList<EnvFromSource>();
+    private List<EnvFromSource> envFrom = new ArrayList<>();
     @JsonProperty("image")
     private String image;
     @JsonProperty("imagePullPolicy")
@@ -119,7 +119,7 @@ public class Step implements Editable<StepBuilder> , KubernetesResource
     private String onError;
     @JsonProperty("ports")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.ContainerPort> ports = new ArrayList<io.fabric8.kubernetes.api.model.ContainerPort>();
+    private List<io.fabric8.kubernetes.api.model.ContainerPort> ports = new ArrayList<>();
     @JsonProperty("readinessProbe")
     private Probe readinessProbe;
     @JsonProperty("resources")
@@ -148,15 +148,15 @@ public class Step implements Editable<StepBuilder> , KubernetesResource
     private Boolean tty;
     @JsonProperty("volumeDevices")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<VolumeDevice> volumeDevices = new ArrayList<VolumeDevice>();
+    private List<VolumeDevice> volumeDevices = new ArrayList<>();
     @JsonProperty("volumeMounts")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.VolumeMount> volumeMounts = new ArrayList<io.fabric8.kubernetes.api.model.VolumeMount>();
+    private List<io.fabric8.kubernetes.api.model.VolumeMount> volumeMounts = new ArrayList<>();
     @JsonProperty("workingDir")
     private String workingDir;
     @JsonProperty("workspaces")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<WorkspaceUsage> workspaces = new ArrayList<WorkspaceUsage>();
+    private List<WorkspaceUsage> workspaces = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

@@ -58,7 +58,7 @@ public class APIServerServingCerts implements Editable<APIServerServingCertsBuil
 
     @JsonProperty("namedCertificates")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<APIServerNamedServingCert> namedCertificates = new ArrayList<APIServerNamedServingCert>();
+    private List<APIServerNamedServingCert> namedCertificates = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

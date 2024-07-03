@@ -59,10 +59,10 @@ public class NonResourceRule implements Editable<NonResourceRuleBuilder> , Kuber
 
     @JsonProperty("nonResourceURLs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> nonResourceURLs = new ArrayList<String>();
+    private List<String> nonResourceURLs = new ArrayList<>();
     @JsonProperty("verbs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> verbs = new ArrayList<String>();
+    private List<String> verbs = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

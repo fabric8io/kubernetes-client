@@ -76,7 +76,7 @@ public class ServiceInstancePropertiesState implements Editable<ServiceInstanceP
     private java.lang.String parameterChecksum;
     @JsonProperty("parameters")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Object> parameters = new LinkedHashMap<String, Object>();
+    private Map<String, Object> parameters = new LinkedHashMap<>();
     @JsonProperty("servicePlanExternalID")
     private java.lang.String servicePlanExternalID;
     @JsonProperty("servicePlanExternalName")

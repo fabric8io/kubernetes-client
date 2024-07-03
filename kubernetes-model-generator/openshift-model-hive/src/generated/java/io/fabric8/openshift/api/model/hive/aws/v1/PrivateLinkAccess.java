@@ -59,7 +59,7 @@ public class PrivateLinkAccess implements Editable<PrivateLinkAccessBuilder> , K
 
     @JsonProperty("additionalAllowedPrincipals")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> additionalAllowedPrincipals = new ArrayList<String>();
+    private List<String> additionalAllowedPrincipals = new ArrayList<>();
     @JsonProperty("enabled")
     private Boolean enabled;
     @JsonIgnore

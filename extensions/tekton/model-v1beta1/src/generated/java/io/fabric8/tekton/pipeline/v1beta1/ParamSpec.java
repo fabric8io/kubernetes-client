@@ -74,7 +74,7 @@ public class ParamSpec implements Editable<ParamSpecBuilder> , KubernetesResourc
     private java.lang.String name;
     @JsonProperty("properties")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, PropertySpec> properties = new LinkedHashMap<String, PropertySpec>();
+    private Map<String, PropertySpec> properties = new LinkedHashMap<>();
     @JsonProperty("type")
     private java.lang.String type;
     @JsonIgnore

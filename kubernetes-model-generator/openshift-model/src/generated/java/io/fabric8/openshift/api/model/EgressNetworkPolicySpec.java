@@ -58,7 +58,7 @@ public class EgressNetworkPolicySpec implements Editable<EgressNetworkPolicySpec
 
     @JsonProperty("egress")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<EgressNetworkPolicyRule> egress = new ArrayList<EgressNetworkPolicyRule>();
+    private List<EgressNetworkPolicyRule> egress = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

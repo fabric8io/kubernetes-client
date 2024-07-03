@@ -78,47 +78,47 @@ public class Kustomization implements Editable<KustomizationBuilder> , Kubernete
     private String apiVersion;
     @JsonProperty("bases")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> bases = new ArrayList<String>();
+    private List<String> bases = new ArrayList<>();
     @JsonProperty("buildMetadata")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> buildMetadata = new ArrayList<String>();
+    private List<String> buildMetadata = new ArrayList<>();
     @JsonProperty("commonAnnotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> commonAnnotations = new LinkedHashMap<String, String>();
+    private Map<String, String> commonAnnotations = new LinkedHashMap<>();
     @JsonProperty("commonLabels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> commonLabels = new LinkedHashMap<String, String>();
+    private Map<String, String> commonLabels = new LinkedHashMap<>();
     @JsonProperty("components")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> components = new ArrayList<String>();
+    private List<String> components = new ArrayList<>();
     @JsonProperty("configMapGenerator")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ConfigMapArgs> configMapGenerator = new ArrayList<ConfigMapArgs>();
+    private List<ConfigMapArgs> configMapGenerator = new ArrayList<>();
     @JsonProperty("configurations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> configurations = new ArrayList<String>();
+    private List<String> configurations = new ArrayList<>();
     @JsonProperty("crds")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> crds = new ArrayList<String>();
+    private List<String> crds = new ArrayList<>();
     @JsonProperty("generatorOptions")
     private GeneratorOptions generatorOptions;
     @JsonProperty("generators")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> generators = new ArrayList<String>();
+    private List<String> generators = new ArrayList<>();
     @JsonProperty("helmChartInflationGenerator")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<HelmChartArgs> helmChartInflationGenerator = new ArrayList<HelmChartArgs>();
+    private List<HelmChartArgs> helmChartInflationGenerator = new ArrayList<>();
     @JsonProperty("helmCharts")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<HelmChart> helmCharts = new ArrayList<HelmChart>();
+    private List<HelmChart> helmCharts = new ArrayList<>();
     @JsonProperty("helmGlobals")
     private HelmGlobals helmGlobals;
     @JsonProperty("imageTags")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Image> imageTags = new ArrayList<Image>();
+    private List<Image> imageTags = new ArrayList<>();
     @JsonProperty("images")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Image> images = new ArrayList<Image>();
+    private List<Image> images = new ArrayList<>();
     /**
      * 
      * (Required)
@@ -128,7 +128,7 @@ public class Kustomization implements Editable<KustomizationBuilder> , Kubernete
     private String kind = "Kustomization";
     @JsonProperty("labels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Label> labels = new ArrayList<Label>();
+    private List<Label> labels = new ArrayList<>();
     @JsonProperty("metadata")
     private ObjectMeta metadata;
     @JsonProperty("namePrefix")
@@ -139,39 +139,39 @@ public class Kustomization implements Editable<KustomizationBuilder> , Kubernete
     private String namespace;
     @JsonProperty("openapi")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> openapi = new LinkedHashMap<String, String>();
+    private Map<String, String> openapi = new LinkedHashMap<>();
     @JsonProperty("patches")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Patch> patches = new ArrayList<Patch>();
+    private List<Patch> patches = new ArrayList<>();
     @JsonProperty("patchesJson6902")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Patch> patchesJson6902 = new ArrayList<Patch>();
+    private List<Patch> patchesJson6902 = new ArrayList<>();
     @JsonProperty("patchesStrategicMerge")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> patchesStrategicMerge = new ArrayList<String>();
+    private List<String> patchesStrategicMerge = new ArrayList<>();
     @JsonProperty("replacements")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ReplacementField> replacements = new ArrayList<ReplacementField>();
+    private List<ReplacementField> replacements = new ArrayList<>();
     @JsonProperty("replicas")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Replica> replicas = new ArrayList<Replica>();
+    private List<Replica> replicas = new ArrayList<>();
     @JsonProperty("resources")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> resources = new ArrayList<String>();
+    private List<String> resources = new ArrayList<>();
     @JsonProperty("secretGenerator")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<SecretArgs> secretGenerator = new ArrayList<SecretArgs>();
+    private List<SecretArgs> secretGenerator = new ArrayList<>();
     @JsonProperty("sortOptions")
     private SortOptions sortOptions;
     @JsonProperty("transformers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> transformers = new ArrayList<String>();
+    private List<String> transformers = new ArrayList<>();
     @JsonProperty("validators")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> validators = new ArrayList<String>();
+    private List<String> validators = new ArrayList<>();
     @JsonProperty("vars")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Var> vars = new ArrayList<Var>();
+    private List<Var> vars = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

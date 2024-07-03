@@ -72,7 +72,7 @@ public class OrderStatus implements Editable<OrderStatusBuilder> , KubernetesRes
 
     @JsonProperty("authorizations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ACMEAuthorization> authorizations = new ArrayList<ACMEAuthorization>();
+    private List<ACMEAuthorization> authorizations = new ArrayList<>();
     @JsonProperty("certificate")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String certificate;

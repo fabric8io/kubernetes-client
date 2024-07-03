@@ -86,7 +86,7 @@ public class VolumeAttributesClass implements Editable<VolumeAttributesClassBuil
     private io.fabric8.kubernetes.api.model.ObjectMeta metadata;
     @JsonProperty("parameters")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> parameters = new LinkedHashMap<String, String>();
+    private Map<String, String> parameters = new LinkedHashMap<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

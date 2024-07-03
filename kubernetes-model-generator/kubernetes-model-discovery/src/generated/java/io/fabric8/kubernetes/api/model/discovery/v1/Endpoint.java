@@ -64,12 +64,12 @@ public class Endpoint implements Editable<EndpointBuilder> , KubernetesResource
 
     @JsonProperty("addresses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> addresses = new ArrayList<String>();
+    private List<String> addresses = new ArrayList<>();
     @JsonProperty("conditions")
     private EndpointConditions conditions;
     @JsonProperty("deprecatedTopology")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> deprecatedTopology = new LinkedHashMap<String, String>();
+    private Map<String, String> deprecatedTopology = new LinkedHashMap<>();
     @JsonProperty("hints")
     private EndpointHints hints;
     @JsonProperty("hostname")

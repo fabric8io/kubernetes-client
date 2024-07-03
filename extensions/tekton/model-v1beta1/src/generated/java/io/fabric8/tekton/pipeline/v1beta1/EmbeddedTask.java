@@ -88,29 +88,29 @@ public class EmbeddedTask implements Editable<EmbeddedTaskBuilder> , KubernetesR
     private PipelineTaskMetadata metadata;
     @JsonProperty("params")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ParamSpec> params = new ArrayList<ParamSpec>();
+    private List<ParamSpec> params = new ArrayList<>();
     @JsonProperty("resources")
     private TaskResources resources;
     @JsonProperty("results")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<TaskResult> results = new ArrayList<TaskResult>();
+    private List<TaskResult> results = new ArrayList<>();
     @JsonProperty("sidecars")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Sidecar> sidecars = new ArrayList<Sidecar>();
+    private List<Sidecar> sidecars = new ArrayList<>();
     @JsonProperty("spec")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Object> spec = new LinkedHashMap<String, Object>();
+    private Map<String, Object> spec = new LinkedHashMap<>();
     @JsonProperty("stepTemplate")
     private StepTemplate stepTemplate;
     @JsonProperty("steps")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Step> steps = new ArrayList<Step>();
+    private List<Step> steps = new ArrayList<>();
     @JsonProperty("volumes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.Volume> volumes = new ArrayList<io.fabric8.kubernetes.api.model.Volume>();
+    private List<io.fabric8.kubernetes.api.model.Volume> volumes = new ArrayList<>();
     @JsonProperty("workspaces")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<WorkspaceDeclaration> workspaces = new ArrayList<WorkspaceDeclaration>();
+    private List<WorkspaceDeclaration> workspaces = new ArrayList<>();
     @JsonIgnore
     private Map<java.lang.String, java.lang.Object> additionalProperties = new LinkedHashMap<java.lang.String, java.lang.Object>();
 

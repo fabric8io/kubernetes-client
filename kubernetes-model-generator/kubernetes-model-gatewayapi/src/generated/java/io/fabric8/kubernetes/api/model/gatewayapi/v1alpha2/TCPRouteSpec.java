@@ -60,10 +60,10 @@ public class TCPRouteSpec implements Editable<TCPRouteSpecBuilder> , KubernetesR
 
     @JsonProperty("parentRefs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ParentReference> parentRefs = new ArrayList<ParentReference>();
+    private List<ParentReference> parentRefs = new ArrayList<>();
     @JsonProperty("rules")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<TCPRouteRule> rules = new ArrayList<TCPRouteRule>();
+    private List<TCPRouteRule> rules = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

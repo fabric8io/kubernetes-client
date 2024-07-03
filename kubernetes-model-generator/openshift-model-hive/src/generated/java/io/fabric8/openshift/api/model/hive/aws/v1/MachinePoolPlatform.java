@@ -64,7 +64,7 @@ public class MachinePoolPlatform implements Editable<MachinePoolPlatformBuilder>
 
     @JsonProperty("additionalSecurityGroupIDs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> additionalSecurityGroupIDs = new ArrayList<String>();
+    private List<String> additionalSecurityGroupIDs = new ArrayList<>();
     @JsonProperty("metadataService")
     private EC2Metadata metadataService;
     @JsonProperty("rootVolume")
@@ -73,12 +73,12 @@ public class MachinePoolPlatform implements Editable<MachinePoolPlatformBuilder>
     private SpotMarketOptions spotMarketOptions;
     @JsonProperty("subnets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> subnets = new ArrayList<String>();
+    private List<String> subnets = new ArrayList<>();
     @JsonProperty("type")
     private String type;
     @JsonProperty("zones")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> zones = new ArrayList<String>();
+    private List<String> zones = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

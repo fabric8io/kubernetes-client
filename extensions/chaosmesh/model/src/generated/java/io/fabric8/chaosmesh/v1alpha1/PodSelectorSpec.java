@@ -75,31 +75,31 @@ public class PodSelectorSpec implements Editable<PodSelectorSpecBuilder> , Kuber
 
     @JsonProperty("annotationSelectors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> annotationSelectors = new LinkedHashMap<String, String>();
+    private Map<String, String> annotationSelectors = new LinkedHashMap<>();
     @JsonProperty("expressionSelectors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<LabelSelectorRequirement> expressionSelectors = new ArrayList<LabelSelectorRequirement>();
+    private List<LabelSelectorRequirement> expressionSelectors = new ArrayList<>();
     @JsonProperty("fieldSelectors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> fieldSelectors = new LinkedHashMap<String, String>();
+    private Map<String, String> fieldSelectors = new LinkedHashMap<>();
     @JsonProperty("labelSelectors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> labelSelectors = new LinkedHashMap<String, String>();
+    private Map<String, String> labelSelectors = new LinkedHashMap<>();
     @JsonProperty("namespaces")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> namespaces = new ArrayList<java.lang.String>();
+    private List<java.lang.String> namespaces = new ArrayList<>();
     @JsonProperty("nodeSelectors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> nodeSelectors = new LinkedHashMap<String, String>();
+    private Map<String, String> nodeSelectors = new LinkedHashMap<>();
     @JsonProperty("nodes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> nodes = new ArrayList<java.lang.String>();
+    private List<java.lang.String> nodes = new ArrayList<>();
     @JsonProperty("podPhaseSelectors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> podPhaseSelectors = new ArrayList<java.lang.String>();
+    private List<java.lang.String> podPhaseSelectors = new ArrayList<>();
     @JsonProperty("pods")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, List<java.lang.String>> pods = new LinkedHashMap<String, List<java.lang.String>>();
+    private Map<String, List<java.lang.String>> pods = new LinkedHashMap<>();
     @JsonIgnore
     private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 

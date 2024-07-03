@@ -60,13 +60,13 @@ public class GRPCRouteRule implements Editable<GRPCRouteRuleBuilder> , Kubernete
 
     @JsonProperty("backendRefs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<GRPCBackendRef> backendRefs = new ArrayList<GRPCBackendRef>();
+    private List<GRPCBackendRef> backendRefs = new ArrayList<>();
     @JsonProperty("filters")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<GRPCRouteFilter> filters = new ArrayList<GRPCRouteFilter>();
+    private List<GRPCRouteFilter> filters = new ArrayList<>();
     @JsonProperty("matches")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<GRPCRouteMatch> matches = new ArrayList<GRPCRouteMatch>();
+    private List<GRPCRouteMatch> matches = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

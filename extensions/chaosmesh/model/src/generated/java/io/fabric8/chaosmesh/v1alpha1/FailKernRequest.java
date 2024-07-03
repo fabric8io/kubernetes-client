@@ -70,12 +70,12 @@ public class FailKernRequest implements Editable<FailKernRequestBuilder> , Kuber
 
     @JsonProperty("callchain")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Frame> callchain = new ArrayList<Frame>();
+    private List<Frame> callchain = new ArrayList<>();
     @JsonProperty("failtype")
     private Integer failtype;
     @JsonProperty("headers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> headers = new ArrayList<String>();
+    private List<String> headers = new ArrayList<>();
     @JsonProperty("probability")
     private Integer probability;
     @JsonProperty("times")

@@ -56,7 +56,7 @@ public class ResourceQuotaList implements Editable<ResourceQuotaListBuilder> , K
     private String apiVersion = "v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.ResourceQuota> items = new ArrayList<io.fabric8.kubernetes.api.model.ResourceQuota>();
+    private List<io.fabric8.kubernetes.api.model.ResourceQuota> items = new ArrayList<>();
     /**
      * 
      * (Required)

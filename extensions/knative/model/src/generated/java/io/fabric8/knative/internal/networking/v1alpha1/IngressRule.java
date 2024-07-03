@@ -68,7 +68,7 @@ public class IngressRule implements Editable<IngressRuleBuilder> , KubernetesRes
 
     @JsonProperty("hosts")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> hosts = new ArrayList<String>();
+    private List<String> hosts = new ArrayList<>();
     @JsonProperty("http")
     private HTTPIngressRuleValue http;
     @JsonProperty("visibility")

@@ -65,7 +65,7 @@ public class AlertmanagerStatus implements Editable<AlertmanagerStatusBuilder> ,
     private Integer availableReplicas;
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Condition> conditions = new ArrayList<Condition>();
+    private List<Condition> conditions = new ArrayList<>();
     @JsonProperty("paused")
     private Boolean paused;
     @JsonProperty("replicas")

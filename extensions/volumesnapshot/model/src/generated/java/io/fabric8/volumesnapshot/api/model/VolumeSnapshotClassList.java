@@ -87,7 +87,7 @@ public class VolumeSnapshotClassList implements Editable<VolumeSnapshotClassList
     private String apiVersion = "snapshot.storage.k8s.io/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.volumesnapshot.api.model.VolumeSnapshotClass> items = new ArrayList<io.fabric8.volumesnapshot.api.model.VolumeSnapshotClass>();
+    private List<io.fabric8.volumesnapshot.api.model.VolumeSnapshotClass> items = new ArrayList<>();
     /**
      * 
      * (Required)

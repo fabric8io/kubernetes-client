@@ -73,27 +73,27 @@ public class X509Subject implements Editable<X509SubjectBuilder> , KubernetesRes
 
     @JsonProperty("countries")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> countries = new ArrayList<String>();
+    private List<String> countries = new ArrayList<>();
     @JsonProperty("localities")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> localities = new ArrayList<String>();
+    private List<String> localities = new ArrayList<>();
     @JsonProperty("organizationalUnits")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> organizationalUnits = new ArrayList<String>();
+    private List<String> organizationalUnits = new ArrayList<>();
     @JsonProperty("organizations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> organizations = new ArrayList<String>();
+    private List<String> organizations = new ArrayList<>();
     @JsonProperty("postalCodes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> postalCodes = new ArrayList<String>();
+    private List<String> postalCodes = new ArrayList<>();
     @JsonProperty("provinces")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> provinces = new ArrayList<String>();
+    private List<String> provinces = new ArrayList<>();
     @JsonProperty("serialNumber")
     private String serialNumber;
     @JsonProperty("streetAddresses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> streetAddresses = new ArrayList<String>();
+    private List<String> streetAddresses = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

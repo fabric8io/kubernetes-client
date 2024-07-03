@@ -67,10 +67,10 @@ public class PipelineTaskResources implements Editable<PipelineTaskResourcesBuil
 
     @JsonProperty("inputs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<PipelineTaskInputResource> inputs = new ArrayList<PipelineTaskInputResource>();
+    private List<PipelineTaskInputResource> inputs = new ArrayList<>();
     @JsonProperty("outputs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<PipelineTaskOutputResource> outputs = new ArrayList<PipelineTaskOutputResource>();
+    private List<PipelineTaskOutputResource> outputs = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

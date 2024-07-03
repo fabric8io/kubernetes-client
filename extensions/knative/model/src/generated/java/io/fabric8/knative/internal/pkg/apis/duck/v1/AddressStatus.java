@@ -69,7 +69,7 @@ public class AddressStatus implements Editable<AddressStatusBuilder> , Kubernete
     private Addressable address;
     @JsonProperty("addresses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Addressable> addresses = new ArrayList<Addressable>();
+    private List<Addressable> addresses = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

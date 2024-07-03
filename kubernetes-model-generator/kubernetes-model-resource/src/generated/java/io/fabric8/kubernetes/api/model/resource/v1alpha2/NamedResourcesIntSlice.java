@@ -58,7 +58,7 @@ public class NamedResourcesIntSlice implements Editable<NamedResourcesIntSliceBu
 
     @JsonProperty("ints")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Long> ints = new ArrayList<Long>();
+    private List<Long> ints = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

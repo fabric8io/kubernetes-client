@@ -67,7 +67,7 @@ public class ClusterClaimSelector implements Editable<ClusterClaimSelectorBuilde
 
     @JsonProperty("matchExpressions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<LabelSelectorRequirement> matchExpressions = new ArrayList<LabelSelectorRequirement>();
+    private List<LabelSelectorRequirement> matchExpressions = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

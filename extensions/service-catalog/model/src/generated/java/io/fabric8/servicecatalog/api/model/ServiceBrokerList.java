@@ -87,7 +87,7 @@ public class ServiceBrokerList implements Editable<ServiceBrokerListBuilder> , K
     private String apiVersion = "servicecatalog.k8s.io/v1beta1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.servicecatalog.api.model.ServiceBroker> items = new ArrayList<io.fabric8.servicecatalog.api.model.ServiceBroker>();
+    private List<io.fabric8.servicecatalog.api.model.ServiceBroker> items = new ArrayList<>();
     /**
      * 
      * (Required)

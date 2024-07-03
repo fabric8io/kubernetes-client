@@ -94,10 +94,10 @@ public class ImageRegistrySpec implements Editable<ImageRegistrySpecBuilder> , K
     private java.lang.String managementState;
     @JsonProperty("nodeSelector")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<java.lang.String, java.lang.String> nodeSelector = new LinkedHashMap<java.lang.String, java.lang.String>();
+    private Map<java.lang.String, java.lang.String> nodeSelector = new LinkedHashMap<>();
     @JsonProperty("observedConfig")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Object> observedConfig = new LinkedHashMap<String, Object>();
+    private Map<String, Object> observedConfig = new LinkedHashMap<>();
     @JsonProperty("operatorLogLevel")
     private java.lang.String operatorLogLevel;
     @JsonProperty("proxy")
@@ -114,18 +114,18 @@ public class ImageRegistrySpec implements Editable<ImageRegistrySpecBuilder> , K
     private java.lang.String rolloutStrategy;
     @JsonProperty("routes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ImageRegistryConfigRoute> routes = new ArrayList<ImageRegistryConfigRoute>();
+    private List<ImageRegistryConfigRoute> routes = new ArrayList<>();
     @JsonProperty("storage")
     private ImageRegistryConfigStorage storage;
     @JsonProperty("tolerations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Toleration> tolerations = new ArrayList<Toleration>();
+    private List<Toleration> tolerations = new ArrayList<>();
     @JsonProperty("topologySpreadConstraints")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<TopologySpreadConstraint> topologySpreadConstraints = new ArrayList<TopologySpreadConstraint>();
+    private List<TopologySpreadConstraint> topologySpreadConstraints = new ArrayList<>();
     @JsonProperty("unsupportedConfigOverrides")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Object> unsupportedConfigOverrides = new LinkedHashMap<String, Object>();
+    private Map<String, Object> unsupportedConfigOverrides = new LinkedHashMap<>();
     @JsonIgnore
     private Map<java.lang.String, java.lang.Object> additionalProperties = new LinkedHashMap<java.lang.String, java.lang.Object>();
 

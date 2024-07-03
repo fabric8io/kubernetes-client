@@ -59,7 +59,7 @@ public class ProfileStatus implements Editable<ProfileStatusBuilder> , Kubernete
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ProfileStatusCondition> conditions = new ArrayList<ProfileStatusCondition>();
+    private List<ProfileStatusCondition> conditions = new ArrayList<>();
     @JsonProperty("tunedProfile")
     private String tunedProfile;
     @JsonIgnore

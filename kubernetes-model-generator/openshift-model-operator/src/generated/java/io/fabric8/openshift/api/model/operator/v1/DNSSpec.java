@@ -74,7 +74,7 @@ public class DNSSpec implements Editable<DNSSpecBuilder> , KubernetesResource
     private String operatorLogLevel;
     @JsonProperty("servers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Server> servers = new ArrayList<Server>();
+    private List<Server> servers = new ArrayList<>();
     @JsonProperty("upstreamResolvers")
     private UpstreamResolvers upstreamResolvers;
     @JsonIgnore

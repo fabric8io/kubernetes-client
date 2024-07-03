@@ -87,7 +87,7 @@ public class SidecarList implements Editable<SidecarListBuilder> , KubernetesRes
     private String apiVersion = "networking.istio.io/v1alpha3";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.istio.api.networking.v1alpha3.Sidecar> items = new ArrayList<io.fabric8.istio.api.networking.v1alpha3.Sidecar>();
+    private List<io.fabric8.istio.api.networking.v1alpha3.Sidecar> items = new ArrayList<>();
     /**
      * 
      * (Required)

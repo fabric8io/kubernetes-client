@@ -62,10 +62,10 @@ public class TunedSpec implements Editable<TunedSpecBuilder> , KubernetesResourc
     private String managementState;
     @JsonProperty("profile")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<TunedProfile> profile = new ArrayList<TunedProfile>();
+    private List<TunedProfile> profile = new ArrayList<>();
     @JsonProperty("recommend")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<TunedRecommend> recommend = new ArrayList<TunedRecommend>();
+    private List<TunedRecommend> recommend = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

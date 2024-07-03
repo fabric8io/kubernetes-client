@@ -68,12 +68,12 @@ public class HTTPChaosStatus implements Editable<HTTPChaosStatusBuilder> , Kuber
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ChaosCondition> conditions = new ArrayList<ChaosCondition>();
+    private List<ChaosCondition> conditions = new ArrayList<>();
     @JsonProperty("experiment")
     private ExperimentStatus experiment;
     @JsonProperty("instances")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Long> instances = new LinkedHashMap<String, Long>();
+    private Map<String, Long> instances = new LinkedHashMap<>();
     @JsonIgnore
     private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 

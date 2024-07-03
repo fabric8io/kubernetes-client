@@ -45,12 +45,12 @@ public class ExecConfig implements Editable<ExecConfigBuilder> , KubernetesResou
     private String apiVersion;
     @JsonProperty("args")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> args = new ArrayList<String>();
+    private List<String> args = new ArrayList<>();
     @JsonProperty("command")
     private String command;
     @JsonProperty("env")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ExecEnvVar> env = new ArrayList<ExecEnvVar>();
+    private List<ExecEnvVar> env = new ArrayList<>();
     @JsonProperty("installHint")
     private String installHint;
     @JsonProperty("interactiveMode")

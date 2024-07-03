@@ -114,7 +114,7 @@ public class BareMetalHostSpec implements Editable<BareMetalHostSpecBuilder> , K
     private RootDeviceHints rootDeviceHints;
     @JsonProperty("taints")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Taint> taints = new ArrayList<Taint>();
+    private List<Taint> taints = new ArrayList<>();
     @JsonProperty("userData")
     private SecretReference userData;
     @JsonIgnore

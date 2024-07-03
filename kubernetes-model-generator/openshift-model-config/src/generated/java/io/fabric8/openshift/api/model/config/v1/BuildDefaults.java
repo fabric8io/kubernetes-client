@@ -64,12 +64,12 @@ public class BuildDefaults implements Editable<BuildDefaultsBuilder> , Kubernete
     private ProxySpec defaultProxy;
     @JsonProperty("env")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<EnvVar> env = new ArrayList<EnvVar>();
+    private List<EnvVar> env = new ArrayList<>();
     @JsonProperty("gitProxy")
     private ProxySpec gitProxy;
     @JsonProperty("imageLabels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ImageLabel> imageLabels = new ArrayList<ImageLabel>();
+    private List<ImageLabel> imageLabels = new ArrayList<>();
     @JsonProperty("resources")
     private io.fabric8.kubernetes.api.model.ResourceRequirements resources;
     @JsonIgnore

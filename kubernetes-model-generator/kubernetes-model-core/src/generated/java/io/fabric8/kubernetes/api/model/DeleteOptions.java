@@ -59,7 +59,7 @@ public class DeleteOptions implements Editable<DeleteOptionsBuilder> , Kubernete
     private String apiVersion = "v1";
     @JsonProperty("dryRun")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> dryRun = new ArrayList<String>();
+    private List<String> dryRun = new ArrayList<>();
     @JsonProperty("gracePeriodSeconds")
     private Long gracePeriodSeconds;
     /**

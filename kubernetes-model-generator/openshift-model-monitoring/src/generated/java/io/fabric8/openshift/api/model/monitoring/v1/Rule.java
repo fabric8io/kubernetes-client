@@ -63,7 +63,7 @@ public class Rule implements Editable<RuleBuilder> , KubernetesResource
     private String alert;
     @JsonProperty("annotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> annotations = new LinkedHashMap<String, String>();
+    private Map<String, String> annotations = new LinkedHashMap<>();
     @JsonProperty("expr")
     private io.fabric8.kubernetes.api.model.IntOrString expr;
     @JsonProperty("for")
@@ -72,7 +72,7 @@ public class Rule implements Editable<RuleBuilder> , KubernetesResource
     private String keepFiringFor;
     @JsonProperty("labels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> labels = new LinkedHashMap<String, String>();
+    private Map<String, String> labels = new LinkedHashMap<>();
     @JsonProperty("record")
     private String record;
     @JsonIgnore

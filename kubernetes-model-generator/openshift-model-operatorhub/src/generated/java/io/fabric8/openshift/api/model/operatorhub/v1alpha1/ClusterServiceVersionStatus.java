@@ -73,7 +73,7 @@ public class ClusterServiceVersionStatus implements Editable<ClusterServiceVersi
     private CleanupStatus cleanup;
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ClusterServiceVersionCondition> conditions = new ArrayList<ClusterServiceVersionCondition>();
+    private List<ClusterServiceVersionCondition> conditions = new ArrayList<>();
     @JsonProperty("lastTransitionTime")
     private String lastTransitionTime;
     @JsonProperty("lastUpdateTime")
@@ -86,7 +86,7 @@ public class ClusterServiceVersionStatus implements Editable<ClusterServiceVersi
     private java.lang.String reason;
     @JsonProperty("requirementStatus")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<RequirementStatus> requirementStatus = new ArrayList<RequirementStatus>();
+    private List<RequirementStatus> requirementStatus = new ArrayList<>();
     @JsonIgnore
     private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 

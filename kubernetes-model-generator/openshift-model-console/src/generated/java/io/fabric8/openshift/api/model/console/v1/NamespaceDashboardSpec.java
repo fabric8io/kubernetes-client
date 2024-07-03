@@ -60,7 +60,7 @@ public class NamespaceDashboardSpec implements Editable<NamespaceDashboardSpecBu
     private io.fabric8.kubernetes.api.model.LabelSelector namespaceSelector;
     @JsonProperty("namespaces")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> namespaces = new ArrayList<String>();
+    private List<String> namespaces = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

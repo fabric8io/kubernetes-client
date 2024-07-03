@@ -61,7 +61,7 @@ public class NamespaceSelector implements Editable<NamespaceSelectorBuilder> , K
     private Boolean any;
     @JsonProperty("matchNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> matchNames = new ArrayList<String>();
+    private List<String> matchNames = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

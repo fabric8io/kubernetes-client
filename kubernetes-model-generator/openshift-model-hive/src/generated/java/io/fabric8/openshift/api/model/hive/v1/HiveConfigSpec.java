@@ -78,7 +78,7 @@ public class HiveConfigSpec implements Editable<HiveConfigSpecBuilder> , Kuberne
 
     @JsonProperty("additionalCertificateAuthoritiesSecretRef")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.LocalObjectReference> additionalCertificateAuthoritiesSecretRef = new ArrayList<io.fabric8.kubernetes.api.model.LocalObjectReference>();
+    private List<io.fabric8.kubernetes.api.model.LocalObjectReference> additionalCertificateAuthoritiesSecretRef = new ArrayList<>();
     @JsonProperty("argoCDConfig")
     private ArgoCDConfig argoCDConfig;
     @JsonProperty("awsPrivateLink")
@@ -91,12 +91,12 @@ public class HiveConfigSpec implements Editable<HiveConfigSpecBuilder> , Kuberne
     private String deleteProtection;
     @JsonProperty("deploymentConfig")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<DeploymentConfig> deploymentConfig = new ArrayList<DeploymentConfig>();
+    private List<DeploymentConfig> deploymentConfig = new ArrayList<>();
     @JsonProperty("deprovisionsDisabled")
     private Boolean deprovisionsDisabled;
     @JsonProperty("disabledControllers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> disabledControllers = new ArrayList<String>();
+    private List<String> disabledControllers = new ArrayList<>();
     @JsonProperty("exportMetrics")
     private Boolean exportMetrics;
     @JsonProperty("failedProvisionConfig")
@@ -111,7 +111,7 @@ public class HiveConfigSpec implements Editable<HiveConfigSpecBuilder> , Kuberne
     private Boolean maintenanceMode;
     @JsonProperty("managedDomains")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ManageDNSConfig> managedDomains = new ArrayList<ManageDNSConfig>();
+    private List<ManageDNSConfig> managedDomains = new ArrayList<>();
     @JsonProperty("metricsConfig")
     private MetricsConfig metricsConfig;
     @JsonProperty("releaseImageVerificationConfigMapRef")

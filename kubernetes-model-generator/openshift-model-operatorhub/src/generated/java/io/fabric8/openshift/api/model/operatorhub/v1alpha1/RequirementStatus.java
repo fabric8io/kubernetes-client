@@ -65,7 +65,7 @@ public class RequirementStatus implements Editable<RequirementStatusBuilder> , K
 
     @JsonProperty("dependents")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<DependentStatus> dependents = new ArrayList<DependentStatus>();
+    private List<DependentStatus> dependents = new ArrayList<>();
     @JsonProperty("group")
     private String group;
     @JsonProperty("kind")

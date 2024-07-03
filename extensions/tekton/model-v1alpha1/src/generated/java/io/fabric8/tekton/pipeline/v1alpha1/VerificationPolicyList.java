@@ -87,7 +87,7 @@ public class VerificationPolicyList implements Editable<VerificationPolicyListBu
     private String apiVersion = "tekton.dev/v1alpha1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.tekton.pipeline.v1alpha1.VerificationPolicy> items = new ArrayList<io.fabric8.tekton.pipeline.v1alpha1.VerificationPolicy>();
+    private List<io.fabric8.tekton.pipeline.v1alpha1.VerificationPolicy> items = new ArrayList<>();
     /**
      * 
      * (Required)

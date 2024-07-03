@@ -63,7 +63,7 @@ public class ProxyConfig implements Editable<ProxyConfigBuilder> , KubernetesRes
     private String iptablesSyncPeriod;
     @JsonProperty("proxyArguments")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, ArrayList<String>> proxyArguments = new LinkedHashMap<String, ArrayList<String>>();
+    private Map<String, ArrayList<String>> proxyArguments = new LinkedHashMap<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

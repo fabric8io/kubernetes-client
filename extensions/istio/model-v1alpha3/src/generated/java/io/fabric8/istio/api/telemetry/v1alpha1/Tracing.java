@@ -71,14 +71,14 @@ public class Tracing implements Editable<TracingBuilder> , KubernetesResource
 
     @JsonProperty("customTags")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, TracingCustomTag> customTags = new LinkedHashMap<String, TracingCustomTag>();
+    private Map<String, TracingCustomTag> customTags = new LinkedHashMap<>();
     @JsonProperty("disableSpanReporting")
     private Boolean disableSpanReporting;
     @JsonProperty("match")
     private TracingTracingSelector match;
     @JsonProperty("providers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ProviderRef> providers = new ArrayList<ProviderRef>();
+    private List<ProviderRef> providers = new ArrayList<>();
     @JsonProperty("randomSamplingPercentage")
     private Double randomSamplingPercentage;
     @JsonProperty("useRequestIdForTraceSampling")

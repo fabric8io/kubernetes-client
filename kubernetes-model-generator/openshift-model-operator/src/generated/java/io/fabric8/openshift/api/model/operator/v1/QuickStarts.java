@@ -58,7 +58,7 @@ public class QuickStarts implements Editable<QuickStartsBuilder> , KubernetesRes
 
     @JsonProperty("disabled")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> disabled = new ArrayList<String>();
+    private List<String> disabled = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

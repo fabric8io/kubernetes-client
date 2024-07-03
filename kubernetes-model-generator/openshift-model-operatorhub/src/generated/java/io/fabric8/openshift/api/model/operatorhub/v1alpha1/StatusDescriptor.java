@@ -70,7 +70,7 @@ public class StatusDescriptor implements Editable<StatusDescriptorBuilder> , Kub
     private String value;
     @JsonProperty("x-descriptors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> xDescriptors = new ArrayList<String>();
+    private List<String> xDescriptors = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

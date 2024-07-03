@@ -39,7 +39,7 @@ public class ConfigMapProjection implements Editable<ConfigMapProjectionBuilder>
 
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<KeyToPath> items = new ArrayList<KeyToPath>();
+    private List<KeyToPath> items = new ArrayList<>();
     @JsonProperty("name")
     private String name;
     @JsonProperty("optional")

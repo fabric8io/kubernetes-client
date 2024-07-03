@@ -41,14 +41,14 @@ public class Label implements Editable<LabelBuilder> , KubernetesResource
 
     @JsonProperty("fields")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<FieldSpec> fields = new ArrayList<FieldSpec>();
+    private List<FieldSpec> fields = new ArrayList<>();
     @JsonProperty("includeSelectors")
     private Boolean includeSelectors;
     @JsonProperty("includeTemplates")
     private Boolean includeTemplates;
     @JsonProperty("pairs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> pairs = new LinkedHashMap<String, String>();
+    private Map<String, String> pairs = new LinkedHashMap<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

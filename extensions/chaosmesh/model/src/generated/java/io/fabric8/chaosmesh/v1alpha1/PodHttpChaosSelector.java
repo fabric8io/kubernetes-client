@@ -77,10 +77,10 @@ public class PodHttpChaosSelector implements Editable<PodHttpChaosSelectorBuilde
     private Integer port;
     @JsonProperty("request_headers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> requestHeaders = new LinkedHashMap<String, String>();
+    private Map<String, String> requestHeaders = new LinkedHashMap<>();
     @JsonProperty("response_headers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> responseHeaders = new LinkedHashMap<String, String>();
+    private Map<String, String> responseHeaders = new LinkedHashMap<>();
     @JsonIgnore
     private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 

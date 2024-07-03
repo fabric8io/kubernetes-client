@@ -84,7 +84,7 @@ public class JVMChaosSpec implements Editable<JVMChaosSpecBuilder> , KubernetesR
     private java.lang.String className;
     @JsonProperty("containerNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> containerNames = new ArrayList<java.lang.String>();
+    private List<java.lang.String> containerNames = new ArrayList<>();
     @JsonProperty("cpuCount")
     private Integer cpuCount;
     @JsonProperty("duration")

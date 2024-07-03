@@ -60,7 +60,7 @@ public class DNSZoneStatus implements Editable<DNSZoneStatusBuilder> , Kubernete
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<DNSZoneCondition> conditions = new ArrayList<DNSZoneCondition>();
+    private List<DNSZoneCondition> conditions = new ArrayList<>();
     @JsonProperty("dnsZone")
     private DNSZone dnsZone;
     @JsonIgnore

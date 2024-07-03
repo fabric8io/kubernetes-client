@@ -71,7 +71,7 @@ public class BuildSpec implements Editable<BuildSpecBuilder> , KubernetesResourc
     private Boolean mountTrustedCA;
     @JsonProperty("nodeSelector")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> nodeSelector = new LinkedHashMap<String, String>();
+    private Map<String, String> nodeSelector = new LinkedHashMap<>();
     @JsonProperty("output")
     private BuildOutput output;
     @JsonProperty("postCommit")
@@ -88,7 +88,7 @@ public class BuildSpec implements Editable<BuildSpecBuilder> , KubernetesResourc
     private BuildStrategy strategy;
     @JsonProperty("triggeredBy")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<BuildTriggerCause> triggeredBy = new ArrayList<BuildTriggerCause>();
+    private List<BuildTriggerCause> triggeredBy = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

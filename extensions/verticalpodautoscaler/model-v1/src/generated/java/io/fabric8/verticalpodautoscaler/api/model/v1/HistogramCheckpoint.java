@@ -66,7 +66,7 @@ public class HistogramCheckpoint implements Editable<HistogramCheckpointBuilder>
 
     @JsonProperty("bucketWeights")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<Integer, Long> bucketWeights = new LinkedHashMap<Integer, Long>();
+    private Map<Integer, Long> bucketWeights = new LinkedHashMap<>();
     @JsonProperty("referenceTimestamp")
     private String referenceTimestamp;
     @JsonProperty("totalWeight")

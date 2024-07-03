@@ -77,10 +77,10 @@ public class NetworkSpec implements Editable<NetworkSpecBuilder> , KubernetesRes
 
     @JsonProperty("additionalNetworks")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<AdditionalNetworkDefinition> additionalNetworks = new ArrayList<AdditionalNetworkDefinition>();
+    private List<AdditionalNetworkDefinition> additionalNetworks = new ArrayList<>();
     @JsonProperty("clusterNetwork")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ClusterNetworkEntry> clusterNetwork = new ArrayList<ClusterNetworkEntry>();
+    private List<ClusterNetworkEntry> clusterNetwork = new ArrayList<>();
     @JsonProperty("defaultNetwork")
     private DefaultNetworkDefinition defaultNetwork;
     @JsonProperty("deployKubeProxy")
@@ -105,7 +105,7 @@ public class NetworkSpec implements Editable<NetworkSpecBuilder> , KubernetesRes
     private String operatorLogLevel;
     @JsonProperty("serviceNetwork")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> serviceNetwork = new ArrayList<String>();
+    private List<String> serviceNetwork = new ArrayList<>();
     @JsonProperty("unsupportedConfigOverrides")
     private KubernetesResource unsupportedConfigOverrides;
     @JsonProperty("useMultiNetworkPolicy")

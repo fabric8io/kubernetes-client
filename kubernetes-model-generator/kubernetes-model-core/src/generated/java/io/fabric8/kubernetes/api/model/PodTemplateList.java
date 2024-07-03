@@ -56,7 +56,7 @@ public class PodTemplateList implements Editable<PodTemplateListBuilder> , Kuber
     private String apiVersion = "v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.PodTemplate> items = new ArrayList<io.fabric8.kubernetes.api.model.PodTemplate>();
+    private List<io.fabric8.kubernetes.api.model.PodTemplate> items = new ArrayList<>();
     /**
      * 
      * (Required)

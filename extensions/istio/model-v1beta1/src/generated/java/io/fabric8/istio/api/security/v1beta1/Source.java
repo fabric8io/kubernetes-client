@@ -75,34 +75,34 @@ public class Source implements Editable<SourceBuilder> , KubernetesResource
 
     @JsonProperty("ipBlocks")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> ipBlocks = new ArrayList<String>();
+    private List<String> ipBlocks = new ArrayList<>();
     @JsonProperty("namespaces")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> namespaces = new ArrayList<String>();
+    private List<String> namespaces = new ArrayList<>();
     @JsonProperty("notIpBlocks")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> notIpBlocks = new ArrayList<String>();
+    private List<String> notIpBlocks = new ArrayList<>();
     @JsonProperty("notNamespaces")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> notNamespaces = new ArrayList<String>();
+    private List<String> notNamespaces = new ArrayList<>();
     @JsonProperty("notPrincipals")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> notPrincipals = new ArrayList<String>();
+    private List<String> notPrincipals = new ArrayList<>();
     @JsonProperty("notRemoteIpBlocks")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> notRemoteIpBlocks = new ArrayList<String>();
+    private List<String> notRemoteIpBlocks = new ArrayList<>();
     @JsonProperty("notRequestPrincipals")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> notRequestPrincipals = new ArrayList<String>();
+    private List<String> notRequestPrincipals = new ArrayList<>();
     @JsonProperty("principals")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> principals = new ArrayList<String>();
+    private List<String> principals = new ArrayList<>();
     @JsonProperty("remoteIpBlocks")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> remoteIpBlocks = new ArrayList<String>();
+    private List<String> remoteIpBlocks = new ArrayList<>();
     @JsonProperty("requestPrincipals")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> requestPrincipals = new ArrayList<String>();
+    private List<String> requestPrincipals = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

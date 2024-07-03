@@ -68,7 +68,7 @@ public class AwsSqsSourceSpec implements Editable<AwsSqsSourceSpecBuilder> , Kub
 
     @JsonProperty("annotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> annotations = new LinkedHashMap<String, String>();
+    private Map<String, String> annotations = new LinkedHashMap<>();
     @JsonProperty("awsCredsSecret")
     private SecretKeySelector awsCredsSecret;
     @JsonProperty("queueUrl")

@@ -65,10 +65,10 @@ public class IngressSpec implements Editable<IngressSpecBuilder> , KubernetesRes
     private String ingressClassName;
     @JsonProperty("rules")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<IngressRule> rules = new ArrayList<IngressRule>();
+    private List<IngressRule> rules = new ArrayList<>();
     @JsonProperty("tls")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<IngressTLS> tls = new ArrayList<IngressTLS>();
+    private List<IngressTLS> tls = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

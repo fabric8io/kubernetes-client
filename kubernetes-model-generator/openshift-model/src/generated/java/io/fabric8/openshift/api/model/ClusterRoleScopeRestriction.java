@@ -62,10 +62,10 @@ public class ClusterRoleScopeRestriction implements Editable<ClusterRoleScopeRes
     private Boolean allowEscalation;
     @JsonProperty("namespaces")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> namespaces = new ArrayList<String>();
+    private List<String> namespaces = new ArrayList<>();
     @JsonProperty("roleNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> roleNames = new ArrayList<String>();
+    private List<String> roleNames = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

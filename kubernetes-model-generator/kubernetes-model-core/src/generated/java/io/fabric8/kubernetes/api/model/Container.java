@@ -60,16 +60,16 @@ public class Container implements Editable<ContainerBuilder> , KubernetesResourc
 
     @JsonProperty("args")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> args = new ArrayList<String>();
+    private List<String> args = new ArrayList<>();
     @JsonProperty("command")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> command = new ArrayList<String>();
+    private List<String> command = new ArrayList<>();
     @JsonProperty("env")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<EnvVar> env = new ArrayList<EnvVar>();
+    private List<EnvVar> env = new ArrayList<>();
     @JsonProperty("envFrom")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<EnvFromSource> envFrom = new ArrayList<EnvFromSource>();
+    private List<EnvFromSource> envFrom = new ArrayList<>();
     @JsonProperty("image")
     private String image;
     @JsonProperty("imagePullPolicy")
@@ -82,12 +82,12 @@ public class Container implements Editable<ContainerBuilder> , KubernetesResourc
     private String name;
     @JsonProperty("ports")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ContainerPort> ports = new ArrayList<ContainerPort>();
+    private List<ContainerPort> ports = new ArrayList<>();
     @JsonProperty("readinessProbe")
     private Probe readinessProbe;
     @JsonProperty("resizePolicy")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ContainerResizePolicy> resizePolicy = new ArrayList<ContainerResizePolicy>();
+    private List<ContainerResizePolicy> resizePolicy = new ArrayList<>();
     @JsonProperty("resources")
     private ResourceRequirements resources;
     @JsonProperty("restartPolicy")
@@ -108,10 +108,10 @@ public class Container implements Editable<ContainerBuilder> , KubernetesResourc
     private Boolean tty;
     @JsonProperty("volumeDevices")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<VolumeDevice> volumeDevices = new ArrayList<VolumeDevice>();
+    private List<VolumeDevice> volumeDevices = new ArrayList<>();
     @JsonProperty("volumeMounts")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<VolumeMount> volumeMounts = new ArrayList<VolumeMount>();
+    private List<VolumeMount> volumeMounts = new ArrayList<>();
     @JsonProperty("workingDir")
     private String workingDir;
     @JsonIgnore

@@ -72,7 +72,7 @@ public class VictorOpsConfig implements Editable<VictorOpsConfigBuilder> , Kuber
     private String apiUrl;
     @JsonProperty("customFields")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<KeyValue> customFields = new ArrayList<KeyValue>();
+    private List<KeyValue> customFields = new ArrayList<>();
     @JsonProperty("entityDisplayName")
     private String entityDisplayName;
     @JsonProperty("httpConfig")

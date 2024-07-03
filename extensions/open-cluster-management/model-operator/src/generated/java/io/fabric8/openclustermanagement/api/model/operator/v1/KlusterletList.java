@@ -87,7 +87,7 @@ public class KlusterletList implements Editable<KlusterletListBuilder> , Kuberne
     private String apiVersion = "operator.open-cluster-management.io/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.openclustermanagement.api.model.operator.v1.Klusterlet> items = new ArrayList<io.fabric8.openclustermanagement.api.model.operator.v1.Klusterlet>();
+    private List<io.fabric8.openclustermanagement.api.model.operator.v1.Klusterlet> items = new ArrayList<>();
     /**
      * 
      * (Required)

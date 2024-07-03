@@ -87,7 +87,7 @@ public class ChallengeList implements Editable<ChallengeListBuilder> , Kubernete
     private String apiVersion = "cert-manager.io/v1alpha2";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.certmanager.api.model.acme.v1alpha2.Challenge> items = new ArrayList<io.fabric8.certmanager.api.model.acme.v1alpha2.Challenge>();
+    private List<io.fabric8.certmanager.api.model.acme.v1alpha2.Challenge> items = new ArrayList<>();
     /**
      * 
      * (Required)

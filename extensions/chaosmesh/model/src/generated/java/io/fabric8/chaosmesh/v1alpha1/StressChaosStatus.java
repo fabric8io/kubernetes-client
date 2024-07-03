@@ -68,12 +68,12 @@ public class StressChaosStatus implements Editable<StressChaosStatusBuilder> , K
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ChaosCondition> conditions = new ArrayList<ChaosCondition>();
+    private List<ChaosCondition> conditions = new ArrayList<>();
     @JsonProperty("experiment")
     private ExperimentStatus experiment;
     @JsonProperty("instances")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, StressInstance> instances = new LinkedHashMap<String, StressInstance>();
+    private Map<String, StressInstance> instances = new LinkedHashMap<>();
     @JsonIgnore
     private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 

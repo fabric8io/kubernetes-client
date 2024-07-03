@@ -71,7 +71,7 @@ public class TaskResult implements Editable<TaskResultBuilder> , KubernetesResou
     private java.lang.String name;
     @JsonProperty("properties")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, PropertySpec> properties = new LinkedHashMap<String, PropertySpec>();
+    private Map<String, PropertySpec> properties = new LinkedHashMap<>();
     @JsonProperty("type")
     private java.lang.String type;
     @JsonIgnore

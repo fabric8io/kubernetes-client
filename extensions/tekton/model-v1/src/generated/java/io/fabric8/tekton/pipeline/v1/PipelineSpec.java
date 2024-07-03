@@ -76,19 +76,19 @@ public class PipelineSpec implements Editable<PipelineSpecBuilder> , KubernetesR
     private String displayName;
     @JsonProperty("finally")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<PipelineTask> _finally = new ArrayList<PipelineTask>();
+    private List<PipelineTask> _finally = new ArrayList<>();
     @JsonProperty("params")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ParamSpec> params = new ArrayList<ParamSpec>();
+    private List<ParamSpec> params = new ArrayList<>();
     @JsonProperty("results")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<PipelineResult> results = new ArrayList<PipelineResult>();
+    private List<PipelineResult> results = new ArrayList<>();
     @JsonProperty("tasks")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<PipelineTask> tasks = new ArrayList<PipelineTask>();
+    private List<PipelineTask> tasks = new ArrayList<>();
     @JsonProperty("workspaces")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<PipelineWorkspaceDeclaration> workspaces = new ArrayList<PipelineWorkspaceDeclaration>();
+    private List<PipelineWorkspaceDeclaration> workspaces = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

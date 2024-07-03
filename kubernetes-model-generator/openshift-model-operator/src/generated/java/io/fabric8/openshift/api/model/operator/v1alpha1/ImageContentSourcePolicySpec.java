@@ -58,7 +58,7 @@ public class ImageContentSourcePolicySpec implements Editable<ImageContentSource
 
     @JsonProperty("repositoryDigestMirrors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<RepositoryDigestMirrors> repositoryDigestMirrors = new ArrayList<RepositoryDigestMirrors>();
+    private List<RepositoryDigestMirrors> repositoryDigestMirrors = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

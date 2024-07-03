@@ -87,7 +87,7 @@ public class ServiceList implements Editable<ServiceListBuilder> , KubernetesRes
     private String apiVersion = "serving.knative.dev/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.knative.serving.v1.Service> items = new ArrayList<io.fabric8.knative.serving.v1.Service>();
+    private List<io.fabric8.knative.serving.v1.Service> items = new ArrayList<>();
     /**
      * 
      * (Required)

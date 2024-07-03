@@ -61,7 +61,7 @@ public class ScopeRestriction implements Editable<ScopeRestrictionBuilder> , Kub
     private ClusterRoleScopeRestriction clusterRole;
     @JsonProperty("literals")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> literals = new ArrayList<String>();
+    private List<String> literals = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

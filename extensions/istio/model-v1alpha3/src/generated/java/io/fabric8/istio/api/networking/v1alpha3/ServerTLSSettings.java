@@ -79,7 +79,7 @@ public class ServerTLSSettings implements Editable<ServerTLSSettingsBuilder> , K
     private String caCertificates;
     @JsonProperty("cipherSuites")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> cipherSuites = new ArrayList<String>();
+    private List<String> cipherSuites = new ArrayList<>();
     @JsonProperty("credentialName")
     private String credentialName;
     @JsonProperty("httpsRedirect")
@@ -96,13 +96,13 @@ public class ServerTLSSettings implements Editable<ServerTLSSettingsBuilder> , K
     private String serverCertificate;
     @JsonProperty("subjectAltNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> subjectAltNames = new ArrayList<String>();
+    private List<String> subjectAltNames = new ArrayList<>();
     @JsonProperty("verifyCertificateHash")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> verifyCertificateHash = new ArrayList<String>();
+    private List<String> verifyCertificateHash = new ArrayList<>();
     @JsonProperty("verifyCertificateSpki")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> verifyCertificateSpki = new ArrayList<String>();
+    private List<String> verifyCertificateSpki = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

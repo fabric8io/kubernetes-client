@@ -89,7 +89,7 @@ public class NodeMetrics implements Editable<NodeMetricsBuilder> , HasMetadata
     private String timestamp;
     @JsonProperty("usage")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<java.lang.String, Quantity> usage = new LinkedHashMap<java.lang.String, Quantity>();
+    private Map<java.lang.String, Quantity> usage = new LinkedHashMap<>();
     @JsonProperty("window")
     private Duration window;
     @JsonIgnore

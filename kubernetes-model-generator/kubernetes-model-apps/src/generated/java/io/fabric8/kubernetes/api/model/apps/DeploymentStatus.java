@@ -69,7 +69,7 @@ public class DeploymentStatus implements Editable<DeploymentStatusBuilder> , Kub
     private Integer collisionCount;
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<DeploymentCondition> conditions = new ArrayList<DeploymentCondition>();
+    private List<DeploymentCondition> conditions = new ArrayList<>();
     @JsonProperty("observedGeneration")
     private Long observedGeneration;
     @JsonProperty("readyReplicas")

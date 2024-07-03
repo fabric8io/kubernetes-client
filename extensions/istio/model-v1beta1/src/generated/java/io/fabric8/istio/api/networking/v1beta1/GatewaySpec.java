@@ -67,10 +67,10 @@ public class GatewaySpec implements Editable<GatewaySpecBuilder> , KubernetesRes
 
     @JsonProperty("selector")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> selector = new LinkedHashMap<String, String>();
+    private Map<String, String> selector = new LinkedHashMap<>();
     @JsonProperty("servers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Server> servers = new ArrayList<Server>();
+    private List<Server> servers = new ArrayList<>();
     @JsonIgnore
     private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 

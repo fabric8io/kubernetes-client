@@ -53,12 +53,12 @@ public class AuthInfo implements Editable<AuthInfoBuilder> , KubernetesResource
     private String as;
     @JsonProperty("as-groups")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> asGroups = new ArrayList<String>();
+    private List<String> asGroups = new ArrayList<>();
     @JsonProperty("as-uid")
     private String asUid;
     @JsonProperty("as-user-extra")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, ArrayList<String>> asUserExtra = new LinkedHashMap<String, ArrayList<String>>();
+    private Map<String, ArrayList<String>> asUserExtra = new LinkedHashMap<>();
     @JsonProperty("auth-provider")
     private AuthProviderConfig authProvider;
     @JsonProperty("client-certificate")
@@ -73,7 +73,7 @@ public class AuthInfo implements Editable<AuthInfoBuilder> , KubernetesResource
     private ExecConfig exec;
     @JsonProperty("extensions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<NamedExtension> extensions = new ArrayList<NamedExtension>();
+    private List<NamedExtension> extensions = new ArrayList<>();
     @JsonProperty("password")
     private String password;
     @JsonProperty("token")

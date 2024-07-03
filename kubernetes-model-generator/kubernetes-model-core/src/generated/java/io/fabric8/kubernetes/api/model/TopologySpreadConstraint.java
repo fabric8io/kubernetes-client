@@ -46,7 +46,7 @@ public class TopologySpreadConstraint implements Editable<TopologySpreadConstrai
     private LabelSelector labelSelector;
     @JsonProperty("matchLabelKeys")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> matchLabelKeys = new ArrayList<String>();
+    private List<String> matchLabelKeys = new ArrayList<>();
     @JsonProperty("maxSkew")
     private Integer maxSkew;
     @JsonProperty("minDomains")

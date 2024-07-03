@@ -39,13 +39,13 @@ public class PodDNSConfig implements Editable<PodDNSConfigBuilder> , KubernetesR
 
     @JsonProperty("nameservers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> nameservers = new ArrayList<String>();
+    private List<String> nameservers = new ArrayList<>();
     @JsonProperty("options")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<PodDNSConfigOption> options = new ArrayList<PodDNSConfigOption>();
+    private List<PodDNSConfigOption> options = new ArrayList<>();
     @JsonProperty("searches")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> searches = new ArrayList<String>();
+    private List<String> searches = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

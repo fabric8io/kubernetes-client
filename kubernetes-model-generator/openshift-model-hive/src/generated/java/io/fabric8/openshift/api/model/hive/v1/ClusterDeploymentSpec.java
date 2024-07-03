@@ -79,7 +79,7 @@ public class ClusterDeploymentSpec implements Editable<ClusterDeploymentSpecBuil
     private io.fabric8.kubernetes.api.model.LocalObjectReference boundServiceAccountSigningKeySecretRef;
     @JsonProperty("certificateBundles")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<CertificateBundleSpec> certificateBundles = new ArrayList<CertificateBundleSpec>();
+    private List<CertificateBundleSpec> certificateBundles = new ArrayList<>();
     @JsonProperty("clusterInstallRef")
     private ClusterInstallLocalReference clusterInstallRef;
     @JsonProperty("clusterMetadata")
@@ -94,7 +94,7 @@ public class ClusterDeploymentSpec implements Editable<ClusterDeploymentSpecBuil
     private Duration hibernateAfter;
     @JsonProperty("ingress")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ClusterIngress> ingress = new ArrayList<ClusterIngress>();
+    private List<ClusterIngress> ingress = new ArrayList<>();
     @JsonProperty("installAttemptsLimit")
     private Integer installAttemptsLimit;
     @JsonProperty("installed")

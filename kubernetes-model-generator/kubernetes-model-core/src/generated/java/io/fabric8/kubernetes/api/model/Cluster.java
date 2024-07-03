@@ -50,7 +50,7 @@ public class Cluster implements Editable<ClusterBuilder> , KubernetesResource
     private Boolean disableCompression;
     @JsonProperty("extensions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<NamedExtension> extensions = new ArrayList<NamedExtension>();
+    private List<NamedExtension> extensions = new ArrayList<>();
     @JsonProperty("insecure-skip-tls-verify")
     private Boolean insecureSkipTlsVerify;
     @JsonProperty("proxy-url")

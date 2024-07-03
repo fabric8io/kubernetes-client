@@ -87,7 +87,7 @@ public class TaskRunList implements Editable<TaskRunListBuilder> , KubernetesRes
     private String apiVersion = "tekton.dev/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.tekton.pipeline.v1.TaskRun> items = new ArrayList<io.fabric8.tekton.pipeline.v1.TaskRun>();
+    private List<io.fabric8.tekton.pipeline.v1.TaskRun> items = new ArrayList<>();
     /**
      * 
      * (Required)

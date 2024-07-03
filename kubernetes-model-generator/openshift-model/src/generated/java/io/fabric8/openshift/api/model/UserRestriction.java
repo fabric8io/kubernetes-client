@@ -59,13 +59,13 @@ public class UserRestriction implements Editable<UserRestrictionBuilder> , Kuber
 
     @JsonProperty("groups")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> groups = new ArrayList<String>();
+    private List<String> groups = new ArrayList<>();
     @JsonProperty("labels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.LabelSelector> labels = new ArrayList<io.fabric8.kubernetes.api.model.LabelSelector>();
+    private List<io.fabric8.kubernetes.api.model.LabelSelector> labels = new ArrayList<>();
     @JsonProperty("users")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> users = new ArrayList<String>();
+    private List<String> users = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

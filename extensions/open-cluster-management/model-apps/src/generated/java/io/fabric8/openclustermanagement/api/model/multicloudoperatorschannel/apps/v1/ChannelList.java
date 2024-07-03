@@ -87,7 +87,7 @@ public class ChannelList implements Editable<ChannelListBuilder> , KubernetesRes
     private String apiVersion = "apps.open-cluster-management.io/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.openclustermanagement.api.model.multicloudoperatorschannel.apps.v1.Channel> items = new ArrayList<io.fabric8.openclustermanagement.api.model.multicloudoperatorschannel.apps.v1.Channel>();
+    private List<io.fabric8.openclustermanagement.api.model.multicloudoperatorschannel.apps.v1.Channel> items = new ArrayList<>();
     /**
      * 
      * (Required)

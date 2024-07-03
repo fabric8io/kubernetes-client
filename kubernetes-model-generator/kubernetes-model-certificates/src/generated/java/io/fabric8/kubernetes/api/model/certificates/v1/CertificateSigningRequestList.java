@@ -79,7 +79,7 @@ public class CertificateSigningRequestList implements Editable<CertificateSignin
     private String apiVersion = "certificates.k8s.io/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequest> items = new ArrayList<io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequest>();
+    private List<io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequest> items = new ArrayList<>();
     /**
      * 
      * (Required)

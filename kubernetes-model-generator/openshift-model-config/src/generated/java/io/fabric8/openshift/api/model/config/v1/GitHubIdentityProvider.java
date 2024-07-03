@@ -71,10 +71,10 @@ public class GitHubIdentityProvider implements Editable<GitHubIdentityProviderBu
     private String hostname;
     @JsonProperty("organizations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> organizations = new ArrayList<String>();
+    private List<String> organizations = new ArrayList<>();
     @JsonProperty("teams")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> teams = new ArrayList<String>();
+    private List<String> teams = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

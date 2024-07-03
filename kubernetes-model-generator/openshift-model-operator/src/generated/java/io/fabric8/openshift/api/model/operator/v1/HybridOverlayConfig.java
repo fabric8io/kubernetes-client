@@ -59,7 +59,7 @@ public class HybridOverlayConfig implements Editable<HybridOverlayConfigBuilder>
 
     @JsonProperty("hybridClusterNetwork")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ClusterNetworkEntry> hybridClusterNetwork = new ArrayList<ClusterNetworkEntry>();
+    private List<ClusterNetworkEntry> hybridClusterNetwork = new ArrayList<>();
     @JsonProperty("hybridOverlayVXLANPort")
     private Integer hybridOverlayVXLANPort;
     @JsonIgnore

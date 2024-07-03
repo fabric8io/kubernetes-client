@@ -67,10 +67,10 @@ public class ExternalNextHops implements Editable<ExternalNextHopsBuilder> , Kub
 
     @JsonProperty("dynamic")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<DynamicHop> dynamic = new ArrayList<DynamicHop>();
+    private List<DynamicHop> dynamic = new ArrayList<>();
     @JsonProperty("static")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<StaticHop> _static = new ArrayList<StaticHop>();
+    private List<StaticHop> _static = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

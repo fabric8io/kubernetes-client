@@ -61,13 +61,13 @@ public class GatewayStatus implements Editable<GatewayStatusBuilder> , Kubernete
 
     @JsonProperty("addresses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<GatewayStatusAddress> addresses = new ArrayList<GatewayStatusAddress>();
+    private List<GatewayStatusAddress> addresses = new ArrayList<>();
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Condition> conditions = new ArrayList<Condition>();
+    private List<Condition> conditions = new ArrayList<>();
     @JsonProperty("listeners")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ListenerStatus> listeners = new ArrayList<ListenerStatus>();
+    private List<ListenerStatus> listeners = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

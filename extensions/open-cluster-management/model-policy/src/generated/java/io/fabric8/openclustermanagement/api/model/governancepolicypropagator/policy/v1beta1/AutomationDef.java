@@ -67,7 +67,7 @@ public class AutomationDef implements Editable<AutomationDefBuilder> , Kubernete
 
     @JsonProperty("extra_vars")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Object> extraVars = new LinkedHashMap<String, Object>();
+    private Map<String, Object> extraVars = new LinkedHashMap<>();
     @JsonProperty("name")
     private java.lang.String name;
     @JsonProperty("secret")

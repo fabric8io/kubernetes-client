@@ -87,7 +87,7 @@ public class CatalogSourceSpec implements Editable<CatalogSourceSpecBuilder> , K
     private String publisher;
     @JsonProperty("secrets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> secrets = new ArrayList<String>();
+    private List<String> secrets = new ArrayList<>();
     @JsonProperty("sourceType")
     private String sourceType;
     @JsonProperty("updateStrategy")

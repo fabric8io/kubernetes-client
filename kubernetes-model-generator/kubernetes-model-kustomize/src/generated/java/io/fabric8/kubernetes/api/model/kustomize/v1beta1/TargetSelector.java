@@ -41,12 +41,12 @@ public class TargetSelector implements Editable<TargetSelectorBuilder> , Kuberne
 
     @JsonProperty("fieldPaths")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> fieldPaths = new ArrayList<String>();
+    private List<String> fieldPaths = new ArrayList<>();
     @JsonProperty("options")
     private FieldOptions options;
     @JsonProperty("reject")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Selector> reject = new ArrayList<Selector>();
+    private List<Selector> reject = new ArrayList<>();
     @JsonProperty("select")
     private Selector select;
     @JsonIgnore

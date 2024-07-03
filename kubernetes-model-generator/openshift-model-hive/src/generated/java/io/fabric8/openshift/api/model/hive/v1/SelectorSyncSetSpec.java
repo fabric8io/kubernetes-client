@@ -66,15 +66,15 @@ public class SelectorSyncSetSpec implements Editable<SelectorSyncSetSpecBuilder>
     private io.fabric8.kubernetes.api.model.LabelSelector clusterDeploymentSelector;
     @JsonProperty("patches")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<SyncObjectPatch> patches = new ArrayList<SyncObjectPatch>();
+    private List<SyncObjectPatch> patches = new ArrayList<>();
     @JsonProperty("resourceApplyMode")
     private java.lang.String resourceApplyMode;
     @JsonProperty("resources")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Map<String, Object>> resources = new ArrayList<Map<String, Object>>();
+    private List<Map<String, Object>> resources = new ArrayList<>();
     @JsonProperty("secretMappings")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<SecretMapping> secretMappings = new ArrayList<SecretMapping>();
+    private List<SecretMapping> secretMappings = new ArrayList<>();
     @JsonIgnore
     private Map<java.lang.String, java.lang.Object> additionalProperties = new LinkedHashMap<java.lang.String, java.lang.Object>();
 

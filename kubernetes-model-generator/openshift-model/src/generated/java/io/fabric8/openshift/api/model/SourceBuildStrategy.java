@@ -63,7 +63,7 @@ public class SourceBuildStrategy implements Editable<SourceBuildStrategyBuilder>
 
     @JsonProperty("env")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<EnvVar> env = new ArrayList<EnvVar>();
+    private List<EnvVar> env = new ArrayList<>();
     @JsonProperty("forcePull")
     private Boolean forcePull;
     @JsonProperty("from")
@@ -76,7 +76,7 @@ public class SourceBuildStrategy implements Editable<SourceBuildStrategyBuilder>
     private String scripts;
     @JsonProperty("volumes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<BuildVolume> volumes = new ArrayList<BuildVolume>();
+    private List<BuildVolume> volumes = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

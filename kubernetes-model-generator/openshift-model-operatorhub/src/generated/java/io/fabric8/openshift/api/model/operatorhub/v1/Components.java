@@ -61,7 +61,7 @@ public class Components implements Editable<ComponentsBuilder> , KubernetesResou
     private io.fabric8.kubernetes.api.model.LabelSelector labelSelector;
     @JsonProperty("refs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<JsonNode> refs = new ArrayList<JsonNode>();
+    private List<JsonNode> refs = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

@@ -66,14 +66,14 @@ public class PrometheusStatus implements Editable<PrometheusStatusBuilder> , Kub
     private Integer availableReplicas;
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Condition> conditions = new ArrayList<Condition>();
+    private List<Condition> conditions = new ArrayList<>();
     @JsonProperty("paused")
     private Boolean paused;
     @JsonProperty("replicas")
     private Integer replicas;
     @JsonProperty("shardStatuses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ShardStatus> shardStatuses = new ArrayList<ShardStatus>();
+    private List<ShardStatus> shardStatuses = new ArrayList<>();
     @JsonProperty("unavailableReplicas")
     private Integer unavailableReplicas;
     @JsonProperty("updatedReplicas")

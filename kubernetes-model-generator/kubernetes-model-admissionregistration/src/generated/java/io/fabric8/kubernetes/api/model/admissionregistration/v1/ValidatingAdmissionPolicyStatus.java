@@ -61,7 +61,7 @@ public class ValidatingAdmissionPolicyStatus implements Editable<ValidatingAdmis
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Condition> conditions = new ArrayList<Condition>();
+    private List<Condition> conditions = new ArrayList<>();
     @JsonProperty("observedGeneration")
     private Long observedGeneration;
     @JsonProperty("typeChecking")

@@ -66,10 +66,10 @@ public class SubscriptionStatus implements Editable<SubscriptionStatusBuilder> ,
 
     @JsonProperty("catalogHealth")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<SubscriptionCatalogHealth> catalogHealth = new ArrayList<SubscriptionCatalogHealth>();
+    private List<SubscriptionCatalogHealth> catalogHealth = new ArrayList<>();
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<SubscriptionCondition> conditions = new ArrayList<SubscriptionCondition>();
+    private List<SubscriptionCondition> conditions = new ArrayList<>();
     @JsonProperty("currentCSV")
     private java.lang.String currentCSV;
     @JsonProperty("installPlanGeneration")

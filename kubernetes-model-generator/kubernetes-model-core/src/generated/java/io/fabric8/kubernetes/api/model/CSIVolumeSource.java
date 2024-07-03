@@ -47,7 +47,7 @@ public class CSIVolumeSource implements Editable<CSIVolumeSourceBuilder> , Kuber
     private Boolean readOnly;
     @JsonProperty("volumeAttributes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> volumeAttributes = new LinkedHashMap<String, String>();
+    private Map<String, String> volumeAttributes = new LinkedHashMap<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

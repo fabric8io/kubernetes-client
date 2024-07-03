@@ -87,7 +87,7 @@ public class ServerlessServiceList implements Editable<ServerlessServiceListBuil
     private String apiVersion = "networking.internal.knative.dev/v1alpha1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.knative.internal.networking.v1alpha1.ServerlessService> items = new ArrayList<io.fabric8.knative.internal.networking.v1alpha1.ServerlessService>();
+    private List<io.fabric8.knative.internal.networking.v1alpha1.ServerlessService> items = new ArrayList<>();
     /**
      * 
      * (Required)

@@ -87,7 +87,7 @@ public class VerticalPodAutoscalerList implements Editable<VerticalPodAutoscaler
     private String apiVersion = "autoscaling.k8s.io/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.verticalpodautoscaler.api.model.v1.VerticalPodAutoscaler> items = new ArrayList<io.fabric8.verticalpodautoscaler.api.model.v1.VerticalPodAutoscaler>();
+    private List<io.fabric8.verticalpodautoscaler.api.model.v1.VerticalPodAutoscaler> items = new ArrayList<>();
     /**
      * 
      * (Required)

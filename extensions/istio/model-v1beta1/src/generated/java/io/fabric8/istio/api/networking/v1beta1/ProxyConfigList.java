@@ -87,7 +87,7 @@ public class ProxyConfigList implements Editable<ProxyConfigListBuilder> , Kuber
     private String apiVersion = "networking.istio.io/v1beta1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.istio.api.networking.v1beta1.ProxyConfig> items = new ArrayList<io.fabric8.istio.api.networking.v1beta1.ProxyConfig>();
+    private List<io.fabric8.istio.api.networking.v1beta1.ProxyConfig> items = new ArrayList<>();
     /**
      * 
      * (Required)

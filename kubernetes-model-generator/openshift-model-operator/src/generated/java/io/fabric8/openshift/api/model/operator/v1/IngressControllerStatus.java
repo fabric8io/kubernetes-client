@@ -68,7 +68,7 @@ public class IngressControllerStatus implements Editable<IngressControllerStatus
     private Integer availableReplicas;
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<OperatorCondition> conditions = new ArrayList<OperatorCondition>();
+    private List<OperatorCondition> conditions = new ArrayList<>();
     @JsonProperty("domain")
     private String domain;
     @JsonProperty("endpointPublishingStrategy")

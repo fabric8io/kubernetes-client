@@ -60,13 +60,13 @@ public class InhibitRule implements Editable<InhibitRuleBuilder> , KubernetesRes
 
     @JsonProperty("equal")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> equal = new ArrayList<String>();
+    private List<String> equal = new ArrayList<>();
     @JsonProperty("sourceMatch")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Matcher> sourceMatch = new ArrayList<Matcher>();
+    private List<Matcher> sourceMatch = new ArrayList<>();
     @JsonProperty("targetMatch")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Matcher> targetMatch = new ArrayList<Matcher>();
+    private List<Matcher> targetMatch = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

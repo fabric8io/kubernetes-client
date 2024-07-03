@@ -87,7 +87,7 @@ public class TelemetryList implements Editable<TelemetryListBuilder> , Kubernete
     private String apiVersion = "telemetry.istio.io/v1alpha1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.istio.api.telemetry.v1alpha1.Telemetry> items = new ArrayList<io.fabric8.istio.api.telemetry.v1alpha1.Telemetry>();
+    private List<io.fabric8.istio.api.telemetry.v1alpha1.Telemetry> items = new ArrayList<>();
     /**
      * 
      * (Required)

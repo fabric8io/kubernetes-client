@@ -60,7 +60,7 @@ public class ImageStreamImportSpec implements Editable<ImageStreamImportSpecBuil
 
     @JsonProperty("images")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ImageImportSpec> images = new ArrayList<ImageImportSpec>();
+    private List<ImageImportSpec> images = new ArrayList<>();
     @JsonProperty("import")
     private Boolean _import;
     @JsonProperty("repository")

@@ -65,22 +65,22 @@ public class Networking implements Editable<NetworkingBuilder> , KubernetesResou
 
     @JsonProperty("clusterNetwork")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ClusterNetworkEntry> clusterNetwork = new ArrayList<ClusterNetworkEntry>();
+    private List<ClusterNetworkEntry> clusterNetwork = new ArrayList<>();
     @JsonProperty("deprecatedClusterNetworks")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ClusterNetworkEntry> deprecatedClusterNetworks = new ArrayList<ClusterNetworkEntry>();
+    private List<ClusterNetworkEntry> deprecatedClusterNetworks = new ArrayList<>();
     @JsonProperty("machineCIDR")
     private String machineCIDR;
     @JsonProperty("machineNetwork")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<MachineNetworkEntry> machineNetwork = new ArrayList<MachineNetworkEntry>();
+    private List<MachineNetworkEntry> machineNetwork = new ArrayList<>();
     @JsonProperty("networkType")
     private String networkType;
     @JsonProperty("serviceCIDR")
     private String serviceCIDR;
     @JsonProperty("serviceNetwork")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> serviceNetwork = new ArrayList<String>();
+    private List<String> serviceNetwork = new ArrayList<>();
     @JsonProperty("type")
     private String type;
     @JsonIgnore

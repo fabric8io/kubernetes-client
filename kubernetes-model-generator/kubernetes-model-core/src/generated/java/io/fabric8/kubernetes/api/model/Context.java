@@ -42,7 +42,7 @@ public class Context implements Editable<ContextBuilder> , KubernetesResource
     private String cluster;
     @JsonProperty("extensions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<NamedExtension> extensions = new ArrayList<NamedExtension>();
+    private List<NamedExtension> extensions = new ArrayList<>();
     @JsonProperty("namespace")
     private String namespace;
     @JsonProperty("user")

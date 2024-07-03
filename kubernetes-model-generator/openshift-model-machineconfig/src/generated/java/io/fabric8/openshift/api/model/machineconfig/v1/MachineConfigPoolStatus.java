@@ -66,10 +66,10 @@ public class MachineConfigPoolStatus implements Editable<MachineConfigPoolStatus
 
     @JsonProperty("certExpirys")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<CertExpiry> certExpirys = new ArrayList<CertExpiry>();
+    private List<CertExpiry> certExpirys = new ArrayList<>();
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<MachineConfigPoolCondition> conditions = new ArrayList<MachineConfigPoolCondition>();
+    private List<MachineConfigPoolCondition> conditions = new ArrayList<>();
     @JsonProperty("configuration")
     private MachineConfigPoolStatusConfiguration configuration;
     @JsonProperty("degradedMachineCount")

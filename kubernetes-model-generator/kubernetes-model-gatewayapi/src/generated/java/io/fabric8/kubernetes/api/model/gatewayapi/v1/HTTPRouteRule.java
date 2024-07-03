@@ -61,13 +61,13 @@ public class HTTPRouteRule implements Editable<HTTPRouteRuleBuilder> , Kubernete
 
     @JsonProperty("backendRefs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<HTTPBackendRef> backendRefs = new ArrayList<HTTPBackendRef>();
+    private List<HTTPBackendRef> backendRefs = new ArrayList<>();
     @JsonProperty("filters")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<HTTPRouteFilter> filters = new ArrayList<HTTPRouteFilter>();
+    private List<HTTPRouteFilter> filters = new ArrayList<>();
     @JsonProperty("matches")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<HTTPRouteMatch> matches = new ArrayList<HTTPRouteMatch>();
+    private List<HTTPRouteMatch> matches = new ArrayList<>();
     @JsonProperty("timeouts")
     private HTTPRouteTimeouts timeouts;
     @JsonIgnore

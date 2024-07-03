@@ -80,7 +80,7 @@ public class GitHubSourceSpec implements Editable<GitHubSourceSpecBuilder> , Kub
     private CloudEventOverrides ceOverrides;
     @JsonProperty("eventTypes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> eventTypes = new ArrayList<String>();
+    private List<String> eventTypes = new ArrayList<>();
     @JsonProperty("githubAPIURL")
     private String githubAPIURL;
     @JsonProperty("ownerAndRepository")

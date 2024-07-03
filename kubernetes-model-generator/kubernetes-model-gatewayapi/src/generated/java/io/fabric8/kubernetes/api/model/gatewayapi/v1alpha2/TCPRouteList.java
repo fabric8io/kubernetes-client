@@ -79,7 +79,7 @@ public class TCPRouteList implements Editable<TCPRouteListBuilder> , KubernetesR
     private String apiVersion = "gateway.networking.k8s.io/v1alpha2";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.TCPRoute> items = new ArrayList<io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.TCPRoute>();
+    private List<io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.TCPRoute> items = new ArrayList<>();
     /**
      * 
      * (Required)

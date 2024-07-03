@@ -58,7 +58,7 @@ public class NamedResourcesResources implements Editable<NamedResourcesResources
 
     @JsonProperty("instances")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<NamedResourcesInstance> instances = new ArrayList<NamedResourcesInstance>();
+    private List<NamedResourcesInstance> instances = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

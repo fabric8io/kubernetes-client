@@ -66,7 +66,7 @@ public class PlacementRuleStatus implements Editable<PlacementRuleStatusBuilder>
 
     @JsonProperty("decisions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<PlacementDecision> decisions = new ArrayList<PlacementDecision>();
+    private List<PlacementDecision> decisions = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

@@ -74,7 +74,7 @@ public class JobStatus implements Editable<JobStatusBuilder> , KubernetesResourc
     private String completionTime;
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<JobCondition> conditions = new ArrayList<JobCondition>();
+    private List<JobCondition> conditions = new ArrayList<>();
     @JsonProperty("failed")
     private Integer failed;
     @JsonProperty("failedIndexes")

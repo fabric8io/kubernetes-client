@@ -79,7 +79,7 @@ public class FeatureGateList implements Editable<FeatureGateListBuilder> , Kuber
     private String apiVersion = "config.openshift.io/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.openshift.api.model.config.v1.FeatureGate> items = new ArrayList<io.fabric8.openshift.api.model.config.v1.FeatureGate>();
+    private List<io.fabric8.openshift.api.model.config.v1.FeatureGate> items = new ArrayList<>();
     /**
      * 
      * (Required)

@@ -72,7 +72,7 @@ public class HTTPHealthCheckConfig implements Editable<HTTPHealthCheckConfigBuil
     private String host;
     @JsonProperty("httpHeaders")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<HTTPHeader> httpHeaders = new ArrayList<HTTPHeader>();
+    private List<HTTPHeader> httpHeaders = new ArrayList<>();
     @JsonProperty("path")
     private String path;
     @JsonProperty("port")

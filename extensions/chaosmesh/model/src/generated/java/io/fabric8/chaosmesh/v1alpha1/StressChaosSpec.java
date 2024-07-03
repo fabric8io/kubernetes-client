@@ -72,7 +72,7 @@ public class StressChaosSpec implements Editable<StressChaosSpecBuilder> , Kuber
 
     @JsonProperty("containerNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> containerNames = new ArrayList<java.lang.String>();
+    private List<java.lang.String> containerNames = new ArrayList<>();
     @JsonProperty("duration")
     private String duration;
     @JsonProperty("mode")

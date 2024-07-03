@@ -79,7 +79,7 @@ public class ClusterResourceQuotaList implements Editable<ClusterResourceQuotaLi
     private String apiVersion = "quota.openshift.io/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.openshift.api.model.ClusterResourceQuota> items = new ArrayList<io.fabric8.openshift.api.model.ClusterResourceQuota>();
+    private List<io.fabric8.openshift.api.model.ClusterResourceQuota> items = new ArrayList<>();
     /**
      * 
      * (Required)

@@ -83,7 +83,7 @@ public class ClusterProvisionSpec implements Editable<ClusterProvisionSpecBuilde
     private java.lang.String installLog;
     @JsonProperty("metadata")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Object> metadata = new LinkedHashMap<String, Object>();
+    private Map<String, Object> metadata = new LinkedHashMap<>();
     @JsonProperty("metadataJSON")
     private java.lang.String metadataJSON;
     @JsonProperty("podSpec")

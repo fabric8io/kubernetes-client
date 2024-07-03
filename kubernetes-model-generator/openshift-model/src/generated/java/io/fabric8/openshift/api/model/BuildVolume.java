@@ -60,7 +60,7 @@ public class BuildVolume implements Editable<BuildVolumeBuilder> , KubernetesRes
 
     @JsonProperty("mounts")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<BuildVolumeMount> mounts = new ArrayList<BuildVolumeMount>();
+    private List<BuildVolumeMount> mounts = new ArrayList<>();
     @JsonProperty("name")
     private String name;
     @JsonProperty("source")

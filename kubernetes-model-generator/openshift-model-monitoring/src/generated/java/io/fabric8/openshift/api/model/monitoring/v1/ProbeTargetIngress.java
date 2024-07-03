@@ -61,7 +61,7 @@ public class ProbeTargetIngress implements Editable<ProbeTargetIngressBuilder> ,
     private NamespaceSelector namespaceSelector;
     @JsonProperty("relabelingConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<RelabelConfig> relabelingConfigs = new ArrayList<RelabelConfig>();
+    private List<RelabelConfig> relabelingConfigs = new ArrayList<>();
     @JsonProperty("selector")
     private io.fabric8.kubernetes.api.model.LabelSelector selector;
     @JsonIgnore

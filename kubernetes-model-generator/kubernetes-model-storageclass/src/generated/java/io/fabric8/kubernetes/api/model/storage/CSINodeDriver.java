@@ -67,7 +67,7 @@ public class CSINodeDriver implements Editable<CSINodeDriverBuilder> , Kubernete
     private String nodeID;
     @JsonProperty("topologyKeys")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> topologyKeys = new ArrayList<String>();
+    private List<String> topologyKeys = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

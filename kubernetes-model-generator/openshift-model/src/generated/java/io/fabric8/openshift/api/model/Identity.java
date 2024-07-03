@@ -76,7 +76,7 @@ public class Identity implements Editable<IdentityBuilder> , HasMetadata
     private String apiVersion = "user.openshift.io/v1";
     @JsonProperty("extra")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> extra = new LinkedHashMap<String, String>();
+    private Map<String, String> extra = new LinkedHashMap<>();
     /**
      * 
      * (Required)

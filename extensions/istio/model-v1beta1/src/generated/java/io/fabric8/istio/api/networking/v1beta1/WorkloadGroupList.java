@@ -87,7 +87,7 @@ public class WorkloadGroupList implements Editable<WorkloadGroupListBuilder> , K
     private String apiVersion = "networking.istio.io/v1beta1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.istio.api.networking.v1beta1.WorkloadGroup> items = new ArrayList<io.fabric8.istio.api.networking.v1beta1.WorkloadGroup>();
+    private List<io.fabric8.istio.api.networking.v1beta1.WorkloadGroup> items = new ArrayList<>();
     /**
      * 
      * (Required)

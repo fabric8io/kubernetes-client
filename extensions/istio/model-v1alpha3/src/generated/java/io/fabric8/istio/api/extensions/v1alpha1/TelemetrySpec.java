@@ -75,17 +75,17 @@ public class TelemetrySpec implements Editable<TelemetrySpecBuilder> , Kubernete
 
     @JsonProperty("accessLogging")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<AccessLogging> accessLogging = new ArrayList<AccessLogging>();
+    private List<AccessLogging> accessLogging = new ArrayList<>();
     @JsonProperty("metrics")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Metrics> metrics = new ArrayList<Metrics>();
+    private List<Metrics> metrics = new ArrayList<>();
     @JsonProperty("selector")
     private WorkloadSelector selector;
     @JsonProperty("targetRef")
     private PolicyTargetReference targetRef;
     @JsonProperty("tracing")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Tracing> tracing = new ArrayList<Tracing>();
+    private List<Tracing> tracing = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

@@ -71,12 +71,12 @@ public class DestinationRuleSpec implements Editable<DestinationRuleSpecBuilder>
 
     @JsonProperty("exportTo")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> exportTo = new ArrayList<String>();
+    private List<String> exportTo = new ArrayList<>();
     @JsonProperty("host")
     private String host;
     @JsonProperty("subsets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Subset> subsets = new ArrayList<Subset>();
+    private List<Subset> subsets = new ArrayList<>();
     @JsonProperty("trafficPolicy")
     private TrafficPolicy trafficPolicy;
     @JsonProperty("workloadSelector")

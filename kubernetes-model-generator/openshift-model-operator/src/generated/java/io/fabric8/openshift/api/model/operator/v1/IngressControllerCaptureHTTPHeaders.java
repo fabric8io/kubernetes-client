@@ -59,10 +59,10 @@ public class IngressControllerCaptureHTTPHeaders implements Editable<IngressCont
 
     @JsonProperty("request")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<IngressControllerCaptureHTTPHeader> request = new ArrayList<IngressControllerCaptureHTTPHeader>();
+    private List<IngressControllerCaptureHTTPHeader> request = new ArrayList<>();
     @JsonProperty("response")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<IngressControllerCaptureHTTPHeader> response = new ArrayList<IngressControllerCaptureHTTPHeader>();
+    private List<IngressControllerCaptureHTTPHeader> response = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

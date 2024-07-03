@@ -78,7 +78,7 @@ public class NetNamespace implements Editable<NetNamespaceBuilder> , HasMetadata
     private String apiVersion = "network.openshift.io/v1";
     @JsonProperty("egressIPs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> egressIPs = new ArrayList<String>();
+    private List<String> egressIPs = new ArrayList<>();
     /**
      * 
      * (Required)

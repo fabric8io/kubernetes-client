@@ -61,7 +61,7 @@ public class EgressRouterSpec implements Editable<EgressRouterSpecBuilder> , Kub
 
     @JsonProperty("addresses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<EgressRouterAddress> addresses = new ArrayList<EgressRouterAddress>();
+    private List<EgressRouterAddress> addresses = new ArrayList<>();
     @JsonProperty("mode")
     private String mode;
     @JsonProperty("networkInterface")

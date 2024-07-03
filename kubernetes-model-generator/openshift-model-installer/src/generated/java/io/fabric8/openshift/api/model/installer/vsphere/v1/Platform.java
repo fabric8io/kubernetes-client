@@ -79,7 +79,7 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     private String apiVIP;
     @JsonProperty("apiVIPs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> apiVIPs = new ArrayList<String>();
+    private List<String> apiVIPs = new ArrayList<>();
     @JsonProperty("cluster")
     private String cluster;
     @JsonProperty("clusterOSImage")
@@ -94,14 +94,14 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     private String diskType;
     @JsonProperty("failureDomains")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<FailureDomain> failureDomains = new ArrayList<FailureDomain>();
+    private List<FailureDomain> failureDomains = new ArrayList<>();
     @JsonProperty("folder")
     private String folder;
     @JsonProperty("ingressVIP")
     private String ingressVIP;
     @JsonProperty("ingressVIPs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> ingressVIPs = new ArrayList<String>();
+    private List<String> ingressVIPs = new ArrayList<>();
     @JsonProperty("loadBalancer")
     private VSpherePlatformLoadBalancer loadBalancer;
     @JsonProperty("network")
@@ -116,7 +116,7 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     private String vCenter;
     @JsonProperty("vcenters")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<VCenter> vcenters = new ArrayList<VCenter>();
+    private List<VCenter> vcenters = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

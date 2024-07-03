@@ -44,15 +44,15 @@ public class PodAffinityTerm implements Editable<PodAffinityTermBuilder> , Kuber
     private LabelSelector labelSelector;
     @JsonProperty("matchLabelKeys")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> matchLabelKeys = new ArrayList<String>();
+    private List<String> matchLabelKeys = new ArrayList<>();
     @JsonProperty("mismatchLabelKeys")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> mismatchLabelKeys = new ArrayList<String>();
+    private List<String> mismatchLabelKeys = new ArrayList<>();
     @JsonProperty("namespaceSelector")
     private LabelSelector namespaceSelector;
     @JsonProperty("namespaces")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> namespaces = new ArrayList<String>();
+    private List<String> namespaces = new ArrayList<>();
     @JsonProperty("topologyKey")
     private String topologyKey;
     @JsonIgnore

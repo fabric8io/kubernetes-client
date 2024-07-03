@@ -59,10 +59,10 @@ public class NetworkPolicyEgressRule implements Editable<NetworkPolicyEgressRule
 
     @JsonProperty("ports")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<NetworkPolicyPort> ports = new ArrayList<NetworkPolicyPort>();
+    private List<NetworkPolicyPort> ports = new ArrayList<>();
     @JsonProperty("to")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<NetworkPolicyPeer> to = new ArrayList<NetworkPolicyPeer>();
+    private List<NetworkPolicyPeer> to = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

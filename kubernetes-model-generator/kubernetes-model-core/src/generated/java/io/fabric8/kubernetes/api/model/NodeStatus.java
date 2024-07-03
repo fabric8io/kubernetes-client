@@ -48,36 +48,36 @@ public class NodeStatus implements Editable<NodeStatusBuilder> , KubernetesResou
 
     @JsonProperty("addresses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<NodeAddress> addresses = new ArrayList<NodeAddress>();
+    private List<NodeAddress> addresses = new ArrayList<>();
     @JsonProperty("allocatable")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, io.fabric8.kubernetes.api.model.Quantity> allocatable = new LinkedHashMap<String, io.fabric8.kubernetes.api.model.Quantity>();
+    private Map<String, io.fabric8.kubernetes.api.model.Quantity> allocatable = new LinkedHashMap<>();
     @JsonProperty("capacity")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, io.fabric8.kubernetes.api.model.Quantity> capacity = new LinkedHashMap<String, io.fabric8.kubernetes.api.model.Quantity>();
+    private Map<String, io.fabric8.kubernetes.api.model.Quantity> capacity = new LinkedHashMap<>();
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<NodeCondition> conditions = new ArrayList<NodeCondition>();
+    private List<NodeCondition> conditions = new ArrayList<>();
     @JsonProperty("config")
     private NodeConfigStatus config;
     @JsonProperty("daemonEndpoints")
     private NodeDaemonEndpoints daemonEndpoints;
     @JsonProperty("images")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ContainerImage> images = new ArrayList<ContainerImage>();
+    private List<ContainerImage> images = new ArrayList<>();
     @JsonProperty("nodeInfo")
     private NodeSystemInfo nodeInfo;
     @JsonProperty("phase")
     private String phase;
     @JsonProperty("runtimeHandlers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<NodeRuntimeHandler> runtimeHandlers = new ArrayList<NodeRuntimeHandler>();
+    private List<NodeRuntimeHandler> runtimeHandlers = new ArrayList<>();
     @JsonProperty("volumesAttached")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<AttachedVolume> volumesAttached = new ArrayList<AttachedVolume>();
+    private List<AttachedVolume> volumesAttached = new ArrayList<>();
     @JsonProperty("volumesInUse")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> volumesInUse = new ArrayList<String>();
+    private List<String> volumesInUse = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

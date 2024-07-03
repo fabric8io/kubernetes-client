@@ -63,10 +63,10 @@ public class SubjectAccessReviewSpec implements Editable<SubjectAccessReviewSpec
 
     @JsonProperty("extra")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, ArrayList<String>> extra = new LinkedHashMap<String, ArrayList<String>>();
+    private Map<String, ArrayList<String>> extra = new LinkedHashMap<>();
     @JsonProperty("group")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> group = new ArrayList<String>();
+    private List<String> group = new ArrayList<>();
     @JsonProperty("nonResourceAttributes")
     private NonResourceAttributes nonResourceAttributes;
     @JsonProperty("resourceAttributes")

@@ -60,12 +60,12 @@ public class StaticIPAMConfig implements Editable<StaticIPAMConfigBuilder> , Kub
 
     @JsonProperty("addresses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<StaticIPAMAddresses> addresses = new ArrayList<StaticIPAMAddresses>();
+    private List<StaticIPAMAddresses> addresses = new ArrayList<>();
     @JsonProperty("dns")
     private StaticIPAMDNS dns;
     @JsonProperty("routes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<StaticIPAMRoutes> routes = new ArrayList<StaticIPAMRoutes>();
+    private List<StaticIPAMRoutes> routes = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

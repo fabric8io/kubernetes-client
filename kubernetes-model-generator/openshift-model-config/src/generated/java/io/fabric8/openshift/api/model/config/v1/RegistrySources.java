@@ -61,16 +61,16 @@ public class RegistrySources implements Editable<RegistrySourcesBuilder> , Kuber
 
     @JsonProperty("allowedRegistries")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> allowedRegistries = new ArrayList<String>();
+    private List<String> allowedRegistries = new ArrayList<>();
     @JsonProperty("blockedRegistries")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> blockedRegistries = new ArrayList<String>();
+    private List<String> blockedRegistries = new ArrayList<>();
     @JsonProperty("containerRuntimeSearchRegistries")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> containerRuntimeSearchRegistries = new ArrayList<String>();
+    private List<String> containerRuntimeSearchRegistries = new ArrayList<>();
     @JsonProperty("insecureRegistries")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> insecureRegistries = new ArrayList<String>();
+    private List<String> insecureRegistries = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

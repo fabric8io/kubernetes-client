@@ -78,15 +78,15 @@ public class PipelineRunStatus implements Editable<PipelineRunStatusBuilder> , K
 
     @JsonProperty("annotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> annotations = new LinkedHashMap<String, String>();
+    private Map<String, String> annotations = new LinkedHashMap<>();
     @JsonProperty("childReferences")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ChildStatusReference> childReferences = new ArrayList<ChildStatusReference>();
+    private List<ChildStatusReference> childReferences = new ArrayList<>();
     @JsonProperty("completionTime")
     private java.lang.String completionTime;
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Condition> conditions = new ArrayList<Condition>();
+    private List<Condition> conditions = new ArrayList<>();
     @JsonProperty("finallyStartTime")
     private java.lang.String finallyStartTime;
     @JsonProperty("observedGeneration")
@@ -97,13 +97,13 @@ public class PipelineRunStatus implements Editable<PipelineRunStatusBuilder> , K
     private Provenance provenance;
     @JsonProperty("results")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<PipelineRunResult> results = new ArrayList<PipelineRunResult>();
+    private List<PipelineRunResult> results = new ArrayList<>();
     @JsonProperty("skippedTasks")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<SkippedTask> skippedTasks = new ArrayList<SkippedTask>();
+    private List<SkippedTask> skippedTasks = new ArrayList<>();
     @JsonProperty("spanContext")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> spanContext = new LinkedHashMap<String, String>();
+    private Map<String, String> spanContext = new LinkedHashMap<>();
     @JsonProperty("startTime")
     private java.lang.String startTime;
     @JsonIgnore

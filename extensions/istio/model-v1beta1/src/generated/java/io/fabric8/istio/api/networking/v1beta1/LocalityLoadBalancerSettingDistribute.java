@@ -67,7 +67,7 @@ public class LocalityLoadBalancerSettingDistribute implements Editable<LocalityL
     private java.lang.String from;
     @JsonProperty("to")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Long> to = new LinkedHashMap<String, Long>();
+    private Map<String, Long> to = new LinkedHashMap<>();
     @JsonIgnore
     private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 

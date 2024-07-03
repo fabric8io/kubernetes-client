@@ -75,10 +75,10 @@ public class PodAutoscalerStatus implements Editable<PodAutoscalerStatusBuilder>
     private Integer actualScale;
     @JsonProperty("annotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> annotations = new LinkedHashMap<String, String>();
+    private Map<String, String> annotations = new LinkedHashMap<>();
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Condition> conditions = new ArrayList<Condition>();
+    private List<Condition> conditions = new ArrayList<>();
     @JsonProperty("desiredScale")
     private Integer desiredScale;
     @JsonProperty("metricsServiceName")

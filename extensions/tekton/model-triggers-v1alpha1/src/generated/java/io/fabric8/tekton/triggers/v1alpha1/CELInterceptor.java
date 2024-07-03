@@ -69,7 +69,7 @@ public class CELInterceptor implements Editable<CELInterceptorBuilder> , Kuberne
     private String filter;
     @JsonProperty("overlays")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<CELOverlay> overlays = new ArrayList<CELOverlay>();
+    private List<CELOverlay> overlays = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

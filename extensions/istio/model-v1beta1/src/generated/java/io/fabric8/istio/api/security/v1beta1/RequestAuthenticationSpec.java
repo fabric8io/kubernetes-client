@@ -70,7 +70,7 @@ public class RequestAuthenticationSpec implements Editable<RequestAuthentication
 
     @JsonProperty("jwtRules")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<JWTRule> jwtRules = new ArrayList<JWTRule>();
+    private List<JWTRule> jwtRules = new ArrayList<>();
     @JsonProperty("selector")
     private WorkloadSelector selector;
     @JsonProperty("targetRef")

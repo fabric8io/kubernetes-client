@@ -79,7 +79,7 @@ public class ClusterRoleList implements Editable<ClusterRoleListBuilder> , Kuber
     private String apiVersion = "rbac.authorization.k8s.io/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.rbac.ClusterRole> items = new ArrayList<io.fabric8.kubernetes.api.model.rbac.ClusterRole>();
+    private List<io.fabric8.kubernetes.api.model.rbac.ClusterRole> items = new ArrayList<>();
     /**
      * 
      * (Required)

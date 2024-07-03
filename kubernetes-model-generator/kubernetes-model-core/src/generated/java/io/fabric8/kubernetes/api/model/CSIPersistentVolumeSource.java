@@ -60,7 +60,7 @@ public class CSIPersistentVolumeSource implements Editable<CSIPersistentVolumeSo
     private Boolean readOnly;
     @JsonProperty("volumeAttributes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> volumeAttributes = new LinkedHashMap<String, String>();
+    private Map<String, String> volumeAttributes = new LinkedHashMap<>();
     @JsonProperty("volumeHandle")
     private String volumeHandle;
     @JsonIgnore

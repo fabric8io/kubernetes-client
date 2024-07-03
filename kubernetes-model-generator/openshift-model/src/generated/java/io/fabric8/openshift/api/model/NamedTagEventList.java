@@ -60,10 +60,10 @@ public class NamedTagEventList implements Editable<NamedTagEventListBuilder> , K
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<TagEventCondition> conditions = new ArrayList<TagEventCondition>();
+    private List<TagEventCondition> conditions = new ArrayList<>();
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<TagEvent> items = new ArrayList<TagEvent>();
+    private List<TagEvent> items = new ArrayList<>();
     @JsonProperty("tag")
     private String tag;
     @JsonIgnore

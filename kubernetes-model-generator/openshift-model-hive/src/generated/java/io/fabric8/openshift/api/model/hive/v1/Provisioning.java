@@ -70,7 +70,7 @@ public class Provisioning implements Editable<ProvisioningBuilder> , KubernetesR
     private io.fabric8.kubernetes.api.model.LocalObjectReference installConfigSecretRef;
     @JsonProperty("installerEnv")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<EnvVar> installerEnv = new ArrayList<EnvVar>();
+    private List<EnvVar> installerEnv = new ArrayList<>();
     @JsonProperty("installerImageOverride")
     private String installerImageOverride;
     @JsonProperty("manifestsConfigMapRef")
@@ -81,7 +81,7 @@ public class Provisioning implements Editable<ProvisioningBuilder> , KubernetesR
     private String releaseImage;
     @JsonProperty("sshKnownHosts")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> sshKnownHosts = new ArrayList<String>();
+    private List<String> sshKnownHosts = new ArrayList<>();
     @JsonProperty("sshPrivateKeySecretRef")
     private io.fabric8.kubernetes.api.model.LocalObjectReference sshPrivateKeySecretRef;
     @JsonIgnore

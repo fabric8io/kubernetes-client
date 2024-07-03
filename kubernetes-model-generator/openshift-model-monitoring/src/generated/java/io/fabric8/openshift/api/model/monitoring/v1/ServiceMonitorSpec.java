@@ -71,7 +71,7 @@ public class ServiceMonitorSpec implements Editable<ServiceMonitorSpecBuilder> ,
     private AttachMetadata attachMetadata;
     @JsonProperty("endpoints")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Endpoint> endpoints = new ArrayList<Endpoint>();
+    private List<Endpoint> endpoints = new ArrayList<>();
     @JsonProperty("jobLabel")
     private String jobLabel;
     @JsonProperty("keepDroppedTargets")
@@ -86,14 +86,14 @@ public class ServiceMonitorSpec implements Editable<ServiceMonitorSpecBuilder> ,
     private NamespaceSelector namespaceSelector;
     @JsonProperty("podTargetLabels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> podTargetLabels = new ArrayList<String>();
+    private List<String> podTargetLabels = new ArrayList<>();
     @JsonProperty("sampleLimit")
     private Long sampleLimit;
     @JsonProperty("selector")
     private io.fabric8.kubernetes.api.model.LabelSelector selector;
     @JsonProperty("targetLabels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> targetLabels = new ArrayList<String>();
+    private List<String> targetLabels = new ArrayList<>();
     @JsonProperty("targetLimit")
     private Long targetLimit;
     @JsonIgnore

@@ -87,7 +87,7 @@ public class PodAutoscalerList implements Editable<PodAutoscalerListBuilder> , K
     private String apiVersion = "autoscaling.internal.knative.dev/v1alpha1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.knative.internal.autoscaling.v1alpha1.PodAutoscaler> items = new ArrayList<io.fabric8.knative.internal.autoscaling.v1alpha1.PodAutoscaler>();
+    private List<io.fabric8.knative.internal.autoscaling.v1alpha1.PodAutoscaler> items = new ArrayList<>();
     /**
      * 
      * (Required)

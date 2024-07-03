@@ -65,10 +65,10 @@ public class DeveloperConsoleCatalogCategory implements Editable<DeveloperConsol
     private String label;
     @JsonProperty("subcategories")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<DeveloperConsoleCatalogCategoryMeta> subcategories = new ArrayList<DeveloperConsoleCatalogCategoryMeta>();
+    private List<DeveloperConsoleCatalogCategoryMeta> subcategories = new ArrayList<>();
     @JsonProperty("tags")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> tags = new ArrayList<String>();
+    private List<String> tags = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

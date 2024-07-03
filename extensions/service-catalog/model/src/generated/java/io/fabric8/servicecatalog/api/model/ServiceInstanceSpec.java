@@ -103,10 +103,10 @@ public class ServiceInstanceSpec implements Editable<ServiceInstanceSpecBuilder>
     private java.lang.String externalID;
     @JsonProperty("parameters")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Object> parameters = new LinkedHashMap<String, Object>();
+    private Map<String, Object> parameters = new LinkedHashMap<>();
     @JsonProperty("parametersFrom")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ParametersFromSource> parametersFrom = new ArrayList<ParametersFromSource>();
+    private List<ParametersFromSource> parametersFrom = new ArrayList<>();
     @JsonProperty("serviceClassExternalID")
     private java.lang.String serviceClassExternalID;
     @JsonProperty("serviceClassExternalName")

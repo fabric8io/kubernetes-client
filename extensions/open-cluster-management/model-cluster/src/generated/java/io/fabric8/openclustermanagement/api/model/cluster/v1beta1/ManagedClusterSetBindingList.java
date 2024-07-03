@@ -87,7 +87,7 @@ public class ManagedClusterSetBindingList implements Editable<ManagedClusterSetB
     private String apiVersion = "cluster.open-cluster-management.io/v1beta1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.openclustermanagement.api.model.cluster.v1beta1.ManagedClusterSetBinding> items = new ArrayList<io.fabric8.openclustermanagement.api.model.cluster.v1beta1.ManagedClusterSetBinding>();
+    private List<io.fabric8.openclustermanagement.api.model.cluster.v1beta1.ManagedClusterSetBinding> items = new ArrayList<>();
     /**
      * 
      * (Required)

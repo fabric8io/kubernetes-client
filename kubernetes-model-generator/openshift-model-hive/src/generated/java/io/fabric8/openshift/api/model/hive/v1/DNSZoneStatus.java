@@ -68,7 +68,7 @@ public class DNSZoneStatus implements Editable<DNSZoneStatusBuilder> , Kubernete
     private AzureDNSZoneStatus azure;
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<DNSZoneCondition> conditions = new ArrayList<DNSZoneCondition>();
+    private List<DNSZoneCondition> conditions = new ArrayList<>();
     @JsonProperty("gcp")
     private GCPDNSZoneStatus gcp;
     @JsonProperty("lastSyncGeneration")
@@ -77,7 +77,7 @@ public class DNSZoneStatus implements Editable<DNSZoneStatusBuilder> , Kubernete
     private String lastSyncTimestamp;
     @JsonProperty("nameServers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> nameServers = new ArrayList<java.lang.String>();
+    private List<java.lang.String> nameServers = new ArrayList<>();
     @JsonIgnore
     private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 

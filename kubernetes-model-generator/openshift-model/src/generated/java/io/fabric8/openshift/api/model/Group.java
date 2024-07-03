@@ -84,7 +84,7 @@ public class Group implements Editable<GroupBuilder> , HasMetadata
     private io.fabric8.kubernetes.api.model.ObjectMeta metadata;
     @JsonProperty("users")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> users = new ArrayList<String>();
+    private List<String> users = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

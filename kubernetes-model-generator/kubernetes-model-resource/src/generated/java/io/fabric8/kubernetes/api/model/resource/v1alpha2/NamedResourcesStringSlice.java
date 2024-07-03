@@ -58,7 +58,7 @@ public class NamedResourcesStringSlice implements Editable<NamedResourcesStringS
 
     @JsonProperty("strings")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> strings = new ArrayList<String>();
+    private List<String> strings = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

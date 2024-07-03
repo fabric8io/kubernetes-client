@@ -79,7 +79,7 @@ public class CredentialsRequestList implements Editable<CredentialsRequestListBu
     private String apiVersion = "cloudcredential.openshift.io/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.openshift.api.model.miscellaneous.cloudcredential.v1.CredentialsRequest> items = new ArrayList<io.fabric8.openshift.api.model.miscellaneous.cloudcredential.v1.CredentialsRequest>();
+    private List<io.fabric8.openshift.api.model.miscellaneous.cloudcredential.v1.CredentialsRequest> items = new ArrayList<>();
     /**
      * 
      * (Required)

@@ -72,7 +72,7 @@ public class GitHub implements Editable<GitHubBuilder> , KubernetesResource
     private String chartPath;
     @JsonProperty("urls")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> urls = new ArrayList<String>();
+    private List<String> urls = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

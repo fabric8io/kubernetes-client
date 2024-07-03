@@ -64,7 +64,7 @@ public class ResolutionRequestSpec implements Editable<ResolutionRequestSpecBuil
 
     @JsonProperty("params")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> params = new LinkedHashMap<String, String>();
+    private Map<String, String> params = new LinkedHashMap<>();
     @JsonIgnore
     private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 

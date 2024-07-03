@@ -79,7 +79,7 @@ public class AlertmanagerConfigList implements Editable<AlertmanagerConfigListBu
     private String apiVersion = "monitoring.coreos.com/v1alpha1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.openshift.api.model.monitoring.v1alpha1.AlertmanagerConfig> items = new ArrayList<io.fabric8.openshift.api.model.monitoring.v1alpha1.AlertmanagerConfig>();
+    private List<io.fabric8.openshift.api.model.monitoring.v1alpha1.AlertmanagerConfig> items = new ArrayList<>();
     /**
      * 
      * (Required)

@@ -60,7 +60,7 @@ public class NamedPortTarget implements Editable<NamedPortTargetBuilder> , Kuber
 
     @JsonProperty("fixedIPs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<FixedIP> fixedIPs = new ArrayList<FixedIP>();
+    private List<FixedIP> fixedIPs = new ArrayList<>();
     @JsonProperty("id")
     private String id;
     @JsonProperty("network")

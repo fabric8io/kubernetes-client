@@ -37,7 +37,7 @@ public class ScopeSelector implements Editable<ScopeSelectorBuilder> , Kubernete
 
     @JsonProperty("matchExpressions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ScopedResourceSelectorRequirement> matchExpressions = new ArrayList<ScopedResourceSelectorRequirement>();
+    private List<ScopedResourceSelectorRequirement> matchExpressions = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

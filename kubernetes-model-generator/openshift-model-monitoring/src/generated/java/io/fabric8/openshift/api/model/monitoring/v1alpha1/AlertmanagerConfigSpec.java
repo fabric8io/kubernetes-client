@@ -61,13 +61,13 @@ public class AlertmanagerConfigSpec implements Editable<AlertmanagerConfigSpecBu
 
     @JsonProperty("inhibitRules")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<InhibitRule> inhibitRules = new ArrayList<InhibitRule>();
+    private List<InhibitRule> inhibitRules = new ArrayList<>();
     @JsonProperty("muteTimeIntervals")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<MuteTimeInterval> muteTimeIntervals = new ArrayList<MuteTimeInterval>();
+    private List<MuteTimeInterval> muteTimeIntervals = new ArrayList<>();
     @JsonProperty("receivers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Receiver> receivers = new ArrayList<Receiver>();
+    private List<Receiver> receivers = new ArrayList<>();
     @JsonProperty("route")
     private Route route;
     @JsonIgnore

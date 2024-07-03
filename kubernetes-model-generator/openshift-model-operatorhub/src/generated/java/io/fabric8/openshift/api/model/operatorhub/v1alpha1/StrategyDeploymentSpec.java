@@ -59,7 +59,7 @@ public class StrategyDeploymentSpec implements Editable<StrategyDeploymentSpecBu
 
     @JsonProperty("label")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> label = new LinkedHashMap<String, String>();
+    private Map<String, String> label = new LinkedHashMap<>();
     @JsonProperty("name")
     private String name;
     @JsonProperty("spec")

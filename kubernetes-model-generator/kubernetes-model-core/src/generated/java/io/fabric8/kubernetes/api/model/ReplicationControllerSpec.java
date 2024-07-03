@@ -42,7 +42,7 @@ public class ReplicationControllerSpec implements Editable<ReplicationController
     private Integer replicas;
     @JsonProperty("selector")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> selector = new LinkedHashMap<String, String>();
+    private Map<String, String> selector = new LinkedHashMap<>();
     @JsonProperty("template")
     private PodTemplateSpec template;
     @JsonIgnore

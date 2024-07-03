@@ -58,7 +58,7 @@ public class ClusterProvisionStatus implements Editable<ClusterProvisionStatusBu
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ClusterProvisionCondition> conditions = new ArrayList<ClusterProvisionCondition>();
+    private List<ClusterProvisionCondition> conditions = new ArrayList<>();
     @JsonProperty("jobRef")
     private io.fabric8.kubernetes.api.model.LocalObjectReference jobRef;
     @JsonIgnore

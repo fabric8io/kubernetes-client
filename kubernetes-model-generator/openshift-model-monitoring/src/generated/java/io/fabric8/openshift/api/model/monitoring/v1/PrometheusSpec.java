@@ -160,7 +160,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder> , Kuberne
     private SecretKeySelector additionalAlertRelabelConfigs;
     @JsonProperty("additionalArgs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Argument> additionalArgs = new ArrayList<Argument>();
+    private List<Argument> additionalArgs = new ArrayList<>();
     @JsonProperty("additionalScrapeConfigs")
     private SecretKeySelector additionalScrapeConfigs;
     @JsonProperty("affinity")
@@ -179,17 +179,17 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder> , Kuberne
     private String bodySizeLimit;
     @JsonProperty("configMaps")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> configMaps = new ArrayList<String>();
+    private List<String> configMaps = new ArrayList<>();
     @JsonProperty("containers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.Container> containers = new ArrayList<io.fabric8.kubernetes.api.model.Container>();
+    private List<io.fabric8.kubernetes.api.model.Container> containers = new ArrayList<>();
     @JsonProperty("disableCompaction")
     private Boolean disableCompaction;
     @JsonProperty("enableAdminAPI")
     private Boolean enableAdminAPI;
     @JsonProperty("enableFeatures")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> enableFeatures = new ArrayList<String>();
+    private List<String> enableFeatures = new ArrayList<>();
     @JsonProperty("enableRemoteWriteReceiver")
     private Boolean enableRemoteWriteReceiver;
     @JsonProperty("enforcedBodySizeLimit")
@@ -212,17 +212,17 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder> , Kuberne
     private String evaluationInterval;
     @JsonProperty("excludedFromEnforcement")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.openshift.api.model.monitoring.v1.ObjectReference> excludedFromEnforcement = new ArrayList<io.fabric8.openshift.api.model.monitoring.v1.ObjectReference>();
+    private List<io.fabric8.openshift.api.model.monitoring.v1.ObjectReference> excludedFromEnforcement = new ArrayList<>();
     @JsonProperty("exemplars")
     private Exemplars exemplars;
     @JsonProperty("externalLabels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> externalLabels = new LinkedHashMap<String, String>();
+    private Map<String, String> externalLabels = new LinkedHashMap<>();
     @JsonProperty("externalUrl")
     private String externalUrl;
     @JsonProperty("hostAliases")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<HostAlias> hostAliases = new ArrayList<HostAlias>();
+    private List<HostAlias> hostAliases = new ArrayList<>();
     @JsonProperty("hostNetwork")
     private Boolean hostNetwork;
     @JsonProperty("ignoreNamespaceSelectors")
@@ -233,10 +233,10 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder> , Kuberne
     private String imagePullPolicy;
     @JsonProperty("imagePullSecrets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.LocalObjectReference> imagePullSecrets = new ArrayList<io.fabric8.kubernetes.api.model.LocalObjectReference>();
+    private List<io.fabric8.kubernetes.api.model.LocalObjectReference> imagePullSecrets = new ArrayList<>();
     @JsonProperty("initContainers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.Container> initContainers = new ArrayList<io.fabric8.kubernetes.api.model.Container>();
+    private List<io.fabric8.kubernetes.api.model.Container> initContainers = new ArrayList<>();
     @JsonProperty("keepDroppedTargets")
     private Long keepDroppedTargets;
     @JsonProperty("labelLimit")
@@ -255,7 +255,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder> , Kuberne
     private Integer minReadySeconds;
     @JsonProperty("nodeSelector")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> nodeSelector = new LinkedHashMap<String, String>();
+    private Map<String, String> nodeSelector = new LinkedHashMap<>();
     @JsonProperty("overrideHonorLabels")
     private Boolean overrideHonorLabels;
     @JsonProperty("overrideHonorTimestamps")
@@ -270,7 +270,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder> , Kuberne
     private io.fabric8.kubernetes.api.model.LabelSelector podMonitorSelector;
     @JsonProperty("podTargetLabels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> podTargetLabels = new ArrayList<String>();
+    private List<String> podTargetLabels = new ArrayList<>();
     @JsonProperty("portName")
     private String portName;
     @JsonProperty("priorityClassName")
@@ -283,17 +283,17 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder> , Kuberne
     private String prometheusExternalLabelName;
     @JsonProperty("prometheusRulesExcludedFromEnforce")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<PrometheusRuleExcludeConfig> prometheusRulesExcludedFromEnforce = new ArrayList<PrometheusRuleExcludeConfig>();
+    private List<PrometheusRuleExcludeConfig> prometheusRulesExcludedFromEnforce = new ArrayList<>();
     @JsonProperty("query")
     private QuerySpec query;
     @JsonProperty("queryLogFile")
     private String queryLogFile;
     @JsonProperty("remoteRead")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<RemoteReadSpec> remoteRead = new ArrayList<RemoteReadSpec>();
+    private List<RemoteReadSpec> remoteRead = new ArrayList<>();
     @JsonProperty("remoteWrite")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<RemoteWriteSpec> remoteWrite = new ArrayList<RemoteWriteSpec>();
+    private List<RemoteWriteSpec> remoteWrite = new ArrayList<>();
     @JsonProperty("replicaExternalLabelName")
     private String replicaExternalLabelName;
     @JsonProperty("replicas")
@@ -324,7 +324,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder> , Kuberne
     private String scrapeTimeout;
     @JsonProperty("secrets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> secrets = new ArrayList<String>();
+    private List<String> secrets = new ArrayList<>();
     @JsonProperty("securityContext")
     private PodSecurityContext securityContext;
     @JsonProperty("serviceAccountName")
@@ -347,10 +347,10 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder> , Kuberne
     private ThanosSpec thanos;
     @JsonProperty("tolerations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Toleration> tolerations = new ArrayList<Toleration>();
+    private List<Toleration> tolerations = new ArrayList<>();
     @JsonProperty("topologySpreadConstraints")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<TopologySpreadConstraint> topologySpreadConstraints = new ArrayList<TopologySpreadConstraint>();
+    private List<TopologySpreadConstraint> topologySpreadConstraints = new ArrayList<>();
     @JsonProperty("tracingConfig")
     private PrometheusTracingConfig tracingConfig;
     @JsonProperty("tsdb")
@@ -359,10 +359,10 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder> , Kuberne
     private String version;
     @JsonProperty("volumeMounts")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<VolumeMount> volumeMounts = new ArrayList<VolumeMount>();
+    private List<VolumeMount> volumeMounts = new ArrayList<>();
     @JsonProperty("volumes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Volume> volumes = new ArrayList<Volume>();
+    private List<Volume> volumes = new ArrayList<>();
     @JsonProperty("walCompression")
     private Boolean walCompression;
     @JsonProperty("web")

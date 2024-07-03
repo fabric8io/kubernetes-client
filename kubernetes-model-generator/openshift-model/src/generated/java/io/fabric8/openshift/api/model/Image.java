@@ -88,14 +88,14 @@ public class Image implements Editable<ImageBuilder> , HasMetadata
     private String dockerImageConfig;
     @JsonProperty("dockerImageLayers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ImageLayer> dockerImageLayers = new ArrayList<ImageLayer>();
+    private List<ImageLayer> dockerImageLayers = new ArrayList<>();
     @JsonProperty("dockerImageManifest")
     private String dockerImageManifest;
     @JsonProperty("dockerImageManifestMediaType")
     private String dockerImageManifestMediaType;
     @JsonProperty("dockerImageManifests")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ImageManifest> dockerImageManifests = new ArrayList<ImageManifest>();
+    private List<ImageManifest> dockerImageManifests = new ArrayList<>();
     @JsonProperty("dockerImageMetadata")
     private RawExtension dockerImageMetadata;
     @JsonProperty("dockerImageMetadataVersion")
@@ -104,7 +104,7 @@ public class Image implements Editable<ImageBuilder> , HasMetadata
     private String dockerImageReference;
     @JsonProperty("dockerImageSignatures")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> dockerImageSignatures = new ArrayList<String>();
+    private List<String> dockerImageSignatures = new ArrayList<>();
     /**
      * 
      * (Required)
@@ -116,7 +116,7 @@ public class Image implements Editable<ImageBuilder> , HasMetadata
     private io.fabric8.kubernetes.api.model.ObjectMeta metadata;
     @JsonProperty("signatures")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ImageSignature> signatures = new ArrayList<ImageSignature>();
+    private List<ImageSignature> signatures = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

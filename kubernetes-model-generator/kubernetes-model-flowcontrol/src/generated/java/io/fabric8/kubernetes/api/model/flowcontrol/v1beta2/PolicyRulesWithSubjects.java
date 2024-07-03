@@ -60,13 +60,13 @@ public class PolicyRulesWithSubjects implements Editable<PolicyRulesWithSubjects
 
     @JsonProperty("nonResourceRules")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<NonResourcePolicyRule> nonResourceRules = new ArrayList<NonResourcePolicyRule>();
+    private List<NonResourcePolicyRule> nonResourceRules = new ArrayList<>();
     @JsonProperty("resourceRules")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ResourcePolicyRule> resourceRules = new ArrayList<ResourcePolicyRule>();
+    private List<ResourcePolicyRule> resourceRules = new ArrayList<>();
     @JsonProperty("subjects")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Subject> subjects = new ArrayList<Subject>();
+    private List<Subject> subjects = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

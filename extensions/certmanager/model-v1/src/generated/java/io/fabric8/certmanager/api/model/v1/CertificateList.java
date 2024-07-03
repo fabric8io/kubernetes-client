@@ -87,7 +87,7 @@ public class CertificateList implements Editable<CertificateListBuilder> , Kuber
     private String apiVersion = "cert-manager.io/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.certmanager.api.model.v1.Certificate> items = new ArrayList<io.fabric8.certmanager.api.model.v1.Certificate>();
+    private List<io.fabric8.certmanager.api.model.v1.Certificate> items = new ArrayList<>();
     /**
      * 
      * (Required)

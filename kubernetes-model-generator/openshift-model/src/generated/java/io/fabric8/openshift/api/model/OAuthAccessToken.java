@@ -105,7 +105,7 @@ public class OAuthAccessToken implements Editable<OAuthAccessTokenBuilder> , Has
     private String refreshToken;
     @JsonProperty("scopes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> scopes = new ArrayList<String>();
+    private List<String> scopes = new ArrayList<>();
     @JsonProperty("userName")
     private String userName;
     @JsonProperty("userUID")

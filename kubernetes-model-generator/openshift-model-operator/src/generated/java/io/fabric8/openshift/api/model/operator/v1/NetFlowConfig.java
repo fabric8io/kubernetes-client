@@ -58,7 +58,7 @@ public class NetFlowConfig implements Editable<NetFlowConfigBuilder> , Kubernete
 
     @JsonProperty("collectors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> collectors = new ArrayList<String>();
+    private List<String> collectors = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

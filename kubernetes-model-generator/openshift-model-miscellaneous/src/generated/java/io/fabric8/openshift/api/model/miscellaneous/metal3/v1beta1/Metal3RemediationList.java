@@ -79,7 +79,7 @@ public class Metal3RemediationList implements Editable<Metal3RemediationListBuil
     private String apiVersion = "infrastructure.cluster.x-k8s.io/v1beta1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.openshift.api.model.miscellaneous.metal3.v1beta1.Metal3Remediation> items = new ArrayList<io.fabric8.openshift.api.model.miscellaneous.metal3.v1beta1.Metal3Remediation>();
+    private List<io.fabric8.openshift.api.model.miscellaneous.metal3.v1beta1.Metal3Remediation> items = new ArrayList<>();
     /**
      * 
      * (Required)

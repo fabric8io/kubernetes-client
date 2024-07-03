@@ -75,7 +75,7 @@ public class Server implements Editable<ServerBuilder> , KubernetesResource
     private String defaultEndpoint;
     @JsonProperty("hosts")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> hosts = new ArrayList<String>();
+    private List<String> hosts = new ArrayList<>();
     @JsonProperty("name")
     private String name;
     @JsonProperty("port")

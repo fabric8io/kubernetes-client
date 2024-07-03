@@ -69,7 +69,7 @@ public class PeerAuthenticationSpec implements Editable<PeerAuthenticationSpecBu
     private io.fabric8.istio.api.security.v1beta1.PeerAuthenticationMutualTLS mtls;
     @JsonProperty("portLevelMtls")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<Long, io.fabric8.istio.api.security.v1beta1.PeerAuthenticationMutualTLS> portLevelMtls = new LinkedHashMap<Long, io.fabric8.istio.api.security.v1beta1.PeerAuthenticationMutualTLS>();
+    private Map<Long, io.fabric8.istio.api.security.v1beta1.PeerAuthenticationMutualTLS> portLevelMtls = new LinkedHashMap<>();
     @JsonProperty("selector")
     private WorkloadSelector selector;
     @JsonIgnore

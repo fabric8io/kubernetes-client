@@ -62,10 +62,10 @@ public class CustomResourceDefinitionStatus implements Editable<CustomResourceDe
     private CustomResourceDefinitionNames acceptedNames;
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<CustomResourceDefinitionCondition> conditions = new ArrayList<CustomResourceDefinitionCondition>();
+    private List<CustomResourceDefinitionCondition> conditions = new ArrayList<>();
     @JsonProperty("storedVersions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> storedVersions = new ArrayList<String>();
+    private List<String> storedVersions = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

@@ -66,14 +66,14 @@ public class OpenStackPlatformStatus implements Editable<OpenStackPlatformStatus
     private String apiServerInternalIP;
     @JsonProperty("apiServerInternalIPs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> apiServerInternalIPs = new ArrayList<String>();
+    private List<String> apiServerInternalIPs = new ArrayList<>();
     @JsonProperty("cloudName")
     private String cloudName;
     @JsonProperty("ingressIP")
     private String ingressIP;
     @JsonProperty("ingressIPs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> ingressIPs = new ArrayList<String>();
+    private List<String> ingressIPs = new ArrayList<>();
     @JsonProperty("loadBalancer")
     private OpenStackPlatformLoadBalancer loadBalancer;
     @JsonProperty("nodeDNSIP")

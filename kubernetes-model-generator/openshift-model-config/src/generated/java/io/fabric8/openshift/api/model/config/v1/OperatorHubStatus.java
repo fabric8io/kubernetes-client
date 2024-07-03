@@ -58,7 +58,7 @@ public class OperatorHubStatus implements Editable<OperatorHubStatusBuilder> , K
 
     @JsonProperty("sources")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<HubSourceStatus> sources = new ArrayList<HubSourceStatus>();
+    private List<HubSourceStatus> sources = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

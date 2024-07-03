@@ -76,24 +76,24 @@ public class SubscriptionSpec implements Editable<SubscriptionSpecBuilder> , Kub
 
     @JsonProperty("allow")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<AllowDenyItem> allow = new ArrayList<AllowDenyItem>();
+    private List<AllowDenyItem> allow = new ArrayList<>();
     @JsonProperty("channel")
     private String channel;
     @JsonProperty("deny")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<AllowDenyItem> deny = new ArrayList<AllowDenyItem>();
+    private List<AllowDenyItem> deny = new ArrayList<>();
     @JsonProperty("hooksecretref")
     private io.fabric8.kubernetes.api.model.ObjectReference hooksecretref;
     @JsonProperty("name")
     private String name;
     @JsonProperty("overrides")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ClusterOverrides> overrides = new ArrayList<ClusterOverrides>();
+    private List<ClusterOverrides> overrides = new ArrayList<>();
     @JsonProperty("packageFilter")
     private PackageFilter packageFilter;
     @JsonProperty("packageOverrides")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Overrides> packageOverrides = new ArrayList<Overrides>();
+    private List<Overrides> packageOverrides = new ArrayList<>();
     @JsonProperty("placement")
     private Placement placement;
     @JsonProperty("secondaryChannel")

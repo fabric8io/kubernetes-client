@@ -79,7 +79,7 @@ public class KubeControllerManagerList implements Editable<KubeControllerManager
     private String apiVersion = "operator.openshift.io/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.openshift.api.model.operator.v1.KubeControllerManager> items = new ArrayList<io.fabric8.openshift.api.model.operator.v1.KubeControllerManager>();
+    private List<io.fabric8.openshift.api.model.operator.v1.KubeControllerManager> items = new ArrayList<>();
     /**
      * 
      * (Required)

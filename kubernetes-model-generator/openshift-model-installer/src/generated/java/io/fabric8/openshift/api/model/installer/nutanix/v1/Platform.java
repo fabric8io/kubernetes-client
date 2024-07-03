@@ -70,7 +70,7 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     private String apiVIP;
     @JsonProperty("apiVIPs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> apiVIPs = new ArrayList<String>();
+    private List<String> apiVIPs = new ArrayList<>();
     @JsonProperty("clusterOSImage")
     private String clusterOSImage;
     @JsonProperty("defaultMachinePlatform")
@@ -79,17 +79,17 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     private String ingressVIP;
     @JsonProperty("ingressVIPs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> ingressVIPs = new ArrayList<String>();
+    private List<String> ingressVIPs = new ArrayList<>();
     @JsonProperty("loadBalancer")
     private NutanixPlatformLoadBalancer loadBalancer;
     @JsonProperty("prismCentral")
     private PrismCentral prismCentral;
     @JsonProperty("prismElements")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<PrismElement> prismElements = new ArrayList<PrismElement>();
+    private List<PrismElement> prismElements = new ArrayList<>();
     @JsonProperty("subnetUUIDs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> subnetUUIDs = new ArrayList<String>();
+    private List<String> subnetUUIDs = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

@@ -70,7 +70,7 @@ public class IssuerStatus implements Editable<IssuerStatusBuilder> , KubernetesR
     private ACMEIssuerStatus acme;
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<IssuerCondition> conditions = new ArrayList<IssuerCondition>();
+    private List<IssuerCondition> conditions = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

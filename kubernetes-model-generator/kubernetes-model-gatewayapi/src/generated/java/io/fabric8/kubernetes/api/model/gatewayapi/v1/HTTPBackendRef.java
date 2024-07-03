@@ -64,7 +64,7 @@ public class HTTPBackendRef implements Editable<HTTPBackendRefBuilder> , Kuberne
 
     @JsonProperty("filters")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<HTTPRouteFilter> filters = new ArrayList<HTTPRouteFilter>();
+    private List<HTTPRouteFilter> filters = new ArrayList<>();
     @JsonProperty("group")
     private String group;
     /**

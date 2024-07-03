@@ -61,7 +61,7 @@ public class RedirectConfig implements Editable<RedirectConfigBuilder> , Kuberne
     private String fallbackIP;
     @JsonProperty("redirectRules")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<L4RedirectRule> redirectRules = new ArrayList<L4RedirectRule>();
+    private List<L4RedirectRule> redirectRules = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

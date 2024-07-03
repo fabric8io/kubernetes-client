@@ -63,7 +63,7 @@ public class HiveConfigStatus implements Editable<HiveConfigStatusBuilder> , Kub
     private String aggregatorClientCAHash;
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<HiveConfigCondition> conditions = new ArrayList<HiveConfigCondition>();
+    private List<HiveConfigCondition> conditions = new ArrayList<>();
     @JsonProperty("configApplied")
     private Boolean configApplied;
     @JsonProperty("observedGeneration")

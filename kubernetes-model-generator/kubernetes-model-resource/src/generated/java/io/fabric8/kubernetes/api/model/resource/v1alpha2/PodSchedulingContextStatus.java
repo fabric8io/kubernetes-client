@@ -58,7 +58,7 @@ public class PodSchedulingContextStatus implements Editable<PodSchedulingContext
 
     @JsonProperty("resourceClaims")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ResourceClaimSchedulingStatus> resourceClaims = new ArrayList<ResourceClaimSchedulingStatus>();
+    private List<ResourceClaimSchedulingStatus> resourceClaims = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

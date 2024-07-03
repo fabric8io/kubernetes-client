@@ -64,18 +64,18 @@ public class SyncSetSpec implements Editable<SyncSetSpecBuilder> , KubernetesRes
     private java.lang.String applyBehavior;
     @JsonProperty("clusterDeploymentRefs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.LocalObjectReference> clusterDeploymentRefs = new ArrayList<io.fabric8.kubernetes.api.model.LocalObjectReference>();
+    private List<io.fabric8.kubernetes.api.model.LocalObjectReference> clusterDeploymentRefs = new ArrayList<>();
     @JsonProperty("patches")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<SyncObjectPatch> patches = new ArrayList<SyncObjectPatch>();
+    private List<SyncObjectPatch> patches = new ArrayList<>();
     @JsonProperty("resourceApplyMode")
     private java.lang.String resourceApplyMode;
     @JsonProperty("resources")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Map<String, Object>> resources = new ArrayList<Map<String, Object>>();
+    private List<Map<String, Object>> resources = new ArrayList<>();
     @JsonProperty("secretMappings")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<SecretMapping> secretMappings = new ArrayList<SecretMapping>();
+    private List<SecretMapping> secretMappings = new ArrayList<>();
     @JsonIgnore
     private Map<java.lang.String, java.lang.Object> additionalProperties = new LinkedHashMap<java.lang.String, java.lang.Object>();
 

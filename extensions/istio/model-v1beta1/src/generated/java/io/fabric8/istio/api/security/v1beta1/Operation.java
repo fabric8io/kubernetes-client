@@ -73,28 +73,28 @@ public class Operation implements Editable<OperationBuilder> , KubernetesResourc
 
     @JsonProperty("hosts")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> hosts = new ArrayList<String>();
+    private List<String> hosts = new ArrayList<>();
     @JsonProperty("methods")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> methods = new ArrayList<String>();
+    private List<String> methods = new ArrayList<>();
     @JsonProperty("notHosts")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> notHosts = new ArrayList<String>();
+    private List<String> notHosts = new ArrayList<>();
     @JsonProperty("notMethods")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> notMethods = new ArrayList<String>();
+    private List<String> notMethods = new ArrayList<>();
     @JsonProperty("notPaths")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> notPaths = new ArrayList<String>();
+    private List<String> notPaths = new ArrayList<>();
     @JsonProperty("notPorts")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> notPorts = new ArrayList<String>();
+    private List<String> notPorts = new ArrayList<>();
     @JsonProperty("paths")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> paths = new ArrayList<String>();
+    private List<String> paths = new ArrayList<>();
     @JsonProperty("ports")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> ports = new ArrayList<String>();
+    private List<String> ports = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

@@ -70,10 +70,10 @@ public class PodHttpChaosPatchActions implements Editable<PodHttpChaosPatchActio
     private PodHttpChaosPatchBodyAction body;
     @JsonProperty("headers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<List<String>> headers = new ArrayList<List<String>>();
+    private List<List<String>> headers = new ArrayList<>();
     @JsonProperty("queries")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<List<String>> queries = new ArrayList<List<String>>();
+    private List<List<String>> queries = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

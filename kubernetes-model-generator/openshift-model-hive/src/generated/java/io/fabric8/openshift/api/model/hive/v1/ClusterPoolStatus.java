@@ -61,7 +61,7 @@ public class ClusterPoolStatus implements Editable<ClusterPoolStatusBuilder> , K
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ClusterPoolCondition> conditions = new ArrayList<ClusterPoolCondition>();
+    private List<ClusterPoolCondition> conditions = new ArrayList<>();
     @JsonProperty("ready")
     private Integer ready;
     @JsonProperty("size")

@@ -87,7 +87,7 @@ public class KResourceList implements Editable<KResourceListBuilder> , Kubernete
     private String apiVersion = "duck.knative.dev/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.knative.internal.pkg.apis.duck.v1.KResource> items = new ArrayList<io.fabric8.knative.internal.pkg.apis.duck.v1.KResource>();
+    private List<io.fabric8.knative.internal.pkg.apis.duck.v1.KResource> items = new ArrayList<>();
     /**
      * 
      * (Required)

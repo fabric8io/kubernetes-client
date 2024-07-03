@@ -61,7 +61,7 @@ public class MatchResources implements Editable<MatchResourcesBuilder> , Kuberne
 
     @JsonProperty("excludeResourceRules")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<NamedRuleWithOperations> excludeResourceRules = new ArrayList<NamedRuleWithOperations>();
+    private List<NamedRuleWithOperations> excludeResourceRules = new ArrayList<>();
     @JsonProperty("matchPolicy")
     private String matchPolicy;
     @JsonProperty("namespaceSelector")
@@ -70,7 +70,7 @@ public class MatchResources implements Editable<MatchResourcesBuilder> , Kuberne
     private io.fabric8.kubernetes.api.model.LabelSelector objectSelector;
     @JsonProperty("resourceRules")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<NamedRuleWithOperations> resourceRules = new ArrayList<NamedRuleWithOperations>();
+    private List<NamedRuleWithOperations> resourceRules = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

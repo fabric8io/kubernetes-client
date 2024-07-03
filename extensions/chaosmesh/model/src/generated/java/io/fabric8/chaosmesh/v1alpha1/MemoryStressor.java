@@ -68,7 +68,7 @@ public class MemoryStressor implements Editable<MemoryStressorBuilder> , Kuberne
 
     @JsonProperty("options")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> options = new ArrayList<String>();
+    private List<String> options = new ArrayList<>();
     @JsonProperty("size")
     private String size;
     @JsonProperty("workers")

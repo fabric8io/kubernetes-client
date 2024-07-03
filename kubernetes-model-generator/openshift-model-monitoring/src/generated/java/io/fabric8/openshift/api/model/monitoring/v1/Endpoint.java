@@ -98,12 +98,12 @@ public class Endpoint implements Editable<EndpointBuilder> , KubernetesResource
     private String interval;
     @JsonProperty("metricRelabelings")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<RelabelConfig> metricRelabelings = new ArrayList<RelabelConfig>();
+    private List<RelabelConfig> metricRelabelings = new ArrayList<>();
     @JsonProperty("oauth2")
     private OAuth2 oauth2;
     @JsonProperty("params")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, ArrayList<String>> params = new LinkedHashMap<String, ArrayList<String>>();
+    private Map<String, ArrayList<String>> params = new LinkedHashMap<>();
     @JsonProperty("path")
     private String path;
     @JsonProperty("port")
@@ -112,7 +112,7 @@ public class Endpoint implements Editable<EndpointBuilder> , KubernetesResource
     private String proxyUrl;
     @JsonProperty("relabelings")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<RelabelConfig> relabelings = new ArrayList<RelabelConfig>();
+    private List<RelabelConfig> relabelings = new ArrayList<>();
     @JsonProperty("scheme")
     private String scheme;
     @JsonProperty("scrapeTimeout")

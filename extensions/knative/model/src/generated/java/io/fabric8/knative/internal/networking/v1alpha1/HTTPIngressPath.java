@@ -70,17 +70,17 @@ public class HTTPIngressPath implements Editable<HTTPIngressPathBuilder> , Kuber
 
     @JsonProperty("appendHeaders")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> appendHeaders = new LinkedHashMap<String, String>();
+    private Map<String, String> appendHeaders = new LinkedHashMap<>();
     @JsonProperty("headers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, HeaderMatch> headers = new LinkedHashMap<String, HeaderMatch>();
+    private Map<String, HeaderMatch> headers = new LinkedHashMap<>();
     @JsonProperty("path")
     private java.lang.String path;
     @JsonProperty("rewriteHost")
     private java.lang.String rewriteHost;
     @JsonProperty("splits")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<IngressBackendSplit> splits = new ArrayList<IngressBackendSplit>();
+    private List<IngressBackendSplit> splits = new ArrayList<>();
     @JsonIgnore
     private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 

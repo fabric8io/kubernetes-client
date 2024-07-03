@@ -60,12 +60,12 @@ public class VSpherePlatformSpec implements Editable<VSpherePlatformSpecBuilder>
 
     @JsonProperty("failureDomains")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<VSpherePlatformFailureDomainSpec> failureDomains = new ArrayList<VSpherePlatformFailureDomainSpec>();
+    private List<VSpherePlatformFailureDomainSpec> failureDomains = new ArrayList<>();
     @JsonProperty("nodeNetworking")
     private VSpherePlatformNodeNetworking nodeNetworking;
     @JsonProperty("vcenters")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<VSpherePlatformVCenterSpec> vcenters = new ArrayList<VSpherePlatformVCenterSpec>();
+    private List<VSpherePlatformVCenterSpec> vcenters = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

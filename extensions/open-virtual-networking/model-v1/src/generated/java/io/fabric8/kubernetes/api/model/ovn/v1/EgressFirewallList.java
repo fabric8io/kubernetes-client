@@ -87,7 +87,7 @@ public class EgressFirewallList implements Editable<EgressFirewallListBuilder> ,
     private String apiVersion = "k8s.ovn.org/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.ovn.v1.EgressFirewall> items = new ArrayList<io.fabric8.kubernetes.api.model.ovn.v1.EgressFirewall>();
+    private List<io.fabric8.kubernetes.api.model.ovn.v1.EgressFirewall> items = new ArrayList<>();
     /**
      * 
      * (Required)

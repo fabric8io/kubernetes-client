@@ -69,10 +69,10 @@ public class UserInfo implements Editable<UserInfoBuilder> , KubernetesResource
 
     @JsonProperty("extra")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, List<String>> extra = new LinkedHashMap<String, List<String>>();
+    private Map<String, List<String>> extra = new LinkedHashMap<>();
     @JsonProperty("groups")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> groups = new ArrayList<java.lang.String>();
+    private List<java.lang.String> groups = new ArrayList<>();
     @JsonProperty("uid")
     private java.lang.String uid;
     @JsonProperty("username")

@@ -74,7 +74,7 @@ public class GCPChaosSpec implements Editable<GCPChaosSpecBuilder> , KubernetesR
     private java.lang.String action;
     @JsonProperty("deviceNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> deviceNames = new ArrayList<java.lang.String>();
+    private List<java.lang.String> deviceNames = new ArrayList<>();
     @JsonProperty("duration")
     private String duration;
     @JsonProperty("instance")

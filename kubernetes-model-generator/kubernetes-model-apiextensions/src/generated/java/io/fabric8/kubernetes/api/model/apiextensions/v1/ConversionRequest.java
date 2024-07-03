@@ -66,7 +66,7 @@ public class ConversionRequest implements Editable<ConversionRequestBuilder> , K
     private String desiredAPIVersion;
     @JsonProperty("objects")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<KubernetesResource> objects = new ArrayList<KubernetesResource>();
+    private List<KubernetesResource> objects = new ArrayList<>();
     @JsonProperty("uid")
     private String uid;
     @JsonIgnore

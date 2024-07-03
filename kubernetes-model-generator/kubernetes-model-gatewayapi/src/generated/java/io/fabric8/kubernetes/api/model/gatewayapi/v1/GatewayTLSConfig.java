@@ -60,12 +60,12 @@ public class GatewayTLSConfig implements Editable<GatewayTLSConfigBuilder> , Kub
 
     @JsonProperty("certificateRefs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<SecretObjectReference> certificateRefs = new ArrayList<SecretObjectReference>();
+    private List<SecretObjectReference> certificateRefs = new ArrayList<>();
     @JsonProperty("mode")
     private String mode;
     @JsonProperty("options")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> options = new LinkedHashMap<String, String>();
+    private Map<String, String> options = new LinkedHashMap<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

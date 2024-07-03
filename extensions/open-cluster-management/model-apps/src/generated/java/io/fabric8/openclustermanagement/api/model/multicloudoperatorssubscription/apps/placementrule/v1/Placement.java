@@ -69,7 +69,7 @@ public class Placement implements Editable<PlacementBuilder> , KubernetesResourc
     private io.fabric8.kubernetes.api.model.LabelSelector clusterSelector;
     @JsonProperty("clusters")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<GenericClusterReference> clusters = new ArrayList<GenericClusterReference>();
+    private List<GenericClusterReference> clusters = new ArrayList<>();
     @JsonProperty("local")
     private Boolean local;
     @JsonProperty("placementRef")

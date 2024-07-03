@@ -87,7 +87,7 @@ public class StressChaosList implements Editable<StressChaosListBuilder> , Kuber
     private String apiVersion = "chaos-mesh.org/v1alpha1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.chaosmesh.v1alpha1.StressChaos> items = new ArrayList<io.fabric8.chaosmesh.v1alpha1.StressChaos>();
+    private List<io.fabric8.chaosmesh.v1alpha1.StressChaos> items = new ArrayList<>();
     /**
      * 
      * (Required)

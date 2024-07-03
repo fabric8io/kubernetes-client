@@ -79,7 +79,7 @@ public class IngressList implements Editable<IngressListBuilder> , KubernetesRes
     private String apiVersion = "networking.k8s.io/v1beta1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.networking.v1beta1.Ingress> items = new ArrayList<io.fabric8.kubernetes.api.model.networking.v1beta1.Ingress>();
+    private List<io.fabric8.kubernetes.api.model.networking.v1beta1.Ingress> items = new ArrayList<>();
     /**
      * 
      * (Required)

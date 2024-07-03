@@ -82,10 +82,10 @@ public class PodMonitorSpec implements Editable<PodMonitorSpecBuilder> , Kuberne
     private NamespaceSelector namespaceSelector;
     @JsonProperty("podMetricsEndpoints")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<PodMetricsEndpoint> podMetricsEndpoints = new ArrayList<PodMetricsEndpoint>();
+    private List<PodMetricsEndpoint> podMetricsEndpoints = new ArrayList<>();
     @JsonProperty("podTargetLabels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> podTargetLabels = new ArrayList<String>();
+    private List<String> podTargetLabels = new ArrayList<>();
     @JsonProperty("sampleLimit")
     private Long sampleLimit;
     @JsonProperty("selector")

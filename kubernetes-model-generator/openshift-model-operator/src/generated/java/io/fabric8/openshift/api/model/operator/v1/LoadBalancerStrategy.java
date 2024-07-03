@@ -61,7 +61,7 @@ public class LoadBalancerStrategy implements Editable<LoadBalancerStrategyBuilde
 
     @JsonProperty("allowedSourceRanges")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> allowedSourceRanges = new ArrayList<String>();
+    private List<String> allowedSourceRanges = new ArrayList<>();
     @JsonProperty("dnsManagementPolicy")
     private String dnsManagementPolicy;
     @JsonProperty("providerParameters")

@@ -67,7 +67,7 @@ public class PrioritizerPolicy implements Editable<PrioritizerPolicyBuilder> , K
 
     @JsonProperty("configurations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<PrioritizerConfig> configurations = new ArrayList<PrioritizerConfig>();
+    private List<PrioritizerConfig> configurations = new ArrayList<>();
     @JsonProperty("mode")
     private String mode;
     @JsonIgnore

@@ -79,7 +79,7 @@ public class InfrastructureList implements Editable<InfrastructureListBuilder> ,
     private String apiVersion = "config.openshift.io/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.openshift.api.model.config.v1.Infrastructure> items = new ArrayList<io.fabric8.openshift.api.model.config.v1.Infrastructure>();
+    private List<io.fabric8.openshift.api.model.config.v1.Infrastructure> items = new ArrayList<>();
     /**
      * 
      * (Required)

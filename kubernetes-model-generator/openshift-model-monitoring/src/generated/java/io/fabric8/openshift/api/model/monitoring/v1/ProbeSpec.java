@@ -94,7 +94,7 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder> , KubernetesResourc
     private Long labelValueLengthLimit;
     @JsonProperty("metricRelabelings")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<RelabelConfig> metricRelabelings = new ArrayList<RelabelConfig>();
+    private List<RelabelConfig> metricRelabelings = new ArrayList<>();
     @JsonProperty("module")
     private String module;
     @JsonProperty("oauth2")

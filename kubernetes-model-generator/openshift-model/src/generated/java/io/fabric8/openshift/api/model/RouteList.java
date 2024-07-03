@@ -79,7 +79,7 @@ public class RouteList implements Editable<RouteListBuilder> , KubernetesResourc
     private String apiVersion = "route.openshift.io/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.openshift.api.model.Route> items = new ArrayList<io.fabric8.openshift.api.model.Route>();
+    private List<io.fabric8.openshift.api.model.Route> items = new ArrayList<>();
     /**
      * 
      * (Required)

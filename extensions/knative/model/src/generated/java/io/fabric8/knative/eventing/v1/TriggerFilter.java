@@ -64,7 +64,7 @@ public class TriggerFilter implements Editable<TriggerFilterBuilder> , Kubernete
 
     @JsonProperty("attributes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> attributes = new LinkedHashMap<String, String>();
+    private Map<String, String> attributes = new LinkedHashMap<>();
     @JsonIgnore
     private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 

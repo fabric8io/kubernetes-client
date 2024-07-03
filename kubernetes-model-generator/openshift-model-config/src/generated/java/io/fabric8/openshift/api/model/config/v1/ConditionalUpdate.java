@@ -61,12 +61,12 @@ public class ConditionalUpdate implements Editable<ConditionalUpdateBuilder> , K
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Condition> conditions = new ArrayList<Condition>();
+    private List<Condition> conditions = new ArrayList<>();
     @JsonProperty("release")
     private Release release;
     @JsonProperty("risks")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ConditionalUpdateRisk> risks = new ArrayList<ConditionalUpdateRisk>();
+    private List<ConditionalUpdateRisk> risks = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

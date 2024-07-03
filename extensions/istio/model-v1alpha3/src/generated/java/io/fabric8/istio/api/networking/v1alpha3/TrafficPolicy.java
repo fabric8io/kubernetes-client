@@ -78,7 +78,7 @@ public class TrafficPolicy implements Editable<TrafficPolicyBuilder> , Kubernete
     private OutlierDetection outlierDetection;
     @JsonProperty("portLevelSettings")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<TrafficPolicyPortTrafficPolicy> portLevelSettings = new ArrayList<TrafficPolicyPortTrafficPolicy>();
+    private List<TrafficPolicyPortTrafficPolicy> portLevelSettings = new ArrayList<>();
     @JsonProperty("proxyProtocol")
     private TrafficPolicyProxyProtocol proxyProtocol;
     @JsonProperty("tls")

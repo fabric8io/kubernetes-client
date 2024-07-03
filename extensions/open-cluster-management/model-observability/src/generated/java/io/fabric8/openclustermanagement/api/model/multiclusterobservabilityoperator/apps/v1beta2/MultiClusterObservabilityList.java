@@ -87,7 +87,7 @@ public class MultiClusterObservabilityList implements Editable<MultiClusterObser
     private String apiVersion = "observability.open-cluster-management.io/v1beta2";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta2.MultiClusterObservability> items = new ArrayList<io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta2.MultiClusterObservability>();
+    private List<io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta2.MultiClusterObservability> items = new ArrayList<>();
     /**
      * 
      * (Required)

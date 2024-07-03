@@ -62,7 +62,7 @@ public class FailureDomain implements Editable<FailureDomainBuilder> , Kubernete
     private String computeAvailabilityZone;
     @JsonProperty("portTargets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<NamedPortTarget> portTargets = new ArrayList<NamedPortTarget>();
+    private List<NamedPortTarget> portTargets = new ArrayList<>();
     @JsonProperty("storageAvailabilityZone")
     private String storageAvailabilityZone;
     @JsonIgnore

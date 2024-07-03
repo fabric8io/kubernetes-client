@@ -83,17 +83,17 @@ public class PagerDutyConfig implements Editable<PagerDutyConfigBuilder> , Kuber
     private String description;
     @JsonProperty("details")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<KeyValue> details = new ArrayList<KeyValue>();
+    private List<KeyValue> details = new ArrayList<>();
     @JsonProperty("group")
     private String group;
     @JsonProperty("httpConfig")
     private HTTPConfig httpConfig;
     @JsonProperty("pagerDutyImageConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<PagerDutyImageConfig> pagerDutyImageConfigs = new ArrayList<PagerDutyImageConfig>();
+    private List<PagerDutyImageConfig> pagerDutyImageConfigs = new ArrayList<>();
     @JsonProperty("pagerDutyLinkConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<PagerDutyLinkConfig> pagerDutyLinkConfigs = new ArrayList<PagerDutyLinkConfig>();
+    private List<PagerDutyLinkConfig> pagerDutyLinkConfigs = new ArrayList<>();
     @JsonProperty("routingKey")
     private SecretKeySelector routingKey;
     @JsonProperty("sendResolved")

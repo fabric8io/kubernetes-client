@@ -67,7 +67,7 @@ public class ExperimentStatus implements Editable<ExperimentStatusBuilder> , Kub
 
     @JsonProperty("containerRecords")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Record> containerRecords = new ArrayList<Record>();
+    private List<Record> containerRecords = new ArrayList<>();
     @JsonProperty("desiredPhase")
     private String desiredPhase;
     @JsonIgnore

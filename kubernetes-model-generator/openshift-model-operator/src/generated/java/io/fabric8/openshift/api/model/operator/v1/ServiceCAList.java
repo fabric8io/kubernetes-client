@@ -79,7 +79,7 @@ public class ServiceCAList implements Editable<ServiceCAListBuilder> , Kubernete
     private String apiVersion = "operator.openshift.io/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.openshift.api.model.operator.v1.ServiceCA> items = new ArrayList<io.fabric8.openshift.api.model.operator.v1.ServiceCA>();
+    private List<io.fabric8.openshift.api.model.operator.v1.ServiceCA> items = new ArrayList<>();
     /**
      * 
      * (Required)

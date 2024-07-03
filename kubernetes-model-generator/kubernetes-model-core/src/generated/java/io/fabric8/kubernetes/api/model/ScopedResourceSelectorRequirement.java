@@ -43,7 +43,7 @@ public class ScopedResourceSelectorRequirement implements Editable<ScopedResourc
     private String scopeName;
     @JsonProperty("values")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> values = new ArrayList<String>();
+    private List<String> values = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

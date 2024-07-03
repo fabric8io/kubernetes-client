@@ -49,13 +49,13 @@ public class ConfigMapArgs implements Editable<ConfigMapArgsBuilder> , Kubernete
     private String env;
     @JsonProperty("envs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> envs = new ArrayList<String>();
+    private List<String> envs = new ArrayList<>();
     @JsonProperty("files")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> files = new ArrayList<String>();
+    private List<String> files = new ArrayList<>();
     @JsonProperty("literals")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> literals = new ArrayList<String>();
+    private List<String> literals = new ArrayList<>();
     @JsonProperty("name")
     private String name;
     @JsonProperty("namespace")

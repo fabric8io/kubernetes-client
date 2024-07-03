@@ -59,7 +59,7 @@ public class BuildConfigStatus implements Editable<BuildConfigStatusBuilder> , K
 
     @JsonProperty("imageChangeTriggers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ImageChangeTriggerStatus> imageChangeTriggers = new ArrayList<ImageChangeTriggerStatus>();
+    private List<ImageChangeTriggerStatus> imageChangeTriggers = new ArrayList<>();
     @JsonProperty("lastVersion")
     private Long lastVersion;
     @JsonIgnore

@@ -62,7 +62,7 @@ public class SoftwareRAIDVolume implements Editable<SoftwareRAIDVolumeBuilder> ,
     private String level;
     @JsonProperty("physicalDisks")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<RootDeviceHints> physicalDisks = new ArrayList<RootDeviceHints>();
+    private List<RootDeviceHints> physicalDisks = new ArrayList<>();
     @JsonProperty("sizeGibibytes")
     private Integer sizeGibibytes;
     @JsonIgnore

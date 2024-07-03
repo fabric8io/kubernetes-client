@@ -87,7 +87,7 @@ public class KafkaChannelList implements Editable<KafkaChannelListBuilder> , Kub
     private String apiVersion = "messaging.knative.dev/v1beta1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.knative.eventing.contrib.kafka.v1beta1.KafkaChannel> items = new ArrayList<io.fabric8.knative.eventing.contrib.kafka.v1beta1.KafkaChannel>();
+    private List<io.fabric8.knative.eventing.contrib.kafka.v1beta1.KafkaChannel> items = new ArrayList<>();
     /**
      * 
      * (Required)

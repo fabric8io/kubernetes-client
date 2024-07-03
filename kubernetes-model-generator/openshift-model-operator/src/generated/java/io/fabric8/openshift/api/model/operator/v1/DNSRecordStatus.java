@@ -61,7 +61,7 @@ public class DNSRecordStatus implements Editable<DNSRecordStatusBuilder> , Kuber
     private Long observedGeneration;
     @JsonProperty("zones")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<DNSZoneStatus> zones = new ArrayList<DNSZoneStatus>();
+    private List<DNSZoneStatus> zones = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

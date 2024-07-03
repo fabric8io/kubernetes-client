@@ -76,7 +76,7 @@ public class PipelineRef implements Editable<PipelineRefBuilder> , KubernetesRes
     private String name;
     @JsonProperty("params")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Param> params = new ArrayList<Param>();
+    private List<Param> params = new ArrayList<>();
     @JsonProperty("resolver")
     private String resolver;
     @JsonIgnore

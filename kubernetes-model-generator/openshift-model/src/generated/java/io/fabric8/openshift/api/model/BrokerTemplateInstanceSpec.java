@@ -59,7 +59,7 @@ public class BrokerTemplateInstanceSpec implements Editable<BrokerTemplateInstan
 
     @JsonProperty("bindingIDs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> bindingIDs = new ArrayList<String>();
+    private List<String> bindingIDs = new ArrayList<>();
     @JsonProperty("secret")
     private io.fabric8.kubernetes.api.model.ObjectReference secret;
     @JsonProperty("templateInstance")

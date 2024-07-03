@@ -65,12 +65,12 @@ public class DockerBuildStrategy implements Editable<DockerBuildStrategyBuilder>
 
     @JsonProperty("buildArgs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<EnvVar> buildArgs = new ArrayList<EnvVar>();
+    private List<EnvVar> buildArgs = new ArrayList<>();
     @JsonProperty("dockerfilePath")
     private String dockerfilePath;
     @JsonProperty("env")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<EnvVar> env = new ArrayList<EnvVar>();
+    private List<EnvVar> env = new ArrayList<>();
     @JsonProperty("forcePull")
     private Boolean forcePull;
     @JsonProperty("from")
@@ -83,7 +83,7 @@ public class DockerBuildStrategy implements Editable<DockerBuildStrategyBuilder>
     private io.fabric8.kubernetes.api.model.LocalObjectReference pullSecret;
     @JsonProperty("volumes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<BuildVolume> volumes = new ArrayList<BuildVolume>();
+    private List<BuildVolume> volumes = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

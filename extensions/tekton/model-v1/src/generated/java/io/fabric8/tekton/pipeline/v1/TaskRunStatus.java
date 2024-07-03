@@ -79,12 +79,12 @@ public class TaskRunStatus implements Editable<TaskRunStatusBuilder> , Kubernete
 
     @JsonProperty("annotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> annotations = new LinkedHashMap<String, String>();
+    private Map<String, String> annotations = new LinkedHashMap<>();
     @JsonProperty("completionTime")
     private java.lang.String completionTime;
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Condition> conditions = new ArrayList<Condition>();
+    private List<Condition> conditions = new ArrayList<>();
     @JsonProperty("observedGeneration")
     private Long observedGeneration;
     @JsonProperty("podName")
@@ -93,21 +93,21 @@ public class TaskRunStatus implements Editable<TaskRunStatusBuilder> , Kubernete
     private Provenance provenance;
     @JsonProperty("results")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<TaskRunResult> results = new ArrayList<TaskRunResult>();
+    private List<TaskRunResult> results = new ArrayList<>();
     @JsonProperty("retriesStatus")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<TaskRunStatus> retriesStatus = new ArrayList<TaskRunStatus>();
+    private List<TaskRunStatus> retriesStatus = new ArrayList<>();
     @JsonProperty("sidecars")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<SidecarState> sidecars = new ArrayList<SidecarState>();
+    private List<SidecarState> sidecars = new ArrayList<>();
     @JsonProperty("spanContext")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> spanContext = new LinkedHashMap<String, String>();
+    private Map<String, String> spanContext = new LinkedHashMap<>();
     @JsonProperty("startTime")
     private java.lang.String startTime;
     @JsonProperty("steps")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<StepState> steps = new ArrayList<StepState>();
+    private List<StepState> steps = new ArrayList<>();
     @JsonProperty("taskSpec")
     private TaskSpec taskSpec;
     @JsonIgnore

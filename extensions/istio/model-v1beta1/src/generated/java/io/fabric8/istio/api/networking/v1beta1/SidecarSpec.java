@@ -70,12 +70,12 @@ public class SidecarSpec implements Editable<SidecarSpecBuilder> , KubernetesRes
 
     @JsonProperty("egress")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<IstioEgressListener> egress = new ArrayList<IstioEgressListener>();
+    private List<IstioEgressListener> egress = new ArrayList<>();
     @JsonProperty("inboundConnectionPool")
     private ConnectionPoolSettings inboundConnectionPool;
     @JsonProperty("ingress")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<IstioIngressListener> ingress = new ArrayList<IstioIngressListener>();
+    private List<IstioIngressListener> ingress = new ArrayList<>();
     @JsonProperty("outboundTrafficPolicy")
     private OutboundTrafficPolicy outboundTrafficPolicy;
     @JsonProperty("workloadSelector")

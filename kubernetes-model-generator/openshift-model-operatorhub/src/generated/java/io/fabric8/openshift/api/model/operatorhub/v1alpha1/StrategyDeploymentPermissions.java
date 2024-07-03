@@ -60,7 +60,7 @@ public class StrategyDeploymentPermissions implements Editable<StrategyDeploymen
 
     @JsonProperty("rules")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<PolicyRule> rules = new ArrayList<PolicyRule>();
+    private List<PolicyRule> rules = new ArrayList<>();
     @JsonProperty("serviceAccountName")
     private String serviceAccountName;
     @JsonIgnore

@@ -64,14 +64,14 @@ public class IngressSpec implements Editable<IngressSpecBuilder> , KubernetesRes
     private String appsDomain;
     @JsonProperty("componentRoutes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ComponentRouteSpec> componentRoutes = new ArrayList<ComponentRouteSpec>();
+    private List<ComponentRouteSpec> componentRoutes = new ArrayList<>();
     @JsonProperty("domain")
     private String domain;
     @JsonProperty("loadBalancer")
     private LoadBalancer loadBalancer;
     @JsonProperty("requiredHSTSPolicies")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<RequiredHSTSPolicy> requiredHSTSPolicies = new ArrayList<RequiredHSTSPolicy>();
+    private List<RequiredHSTSPolicy> requiredHSTSPolicies = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

@@ -46,7 +46,7 @@ public class APIResource implements Editable<APIResourceBuilder> , KubernetesRes
 
     @JsonProperty("categories")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> categories = new ArrayList<String>();
+    private List<String> categories = new ArrayList<>();
     @JsonProperty("group")
     private String group;
     @JsonProperty("kind")
@@ -57,14 +57,14 @@ public class APIResource implements Editable<APIResourceBuilder> , KubernetesRes
     private Boolean namespaced;
     @JsonProperty("shortNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> shortNames = new ArrayList<String>();
+    private List<String> shortNames = new ArrayList<>();
     @JsonProperty("singularName")
     private String singularName;
     @JsonProperty("storageVersionHash")
     private String storageVersionHash;
     @JsonProperty("verbs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> verbs = new ArrayList<String>();
+    private List<String> verbs = new ArrayList<>();
     @JsonProperty("version")
     private String version;
     @JsonIgnore

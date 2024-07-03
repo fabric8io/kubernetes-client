@@ -71,13 +71,13 @@ public class PolicyStatus implements Editable<PolicyStatusBuilder> , KubernetesR
     private String compliant;
     @JsonProperty("details")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<DetailsPerTemplate> details = new ArrayList<DetailsPerTemplate>();
+    private List<DetailsPerTemplate> details = new ArrayList<>();
     @JsonProperty("placement")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Placement> placement = new ArrayList<Placement>();
+    private List<Placement> placement = new ArrayList<>();
     @JsonProperty("status")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<CompliancePerClusterStatus> status = new ArrayList<CompliancePerClusterStatus>();
+    private List<CompliancePerClusterStatus> status = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

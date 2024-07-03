@@ -65,7 +65,7 @@ public class ReplicaSetStatus implements Editable<ReplicaSetStatusBuilder> , Kub
     private Integer availableReplicas;
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ReplicaSetCondition> conditions = new ArrayList<ReplicaSetCondition>();
+    private List<ReplicaSetCondition> conditions = new ArrayList<>();
     @JsonProperty("fullyLabeledReplicas")
     private Integer fullyLabeledReplicas;
     @JsonProperty("observedGeneration")

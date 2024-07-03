@@ -78,7 +78,7 @@ public class AuthorizationPolicySpec implements Editable<AuthorizationPolicySpec
     private AuthorizationPolicyAction action;
     @JsonProperty("rules")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Rule> rules = new ArrayList<Rule>();
+    private List<Rule> rules = new ArrayList<>();
     @JsonProperty("selector")
     private WorkloadSelector selector;
     @JsonProperty("targetRef")

@@ -67,7 +67,7 @@ public class ResourceClaimStatus implements Editable<ResourceClaimStatusBuilder>
     private String driverName;
     @JsonProperty("reservedFor")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ResourceClaimConsumerReference> reservedFor = new ArrayList<ResourceClaimConsumerReference>();
+    private List<ResourceClaimConsumerReference> reservedFor = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

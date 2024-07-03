@@ -62,10 +62,10 @@ public class AWSPlatformStatus implements Editable<AWSPlatformStatusBuilder> , K
     private String region;
     @JsonProperty("resourceTags")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<AWSResourceTag> resourceTags = new ArrayList<AWSResourceTag>();
+    private List<AWSResourceTag> resourceTags = new ArrayList<>();
     @JsonProperty("serviceEndpoints")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<AWSServiceEndpoint> serviceEndpoints = new ArrayList<AWSServiceEndpoint>();
+    private List<AWSServiceEndpoint> serviceEndpoints = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

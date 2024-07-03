@@ -94,12 +94,12 @@ public class WasmPluginSpec implements Editable<WasmPluginSpecBuilder> , Kuberne
     private java.lang.String imagePullSecret;
     @JsonProperty("match")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<WasmPluginTrafficSelector> match = new ArrayList<WasmPluginTrafficSelector>();
+    private List<WasmPluginTrafficSelector> match = new ArrayList<>();
     @JsonProperty("phase")
     private PluginPhase phase;
     @JsonProperty("pluginConfig")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Object> pluginConfig = new LinkedHashMap<String, Object>();
+    private Map<String, Object> pluginConfig = new LinkedHashMap<>();
     @JsonProperty("pluginName")
     private java.lang.String pluginName;
     @JsonProperty("priority")

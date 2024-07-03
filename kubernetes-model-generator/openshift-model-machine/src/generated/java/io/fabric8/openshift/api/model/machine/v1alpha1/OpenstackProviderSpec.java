@@ -122,29 +122,29 @@ public class OpenstackProviderSpec implements Editable<OpenstackProviderSpecBuil
     private io.fabric8.kubernetes.api.model.ObjectMeta metadata;
     @JsonProperty("networks")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<NetworkParam> networks = new ArrayList<NetworkParam>();
+    private List<NetworkParam> networks = new ArrayList<>();
     @JsonProperty("ports")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<PortOpts> ports = new ArrayList<PortOpts>();
+    private List<PortOpts> ports = new ArrayList<>();
     @JsonProperty("primarySubnet")
     private String primarySubnet;
     @JsonProperty("rootVolume")
     private RootVolume rootVolume;
     @JsonProperty("securityGroups")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<SecurityGroupParam> securityGroups = new ArrayList<SecurityGroupParam>();
+    private List<SecurityGroupParam> securityGroups = new ArrayList<>();
     @JsonProperty("serverGroupID")
     private String serverGroupID;
     @JsonProperty("serverGroupName")
     private String serverGroupName;
     @JsonProperty("serverMetadata")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> serverMetadata = new LinkedHashMap<String, String>();
+    private Map<String, String> serverMetadata = new LinkedHashMap<>();
     @JsonProperty("sshUserName")
     private String sshUserName;
     @JsonProperty("tags")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> tags = new ArrayList<String>();
+    private List<String> tags = new ArrayList<>();
     @JsonProperty("trunk")
     private Boolean trunk;
     @JsonProperty("userDataSecret")

@@ -79,7 +79,7 @@ public class GitLabSourceSpec implements Editable<GitLabSourceSpecBuilder> , Kub
     private CloudEventOverrides ceOverrides;
     @JsonProperty("eventTypes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> eventTypes = new ArrayList<String>();
+    private List<String> eventTypes = new ArrayList<>();
     @JsonProperty("projectUrl")
     private String projectUrl;
     @JsonProperty("secretToken")

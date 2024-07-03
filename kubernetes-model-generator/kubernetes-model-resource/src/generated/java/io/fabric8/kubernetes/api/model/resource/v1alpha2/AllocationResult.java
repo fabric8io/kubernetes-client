@@ -63,7 +63,7 @@ public class AllocationResult implements Editable<AllocationResultBuilder> , Kub
     private NodeSelector availableOnNodes;
     @JsonProperty("resourceHandles")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ResourceHandle> resourceHandles = new ArrayList<ResourceHandle>();
+    private List<ResourceHandle> resourceHandles = new ArrayList<>();
     @JsonProperty("shareable")
     private Boolean shareable;
     @JsonIgnore

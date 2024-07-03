@@ -71,16 +71,16 @@ public class RecommendedContainerResources implements Editable<RecommendedContai
     private java.lang.String containerName;
     @JsonProperty("lowerBound")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Quantity> lowerBound = new LinkedHashMap<String, Quantity>();
+    private Map<String, Quantity> lowerBound = new LinkedHashMap<>();
     @JsonProperty("target")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Quantity> target = new LinkedHashMap<String, Quantity>();
+    private Map<String, Quantity> target = new LinkedHashMap<>();
     @JsonProperty("uncappedTarget")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Quantity> uncappedTarget = new LinkedHashMap<String, Quantity>();
+    private Map<String, Quantity> uncappedTarget = new LinkedHashMap<>();
     @JsonProperty("upperBound")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Quantity> upperBound = new LinkedHashMap<String, Quantity>();
+    private Map<String, Quantity> upperBound = new LinkedHashMap<>();
     @JsonIgnore
     private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 

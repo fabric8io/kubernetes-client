@@ -36,10 +36,10 @@ public class ResourceQuotaStatus implements Editable<ResourceQuotaStatusBuilder>
 
     @JsonProperty("hard")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, io.fabric8.kubernetes.api.model.Quantity> hard = new LinkedHashMap<String, io.fabric8.kubernetes.api.model.Quantity>();
+    private Map<String, io.fabric8.kubernetes.api.model.Quantity> hard = new LinkedHashMap<>();
     @JsonProperty("used")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, io.fabric8.kubernetes.api.model.Quantity> used = new LinkedHashMap<String, io.fabric8.kubernetes.api.model.Quantity>();
+    private Map<String, io.fabric8.kubernetes.api.model.Quantity> used = new LinkedHashMap<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

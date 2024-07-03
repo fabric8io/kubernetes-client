@@ -71,12 +71,12 @@ public class WebhookDescription implements Editable<WebhookDescriptionBuilder> ,
 
     @JsonProperty("admissionReviewVersions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> admissionReviewVersions = new ArrayList<String>();
+    private List<String> admissionReviewVersions = new ArrayList<>();
     @JsonProperty("containerPort")
     private Integer containerPort;
     @JsonProperty("conversionCRDs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> conversionCRDs = new ArrayList<String>();
+    private List<String> conversionCRDs = new ArrayList<>();
     @JsonProperty("deploymentName")
     private String deploymentName;
     @JsonProperty("failurePolicy")
@@ -91,7 +91,7 @@ public class WebhookDescription implements Editable<WebhookDescriptionBuilder> ,
     private String reinvocationPolicy;
     @JsonProperty("rules")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<RuleWithOperations> rules = new ArrayList<RuleWithOperations>();
+    private List<RuleWithOperations> rules = new ArrayList<>();
     @JsonProperty("sideEffects")
     private String sideEffects;
     @JsonProperty("targetPort")

@@ -62,19 +62,19 @@ public class TimeInterval implements Editable<TimeIntervalBuilder> , KubernetesR
 
     @JsonProperty("daysOfMonth")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<DayOfMonthRange> daysOfMonth = new ArrayList<DayOfMonthRange>();
+    private List<DayOfMonthRange> daysOfMonth = new ArrayList<>();
     @JsonProperty("months")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> months = new ArrayList<String>();
+    private List<String> months = new ArrayList<>();
     @JsonProperty("times")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<TimeRange> times = new ArrayList<TimeRange>();
+    private List<TimeRange> times = new ArrayList<>();
     @JsonProperty("weekdays")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> weekdays = new ArrayList<String>();
+    private List<String> weekdays = new ArrayList<>();
     @JsonProperty("years")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> years = new ArrayList<String>();
+    private List<String> years = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

@@ -79,7 +79,7 @@ public class ClusterAutoscalerList implements Editable<ClusterAutoscalerListBuil
     private String apiVersion = "autoscaling.openshift.io/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.openshift.api.model.clusterautoscaling.v1.ClusterAutoscaler> items = new ArrayList<io.fabric8.openshift.api.model.clusterautoscaling.v1.ClusterAutoscaler>();
+    private List<io.fabric8.openshift.api.model.clusterautoscaling.v1.ClusterAutoscaler> items = new ArrayList<>();
     /**
      * 
      * (Required)

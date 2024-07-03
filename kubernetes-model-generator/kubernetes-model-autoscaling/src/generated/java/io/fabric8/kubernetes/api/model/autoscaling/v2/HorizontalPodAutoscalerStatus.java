@@ -63,10 +63,10 @@ public class HorizontalPodAutoscalerStatus implements Editable<HorizontalPodAuto
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<HorizontalPodAutoscalerCondition> conditions = new ArrayList<HorizontalPodAutoscalerCondition>();
+    private List<HorizontalPodAutoscalerCondition> conditions = new ArrayList<>();
     @JsonProperty("currentMetrics")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<MetricStatus> currentMetrics = new ArrayList<MetricStatus>();
+    private List<MetricStatus> currentMetrics = new ArrayList<>();
     @JsonProperty("currentReplicas")
     private Integer currentReplicas;
     @JsonProperty("desiredReplicas")

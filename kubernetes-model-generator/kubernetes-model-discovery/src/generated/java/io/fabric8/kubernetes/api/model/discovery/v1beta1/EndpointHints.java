@@ -58,7 +58,7 @@ public class EndpointHints implements Editable<EndpointHintsBuilder> , Kubernete
 
     @JsonProperty("forZones")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ForZone> forZones = new ArrayList<ForZone>();
+    private List<ForZone> forZones = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

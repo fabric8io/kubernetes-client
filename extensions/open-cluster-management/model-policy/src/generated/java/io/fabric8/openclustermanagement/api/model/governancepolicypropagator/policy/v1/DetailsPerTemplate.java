@@ -69,7 +69,7 @@ public class DetailsPerTemplate implements Editable<DetailsPerTemplateBuilder> ,
     private String compliant;
     @JsonProperty("history")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ComplianceHistory> history = new ArrayList<ComplianceHistory>();
+    private List<ComplianceHistory> history = new ArrayList<>();
     @JsonProperty("templateMeta")
     private io.fabric8.kubernetes.api.model.ObjectMeta templateMeta;
     @JsonIgnore

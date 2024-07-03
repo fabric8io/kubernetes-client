@@ -50,7 +50,7 @@ public class RBDVolumeSource implements Editable<RBDVolumeSourceBuilder> , Kuber
     private String keyring;
     @JsonProperty("monitors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> monitors = new ArrayList<String>();
+    private List<String> monitors = new ArrayList<>();
     @JsonProperty("pool")
     private String pool;
     @JsonProperty("readOnly")

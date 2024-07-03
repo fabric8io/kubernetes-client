@@ -77,7 +77,7 @@ public class ServiceBindingStatus implements Editable<ServiceBindingStatusBuilde
     private Boolean asyncOpInProgress;
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ServiceBindingCondition> conditions = new ArrayList<ServiceBindingCondition>();
+    private List<ServiceBindingCondition> conditions = new ArrayList<>();
     @JsonProperty("currentOperation")
     private java.lang.String currentOperation;
     @JsonProperty("externalProperties")

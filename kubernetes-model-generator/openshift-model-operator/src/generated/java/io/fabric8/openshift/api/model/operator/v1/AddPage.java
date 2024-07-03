@@ -58,7 +58,7 @@ public class AddPage implements Editable<AddPageBuilder> , KubernetesResource
 
     @JsonProperty("disabledActions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> disabledActions = new ArrayList<String>();
+    private List<String> disabledActions = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

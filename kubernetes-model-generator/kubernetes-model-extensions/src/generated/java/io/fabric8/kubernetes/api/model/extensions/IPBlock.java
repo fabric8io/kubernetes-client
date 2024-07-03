@@ -61,7 +61,7 @@ public class IPBlock implements Editable<IPBlockBuilder> , KubernetesResource
     private String cidr;
     @JsonProperty("except")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> except = new ArrayList<String>();
+    private List<String> except = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

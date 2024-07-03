@@ -65,7 +65,7 @@ public class EnvoyFilterProxyMatch implements Editable<EnvoyFilterProxyMatchBuil
 
     @JsonProperty("metadata")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> metadata = new LinkedHashMap<String, String>();
+    private Map<String, String> metadata = new LinkedHashMap<>();
     @JsonProperty("proxyVersion")
     private java.lang.String proxyVersion;
     @JsonIgnore

@@ -79,7 +79,7 @@ public class FlowSchemaList implements Editable<FlowSchemaListBuilder> , Kuberne
     private String apiVersion = "flowcontrol.apiserver.k8s.io/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.flowcontrol.v1.FlowSchema> items = new ArrayList<io.fabric8.kubernetes.api.model.flowcontrol.v1.FlowSchema>();
+    private List<io.fabric8.kubernetes.api.model.flowcontrol.v1.FlowSchema> items = new ArrayList<>();
     /**
      * 
      * (Required)

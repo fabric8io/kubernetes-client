@@ -87,7 +87,7 @@ public class PingSourceList implements Editable<PingSourceListBuilder> , Kuberne
     private String apiVersion = "sources.knative.dev/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.knative.sources.v1.PingSource> items = new ArrayList<io.fabric8.knative.sources.v1.PingSource>();
+    private List<io.fabric8.knative.sources.v1.PingSource> items = new ArrayList<>();
     /**
      * 
      * (Required)

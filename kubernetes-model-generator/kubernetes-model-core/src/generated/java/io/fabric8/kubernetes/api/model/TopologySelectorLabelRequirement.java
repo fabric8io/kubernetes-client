@@ -40,7 +40,7 @@ public class TopologySelectorLabelRequirement implements Editable<TopologySelect
     private String key;
     @JsonProperty("values")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> values = new ArrayList<String>();
+    private List<String> values = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

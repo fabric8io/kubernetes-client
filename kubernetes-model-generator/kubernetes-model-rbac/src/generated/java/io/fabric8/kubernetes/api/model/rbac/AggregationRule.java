@@ -57,7 +57,7 @@ public class AggregationRule implements Editable<AggregationRuleBuilder> , Kuber
 
     @JsonProperty("clusterRoleSelectors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.LabelSelector> clusterRoleSelectors = new ArrayList<io.fabric8.kubernetes.api.model.LabelSelector>();
+    private List<io.fabric8.kubernetes.api.model.LabelSelector> clusterRoleSelectors = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

@@ -64,7 +64,7 @@ public class AccessLogging implements Editable<AccessLoggingBuilder> , Kubernete
     private LoggingDestination destination;
     @JsonProperty("httpCaptureCookies")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<IngressControllerCaptureHTTPCookie> httpCaptureCookies = new ArrayList<IngressControllerCaptureHTTPCookie>();
+    private List<IngressControllerCaptureHTTPCookie> httpCaptureCookies = new ArrayList<>();
     @JsonProperty("httpCaptureHeaders")
     private IngressControllerCaptureHTTPHeaders httpCaptureHeaders;
     @JsonProperty("httpLogFormat")

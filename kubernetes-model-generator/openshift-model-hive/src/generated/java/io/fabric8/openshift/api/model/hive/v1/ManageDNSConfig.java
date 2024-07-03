@@ -65,7 +65,7 @@ public class ManageDNSConfig implements Editable<ManageDNSConfigBuilder> , Kuber
     private ManageDNSAzureConfig azure;
     @JsonProperty("domains")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> domains = new ArrayList<String>();
+    private List<String> domains = new ArrayList<>();
     @JsonProperty("gcp")
     private ManageDNSGCPConfig gcp;
     @JsonIgnore

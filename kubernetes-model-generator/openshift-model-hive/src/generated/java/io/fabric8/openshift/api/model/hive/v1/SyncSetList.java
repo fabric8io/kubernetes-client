@@ -79,7 +79,7 @@ public class SyncSetList implements Editable<SyncSetListBuilder> , KubernetesRes
     private String apiVersion = "hive.openshift.io/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.openshift.api.model.hive.v1.SyncSet> items = new ArrayList<io.fabric8.openshift.api.model.hive.v1.SyncSet>();
+    private List<io.fabric8.openshift.api.model.hive.v1.SyncSet> items = new ArrayList<>();
     /**
      * 
      * (Required)

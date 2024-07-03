@@ -79,7 +79,7 @@ public class HorizontalPodAutoscalerList implements Editable<HorizontalPodAutosc
     private String apiVersion = "autoscaling/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.autoscaling.v1.HorizontalPodAutoscaler> items = new ArrayList<io.fabric8.kubernetes.api.model.autoscaling.v1.HorizontalPodAutoscaler>();
+    private List<io.fabric8.kubernetes.api.model.autoscaling.v1.HorizontalPodAutoscaler> items = new ArrayList<>();
     /**
      * 
      * (Required)

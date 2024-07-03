@@ -60,10 +60,10 @@ public class DeveloperConsoleCatalogTypes implements Editable<DeveloperConsoleCa
 
     @JsonProperty("disabled")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> disabled = new ArrayList<String>();
+    private List<String> disabled = new ArrayList<>();
     @JsonProperty("enabled")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> enabled = new ArrayList<String>();
+    private List<String> enabled = new ArrayList<>();
     @JsonProperty("state")
     private String state;
     @JsonIgnore

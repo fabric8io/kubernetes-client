@@ -66,7 +66,7 @@ public class TaskRunDebug implements Editable<TaskRunDebugBuilder> , KubernetesR
 
     @JsonProperty("breakpoint")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> breakpoint = new ArrayList<String>();
+    private List<String> breakpoint = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

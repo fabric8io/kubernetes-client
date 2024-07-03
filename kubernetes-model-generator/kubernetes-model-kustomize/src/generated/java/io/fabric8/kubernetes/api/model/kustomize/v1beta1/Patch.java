@@ -39,7 +39,7 @@ public class Patch implements Editable<PatchBuilder> , KubernetesResource
 
     @JsonProperty("options")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Boolean> options = new LinkedHashMap<String, Boolean>();
+    private Map<String, Boolean> options = new LinkedHashMap<>();
     @JsonProperty("patch")
     private String patch;
     @JsonProperty("path")

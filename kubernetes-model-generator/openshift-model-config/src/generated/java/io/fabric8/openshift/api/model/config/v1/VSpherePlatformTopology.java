@@ -71,7 +71,7 @@ public class VSpherePlatformTopology implements Editable<VSpherePlatformTopology
     private String folder;
     @JsonProperty("networks")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> networks = new ArrayList<String>();
+    private List<String> networks = new ArrayList<>();
     @JsonProperty("resourcePool")
     private String resourcePool;
     @JsonIgnore

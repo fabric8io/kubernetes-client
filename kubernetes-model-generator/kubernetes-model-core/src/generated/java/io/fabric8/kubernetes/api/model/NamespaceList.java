@@ -56,7 +56,7 @@ public class NamespaceList implements Editable<NamespaceListBuilder> , Kubernete
     private String apiVersion = "v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.Namespace> items = new ArrayList<io.fabric8.kubernetes.api.model.Namespace>();
+    private List<io.fabric8.kubernetes.api.model.Namespace> items = new ArrayList<>();
     /**
      * 
      * (Required)

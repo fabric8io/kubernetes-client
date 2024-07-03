@@ -108,23 +108,23 @@ public class JSONSchemaProps implements Editable<JSONSchemaPropsBuilder> , Kuber
     private JSONSchemaPropsOrBool additionalProperties;
     @JsonProperty("allOf")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<JSONSchemaProps> allOf = new ArrayList<JSONSchemaProps>();
+    private List<JSONSchemaProps> allOf = new ArrayList<>();
     @JsonProperty("anyOf")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<JSONSchemaProps> anyOf = new ArrayList<JSONSchemaProps>();
+    private List<JSONSchemaProps> anyOf = new ArrayList<>();
     @JsonProperty("default")
     private JsonNode _default;
     @JsonProperty("definitions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps> definitions = new LinkedHashMap<String, io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps>();
+    private Map<String, io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps> definitions = new LinkedHashMap<>();
     @JsonProperty("dependencies")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, JSONSchemaPropsOrStringArray> dependencies = new LinkedHashMap<String, JSONSchemaPropsOrStringArray>();
+    private Map<String, JSONSchemaPropsOrStringArray> dependencies = new LinkedHashMap<>();
     @JsonProperty("description")
     private String description;
     @JsonProperty("enum")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<JsonNode> _enum = new ArrayList<JsonNode>();
+    private List<JsonNode> _enum = new ArrayList<>();
     @JsonProperty("example")
     private JsonNode example;
     @JsonProperty("exclusiveMaximum")
@@ -163,18 +163,18 @@ public class JSONSchemaProps implements Editable<JSONSchemaPropsBuilder> , Kuber
     private Boolean nullable;
     @JsonProperty("oneOf")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<JSONSchemaProps> oneOf = new ArrayList<JSONSchemaProps>();
+    private List<JSONSchemaProps> oneOf = new ArrayList<>();
     @JsonProperty("pattern")
     private String pattern;
     @JsonProperty("patternProperties")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps> patternProperties = new LinkedHashMap<String, io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps>();
+    private Map<String, io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps> patternProperties = new LinkedHashMap<>();
     @JsonProperty("properties")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps> properties = new LinkedHashMap<String, io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps>();
+    private Map<String, io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps> properties = new LinkedHashMap<>();
     @JsonProperty("required")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> required = new ArrayList<String>();
+    private List<String> required = new ArrayList<>();
     @JsonProperty("title")
     private String title;
     @JsonProperty("type")
@@ -187,7 +187,7 @@ public class JSONSchemaProps implements Editable<JSONSchemaPropsBuilder> , Kuber
     private Boolean xKubernetesIntOrString;
     @JsonProperty("x-kubernetes-list-map-keys")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> xKubernetesListMapKeys = new ArrayList<String>();
+    private List<String> xKubernetesListMapKeys = new ArrayList<>();
     @JsonProperty("x-kubernetes-list-type")
     private String xKubernetesListType;
     @JsonProperty("x-kubernetes-map-type")
@@ -196,7 +196,7 @@ public class JSONSchemaProps implements Editable<JSONSchemaPropsBuilder> , Kuber
     private Boolean xKubernetesPreserveUnknownFields;
     @JsonProperty("x-kubernetes-validations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ValidationRule> xKubernetesValidations = new ArrayList<ValidationRule>();
+    private List<ValidationRule> xKubernetesValidations = new ArrayList<>();
 
     /**
      * No args constructor for use in serialization

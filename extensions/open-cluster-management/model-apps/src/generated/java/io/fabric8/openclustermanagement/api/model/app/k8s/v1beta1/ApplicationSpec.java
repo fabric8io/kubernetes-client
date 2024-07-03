@@ -75,12 +75,12 @@ public class ApplicationSpec implements Editable<ApplicationSpecBuilder> , Kuber
     private String assemblyPhase;
     @JsonProperty("componentKinds")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<GroupKind> componentKinds = new ArrayList<GroupKind>();
+    private List<GroupKind> componentKinds = new ArrayList<>();
     @JsonProperty("descriptor")
     private Descriptor descriptor;
     @JsonProperty("info")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<InfoItem> info = new ArrayList<InfoItem>();
+    private List<InfoItem> info = new ArrayList<>();
     @JsonProperty("selector")
     private io.fabric8.kubernetes.api.model.LabelSelector selector;
     @JsonIgnore

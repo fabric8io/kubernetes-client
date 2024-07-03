@@ -65,7 +65,7 @@ public class RouteSpec implements Editable<RouteSpecBuilder> , KubernetesResourc
 
     @JsonProperty("alternateBackends")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<RouteTargetReference> alternateBackends = new ArrayList<RouteTargetReference>();
+    private List<RouteTargetReference> alternateBackends = new ArrayList<>();
     @JsonProperty("host")
     private String host;
     @JsonProperty("path")

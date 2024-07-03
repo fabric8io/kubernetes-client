@@ -77,7 +77,7 @@ public class KafkaSourceSpec implements Editable<KafkaSourceSpecBuilder> , Kuber
 
     @JsonProperty("bootstrapServers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> bootstrapServers = new ArrayList<String>();
+    private List<String> bootstrapServers = new ArrayList<>();
     @JsonProperty("ceOverrides")
     private CloudEventOverrides ceOverrides;
     @JsonProperty("consumerGroup")
@@ -94,7 +94,7 @@ public class KafkaSourceSpec implements Editable<KafkaSourceSpecBuilder> , Kuber
     private Destination sink;
     @JsonProperty("topics")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> topics = new ArrayList<String>();
+    private List<String> topics = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

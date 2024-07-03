@@ -79,7 +79,7 @@ public class IngressList implements Editable<IngressListBuilder> , KubernetesRes
     private String apiVersion = "config.openshift.io/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.openshift.api.model.config.v1.Ingress> items = new ArrayList<io.fabric8.openshift.api.model.config.v1.Ingress>();
+    private List<io.fabric8.openshift.api.model.config.v1.Ingress> items = new ArrayList<>();
     /**
      * 
      * (Required)

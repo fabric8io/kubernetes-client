@@ -66,15 +66,15 @@ public class MachineConfigSpec implements Editable<MachineConfigSpecBuilder> , K
     private java.lang.String baseOSExtensionsContainerImage;
     @JsonProperty("config")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Object> config = new LinkedHashMap<String, Object>();
+    private Map<String, Object> config = new LinkedHashMap<>();
     @JsonProperty("extensions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> extensions = new ArrayList<java.lang.String>();
+    private List<java.lang.String> extensions = new ArrayList<>();
     @JsonProperty("fips")
     private Boolean fips;
     @JsonProperty("kernelArguments")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> kernelArguments = new ArrayList<java.lang.String>();
+    private List<java.lang.String> kernelArguments = new ArrayList<>();
     @JsonProperty("kernelType")
     private java.lang.String kernelType;
     @JsonProperty("osImageURL")

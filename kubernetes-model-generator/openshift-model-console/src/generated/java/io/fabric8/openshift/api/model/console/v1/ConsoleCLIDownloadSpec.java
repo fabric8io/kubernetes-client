@@ -64,7 +64,7 @@ public class ConsoleCLIDownloadSpec implements Editable<ConsoleCLIDownloadSpecBu
     private String displayName;
     @JsonProperty("links")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<CLIDownloadLink> links = new ArrayList<CLIDownloadLink>();
+    private List<CLIDownloadLink> links = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
