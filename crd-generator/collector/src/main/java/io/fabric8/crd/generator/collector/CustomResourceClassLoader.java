@@ -43,11 +43,13 @@ class CustomResourceClassLoader {
 
   private ClassLoader cachedClassLoader;
 
+  @SuppressWarnings("UnusedReturnValue")
   public CustomResourceClassLoader withParentClassLoader(ClassLoader parentClassLoader) {
     this.parentClassLoader = parentClassLoader;
     return this;
   }
 
+  @SuppressWarnings("UnusedReturnValue")
   public CustomResourceClassLoader withClasspathElement(String... classpathElements) {
     if (classpathElements != null) {
       withClasspathElements(Arrays.asList(classpathElements));
@@ -55,6 +57,7 @@ class CustomResourceClassLoader {
     return this;
   }
 
+  @SuppressWarnings("UnusedReturnValue")
   public CustomResourceClassLoader withClasspathElements(Collection<String> classpathElements) {
     if (classpathElements != null) {
       classpathElements.stream()

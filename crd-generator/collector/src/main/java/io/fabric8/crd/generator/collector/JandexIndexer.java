@@ -52,6 +52,7 @@ class JandexIndexer {
   private long maxBytesReadFromJar = 100000000; // 100 MB
   private long maxClassFileSize = 1000000; // 1 MB
 
+  @SuppressWarnings("UnusedReturnValue")
   public JandexIndexer withMaxJarEntries(int maxJarEntries) {
     if (maxJarEntries < 1)
       throw new IllegalArgumentException("maxJarEntries must be greater than 0");
@@ -59,6 +60,7 @@ class JandexIndexer {
     return this;
   }
 
+  @SuppressWarnings("UnusedReturnValue")
   public JandexIndexer withMaxClassFileSize(int maxClassFileSize) {
     if (maxClassFileSize < 10)
       throw new IllegalArgumentException("maxClassFileSize must be greater than 10");
@@ -66,6 +68,7 @@ class JandexIndexer {
     return this;
   }
 
+  @SuppressWarnings("UnusedReturnValue")
   public JandexIndexer withMaxBytesReadFromJar(long maxBytesReadFromJar) {
     if (maxBytesReadFromJar < 10)
       throw new IllegalArgumentException("maxBytesReadFromJar must be greater than 10");
@@ -161,6 +164,7 @@ class JandexIndexer {
     }
   }
 
+  @SuppressWarnings("UnusedReturnValue")
   private long addToIndex(Path file, Indexer indexer) {
     try (InputStream in = Files.newInputStream(file)) {
       return addToIndex(in, indexer);
