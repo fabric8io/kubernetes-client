@@ -184,7 +184,7 @@ public class CustomResourceCollector {
   /**
    * Resets all internal states to defaults.
    */
-  public void reset() {
+  void reset() {
     customResourceClassLoader.reset();
     jandexCustomResourceClassScanner.reset();
     customResourceClassNames.clear();

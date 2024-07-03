@@ -127,7 +127,7 @@ class CustomResourceClassLoader {
     return Thread.currentThread().getContextClassLoader();
   }
 
-  public void reset() {
+  void reset() {
     classpathElements.clear();
     parentClassLoader = null;
     cachedClassLoader = null;
