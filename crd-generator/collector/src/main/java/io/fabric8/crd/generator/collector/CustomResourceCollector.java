@@ -182,7 +182,7 @@ public class CustomResourceCollector {
         .map(customResourceClassLoader::loadCustomResourceClass)
         .collect(Collectors.toList());
 
-    log.debug("Found {} custom resource classes after filtering", customResourceClasses.size());
+    log.debug("Retained {} custom resource classes after filtering", customResourceClasses.size());
     return customResourceClasses;
   }
 
