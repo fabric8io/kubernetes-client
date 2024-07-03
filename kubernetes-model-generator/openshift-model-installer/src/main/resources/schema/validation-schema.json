@@ -3134,20 +3134,17 @@
     },
     "failuredomain": {
       "properties": {
-        "name": {
+        "computeAvailabilityZone": {
           "type": "string"
         },
-        "region": {
-          "type": "string"
+        "portTargets": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/os_installer_openstack_v1_NamedPortTarget",
+            "existingJavaType": "io.fabric8.openshift.api.model.installer.openstack.v1.NamedPortTarget"
+          }
         },
-        "server": {
-          "type": "string"
-        },
-        "topology": {
-          "$ref": "#/definitions/os_installer_vsphere_v1_Topology",
-          "existingJavaType": "io.fabric8.openshift.api.model.installer.vsphere.v1.Topology"
-        },
-        "zone": {
+        "storageAvailabilityZone": {
           "type": "string"
         }
       },
@@ -3401,26 +3398,22 @@
     },
     "machinepool": {
       "properties": {
-        "coresPerSocket": {
-          "type": "integer"
+        "architecture": {
+          "type": "string"
         },
-        "cpus": {
-          "type": "integer"
+        "hyperthreading": {
+          "type": "string"
         },
-        "memoryMB": {
+        "name": {
+          "type": "string"
+        },
+        "platform": {
+          "$ref": "#/definitions/os_installer_v1_MachinePoolPlatform",
+          "existingJavaType": "io.fabric8.openshift.api.model.installer.v1.MachinePoolPlatform"
+        },
+        "replicas": {
           "type": "integer",
           "existingJavaType": "Long"
-        },
-        "osDisk": {
-          "$ref": "#/definitions/os_installer_vsphere_v1_OSDisk",
-          "existingJavaType": "io.fabric8.openshift.api.model.installer.vsphere.v1.OSDisk"
-        },
-        "zones": {
-          "type": "array",
-          "javaOmitEmpty": true,
-          "items": {
-            "type": "string"
-          }
         }
       },
       "additionalProperties": true
@@ -3722,15 +3715,9 @@
     },
     "osdisk": {
       "properties": {
-        "diskEncryptionSet": {
-          "$ref": "#/definitions/os_installer_azure_v1_DiskEncryptionSet",
-          "existingJavaType": "io.fabric8.openshift.api.model.installer.azure.v1.DiskEncryptionSet"
-        },
-        "diskSizeGB": {
-          "type": "integer"
-        },
-        "diskType": {
-          "type": "string"
+        "diskSizeGiB": {
+          "type": "integer",
+          "existingJavaType": "Long"
         }
       },
       "additionalProperties": true
@@ -3788,79 +3775,49 @@
     },
     "platform": {
       "properties": {
-        "apiFloatingIP": {
+        "amiID": {
           "type": "string"
         },
-        "apiVIP": {
+        "defaultMachinePlatform": {
+          "$ref": "#/definitions/os_installer_aws_v1_MachinePool",
+          "existingJavaType": "io.fabric8.openshift.api.model.installer.aws.v1.MachinePool"
+        },
+        "experimentalPropagateUserTags": {
+          "type": "boolean"
+        },
+        "hostedZone": {
           "type": "string"
         },
-        "apiVIPs": {
+        "lbType": {
+          "type": "string"
+        },
+        "propagateUserTags": {
+          "type": "boolean"
+        },
+        "region": {
+          "type": "string"
+        },
+        "serviceEndpoints": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/os_installer_aws_v1_ServiceEndpoint",
+            "existingJavaType": "io.fabric8.openshift.api.model.installer.aws.v1.ServiceEndpoint"
+          }
+        },
+        "subnets": {
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
             "type": "string"
           }
         },
-        "cloud": {
-          "type": "string"
-        },
-        "clusterOSImage": {
-          "type": "string"
-        },
-        "clusterOSImageProperties": {
+        "userTags": {
           "type": "object",
           "additionalProperties": {
             "type": "string"
           },
           "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
-        },
-        "computeFlavor": {
-          "type": "string"
-        },
-        "defaultMachinePlatform": {
-          "$ref": "#/definitions/os_installer_openstack_v1_MachinePool",
-          "existingJavaType": "io.fabric8.openshift.api.model.installer.openstack.v1.MachinePool"
-        },
-        "externalDNS": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "externalNetwork": {
-          "type": "string"
-        },
-        "ingressFloatingIP": {
-          "type": "string"
-        },
-        "ingressVIP": {
-          "type": "string"
-        },
-        "ingressVIPs": {
-          "type": "array",
-          "javaOmitEmpty": true,
-          "items": {
-            "type": "string"
-          }
-        },
-        "lbFloatingIP": {
-          "type": "string"
-        },
-        "loadBalancer": {
-          "$ref": "#/definitions/os_config_v1_OpenStackPlatformLoadBalancer",
-          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.OpenStackPlatformLoadBalancer"
-        },
-        "machinesSubnet": {
-          "type": "string"
-        },
-        "octaviaSupport": {
-          "type": "string"
-        },
-        "region": {
-          "type": "string"
-        },
-        "trunkSupport": {
-          "type": "string"
         }
       },
       "additionalProperties": true
