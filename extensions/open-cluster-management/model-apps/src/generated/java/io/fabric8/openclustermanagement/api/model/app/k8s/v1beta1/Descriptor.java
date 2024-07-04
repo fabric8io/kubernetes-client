@@ -76,21 +76,21 @@ public class Descriptor implements Editable<DescriptorBuilder> , KubernetesResou
     private String description;
     @JsonProperty("icons")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ImageSpec> icons = new ArrayList<ImageSpec>();
+    private List<ImageSpec> icons = new ArrayList<>();
     @JsonProperty("keywords")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> keywords = new ArrayList<String>();
+    private List<String> keywords = new ArrayList<>();
     @JsonProperty("links")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Link> links = new ArrayList<Link>();
+    private List<Link> links = new ArrayList<>();
     @JsonProperty("maintainers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ContactData> maintainers = new ArrayList<ContactData>();
+    private List<ContactData> maintainers = new ArrayList<>();
     @JsonProperty("notes")
     private String notes;
     @JsonProperty("owners")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ContactData> owners = new ArrayList<ContactData>();
+    private List<ContactData> owners = new ArrayList<>();
     @JsonProperty("type")
     private String type;
     @JsonProperty("version")

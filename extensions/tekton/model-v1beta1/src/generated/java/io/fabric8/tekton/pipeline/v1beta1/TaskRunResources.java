@@ -67,10 +67,10 @@ public class TaskRunResources implements Editable<TaskRunResourcesBuilder> , Kub
 
     @JsonProperty("inputs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<TaskResourceBinding> inputs = new ArrayList<TaskResourceBinding>();
+    private List<TaskResourceBinding> inputs = new ArrayList<>();
     @JsonProperty("outputs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<TaskResourceBinding> outputs = new ArrayList<TaskResourceBinding>();
+    private List<TaskResourceBinding> outputs = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

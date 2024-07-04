@@ -62,7 +62,7 @@ public class VCenter implements Editable<VCenterBuilder> , KubernetesResource
 
     @JsonProperty("datacenters")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> datacenters = new ArrayList<String>();
+    private List<String> datacenters = new ArrayList<>();
     @JsonProperty("password")
     private String password;
     @JsonProperty("port")

@@ -79,7 +79,7 @@ public class UserList implements Editable<UserListBuilder> , KubernetesResource,
     private String apiVersion = "user.openshift.io/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.openshift.api.model.User> items = new ArrayList<io.fabric8.openshift.api.model.User>();
+    private List<io.fabric8.openshift.api.model.User> items = new ArrayList<>();
     /**
      * 
      * (Required)

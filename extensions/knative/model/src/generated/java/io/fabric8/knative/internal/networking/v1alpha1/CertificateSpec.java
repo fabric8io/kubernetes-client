@@ -68,7 +68,7 @@ public class CertificateSpec implements Editable<CertificateSpecBuilder> , Kuber
 
     @JsonProperty("dnsNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> dnsNames = new ArrayList<String>();
+    private List<String> dnsNames = new ArrayList<>();
     @JsonProperty("domain")
     private String domain;
     @JsonProperty("secretName")

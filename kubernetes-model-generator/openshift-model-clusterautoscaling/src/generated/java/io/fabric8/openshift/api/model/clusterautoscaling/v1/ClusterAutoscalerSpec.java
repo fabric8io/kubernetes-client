@@ -69,7 +69,7 @@ public class ClusterAutoscalerSpec implements Editable<ClusterAutoscalerSpecBuil
     private Boolean balanceSimilarNodeGroups;
     @JsonProperty("balancingIgnoredLabels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> balancingIgnoredLabels = new ArrayList<String>();
+    private List<String> balancingIgnoredLabels = new ArrayList<>();
     @JsonProperty("ignoreDaemonsetsUtilization")
     private Boolean ignoreDaemonsetsUtilization;
     @JsonProperty("logVerbosity")

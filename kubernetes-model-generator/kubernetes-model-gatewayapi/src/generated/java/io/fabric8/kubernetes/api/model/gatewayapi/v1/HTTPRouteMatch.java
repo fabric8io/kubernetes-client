@@ -61,14 +61,14 @@ public class HTTPRouteMatch implements Editable<HTTPRouteMatchBuilder> , Kuberne
 
     @JsonProperty("headers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<HTTPHeaderMatch> headers = new ArrayList<HTTPHeaderMatch>();
+    private List<HTTPHeaderMatch> headers = new ArrayList<>();
     @JsonProperty("method")
     private String method;
     @JsonProperty("path")
     private HTTPPathMatch path;
     @JsonProperty("queryParams")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<HTTPQueryParamMatch> queryParams = new ArrayList<HTTPQueryParamMatch>();
+    private List<HTTPQueryParamMatch> queryParams = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

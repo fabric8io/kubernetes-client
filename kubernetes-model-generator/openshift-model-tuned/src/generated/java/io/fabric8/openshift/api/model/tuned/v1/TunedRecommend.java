@@ -62,10 +62,10 @@ public class TunedRecommend implements Editable<TunedRecommendBuilder> , Kuberne
 
     @JsonProperty("machineConfigLabels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> machineConfigLabels = new LinkedHashMap<String, String>();
+    private Map<String, String> machineConfigLabels = new LinkedHashMap<>();
     @JsonProperty("match")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<TunedMatch> match = new ArrayList<TunedMatch>();
+    private List<TunedMatch> match = new ArrayList<>();
     @JsonProperty("operand")
     private OperandConfig operand;
     @JsonProperty("priority")

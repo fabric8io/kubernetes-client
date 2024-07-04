@@ -79,7 +79,7 @@ public class CustomRunSpec implements Editable<CustomRunSpecBuilder> , Kubernete
     private EmbeddedCustomRunSpec customSpec;
     @JsonProperty("params")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Param> params = new ArrayList<Param>();
+    private List<Param> params = new ArrayList<>();
     @JsonProperty("retries")
     private Integer retries;
     @JsonProperty("serviceAccountName")
@@ -92,7 +92,7 @@ public class CustomRunSpec implements Editable<CustomRunSpecBuilder> , Kubernete
     private Duration timeout;
     @JsonProperty("workspaces")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<WorkspaceBinding> workspaces = new ArrayList<WorkspaceBinding>();
+    private List<WorkspaceBinding> workspaces = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

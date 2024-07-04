@@ -70,7 +70,7 @@ public class PolicySpec implements Editable<PolicySpecBuilder> , KubernetesResou
     private Boolean disabled;
     @JsonProperty("policy-templates")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<PolicyTemplate> policyTemplates = new ArrayList<PolicyTemplate>();
+    private List<PolicyTemplate> policyTemplates = new ArrayList<>();
     @JsonProperty("remediationAction")
     private String remediationAction;
     @JsonIgnore

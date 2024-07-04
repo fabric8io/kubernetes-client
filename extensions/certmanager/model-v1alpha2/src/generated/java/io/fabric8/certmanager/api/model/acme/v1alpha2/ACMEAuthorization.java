@@ -70,7 +70,7 @@ public class ACMEAuthorization implements Editable<ACMEAuthorizationBuilder> , K
 
     @JsonProperty("challenges")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ACMEChallenge> challenges = new ArrayList<ACMEChallenge>();
+    private List<ACMEChallenge> challenges = new ArrayList<>();
     @JsonProperty("identifier")
     private String identifier;
     @JsonProperty("initialState")

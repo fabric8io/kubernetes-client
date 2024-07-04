@@ -59,10 +59,10 @@ public class ExternalIPPolicy implements Editable<ExternalIPPolicyBuilder> , Kub
 
     @JsonProperty("allowedCIDRs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> allowedCIDRs = new ArrayList<String>();
+    private List<String> allowedCIDRs = new ArrayList<>();
     @JsonProperty("rejectedCIDRs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> rejectedCIDRs = new ArrayList<String>();
+    private List<String> rejectedCIDRs = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

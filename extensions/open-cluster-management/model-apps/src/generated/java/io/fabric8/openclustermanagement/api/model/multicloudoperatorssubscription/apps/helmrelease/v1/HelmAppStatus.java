@@ -67,7 +67,7 @@ public class HelmAppStatus implements Editable<HelmAppStatusBuilder> , Kubernete
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<HelmAppCondition> conditions = new ArrayList<HelmAppCondition>();
+    private List<HelmAppCondition> conditions = new ArrayList<>();
     @JsonProperty("deployedRelease")
     private HelmAppRelease deployedRelease;
     @JsonIgnore

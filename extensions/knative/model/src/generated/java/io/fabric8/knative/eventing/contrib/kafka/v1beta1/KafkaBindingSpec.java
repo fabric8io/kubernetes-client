@@ -69,7 +69,7 @@ public class KafkaBindingSpec implements Editable<KafkaBindingSpecBuilder> , Kub
 
     @JsonProperty("bootstrapServers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> bootstrapServers = new ArrayList<String>();
+    private List<String> bootstrapServers = new ArrayList<>();
     @JsonProperty("net")
     private KafkaNetSpec net;
     @JsonProperty("subject")

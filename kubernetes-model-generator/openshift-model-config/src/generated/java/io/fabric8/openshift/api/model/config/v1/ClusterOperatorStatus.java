@@ -61,15 +61,15 @@ public class ClusterOperatorStatus implements Editable<ClusterOperatorStatusBuil
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ClusterOperatorStatusCondition> conditions = new ArrayList<ClusterOperatorStatusCondition>();
+    private List<ClusterOperatorStatusCondition> conditions = new ArrayList<>();
     @JsonProperty("extension")
     private RawExtension extension;
     @JsonProperty("relatedObjects")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.openshift.api.model.config.v1.ObjectReference> relatedObjects = new ArrayList<io.fabric8.openshift.api.model.config.v1.ObjectReference>();
+    private List<io.fabric8.openshift.api.model.config.v1.ObjectReference> relatedObjects = new ArrayList<>();
     @JsonProperty("versions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<OperandVersion> versions = new ArrayList<OperandVersion>();
+    private List<OperandVersion> versions = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

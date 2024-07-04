@@ -79,7 +79,7 @@ public class RangeAllocationList implements Editable<RangeAllocationListBuilder>
     private String apiVersion = "security.openshift.io/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.openshift.api.model.RangeAllocation> items = new ArrayList<io.fabric8.openshift.api.model.RangeAllocation>();
+    private List<io.fabric8.openshift.api.model.RangeAllocation> items = new ArrayList<>();
     /**
      * 
      * (Required)

@@ -63,7 +63,7 @@ public class VolumeAttachmentStatus implements Editable<VolumeAttachmentStatusBu
     private Boolean attached;
     @JsonProperty("attachmentMetadata")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> attachmentMetadata = new LinkedHashMap<String, String>();
+    private Map<String, String> attachmentMetadata = new LinkedHashMap<>();
     @JsonProperty("detachError")
     private VolumeError detachError;
     @JsonIgnore

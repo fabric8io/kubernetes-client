@@ -60,10 +60,10 @@ public class FeatureGateStatus implements Editable<FeatureGateStatusBuilder> , K
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Condition> conditions = new ArrayList<Condition>();
+    private List<Condition> conditions = new ArrayList<>();
     @JsonProperty("featureGates")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<FeatureGateDetails> featureGates = new ArrayList<FeatureGateDetails>();
+    private List<FeatureGateDetails> featureGates = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

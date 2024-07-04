@@ -60,13 +60,13 @@ public class StrategyDetailsDeployment implements Editable<StrategyDetailsDeploy
 
     @JsonProperty("clusterPermissions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<StrategyDeploymentPermissions> clusterPermissions = new ArrayList<StrategyDeploymentPermissions>();
+    private List<StrategyDeploymentPermissions> clusterPermissions = new ArrayList<>();
     @JsonProperty("deployments")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<StrategyDeploymentSpec> deployments = new ArrayList<StrategyDeploymentSpec>();
+    private List<StrategyDeploymentSpec> deployments = new ArrayList<>();
     @JsonProperty("permissions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<StrategyDeploymentPermissions> permissions = new ArrayList<StrategyDeploymentPermissions>();
+    private List<StrategyDeploymentPermissions> permissions = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

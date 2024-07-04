@@ -81,7 +81,7 @@ public class ChannelSpec implements Editable<ChannelSpecBuilder> , KubernetesRes
     private io.fabric8.kubernetes.api.model.ObjectReference secretRef;
     @JsonProperty("sourceNamespaces")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> sourceNamespaces = new ArrayList<String>();
+    private List<String> sourceNamespaces = new ArrayList<>();
     @JsonProperty("type")
     private String type;
     @JsonIgnore

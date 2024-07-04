@@ -59,7 +59,7 @@ public class PodSchedulingContextSpec implements Editable<PodSchedulingContextSp
 
     @JsonProperty("potentialNodes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> potentialNodes = new ArrayList<String>();
+    private List<String> potentialNodes = new ArrayList<>();
     @JsonProperty("selectedNode")
     private String selectedNode;
     @JsonIgnore

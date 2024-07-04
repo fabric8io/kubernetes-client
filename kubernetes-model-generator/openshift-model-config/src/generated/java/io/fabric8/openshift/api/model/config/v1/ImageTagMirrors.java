@@ -62,7 +62,7 @@ public class ImageTagMirrors implements Editable<ImageTagMirrorsBuilder> , Kuber
     private String mirrorSourcePolicy;
     @JsonProperty("mirrors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> mirrors = new ArrayList<String>();
+    private List<String> mirrors = new ArrayList<>();
     @JsonProperty("source")
     private String source;
     @JsonIgnore

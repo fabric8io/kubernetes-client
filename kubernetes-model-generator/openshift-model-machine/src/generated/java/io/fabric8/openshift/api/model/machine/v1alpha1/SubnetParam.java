@@ -65,7 +65,7 @@ public class SubnetParam implements Editable<SubnetParamBuilder> , KubernetesRes
     private Boolean portSecurity;
     @JsonProperty("portTags")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> portTags = new ArrayList<String>();
+    private List<String> portTags = new ArrayList<>();
     @JsonProperty("uuid")
     private String uuid;
     @JsonIgnore

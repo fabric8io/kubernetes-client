@@ -77,18 +77,18 @@ public class ApiServerSourceStatus implements Editable<ApiServerSourceStatusBuil
 
     @JsonProperty("annotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> annotations = new LinkedHashMap<String, String>();
+    private Map<String, String> annotations = new LinkedHashMap<>();
     @JsonProperty("auth")
     private AuthStatus auth;
     @JsonProperty("ceAttributes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<CloudEventAttributes> ceAttributes = new ArrayList<CloudEventAttributes>();
+    private List<CloudEventAttributes> ceAttributes = new ArrayList<>();
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Condition> conditions = new ArrayList<Condition>();
+    private List<Condition> conditions = new ArrayList<>();
     @JsonProperty("namespaces")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> namespaces = new ArrayList<java.lang.String>();
+    private List<java.lang.String> namespaces = new ArrayList<>();
     @JsonProperty("observedGeneration")
     private Long observedGeneration;
     @JsonProperty("sinkAudience")

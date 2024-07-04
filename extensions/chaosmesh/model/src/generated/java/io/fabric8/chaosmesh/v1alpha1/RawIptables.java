@@ -74,7 +74,7 @@ public class RawIptables implements Editable<RawIptablesBuilder> , KubernetesRes
     private String direction;
     @JsonProperty("ipsets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> ipsets = new ArrayList<String>();
+    private List<String> ipsets = new ArrayList<>();
     @JsonProperty("name")
     private String name;
     @JsonProperty("source")

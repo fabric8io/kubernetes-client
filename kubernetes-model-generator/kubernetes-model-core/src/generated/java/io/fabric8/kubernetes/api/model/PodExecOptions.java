@@ -60,7 +60,7 @@ public class PodExecOptions implements Editable<PodExecOptionsBuilder> , Kuberne
     private String apiVersion = "v1";
     @JsonProperty("command")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> command = new ArrayList<String>();
+    private List<String> command = new ArrayList<>();
     @JsonProperty("container")
     private String container;
     /**

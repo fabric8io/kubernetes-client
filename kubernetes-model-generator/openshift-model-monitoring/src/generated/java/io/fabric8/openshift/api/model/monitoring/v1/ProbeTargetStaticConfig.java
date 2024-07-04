@@ -60,13 +60,13 @@ public class ProbeTargetStaticConfig implements Editable<ProbeTargetStaticConfig
 
     @JsonProperty("labels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> labels = new LinkedHashMap<String, String>();
+    private Map<String, String> labels = new LinkedHashMap<>();
     @JsonProperty("relabelingConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<RelabelConfig> relabelingConfigs = new ArrayList<RelabelConfig>();
+    private List<RelabelConfig> relabelingConfigs = new ArrayList<>();
     @JsonProperty("static")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> _static = new ArrayList<String>();
+    private List<String> _static = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

@@ -66,7 +66,7 @@ public class ListValue implements Editable<ListValueBuilder> , KubernetesResourc
 
     @JsonProperty("values")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Value> values = new ArrayList<Value>();
+    private List<Value> values = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

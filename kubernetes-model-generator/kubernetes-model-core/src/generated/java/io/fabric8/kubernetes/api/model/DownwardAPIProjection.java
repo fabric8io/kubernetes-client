@@ -37,7 +37,7 @@ public class DownwardAPIProjection implements Editable<DownwardAPIProjectionBuil
 
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<DownwardAPIVolumeFile> items = new ArrayList<DownwardAPIVolumeFile>();
+    private List<DownwardAPIVolumeFile> items = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

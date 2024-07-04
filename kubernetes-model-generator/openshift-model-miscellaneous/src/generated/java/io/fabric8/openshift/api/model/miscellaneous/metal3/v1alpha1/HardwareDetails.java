@@ -70,12 +70,12 @@ public class HardwareDetails implements Editable<HardwareDetailsBuilder> , Kuber
     private String hostname;
     @JsonProperty("nics")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<NIC> nics = new ArrayList<NIC>();
+    private List<NIC> nics = new ArrayList<>();
     @JsonProperty("ramMebibytes")
     private Integer ramMebibytes;
     @JsonProperty("storage")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Storage> storage = new ArrayList<Storage>();
+    private List<Storage> storage = new ArrayList<>();
     @JsonProperty("systemVendor")
     private HardwareSystemVendor systemVendor;
     @JsonIgnore

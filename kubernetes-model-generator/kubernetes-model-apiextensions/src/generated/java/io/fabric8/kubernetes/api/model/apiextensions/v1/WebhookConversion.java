@@ -61,7 +61,7 @@ public class WebhookConversion implements Editable<WebhookConversionBuilder> , K
     private WebhookClientConfig clientConfig;
     @JsonProperty("conversionReviewVersions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> conversionReviewVersions = new ArrayList<String>();
+    private List<String> conversionReviewVersions = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

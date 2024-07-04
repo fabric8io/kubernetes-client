@@ -87,7 +87,7 @@ public class PhysicalMachineChaosList implements Editable<PhysicalMachineChaosLi
     private String apiVersion = "chaos-mesh.org/v1alpha1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.chaosmesh.v1alpha1.PhysicalMachineChaos> items = new ArrayList<io.fabric8.chaosmesh.v1alpha1.PhysicalMachineChaos>();
+    private List<io.fabric8.chaosmesh.v1alpha1.PhysicalMachineChaos> items = new ArrayList<>();
     /**
      * 
      * (Required)

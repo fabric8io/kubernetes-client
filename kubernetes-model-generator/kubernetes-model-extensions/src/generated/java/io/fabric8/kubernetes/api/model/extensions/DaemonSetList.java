@@ -79,7 +79,7 @@ public class DaemonSetList implements Editable<DaemonSetListBuilder> , Kubernete
     private String apiVersion = "extensions/v1beta1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.extensions.DaemonSet> items = new ArrayList<io.fabric8.kubernetes.api.model.extensions.DaemonSet>();
+    private List<io.fabric8.kubernetes.api.model.extensions.DaemonSet> items = new ArrayList<>();
     /**
      * 
      * (Required)

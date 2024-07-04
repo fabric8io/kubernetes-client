@@ -87,7 +87,7 @@ public class RunList implements Editable<RunListBuilder> , KubernetesResource, K
     private String apiVersion = "tekton.dev/v1alpha1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.tekton.pipeline.v1alpha1.Run> items = new ArrayList<io.fabric8.tekton.pipeline.v1alpha1.Run>();
+    private List<io.fabric8.tekton.pipeline.v1alpha1.Run> items = new ArrayList<>();
     /**
      * 
      * (Required)

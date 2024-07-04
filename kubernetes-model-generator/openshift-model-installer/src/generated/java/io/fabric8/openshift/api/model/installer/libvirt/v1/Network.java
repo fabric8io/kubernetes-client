@@ -59,7 +59,7 @@ public class Network implements Editable<NetworkBuilder> , KubernetesResource
 
     @JsonProperty("dnsmasqOptions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<DnsmasqOption> dnsmasqOptions = new ArrayList<DnsmasqOption>();
+    private List<DnsmasqOption> dnsmasqOptions = new ArrayList<>();
     @JsonProperty("if")
     private String _if;
     @JsonIgnore

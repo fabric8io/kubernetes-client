@@ -58,7 +58,7 @@ public class ImageTagMirrorSetSpec implements Editable<ImageTagMirrorSetSpecBuil
 
     @JsonProperty("imageTagMirrors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ImageTagMirrors> imageTagMirrors = new ArrayList<ImageTagMirrors>();
+    private List<ImageTagMirrors> imageTagMirrors = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

@@ -59,7 +59,7 @@ public class ClusterStateStatus implements Editable<ClusterStateStatusBuilder> ,
 
     @JsonProperty("clusterOperators")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ClusterOperatorState> clusterOperators = new ArrayList<ClusterOperatorState>();
+    private List<ClusterOperatorState> clusterOperators = new ArrayList<>();
     @JsonProperty("lastUpdated")
     private String lastUpdated;
     @JsonIgnore

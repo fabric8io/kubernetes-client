@@ -89,7 +89,7 @@ public class RoleBinding implements Editable<RoleBindingBuilder> , HasMetadata, 
     private RoleRef roleRef;
     @JsonProperty("subjects")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Subject> subjects = new ArrayList<Subject>();
+    private List<Subject> subjects = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

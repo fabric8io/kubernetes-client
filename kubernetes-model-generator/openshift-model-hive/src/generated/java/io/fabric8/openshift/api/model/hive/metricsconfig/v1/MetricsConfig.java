@@ -59,10 +59,10 @@ public class MetricsConfig implements Editable<MetricsConfigBuilder> , Kubernete
 
     @JsonProperty("additionalClusterDeploymentLabels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> additionalClusterDeploymentLabels = new LinkedHashMap<String, String>();
+    private Map<String, String> additionalClusterDeploymentLabels = new LinkedHashMap<>();
     @JsonProperty("metricsWithDuration")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<MetricsWithDuration> metricsWithDuration = new ArrayList<MetricsWithDuration>();
+    private List<MetricsWithDuration> metricsWithDuration = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

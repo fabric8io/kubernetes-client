@@ -59,10 +59,10 @@ public class UncountedTerminatedPods implements Editable<UncountedTerminatedPods
 
     @JsonProperty("failed")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> failed = new ArrayList<String>();
+    private List<String> failed = new ArrayList<>();
     @JsonProperty("succeeded")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> succeeded = new ArrayList<String>();
+    private List<String> succeeded = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

@@ -64,7 +64,7 @@ public class ImageStreamSpec implements Editable<ImageStreamSpecBuilder> , Kuber
     private ImageLookupPolicy lookupPolicy;
     @JsonProperty("tags")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<TagReference> tags = new ArrayList<TagReference>();
+    private List<TagReference> tags = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

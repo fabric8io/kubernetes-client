@@ -66,7 +66,7 @@ public class IngressSpec implements Editable<IngressSpecBuilder> , KubernetesRes
 
     @JsonProperty("sslCiphers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> sslCiphers = new ArrayList<String>();
+    private List<String> sslCiphers = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

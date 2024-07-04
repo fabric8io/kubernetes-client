@@ -61,7 +61,7 @@ public class MachineHealthCheckStatus implements Editable<MachineHealthCheckStat
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Condition> conditions = new ArrayList<Condition>();
+    private List<Condition> conditions = new ArrayList<>();
     @JsonProperty("currentHealthy")
     private Integer currentHealthy;
     @JsonProperty("expectedMachines")

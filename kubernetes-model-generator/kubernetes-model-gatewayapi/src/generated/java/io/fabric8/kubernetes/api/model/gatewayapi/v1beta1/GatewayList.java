@@ -79,7 +79,7 @@ public class GatewayList implements Editable<GatewayListBuilder> , KubernetesRes
     private String apiVersion = "gateway.networking.k8s.io/v1beta1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.Gateway> items = new ArrayList<io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.Gateway>();
+    private List<io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.Gateway> items = new ArrayList<>();
     /**
      * 
      * (Required)

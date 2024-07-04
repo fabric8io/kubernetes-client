@@ -59,7 +59,7 @@ public class CronJobStatus implements Editable<CronJobStatusBuilder> , Kubernete
 
     @JsonProperty("active")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.ObjectReference> active = new ArrayList<io.fabric8.kubernetes.api.model.ObjectReference>();
+    private List<io.fabric8.kubernetes.api.model.ObjectReference> active = new ArrayList<>();
     @JsonProperty("lastScheduleTime")
     private String lastScheduleTime;
     @JsonProperty("lastSuccessfulTime")

@@ -69,12 +69,12 @@ public class IstioStatus implements Editable<IstioStatusBuilder> , KubernetesRes
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<IstioCondition> conditions = new ArrayList<IstioCondition>();
+    private List<IstioCondition> conditions = new ArrayList<>();
     @JsonProperty("observedGeneration")
     private Long observedGeneration;
     @JsonProperty("validationMessages")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<AnalysisMessageBase> validationMessages = new ArrayList<AnalysisMessageBase>();
+    private List<AnalysisMessageBase> validationMessages = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

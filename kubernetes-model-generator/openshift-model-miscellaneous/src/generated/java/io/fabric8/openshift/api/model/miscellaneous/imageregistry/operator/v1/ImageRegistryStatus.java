@@ -66,10 +66,10 @@ public class ImageRegistryStatus implements Editable<ImageRegistryStatusBuilder>
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<OperatorCondition> conditions = new ArrayList<OperatorCondition>();
+    private List<OperatorCondition> conditions = new ArrayList<>();
     @JsonProperty("generations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<GenerationStatus> generations = new ArrayList<GenerationStatus>();
+    private List<GenerationStatus> generations = new ArrayList<>();
     @JsonProperty("observedGeneration")
     private Long observedGeneration;
     @JsonProperty("readyReplicas")

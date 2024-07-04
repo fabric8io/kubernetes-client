@@ -70,7 +70,7 @@ public class PodGroupSpec implements Editable<PodGroupSpecBuilder> , KubernetesR
     private Integer minMember;
     @JsonProperty("minResources")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Quantity> minResources = new LinkedHashMap<String, Quantity>();
+    private Map<String, Quantity> minResources = new LinkedHashMap<>();
     @JsonProperty("priorityClassName")
     private java.lang.String priorityClassName;
     @JsonProperty("queue")

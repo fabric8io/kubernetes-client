@@ -59,12 +59,12 @@ public class ImageSource implements Editable<ImageSourceBuilder> , KubernetesRes
 
     @JsonProperty("as")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> as = new ArrayList<String>();
+    private List<String> as = new ArrayList<>();
     @JsonProperty("from")
     private io.fabric8.kubernetes.api.model.ObjectReference from;
     @JsonProperty("paths")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ImageSourcePath> paths = new ArrayList<ImageSourcePath>();
+    private List<ImageSourcePath> paths = new ArrayList<>();
     @JsonProperty("pullSecret")
     private io.fabric8.kubernetes.api.model.LocalObjectReference pullSecret;
     @JsonIgnore

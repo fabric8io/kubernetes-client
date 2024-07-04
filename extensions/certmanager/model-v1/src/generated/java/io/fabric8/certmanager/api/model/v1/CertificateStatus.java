@@ -73,7 +73,7 @@ public class CertificateStatus implements Editable<CertificateStatusBuilder> , K
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<CertificateCondition> conditions = new ArrayList<CertificateCondition>();
+    private List<CertificateCondition> conditions = new ArrayList<>();
     @JsonProperty("failedIssuanceAttempts")
     private Integer failedIssuanceAttempts;
     @JsonProperty("lastFailureTime")

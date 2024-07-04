@@ -62,15 +62,15 @@ public class ExecNewPodHook implements Editable<ExecNewPodHookBuilder> , Kuberne
 
     @JsonProperty("command")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> command = new ArrayList<String>();
+    private List<String> command = new ArrayList<>();
     @JsonProperty("containerName")
     private String containerName;
     @JsonProperty("env")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<EnvVar> env = new ArrayList<EnvVar>();
+    private List<EnvVar> env = new ArrayList<>();
     @JsonProperty("volumes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> volumes = new ArrayList<String>();
+    private List<String> volumes = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

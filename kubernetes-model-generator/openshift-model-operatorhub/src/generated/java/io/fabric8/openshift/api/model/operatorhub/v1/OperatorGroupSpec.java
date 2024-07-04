@@ -67,7 +67,7 @@ public class OperatorGroupSpec implements Editable<OperatorGroupSpecBuilder> , K
     private Boolean staticProvidedAPIs;
     @JsonProperty("targetNamespaces")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> targetNamespaces = new ArrayList<String>();
+    private List<String> targetNamespaces = new ArrayList<>();
     @JsonProperty("upgradeStrategy")
     private String upgradeStrategy;
     @JsonIgnore

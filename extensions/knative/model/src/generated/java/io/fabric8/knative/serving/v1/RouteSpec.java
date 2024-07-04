@@ -66,7 +66,7 @@ public class RouteSpec implements Editable<RouteSpecBuilder> , KubernetesResourc
 
     @JsonProperty("traffic")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<TrafficTarget> traffic = new ArrayList<TrafficTarget>();
+    private List<TrafficTarget> traffic = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

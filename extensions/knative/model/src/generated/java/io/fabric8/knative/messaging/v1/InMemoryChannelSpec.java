@@ -71,7 +71,7 @@ public class InMemoryChannelSpec implements Editable<InMemoryChannelSpecBuilder>
     private DeliverySpec delivery;
     @JsonProperty("subscribers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<SubscriberSpec> subscribers = new ArrayList<SubscriberSpec>();
+    private List<SubscriberSpec> subscribers = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

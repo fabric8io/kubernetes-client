@@ -63,12 +63,12 @@ public class APIRequestCountStatus implements Editable<APIRequestCountStatusBuil
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Condition> conditions = new ArrayList<Condition>();
+    private List<Condition> conditions = new ArrayList<>();
     @JsonProperty("currentHour")
     private PerResourceAPIRequestLog currentHour;
     @JsonProperty("last24h")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<PerResourceAPIRequestLog> last24h = new ArrayList<PerResourceAPIRequestLog>();
+    private List<PerResourceAPIRequestLog> last24h = new ArrayList<>();
     @JsonProperty("removedInRelease")
     private String removedInRelease;
     @JsonProperty("requestCount")

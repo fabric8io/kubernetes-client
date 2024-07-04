@@ -69,16 +69,16 @@ public class NameConstraintItem implements Editable<NameConstraintItemBuilder> ,
 
     @JsonProperty("dnsDomains")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> dnsDomains = new ArrayList<String>();
+    private List<String> dnsDomains = new ArrayList<>();
     @JsonProperty("emailAddresses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> emailAddresses = new ArrayList<String>();
+    private List<String> emailAddresses = new ArrayList<>();
     @JsonProperty("ipRanges")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> ipRanges = new ArrayList<String>();
+    private List<String> ipRanges = new ArrayList<>();
     @JsonProperty("uriDomains")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> uriDomains = new ArrayList<String>();
+    private List<String> uriDomains = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

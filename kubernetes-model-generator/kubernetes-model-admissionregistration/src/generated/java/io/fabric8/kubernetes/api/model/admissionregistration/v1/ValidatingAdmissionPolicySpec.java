@@ -64,22 +64,22 @@ public class ValidatingAdmissionPolicySpec implements Editable<ValidatingAdmissi
 
     @JsonProperty("auditAnnotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<AuditAnnotation> auditAnnotations = new ArrayList<AuditAnnotation>();
+    private List<AuditAnnotation> auditAnnotations = new ArrayList<>();
     @JsonProperty("failurePolicy")
     private String failurePolicy;
     @JsonProperty("matchConditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<MatchCondition> matchConditions = new ArrayList<MatchCondition>();
+    private List<MatchCondition> matchConditions = new ArrayList<>();
     @JsonProperty("matchConstraints")
     private MatchResources matchConstraints;
     @JsonProperty("paramKind")
     private ParamKind paramKind;
     @JsonProperty("validations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Validation> validations = new ArrayList<Validation>();
+    private List<Validation> validations = new ArrayList<>();
     @JsonProperty("variables")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Variable> variables = new ArrayList<Variable>();
+    private List<Variable> variables = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

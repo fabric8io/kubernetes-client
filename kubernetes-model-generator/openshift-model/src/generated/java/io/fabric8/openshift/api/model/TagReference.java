@@ -61,7 +61,7 @@ public class TagReference implements Editable<TagReferenceBuilder> , KubernetesR
 
     @JsonProperty("annotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> annotations = new LinkedHashMap<String, String>();
+    private Map<String, String> annotations = new LinkedHashMap<>();
     @JsonProperty("from")
     private io.fabric8.kubernetes.api.model.ObjectReference from;
     @JsonProperty("generation")

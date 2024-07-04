@@ -69,7 +69,7 @@ public class ServiceBrokerStatus implements Editable<ServiceBrokerStatusBuilder>
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ServiceBrokerCondition> conditions = new ArrayList<ServiceBrokerCondition>();
+    private List<ServiceBrokerCondition> conditions = new ArrayList<>();
     @JsonProperty("lastCatalogRetrievalTime")
     private String lastCatalogRetrievalTime;
     @JsonProperty("operationStartTime")

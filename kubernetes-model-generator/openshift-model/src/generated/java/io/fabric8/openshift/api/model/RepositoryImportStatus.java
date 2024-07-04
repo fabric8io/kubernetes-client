@@ -61,10 +61,10 @@ public class RepositoryImportStatus implements Editable<RepositoryImportStatusBu
 
     @JsonProperty("additionalTags")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> additionalTags = new ArrayList<String>();
+    private List<String> additionalTags = new ArrayList<>();
     @JsonProperty("images")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ImageImportStatus> images = new ArrayList<ImageImportStatus>();
+    private List<ImageImportStatus> images = new ArrayList<>();
     @JsonProperty("status")
     private Status status;
     @JsonIgnore

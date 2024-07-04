@@ -69,10 +69,10 @@ public class APIGroup implements Editable<APIGroupBuilder> , KubernetesResource
     private GroupVersionForDiscovery preferredVersion;
     @JsonProperty("serverAddressByClientCIDRs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ServerAddressByClientCIDR> serverAddressByClientCIDRs = new ArrayList<ServerAddressByClientCIDR>();
+    private List<ServerAddressByClientCIDR> serverAddressByClientCIDRs = new ArrayList<>();
     @JsonProperty("versions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<GroupVersionForDiscovery> versions = new ArrayList<GroupVersionForDiscovery>();
+    private List<GroupVersionForDiscovery> versions = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

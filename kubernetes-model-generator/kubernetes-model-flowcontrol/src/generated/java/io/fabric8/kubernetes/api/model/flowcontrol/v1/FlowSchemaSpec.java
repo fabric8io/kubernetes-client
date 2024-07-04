@@ -67,7 +67,7 @@ public class FlowSchemaSpec implements Editable<FlowSchemaSpecBuilder> , Kuberne
     private PriorityLevelConfigurationReference priorityLevelConfiguration;
     @JsonProperty("rules")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<PolicyRulesWithSubjects> rules = new ArrayList<PolicyRulesWithSubjects>();
+    private List<PolicyRulesWithSubjects> rules = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

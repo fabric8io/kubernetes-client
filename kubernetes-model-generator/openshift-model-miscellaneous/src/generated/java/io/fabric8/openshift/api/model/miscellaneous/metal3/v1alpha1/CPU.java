@@ -68,7 +68,7 @@ public class CPU implements Editable<CPUBuilder> , KubernetesResource
     private Integer count;
     @JsonProperty("flags")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> flags = new ArrayList<String>();
+    private List<String> flags = new ArrayList<>();
     @JsonProperty("model")
     private String model;
     @JsonIgnore

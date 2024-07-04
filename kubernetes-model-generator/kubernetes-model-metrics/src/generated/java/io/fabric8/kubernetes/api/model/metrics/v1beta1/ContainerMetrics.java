@@ -60,7 +60,7 @@ public class ContainerMetrics implements Editable<ContainerMetricsBuilder> , Kub
     private String name;
     @JsonProperty("usage")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Quantity> usage = new LinkedHashMap<String, Quantity>();
+    private Map<String, Quantity> usage = new LinkedHashMap<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

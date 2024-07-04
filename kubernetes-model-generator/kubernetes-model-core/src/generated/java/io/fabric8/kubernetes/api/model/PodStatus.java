@@ -52,21 +52,21 @@ public class PodStatus implements Editable<PodStatusBuilder> , KubernetesResourc
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<PodCondition> conditions = new ArrayList<PodCondition>();
+    private List<PodCondition> conditions = new ArrayList<>();
     @JsonProperty("containerStatuses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ContainerStatus> containerStatuses = new ArrayList<ContainerStatus>();
+    private List<ContainerStatus> containerStatuses = new ArrayList<>();
     @JsonProperty("ephemeralContainerStatuses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ContainerStatus> ephemeralContainerStatuses = new ArrayList<ContainerStatus>();
+    private List<ContainerStatus> ephemeralContainerStatuses = new ArrayList<>();
     @JsonProperty("hostIP")
     private java.lang.String hostIP;
     @JsonProperty("hostIPs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<HostIP> hostIPs = new ArrayList<HostIP>();
+    private List<HostIP> hostIPs = new ArrayList<>();
     @JsonProperty("initContainerStatuses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ContainerStatus> initContainerStatuses = new ArrayList<ContainerStatus>();
+    private List<ContainerStatus> initContainerStatuses = new ArrayList<>();
     @JsonProperty("message")
     private java.lang.String message;
     @JsonProperty("nominatedNodeName")
@@ -77,7 +77,7 @@ public class PodStatus implements Editable<PodStatusBuilder> , KubernetesResourc
     private java.lang.String podIP;
     @JsonProperty("podIPs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<PodIP> podIPs = new ArrayList<PodIP>();
+    private List<PodIP> podIPs = new ArrayList<>();
     @JsonProperty("qosClass")
     private java.lang.String qosClass;
     @JsonProperty("reason")
@@ -86,7 +86,7 @@ public class PodStatus implements Editable<PodStatusBuilder> , KubernetesResourc
     private java.lang.String resize;
     @JsonProperty("resourceClaimStatuses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<PodResourceClaimStatus> resourceClaimStatuses = new ArrayList<PodResourceClaimStatus>();
+    private List<PodResourceClaimStatus> resourceClaimStatuses = new ArrayList<>();
     @JsonProperty("startTime")
     private String startTime;
     @JsonIgnore

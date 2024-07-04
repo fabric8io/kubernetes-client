@@ -70,10 +70,10 @@ public class Condition implements Editable<ConditionBuilder> , KubernetesResourc
     private String key;
     @JsonProperty("notValues")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> notValues = new ArrayList<String>();
+    private List<String> notValues = new ArrayList<>();
     @JsonProperty("values")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> values = new ArrayList<String>();
+    private List<String> values = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

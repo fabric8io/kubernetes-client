@@ -79,7 +79,7 @@ public class ImageContentSourcePolicyList implements Editable<ImageContentSource
     private String apiVersion = "operator.openshift.io/v1alpha1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.openshift.api.model.operator.v1alpha1.ImageContentSourcePolicy> items = new ArrayList<io.fabric8.openshift.api.model.operator.v1alpha1.ImageContentSourcePolicy>();
+    private List<io.fabric8.openshift.api.model.operator.v1alpha1.ImageContentSourcePolicy> items = new ArrayList<>();
     /**
      * 
      * (Required)

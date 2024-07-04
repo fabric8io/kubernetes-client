@@ -70,7 +70,7 @@ public class PrometheusTracingConfig implements Editable<PrometheusTracingConfig
     private String endpoint;
     @JsonProperty("headers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> headers = new LinkedHashMap<String, String>();
+    private Map<String, String> headers = new LinkedHashMap<>();
     @JsonProperty("insecure")
     private Boolean insecure;
     @JsonProperty("samplingFraction")

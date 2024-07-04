@@ -64,14 +64,14 @@ public class OutageEntry implements Editable<OutageEntryBuilder> , KubernetesRes
     private String end;
     @JsonProperty("endLogs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<LogEntry> endLogs = new ArrayList<LogEntry>();
+    private List<LogEntry> endLogs = new ArrayList<>();
     @JsonProperty("message")
     private java.lang.String message;
     @JsonProperty("start")
     private String start;
     @JsonProperty("startLogs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<LogEntry> startLogs = new ArrayList<LogEntry>();
+    private List<LogEntry> startLogs = new ArrayList<>();
     @JsonIgnore
     private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 

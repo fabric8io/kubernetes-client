@@ -39,14 +39,14 @@ public class GeneratorOptions implements Editable<GeneratorOptionsBuilder> , Kub
 
     @JsonProperty("annotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> annotations = new LinkedHashMap<String, String>();
+    private Map<String, String> annotations = new LinkedHashMap<>();
     @JsonProperty("disableNameSuffixHash")
     private Boolean disableNameSuffixHash;
     @JsonProperty("immutable")
     private Boolean immutable;
     @JsonProperty("labels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> labels = new LinkedHashMap<String, String>();
+    private Map<String, String> labels = new LinkedHashMap<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

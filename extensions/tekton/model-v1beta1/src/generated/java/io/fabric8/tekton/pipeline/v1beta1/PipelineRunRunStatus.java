@@ -73,7 +73,7 @@ public class PipelineRunRunStatus implements Editable<PipelineRunRunStatusBuilde
     private CustomRunStatus status;
     @JsonProperty("whenExpressions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<WhenExpression> whenExpressions = new ArrayList<WhenExpression>();
+    private List<WhenExpression> whenExpressions = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

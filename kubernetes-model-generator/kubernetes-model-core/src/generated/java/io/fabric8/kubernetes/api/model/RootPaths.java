@@ -37,7 +37,7 @@ public class RootPaths implements Editable<RootPathsBuilder> , KubernetesResourc
 
     @JsonProperty("paths")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> paths = new ArrayList<String>();
+    private List<String> paths = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

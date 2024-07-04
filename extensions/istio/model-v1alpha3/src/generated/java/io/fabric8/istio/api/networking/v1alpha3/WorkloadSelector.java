@@ -64,7 +64,7 @@ public class WorkloadSelector implements Editable<WorkloadSelectorBuilder> , Kub
 
     @JsonProperty("labels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> labels = new LinkedHashMap<String, String>();
+    private Map<String, String> labels = new LinkedHashMap<>();
     @JsonIgnore
     private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 

@@ -80,7 +80,7 @@ public class ClusterServiceVersionSpec implements Editable<ClusterServiceVersion
 
     @JsonProperty("annotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> annotations = new LinkedHashMap<String, String>();
+    private Map<String, String> annotations = new LinkedHashMap<>();
     @JsonProperty("apiservicedefinitions")
     private APIServiceDefinitions apiservicedefinitions;
     @JsonProperty("cleanup")
@@ -93,48 +93,48 @@ public class ClusterServiceVersionSpec implements Editable<ClusterServiceVersion
     private String displayName;
     @JsonProperty("icon")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Icon> icon = new ArrayList<Icon>();
+    private List<Icon> icon = new ArrayList<>();
     @JsonProperty("install")
     private NamedInstallStrategy install;
     @JsonProperty("installModes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<InstallMode> installModes = new ArrayList<InstallMode>();
+    private List<InstallMode> installModes = new ArrayList<>();
     @JsonProperty("keywords")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> keywords = new ArrayList<String>();
+    private List<String> keywords = new ArrayList<>();
     @JsonProperty("labels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> labels = new LinkedHashMap<String, String>();
+    private Map<String, String> labels = new LinkedHashMap<>();
     @JsonProperty("links")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<AppLink> links = new ArrayList<AppLink>();
+    private List<AppLink> links = new ArrayList<>();
     @JsonProperty("maintainers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Maintainer> maintainers = new ArrayList<Maintainer>();
+    private List<Maintainer> maintainers = new ArrayList<>();
     @JsonProperty("maturity")
     private String maturity;
     @JsonProperty("minKubeVersion")
     private String minKubeVersion;
     @JsonProperty("nativeAPIs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<GroupVersionKind> nativeAPIs = new ArrayList<GroupVersionKind>();
+    private List<GroupVersionKind> nativeAPIs = new ArrayList<>();
     @JsonProperty("provider")
     private AppLink provider;
     @JsonProperty("relatedImages")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<RelatedImage> relatedImages = new ArrayList<RelatedImage>();
+    private List<RelatedImage> relatedImages = new ArrayList<>();
     @JsonProperty("replaces")
     private String replaces;
     @JsonProperty("selector")
     private io.fabric8.kubernetes.api.model.LabelSelector selector;
     @JsonProperty("skips")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> skips = new ArrayList<String>();
+    private List<String> skips = new ArrayList<>();
     @JsonProperty("version")
     private String version;
     @JsonProperty("webhookdefinitions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<WebhookDescription> webhookdefinitions = new ArrayList<WebhookDescription>();
+    private List<WebhookDescription> webhookdefinitions = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

@@ -75,15 +75,15 @@ public class ServiceBindingSpec implements Editable<ServiceBindingSpecBuilder> ,
     private io.fabric8.servicecatalog.api.model.LocalObjectReference instanceRef;
     @JsonProperty("parameters")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Object> parameters = new LinkedHashMap<String, Object>();
+    private Map<String, Object> parameters = new LinkedHashMap<>();
     @JsonProperty("parametersFrom")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ParametersFromSource> parametersFrom = new ArrayList<ParametersFromSource>();
+    private List<ParametersFromSource> parametersFrom = new ArrayList<>();
     @JsonProperty("secretName")
     private java.lang.String secretName;
     @JsonProperty("secretTransforms")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<SecretTransform> secretTransforms = new ArrayList<SecretTransform>();
+    private List<SecretTransform> secretTransforms = new ArrayList<>();
     @JsonProperty("userInfo")
     private UserInfo userInfo;
     @JsonIgnore

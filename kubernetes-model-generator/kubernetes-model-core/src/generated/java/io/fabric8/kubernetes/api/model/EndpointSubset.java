@@ -39,13 +39,13 @@ public class EndpointSubset implements Editable<EndpointSubsetBuilder> , Kuberne
 
     @JsonProperty("addresses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<EndpointAddress> addresses = new ArrayList<EndpointAddress>();
+    private List<EndpointAddress> addresses = new ArrayList<>();
     @JsonProperty("notReadyAddresses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<EndpointAddress> notReadyAddresses = new ArrayList<EndpointAddress>();
+    private List<EndpointAddress> notReadyAddresses = new ArrayList<>();
     @JsonProperty("ports")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<EndpointPort> ports = new ArrayList<EndpointPort>();
+    private List<EndpointPort> ports = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

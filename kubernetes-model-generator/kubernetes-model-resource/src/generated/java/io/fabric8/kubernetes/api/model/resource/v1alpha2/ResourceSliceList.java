@@ -79,7 +79,7 @@ public class ResourceSliceList implements Editable<ResourceSliceListBuilder> , K
     private String apiVersion = "resource.k8s.io/v1alpha2";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.resource.v1alpha2.ResourceSlice> items = new ArrayList<io.fabric8.kubernetes.api.model.resource.v1alpha2.ResourceSlice>();
+    private List<io.fabric8.kubernetes.api.model.resource.v1alpha2.ResourceSlice> items = new ArrayList<>();
     /**
      * 
      * (Required)

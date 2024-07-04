@@ -72,14 +72,14 @@ public class WorkloadEntrySpec implements Editable<WorkloadEntrySpecBuilder> , K
     private java.lang.String address;
     @JsonProperty("labels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> labels = new LinkedHashMap<String, String>();
+    private Map<String, String> labels = new LinkedHashMap<>();
     @JsonProperty("locality")
     private java.lang.String locality;
     @JsonProperty("network")
     private java.lang.String network;
     @JsonProperty("ports")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Long> ports = new LinkedHashMap<String, Long>();
+    private Map<String, Long> ports = new LinkedHashMap<>();
     @JsonProperty("serviceAccount")
     private java.lang.String serviceAccount;
     @JsonProperty("weight")

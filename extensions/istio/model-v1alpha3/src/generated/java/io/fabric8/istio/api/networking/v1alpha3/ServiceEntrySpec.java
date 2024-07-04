@@ -74,26 +74,26 @@ public class ServiceEntrySpec implements Editable<ServiceEntrySpecBuilder> , Kub
 
     @JsonProperty("addresses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> addresses = new ArrayList<String>();
+    private List<String> addresses = new ArrayList<>();
     @JsonProperty("endpoints")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<WorkloadEntrySpec> endpoints = new ArrayList<WorkloadEntrySpec>();
+    private List<WorkloadEntrySpec> endpoints = new ArrayList<>();
     @JsonProperty("exportTo")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> exportTo = new ArrayList<String>();
+    private List<String> exportTo = new ArrayList<>();
     @JsonProperty("hosts")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> hosts = new ArrayList<String>();
+    private List<String> hosts = new ArrayList<>();
     @JsonProperty("location")
     private ServiceEntryLocation location;
     @JsonProperty("ports")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ServicePort> ports = new ArrayList<ServicePort>();
+    private List<ServicePort> ports = new ArrayList<>();
     @JsonProperty("resolution")
     private ServiceEntryResolution resolution;
     @JsonProperty("subjectAltNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> subjectAltNames = new ArrayList<String>();
+    private List<String> subjectAltNames = new ArrayList<>();
     @JsonProperty("workloadSelector")
     private WorkloadSelector workloadSelector;
     @JsonIgnore

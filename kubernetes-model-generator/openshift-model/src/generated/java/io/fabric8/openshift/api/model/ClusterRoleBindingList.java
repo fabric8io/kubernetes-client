@@ -79,7 +79,7 @@ public class ClusterRoleBindingList implements Editable<ClusterRoleBindingListBu
     private String apiVersion = "authorization.openshift.io/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.openshift.api.model.ClusterRoleBinding> items = new ArrayList<io.fabric8.openshift.api.model.ClusterRoleBinding>();
+    private List<io.fabric8.openshift.api.model.ClusterRoleBinding> items = new ArrayList<>();
     /**
      * 
      * (Required)

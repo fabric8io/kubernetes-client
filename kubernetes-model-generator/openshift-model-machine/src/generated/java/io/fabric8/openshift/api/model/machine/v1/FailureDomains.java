@@ -62,16 +62,16 @@ public class FailureDomains implements Editable<FailureDomainsBuilder> , Kuberne
 
     @JsonProperty("aws")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<AWSFailureDomain> aws = new ArrayList<AWSFailureDomain>();
+    private List<AWSFailureDomain> aws = new ArrayList<>();
     @JsonProperty("azure")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<AzureFailureDomain> azure = new ArrayList<AzureFailureDomain>();
+    private List<AzureFailureDomain> azure = new ArrayList<>();
     @JsonProperty("gcp")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<GCPFailureDomain> gcp = new ArrayList<GCPFailureDomain>();
+    private List<GCPFailureDomain> gcp = new ArrayList<>();
     @JsonProperty("openstack")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<OpenStackFailureDomain> openstack = new ArrayList<OpenStackFailureDomain>();
+    private List<OpenStackFailureDomain> openstack = new ArrayList<>();
     @JsonProperty("platform")
     private String platform;
     @JsonIgnore

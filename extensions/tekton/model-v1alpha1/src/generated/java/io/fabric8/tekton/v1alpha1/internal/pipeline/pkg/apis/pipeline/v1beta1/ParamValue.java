@@ -69,10 +69,10 @@ public class ParamValue implements Editable<ParamValueBuilder> , KubernetesResou
 
     @JsonProperty("ArrayVal")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> arrayVal = new ArrayList<java.lang.String>();
+    private List<java.lang.String> arrayVal = new ArrayList<>();
     @JsonProperty("ObjectVal")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> objectVal = new LinkedHashMap<String, String>();
+    private Map<String, String> objectVal = new LinkedHashMap<>();
     @JsonProperty("StringVal")
     private java.lang.String stringVal;
     @JsonProperty("Type")

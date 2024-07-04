@@ -87,7 +87,7 @@ public class IngressList implements Editable<IngressListBuilder> , KubernetesRes
     private String apiVersion = "networking.internal.knative.dev/v1alpha1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.knative.internal.networking.v1alpha1.Ingress> items = new ArrayList<io.fabric8.knative.internal.networking.v1alpha1.Ingress>();
+    private List<io.fabric8.knative.internal.networking.v1alpha1.Ingress> items = new ArrayList<>();
     /**
      * 
      * (Required)

@@ -87,7 +87,7 @@ public class EgressIPList implements Editable<EgressIPListBuilder> , KubernetesR
     private String apiVersion = "k8s.ovn.org/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.ovn.v1.EgressIP> items = new ArrayList<io.fabric8.kubernetes.api.model.ovn.v1.EgressIP>();
+    private List<io.fabric8.kubernetes.api.model.ovn.v1.EgressIP> items = new ArrayList<>();
     /**
      * 
      * (Required)

@@ -72,7 +72,7 @@ public class TaskResourceBinding implements Editable<TaskResourceBindingBuilder>
     private String name;
     @JsonProperty("paths")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> paths = new ArrayList<String>();
+    private List<String> paths = new ArrayList<>();
     @JsonProperty("resourceRef")
     private PipelineResourceRef resourceRef;
     @JsonProperty("resourceSpec")

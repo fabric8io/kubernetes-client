@@ -70,15 +70,15 @@ public class KlusterletStatus implements Editable<KlusterletStatusBuilder> , Kub
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Condition> conditions = new ArrayList<Condition>();
+    private List<Condition> conditions = new ArrayList<>();
     @JsonProperty("generations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<GenerationStatus> generations = new ArrayList<GenerationStatus>();
+    private List<GenerationStatus> generations = new ArrayList<>();
     @JsonProperty("observedGeneration")
     private Long observedGeneration;
     @JsonProperty("relatedResources")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<RelatedResourceMeta> relatedResources = new ArrayList<RelatedResourceMeta>();
+    private List<RelatedResourceMeta> relatedResources = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

@@ -79,7 +79,7 @@ public class EtcdList implements Editable<EtcdListBuilder> , KubernetesResource,
     private String apiVersion = "operator.openshift.io/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.openshift.api.model.operator.v1.Etcd> items = new ArrayList<io.fabric8.openshift.api.model.operator.v1.Etcd>();
+    private List<io.fabric8.openshift.api.model.operator.v1.Etcd> items = new ArrayList<>();
     /**
      * 
      * (Required)

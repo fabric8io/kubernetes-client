@@ -86,7 +86,7 @@ public class Role implements Editable<RoleBuilder> , HasMetadata, Namespaced
     private io.fabric8.kubernetes.api.model.ObjectMeta metadata;
     @JsonProperty("rules")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<PolicyRule> rules = new ArrayList<PolicyRule>();
+    private List<PolicyRule> rules = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

@@ -79,7 +79,7 @@ public class ImageTagList implements Editable<ImageTagListBuilder> , KubernetesR
     private String apiVersion = "image.openshift.io/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.openshift.api.model.ImageTag> items = new ArrayList<io.fabric8.openshift.api.model.ImageTag>();
+    private List<io.fabric8.openshift.api.model.ImageTag> items = new ArrayList<>();
     /**
      * 
      * (Required)

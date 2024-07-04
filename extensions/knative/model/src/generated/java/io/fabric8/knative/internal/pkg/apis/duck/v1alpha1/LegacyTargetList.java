@@ -87,7 +87,7 @@ public class LegacyTargetList implements Editable<LegacyTargetListBuilder> , Kub
     private String apiVersion = "duck.knative.dev/v1alpha1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.knative.internal.pkg.apis.duck.v1alpha1.LegacyTarget> items = new ArrayList<io.fabric8.knative.internal.pkg.apis.duck.v1alpha1.LegacyTarget>();
+    private List<io.fabric8.knative.internal.pkg.apis.duck.v1alpha1.LegacyTarget> items = new ArrayList<>();
     /**
      * 
      * (Required)

@@ -58,7 +58,7 @@ public class TypeChecking implements Editable<TypeCheckingBuilder> , KubernetesR
 
     @JsonProperty("expressionWarnings")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ExpressionWarning> expressionWarnings = new ArrayList<ExpressionWarning>();
+    private List<ExpressionWarning> expressionWarnings = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

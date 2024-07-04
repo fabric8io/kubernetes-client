@@ -67,10 +67,10 @@ public class TaskResources implements Editable<TaskResourcesBuilder> , Kubernete
 
     @JsonProperty("inputs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<TaskResource> inputs = new ArrayList<TaskResource>();
+    private List<TaskResource> inputs = new ArrayList<>();
     @JsonProperty("outputs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<TaskResource> outputs = new ArrayList<TaskResource>();
+    private List<TaskResource> outputs = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

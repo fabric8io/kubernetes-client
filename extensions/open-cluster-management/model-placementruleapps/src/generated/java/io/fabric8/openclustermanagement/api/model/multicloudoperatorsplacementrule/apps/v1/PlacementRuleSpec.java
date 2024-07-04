@@ -70,17 +70,17 @@ public class PlacementRuleSpec implements Editable<PlacementRuleSpecBuilder> , K
 
     @JsonProperty("clusterConditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ClusterConditionFilter> clusterConditions = new ArrayList<ClusterConditionFilter>();
+    private List<ClusterConditionFilter> clusterConditions = new ArrayList<>();
     @JsonProperty("clusterReplicas")
     private Integer clusterReplicas;
     @JsonProperty("clusterSelector")
     private io.fabric8.kubernetes.api.model.LabelSelector clusterSelector;
     @JsonProperty("clusters")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<GenericClusterReference> clusters = new ArrayList<GenericClusterReference>();
+    private List<GenericClusterReference> clusters = new ArrayList<>();
     @JsonProperty("policies")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.ObjectReference> policies = new ArrayList<io.fabric8.kubernetes.api.model.ObjectReference>();
+    private List<io.fabric8.kubernetes.api.model.ObjectReference> policies = new ArrayList<>();
     @JsonProperty("resourceHint")
     private ResourceHint resourceHint;
     @JsonProperty("schedulerName")

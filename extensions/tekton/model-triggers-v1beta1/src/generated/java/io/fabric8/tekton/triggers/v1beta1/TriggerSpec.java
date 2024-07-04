@@ -70,10 +70,10 @@ public class TriggerSpec implements Editable<TriggerSpecBuilder> , KubernetesRes
 
     @JsonProperty("bindings")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<TriggerSpecBinding> bindings = new ArrayList<TriggerSpecBinding>();
+    private List<TriggerSpecBinding> bindings = new ArrayList<>();
     @JsonProperty("interceptors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<TriggerInterceptor> interceptors = new ArrayList<TriggerInterceptor>();
+    private List<TriggerInterceptor> interceptors = new ArrayList<>();
     @JsonProperty("name")
     private String name;
     @JsonProperty("serviceAccountName")

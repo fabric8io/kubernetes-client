@@ -60,7 +60,7 @@ public class ClusterOperatorState implements Editable<ClusterOperatorStateBuilde
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ClusterOperatorStatusCondition> conditions = new ArrayList<ClusterOperatorStatusCondition>();
+    private List<ClusterOperatorStatusCondition> conditions = new ArrayList<>();
     @JsonProperty("name")
     private String name;
     @JsonIgnore

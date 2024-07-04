@@ -55,7 +55,7 @@ public class APIGroupList implements Editable<APIGroupListBuilder> , KubernetesR
     private String apiVersion = "v1";
     @JsonProperty("groups")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<APIGroup> groups = new ArrayList<APIGroup>();
+    private List<APIGroup> groups = new ArrayList<>();
     /**
      * 
      * (Required)

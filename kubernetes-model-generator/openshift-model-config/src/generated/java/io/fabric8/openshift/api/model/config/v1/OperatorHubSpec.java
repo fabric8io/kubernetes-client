@@ -61,7 +61,7 @@ public class OperatorHubSpec implements Editable<OperatorHubSpecBuilder> , Kuber
     private Boolean disableAllDefaultSources;
     @JsonProperty("sources")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<HubSource> sources = new ArrayList<HubSource>();
+    private List<HubSource> sources = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

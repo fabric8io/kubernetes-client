@@ -58,7 +58,7 @@ public class ServiceCIDRSpec implements Editable<ServiceCIDRSpecBuilder> , Kuber
 
     @JsonProperty("cidrs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> cidrs = new ArrayList<String>();
+    private List<String> cidrs = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

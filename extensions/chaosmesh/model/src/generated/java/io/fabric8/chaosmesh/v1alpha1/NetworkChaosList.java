@@ -87,7 +87,7 @@ public class NetworkChaosList implements Editable<NetworkChaosListBuilder> , Kub
     private String apiVersion = "chaos-mesh.org/v1alpha1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.chaosmesh.v1alpha1.NetworkChaos> items = new ArrayList<io.fabric8.chaosmesh.v1alpha1.NetworkChaos>();
+    private List<io.fabric8.chaosmesh.v1alpha1.NetworkChaos> items = new ArrayList<>();
     /**
      * 
      * (Required)

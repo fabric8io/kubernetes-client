@@ -67,10 +67,10 @@ public class TCPRoute implements Editable<TCPRouteBuilder> , KubernetesResource
 
     @JsonProperty("match")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<L4MatchAttributes> match = new ArrayList<L4MatchAttributes>();
+    private List<L4MatchAttributes> match = new ArrayList<>();
     @JsonProperty("route")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<RouteDestination> route = new ArrayList<RouteDestination>();
+    private List<RouteDestination> route = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

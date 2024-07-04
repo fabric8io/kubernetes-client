@@ -64,7 +64,7 @@ public class ImageStreamStatus implements Editable<ImageStreamStatusBuilder> , K
     private String publicDockerImageRepository;
     @JsonProperty("tags")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<NamedTagEventList> tags = new ArrayList<NamedTagEventList>();
+    private List<NamedTagEventList> tags = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

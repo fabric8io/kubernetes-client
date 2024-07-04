@@ -106,13 +106,13 @@ public class SecurityContextConstraints implements Editable<SecurityContextConst
     private Boolean allowPrivilegedContainer;
     @JsonProperty("allowedCapabilities")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> allowedCapabilities = new ArrayList<String>();
+    private List<String> allowedCapabilities = new ArrayList<>();
     @JsonProperty("allowedFlexVolumes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<AllowedFlexVolume> allowedFlexVolumes = new ArrayList<AllowedFlexVolume>();
+    private List<AllowedFlexVolume> allowedFlexVolumes = new ArrayList<>();
     @JsonProperty("allowedUnsafeSysctls")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> allowedUnsafeSysctls = new ArrayList<String>();
+    private List<String> allowedUnsafeSysctls = new ArrayList<>();
     /**
      * 
      * (Required)
@@ -122,17 +122,17 @@ public class SecurityContextConstraints implements Editable<SecurityContextConst
     private String apiVersion = "security.openshift.io/v1";
     @JsonProperty("defaultAddCapabilities")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> defaultAddCapabilities = new ArrayList<String>();
+    private List<String> defaultAddCapabilities = new ArrayList<>();
     @JsonProperty("defaultAllowPrivilegeEscalation")
     private Boolean defaultAllowPrivilegeEscalation;
     @JsonProperty("forbiddenSysctls")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> forbiddenSysctls = new ArrayList<String>();
+    private List<String> forbiddenSysctls = new ArrayList<>();
     @JsonProperty("fsGroup")
     private FSGroupStrategyOptions fsGroup;
     @JsonProperty("groups")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> groups = new ArrayList<String>();
+    private List<String> groups = new ArrayList<>();
     /**
      * 
      * (Required)
@@ -148,22 +148,22 @@ public class SecurityContextConstraints implements Editable<SecurityContextConst
     private Boolean readOnlyRootFilesystem;
     @JsonProperty("requiredDropCapabilities")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> requiredDropCapabilities = new ArrayList<String>();
+    private List<String> requiredDropCapabilities = new ArrayList<>();
     @JsonProperty("runAsUser")
     private RunAsUserStrategyOptions runAsUser;
     @JsonProperty("seLinuxContext")
     private SELinuxContextStrategyOptions seLinuxContext;
     @JsonProperty("seccompProfiles")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> seccompProfiles = new ArrayList<String>();
+    private List<String> seccompProfiles = new ArrayList<>();
     @JsonProperty("supplementalGroups")
     private SupplementalGroupsStrategyOptions supplementalGroups;
     @JsonProperty("users")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> users = new ArrayList<String>();
+    private List<String> users = new ArrayList<>();
     @JsonProperty("volumes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> volumes = new ArrayList<String>();
+    private List<String> volumes = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

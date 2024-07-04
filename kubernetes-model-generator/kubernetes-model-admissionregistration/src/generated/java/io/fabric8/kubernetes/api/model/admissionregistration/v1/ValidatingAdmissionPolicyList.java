@@ -79,7 +79,7 @@ public class ValidatingAdmissionPolicyList implements Editable<ValidatingAdmissi
     private String apiVersion = "admissionregistration.k8s.io/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.admissionregistration.v1.ValidatingAdmissionPolicy> items = new ArrayList<io.fabric8.kubernetes.api.model.admissionregistration.v1.ValidatingAdmissionPolicy>();
+    private List<io.fabric8.kubernetes.api.model.admissionregistration.v1.ValidatingAdmissionPolicy> items = new ArrayList<>();
     /**
      * 
      * (Required)

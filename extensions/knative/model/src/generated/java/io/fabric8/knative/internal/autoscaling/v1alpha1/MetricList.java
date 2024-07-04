@@ -87,7 +87,7 @@ public class MetricList implements Editable<MetricListBuilder> , KubernetesResou
     private String apiVersion = "autoscaling.internal.knative.dev/v1alpha1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.knative.internal.autoscaling.v1alpha1.Metric> items = new ArrayList<io.fabric8.knative.internal.autoscaling.v1alpha1.Metric>();
+    private List<io.fabric8.knative.internal.autoscaling.v1alpha1.Metric> items = new ArrayList<>();
     /**
      * 
      * (Required)

@@ -60,10 +60,10 @@ public class UDPRouteSpec implements Editable<UDPRouteSpecBuilder> , KubernetesR
 
     @JsonProperty("parentRefs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ParentReference> parentRefs = new ArrayList<ParentReference>();
+    private List<ParentReference> parentRefs = new ArrayList<>();
     @JsonProperty("rules")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<UDPRouteRule> rules = new ArrayList<UDPRouteRule>();
+    private List<UDPRouteRule> rules = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

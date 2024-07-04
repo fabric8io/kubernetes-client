@@ -63,19 +63,19 @@ public class ObjectMeta implements Editable<ObjectMetaBuilder> , KubernetesResou
 
     @JsonProperty("annotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> annotations = new LinkedHashMap<String, String>();
+    private Map<String, String> annotations = new LinkedHashMap<>();
     @JsonProperty("generateName")
     private String generateName;
     @JsonProperty("labels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> labels = new LinkedHashMap<String, String>();
+    private Map<String, String> labels = new LinkedHashMap<>();
     @JsonProperty("name")
     private String name;
     @JsonProperty("namespace")
     private String namespace;
     @JsonProperty("ownerReferences")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<OwnerReference> ownerReferences = new ArrayList<OwnerReference>();
+    private List<OwnerReference> ownerReferences = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

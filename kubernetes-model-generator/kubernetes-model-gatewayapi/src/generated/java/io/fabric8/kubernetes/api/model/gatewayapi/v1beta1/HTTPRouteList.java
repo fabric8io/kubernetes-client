@@ -79,7 +79,7 @@ public class HTTPRouteList implements Editable<HTTPRouteListBuilder> , Kubernete
     private String apiVersion = "gateway.networking.k8s.io/v1beta1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.HTTPRoute> items = new ArrayList<io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.HTTPRoute>();
+    private List<io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.HTTPRoute> items = new ArrayList<>();
     /**
      * 
      * (Required)

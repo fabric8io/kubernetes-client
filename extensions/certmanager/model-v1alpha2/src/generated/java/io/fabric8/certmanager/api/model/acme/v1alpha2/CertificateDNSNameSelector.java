@@ -68,13 +68,13 @@ public class CertificateDNSNameSelector implements Editable<CertificateDNSNameSe
 
     @JsonProperty("dnsNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> dnsNames = new ArrayList<java.lang.String>();
+    private List<java.lang.String> dnsNames = new ArrayList<>();
     @JsonProperty("dnsZones")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> dnsZones = new ArrayList<java.lang.String>();
+    private List<java.lang.String> dnsZones = new ArrayList<>();
     @JsonProperty("matchLabels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> matchLabels = new LinkedHashMap<String, String>();
+    private Map<String, String> matchLabels = new LinkedHashMap<>();
     @JsonIgnore
     private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 

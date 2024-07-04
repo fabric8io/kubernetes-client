@@ -71,7 +71,7 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     private MachinePool defaultMachinePlatform;
     @JsonProperty("licenses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> licenses = new ArrayList<String>();
+    private List<String> licenses = new ArrayList<>();
     @JsonProperty("network")
     private String network;
     @JsonProperty("networkProjectID")

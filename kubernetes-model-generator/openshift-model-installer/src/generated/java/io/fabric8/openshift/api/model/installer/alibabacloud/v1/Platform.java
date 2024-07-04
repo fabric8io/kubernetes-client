@@ -72,12 +72,12 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     private String resourceGroupID;
     @JsonProperty("tags")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> tags = new LinkedHashMap<String, String>();
+    private Map<String, String> tags = new LinkedHashMap<>();
     @JsonProperty("vpcID")
     private String vpcID;
     @JsonProperty("vswitchIDs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> vswitchIDs = new ArrayList<String>();
+    private List<String> vswitchIDs = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

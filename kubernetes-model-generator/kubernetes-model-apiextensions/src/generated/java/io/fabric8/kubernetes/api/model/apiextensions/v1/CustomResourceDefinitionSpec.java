@@ -73,7 +73,7 @@ public class CustomResourceDefinitionSpec implements Editable<CustomResourceDefi
     private String scope;
     @JsonProperty("versions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<CustomResourceDefinitionVersion> versions = new ArrayList<CustomResourceDefinitionVersion>();
+    private List<CustomResourceDefinitionVersion> versions = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

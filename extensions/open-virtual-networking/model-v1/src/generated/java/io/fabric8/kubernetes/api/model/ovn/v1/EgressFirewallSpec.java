@@ -66,7 +66,7 @@ public class EgressFirewallSpec implements Editable<EgressFirewallSpecBuilder> ,
 
     @JsonProperty("egress")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<EgressFirewallRule> egress = new ArrayList<EgressFirewallRule>();
+    private List<EgressFirewallRule> egress = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

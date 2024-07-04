@@ -64,7 +64,7 @@ public class Server implements Editable<ServerBuilder> , KubernetesResource
     private String name;
     @JsonProperty("zones")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> zones = new ArrayList<String>();
+    private List<String> zones = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

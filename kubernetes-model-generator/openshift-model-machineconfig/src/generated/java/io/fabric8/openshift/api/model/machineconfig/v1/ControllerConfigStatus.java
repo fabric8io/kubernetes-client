@@ -60,10 +60,10 @@ public class ControllerConfigStatus implements Editable<ControllerConfigStatusBu
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ControllerConfigStatusCondition> conditions = new ArrayList<ControllerConfigStatusCondition>();
+    private List<ControllerConfigStatusCondition> conditions = new ArrayList<>();
     @JsonProperty("controllerCertificates")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ControllerCertificate> controllerCertificates = new ArrayList<ControllerCertificate>();
+    private List<ControllerCertificate> controllerCertificates = new ArrayList<>();
     @JsonProperty("observedGeneration")
     private Long observedGeneration;
     @JsonIgnore

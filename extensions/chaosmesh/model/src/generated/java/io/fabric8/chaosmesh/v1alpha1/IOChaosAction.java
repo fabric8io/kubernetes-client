@@ -91,7 +91,7 @@ public class IOChaosAction implements Editable<IOChaosActionBuilder> , Kubernete
     private Timespec ctime;
     @JsonProperty("faults")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<IoFault> faults = new ArrayList<IoFault>();
+    private List<IoFault> faults = new ArrayList<>();
     @JsonProperty("gid")
     private Long gid;
     @JsonProperty("ino")
@@ -102,7 +102,7 @@ public class IOChaosAction implements Editable<IOChaosActionBuilder> , Kubernete
     private java.lang.String latency;
     @JsonProperty("methods")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> methods = new ArrayList<java.lang.String>();
+    private List<java.lang.String> methods = new ArrayList<>();
     @JsonProperty("mistake")
     private MistakeSpec mistake;
     @JsonProperty("mtime")

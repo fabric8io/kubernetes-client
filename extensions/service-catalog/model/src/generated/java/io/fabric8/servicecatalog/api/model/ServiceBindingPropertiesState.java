@@ -68,7 +68,7 @@ public class ServiceBindingPropertiesState implements Editable<ServiceBindingPro
     private java.lang.String parameterChecksum;
     @JsonProperty("parameters")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Object> parameters = new LinkedHashMap<String, Object>();
+    private Map<String, Object> parameters = new LinkedHashMap<>();
     @JsonProperty("userInfo")
     private UserInfo userInfo;
     @JsonIgnore

@@ -64,13 +64,13 @@ public class ComponentRouteStatus implements Editable<ComponentRouteStatusBuilde
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Condition> conditions = new ArrayList<Condition>();
+    private List<Condition> conditions = new ArrayList<>();
     @JsonProperty("consumingUsers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> consumingUsers = new ArrayList<String>();
+    private List<String> consumingUsers = new ArrayList<>();
     @JsonProperty("currentHostnames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> currentHostnames = new ArrayList<String>();
+    private List<String> currentHostnames = new ArrayList<>();
     @JsonProperty("defaultHostname")
     private String defaultHostname;
     @JsonProperty("name")
@@ -79,7 +79,7 @@ public class ComponentRouteStatus implements Editable<ComponentRouteStatusBuilde
     private String namespace;
     @JsonProperty("relatedObjects")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.openshift.api.model.config.v1.ObjectReference> relatedObjects = new ArrayList<io.fabric8.openshift.api.model.config.v1.ObjectReference>();
+    private List<io.fabric8.openshift.api.model.config.v1.ObjectReference> relatedObjects = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

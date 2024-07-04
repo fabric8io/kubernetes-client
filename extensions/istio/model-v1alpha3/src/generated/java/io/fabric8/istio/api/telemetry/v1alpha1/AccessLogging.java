@@ -75,7 +75,7 @@ public class AccessLogging implements Editable<AccessLoggingBuilder> , Kubernete
     private AccessLoggingLogSelector match;
     @JsonProperty("providers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ProviderRef> providers = new ArrayList<ProviderRef>();
+    private List<ProviderRef> providers = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

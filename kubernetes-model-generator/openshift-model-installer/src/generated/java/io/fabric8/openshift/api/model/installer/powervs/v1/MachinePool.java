@@ -69,7 +69,7 @@ public class MachinePool implements Editable<MachinePoolBuilder> , KubernetesRes
     private String sysType;
     @JsonProperty("volumeIDs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> volumeIDs = new ArrayList<String>();
+    private List<String> volumeIDs = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

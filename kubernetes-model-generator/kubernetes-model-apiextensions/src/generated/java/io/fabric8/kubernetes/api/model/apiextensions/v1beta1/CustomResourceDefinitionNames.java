@@ -63,7 +63,7 @@ public class CustomResourceDefinitionNames implements Editable<CustomResourceDef
 
     @JsonProperty("categories")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> categories = new ArrayList<String>();
+    private List<String> categories = new ArrayList<>();
     @JsonProperty("kind")
     private String kind;
     @JsonProperty("listKind")
@@ -72,7 +72,7 @@ public class CustomResourceDefinitionNames implements Editable<CustomResourceDef
     private String plural;
     @JsonProperty("shortNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> shortNames = new ArrayList<String>();
+    private List<String> shortNames = new ArrayList<>();
     @JsonProperty("singular")
     private String singular;
     @JsonIgnore

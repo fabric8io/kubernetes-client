@@ -80,26 +80,26 @@ public class ServiceClassSpec implements Editable<ServiceClassSpecBuilder> , Kub
     private Boolean bindingRetrievable;
     @JsonProperty("defaultProvisionParameters")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Object> defaultProvisionParameters = new LinkedHashMap<String, Object>();
+    private Map<String, Object> defaultProvisionParameters = new LinkedHashMap<>();
     @JsonProperty("description")
     private java.lang.String description;
     @JsonProperty("externalID")
     private java.lang.String externalID;
     @JsonProperty("externalMetadata")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Object> externalMetadata = new LinkedHashMap<String, Object>();
+    private Map<String, Object> externalMetadata = new LinkedHashMap<>();
     @JsonProperty("externalName")
     private java.lang.String externalName;
     @JsonProperty("planUpdatable")
     private Boolean planUpdatable;
     @JsonProperty("requires")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> requires = new ArrayList<java.lang.String>();
+    private List<java.lang.String> requires = new ArrayList<>();
     @JsonProperty("serviceBrokerName")
     private java.lang.String serviceBrokerName;
     @JsonProperty("tags")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> tags = new ArrayList<java.lang.String>();
+    private List<java.lang.String> tags = new ArrayList<>();
     @JsonIgnore
     private Map<java.lang.String, java.lang.Object> additionalProperties = new LinkedHashMap<java.lang.String, java.lang.Object>();
 

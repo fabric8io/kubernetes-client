@@ -87,7 +87,7 @@ public class DiscoveryConfigList implements Editable<DiscoveryConfigListBuilder>
     private String apiVersion = "discovery.open-cluster-management.io/v1alpha1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.openclustermanagement.api.model.discovery.v1alpha1.DiscoveryConfig> items = new ArrayList<io.fabric8.openclustermanagement.api.model.discovery.v1alpha1.DiscoveryConfig>();
+    private List<io.fabric8.openclustermanagement.api.model.discovery.v1alpha1.DiscoveryConfig> items = new ArrayList<>();
     /**
      * 
      * (Required)

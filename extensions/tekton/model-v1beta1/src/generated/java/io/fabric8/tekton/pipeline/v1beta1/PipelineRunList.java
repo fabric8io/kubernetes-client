@@ -87,7 +87,7 @@ public class PipelineRunList implements Editable<PipelineRunListBuilder> , Kuber
     private String apiVersion = "tekton.dev/v1beta1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.tekton.pipeline.v1beta1.PipelineRun> items = new ArrayList<io.fabric8.tekton.pipeline.v1beta1.PipelineRun>();
+    private List<io.fabric8.tekton.pipeline.v1beta1.PipelineRun> items = new ArrayList<>();
     /**
      * 
      * (Required)

@@ -70,7 +70,7 @@ public class MachineSpec implements Editable<MachineSpecBuilder> , KubernetesRes
     private ProviderSpec providerSpec;
     @JsonProperty("taints")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Taint> taints = new ArrayList<Taint>();
+    private List<Taint> taints = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

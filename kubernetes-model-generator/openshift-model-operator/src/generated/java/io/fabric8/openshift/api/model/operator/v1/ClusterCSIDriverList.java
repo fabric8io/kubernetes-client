@@ -79,7 +79,7 @@ public class ClusterCSIDriverList implements Editable<ClusterCSIDriverListBuilde
     private String apiVersion = "operator.openshift.io/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.openshift.api.model.operator.v1.ClusterCSIDriver> items = new ArrayList<io.fabric8.openshift.api.model.operator.v1.ClusterCSIDriver>();
+    private List<io.fabric8.openshift.api.model.operator.v1.ClusterCSIDriver> items = new ArrayList<>();
     /**
      * 
      * (Required)

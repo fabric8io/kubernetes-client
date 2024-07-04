@@ -69,7 +69,7 @@ public class Filter implements Editable<FilterBuilder> , KubernetesResource
     private Integer lastActive;
     @JsonProperty("openShiftVersions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> openShiftVersions = new ArrayList<String>();
+    private List<String> openShiftVersions = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

@@ -74,7 +74,7 @@ public class SequenceSpec implements Editable<SequenceSpecBuilder> , KubernetesR
     private Destination reply;
     @JsonProperty("steps")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<SequenceStep> steps = new ArrayList<SequenceStep>();
+    private List<SequenceStep> steps = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

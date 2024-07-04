@@ -59,10 +59,10 @@ public class ReferenceGrantSpec implements Editable<ReferenceGrantSpecBuilder> ,
 
     @JsonProperty("from")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ReferenceGrantFrom> from = new ArrayList<ReferenceGrantFrom>();
+    private List<ReferenceGrantFrom> from = new ArrayList<>();
     @JsonProperty("to")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ReferenceGrantTo> to = new ArrayList<ReferenceGrantTo>();
+    private List<ReferenceGrantTo> to = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

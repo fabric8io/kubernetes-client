@@ -79,7 +79,7 @@ public class ReplicaSetList implements Editable<ReplicaSetListBuilder> , Kuberne
     private String apiVersion = "extensions/v1beta1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.extensions.ReplicaSet> items = new ArrayList<io.fabric8.kubernetes.api.model.extensions.ReplicaSet>();
+    private List<io.fabric8.kubernetes.api.model.extensions.ReplicaSet> items = new ArrayList<>();
     /**
      * 
      * (Required)

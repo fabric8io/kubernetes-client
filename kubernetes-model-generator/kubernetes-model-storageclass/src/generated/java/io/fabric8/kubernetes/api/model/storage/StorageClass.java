@@ -78,7 +78,7 @@ public class StorageClass implements Editable<StorageClassBuilder> , HasMetadata
     private Boolean allowVolumeExpansion;
     @JsonProperty("allowedTopologies")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<TopologySelectorTerm> allowedTopologies = new ArrayList<TopologySelectorTerm>();
+    private List<TopologySelectorTerm> allowedTopologies = new ArrayList<>();
     /**
      * 
      * (Required)
@@ -97,10 +97,10 @@ public class StorageClass implements Editable<StorageClassBuilder> , HasMetadata
     private io.fabric8.kubernetes.api.model.ObjectMeta metadata;
     @JsonProperty("mountOptions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> mountOptions = new ArrayList<String>();
+    private List<String> mountOptions = new ArrayList<>();
     @JsonProperty("parameters")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> parameters = new LinkedHashMap<String, String>();
+    private Map<String, String> parameters = new LinkedHashMap<>();
     @JsonProperty("provisioner")
     private String provisioner;
     @JsonProperty("reclaimPolicy")

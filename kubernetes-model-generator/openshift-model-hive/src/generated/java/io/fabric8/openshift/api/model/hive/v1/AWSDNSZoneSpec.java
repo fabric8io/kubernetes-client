@@ -61,7 +61,7 @@ public class AWSDNSZoneSpec implements Editable<AWSDNSZoneSpecBuilder> , Kuberne
 
     @JsonProperty("additionalTags")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<AWSResourceTag> additionalTags = new ArrayList<AWSResourceTag>();
+    private List<AWSResourceTag> additionalTags = new ArrayList<>();
     @JsonProperty("credentialsAssumeRole")
     private AssumeRole credentialsAssumeRole;
     @JsonProperty("credentialsSecretRef")

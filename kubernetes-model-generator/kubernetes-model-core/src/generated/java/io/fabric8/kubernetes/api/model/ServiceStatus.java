@@ -38,7 +38,7 @@ public class ServiceStatus implements Editable<ServiceStatusBuilder> , Kubernete
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Condition> conditions = new ArrayList<Condition>();
+    private List<Condition> conditions = new ArrayList<>();
     @JsonProperty("loadBalancer")
     private LoadBalancerStatus loadBalancer;
     @JsonIgnore

@@ -70,7 +70,7 @@ public class AuthenticationSpec implements Editable<AuthenticationSpecBuilder> ,
     private WebhookTokenAuthenticator webhookTokenAuthenticator;
     @JsonProperty("webhookTokenAuthenticators")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<DeprecatedWebhookTokenAuthenticator> webhookTokenAuthenticators = new ArrayList<DeprecatedWebhookTokenAuthenticator>();
+    private List<DeprecatedWebhookTokenAuthenticator> webhookTokenAuthenticators = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

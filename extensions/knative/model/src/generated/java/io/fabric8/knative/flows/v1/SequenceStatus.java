@@ -77,20 +77,20 @@ public class SequenceStatus implements Editable<SequenceStatusBuilder> , Kuberne
     private Addressable address;
     @JsonProperty("annotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> annotations = new LinkedHashMap<String, String>();
+    private Map<String, String> annotations = new LinkedHashMap<>();
     @JsonProperty("auth")
     private AuthStatus auth;
     @JsonProperty("channelStatuses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<SequenceChannelStatus> channelStatuses = new ArrayList<SequenceChannelStatus>();
+    private List<SequenceChannelStatus> channelStatuses = new ArrayList<>();
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Condition> conditions = new ArrayList<Condition>();
+    private List<Condition> conditions = new ArrayList<>();
     @JsonProperty("observedGeneration")
     private Long observedGeneration;
     @JsonProperty("subscriptionStatuses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<SequenceSubscriptionStatus> subscriptionStatuses = new ArrayList<SequenceSubscriptionStatus>();
+    private List<SequenceSubscriptionStatus> subscriptionStatuses = new ArrayList<>();
     @JsonIgnore
     private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 

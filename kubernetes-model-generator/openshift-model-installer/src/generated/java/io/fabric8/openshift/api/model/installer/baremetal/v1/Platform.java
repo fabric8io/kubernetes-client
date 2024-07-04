@@ -84,7 +84,7 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     private String apiVIP;
     @JsonProperty("apiVIPs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> apiVIPs = new ArrayList<String>();
+    private List<String> apiVIPs = new ArrayList<>();
     @JsonProperty("bootstrapExternalStaticGateway")
     private String bootstrapExternalStaticGateway;
     @JsonProperty("bootstrapExternalStaticIP")
@@ -105,12 +105,12 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     private String externalMACAddress;
     @JsonProperty("hosts")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Host> hosts = new ArrayList<Host>();
+    private List<Host> hosts = new ArrayList<>();
     @JsonProperty("ingressVIP")
     private String ingressVIP;
     @JsonProperty("ingressVIPs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> ingressVIPs = new ArrayList<String>();
+    private List<String> ingressVIPs = new ArrayList<>();
     @JsonProperty("libvirtURI")
     private String libvirtURI;
     @JsonProperty("loadBalancer")

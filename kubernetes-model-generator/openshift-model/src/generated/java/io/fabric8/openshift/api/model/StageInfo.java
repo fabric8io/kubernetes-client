@@ -67,7 +67,7 @@ public class StageInfo implements Editable<StageInfoBuilder> , KubernetesResourc
     private String startTime;
     @JsonProperty("steps")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<StepInfo> steps = new ArrayList<StepInfo>();
+    private List<StepInfo> steps = new ArrayList<>();
     @JsonIgnore
     private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 

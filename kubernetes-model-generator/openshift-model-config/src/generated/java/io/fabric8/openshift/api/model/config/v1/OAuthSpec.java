@@ -60,7 +60,7 @@ public class OAuthSpec implements Editable<OAuthSpecBuilder> , KubernetesResourc
 
     @JsonProperty("identityProviders")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<IdentityProvider> identityProviders = new ArrayList<IdentityProvider>();
+    private List<IdentityProvider> identityProviders = new ArrayList<>();
     @JsonProperty("templates")
     private OAuthTemplates templates;
     @JsonProperty("tokenConfig")

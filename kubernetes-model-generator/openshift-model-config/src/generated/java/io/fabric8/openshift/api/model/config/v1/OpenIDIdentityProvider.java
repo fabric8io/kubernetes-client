@@ -72,10 +72,10 @@ public class OpenIDIdentityProvider implements Editable<OpenIDIdentityProviderBu
     private SecretNameReference clientSecret;
     @JsonProperty("extraAuthorizeParameters")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> extraAuthorizeParameters = new LinkedHashMap<String, String>();
+    private Map<String, String> extraAuthorizeParameters = new LinkedHashMap<>();
     @JsonProperty("extraScopes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> extraScopes = new ArrayList<String>();
+    private List<String> extraScopes = new ArrayList<>();
     @JsonProperty("issuer")
     private String issuer;
     @JsonIgnore

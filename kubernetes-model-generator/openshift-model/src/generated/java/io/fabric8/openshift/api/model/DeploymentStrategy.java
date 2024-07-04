@@ -64,12 +64,12 @@ public class DeploymentStrategy implements Editable<DeploymentStrategyBuilder> ,
     private Long activeDeadlineSeconds;
     @JsonProperty("annotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> annotations = new LinkedHashMap<String, String>();
+    private Map<String, String> annotations = new LinkedHashMap<>();
     @JsonProperty("customParams")
     private CustomDeploymentStrategyParams customParams;
     @JsonProperty("labels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> labels = new LinkedHashMap<String, String>();
+    private Map<String, String> labels = new LinkedHashMap<>();
     @JsonProperty("recreateParams")
     private RecreateDeploymentStrategyParams recreateParams;
     @JsonProperty("resources")

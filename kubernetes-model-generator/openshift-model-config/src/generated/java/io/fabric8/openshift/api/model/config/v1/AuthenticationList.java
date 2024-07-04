@@ -79,7 +79,7 @@ public class AuthenticationList implements Editable<AuthenticationListBuilder> ,
     private String apiVersion = "config.openshift.io/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.openshift.api.model.config.v1.Authentication> items = new ArrayList<io.fabric8.openshift.api.model.config.v1.Authentication>();
+    private List<io.fabric8.openshift.api.model.config.v1.Authentication> items = new ArrayList<>();
     /**
      * 
      * (Required)

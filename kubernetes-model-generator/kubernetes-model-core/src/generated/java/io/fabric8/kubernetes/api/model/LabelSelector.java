@@ -38,10 +38,10 @@ public class LabelSelector implements Editable<LabelSelectorBuilder> , Kubernete
 
     @JsonProperty("matchExpressions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<LabelSelectorRequirement> matchExpressions = new ArrayList<LabelSelectorRequirement>();
+    private List<LabelSelectorRequirement> matchExpressions = new ArrayList<>();
     @JsonProperty("matchLabels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> matchLabels = new LinkedHashMap<String, String>();
+    private Map<String, String> matchLabels = new LinkedHashMap<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

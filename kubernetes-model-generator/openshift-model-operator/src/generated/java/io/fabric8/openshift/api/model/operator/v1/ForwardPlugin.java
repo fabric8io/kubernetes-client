@@ -67,7 +67,7 @@ public class ForwardPlugin implements Editable<ForwardPluginBuilder> , Kubernete
     private DNSTransportConfig transportConfig;
     @JsonProperty("upstreams")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> upstreams = new ArrayList<String>();
+    private List<String> upstreams = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

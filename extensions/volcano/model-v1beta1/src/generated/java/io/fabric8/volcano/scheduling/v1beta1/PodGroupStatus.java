@@ -70,7 +70,7 @@ public class PodGroupStatus implements Editable<PodGroupStatusBuilder> , Kuberne
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<PodGroupCondition> conditions = new ArrayList<PodGroupCondition>();
+    private List<PodGroupCondition> conditions = new ArrayList<>();
     @JsonProperty("failed")
     private Integer failed;
     @JsonProperty("phase")

@@ -76,7 +76,7 @@ public class BlockChaosSpec implements Editable<BlockChaosSpecBuilder> , Kuberne
     private java.lang.String action;
     @JsonProperty("containerNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> containerNames = new ArrayList<java.lang.String>();
+    private List<java.lang.String> containerNames = new ArrayList<>();
     @JsonProperty("delay")
     private BlockDelaySpec delay;
     @JsonProperty("duration")

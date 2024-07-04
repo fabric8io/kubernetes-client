@@ -64,7 +64,7 @@ public class PolicyAncestorStatus implements Editable<PolicyAncestorStatusBuilde
     private ParentReference ancestorRef;
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Condition> conditions = new ArrayList<Condition>();
+    private List<Condition> conditions = new ArrayList<>();
     @JsonProperty("controllerName")
     private String controllerName;
     @JsonIgnore

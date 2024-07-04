@@ -95,7 +95,7 @@ public class MachineConfigPoolStatusConfiguration implements Editable<MachineCon
     private String resourceVersion;
     @JsonProperty("source")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.ObjectReference> source = new ArrayList<io.fabric8.kubernetes.api.model.ObjectReference>();
+    private List<io.fabric8.kubernetes.api.model.ObjectReference> source = new ArrayList<>();
     @JsonProperty("uid")
     private String uid;
     @JsonIgnore

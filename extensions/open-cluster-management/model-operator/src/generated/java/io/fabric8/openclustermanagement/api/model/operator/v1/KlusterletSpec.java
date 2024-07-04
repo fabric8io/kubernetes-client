@@ -73,7 +73,7 @@ public class KlusterletSpec implements Editable<KlusterletSpecBuilder> , Kuberne
     private String clusterName;
     @JsonProperty("externalServerURLs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ServerURL> externalServerURLs = new ArrayList<ServerURL>();
+    private List<ServerURL> externalServerURLs = new ArrayList<>();
     @JsonProperty("namespace")
     private String namespace;
     @JsonProperty("nodePlacement")

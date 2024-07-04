@@ -64,7 +64,7 @@ public class PolicyTemplate implements Editable<PolicyTemplateBuilder> , Kuberne
 
     @JsonProperty("objectDefinition")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Object> objectDefinition = new LinkedHashMap<String, Object>();
+    private Map<String, Object> objectDefinition = new LinkedHashMap<>();
     @JsonIgnore
     private Map<java.lang.String, java.lang.Object> additionalProperties = new LinkedHashMap<java.lang.String, java.lang.Object>();
 

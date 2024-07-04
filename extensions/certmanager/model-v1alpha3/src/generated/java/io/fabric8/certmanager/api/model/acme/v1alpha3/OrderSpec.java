@@ -75,12 +75,12 @@ public class OrderSpec implements Editable<OrderSpecBuilder> , KubernetesResourc
     private String csr;
     @JsonProperty("dnsNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> dnsNames = new ArrayList<String>();
+    private List<String> dnsNames = new ArrayList<>();
     @JsonProperty("duration")
     private Duration duration;
     @JsonProperty("ipAddresses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> ipAddresses = new ArrayList<String>();
+    private List<String> ipAddresses = new ArrayList<>();
     @JsonProperty("issuerRef")
     private io.fabric8.certmanager.api.model.meta.v1.ObjectReference issuerRef;
     @JsonIgnore

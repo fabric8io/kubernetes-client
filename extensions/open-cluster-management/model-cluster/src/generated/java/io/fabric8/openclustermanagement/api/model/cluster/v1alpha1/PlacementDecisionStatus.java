@@ -66,7 +66,7 @@ public class PlacementDecisionStatus implements Editable<PlacementDecisionStatus
 
     @JsonProperty("decisions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ClusterDecision> decisions = new ArrayList<ClusterDecision>();
+    private List<ClusterDecision> decisions = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

@@ -93,7 +93,7 @@ public class MultiClusterHubSpec implements Editable<MultiClusterHubSpecBuilder>
     private IngressSpec ingress;
     @JsonProperty("nodeSelector")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> nodeSelector = new LinkedHashMap<String, String>();
+    private Map<String, String> nodeSelector = new LinkedHashMap<>();
     @JsonProperty("overrides")
     private Overrides overrides;
     @JsonProperty("separateCertificateManagement")

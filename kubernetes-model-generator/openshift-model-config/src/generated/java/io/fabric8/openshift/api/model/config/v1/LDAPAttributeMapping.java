@@ -61,16 +61,16 @@ public class LDAPAttributeMapping implements Editable<LDAPAttributeMappingBuilde
 
     @JsonProperty("email")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> email = new ArrayList<String>();
+    private List<String> email = new ArrayList<>();
     @JsonProperty("id")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> id = new ArrayList<String>();
+    private List<String> id = new ArrayList<>();
     @JsonProperty("name")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> name = new ArrayList<String>();
+    private List<String> name = new ArrayList<>();
     @JsonProperty("preferredUsername")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> preferredUsername = new ArrayList<String>();
+    private List<String> preferredUsername = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

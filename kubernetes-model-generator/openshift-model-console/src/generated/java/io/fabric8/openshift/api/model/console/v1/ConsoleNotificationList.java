@@ -79,7 +79,7 @@ public class ConsoleNotificationList implements Editable<ConsoleNotificationList
     private String apiVersion = "console.openshift.io/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.openshift.api.model.console.v1.ConsoleNotification> items = new ArrayList<io.fabric8.openshift.api.model.console.v1.ConsoleNotification>();
+    private List<io.fabric8.openshift.api.model.console.v1.ConsoleNotification> items = new ArrayList<>();
     /**
      * 
      * (Required)

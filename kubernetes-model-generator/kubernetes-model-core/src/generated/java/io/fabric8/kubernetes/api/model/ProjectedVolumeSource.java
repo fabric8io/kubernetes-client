@@ -40,7 +40,7 @@ public class ProjectedVolumeSource implements Editable<ProjectedVolumeSourceBuil
     private Integer defaultMode;
     @JsonProperty("sources")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<VolumeProjection> sources = new ArrayList<VolumeProjection>();
+    private List<VolumeProjection> sources = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

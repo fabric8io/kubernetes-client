@@ -70,7 +70,7 @@ public class ProxyConfigSpec implements Editable<ProxyConfigSpecBuilder> , Kuber
     private Integer concurrency;
     @JsonProperty("environmentVariables")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> environmentVariables = new LinkedHashMap<String, String>();
+    private Map<String, String> environmentVariables = new LinkedHashMap<>();
     @JsonProperty("image")
     private ProxyImage image;
     @JsonProperty("selector")

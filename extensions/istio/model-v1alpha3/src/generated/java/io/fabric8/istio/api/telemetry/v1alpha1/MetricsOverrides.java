@@ -70,7 +70,7 @@ public class MetricsOverrides implements Editable<MetricsOverridesBuilder> , Kub
     private MetricSelector match;
     @JsonProperty("tagOverrides")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, MetricsOverridesTagOverride> tagOverrides = new LinkedHashMap<String, MetricsOverridesTagOverride>();
+    private Map<String, MetricsOverridesTagOverride> tagOverrides = new LinkedHashMap<>();
     @JsonIgnore
     private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 

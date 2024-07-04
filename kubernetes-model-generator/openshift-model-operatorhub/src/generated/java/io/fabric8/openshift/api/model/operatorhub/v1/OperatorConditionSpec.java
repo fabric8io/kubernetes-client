@@ -61,13 +61,13 @@ public class OperatorConditionSpec implements Editable<OperatorConditionSpecBuil
 
     @JsonProperty("deployments")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> deployments = new ArrayList<String>();
+    private List<String> deployments = new ArrayList<>();
     @JsonProperty("overrides")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Condition> overrides = new ArrayList<Condition>();
+    private List<Condition> overrides = new ArrayList<>();
     @JsonProperty("serviceAccounts")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> serviceAccounts = new ArrayList<String>();
+    private List<String> serviceAccounts = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

@@ -37,7 +37,7 @@ public class NamespaceSpec implements Editable<NamespaceSpecBuilder> , Kubernete
 
     @JsonProperty("finalizers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> finalizers = new ArrayList<String>();
+    private List<String> finalizers = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

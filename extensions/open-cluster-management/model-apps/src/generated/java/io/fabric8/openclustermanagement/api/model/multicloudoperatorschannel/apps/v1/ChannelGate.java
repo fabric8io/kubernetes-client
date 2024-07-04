@@ -65,7 +65,7 @@ public class ChannelGate implements Editable<ChannelGateBuilder> , KubernetesRes
 
     @JsonProperty("annotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> annotations = new LinkedHashMap<String, String>();
+    private Map<String, String> annotations = new LinkedHashMap<>();
     @JsonProperty("labelSelector")
     private io.fabric8.kubernetes.api.model.LabelSelector labelSelector;
     @JsonProperty("name")

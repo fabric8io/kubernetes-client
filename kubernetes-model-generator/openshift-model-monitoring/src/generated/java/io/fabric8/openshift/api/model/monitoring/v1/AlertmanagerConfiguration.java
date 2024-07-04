@@ -64,7 +64,7 @@ public class AlertmanagerConfiguration implements Editable<AlertmanagerConfigura
     private String name;
     @JsonProperty("templates")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<SecretOrConfigMap> templates = new ArrayList<SecretOrConfigMap>();
+    private List<SecretOrConfigMap> templates = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

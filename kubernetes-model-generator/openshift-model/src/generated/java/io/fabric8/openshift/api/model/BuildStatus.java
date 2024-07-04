@@ -73,7 +73,7 @@ public class BuildStatus implements Editable<BuildStatusBuilder> , KubernetesRes
     private String completionTimestamp;
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<BuildCondition> conditions = new ArrayList<BuildCondition>();
+    private List<BuildCondition> conditions = new ArrayList<>();
     @JsonProperty("config")
     private io.fabric8.kubernetes.api.model.ObjectReference config;
     @JsonProperty("duration")
@@ -92,7 +92,7 @@ public class BuildStatus implements Editable<BuildStatusBuilder> , KubernetesRes
     private java.lang.String reason;
     @JsonProperty("stages")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<StageInfo> stages = new ArrayList<StageInfo>();
+    private List<StageInfo> stages = new ArrayList<>();
     @JsonProperty("startTimestamp")
     private String startTimestamp;
     @JsonIgnore

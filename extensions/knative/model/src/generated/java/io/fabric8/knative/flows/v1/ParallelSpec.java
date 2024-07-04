@@ -70,7 +70,7 @@ public class ParallelSpec implements Editable<ParallelSpecBuilder> , KubernetesR
 
     @JsonProperty("branches")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ParallelBranch> branches = new ArrayList<ParallelBranch>();
+    private List<ParallelBranch> branches = new ArrayList<>();
     @JsonProperty("channelTemplate")
     private ChannelTemplateSpec channelTemplate;
     @JsonProperty("reply")

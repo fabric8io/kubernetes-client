@@ -65,7 +65,7 @@ public class VmConfig implements Editable<VmConfigBuilder> , KubernetesResource
 
     @JsonProperty("env")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.istio.api.networking.v1alpha1.EnvVar> env = new ArrayList<io.fabric8.istio.api.networking.v1alpha1.EnvVar>();
+    private List<io.fabric8.istio.api.networking.v1alpha1.EnvVar> env = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

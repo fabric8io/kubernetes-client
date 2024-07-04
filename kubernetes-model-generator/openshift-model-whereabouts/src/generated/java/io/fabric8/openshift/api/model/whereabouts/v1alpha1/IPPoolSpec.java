@@ -57,7 +57,7 @@ public class IPPoolSpec implements Editable<IPPoolSpecBuilder> , KubernetesResou
 
     @JsonProperty("allocations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, IPAllocation> allocations = new LinkedHashMap<String, IPAllocation>();
+    private Map<String, IPAllocation> allocations = new LinkedHashMap<>();
     @JsonProperty("range")
     private String range;
     @JsonIgnore

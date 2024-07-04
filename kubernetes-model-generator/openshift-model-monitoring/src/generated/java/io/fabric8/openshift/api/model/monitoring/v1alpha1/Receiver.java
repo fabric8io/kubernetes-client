@@ -70,42 +70,42 @@ public class Receiver implements Editable<ReceiverBuilder> , KubernetesResource
 
     @JsonProperty("discordConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<DiscordConfig> discordConfigs = new ArrayList<DiscordConfig>();
+    private List<DiscordConfig> discordConfigs = new ArrayList<>();
     @JsonProperty("emailConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<EmailConfig> emailConfigs = new ArrayList<EmailConfig>();
+    private List<EmailConfig> emailConfigs = new ArrayList<>();
     @JsonProperty("name")
     private String name;
     @JsonProperty("opsgenieConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<OpsGenieConfig> opsgenieConfigs = new ArrayList<OpsGenieConfig>();
+    private List<OpsGenieConfig> opsgenieConfigs = new ArrayList<>();
     @JsonProperty("pagerdutyConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<PagerDutyConfig> pagerdutyConfigs = new ArrayList<PagerDutyConfig>();
+    private List<PagerDutyConfig> pagerdutyConfigs = new ArrayList<>();
     @JsonProperty("pushoverConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<PushoverConfig> pushoverConfigs = new ArrayList<PushoverConfig>();
+    private List<PushoverConfig> pushoverConfigs = new ArrayList<>();
     @JsonProperty("slackConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<SlackConfig> slackConfigs = new ArrayList<SlackConfig>();
+    private List<SlackConfig> slackConfigs = new ArrayList<>();
     @JsonProperty("snsConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<SNSConfig> snsConfigs = new ArrayList<SNSConfig>();
+    private List<SNSConfig> snsConfigs = new ArrayList<>();
     @JsonProperty("telegramConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<TelegramConfig> telegramConfigs = new ArrayList<TelegramConfig>();
+    private List<TelegramConfig> telegramConfigs = new ArrayList<>();
     @JsonProperty("victoropsConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<VictorOpsConfig> victoropsConfigs = new ArrayList<VictorOpsConfig>();
+    private List<VictorOpsConfig> victoropsConfigs = new ArrayList<>();
     @JsonProperty("webexConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<WebexConfig> webexConfigs = new ArrayList<WebexConfig>();
+    private List<WebexConfig> webexConfigs = new ArrayList<>();
     @JsonProperty("webhookConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<WebhookConfig> webhookConfigs = new ArrayList<WebhookConfig>();
+    private List<WebhookConfig> webhookConfigs = new ArrayList<>();
     @JsonProperty("wechatConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<WeChatConfig> wechatConfigs = new ArrayList<WeChatConfig>();
+    private List<WeChatConfig> wechatConfigs = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

@@ -67,7 +67,7 @@ public class VerticalPodAutoscalerStatus implements Editable<VerticalPodAutoscal
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<VerticalPodAutoscalerCondition> conditions = new ArrayList<VerticalPodAutoscalerCondition>();
+    private List<VerticalPodAutoscalerCondition> conditions = new ArrayList<>();
     @JsonProperty("recommendation")
     private RecommendedPodResources recommendation;
     @JsonIgnore

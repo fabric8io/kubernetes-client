@@ -59,10 +59,10 @@ public class CustomFeatureGates implements Editable<CustomFeatureGatesBuilder> ,
 
     @JsonProperty("disabled")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> disabled = new ArrayList<String>();
+    private List<String> disabled = new ArrayList<>();
     @JsonProperty("enabled")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> enabled = new ArrayList<String>();
+    private List<String> enabled = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

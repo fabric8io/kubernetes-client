@@ -70,7 +70,7 @@ public class CPUStressor implements Editable<CPUStressorBuilder> , KubernetesRes
     private Integer load;
     @JsonProperty("options")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> options = new ArrayList<String>();
+    private List<String> options = new ArrayList<>();
     @JsonProperty("workers")
     private java.lang.Integer workers;
     @JsonIgnore

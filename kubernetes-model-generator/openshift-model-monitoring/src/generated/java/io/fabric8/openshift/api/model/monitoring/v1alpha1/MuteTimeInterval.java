@@ -61,7 +61,7 @@ public class MuteTimeInterval implements Editable<MuteTimeIntervalBuilder> , Kub
     private String name;
     @JsonProperty("timeIntervals")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<TimeInterval> timeIntervals = new ArrayList<TimeInterval>();
+    private List<TimeInterval> timeIntervals = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

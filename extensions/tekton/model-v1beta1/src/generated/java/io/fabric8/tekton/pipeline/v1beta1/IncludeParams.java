@@ -69,7 +69,7 @@ public class IncludeParams implements Editable<IncludeParamsBuilder> , Kubernete
     private String name;
     @JsonProperty("params")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Param> params = new ArrayList<Param>();
+    private List<Param> params = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

@@ -74,14 +74,14 @@ public class DNSChaosSpec implements Editable<DNSChaosSpecBuilder> , KubernetesR
     private java.lang.String action;
     @JsonProperty("containerNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> containerNames = new ArrayList<java.lang.String>();
+    private List<java.lang.String> containerNames = new ArrayList<>();
     @JsonProperty("duration")
     private String duration;
     @JsonProperty("mode")
     private java.lang.String mode;
     @JsonProperty("patterns")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> patterns = new ArrayList<java.lang.String>();
+    private List<java.lang.String> patterns = new ArrayList<>();
     @JsonProperty("selector")
     private PodSelectorSpec selector;
     @JsonProperty("value")

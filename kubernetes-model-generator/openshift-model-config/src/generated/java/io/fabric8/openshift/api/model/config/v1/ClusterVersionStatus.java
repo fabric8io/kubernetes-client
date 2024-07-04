@@ -65,20 +65,20 @@ public class ClusterVersionStatus implements Editable<ClusterVersionStatusBuilde
 
     @JsonProperty("availableUpdates")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Release> availableUpdates = new ArrayList<Release>();
+    private List<Release> availableUpdates = new ArrayList<>();
     @JsonProperty("capabilities")
     private ClusterVersionCapabilitiesStatus capabilities;
     @JsonProperty("conditionalUpdates")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ConditionalUpdate> conditionalUpdates = new ArrayList<ConditionalUpdate>();
+    private List<ConditionalUpdate> conditionalUpdates = new ArrayList<>();
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ClusterOperatorStatusCondition> conditions = new ArrayList<ClusterOperatorStatusCondition>();
+    private List<ClusterOperatorStatusCondition> conditions = new ArrayList<>();
     @JsonProperty("desired")
     private Release desired;
     @JsonProperty("history")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<UpdateHistory> history = new ArrayList<UpdateHistory>();
+    private List<UpdateHistory> history = new ArrayList<>();
     @JsonProperty("observedGeneration")
     private Long observedGeneration;
     @JsonProperty("versionHash")

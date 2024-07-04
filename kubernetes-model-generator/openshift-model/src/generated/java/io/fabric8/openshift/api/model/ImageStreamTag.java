@@ -81,7 +81,7 @@ public class ImageStreamTag implements Editable<ImageStreamTagBuilder> , HasMeta
     private String apiVersion = "image.openshift.io/v1";
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<TagEventCondition> conditions = new ArrayList<TagEventCondition>();
+    private List<TagEventCondition> conditions = new ArrayList<>();
     @JsonProperty("generation")
     private Long generation;
     @JsonProperty("image")

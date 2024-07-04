@@ -62,7 +62,7 @@ public class NetworkStatus implements Editable<NetworkStatusBuilder> , Kubernete
 
     @JsonProperty("clusterNetwork")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ClusterNetworkEntry> clusterNetwork = new ArrayList<ClusterNetworkEntry>();
+    private List<ClusterNetworkEntry> clusterNetwork = new ArrayList<>();
     @JsonProperty("clusterNetworkMTU")
     private Integer clusterNetworkMTU;
     @JsonProperty("migration")
@@ -71,7 +71,7 @@ public class NetworkStatus implements Editable<NetworkStatusBuilder> , Kubernete
     private String networkType;
     @JsonProperty("serviceNetwork")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> serviceNetwork = new ArrayList<String>();
+    private List<String> serviceNetwork = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

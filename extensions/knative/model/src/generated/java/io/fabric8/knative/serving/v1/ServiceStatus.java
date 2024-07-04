@@ -77,10 +77,10 @@ public class ServiceStatus implements Editable<ServiceStatusBuilder> , Kubernete
     private Addressable address;
     @JsonProperty("annotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> annotations = new LinkedHashMap<String, String>();
+    private Map<String, String> annotations = new LinkedHashMap<>();
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Condition> conditions = new ArrayList<Condition>();
+    private List<Condition> conditions = new ArrayList<>();
     @JsonProperty("latestCreatedRevisionName")
     private java.lang.String latestCreatedRevisionName;
     @JsonProperty("latestReadyRevisionName")
@@ -89,7 +89,7 @@ public class ServiceStatus implements Editable<ServiceStatusBuilder> , Kubernete
     private Long observedGeneration;
     @JsonProperty("traffic")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<TrafficTarget> traffic = new ArrayList<TrafficTarget>();
+    private List<TrafficTarget> traffic = new ArrayList<>();
     @JsonProperty("url")
     private java.lang.String url;
     @JsonIgnore

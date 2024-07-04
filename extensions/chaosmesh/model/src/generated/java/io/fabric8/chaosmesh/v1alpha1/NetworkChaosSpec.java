@@ -96,7 +96,7 @@ public class NetworkChaosSpec implements Editable<NetworkChaosSpecBuilder> , Kub
     private String duration;
     @JsonProperty("externalTargets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> externalTargets = new ArrayList<java.lang.String>();
+    private List<java.lang.String> externalTargets = new ArrayList<>();
     @JsonProperty("loss")
     private LossSpec loss;
     @JsonProperty("mode")

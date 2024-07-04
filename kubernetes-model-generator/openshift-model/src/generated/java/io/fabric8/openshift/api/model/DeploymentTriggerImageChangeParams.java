@@ -62,7 +62,7 @@ public class DeploymentTriggerImageChangeParams implements Editable<DeploymentTr
     private Boolean automatic;
     @JsonProperty("containerNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> containerNames = new ArrayList<String>();
+    private List<String> containerNames = new ArrayList<>();
     @JsonProperty("from")
     private io.fabric8.kubernetes.api.model.ObjectReference from;
     @JsonProperty("lastTriggeredImage")

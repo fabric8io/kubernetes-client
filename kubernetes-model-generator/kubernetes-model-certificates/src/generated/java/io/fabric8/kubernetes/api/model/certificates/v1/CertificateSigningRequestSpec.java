@@ -67,10 +67,10 @@ public class CertificateSigningRequestSpec implements Editable<CertificateSignin
     private Integer expirationSeconds;
     @JsonProperty("extra")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, ArrayList<String>> extra = new LinkedHashMap<String, ArrayList<String>>();
+    private Map<String, ArrayList<String>> extra = new LinkedHashMap<>();
     @JsonProperty("groups")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> groups = new ArrayList<String>();
+    private List<String> groups = new ArrayList<>();
     @JsonProperty("request")
     private String request;
     @JsonProperty("signerName")
@@ -79,7 +79,7 @@ public class CertificateSigningRequestSpec implements Editable<CertificateSignin
     private String uid;
     @JsonProperty("usages")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> usages = new ArrayList<String>();
+    private List<String> usages = new ArrayList<>();
     @JsonProperty("username")
     private String username;
     @JsonIgnore

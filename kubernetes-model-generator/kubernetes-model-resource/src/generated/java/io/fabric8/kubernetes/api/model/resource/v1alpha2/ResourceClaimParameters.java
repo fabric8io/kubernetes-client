@@ -79,7 +79,7 @@ public class ResourceClaimParameters implements Editable<ResourceClaimParameters
     private String apiVersion = "resource.k8s.io/v1alpha2";
     @JsonProperty("driverRequests")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<DriverRequests> driverRequests = new ArrayList<DriverRequests>();
+    private List<DriverRequests> driverRequests = new ArrayList<>();
     @JsonProperty("generatedFrom")
     private ResourceClaimParametersReference generatedFrom;
     /**

@@ -87,7 +87,7 @@ public class MultiClusterHubList implements Editable<MultiClusterHubListBuilder>
     private String apiVersion = "operator.open-cluster-management.io/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.openclustermanagement.api.model.multiclusterhub.operator.v1.MultiClusterHub> items = new ArrayList<io.fabric8.openclustermanagement.api.model.multiclusterhub.operator.v1.MultiClusterHub>();
+    private List<io.fabric8.openclustermanagement.api.model.multiclusterhub.operator.v1.MultiClusterHub> items = new ArrayList<>();
     /**
      * 
      * (Required)

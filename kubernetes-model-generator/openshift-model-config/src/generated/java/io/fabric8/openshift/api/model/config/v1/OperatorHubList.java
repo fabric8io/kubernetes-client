@@ -79,7 +79,7 @@ public class OperatorHubList implements Editable<OperatorHubListBuilder> , Kuber
     private String apiVersion = "config.openshift.io/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.openshift.api.model.config.v1.OperatorHub> items = new ArrayList<io.fabric8.openshift.api.model.config.v1.OperatorHub>();
+    private List<io.fabric8.openshift.api.model.config.v1.OperatorHub> items = new ArrayList<>();
     /**
      * 
      * (Required)

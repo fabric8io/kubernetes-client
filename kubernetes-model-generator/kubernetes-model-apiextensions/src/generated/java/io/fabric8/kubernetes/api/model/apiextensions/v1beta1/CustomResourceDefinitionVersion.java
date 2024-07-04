@@ -66,7 +66,7 @@ public class CustomResourceDefinitionVersion implements Editable<CustomResourceD
 
     @JsonProperty("additionalPrinterColumns")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<CustomResourceColumnDefinition> additionalPrinterColumns = new ArrayList<CustomResourceColumnDefinition>();
+    private List<CustomResourceColumnDefinition> additionalPrinterColumns = new ArrayList<>();
     @JsonProperty("deprecated")
     private Boolean deprecated;
     @JsonProperty("deprecationWarning")
@@ -77,7 +77,7 @@ public class CustomResourceDefinitionVersion implements Editable<CustomResourceD
     private CustomResourceValidation schema;
     @JsonProperty("selectableFields")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<SelectableField> selectableFields = new ArrayList<SelectableField>();
+    private List<SelectableField> selectableFields = new ArrayList<>();
     @JsonProperty("served")
     private Boolean served;
     @JsonProperty("storage")

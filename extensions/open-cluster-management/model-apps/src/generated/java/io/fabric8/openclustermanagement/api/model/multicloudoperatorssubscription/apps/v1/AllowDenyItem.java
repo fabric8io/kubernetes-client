@@ -69,7 +69,7 @@ public class AllowDenyItem implements Editable<AllowDenyItemBuilder> , Kubernete
     private String apiVersion;
     @JsonProperty("kinds")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> kinds = new ArrayList<String>();
+    private List<String> kinds = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

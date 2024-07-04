@@ -67,7 +67,7 @@ public class UpstreamResolvers implements Editable<UpstreamResolversBuilder> , K
     private DNSTransportConfig transportConfig;
     @JsonProperty("upstreams")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Upstream> upstreams = new ArrayList<Upstream>();
+    private List<Upstream> upstreams = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

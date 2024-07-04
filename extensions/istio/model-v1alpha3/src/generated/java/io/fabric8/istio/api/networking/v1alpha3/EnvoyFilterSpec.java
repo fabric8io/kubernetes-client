@@ -68,7 +68,7 @@ public class EnvoyFilterSpec implements Editable<EnvoyFilterSpecBuilder> , Kuber
 
     @JsonProperty("configPatches")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<EnvoyFilterEnvoyConfigObjectPatch> configPatches = new ArrayList<EnvoyFilterEnvoyConfigObjectPatch>();
+    private List<EnvoyFilterEnvoyConfigObjectPatch> configPatches = new ArrayList<>();
     @JsonProperty("priority")
     private Integer priority;
     @JsonProperty("workloadSelector")

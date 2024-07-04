@@ -60,7 +60,7 @@ public class HPAScalingRules implements Editable<HPAScalingRulesBuilder> , Kuber
 
     @JsonProperty("policies")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<HPAScalingPolicy> policies = new ArrayList<HPAScalingPolicy>();
+    private List<HPAScalingPolicy> policies = new ArrayList<>();
     @JsonProperty("selectPolicy")
     private String selectPolicy;
     @JsonProperty("stabilizationWindowSeconds")

@@ -76,7 +76,7 @@ public class BuildConfigSpec implements Editable<BuildConfigSpecBuilder> , Kuber
     private Boolean mountTrustedCA;
     @JsonProperty("nodeSelector")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> nodeSelector = new LinkedHashMap<String, String>();
+    private Map<String, String> nodeSelector = new LinkedHashMap<>();
     @JsonProperty("output")
     private BuildOutput output;
     @JsonProperty("postCommit")
@@ -97,7 +97,7 @@ public class BuildConfigSpec implements Editable<BuildConfigSpecBuilder> , Kuber
     private Integer successfulBuildsHistoryLimit;
     @JsonProperty("triggers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<BuildTriggerPolicy> triggers = new ArrayList<BuildTriggerPolicy>();
+    private List<BuildTriggerPolicy> triggers = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

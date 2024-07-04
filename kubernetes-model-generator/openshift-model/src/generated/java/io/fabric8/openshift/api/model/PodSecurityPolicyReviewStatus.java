@@ -58,7 +58,7 @@ public class PodSecurityPolicyReviewStatus implements Editable<PodSecurityPolicy
 
     @JsonProperty("allowedServiceAccounts")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ServiceAccountPodSecurityPolicyReviewStatus> allowedServiceAccounts = new ArrayList<ServiceAccountPodSecurityPolicyReviewStatus>();
+    private List<ServiceAccountPodSecurityPolicyReviewStatus> allowedServiceAccounts = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

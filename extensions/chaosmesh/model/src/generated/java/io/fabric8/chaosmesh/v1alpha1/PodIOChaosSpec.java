@@ -68,7 +68,7 @@ public class PodIOChaosSpec implements Editable<PodIOChaosSpecBuilder> , Kuberne
 
     @JsonProperty("actions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<IOChaosAction> actions = new ArrayList<IOChaosAction>();
+    private List<IOChaosAction> actions = new ArrayList<>();
     @JsonProperty("container")
     private String container;
     @JsonProperty("volumeMountPath")

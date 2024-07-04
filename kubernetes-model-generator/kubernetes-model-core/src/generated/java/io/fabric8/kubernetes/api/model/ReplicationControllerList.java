@@ -56,7 +56,7 @@ public class ReplicationControllerList implements Editable<ReplicationController
     private String apiVersion = "v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.ReplicationController> items = new ArrayList<io.fabric8.kubernetes.api.model.ReplicationController>();
+    private List<io.fabric8.kubernetes.api.model.ReplicationController> items = new ArrayList<>();
     /**
      * 
      * (Required)

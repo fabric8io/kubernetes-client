@@ -83,7 +83,7 @@ public class IOChaosSpec implements Editable<IOChaosSpecBuilder> , KubernetesRes
     private AttrOverrideSpec attr;
     @JsonProperty("containerNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> containerNames = new ArrayList<java.lang.String>();
+    private List<java.lang.String> containerNames = new ArrayList<>();
     @JsonProperty("delay")
     private java.lang.String delay;
     @JsonProperty("duration")
@@ -92,7 +92,7 @@ public class IOChaosSpec implements Editable<IOChaosSpecBuilder> , KubernetesRes
     private Integer errno;
     @JsonProperty("methods")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> methods = new ArrayList<java.lang.String>();
+    private List<java.lang.String> methods = new ArrayList<>();
     @JsonProperty("mistake")
     private MistakeSpec mistake;
     @JsonProperty("mode")

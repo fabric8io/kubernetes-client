@@ -66,7 +66,7 @@ public class ExecHealthCheckConfig implements Editable<ExecHealthCheckConfigBuil
 
     @JsonProperty("command")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> command = new ArrayList<String>();
+    private List<String> command = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

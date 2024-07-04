@@ -59,7 +59,7 @@ public class ContainerRuntimeConfigStatus implements Editable<ContainerRuntimeCo
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ContainerRuntimeConfigCondition> conditions = new ArrayList<ContainerRuntimeConfigCondition>();
+    private List<ContainerRuntimeConfigCondition> conditions = new ArrayList<>();
     @JsonProperty("observedGeneration")
     private Long observedGeneration;
     @JsonIgnore

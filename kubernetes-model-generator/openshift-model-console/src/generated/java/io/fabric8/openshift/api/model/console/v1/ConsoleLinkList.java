@@ -79,7 +79,7 @@ public class ConsoleLinkList implements Editable<ConsoleLinkListBuilder> , Kuber
     private String apiVersion = "console.openshift.io/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.openshift.api.model.console.v1.ConsoleLink> items = new ArrayList<io.fabric8.openshift.api.model.console.v1.ConsoleLink>();
+    private List<io.fabric8.openshift.api.model.console.v1.ConsoleLink> items = new ArrayList<>();
     /**
      * 
      * (Required)

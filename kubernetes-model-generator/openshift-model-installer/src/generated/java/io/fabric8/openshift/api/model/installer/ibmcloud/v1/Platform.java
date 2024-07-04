@@ -64,10 +64,10 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
 
     @JsonProperty("computeSubnets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> computeSubnets = new ArrayList<String>();
+    private List<String> computeSubnets = new ArrayList<>();
     @JsonProperty("controlPlaneSubnets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> controlPlaneSubnets = new ArrayList<String>();
+    private List<String> controlPlaneSubnets = new ArrayList<>();
     @JsonProperty("defaultMachinePlatform")
     private MachinePool defaultMachinePlatform;
     @JsonProperty("networkResourceGroupName")

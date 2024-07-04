@@ -85,7 +85,7 @@ public class StatefulSetSpec implements Editable<StatefulSetSpecBuilder> , Kuber
     private StatefulSetUpdateStrategy updateStrategy;
     @JsonProperty("volumeClaimTemplates")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.PersistentVolumeClaim> volumeClaimTemplates = new ArrayList<io.fabric8.kubernetes.api.model.PersistentVolumeClaim>();
+    private List<io.fabric8.kubernetes.api.model.PersistentVolumeClaim> volumeClaimTemplates = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

@@ -68,7 +68,7 @@ public class SearchOperatorSpec implements Editable<SearchOperatorSpecBuilder> ,
 
     @JsonProperty("nodeSelector")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> nodeSelector = new LinkedHashMap<String, String>();
+    private Map<String, String> nodeSelector = new LinkedHashMap<>();
     @JsonProperty("pullpolicy")
     private java.lang.String pullpolicy;
     @JsonProperty("pullsecret")

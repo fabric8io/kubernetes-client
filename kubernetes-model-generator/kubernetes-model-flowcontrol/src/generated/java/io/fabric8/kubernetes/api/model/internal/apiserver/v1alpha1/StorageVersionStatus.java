@@ -62,10 +62,10 @@ public class StorageVersionStatus implements Editable<StorageVersionStatusBuilde
     private String commonEncodingVersion;
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<StorageVersionCondition> conditions = new ArrayList<StorageVersionCondition>();
+    private List<StorageVersionCondition> conditions = new ArrayList<>();
     @JsonProperty("storageVersions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ServerStorageVersion> storageVersions = new ArrayList<ServerStorageVersion>();
+    private List<ServerStorageVersion> storageVersions = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

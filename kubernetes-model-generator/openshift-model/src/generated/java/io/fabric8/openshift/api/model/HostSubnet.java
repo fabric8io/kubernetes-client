@@ -80,10 +80,10 @@ public class HostSubnet implements Editable<HostSubnetBuilder> , HasMetadata
     private String apiVersion = "network.openshift.io/v1";
     @JsonProperty("egressCIDRs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> egressCIDRs = new ArrayList<String>();
+    private List<String> egressCIDRs = new ArrayList<>();
     @JsonProperty("egressIPs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> egressIPs = new ArrayList<String>();
+    private List<String> egressIPs = new ArrayList<>();
     @JsonProperty("host")
     private String host;
     @JsonProperty("hostIP")

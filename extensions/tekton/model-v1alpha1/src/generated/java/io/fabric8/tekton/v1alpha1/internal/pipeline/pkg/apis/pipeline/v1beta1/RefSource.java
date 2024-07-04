@@ -66,7 +66,7 @@ public class RefSource implements Editable<RefSourceBuilder> , KubernetesResourc
 
     @JsonProperty("digest")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> digest = new LinkedHashMap<String, String>();
+    private Map<String, String> digest = new LinkedHashMap<>();
     @JsonProperty("entryPoint")
     private java.lang.String entryPoint;
     @JsonProperty("uri")

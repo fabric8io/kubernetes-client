@@ -87,7 +87,7 @@ public class ChannelList implements Editable<ChannelListBuilder> , KubernetesRes
     private String apiVersion = "messaging.knative.dev/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.knative.messaging.v1.Channel> items = new ArrayList<io.fabric8.knative.messaging.v1.Channel>();
+    private List<io.fabric8.knative.messaging.v1.Channel> items = new ArrayList<>();
     /**
      * 
      * (Required)

@@ -63,7 +63,7 @@ public class HorizontalPodAutoscalerSpec implements Editable<HorizontalPodAutosc
     private Integer maxReplicas;
     @JsonProperty("metrics")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<MetricSpec> metrics = new ArrayList<MetricSpec>();
+    private List<MetricSpec> metrics = new ArrayList<>();
     @JsonProperty("minReplicas")
     private Integer minReplicas;
     @JsonProperty("scaleTargetRef")

@@ -58,7 +58,7 @@ public class CleanupStatus implements Editable<CleanupStatusBuilder> , Kubernete
 
     @JsonProperty("pendingDeletion")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ResourceList> pendingDeletion = new ArrayList<ResourceList>();
+    private List<ResourceList> pendingDeletion = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

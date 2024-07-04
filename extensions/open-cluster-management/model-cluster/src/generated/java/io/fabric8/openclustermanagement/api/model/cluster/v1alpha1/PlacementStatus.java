@@ -68,7 +68,7 @@ public class PlacementStatus implements Editable<PlacementStatusBuilder> , Kuber
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Condition> conditions = new ArrayList<Condition>();
+    private List<Condition> conditions = new ArrayList<>();
     @JsonProperty("numberOfSelectedClusters")
     private Integer numberOfSelectedClusters;
     @JsonIgnore

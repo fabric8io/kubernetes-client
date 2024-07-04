@@ -68,7 +68,7 @@ public class ProxySpec implements Editable<ProxySpecBuilder> , KubernetesResourc
     private String noProxy;
     @JsonProperty("readinessEndpoints")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> readinessEndpoints = new ArrayList<String>();
+    private List<String> readinessEndpoints = new ArrayList<>();
     @JsonProperty("trustedCA")
     private ConfigMapNameReference trustedCA;
     @JsonIgnore

@@ -64,7 +64,7 @@ public class CloudEventOverrides implements Editable<CloudEventOverridesBuilder>
 
     @JsonProperty("extensions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> extensions = new LinkedHashMap<String, String>();
+    private Map<String, String> extensions = new LinkedHashMap<>();
     @JsonIgnore
     private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 

@@ -68,29 +68,29 @@ public class Route implements Editable<RouteBuilder> , KubernetesResource
 
     @JsonProperty("activeTimeIntervals")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> activeTimeIntervals = new ArrayList<String>();
+    private List<String> activeTimeIntervals = new ArrayList<>();
     @JsonProperty("continue")
     private Boolean _continue;
     @JsonProperty("groupBy")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> groupBy = new ArrayList<String>();
+    private List<String> groupBy = new ArrayList<>();
     @JsonProperty("groupInterval")
     private String groupInterval;
     @JsonProperty("groupWait")
     private String groupWait;
     @JsonProperty("matchers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Matcher> matchers = new ArrayList<Matcher>();
+    private List<Matcher> matchers = new ArrayList<>();
     @JsonProperty("muteTimeIntervals")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> muteTimeIntervals = new ArrayList<String>();
+    private List<String> muteTimeIntervals = new ArrayList<>();
     @JsonProperty("receiver")
     private String receiver;
     @JsonProperty("repeatInterval")
     private String repeatInterval;
     @JsonProperty("routes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<JsonNode> routes = new ArrayList<JsonNode>();
+    private List<JsonNode> routes = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

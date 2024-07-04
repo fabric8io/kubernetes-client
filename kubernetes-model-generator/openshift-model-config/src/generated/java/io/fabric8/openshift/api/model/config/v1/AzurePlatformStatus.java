@@ -70,7 +70,7 @@ public class AzurePlatformStatus implements Editable<AzurePlatformStatusBuilder>
     private String resourceGroupName;
     @JsonProperty("resourceTags")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<AzureResourceTag> resourceTags = new ArrayList<AzureResourceTag>();
+    private List<AzureResourceTag> resourceTags = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

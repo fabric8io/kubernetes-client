@@ -58,7 +58,7 @@ public class FlowSchemaStatus implements Editable<FlowSchemaStatusBuilder> , Kub
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<FlowSchemaCondition> conditions = new ArrayList<FlowSchemaCondition>();
+    private List<FlowSchemaCondition> conditions = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

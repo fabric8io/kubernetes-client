@@ -71,7 +71,7 @@ public class WasmPluginTrafficSelector implements Editable<WasmPluginTrafficSele
     private WorkloadMode mode;
     @JsonProperty("ports")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<PortSelector> ports = new ArrayList<PortSelector>();
+    private List<PortSelector> ports = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

@@ -87,7 +87,7 @@ public class ResolutionRequestList implements Editable<ResolutionRequestListBuil
     private String apiVersion = "resolution.tekton.dev/v1beta1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.tekton.resolution.v1beta1.ResolutionRequest> items = new ArrayList<io.fabric8.tekton.resolution.v1beta1.ResolutionRequest>();
+    private List<io.fabric8.tekton.resolution.v1beta1.ResolutionRequest> items = new ArrayList<>();
     /**
      * 
      * (Required)

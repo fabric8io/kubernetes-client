@@ -65,14 +65,14 @@ public class PodDisruptionBudgetStatus implements Editable<PodDisruptionBudgetSt
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Condition> conditions = new ArrayList<Condition>();
+    private List<Condition> conditions = new ArrayList<>();
     @JsonProperty("currentHealthy")
     private Integer currentHealthy;
     @JsonProperty("desiredHealthy")
     private Integer desiredHealthy;
     @JsonProperty("disruptedPods")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> disruptedPods = new LinkedHashMap<String, String>();
+    private Map<String, String> disruptedPods = new LinkedHashMap<>();
     @JsonProperty("disruptionsAllowed")
     private Integer disruptionsAllowed;
     @JsonProperty("expectedPods")

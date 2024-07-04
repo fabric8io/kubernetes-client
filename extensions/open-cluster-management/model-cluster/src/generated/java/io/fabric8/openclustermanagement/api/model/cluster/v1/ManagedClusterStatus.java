@@ -72,16 +72,16 @@ public class ManagedClusterStatus implements Editable<ManagedClusterStatusBuilde
 
     @JsonProperty("allocatable")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Quantity> allocatable = new LinkedHashMap<String, Quantity>();
+    private Map<String, Quantity> allocatable = new LinkedHashMap<>();
     @JsonProperty("capacity")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Quantity> capacity = new LinkedHashMap<String, Quantity>();
+    private Map<String, Quantity> capacity = new LinkedHashMap<>();
     @JsonProperty("clusterClaims")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ManagedClusterClaim> clusterClaims = new ArrayList<ManagedClusterClaim>();
+    private List<ManagedClusterClaim> clusterClaims = new ArrayList<>();
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Condition> conditions = new ArrayList<Condition>();
+    private List<Condition> conditions = new ArrayList<>();
     @JsonProperty("version")
     private ManagedClusterVersion version;
     @JsonIgnore

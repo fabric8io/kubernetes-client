@@ -58,7 +58,7 @@ public class AlertingSpec implements Editable<AlertingSpecBuilder> , KubernetesR
 
     @JsonProperty("alertmanagers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<AlertmanagerEndpoints> alertmanagers = new ArrayList<AlertmanagerEndpoints>();
+    private List<AlertmanagerEndpoints> alertmanagers = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

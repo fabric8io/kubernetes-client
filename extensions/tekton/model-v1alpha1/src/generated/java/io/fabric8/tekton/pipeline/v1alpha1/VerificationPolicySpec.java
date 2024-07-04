@@ -68,12 +68,12 @@ public class VerificationPolicySpec implements Editable<VerificationPolicySpecBu
 
     @JsonProperty("authorities")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Authority> authorities = new ArrayList<Authority>();
+    private List<Authority> authorities = new ArrayList<>();
     @JsonProperty("mode")
     private String mode;
     @JsonProperty("resources")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ResourcePattern> resources = new ArrayList<ResourcePattern>();
+    private List<ResourcePattern> resources = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

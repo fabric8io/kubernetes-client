@@ -67,7 +67,7 @@ public class EgressFirewallStatus implements Editable<EgressFirewallStatusBuilde
 
     @JsonProperty("messages")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> messages = new ArrayList<String>();
+    private List<String> messages = new ArrayList<>();
     @JsonProperty("status")
     private String status;
     @JsonIgnore

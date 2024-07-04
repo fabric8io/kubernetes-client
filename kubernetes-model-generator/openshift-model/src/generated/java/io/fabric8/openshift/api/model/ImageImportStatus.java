@@ -64,7 +64,7 @@ public class ImageImportStatus implements Editable<ImageImportStatusBuilder> , K
     private Image image;
     @JsonProperty("manifests")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Image> manifests = new ArrayList<Image>();
+    private List<Image> manifests = new ArrayList<>();
     @JsonProperty("status")
     private Status status;
     @JsonProperty("tag")

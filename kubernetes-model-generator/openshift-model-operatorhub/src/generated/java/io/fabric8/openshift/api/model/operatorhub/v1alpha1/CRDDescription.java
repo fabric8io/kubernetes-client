@@ -66,7 +66,7 @@ public class CRDDescription implements Editable<CRDDescriptionBuilder> , Kuberne
 
     @JsonProperty("actionDescriptors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ActionDescriptor> actionDescriptors = new ArrayList<ActionDescriptor>();
+    private List<ActionDescriptor> actionDescriptors = new ArrayList<>();
     @JsonProperty("description")
     private String description;
     @JsonProperty("displayName")
@@ -77,13 +77,13 @@ public class CRDDescription implements Editable<CRDDescriptionBuilder> , Kuberne
     private String name;
     @JsonProperty("resources")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<APIResourceReference> resources = new ArrayList<APIResourceReference>();
+    private List<APIResourceReference> resources = new ArrayList<>();
     @JsonProperty("specDescriptors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<SpecDescriptor> specDescriptors = new ArrayList<SpecDescriptor>();
+    private List<SpecDescriptor> specDescriptors = new ArrayList<>();
     @JsonProperty("statusDescriptors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<StatusDescriptor> statusDescriptors = new ArrayList<StatusDescriptor>();
+    private List<StatusDescriptor> statusDescriptors = new ArrayList<>();
     @JsonProperty("version")
     private String version;
     @JsonIgnore

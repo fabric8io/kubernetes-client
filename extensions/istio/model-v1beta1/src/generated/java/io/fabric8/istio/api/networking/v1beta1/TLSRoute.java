@@ -67,10 +67,10 @@ public class TLSRoute implements Editable<TLSRouteBuilder> , KubernetesResource
 
     @JsonProperty("match")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<TLSMatchAttributes> match = new ArrayList<TLSMatchAttributes>();
+    private List<TLSMatchAttributes> match = new ArrayList<>();
     @JsonProperty("route")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<RouteDestination> route = new ArrayList<RouteDestination>();
+    private List<RouteDestination> route = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

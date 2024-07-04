@@ -109,12 +109,12 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder> , Kuber
 
     @JsonProperty("additionalArgs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Argument> additionalArgs = new ArrayList<Argument>();
+    private List<Argument> additionalArgs = new ArrayList<>();
     @JsonProperty("affinity")
     private Affinity affinity;
     @JsonProperty("alertDropLabels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> alertDropLabels = new ArrayList<String>();
+    private List<String> alertDropLabels = new ArrayList<>();
     @JsonProperty("alertQueryUrl")
     private String alertQueryUrl;
     @JsonProperty("alertRelabelConfigFile")
@@ -125,37 +125,37 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder> , Kuber
     private SecretKeySelector alertmanagersConfig;
     @JsonProperty("alertmanagersUrl")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> alertmanagersUrl = new ArrayList<String>();
+    private List<String> alertmanagersUrl = new ArrayList<>();
     @JsonProperty("containers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.Container> containers = new ArrayList<io.fabric8.kubernetes.api.model.Container>();
+    private List<io.fabric8.kubernetes.api.model.Container> containers = new ArrayList<>();
     @JsonProperty("enforcedNamespaceLabel")
     private String enforcedNamespaceLabel;
     @JsonProperty("evaluationInterval")
     private String evaluationInterval;
     @JsonProperty("excludedFromEnforcement")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.openshift.api.model.monitoring.v1.ObjectReference> excludedFromEnforcement = new ArrayList<io.fabric8.openshift.api.model.monitoring.v1.ObjectReference>();
+    private List<io.fabric8.openshift.api.model.monitoring.v1.ObjectReference> excludedFromEnforcement = new ArrayList<>();
     @JsonProperty("externalPrefix")
     private String externalPrefix;
     @JsonProperty("grpcServerTlsConfig")
     private TLSConfig grpcServerTlsConfig;
     @JsonProperty("hostAliases")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<HostAlias> hostAliases = new ArrayList<HostAlias>();
+    private List<HostAlias> hostAliases = new ArrayList<>();
     @JsonProperty("image")
     private String image;
     @JsonProperty("imagePullPolicy")
     private String imagePullPolicy;
     @JsonProperty("imagePullSecrets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.LocalObjectReference> imagePullSecrets = new ArrayList<io.fabric8.kubernetes.api.model.LocalObjectReference>();
+    private List<io.fabric8.kubernetes.api.model.LocalObjectReference> imagePullSecrets = new ArrayList<>();
     @JsonProperty("initContainers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.Container> initContainers = new ArrayList<io.fabric8.kubernetes.api.model.Container>();
+    private List<io.fabric8.kubernetes.api.model.Container> initContainers = new ArrayList<>();
     @JsonProperty("labels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> labels = new LinkedHashMap<String, String>();
+    private Map<String, String> labels = new LinkedHashMap<>();
     @JsonProperty("listenLocal")
     private Boolean listenLocal;
     @JsonProperty("logFormat")
@@ -166,7 +166,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder> , Kuber
     private Integer minReadySeconds;
     @JsonProperty("nodeSelector")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> nodeSelector = new LinkedHashMap<String, String>();
+    private Map<String, String> nodeSelector = new LinkedHashMap<>();
     @JsonProperty("objectStorageConfig")
     private SecretKeySelector objectStorageConfig;
     @JsonProperty("objectStorageConfigFile")
@@ -181,12 +181,12 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder> , Kuber
     private String priorityClassName;
     @JsonProperty("prometheusRulesExcludedFromEnforce")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<PrometheusRuleExcludeConfig> prometheusRulesExcludedFromEnforce = new ArrayList<PrometheusRuleExcludeConfig>();
+    private List<PrometheusRuleExcludeConfig> prometheusRulesExcludedFromEnforce = new ArrayList<>();
     @JsonProperty("queryConfig")
     private SecretKeySelector queryConfig;
     @JsonProperty("queryEndpoints")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> queryEndpoints = new ArrayList<String>();
+    private List<String> queryEndpoints = new ArrayList<>();
     @JsonProperty("replicas")
     private Integer replicas;
     @JsonProperty("resources")
@@ -207,10 +207,10 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder> , Kuber
     private StorageSpec storage;
     @JsonProperty("tolerations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Toleration> tolerations = new ArrayList<Toleration>();
+    private List<Toleration> tolerations = new ArrayList<>();
     @JsonProperty("topologySpreadConstraints")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<TopologySpreadConstraint> topologySpreadConstraints = new ArrayList<TopologySpreadConstraint>();
+    private List<TopologySpreadConstraint> topologySpreadConstraints = new ArrayList<>();
     @JsonProperty("tracingConfig")
     private SecretKeySelector tracingConfig;
     @JsonProperty("tracingConfigFile")
@@ -219,10 +219,10 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder> , Kuber
     private String version;
     @JsonProperty("volumeMounts")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<VolumeMount> volumeMounts = new ArrayList<VolumeMount>();
+    private List<VolumeMount> volumeMounts = new ArrayList<>();
     @JsonProperty("volumes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Volume> volumes = new ArrayList<Volume>();
+    private List<Volume> volumes = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

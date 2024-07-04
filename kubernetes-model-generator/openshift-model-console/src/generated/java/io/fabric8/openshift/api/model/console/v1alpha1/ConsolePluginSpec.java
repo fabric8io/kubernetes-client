@@ -62,7 +62,7 @@ public class ConsolePluginSpec implements Editable<ConsolePluginSpecBuilder> , K
     private String displayName;
     @JsonProperty("proxy")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ConsolePluginProxy> proxy = new ArrayList<ConsolePluginProxy>();
+    private List<ConsolePluginProxy> proxy = new ArrayList<>();
     @JsonProperty("service")
     private ConsolePluginService service;
     @JsonIgnore

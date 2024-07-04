@@ -68,10 +68,10 @@ public class Metrics implements Editable<MetricsBuilder> , KubernetesResource
 
     @JsonProperty("overrides")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<MetricsOverrides> overrides = new ArrayList<MetricsOverrides>();
+    private List<MetricsOverrides> overrides = new ArrayList<>();
     @JsonProperty("providers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ProviderRef> providers = new ArrayList<ProviderRef>();
+    private List<ProviderRef> providers = new ArrayList<>();
     @JsonProperty("reportingInterval")
     private String reportingInterval;
     @JsonIgnore

@@ -87,7 +87,7 @@ public class ClientTLSSettings implements Editable<ClientTLSSettingsBuilder> , K
     private String sni;
     @JsonProperty("subjectAltNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> subjectAltNames = new ArrayList<String>();
+    private List<String> subjectAltNames = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

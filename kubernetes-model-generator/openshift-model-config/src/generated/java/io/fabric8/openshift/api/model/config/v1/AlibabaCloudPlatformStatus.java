@@ -64,7 +64,7 @@ public class AlibabaCloudPlatformStatus implements Editable<AlibabaCloudPlatform
     private String resourceGroupID;
     @JsonProperty("resourceTags")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<AlibabaCloudResourceTag> resourceTags = new ArrayList<AlibabaCloudResourceTag>();
+    private List<AlibabaCloudResourceTag> resourceTags = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

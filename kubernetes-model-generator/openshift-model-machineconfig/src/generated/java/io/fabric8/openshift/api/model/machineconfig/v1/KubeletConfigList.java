@@ -79,7 +79,7 @@ public class KubeletConfigList implements Editable<KubeletConfigListBuilder> , K
     private String apiVersion = "machineconfiguration.openshift.io/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.openshift.api.model.machineconfig.v1.KubeletConfig> items = new ArrayList<io.fabric8.openshift.api.model.machineconfig.v1.KubeletConfig>();
+    private List<io.fabric8.openshift.api.model.machineconfig.v1.KubeletConfig> items = new ArrayList<>();
     /**
      * 
      * (Required)

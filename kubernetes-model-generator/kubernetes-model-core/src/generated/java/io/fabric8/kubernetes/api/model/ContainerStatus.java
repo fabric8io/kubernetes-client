@@ -48,7 +48,7 @@ public class ContainerStatus implements Editable<ContainerStatusBuilder> , Kuber
 
     @JsonProperty("allocatedResources")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Quantity> allocatedResources = new LinkedHashMap<String, Quantity>();
+    private Map<String, Quantity> allocatedResources = new LinkedHashMap<>();
     @JsonProperty("containerID")
     private String containerID;
     @JsonProperty("image")
@@ -71,7 +71,7 @@ public class ContainerStatus implements Editable<ContainerStatusBuilder> , Kuber
     private ContainerState state;
     @JsonProperty("volumeMounts")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<VolumeMountStatus> volumeMounts = new ArrayList<VolumeMountStatus>();
+    private List<VolumeMountStatus> volumeMounts = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

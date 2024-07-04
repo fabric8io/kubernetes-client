@@ -62,7 +62,7 @@ public class AWSPrivateLinkInventory implements Editable<AWSPrivateLinkInventory
     private String region;
     @JsonProperty("subnets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<AWSPrivateLinkSubnet> subnets = new ArrayList<AWSPrivateLinkSubnet>();
+    private List<AWSPrivateLinkSubnet> subnets = new ArrayList<>();
     @JsonProperty("vpcID")
     private String vpcID;
     @JsonIgnore

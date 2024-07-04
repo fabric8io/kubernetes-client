@@ -73,7 +73,7 @@ public class IstioEgressListener implements Editable<IstioEgressListenerBuilder>
     private CaptureMode captureMode;
     @JsonProperty("hosts")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> hosts = new ArrayList<String>();
+    private List<String> hosts = new ArrayList<>();
     @JsonProperty("port")
     private SidecarPort port;
     @JsonIgnore

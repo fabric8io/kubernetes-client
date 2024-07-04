@@ -44,19 +44,19 @@ public class PersistentVolumeClaimStatus implements Editable<PersistentVolumeCla
 
     @JsonProperty("accessModes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> accessModes = new ArrayList<String>();
+    private List<String> accessModes = new ArrayList<>();
     @JsonProperty("allocatedResourceStatuses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> allocatedResourceStatuses = new LinkedHashMap<String, String>();
+    private Map<String, String> allocatedResourceStatuses = new LinkedHashMap<>();
     @JsonProperty("allocatedResources")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, io.fabric8.kubernetes.api.model.Quantity> allocatedResources = new LinkedHashMap<String, io.fabric8.kubernetes.api.model.Quantity>();
+    private Map<String, io.fabric8.kubernetes.api.model.Quantity> allocatedResources = new LinkedHashMap<>();
     @JsonProperty("capacity")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, io.fabric8.kubernetes.api.model.Quantity> capacity = new LinkedHashMap<String, io.fabric8.kubernetes.api.model.Quantity>();
+    private Map<String, io.fabric8.kubernetes.api.model.Quantity> capacity = new LinkedHashMap<>();
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<PersistentVolumeClaimCondition> conditions = new ArrayList<PersistentVolumeClaimCondition>();
+    private List<PersistentVolumeClaimCondition> conditions = new ArrayList<>();
     @JsonProperty("currentVolumeAttributesClassName")
     private String currentVolumeAttributesClassName;
     @JsonProperty("modifyVolumeStatus")

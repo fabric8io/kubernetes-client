@@ -66,7 +66,7 @@ public class PodHttpChaosSpec implements Editable<PodHttpChaosSpecBuilder> , Kub
 
     @JsonProperty("rules")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<PodHttpChaosRule> rules = new ArrayList<PodHttpChaosRule>();
+    private List<PodHttpChaosRule> rules = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

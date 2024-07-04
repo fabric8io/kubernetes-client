@@ -56,7 +56,7 @@ public class ComponentStatus implements Editable<ComponentStatusBuilder> , HasMe
     private String apiVersion = "v1";
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ComponentCondition> conditions = new ArrayList<ComponentCondition>();
+    private List<ComponentCondition> conditions = new ArrayList<>();
     /**
      * 
      * (Required)

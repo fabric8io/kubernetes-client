@@ -79,7 +79,7 @@ public class ImageStreamList implements Editable<ImageStreamListBuilder> , Kuber
     private String apiVersion = "image.openshift.io/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.openshift.api.model.ImageStream> items = new ArrayList<io.fabric8.openshift.api.model.ImageStream>();
+    private List<io.fabric8.openshift.api.model.ImageStream> items = new ArrayList<>();
     /**
      * 
      * (Required)

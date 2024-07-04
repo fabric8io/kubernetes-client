@@ -69,14 +69,14 @@ public class MutatingWebhook implements Editable<MutatingWebhookBuilder> , Kuber
 
     @JsonProperty("admissionReviewVersions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> admissionReviewVersions = new ArrayList<String>();
+    private List<String> admissionReviewVersions = new ArrayList<>();
     @JsonProperty("clientConfig")
     private WebhookClientConfig clientConfig;
     @JsonProperty("failurePolicy")
     private String failurePolicy;
     @JsonProperty("matchConditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<MatchCondition> matchConditions = new ArrayList<MatchCondition>();
+    private List<MatchCondition> matchConditions = new ArrayList<>();
     @JsonProperty("matchPolicy")
     private String matchPolicy;
     @JsonProperty("name")
@@ -89,7 +89,7 @@ public class MutatingWebhook implements Editable<MutatingWebhookBuilder> , Kuber
     private String reinvocationPolicy;
     @JsonProperty("rules")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<RuleWithOperations> rules = new ArrayList<RuleWithOperations>();
+    private List<RuleWithOperations> rules = new ArrayList<>();
     @JsonProperty("sideEffects")
     private String sideEffects;
     @JsonProperty("timeoutSeconds")

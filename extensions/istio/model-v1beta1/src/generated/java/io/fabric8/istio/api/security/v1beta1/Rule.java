@@ -68,13 +68,13 @@ public class Rule implements Editable<RuleBuilder> , KubernetesResource
 
     @JsonProperty("from")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<RuleFrom> from = new ArrayList<RuleFrom>();
+    private List<RuleFrom> from = new ArrayList<>();
     @JsonProperty("to")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<RuleTo> to = new ArrayList<RuleTo>();
+    private List<RuleTo> to = new ArrayList<>();
     @JsonProperty("when")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Condition> when = new ArrayList<Condition>();
+    private List<Condition> when = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

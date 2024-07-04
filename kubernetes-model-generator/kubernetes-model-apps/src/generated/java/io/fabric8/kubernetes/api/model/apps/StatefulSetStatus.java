@@ -71,7 +71,7 @@ public class StatefulSetStatus implements Editable<StatefulSetStatusBuilder> , K
     private Integer collisionCount;
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<StatefulSetCondition> conditions = new ArrayList<StatefulSetCondition>();
+    private List<StatefulSetCondition> conditions = new ArrayList<>();
     @JsonProperty("currentReplicas")
     private Integer currentReplicas;
     @JsonProperty("currentRevision")

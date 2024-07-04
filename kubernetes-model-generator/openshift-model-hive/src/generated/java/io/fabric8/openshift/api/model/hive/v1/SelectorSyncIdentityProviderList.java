@@ -79,7 +79,7 @@ public class SelectorSyncIdentityProviderList implements Editable<SelectorSyncId
     private String apiVersion = "hive.openshift.io/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.openshift.api.model.hive.v1.SelectorSyncIdentityProvider> items = new ArrayList<io.fabric8.openshift.api.model.hive.v1.SelectorSyncIdentityProvider>();
+    private List<io.fabric8.openshift.api.model.hive.v1.SelectorSyncIdentityProvider> items = new ArrayList<>();
     /**
      * 
      * (Required)

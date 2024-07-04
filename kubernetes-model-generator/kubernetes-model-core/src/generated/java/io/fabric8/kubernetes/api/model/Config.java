@@ -46,22 +46,22 @@ public class Config implements Editable<ConfigBuilder> , KubernetesResource
     private String apiVersion;
     @JsonProperty("clusters")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<NamedCluster> clusters = new ArrayList<NamedCluster>();
+    private List<NamedCluster> clusters = new ArrayList<>();
     @JsonProperty("contexts")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<NamedContext> contexts = new ArrayList<NamedContext>();
+    private List<NamedContext> contexts = new ArrayList<>();
     @JsonProperty("current-context")
     private String currentContext;
     @JsonProperty("extensions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<NamedExtension> extensions = new ArrayList<NamedExtension>();
+    private List<NamedExtension> extensions = new ArrayList<>();
     @JsonProperty("kind")
     private String kind;
     @JsonProperty("preferences")
     private Preferences preferences;
     @JsonProperty("users")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<NamedAuthInfo> users = new ArrayList<NamedAuthInfo>();
+    private List<NamedAuthInfo> users = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

@@ -64,13 +64,13 @@ public class MachinePool implements Editable<MachinePoolBuilder> , KubernetesRes
 
     @JsonProperty("additionalNetworkIDs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> additionalNetworkIDs = new ArrayList<String>();
+    private List<String> additionalNetworkIDs = new ArrayList<>();
     @JsonProperty("additionalSecurityGroupIDs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> additionalSecurityGroupIDs = new ArrayList<String>();
+    private List<String> additionalSecurityGroupIDs = new ArrayList<>();
     @JsonProperty("failureDomains")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<FailureDomain> failureDomains = new ArrayList<FailureDomain>();
+    private List<FailureDomain> failureDomains = new ArrayList<>();
     @JsonProperty("rootVolume")
     private RootVolume rootVolume;
     @JsonProperty("serverGroupPolicy")
@@ -79,7 +79,7 @@ public class MachinePool implements Editable<MachinePoolBuilder> , KubernetesRes
     private String type;
     @JsonProperty("zones")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> zones = new ArrayList<String>();
+    private List<String> zones = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

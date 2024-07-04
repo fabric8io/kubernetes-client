@@ -59,7 +59,7 @@ public class ImagePrunerStatus implements Editable<ImagePrunerStatusBuilder> , K
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<OperatorCondition> conditions = new ArrayList<OperatorCondition>();
+    private List<OperatorCondition> conditions = new ArrayList<>();
     @JsonProperty("observedGeneration")
     private Long observedGeneration;
     @JsonIgnore

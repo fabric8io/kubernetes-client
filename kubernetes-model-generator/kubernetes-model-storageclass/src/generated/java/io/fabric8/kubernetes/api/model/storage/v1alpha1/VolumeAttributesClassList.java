@@ -79,7 +79,7 @@ public class VolumeAttributesClassList implements Editable<VolumeAttributesClass
     private String apiVersion = "storage.k8s.io/v1alpha1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.storage.v1alpha1.VolumeAttributesClass> items = new ArrayList<io.fabric8.kubernetes.api.model.storage.v1alpha1.VolumeAttributesClass>();
+    private List<io.fabric8.kubernetes.api.model.storage.v1alpha1.VolumeAttributesClass> items = new ArrayList<>();
     /**
      * 
      * (Required)

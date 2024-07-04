@@ -87,7 +87,7 @@ public class TriggerList implements Editable<TriggerListBuilder> , KubernetesRes
     private String apiVersion = "triggers.tekton.dev/v1beta1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.tekton.triggers.v1beta1.Trigger> items = new ArrayList<io.fabric8.tekton.triggers.v1beta1.Trigger>();
+    private List<io.fabric8.tekton.triggers.v1beta1.Trigger> items = new ArrayList<>();
     /**
      * 
      * (Required)

@@ -82,7 +82,7 @@ public class RemoteWriteSpec implements Editable<RemoteWriteSpecBuilder> , Kuber
     private String bearerTokenFile;
     @JsonProperty("headers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> headers = new LinkedHashMap<String, String>();
+    private Map<String, String> headers = new LinkedHashMap<>();
     @JsonProperty("metadataConfig")
     private MetadataConfig metadataConfig;
     @JsonProperty("name")
@@ -107,7 +107,7 @@ public class RemoteWriteSpec implements Editable<RemoteWriteSpecBuilder> , Kuber
     private String url;
     @JsonProperty("writeRelabelConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<RelabelConfig> writeRelabelConfigs = new ArrayList<RelabelConfig>();
+    private List<RelabelConfig> writeRelabelConfigs = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

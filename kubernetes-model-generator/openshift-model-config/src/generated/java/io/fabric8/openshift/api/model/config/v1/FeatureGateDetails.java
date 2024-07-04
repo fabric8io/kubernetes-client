@@ -60,10 +60,10 @@ public class FeatureGateDetails implements Editable<FeatureGateDetailsBuilder> ,
 
     @JsonProperty("disabled")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<FeatureGateAttributes> disabled = new ArrayList<FeatureGateAttributes>();
+    private List<FeatureGateAttributes> disabled = new ArrayList<>();
     @JsonProperty("enabled")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<FeatureGateAttributes> enabled = new ArrayList<FeatureGateAttributes>();
+    private List<FeatureGateAttributes> enabled = new ArrayList<>();
     @JsonProperty("version")
     private String version;
     @JsonIgnore

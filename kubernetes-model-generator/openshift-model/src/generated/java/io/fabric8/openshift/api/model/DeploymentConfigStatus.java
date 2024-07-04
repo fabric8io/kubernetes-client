@@ -68,7 +68,7 @@ public class DeploymentConfigStatus implements Editable<DeploymentConfigStatusBu
     private Integer availableReplicas;
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<DeploymentCondition> conditions = new ArrayList<DeploymentCondition>();
+    private List<DeploymentCondition> conditions = new ArrayList<>();
     @JsonProperty("details")
     private DeploymentDetails details;
     @JsonProperty("latestVersion")

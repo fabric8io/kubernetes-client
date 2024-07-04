@@ -79,7 +79,7 @@ public class OAuthClientList implements Editable<OAuthClientListBuilder> , Kuber
     private String apiVersion = "oauth.openshift.io/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.openshift.api.model.OAuthClient> items = new ArrayList<io.fabric8.openshift.api.model.OAuthClient>();
+    private List<io.fabric8.openshift.api.model.OAuthClient> items = new ArrayList<>();
     /**
      * 
      * (Required)

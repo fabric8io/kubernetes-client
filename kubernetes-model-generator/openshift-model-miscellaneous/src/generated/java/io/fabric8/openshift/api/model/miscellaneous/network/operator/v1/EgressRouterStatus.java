@@ -58,7 +58,7 @@ public class EgressRouterStatus implements Editable<EgressRouterStatusBuilder> ,
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<EgressRouterStatusCondition> conditions = new ArrayList<EgressRouterStatusCondition>();
+    private List<EgressRouterStatusCondition> conditions = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

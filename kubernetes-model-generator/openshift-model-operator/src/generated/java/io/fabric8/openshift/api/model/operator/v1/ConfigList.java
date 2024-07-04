@@ -79,7 +79,7 @@ public class ConfigList implements Editable<ConfigListBuilder> , KubernetesResou
     private String apiVersion = "operator.openshift.io/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.openshift.api.model.operator.v1.Config> items = new ArrayList<io.fabric8.openshift.api.model.operator.v1.Config>();
+    private List<io.fabric8.openshift.api.model.operator.v1.Config> items = new ArrayList<>();
     /**
      * 
      * (Required)

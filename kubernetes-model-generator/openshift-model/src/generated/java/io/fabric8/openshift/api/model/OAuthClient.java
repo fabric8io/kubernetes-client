@@ -80,7 +80,7 @@ public class OAuthClient implements Editable<OAuthClientBuilder> , HasMetadata
     private Integer accessTokenMaxAgeSeconds;
     @JsonProperty("additionalSecrets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> additionalSecrets = new ArrayList<String>();
+    private List<String> additionalSecrets = new ArrayList<>();
     /**
      * 
      * (Required)
@@ -101,12 +101,12 @@ public class OAuthClient implements Editable<OAuthClientBuilder> , HasMetadata
     private io.fabric8.kubernetes.api.model.ObjectMeta metadata;
     @JsonProperty("redirectURIs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> redirectURIs = new ArrayList<String>();
+    private List<String> redirectURIs = new ArrayList<>();
     @JsonProperty("respondWithChallenges")
     private Boolean respondWithChallenges;
     @JsonProperty("scopeRestrictions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ScopeRestriction> scopeRestrictions = new ArrayList<ScopeRestriction>();
+    private List<ScopeRestriction> scopeRestrictions = new ArrayList<>();
     @JsonProperty("secret")
     private String secret;
     @JsonIgnore

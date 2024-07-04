@@ -59,7 +59,7 @@ public class NamedResourcesInstance implements Editable<NamedResourcesInstanceBu
 
     @JsonProperty("attributes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<NamedResourcesAttribute> attributes = new ArrayList<NamedResourcesAttribute>();
+    private List<NamedResourcesAttribute> attributes = new ArrayList<>();
     @JsonProperty("name")
     private String name;
     @JsonIgnore

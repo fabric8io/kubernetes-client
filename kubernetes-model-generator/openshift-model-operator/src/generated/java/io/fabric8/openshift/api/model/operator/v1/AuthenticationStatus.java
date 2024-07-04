@@ -63,10 +63,10 @@ public class AuthenticationStatus implements Editable<AuthenticationStatusBuilde
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<OperatorCondition> conditions = new ArrayList<OperatorCondition>();
+    private List<OperatorCondition> conditions = new ArrayList<>();
     @JsonProperty("generations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<GenerationStatus> generations = new ArrayList<GenerationStatus>();
+    private List<GenerationStatus> generations = new ArrayList<>();
     @JsonProperty("oauthAPIServer")
     private OAuthAPIServerStatus oauthAPIServer;
     @JsonProperty("observedGeneration")

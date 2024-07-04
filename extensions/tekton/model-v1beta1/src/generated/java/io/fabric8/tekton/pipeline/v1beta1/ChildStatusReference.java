@@ -78,7 +78,7 @@ public class ChildStatusReference implements Editable<ChildStatusReferenceBuilde
     private String pipelineTaskName;
     @JsonProperty("whenExpressions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<WhenExpression> whenExpressions = new ArrayList<WhenExpression>();
+    private List<WhenExpression> whenExpressions = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

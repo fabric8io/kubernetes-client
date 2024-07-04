@@ -68,7 +68,7 @@ public class RawIPSet implements Editable<RawIPSetBuilder> , KubernetesResource
 
     @JsonProperty("cidrs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> cidrs = new ArrayList<String>();
+    private List<String> cidrs = new ArrayList<>();
     @JsonProperty("name")
     private String name;
     @JsonProperty("source")

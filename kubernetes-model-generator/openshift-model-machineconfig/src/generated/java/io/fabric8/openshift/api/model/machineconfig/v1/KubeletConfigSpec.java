@@ -62,7 +62,7 @@ public class KubeletConfigSpec implements Editable<KubeletConfigSpecBuilder> , K
     private Boolean autoSizingReserved;
     @JsonProperty("kubeletConfig")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Object> kubeletConfig = new LinkedHashMap<String, Object>();
+    private Map<String, Object> kubeletConfig = new LinkedHashMap<>();
     @JsonProperty("logLevel")
     private Integer logLevel;
     @JsonProperty("machineConfigPoolSelector")

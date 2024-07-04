@@ -87,7 +87,7 @@ public class SearchCustomizationList implements Editable<SearchCustomizationList
     private String apiVersion = "search.open-cluster-management.io/v1alpha1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.openclustermanagement.api.model.searchoperator.v1alpha1.SearchCustomization> items = new ArrayList<io.fabric8.openclustermanagement.api.model.searchoperator.v1alpha1.SearchCustomization>();
+    private List<io.fabric8.openclustermanagement.api.model.searchoperator.v1alpha1.SearchCustomization> items = new ArrayList<>();
     /**
      * 
      * (Required)

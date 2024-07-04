@@ -94,7 +94,7 @@ public class PhysicalMachineChaosSpec implements Editable<PhysicalMachineChaosSp
     private java.lang.String action;
     @JsonProperty("address")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> address = new ArrayList<java.lang.String>();
+    private List<java.lang.String> address = new ArrayList<>();
     @JsonProperty("clock")
     private ClockSpec clock;
     @JsonProperty("disk-fill")

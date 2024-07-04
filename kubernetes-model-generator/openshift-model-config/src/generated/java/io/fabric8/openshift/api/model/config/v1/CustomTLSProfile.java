@@ -59,7 +59,7 @@ public class CustomTLSProfile implements Editable<CustomTLSProfileBuilder> , Kub
 
     @JsonProperty("ciphers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> ciphers = new ArrayList<String>();
+    private List<String> ciphers = new ArrayList<>();
     @JsonProperty("minTLSVersion")
     private String minTLSVersion;
     @JsonIgnore

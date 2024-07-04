@@ -84,7 +84,7 @@ public class TaskRunSpec implements Editable<TaskRunSpecBuilder> , KubernetesRes
     private TaskRunDebug debug;
     @JsonProperty("params")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Param> params = new ArrayList<Param>();
+    private List<Param> params = new ArrayList<>();
     @JsonProperty("podTemplate")
     private Template podTemplate;
     @JsonProperty("retries")
@@ -93,14 +93,14 @@ public class TaskRunSpec implements Editable<TaskRunSpecBuilder> , KubernetesRes
     private String serviceAccountName;
     @JsonProperty("sidecarSpecs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<TaskRunSidecarSpec> sidecarSpecs = new ArrayList<TaskRunSidecarSpec>();
+    private List<TaskRunSidecarSpec> sidecarSpecs = new ArrayList<>();
     @JsonProperty("status")
     private String status;
     @JsonProperty("statusMessage")
     private String statusMessage;
     @JsonProperty("stepSpecs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<TaskRunStepSpec> stepSpecs = new ArrayList<TaskRunStepSpec>();
+    private List<TaskRunStepSpec> stepSpecs = new ArrayList<>();
     @JsonProperty("taskRef")
     private TaskRef taskRef;
     @JsonProperty("taskSpec")
@@ -109,7 +109,7 @@ public class TaskRunSpec implements Editable<TaskRunSpecBuilder> , KubernetesRes
     private Duration timeout;
     @JsonProperty("workspaces")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<WorkspaceBinding> workspaces = new ArrayList<WorkspaceBinding>();
+    private List<WorkspaceBinding> workspaces = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

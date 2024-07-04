@@ -62,16 +62,16 @@ public class MachinePoolStatus implements Editable<MachinePoolStatusBuilder> , K
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<MachinePoolCondition> conditions = new ArrayList<MachinePoolCondition>();
+    private List<MachinePoolCondition> conditions = new ArrayList<>();
     @JsonProperty("machineSets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<MachineSetStatus> machineSets = new ArrayList<MachineSetStatus>();
+    private List<MachineSetStatus> machineSets = new ArrayList<>();
     @JsonProperty("ownedLabels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> ownedLabels = new ArrayList<String>();
+    private List<String> ownedLabels = new ArrayList<>();
     @JsonProperty("ownedTaints")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<TaintIdentifier> ownedTaints = new ArrayList<TaintIdentifier>();
+    private List<TaintIdentifier> ownedTaints = new ArrayList<>();
     @JsonProperty("replicas")
     private Integer replicas;
     @JsonIgnore

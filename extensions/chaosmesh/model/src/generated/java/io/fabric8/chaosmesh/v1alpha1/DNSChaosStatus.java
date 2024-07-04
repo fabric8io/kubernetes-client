@@ -67,7 +67,7 @@ public class DNSChaosStatus implements Editable<DNSChaosStatusBuilder> , Kuberne
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ChaosCondition> conditions = new ArrayList<ChaosCondition>();
+    private List<ChaosCondition> conditions = new ArrayList<>();
     @JsonProperty("experiment")
     private ExperimentStatus experiment;
     @JsonIgnore

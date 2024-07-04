@@ -78,10 +78,10 @@ public class CertificateRequestSpec implements Editable<CertificateRequestSpecBu
     private Duration duration;
     @JsonProperty("extra")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, List<String>> extra = new LinkedHashMap<String, List<String>>();
+    private Map<String, List<String>> extra = new LinkedHashMap<>();
     @JsonProperty("groups")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> groups = new ArrayList<java.lang.String>();
+    private List<java.lang.String> groups = new ArrayList<>();
     @JsonProperty("isCA")
     private Boolean isCA;
     @JsonProperty("issuerRef")
@@ -90,7 +90,7 @@ public class CertificateRequestSpec implements Editable<CertificateRequestSpecBu
     private java.lang.String uid;
     @JsonProperty("usages")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> usages = new ArrayList<java.lang.String>();
+    private List<java.lang.String> usages = new ArrayList<>();
     @JsonProperty("username")
     private java.lang.String username;
     @JsonIgnore

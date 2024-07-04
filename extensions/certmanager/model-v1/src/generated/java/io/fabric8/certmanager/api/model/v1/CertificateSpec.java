@@ -86,22 +86,22 @@ public class CertificateSpec implements Editable<CertificateSpecBuilder> , Kuber
 
     @JsonProperty("additionalOutputFormats")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<CertificateAdditionalOutputFormat> additionalOutputFormats = new ArrayList<CertificateAdditionalOutputFormat>();
+    private List<CertificateAdditionalOutputFormat> additionalOutputFormats = new ArrayList<>();
     @JsonProperty("commonName")
     private String commonName;
     @JsonProperty("dnsNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> dnsNames = new ArrayList<String>();
+    private List<String> dnsNames = new ArrayList<>();
     @JsonProperty("duration")
     private Duration duration;
     @JsonProperty("emailAddresses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> emailAddresses = new ArrayList<String>();
+    private List<String> emailAddresses = new ArrayList<>();
     @JsonProperty("encodeUsagesInRequest")
     private Boolean encodeUsagesInRequest;
     @JsonProperty("ipAddresses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> ipAddresses = new ArrayList<String>();
+    private List<String> ipAddresses = new ArrayList<>();
     @JsonProperty("isCA")
     private java.lang.Boolean isCA;
     @JsonProperty("issuerRef")
@@ -114,7 +114,7 @@ public class CertificateSpec implements Editable<CertificateSpecBuilder> , Kuber
     private NameConstraints nameConstraints;
     @JsonProperty("otherNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<OtherName> otherNames = new ArrayList<OtherName>();
+    private List<OtherName> otherNames = new ArrayList<>();
     @JsonProperty("privateKey")
     private CertificatePrivateKey privateKey;
     @JsonProperty("renewBefore")
@@ -129,10 +129,10 @@ public class CertificateSpec implements Editable<CertificateSpecBuilder> , Kuber
     private X509Subject subject;
     @JsonProperty("uris")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> uris = new ArrayList<String>();
+    private List<String> uris = new ArrayList<>();
     @JsonProperty("usages")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> usages = new ArrayList<String>();
+    private List<String> usages = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

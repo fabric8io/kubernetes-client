@@ -73,7 +73,7 @@ public class PackageManifestStatus implements Editable<PackageManifestStatusBuil
     private String catalogSourcePublisher;
     @JsonProperty("channels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<PackageChannel> channels = new ArrayList<PackageChannel>();
+    private List<PackageChannel> channels = new ArrayList<>();
     @JsonProperty("defaultChannel")
     private String defaultChannel;
     @JsonProperty("packageName")

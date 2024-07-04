@@ -79,7 +79,7 @@ public class StorageVersionMigrationList implements Editable<StorageVersionMigra
     private String apiVersion = "storagemigration.k8s.io/v1alpha1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.storagemigration.v1alpha1.StorageVersionMigration> items = new ArrayList<io.fabric8.kubernetes.api.model.storagemigration.v1alpha1.StorageVersionMigration>();
+    private List<io.fabric8.kubernetes.api.model.storagemigration.v1alpha1.StorageVersionMigration> items = new ArrayList<>();
     /**
      * 
      * (Required)

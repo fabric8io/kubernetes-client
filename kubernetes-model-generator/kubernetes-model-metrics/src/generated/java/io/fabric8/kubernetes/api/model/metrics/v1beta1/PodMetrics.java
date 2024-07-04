@@ -80,7 +80,7 @@ public class PodMetrics implements Editable<PodMetricsBuilder> , HasMetadata, Na
     private java.lang.String apiVersion = "metrics.k8s.io/v1beta1";
     @JsonProperty("containers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ContainerMetrics> containers = new ArrayList<ContainerMetrics>();
+    private List<ContainerMetrics> containers = new ArrayList<>();
     /**
      * 
      * (Required)

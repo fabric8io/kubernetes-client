@@ -85,7 +85,7 @@ public class ValidatingWebhookConfiguration implements Editable<ValidatingWebhoo
     private io.fabric8.kubernetes.api.model.ObjectMeta metadata;
     @JsonProperty("webhooks")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ValidatingWebhook> webhooks = new ArrayList<ValidatingWebhook>();
+    private List<ValidatingWebhook> webhooks = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

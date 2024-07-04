@@ -44,7 +44,7 @@ public class ReplacementField implements Editable<ReplacementFieldBuilder> , Kub
     private SourceSelector source;
     @JsonProperty("targets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<TargetSelector> targets = new ArrayList<TargetSelector>();
+    private List<TargetSelector> targets = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

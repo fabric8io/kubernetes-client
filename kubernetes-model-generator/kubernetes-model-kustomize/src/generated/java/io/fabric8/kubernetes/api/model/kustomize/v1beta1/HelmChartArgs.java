@@ -60,7 +60,7 @@ public class HelmChartArgs implements Editable<HelmChartArgsBuilder> , Kubernete
     private String chartVersion;
     @JsonProperty("extraArgs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> extraArgs = new ArrayList<String>();
+    private List<String> extraArgs = new ArrayList<>();
     @JsonProperty("helmBin")
     private String helmBin;
     @JsonProperty("helmHome")
@@ -73,7 +73,7 @@ public class HelmChartArgs implements Editable<HelmChartArgsBuilder> , Kubernete
     private String values;
     @JsonProperty("valuesLocal")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Object> valuesLocal = new LinkedHashMap<String, Object>();
+    private Map<String, Object> valuesLocal = new LinkedHashMap<>();
     @JsonProperty("valuesMerge")
     private String valuesMerge;
     @JsonIgnore

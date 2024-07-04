@@ -64,7 +64,7 @@ public class PodFailurePolicyOnExitCodesRequirement implements Editable<PodFailu
     private String operator;
     @JsonProperty("values")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Integer> values = new ArrayList<Integer>();
+    private List<Integer> values = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

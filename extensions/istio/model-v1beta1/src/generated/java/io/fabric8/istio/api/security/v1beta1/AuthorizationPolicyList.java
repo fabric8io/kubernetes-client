@@ -87,7 +87,7 @@ public class AuthorizationPolicyList implements Editable<AuthorizationPolicyList
     private String apiVersion = "security.istio.io/v1beta1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.istio.api.security.v1beta1.AuthorizationPolicy> items = new ArrayList<io.fabric8.istio.api.security.v1beta1.AuthorizationPolicy>();
+    private List<io.fabric8.istio.api.security.v1beta1.AuthorizationPolicy> items = new ArrayList<>();
     /**
      * 
      * (Required)

@@ -61,7 +61,7 @@ public class SelectorSyncIdentityProviderSpec implements Editable<SelectorSyncId
     private io.fabric8.kubernetes.api.model.LabelSelector clusterDeploymentSelector;
     @JsonProperty("identityProviders")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<IdentityProvider> identityProviders = new ArrayList<IdentityProvider>();
+    private List<IdentityProvider> identityProviders = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

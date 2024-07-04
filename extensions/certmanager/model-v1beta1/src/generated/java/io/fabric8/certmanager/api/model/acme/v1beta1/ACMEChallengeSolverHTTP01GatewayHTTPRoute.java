@@ -65,7 +65,7 @@ public class ACMEChallengeSolverHTTP01GatewayHTTPRoute implements Editable<ACMEC
 
     @JsonProperty("labels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> labels = new LinkedHashMap<String, String>();
+    private Map<String, String> labels = new LinkedHashMap<>();
     @JsonProperty("serviceType")
     private java.lang.String serviceType;
     @JsonIgnore

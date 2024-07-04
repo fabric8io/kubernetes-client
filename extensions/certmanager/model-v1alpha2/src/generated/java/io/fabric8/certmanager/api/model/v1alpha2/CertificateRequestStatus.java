@@ -75,7 +75,7 @@ public class CertificateRequestStatus implements Editable<CertificateRequestStat
     private String certificate;
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<CertificateRequestCondition> conditions = new ArrayList<CertificateRequestCondition>();
+    private List<CertificateRequestCondition> conditions = new ArrayList<>();
     @JsonProperty("failureTime")
     private String failureTime;
     @JsonIgnore

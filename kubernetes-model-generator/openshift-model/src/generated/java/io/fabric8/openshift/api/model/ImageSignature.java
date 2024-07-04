@@ -83,7 +83,7 @@ public class ImageSignature implements Editable<ImageSignatureBuilder> , HasMeta
     private java.lang.String apiVersion = "image.openshift.io/v1";
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<SignatureCondition> conditions = new ArrayList<SignatureCondition>();
+    private List<SignatureCondition> conditions = new ArrayList<>();
     @JsonProperty("content")
     private java.lang.String content;
     @JsonProperty("created")
@@ -105,7 +105,7 @@ public class ImageSignature implements Editable<ImageSignatureBuilder> , HasMeta
     private io.fabric8.kubernetes.api.model.ObjectMeta metadata;
     @JsonProperty("signedClaims")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<java.lang.String, java.lang.String> signedClaims = new LinkedHashMap<java.lang.String, java.lang.String>();
+    private Map<java.lang.String, java.lang.String> signedClaims = new LinkedHashMap<>();
     @JsonProperty("type")
     private java.lang.String type;
     @JsonIgnore

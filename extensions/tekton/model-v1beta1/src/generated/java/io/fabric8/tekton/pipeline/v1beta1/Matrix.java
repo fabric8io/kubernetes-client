@@ -67,10 +67,10 @@ public class Matrix implements Editable<MatrixBuilder> , KubernetesResource
 
     @JsonProperty("include")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<IncludeParams> include = new ArrayList<IncludeParams>();
+    private List<IncludeParams> include = new ArrayList<>();
     @JsonProperty("params")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Param> params = new ArrayList<Param>();
+    private List<Param> params = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

@@ -60,15 +60,15 @@ public class NetworkPolicySpec implements Editable<NetworkPolicySpecBuilder> , K
 
     @JsonProperty("egress")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<NetworkPolicyEgressRule> egress = new ArrayList<NetworkPolicyEgressRule>();
+    private List<NetworkPolicyEgressRule> egress = new ArrayList<>();
     @JsonProperty("ingress")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<NetworkPolicyIngressRule> ingress = new ArrayList<NetworkPolicyIngressRule>();
+    private List<NetworkPolicyIngressRule> ingress = new ArrayList<>();
     @JsonProperty("podSelector")
     private io.fabric8.kubernetes.api.model.LabelSelector podSelector;
     @JsonProperty("policyTypes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> policyTypes = new ArrayList<String>();
+    private List<String> policyTypes = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

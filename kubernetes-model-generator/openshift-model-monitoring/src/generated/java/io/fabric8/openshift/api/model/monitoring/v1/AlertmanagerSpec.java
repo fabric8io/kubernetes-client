@@ -106,7 +106,7 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder> , Kub
 
     @JsonProperty("additionalPeers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> additionalPeers = new ArrayList<String>();
+    private List<String> additionalPeers = new ArrayList<>();
     @JsonProperty("affinity")
     private Affinity affinity;
     @JsonProperty("alertmanagerConfigMatcherStrategy")
@@ -131,29 +131,29 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder> , Kub
     private String clusterPushpullInterval;
     @JsonProperty("configMaps")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> configMaps = new ArrayList<String>();
+    private List<String> configMaps = new ArrayList<>();
     @JsonProperty("configSecret")
     private String configSecret;
     @JsonProperty("containers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.Container> containers = new ArrayList<io.fabric8.kubernetes.api.model.Container>();
+    private List<io.fabric8.kubernetes.api.model.Container> containers = new ArrayList<>();
     @JsonProperty("externalUrl")
     private String externalUrl;
     @JsonProperty("forceEnableClusterMode")
     private Boolean forceEnableClusterMode;
     @JsonProperty("hostAliases")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<HostAlias> hostAliases = new ArrayList<HostAlias>();
+    private List<HostAlias> hostAliases = new ArrayList<>();
     @JsonProperty("image")
     private String image;
     @JsonProperty("imagePullPolicy")
     private String imagePullPolicy;
     @JsonProperty("imagePullSecrets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.LocalObjectReference> imagePullSecrets = new ArrayList<io.fabric8.kubernetes.api.model.LocalObjectReference>();
+    private List<io.fabric8.kubernetes.api.model.LocalObjectReference> imagePullSecrets = new ArrayList<>();
     @JsonProperty("initContainers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.Container> initContainers = new ArrayList<io.fabric8.kubernetes.api.model.Container>();
+    private List<io.fabric8.kubernetes.api.model.Container> initContainers = new ArrayList<>();
     @JsonProperty("listenLocal")
     private Boolean listenLocal;
     @JsonProperty("logFormat")
@@ -164,7 +164,7 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder> , Kub
     private Integer minReadySeconds;
     @JsonProperty("nodeSelector")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> nodeSelector = new LinkedHashMap<String, String>();
+    private Map<String, String> nodeSelector = new LinkedHashMap<>();
     @JsonProperty("paused")
     private Boolean paused;
     @JsonProperty("podMetadata")
@@ -183,7 +183,7 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder> , Kub
     private String routePrefix;
     @JsonProperty("secrets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> secrets = new ArrayList<String>();
+    private List<String> secrets = new ArrayList<>();
     @JsonProperty("securityContext")
     private PodSecurityContext securityContext;
     @JsonProperty("serviceAccountName")
@@ -196,18 +196,18 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder> , Kub
     private String tag;
     @JsonProperty("tolerations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Toleration> tolerations = new ArrayList<Toleration>();
+    private List<Toleration> tolerations = new ArrayList<>();
     @JsonProperty("topologySpreadConstraints")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<TopologySpreadConstraint> topologySpreadConstraints = new ArrayList<TopologySpreadConstraint>();
+    private List<TopologySpreadConstraint> topologySpreadConstraints = new ArrayList<>();
     @JsonProperty("version")
     private String version;
     @JsonProperty("volumeMounts")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<VolumeMount> volumeMounts = new ArrayList<VolumeMount>();
+    private List<VolumeMount> volumeMounts = new ArrayList<>();
     @JsonProperty("volumes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Volume> volumes = new ArrayList<Volume>();
+    private List<Volume> volumes = new ArrayList<>();
     @JsonProperty("web")
     private AlertmanagerWebSpec web;
     @JsonIgnore

@@ -68,7 +68,7 @@ public class PipelineTaskInputResource implements Editable<PipelineTaskInputReso
 
     @JsonProperty("from")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> from = new ArrayList<String>();
+    private List<String> from = new ArrayList<>();
     @JsonProperty("name")
     private String name;
     @JsonProperty("resource")

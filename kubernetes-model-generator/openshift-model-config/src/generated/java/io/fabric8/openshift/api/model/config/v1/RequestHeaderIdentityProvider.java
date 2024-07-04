@@ -69,21 +69,21 @@ public class RequestHeaderIdentityProvider implements Editable<RequestHeaderIden
     private String challengeURL;
     @JsonProperty("clientCommonNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> clientCommonNames = new ArrayList<String>();
+    private List<String> clientCommonNames = new ArrayList<>();
     @JsonProperty("emailHeaders")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> emailHeaders = new ArrayList<String>();
+    private List<String> emailHeaders = new ArrayList<>();
     @JsonProperty("headers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> headers = new ArrayList<String>();
+    private List<String> headers = new ArrayList<>();
     @JsonProperty("loginURL")
     private String loginURL;
     @JsonProperty("nameHeaders")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> nameHeaders = new ArrayList<String>();
+    private List<String> nameHeaders = new ArrayList<>();
     @JsonProperty("preferredUsernameHeaders")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> preferredUsernameHeaders = new ArrayList<String>();
+    private List<String> preferredUsernameHeaders = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

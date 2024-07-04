@@ -87,7 +87,7 @@ public class WorkloadEntryList implements Editable<WorkloadEntryListBuilder> , K
     private String apiVersion = "networking.istio.io/v1beta1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.istio.api.networking.v1beta1.WorkloadEntry> items = new ArrayList<io.fabric8.istio.api.networking.v1beta1.WorkloadEntry>();
+    private List<io.fabric8.istio.api.networking.v1beta1.WorkloadEntry> items = new ArrayList<>();
     /**
      * 
      * (Required)

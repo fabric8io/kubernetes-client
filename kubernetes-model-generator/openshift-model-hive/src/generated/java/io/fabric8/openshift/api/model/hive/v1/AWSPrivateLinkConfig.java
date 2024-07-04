@@ -60,14 +60,14 @@ public class AWSPrivateLinkConfig implements Editable<AWSPrivateLinkConfigBuilde
 
     @JsonProperty("associatedVPCs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<AWSAssociatedVPC> associatedVPCs = new ArrayList<AWSAssociatedVPC>();
+    private List<AWSAssociatedVPC> associatedVPCs = new ArrayList<>();
     @JsonProperty("credentialsSecretRef")
     private io.fabric8.kubernetes.api.model.LocalObjectReference credentialsSecretRef;
     @JsonProperty("dnsRecordType")
     private String dnsRecordType;
     @JsonProperty("endpointVPCInventory")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<AWSPrivateLinkInventory> endpointVPCInventory = new ArrayList<AWSPrivateLinkInventory>();
+    private List<AWSPrivateLinkInventory> endpointVPCInventory = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

@@ -79,7 +79,7 @@ public class ClusterRoleList implements Editable<ClusterRoleListBuilder> , Kuber
     private String apiVersion = "authorization.openshift.io/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.openshift.api.model.ClusterRole> items = new ArrayList<io.fabric8.openshift.api.model.ClusterRole>();
+    private List<io.fabric8.openshift.api.model.ClusterRole> items = new ArrayList<>();
     /**
      * 
      * (Required)

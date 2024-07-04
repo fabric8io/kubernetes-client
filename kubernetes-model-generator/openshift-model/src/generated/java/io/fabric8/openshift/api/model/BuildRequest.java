@@ -89,7 +89,7 @@ public class BuildRequest implements Editable<BuildRequestBuilder> , HasMetadata
     private DockerStrategyOptions dockerStrategyOptions;
     @JsonProperty("env")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<EnvVar> env = new ArrayList<EnvVar>();
+    private List<EnvVar> env = new ArrayList<>();
     @JsonProperty("from")
     private io.fabric8.kubernetes.api.model.ObjectReference from;
     /**
@@ -109,7 +109,7 @@ public class BuildRequest implements Editable<BuildRequestBuilder> , HasMetadata
     private SourceStrategyOptions sourceStrategyOptions;
     @JsonProperty("triggeredBy")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<BuildTriggerCause> triggeredBy = new ArrayList<BuildTriggerCause>();
+    private List<BuildTriggerCause> triggeredBy = new ArrayList<>();
     @JsonProperty("triggeredByImage")
     private io.fabric8.kubernetes.api.model.ObjectReference triggeredByImage;
     @JsonIgnore

@@ -65,7 +65,7 @@ public class ConversionResponse implements Editable<ConversionResponseBuilder> ,
 
     @JsonProperty("convertedObjects")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<KubernetesResource> convertedObjects = new ArrayList<KubernetesResource>();
+    private List<KubernetesResource> convertedObjects = new ArrayList<>();
     @JsonProperty("result")
     private Status result;
     @JsonProperty("uid")

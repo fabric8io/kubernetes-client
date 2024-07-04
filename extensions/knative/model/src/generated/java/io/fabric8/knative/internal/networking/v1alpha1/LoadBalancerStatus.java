@@ -66,7 +66,7 @@ public class LoadBalancerStatus implements Editable<LoadBalancerStatusBuilder> ,
 
     @JsonProperty("ingress")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<LoadBalancerIngressStatus> ingress = new ArrayList<LoadBalancerIngressStatus>();
+    private List<LoadBalancerIngressStatus> ingress = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

@@ -68,10 +68,10 @@ public class CAIssuer implements Editable<CAIssuerBuilder> , KubernetesResource
 
     @JsonProperty("crlDistributionPoints")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> crlDistributionPoints = new ArrayList<String>();
+    private List<String> crlDistributionPoints = new ArrayList<>();
     @JsonProperty("ocspServers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> ocspServers = new ArrayList<String>();
+    private List<String> ocspServers = new ArrayList<>();
     @JsonProperty("secretName")
     private String secretName;
     @JsonIgnore

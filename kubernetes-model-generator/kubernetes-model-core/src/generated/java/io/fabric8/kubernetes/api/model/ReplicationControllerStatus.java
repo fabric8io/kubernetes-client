@@ -44,7 +44,7 @@ public class ReplicationControllerStatus implements Editable<ReplicationControll
     private Integer availableReplicas;
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ReplicationControllerCondition> conditions = new ArrayList<ReplicationControllerCondition>();
+    private List<ReplicationControllerCondition> conditions = new ArrayList<>();
     @JsonProperty("fullyLabeledReplicas")
     private Integer fullyLabeledReplicas;
     @JsonProperty("observedGeneration")

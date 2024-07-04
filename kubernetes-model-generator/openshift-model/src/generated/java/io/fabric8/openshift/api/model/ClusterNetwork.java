@@ -82,7 +82,7 @@ public class ClusterNetwork implements Editable<ClusterNetworkBuilder> , HasMeta
     private String apiVersion = "network.openshift.io/v1";
     @JsonProperty("clusterNetworks")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ClusterNetworkEntry> clusterNetworks = new ArrayList<ClusterNetworkEntry>();
+    private List<ClusterNetworkEntry> clusterNetworks = new ArrayList<>();
     @JsonProperty("hostsubnetlength")
     private Integer hostsubnetlength;
     /**

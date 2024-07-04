@@ -103,7 +103,7 @@ public class OAuthAuthorizeToken implements Editable<OAuthAuthorizeTokenBuilder>
     private String redirectURI;
     @JsonProperty("scopes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> scopes = new ArrayList<String>();
+    private List<String> scopes = new ArrayList<>();
     @JsonProperty("state")
     private String state;
     @JsonProperty("userName")

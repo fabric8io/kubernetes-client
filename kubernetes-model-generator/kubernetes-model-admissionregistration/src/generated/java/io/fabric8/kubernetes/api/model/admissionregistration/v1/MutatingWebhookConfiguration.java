@@ -85,7 +85,7 @@ public class MutatingWebhookConfiguration implements Editable<MutatingWebhookCon
     private io.fabric8.kubernetes.api.model.ObjectMeta metadata;
     @JsonProperty("webhooks")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<MutatingWebhook> webhooks = new ArrayList<MutatingWebhook>();
+    private List<MutatingWebhook> webhooks = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

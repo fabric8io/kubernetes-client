@@ -79,7 +79,7 @@ public class RoleBindingRestrictionList implements Editable<RoleBindingRestricti
     private String apiVersion = "authorization.openshift.io/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.openshift.api.model.RoleBindingRestriction> items = new ArrayList<io.fabric8.openshift.api.model.RoleBindingRestriction>();
+    private List<io.fabric8.openshift.api.model.RoleBindingRestriction> items = new ArrayList<>();
     /**
      * 
      * (Required)

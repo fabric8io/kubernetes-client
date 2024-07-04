@@ -79,7 +79,7 @@ public class StatefulSetList implements Editable<StatefulSetListBuilder> , Kuber
     private String apiVersion = "apps/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.apps.StatefulSet> items = new ArrayList<io.fabric8.kubernetes.api.model.apps.StatefulSet>();
+    private List<io.fabric8.kubernetes.api.model.apps.StatefulSet> items = new ArrayList<>();
     /**
      * 
      * (Required)

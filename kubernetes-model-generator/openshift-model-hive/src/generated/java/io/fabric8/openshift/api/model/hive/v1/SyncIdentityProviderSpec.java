@@ -59,10 +59,10 @@ public class SyncIdentityProviderSpec implements Editable<SyncIdentityProviderSp
 
     @JsonProperty("clusterDeploymentRefs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.LocalObjectReference> clusterDeploymentRefs = new ArrayList<io.fabric8.kubernetes.api.model.LocalObjectReference>();
+    private List<io.fabric8.kubernetes.api.model.LocalObjectReference> clusterDeploymentRefs = new ArrayList<>();
     @JsonProperty("identityProviders")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<IdentityProvider> identityProviders = new ArrayList<IdentityProvider>();
+    private List<IdentityProvider> identityProviders = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

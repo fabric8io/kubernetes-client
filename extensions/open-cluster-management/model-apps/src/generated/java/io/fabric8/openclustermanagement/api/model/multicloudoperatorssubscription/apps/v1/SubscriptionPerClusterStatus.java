@@ -64,7 +64,7 @@ public class SubscriptionPerClusterStatus implements Editable<SubscriptionPerClu
 
     @JsonProperty("packages")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, SubscriptionUnitStatus> packages = new LinkedHashMap<String, SubscriptionUnitStatus>();
+    private Map<String, SubscriptionUnitStatus> packages = new LinkedHashMap<>();
     @JsonIgnore
     private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 

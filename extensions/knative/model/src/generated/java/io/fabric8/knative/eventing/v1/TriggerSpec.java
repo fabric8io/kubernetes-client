@@ -78,7 +78,7 @@ public class TriggerSpec implements Editable<TriggerSpecBuilder> , KubernetesRes
     private TriggerFilter filter;
     @JsonProperty("filters")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<SubscriptionsAPIFilter> filters = new ArrayList<SubscriptionsAPIFilter>();
+    private List<SubscriptionsAPIFilter> filters = new ArrayList<>();
     @JsonProperty("subscriber")
     private Destination subscriber;
     @JsonIgnore

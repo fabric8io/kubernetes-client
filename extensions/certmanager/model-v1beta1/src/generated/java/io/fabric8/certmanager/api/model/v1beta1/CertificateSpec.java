@@ -84,17 +84,17 @@ public class CertificateSpec implements Editable<CertificateSpecBuilder> , Kuber
     private String commonName;
     @JsonProperty("dnsNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> dnsNames = new ArrayList<String>();
+    private List<String> dnsNames = new ArrayList<>();
     @JsonProperty("duration")
     private Duration duration;
     @JsonProperty("emailSANs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> emailSANs = new ArrayList<String>();
+    private List<String> emailSANs = new ArrayList<>();
     @JsonProperty("encodeUsagesInRequest")
     private Boolean encodeUsagesInRequest;
     @JsonProperty("ipAddresses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> ipAddresses = new ArrayList<String>();
+    private List<String> ipAddresses = new ArrayList<>();
     @JsonProperty("isCA")
     private java.lang.Boolean isCA;
     @JsonProperty("issuerRef")
@@ -115,10 +115,10 @@ public class CertificateSpec implements Editable<CertificateSpecBuilder> , Kuber
     private X509Subject subject;
     @JsonProperty("uriSANs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> uriSANs = new ArrayList<String>();
+    private List<String> uriSANs = new ArrayList<>();
     @JsonProperty("usages")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> usages = new ArrayList<String>();
+    private List<String> usages = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

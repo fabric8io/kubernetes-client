@@ -59,7 +59,7 @@ public class APIServerNamedServingCert implements Editable<APIServerNamedServing
 
     @JsonProperty("names")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> names = new ArrayList<String>();
+    private List<String> names = new ArrayList<>();
     @JsonProperty("servingCertificate")
     private SecretNameReference servingCertificate;
     @JsonIgnore

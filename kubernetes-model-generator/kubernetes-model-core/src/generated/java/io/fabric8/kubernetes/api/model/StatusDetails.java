@@ -42,7 +42,7 @@ public class StatusDetails implements Editable<StatusDetailsBuilder> , Kubernete
 
     @JsonProperty("causes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<StatusCause> causes = new ArrayList<StatusCause>();
+    private List<StatusCause> causes = new ArrayList<>();
     @JsonProperty("group")
     private String group;
     @JsonProperty("kind")

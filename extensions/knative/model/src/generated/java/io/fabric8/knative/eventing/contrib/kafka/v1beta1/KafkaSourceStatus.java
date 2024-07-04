@@ -82,17 +82,17 @@ public class KafkaSourceStatus implements Editable<KafkaSourceStatusBuilder> , K
 
     @JsonProperty("annotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> annotations = new LinkedHashMap<String, String>();
+    private Map<String, String> annotations = new LinkedHashMap<>();
     @JsonProperty("auth")
     private AuthStatus auth;
     @JsonProperty("ceAttributes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<CloudEventAttributes> ceAttributes = new ArrayList<CloudEventAttributes>();
+    private List<CloudEventAttributes> ceAttributes = new ArrayList<>();
     @JsonProperty("claims")
     private java.lang.String claims;
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Condition> conditions = new ArrayList<Condition>();
+    private List<Condition> conditions = new ArrayList<>();
     @JsonProperty("consumers")
     private java.lang.Integer consumers;
     @JsonProperty("maxAllowedVReplicas")
@@ -101,7 +101,7 @@ public class KafkaSourceStatus implements Editable<KafkaSourceStatusBuilder> , K
     private Long observedGeneration;
     @JsonProperty("placements")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Placement> placements = new ArrayList<Placement>();
+    private List<Placement> placements = new ArrayList<>();
     @JsonProperty("selector")
     private java.lang.String selector;
     @JsonProperty("sinkAudience")

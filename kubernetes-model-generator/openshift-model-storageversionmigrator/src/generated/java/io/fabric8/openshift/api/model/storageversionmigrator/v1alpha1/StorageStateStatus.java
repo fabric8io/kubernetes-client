@@ -64,7 +64,7 @@ public class StorageStateStatus implements Editable<StorageStateStatusBuilder> ,
     private String lastHeartbeatTime;
     @JsonProperty("persistedStorageVersionHashes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> persistedStorageVersionHashes = new ArrayList<java.lang.String>();
+    private List<java.lang.String> persistedStorageVersionHashes = new ArrayList<>();
     @JsonIgnore
     private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 

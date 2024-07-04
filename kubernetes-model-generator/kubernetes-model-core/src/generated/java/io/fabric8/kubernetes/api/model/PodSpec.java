@@ -81,7 +81,7 @@ public class PodSpec implements Editable<PodSpecBuilder> , KubernetesResource
     private Boolean automountServiceAccountToken;
     @JsonProperty("containers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Container> containers = new ArrayList<Container>();
+    private List<Container> containers = new ArrayList<>();
     @JsonProperty("dnsConfig")
     private PodDNSConfig dnsConfig;
     @JsonProperty("dnsPolicy")
@@ -90,10 +90,10 @@ public class PodSpec implements Editable<PodSpecBuilder> , KubernetesResource
     private Boolean enableServiceLinks;
     @JsonProperty("ephemeralContainers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<EphemeralContainer> ephemeralContainers = new ArrayList<EphemeralContainer>();
+    private List<EphemeralContainer> ephemeralContainers = new ArrayList<>();
     @JsonProperty("hostAliases")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<HostAlias> hostAliases = new ArrayList<HostAlias>();
+    private List<HostAlias> hostAliases = new ArrayList<>();
     @JsonProperty("hostIPC")
     private Boolean hostIPC;
     @JsonProperty("hostNetwork")
@@ -106,20 +106,20 @@ public class PodSpec implements Editable<PodSpecBuilder> , KubernetesResource
     private String hostname;
     @JsonProperty("imagePullSecrets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<LocalObjectReference> imagePullSecrets = new ArrayList<LocalObjectReference>();
+    private List<LocalObjectReference> imagePullSecrets = new ArrayList<>();
     @JsonProperty("initContainers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Container> initContainers = new ArrayList<Container>();
+    private List<Container> initContainers = new ArrayList<>();
     @JsonProperty("nodeName")
     private String nodeName;
     @JsonProperty("nodeSelector")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> nodeSelector = new LinkedHashMap<String, String>();
+    private Map<String, String> nodeSelector = new LinkedHashMap<>();
     @JsonProperty("os")
     private PodOS os;
     @JsonProperty("overhead")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Quantity> overhead = new LinkedHashMap<String, Quantity>();
+    private Map<String, Quantity> overhead = new LinkedHashMap<>();
     @JsonProperty("preemptionPolicy")
     private String preemptionPolicy;
     @JsonProperty("priority")
@@ -128,10 +128,10 @@ public class PodSpec implements Editable<PodSpecBuilder> , KubernetesResource
     private String priorityClassName;
     @JsonProperty("readinessGates")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<PodReadinessGate> readinessGates = new ArrayList<PodReadinessGate>();
+    private List<PodReadinessGate> readinessGates = new ArrayList<>();
     @JsonProperty("resourceClaims")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<PodResourceClaim> resourceClaims = new ArrayList<PodResourceClaim>();
+    private List<PodResourceClaim> resourceClaims = new ArrayList<>();
     @JsonProperty("restartPolicy")
     private String restartPolicy;
     @JsonProperty("runtimeClassName")
@@ -140,7 +140,7 @@ public class PodSpec implements Editable<PodSpecBuilder> , KubernetesResource
     private String schedulerName;
     @JsonProperty("schedulingGates")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<PodSchedulingGate> schedulingGates = new ArrayList<PodSchedulingGate>();
+    private List<PodSchedulingGate> schedulingGates = new ArrayList<>();
     @JsonProperty("securityContext")
     private PodSecurityContext securityContext;
     @JsonProperty("serviceAccount")
@@ -157,13 +157,13 @@ public class PodSpec implements Editable<PodSpecBuilder> , KubernetesResource
     private Long terminationGracePeriodSeconds;
     @JsonProperty("tolerations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Toleration> tolerations = new ArrayList<Toleration>();
+    private List<Toleration> tolerations = new ArrayList<>();
     @JsonProperty("topologySpreadConstraints")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<TopologySpreadConstraint> topologySpreadConstraints = new ArrayList<TopologySpreadConstraint>();
+    private List<TopologySpreadConstraint> topologySpreadConstraints = new ArrayList<>();
     @JsonProperty("volumes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Volume> volumes = new ArrayList<Volume>();
+    private List<Volume> volumes = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

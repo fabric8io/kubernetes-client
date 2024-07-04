@@ -59,10 +59,10 @@ public class LifecycleHooks implements Editable<LifecycleHooksBuilder> , Kuberne
 
     @JsonProperty("preDrain")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<LifecycleHook> preDrain = new ArrayList<LifecycleHook>();
+    private List<LifecycleHook> preDrain = new ArrayList<>();
     @JsonProperty("preTerminate")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<LifecycleHook> preTerminate = new ArrayList<LifecycleHook>();
+    private List<LifecycleHook> preTerminate = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

@@ -59,7 +59,7 @@ public class StorageVersionMigrationStatus implements Editable<StorageVersionMig
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<MigrationCondition> conditions = new ArrayList<MigrationCondition>();
+    private List<MigrationCondition> conditions = new ArrayList<>();
     @JsonProperty("resourceVersion")
     private String resourceVersion;
     @JsonIgnore

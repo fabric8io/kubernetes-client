@@ -87,7 +87,7 @@ public class KafkaBindingList implements Editable<KafkaBindingListBuilder> , Kub
     private String apiVersion = "bindings.knative.dev/v1beta1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.knative.eventing.contrib.kafka.v1beta1.KafkaBinding> items = new ArrayList<io.fabric8.knative.eventing.contrib.kafka.v1beta1.KafkaBinding>();
+    private List<io.fabric8.knative.eventing.contrib.kafka.v1beta1.KafkaBinding> items = new ArrayList<>();
     /**
      * 
      * (Required)

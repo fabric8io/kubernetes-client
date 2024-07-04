@@ -87,7 +87,7 @@ public class TargetList implements Editable<TargetListBuilder> , KubernetesResou
     private String apiVersion = "duck.knative.dev/v1alpha1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.knative.internal.pkg.apis.duck.v1alpha1.Target> items = new ArrayList<io.fabric8.knative.internal.pkg.apis.duck.v1alpha1.Target>();
+    private List<io.fabric8.knative.internal.pkg.apis.duck.v1alpha1.Target> items = new ArrayList<>();
     /**
      * 
      * (Required)

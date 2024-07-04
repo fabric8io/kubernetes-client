@@ -68,12 +68,12 @@ public class BlockChaosStatus implements Editable<BlockChaosStatusBuilder> , Kub
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ChaosCondition> conditions = new ArrayList<ChaosCondition>();
+    private List<ChaosCondition> conditions = new ArrayList<>();
     @JsonProperty("experiment")
     private ExperimentStatus experiment;
     @JsonProperty("ids")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Integer> ids = new LinkedHashMap<String, Integer>();
+    private Map<String, Integer> ids = new LinkedHashMap<>();
     @JsonIgnore
     private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 

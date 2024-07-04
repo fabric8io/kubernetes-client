@@ -58,7 +58,7 @@ public class PowerVSPlatformSpec implements Editable<PowerVSPlatformSpecBuilder>
 
     @JsonProperty("serviceEndpoints")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<PowerVSServiceEndpoint> serviceEndpoints = new ArrayList<PowerVSServiceEndpoint>();
+    private List<PowerVSServiceEndpoint> serviceEndpoints = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
