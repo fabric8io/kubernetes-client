@@ -72,10 +72,10 @@ public class TriggerTemplateSpec implements Editable<TriggerTemplateSpecBuilder>
 
     @JsonProperty("params")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ParamSpec> params = new ArrayList<ParamSpec>();
+    private List<ParamSpec> params = new ArrayList<>();
     @JsonProperty("resourcetemplates")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<HasMetadata> resourcetemplates = new ArrayList<HasMetadata>();
+    private List<HasMetadata> resourcetemplates = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

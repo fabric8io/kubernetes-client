@@ -87,7 +87,7 @@ public class DestinationRuleList implements Editable<DestinationRuleListBuilder>
     private String apiVersion = "networking.istio.io/v1alpha3";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.istio.api.networking.v1alpha3.DestinationRule> items = new ArrayList<io.fabric8.istio.api.networking.v1alpha3.DestinationRule>();
+    private List<io.fabric8.istio.api.networking.v1alpha3.DestinationRule> items = new ArrayList<>();
     /**
      * 
      * (Required)

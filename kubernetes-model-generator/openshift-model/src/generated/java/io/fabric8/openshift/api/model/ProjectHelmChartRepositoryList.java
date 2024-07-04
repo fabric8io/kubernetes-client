@@ -79,7 +79,7 @@ public class ProjectHelmChartRepositoryList implements Editable<ProjectHelmChart
     private String apiVersion = "helm.openshift.io/v1beta1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.openshift.api.model.ProjectHelmChartRepository> items = new ArrayList<io.fabric8.openshift.api.model.ProjectHelmChartRepository>();
+    private List<io.fabric8.openshift.api.model.ProjectHelmChartRepository> items = new ArrayList<>();
     /**
      * 
      * (Required)

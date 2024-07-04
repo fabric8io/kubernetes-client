@@ -79,7 +79,7 @@ public class IdentityList implements Editable<IdentityListBuilder> , KubernetesR
     private String apiVersion = "user.openshift.io/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.openshift.api.model.Identity> items = new ArrayList<io.fabric8.openshift.api.model.Identity>();
+    private List<io.fabric8.openshift.api.model.Identity> items = new ArrayList<>();
     /**
      * 
      * (Required)

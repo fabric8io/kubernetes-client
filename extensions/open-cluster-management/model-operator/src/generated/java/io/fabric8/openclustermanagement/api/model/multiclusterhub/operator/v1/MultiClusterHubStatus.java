@@ -70,10 +70,10 @@ public class MultiClusterHubStatus implements Editable<MultiClusterHubStatusBuil
 
     @JsonProperty("components")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, StatusCondition> components = new LinkedHashMap<String, StatusCondition>();
+    private Map<String, StatusCondition> components = new LinkedHashMap<>();
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<HubCondition> conditions = new ArrayList<HubCondition>();
+    private List<HubCondition> conditions = new ArrayList<>();
     @JsonProperty("currentVersion")
     private java.lang.String currentVersion;
     @JsonProperty("desiredVersion")

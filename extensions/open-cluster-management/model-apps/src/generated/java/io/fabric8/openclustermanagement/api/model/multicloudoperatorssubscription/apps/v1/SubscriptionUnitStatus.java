@@ -76,7 +76,7 @@ public class SubscriptionUnitStatus implements Editable<SubscriptionUnitStatusBu
     private java.lang.String reason;
     @JsonProperty("resourceStatus")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Object> resourceStatus = new LinkedHashMap<String, Object>();
+    private Map<String, Object> resourceStatus = new LinkedHashMap<>();
     @JsonIgnore
     private Map<java.lang.String, java.lang.Object> additionalProperties = new LinkedHashMap<java.lang.String, java.lang.Object>();
 

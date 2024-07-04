@@ -67,7 +67,7 @@ public class BuildSource implements Editable<BuildSourceBuilder> , KubernetesRes
     private BinaryBuildSource binary;
     @JsonProperty("configMaps")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ConfigMapBuildSource> configMaps = new ArrayList<ConfigMapBuildSource>();
+    private List<ConfigMapBuildSource> configMaps = new ArrayList<>();
     @JsonProperty("contextDir")
     private String contextDir;
     @JsonProperty("dockerfile")
@@ -76,10 +76,10 @@ public class BuildSource implements Editable<BuildSourceBuilder> , KubernetesRes
     private GitBuildSource git;
     @JsonProperty("images")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ImageSource> images = new ArrayList<ImageSource>();
+    private List<ImageSource> images = new ArrayList<>();
     @JsonProperty("secrets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<SecretBuildSource> secrets = new ArrayList<SecretBuildSource>();
+    private List<SecretBuildSource> secrets = new ArrayList<>();
     @JsonProperty("sourceSecret")
     private io.fabric8.kubernetes.api.model.LocalObjectReference sourceSecret;
     @JsonProperty("type")

@@ -74,7 +74,7 @@ public class NodeStatus implements Editable<NodeStatusBuilder> , KubernetesResou
     private Integer lastFailedRevision;
     @JsonProperty("lastFailedRevisionErrors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> lastFailedRevisionErrors = new ArrayList<java.lang.String>();
+    private List<java.lang.String> lastFailedRevisionErrors = new ArrayList<>();
     @JsonProperty("lastFailedTime")
     private String lastFailedTime;
     @JsonProperty("lastFallbackCount")

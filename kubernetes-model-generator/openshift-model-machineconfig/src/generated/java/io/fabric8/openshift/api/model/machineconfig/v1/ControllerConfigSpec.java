@@ -97,13 +97,13 @@ public class ControllerConfigSpec implements Editable<ControllerConfigSpecBuilde
     private String etcdDiscoveryDomain;
     @JsonProperty("imageRegistryBundleData")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ImageRegistryBundle> imageRegistryBundleData = new ArrayList<ImageRegistryBundle>();
+    private List<ImageRegistryBundle> imageRegistryBundleData = new ArrayList<>();
     @JsonProperty("imageRegistryBundleUserData")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ImageRegistryBundle> imageRegistryBundleUserData = new ArrayList<ImageRegistryBundle>();
+    private List<ImageRegistryBundle> imageRegistryBundleUserData = new ArrayList<>();
     @JsonProperty("images")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> images = new LinkedHashMap<String, String>();
+    private Map<String, String> images = new LinkedHashMap<>();
     @JsonProperty("infra")
     private Infrastructure infra;
     @JsonProperty("ipFamilies")

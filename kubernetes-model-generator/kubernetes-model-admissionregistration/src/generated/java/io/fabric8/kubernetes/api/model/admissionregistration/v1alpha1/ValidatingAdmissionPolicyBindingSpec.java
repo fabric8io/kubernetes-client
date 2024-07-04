@@ -67,7 +67,7 @@ public class ValidatingAdmissionPolicyBindingSpec implements Editable<Validating
     private String policyName;
     @JsonProperty("validationActions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> validationActions = new ArrayList<String>();
+    private List<String> validationActions = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

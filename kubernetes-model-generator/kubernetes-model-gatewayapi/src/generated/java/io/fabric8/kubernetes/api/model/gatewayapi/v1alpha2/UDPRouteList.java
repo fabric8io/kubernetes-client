@@ -79,7 +79,7 @@ public class UDPRouteList implements Editable<UDPRouteListBuilder> , KubernetesR
     private String apiVersion = "gateway.networking.k8s.io/v1alpha2";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.UDPRoute> items = new ArrayList<io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.UDPRoute>();
+    private List<io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.UDPRoute> items = new ArrayList<>();
     /**
      * 
      * (Required)

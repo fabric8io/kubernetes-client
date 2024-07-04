@@ -74,7 +74,7 @@ public class EmbeddedRunSpec implements Editable<EmbeddedRunSpecBuilder> , Kuber
     private PipelineTaskMetadata metadata;
     @JsonProperty("spec")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Object> spec = new LinkedHashMap<String, Object>();
+    private Map<String, Object> spec = new LinkedHashMap<>();
     @JsonIgnore
     private Map<java.lang.String, java.lang.Object> additionalProperties = new LinkedHashMap<java.lang.String, java.lang.Object>();
 

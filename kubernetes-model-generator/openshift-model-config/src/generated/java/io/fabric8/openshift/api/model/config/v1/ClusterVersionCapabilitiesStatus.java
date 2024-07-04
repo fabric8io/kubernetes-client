@@ -59,10 +59,10 @@ public class ClusterVersionCapabilitiesStatus implements Editable<ClusterVersion
 
     @JsonProperty("enabledCapabilities")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> enabledCapabilities = new ArrayList<String>();
+    private List<String> enabledCapabilities = new ArrayList<>();
     @JsonProperty("knownCapabilities")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> knownCapabilities = new ArrayList<String>();
+    private List<String> knownCapabilities = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

@@ -59,7 +59,7 @@ public class DriverAllocationResult implements Editable<DriverAllocationResultBu
     private NamedResourcesAllocationResult namedResources;
     @JsonProperty("vendorRequestParameters")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Object> vendorRequestParameters = new LinkedHashMap<String, Object>();
+    private Map<String, Object> vendorRequestParameters = new LinkedHashMap<>();
     @JsonIgnore
     private Map<java.lang.String, java.lang.Object> additionalProperties = new LinkedHashMap<java.lang.String, java.lang.Object>();
 

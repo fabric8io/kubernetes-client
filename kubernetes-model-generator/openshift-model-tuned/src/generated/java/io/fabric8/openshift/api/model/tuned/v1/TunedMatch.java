@@ -63,7 +63,7 @@ public class TunedMatch implements Editable<TunedMatchBuilder> , KubernetesResou
     private String label;
     @JsonProperty("match")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<TunedMatch> match = new ArrayList<TunedMatch>();
+    private List<TunedMatch> match = new ArrayList<>();
     @JsonProperty("type")
     private String type;
     @JsonProperty("value")

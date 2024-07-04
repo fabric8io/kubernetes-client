@@ -58,7 +58,7 @@ public class PodFailurePolicy implements Editable<PodFailurePolicyBuilder> , Kub
 
     @JsonProperty("rules")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<PodFailurePolicyRule> rules = new ArrayList<PodFailurePolicyRule>();
+    private List<PodFailurePolicyRule> rules = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

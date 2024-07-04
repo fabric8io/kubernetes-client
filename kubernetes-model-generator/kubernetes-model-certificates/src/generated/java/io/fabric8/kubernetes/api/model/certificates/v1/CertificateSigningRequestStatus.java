@@ -61,7 +61,7 @@ public class CertificateSigningRequestStatus implements Editable<CertificateSign
     private String certificate;
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<CertificateSigningRequestCondition> conditions = new ArrayList<CertificateSigningRequestCondition>();
+    private List<CertificateSigningRequestCondition> conditions = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

@@ -79,7 +79,7 @@ public class ResourceClaimParametersList implements Editable<ResourceClaimParame
     private String apiVersion = "resource.k8s.io/v1alpha2";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.resource.v1alpha2.ResourceClaimParameters> items = new ArrayList<io.fabric8.kubernetes.api.model.resource.v1alpha2.ResourceClaimParameters>();
+    private List<io.fabric8.kubernetes.api.model.resource.v1alpha2.ResourceClaimParameters> items = new ArrayList<>();
     /**
      * 
      * (Required)

@@ -38,7 +38,7 @@ public class ContainerImage implements Editable<ContainerImageBuilder> , Kuberne
 
     @JsonProperty("names")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> names = new ArrayList<String>();
+    private List<String> names = new ArrayList<>();
     @JsonProperty("sizeBytes")
     private Long sizeBytes;
     @JsonIgnore

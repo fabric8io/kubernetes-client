@@ -77,10 +77,10 @@ public class CSIDriverSpec implements Editable<CSIDriverSpecBuilder> , Kubernete
     private Boolean storageCapacity;
     @JsonProperty("tokenRequests")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<TokenRequest> tokenRequests = new ArrayList<TokenRequest>();
+    private List<TokenRequest> tokenRequests = new ArrayList<>();
     @JsonProperty("volumeLifecycleModes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> volumeLifecycleModes = new ArrayList<String>();
+    private List<String> volumeLifecycleModes = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

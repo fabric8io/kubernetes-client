@@ -65,7 +65,7 @@ public class CustomBuildStrategy implements Editable<CustomBuildStrategyBuilder>
     private String buildAPIVersion;
     @JsonProperty("env")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<EnvVar> env = new ArrayList<EnvVar>();
+    private List<EnvVar> env = new ArrayList<>();
     @JsonProperty("exposeDockerSocket")
     private Boolean exposeDockerSocket;
     @JsonProperty("forcePull")
@@ -76,7 +76,7 @@ public class CustomBuildStrategy implements Editable<CustomBuildStrategyBuilder>
     private io.fabric8.kubernetes.api.model.LocalObjectReference pullSecret;
     @JsonProperty("secrets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<SecretSpec> secrets = new ArrayList<SecretSpec>();
+    private List<SecretSpec> secrets = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

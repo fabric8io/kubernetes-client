@@ -67,10 +67,10 @@ public class OAuth2 implements Editable<OAuth2Builder> , KubernetesResource
     private SecretKeySelector clientSecret;
     @JsonProperty("endpointParams")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> endpointParams = new LinkedHashMap<String, String>();
+    private Map<String, String> endpointParams = new LinkedHashMap<>();
     @JsonProperty("scopes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> scopes = new ArrayList<String>();
+    private List<String> scopes = new ArrayList<>();
     @JsonProperty("tokenUrl")
     private String tokenUrl;
     @JsonIgnore

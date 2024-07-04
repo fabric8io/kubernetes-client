@@ -47,10 +47,10 @@ public class FCVolumeSource implements Editable<FCVolumeSourceBuilder> , Kuberne
     private Boolean readOnly;
     @JsonProperty("targetWWNs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> targetWWNs = new ArrayList<String>();
+    private List<String> targetWWNs = new ArrayList<>();
     @JsonProperty("wwids")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> wwids = new ArrayList<String>();
+    private List<String> wwids = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

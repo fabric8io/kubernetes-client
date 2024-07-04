@@ -79,7 +79,7 @@ public class SubscriptionStatus implements Editable<SubscriptionStatusBuilder> ,
     private java.lang.String reason;
     @JsonProperty("statuses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, SubscriptionPerClusterStatus> statuses = new LinkedHashMap<String, SubscriptionPerClusterStatus>();
+    private Map<String, SubscriptionPerClusterStatus> statuses = new LinkedHashMap<>();
     @JsonIgnore
     private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 

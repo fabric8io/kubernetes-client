@@ -87,7 +87,7 @@ public class EventListenerList implements Editable<EventListenerListBuilder> , K
     private String apiVersion = "triggers.tekton.dev/v1alpha1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.tekton.triggers.v1alpha1.EventListener> items = new ArrayList<io.fabric8.tekton.triggers.v1alpha1.EventListener>();
+    private List<io.fabric8.tekton.triggers.v1alpha1.EventListener> items = new ArrayList<>();
     /**
      * 
      * (Required)

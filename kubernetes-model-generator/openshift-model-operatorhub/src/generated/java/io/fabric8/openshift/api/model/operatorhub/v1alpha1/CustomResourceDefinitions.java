@@ -59,10 +59,10 @@ public class CustomResourceDefinitions implements Editable<CustomResourceDefinit
 
     @JsonProperty("owned")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<CRDDescription> owned = new ArrayList<CRDDescription>();
+    private List<CRDDescription> owned = new ArrayList<>();
     @JsonProperty("required")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<CRDDescription> required = new ArrayList<CRDDescription>();
+    private List<CRDDescription> required = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

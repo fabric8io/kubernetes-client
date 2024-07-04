@@ -71,22 +71,22 @@ public class VirtualServiceSpec implements Editable<VirtualServiceSpecBuilder> ,
 
     @JsonProperty("exportTo")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> exportTo = new ArrayList<String>();
+    private List<String> exportTo = new ArrayList<>();
     @JsonProperty("gateways")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> gateways = new ArrayList<String>();
+    private List<String> gateways = new ArrayList<>();
     @JsonProperty("hosts")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> hosts = new ArrayList<String>();
+    private List<String> hosts = new ArrayList<>();
     @JsonProperty("http")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<HTTPRoute> http = new ArrayList<HTTPRoute>();
+    private List<HTTPRoute> http = new ArrayList<>();
     @JsonProperty("tcp")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<TCPRoute> tcp = new ArrayList<TCPRoute>();
+    private List<TCPRoute> tcp = new ArrayList<>();
     @JsonProperty("tls")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<TLSRoute> tls = new ArrayList<TLSRoute>();
+    private List<TLSRoute> tls = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

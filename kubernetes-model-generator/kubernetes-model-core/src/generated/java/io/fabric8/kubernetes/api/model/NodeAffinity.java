@@ -38,7 +38,7 @@ public class NodeAffinity implements Editable<NodeAffinityBuilder> , KubernetesR
 
     @JsonProperty("preferredDuringSchedulingIgnoredDuringExecution")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<PreferredSchedulingTerm> preferredDuringSchedulingIgnoredDuringExecution = new ArrayList<PreferredSchedulingTerm>();
+    private List<PreferredSchedulingTerm> preferredDuringSchedulingIgnoredDuringExecution = new ArrayList<>();
     @JsonProperty("requiredDuringSchedulingIgnoredDuringExecution")
     private NodeSelector requiredDuringSchedulingIgnoredDuringExecution;
     @JsonIgnore

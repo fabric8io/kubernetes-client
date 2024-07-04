@@ -58,7 +58,7 @@ public class PriorityLevelConfigurationStatus implements Editable<PriorityLevelC
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<PriorityLevelConfigurationCondition> conditions = new ArrayList<PriorityLevelConfigurationCondition>();
+    private List<PriorityLevelConfigurationCondition> conditions = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

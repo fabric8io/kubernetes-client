@@ -71,7 +71,7 @@ public class ClusterVersionSpec implements Editable<ClusterVersionSpecBuilder> ,
     private Update desiredUpdate;
     @JsonProperty("overrides")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ComponentOverride> overrides = new ArrayList<ComponentOverride>();
+    private List<ComponentOverride> overrides = new ArrayList<>();
     @JsonProperty("upstream")
     private String upstream;
     @JsonIgnore

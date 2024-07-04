@@ -59,7 +59,7 @@ public class PodSecurityPolicySubjectReviewSpec implements Editable<PodSecurityP
 
     @JsonProperty("groups")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> groups = new ArrayList<String>();
+    private List<String> groups = new ArrayList<>();
     @JsonProperty("template")
     private io.fabric8.kubernetes.api.model.PodTemplateSpec template;
     @JsonProperty("user")

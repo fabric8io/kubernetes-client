@@ -59,7 +59,7 @@ public class DeploymentDetails implements Editable<DeploymentDetailsBuilder> , K
 
     @JsonProperty("causes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<DeploymentCause> causes = new ArrayList<DeploymentCause>();
+    private List<DeploymentCause> causes = new ArrayList<>();
     @JsonProperty("message")
     private String message;
     @JsonIgnore

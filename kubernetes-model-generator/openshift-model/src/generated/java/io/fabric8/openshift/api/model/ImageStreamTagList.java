@@ -79,7 +79,7 @@ public class ImageStreamTagList implements Editable<ImageStreamTagListBuilder> ,
     private String apiVersion = "image.openshift.io/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.openshift.api.model.ImageStreamTag> items = new ArrayList<io.fabric8.openshift.api.model.ImageStreamTag>();
+    private List<io.fabric8.openshift.api.model.ImageStreamTag> items = new ArrayList<>();
     /**
      * 
      * (Required)

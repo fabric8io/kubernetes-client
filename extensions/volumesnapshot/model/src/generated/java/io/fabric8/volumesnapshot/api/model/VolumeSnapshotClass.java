@@ -97,7 +97,7 @@ public class VolumeSnapshotClass implements Editable<VolumeSnapshotClassBuilder>
     private io.fabric8.kubernetes.api.model.ObjectMeta metadata;
     @JsonProperty("parameters")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> parameters = new LinkedHashMap<String, String>();
+    private Map<String, String> parameters = new LinkedHashMap<>();
     @JsonIgnore
     private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 

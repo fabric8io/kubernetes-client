@@ -77,30 +77,30 @@ public class ServicePlanSpec implements Editable<ServicePlanSpecBuilder> , Kuber
     private Boolean bindable;
     @JsonProperty("defaultProvisionParameters")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Object> defaultProvisionParameters = new LinkedHashMap<String, Object>();
+    private Map<String, Object> defaultProvisionParameters = new LinkedHashMap<>();
     @JsonProperty("description")
     private java.lang.String description;
     @JsonProperty("externalID")
     private java.lang.String externalID;
     @JsonProperty("externalMetadata")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Object> externalMetadata = new LinkedHashMap<String, Object>();
+    private Map<String, Object> externalMetadata = new LinkedHashMap<>();
     @JsonProperty("externalName")
     private java.lang.String externalName;
     @JsonProperty("free")
     private java.lang.Boolean free;
     @JsonProperty("instanceCreateParameterSchema")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Object> instanceCreateParameterSchema = new LinkedHashMap<String, Object>();
+    private Map<String, Object> instanceCreateParameterSchema = new LinkedHashMap<>();
     @JsonProperty("instanceUpdateParameterSchema")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Object> instanceUpdateParameterSchema = new LinkedHashMap<String, Object>();
+    private Map<String, Object> instanceUpdateParameterSchema = new LinkedHashMap<>();
     @JsonProperty("serviceBindingCreateParameterSchema")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Object> serviceBindingCreateParameterSchema = new LinkedHashMap<String, Object>();
+    private Map<String, Object> serviceBindingCreateParameterSchema = new LinkedHashMap<>();
     @JsonProperty("serviceBindingCreateResponseSchema")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Object> serviceBindingCreateResponseSchema = new LinkedHashMap<String, Object>();
+    private Map<String, Object> serviceBindingCreateResponseSchema = new LinkedHashMap<>();
     @JsonProperty("serviceBrokerName")
     private java.lang.String serviceBrokerName;
     @JsonProperty("serviceClassRef")

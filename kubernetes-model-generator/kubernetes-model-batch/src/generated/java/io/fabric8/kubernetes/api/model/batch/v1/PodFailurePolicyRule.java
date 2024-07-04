@@ -64,7 +64,7 @@ public class PodFailurePolicyRule implements Editable<PodFailurePolicyRuleBuilde
     private PodFailurePolicyOnExitCodesRequirement onExitCodes;
     @JsonProperty("onPodConditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<PodFailurePolicyOnPodConditionsPattern> onPodConditions = new ArrayList<PodFailurePolicyOnPodConditionsPattern>();
+    private List<PodFailurePolicyOnPodConditionsPattern> onPodConditions = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

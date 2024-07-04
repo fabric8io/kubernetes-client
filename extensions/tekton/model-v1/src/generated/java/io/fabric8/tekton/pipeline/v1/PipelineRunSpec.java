@@ -73,7 +73,7 @@ public class PipelineRunSpec implements Editable<PipelineRunSpecBuilder> , Kuber
 
     @JsonProperty("params")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Param> params = new ArrayList<Param>();
+    private List<Param> params = new ArrayList<>();
     @JsonProperty("pipelineRef")
     private PipelineRef pipelineRef;
     @JsonProperty("pipelineSpec")
@@ -82,14 +82,14 @@ public class PipelineRunSpec implements Editable<PipelineRunSpecBuilder> , Kuber
     private String status;
     @JsonProperty("taskRunSpecs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<PipelineTaskRunSpec> taskRunSpecs = new ArrayList<PipelineTaskRunSpec>();
+    private List<PipelineTaskRunSpec> taskRunSpecs = new ArrayList<>();
     @JsonProperty("taskRunTemplate")
     private PipelineTaskRunTemplate taskRunTemplate;
     @JsonProperty("timeouts")
     private TimeoutFields timeouts;
     @JsonProperty("workspaces")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<WorkspaceBinding> workspaces = new ArrayList<WorkspaceBinding>();
+    private List<WorkspaceBinding> workspaces = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

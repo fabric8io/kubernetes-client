@@ -58,7 +58,7 @@ public class CSINodeSpec implements Editable<CSINodeSpecBuilder> , KubernetesRes
 
     @JsonProperty("drivers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<CSINodeDriver> drivers = new ArrayList<CSINodeDriver>();
+    private List<CSINodeDriver> drivers = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

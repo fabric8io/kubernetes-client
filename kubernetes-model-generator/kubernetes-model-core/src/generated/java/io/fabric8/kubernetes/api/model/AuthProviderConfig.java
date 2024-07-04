@@ -36,7 +36,7 @@ public class AuthProviderConfig implements Editable<AuthProviderConfigBuilder> ,
 
     @JsonProperty("config")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> config = new LinkedHashMap<String, String>();
+    private Map<String, String> config = new LinkedHashMap<>();
     @JsonProperty("name")
     private String name;
     @JsonIgnore

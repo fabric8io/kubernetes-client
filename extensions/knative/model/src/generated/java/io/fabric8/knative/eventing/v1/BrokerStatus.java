@@ -76,13 +76,13 @@ public class BrokerStatus implements Editable<BrokerStatusBuilder> , KubernetesR
     private Addressable address;
     @JsonProperty("addresses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Addressable> addresses = new ArrayList<Addressable>();
+    private List<Addressable> addresses = new ArrayList<>();
     @JsonProperty("annotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> annotations = new LinkedHashMap<String, String>();
+    private Map<String, String> annotations = new LinkedHashMap<>();
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Condition> conditions = new ArrayList<Condition>();
+    private List<Condition> conditions = new ArrayList<>();
     @JsonProperty("deadLetterSinkCACerts")
     private String deadLetterSinkCACerts;
     @JsonProperty("deadLetterSinkUri")

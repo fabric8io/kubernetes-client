@@ -71,13 +71,13 @@ public class CertificateStatus implements Editable<CertificateStatusBuilder> , K
 
     @JsonProperty("annotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> annotations = new LinkedHashMap<String, String>();
+    private Map<String, String> annotations = new LinkedHashMap<>();
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Condition> conditions = new ArrayList<Condition>();
+    private List<Condition> conditions = new ArrayList<>();
     @JsonProperty("http01Challenges")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<HTTP01Challenge> http01Challenges = new ArrayList<HTTP01Challenge>();
+    private List<HTTP01Challenge> http01Challenges = new ArrayList<>();
     @JsonProperty("notAfter")
     private java.lang.String notAfter;
     @JsonProperty("observedGeneration")

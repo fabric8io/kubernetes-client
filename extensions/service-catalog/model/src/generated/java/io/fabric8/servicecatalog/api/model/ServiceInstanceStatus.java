@@ -81,14 +81,14 @@ public class ServiceInstanceStatus implements Editable<ServiceInstanceStatusBuil
     private Boolean asyncOpInProgress;
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ServiceInstanceCondition> conditions = new ArrayList<ServiceInstanceCondition>();
+    private List<ServiceInstanceCondition> conditions = new ArrayList<>();
     @JsonProperty("currentOperation")
     private java.lang.String currentOperation;
     @JsonProperty("dashboardURL")
     private String dashboardURL;
     @JsonProperty("defaultProvisionParameters")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Object> defaultProvisionParameters = new LinkedHashMap<String, Object>();
+    private Map<String, Object> defaultProvisionParameters = new LinkedHashMap<>();
     @JsonProperty("deprovisionStatus")
     private java.lang.String deprovisionStatus;
     @JsonProperty("externalProperties")

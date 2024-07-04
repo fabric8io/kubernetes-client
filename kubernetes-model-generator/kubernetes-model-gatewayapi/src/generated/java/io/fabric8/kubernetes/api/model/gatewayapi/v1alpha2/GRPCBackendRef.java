@@ -64,7 +64,7 @@ public class GRPCBackendRef implements Editable<GRPCBackendRefBuilder> , Kuberne
 
     @JsonProperty("filters")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<GRPCRouteFilter> filters = new ArrayList<GRPCRouteFilter>();
+    private List<GRPCRouteFilter> filters = new ArrayList<>();
     @JsonProperty("group")
     private String group;
     /**

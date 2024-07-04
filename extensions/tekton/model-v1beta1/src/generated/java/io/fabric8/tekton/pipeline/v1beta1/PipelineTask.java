@@ -87,14 +87,14 @@ public class PipelineTask implements Editable<PipelineTaskBuilder> , KubernetesR
     private String name;
     @JsonProperty("params")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Param> params = new ArrayList<Param>();
+    private List<Param> params = new ArrayList<>();
     @JsonProperty("resources")
     private PipelineTaskResources resources;
     @JsonProperty("retries")
     private Integer retries;
     @JsonProperty("runAfter")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> runAfter = new ArrayList<String>();
+    private List<String> runAfter = new ArrayList<>();
     @JsonProperty("taskRef")
     private TaskRef taskRef;
     @JsonProperty("taskSpec")
@@ -103,10 +103,10 @@ public class PipelineTask implements Editable<PipelineTaskBuilder> , KubernetesR
     private Duration timeout;
     @JsonProperty("when")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<WhenExpression> when = new ArrayList<WhenExpression>();
+    private List<WhenExpression> when = new ArrayList<>();
     @JsonProperty("workspaces")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<WorkspacePipelineTaskBinding> workspaces = new ArrayList<WorkspacePipelineTaskBinding>();
+    private List<WorkspacePipelineTaskBinding> workspaces = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

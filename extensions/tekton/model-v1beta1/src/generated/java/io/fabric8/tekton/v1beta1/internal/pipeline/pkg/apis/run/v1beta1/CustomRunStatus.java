@@ -74,23 +74,23 @@ public class CustomRunStatus implements Editable<CustomRunStatusBuilder> , Kuber
 
     @JsonProperty("annotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> annotations = new LinkedHashMap<String, String>();
+    private Map<String, String> annotations = new LinkedHashMap<>();
     @JsonProperty("completionTime")
     private java.lang.String completionTime;
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Condition> conditions = new ArrayList<Condition>();
+    private List<Condition> conditions = new ArrayList<>();
     @JsonProperty("extraFields")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Object> extraFields = new LinkedHashMap<String, Object>();
+    private Map<String, Object> extraFields = new LinkedHashMap<>();
     @JsonProperty("observedGeneration")
     private Long observedGeneration;
     @JsonProperty("results")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<CustomRunResult> results = new ArrayList<CustomRunResult>();
+    private List<CustomRunResult> results = new ArrayList<>();
     @JsonProperty("retriesStatus")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<CustomRunStatus> retriesStatus = new ArrayList<CustomRunStatus>();
+    private List<CustomRunStatus> retriesStatus = new ArrayList<>();
     @JsonProperty("startTime")
     private java.lang.String startTime;
     @JsonIgnore

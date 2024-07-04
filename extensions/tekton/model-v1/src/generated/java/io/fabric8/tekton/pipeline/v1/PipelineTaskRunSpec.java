@@ -82,10 +82,10 @@ public class PipelineTaskRunSpec implements Editable<PipelineTaskRunSpecBuilder>
     private String serviceAccountName;
     @JsonProperty("sidecarSpecs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<TaskRunSidecarSpec> sidecarSpecs = new ArrayList<TaskRunSidecarSpec>();
+    private List<TaskRunSidecarSpec> sidecarSpecs = new ArrayList<>();
     @JsonProperty("stepSpecs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<TaskRunStepSpec> stepSpecs = new ArrayList<TaskRunStepSpec>();
+    private List<TaskRunStepSpec> stepSpecs = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

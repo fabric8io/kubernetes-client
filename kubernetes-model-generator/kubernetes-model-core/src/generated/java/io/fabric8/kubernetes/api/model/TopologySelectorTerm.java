@@ -37,7 +37,7 @@ public class TopologySelectorTerm implements Editable<TopologySelectorTermBuilde
 
     @JsonProperty("matchLabelExpressions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<TopologySelectorLabelRequirement> matchLabelExpressions = new ArrayList<TopologySelectorLabelRequirement>();
+    private List<TopologySelectorLabelRequirement> matchLabelExpressions = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

@@ -69,7 +69,7 @@ public class Storage implements Editable<StorageBuilder> , KubernetesResource
 
     @JsonProperty("alternateNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> alternateNames = new ArrayList<String>();
+    private List<String> alternateNames = new ArrayList<>();
     @JsonProperty("hctl")
     private String hctl;
     @JsonProperty("model")

@@ -93,7 +93,7 @@ public class SubjectAccessReview implements Editable<SubjectAccessReviewBuilder>
     private KubernetesResource content;
     @JsonProperty("groups")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> groups = new ArrayList<String>();
+    private List<String> groups = new ArrayList<>();
     @JsonProperty("isNonResourceURL")
     private Boolean isNonResourceURL;
     /**
@@ -117,7 +117,7 @@ public class SubjectAccessReview implements Editable<SubjectAccessReviewBuilder>
     private String resourceName;
     @JsonProperty("scopes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> scopes = new ArrayList<String>();
+    private List<String> scopes = new ArrayList<>();
     @JsonProperty("user")
     private String user;
     @JsonProperty("verb")

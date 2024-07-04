@@ -79,7 +79,7 @@ public class ImagePrunerList implements Editable<ImagePrunerListBuilder> , Kuber
     private String apiVersion = "imageregistry.operator.openshift.io/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.openshift.api.model.operator.v1.ImagePruner> items = new ArrayList<io.fabric8.openshift.api.model.operator.v1.ImagePruner>();
+    private List<io.fabric8.openshift.api.model.operator.v1.ImagePruner> items = new ArrayList<>();
     /**
      * 
      * (Required)

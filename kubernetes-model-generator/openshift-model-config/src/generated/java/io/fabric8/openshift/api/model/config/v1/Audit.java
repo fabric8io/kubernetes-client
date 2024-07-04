@@ -59,7 +59,7 @@ public class Audit implements Editable<AuditBuilder> , KubernetesResource
 
     @JsonProperty("customRules")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<AuditCustomRule> customRules = new ArrayList<AuditCustomRule>();
+    private List<AuditCustomRule> customRules = new ArrayList<>();
     @JsonProperty("profile")
     private String profile;
     @JsonIgnore

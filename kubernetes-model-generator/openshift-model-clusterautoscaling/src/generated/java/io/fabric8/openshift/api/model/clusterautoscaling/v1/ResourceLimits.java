@@ -63,7 +63,7 @@ public class ResourceLimits implements Editable<ResourceLimitsBuilder> , Kuberne
     private ResourceRange cores;
     @JsonProperty("gpus")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<GPULimit> gpus = new ArrayList<GPULimit>();
+    private List<GPULimit> gpus = new ArrayList<>();
     @JsonProperty("maxNodesTotal")
     private Integer maxNodesTotal;
     @JsonProperty("memory")

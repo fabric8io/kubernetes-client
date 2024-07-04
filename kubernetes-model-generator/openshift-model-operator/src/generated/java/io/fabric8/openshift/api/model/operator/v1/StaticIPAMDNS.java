@@ -62,10 +62,10 @@ public class StaticIPAMDNS implements Editable<StaticIPAMDNSBuilder> , Kubernete
     private String domain;
     @JsonProperty("nameservers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> nameservers = new ArrayList<String>();
+    private List<String> nameservers = new ArrayList<>();
     @JsonProperty("search")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> search = new ArrayList<String>();
+    private List<String> search = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

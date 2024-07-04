@@ -87,7 +87,7 @@ public class SinkBindingList implements Editable<SinkBindingListBuilder> , Kuber
     private String apiVersion = "sources.knative.dev/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.knative.sources.v1.SinkBinding> items = new ArrayList<io.fabric8.knative.sources.v1.SinkBinding>();
+    private List<io.fabric8.knative.sources.v1.SinkBinding> items = new ArrayList<>();
     /**
      * 
      * (Required)

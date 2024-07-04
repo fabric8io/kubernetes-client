@@ -60,7 +60,7 @@ public class CustomResourceConversion implements Editable<CustomResourceConversi
 
     @JsonProperty("conversionReviewVersions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> conversionReviewVersions = new ArrayList<String>();
+    private List<String> conversionReviewVersions = new ArrayList<>();
     @JsonProperty("strategy")
     private String strategy;
     @JsonProperty("webhookClientConfig")

@@ -69,7 +69,7 @@ public class ClusterClaimSpec implements Editable<ClusterClaimSpecBuilder> , Kub
     private String namespace;
     @JsonProperty("subjects")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Subject> subjects = new ArrayList<Subject>();
+    private List<Subject> subjects = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

@@ -62,7 +62,7 @@ public class RouteIngress implements Editable<RouteIngressBuilder> , KubernetesR
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<RouteIngressCondition> conditions = new ArrayList<RouteIngressCondition>();
+    private List<RouteIngressCondition> conditions = new ArrayList<>();
     @JsonProperty("host")
     private String host;
     @JsonProperty("routerCanonicalHostname")

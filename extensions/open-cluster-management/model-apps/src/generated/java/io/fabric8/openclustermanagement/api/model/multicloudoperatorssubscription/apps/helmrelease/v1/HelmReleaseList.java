@@ -87,7 +87,7 @@ public class HelmReleaseList implements Editable<HelmReleaseListBuilder> , Kuber
     private String apiVersion = "apps.open-cluster-management.io/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.helmrelease.v1.HelmRelease> items = new ArrayList<io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.helmrelease.v1.HelmRelease>();
+    private List<io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.helmrelease.v1.HelmRelease> items = new ArrayList<>();
     /**
      * 
      * (Required)

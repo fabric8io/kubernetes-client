@@ -61,12 +61,12 @@ public class OperatorGroupStatus implements Editable<OperatorGroupStatusBuilder>
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Condition> conditions = new ArrayList<Condition>();
+    private List<Condition> conditions = new ArrayList<>();
     @JsonProperty("lastUpdated")
     private String lastUpdated;
     @JsonProperty("namespaces")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> namespaces = new ArrayList<java.lang.String>();
+    private List<java.lang.String> namespaces = new ArrayList<>();
     @JsonProperty("serviceAccountRef")
     private io.fabric8.kubernetes.api.model.ObjectReference serviceAccountRef;
     @JsonIgnore

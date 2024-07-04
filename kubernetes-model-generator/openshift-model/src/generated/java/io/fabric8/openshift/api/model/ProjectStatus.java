@@ -60,7 +60,7 @@ public class ProjectStatus implements Editable<ProjectStatusBuilder> , Kubernete
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<NamespaceCondition> conditions = new ArrayList<NamespaceCondition>();
+    private List<NamespaceCondition> conditions = new ArrayList<>();
     @JsonProperty("phase")
     private String phase;
     @JsonIgnore

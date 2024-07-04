@@ -66,7 +66,7 @@ public class Subset implements Editable<SubsetBuilder> , KubernetesResource
 
     @JsonProperty("labels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> labels = new LinkedHashMap<String, String>();
+    private Map<String, String> labels = new LinkedHashMap<>();
     @JsonProperty("name")
     private java.lang.String name;
     @JsonProperty("trafficPolicy")

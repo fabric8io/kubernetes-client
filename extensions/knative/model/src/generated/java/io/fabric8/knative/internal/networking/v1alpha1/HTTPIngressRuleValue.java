@@ -66,7 +66,7 @@ public class HTTPIngressRuleValue implements Editable<HTTPIngressRuleValueBuilde
 
     @JsonProperty("paths")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<HTTPIngressPath> paths = new ArrayList<HTTPIngressPath>();
+    private List<HTTPIngressPath> paths = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

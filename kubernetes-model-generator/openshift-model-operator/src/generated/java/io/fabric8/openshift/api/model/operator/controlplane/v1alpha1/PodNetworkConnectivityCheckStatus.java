@@ -61,16 +61,16 @@ public class PodNetworkConnectivityCheckStatus implements Editable<PodNetworkCon
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<PodNetworkConnectivityCheckCondition> conditions = new ArrayList<PodNetworkConnectivityCheckCondition>();
+    private List<PodNetworkConnectivityCheckCondition> conditions = new ArrayList<>();
     @JsonProperty("failures")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<LogEntry> failures = new ArrayList<LogEntry>();
+    private List<LogEntry> failures = new ArrayList<>();
     @JsonProperty("outages")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<OutageEntry> outages = new ArrayList<OutageEntry>();
+    private List<OutageEntry> outages = new ArrayList<>();
     @JsonProperty("successes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<LogEntry> successes = new ArrayList<LogEntry>();
+    private List<LogEntry> successes = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

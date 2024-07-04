@@ -70,7 +70,7 @@ public class RuleGroup implements Editable<RuleGroupBuilder> , KubernetesResourc
     private String partialResponseStrategy;
     @JsonProperty("rules")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Rule> rules = new ArrayList<Rule>();
+    private List<Rule> rules = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

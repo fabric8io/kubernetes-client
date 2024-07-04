@@ -12816,17 +12816,13 @@
     },
     "machinepool": {
       "properties": {
-        "bootVolume": {
-          "$ref": "#/definitions/os_hive_ibmcloud_v1_BootVolume",
-          "existingJavaType": "io.fabric8.openshift.api.model.hive.ibmcloud.v1.BootVolume"
+        "osDisk": {
+          "$ref": "#/definitions/os_hive_azure_v1_OSDisk",
+          "existingJavaType": "io.fabric8.openshift.api.model.hive.azure.v1.OSDisk"
         },
-        "dedicatedHosts": {
-          "type": "array",
-          "javaOmitEmpty": true,
-          "items": {
-            "$ref": "#/definitions/os_hive_ibmcloud_v1_DedicatedHost",
-            "existingJavaType": "io.fabric8.openshift.api.model.hive.ibmcloud.v1.DedicatedHost"
-          }
+        "osImage": {
+          "$ref": "#/definitions/os_hive_azure_v1_OSImage",
+          "existingJavaType": "io.fabric8.openshift.api.model.hive.azure.v1.OSImage"
         },
         "type": {
           "type": "string"
@@ -13513,8 +13509,15 @@
     },
     "osdisk": {
       "properties": {
+        "diskEncryptionSet": {
+          "$ref": "#/definitions/os_hive_azure_v1_DiskEncryptionSet",
+          "existingJavaType": "io.fabric8.openshift.api.model.hive.azure.v1.DiskEncryptionSet"
+        },
         "diskSizeGB": {
           "type": "integer"
+        },
+        "diskType": {
+          "type": "string"
         }
       },
       "additionalProperties": true
@@ -13659,26 +13662,17 @@
           "$ref": "#/definitions/kubernetes_core_LocalObjectReference",
           "existingJavaType": "io.fabric8.kubernetes.api.model.LocalObjectReference"
         },
-        "cluster": {
-          "type": "string"
-        },
         "credentialsSecretRef": {
           "$ref": "#/definitions/kubernetes_core_LocalObjectReference",
           "existingJavaType": "io.fabric8.kubernetes.api.model.LocalObjectReference"
         },
-        "datacenter": {
+        "ovirt_cluster_id": {
           "type": "string"
         },
-        "defaultDatastore": {
+        "ovirt_network_name": {
           "type": "string"
         },
-        "folder": {
-          "type": "string"
-        },
-        "network": {
-          "type": "string"
-        },
-        "vCenter": {
+        "storage_domain_id": {
           "type": "string"
         }
       },
@@ -13686,9 +13680,9 @@
     },
     "platformstatus": {
       "properties": {
-        "privateLink": {
-          "$ref": "#/definitions/os_hive_aws_v1_PrivateLinkAccessStatus",
-          "existingJavaType": "io.fabric8.openshift.api.model.hive.aws.v1.PrivateLinkAccessStatus"
+        "aws": {
+          "$ref": "#/definitions/os_hive_aws_v1_PlatformStatus",
+          "existingJavaType": "io.fabric8.openshift.api.model.hive.aws.v1.AwsPlatformStatus"
         }
       },
       "additionalProperties": true

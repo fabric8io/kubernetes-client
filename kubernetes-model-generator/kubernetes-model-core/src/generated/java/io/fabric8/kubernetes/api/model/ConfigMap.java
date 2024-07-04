@@ -56,10 +56,10 @@ public class ConfigMap implements Editable<ConfigMapBuilder> , HasMetadata, Name
     private String apiVersion = "v1";
     @JsonProperty("binaryData")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> binaryData = new LinkedHashMap<String, String>();
+    private Map<String, String> binaryData = new LinkedHashMap<>();
     @JsonProperty("data")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> data = new LinkedHashMap<String, String>();
+    private Map<String, String> data = new LinkedHashMap<>();
     @JsonProperty("immutable")
     private Boolean immutable;
     /**

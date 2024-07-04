@@ -60,10 +60,10 @@ public class ServiceSpec implements Editable<ServiceSpecBuilder> , KubernetesRes
     private String clusterIP;
     @JsonProperty("clusterIPs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> clusterIPs = new ArrayList<String>();
+    private List<String> clusterIPs = new ArrayList<>();
     @JsonProperty("externalIPs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> externalIPs = new ArrayList<String>();
+    private List<String> externalIPs = new ArrayList<>();
     @JsonProperty("externalName")
     private String externalName;
     @JsonProperty("externalTrafficPolicy")
@@ -74,7 +74,7 @@ public class ServiceSpec implements Editable<ServiceSpecBuilder> , KubernetesRes
     private String internalTrafficPolicy;
     @JsonProperty("ipFamilies")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> ipFamilies = new ArrayList<String>();
+    private List<String> ipFamilies = new ArrayList<>();
     @JsonProperty("ipFamilyPolicy")
     private String ipFamilyPolicy;
     @JsonProperty("loadBalancerClass")
@@ -83,15 +83,15 @@ public class ServiceSpec implements Editable<ServiceSpecBuilder> , KubernetesRes
     private String loadBalancerIP;
     @JsonProperty("loadBalancerSourceRanges")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> loadBalancerSourceRanges = new ArrayList<String>();
+    private List<String> loadBalancerSourceRanges = new ArrayList<>();
     @JsonProperty("ports")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ServicePort> ports = new ArrayList<ServicePort>();
+    private List<ServicePort> ports = new ArrayList<>();
     @JsonProperty("publishNotReadyAddresses")
     private Boolean publishNotReadyAddresses;
     @JsonProperty("selector")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> selector = new LinkedHashMap<String, String>();
+    private Map<String, String> selector = new LinkedHashMap<>();
     @JsonProperty("sessionAffinity")
     private String sessionAffinity;
     @JsonProperty("sessionAffinityConfig")

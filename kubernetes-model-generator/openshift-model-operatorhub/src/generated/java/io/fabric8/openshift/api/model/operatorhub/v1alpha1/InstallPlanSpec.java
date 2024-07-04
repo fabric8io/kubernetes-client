@@ -67,7 +67,7 @@ public class InstallPlanSpec implements Editable<InstallPlanSpecBuilder> , Kuber
     private Boolean approved;
     @JsonProperty("clusterServiceVersionNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> clusterServiceVersionNames = new ArrayList<String>();
+    private List<String> clusterServiceVersionNames = new ArrayList<>();
     @JsonProperty("generation")
     private Integer generation;
     @JsonProperty("source")

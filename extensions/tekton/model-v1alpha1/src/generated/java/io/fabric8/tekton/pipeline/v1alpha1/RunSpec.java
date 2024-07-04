@@ -80,7 +80,7 @@ public class RunSpec implements Editable<RunSpecBuilder> , KubernetesResource
 
     @JsonProperty("params")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Param> params = new ArrayList<Param>();
+    private List<Param> params = new ArrayList<>();
     @JsonProperty("podTemplate")
     private Template podTemplate;
     @JsonProperty("ref")
@@ -99,7 +99,7 @@ public class RunSpec implements Editable<RunSpecBuilder> , KubernetesResource
     private Duration timeout;
     @JsonProperty("workspaces")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<WorkspaceBinding> workspaces = new ArrayList<WorkspaceBinding>();
+    private List<WorkspaceBinding> workspaces = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

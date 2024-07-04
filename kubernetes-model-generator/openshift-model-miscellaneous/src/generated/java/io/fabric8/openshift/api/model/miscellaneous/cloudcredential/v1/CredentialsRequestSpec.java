@@ -62,12 +62,12 @@ public class CredentialsRequestSpec implements Editable<CredentialsRequestSpecBu
     private java.lang.String cloudTokenPath;
     @JsonProperty("providerSpec")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Object> providerSpec = new LinkedHashMap<String, Object>();
+    private Map<String, Object> providerSpec = new LinkedHashMap<>();
     @JsonProperty("secretRef")
     private io.fabric8.kubernetes.api.model.ObjectReference secretRef;
     @JsonProperty("serviceAccountNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> serviceAccountNames = new ArrayList<java.lang.String>();
+    private List<java.lang.String> serviceAccountNames = new ArrayList<>();
     @JsonIgnore
     private Map<java.lang.String, java.lang.Object> additionalProperties = new LinkedHashMap<java.lang.String, java.lang.Object>();
 

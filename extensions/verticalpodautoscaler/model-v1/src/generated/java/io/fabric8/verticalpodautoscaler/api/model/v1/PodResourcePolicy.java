@@ -66,7 +66,7 @@ public class PodResourcePolicy implements Editable<PodResourcePolicyBuilder> , K
 
     @JsonProperty("containerPolicies")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ContainerResourcePolicy> containerPolicies = new ArrayList<ContainerResourcePolicy>();
+    private List<ContainerResourcePolicy> containerPolicies = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

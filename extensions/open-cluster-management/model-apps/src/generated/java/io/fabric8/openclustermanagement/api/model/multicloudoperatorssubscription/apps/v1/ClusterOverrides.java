@@ -69,7 +69,7 @@ public class ClusterOverrides implements Editable<ClusterOverridesBuilder> , Kub
     private String clusterName;
     @JsonProperty("clusterOverrides")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ClusterOverride> clusterOverrides = new ArrayList<ClusterOverride>();
+    private List<ClusterOverride> clusterOverrides = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

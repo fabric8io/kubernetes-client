@@ -71,12 +71,12 @@ public class ClusterDeploymentStatus implements Editable<ClusterDeploymentStatus
     private java.lang.String apiURL;
     @JsonProperty("certificateBundles")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<CertificateBundleStatus> certificateBundles = new ArrayList<CertificateBundleStatus>();
+    private List<CertificateBundleStatus> certificateBundles = new ArrayList<>();
     @JsonProperty("cliImage")
     private java.lang.String cliImage;
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ClusterDeploymentCondition> conditions = new ArrayList<ClusterDeploymentCondition>();
+    private List<ClusterDeploymentCondition> conditions = new ArrayList<>();
     @JsonProperty("installRestarts")
     private Integer installRestarts;
     @JsonProperty("installStartedTimestamp")

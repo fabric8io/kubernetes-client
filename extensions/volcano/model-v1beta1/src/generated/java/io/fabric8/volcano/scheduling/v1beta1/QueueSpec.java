@@ -67,7 +67,7 @@ public class QueueSpec implements Editable<QueueSpecBuilder> , KubernetesResourc
 
     @JsonProperty("capability")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Quantity> capability = new LinkedHashMap<String, Quantity>();
+    private Map<String, Quantity> capability = new LinkedHashMap<>();
     @JsonProperty("reclaimable")
     private Boolean reclaimable;
     @JsonProperty("weight")

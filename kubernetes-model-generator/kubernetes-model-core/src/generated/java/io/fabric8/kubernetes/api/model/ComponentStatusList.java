@@ -56,7 +56,7 @@ public class ComponentStatusList implements Editable<ComponentStatusListBuilder>
     private String apiVersion = "v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.ComponentStatus> items = new ArrayList<io.fabric8.kubernetes.api.model.ComponentStatus>();
+    private List<io.fabric8.kubernetes.api.model.ComponentStatus> items = new ArrayList<>();
     /**
      * 
      * (Required)

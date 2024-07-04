@@ -61,7 +61,7 @@ public class ClusterDeprovisionStatus implements Editable<ClusterDeprovisionStat
     private Boolean completed;
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ClusterDeprovisionCondition> conditions = new ArrayList<ClusterDeprovisionCondition>();
+    private List<ClusterDeprovisionCondition> conditions = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

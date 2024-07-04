@@ -60,13 +60,13 @@ public class HTTPRouteSpec implements Editable<HTTPRouteSpecBuilder> , Kubernete
 
     @JsonProperty("hostnames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> hostnames = new ArrayList<String>();
+    private List<String> hostnames = new ArrayList<>();
     @JsonProperty("parentRefs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ParentReference> parentRefs = new ArrayList<ParentReference>();
+    private List<ParentReference> parentRefs = new ArrayList<>();
     @JsonProperty("rules")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<HTTPRouteRule> rules = new ArrayList<HTTPRouteRule>();
+    private List<HTTPRouteRule> rules = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

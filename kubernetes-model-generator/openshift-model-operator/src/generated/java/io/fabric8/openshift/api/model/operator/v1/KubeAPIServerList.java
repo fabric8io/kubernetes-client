@@ -79,7 +79,7 @@ public class KubeAPIServerList implements Editable<KubeAPIServerListBuilder> , K
     private String apiVersion = "operator.openshift.io/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.openshift.api.model.operator.v1.KubeAPIServer> items = new ArrayList<io.fabric8.openshift.api.model.operator.v1.KubeAPIServer>();
+    private List<io.fabric8.openshift.api.model.operator.v1.KubeAPIServer> items = new ArrayList<>();
     /**
      * 
      * (Required)

@@ -57,7 +57,7 @@ public class Secret implements Editable<SecretBuilder> , HasMetadata, Namespaced
     private String apiVersion = "v1";
     @JsonProperty("data")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> data = new LinkedHashMap<String, String>();
+    private Map<String, String> data = new LinkedHashMap<>();
     @JsonProperty("immutable")
     private Boolean immutable;
     /**
@@ -71,7 +71,7 @@ public class Secret implements Editable<SecretBuilder> , HasMetadata, Namespaced
     private ObjectMeta metadata;
     @JsonProperty("stringData")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> stringData = new LinkedHashMap<String, String>();
+    private Map<String, String> stringData = new LinkedHashMap<>();
     @JsonProperty("type")
     private String type;
     @JsonIgnore

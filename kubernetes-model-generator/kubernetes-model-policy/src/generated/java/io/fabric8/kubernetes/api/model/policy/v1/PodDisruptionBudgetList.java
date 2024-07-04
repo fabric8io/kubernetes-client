@@ -79,7 +79,7 @@ public class PodDisruptionBudgetList implements Editable<PodDisruptionBudgetList
     private String apiVersion = "policy/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.policy.v1.PodDisruptionBudget> items = new ArrayList<io.fabric8.kubernetes.api.model.policy.v1.PodDisruptionBudget>();
+    private List<io.fabric8.kubernetes.api.model.policy.v1.PodDisruptionBudget> items = new ArrayList<>();
     /**
      * 
      * (Required)

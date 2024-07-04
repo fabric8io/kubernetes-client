@@ -87,7 +87,7 @@ public class IssuerList implements Editable<IssuerListBuilder> , KubernetesResou
     private String apiVersion = "cert-manager.io/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.certmanager.api.model.v1.Issuer> items = new ArrayList<io.fabric8.certmanager.api.model.v1.Issuer>();
+    private List<io.fabric8.certmanager.api.model.v1.Issuer> items = new ArrayList<>();
     /**
      * 
      * (Required)

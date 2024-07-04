@@ -58,7 +58,7 @@ public class ProjectSpec implements Editable<ProjectSpecBuilder> , KubernetesRes
 
     @JsonProperty("finalizers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> finalizers = new ArrayList<String>();
+    private List<String> finalizers = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

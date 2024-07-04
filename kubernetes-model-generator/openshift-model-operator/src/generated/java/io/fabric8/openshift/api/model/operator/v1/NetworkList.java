@@ -79,7 +79,7 @@ public class NetworkList implements Editable<NetworkListBuilder> , KubernetesRes
     private String apiVersion = "operator.openshift.io/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.openshift.api.model.operator.v1.Network> items = new ArrayList<io.fabric8.openshift.api.model.operator.v1.Network>();
+    private List<io.fabric8.openshift.api.model.operator.v1.Network> items = new ArrayList<>();
     /**
      * 
      * (Required)

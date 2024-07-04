@@ -73,14 +73,14 @@ public class PodHttpChaosReplaceActions implements Editable<PodHttpChaosReplaceA
     private Integer code;
     @JsonProperty("headers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> headers = new LinkedHashMap<String, String>();
+    private Map<String, String> headers = new LinkedHashMap<>();
     @JsonProperty("method")
     private String method;
     @JsonProperty("path")
     private String path;
     @JsonProperty("queries")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> queries = new LinkedHashMap<String, String>();
+    private Map<String, String> queries = new LinkedHashMap<>();
     @JsonIgnore
     private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 

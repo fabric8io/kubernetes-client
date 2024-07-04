@@ -87,7 +87,7 @@ public class SourceList implements Editable<SourceListBuilder> , KubernetesResou
     private String apiVersion = "duck.knative.dev/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.knative.internal.pkg.apis.duck.v1.Source> items = new ArrayList<io.fabric8.knative.internal.pkg.apis.duck.v1.Source>();
+    private List<io.fabric8.knative.internal.pkg.apis.duck.v1.Source> items = new ArrayList<>();
     /**
      * 
      * (Required)

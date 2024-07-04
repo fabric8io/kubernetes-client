@@ -87,7 +87,7 @@ public class ServiceClassList implements Editable<ServiceClassListBuilder> , Kub
     private String apiVersion = "servicecatalog.k8s.io/v1beta1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.servicecatalog.api.model.ServiceClass> items = new ArrayList<io.fabric8.servicecatalog.api.model.ServiceClass>();
+    private List<io.fabric8.servicecatalog.api.model.ServiceClass> items = new ArrayList<>();
     /**
      * 
      * (Required)

@@ -75,12 +75,12 @@ public class PortOpts implements Editable<PortOptsBuilder> , KubernetesResource
     private Boolean adminStateUp;
     @JsonProperty("allowedAddressPairs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<AddressPair> allowedAddressPairs = new ArrayList<AddressPair>();
+    private List<AddressPair> allowedAddressPairs = new ArrayList<>();
     @JsonProperty("description")
     private String description;
     @JsonProperty("fixedIPs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<FixedIPs> fixedIPs = new ArrayList<FixedIPs>();
+    private List<FixedIPs> fixedIPs = new ArrayList<>();
     @JsonProperty("hostID")
     private String hostID;
     @JsonProperty("macAddress")
@@ -93,15 +93,15 @@ public class PortOpts implements Editable<PortOptsBuilder> , KubernetesResource
     private Boolean portSecurity;
     @JsonProperty("profile")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> profile = new LinkedHashMap<String, String>();
+    private Map<String, String> profile = new LinkedHashMap<>();
     @JsonProperty("projectID")
     private String projectID;
     @JsonProperty("securityGroups")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> securityGroups = new ArrayList<String>();
+    private List<String> securityGroups = new ArrayList<>();
     @JsonProperty("tags")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> tags = new ArrayList<String>();
+    private List<String> tags = new ArrayList<>();
     @JsonProperty("tenantID")
     private String tenantID;
     @JsonProperty("trunk")

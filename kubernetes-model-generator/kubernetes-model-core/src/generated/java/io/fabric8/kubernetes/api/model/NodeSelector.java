@@ -37,7 +37,7 @@ public class NodeSelector implements Editable<NodeSelectorBuilder> , KubernetesR
 
     @JsonProperty("nodeSelectorTerms")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<NodeSelectorTerm> nodeSelectorTerms = new ArrayList<NodeSelectorTerm>();
+    private List<NodeSelectorTerm> nodeSelectorTerms = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

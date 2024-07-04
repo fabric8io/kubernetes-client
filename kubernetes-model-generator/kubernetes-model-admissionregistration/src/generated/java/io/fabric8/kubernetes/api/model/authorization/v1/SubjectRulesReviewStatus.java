@@ -65,10 +65,10 @@ public class SubjectRulesReviewStatus implements Editable<SubjectRulesReviewStat
     private Boolean incomplete;
     @JsonProperty("nonResourceRules")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<NonResourceRule> nonResourceRules = new ArrayList<NonResourceRule>();
+    private List<NonResourceRule> nonResourceRules = new ArrayList<>();
     @JsonProperty("resourceRules")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ResourceRule> resourceRules = new ArrayList<ResourceRule>();
+    private List<ResourceRule> resourceRules = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

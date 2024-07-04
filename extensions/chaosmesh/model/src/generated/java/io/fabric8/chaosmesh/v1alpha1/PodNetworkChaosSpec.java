@@ -68,13 +68,13 @@ public class PodNetworkChaosSpec implements Editable<PodNetworkChaosSpecBuilder>
 
     @JsonProperty("ipsets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<RawIPSet> ipsets = new ArrayList<RawIPSet>();
+    private List<RawIPSet> ipsets = new ArrayList<>();
     @JsonProperty("iptables")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<RawIptables> iptables = new ArrayList<RawIptables>();
+    private List<RawIptables> iptables = new ArrayList<>();
     @JsonProperty("tcs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<RawTrafficControl> tcs = new ArrayList<RawTrafficControl>();
+    private List<RawTrafficControl> tcs = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

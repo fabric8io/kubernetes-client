@@ -40,19 +40,19 @@ public class LimitRangeItem implements Editable<LimitRangeItemBuilder> , Kuberne
 
     @JsonProperty("default")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, io.fabric8.kubernetes.api.model.Quantity> _default = new LinkedHashMap<String, io.fabric8.kubernetes.api.model.Quantity>();
+    private Map<String, io.fabric8.kubernetes.api.model.Quantity> _default = new LinkedHashMap<>();
     @JsonProperty("defaultRequest")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, io.fabric8.kubernetes.api.model.Quantity> defaultRequest = new LinkedHashMap<String, io.fabric8.kubernetes.api.model.Quantity>();
+    private Map<String, io.fabric8.kubernetes.api.model.Quantity> defaultRequest = new LinkedHashMap<>();
     @JsonProperty("max")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, io.fabric8.kubernetes.api.model.Quantity> max = new LinkedHashMap<String, io.fabric8.kubernetes.api.model.Quantity>();
+    private Map<String, io.fabric8.kubernetes.api.model.Quantity> max = new LinkedHashMap<>();
     @JsonProperty("maxLimitRequestRatio")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, io.fabric8.kubernetes.api.model.Quantity> maxLimitRequestRatio = new LinkedHashMap<String, io.fabric8.kubernetes.api.model.Quantity>();
+    private Map<String, io.fabric8.kubernetes.api.model.Quantity> maxLimitRequestRatio = new LinkedHashMap<>();
     @JsonProperty("min")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, io.fabric8.kubernetes.api.model.Quantity> min = new LinkedHashMap<String, io.fabric8.kubernetes.api.model.Quantity>();
+    private Map<String, io.fabric8.kubernetes.api.model.Quantity> min = new LinkedHashMap<>();
     @JsonProperty("type")
     private String type;
     @JsonIgnore

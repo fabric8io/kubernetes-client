@@ -68,7 +68,7 @@ public class WebhookInterceptor implements Editable<WebhookInterceptorBuilder> ,
 
     @JsonProperty("header")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Param> header = new ArrayList<Param>();
+    private List<Param> header = new ArrayList<>();
     @JsonProperty("objectRef")
     private io.fabric8.kubernetes.api.model.ObjectReference objectRef;
     @JsonProperty("url")

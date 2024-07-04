@@ -81,13 +81,13 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     private String region;
     @JsonProperty("serviceEndpoints")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ServiceEndpoint> serviceEndpoints = new ArrayList<ServiceEndpoint>();
+    private List<ServiceEndpoint> serviceEndpoints = new ArrayList<>();
     @JsonProperty("subnets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> subnets = new ArrayList<String>();
+    private List<String> subnets = new ArrayList<>();
     @JsonProperty("userTags")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> userTags = new LinkedHashMap<String, String>();
+    private Map<String, String> userTags = new LinkedHashMap<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

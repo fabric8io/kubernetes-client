@@ -67,7 +67,7 @@ public class BitbucketInterceptor implements Editable<BitbucketInterceptorBuilde
 
     @JsonProperty("eventTypes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> eventTypes = new ArrayList<String>();
+    private List<String> eventTypes = new ArrayList<>();
     @JsonProperty("secretRef")
     private SecretRef secretRef;
     @JsonIgnore

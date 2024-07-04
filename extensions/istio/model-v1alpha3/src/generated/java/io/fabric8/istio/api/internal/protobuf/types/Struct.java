@@ -64,7 +64,7 @@ public class Struct implements Editable<StructBuilder> , KubernetesResource
 
     @JsonProperty("fields")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Value> fields = new LinkedHashMap<String, Value>();
+    private Map<String, Value> fields = new LinkedHashMap<>();
     @JsonIgnore
     private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 

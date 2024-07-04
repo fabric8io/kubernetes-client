@@ -90,7 +90,7 @@ public class OAuthClientAuthorization implements Editable<OAuthClientAuthorizati
     private io.fabric8.kubernetes.api.model.ObjectMeta metadata;
     @JsonProperty("scopes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> scopes = new ArrayList<String>();
+    private List<String> scopes = new ArrayList<>();
     @JsonProperty("userName")
     private String userName;
     @JsonProperty("userUID")

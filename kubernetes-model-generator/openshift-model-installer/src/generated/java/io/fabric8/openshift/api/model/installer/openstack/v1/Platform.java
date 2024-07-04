@@ -81,21 +81,21 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     private String apiVIP;
     @JsonProperty("apiVIPs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> apiVIPs = new ArrayList<String>();
+    private List<String> apiVIPs = new ArrayList<>();
     @JsonProperty("cloud")
     private String cloud;
     @JsonProperty("clusterOSImage")
     private String clusterOSImage;
     @JsonProperty("clusterOSImageProperties")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> clusterOSImageProperties = new LinkedHashMap<String, String>();
+    private Map<String, String> clusterOSImageProperties = new LinkedHashMap<>();
     @JsonProperty("computeFlavor")
     private String computeFlavor;
     @JsonProperty("defaultMachinePlatform")
     private MachinePool defaultMachinePlatform;
     @JsonProperty("externalDNS")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> externalDNS = new ArrayList<String>();
+    private List<String> externalDNS = new ArrayList<>();
     @JsonProperty("externalNetwork")
     private String externalNetwork;
     @JsonProperty("ingressFloatingIP")
@@ -104,7 +104,7 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     private String ingressVIP;
     @JsonProperty("ingressVIPs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> ingressVIPs = new ArrayList<String>();
+    private List<String> ingressVIPs = new ArrayList<>();
     @JsonProperty("lbFloatingIP")
     private String lbFloatingIP;
     @JsonProperty("loadBalancer")

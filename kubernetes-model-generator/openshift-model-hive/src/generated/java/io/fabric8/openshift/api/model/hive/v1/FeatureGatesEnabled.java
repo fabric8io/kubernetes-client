@@ -58,7 +58,7 @@ public class FeatureGatesEnabled implements Editable<FeatureGatesEnabledBuilder>
 
     @JsonProperty("enabled")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> enabled = new ArrayList<String>();
+    private List<String> enabled = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

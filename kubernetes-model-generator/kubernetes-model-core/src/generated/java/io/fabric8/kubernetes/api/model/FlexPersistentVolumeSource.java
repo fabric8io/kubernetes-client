@@ -43,7 +43,7 @@ public class FlexPersistentVolumeSource implements Editable<FlexPersistentVolume
     private String fsType;
     @JsonProperty("options")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> options = new LinkedHashMap<String, String>();
+    private Map<String, String> options = new LinkedHashMap<>();
     @JsonProperty("readOnly")
     private Boolean readOnly;
     @JsonProperty("secretRef")

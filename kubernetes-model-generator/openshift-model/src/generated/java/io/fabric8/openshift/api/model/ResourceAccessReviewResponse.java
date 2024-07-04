@@ -81,7 +81,7 @@ public class ResourceAccessReviewResponse implements Editable<ResourceAccessRevi
     private String evalutionError;
     @JsonProperty("groups")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> groups = new ArrayList<String>();
+    private List<String> groups = new ArrayList<>();
     /**
      * 
      * (Required)
@@ -93,7 +93,7 @@ public class ResourceAccessReviewResponse implements Editable<ResourceAccessRevi
     private String namespace;
     @JsonProperty("users")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> users = new ArrayList<String>();
+    private List<String> users = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

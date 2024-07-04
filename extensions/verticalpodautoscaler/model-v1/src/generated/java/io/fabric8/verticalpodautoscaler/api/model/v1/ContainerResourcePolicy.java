@@ -74,15 +74,15 @@ public class ContainerResourcePolicy implements Editable<ContainerResourcePolicy
     private java.lang.String containerName;
     @JsonProperty("controlledResources")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> controlledResources = new ArrayList<java.lang.String>();
+    private List<java.lang.String> controlledResources = new ArrayList<>();
     @JsonProperty("controlledValues")
     private String controlledValues;
     @JsonProperty("maxAllowed")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Quantity> maxAllowed = new LinkedHashMap<String, Quantity>();
+    private Map<String, Quantity> maxAllowed = new LinkedHashMap<>();
     @JsonProperty("minAllowed")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Quantity> minAllowed = new LinkedHashMap<String, Quantity>();
+    private Map<String, Quantity> minAllowed = new LinkedHashMap<>();
     @JsonProperty("mode")
     private String mode;
     @JsonIgnore

@@ -61,7 +61,7 @@ public class NutanixPlatformSpec implements Editable<NutanixPlatformSpecBuilder>
     private NutanixPrismEndpoint prismCentral;
     @JsonProperty("prismElements")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<NutanixPrismElementEndpoint> prismElements = new ArrayList<NutanixPrismElementEndpoint>();
+    private List<NutanixPrismElementEndpoint> prismElements = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

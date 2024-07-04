@@ -59,10 +59,10 @@ public class APIServiceDefinitions implements Editable<APIServiceDefinitionsBuil
 
     @JsonProperty("owned")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<APIServiceDescription> owned = new ArrayList<APIServiceDescription>();
+    private List<APIServiceDescription> owned = new ArrayList<>();
     @JsonProperty("required")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<APIServiceDescription> required = new ArrayList<APIServiceDescription>();
+    private List<APIServiceDescription> required = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

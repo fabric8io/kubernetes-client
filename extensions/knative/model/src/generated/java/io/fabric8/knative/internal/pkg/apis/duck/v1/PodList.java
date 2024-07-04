@@ -83,7 +83,7 @@ public class PodList implements Editable<PodListBuilder> , KubernetesResource, K
     private String apiVersion = "duck.knative.dev/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.knative.internal.pkg.apis.duck.v1.WithPod> items = new ArrayList<io.fabric8.knative.internal.pkg.apis.duck.v1.WithPod>();
+    private List<io.fabric8.knative.internal.pkg.apis.duck.v1.WithPod> items = new ArrayList<>();
     /**
      * 
      * (Required)

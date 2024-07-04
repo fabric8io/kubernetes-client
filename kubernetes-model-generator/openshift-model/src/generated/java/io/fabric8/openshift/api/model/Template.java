@@ -91,17 +91,17 @@ public class Template implements Editable<TemplateBuilder> , HasMetadata, Namesp
     private String kind = "Template";
     @JsonProperty("labels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> labels = new LinkedHashMap<String, String>();
+    private Map<String, String> labels = new LinkedHashMap<>();
     @JsonProperty("message")
     private String message;
     @JsonProperty("metadata")
     private io.fabric8.kubernetes.api.model.ObjectMeta metadata;
     @JsonProperty("objects")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<HasMetadata> objects = new ArrayList<HasMetadata>();
+    private List<HasMetadata> objects = new ArrayList<>();
     @JsonProperty("parameters")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Parameter> parameters = new ArrayList<Parameter>();
+    private List<Parameter> parameters = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

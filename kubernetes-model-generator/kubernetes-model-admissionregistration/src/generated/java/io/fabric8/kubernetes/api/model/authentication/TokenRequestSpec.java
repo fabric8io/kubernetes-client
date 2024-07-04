@@ -60,7 +60,7 @@ public class TokenRequestSpec implements Editable<TokenRequestSpecBuilder> , Kub
 
     @JsonProperty("audiences")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> audiences = new ArrayList<String>();
+    private List<String> audiences = new ArrayList<>();
     @JsonProperty("boundObjectRef")
     private BoundObjectReference boundObjectRef;
     @JsonProperty("expirationSeconds")

@@ -79,7 +79,7 @@ public class ValidatingWebhookConfigurationList implements Editable<ValidatingWe
     private String apiVersion = "admissionregistration.k8s.io/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.admissionregistration.v1.ValidatingWebhookConfiguration> items = new ArrayList<io.fabric8.kubernetes.api.model.admissionregistration.v1.ValidatingWebhookConfiguration>();
+    private List<io.fabric8.kubernetes.api.model.admissionregistration.v1.ValidatingWebhookConfiguration> items = new ArrayList<>();
     /**
      * 
      * (Required)

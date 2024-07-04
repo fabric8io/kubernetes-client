@@ -63,13 +63,13 @@ public class StructuredResourceHandle implements Editable<StructuredResourceHand
     private java.lang.String nodeName;
     @JsonProperty("results")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<DriverAllocationResult> results = new ArrayList<DriverAllocationResult>();
+    private List<DriverAllocationResult> results = new ArrayList<>();
     @JsonProperty("vendorClaimParameters")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Object> vendorClaimParameters = new LinkedHashMap<String, Object>();
+    private Map<String, Object> vendorClaimParameters = new LinkedHashMap<>();
     @JsonProperty("vendorClassParameters")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Object> vendorClassParameters = new LinkedHashMap<String, Object>();
+    private Map<String, Object> vendorClassParameters = new LinkedHashMap<>();
     @JsonIgnore
     private Map<java.lang.String, java.lang.Object> additionalProperties = new LinkedHashMap<java.lang.String, java.lang.Object>();
 

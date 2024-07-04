@@ -73,7 +73,7 @@ public class DeploymentConfigSpec implements Editable<DeploymentConfigSpecBuilde
     private Integer revisionHistoryLimit;
     @JsonProperty("selector")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> selector = new LinkedHashMap<String, String>();
+    private Map<String, String> selector = new LinkedHashMap<>();
     @JsonProperty("strategy")
     private DeploymentStrategy strategy;
     @JsonProperty("template")
@@ -82,7 +82,7 @@ public class DeploymentConfigSpec implements Editable<DeploymentConfigSpecBuilde
     private Boolean test;
     @JsonProperty("triggers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<DeploymentTriggerPolicy> triggers = new ArrayList<DeploymentTriggerPolicy>();
+    private List<DeploymentTriggerPolicy> triggers = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

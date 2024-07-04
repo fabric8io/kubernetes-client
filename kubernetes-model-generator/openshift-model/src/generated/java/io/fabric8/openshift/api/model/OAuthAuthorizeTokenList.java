@@ -79,7 +79,7 @@ public class OAuthAuthorizeTokenList implements Editable<OAuthAuthorizeTokenList
     private String apiVersion = "oauth.openshift.io/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.openshift.api.model.OAuthAuthorizeToken> items = new ArrayList<io.fabric8.openshift.api.model.OAuthAuthorizeToken>();
+    private List<io.fabric8.openshift.api.model.OAuthAuthorizeToken> items = new ArrayList<>();
     /**
      * 
      * (Required)

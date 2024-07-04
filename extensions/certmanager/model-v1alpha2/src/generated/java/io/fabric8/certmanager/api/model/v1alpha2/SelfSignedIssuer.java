@@ -66,7 +66,7 @@ public class SelfSignedIssuer implements Editable<SelfSignedIssuerBuilder> , Kub
 
     @JsonProperty("crlDistributionPoints")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> crlDistributionPoints = new ArrayList<String>();
+    private List<String> crlDistributionPoints = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

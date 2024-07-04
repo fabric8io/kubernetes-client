@@ -79,7 +79,7 @@ public class ResourceClaimList implements Editable<ResourceClaimListBuilder> , K
     private String apiVersion = "resource.k8s.io/v1alpha2";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.resource.v1alpha2.ResourceClaim> items = new ArrayList<io.fabric8.kubernetes.api.model.resource.v1alpha2.ResourceClaim>();
+    private List<io.fabric8.kubernetes.api.model.resource.v1alpha2.ResourceClaim> items = new ArrayList<>();
     /**
      * 
      * (Required)

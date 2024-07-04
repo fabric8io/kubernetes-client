@@ -89,7 +89,7 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     private String vpcRegion;
     @JsonProperty("vpcSubnets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> vpcSubnets = new ArrayList<String>();
+    private List<String> vpcSubnets = new ArrayList<>();
     @JsonProperty("zone")
     private String zone;
     @JsonIgnore

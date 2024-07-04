@@ -63,10 +63,10 @@ public class PodSecurityContext implements Editable<PodSecurityContextBuilder> ,
     private SeccompProfile seccompProfile;
     @JsonProperty("supplementalGroups")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Long> supplementalGroups = new ArrayList<Long>();
+    private List<Long> supplementalGroups = new ArrayList<>();
     @JsonProperty("sysctls")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Sysctl> sysctls = new ArrayList<Sysctl>();
+    private List<Sysctl> sysctls = new ArrayList<>();
     @JsonProperty("windowsOptions")
     private WindowsSecurityContextOptions windowsOptions;
     @JsonIgnore

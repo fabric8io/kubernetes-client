@@ -80,7 +80,7 @@ public class SlackConfig implements Editable<SlackConfigBuilder> , KubernetesRes
 
     @JsonProperty("actions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<SlackAction> actions = new ArrayList<SlackAction>();
+    private List<SlackAction> actions = new ArrayList<>();
     @JsonProperty("apiURL")
     private SecretKeySelector apiURL;
     @JsonProperty("callbackId")
@@ -93,7 +93,7 @@ public class SlackConfig implements Editable<SlackConfigBuilder> , KubernetesRes
     private String fallback;
     @JsonProperty("fields")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<SlackField> fields = new ArrayList<SlackField>();
+    private List<SlackField> fields = new ArrayList<>();
     @JsonProperty("footer")
     private String footer;
     @JsonProperty("httpConfig")
@@ -108,7 +108,7 @@ public class SlackConfig implements Editable<SlackConfigBuilder> , KubernetesRes
     private Boolean linkNames;
     @JsonProperty("mrkdwnIn")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> mrkdwnIn = new ArrayList<String>();
+    private List<String> mrkdwnIn = new ArrayList<>();
     @JsonProperty("pretext")
     private String pretext;
     @JsonProperty("sendResolved")

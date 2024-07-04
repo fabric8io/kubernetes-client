@@ -87,7 +87,7 @@ public class BlockChaosList implements Editable<BlockChaosListBuilder> , Kuberne
     private String apiVersion = "chaos-mesh.org/v1alpha1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.chaosmesh.v1alpha1.BlockChaos> items = new ArrayList<io.fabric8.chaosmesh.v1alpha1.BlockChaos>();
+    private List<io.fabric8.chaosmesh.v1alpha1.BlockChaos> items = new ArrayList<>();
     /**
      * 
      * (Required)

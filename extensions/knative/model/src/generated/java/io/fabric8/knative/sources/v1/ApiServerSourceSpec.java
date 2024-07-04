@@ -81,7 +81,7 @@ public class ApiServerSourceSpec implements Editable<ApiServerSourceSpecBuilder>
     private APIVersionKind owner;
     @JsonProperty("resources")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<APIVersionKindSelector> resources = new ArrayList<APIVersionKindSelector>();
+    private List<APIVersionKindSelector> resources = new ArrayList<>();
     @JsonProperty("serviceAccountName")
     private String serviceAccountName;
     @JsonProperty("sink")

@@ -60,7 +60,7 @@ public class ServiceAccount implements Editable<ServiceAccountBuilder> , HasMeta
     private Boolean automountServiceAccountToken;
     @JsonProperty("imagePullSecrets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<LocalObjectReference> imagePullSecrets = new ArrayList<LocalObjectReference>();
+    private List<LocalObjectReference> imagePullSecrets = new ArrayList<>();
     /**
      * 
      * (Required)
@@ -72,7 +72,7 @@ public class ServiceAccount implements Editable<ServiceAccountBuilder> , HasMeta
     private ObjectMeta metadata;
     @JsonProperty("secrets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ObjectReference> secrets = new ArrayList<ObjectReference>();
+    private List<ObjectReference> secrets = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

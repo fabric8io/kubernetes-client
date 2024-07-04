@@ -78,7 +78,7 @@ public class ClusterRoleBinding implements Editable<ClusterRoleBindingBuilder> ,
     private String apiVersion = "authorization.openshift.io/v1";
     @JsonProperty("groupNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> groupNames = new ArrayList<String>();
+    private List<String> groupNames = new ArrayList<>();
     /**
      * 
      * (Required)
@@ -92,10 +92,10 @@ public class ClusterRoleBinding implements Editable<ClusterRoleBindingBuilder> ,
     private io.fabric8.kubernetes.api.model.ObjectReference roleRef;
     @JsonProperty("subjects")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.ObjectReference> subjects = new ArrayList<io.fabric8.kubernetes.api.model.ObjectReference>();
+    private List<io.fabric8.kubernetes.api.model.ObjectReference> subjects = new ArrayList<>();
     @JsonProperty("userNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> userNames = new ArrayList<String>();
+    private List<String> userNames = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

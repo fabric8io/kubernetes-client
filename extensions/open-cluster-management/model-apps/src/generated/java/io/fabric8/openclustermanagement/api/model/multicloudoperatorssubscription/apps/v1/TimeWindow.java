@@ -69,10 +69,10 @@ public class TimeWindow implements Editable<TimeWindowBuilder> , KubernetesResou
 
     @JsonProperty("daysofweek")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> daysofweek = new ArrayList<String>();
+    private List<String> daysofweek = new ArrayList<>();
     @JsonProperty("hours")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<HourRange> hours = new ArrayList<HourRange>();
+    private List<HourRange> hours = new ArrayList<>();
     @JsonProperty("location")
     private String location;
     @JsonProperty("windowtype")

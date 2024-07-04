@@ -61,7 +61,7 @@ public class APIResourceList implements Editable<APIResourceListBuilder> , Kuber
     private String kind = "APIResourceList";
     @JsonProperty("resources")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<APIResource> resources = new ArrayList<APIResource>();
+    private List<APIResource> resources = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

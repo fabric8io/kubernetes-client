@@ -63,7 +63,7 @@ public class AWSResourceReference implements Editable<AWSResourceReferenceBuilde
     private String arn;
     @JsonProperty("filters")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<AWSResourceFilter> filters = new ArrayList<AWSResourceFilter>();
+    private List<AWSResourceFilter> filters = new ArrayList<>();
     @JsonProperty("id")
     private String id;
     @JsonProperty("type")

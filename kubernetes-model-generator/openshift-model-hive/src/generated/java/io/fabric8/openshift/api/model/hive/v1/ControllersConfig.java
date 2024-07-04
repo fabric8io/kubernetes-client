@@ -59,7 +59,7 @@ public class ControllersConfig implements Editable<ControllersConfigBuilder> , K
 
     @JsonProperty("controllers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<SpecificControllerConfig> controllers = new ArrayList<SpecificControllerConfig>();
+    private List<SpecificControllerConfig> controllers = new ArrayList<>();
     @JsonProperty("default")
     private ControllerConfig _default;
     @JsonIgnore

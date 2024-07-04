@@ -42,7 +42,7 @@ public class SecretVolumeSource implements Editable<SecretVolumeSourceBuilder> ,
     private Integer defaultMode;
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<KeyToPath> items = new ArrayList<KeyToPath>();
+    private List<KeyToPath> items = new ArrayList<>();
     @JsonProperty("optional")
     private Boolean optional;
     @JsonProperty("secretName")

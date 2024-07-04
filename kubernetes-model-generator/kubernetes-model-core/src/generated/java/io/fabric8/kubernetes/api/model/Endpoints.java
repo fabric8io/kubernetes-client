@@ -65,7 +65,7 @@ public class Endpoints implements Editable<EndpointsBuilder> , HasMetadata, Name
     private ObjectMeta metadata;
     @JsonProperty("subsets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<EndpointSubset> subsets = new ArrayList<EndpointSubset>();
+    private List<EndpointSubset> subsets = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

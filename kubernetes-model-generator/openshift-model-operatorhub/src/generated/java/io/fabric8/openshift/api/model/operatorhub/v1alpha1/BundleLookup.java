@@ -64,7 +64,7 @@ public class BundleLookup implements Editable<BundleLookupBuilder> , KubernetesR
     private io.fabric8.kubernetes.api.model.ObjectReference catalogSourceRef;
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<BundleLookupCondition> conditions = new ArrayList<BundleLookupCondition>();
+    private List<BundleLookupCondition> conditions = new ArrayList<>();
     @JsonProperty("identifier")
     private String identifier;
     @JsonProperty("path")

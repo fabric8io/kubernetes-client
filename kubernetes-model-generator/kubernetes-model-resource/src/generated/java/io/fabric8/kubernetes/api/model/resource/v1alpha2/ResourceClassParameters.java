@@ -79,7 +79,7 @@ public class ResourceClassParameters implements Editable<ResourceClassParameters
     private String apiVersion = "resource.k8s.io/v1alpha2";
     @JsonProperty("filters")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ResourceFilter> filters = new ArrayList<ResourceFilter>();
+    private List<ResourceFilter> filters = new ArrayList<>();
     @JsonProperty("generatedFrom")
     private ResourceClassParametersReference generatedFrom;
     /**
@@ -93,7 +93,7 @@ public class ResourceClassParameters implements Editable<ResourceClassParameters
     private io.fabric8.kubernetes.api.model.ObjectMeta metadata;
     @JsonProperty("vendorParameters")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<VendorParameters> vendorParameters = new ArrayList<VendorParameters>();
+    private List<VendorParameters> vendorParameters = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

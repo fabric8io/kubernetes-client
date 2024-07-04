@@ -61,7 +61,7 @@ public class SubjectRulesReviewStatus implements Editable<SubjectRulesReviewStat
     private String evaluationError;
     @JsonProperty("rules")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<PolicyRule> rules = new ArrayList<PolicyRule>();
+    private List<PolicyRule> rules = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

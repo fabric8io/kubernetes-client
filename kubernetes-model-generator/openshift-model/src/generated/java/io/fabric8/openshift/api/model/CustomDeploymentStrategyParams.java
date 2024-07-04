@@ -61,10 +61,10 @@ public class CustomDeploymentStrategyParams implements Editable<CustomDeployment
 
     @JsonProperty("command")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> command = new ArrayList<String>();
+    private List<String> command = new ArrayList<>();
     @JsonProperty("environment")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<EnvVar> environment = new ArrayList<EnvVar>();
+    private List<EnvVar> environment = new ArrayList<>();
     @JsonProperty("image")
     private String image;
     @JsonIgnore

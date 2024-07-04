@@ -87,7 +87,7 @@ public class EgressServiceList implements Editable<EgressServiceListBuilder> , K
     private String apiVersion = "k8s.ovn.org/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.ovn.v1.EgressService> items = new ArrayList<io.fabric8.kubernetes.api.model.ovn.v1.EgressService>();
+    private List<io.fabric8.kubernetes.api.model.ovn.v1.EgressService> items = new ArrayList<>();
     /**
      * 
      * (Required)

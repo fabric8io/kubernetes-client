@@ -66,20 +66,20 @@ public class InstallPlanStatus implements Editable<InstallPlanStatusBuilder> , K
     private io.fabric8.kubernetes.api.model.ObjectReference attenuatedServiceAccountRef;
     @JsonProperty("bundleLookups")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<BundleLookup> bundleLookups = new ArrayList<BundleLookup>();
+    private List<BundleLookup> bundleLookups = new ArrayList<>();
     @JsonProperty("catalogSources")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> catalogSources = new ArrayList<java.lang.String>();
+    private List<java.lang.String> catalogSources = new ArrayList<>();
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<InstallPlanCondition> conditions = new ArrayList<InstallPlanCondition>();
+    private List<InstallPlanCondition> conditions = new ArrayList<>();
     @JsonProperty("message")
     private java.lang.String message;
     @JsonProperty("phase")
     private java.lang.String phase;
     @JsonProperty("plan")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Step> plan = new ArrayList<Step>();
+    private List<Step> plan = new ArrayList<>();
     @JsonProperty("startTime")
     private String startTime;
     @JsonIgnore

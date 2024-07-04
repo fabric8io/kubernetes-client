@@ -79,7 +79,7 @@ public class PrometheusList implements Editable<PrometheusListBuilder> , Kuberne
     private String apiVersion = "monitoring.coreos.com/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.openshift.api.model.monitoring.v1.Prometheus> items = new ArrayList<io.fabric8.openshift.api.model.monitoring.v1.Prometheus>();
+    private List<io.fabric8.openshift.api.model.monitoring.v1.Prometheus> items = new ArrayList<>();
     /**
      * 
      * (Required)

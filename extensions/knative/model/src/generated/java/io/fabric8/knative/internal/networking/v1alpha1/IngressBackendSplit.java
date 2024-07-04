@@ -67,7 +67,7 @@ public class IngressBackendSplit implements Editable<IngressBackendSplitBuilder>
 
     @JsonProperty("appendHeaders")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> appendHeaders = new LinkedHashMap<String, String>();
+    private Map<String, String> appendHeaders = new LinkedHashMap<>();
     @JsonProperty("percent")
     private Integer percent;
     @JsonProperty("serviceName")

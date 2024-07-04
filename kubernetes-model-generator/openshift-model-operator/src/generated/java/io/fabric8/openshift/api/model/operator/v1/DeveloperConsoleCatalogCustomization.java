@@ -59,7 +59,7 @@ public class DeveloperConsoleCatalogCustomization implements Editable<DeveloperC
 
     @JsonProperty("categories")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<DeveloperConsoleCatalogCategory> categories = new ArrayList<DeveloperConsoleCatalogCategory>();
+    private List<DeveloperConsoleCatalogCategory> categories = new ArrayList<>();
     @JsonProperty("types")
     private DeveloperConsoleCatalogTypes types;
     @JsonIgnore

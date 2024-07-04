@@ -69,7 +69,7 @@ public class ConsoleQuickStartSpec implements Editable<ConsoleQuickStartSpecBuil
 
     @JsonProperty("accessReviewResources")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ResourceAttributes> accessReviewResources = new ArrayList<ResourceAttributes>();
+    private List<ResourceAttributes> accessReviewResources = new ArrayList<>();
     @JsonProperty("conclusion")
     private String conclusion;
     @JsonProperty("description")
@@ -84,16 +84,16 @@ public class ConsoleQuickStartSpec implements Editable<ConsoleQuickStartSpecBuil
     private String introduction;
     @JsonProperty("nextQuickStart")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> nextQuickStart = new ArrayList<String>();
+    private List<String> nextQuickStart = new ArrayList<>();
     @JsonProperty("prerequisites")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> prerequisites = new ArrayList<String>();
+    private List<String> prerequisites = new ArrayList<>();
     @JsonProperty("tags")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> tags = new ArrayList<String>();
+    private List<String> tags = new ArrayList<>();
     @JsonProperty("tasks")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ConsoleQuickStartTask> tasks = new ArrayList<ConsoleQuickStartTask>();
+    private List<ConsoleQuickStartTask> tasks = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

@@ -38,10 +38,10 @@ public class PodAntiAffinity implements Editable<PodAntiAffinityBuilder> , Kuber
 
     @JsonProperty("preferredDuringSchedulingIgnoredDuringExecution")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<WeightedPodAffinityTerm> preferredDuringSchedulingIgnoredDuringExecution = new ArrayList<WeightedPodAffinityTerm>();
+    private List<WeightedPodAffinityTerm> preferredDuringSchedulingIgnoredDuringExecution = new ArrayList<>();
     @JsonProperty("requiredDuringSchedulingIgnoredDuringExecution")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<PodAffinityTerm> requiredDuringSchedulingIgnoredDuringExecution = new ArrayList<PodAffinityTerm>();
+    private List<PodAffinityTerm> requiredDuringSchedulingIgnoredDuringExecution = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

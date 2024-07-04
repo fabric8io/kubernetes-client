@@ -58,7 +58,7 @@ public class HTTPCompressionPolicy implements Editable<HTTPCompressionPolicyBuil
 
     @JsonProperty("mimeTypes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> mimeTypes = new ArrayList<String>();
+    private List<String> mimeTypes = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

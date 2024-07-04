@@ -79,7 +79,7 @@ public class NIC implements Editable<NICBuilder> , KubernetesResource
     private Integer vlanId;
     @JsonProperty("vlans")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<VLAN> vlans = new ArrayList<VLAN>();
+    private List<VLAN> vlans = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

@@ -61,7 +61,7 @@ public class ISCSIVolumeSource implements Editable<ISCSIVolumeSourceBuilder> , K
     private Integer lun;
     @JsonProperty("portals")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> portals = new ArrayList<String>();
+    private List<String> portals = new ArrayList<>();
     @JsonProperty("readOnly")
     private Boolean readOnly;
     @JsonProperty("secretRef")

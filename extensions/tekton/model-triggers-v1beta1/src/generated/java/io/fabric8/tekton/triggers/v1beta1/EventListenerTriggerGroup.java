@@ -68,7 +68,7 @@ public class EventListenerTriggerGroup implements Editable<EventListenerTriggerG
 
     @JsonProperty("interceptors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<TriggerInterceptor> interceptors = new ArrayList<TriggerInterceptor>();
+    private List<TriggerInterceptor> interceptors = new ArrayList<>();
     @JsonProperty("name")
     private String name;
     @JsonProperty("triggerSelector")

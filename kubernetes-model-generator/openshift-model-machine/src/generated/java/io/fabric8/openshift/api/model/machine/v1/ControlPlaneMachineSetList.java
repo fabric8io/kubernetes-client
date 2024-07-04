@@ -79,7 +79,7 @@ public class ControlPlaneMachineSetList implements Editable<ControlPlaneMachineS
     private String apiVersion = "machine.openshift.io/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.openshift.api.model.machine.v1.ControlPlaneMachineSet> items = new ArrayList<io.fabric8.openshift.api.model.machine.v1.ControlPlaneMachineSet>();
+    private List<io.fabric8.openshift.api.model.machine.v1.ControlPlaneMachineSet> items = new ArrayList<>();
     /**
      * 
      * (Required)

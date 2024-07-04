@@ -59,7 +59,7 @@ public class SupplementalGroupsStrategyOptions implements Editable<SupplementalG
 
     @JsonProperty("ranges")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<IDRange> ranges = new ArrayList<IDRange>();
+    private List<IDRange> ranges = new ArrayList<>();
     @JsonProperty("type")
     private String type;
     @JsonIgnore

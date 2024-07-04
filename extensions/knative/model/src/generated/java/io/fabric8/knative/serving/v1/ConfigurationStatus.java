@@ -71,10 +71,10 @@ public class ConfigurationStatus implements Editable<ConfigurationStatusBuilder>
 
     @JsonProperty("annotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> annotations = new LinkedHashMap<String, String>();
+    private Map<String, String> annotations = new LinkedHashMap<>();
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Condition> conditions = new ArrayList<Condition>();
+    private List<Condition> conditions = new ArrayList<>();
     @JsonProperty("latestCreatedRevisionName")
     private java.lang.String latestCreatedRevisionName;
     @JsonProperty("latestReadyRevisionName")

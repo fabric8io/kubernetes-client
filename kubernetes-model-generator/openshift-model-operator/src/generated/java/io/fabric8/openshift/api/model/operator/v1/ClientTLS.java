@@ -61,7 +61,7 @@ public class ClientTLS implements Editable<ClientTLSBuilder> , KubernetesResourc
 
     @JsonProperty("allowedSubjectPatterns")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> allowedSubjectPatterns = new ArrayList<String>();
+    private List<String> allowedSubjectPatterns = new ArrayList<>();
     @JsonProperty("clientCA")
     private ConfigMapNameReference clientCA;
     @JsonProperty("clientCertificatePolicy")

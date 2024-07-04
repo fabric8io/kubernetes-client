@@ -70,7 +70,7 @@ public class HiveConfigSpec implements Editable<HiveConfigSpecBuilder> , Kuberne
 
     @JsonProperty("additionalCertificateAuthorities")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.LocalObjectReference> additionalCertificateAuthorities = new ArrayList<io.fabric8.kubernetes.api.model.LocalObjectReference>();
+    private List<io.fabric8.kubernetes.api.model.LocalObjectReference> additionalCertificateAuthorities = new ArrayList<>();
     @JsonProperty("backup")
     private BackupConfig backup;
     @JsonProperty("externalDNS")

@@ -62,16 +62,16 @@ public class RuleWithOperations implements Editable<RuleWithOperationsBuilder> ,
 
     @JsonProperty("apiGroups")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> apiGroups = new ArrayList<String>();
+    private List<String> apiGroups = new ArrayList<>();
     @JsonProperty("apiVersions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> apiVersions = new ArrayList<String>();
+    private List<String> apiVersions = new ArrayList<>();
     @JsonProperty("operations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> operations = new ArrayList<String>();
+    private List<String> operations = new ArrayList<>();
     @JsonProperty("resources")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> resources = new ArrayList<String>();
+    private List<String> resources = new ArrayList<>();
     @JsonProperty("scope")
     private String scope;
     @JsonIgnore

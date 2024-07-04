@@ -58,7 +58,7 @@ public class ImageDigestMirrorSetSpec implements Editable<ImageDigestMirrorSetSp
 
     @JsonProperty("imageDigestMirrors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ImageDigestMirrors> imageDigestMirrors = new ArrayList<ImageDigestMirrors>();
+    private List<ImageDigestMirrors> imageDigestMirrors = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

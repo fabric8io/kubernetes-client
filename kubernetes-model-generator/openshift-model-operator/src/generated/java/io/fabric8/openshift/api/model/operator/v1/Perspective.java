@@ -62,7 +62,7 @@ public class Perspective implements Editable<PerspectiveBuilder> , KubernetesRes
     private String id;
     @JsonProperty("pinnedResources")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<PinnedResourceReference> pinnedResources = new ArrayList<PinnedResourceReference>();
+    private List<PinnedResourceReference> pinnedResources = new ArrayList<>();
     @JsonProperty("visibility")
     private PerspectiveVisibility visibility;
     @JsonIgnore

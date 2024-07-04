@@ -37,7 +37,7 @@ public class APIServiceStatus implements Editable<APIServiceStatusBuilder> , Kub
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<APIServiceCondition> conditions = new ArrayList<APIServiceCondition>();
+    private List<APIServiceCondition> conditions = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

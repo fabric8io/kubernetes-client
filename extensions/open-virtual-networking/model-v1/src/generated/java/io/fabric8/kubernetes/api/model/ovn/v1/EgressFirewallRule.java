@@ -68,7 +68,7 @@ public class EgressFirewallRule implements Editable<EgressFirewallRuleBuilder> ,
 
     @JsonProperty("ports")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<EgressFirewallPort> ports = new ArrayList<EgressFirewallPort>();
+    private List<EgressFirewallPort> ports = new ArrayList<>();
     @JsonProperty("to")
     private EgressFirewallDestination to;
     @JsonProperty("type")

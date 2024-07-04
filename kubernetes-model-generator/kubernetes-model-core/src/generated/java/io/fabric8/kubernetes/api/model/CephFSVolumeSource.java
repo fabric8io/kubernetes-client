@@ -42,7 +42,7 @@ public class CephFSVolumeSource implements Editable<CephFSVolumeSourceBuilder> ,
 
     @JsonProperty("monitors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> monitors = new ArrayList<String>();
+    private List<String> monitors = new ArrayList<>();
     @JsonProperty("path")
     private String path;
     @JsonProperty("readOnly")

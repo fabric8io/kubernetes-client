@@ -87,7 +87,7 @@ public class WasmPluginList implements Editable<WasmPluginListBuilder> , Kuberne
     private String apiVersion = "extensions.istio.io/v1alpha1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.istio.api.extensions.v1alpha1.WasmPlugin> items = new ArrayList<io.fabric8.istio.api.extensions.v1alpha1.WasmPlugin>();
+    private List<io.fabric8.istio.api.extensions.v1alpha1.WasmPlugin> items = new ArrayList<>();
     /**
      * 
      * (Required)

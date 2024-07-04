@@ -70,7 +70,7 @@ public class Placement implements Editable<PlacementBuilder> , KubernetesResourc
 
     @JsonProperty("decisions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<PlacementDecision> decisions = new ArrayList<PlacementDecision>();
+    private List<PlacementDecision> decisions = new ArrayList<>();
     @JsonProperty("placement")
     private String placement;
     @JsonProperty("placementBinding")

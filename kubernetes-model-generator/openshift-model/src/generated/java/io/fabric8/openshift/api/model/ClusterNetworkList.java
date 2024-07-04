@@ -79,7 +79,7 @@ public class ClusterNetworkList implements Editable<ClusterNetworkListBuilder> ,
     private String apiVersion = "network.openshift.io/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.openshift.api.model.ClusterNetwork> items = new ArrayList<io.fabric8.openshift.api.model.ClusterNetwork>();
+    private List<io.fabric8.openshift.api.model.ClusterNetwork> items = new ArrayList<>();
     /**
      * 
      * (Required)

@@ -68,7 +68,7 @@ public class MachinePool implements Editable<MachinePoolBuilder> , KubernetesRes
     private String bootType;
     @JsonProperty("categories")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<NutanixCategory> categories = new ArrayList<NutanixCategory>();
+    private List<NutanixCategory> categories = new ArrayList<>();
     @JsonProperty("coresPerSocket")
     private Long coresPerSocket;
     @JsonProperty("cpus")

@@ -78,10 +78,10 @@ public class PipelineTaskRunSpec implements Editable<PipelineTaskRunSpecBuilder>
     private String pipelineTaskName;
     @JsonProperty("sidecarOverrides")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<TaskRunSidecarOverride> sidecarOverrides = new ArrayList<TaskRunSidecarOverride>();
+    private List<TaskRunSidecarOverride> sidecarOverrides = new ArrayList<>();
     @JsonProperty("stepOverrides")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<TaskRunStepOverride> stepOverrides = new ArrayList<TaskRunStepOverride>();
+    private List<TaskRunStepOverride> stepOverrides = new ArrayList<>();
     @JsonProperty("taskPodTemplate")
     private Template taskPodTemplate;
     @JsonProperty("taskServiceAccountName")

@@ -83,7 +83,7 @@ public class TriggerInterceptor implements Editable<TriggerInterceptorBuilder> ,
     private String name;
     @JsonProperty("params")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<InterceptorParams> params = new ArrayList<InterceptorParams>();
+    private List<InterceptorParams> params = new ArrayList<>();
     @JsonProperty("ref")
     private InterceptorRef ref;
     @JsonProperty("webhook")

@@ -66,7 +66,7 @@ public class RecommendedPodResources implements Editable<RecommendedPodResources
 
     @JsonProperty("containerRecommendations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<RecommendedContainerResources> containerRecommendations = new ArrayList<RecommendedContainerResources>();
+    private List<RecommendedContainerResources> containerRecommendations = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

@@ -69,7 +69,7 @@ public class DaemonSetStatus implements Editable<DaemonSetStatusBuilder> , Kuber
     private Integer collisionCount;
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<DaemonSetCondition> conditions = new ArrayList<DaemonSetCondition>();
+    private List<DaemonSetCondition> conditions = new ArrayList<>();
     @JsonProperty("currentNumberScheduled")
     private Integer currentNumberScheduled;
     @JsonProperty("desiredNumberScheduled")

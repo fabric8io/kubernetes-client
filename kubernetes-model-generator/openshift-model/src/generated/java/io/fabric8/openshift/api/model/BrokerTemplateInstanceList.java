@@ -79,7 +79,7 @@ public class BrokerTemplateInstanceList implements Editable<BrokerTemplateInstan
     private String apiVersion = "template.openshift.io/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.openshift.api.model.BrokerTemplateInstance> items = new ArrayList<io.fabric8.openshift.api.model.BrokerTemplateInstance>();
+    private List<io.fabric8.openshift.api.model.BrokerTemplateInstance> items = new ArrayList<>();
     /**
      * 
      * (Required)

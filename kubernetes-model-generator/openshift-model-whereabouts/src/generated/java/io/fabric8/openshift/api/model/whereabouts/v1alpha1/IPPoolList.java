@@ -79,7 +79,7 @@ public class IPPoolList implements Editable<IPPoolListBuilder> , KubernetesResou
     private String apiVersion = "whereabouts.cni.cncf.io/v1alpha1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.openshift.api.model.whereabouts.v1alpha1.IPPool> items = new ArrayList<io.fabric8.openshift.api.model.whereabouts.v1alpha1.IPPool>();
+    private List<io.fabric8.openshift.api.model.whereabouts.v1alpha1.IPPool> items = new ArrayList<>();
     /**
      * 
      * (Required)

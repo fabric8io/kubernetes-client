@@ -79,7 +79,7 @@ public class StorageClassList implements Editable<StorageClassListBuilder> , Kub
     private String apiVersion = "storage.k8s.io/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.storage.StorageClass> items = new ArrayList<io.fabric8.kubernetes.api.model.storage.StorageClass>();
+    private List<io.fabric8.kubernetes.api.model.storage.StorageClass> items = new ArrayList<>();
     /**
      * 
      * (Required)

@@ -70,7 +70,7 @@ public class EnvoyFilterPatch implements Editable<EnvoyFilterPatchBuilder> , Kub
     private EnvoyFilterPatchOperation operation;
     @JsonProperty("value")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Object> value = new LinkedHashMap<String, Object>();
+    private Map<String, Object> value = new LinkedHashMap<>();
     @JsonIgnore
     private Map<java.lang.String, java.lang.Object> additionalProperties = new LinkedHashMap<java.lang.String, java.lang.Object>();
 

@@ -75,18 +75,18 @@ public class JWTRule implements Editable<JWTRuleBuilder> , KubernetesResource
 
     @JsonProperty("audiences")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> audiences = new ArrayList<String>();
+    private List<String> audiences = new ArrayList<>();
     @JsonProperty("forwardOriginalToken")
     private Boolean forwardOriginalToken;
     @JsonProperty("fromCookies")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> fromCookies = new ArrayList<String>();
+    private List<String> fromCookies = new ArrayList<>();
     @JsonProperty("fromHeaders")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<JWTHeader> fromHeaders = new ArrayList<JWTHeader>();
+    private List<JWTHeader> fromHeaders = new ArrayList<>();
     @JsonProperty("fromParams")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> fromParams = new ArrayList<String>();
+    private List<String> fromParams = new ArrayList<>();
     @JsonProperty("issuer")
     private String issuer;
     @JsonProperty("jwks")
@@ -95,7 +95,7 @@ public class JWTRule implements Editable<JWTRuleBuilder> , KubernetesResource
     private String jwksUri;
     @JsonProperty("outputClaimToHeaders")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ClaimToHeader> outputClaimToHeaders = new ArrayList<ClaimToHeader>();
+    private List<ClaimToHeader> outputClaimToHeaders = new ArrayList<>();
     @JsonProperty("outputPayloadToHeader")
     private String outputPayloadToHeader;
     @JsonIgnore

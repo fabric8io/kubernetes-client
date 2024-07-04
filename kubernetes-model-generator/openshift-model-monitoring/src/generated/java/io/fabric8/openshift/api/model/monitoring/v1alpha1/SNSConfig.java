@@ -68,7 +68,7 @@ public class SNSConfig implements Editable<SNSConfigBuilder> , KubernetesResourc
     private String apiURL;
     @JsonProperty("attributes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> attributes = new LinkedHashMap<String, String>();
+    private Map<String, String> attributes = new LinkedHashMap<>();
     @JsonProperty("httpConfig")
     private HTTPConfig httpConfig;
     @JsonProperty("message")

@@ -61,16 +61,16 @@ public class ResourceRule implements Editable<ResourceRuleBuilder> , KubernetesR
 
     @JsonProperty("apiGroups")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> apiGroups = new ArrayList<String>();
+    private List<String> apiGroups = new ArrayList<>();
     @JsonProperty("resourceNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> resourceNames = new ArrayList<String>();
+    private List<String> resourceNames = new ArrayList<>();
     @JsonProperty("resources")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> resources = new ArrayList<String>();
+    private List<String> resources = new ArrayList<>();
     @JsonProperty("verbs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> verbs = new ArrayList<String>();
+    private List<String> verbs = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

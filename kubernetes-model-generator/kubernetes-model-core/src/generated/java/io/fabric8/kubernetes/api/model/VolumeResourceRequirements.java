@@ -36,10 +36,10 @@ public class VolumeResourceRequirements implements Editable<VolumeResourceRequir
 
     @JsonProperty("limits")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, io.fabric8.kubernetes.api.model.Quantity> limits = new LinkedHashMap<String, io.fabric8.kubernetes.api.model.Quantity>();
+    private Map<String, io.fabric8.kubernetes.api.model.Quantity> limits = new LinkedHashMap<>();
     @JsonProperty("requests")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, io.fabric8.kubernetes.api.model.Quantity> requests = new LinkedHashMap<String, io.fabric8.kubernetes.api.model.Quantity>();
+    private Map<String, io.fabric8.kubernetes.api.model.Quantity> requests = new LinkedHashMap<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

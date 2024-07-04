@@ -61,7 +61,7 @@ public class VPCEndpointService implements Editable<VPCEndpointServiceBuilder> ,
 
     @JsonProperty("additionalAllowedPrincipals")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> additionalAllowedPrincipals = new ArrayList<String>();
+    private List<String> additionalAllowedPrincipals = new ArrayList<>();
     @JsonProperty("defaultAllowedPrincipal")
     private String defaultAllowedPrincipal;
     @JsonProperty("id")

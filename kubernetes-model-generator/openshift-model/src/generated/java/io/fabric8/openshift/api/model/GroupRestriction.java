@@ -58,10 +58,10 @@ public class GroupRestriction implements Editable<GroupRestrictionBuilder> , Kub
 
     @JsonProperty("groups")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> groups = new ArrayList<String>();
+    private List<String> groups = new ArrayList<>();
     @JsonProperty("labels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.LabelSelector> labels = new ArrayList<io.fabric8.kubernetes.api.model.LabelSelector>();
+    private List<io.fabric8.kubernetes.api.model.LabelSelector> labels = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

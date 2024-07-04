@@ -79,7 +79,7 @@ public class ConsoleCustomization implements Editable<ConsoleCustomizationBuilde
     private String documentationBaseURL;
     @JsonProperty("perspectives")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Perspective> perspectives = new ArrayList<Perspective>();
+    private List<Perspective> perspectives = new ArrayList<>();
     @JsonProperty("projectAccess")
     private ProjectAccess projectAccess;
     @JsonProperty("quickStarts")

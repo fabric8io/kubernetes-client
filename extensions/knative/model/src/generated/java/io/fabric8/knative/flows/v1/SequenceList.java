@@ -87,7 +87,7 @@ public class SequenceList implements Editable<SequenceListBuilder> , KubernetesR
     private String apiVersion = "flows.knative.dev/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.knative.flows.v1.Sequence> items = new ArrayList<io.fabric8.knative.flows.v1.Sequence>();
+    private List<io.fabric8.knative.flows.v1.Sequence> items = new ArrayList<>();
     /**
      * 
      * (Required)

@@ -72,23 +72,23 @@ public class SubscriptionsAPIFilter implements Editable<SubscriptionsAPIFilterBu
 
     @JsonProperty("all")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<SubscriptionsAPIFilter> all = new ArrayList<SubscriptionsAPIFilter>();
+    private List<SubscriptionsAPIFilter> all = new ArrayList<>();
     @JsonProperty("any")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<SubscriptionsAPIFilter> any = new ArrayList<SubscriptionsAPIFilter>();
+    private List<SubscriptionsAPIFilter> any = new ArrayList<>();
     @JsonProperty("cesql")
     private java.lang.String cesql;
     @JsonProperty("exact")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> exact = new LinkedHashMap<String, String>();
+    private Map<String, String> exact = new LinkedHashMap<>();
     @JsonProperty("not")
     private SubscriptionsAPIFilter not;
     @JsonProperty("prefix")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> prefix = new LinkedHashMap<String, String>();
+    private Map<String, String> prefix = new LinkedHashMap<>();
     @JsonProperty("suffix")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> suffix = new LinkedHashMap<String, String>();
+    private Map<String, String> suffix = new LinkedHashMap<>();
     @JsonIgnore
     private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 

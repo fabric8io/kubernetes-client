@@ -76,18 +76,18 @@ public class RevisionStatus implements Editable<RevisionStatusBuilder> , Kuberne
     private Integer actualReplicas;
     @JsonProperty("annotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> annotations = new LinkedHashMap<String, String>();
+    private Map<String, String> annotations = new LinkedHashMap<>();
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Condition> conditions = new ArrayList<Condition>();
+    private List<Condition> conditions = new ArrayList<>();
     @JsonProperty("containerStatuses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ContainerStatus> containerStatuses = new ArrayList<ContainerStatus>();
+    private List<ContainerStatus> containerStatuses = new ArrayList<>();
     @JsonProperty("desiredReplicas")
     private Integer desiredReplicas;
     @JsonProperty("initContainerStatuses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ContainerStatus> initContainerStatuses = new ArrayList<ContainerStatus>();
+    private List<ContainerStatus> initContainerStatuses = new ArrayList<>();
     @JsonProperty("logUrl")
     private java.lang.String logUrl;
     @JsonProperty("observedGeneration")

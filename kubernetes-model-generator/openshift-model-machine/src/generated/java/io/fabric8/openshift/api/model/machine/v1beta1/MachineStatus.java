@@ -66,10 +66,10 @@ public class MachineStatus implements Editable<MachineStatusBuilder> , Kubernete
 
     @JsonProperty("addresses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<NodeAddress> addresses = new ArrayList<NodeAddress>();
+    private List<NodeAddress> addresses = new ArrayList<>();
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Condition> conditions = new ArrayList<Condition>();
+    private List<Condition> conditions = new ArrayList<>();
     @JsonProperty("errorMessage")
     private java.lang.String errorMessage;
     @JsonProperty("errorReason")
@@ -84,7 +84,7 @@ public class MachineStatus implements Editable<MachineStatusBuilder> , Kubernete
     private java.lang.String phase;
     @JsonProperty("providerStatus")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Object> providerStatus = new LinkedHashMap<String, Object>();
+    private Map<String, Object> providerStatus = new LinkedHashMap<>();
     @JsonIgnore
     private Map<java.lang.String, java.lang.Object> additionalProperties = new LinkedHashMap<java.lang.String, java.lang.Object>();
 

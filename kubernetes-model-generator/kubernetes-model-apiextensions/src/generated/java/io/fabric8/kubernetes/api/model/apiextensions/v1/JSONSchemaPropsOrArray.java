@@ -61,7 +61,7 @@ public class JSONSchemaPropsOrArray implements Editable<JSONSchemaPropsOrArrayBu
 
     @JsonProperty("JSONSchemas")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<JSONSchemaProps> jSONSchemas = new ArrayList<JSONSchemaProps>();
+    private List<JSONSchemaProps> jSONSchemas = new ArrayList<>();
     @JsonProperty("Schema")
     private JSONSchemaProps schema;
     @JsonIgnore

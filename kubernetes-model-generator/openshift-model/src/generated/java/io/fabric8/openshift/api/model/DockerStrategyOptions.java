@@ -60,7 +60,7 @@ public class DockerStrategyOptions implements Editable<DockerStrategyOptionsBuil
 
     @JsonProperty("buildArgs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<EnvVar> buildArgs = new ArrayList<EnvVar>();
+    private List<EnvVar> buildArgs = new ArrayList<>();
     @JsonProperty("noCache")
     private Boolean noCache;
     @JsonIgnore

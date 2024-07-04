@@ -79,7 +79,7 @@ public class StorageStateList implements Editable<StorageStateListBuilder> , Kub
     private String apiVersion = "migration.k8s.io/v1alpha1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.openshift.api.model.storageversionmigrator.v1alpha1.StorageState> items = new ArrayList<io.fabric8.openshift.api.model.storageversionmigrator.v1alpha1.StorageState>();
+    private List<io.fabric8.openshift.api.model.storageversionmigrator.v1alpha1.StorageState> items = new ArrayList<>();
     /**
      * 
      * (Required)

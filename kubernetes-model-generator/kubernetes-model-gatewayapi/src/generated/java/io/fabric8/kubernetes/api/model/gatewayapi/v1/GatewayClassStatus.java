@@ -60,10 +60,10 @@ public class GatewayClassStatus implements Editable<GatewayClassStatusBuilder> ,
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Condition> conditions = new ArrayList<Condition>();
+    private List<Condition> conditions = new ArrayList<>();
     @JsonProperty("supportedFeatures")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> supportedFeatures = new ArrayList<String>();
+    private List<String> supportedFeatures = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

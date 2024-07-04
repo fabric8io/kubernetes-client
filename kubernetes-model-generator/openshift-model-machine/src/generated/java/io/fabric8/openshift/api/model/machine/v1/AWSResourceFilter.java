@@ -61,7 +61,7 @@ public class AWSResourceFilter implements Editable<AWSResourceFilterBuilder> , K
     private String name;
     @JsonProperty("values")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> values = new ArrayList<String>();
+    private List<String> values = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

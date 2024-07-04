@@ -58,7 +58,7 @@ public class AWSPlatformSpec implements Editable<AWSPlatformSpecBuilder> , Kuber
 
     @JsonProperty("serviceEndpoints")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<AWSServiceEndpoint> serviceEndpoints = new ArrayList<AWSServiceEndpoint>();
+    private List<AWSServiceEndpoint> serviceEndpoints = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

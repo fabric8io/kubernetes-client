@@ -87,7 +87,7 @@ public class ClusterManagerList implements Editable<ClusterManagerListBuilder> ,
     private String apiVersion = "operator.open-cluster-management.io/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.openclustermanagement.api.model.operator.v1.ClusterManager> items = new ArrayList<io.fabric8.openclustermanagement.api.model.operator.v1.ClusterManager>();
+    private List<io.fabric8.openclustermanagement.api.model.operator.v1.ClusterManager> items = new ArrayList<>();
     /**
      * 
      * (Required)

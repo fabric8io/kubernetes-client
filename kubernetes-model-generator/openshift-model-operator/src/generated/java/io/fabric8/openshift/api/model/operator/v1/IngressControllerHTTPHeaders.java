@@ -62,7 +62,7 @@ public class IngressControllerHTTPHeaders implements Editable<IngressControllerH
     private String forwardedHeaderPolicy;
     @JsonProperty("headerNameCaseAdjustments")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> headerNameCaseAdjustments = new ArrayList<String>();
+    private List<String> headerNameCaseAdjustments = new ArrayList<>();
     @JsonProperty("uniqueId")
     private IngressControllerHTTPUniqueIdHeaderPolicy uniqueId;
     @JsonIgnore

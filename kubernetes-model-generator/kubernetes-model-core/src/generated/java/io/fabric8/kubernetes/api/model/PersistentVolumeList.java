@@ -56,7 +56,7 @@ public class PersistentVolumeList implements Editable<PersistentVolumeListBuilde
     private String apiVersion = "v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.PersistentVolume> items = new ArrayList<io.fabric8.kubernetes.api.model.PersistentVolume>();
+    private List<io.fabric8.kubernetes.api.model.PersistentVolume> items = new ArrayList<>();
     /**
      * 
      * (Required)

@@ -68,10 +68,10 @@ public class GCPChaosStatus implements Editable<GCPChaosStatusBuilder> , Kuberne
 
     @JsonProperty("attachedDiskStrings")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> attachedDiskStrings = new ArrayList<String>();
+    private List<String> attachedDiskStrings = new ArrayList<>();
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ChaosCondition> conditions = new ArrayList<ChaosCondition>();
+    private List<ChaosCondition> conditions = new ArrayList<>();
     @JsonProperty("experiment")
     private ExperimentStatus experiment;
     @JsonIgnore

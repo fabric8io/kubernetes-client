@@ -87,7 +87,7 @@ public class InterceptorList implements Editable<InterceptorListBuilder> , Kuber
     private String apiVersion = "triggers.tekton.dev/v1alpha1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.tekton.triggers.v1alpha1.Interceptor> items = new ArrayList<io.fabric8.tekton.triggers.v1alpha1.Interceptor>();
+    private List<io.fabric8.tekton.triggers.v1alpha1.Interceptor> items = new ArrayList<>();
     /**
      * 
      * (Required)

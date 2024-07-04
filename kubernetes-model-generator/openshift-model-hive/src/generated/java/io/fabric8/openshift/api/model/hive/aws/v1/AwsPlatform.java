@@ -67,7 +67,7 @@ public class AwsPlatform implements Editable<AwsPlatformBuilder> , KubernetesRes
     private String region;
     @JsonProperty("userTags")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> userTags = new LinkedHashMap<String, String>();
+    private Map<String, String> userTags = new LinkedHashMap<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

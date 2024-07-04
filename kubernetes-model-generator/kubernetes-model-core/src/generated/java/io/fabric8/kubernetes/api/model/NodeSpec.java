@@ -49,12 +49,12 @@ public class NodeSpec implements Editable<NodeSpecBuilder> , KubernetesResource
     private String podCIDR;
     @JsonProperty("podCIDRs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> podCIDRs = new ArrayList<String>();
+    private List<String> podCIDRs = new ArrayList<>();
     @JsonProperty("providerID")
     private String providerID;
     @JsonProperty("taints")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Taint> taints = new ArrayList<Taint>();
+    private List<Taint> taints = new ArrayList<>();
     @JsonProperty("unschedulable")
     private Boolean unschedulable;
     @JsonIgnore

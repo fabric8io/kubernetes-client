@@ -69,19 +69,19 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
 
     @JsonProperty("affinityGroups")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<AffinityGroup> affinityGroups = new ArrayList<AffinityGroup>();
+    private List<AffinityGroup> affinityGroups = new ArrayList<>();
     @JsonProperty("api_vip")
     private String apiVip;
     @JsonProperty("api_vips")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> apiVips = new ArrayList<String>();
+    private List<String> apiVips = new ArrayList<>();
     @JsonProperty("defaultMachinePlatform")
     private MachinePool defaultMachinePlatform;
     @JsonProperty("ingress_vip")
     private String ingressVip;
     @JsonProperty("ingress_vips")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> ingressVips = new ArrayList<String>();
+    private List<String> ingressVips = new ArrayList<>();
     @JsonProperty("loadBalancer")
     private OvirtPlatformLoadBalancer loadBalancer;
     @JsonProperty("ovirt_cluster_id")

@@ -67,7 +67,7 @@ public class PersistentVolumeSpec implements Editable<PersistentVolumeSpecBuilde
 
     @JsonProperty("accessModes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> accessModes = new ArrayList<String>();
+    private List<String> accessModes = new ArrayList<>();
     @JsonProperty("awsElasticBlockStore")
     private AWSElasticBlockStoreVolumeSource awsElasticBlockStore;
     @JsonProperty("azureDisk")
@@ -76,7 +76,7 @@ public class PersistentVolumeSpec implements Editable<PersistentVolumeSpecBuilde
     private AzureFilePersistentVolumeSource azureFile;
     @JsonProperty("capacity")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Quantity> capacity = new LinkedHashMap<String, Quantity>();
+    private Map<String, Quantity> capacity = new LinkedHashMap<>();
     @JsonProperty("cephfs")
     private CephFSPersistentVolumeSource cephfs;
     @JsonProperty("cinder")
@@ -103,7 +103,7 @@ public class PersistentVolumeSpec implements Editable<PersistentVolumeSpecBuilde
     private LocalVolumeSource local;
     @JsonProperty("mountOptions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> mountOptions = new ArrayList<String>();
+    private List<String> mountOptions = new ArrayList<>();
     @JsonProperty("nfs")
     private NFSVolumeSource nfs;
     @JsonProperty("nodeAffinity")

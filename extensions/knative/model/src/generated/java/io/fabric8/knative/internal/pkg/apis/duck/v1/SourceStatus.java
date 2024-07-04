@@ -74,15 +74,15 @@ public class SourceStatus implements Editable<SourceStatusBuilder> , KubernetesR
 
     @JsonProperty("annotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> annotations = new LinkedHashMap<String, String>();
+    private Map<String, String> annotations = new LinkedHashMap<>();
     @JsonProperty("auth")
     private AuthStatus auth;
     @JsonProperty("ceAttributes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<CloudEventAttributes> ceAttributes = new ArrayList<CloudEventAttributes>();
+    private List<CloudEventAttributes> ceAttributes = new ArrayList<>();
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Condition> conditions = new ArrayList<Condition>();
+    private List<Condition> conditions = new ArrayList<>();
     @JsonProperty("observedGeneration")
     private Long observedGeneration;
     @JsonProperty("sinkAudience")

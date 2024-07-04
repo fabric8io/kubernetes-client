@@ -81,7 +81,7 @@ public class ThanosSpec implements Editable<ThanosSpecBuilder> , KubernetesResou
 
     @JsonProperty("additionalArgs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Argument> additionalArgs = new ArrayList<Argument>();
+    private List<Argument> additionalArgs = new ArrayList<>();
     @JsonProperty("baseImage")
     private String baseImage;
     @JsonProperty("blockSize")
@@ -126,7 +126,7 @@ public class ThanosSpec implements Editable<ThanosSpecBuilder> , KubernetesResou
     private String version;
     @JsonProperty("volumeMounts")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<VolumeMount> volumeMounts = new ArrayList<VolumeMount>();
+    private List<VolumeMount> volumeMounts = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

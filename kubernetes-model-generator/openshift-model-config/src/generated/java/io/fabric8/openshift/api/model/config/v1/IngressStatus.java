@@ -59,7 +59,7 @@ public class IngressStatus implements Editable<IngressStatusBuilder> , Kubernete
 
     @JsonProperty("componentRoutes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ComponentRouteStatus> componentRoutes = new ArrayList<ComponentRouteStatus>();
+    private List<ComponentRouteStatus> componentRoutes = new ArrayList<>();
     @JsonProperty("defaultPlacement")
     private String defaultPlacement;
     @JsonIgnore

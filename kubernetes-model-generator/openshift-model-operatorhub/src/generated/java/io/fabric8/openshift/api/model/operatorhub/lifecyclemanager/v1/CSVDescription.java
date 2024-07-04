@@ -77,7 +77,7 @@ public class CSVDescription implements Editable<CSVDescriptionBuilder> , Kuberne
 
     @JsonProperty("annotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> annotations = new LinkedHashMap<String, String>();
+    private Map<String, String> annotations = new LinkedHashMap<>();
     @JsonProperty("apiservicedefinitions")
     private APIServiceDefinitions apiservicedefinitions;
     @JsonProperty("customresourcedefinitions")
@@ -88,31 +88,31 @@ public class CSVDescription implements Editable<CSVDescriptionBuilder> , Kuberne
     private String displayName;
     @JsonProperty("icon")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Icon> icon = new ArrayList<Icon>();
+    private List<Icon> icon = new ArrayList<>();
     @JsonProperty("installModes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<InstallMode> installModes = new ArrayList<InstallMode>();
+    private List<InstallMode> installModes = new ArrayList<>();
     @JsonProperty("keywords")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> keywords = new ArrayList<String>();
+    private List<String> keywords = new ArrayList<>();
     @JsonProperty("links")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<AppLink> links = new ArrayList<AppLink>();
+    private List<AppLink> links = new ArrayList<>();
     @JsonProperty("maintainers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Maintainer> maintainers = new ArrayList<Maintainer>();
+    private List<Maintainer> maintainers = new ArrayList<>();
     @JsonProperty("maturity")
     private String maturity;
     @JsonProperty("minKubeVersion")
     private String minKubeVersion;
     @JsonProperty("nativeApis")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<GroupVersionKind> nativeApis = new ArrayList<GroupVersionKind>();
+    private List<GroupVersionKind> nativeApis = new ArrayList<>();
     @JsonProperty("provider")
     private AppLink provider;
     @JsonProperty("relatedImages")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> relatedImages = new ArrayList<String>();
+    private List<String> relatedImages = new ArrayList<>();
     @JsonProperty("version")
     private String version;
     @JsonIgnore

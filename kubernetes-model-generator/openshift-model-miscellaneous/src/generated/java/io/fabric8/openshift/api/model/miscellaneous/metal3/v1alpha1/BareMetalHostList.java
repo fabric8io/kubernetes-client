@@ -79,7 +79,7 @@ public class BareMetalHostList implements Editable<BareMetalHostListBuilder> , K
     private String apiVersion = "metal3.io/v1alpha1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.openshift.api.model.miscellaneous.metal3.v1alpha1.BareMetalHost> items = new ArrayList<io.fabric8.openshift.api.model.miscellaneous.metal3.v1alpha1.BareMetalHost>();
+    private List<io.fabric8.openshift.api.model.miscellaneous.metal3.v1alpha1.BareMetalHost> items = new ArrayList<>();
     /**
      * 
      * (Required)

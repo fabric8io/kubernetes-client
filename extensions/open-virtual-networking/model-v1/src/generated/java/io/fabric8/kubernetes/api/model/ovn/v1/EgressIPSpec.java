@@ -67,7 +67,7 @@ public class EgressIPSpec implements Editable<EgressIPSpecBuilder> , KubernetesR
 
     @JsonProperty("egressIPs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> egressIPs = new ArrayList<String>();
+    private List<String> egressIPs = new ArrayList<>();
     @JsonProperty("namespaceSelector")
     private io.fabric8.kubernetes.api.model.LabelSelector namespaceSelector;
     @JsonProperty("podSelector")

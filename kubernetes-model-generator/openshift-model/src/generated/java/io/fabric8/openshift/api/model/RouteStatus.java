@@ -58,7 +58,7 @@ public class RouteStatus implements Editable<RouteStatusBuilder> , KubernetesRes
 
     @JsonProperty("ingress")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<RouteIngress> ingress = new ArrayList<RouteIngress>();
+    private List<RouteIngress> ingress = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

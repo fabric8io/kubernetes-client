@@ -87,7 +87,7 @@ public class HTTPChaosList implements Editable<HTTPChaosListBuilder> , Kubernete
     private String apiVersion = "chaos-mesh.org/v1alpha1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.chaosmesh.v1alpha1.HTTPChaos> items = new ArrayList<io.fabric8.chaosmesh.v1alpha1.HTTPChaos>();
+    private List<io.fabric8.chaosmesh.v1alpha1.HTTPChaos> items = new ArrayList<>();
     /**
      * 
      * (Required)

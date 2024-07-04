@@ -58,7 +58,7 @@ public class PodSecurityPolicyReviewSpec implements Editable<PodSecurityPolicyRe
 
     @JsonProperty("serviceAccountNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> serviceAccountNames = new ArrayList<String>();
+    private List<String> serviceAccountNames = new ArrayList<>();
     @JsonProperty("template")
     private io.fabric8.kubernetes.api.model.PodTemplateSpec template;
     @JsonIgnore

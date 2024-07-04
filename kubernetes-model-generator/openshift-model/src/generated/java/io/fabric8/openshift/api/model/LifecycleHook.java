@@ -64,7 +64,7 @@ public class LifecycleHook implements Editable<LifecycleHookBuilder> , Kubernete
     private String failurePolicy;
     @JsonProperty("tagImages")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<TagImageHook> tagImages = new ArrayList<TagImageHook>();
+    private List<TagImageHook> tagImages = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

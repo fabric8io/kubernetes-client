@@ -45,7 +45,7 @@ public class PersistentVolumeClaimSpec implements Editable<PersistentVolumeClaim
 
     @JsonProperty("accessModes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> accessModes = new ArrayList<String>();
+    private List<String> accessModes = new ArrayList<>();
     @JsonProperty("dataSource")
     private TypedLocalObjectReference dataSource;
     @JsonProperty("dataSourceRef")

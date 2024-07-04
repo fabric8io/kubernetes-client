@@ -62,10 +62,10 @@ public class DriverRequests implements Editable<DriverRequestsBuilder> , Kuberne
     private java.lang.String driverName;
     @JsonProperty("requests")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ResourceRequest> requests = new ArrayList<ResourceRequest>();
+    private List<ResourceRequest> requests = new ArrayList<>();
     @JsonProperty("vendorParameters")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Object> vendorParameters = new LinkedHashMap<String, Object>();
+    private Map<String, Object> vendorParameters = new LinkedHashMap<>();
     @JsonIgnore
     private Map<java.lang.String, java.lang.Object> additionalProperties = new LinkedHashMap<java.lang.String, java.lang.Object>();
 

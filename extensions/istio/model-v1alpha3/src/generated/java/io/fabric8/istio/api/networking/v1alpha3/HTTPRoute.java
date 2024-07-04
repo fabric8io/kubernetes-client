@@ -91,7 +91,7 @@ public class HTTPRoute implements Editable<HTTPRouteBuilder> , KubernetesResourc
     private Headers headers;
     @JsonProperty("match")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<HTTPMatchRequest> match = new ArrayList<HTTPMatchRequest>();
+    private List<HTTPMatchRequest> match = new ArrayList<>();
     @JsonProperty("mirror")
     private Destination mirror;
     @JsonProperty("mirrorPercent")
@@ -100,7 +100,7 @@ public class HTTPRoute implements Editable<HTTPRouteBuilder> , KubernetesResourc
     private Percent mirrorPercentage;
     @JsonProperty("mirrors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<HTTPMirrorPolicy> mirrors = new ArrayList<HTTPMirrorPolicy>();
+    private List<HTTPMirrorPolicy> mirrors = new ArrayList<>();
     @JsonProperty("name")
     private String name;
     @JsonProperty("redirect")
@@ -111,7 +111,7 @@ public class HTTPRoute implements Editable<HTTPRouteBuilder> , KubernetesResourc
     private HTTPRewrite rewrite;
     @JsonProperty("route")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<HTTPRouteDestination> route = new ArrayList<HTTPRouteDestination>();
+    private List<HTTPRouteDestination> route = new ArrayList<>();
     @JsonProperty("timeout")
     private String timeout;
     @JsonIgnore

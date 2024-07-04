@@ -60,7 +60,7 @@ public class VSpherePlatformVCenterSpec implements Editable<VSpherePlatformVCent
 
     @JsonProperty("datacenters")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> datacenters = new ArrayList<String>();
+    private List<String> datacenters = new ArrayList<>();
     @JsonProperty("port")
     private Integer port;
     @JsonProperty("server")

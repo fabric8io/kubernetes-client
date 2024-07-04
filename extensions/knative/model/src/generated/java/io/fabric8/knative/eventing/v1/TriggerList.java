@@ -87,7 +87,7 @@ public class TriggerList implements Editable<TriggerListBuilder> , KubernetesRes
     private String apiVersion = "eventing.knative.dev/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.knative.eventing.v1.Trigger> items = new ArrayList<io.fabric8.knative.eventing.v1.Trigger>();
+    private List<io.fabric8.knative.eventing.v1.Trigger> items = new ArrayList<>();
     /**
      * 
      * (Required)

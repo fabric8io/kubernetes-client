@@ -87,7 +87,7 @@ public class ServiceBindingList implements Editable<ServiceBindingListBuilder> ,
     private String apiVersion = "servicecatalog.k8s.io/v1beta1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.servicecatalog.api.model.ServiceBinding> items = new ArrayList<io.fabric8.servicecatalog.api.model.ServiceBinding>();
+    private List<io.fabric8.servicecatalog.api.model.ServiceBinding> items = new ArrayList<>();
     /**
      * 
      * (Required)

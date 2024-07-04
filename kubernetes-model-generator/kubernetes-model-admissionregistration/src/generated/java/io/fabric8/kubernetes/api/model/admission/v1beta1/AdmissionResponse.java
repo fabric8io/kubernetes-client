@@ -67,7 +67,7 @@ public class AdmissionResponse implements Editable<AdmissionResponseBuilder> , K
     private Boolean allowed;
     @JsonProperty("auditAnnotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> auditAnnotations = new LinkedHashMap<String, String>();
+    private Map<String, String> auditAnnotations = new LinkedHashMap<>();
     @JsonProperty("patch")
     private String patch;
     @JsonProperty("patchType")
@@ -78,7 +78,7 @@ public class AdmissionResponse implements Editable<AdmissionResponseBuilder> , K
     private String uid;
     @JsonProperty("warnings")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> warnings = new ArrayList<String>();
+    private List<String> warnings = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

@@ -58,7 +58,7 @@ public class ProjectAccess implements Editable<ProjectAccessBuilder> , Kubernete
 
     @JsonProperty("availableClusterRoles")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> availableClusterRoles = new ArrayList<String>();
+    private List<String> availableClusterRoles = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

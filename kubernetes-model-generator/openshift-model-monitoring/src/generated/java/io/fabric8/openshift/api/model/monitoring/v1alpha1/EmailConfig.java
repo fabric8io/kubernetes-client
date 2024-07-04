@@ -83,7 +83,7 @@ public class EmailConfig implements Editable<EmailConfigBuilder> , KubernetesRes
     private String from;
     @JsonProperty("headers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<KeyValue> headers = new ArrayList<KeyValue>();
+    private List<KeyValue> headers = new ArrayList<>();
     @JsonProperty("hello")
     private String hello;
     @JsonProperty("html")

@@ -79,7 +79,7 @@ public class HiveConfigList implements Editable<HiveConfigListBuilder> , Kuberne
     private String apiVersion = "hive.openshift.io/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.openshift.api.model.hive.v1.HiveConfig> items = new ArrayList<io.fabric8.openshift.api.model.hive.v1.HiveConfig>();
+    private List<io.fabric8.openshift.api.model.hive.v1.HiveConfig> items = new ArrayList<>();
     /**
      * 
      * (Required)

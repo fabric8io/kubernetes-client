@@ -64,12 +64,12 @@ public class NutanixPlatformStatus implements Editable<NutanixPlatformStatusBuil
     private String apiServerInternalIP;
     @JsonProperty("apiServerInternalIPs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> apiServerInternalIPs = new ArrayList<String>();
+    private List<String> apiServerInternalIPs = new ArrayList<>();
     @JsonProperty("ingressIP")
     private String ingressIP;
     @JsonProperty("ingressIPs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> ingressIPs = new ArrayList<String>();
+    private List<String> ingressIPs = new ArrayList<>();
     @JsonProperty("loadBalancer")
     private NutanixPlatformLoadBalancer loadBalancer;
     @JsonIgnore

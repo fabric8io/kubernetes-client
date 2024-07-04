@@ -65,7 +65,7 @@ public class PackageFilter implements Editable<PackageFilterBuilder> , Kubernete
 
     @JsonProperty("annotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> annotations = new LinkedHashMap<String, String>();
+    private Map<String, String> annotations = new LinkedHashMap<>();
     @JsonProperty("filterRef")
     private io.fabric8.kubernetes.api.model.LocalObjectReference filterRef;
     @JsonProperty("labelSelector")

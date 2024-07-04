@@ -59,7 +59,7 @@ public class DNSZone implements Editable<DNSZoneBuilder> , KubernetesResource
     private String id;
     @JsonProperty("tags")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> tags = new LinkedHashMap<String, String>();
+    private Map<String, String> tags = new LinkedHashMap<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

@@ -68,13 +68,13 @@ public class HeadersHeaderOperations implements Editable<HeadersHeaderOperations
 
     @JsonProperty("add")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> add = new LinkedHashMap<String, String>();
+    private Map<String, String> add = new LinkedHashMap<>();
     @JsonProperty("remove")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> remove = new ArrayList<java.lang.String>();
+    private List<java.lang.String> remove = new ArrayList<>();
     @JsonProperty("set")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> set = new LinkedHashMap<String, String>();
+    private Map<String, String> set = new LinkedHashMap<>();
     @JsonIgnore
     private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 

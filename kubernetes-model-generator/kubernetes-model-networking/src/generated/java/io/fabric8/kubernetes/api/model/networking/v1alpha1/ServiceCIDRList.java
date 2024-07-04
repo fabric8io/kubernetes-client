@@ -79,7 +79,7 @@ public class ServiceCIDRList implements Editable<ServiceCIDRListBuilder> , Kuber
     private String apiVersion = "networking.k8s.io/v1alpha1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.networking.v1alpha1.ServiceCIDR> items = new ArrayList<io.fabric8.kubernetes.api.model.networking.v1alpha1.ServiceCIDR>();
+    private List<io.fabric8.kubernetes.api.model.networking.v1alpha1.ServiceCIDR> items = new ArrayList<>();
     /**
      * 
      * (Required)

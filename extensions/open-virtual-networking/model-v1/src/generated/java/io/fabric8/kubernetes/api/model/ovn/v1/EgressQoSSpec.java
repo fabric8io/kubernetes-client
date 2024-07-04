@@ -66,7 +66,7 @@ public class EgressQoSSpec implements Editable<EgressQoSSpecBuilder> , Kubernete
 
     @JsonProperty("egress")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<EgressQoSRule> egress = new ArrayList<EgressQoSRule>();
+    private List<EgressQoSRule> egress = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

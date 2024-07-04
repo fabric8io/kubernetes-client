@@ -73,10 +73,10 @@ public class AnsibleJobsStatus implements Editable<AnsibleJobsStatusBuilder> , K
     private String lastprehookjob;
     @JsonProperty("posthookjobshistory")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> posthookjobshistory = new ArrayList<String>();
+    private List<String> posthookjobshistory = new ArrayList<>();
     @JsonProperty("prehookjobshistory")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> prehookjobshistory = new ArrayList<String>();
+    private List<String> prehookjobshistory = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

@@ -51,10 +51,10 @@ public class HelmChart implements Editable<HelmChartBuilder> , KubernetesResourc
 
     @JsonProperty("additionalValuesFiles")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> additionalValuesFiles = new ArrayList<String>();
+    private List<String> additionalValuesFiles = new ArrayList<>();
     @JsonProperty("apiVersions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> apiVersions = new ArrayList<String>();
+    private List<String> apiVersions = new ArrayList<>();
     @JsonProperty("includeCRDs")
     private Boolean includeCRDs;
     @JsonProperty("name")
@@ -75,7 +75,7 @@ public class HelmChart implements Editable<HelmChartBuilder> , KubernetesResourc
     private String valuesFile;
     @JsonProperty("valuesInline")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Object> valuesInline = new LinkedHashMap<String, Object>();
+    private Map<String, Object> valuesInline = new LinkedHashMap<>();
     @JsonProperty("valuesMerge")
     private String valuesMerge;
     @JsonProperty("version")

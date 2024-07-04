@@ -67,7 +67,7 @@ public class GitLabInterceptor implements Editable<GitLabInterceptorBuilder> , K
 
     @JsonProperty("eventTypes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> eventTypes = new ArrayList<String>();
+    private List<String> eventTypes = new ArrayList<>();
     @JsonProperty("secretRef")
     private SecretRef secretRef;
     @JsonIgnore

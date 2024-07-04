@@ -61,7 +61,7 @@ public class JenkinsPipelineBuildStrategy implements Editable<JenkinsPipelineBui
 
     @JsonProperty("env")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<EnvVar> env = new ArrayList<EnvVar>();
+    private List<EnvVar> env = new ArrayList<>();
     @JsonProperty("jenkinsfile")
     private String jenkinsfile;
     @JsonProperty("jenkinsfilePath")

@@ -59,10 +59,10 @@ public class ServiceAccountRestriction implements Editable<ServiceAccountRestric
 
     @JsonProperty("namespaces")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> namespaces = new ArrayList<String>();
+    private List<String> namespaces = new ArrayList<>();
     @JsonProperty("serviceaccounts")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ServiceAccountReference> serviceaccounts = new ArrayList<ServiceAccountReference>();
+    private List<ServiceAccountReference> serviceaccounts = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

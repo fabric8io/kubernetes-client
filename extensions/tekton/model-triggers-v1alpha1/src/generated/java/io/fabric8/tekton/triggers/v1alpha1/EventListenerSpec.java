@@ -77,7 +77,7 @@ public class EventListenerSpec implements Editable<EventListenerSpecBuilder> , K
     private String serviceAccountName;
     @JsonProperty("triggers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<EventListenerTrigger> triggers = new ArrayList<EventListenerTrigger>();
+    private List<EventListenerTrigger> triggers = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

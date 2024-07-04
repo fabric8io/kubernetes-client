@@ -86,7 +86,7 @@ public class ImagePrunerSpec implements Editable<ImagePrunerSpecBuilder> , Kuber
     private String logLevel;
     @JsonProperty("nodeSelector")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> nodeSelector = new LinkedHashMap<String, String>();
+    private Map<String, String> nodeSelector = new LinkedHashMap<>();
     @JsonProperty("resources")
     private io.fabric8.kubernetes.api.model.ResourceRequirements resources;
     @JsonProperty("schedule")
@@ -97,7 +97,7 @@ public class ImagePrunerSpec implements Editable<ImagePrunerSpecBuilder> , Kuber
     private Boolean suspend;
     @JsonProperty("tolerations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Toleration> tolerations = new ArrayList<Toleration>();
+    private List<Toleration> tolerations = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

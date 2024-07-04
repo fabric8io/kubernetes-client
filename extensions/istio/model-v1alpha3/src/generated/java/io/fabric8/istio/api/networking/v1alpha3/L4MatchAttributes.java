@@ -71,15 +71,15 @@ public class L4MatchAttributes implements Editable<L4MatchAttributesBuilder> , K
 
     @JsonProperty("destinationSubnets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> destinationSubnets = new ArrayList<java.lang.String>();
+    private List<java.lang.String> destinationSubnets = new ArrayList<>();
     @JsonProperty("gateways")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> gateways = new ArrayList<java.lang.String>();
+    private List<java.lang.String> gateways = new ArrayList<>();
     @JsonProperty("port")
     private Integer port;
     @JsonProperty("sourceLabels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> sourceLabels = new LinkedHashMap<String, String>();
+    private Map<String, String> sourceLabels = new LinkedHashMap<>();
     @JsonProperty("sourceNamespace")
     private java.lang.String sourceNamespace;
     @JsonProperty("sourceSubnet")

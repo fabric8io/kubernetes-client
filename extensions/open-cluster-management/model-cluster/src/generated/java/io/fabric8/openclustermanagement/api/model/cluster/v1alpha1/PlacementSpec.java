@@ -69,12 +69,12 @@ public class PlacementSpec implements Editable<PlacementSpecBuilder> , Kubernete
 
     @JsonProperty("clusterSets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> clusterSets = new ArrayList<String>();
+    private List<String> clusterSets = new ArrayList<>();
     @JsonProperty("numberOfClusters")
     private Integer numberOfClusters;
     @JsonProperty("predicates")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ClusterPredicate> predicates = new ArrayList<ClusterPredicate>();
+    private List<ClusterPredicate> predicates = new ArrayList<>();
     @JsonProperty("prioritizerPolicy")
     private PrioritizerPolicy prioritizerPolicy;
     @JsonIgnore

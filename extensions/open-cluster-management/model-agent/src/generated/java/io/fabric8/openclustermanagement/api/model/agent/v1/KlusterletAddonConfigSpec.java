@@ -77,7 +77,7 @@ public class KlusterletAddonConfigSpec implements Editable<KlusterletAddonConfig
     private KlusterletAddonAgentConfigSpec certPolicyController;
     @JsonProperty("clusterLabels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> clusterLabels = new LinkedHashMap<String, String>();
+    private Map<String, String> clusterLabels = new LinkedHashMap<>();
     @JsonProperty("clusterName")
     private java.lang.String clusterName;
     @JsonProperty("clusterNamespace")

@@ -39,12 +39,12 @@ public class ResourceQuotaSpec implements Editable<ResourceQuotaSpecBuilder> , K
 
     @JsonProperty("hard")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Quantity> hard = new LinkedHashMap<String, Quantity>();
+    private Map<String, Quantity> hard = new LinkedHashMap<>();
     @JsonProperty("scopeSelector")
     private ScopeSelector scopeSelector;
     @JsonProperty("scopes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> scopes = new ArrayList<String>();
+    private List<String> scopes = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

@@ -63,7 +63,7 @@ public class APIServerSpec implements Editable<APIServerSpecBuilder> , Kubernete
 
     @JsonProperty("additionalCORSAllowedOrigins")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> additionalCORSAllowedOrigins = new ArrayList<String>();
+    private List<String> additionalCORSAllowedOrigins = new ArrayList<>();
     @JsonProperty("audit")
     private Audit audit;
     @JsonProperty("clientCA")

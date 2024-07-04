@@ -61,7 +61,7 @@ public class PerUserAPIRequestCount implements Editable<PerUserAPIRequestCountBu
 
     @JsonProperty("byVerb")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<PerVerbAPIRequestCount> byVerb = new ArrayList<PerVerbAPIRequestCount>();
+    private List<PerVerbAPIRequestCount> byVerb = new ArrayList<>();
     @JsonProperty("requestCount")
     private Long requestCount;
     @JsonProperty("userAgent")

@@ -79,7 +79,7 @@ public class DeploymentList implements Editable<DeploymentListBuilder> , Kuberne
     private String apiVersion = "apps/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.apps.Deployment> items = new ArrayList<io.fabric8.kubernetes.api.model.apps.Deployment>();
+    private List<io.fabric8.kubernetes.api.model.apps.Deployment> items = new ArrayList<>();
     /**
      * 
      * (Required)

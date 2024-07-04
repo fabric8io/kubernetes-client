@@ -80,7 +80,7 @@ public class ConsoleSpec implements Editable<ConsoleSpecBuilder> , KubernetesRes
     private String operatorLogLevel;
     @JsonProperty("plugins")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> plugins = new ArrayList<String>();
+    private List<String> plugins = new ArrayList<>();
     @JsonProperty("providers")
     private ConsoleProviders providers;
     @JsonProperty("route")

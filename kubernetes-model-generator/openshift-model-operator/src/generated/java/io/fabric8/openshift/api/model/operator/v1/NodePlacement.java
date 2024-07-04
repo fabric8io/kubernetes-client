@@ -61,7 +61,7 @@ public class NodePlacement implements Editable<NodePlacementBuilder> , Kubernete
     private io.fabric8.kubernetes.api.model.LabelSelector nodeSelector;
     @JsonProperty("tolerations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Toleration> tolerations = new ArrayList<Toleration>();
+    private List<Toleration> tolerations = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

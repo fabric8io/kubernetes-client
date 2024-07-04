@@ -64,7 +64,7 @@ public class DeveloperConsoleCatalogCategoryMeta implements Editable<DeveloperCo
     private String label;
     @JsonProperty("tags")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> tags = new ArrayList<String>();
+    private List<String> tags = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

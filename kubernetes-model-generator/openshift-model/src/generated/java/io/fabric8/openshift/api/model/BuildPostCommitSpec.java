@@ -60,10 +60,10 @@ public class BuildPostCommitSpec implements Editable<BuildPostCommitSpecBuilder>
 
     @JsonProperty("args")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> args = new ArrayList<String>();
+    private List<String> args = new ArrayList<>();
     @JsonProperty("command")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> command = new ArrayList<String>();
+    private List<String> command = new ArrayList<>();
     @JsonProperty("script")
     private String script;
     @JsonIgnore

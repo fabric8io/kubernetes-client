@@ -62,7 +62,7 @@ public class FailedProvisionConfig implements Editable<FailedProvisionConfigBuil
     private FailedProvisionAWSConfig aws;
     @JsonProperty("retryReasons")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> retryReasons = new ArrayList<String>();
+    private List<String> retryReasons = new ArrayList<>();
     @JsonProperty("skipGatherLogs")
     private Boolean skipGatherLogs;
     @JsonIgnore

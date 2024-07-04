@@ -98,10 +98,10 @@ public class HTTPChaosSpec implements Editable<HTTPChaosSpecBuilder> , Kubernete
     private PodHttpChaosReplaceActions replace;
     @JsonProperty("request_headers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> requestHeaders = new LinkedHashMap<String, String>();
+    private Map<String, String> requestHeaders = new LinkedHashMap<>();
     @JsonProperty("response_headers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> responseHeaders = new LinkedHashMap<String, String>();
+    private Map<String, String> responseHeaders = new LinkedHashMap<>();
     @JsonProperty("selector")
     private PodSelectorSpec selector;
     @JsonProperty("target")

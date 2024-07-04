@@ -81,10 +81,10 @@ public class HTTPMatchRequest implements Editable<HTTPMatchRequestBuilder> , Kub
     private io.fabric8.istio.api.networking.v1alpha3.StringMatch authority;
     @JsonProperty("gateways")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> gateways = new ArrayList<java.lang.String>();
+    private List<java.lang.String> gateways = new ArrayList<>();
     @JsonProperty("headers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, io.fabric8.istio.api.networking.v1alpha3.StringMatch> headers = new LinkedHashMap<String, io.fabric8.istio.api.networking.v1alpha3.StringMatch>();
+    private Map<String, io.fabric8.istio.api.networking.v1alpha3.StringMatch> headers = new LinkedHashMap<>();
     @JsonProperty("ignoreUriCase")
     private Boolean ignoreUriCase;
     @JsonProperty("method")
@@ -95,12 +95,12 @@ public class HTTPMatchRequest implements Editable<HTTPMatchRequestBuilder> , Kub
     private Integer port;
     @JsonProperty("queryParams")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, io.fabric8.istio.api.networking.v1alpha3.StringMatch> queryParams = new LinkedHashMap<String, io.fabric8.istio.api.networking.v1alpha3.StringMatch>();
+    private Map<String, io.fabric8.istio.api.networking.v1alpha3.StringMatch> queryParams = new LinkedHashMap<>();
     @JsonProperty("scheme")
     private io.fabric8.istio.api.networking.v1alpha3.StringMatch scheme;
     @JsonProperty("sourceLabels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> sourceLabels = new LinkedHashMap<String, String>();
+    private Map<String, String> sourceLabels = new LinkedHashMap<>();
     @JsonProperty("sourceNamespace")
     private java.lang.String sourceNamespace;
     @JsonProperty("statPrefix")
@@ -109,7 +109,7 @@ public class HTTPMatchRequest implements Editable<HTTPMatchRequestBuilder> , Kub
     private io.fabric8.istio.api.networking.v1alpha3.StringMatch uri;
     @JsonProperty("withoutHeaders")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, io.fabric8.istio.api.networking.v1alpha3.StringMatch> withoutHeaders = new LinkedHashMap<String, io.fabric8.istio.api.networking.v1alpha3.StringMatch>();
+    private Map<String, io.fabric8.istio.api.networking.v1alpha3.StringMatch> withoutHeaders = new LinkedHashMap<>();
     @JsonIgnore
     private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 

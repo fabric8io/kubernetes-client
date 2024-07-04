@@ -87,7 +87,7 @@ public class BrokerList implements Editable<BrokerListBuilder> , KubernetesResou
     private String apiVersion = "eventing.knative.dev/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.knative.eventing.v1.Broker> items = new ArrayList<io.fabric8.knative.eventing.v1.Broker>();
+    private List<io.fabric8.knative.eventing.v1.Broker> items = new ArrayList<>();
     /**
      * 
      * (Required)

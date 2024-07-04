@@ -87,7 +87,7 @@ public class ImageList implements Editable<ImageListBuilder> , KubernetesResourc
     private String apiVersion = "caching.internal.knative.dev/v1alpha1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.knative.internal.caching.v1alpha1.Image> items = new ArrayList<io.fabric8.knative.internal.caching.v1alpha1.Image>();
+    private List<io.fabric8.knative.internal.caching.v1alpha1.Image> items = new ArrayList<>();
     /**
      * 
      * (Required)

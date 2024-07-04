@@ -79,7 +79,7 @@ public class CustomResourceDefinitionList implements Editable<CustomResourceDefi
     private String apiVersion = "apiextensions.k8s.io/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinition> items = new ArrayList<io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinition>();
+    private List<io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinition> items = new ArrayList<>();
     /**
      * 
      * (Required)

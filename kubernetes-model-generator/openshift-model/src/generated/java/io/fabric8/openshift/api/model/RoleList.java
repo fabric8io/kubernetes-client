@@ -79,7 +79,7 @@ public class RoleList implements Editable<RoleListBuilder> , KubernetesResource,
     private String apiVersion = "authorization.openshift.io/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.openshift.api.model.Role> items = new ArrayList<io.fabric8.openshift.api.model.Role>();
+    private List<io.fabric8.openshift.api.model.Role> items = new ArrayList<>();
     /**
      * 
      * (Required)

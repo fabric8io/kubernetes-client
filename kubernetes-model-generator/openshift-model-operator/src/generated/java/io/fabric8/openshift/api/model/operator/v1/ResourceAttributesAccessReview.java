@@ -60,10 +60,10 @@ public class ResourceAttributesAccessReview implements Editable<ResourceAttribut
 
     @JsonProperty("missing")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ResourceAttributes> missing = new ArrayList<ResourceAttributes>();
+    private List<ResourceAttributes> missing = new ArrayList<>();
     @JsonProperty("required")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ResourceAttributes> required = new ArrayList<ResourceAttributes>();
+    private List<ResourceAttributes> required = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

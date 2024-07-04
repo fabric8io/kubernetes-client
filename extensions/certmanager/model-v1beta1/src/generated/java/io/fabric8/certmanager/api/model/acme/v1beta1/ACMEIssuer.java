@@ -91,7 +91,7 @@ public class ACMEIssuer implements Editable<ACMEIssuerBuilder> , KubernetesResou
     private Boolean skipTLSVerify;
     @JsonProperty("solvers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ACMEChallengeSolver> solvers = new ArrayList<ACMEChallengeSolver>();
+    private List<ACMEChallengeSolver> solvers = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

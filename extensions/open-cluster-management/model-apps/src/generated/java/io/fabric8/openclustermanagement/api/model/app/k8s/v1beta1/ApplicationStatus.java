@@ -69,12 +69,12 @@ public class ApplicationStatus implements Editable<ApplicationStatusBuilder> , K
 
     @JsonProperty("components")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ObjectStatus> components = new ArrayList<ObjectStatus>();
+    private List<ObjectStatus> components = new ArrayList<>();
     @JsonProperty("componentsReady")
     private String componentsReady;
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Condition> conditions = new ArrayList<Condition>();
+    private List<Condition> conditions = new ArrayList<>();
     @JsonProperty("observedGeneration")
     private Long observedGeneration;
     @JsonIgnore

@@ -59,10 +59,10 @@ public class RAIDConfig implements Editable<RAIDConfigBuilder> , KubernetesResou
 
     @JsonProperty("hardwareRAIDVolumes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<HardwareRAIDVolume> hardwareRAIDVolumes = new ArrayList<HardwareRAIDVolume>();
+    private List<HardwareRAIDVolume> hardwareRAIDVolumes = new ArrayList<>();
     @JsonProperty("softwareRAIDVolumes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<SoftwareRAIDVolume> softwareRAIDVolumes = new ArrayList<SoftwareRAIDVolume>();
+    private List<SoftwareRAIDVolume> softwareRAIDVolumes = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

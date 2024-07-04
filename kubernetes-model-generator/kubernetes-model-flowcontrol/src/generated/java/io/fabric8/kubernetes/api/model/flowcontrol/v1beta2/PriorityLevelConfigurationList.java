@@ -79,7 +79,7 @@ public class PriorityLevelConfigurationList implements Editable<PriorityLevelCon
     private String apiVersion = "flowcontrol.apiserver.k8s.io/v1beta2";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.flowcontrol.v1beta2.PriorityLevelConfiguration> items = new ArrayList<io.fabric8.kubernetes.api.model.flowcontrol.v1beta2.PriorityLevelConfiguration>();
+    private List<io.fabric8.kubernetes.api.model.flowcontrol.v1beta2.PriorityLevelConfiguration> items = new ArrayList<>();
     /**
      * 
      * (Required)

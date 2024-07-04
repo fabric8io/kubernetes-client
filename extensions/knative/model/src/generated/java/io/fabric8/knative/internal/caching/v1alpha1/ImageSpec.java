@@ -69,7 +69,7 @@ public class ImageSpec implements Editable<ImageSpecBuilder> , KubernetesResourc
     private String image;
     @JsonProperty("imagePullSecrets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.LocalObjectReference> imagePullSecrets = new ArrayList<io.fabric8.kubernetes.api.model.LocalObjectReference>();
+    private List<io.fabric8.kubernetes.api.model.LocalObjectReference> imagePullSecrets = new ArrayList<>();
     @JsonProperty("serviceAccountName")
     private String serviceAccountName;
     @JsonIgnore

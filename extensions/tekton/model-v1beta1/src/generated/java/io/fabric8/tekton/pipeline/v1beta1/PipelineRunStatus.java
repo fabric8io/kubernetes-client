@@ -80,40 +80,40 @@ public class PipelineRunStatus implements Editable<PipelineRunStatusBuilder> , K
 
     @JsonProperty("annotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> annotations = new LinkedHashMap<String, String>();
+    private Map<String, String> annotations = new LinkedHashMap<>();
     @JsonProperty("childReferences")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ChildStatusReference> childReferences = new ArrayList<ChildStatusReference>();
+    private List<ChildStatusReference> childReferences = new ArrayList<>();
     @JsonProperty("completionTime")
     private java.lang.String completionTime;
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Condition> conditions = new ArrayList<Condition>();
+    private List<Condition> conditions = new ArrayList<>();
     @JsonProperty("finallyStartTime")
     private java.lang.String finallyStartTime;
     @JsonProperty("observedGeneration")
     private Long observedGeneration;
     @JsonProperty("pipelineResults")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<PipelineRunResult> pipelineResults = new ArrayList<PipelineRunResult>();
+    private List<PipelineRunResult> pipelineResults = new ArrayList<>();
     @JsonProperty("pipelineSpec")
     private PipelineSpec pipelineSpec;
     @JsonProperty("provenance")
     private Provenance provenance;
     @JsonProperty("runs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, PipelineRunRunStatus> runs = new LinkedHashMap<String, PipelineRunRunStatus>();
+    private Map<String, PipelineRunRunStatus> runs = new LinkedHashMap<>();
     @JsonProperty("skippedTasks")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<SkippedTask> skippedTasks = new ArrayList<SkippedTask>();
+    private List<SkippedTask> skippedTasks = new ArrayList<>();
     @JsonProperty("spanContext")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> spanContext = new LinkedHashMap<String, String>();
+    private Map<String, String> spanContext = new LinkedHashMap<>();
     @JsonProperty("startTime")
     private java.lang.String startTime;
     @JsonProperty("taskRuns")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, PipelineRunTaskRunStatus> taskRuns = new LinkedHashMap<String, PipelineRunTaskRunStatus>();
+    private Map<String, PipelineRunTaskRunStatus> taskRuns = new LinkedHashMap<>();
     @JsonIgnore
     private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
 

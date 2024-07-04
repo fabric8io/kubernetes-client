@@ -38,10 +38,10 @@ public class NodeSelectorTerm implements Editable<NodeSelectorTermBuilder> , Kub
 
     @JsonProperty("matchExpressions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<NodeSelectorRequirement> matchExpressions = new ArrayList<NodeSelectorRequirement>();
+    private List<NodeSelectorRequirement> matchExpressions = new ArrayList<>();
     @JsonProperty("matchFields")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<NodeSelectorRequirement> matchFields = new ArrayList<NodeSelectorRequirement>();
+    private List<NodeSelectorRequirement> matchFields = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

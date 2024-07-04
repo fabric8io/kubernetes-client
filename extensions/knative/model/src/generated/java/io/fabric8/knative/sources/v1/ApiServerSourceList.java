@@ -87,7 +87,7 @@ public class ApiServerSourceList implements Editable<ApiServerSourceListBuilder>
     private String apiVersion = "sources.knative.dev/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.knative.sources.v1.ApiServerSource> items = new ArrayList<io.fabric8.knative.sources.v1.ApiServerSource>();
+    private List<io.fabric8.knative.sources.v1.ApiServerSource> items = new ArrayList<>();
     /**
      * 
      * (Required)

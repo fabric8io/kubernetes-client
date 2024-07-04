@@ -65,12 +65,12 @@ public class BareMetalPlatformStatus implements Editable<BareMetalPlatformStatus
     private String apiServerInternalIP;
     @JsonProperty("apiServerInternalIPs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> apiServerInternalIPs = new ArrayList<String>();
+    private List<String> apiServerInternalIPs = new ArrayList<>();
     @JsonProperty("ingressIP")
     private String ingressIP;
     @JsonProperty("ingressIPs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> ingressIPs = new ArrayList<String>();
+    private List<String> ingressIPs = new ArrayList<>();
     @JsonProperty("loadBalancer")
     private BareMetalPlatformLoadBalancer loadBalancer;
     @JsonProperty("nodeDNSIP")

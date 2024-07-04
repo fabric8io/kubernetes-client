@@ -59,7 +59,7 @@ public class BackendTLSPolicyConfig implements Editable<BackendTLSPolicyConfigBu
 
     @JsonProperty("caCertRefs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.gatewayapi.v1.LocalObjectReference> caCertRefs = new ArrayList<io.fabric8.kubernetes.api.model.gatewayapi.v1.LocalObjectReference>();
+    private List<io.fabric8.kubernetes.api.model.gatewayapi.v1.LocalObjectReference> caCertRefs = new ArrayList<>();
     @JsonProperty("hostname")
     private String hostname;
     @JsonProperty("wellKnownCACerts")

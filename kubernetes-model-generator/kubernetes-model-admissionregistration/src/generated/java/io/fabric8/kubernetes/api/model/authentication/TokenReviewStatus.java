@@ -61,7 +61,7 @@ public class TokenReviewStatus implements Editable<TokenReviewStatusBuilder> , K
 
     @JsonProperty("audiences")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> audiences = new ArrayList<String>();
+    private List<String> audiences = new ArrayList<>();
     @JsonProperty("authenticated")
     private Boolean authenticated;
     @JsonProperty("error")

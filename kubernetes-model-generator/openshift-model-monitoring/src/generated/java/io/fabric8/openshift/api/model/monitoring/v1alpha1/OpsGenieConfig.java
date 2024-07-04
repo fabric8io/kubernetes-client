@@ -81,7 +81,7 @@ public class OpsGenieConfig implements Editable<OpsGenieConfigBuilder> , Kuberne
     private String description;
     @JsonProperty("details")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<KeyValue> details = new ArrayList<KeyValue>();
+    private List<KeyValue> details = new ArrayList<>();
     @JsonProperty("entity")
     private String entity;
     @JsonProperty("httpConfig")
@@ -94,7 +94,7 @@ public class OpsGenieConfig implements Editable<OpsGenieConfigBuilder> , Kuberne
     private String priority;
     @JsonProperty("responders")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<OpsGenieConfigResponder> responders = new ArrayList<OpsGenieConfigResponder>();
+    private List<OpsGenieConfigResponder> responders = new ArrayList<>();
     @JsonProperty("sendResolved")
     private Boolean sendResolved;
     @JsonProperty("source")

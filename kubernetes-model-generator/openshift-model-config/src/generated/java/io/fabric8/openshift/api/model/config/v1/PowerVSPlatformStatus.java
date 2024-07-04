@@ -71,7 +71,7 @@ public class PowerVSPlatformStatus implements Editable<PowerVSPlatformStatusBuil
     private String resourceGroup;
     @JsonProperty("serviceEndpoints")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<PowerVSServiceEndpoint> serviceEndpoints = new ArrayList<PowerVSServiceEndpoint>();
+    private List<PowerVSServiceEndpoint> serviceEndpoints = new ArrayList<>();
     @JsonProperty("zone")
     private String zone;
     @JsonIgnore

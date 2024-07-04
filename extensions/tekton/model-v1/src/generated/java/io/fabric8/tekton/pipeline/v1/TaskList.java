@@ -87,7 +87,7 @@ public class TaskList implements Editable<TaskListBuilder> , KubernetesResource,
     private String apiVersion = "tekton.dev/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.tekton.pipeline.v1.Task> items = new ArrayList<io.fabric8.tekton.pipeline.v1.Task>();
+    private List<io.fabric8.tekton.pipeline.v1.Task> items = new ArrayList<>();
     /**
      * 
      * (Required)

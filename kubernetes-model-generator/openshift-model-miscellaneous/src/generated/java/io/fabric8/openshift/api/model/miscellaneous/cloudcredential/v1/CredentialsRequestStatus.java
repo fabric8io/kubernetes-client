@@ -63,7 +63,7 @@ public class CredentialsRequestStatus implements Editable<CredentialsRequestStat
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<CredentialsRequestCondition> conditions = new ArrayList<CredentialsRequestCondition>();
+    private List<CredentialsRequestCondition> conditions = new ArrayList<>();
     @JsonProperty("lastSyncCloudCredsSecretResourceVersion")
     private java.lang.String lastSyncCloudCredsSecretResourceVersion;
     @JsonProperty("lastSyncGeneration")
@@ -72,7 +72,7 @@ public class CredentialsRequestStatus implements Editable<CredentialsRequestStat
     private String lastSyncTimestamp;
     @JsonProperty("providerStatus")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Object> providerStatus = new LinkedHashMap<String, Object>();
+    private Map<String, Object> providerStatus = new LinkedHashMap<>();
     @JsonProperty("provisioned")
     private Boolean provisioned;
     @JsonIgnore

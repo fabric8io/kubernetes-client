@@ -62,7 +62,7 @@ public class ResourceList implements Editable<ResourceListBuilder> , KubernetesR
     private String group;
     @JsonProperty("instances")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ResourceInstance> instances = new ArrayList<ResourceInstance>();
+    private List<ResourceInstance> instances = new ArrayList<>();
     @JsonProperty("kind")
     private String kind;
     @JsonIgnore

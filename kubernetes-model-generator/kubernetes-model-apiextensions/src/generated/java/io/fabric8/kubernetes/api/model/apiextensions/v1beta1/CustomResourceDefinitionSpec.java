@@ -68,7 +68,7 @@ public class CustomResourceDefinitionSpec implements Editable<CustomResourceDefi
 
     @JsonProperty("additionalPrinterColumns")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<CustomResourceColumnDefinition> additionalPrinterColumns = new ArrayList<CustomResourceColumnDefinition>();
+    private List<CustomResourceColumnDefinition> additionalPrinterColumns = new ArrayList<>();
     @JsonProperty("conversion")
     private CustomResourceConversion conversion;
     @JsonProperty("group")
@@ -81,7 +81,7 @@ public class CustomResourceDefinitionSpec implements Editable<CustomResourceDefi
     private String scope;
     @JsonProperty("selectableFields")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<SelectableField> selectableFields = new ArrayList<SelectableField>();
+    private List<SelectableField> selectableFields = new ArrayList<>();
     @JsonProperty("subresources")
     private CustomResourceSubresources subresources;
     @JsonProperty("validation")
@@ -90,7 +90,7 @@ public class CustomResourceDefinitionSpec implements Editable<CustomResourceDefi
     private String version;
     @JsonProperty("versions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<CustomResourceDefinitionVersion> versions = new ArrayList<CustomResourceDefinitionVersion>();
+    private List<CustomResourceDefinitionVersion> versions = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

@@ -61,7 +61,7 @@ public class RequiredHSTSPolicy implements Editable<RequiredHSTSPolicyBuilder> ,
 
     @JsonProperty("domainPatterns")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> domainPatterns = new ArrayList<String>();
+    private List<String> domainPatterns = new ArrayList<>();
     @JsonProperty("includeSubDomainsPolicy")
     private String includeSubDomainsPolicy;
     @JsonProperty("maxAge")

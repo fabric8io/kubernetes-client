@@ -80,10 +80,10 @@ public class User implements Editable<UserBuilder> , HasMetadata
     private String fullName;
     @JsonProperty("groups")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> groups = new ArrayList<String>();
+    private List<String> groups = new ArrayList<>();
     @JsonProperty("identities")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> identities = new ArrayList<String>();
+    private List<String> identities = new ArrayList<>();
     /**
      * 
      * (Required)

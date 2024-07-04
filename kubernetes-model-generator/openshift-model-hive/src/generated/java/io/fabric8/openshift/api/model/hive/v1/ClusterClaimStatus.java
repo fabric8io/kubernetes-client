@@ -60,7 +60,7 @@ public class ClusterClaimStatus implements Editable<ClusterClaimStatusBuilder> ,
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ClusterClaimCondition> conditions = new ArrayList<ClusterClaimCondition>();
+    private List<ClusterClaimCondition> conditions = new ArrayList<>();
     @JsonProperty("lifetime")
     private Duration lifetime;
     @JsonIgnore

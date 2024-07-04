@@ -96,7 +96,7 @@ public class HelmRelease implements Editable<HelmReleaseBuilder> , HasMetadata, 
     private HelmReleaseRepo repo;
     @JsonProperty("spec")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Object> spec = new LinkedHashMap<String, Object>();
+    private Map<String, Object> spec = new LinkedHashMap<>();
     @JsonProperty("status")
     private HelmAppStatus status;
     @JsonIgnore

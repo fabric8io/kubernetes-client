@@ -87,7 +87,7 @@ public class EnvoyFilterList implements Editable<EnvoyFilterListBuilder> , Kuber
     private String apiVersion = "networking.istio.io/v1alpha3";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.istio.api.networking.v1alpha3.EnvoyFilter> items = new ArrayList<io.fabric8.istio.api.networking.v1alpha3.EnvoyFilter>();
+    private List<io.fabric8.istio.api.networking.v1alpha3.EnvoyFilter> items = new ArrayList<>();
     /**
      * 
      * (Required)

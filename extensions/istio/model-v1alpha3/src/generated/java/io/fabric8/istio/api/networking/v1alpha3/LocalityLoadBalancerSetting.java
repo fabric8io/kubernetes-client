@@ -69,15 +69,15 @@ public class LocalityLoadBalancerSetting implements Editable<LocalityLoadBalance
 
     @JsonProperty("distribute")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<LocalityLoadBalancerSettingDistribute> distribute = new ArrayList<LocalityLoadBalancerSettingDistribute>();
+    private List<LocalityLoadBalancerSettingDistribute> distribute = new ArrayList<>();
     @JsonProperty("enabled")
     private Boolean enabled;
     @JsonProperty("failover")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<LocalityLoadBalancerSettingFailover> failover = new ArrayList<LocalityLoadBalancerSettingFailover>();
+    private List<LocalityLoadBalancerSettingFailover> failover = new ArrayList<>();
     @JsonProperty("failoverPriority")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> failoverPriority = new ArrayList<String>();
+    private List<String> failoverPriority = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

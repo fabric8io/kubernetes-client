@@ -79,7 +79,7 @@ public class NetworkAttachmentDefinitionList implements Editable<NetworkAttachme
     private String apiVersion = "k8s.cni.cncf.io/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.openshift.api.model.miscellaneous.cncf.cni.v1.NetworkAttachmentDefinition> items = new ArrayList<io.fabric8.openshift.api.model.miscellaneous.cncf.cni.v1.NetworkAttachmentDefinition>();
+    private List<io.fabric8.openshift.api.model.miscellaneous.cncf.cni.v1.NetworkAttachmentDefinition> items = new ArrayList<>();
     /**
      * 
      * (Required)

@@ -38,10 +38,10 @@ public class Capabilities implements Editable<CapabilitiesBuilder> , KubernetesR
 
     @JsonProperty("add")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> add = new ArrayList<String>();
+    private List<String> add = new ArrayList<>();
     @JsonProperty("drop")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> drop = new ArrayList<String>();
+    private List<String> drop = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

@@ -74,7 +74,7 @@ public class ClusterPoolSpec implements Editable<ClusterPoolSpecBuilder> , Kuber
 
     @JsonProperty("annotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> annotations = new LinkedHashMap<String, String>();
+    private Map<String, String> annotations = new LinkedHashMap<>();
     @JsonProperty("baseDomain")
     private String baseDomain;
     @JsonProperty("claimLifetime")
@@ -91,10 +91,10 @@ public class ClusterPoolSpec implements Editable<ClusterPoolSpecBuilder> , Kuber
     private io.fabric8.kubernetes.api.model.LocalObjectReference installConfigSecretTemplateRef;
     @JsonProperty("inventory")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<InventoryEntry> inventory = new ArrayList<InventoryEntry>();
+    private List<InventoryEntry> inventory = new ArrayList<>();
     @JsonProperty("labels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> labels = new LinkedHashMap<String, String>();
+    private Map<String, String> labels = new LinkedHashMap<>();
     @JsonProperty("maxConcurrent")
     private Integer maxConcurrent;
     @JsonProperty("maxSize")

@@ -79,7 +79,7 @@ public class TunedList implements Editable<TunedListBuilder> , KubernetesResourc
     private String apiVersion = "tuned.openshift.io/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.openshift.api.model.tuned.v1.Tuned> items = new ArrayList<io.fabric8.openshift.api.model.tuned.v1.Tuned>();
+    private List<io.fabric8.openshift.api.model.tuned.v1.Tuned> items = new ArrayList<>();
     /**
      * 
      * (Required)

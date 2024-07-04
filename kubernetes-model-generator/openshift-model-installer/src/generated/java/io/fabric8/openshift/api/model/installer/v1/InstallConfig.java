@@ -104,7 +104,7 @@ public class InstallConfig implements Editable<InstallConfigBuilder> , HasMetada
     private Capabilities capabilities;
     @JsonProperty("compute")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<MachinePool> compute = new ArrayList<MachinePool>();
+    private List<MachinePool> compute = new ArrayList<>();
     @JsonProperty("controlPlane")
     private MachinePool controlPlane;
     @JsonProperty("cpuPartitioningMode")
@@ -117,7 +117,7 @@ public class InstallConfig implements Editable<InstallConfigBuilder> , HasMetada
     private Boolean fips;
     @JsonProperty("imageContentSources")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ImageContentSource> imageContentSources = new ArrayList<ImageContentSource>();
+    private List<ImageContentSource> imageContentSources = new ArrayList<>();
     /**
      * 
      * (Required)

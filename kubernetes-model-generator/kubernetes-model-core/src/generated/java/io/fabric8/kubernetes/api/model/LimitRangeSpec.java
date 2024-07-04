@@ -37,7 +37,7 @@ public class LimitRangeSpec implements Editable<LimitRangeSpecBuilder> , Kuberne
 
     @JsonProperty("limits")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<LimitRangeItem> limits = new ArrayList<LimitRangeItem>();
+    private List<LimitRangeItem> limits = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

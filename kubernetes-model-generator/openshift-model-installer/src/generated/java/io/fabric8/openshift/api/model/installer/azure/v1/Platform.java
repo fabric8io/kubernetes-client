@@ -90,7 +90,7 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     private String resourceGroupName;
     @JsonProperty("userTags")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> userTags = new LinkedHashMap<String, String>();
+    private Map<String, String> userTags = new LinkedHashMap<>();
     @JsonProperty("virtualNetwork")
     private String virtualNetwork;
     @JsonIgnore

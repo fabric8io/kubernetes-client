@@ -58,7 +58,7 @@ public class PolicyStatus implements Editable<PolicyStatusBuilder> , KubernetesR
 
     @JsonProperty("ancestors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<PolicyAncestorStatus> ancestors = new ArrayList<PolicyAncestorStatus>();
+    private List<PolicyAncestorStatus> ancestors = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

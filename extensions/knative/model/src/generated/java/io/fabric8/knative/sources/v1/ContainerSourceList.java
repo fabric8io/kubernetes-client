@@ -87,7 +87,7 @@ public class ContainerSourceList implements Editable<ContainerSourceListBuilder>
     private String apiVersion = "sources.knative.dev/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.knative.sources.v1.ContainerSource> items = new ArrayList<io.fabric8.knative.sources.v1.ContainerSource>();
+    private List<io.fabric8.knative.sources.v1.ContainerSource> items = new ArrayList<>();
     /**
      * 
      * (Required)

@@ -68,7 +68,7 @@ public class MachinePool implements Editable<MachinePoolBuilder> , KubernetesRes
 
     @JsonProperty("affinityGroupsNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> affinityGroupsNames = new ArrayList<String>();
+    private List<String> affinityGroupsNames = new ArrayList<>();
     @JsonProperty("autoPinningPolicy")
     private String autoPinningPolicy;
     @JsonProperty("clone")

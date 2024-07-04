@@ -70,7 +70,7 @@ public class AdminPolicyBasedRouteStatus implements Editable<AdminPolicyBasedRou
     private String lastTransitionTime;
     @JsonProperty("messages")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> messages = new ArrayList<String>();
+    private List<String> messages = new ArrayList<>();
     @JsonProperty("status")
     private String status;
     @JsonIgnore

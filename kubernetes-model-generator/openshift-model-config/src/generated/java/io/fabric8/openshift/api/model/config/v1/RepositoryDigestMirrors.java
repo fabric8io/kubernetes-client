@@ -62,7 +62,7 @@ public class RepositoryDigestMirrors implements Editable<RepositoryDigestMirrors
     private Boolean allowMirrorByTags;
     @JsonProperty("mirrors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> mirrors = new ArrayList<String>();
+    private List<String> mirrors = new ArrayList<>();
     @JsonProperty("source")
     private String source;
     @JsonIgnore

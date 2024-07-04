@@ -74,7 +74,7 @@ public class RelabelConfig implements Editable<RelabelConfigBuilder> , Kubernete
     private String separator;
     @JsonProperty("sourceLabels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> sourceLabels = new ArrayList<String>();
+    private List<String> sourceLabels = new ArrayList<>();
     @JsonProperty("targetLabel")
     private String targetLabel;
     @JsonIgnore

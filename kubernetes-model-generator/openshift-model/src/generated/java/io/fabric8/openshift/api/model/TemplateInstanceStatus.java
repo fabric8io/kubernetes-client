@@ -59,10 +59,10 @@ public class TemplateInstanceStatus implements Editable<TemplateInstanceStatusBu
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<TemplateInstanceCondition> conditions = new ArrayList<TemplateInstanceCondition>();
+    private List<TemplateInstanceCondition> conditions = new ArrayList<>();
     @JsonProperty("objects")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<TemplateInstanceObject> objects = new ArrayList<TemplateInstanceObject>();
+    private List<TemplateInstanceObject> objects = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

@@ -61,13 +61,13 @@ public class Rule implements Editable<RuleBuilder> , KubernetesResource
 
     @JsonProperty("apiGroups")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> apiGroups = new ArrayList<String>();
+    private List<String> apiGroups = new ArrayList<>();
     @JsonProperty("apiVersions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> apiVersions = new ArrayList<String>();
+    private List<String> apiVersions = new ArrayList<>();
     @JsonProperty("resources")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> resources = new ArrayList<String>();
+    private List<String> resources = new ArrayList<>();
     @JsonProperty("scope")
     private String scope;
     @JsonIgnore

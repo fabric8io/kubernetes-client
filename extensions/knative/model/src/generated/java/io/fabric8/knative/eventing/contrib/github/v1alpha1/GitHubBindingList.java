@@ -87,7 +87,7 @@ public class GitHubBindingList implements Editable<GitHubBindingListBuilder> , K
     private String apiVersion = "bindings.knative.dev/v1alpha1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.knative.eventing.contrib.github.v1alpha1.GitHubBinding> items = new ArrayList<io.fabric8.knative.eventing.contrib.github.v1alpha1.GitHubBinding>();
+    private List<io.fabric8.knative.eventing.contrib.github.v1alpha1.GitHubBinding> items = new ArrayList<>();
     /**
      * 
      * (Required)

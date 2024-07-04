@@ -59,7 +59,7 @@ public class TLSProfileSpec implements Editable<TLSProfileSpecBuilder> , Kuberne
 
     @JsonProperty("ciphers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> ciphers = new ArrayList<String>();
+    private List<String> ciphers = new ArrayList<>();
     @JsonProperty("minTLSVersion")
     private String minTLSVersion;
     @JsonIgnore

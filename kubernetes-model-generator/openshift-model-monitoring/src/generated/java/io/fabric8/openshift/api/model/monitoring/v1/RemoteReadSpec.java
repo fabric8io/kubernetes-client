@@ -82,7 +82,7 @@ public class RemoteReadSpec implements Editable<RemoteReadSpecBuilder> , Kuberne
     private Boolean followRedirects;
     @JsonProperty("headers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> headers = new LinkedHashMap<String, String>();
+    private Map<String, String> headers = new LinkedHashMap<>();
     @JsonProperty("name")
     private String name;
     @JsonProperty("oauth2")
@@ -95,7 +95,7 @@ public class RemoteReadSpec implements Editable<RemoteReadSpecBuilder> , Kuberne
     private String remoteTimeout;
     @JsonProperty("requiredMatchers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> requiredMatchers = new LinkedHashMap<String, String>();
+    private Map<String, String> requiredMatchers = new LinkedHashMap<>();
     @JsonProperty("tlsConfig")
     private TLSConfig tlsConfig;
     @JsonProperty("url")

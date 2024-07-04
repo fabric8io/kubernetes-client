@@ -60,13 +60,13 @@ public class HTTPHeaderFilter implements Editable<HTTPHeaderFilterBuilder> , Kub
 
     @JsonProperty("add")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<HTTPHeader> add = new ArrayList<HTTPHeader>();
+    private List<HTTPHeader> add = new ArrayList<>();
     @JsonProperty("remove")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> remove = new ArrayList<String>();
+    private List<String> remove = new ArrayList<>();
     @JsonProperty("set")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<HTTPHeader> set = new ArrayList<HTTPHeader>();
+    private List<HTTPHeader> set = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

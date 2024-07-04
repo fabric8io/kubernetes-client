@@ -67,14 +67,14 @@ public class ValidatingWebhook implements Editable<ValidatingWebhookBuilder> , K
 
     @JsonProperty("admissionReviewVersions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> admissionReviewVersions = new ArrayList<String>();
+    private List<String> admissionReviewVersions = new ArrayList<>();
     @JsonProperty("clientConfig")
     private WebhookClientConfig clientConfig;
     @JsonProperty("failurePolicy")
     private String failurePolicy;
     @JsonProperty("matchConditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<MatchCondition> matchConditions = new ArrayList<MatchCondition>();
+    private List<MatchCondition> matchConditions = new ArrayList<>();
     @JsonProperty("matchPolicy")
     private String matchPolicy;
     @JsonProperty("name")
@@ -85,7 +85,7 @@ public class ValidatingWebhook implements Editable<ValidatingWebhookBuilder> , K
     private io.fabric8.kubernetes.api.model.LabelSelector objectSelector;
     @JsonProperty("rules")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<RuleWithOperations> rules = new ArrayList<RuleWithOperations>();
+    private List<RuleWithOperations> rules = new ArrayList<>();
     @JsonProperty("sideEffects")
     private String sideEffects;
     @JsonProperty("timeoutSeconds")

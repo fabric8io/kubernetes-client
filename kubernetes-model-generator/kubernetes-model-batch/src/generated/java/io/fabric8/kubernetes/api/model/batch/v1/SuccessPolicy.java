@@ -58,7 +58,7 @@ public class SuccessPolicy implements Editable<SuccessPolicyBuilder> , Kubernete
 
     @JsonProperty("rules")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<SuccessPolicyRule> rules = new ArrayList<SuccessPolicyRule>();
+    private List<SuccessPolicyRule> rules = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

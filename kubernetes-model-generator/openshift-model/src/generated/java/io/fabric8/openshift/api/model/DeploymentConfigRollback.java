@@ -87,7 +87,7 @@ public class DeploymentConfigRollback implements Editable<DeploymentConfigRollba
     private DeploymentConfigRollbackSpec spec;
     @JsonProperty("updatedAnnotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> updatedAnnotations = new LinkedHashMap<String, String>();
+    private Map<String, String> updatedAnnotations = new LinkedHashMap<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
