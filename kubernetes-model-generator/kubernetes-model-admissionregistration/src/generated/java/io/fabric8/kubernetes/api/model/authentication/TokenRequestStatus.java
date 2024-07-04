@@ -58,9 +58,9 @@ public class TokenRequestStatus implements Editable<TokenRequestStatusBuilder> ,
     @JsonProperty("expirationTimestamp")
     private String expirationTimestamp;
     @JsonProperty("token")
-    private java.lang.String token;
+    private String token;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -69,7 +69,7 @@ public class TokenRequestStatus implements Editable<TokenRequestStatusBuilder> ,
     public TokenRequestStatus() {
     }
 
-    public TokenRequestStatus(String expirationTimestamp, java.lang.String token) {
+    public TokenRequestStatus(String expirationTimestamp, String token) {
         super();
         this.expirationTimestamp = expirationTimestamp;
         this.token = token;
@@ -86,12 +86,12 @@ public class TokenRequestStatus implements Editable<TokenRequestStatusBuilder> ,
     }
 
     @JsonProperty("token")
-    public java.lang.String getToken() {
+    public String getToken() {
         return token;
     }
 
     @JsonProperty("token")
-    public void setToken(java.lang.String token) {
+    public void setToken(String token) {
         this.token = token;
     }
 
@@ -106,16 +106,16 @@ public class TokenRequestStatus implements Editable<TokenRequestStatusBuilder> ,
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
-    public void setAdditionalProperties(Map<java.lang.String, Object> additionalProperties) {
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
     }
 

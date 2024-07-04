@@ -151,8 +151,7 @@
       "type": "object",
       "properties": {
         "lastTransitionTime": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "message": {
           "type": "string"
@@ -346,8 +345,7 @@
           "type": "string"
         },
         "time": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         }
       },
       "additionalProperties": true,
@@ -367,16 +365,14 @@
           "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "creationTimestamp": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "deletionGracePeriodSeconds": {
           "type": "integer",
           "existingJavaType": "Long"
         },
         "deletionTimestamp": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "finalizers": {
           "type": "array",
@@ -583,19 +579,6 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "kubernetes_apimachinery_Time": {
-      "type": "object",
-      "properties": {
-        "Time": {
-          "type": "string"
-        }
-      },
-      "additionalProperties": true,
-      "existingJavaType": "String",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
     "kubernetes_apimachinery_TypeMeta": {
       "type": "object",
       "properties": {
@@ -714,12 +697,10 @@
       "type": "object",
       "properties": {
         "lastTransitionTime": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "lastUpdateTime": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "message": {
           "type": "string"
@@ -4343,12 +4324,10 @@
       "type": "object",
       "properties": {
         "lastTransitionTime": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "lastUpdateTime": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "message": {
           "type": "string"
@@ -4732,8 +4711,7 @@
           }
         },
         "lastUpdated": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "namespaces": {
           "type": "array",
@@ -5023,12 +5001,10 @@
       "type": "object",
       "properties": {
         "lastTransitionTime": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "lastUpdateTime": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "message": {
           "type": "string"
@@ -5244,8 +5220,7 @@
           "existingJavaType": "io.fabric8.openshift.api.model.operatorhub.v1alpha1.GRPCConnectionState"
         },
         "latestImageRegistryPoll": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "message": {
           "type": "string"
@@ -5332,12 +5307,10 @@
       "type": "object",
       "properties": {
         "lastTransitionTime": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "lastUpdateTime": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "message": {
           "type": "string"
@@ -5527,12 +5500,10 @@
       "type": "object",
       "properties": {
         "certsLastUpdated": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "certsRotateAt": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "cleanup": {
           "$ref": "#/definitions/os_operatorhub_v1alpha1_CleanupStatus",
@@ -5547,12 +5518,10 @@
           }
         },
         "lastTransitionTime": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "lastUpdateTime": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "message": {
           "type": "string"
@@ -5582,8 +5551,7 @@
       "type": "object",
       "properties": {
         "lastUpdateTime": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "name": {
           "type": "string"
@@ -5665,8 +5633,7 @@
           "type": "string"
         },
         "lastConnect": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "lastObservedState": {
           "type": "string"
@@ -5782,12 +5749,10 @@
       "type": "object",
       "properties": {
         "lastTransitionTime": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "lastUpdateTime": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "message": {
           "type": "string"
@@ -5937,8 +5902,7 @@
           }
         },
         "startTime": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         }
       },
       "additionalProperties": true,
@@ -5997,8 +5961,7 @@
       "type": "object",
       "properties": {
         "createdAt": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "port": {
           "type": "string"
@@ -6346,8 +6309,7 @@
           "type": "boolean"
         },
         "lastUpdated": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         }
       },
       "additionalProperties": true,
@@ -6360,12 +6322,12 @@
       "type": "object",
       "properties": {
         "lastHeartbeatTime": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string",
+          "description": "last time we got an update on a given condition"
         },
         "lastTransitionTime": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string",
+          "description": "last time the condition transit from one status to another"
         },
         "message": {
           "type": "string",
@@ -6560,8 +6522,7 @@
           "existingJavaType": "io.fabric8.openshift.api.model.operatorhub.v1alpha1.InstallPlanReference"
         },
         "lastUpdated": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "reason": {
           "type": "string"
@@ -6779,8 +6740,7 @@
       "existingJavaType": "io.fabric8.openshift.api.model.operatorhub.v1alpha1.SubscriptionList"
     },
     "Time": {
-      "$ref": "#/definitions/kubernetes_apimachinery_Time",
-      "existingJavaType": "String"
+      "type": "string"
     },
     "TypeMeta": {
       "$ref": "#/definitions/kubernetes_apimachinery_TypeMeta",

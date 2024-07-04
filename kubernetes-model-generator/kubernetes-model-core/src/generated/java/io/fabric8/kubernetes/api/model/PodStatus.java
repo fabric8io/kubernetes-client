@@ -60,7 +60,7 @@ public class PodStatus implements Editable<PodStatusBuilder> , KubernetesResourc
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ContainerStatus> ephemeralContainerStatuses = new ArrayList<>();
     @JsonProperty("hostIP")
-    private java.lang.String hostIP;
+    private String hostIP;
     @JsonProperty("hostIPs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<HostIP> hostIPs = new ArrayList<>();
@@ -68,29 +68,29 @@ public class PodStatus implements Editable<PodStatusBuilder> , KubernetesResourc
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ContainerStatus> initContainerStatuses = new ArrayList<>();
     @JsonProperty("message")
-    private java.lang.String message;
+    private String message;
     @JsonProperty("nominatedNodeName")
-    private java.lang.String nominatedNodeName;
+    private String nominatedNodeName;
     @JsonProperty("phase")
-    private java.lang.String phase;
+    private String phase;
     @JsonProperty("podIP")
-    private java.lang.String podIP;
+    private String podIP;
     @JsonProperty("podIPs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<PodIP> podIPs = new ArrayList<>();
     @JsonProperty("qosClass")
-    private java.lang.String qosClass;
+    private String qosClass;
     @JsonProperty("reason")
-    private java.lang.String reason;
+    private String reason;
     @JsonProperty("resize")
-    private java.lang.String resize;
+    private String resize;
     @JsonProperty("resourceClaimStatuses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<PodResourceClaimStatus> resourceClaimStatuses = new ArrayList<>();
     @JsonProperty("startTime")
     private String startTime;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -99,7 +99,7 @@ public class PodStatus implements Editable<PodStatusBuilder> , KubernetesResourc
     public PodStatus() {
     }
 
-    public PodStatus(List<PodCondition> conditions, List<ContainerStatus> containerStatuses, List<ContainerStatus> ephemeralContainerStatuses, java.lang.String hostIP, List<HostIP> hostIPs, List<ContainerStatus> initContainerStatuses, java.lang.String message, java.lang.String nominatedNodeName, java.lang.String phase, java.lang.String podIP, List<PodIP> podIPs, java.lang.String qosClass, java.lang.String reason, java.lang.String resize, List<PodResourceClaimStatus> resourceClaimStatuses, String startTime) {
+    public PodStatus(List<PodCondition> conditions, List<ContainerStatus> containerStatuses, List<ContainerStatus> ephemeralContainerStatuses, String hostIP, List<HostIP> hostIPs, List<ContainerStatus> initContainerStatuses, String message, String nominatedNodeName, String phase, String podIP, List<PodIP> podIPs, String qosClass, String reason, String resize, List<PodResourceClaimStatus> resourceClaimStatuses, String startTime) {
         super();
         this.conditions = conditions;
         this.containerStatuses = containerStatuses;
@@ -153,12 +153,12 @@ public class PodStatus implements Editable<PodStatusBuilder> , KubernetesResourc
     }
 
     @JsonProperty("hostIP")
-    public java.lang.String getHostIP() {
+    public String getHostIP() {
         return hostIP;
     }
 
     @JsonProperty("hostIP")
-    public void setHostIP(java.lang.String hostIP) {
+    public void setHostIP(String hostIP) {
         this.hostIP = hostIP;
     }
 
@@ -185,42 +185,42 @@ public class PodStatus implements Editable<PodStatusBuilder> , KubernetesResourc
     }
 
     @JsonProperty("message")
-    public java.lang.String getMessage() {
+    public String getMessage() {
         return message;
     }
 
     @JsonProperty("message")
-    public void setMessage(java.lang.String message) {
+    public void setMessage(String message) {
         this.message = message;
     }
 
     @JsonProperty("nominatedNodeName")
-    public java.lang.String getNominatedNodeName() {
+    public String getNominatedNodeName() {
         return nominatedNodeName;
     }
 
     @JsonProperty("nominatedNodeName")
-    public void setNominatedNodeName(java.lang.String nominatedNodeName) {
+    public void setNominatedNodeName(String nominatedNodeName) {
         this.nominatedNodeName = nominatedNodeName;
     }
 
     @JsonProperty("phase")
-    public java.lang.String getPhase() {
+    public String getPhase() {
         return phase;
     }
 
     @JsonProperty("phase")
-    public void setPhase(java.lang.String phase) {
+    public void setPhase(String phase) {
         this.phase = phase;
     }
 
     @JsonProperty("podIP")
-    public java.lang.String getPodIP() {
+    public String getPodIP() {
         return podIP;
     }
 
     @JsonProperty("podIP")
-    public void setPodIP(java.lang.String podIP) {
+    public void setPodIP(String podIP) {
         this.podIP = podIP;
     }
 
@@ -236,32 +236,32 @@ public class PodStatus implements Editable<PodStatusBuilder> , KubernetesResourc
     }
 
     @JsonProperty("qosClass")
-    public java.lang.String getQosClass() {
+    public String getQosClass() {
         return qosClass;
     }
 
     @JsonProperty("qosClass")
-    public void setQosClass(java.lang.String qosClass) {
+    public void setQosClass(String qosClass) {
         this.qosClass = qosClass;
     }
 
     @JsonProperty("reason")
-    public java.lang.String getReason() {
+    public String getReason() {
         return reason;
     }
 
     @JsonProperty("reason")
-    public void setReason(java.lang.String reason) {
+    public void setReason(String reason) {
         this.reason = reason;
     }
 
     @JsonProperty("resize")
-    public java.lang.String getResize() {
+    public String getResize() {
         return resize;
     }
 
     @JsonProperty("resize")
-    public void setResize(java.lang.String resize) {
+    public void setResize(String resize) {
         this.resize = resize;
     }
 
@@ -297,16 +297,16 @@ public class PodStatus implements Editable<PodStatusBuilder> , KubernetesResourc
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
-    public void setAdditionalProperties(Map<java.lang.String, Object> additionalProperties) {
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
     }
 

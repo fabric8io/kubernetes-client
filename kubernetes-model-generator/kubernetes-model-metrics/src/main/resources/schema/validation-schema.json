@@ -337,8 +337,7 @@
           "type": "string"
         },
         "time": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         }
       },
       "additionalProperties": true,
@@ -358,16 +357,14 @@
           "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "creationTimestamp": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "deletionGracePeriodSeconds": {
           "type": "integer",
           "existingJavaType": "Long"
         },
         "deletionTimestamp": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "finalizers": {
           "type": "array",
@@ -642,19 +639,6 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "kubernetes_apimachinery_Time": {
-      "type": "object",
-      "properties": {
-        "Time": {
-          "type": "string"
-        }
-      },
-      "additionalProperties": true,
-      "existingJavaType": "String",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
     "kubernetes_apimachinery_TypeMeta": {
       "type": "object",
       "properties": {
@@ -819,8 +803,7 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "timestamp": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "usage": {
           "type": "object",
@@ -898,8 +881,7 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "timestamp": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "window": {
           "$ref": "#/definitions/kubernetes_apimachinery_Duration",
@@ -1038,8 +1020,7 @@
       "existingJavaType": "io.fabric8.kubernetes.api.model.Status"
     },
     "Time": {
-      "$ref": "#/definitions/kubernetes_apimachinery_Time",
-      "existingJavaType": "String"
+      "type": "string"
     },
     "TypeMeta": {
       "$ref": "#/definitions/kubernetes_apimachinery_TypeMeta",
@@ -1377,8 +1358,7 @@
           "type": "string"
         },
         "time": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         }
       },
       "additionalProperties": true
@@ -1400,8 +1380,7 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "timestamp": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "usage": {
           "type": "object",
@@ -1454,16 +1433,14 @@
           "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "creationTimestamp": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "deletionGracePeriodSeconds": {
           "type": "integer",
           "existingJavaType": "Long"
         },
         "deletionTimestamp": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "finalizers": {
           "type": "array",
@@ -1629,8 +1606,7 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "timestamp": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "window": {
           "$ref": "#/definitions/kubernetes_apimachinery_Duration",
@@ -1781,14 +1757,6 @@
           "type": "integer"
         },
         "uid": {
-          "type": "string"
-        }
-      },
-      "additionalProperties": true
-    },
-    "time": {
-      "properties": {
-        "Time": {
           "type": "string"
         }
       },

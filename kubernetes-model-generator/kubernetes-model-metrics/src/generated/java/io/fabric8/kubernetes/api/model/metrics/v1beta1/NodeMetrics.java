@@ -75,25 +75,25 @@ public class NodeMetrics implements Editable<NodeMetricsBuilder> , HasMetadata
      * 
      */
     @JsonProperty("apiVersion")
-    private java.lang.String apiVersion = "metrics.k8s.io/v1beta1";
+    private String apiVersion = "metrics.k8s.io/v1beta1";
     /**
      * 
      * (Required)
      * 
      */
     @JsonProperty("kind")
-    private java.lang.String kind = "NodeMetrics";
+    private String kind = "NodeMetrics";
     @JsonProperty("metadata")
     private io.fabric8.kubernetes.api.model.ObjectMeta metadata;
     @JsonProperty("timestamp")
     private String timestamp;
     @JsonProperty("usage")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<java.lang.String, Quantity> usage = new LinkedHashMap<>();
+    private Map<String, Quantity> usage = new LinkedHashMap<>();
     @JsonProperty("window")
     private Duration window;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -102,7 +102,7 @@ public class NodeMetrics implements Editable<NodeMetricsBuilder> , HasMetadata
     public NodeMetrics() {
     }
 
-    public NodeMetrics(java.lang.String apiVersion, java.lang.String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, String timestamp, Map<java.lang.String, Quantity> usage, Duration window) {
+    public NodeMetrics(String apiVersion, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, String timestamp, Map<String, Quantity> usage, Duration window) {
         super();
         this.apiVersion = apiVersion;
         this.kind = kind;
@@ -118,7 +118,7 @@ public class NodeMetrics implements Editable<NodeMetricsBuilder> , HasMetadata
      * 
      */
     @JsonProperty("apiVersion")
-    public java.lang.String getApiVersion() {
+    public String getApiVersion() {
         return apiVersion;
     }
 
@@ -128,7 +128,7 @@ public class NodeMetrics implements Editable<NodeMetricsBuilder> , HasMetadata
      * 
      */
     @JsonProperty("apiVersion")
-    public void setApiVersion(java.lang.String apiVersion) {
+    public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
     }
 
@@ -138,7 +138,7 @@ public class NodeMetrics implements Editable<NodeMetricsBuilder> , HasMetadata
      * 
      */
     @JsonProperty("kind")
-    public java.lang.String getKind() {
+    public String getKind() {
         return kind;
     }
 
@@ -148,7 +148,7 @@ public class NodeMetrics implements Editable<NodeMetricsBuilder> , HasMetadata
      * 
      */
     @JsonProperty("kind")
-    public void setKind(java.lang.String kind) {
+    public void setKind(String kind) {
         this.kind = kind;
     }
 
@@ -174,12 +174,12 @@ public class NodeMetrics implements Editable<NodeMetricsBuilder> , HasMetadata
 
     @JsonProperty("usage")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public Map<java.lang.String, Quantity> getUsage() {
+    public Map<String, Quantity> getUsage() {
         return usage;
     }
 
     @JsonProperty("usage")
-    public void setUsage(Map<java.lang.String, Quantity> usage) {
+    public void setUsage(Map<String, Quantity> usage) {
         this.usage = usage;
     }
 
@@ -204,16 +204,16 @@ public class NodeMetrics implements Editable<NodeMetricsBuilder> , HasMetadata
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
-    public void setAdditionalProperties(Map<java.lang.String, Object> additionalProperties) {
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
     }
 

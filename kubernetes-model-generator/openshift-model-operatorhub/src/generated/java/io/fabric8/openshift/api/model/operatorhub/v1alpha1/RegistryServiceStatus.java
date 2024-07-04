@@ -61,15 +61,15 @@ public class RegistryServiceStatus implements Editable<RegistryServiceStatusBuil
     @JsonProperty("createdAt")
     private String createdAt;
     @JsonProperty("port")
-    private java.lang.String port;
+    private String port;
     @JsonProperty("protocol")
-    private java.lang.String protocol;
+    private String protocol;
     @JsonProperty("serviceName")
-    private java.lang.String serviceName;
+    private String serviceName;
     @JsonProperty("serviceNamespace")
-    private java.lang.String serviceNamespace;
+    private String serviceNamespace;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -78,7 +78,7 @@ public class RegistryServiceStatus implements Editable<RegistryServiceStatusBuil
     public RegistryServiceStatus() {
     }
 
-    public RegistryServiceStatus(String createdAt, java.lang.String port, java.lang.String protocol, java.lang.String serviceName, java.lang.String serviceNamespace) {
+    public RegistryServiceStatus(String createdAt, String port, String protocol, String serviceName, String serviceNamespace) {
         super();
         this.createdAt = createdAt;
         this.port = port;
@@ -98,42 +98,42 @@ public class RegistryServiceStatus implements Editable<RegistryServiceStatusBuil
     }
 
     @JsonProperty("port")
-    public java.lang.String getPort() {
+    public String getPort() {
         return port;
     }
 
     @JsonProperty("port")
-    public void setPort(java.lang.String port) {
+    public void setPort(String port) {
         this.port = port;
     }
 
     @JsonProperty("protocol")
-    public java.lang.String getProtocol() {
+    public String getProtocol() {
         return protocol;
     }
 
     @JsonProperty("protocol")
-    public void setProtocol(java.lang.String protocol) {
+    public void setProtocol(String protocol) {
         this.protocol = protocol;
     }
 
     @JsonProperty("serviceName")
-    public java.lang.String getServiceName() {
+    public String getServiceName() {
         return serviceName;
     }
 
     @JsonProperty("serviceName")
-    public void setServiceName(java.lang.String serviceName) {
+    public void setServiceName(String serviceName) {
         this.serviceName = serviceName;
     }
 
     @JsonProperty("serviceNamespace")
-    public java.lang.String getServiceNamespace() {
+    public String getServiceNamespace() {
         return serviceNamespace;
     }
 
     @JsonProperty("serviceNamespace")
-    public void setServiceNamespace(java.lang.String serviceNamespace) {
+    public void setServiceNamespace(String serviceNamespace) {
         this.serviceNamespace = serviceNamespace;
     }
 
@@ -148,16 +148,16 @@ public class RegistryServiceStatus implements Editable<RegistryServiceStatusBuil
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
-    public void setAdditionalProperties(Map<java.lang.String, Object> additionalProperties) {
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
     }
 

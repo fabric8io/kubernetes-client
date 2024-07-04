@@ -89,8 +89,7 @@
       "type": "object",
       "properties": {
         "lastTransitionTime": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "message": {
           "type": "string"
@@ -414,8 +413,7 @@
           "type": "string"
         },
         "time": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         }
       },
       "additionalProperties": true,
@@ -435,16 +433,14 @@
           "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "creationTimestamp": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "deletionGracePeriodSeconds": {
           "type": "integer",
           "existingJavaType": "Long"
         },
         "deletionTimestamp": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "finalizers": {
           "type": "array",
@@ -719,19 +715,6 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "kubernetes_apimachinery_Time": {
-      "type": "object",
-      "properties": {
-        "Time": {
-          "type": "string"
-        }
-      },
-      "additionalProperties": true,
-      "existingJavaType": "String",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
     "kubernetes_apimachinery_TypeMeta": {
       "type": "object",
       "properties": {
@@ -948,8 +931,7 @@
       "type": "object",
       "properties": {
         "lastTransitionTime": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "message": {
           "type": "string"
@@ -1130,12 +1112,10 @@
       "type": "object",
       "properties": {
         "lastTransitionTime": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "lastUpdateTime": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "message": {
           "type": "string"
@@ -1319,8 +1299,7 @@
       "type": "object",
       "properties": {
         "lastTransitionTime": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "message": {
           "type": "string"
@@ -1521,8 +1500,7 @@
       "type": "object",
       "properties": {
         "lastTransitionTime": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "message": {
           "type": "string"
@@ -2650,8 +2628,7 @@
       "type": "object",
       "properties": {
         "startedAt": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         }
       },
       "additionalProperties": true,
@@ -2670,8 +2647,7 @@
           "type": "integer"
         },
         "finishedAt": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "message": {
           "type": "string"
@@ -2683,8 +2659,7 @@
           "type": "integer"
         },
         "startedAt": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         }
       },
       "additionalProperties": true,
@@ -4101,8 +4076,7 @@
       "type": "object",
       "properties": {
         "lastTransitionTime": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "message": {
           "type": "string"
@@ -4267,12 +4241,10 @@
       "type": "object",
       "properties": {
         "lastHeartbeatTime": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "lastTransitionTime": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "message": {
           "type": "string"
@@ -4759,12 +4731,10 @@
       "type": "object",
       "properties": {
         "lastProbeTime": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "lastTransitionTime": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "message": {
           "type": "string"
@@ -5228,8 +5198,7 @@
       "type": "object",
       "properties": {
         "lastPhaseTransitionTime": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "message": {
           "type": "string"
@@ -5394,12 +5363,10 @@
       "type": "object",
       "properties": {
         "lastProbeTime": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "lastTransitionTime": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "message": {
           "type": "string"
@@ -5925,8 +5892,7 @@
           }
         },
         "startTime": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         }
       },
       "additionalProperties": true,
@@ -6301,8 +6267,7 @@
       "type": "object",
       "properties": {
         "lastTransitionTime": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "message": {
           "type": "string"
@@ -7429,8 +7394,7 @@
           "type": "string"
         },
         "timeAdded": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "value": {
           "type": "string"
@@ -8217,8 +8181,7 @@
       "existingJavaType": "io.fabric8.kubernetes.api.model.Status"
     },
     "Time": {
-      "$ref": "#/definitions/kubernetes_apimachinery_Time",
-      "existingJavaType": "String"
+      "type": "string"
     },
     "Toleration": {
       "$ref": "#/definitions/kubernetes_core_Toleration",
@@ -8649,8 +8612,7 @@
     "condition": {
       "properties": {
         "lastTransitionTime": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "message": {
           "type": "string"
@@ -9010,8 +8972,7 @@
     "containerstaterunning": {
       "properties": {
         "startedAt": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         }
       },
       "additionalProperties": true
@@ -9025,8 +8986,7 @@
           "type": "integer"
         },
         "finishedAt": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "message": {
           "type": "string"
@@ -9038,8 +8998,7 @@
           "type": "integer"
         },
         "startedAt": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         }
       },
       "additionalProperties": true
@@ -9299,8 +9258,7 @@
     "daemonsetcondition": {
       "properties": {
         "lastTransitionTime": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "message": {
           "type": "string"
@@ -9485,12 +9443,10 @@
     "deploymentcondition": {
       "properties": {
         "lastTransitionTime": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "lastUpdateTime": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "message": {
           "type": "string"
@@ -10870,8 +10826,7 @@
           "type": "string"
         },
         "time": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         }
       },
       "additionalProperties": true
@@ -10917,8 +10872,7 @@
     "namespacecondition": {
       "properties": {
         "lastTransitionTime": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "message": {
           "type": "string"
@@ -11061,12 +11015,10 @@
     "nodecondition": {
       "properties": {
         "lastHeartbeatTime": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "lastTransitionTime": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "message": {
           "type": "string"
@@ -11393,16 +11345,14 @@
           "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "creationTimestamp": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "deletionGracePeriodSeconds": {
           "type": "integer",
           "existingJavaType": "Long"
         },
         "deletionTimestamp": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "finalizers": {
           "type": "array",
@@ -11601,12 +11551,10 @@
     "persistentvolumeclaimcondition": {
       "properties": {
         "lastProbeTime": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "lastTransitionTime": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "message": {
           "type": "string"
@@ -12023,8 +11971,7 @@
     "persistentvolumestatus": {
       "properties": {
         "lastPhaseTransitionTime": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "message": {
           "type": "string"
@@ -12158,12 +12105,10 @@
     "podcondition": {
       "properties": {
         "lastProbeTime": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "lastTransitionTime": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "message": {
           "type": "string"
@@ -12628,8 +12573,7 @@
           }
         },
         "startTime": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         }
       },
       "additionalProperties": true
@@ -12953,8 +12897,7 @@
     "replicasetcondition": {
       "properties": {
         "lastTransitionTime": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "message": {
           "type": "string"
@@ -13075,8 +13018,7 @@
     "replicationcontrollercondition": {
       "properties": {
         "lastTransitionTime": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "message": {
           "type": "string"
@@ -14015,8 +13957,7 @@
     "statefulsetcondition": {
       "properties": {
         "lastTransitionTime": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "message": {
           "type": "string"
@@ -14318,8 +14259,7 @@
           "type": "string"
         },
         "timeAdded": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "value": {
           "type": "string"
@@ -14335,14 +14275,6 @@
         "port": {
           "$ref": "#/definitions/kubernetes_apimachinery_pkg_util_intstr_IntOrString",
           "existingJavaType": "io.fabric8.kubernetes.api.model.IntOrString"
-        }
-      },
-      "additionalProperties": true
-    },
-    "time": {
-      "properties": {
-        "Time": {
-          "type": "string"
         }
       },
       "additionalProperties": true

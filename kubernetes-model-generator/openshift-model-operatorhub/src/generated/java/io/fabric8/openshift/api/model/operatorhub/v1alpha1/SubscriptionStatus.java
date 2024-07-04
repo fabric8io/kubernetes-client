@@ -71,23 +71,23 @@ public class SubscriptionStatus implements Editable<SubscriptionStatusBuilder> ,
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<SubscriptionCondition> conditions = new ArrayList<>();
     @JsonProperty("currentCSV")
-    private java.lang.String currentCSV;
+    private String currentCSV;
     @JsonProperty("installPlanGeneration")
     private Integer installPlanGeneration;
     @JsonProperty("installPlanRef")
     private io.fabric8.kubernetes.api.model.ObjectReference installPlanRef;
     @JsonProperty("installedCSV")
-    private java.lang.String installedCSV;
+    private String installedCSV;
     @JsonProperty("installplan")
     private InstallPlanReference installplan;
     @JsonProperty("lastUpdated")
     private String lastUpdated;
     @JsonProperty("reason")
-    private java.lang.String reason;
+    private String reason;
     @JsonProperty("state")
-    private java.lang.String state;
+    private String state;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -96,7 +96,7 @@ public class SubscriptionStatus implements Editable<SubscriptionStatusBuilder> ,
     public SubscriptionStatus() {
     }
 
-    public SubscriptionStatus(List<SubscriptionCatalogHealth> catalogHealth, List<SubscriptionCondition> conditions, java.lang.String currentCSV, Integer installPlanGeneration, io.fabric8.kubernetes.api.model.ObjectReference installPlanRef, java.lang.String installedCSV, InstallPlanReference installplan, String lastUpdated, java.lang.String reason, java.lang.String state) {
+    public SubscriptionStatus(List<SubscriptionCatalogHealth> catalogHealth, List<SubscriptionCondition> conditions, String currentCSV, Integer installPlanGeneration, io.fabric8.kubernetes.api.model.ObjectReference installPlanRef, String installedCSV, InstallPlanReference installplan, String lastUpdated, String reason, String state) {
         super();
         this.catalogHealth = catalogHealth;
         this.conditions = conditions;
@@ -133,12 +133,12 @@ public class SubscriptionStatus implements Editable<SubscriptionStatusBuilder> ,
     }
 
     @JsonProperty("currentCSV")
-    public java.lang.String getCurrentCSV() {
+    public String getCurrentCSV() {
         return currentCSV;
     }
 
     @JsonProperty("currentCSV")
-    public void setCurrentCSV(java.lang.String currentCSV) {
+    public void setCurrentCSV(String currentCSV) {
         this.currentCSV = currentCSV;
     }
 
@@ -163,12 +163,12 @@ public class SubscriptionStatus implements Editable<SubscriptionStatusBuilder> ,
     }
 
     @JsonProperty("installedCSV")
-    public java.lang.String getInstalledCSV() {
+    public String getInstalledCSV() {
         return installedCSV;
     }
 
     @JsonProperty("installedCSV")
-    public void setInstalledCSV(java.lang.String installedCSV) {
+    public void setInstalledCSV(String installedCSV) {
         this.installedCSV = installedCSV;
     }
 
@@ -193,22 +193,22 @@ public class SubscriptionStatus implements Editable<SubscriptionStatusBuilder> ,
     }
 
     @JsonProperty("reason")
-    public java.lang.String getReason() {
+    public String getReason() {
         return reason;
     }
 
     @JsonProperty("reason")
-    public void setReason(java.lang.String reason) {
+    public void setReason(String reason) {
         this.reason = reason;
     }
 
     @JsonProperty("state")
-    public java.lang.String getState() {
+    public String getState() {
         return state;
     }
 
     @JsonProperty("state")
-    public void setState(java.lang.String state) {
+    public void setState(String state) {
         this.state = state;
     }
 
@@ -223,16 +223,16 @@ public class SubscriptionStatus implements Editable<SubscriptionStatusBuilder> ,
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
-    public void setAdditionalProperties(Map<java.lang.String, Object> additionalProperties) {
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
     }
 

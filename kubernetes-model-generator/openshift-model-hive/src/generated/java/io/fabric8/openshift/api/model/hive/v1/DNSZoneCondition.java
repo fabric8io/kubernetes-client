@@ -64,15 +64,15 @@ public class DNSZoneCondition implements Editable<DNSZoneConditionBuilder> , Kub
     @JsonProperty("lastTransitionTime")
     private String lastTransitionTime;
     @JsonProperty("message")
-    private java.lang.String message;
+    private String message;
     @JsonProperty("reason")
-    private java.lang.String reason;
+    private String reason;
     @JsonProperty("status")
-    private java.lang.String status;
+    private String status;
     @JsonProperty("type")
-    private java.lang.String type;
+    private String type;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -81,7 +81,7 @@ public class DNSZoneCondition implements Editable<DNSZoneConditionBuilder> , Kub
     public DNSZoneCondition() {
     }
 
-    public DNSZoneCondition(String lastProbeTime, String lastTransitionTime, java.lang.String message, java.lang.String reason, java.lang.String status, java.lang.String type) {
+    public DNSZoneCondition(String lastProbeTime, String lastTransitionTime, String message, String reason, String status, String type) {
         super();
         this.lastProbeTime = lastProbeTime;
         this.lastTransitionTime = lastTransitionTime;
@@ -112,42 +112,42 @@ public class DNSZoneCondition implements Editable<DNSZoneConditionBuilder> , Kub
     }
 
     @JsonProperty("message")
-    public java.lang.String getMessage() {
+    public String getMessage() {
         return message;
     }
 
     @JsonProperty("message")
-    public void setMessage(java.lang.String message) {
+    public void setMessage(String message) {
         this.message = message;
     }
 
     @JsonProperty("reason")
-    public java.lang.String getReason() {
+    public String getReason() {
         return reason;
     }
 
     @JsonProperty("reason")
-    public void setReason(java.lang.String reason) {
+    public void setReason(String reason) {
         this.reason = reason;
     }
 
     @JsonProperty("status")
-    public java.lang.String getStatus() {
+    public String getStatus() {
         return status;
     }
 
     @JsonProperty("status")
-    public void setStatus(java.lang.String status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
     @JsonProperty("type")
-    public java.lang.String getType() {
+    public String getType() {
         return type;
     }
 
     @JsonProperty("type")
-    public void setType(java.lang.String type) {
+    public void setType(String type) {
         this.type = type;
     }
 
@@ -162,16 +162,16 @@ public class DNSZoneCondition implements Editable<DNSZoneConditionBuilder> , Kub
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
-    public void setAdditionalProperties(Map<java.lang.String, Object> additionalProperties) {
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
     }
 

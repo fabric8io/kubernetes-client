@@ -40,21 +40,21 @@ public class ManagedFieldsEntry implements Editable<ManagedFieldsEntryBuilder> ,
 {
 
     @JsonProperty("apiVersion")
-    private java.lang.String apiVersion;
+    private String apiVersion;
     @JsonProperty("fieldsType")
-    private java.lang.String fieldsType;
+    private String fieldsType;
     @JsonProperty("fieldsV1")
     private FieldsV1 fieldsV1;
     @JsonProperty("manager")
-    private java.lang.String manager;
+    private String manager;
     @JsonProperty("operation")
-    private java.lang.String operation;
+    private String operation;
     @JsonProperty("subresource")
-    private java.lang.String subresource;
+    private String subresource;
     @JsonProperty("time")
     private String time;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -63,7 +63,7 @@ public class ManagedFieldsEntry implements Editable<ManagedFieldsEntryBuilder> ,
     public ManagedFieldsEntry() {
     }
 
-    public ManagedFieldsEntry(java.lang.String apiVersion, java.lang.String fieldsType, FieldsV1 fieldsV1, java.lang.String manager, java.lang.String operation, java.lang.String subresource, String time) {
+    public ManagedFieldsEntry(String apiVersion, String fieldsType, FieldsV1 fieldsV1, String manager, String operation, String subresource, String time) {
         super();
         this.apiVersion = apiVersion;
         this.fieldsType = fieldsType;
@@ -75,22 +75,22 @@ public class ManagedFieldsEntry implements Editable<ManagedFieldsEntryBuilder> ,
     }
 
     @JsonProperty("apiVersion")
-    public java.lang.String getApiVersion() {
+    public String getApiVersion() {
         return apiVersion;
     }
 
     @JsonProperty("apiVersion")
-    public void setApiVersion(java.lang.String apiVersion) {
+    public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
     }
 
     @JsonProperty("fieldsType")
-    public java.lang.String getFieldsType() {
+    public String getFieldsType() {
         return fieldsType;
     }
 
     @JsonProperty("fieldsType")
-    public void setFieldsType(java.lang.String fieldsType) {
+    public void setFieldsType(String fieldsType) {
         this.fieldsType = fieldsType;
     }
 
@@ -105,32 +105,32 @@ public class ManagedFieldsEntry implements Editable<ManagedFieldsEntryBuilder> ,
     }
 
     @JsonProperty("manager")
-    public java.lang.String getManager() {
+    public String getManager() {
         return manager;
     }
 
     @JsonProperty("manager")
-    public void setManager(java.lang.String manager) {
+    public void setManager(String manager) {
         this.manager = manager;
     }
 
     @JsonProperty("operation")
-    public java.lang.String getOperation() {
+    public String getOperation() {
         return operation;
     }
 
     @JsonProperty("operation")
-    public void setOperation(java.lang.String operation) {
+    public void setOperation(String operation) {
         this.operation = operation;
     }
 
     @JsonProperty("subresource")
-    public java.lang.String getSubresource() {
+    public String getSubresource() {
         return subresource;
     }
 
     @JsonProperty("subresource")
-    public void setSubresource(java.lang.String subresource) {
+    public void setSubresource(String subresource) {
         this.subresource = subresource;
     }
 
@@ -155,16 +155,16 @@ public class ManagedFieldsEntry implements Editable<ManagedFieldsEntryBuilder> ,
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
-    public void setAdditionalProperties(Map<java.lang.String, Object> additionalProperties) {
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
     }
 

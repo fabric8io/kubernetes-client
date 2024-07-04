@@ -77,7 +77,7 @@ public class MachineStatus implements Editable<MachineStatusBuilder> , Kubernete
     @JsonProperty("lastOperation")
     private LastOperation lastOperation;
     @JsonProperty("lastUpdated")
-    private String lastUpdated;
+    private java.lang.String lastUpdated;
     @JsonProperty("nodeRef")
     private io.fabric8.kubernetes.api.model.ObjectReference nodeRef;
     @JsonProperty("phase")
@@ -95,7 +95,7 @@ public class MachineStatus implements Editable<MachineStatusBuilder> , Kubernete
     public MachineStatus() {
     }
 
-    public MachineStatus(List<NodeAddress> addresses, List<Condition> conditions, java.lang.String errorMessage, java.lang.String errorReason, LastOperation lastOperation, String lastUpdated, io.fabric8.kubernetes.api.model.ObjectReference nodeRef, java.lang.String phase, Map<String, Object> providerStatus) {
+    public MachineStatus(List<NodeAddress> addresses, List<Condition> conditions, java.lang.String errorMessage, java.lang.String errorReason, LastOperation lastOperation, java.lang.String lastUpdated, io.fabric8.kubernetes.api.model.ObjectReference nodeRef, java.lang.String phase, Map<String, Object> providerStatus) {
         super();
         this.addresses = addresses;
         this.conditions = conditions;
@@ -161,12 +161,12 @@ public class MachineStatus implements Editable<MachineStatusBuilder> , Kubernete
     }
 
     @JsonProperty("lastUpdated")
-    public String getLastUpdated() {
+    public java.lang.String getLastUpdated() {
         return lastUpdated;
     }
 
     @JsonProperty("lastUpdated")
-    public void setLastUpdated(String lastUpdated) {
+    public void setLastUpdated(java.lang.String lastUpdated) {
         this.lastUpdated = lastUpdated;
     }
 
