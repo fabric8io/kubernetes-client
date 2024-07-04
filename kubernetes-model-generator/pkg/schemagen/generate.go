@@ -322,6 +322,12 @@ func (g *schemaGenerator) getPropertyDescriptor(t reflect.Type, desc string, omi
 	if ok {
 		t = tt
 	}
+	stringPropertyDescriptor := &JSONPropertyDescriptor{
+		JSONDescriptor: &JSONDescriptor{
+			Type:        "string",
+			Description: desc,
+		},
+	}
 	switch t.Kind() {
 	case reflect.Bool:
 		return JSONPropertyDescriptor{
@@ -358,21 +364,11 @@ func (g *schemaGenerator) getPropertyDescriptor(t reflect.Type, desc string, omi
 			},
 		}
 	case reflect.String:
-		return JSONPropertyDescriptor{
-			JSONDescriptor: &JSONDescriptor{
-				Type:        "string",
-				Description: desc,
-			},
-		}
+		return *stringPropertyDescriptor
 	case reflect.Array:
 	case reflect.Slice:
 		if g.javaTypeArrayList(t.Elem()) == "String" {
-			return JSONPropertyDescriptor{
-				JSONDescriptor: &JSONDescriptor{
-					Type:        "string",
-					Description: desc,
-				},
-			}
+			return *stringPropertyDescriptor
 		}
 		return JSONPropertyDescriptor{
 			JSONDescriptor: &JSONDescriptor{
@@ -399,6 +395,10 @@ func (g *schemaGenerator) getPropertyDescriptor(t reflect.Type, desc string, omi
 		}
 	case reflect.Struct:
 		definedType, ok := g.types[t]
+		javaType := g.javaType(t)
+		if javaType == "String" {
+			return *stringPropertyDescriptor
+		}
 		if !ok {
 			g.types[t] = &JSONObjectDescriptor{}
 			definedType = g.generateObjectDescriptor(t)
@@ -409,7 +409,7 @@ func (g *schemaGenerator) getPropertyDescriptor(t reflect.Type, desc string, omi
 				Reference: g.generateReference(t),
 			},
 			ExistingJavaTypeDescriptor: &ExistingJavaTypeDescriptor{
-				ExistingJavaType: g.javaType(t),
+				ExistingJavaType: javaType,
 			},
 		}
 	}
