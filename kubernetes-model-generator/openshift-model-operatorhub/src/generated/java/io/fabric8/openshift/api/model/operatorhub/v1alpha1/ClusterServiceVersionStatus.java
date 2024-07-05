@@ -79,16 +79,16 @@ public class ClusterServiceVersionStatus implements Editable<ClusterServiceVersi
     @JsonProperty("lastUpdateTime")
     private String lastUpdateTime;
     @JsonProperty("message")
-    private java.lang.String message;
+    private String message;
     @JsonProperty("phase")
-    private java.lang.String phase;
+    private String phase;
     @JsonProperty("reason")
-    private java.lang.String reason;
+    private String reason;
     @JsonProperty("requirementStatus")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<RequirementStatus> requirementStatus = new ArrayList<>();
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -97,7 +97,7 @@ public class ClusterServiceVersionStatus implements Editable<ClusterServiceVersi
     public ClusterServiceVersionStatus() {
     }
 
-    public ClusterServiceVersionStatus(String certsLastUpdated, String certsRotateAt, CleanupStatus cleanup, List<ClusterServiceVersionCondition> conditions, String lastTransitionTime, String lastUpdateTime, java.lang.String message, java.lang.String phase, java.lang.String reason, List<RequirementStatus> requirementStatus) {
+    public ClusterServiceVersionStatus(String certsLastUpdated, String certsRotateAt, CleanupStatus cleanup, List<ClusterServiceVersionCondition> conditions, String lastTransitionTime, String lastUpdateTime, String message, String phase, String reason, List<RequirementStatus> requirementStatus) {
         super();
         this.certsLastUpdated = certsLastUpdated;
         this.certsRotateAt = certsRotateAt;
@@ -173,32 +173,32 @@ public class ClusterServiceVersionStatus implements Editable<ClusterServiceVersi
     }
 
     @JsonProperty("message")
-    public java.lang.String getMessage() {
+    public String getMessage() {
         return message;
     }
 
     @JsonProperty("message")
-    public void setMessage(java.lang.String message) {
+    public void setMessage(String message) {
         this.message = message;
     }
 
     @JsonProperty("phase")
-    public java.lang.String getPhase() {
+    public String getPhase() {
         return phase;
     }
 
     @JsonProperty("phase")
-    public void setPhase(java.lang.String phase) {
+    public void setPhase(String phase) {
         this.phase = phase;
     }
 
     @JsonProperty("reason")
-    public java.lang.String getReason() {
+    public String getReason() {
         return reason;
     }
 
     @JsonProperty("reason")
-    public void setReason(java.lang.String reason) {
+    public void setReason(String reason) {
         this.reason = reason;
     }
 
@@ -224,16 +224,16 @@ public class ClusterServiceVersionStatus implements Editable<ClusterServiceVersi
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
-    public void setAdditionalProperties(Map<java.lang.String, Object> additionalProperties) {
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
     }
 

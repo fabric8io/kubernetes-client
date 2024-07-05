@@ -79,24 +79,24 @@ public class BuildStatus implements Editable<BuildStatusBuilder> , KubernetesRes
     @JsonProperty("duration")
     private Long duration;
     @JsonProperty("logSnippet")
-    private java.lang.String logSnippet;
+    private String logSnippet;
     @JsonProperty("message")
-    private java.lang.String message;
+    private String message;
     @JsonProperty("output")
     private BuildStatusOutput output;
     @JsonProperty("outputDockerImageReference")
-    private java.lang.String outputDockerImageReference;
+    private String outputDockerImageReference;
     @JsonProperty("phase")
-    private java.lang.String phase;
+    private String phase;
     @JsonProperty("reason")
-    private java.lang.String reason;
+    private String reason;
     @JsonProperty("stages")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<StageInfo> stages = new ArrayList<>();
     @JsonProperty("startTimestamp")
     private String startTimestamp;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -105,7 +105,7 @@ public class BuildStatus implements Editable<BuildStatusBuilder> , KubernetesRes
     public BuildStatus() {
     }
 
-    public BuildStatus(Boolean cancelled, String completionTimestamp, List<BuildCondition> conditions, io.fabric8.kubernetes.api.model.ObjectReference config, Long duration, java.lang.String logSnippet, java.lang.String message, BuildStatusOutput output, java.lang.String outputDockerImageReference, java.lang.String phase, java.lang.String reason, List<StageInfo> stages, String startTimestamp) {
+    public BuildStatus(Boolean cancelled, String completionTimestamp, List<BuildCondition> conditions, io.fabric8.kubernetes.api.model.ObjectReference config, Long duration, String logSnippet, String message, BuildStatusOutput output, String outputDockerImageReference, String phase, String reason, List<StageInfo> stages, String startTimestamp) {
         super();
         this.cancelled = cancelled;
         this.completionTimestamp = completionTimestamp;
@@ -174,22 +174,22 @@ public class BuildStatus implements Editable<BuildStatusBuilder> , KubernetesRes
     }
 
     @JsonProperty("logSnippet")
-    public java.lang.String getLogSnippet() {
+    public String getLogSnippet() {
         return logSnippet;
     }
 
     @JsonProperty("logSnippet")
-    public void setLogSnippet(java.lang.String logSnippet) {
+    public void setLogSnippet(String logSnippet) {
         this.logSnippet = logSnippet;
     }
 
     @JsonProperty("message")
-    public java.lang.String getMessage() {
+    public String getMessage() {
         return message;
     }
 
     @JsonProperty("message")
-    public void setMessage(java.lang.String message) {
+    public void setMessage(String message) {
         this.message = message;
     }
 
@@ -204,32 +204,32 @@ public class BuildStatus implements Editable<BuildStatusBuilder> , KubernetesRes
     }
 
     @JsonProperty("outputDockerImageReference")
-    public java.lang.String getOutputDockerImageReference() {
+    public String getOutputDockerImageReference() {
         return outputDockerImageReference;
     }
 
     @JsonProperty("outputDockerImageReference")
-    public void setOutputDockerImageReference(java.lang.String outputDockerImageReference) {
+    public void setOutputDockerImageReference(String outputDockerImageReference) {
         this.outputDockerImageReference = outputDockerImageReference;
     }
 
     @JsonProperty("phase")
-    public java.lang.String getPhase() {
+    public String getPhase() {
         return phase;
     }
 
     @JsonProperty("phase")
-    public void setPhase(java.lang.String phase) {
+    public void setPhase(String phase) {
         this.phase = phase;
     }
 
     @JsonProperty("reason")
-    public java.lang.String getReason() {
+    public String getReason() {
         return reason;
     }
 
     @JsonProperty("reason")
-    public void setReason(java.lang.String reason) {
+    public void setReason(String reason) {
         this.reason = reason;
     }
 
@@ -265,16 +265,16 @@ public class BuildStatus implements Editable<BuildStatusBuilder> , KubernetesRes
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
-    public void setAdditionalProperties(Map<java.lang.String, Object> additionalProperties) {
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
     }
 

@@ -61,21 +61,21 @@ public class UpdateHistory implements Editable<UpdateHistoryBuilder> , Kubernete
 {
 
     @JsonProperty("acceptedRisks")
-    private java.lang.String acceptedRisks;
+    private String acceptedRisks;
     @JsonProperty("completionTime")
     private String completionTime;
     @JsonProperty("image")
-    private java.lang.String image;
+    private String image;
     @JsonProperty("startedTime")
     private String startedTime;
     @JsonProperty("state")
-    private java.lang.String state;
+    private String state;
     @JsonProperty("verified")
     private Boolean verified;
     @JsonProperty("version")
-    private java.lang.String version;
+    private String version;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -84,7 +84,7 @@ public class UpdateHistory implements Editable<UpdateHistoryBuilder> , Kubernete
     public UpdateHistory() {
     }
 
-    public UpdateHistory(java.lang.String acceptedRisks, String completionTime, java.lang.String image, String startedTime, java.lang.String state, Boolean verified, java.lang.String version) {
+    public UpdateHistory(String acceptedRisks, String completionTime, String image, String startedTime, String state, Boolean verified, String version) {
         super();
         this.acceptedRisks = acceptedRisks;
         this.completionTime = completionTime;
@@ -96,12 +96,12 @@ public class UpdateHistory implements Editable<UpdateHistoryBuilder> , Kubernete
     }
 
     @JsonProperty("acceptedRisks")
-    public java.lang.String getAcceptedRisks() {
+    public String getAcceptedRisks() {
         return acceptedRisks;
     }
 
     @JsonProperty("acceptedRisks")
-    public void setAcceptedRisks(java.lang.String acceptedRisks) {
+    public void setAcceptedRisks(String acceptedRisks) {
         this.acceptedRisks = acceptedRisks;
     }
 
@@ -116,12 +116,12 @@ public class UpdateHistory implements Editable<UpdateHistoryBuilder> , Kubernete
     }
 
     @JsonProperty("image")
-    public java.lang.String getImage() {
+    public String getImage() {
         return image;
     }
 
     @JsonProperty("image")
-    public void setImage(java.lang.String image) {
+    public void setImage(String image) {
         this.image = image;
     }
 
@@ -136,12 +136,12 @@ public class UpdateHistory implements Editable<UpdateHistoryBuilder> , Kubernete
     }
 
     @JsonProperty("state")
-    public java.lang.String getState() {
+    public String getState() {
         return state;
     }
 
     @JsonProperty("state")
-    public void setState(java.lang.String state) {
+    public void setState(String state) {
         this.state = state;
     }
 
@@ -156,12 +156,12 @@ public class UpdateHistory implements Editable<UpdateHistoryBuilder> , Kubernete
     }
 
     @JsonProperty("version")
-    public java.lang.String getVersion() {
+    public String getVersion() {
         return version;
     }
 
     @JsonProperty("version")
-    public void setVersion(java.lang.String version) {
+    public void setVersion(String version) {
         this.version = version;
     }
 
@@ -176,16 +176,16 @@ public class UpdateHistory implements Editable<UpdateHistoryBuilder> , Kubernete
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
-    public void setAdditionalProperties(Map<java.lang.String, Object> additionalProperties) {
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
     }
 

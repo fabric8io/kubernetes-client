@@ -61,15 +61,15 @@ public class ConfigMapResourceReference implements Editable<ConfigMapResourceRef
     @JsonProperty("lastUpdateTime")
     private String lastUpdateTime;
     @JsonProperty("name")
-    private java.lang.String name;
+    private String name;
     @JsonProperty("namespace")
-    private java.lang.String namespace;
+    private String namespace;
     @JsonProperty("resourceVersion")
-    private java.lang.String resourceVersion;
+    private String resourceVersion;
     @JsonProperty("uid")
-    private java.lang.String uid;
+    private String uid;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -78,7 +78,7 @@ public class ConfigMapResourceReference implements Editable<ConfigMapResourceRef
     public ConfigMapResourceReference() {
     }
 
-    public ConfigMapResourceReference(String lastUpdateTime, java.lang.String name, java.lang.String namespace, java.lang.String resourceVersion, java.lang.String uid) {
+    public ConfigMapResourceReference(String lastUpdateTime, String name, String namespace, String resourceVersion, String uid) {
         super();
         this.lastUpdateTime = lastUpdateTime;
         this.name = name;
@@ -98,42 +98,42 @@ public class ConfigMapResourceReference implements Editable<ConfigMapResourceRef
     }
 
     @JsonProperty("name")
-    public java.lang.String getName() {
+    public String getName() {
         return name;
     }
 
     @JsonProperty("name")
-    public void setName(java.lang.String name) {
+    public void setName(String name) {
         this.name = name;
     }
 
     @JsonProperty("namespace")
-    public java.lang.String getNamespace() {
+    public String getNamespace() {
         return namespace;
     }
 
     @JsonProperty("namespace")
-    public void setNamespace(java.lang.String namespace) {
+    public void setNamespace(String namespace) {
         this.namespace = namespace;
     }
 
     @JsonProperty("resourceVersion")
-    public java.lang.String getResourceVersion() {
+    public String getResourceVersion() {
         return resourceVersion;
     }
 
     @JsonProperty("resourceVersion")
-    public void setResourceVersion(java.lang.String resourceVersion) {
+    public void setResourceVersion(String resourceVersion) {
         this.resourceVersion = resourceVersion;
     }
 
     @JsonProperty("uid")
-    public java.lang.String getUid() {
+    public String getUid() {
         return uid;
     }
 
     @JsonProperty("uid")
-    public void setUid(java.lang.String uid) {
+    public void setUid(String uid) {
         this.uid = uid;
     }
 
@@ -148,16 +148,16 @@ public class ConfigMapResourceReference implements Editable<ConfigMapResourceRef
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
-    public void setAdditionalProperties(Map<java.lang.String, Object> additionalProperties) {
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
     }
 

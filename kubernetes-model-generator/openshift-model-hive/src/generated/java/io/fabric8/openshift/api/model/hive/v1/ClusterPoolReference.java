@@ -58,17 +58,17 @@ public class ClusterPoolReference implements Editable<ClusterPoolReferenceBuilde
 {
 
     @JsonProperty("claimName")
-    private java.lang.String claimName;
+    private String claimName;
     @JsonProperty("claimedTimestamp")
     private String claimedTimestamp;
     @JsonProperty("clusterDeploymentCustomization")
     private io.fabric8.kubernetes.api.model.LocalObjectReference clusterDeploymentCustomization;
     @JsonProperty("namespace")
-    private java.lang.String namespace;
+    private String namespace;
     @JsonProperty("poolName")
-    private java.lang.String poolName;
+    private String poolName;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -77,7 +77,7 @@ public class ClusterPoolReference implements Editable<ClusterPoolReferenceBuilde
     public ClusterPoolReference() {
     }
 
-    public ClusterPoolReference(java.lang.String claimName, String claimedTimestamp, io.fabric8.kubernetes.api.model.LocalObjectReference clusterDeploymentCustomization, java.lang.String namespace, java.lang.String poolName) {
+    public ClusterPoolReference(String claimName, String claimedTimestamp, io.fabric8.kubernetes.api.model.LocalObjectReference clusterDeploymentCustomization, String namespace, String poolName) {
         super();
         this.claimName = claimName;
         this.claimedTimestamp = claimedTimestamp;
@@ -87,12 +87,12 @@ public class ClusterPoolReference implements Editable<ClusterPoolReferenceBuilde
     }
 
     @JsonProperty("claimName")
-    public java.lang.String getClaimName() {
+    public String getClaimName() {
         return claimName;
     }
 
     @JsonProperty("claimName")
-    public void setClaimName(java.lang.String claimName) {
+    public void setClaimName(String claimName) {
         this.claimName = claimName;
     }
 
@@ -117,22 +117,22 @@ public class ClusterPoolReference implements Editable<ClusterPoolReferenceBuilde
     }
 
     @JsonProperty("namespace")
-    public java.lang.String getNamespace() {
+    public String getNamespace() {
         return namespace;
     }
 
     @JsonProperty("namespace")
-    public void setNamespace(java.lang.String namespace) {
+    public void setNamespace(String namespace) {
         this.namespace = namespace;
     }
 
     @JsonProperty("poolName")
-    public java.lang.String getPoolName() {
+    public String getPoolName() {
         return poolName;
     }
 
     @JsonProperty("poolName")
-    public void setPoolName(java.lang.String poolName) {
+    public void setPoolName(String poolName) {
         this.poolName = poolName;
     }
 
@@ -147,16 +147,16 @@ public class ClusterPoolReference implements Editable<ClusterPoolReferenceBuilde
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
-    public void setAdditionalProperties(Map<java.lang.String, Object> additionalProperties) {
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
     }
 

@@ -37,15 +37,15 @@ public class Taint implements Editable<TaintBuilder> , KubernetesResource
 {
 
     @JsonProperty("effect")
-    private java.lang.String effect;
+    private String effect;
     @JsonProperty("key")
-    private java.lang.String key;
+    private String key;
     @JsonProperty("timeAdded")
     private String timeAdded;
     @JsonProperty("value")
-    private java.lang.String value;
+    private String value;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -54,7 +54,7 @@ public class Taint implements Editable<TaintBuilder> , KubernetesResource
     public Taint() {
     }
 
-    public Taint(java.lang.String effect, java.lang.String key, String timeAdded, java.lang.String value) {
+    public Taint(String effect, String key, String timeAdded, String value) {
         super();
         this.effect = effect;
         this.key = key;
@@ -63,22 +63,22 @@ public class Taint implements Editable<TaintBuilder> , KubernetesResource
     }
 
     @JsonProperty("effect")
-    public java.lang.String getEffect() {
+    public String getEffect() {
         return effect;
     }
 
     @JsonProperty("effect")
-    public void setEffect(java.lang.String effect) {
+    public void setEffect(String effect) {
         this.effect = effect;
     }
 
     @JsonProperty("key")
-    public java.lang.String getKey() {
+    public String getKey() {
         return key;
     }
 
     @JsonProperty("key")
-    public void setKey(java.lang.String key) {
+    public void setKey(String key) {
         this.key = key;
     }
 
@@ -93,12 +93,12 @@ public class Taint implements Editable<TaintBuilder> , KubernetesResource
     }
 
     @JsonProperty("value")
-    public java.lang.String getValue() {
+    public String getValue() {
         return value;
     }
 
     @JsonProperty("value")
-    public void setValue(java.lang.String value) {
+    public void setValue(String value) {
         this.value = value;
     }
 
@@ -113,16 +113,16 @@ public class Taint implements Editable<TaintBuilder> , KubernetesResource
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
-    public void setAdditionalProperties(Map<java.lang.String, Object> additionalProperties) {
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
     }
 

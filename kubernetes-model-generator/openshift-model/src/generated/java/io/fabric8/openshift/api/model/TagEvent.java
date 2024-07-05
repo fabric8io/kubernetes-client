@@ -60,13 +60,13 @@ public class TagEvent implements Editable<TagEventBuilder> , KubernetesResource
     @JsonProperty("created")
     private String created;
     @JsonProperty("dockerImageReference")
-    private java.lang.String dockerImageReference;
+    private String dockerImageReference;
     @JsonProperty("generation")
     private Long generation;
     @JsonProperty("image")
-    private java.lang.String image;
+    private String image;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -75,7 +75,7 @@ public class TagEvent implements Editable<TagEventBuilder> , KubernetesResource
     public TagEvent() {
     }
 
-    public TagEvent(String created, java.lang.String dockerImageReference, Long generation, java.lang.String image) {
+    public TagEvent(String created, String dockerImageReference, Long generation, String image) {
         super();
         this.created = created;
         this.dockerImageReference = dockerImageReference;
@@ -94,12 +94,12 @@ public class TagEvent implements Editable<TagEventBuilder> , KubernetesResource
     }
 
     @JsonProperty("dockerImageReference")
-    public java.lang.String getDockerImageReference() {
+    public String getDockerImageReference() {
         return dockerImageReference;
     }
 
     @JsonProperty("dockerImageReference")
-    public void setDockerImageReference(java.lang.String dockerImageReference) {
+    public void setDockerImageReference(String dockerImageReference) {
         this.dockerImageReference = dockerImageReference;
     }
 
@@ -114,12 +114,12 @@ public class TagEvent implements Editable<TagEventBuilder> , KubernetesResource
     }
 
     @JsonProperty("image")
-    public java.lang.String getImage() {
+    public String getImage() {
         return image;
     }
 
     @JsonProperty("image")
-    public void setImage(java.lang.String image) {
+    public void setImage(String image) {
         this.image = image;
     }
 
@@ -134,16 +134,16 @@ public class TagEvent implements Editable<TagEventBuilder> , KubernetesResource
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
-    public void setAdditionalProperties(Map<java.lang.String, Object> additionalProperties) {
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
     }
 

@@ -89,8 +89,7 @@
       "type": "object",
       "properties": {
         "lastTransitionTime": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "message": {
           "type": "string"
@@ -414,8 +413,7 @@
           "type": "string"
         },
         "time": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         }
       },
       "additionalProperties": true,
@@ -435,16 +433,14 @@
           "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "creationTimestamp": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "deletionGracePeriodSeconds": {
           "type": "integer",
           "existingJavaType": "Long"
         },
         "deletionTimestamp": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "finalizers": {
           "type": "array",
@@ -715,19 +711,6 @@
       },
       "additionalProperties": true,
       "existingJavaType": "io.fabric8.kubernetes.api.model.StatusDetails",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "kubernetes_apimachinery_Time": {
-      "type": "object",
-      "properties": {
-        "Time": {
-          "type": "string"
-        }
-      },
-      "additionalProperties": true,
-      "existingJavaType": "String",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -1016,8 +999,7 @@
         "disruptedPods": {
           "type": "object",
           "additionalProperties": {
-            "$ref": "#/definitions/kubernetes_apimachinery_Time",
-            "existingJavaType": "String"
+            "type": "string"
           },
           "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
@@ -1177,8 +1159,7 @@
         "disruptedPods": {
           "type": "object",
           "additionalProperties": {
-            "$ref": "#/definitions/kubernetes_apimachinery_Time",
-            "existingJavaType": "String"
+            "type": "string"
           },
           "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
@@ -1275,8 +1256,7 @@
       "existingJavaType": "io.fabric8.kubernetes.api.model.Status"
     },
     "Time": {
-      "$ref": "#/definitions/kubernetes_apimachinery_Time",
-      "existingJavaType": "String"
+      "type": "string"
     },
     "TypeMeta": {
       "$ref": "#/definitions/kubernetes_apimachinery_TypeMeta",
@@ -1363,8 +1343,7 @@
     "condition": {
       "properties": {
         "lastTransitionTime": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "message": {
           "type": "string"
@@ -1453,7 +1432,7 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "policy/v1",
+          "default": "policy/v1beta1",
           "required": true
         },
         "deleteOptions": {
@@ -1702,8 +1681,7 @@
           "type": "string"
         },
         "time": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         }
       },
       "additionalProperties": true
@@ -1718,16 +1696,14 @@
           "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "creationTimestamp": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "deletionGracePeriodSeconds": {
           "type": "integer",
           "existingJavaType": "Long"
         },
         "deletionTimestamp": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "finalizers": {
           "type": "array",
@@ -1961,8 +1937,7 @@
         "disruptedPods": {
           "type": "object",
           "additionalProperties": {
-            "$ref": "#/definitions/kubernetes_apimachinery_Time",
-            "existingJavaType": "String"
+            "type": "string"
           },
           "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
@@ -2095,14 +2070,6 @@
           "type": "integer"
         },
         "uid": {
-          "type": "string"
-        }
-      },
-      "additionalProperties": true
-    },
-    "time": {
-      "properties": {
-        "Time": {
           "type": "string"
         }
       },

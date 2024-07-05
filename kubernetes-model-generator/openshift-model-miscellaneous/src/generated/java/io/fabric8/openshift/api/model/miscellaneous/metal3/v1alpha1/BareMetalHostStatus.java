@@ -68,21 +68,21 @@ public class BareMetalHostStatus implements Editable<BareMetalHostStatusBuilder>
     @JsonProperty("errorCount")
     private Integer errorCount;
     @JsonProperty("errorMessage")
-    private java.lang.String errorMessage;
+    private String errorMessage;
     @JsonProperty("errorType")
-    private java.lang.String errorType;
+    private String errorType;
     @JsonProperty("goodCredentials")
     private CredentialsStatus goodCredentials;
     @JsonProperty("hardware")
     private HardwareDetails hardware;
     @JsonProperty("hardwareProfile")
-    private java.lang.String hardwareProfile;
+    private String hardwareProfile;
     @JsonProperty("lastUpdated")
     private String lastUpdated;
     @JsonProperty("operationHistory")
     private OperationHistory operationHistory;
     @JsonProperty("operationalStatus")
-    private java.lang.String operationalStatus;
+    private String operationalStatus;
     @JsonProperty("poweredOn")
     private Boolean poweredOn;
     @JsonProperty("provisioning")
@@ -90,7 +90,7 @@ public class BareMetalHostStatus implements Editable<BareMetalHostStatusBuilder>
     @JsonProperty("triedCredentials")
     private CredentialsStatus triedCredentials;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -99,7 +99,7 @@ public class BareMetalHostStatus implements Editable<BareMetalHostStatusBuilder>
     public BareMetalHostStatus() {
     }
 
-    public BareMetalHostStatus(Integer errorCount, java.lang.String errorMessage, java.lang.String errorType, CredentialsStatus goodCredentials, HardwareDetails hardware, java.lang.String hardwareProfile, String lastUpdated, OperationHistory operationHistory, java.lang.String operationalStatus, Boolean poweredOn, ProvisionStatus provisioning, CredentialsStatus triedCredentials) {
+    public BareMetalHostStatus(Integer errorCount, String errorMessage, String errorType, CredentialsStatus goodCredentials, HardwareDetails hardware, String hardwareProfile, String lastUpdated, OperationHistory operationHistory, String operationalStatus, Boolean poweredOn, ProvisionStatus provisioning, CredentialsStatus triedCredentials) {
         super();
         this.errorCount = errorCount;
         this.errorMessage = errorMessage;
@@ -126,22 +126,22 @@ public class BareMetalHostStatus implements Editable<BareMetalHostStatusBuilder>
     }
 
     @JsonProperty("errorMessage")
-    public java.lang.String getErrorMessage() {
+    public String getErrorMessage() {
         return errorMessage;
     }
 
     @JsonProperty("errorMessage")
-    public void setErrorMessage(java.lang.String errorMessage) {
+    public void setErrorMessage(String errorMessage) {
         this.errorMessage = errorMessage;
     }
 
     @JsonProperty("errorType")
-    public java.lang.String getErrorType() {
+    public String getErrorType() {
         return errorType;
     }
 
     @JsonProperty("errorType")
-    public void setErrorType(java.lang.String errorType) {
+    public void setErrorType(String errorType) {
         this.errorType = errorType;
     }
 
@@ -166,12 +166,12 @@ public class BareMetalHostStatus implements Editable<BareMetalHostStatusBuilder>
     }
 
     @JsonProperty("hardwareProfile")
-    public java.lang.String getHardwareProfile() {
+    public String getHardwareProfile() {
         return hardwareProfile;
     }
 
     @JsonProperty("hardwareProfile")
-    public void setHardwareProfile(java.lang.String hardwareProfile) {
+    public void setHardwareProfile(String hardwareProfile) {
         this.hardwareProfile = hardwareProfile;
     }
 
@@ -196,12 +196,12 @@ public class BareMetalHostStatus implements Editable<BareMetalHostStatusBuilder>
     }
 
     @JsonProperty("operationalStatus")
-    public java.lang.String getOperationalStatus() {
+    public String getOperationalStatus() {
         return operationalStatus;
     }
 
     @JsonProperty("operationalStatus")
-    public void setOperationalStatus(java.lang.String operationalStatus) {
+    public void setOperationalStatus(String operationalStatus) {
         this.operationalStatus = operationalStatus;
     }
 
@@ -246,16 +246,16 @@ public class BareMetalHostStatus implements Editable<BareMetalHostStatusBuilder>
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
-    public void setAdditionalProperties(Map<java.lang.String, Object> additionalProperties) {
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
     }
 

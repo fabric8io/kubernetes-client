@@ -66,14 +66,14 @@ public class OutageEntry implements Editable<OutageEntryBuilder> , KubernetesRes
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<LogEntry> endLogs = new ArrayList<>();
     @JsonProperty("message")
-    private java.lang.String message;
+    private String message;
     @JsonProperty("start")
     private String start;
     @JsonProperty("startLogs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<LogEntry> startLogs = new ArrayList<>();
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -82,7 +82,7 @@ public class OutageEntry implements Editable<OutageEntryBuilder> , KubernetesRes
     public OutageEntry() {
     }
 
-    public OutageEntry(String end, List<LogEntry> endLogs, java.lang.String message, String start, List<LogEntry> startLogs) {
+    public OutageEntry(String end, List<LogEntry> endLogs, String message, String start, List<LogEntry> startLogs) {
         super();
         this.end = end;
         this.endLogs = endLogs;
@@ -113,12 +113,12 @@ public class OutageEntry implements Editable<OutageEntryBuilder> , KubernetesRes
     }
 
     @JsonProperty("message")
-    public java.lang.String getMessage() {
+    public String getMessage() {
         return message;
     }
 
     @JsonProperty("message")
-    public void setMessage(java.lang.String message) {
+    public void setMessage(String message) {
         this.message = message;
     }
 
@@ -154,16 +154,16 @@ public class OutageEntry implements Editable<OutageEntryBuilder> , KubernetesRes
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
-    public void setAdditionalProperties(Map<java.lang.String, Object> additionalProperties) {
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
     }
 

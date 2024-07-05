@@ -59,11 +59,11 @@ public class StepInfo implements Editable<StepInfoBuilder> , KubernetesResource
     @JsonProperty("durationMilliseconds")
     private Long durationMilliseconds;
     @JsonProperty("name")
-    private java.lang.String name;
+    private String name;
     @JsonProperty("startTime")
     private String startTime;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -72,7 +72,7 @@ public class StepInfo implements Editable<StepInfoBuilder> , KubernetesResource
     public StepInfo() {
     }
 
-    public StepInfo(Long durationMilliseconds, java.lang.String name, String startTime) {
+    public StepInfo(Long durationMilliseconds, String name, String startTime) {
         super();
         this.durationMilliseconds = durationMilliseconds;
         this.name = name;
@@ -90,12 +90,12 @@ public class StepInfo implements Editable<StepInfoBuilder> , KubernetesResource
     }
 
     @JsonProperty("name")
-    public java.lang.String getName() {
+    public String getName() {
         return name;
     }
 
     @JsonProperty("name")
-    public void setName(java.lang.String name) {
+    public void setName(String name) {
         this.name = name;
     }
 
@@ -120,16 +120,16 @@ public class StepInfo implements Editable<StepInfoBuilder> , KubernetesResource
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
-    public void setAdditionalProperties(Map<java.lang.String, Object> additionalProperties) {
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
     }
 

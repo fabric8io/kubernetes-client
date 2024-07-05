@@ -57,13 +57,13 @@ public class GRPCConnectionState implements Editable<GRPCConnectionStateBuilder>
 {
 
     @JsonProperty("address")
-    private java.lang.String address;
+    private String address;
     @JsonProperty("lastConnect")
     private String lastConnect;
     @JsonProperty("lastObservedState")
-    private java.lang.String lastObservedState;
+    private String lastObservedState;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -72,7 +72,7 @@ public class GRPCConnectionState implements Editable<GRPCConnectionStateBuilder>
     public GRPCConnectionState() {
     }
 
-    public GRPCConnectionState(java.lang.String address, String lastConnect, java.lang.String lastObservedState) {
+    public GRPCConnectionState(String address, String lastConnect, String lastObservedState) {
         super();
         this.address = address;
         this.lastConnect = lastConnect;
@@ -80,12 +80,12 @@ public class GRPCConnectionState implements Editable<GRPCConnectionStateBuilder>
     }
 
     @JsonProperty("address")
-    public java.lang.String getAddress() {
+    public String getAddress() {
         return address;
     }
 
     @JsonProperty("address")
-    public void setAddress(java.lang.String address) {
+    public void setAddress(String address) {
         this.address = address;
     }
 
@@ -100,12 +100,12 @@ public class GRPCConnectionState implements Editable<GRPCConnectionStateBuilder>
     }
 
     @JsonProperty("lastObservedState")
-    public java.lang.String getLastObservedState() {
+    public String getLastObservedState() {
         return lastObservedState;
     }
 
     @JsonProperty("lastObservedState")
-    public void setLastObservedState(java.lang.String lastObservedState) {
+    public void setLastObservedState(String lastObservedState) {
         this.lastObservedState = lastObservedState;
     }
 
@@ -120,16 +120,16 @@ public class GRPCConnectionState implements Editable<GRPCConnectionStateBuilder>
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
-    public void setAdditionalProperties(Map<java.lang.String, Object> additionalProperties) {
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
     }
 

@@ -60,9 +60,19 @@ import lombok.experimental.Accessors;
 public class SubscriptionCondition implements Editable<SubscriptionConditionBuilder> , KubernetesResource
 {
 
+    /**
+     * last time we got an update on a given condition
+     * 
+     */
     @JsonProperty("lastHeartbeatTime")
+    @JsonPropertyDescription("last time we got an update on a given condition")
     private String lastHeartbeatTime;
+    /**
+     * last time the condition transit from one status to another
+     * 
+     */
     @JsonProperty("lastTransitionTime")
+    @JsonPropertyDescription("last time the condition transit from one status to another")
     private String lastTransitionTime;
     /**
      * human-readable message indicating details about last transition
@@ -70,30 +80,30 @@ public class SubscriptionCondition implements Editable<SubscriptionConditionBuil
      */
     @JsonProperty("message")
     @JsonPropertyDescription("human-readable message indicating details about last transition")
-    private java.lang.String message;
+    private String message;
     /**
      * one-word CamelCase reason for the condition's last transition
      * 
      */
     @JsonProperty("reason")
     @JsonPropertyDescription("one-word CamelCase reason for the condition's last transition")
-    private java.lang.String reason;
+    private String reason;
     /**
      * status of the condition
      * 
      */
     @JsonProperty("status")
     @JsonPropertyDescription("status of the condition")
-    private java.lang.String status;
+    private String status;
     /**
      * type of Subscription condition
      * 
      */
     @JsonProperty("type")
     @JsonPropertyDescription("type of Subscription condition")
-    private java.lang.String type;
+    private String type;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -106,6 +116,10 @@ public class SubscriptionCondition implements Editable<SubscriptionConditionBuil
      * 
      * @param reason
      *     one-word CamelCase reason for the condition's last transition.
+     * @param lastHeartbeatTime
+     *     last time we got an update on a given condition.
+     * @param lastTransitionTime
+     *     last time the condition transit from one status to another.
      * @param message
      *     human-readable message indicating details about last transition.
      * @param type
@@ -113,7 +127,7 @@ public class SubscriptionCondition implements Editable<SubscriptionConditionBuil
      * @param status
      *     status of the condition.
      */
-    public SubscriptionCondition(String lastHeartbeatTime, String lastTransitionTime, java.lang.String message, java.lang.String reason, java.lang.String status, java.lang.String type) {
+    public SubscriptionCondition(String lastHeartbeatTime, String lastTransitionTime, String message, String reason, String status, String type) {
         super();
         this.lastHeartbeatTime = lastHeartbeatTime;
         this.lastTransitionTime = lastTransitionTime;
@@ -123,21 +137,37 @@ public class SubscriptionCondition implements Editable<SubscriptionConditionBuil
         this.type = type;
     }
 
+    /**
+     * last time we got an update on a given condition
+     * 
+     */
     @JsonProperty("lastHeartbeatTime")
     public String getLastHeartbeatTime() {
         return lastHeartbeatTime;
     }
 
+    /**
+     * last time we got an update on a given condition
+     * 
+     */
     @JsonProperty("lastHeartbeatTime")
     public void setLastHeartbeatTime(String lastHeartbeatTime) {
         this.lastHeartbeatTime = lastHeartbeatTime;
     }
 
+    /**
+     * last time the condition transit from one status to another
+     * 
+     */
     @JsonProperty("lastTransitionTime")
     public String getLastTransitionTime() {
         return lastTransitionTime;
     }
 
+    /**
+     * last time the condition transit from one status to another
+     * 
+     */
     @JsonProperty("lastTransitionTime")
     public void setLastTransitionTime(String lastTransitionTime) {
         this.lastTransitionTime = lastTransitionTime;
@@ -148,7 +178,7 @@ public class SubscriptionCondition implements Editable<SubscriptionConditionBuil
      * 
      */
     @JsonProperty("message")
-    public java.lang.String getMessage() {
+    public String getMessage() {
         return message;
     }
 
@@ -157,7 +187,7 @@ public class SubscriptionCondition implements Editable<SubscriptionConditionBuil
      * 
      */
     @JsonProperty("message")
-    public void setMessage(java.lang.String message) {
+    public void setMessage(String message) {
         this.message = message;
     }
 
@@ -166,7 +196,7 @@ public class SubscriptionCondition implements Editable<SubscriptionConditionBuil
      * 
      */
     @JsonProperty("reason")
-    public java.lang.String getReason() {
+    public String getReason() {
         return reason;
     }
 
@@ -175,7 +205,7 @@ public class SubscriptionCondition implements Editable<SubscriptionConditionBuil
      * 
      */
     @JsonProperty("reason")
-    public void setReason(java.lang.String reason) {
+    public void setReason(String reason) {
         this.reason = reason;
     }
 
@@ -184,7 +214,7 @@ public class SubscriptionCondition implements Editable<SubscriptionConditionBuil
      * 
      */
     @JsonProperty("status")
-    public java.lang.String getStatus() {
+    public String getStatus() {
         return status;
     }
 
@@ -193,7 +223,7 @@ public class SubscriptionCondition implements Editable<SubscriptionConditionBuil
      * 
      */
     @JsonProperty("status")
-    public void setStatus(java.lang.String status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
@@ -202,7 +232,7 @@ public class SubscriptionCondition implements Editable<SubscriptionConditionBuil
      * 
      */
     @JsonProperty("type")
-    public java.lang.String getType() {
+    public String getType() {
         return type;
     }
 
@@ -211,7 +241,7 @@ public class SubscriptionCondition implements Editable<SubscriptionConditionBuil
      * 
      */
     @JsonProperty("type")
-    public void setType(java.lang.String type) {
+    public void setType(String type) {
         this.type = type;
     }
 
@@ -226,16 +256,16 @@ public class SubscriptionCondition implements Editable<SubscriptionConditionBuil
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
-    public void setAdditionalProperties(Map<java.lang.String, Object> additionalProperties) {
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
     }
 

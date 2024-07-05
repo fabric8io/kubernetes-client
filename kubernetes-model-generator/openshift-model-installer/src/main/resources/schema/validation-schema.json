@@ -210,8 +210,7 @@
           "type": "string"
         },
         "time": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         }
       },
       "additionalProperties": true,
@@ -231,16 +230,14 @@
           "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "creationTimestamp": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "deletionGracePeriodSeconds": {
           "type": "integer",
           "existingJavaType": "Long"
         },
         "deletionTimestamp": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "finalizers": {
           "type": "array",
@@ -443,19 +440,6 @@
       },
       "additionalProperties": true,
       "existingJavaType": "io.fabric8.kubernetes.api.model.StatusDetails",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "kubernetes_apimachinery_Time": {
-      "type": "object",
-      "properties": {
-        "Time": {
-          "type": "string"
-        }
-      },
-      "additionalProperties": true,
-      "existingJavaType": "String",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -2876,8 +2860,7 @@
       "existingJavaType": "io.fabric8.kubernetes.api.model.Status"
     },
     "Time": {
-      "$ref": "#/definitions/kubernetes_apimachinery_Time",
-      "existingJavaType": "String"
+      "type": "string"
     },
     "TypeMeta": {
       "$ref": "#/definitions/kubernetes_apimachinery_TypeMeta",
@@ -3397,47 +3380,6 @@
       "additionalProperties": true
     },
     "machinepool": {
-      "properties": {
-        "additionalNetworkIDs": {
-          "type": "array",
-          "javaOmitEmpty": true,
-          "items": {
-            "type": "string"
-          }
-        },
-        "additionalSecurityGroupIDs": {
-          "type": "array",
-          "javaOmitEmpty": true,
-          "items": {
-            "type": "string"
-          }
-        },
-        "failureDomains": {
-          "type": "array",
-          "javaOmitEmpty": true,
-          "items": {
-            "$ref": "#/definitions/os_installer_openstack_v1_FailureDomain",
-            "existingJavaType": "io.fabric8.openshift.api.model.installer.openstack.v1.FailureDomain"
-          }
-        },
-        "rootVolume": {
-          "$ref": "#/definitions/os_installer_openstack_v1_RootVolume",
-          "existingJavaType": "io.fabric8.openshift.api.model.installer.openstack.v1.RootVolume"
-        },
-        "serverGroupPolicy": {
-          "type": "string"
-        },
-        "type": {
-          "type": "string"
-        },
-        "zones": {
-          "type": "array",
-          "javaOmitEmpty": true,
-          "items": {
-            "type": "string"
-          }
-        }
-      },
       "additionalProperties": true
     },
     "machinepoolplatform": {
@@ -3515,8 +3457,7 @@
           "type": "string"
         },
         "time": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         }
       },
       "additionalProperties": true
@@ -3659,16 +3600,14 @@
           "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "creationTimestamp": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "deletionGracePeriodSeconds": {
           "type": "integer",
           "existingJavaType": "Long"
         },
         "deletionTimestamp": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "finalizers": {
           "type": "array",
@@ -3737,8 +3676,15 @@
     },
     "osdisk": {
       "properties": {
+        "diskEncryptionSet": {
+          "$ref": "#/definitions/os_installer_azure_v1_DiskEncryptionSet",
+          "existingJavaType": "io.fabric8.openshift.api.model.installer.azure.v1.DiskEncryptionSet"
+        },
         "diskSizeGB": {
           "type": "integer"
+        },
+        "diskType": {
+          "type": "string"
         }
       },
       "additionalProperties": true
@@ -3795,6 +3741,38 @@
       "additionalProperties": true
     },
     "platform": {
+      "properties": {
+        "defaultMachinePlatform": {
+          "$ref": "#/definitions/os_installer_alibabacloud_v1_MachinePool",
+          "existingJavaType": "io.fabric8.openshift.api.model.installer.alibabacloud.v1.MachinePool"
+        },
+        "privateZoneID": {
+          "type": "string"
+        },
+        "region": {
+          "type": "string"
+        },
+        "resourceGroupID": {
+          "type": "string"
+        },
+        "tags": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
+        },
+        "vpcID": {
+          "type": "string"
+        },
+        "vswitchIDs": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        }
+      },
       "additionalProperties": true
     },
     "porttarget": {
@@ -4087,14 +4065,6 @@
           "type": "string"
         },
         "tenantId": {
-          "type": "string"
-        }
-      },
-      "additionalProperties": true
-    },
-    "time": {
-      "properties": {
-        "Time": {
           "type": "string"
         }
       },

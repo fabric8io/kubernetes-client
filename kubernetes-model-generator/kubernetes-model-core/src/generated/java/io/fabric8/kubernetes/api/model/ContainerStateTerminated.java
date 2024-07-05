@@ -40,21 +40,21 @@ public class ContainerStateTerminated implements Editable<ContainerStateTerminat
 {
 
     @JsonProperty("containerID")
-    private java.lang.String containerID;
+    private String containerID;
     @JsonProperty("exitCode")
     private Integer exitCode;
     @JsonProperty("finishedAt")
     private String finishedAt;
     @JsonProperty("message")
-    private java.lang.String message;
+    private String message;
     @JsonProperty("reason")
-    private java.lang.String reason;
+    private String reason;
     @JsonProperty("signal")
     private Integer signal;
     @JsonProperty("startedAt")
     private String startedAt;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -63,7 +63,7 @@ public class ContainerStateTerminated implements Editable<ContainerStateTerminat
     public ContainerStateTerminated() {
     }
 
-    public ContainerStateTerminated(java.lang.String containerID, Integer exitCode, String finishedAt, java.lang.String message, java.lang.String reason, Integer signal, String startedAt) {
+    public ContainerStateTerminated(String containerID, Integer exitCode, String finishedAt, String message, String reason, Integer signal, String startedAt) {
         super();
         this.containerID = containerID;
         this.exitCode = exitCode;
@@ -75,12 +75,12 @@ public class ContainerStateTerminated implements Editable<ContainerStateTerminat
     }
 
     @JsonProperty("containerID")
-    public java.lang.String getContainerID() {
+    public String getContainerID() {
         return containerID;
     }
 
     @JsonProperty("containerID")
-    public void setContainerID(java.lang.String containerID) {
+    public void setContainerID(String containerID) {
         this.containerID = containerID;
     }
 
@@ -105,22 +105,22 @@ public class ContainerStateTerminated implements Editable<ContainerStateTerminat
     }
 
     @JsonProperty("message")
-    public java.lang.String getMessage() {
+    public String getMessage() {
         return message;
     }
 
     @JsonProperty("message")
-    public void setMessage(java.lang.String message) {
+    public void setMessage(String message) {
         this.message = message;
     }
 
     @JsonProperty("reason")
-    public java.lang.String getReason() {
+    public String getReason() {
         return reason;
     }
 
     @JsonProperty("reason")
-    public void setReason(java.lang.String reason) {
+    public void setReason(String reason) {
         this.reason = reason;
     }
 
@@ -155,16 +155,16 @@ public class ContainerStateTerminated implements Editable<ContainerStateTerminat
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
-    public void setAdditionalProperties(Map<java.lang.String, Object> additionalProperties) {
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
     }
 

@@ -69,21 +69,21 @@ public class InstallPlanStatus implements Editable<InstallPlanStatusBuilder> , K
     private List<BundleLookup> bundleLookups = new ArrayList<>();
     @JsonProperty("catalogSources")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> catalogSources = new ArrayList<>();
+    private List<String> catalogSources = new ArrayList<>();
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<InstallPlanCondition> conditions = new ArrayList<>();
     @JsonProperty("message")
-    private java.lang.String message;
+    private String message;
     @JsonProperty("phase")
-    private java.lang.String phase;
+    private String phase;
     @JsonProperty("plan")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Step> plan = new ArrayList<>();
     @JsonProperty("startTime")
     private String startTime;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -92,7 +92,7 @@ public class InstallPlanStatus implements Editable<InstallPlanStatusBuilder> , K
     public InstallPlanStatus() {
     }
 
-    public InstallPlanStatus(io.fabric8.kubernetes.api.model.ObjectReference attenuatedServiceAccountRef, List<BundleLookup> bundleLookups, List<java.lang.String> catalogSources, List<InstallPlanCondition> conditions, java.lang.String message, java.lang.String phase, List<Step> plan, String startTime) {
+    public InstallPlanStatus(io.fabric8.kubernetes.api.model.ObjectReference attenuatedServiceAccountRef, List<BundleLookup> bundleLookups, List<String> catalogSources, List<InstallPlanCondition> conditions, String message, String phase, List<Step> plan, String startTime) {
         super();
         this.attenuatedServiceAccountRef = attenuatedServiceAccountRef;
         this.bundleLookups = bundleLookups;
@@ -127,12 +127,12 @@ public class InstallPlanStatus implements Editable<InstallPlanStatusBuilder> , K
 
     @JsonProperty("catalogSources")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<java.lang.String> getCatalogSources() {
+    public List<String> getCatalogSources() {
         return catalogSources;
     }
 
     @JsonProperty("catalogSources")
-    public void setCatalogSources(List<java.lang.String> catalogSources) {
+    public void setCatalogSources(List<String> catalogSources) {
         this.catalogSources = catalogSources;
     }
 
@@ -148,22 +148,22 @@ public class InstallPlanStatus implements Editable<InstallPlanStatusBuilder> , K
     }
 
     @JsonProperty("message")
-    public java.lang.String getMessage() {
+    public String getMessage() {
         return message;
     }
 
     @JsonProperty("message")
-    public void setMessage(java.lang.String message) {
+    public void setMessage(String message) {
         this.message = message;
     }
 
     @JsonProperty("phase")
-    public java.lang.String getPhase() {
+    public String getPhase() {
         return phase;
     }
 
     @JsonProperty("phase")
-    public void setPhase(java.lang.String phase) {
+    public void setPhase(String phase) {
         this.phase = phase;
     }
 
@@ -199,16 +199,16 @@ public class InstallPlanStatus implements Editable<InstallPlanStatusBuilder> , K
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
-    public void setAdditionalProperties(Map<java.lang.String, Object> additionalProperties) {
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
     }
 

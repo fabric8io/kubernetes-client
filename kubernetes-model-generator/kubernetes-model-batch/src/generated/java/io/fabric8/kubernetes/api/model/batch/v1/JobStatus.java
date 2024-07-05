@@ -69,7 +69,7 @@ public class JobStatus implements Editable<JobStatusBuilder> , KubernetesResourc
     @JsonProperty("active")
     private Integer active;
     @JsonProperty("completedIndexes")
-    private java.lang.String completedIndexes;
+    private String completedIndexes;
     @JsonProperty("completionTime")
     private String completionTime;
     @JsonProperty("conditions")
@@ -78,7 +78,7 @@ public class JobStatus implements Editable<JobStatusBuilder> , KubernetesResourc
     @JsonProperty("failed")
     private Integer failed;
     @JsonProperty("failedIndexes")
-    private java.lang.String failedIndexes;
+    private String failedIndexes;
     @JsonProperty("ready")
     private Integer ready;
     @JsonProperty("startTime")
@@ -90,7 +90,7 @@ public class JobStatus implements Editable<JobStatusBuilder> , KubernetesResourc
     @JsonProperty("uncountedTerminatedPods")
     private UncountedTerminatedPods uncountedTerminatedPods;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -99,7 +99,7 @@ public class JobStatus implements Editable<JobStatusBuilder> , KubernetesResourc
     public JobStatus() {
     }
 
-    public JobStatus(Integer active, java.lang.String completedIndexes, String completionTime, List<JobCondition> conditions, Integer failed, java.lang.String failedIndexes, Integer ready, String startTime, Integer succeeded, Integer terminating, UncountedTerminatedPods uncountedTerminatedPods) {
+    public JobStatus(Integer active, String completedIndexes, String completionTime, List<JobCondition> conditions, Integer failed, String failedIndexes, Integer ready, String startTime, Integer succeeded, Integer terminating, UncountedTerminatedPods uncountedTerminatedPods) {
         super();
         this.active = active;
         this.completedIndexes = completedIndexes;
@@ -125,12 +125,12 @@ public class JobStatus implements Editable<JobStatusBuilder> , KubernetesResourc
     }
 
     @JsonProperty("completedIndexes")
-    public java.lang.String getCompletedIndexes() {
+    public String getCompletedIndexes() {
         return completedIndexes;
     }
 
     @JsonProperty("completedIndexes")
-    public void setCompletedIndexes(java.lang.String completedIndexes) {
+    public void setCompletedIndexes(String completedIndexes) {
         this.completedIndexes = completedIndexes;
     }
 
@@ -166,12 +166,12 @@ public class JobStatus implements Editable<JobStatusBuilder> , KubernetesResourc
     }
 
     @JsonProperty("failedIndexes")
-    public java.lang.String getFailedIndexes() {
+    public String getFailedIndexes() {
         return failedIndexes;
     }
 
     @JsonProperty("failedIndexes")
-    public void setFailedIndexes(java.lang.String failedIndexes) {
+    public void setFailedIndexes(String failedIndexes) {
         this.failedIndexes = failedIndexes;
     }
 
@@ -236,16 +236,16 @@ public class JobStatus implements Editable<JobStatusBuilder> , KubernetesResourc
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
-    public void setAdditionalProperties(Map<java.lang.String, Object> additionalProperties) {
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
     }
 
