@@ -68,12 +68,12 @@ public class ClusterDeploymentStatus implements Editable<ClusterDeploymentStatus
 {
 
     @JsonProperty("apiURL")
-    private java.lang.String apiURL;
+    private String apiURL;
     @JsonProperty("certificateBundles")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<CertificateBundleStatus> certificateBundles = new ArrayList<>();
     @JsonProperty("cliImage")
-    private java.lang.String cliImage;
+    private String cliImage;
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ClusterDeploymentCondition> conditions = new ArrayList<>();
@@ -82,21 +82,21 @@ public class ClusterDeploymentStatus implements Editable<ClusterDeploymentStatus
     @JsonProperty("installStartedTimestamp")
     private String installStartedTimestamp;
     @JsonProperty("installVersion")
-    private java.lang.String installVersion;
+    private String installVersion;
     @JsonProperty("installedTimestamp")
     private String installedTimestamp;
     @JsonProperty("installerImage")
-    private java.lang.String installerImage;
+    private String installerImage;
     @JsonProperty("platformStatus")
     private PlatformStatus platformStatus;
     @JsonProperty("powerState")
-    private java.lang.String powerState;
+    private String powerState;
     @JsonProperty("provisionRef")
     private io.fabric8.kubernetes.api.model.LocalObjectReference provisionRef;
     @JsonProperty("webConsoleURL")
-    private java.lang.String webConsoleURL;
+    private String webConsoleURL;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -105,7 +105,7 @@ public class ClusterDeploymentStatus implements Editable<ClusterDeploymentStatus
     public ClusterDeploymentStatus() {
     }
 
-    public ClusterDeploymentStatus(java.lang.String apiURL, List<CertificateBundleStatus> certificateBundles, java.lang.String cliImage, List<ClusterDeploymentCondition> conditions, Integer installRestarts, String installStartedTimestamp, java.lang.String installVersion, String installedTimestamp, java.lang.String installerImage, PlatformStatus platformStatus, java.lang.String powerState, io.fabric8.kubernetes.api.model.LocalObjectReference provisionRef, java.lang.String webConsoleURL) {
+    public ClusterDeploymentStatus(String apiURL, List<CertificateBundleStatus> certificateBundles, String cliImage, List<ClusterDeploymentCondition> conditions, Integer installRestarts, String installStartedTimestamp, String installVersion, String installedTimestamp, String installerImage, PlatformStatus platformStatus, String powerState, io.fabric8.kubernetes.api.model.LocalObjectReference provisionRef, String webConsoleURL) {
         super();
         this.apiURL = apiURL;
         this.certificateBundles = certificateBundles;
@@ -123,12 +123,12 @@ public class ClusterDeploymentStatus implements Editable<ClusterDeploymentStatus
     }
 
     @JsonProperty("apiURL")
-    public java.lang.String getApiURL() {
+    public String getApiURL() {
         return apiURL;
     }
 
     @JsonProperty("apiURL")
-    public void setApiURL(java.lang.String apiURL) {
+    public void setApiURL(String apiURL) {
         this.apiURL = apiURL;
     }
 
@@ -144,12 +144,12 @@ public class ClusterDeploymentStatus implements Editable<ClusterDeploymentStatus
     }
 
     @JsonProperty("cliImage")
-    public java.lang.String getCliImage() {
+    public String getCliImage() {
         return cliImage;
     }
 
     @JsonProperty("cliImage")
-    public void setCliImage(java.lang.String cliImage) {
+    public void setCliImage(String cliImage) {
         this.cliImage = cliImage;
     }
 
@@ -185,12 +185,12 @@ public class ClusterDeploymentStatus implements Editable<ClusterDeploymentStatus
     }
 
     @JsonProperty("installVersion")
-    public java.lang.String getInstallVersion() {
+    public String getInstallVersion() {
         return installVersion;
     }
 
     @JsonProperty("installVersion")
-    public void setInstallVersion(java.lang.String installVersion) {
+    public void setInstallVersion(String installVersion) {
         this.installVersion = installVersion;
     }
 
@@ -205,12 +205,12 @@ public class ClusterDeploymentStatus implements Editable<ClusterDeploymentStatus
     }
 
     @JsonProperty("installerImage")
-    public java.lang.String getInstallerImage() {
+    public String getInstallerImage() {
         return installerImage;
     }
 
     @JsonProperty("installerImage")
-    public void setInstallerImage(java.lang.String installerImage) {
+    public void setInstallerImage(String installerImage) {
         this.installerImage = installerImage;
     }
 
@@ -225,12 +225,12 @@ public class ClusterDeploymentStatus implements Editable<ClusterDeploymentStatus
     }
 
     @JsonProperty("powerState")
-    public java.lang.String getPowerState() {
+    public String getPowerState() {
         return powerState;
     }
 
     @JsonProperty("powerState")
-    public void setPowerState(java.lang.String powerState) {
+    public void setPowerState(String powerState) {
         this.powerState = powerState;
     }
 
@@ -245,12 +245,12 @@ public class ClusterDeploymentStatus implements Editable<ClusterDeploymentStatus
     }
 
     @JsonProperty("webConsoleURL")
-    public java.lang.String getWebConsoleURL() {
+    public String getWebConsoleURL() {
         return webConsoleURL;
     }
 
     @JsonProperty("webConsoleURL")
-    public void setWebConsoleURL(java.lang.String webConsoleURL) {
+    public void setWebConsoleURL(String webConsoleURL) {
         this.webConsoleURL = webConsoleURL;
     }
 
@@ -265,16 +265,16 @@ public class ClusterDeploymentStatus implements Editable<ClusterDeploymentStatus
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
-    public void setAdditionalProperties(Map<java.lang.String, Object> additionalProperties) {
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
     }
 

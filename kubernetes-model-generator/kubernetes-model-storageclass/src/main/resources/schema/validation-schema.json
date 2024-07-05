@@ -371,8 +371,7 @@
           "type": "string"
         },
         "time": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         }
       },
       "additionalProperties": true,
@@ -392,16 +391,14 @@
           "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "creationTimestamp": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "deletionGracePeriodSeconds": {
           "type": "integer",
           "existingJavaType": "Long"
         },
         "deletionTimestamp": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "finalizers": {
           "type": "array",
@@ -672,19 +669,6 @@
       },
       "additionalProperties": true,
       "existingJavaType": "io.fabric8.kubernetes.api.model.StatusDetails",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "kubernetes_apimachinery_Time": {
-      "type": "object",
-      "properties": {
-        "Time": {
-          "type": "string"
-        }
-      },
-      "additionalProperties": true,
-      "existingJavaType": "String",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -2307,8 +2291,7 @@
           "type": "string"
         },
         "time": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         }
       },
       "additionalProperties": true,
@@ -2727,8 +2710,7 @@
       "type": "object",
       "properties": {
         "lastUpdateTime": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "message": {
           "type": "string"
@@ -2955,8 +2937,7 @@
       "existingJavaType": "io.fabric8.kubernetes.api.model.storagemigration.v1alpha1.StorageVersionMigrationList"
     },
     "Time": {
-      "$ref": "#/definitions/kubernetes_apimachinery_Time",
-      "existingJavaType": "String"
+      "type": "string"
     },
     "TypeMeta": {
       "$ref": "#/definitions/kubernetes_apimachinery_TypeMeta",
@@ -3202,7 +3183,7 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "storage.k8s.io/v1beta1",
+          "default": "storage.k8s.io/v1",
           "required": true
         },
         "kind": {
@@ -3215,8 +3196,8 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
-          "$ref": "#/definitions/kubernetes_storageclass_v1beta1_CSIDriverSpec",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.storage.v1beta1.CSIDriverSpec"
+          "$ref": "#/definitions/kubernetes_storageclass_CSIDriverSpec",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.storage.CSIDriverSpec"
         }
       },
       "additionalProperties": true
@@ -3225,14 +3206,14 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "storage.k8s.io/v1beta1",
+          "default": "storage.k8s.io/v1",
           "required": true
         },
         "items": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/kubernetes_storageclass_v1beta1_CSIDriver",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.storage.v1beta1.CSIDriver"
+            "$ref": "#/definitions/kubernetes_storageclass_CSIDriver",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.storage.CSIDriver"
           }
         },
         "kind": {
@@ -3271,8 +3252,8 @@
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/kubernetes_storageclass_TokenRequest",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.storage.TokenRequest"
+            "$ref": "#/definitions/kubernetes_storageclass_v1beta1_TokenRequest",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.storage.v1beta1.TokenRequest"
           }
         },
         "volumeLifecycleModes": {
@@ -3311,8 +3292,8 @@
     "csinodedriver": {
       "properties": {
         "allocatable": {
-          "$ref": "#/definitions/kubernetes_storageclass_VolumeNodeResources",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.storage.VolumeNodeResources"
+          "$ref": "#/definitions/kubernetes_storageclass_v1beta1_VolumeNodeResources",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.storage.v1beta1.VolumeNodeResources"
         },
         "name": {
           "type": "string"
@@ -3360,8 +3341,8 @@
         "drivers": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/kubernetes_storageclass_CSINodeDriver",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.storage.CSINodeDriver"
+            "$ref": "#/definitions/kubernetes_storageclass_v1beta1_CSINodeDriver",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.storage.v1beta1.CSINodeDriver"
           }
         }
       },
@@ -3899,8 +3880,7 @@
           "type": "string"
         },
         "time": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         }
       },
       "additionalProperties": true
@@ -3908,8 +3888,7 @@
     "migrationcondition": {
       "properties": {
         "lastUpdateTime": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "message": {
           "type": "string"
@@ -4001,16 +3980,14 @@
           "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "creationTimestamp": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "deletionGracePeriodSeconds": {
           "type": "integer",
           "existingJavaType": "Long"
         },
         "deletionTimestamp": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "finalizers": {
           "type": "array",
@@ -4810,14 +4787,6 @@
       },
       "additionalProperties": true
     },
-    "time": {
-      "properties": {
-        "Time": {
-          "type": "string"
-        }
-      },
-      "additionalProperties": true
-    },
     "tokenrequest": {
       "properties": {
         "audience": {
@@ -5060,8 +5029,7 @@
           "type": "string"
         },
         "time": {
-          "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "existingJavaType": "String"
+          "type": "string"
         }
       },
       "additionalProperties": true

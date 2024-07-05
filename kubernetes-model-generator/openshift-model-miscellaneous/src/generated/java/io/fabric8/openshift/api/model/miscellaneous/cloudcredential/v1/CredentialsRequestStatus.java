@@ -69,7 +69,7 @@ public class CredentialsRequestStatus implements Editable<CredentialsRequestStat
     @JsonProperty("lastSyncGeneration")
     private Long lastSyncGeneration;
     @JsonProperty("lastSyncTimestamp")
-    private String lastSyncTimestamp;
+    private java.lang.String lastSyncTimestamp;
     @JsonProperty("providerStatus")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, Object> providerStatus = new LinkedHashMap<>();
@@ -85,7 +85,7 @@ public class CredentialsRequestStatus implements Editable<CredentialsRequestStat
     public CredentialsRequestStatus() {
     }
 
-    public CredentialsRequestStatus(List<CredentialsRequestCondition> conditions, java.lang.String lastSyncCloudCredsSecretResourceVersion, Long lastSyncGeneration, String lastSyncTimestamp, Map<String, Object> providerStatus, Boolean provisioned) {
+    public CredentialsRequestStatus(List<CredentialsRequestCondition> conditions, java.lang.String lastSyncCloudCredsSecretResourceVersion, Long lastSyncGeneration, java.lang.String lastSyncTimestamp, Map<String, Object> providerStatus, Boolean provisioned) {
         super();
         this.conditions = conditions;
         this.lastSyncCloudCredsSecretResourceVersion = lastSyncCloudCredsSecretResourceVersion;
@@ -127,12 +127,12 @@ public class CredentialsRequestStatus implements Editable<CredentialsRequestStat
     }
 
     @JsonProperty("lastSyncTimestamp")
-    public String getLastSyncTimestamp() {
+    public java.lang.String getLastSyncTimestamp() {
         return lastSyncTimestamp;
     }
 
     @JsonProperty("lastSyncTimestamp")
-    public void setLastSyncTimestamp(String lastSyncTimestamp) {
+    public void setLastSyncTimestamp(java.lang.String lastSyncTimestamp) {
         this.lastSyncTimestamp = lastSyncTimestamp;
     }
 

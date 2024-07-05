@@ -58,15 +58,15 @@ public class LastOperation implements Editable<LastOperationBuilder> , Kubernete
 {
 
     @JsonProperty("description")
-    private java.lang.String description;
+    private String description;
     @JsonProperty("lastUpdated")
     private String lastUpdated;
     @JsonProperty("state")
-    private java.lang.String state;
+    private String state;
     @JsonProperty("type")
-    private java.lang.String type;
+    private String type;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -75,7 +75,7 @@ public class LastOperation implements Editable<LastOperationBuilder> , Kubernete
     public LastOperation() {
     }
 
-    public LastOperation(java.lang.String description, String lastUpdated, java.lang.String state, java.lang.String type) {
+    public LastOperation(String description, String lastUpdated, String state, String type) {
         super();
         this.description = description;
         this.lastUpdated = lastUpdated;
@@ -84,12 +84,12 @@ public class LastOperation implements Editable<LastOperationBuilder> , Kubernete
     }
 
     @JsonProperty("description")
-    public java.lang.String getDescription() {
+    public String getDescription() {
         return description;
     }
 
     @JsonProperty("description")
-    public void setDescription(java.lang.String description) {
+    public void setDescription(String description) {
         this.description = description;
     }
 
@@ -104,22 +104,22 @@ public class LastOperation implements Editable<LastOperationBuilder> , Kubernete
     }
 
     @JsonProperty("state")
-    public java.lang.String getState() {
+    public String getState() {
         return state;
     }
 
     @JsonProperty("state")
-    public void setState(java.lang.String state) {
+    public void setState(String state) {
         this.state = state;
     }
 
     @JsonProperty("type")
-    public java.lang.String getType() {
+    public String getType() {
         return type;
     }
 
     @JsonProperty("type")
-    public void setType(java.lang.String type) {
+    public void setType(String type) {
         this.type = type;
     }
 
@@ -134,16 +134,16 @@ public class LastOperation implements Editable<LastOperationBuilder> , Kubernete
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
-    public void setAdditionalProperties(Map<java.lang.String, Object> additionalProperties) {
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
     }
 

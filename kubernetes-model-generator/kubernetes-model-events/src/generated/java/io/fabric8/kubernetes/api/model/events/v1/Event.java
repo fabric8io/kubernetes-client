@@ -81,14 +81,14 @@ public class Event implements Editable<EventBuilder> , HasMetadata, Namespaced
 {
 
     @JsonProperty("action")
-    private java.lang.String action;
+    private String action;
     /**
      * 
      * (Required)
      * 
      */
     @JsonProperty("apiVersion")
-    private java.lang.String apiVersion = "events.k8s.io/v1";
+    private String apiVersion = "events.k8s.io/v1";
     @JsonProperty("deprecatedCount")
     private Integer deprecatedCount;
     @JsonProperty("deprecatedFirstTimestamp")
@@ -105,27 +105,27 @@ public class Event implements Editable<EventBuilder> , HasMetadata, Namespaced
      * 
      */
     @JsonProperty("kind")
-    private java.lang.String kind = "Event";
+    private String kind = "Event";
     @JsonProperty("metadata")
     private io.fabric8.kubernetes.api.model.ObjectMeta metadata;
     @JsonProperty("note")
-    private java.lang.String note;
+    private String note;
     @JsonProperty("reason")
-    private java.lang.String reason;
+    private String reason;
     @JsonProperty("regarding")
     private io.fabric8.kubernetes.api.model.ObjectReference regarding;
     @JsonProperty("related")
     private io.fabric8.kubernetes.api.model.ObjectReference related;
     @JsonProperty("reportingController")
-    private java.lang.String reportingController;
+    private String reportingController;
     @JsonProperty("reportingInstance")
-    private java.lang.String reportingInstance;
+    private String reportingInstance;
     @JsonProperty("series")
     private EventSeries series;
     @JsonProperty("type")
-    private java.lang.String type;
+    private String type;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -134,7 +134,7 @@ public class Event implements Editable<EventBuilder> , HasMetadata, Namespaced
     public Event() {
     }
 
-    public Event(java.lang.String action, java.lang.String apiVersion, Integer deprecatedCount, String deprecatedFirstTimestamp, String deprecatedLastTimestamp, EventSource deprecatedSource, MicroTime eventTime, java.lang.String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, java.lang.String note, java.lang.String reason, io.fabric8.kubernetes.api.model.ObjectReference regarding, io.fabric8.kubernetes.api.model.ObjectReference related, java.lang.String reportingController, java.lang.String reportingInstance, EventSeries series, java.lang.String type) {
+    public Event(String action, String apiVersion, Integer deprecatedCount, String deprecatedFirstTimestamp, String deprecatedLastTimestamp, EventSource deprecatedSource, MicroTime eventTime, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, String note, String reason, io.fabric8.kubernetes.api.model.ObjectReference regarding, io.fabric8.kubernetes.api.model.ObjectReference related, String reportingController, String reportingInstance, EventSeries series, String type) {
         super();
         this.action = action;
         this.apiVersion = apiVersion;
@@ -156,12 +156,12 @@ public class Event implements Editable<EventBuilder> , HasMetadata, Namespaced
     }
 
     @JsonProperty("action")
-    public java.lang.String getAction() {
+    public String getAction() {
         return action;
     }
 
     @JsonProperty("action")
-    public void setAction(java.lang.String action) {
+    public void setAction(String action) {
         this.action = action;
     }
 
@@ -171,7 +171,7 @@ public class Event implements Editable<EventBuilder> , HasMetadata, Namespaced
      * 
      */
     @JsonProperty("apiVersion")
-    public java.lang.String getApiVersion() {
+    public String getApiVersion() {
         return apiVersion;
     }
 
@@ -181,7 +181,7 @@ public class Event implements Editable<EventBuilder> , HasMetadata, Namespaced
      * 
      */
     @JsonProperty("apiVersion")
-    public void setApiVersion(java.lang.String apiVersion) {
+    public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
     }
 
@@ -241,7 +241,7 @@ public class Event implements Editable<EventBuilder> , HasMetadata, Namespaced
      * 
      */
     @JsonProperty("kind")
-    public java.lang.String getKind() {
+    public String getKind() {
         return kind;
     }
 
@@ -251,7 +251,7 @@ public class Event implements Editable<EventBuilder> , HasMetadata, Namespaced
      * 
      */
     @JsonProperty("kind")
-    public void setKind(java.lang.String kind) {
+    public void setKind(String kind) {
         this.kind = kind;
     }
 
@@ -266,22 +266,22 @@ public class Event implements Editable<EventBuilder> , HasMetadata, Namespaced
     }
 
     @JsonProperty("note")
-    public java.lang.String getNote() {
+    public String getNote() {
         return note;
     }
 
     @JsonProperty("note")
-    public void setNote(java.lang.String note) {
+    public void setNote(String note) {
         this.note = note;
     }
 
     @JsonProperty("reason")
-    public java.lang.String getReason() {
+    public String getReason() {
         return reason;
     }
 
     @JsonProperty("reason")
-    public void setReason(java.lang.String reason) {
+    public void setReason(String reason) {
         this.reason = reason;
     }
 
@@ -306,22 +306,22 @@ public class Event implements Editable<EventBuilder> , HasMetadata, Namespaced
     }
 
     @JsonProperty("reportingController")
-    public java.lang.String getReportingController() {
+    public String getReportingController() {
         return reportingController;
     }
 
     @JsonProperty("reportingController")
-    public void setReportingController(java.lang.String reportingController) {
+    public void setReportingController(String reportingController) {
         this.reportingController = reportingController;
     }
 
     @JsonProperty("reportingInstance")
-    public java.lang.String getReportingInstance() {
+    public String getReportingInstance() {
         return reportingInstance;
     }
 
     @JsonProperty("reportingInstance")
-    public void setReportingInstance(java.lang.String reportingInstance) {
+    public void setReportingInstance(String reportingInstance) {
         this.reportingInstance = reportingInstance;
     }
 
@@ -336,12 +336,12 @@ public class Event implements Editable<EventBuilder> , HasMetadata, Namespaced
     }
 
     @JsonProperty("type")
-    public java.lang.String getType() {
+    public String getType() {
         return type;
     }
 
     @JsonProperty("type")
-    public void setType(java.lang.String type) {
+    public void setType(String type) {
         this.type = type;
     }
 
@@ -356,16 +356,16 @@ public class Event implements Editable<EventBuilder> , HasMetadata, Namespaced
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
-    public void setAdditionalProperties(Map<java.lang.String, Object> additionalProperties) {
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
     }
 

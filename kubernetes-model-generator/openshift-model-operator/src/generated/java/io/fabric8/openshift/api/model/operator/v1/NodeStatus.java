@@ -69,22 +69,22 @@ public class NodeStatus implements Editable<NodeStatusBuilder> , KubernetesResou
     @JsonProperty("lastFailedCount")
     private Integer lastFailedCount;
     @JsonProperty("lastFailedReason")
-    private java.lang.String lastFailedReason;
+    private String lastFailedReason;
     @JsonProperty("lastFailedRevision")
     private Integer lastFailedRevision;
     @JsonProperty("lastFailedRevisionErrors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> lastFailedRevisionErrors = new ArrayList<>();
+    private List<String> lastFailedRevisionErrors = new ArrayList<>();
     @JsonProperty("lastFailedTime")
     private String lastFailedTime;
     @JsonProperty("lastFallbackCount")
     private Integer lastFallbackCount;
     @JsonProperty("nodeName")
-    private java.lang.String nodeName;
+    private String nodeName;
     @JsonProperty("targetRevision")
     private Integer targetRevision;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -93,7 +93,7 @@ public class NodeStatus implements Editable<NodeStatusBuilder> , KubernetesResou
     public NodeStatus() {
     }
 
-    public NodeStatus(Integer currentRevision, Integer lastFailedCount, java.lang.String lastFailedReason, Integer lastFailedRevision, List<java.lang.String> lastFailedRevisionErrors, String lastFailedTime, Integer lastFallbackCount, java.lang.String nodeName, Integer targetRevision) {
+    public NodeStatus(Integer currentRevision, Integer lastFailedCount, String lastFailedReason, Integer lastFailedRevision, List<String> lastFailedRevisionErrors, String lastFailedTime, Integer lastFallbackCount, String nodeName, Integer targetRevision) {
         super();
         this.currentRevision = currentRevision;
         this.lastFailedCount = lastFailedCount;
@@ -127,12 +127,12 @@ public class NodeStatus implements Editable<NodeStatusBuilder> , KubernetesResou
     }
 
     @JsonProperty("lastFailedReason")
-    public java.lang.String getLastFailedReason() {
+    public String getLastFailedReason() {
         return lastFailedReason;
     }
 
     @JsonProperty("lastFailedReason")
-    public void setLastFailedReason(java.lang.String lastFailedReason) {
+    public void setLastFailedReason(String lastFailedReason) {
         this.lastFailedReason = lastFailedReason;
     }
 
@@ -148,12 +148,12 @@ public class NodeStatus implements Editable<NodeStatusBuilder> , KubernetesResou
 
     @JsonProperty("lastFailedRevisionErrors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<java.lang.String> getLastFailedRevisionErrors() {
+    public List<String> getLastFailedRevisionErrors() {
         return lastFailedRevisionErrors;
     }
 
     @JsonProperty("lastFailedRevisionErrors")
-    public void setLastFailedRevisionErrors(List<java.lang.String> lastFailedRevisionErrors) {
+    public void setLastFailedRevisionErrors(List<String> lastFailedRevisionErrors) {
         this.lastFailedRevisionErrors = lastFailedRevisionErrors;
     }
 
@@ -178,12 +178,12 @@ public class NodeStatus implements Editable<NodeStatusBuilder> , KubernetesResou
     }
 
     @JsonProperty("nodeName")
-    public java.lang.String getNodeName() {
+    public String getNodeName() {
         return nodeName;
     }
 
     @JsonProperty("nodeName")
-    public void setNodeName(java.lang.String nodeName) {
+    public void setNodeName(String nodeName) {
         this.nodeName = nodeName;
     }
 
@@ -208,16 +208,16 @@ public class NodeStatus implements Editable<NodeStatusBuilder> , KubernetesResou
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
-    public void setAdditionalProperties(Map<java.lang.String, Object> additionalProperties) {
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
     }
 

@@ -59,14 +59,14 @@ public class StorageStateStatus implements Editable<StorageStateStatusBuilder> ,
 {
 
     @JsonProperty("currentStorageVersionHash")
-    private java.lang.String currentStorageVersionHash;
+    private String currentStorageVersionHash;
     @JsonProperty("lastHeartbeatTime")
     private String lastHeartbeatTime;
     @JsonProperty("persistedStorageVersionHashes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> persistedStorageVersionHashes = new ArrayList<>();
+    private List<String> persistedStorageVersionHashes = new ArrayList<>();
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -75,7 +75,7 @@ public class StorageStateStatus implements Editable<StorageStateStatusBuilder> ,
     public StorageStateStatus() {
     }
 
-    public StorageStateStatus(java.lang.String currentStorageVersionHash, String lastHeartbeatTime, List<java.lang.String> persistedStorageVersionHashes) {
+    public StorageStateStatus(String currentStorageVersionHash, String lastHeartbeatTime, List<String> persistedStorageVersionHashes) {
         super();
         this.currentStorageVersionHash = currentStorageVersionHash;
         this.lastHeartbeatTime = lastHeartbeatTime;
@@ -83,12 +83,12 @@ public class StorageStateStatus implements Editable<StorageStateStatusBuilder> ,
     }
 
     @JsonProperty("currentStorageVersionHash")
-    public java.lang.String getCurrentStorageVersionHash() {
+    public String getCurrentStorageVersionHash() {
         return currentStorageVersionHash;
     }
 
     @JsonProperty("currentStorageVersionHash")
-    public void setCurrentStorageVersionHash(java.lang.String currentStorageVersionHash) {
+    public void setCurrentStorageVersionHash(String currentStorageVersionHash) {
         this.currentStorageVersionHash = currentStorageVersionHash;
     }
 
@@ -104,12 +104,12 @@ public class StorageStateStatus implements Editable<StorageStateStatusBuilder> ,
 
     @JsonProperty("persistedStorageVersionHashes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<java.lang.String> getPersistedStorageVersionHashes() {
+    public List<String> getPersistedStorageVersionHashes() {
         return persistedStorageVersionHashes;
     }
 
     @JsonProperty("persistedStorageVersionHashes")
-    public void setPersistedStorageVersionHashes(List<java.lang.String> persistedStorageVersionHashes) {
+    public void setPersistedStorageVersionHashes(List<String> persistedStorageVersionHashes) {
         this.persistedStorageVersionHashes = persistedStorageVersionHashes;
     }
 
@@ -124,16 +124,16 @@ public class StorageStateStatus implements Editable<StorageStateStatusBuilder> ,
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
-    public void setAdditionalProperties(Map<java.lang.String, Object> additionalProperties) {
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
     }
 

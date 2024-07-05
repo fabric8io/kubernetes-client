@@ -77,9 +77,9 @@ public class DNSZoneStatus implements Editable<DNSZoneStatusBuilder> , Kubernete
     private String lastSyncTimestamp;
     @JsonProperty("nameServers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> nameServers = new ArrayList<>();
+    private List<String> nameServers = new ArrayList<>();
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -88,7 +88,7 @@ public class DNSZoneStatus implements Editable<DNSZoneStatusBuilder> , Kubernete
     public DNSZoneStatus() {
     }
 
-    public DNSZoneStatus(AWSDNSZoneStatus aws, AzureDNSZoneStatus azure, List<DNSZoneCondition> conditions, GCPDNSZoneStatus gcp, Long lastSyncGeneration, String lastSyncTimestamp, List<java.lang.String> nameServers) {
+    public DNSZoneStatus(AWSDNSZoneStatus aws, AzureDNSZoneStatus azure, List<DNSZoneCondition> conditions, GCPDNSZoneStatus gcp, Long lastSyncGeneration, String lastSyncTimestamp, List<String> nameServers) {
         super();
         this.aws = aws;
         this.azure = azure;
@@ -162,12 +162,12 @@ public class DNSZoneStatus implements Editable<DNSZoneStatusBuilder> , Kubernete
 
     @JsonProperty("nameServers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<java.lang.String> getNameServers() {
+    public List<String> getNameServers() {
         return nameServers;
     }
 
     @JsonProperty("nameServers")
-    public void setNameServers(List<java.lang.String> nameServers) {
+    public void setNameServers(List<String> nameServers) {
         this.nameServers = nameServers;
     }
 
@@ -182,16 +182,16 @@ public class DNSZoneStatus implements Editable<DNSZoneStatusBuilder> , Kubernete
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
-    public void setAdditionalProperties(Map<java.lang.String, Object> additionalProperties) {
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
     }
 

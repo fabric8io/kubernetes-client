@@ -66,11 +66,11 @@ public class OperatorGroupStatus implements Editable<OperatorGroupStatusBuilder>
     private String lastUpdated;
     @JsonProperty("namespaces")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> namespaces = new ArrayList<>();
+    private List<String> namespaces = new ArrayList<>();
     @JsonProperty("serviceAccountRef")
     private io.fabric8.kubernetes.api.model.ObjectReference serviceAccountRef;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -79,7 +79,7 @@ public class OperatorGroupStatus implements Editable<OperatorGroupStatusBuilder>
     public OperatorGroupStatus() {
     }
 
-    public OperatorGroupStatus(List<Condition> conditions, String lastUpdated, List<java.lang.String> namespaces, io.fabric8.kubernetes.api.model.ObjectReference serviceAccountRef) {
+    public OperatorGroupStatus(List<Condition> conditions, String lastUpdated, List<String> namespaces, io.fabric8.kubernetes.api.model.ObjectReference serviceAccountRef) {
         super();
         this.conditions = conditions;
         this.lastUpdated = lastUpdated;
@@ -110,12 +110,12 @@ public class OperatorGroupStatus implements Editable<OperatorGroupStatusBuilder>
 
     @JsonProperty("namespaces")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<java.lang.String> getNamespaces() {
+    public List<String> getNamespaces() {
         return namespaces;
     }
 
     @JsonProperty("namespaces")
-    public void setNamespaces(List<java.lang.String> namespaces) {
+    public void setNamespaces(List<String> namespaces) {
         this.namespaces = namespaces;
     }
 
@@ -140,16 +140,16 @@ public class OperatorGroupStatus implements Editable<OperatorGroupStatusBuilder>
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
-    public void setAdditionalProperties(Map<java.lang.String, Object> additionalProperties) {
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
     }
 

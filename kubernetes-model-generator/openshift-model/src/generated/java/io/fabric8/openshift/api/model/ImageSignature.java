@@ -80,16 +80,16 @@ public class ImageSignature implements Editable<ImageSignatureBuilder> , HasMeta
      * 
      */
     @JsonProperty("apiVersion")
-    private java.lang.String apiVersion = "image.openshift.io/v1";
+    private String apiVersion = "image.openshift.io/v1";
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<SignatureCondition> conditions = new ArrayList<>();
     @JsonProperty("content")
-    private java.lang.String content;
+    private String content;
     @JsonProperty("created")
     private String created;
     @JsonProperty("imageIdentity")
-    private java.lang.String imageIdentity;
+    private String imageIdentity;
     @JsonProperty("issuedBy")
     private SignatureIssuer issuedBy;
     @JsonProperty("issuedTo")
@@ -100,16 +100,16 @@ public class ImageSignature implements Editable<ImageSignatureBuilder> , HasMeta
      * 
      */
     @JsonProperty("kind")
-    private java.lang.String kind = "ImageSignature";
+    private String kind = "ImageSignature";
     @JsonProperty("metadata")
     private io.fabric8.kubernetes.api.model.ObjectMeta metadata;
     @JsonProperty("signedClaims")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<java.lang.String, java.lang.String> signedClaims = new LinkedHashMap<>();
+    private Map<String, String> signedClaims = new LinkedHashMap<>();
     @JsonProperty("type")
-    private java.lang.String type;
+    private String type;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -118,7 +118,7 @@ public class ImageSignature implements Editable<ImageSignatureBuilder> , HasMeta
     public ImageSignature() {
     }
 
-    public ImageSignature(java.lang.String apiVersion, List<SignatureCondition> conditions, java.lang.String content, String created, java.lang.String imageIdentity, SignatureIssuer issuedBy, SignatureSubject issuedTo, java.lang.String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, Map<java.lang.String, java.lang.String> signedClaims, java.lang.String type) {
+    public ImageSignature(String apiVersion, List<SignatureCondition> conditions, String content, String created, String imageIdentity, SignatureIssuer issuedBy, SignatureSubject issuedTo, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, Map<String, String> signedClaims, String type) {
         super();
         this.apiVersion = apiVersion;
         this.conditions = conditions;
@@ -139,7 +139,7 @@ public class ImageSignature implements Editable<ImageSignatureBuilder> , HasMeta
      * 
      */
     @JsonProperty("apiVersion")
-    public java.lang.String getApiVersion() {
+    public String getApiVersion() {
         return apiVersion;
     }
 
@@ -149,7 +149,7 @@ public class ImageSignature implements Editable<ImageSignatureBuilder> , HasMeta
      * 
      */
     @JsonProperty("apiVersion")
-    public void setApiVersion(java.lang.String apiVersion) {
+    public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
     }
 
@@ -165,12 +165,12 @@ public class ImageSignature implements Editable<ImageSignatureBuilder> , HasMeta
     }
 
     @JsonProperty("content")
-    public java.lang.String getContent() {
+    public String getContent() {
         return content;
     }
 
     @JsonProperty("content")
-    public void setContent(java.lang.String content) {
+    public void setContent(String content) {
         this.content = content;
     }
 
@@ -185,12 +185,12 @@ public class ImageSignature implements Editable<ImageSignatureBuilder> , HasMeta
     }
 
     @JsonProperty("imageIdentity")
-    public java.lang.String getImageIdentity() {
+    public String getImageIdentity() {
         return imageIdentity;
     }
 
     @JsonProperty("imageIdentity")
-    public void setImageIdentity(java.lang.String imageIdentity) {
+    public void setImageIdentity(String imageIdentity) {
         this.imageIdentity = imageIdentity;
     }
 
@@ -220,7 +220,7 @@ public class ImageSignature implements Editable<ImageSignatureBuilder> , HasMeta
      * 
      */
     @JsonProperty("kind")
-    public java.lang.String getKind() {
+    public String getKind() {
         return kind;
     }
 
@@ -230,7 +230,7 @@ public class ImageSignature implements Editable<ImageSignatureBuilder> , HasMeta
      * 
      */
     @JsonProperty("kind")
-    public void setKind(java.lang.String kind) {
+    public void setKind(String kind) {
         this.kind = kind;
     }
 
@@ -246,22 +246,22 @@ public class ImageSignature implements Editable<ImageSignatureBuilder> , HasMeta
 
     @JsonProperty("signedClaims")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public Map<java.lang.String, java.lang.String> getSignedClaims() {
+    public Map<String, String> getSignedClaims() {
         return signedClaims;
     }
 
     @JsonProperty("signedClaims")
-    public void setSignedClaims(Map<java.lang.String, java.lang.String> signedClaims) {
+    public void setSignedClaims(Map<String, String> signedClaims) {
         this.signedClaims = signedClaims;
     }
 
     @JsonProperty("type")
-    public java.lang.String getType() {
+    public String getType() {
         return type;
     }
 
     @JsonProperty("type")
-    public void setType(java.lang.String type) {
+    public void setType(String type) {
         this.type = type;
     }
 
@@ -276,16 +276,16 @@ public class ImageSignature implements Editable<ImageSignatureBuilder> , HasMeta
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
-    public void setAdditionalProperties(Map<java.lang.String, Object> additionalProperties) {
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
     }
 

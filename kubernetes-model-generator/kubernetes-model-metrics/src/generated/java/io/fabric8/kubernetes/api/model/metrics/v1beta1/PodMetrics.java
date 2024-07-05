@@ -77,7 +77,7 @@ public class PodMetrics implements Editable<PodMetricsBuilder> , HasMetadata, Na
      * 
      */
     @JsonProperty("apiVersion")
-    private java.lang.String apiVersion = "metrics.k8s.io/v1beta1";
+    private String apiVersion = "metrics.k8s.io/v1beta1";
     @JsonProperty("containers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ContainerMetrics> containers = new ArrayList<>();
@@ -87,7 +87,7 @@ public class PodMetrics implements Editable<PodMetricsBuilder> , HasMetadata, Na
      * 
      */
     @JsonProperty("kind")
-    private java.lang.String kind = "PodMetrics";
+    private String kind = "PodMetrics";
     @JsonProperty("metadata")
     private io.fabric8.kubernetes.api.model.ObjectMeta metadata;
     @JsonProperty("timestamp")
@@ -95,7 +95,7 @@ public class PodMetrics implements Editable<PodMetricsBuilder> , HasMetadata, Na
     @JsonProperty("window")
     private Duration window;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -104,7 +104,7 @@ public class PodMetrics implements Editable<PodMetricsBuilder> , HasMetadata, Na
     public PodMetrics() {
     }
 
-    public PodMetrics(java.lang.String apiVersion, List<ContainerMetrics> containers, java.lang.String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, String timestamp, Duration window) {
+    public PodMetrics(String apiVersion, List<ContainerMetrics> containers, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, String timestamp, Duration window) {
         super();
         this.apiVersion = apiVersion;
         this.containers = containers;
@@ -120,7 +120,7 @@ public class PodMetrics implements Editable<PodMetricsBuilder> , HasMetadata, Na
      * 
      */
     @JsonProperty("apiVersion")
-    public java.lang.String getApiVersion() {
+    public String getApiVersion() {
         return apiVersion;
     }
 
@@ -130,7 +130,7 @@ public class PodMetrics implements Editable<PodMetricsBuilder> , HasMetadata, Na
      * 
      */
     @JsonProperty("apiVersion")
-    public void setApiVersion(java.lang.String apiVersion) {
+    public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
     }
 
@@ -151,7 +151,7 @@ public class PodMetrics implements Editable<PodMetricsBuilder> , HasMetadata, Na
      * 
      */
     @JsonProperty("kind")
-    public java.lang.String getKind() {
+    public String getKind() {
         return kind;
     }
 
@@ -161,7 +161,7 @@ public class PodMetrics implements Editable<PodMetricsBuilder> , HasMetadata, Na
      * 
      */
     @JsonProperty("kind")
-    public void setKind(java.lang.String kind) {
+    public void setKind(String kind) {
         this.kind = kind;
     }
 
@@ -206,16 +206,16 @@ public class PodMetrics implements Editable<PodMetricsBuilder> , HasMetadata, Na
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
-    public void setAdditionalProperties(Map<java.lang.String, Object> additionalProperties) {
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
     }
 

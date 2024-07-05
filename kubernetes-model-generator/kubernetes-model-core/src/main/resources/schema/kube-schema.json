@@ -39,8 +39,7 @@
       "type": "object",
       "properties": {
         "lastTransitionTime": {
-          "$ref": "#/definitions/kubernetes_apimachinery_pkg_apis_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "message": {
           "type": "string"
@@ -316,8 +315,7 @@
       "type": "object",
       "properties": {
         "lastTransitionTime": {
-          "$ref": "#/definitions/kubernetes_apimachinery_pkg_apis_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "message": {
           "type": "string"
@@ -695,8 +693,7 @@
           "type": "string"
         },
         "time": {
-          "$ref": "#/definitions/kubernetes_apimachinery_pkg_apis_Time",
-          "existingJavaType": "String"
+          "type": "string"
         }
       },
       "additionalProperties": true,
@@ -731,16 +728,14 @@
           "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
         },
         "creationTimestamp": {
-          "$ref": "#/definitions/kubernetes_apimachinery_pkg_apis_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "deletionGracePeriodSeconds": {
           "type": "integer",
           "existingJavaType": "Long"
         },
         "deletionTimestamp": {
-          "$ref": "#/definitions/kubernetes_apimachinery_pkg_apis_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "finalizers": {
           "type": "array",
@@ -1011,19 +1006,6 @@
       },
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.StatusDetails",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "kubernetes_apimachinery_pkg_apis_Time": {
-      "type": "object",
-      "properties": {
-        "Time": {
-          "type": "string"
-        }
-      },
-      "additionalProperties": true,
-      "existingJavaType": "String",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -2441,8 +2423,7 @@
       "type": "object",
       "properties": {
         "startedAt": {
-          "$ref": "#/definitions/kubernetes_apimachinery_pkg_apis_Time",
-          "existingJavaType": "String"
+          "type": "string"
         }
       },
       "additionalProperties": true,
@@ -2461,8 +2442,7 @@
           "type": "integer"
         },
         "finishedAt": {
-          "$ref": "#/definitions/kubernetes_apimachinery_pkg_apis_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "message": {
           "type": "string"
@@ -2474,8 +2454,7 @@
           "type": "integer"
         },
         "startedAt": {
-          "$ref": "#/definitions/kubernetes_apimachinery_pkg_apis_Time",
-          "existingJavaType": "String"
+          "type": "string"
         }
       },
       "additionalProperties": true,
@@ -3156,8 +3135,7 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.MicroTime"
         },
         "firstTimestamp": {
-          "$ref": "#/definitions/kubernetes_apimachinery_pkg_apis_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "involvedObject": {
           "$ref": "#/definitions/kubernetes_core_ObjectReference",
@@ -3169,8 +3147,7 @@
           "required": true
         },
         "lastTimestamp": {
-          "$ref": "#/definitions/kubernetes_apimachinery_pkg_apis_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "message": {
           "type": "string"
@@ -4031,8 +4008,7 @@
       "type": "object",
       "properties": {
         "lastTransitionTime": {
-          "$ref": "#/definitions/kubernetes_apimachinery_pkg_apis_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "message": {
           "type": "string"
@@ -4197,12 +4173,10 @@
       "type": "object",
       "properties": {
         "lastHeartbeatTime": {
-          "$ref": "#/definitions/kubernetes_apimachinery_pkg_apis_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "lastTransitionTime": {
-          "$ref": "#/definitions/kubernetes_apimachinery_pkg_apis_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "message": {
           "type": "string"
@@ -4689,12 +4663,10 @@
       "type": "object",
       "properties": {
         "lastProbeTime": {
-          "$ref": "#/definitions/kubernetes_apimachinery_pkg_apis_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "lastTransitionTime": {
-          "$ref": "#/definitions/kubernetes_apimachinery_pkg_apis_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "message": {
           "type": "string"
@@ -5158,8 +5130,7 @@
       "type": "object",
       "properties": {
         "lastPhaseTransitionTime": {
-          "$ref": "#/definitions/kubernetes_apimachinery_pkg_apis_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "message": {
           "type": "string"
@@ -5324,12 +5295,10 @@
       "type": "object",
       "properties": {
         "lastProbeTime": {
-          "$ref": "#/definitions/kubernetes_apimachinery_pkg_apis_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "lastTransitionTime": {
-          "$ref": "#/definitions/kubernetes_apimachinery_pkg_apis_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "message": {
           "type": "string"
@@ -5896,8 +5865,7 @@
           }
         },
         "startTime": {
-          "$ref": "#/definitions/kubernetes_apimachinery_pkg_apis_Time",
-          "existingJavaType": "String"
+          "type": "string"
         }
       },
       "additionalProperties": true,
@@ -6272,8 +6240,7 @@
       "type": "object",
       "properties": {
         "lastTransitionTime": {
-          "$ref": "#/definitions/kubernetes_apimachinery_pkg_apis_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "message": {
           "type": "string"
@@ -7400,8 +7367,7 @@
           "type": "string"
         },
         "timeAdded": {
-          "$ref": "#/definitions/kubernetes_apimachinery_pkg_apis_Time",
-          "existingJavaType": "String"
+          "type": "string"
         },
         "value": {
           "type": "string"
@@ -8262,8 +8228,7 @@
       "existingJavaType": "io.fabric8.kubernetes.api.model.Status"
     },
     "Time": {
-      "$ref": "#/definitions/kubernetes_apimachinery_pkg_apis_Time",
-      "existingJavaType": "String"
+      "type": "string"
     },
     "Toleration": {
       "$ref": "#/definitions/kubernetes_core_Toleration",

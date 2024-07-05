@@ -73,13 +73,13 @@ public class CatalogSourceStatus implements Editable<CatalogSourceStatusBuilder>
     @JsonProperty("latestImageRegistryPoll")
     private String latestImageRegistryPoll;
     @JsonProperty("message")
-    private java.lang.String message;
+    private String message;
     @JsonProperty("reason")
-    private java.lang.String reason;
+    private String reason;
     @JsonProperty("registryService")
     private RegistryServiceStatus registryService;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -88,7 +88,7 @@ public class CatalogSourceStatus implements Editable<CatalogSourceStatusBuilder>
     public CatalogSourceStatus() {
     }
 
-    public CatalogSourceStatus(List<Condition> conditions, ConfigMapResourceReference configMapReference, GRPCConnectionState connectionState, String latestImageRegistryPoll, java.lang.String message, java.lang.String reason, RegistryServiceStatus registryService) {
+    public CatalogSourceStatus(List<Condition> conditions, ConfigMapResourceReference configMapReference, GRPCConnectionState connectionState, String latestImageRegistryPoll, String message, String reason, RegistryServiceStatus registryService) {
         super();
         this.conditions = conditions;
         this.configMapReference = configMapReference;
@@ -141,22 +141,22 @@ public class CatalogSourceStatus implements Editable<CatalogSourceStatusBuilder>
     }
 
     @JsonProperty("message")
-    public java.lang.String getMessage() {
+    public String getMessage() {
         return message;
     }
 
     @JsonProperty("message")
-    public void setMessage(java.lang.String message) {
+    public void setMessage(String message) {
         this.message = message;
     }
 
     @JsonProperty("reason")
-    public java.lang.String getReason() {
+    public String getReason() {
         return reason;
     }
 
     @JsonProperty("reason")
-    public void setReason(java.lang.String reason) {
+    public void setReason(String reason) {
         this.reason = reason;
     }
 
@@ -181,16 +181,16 @@ public class CatalogSourceStatus implements Editable<CatalogSourceStatusBuilder>
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
-    public void setAdditionalProperties(Map<java.lang.String, Object> additionalProperties) {
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
     }
 

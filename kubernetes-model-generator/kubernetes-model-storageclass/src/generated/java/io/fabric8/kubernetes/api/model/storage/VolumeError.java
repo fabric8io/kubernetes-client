@@ -56,11 +56,11 @@ public class VolumeError implements Editable<VolumeErrorBuilder> , KubernetesRes
 {
 
     @JsonProperty("message")
-    private java.lang.String message;
+    private String message;
     @JsonProperty("time")
     private String time;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -69,19 +69,19 @@ public class VolumeError implements Editable<VolumeErrorBuilder> , KubernetesRes
     public VolumeError() {
     }
 
-    public VolumeError(java.lang.String message, String time) {
+    public VolumeError(String message, String time) {
         super();
         this.message = message;
         this.time = time;
     }
 
     @JsonProperty("message")
-    public java.lang.String getMessage() {
+    public String getMessage() {
         return message;
     }
 
     @JsonProperty("message")
-    public void setMessage(java.lang.String message) {
+    public void setMessage(String message) {
         this.message = message;
     }
 
@@ -106,16 +106,16 @@ public class VolumeError implements Editable<VolumeErrorBuilder> , KubernetesRes
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
-    public void setAdditionalProperties(Map<java.lang.String, Object> additionalProperties) {
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
     }
 
