@@ -838,7 +838,7 @@
               "type": "string"
             }
           },
-          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.util.ArrayList\u003cjava.lang.String\u003e\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.util.List\u003cjava.lang.String\u003e\u003e"
         },
         "groups": {
           "type": "array",
@@ -1076,7 +1076,7 @@
               "type": "string"
             }
           },
-          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.util.ArrayList\u003cjava.lang.String\u003e\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.util.List\u003cjava.lang.String\u003e\u003e"
         },
         "groups": {
           "type": "array",
@@ -1316,7 +1316,7 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "certificates.k8s.io/v1beta1",
+          "default": "certificates.k8s.io/v1",
           "required": true
         },
         "kind": {
@@ -1329,12 +1329,12 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
-          "$ref": "#/definitions/kubernetes_certificates_v1beta1_CertificateSigningRequestSpec",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequestSpec"
+          "$ref": "#/definitions/kubernetes_certificates_v1_CertificateSigningRequestSpec",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequestSpec"
         },
         "status": {
-          "$ref": "#/definitions/kubernetes_certificates_v1beta1_CertificateSigningRequestStatus",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequestStatus"
+          "$ref": "#/definitions/kubernetes_certificates_v1_CertificateSigningRequestStatus",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequestStatus"
         }
       },
       "additionalProperties": true
@@ -1366,14 +1366,14 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "certificates.k8s.io/v1",
+          "default": "certificates.k8s.io/v1beta1",
           "required": true
         },
         "items": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/kubernetes_certificates_v1_CertificateSigningRequest",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequest"
+            "$ref": "#/definitions/kubernetes_certificates_v1beta1_CertificateSigningRequest",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequest"
           }
         },
         "kind": {
@@ -1401,7 +1401,7 @@
               "type": "string"
             }
           },
-          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.util.ArrayList\u003cjava.lang.String\u003e\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.util.List\u003cjava.lang.String\u003e\u003e"
         },
         "groups": {
           "type": "array",

@@ -81,6 +81,7 @@ public class JSONSchemaPropsOrStringArray implements Editable<JSONSchemaPropsOrS
     }
 
     @JsonProperty("Property")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getProperty() {
         return property;
     }

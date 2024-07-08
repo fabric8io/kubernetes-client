@@ -131,6 +131,7 @@ public class ActionDescriptor implements Editable<ActionDescriptorBuilder> , Kub
     }
 
     @JsonProperty("x-descriptors")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getXDescriptors() {
         return xDescriptors;
     }

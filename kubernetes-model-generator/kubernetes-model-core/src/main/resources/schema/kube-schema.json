@@ -1164,7 +1164,7 @@
               "type": "string"
             }
           },
-          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.util.ArrayList\u003cjava.lang.String\u003e\u003e"
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.util.List\u003cjava.lang.String\u003e\u003e"
         },
         "auth-provider": {
           "$ref": "#/definitions/kubernetes_config_AuthProviderConfig",

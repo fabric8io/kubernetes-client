@@ -90,6 +90,7 @@ public class LoadBalancerSettings implements Editable<LoadBalancerSettingsBuilde
     }
 
     @JsonProperty("LbPolicy")
+    @JsonUnwrapped
     public IsLoadBalancerSettingsLbPolicy getLbPolicy() {
         return lbPolicy;
     }

@@ -63,7 +63,7 @@ public class SubjectAccessReviewSpec implements Editable<SubjectAccessReviewSpec
 
     @JsonProperty("extra")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, ArrayList<String>> extra = new LinkedHashMap<>();
+    private Map<String, List<String>> extra = new LinkedHashMap<>();
     @JsonProperty("group")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> group = new ArrayList<>();
@@ -85,7 +85,7 @@ public class SubjectAccessReviewSpec implements Editable<SubjectAccessReviewSpec
     public SubjectAccessReviewSpec() {
     }
 
-    public SubjectAccessReviewSpec(Map<String, ArrayList<String>> extra, List<String> group, NonResourceAttributes nonResourceAttributes, ResourceAttributes resourceAttributes, String uid, String user) {
+    public SubjectAccessReviewSpec(Map<String, List<String>> extra, List<String> group, NonResourceAttributes nonResourceAttributes, ResourceAttributes resourceAttributes, String uid, String user) {
         super();
         this.extra = extra;
         this.group = group;
@@ -97,12 +97,12 @@ public class SubjectAccessReviewSpec implements Editable<SubjectAccessReviewSpec
 
     @JsonProperty("extra")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public Map<String, ArrayList<String>> getExtra() {
+    public Map<String, List<String>> getExtra() {
         return extra;
     }
 
     @JsonProperty("extra")
-    public void setExtra(Map<String, ArrayList<String>> extra) {
+    public void setExtra(Map<String, List<String>> extra) {
         this.extra = extra;
     }
 

@@ -107,6 +107,7 @@ public class ProbeTargetStaticConfig implements Editable<ProbeTargetStaticConfig
     }
 
     @JsonProperty("static")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getStatic() {
         return _static;
     }

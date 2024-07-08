@@ -100,7 +100,7 @@ public class PodMetricsEndpoint implements Editable<PodMetricsEndpointBuilder> ,
     private OAuth2 oauth2;
     @JsonProperty("params")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, ArrayList<String>> params = new LinkedHashMap<>();
+    private Map<String, List<String>> params = new LinkedHashMap<>();
     @JsonProperty("path")
     private String path;
     @JsonProperty("port")
@@ -128,7 +128,7 @@ public class PodMetricsEndpoint implements Editable<PodMetricsEndpointBuilder> ,
     public PodMetricsEndpoint() {
     }
 
-    public PodMetricsEndpoint(SafeAuthorization authorization, BasicAuth basicAuth, SecretKeySelector bearerTokenSecret, Boolean enableHttp2, Boolean filterRunning, Boolean followRedirects, Boolean honorLabels, Boolean honorTimestamps, String interval, List<RelabelConfig> metricRelabelings, OAuth2 oauth2, Map<String, ArrayList<String>> params, String path, String port, String proxyUrl, List<RelabelConfig> relabelings, String scheme, String scrapeTimeout, io.fabric8.kubernetes.api.model.IntOrString targetPort, PodMetricsEndpointTLSConfig tlsConfig) {
+    public PodMetricsEndpoint(SafeAuthorization authorization, BasicAuth basicAuth, SecretKeySelector bearerTokenSecret, Boolean enableHttp2, Boolean filterRunning, Boolean followRedirects, Boolean honorLabels, Boolean honorTimestamps, String interval, List<RelabelConfig> metricRelabelings, OAuth2 oauth2, Map<String, List<String>> params, String path, String port, String proxyUrl, List<RelabelConfig> relabelings, String scheme, String scrapeTimeout, io.fabric8.kubernetes.api.model.IntOrString targetPort, PodMetricsEndpointTLSConfig tlsConfig) {
         super();
         this.authorization = authorization;
         this.basicAuth = basicAuth;
@@ -265,12 +265,12 @@ public class PodMetricsEndpoint implements Editable<PodMetricsEndpointBuilder> ,
 
     @JsonProperty("params")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public Map<String, ArrayList<String>> getParams() {
+    public Map<String, List<String>> getParams() {
         return params;
     }
 
     @JsonProperty("params")
-    public void setParams(Map<String, ArrayList<String>> params) {
+    public void setParams(Map<String, List<String>> params) {
         this.params = params;
     }
 

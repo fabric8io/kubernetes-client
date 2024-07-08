@@ -82,6 +82,7 @@ public class TracingCustomTag implements Editable<TracingCustomTagBuilder> , Kub
     }
 
     @JsonProperty("Type")
+    @JsonUnwrapped
     public IsTracingCustomTagType getType() {
         return type;
     }

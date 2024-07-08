@@ -86,6 +86,7 @@ public class HTTPFaultInjectionAbort implements Editable<HTTPFaultInjectionAbort
     }
 
     @JsonProperty("ErrorType")
+    @JsonUnwrapped
     public IsHTTPFaultInjectionAbortErrorType getErrorType() {
         return errorType;
     }

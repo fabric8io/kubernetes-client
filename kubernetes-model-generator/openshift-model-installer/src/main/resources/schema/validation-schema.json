@@ -3117,17 +3117,20 @@
     },
     "failuredomain": {
       "properties": {
-        "computeAvailabilityZone": {
+        "name": {
           "type": "string"
         },
-        "portTargets": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/os_installer_openstack_v1_NamedPortTarget",
-            "existingJavaType": "io.fabric8.openshift.api.model.installer.openstack.v1.NamedPortTarget"
-          }
+        "region": {
+          "type": "string"
         },
-        "storageAvailabilityZone": {
+        "server": {
+          "type": "string"
+        },
+        "topology": {
+          "$ref": "#/definitions/os_installer_vsphere_v1_Topology",
+          "existingJavaType": "io.fabric8.openshift.api.model.installer.vsphere.v1.Topology"
+        },
+        "zone": {
           "type": "string"
         }
       },
@@ -3380,6 +3383,35 @@
       "additionalProperties": true
     },
     "machinepool": {
+      "properties": {
+        "encryptionAtHost": {
+          "type": "boolean"
+        },
+        "osDisk": {
+          "$ref": "#/definitions/os_installer_azure_v1_OSDisk",
+          "existingJavaType": "io.fabric8.openshift.api.model.installer.azure.v1.OSDisk"
+        },
+        "osImage": {
+          "$ref": "#/definitions/os_installer_azure_v1_OSImage",
+          "existingJavaType": "io.fabric8.openshift.api.model.installer.azure.v1.OSImage"
+        },
+        "type": {
+          "type": "string"
+        },
+        "ultraSSDCapability": {
+          "type": "string"
+        },
+        "vmNetworkingType": {
+          "type": "string"
+        },
+        "zones": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        }
+      },
       "additionalProperties": true
     },
     "machinepoolplatform": {
@@ -3741,38 +3773,6 @@
       "additionalProperties": true
     },
     "platform": {
-      "properties": {
-        "defaultMachinePlatform": {
-          "$ref": "#/definitions/os_installer_alibabacloud_v1_MachinePool",
-          "existingJavaType": "io.fabric8.openshift.api.model.installer.alibabacloud.v1.MachinePool"
-        },
-        "privateZoneID": {
-          "type": "string"
-        },
-        "region": {
-          "type": "string"
-        },
-        "resourceGroupID": {
-          "type": "string"
-        },
-        "tags": {
-          "type": "object",
-          "additionalProperties": {
-            "type": "string"
-          },
-          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
-        },
-        "vpcID": {
-          "type": "string"
-        },
-        "vswitchIDs": {
-          "type": "array",
-          "javaOmitEmpty": true,
-          "items": {
-            "type": "string"
-          }
-        }
-      },
       "additionalProperties": true
     },
     "porttarget": {

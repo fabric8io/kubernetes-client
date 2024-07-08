@@ -98,6 +98,7 @@ public class HTTPRedirect implements Editable<HTTPRedirectBuilder> , KubernetesR
     }
 
     @JsonProperty("RedirectPort")
+    @JsonUnwrapped
     public IsHTTPRedirectRedirectPort getRedirectPort() {
         return redirectPort;
     }

@@ -61,7 +61,7 @@ public class TemplateInstanceRequester implements Editable<TemplateInstanceReque
 
     @JsonProperty("extra")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, ArrayList<String>> extra = new LinkedHashMap<>();
+    private Map<String, List<String>> extra = new LinkedHashMap<>();
     @JsonProperty("groups")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> groups = new ArrayList<>();
@@ -79,7 +79,7 @@ public class TemplateInstanceRequester implements Editable<TemplateInstanceReque
     public TemplateInstanceRequester() {
     }
 
-    public TemplateInstanceRequester(Map<String, ArrayList<String>> extra, List<String> groups, String uid, String username) {
+    public TemplateInstanceRequester(Map<String, List<String>> extra, List<String> groups, String uid, String username) {
         super();
         this.extra = extra;
         this.groups = groups;
@@ -89,12 +89,12 @@ public class TemplateInstanceRequester implements Editable<TemplateInstanceReque
 
     @JsonProperty("extra")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public Map<String, ArrayList<String>> getExtra() {
+    public Map<String, List<String>> getExtra() {
         return extra;
     }
 
     @JsonProperty("extra")
-    public void setExtra(Map<String, ArrayList<String>> extra) {
+    public void setExtra(Map<String, List<String>> extra) {
         this.extra = extra;
     }
 

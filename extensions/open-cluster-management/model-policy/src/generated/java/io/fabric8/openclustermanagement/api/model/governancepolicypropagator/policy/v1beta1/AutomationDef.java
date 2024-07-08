@@ -93,6 +93,7 @@ public class AutomationDef implements Editable<AutomationDefBuilder> , Kubernete
     }
 
     @JsonProperty("extra_vars")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Object> getExtraVars() {
         return extraVars;
     }

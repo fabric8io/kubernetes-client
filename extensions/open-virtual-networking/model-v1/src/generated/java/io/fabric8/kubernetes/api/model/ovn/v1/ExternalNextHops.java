@@ -99,6 +99,7 @@ public class ExternalNextHops implements Editable<ExternalNextHopsBuilder> , Kub
     }
 
     @JsonProperty("static")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<StaticHop> getStatic() {
         return _static;
     }

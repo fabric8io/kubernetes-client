@@ -58,7 +58,7 @@ public class AuthInfo implements Editable<AuthInfoBuilder> , KubernetesResource
     private String asUid;
     @JsonProperty("as-user-extra")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, ArrayList<String>> asUserExtra = new LinkedHashMap<>();
+    private Map<String, List<String>> asUserExtra = new LinkedHashMap<>();
     @JsonProperty("auth-provider")
     private AuthProviderConfig authProvider;
     @JsonProperty("client-certificate")
@@ -92,7 +92,7 @@ public class AuthInfo implements Editable<AuthInfoBuilder> , KubernetesResource
     public AuthInfo() {
     }
 
-    public AuthInfo(String as, List<String> asGroups, String asUid, Map<String, ArrayList<String>> asUserExtra, AuthProviderConfig authProvider, String clientCertificate, String clientCertificateData, String clientKey, String clientKeyData, ExecConfig exec, List<NamedExtension> extensions, String password, String token, String tokenFile, String username) {
+    public AuthInfo(String as, List<String> asGroups, String asUid, Map<String, List<String>> asUserExtra, AuthProviderConfig authProvider, String clientCertificate, String clientCertificateData, String clientKey, String clientKeyData, ExecConfig exec, List<NamedExtension> extensions, String password, String token, String tokenFile, String username) {
         super();
         this.as = as;
         this.asGroups = asGroups;
@@ -122,6 +122,7 @@ public class AuthInfo implements Editable<AuthInfoBuilder> , KubernetesResource
     }
 
     @JsonProperty("as-groups")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getAsGroups() {
         return asGroups;
     }
@@ -142,12 +143,13 @@ public class AuthInfo implements Editable<AuthInfoBuilder> , KubernetesResource
     }
 
     @JsonProperty("as-user-extra")
-    public Map<String, ArrayList<String>> getAsUserExtra() {
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public Map<String, List<String>> getAsUserExtra() {
         return asUserExtra;
     }
 
     @JsonProperty("as-user-extra")
-    public void setAsUserExtra(Map<String, ArrayList<String>> asUserExtra) {
+    public void setAsUserExtra(Map<String, List<String>> asUserExtra) {
         this.asUserExtra = asUserExtra;
     }
 

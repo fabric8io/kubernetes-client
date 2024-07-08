@@ -131,7 +131,7 @@ func (g *schemaGenerator) javaTypeArrayList(t reflect.Type) string {
 	case "Byte":
 		return "String"
 	default:
-		return "java.util.ArrayList<" + typeName + ">"
+		return "java.util.List<" + typeName + ">"
 	}
 }
 

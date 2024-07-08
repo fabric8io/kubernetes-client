@@ -101,6 +101,7 @@ public class PolicySpec implements Editable<PolicySpecBuilder> , KubernetesResou
     }
 
     @JsonProperty("policy-templates")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PolicyTemplate> getPolicyTemplates() {
         return policyTemplates;
     }
