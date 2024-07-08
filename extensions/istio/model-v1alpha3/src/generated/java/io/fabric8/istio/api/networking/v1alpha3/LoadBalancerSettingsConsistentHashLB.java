@@ -91,6 +91,7 @@ public class LoadBalancerSettingsConsistentHashLB implements Editable<LoadBalanc
     }
 
     @JsonProperty("HashAlgorithm")
+    @JsonUnwrapped
     public IsLoadBalancerSettingsConsistentHashLBHashAlgorithm getHashAlgorithm() {
         return hashAlgorithm;
     }
@@ -101,6 +102,7 @@ public class LoadBalancerSettingsConsistentHashLB implements Editable<LoadBalanc
     }
 
     @JsonProperty("HashKey")
+    @JsonUnwrapped
     public IsLoadBalancerSettingsConsistentHashLBHashKey getHashKey() {
         return hashKey;
     }

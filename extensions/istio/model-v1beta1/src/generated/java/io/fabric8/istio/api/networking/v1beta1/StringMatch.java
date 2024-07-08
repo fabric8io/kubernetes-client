@@ -82,6 +82,7 @@ public class StringMatch implements Editable<StringMatchBuilder> , KubernetesRes
     }
 
     @JsonProperty("MatchType")
+    @JsonUnwrapped
     public IsStringMatchMatchType getMatchType() {
         return matchType;
     }

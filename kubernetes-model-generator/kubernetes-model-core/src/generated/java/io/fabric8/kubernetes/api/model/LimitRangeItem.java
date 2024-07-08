@@ -76,6 +76,7 @@ public class LimitRangeItem implements Editable<LimitRangeItemBuilder> , Kuberne
     }
 
     @JsonProperty("default")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, io.fabric8.kubernetes.api.model.Quantity> getDefault() {
         return _default;
     }

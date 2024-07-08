@@ -238,6 +238,7 @@ public class HTTPChaosSpec implements Editable<HTTPChaosSpecBuilder> , Kubernete
     }
 
     @JsonProperty("request_headers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getRequestHeaders() {
         return requestHeaders;
     }
@@ -248,6 +249,7 @@ public class HTTPChaosSpec implements Editable<HTTPChaosSpecBuilder> , Kubernete
     }
 
     @JsonProperty("response_headers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getResponseHeaders() {
         return responseHeaders;
     }

@@ -142,6 +142,7 @@ public class PodHttpChaosSelector implements Editable<PodHttpChaosSelectorBuilde
     }
 
     @JsonProperty("request_headers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getRequestHeaders() {
         return requestHeaders;
     }
@@ -152,6 +153,7 @@ public class PodHttpChaosSelector implements Editable<PodHttpChaosSelectorBuilde
     }
 
     @JsonProperty("response_headers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getResponseHeaders() {
         return responseHeaders;
     }

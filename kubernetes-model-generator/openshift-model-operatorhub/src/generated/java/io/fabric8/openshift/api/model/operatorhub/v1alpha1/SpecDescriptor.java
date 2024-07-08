@@ -131,6 +131,7 @@ public class SpecDescriptor implements Editable<SpecDescriptorBuilder> , Kuberne
     }
 
     @JsonProperty("x-descriptors")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getXDescriptors() {
         return xDescriptors;
     }
