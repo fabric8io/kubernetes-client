@@ -19,11 +19,13 @@ import (
 	"github.com/getkin/kin-openapi/openapi3"
 	v1admission "k8s.io/api/admission/v1"
 	v1beta1admission "k8s.io/api/admission/v1beta1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	configapi "k8s.io/client-go/tools/clientcmd/api/v1"
 	"os"
 	"path/filepath"
 	"reflect"
 	"strings"
+	"time"
 )
 
 type Schemas struct {
@@ -48,11 +50,12 @@ func main() {
 			reflect.TypeOf(v1admission.AdmissionRequest{}),
 			reflect.TypeOf(v1beta1admission.AdmissionRequest{}),
 		}, "admission-registration"},
-		//{[]reflect.Type{
-		//	reflect.TypeOf(metav1.GroupKind{}),
-		//	reflect.TypeOf(metav1.GroupVersionKind{}),
-		//	reflect.TypeOf(metav1.GroupVersionResource{}),
-		//}, "api-machinery-extra"},
+		{[]reflect.Type{
+			reflect.TypeOf(metav1.MicroTime{}),
+			//	reflect.TypeOf(metav1.GroupKind{}),
+			//	reflect.TypeOf(metav1.GroupVersionKind{}),
+			//	reflect.TypeOf(metav1.GroupVersionResource{}),
+		}, "api-machinery-extra"},
 	}
 	generate(schemas, targetDirectory)
 }
@@ -98,6 +101,9 @@ func generateType(schemas openapi3.Schemas, t reflect.Type) {
 	for it := 0; it < t.NumField(); it++ {
 		field := t.Field(it)
 		fieldName := field.Tag.Get("json")
+		if len(fieldName) == 0 {
+			fieldName = field.Name
+		}
 		if strings.Index(fieldName, ",") > 0 {
 			fieldName = strings.Split(fieldName, ",")[0]
 		}
@@ -106,7 +112,9 @@ func generateType(schemas openapi3.Schemas, t reflect.Type) {
 		// Recurse to generate the schema for the subtypes
 		switch field.Type.Kind() {
 		case reflect.Struct:
-			generateType(schemas, field.Type)
+			if field.Type != reflect.TypeOf(time.Time{}) {
+				generateType(schemas, field.Type)
+			}
 		case reflect.Ptr, reflect.Array, reflect.Slice:
 			generateType(schemas, field.Type.Elem())
 		}
@@ -115,17 +123,21 @@ func generateType(schemas openapi3.Schemas, t reflect.Type) {
 }
 
 func openApiKind(t reflect.Type) *openapi3.SchemaRef {
+	stringSchema := &openapi3.SchemaRef{
+		Value: openapi3.NewStringSchema(),
+	}
 	switch t.Kind() {
 	case reflect.Ptr:
 		return openApiKind(t.Elem())
 	case reflect.Struct:
+		if t == reflect.TypeOf(time.Time{}) {
+			return stringSchema
+		}
 		return &openapi3.SchemaRef{
 			Ref: "#/components/schemas/" + getKey(t),
 		}
 	case reflect.String:
-		return &openapi3.SchemaRef{
-			Value: openapi3.NewStringSchema(),
-		}
+		return stringSchema
 	case reflect.Bool:
 		return &openapi3.SchemaRef{
 			Value: openapi3.NewBoolSchema(),
@@ -137,9 +149,7 @@ func openApiKind(t reflect.Type) *openapi3.SchemaRef {
 	case reflect.Array, reflect.Slice:
 		// Byte-arrays as String (Fabric8)
 		if t.Elem().Kind() == reflect.Uint8 {
-			return &openapi3.SchemaRef{
-				Value: openapi3.NewStringSchema(),
-			}
+			return stringSchema
 		}
 		return &openapi3.SchemaRef{
 			Value: &openapi3.Schema{
@@ -158,9 +168,7 @@ func openApiKind(t reflect.Type) *openapi3.SchemaRef {
 		}
 	default:
 		println("unhandled default case " + t.Kind().String())
-		return &openapi3.SchemaRef{
-			Value: openapi3.NewStringSchema(),
-		}
+		return stringSchema
 	}
 }
 
