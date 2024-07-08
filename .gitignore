@@ -82,6 +82,7 @@ crashlytics.properties
 crashlytics-build.properties
 
 # Ignore generator binary output file
+kubernetes-model-generator/openapi/generator/generator
 kubernetes-model-generator/*/generate
 extensions/*/generator/generate
 
