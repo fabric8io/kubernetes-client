@@ -23,6 +23,11 @@ clean-java:
 .PHONY: clean
 clean: clean-java
 
+.PHONY: generate-openapi
+generate-openapi:
+	cd kubernetes-model-generator/openapi/generator && go build
+	cd kubernetes-model-generator/openapi/generator && ./generator
+
 .PHONY: generate-model
 generate-model:
 	cd kubernetes-model-generator && ./generateModel.sh
