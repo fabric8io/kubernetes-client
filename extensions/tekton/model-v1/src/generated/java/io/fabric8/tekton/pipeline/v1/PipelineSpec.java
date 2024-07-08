@@ -131,6 +131,7 @@ public class PipelineSpec implements Editable<PipelineSpecBuilder> , KubernetesR
     }
 
     @JsonProperty("finally")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PipelineTask> getFinally() {
         return _finally;
     }

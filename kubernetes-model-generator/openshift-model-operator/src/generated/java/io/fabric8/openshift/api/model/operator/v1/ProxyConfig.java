@@ -1,8 +1,8 @@
 
 package io.fabric8.openshift.api.model.operator.v1;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -63,7 +63,7 @@ public class ProxyConfig implements Editable<ProxyConfigBuilder> , KubernetesRes
     private String iptablesSyncPeriod;
     @JsonProperty("proxyArguments")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, ArrayList<String>> proxyArguments = new LinkedHashMap<>();
+    private Map<String, List<String>> proxyArguments = new LinkedHashMap<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -74,7 +74,7 @@ public class ProxyConfig implements Editable<ProxyConfigBuilder> , KubernetesRes
     public ProxyConfig() {
     }
 
-    public ProxyConfig(String bindAddress, String iptablesSyncPeriod, Map<String, ArrayList<String>> proxyArguments) {
+    public ProxyConfig(String bindAddress, String iptablesSyncPeriod, Map<String, List<String>> proxyArguments) {
         super();
         this.bindAddress = bindAddress;
         this.iptablesSyncPeriod = iptablesSyncPeriod;
@@ -103,12 +103,12 @@ public class ProxyConfig implements Editable<ProxyConfigBuilder> , KubernetesRes
 
     @JsonProperty("proxyArguments")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public Map<String, ArrayList<String>> getProxyArguments() {
+    public Map<String, List<String>> getProxyArguments() {
         return proxyArguments;
     }
 
     @JsonProperty("proxyArguments")
-    public void setProxyArguments(Map<String, ArrayList<String>> proxyArguments) {
+    public void setProxyArguments(Map<String, List<String>> proxyArguments) {
         this.proxyArguments = proxyArguments;
     }
 

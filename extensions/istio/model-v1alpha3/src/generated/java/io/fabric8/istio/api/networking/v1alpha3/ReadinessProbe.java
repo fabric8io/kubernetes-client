@@ -102,6 +102,7 @@ public class ReadinessProbe implements Editable<ReadinessProbeBuilder> , Kuberne
     }
 
     @JsonProperty("HealthCheckMethod")
+    @JsonUnwrapped
     public IsReadinessProbeHealthCheckMethod getHealthCheckMethod() {
         return healthCheckMethod;
     }

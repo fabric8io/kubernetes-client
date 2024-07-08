@@ -82,6 +82,7 @@ public class Value implements Editable<ValueBuilder> , KubernetesResource
     }
 
     @JsonProperty("Kind")
+    @JsonUnwrapped
     public IsValueKind getKind() {
         return kind;
     }

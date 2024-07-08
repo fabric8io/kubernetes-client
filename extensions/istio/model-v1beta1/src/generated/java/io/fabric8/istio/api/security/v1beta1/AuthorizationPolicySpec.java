@@ -103,6 +103,7 @@ public class AuthorizationPolicySpec implements Editable<AuthorizationPolicySpec
     }
 
     @JsonProperty("ActionDetail")
+    @JsonUnwrapped
     public IsAuthorizationPolicyActionDetail getActionDetail() {
         return actionDetail;
     }

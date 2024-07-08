@@ -358,6 +358,7 @@ public class JSONSchemaProps implements Editable<JSONSchemaPropsBuilder> , Kuber
     }
 
     @JsonProperty("enum")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<JsonNode> getEnum() {
         return _enum;
     }
@@ -652,6 +653,7 @@ public class JSONSchemaProps implements Editable<JSONSchemaPropsBuilder> , Kuber
     }
 
     @JsonProperty("x-kubernetes-list-map-keys")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getXKubernetesListMapKeys() {
         return xKubernetesListMapKeys;
     }
@@ -692,6 +694,7 @@ public class JSONSchemaProps implements Editable<JSONSchemaPropsBuilder> , Kuber
     }
 
     @JsonProperty("x-kubernetes-validations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ValidationRule> getXKubernetesValidations() {
         return xKubernetesValidations;
     }

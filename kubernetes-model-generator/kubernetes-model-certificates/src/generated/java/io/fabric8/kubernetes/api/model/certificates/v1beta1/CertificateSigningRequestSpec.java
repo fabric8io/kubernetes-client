@@ -67,7 +67,7 @@ public class CertificateSigningRequestSpec implements Editable<CertificateSignin
     private Integer expirationSeconds;
     @JsonProperty("extra")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, ArrayList<String>> extra = new LinkedHashMap<>();
+    private Map<String, List<String>> extra = new LinkedHashMap<>();
     @JsonProperty("groups")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> groups = new ArrayList<>();
@@ -92,7 +92,7 @@ public class CertificateSigningRequestSpec implements Editable<CertificateSignin
     public CertificateSigningRequestSpec() {
     }
 
-    public CertificateSigningRequestSpec(Integer expirationSeconds, Map<String, ArrayList<String>> extra, List<String> groups, String request, String signerName, String uid, List<String> usages, String username) {
+    public CertificateSigningRequestSpec(Integer expirationSeconds, Map<String, List<String>> extra, List<String> groups, String request, String signerName, String uid, List<String> usages, String username) {
         super();
         this.expirationSeconds = expirationSeconds;
         this.extra = extra;
@@ -116,12 +116,12 @@ public class CertificateSigningRequestSpec implements Editable<CertificateSignin
 
     @JsonProperty("extra")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public Map<String, ArrayList<String>> getExtra() {
+    public Map<String, List<String>> getExtra() {
         return extra;
     }
 
     @JsonProperty("extra")
-    public void setExtra(Map<String, ArrayList<String>> extra) {
+    public void setExtra(Map<String, List<String>> extra) {
         this.extra = extra;
     }
 

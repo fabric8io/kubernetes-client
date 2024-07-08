@@ -12892,37 +12892,41 @@
     },
     "machinepoolplatform": {
       "properties": {
-        "alibabacloud": {
-          "$ref": "#/definitions/os_hive_alibabacloud_v1_MachinePool",
-          "existingJavaType": "io.fabric8.openshift.api.model.hive.alibabacloud.v1.MachinePool"
+        "additionalSecurityGroupIDs": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
         },
-        "aws": {
-          "$ref": "#/definitions/os_hive_aws_v1_MachinePoolPlatform",
-          "existingJavaType": "io.fabric8.openshift.api.model.hive.aws.v1.MachinePoolPlatform"
+        "metadataService": {
+          "$ref": "#/definitions/os_hive_aws_v1_EC2Metadata",
+          "existingJavaType": "io.fabric8.openshift.api.model.hive.aws.v1.EC2Metadata"
         },
-        "azure": {
-          "$ref": "#/definitions/os_hive_azure_v1_MachinePool",
-          "existingJavaType": "io.fabric8.openshift.api.model.hive.azure.v1.MachinePool"
+        "rootVolume": {
+          "$ref": "#/definitions/os_hive_aws_v1_EC2RootVolume",
+          "existingJavaType": "io.fabric8.openshift.api.model.hive.aws.v1.EC2RootVolume"
         },
-        "gcp": {
-          "$ref": "#/definitions/os_hive_gcp_v1_MachinePool",
-          "existingJavaType": "io.fabric8.openshift.api.model.hive.gcp.v1.MachinePool"
+        "spotMarketOptions": {
+          "$ref": "#/definitions/os_hive_aws_v1_SpotMarketOptions",
+          "existingJavaType": "io.fabric8.openshift.api.model.hive.aws.v1.SpotMarketOptions"
         },
-        "ibmcloud": {
-          "$ref": "#/definitions/os_hive_ibmcloud_v1_MachinePool",
-          "existingJavaType": "io.fabric8.openshift.api.model.hive.ibmcloud.v1.MachinePool"
+        "subnets": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
         },
-        "openstack": {
-          "$ref": "#/definitions/os_hive_openstack_v1_MachinePool",
-          "existingJavaType": "io.fabric8.openshift.api.model.hive.openstack.v1.MachinePool"
+        "type": {
+          "type": "string"
         },
-        "ovirt": {
-          "$ref": "#/definitions/os_hive_ovirt_v1_MachinePool",
-          "existingJavaType": "io.fabric8.openshift.api.model.hive.ovirt.v1.MachinePool"
-        },
-        "vsphere": {
-          "$ref": "#/definitions/os_hive_vsphere_v1_MachinePool",
-          "existingJavaType": "io.fabric8.openshift.api.model.hive.vsphere.v1.MachinePool"
+        "zones": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
         }
       },
       "additionalProperties": true
@@ -13434,8 +13438,15 @@
     },
     "osdisk": {
       "properties": {
+        "diskEncryptionSet": {
+          "$ref": "#/definitions/os_hive_azure_v1_DiskEncryptionSet",
+          "existingJavaType": "io.fabric8.openshift.api.model.hive.azure.v1.DiskEncryptionSet"
+        },
         "diskSizeGB": {
           "type": "integer"
+        },
+        "diskType": {
+          "type": "string"
         }
       },
       "additionalProperties": true
@@ -13576,6 +13587,12 @@
     },
     "platform": {
       "properties": {
+        "accountID": {
+          "type": "string"
+        },
+        "cisInstanceCRN": {
+          "type": "string"
+        },
         "credentialsSecretRef": {
           "$ref": "#/definitions/kubernetes_core_LocalObjectReference",
           "existingJavaType": "io.fabric8.kubernetes.api.model.LocalObjectReference"

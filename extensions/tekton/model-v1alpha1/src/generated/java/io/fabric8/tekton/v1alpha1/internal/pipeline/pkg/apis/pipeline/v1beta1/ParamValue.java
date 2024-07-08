@@ -96,6 +96,7 @@ public class ParamValue implements Editable<ParamValueBuilder> , KubernetesResou
     }
 
     @JsonProperty("ArrayVal")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<java.lang.String> getArrayVal() {
         return arrayVal;
     }
@@ -106,6 +107,7 @@ public class ParamValue implements Editable<ParamValueBuilder> , KubernetesResou
     }
 
     @JsonProperty("ObjectVal")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getObjectVal() {
         return objectVal;
     }

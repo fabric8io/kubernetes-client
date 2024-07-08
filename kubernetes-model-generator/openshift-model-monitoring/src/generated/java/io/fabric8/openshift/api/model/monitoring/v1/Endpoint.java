@@ -103,7 +103,7 @@ public class Endpoint implements Editable<EndpointBuilder> , KubernetesResource
     private OAuth2 oauth2;
     @JsonProperty("params")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, ArrayList<String>> params = new LinkedHashMap<>();
+    private Map<String, List<String>> params = new LinkedHashMap<>();
     @JsonProperty("path")
     private String path;
     @JsonProperty("port")
@@ -131,7 +131,7 @@ public class Endpoint implements Editable<EndpointBuilder> , KubernetesResource
     public Endpoint() {
     }
 
-    public Endpoint(SafeAuthorization authorization, BasicAuth basicAuth, String bearerTokenFile, SecretKeySelector bearerTokenSecret, Boolean enableHttp2, Boolean filterRunning, Boolean followRedirects, Boolean honorLabels, Boolean honorTimestamps, String interval, List<RelabelConfig> metricRelabelings, OAuth2 oauth2, Map<String, ArrayList<String>> params, String path, String port, String proxyUrl, List<RelabelConfig> relabelings, String scheme, String scrapeTimeout, io.fabric8.kubernetes.api.model.IntOrString targetPort, TLSConfig tlsConfig) {
+    public Endpoint(SafeAuthorization authorization, BasicAuth basicAuth, String bearerTokenFile, SecretKeySelector bearerTokenSecret, Boolean enableHttp2, Boolean filterRunning, Boolean followRedirects, Boolean honorLabels, Boolean honorTimestamps, String interval, List<RelabelConfig> metricRelabelings, OAuth2 oauth2, Map<String, List<String>> params, String path, String port, String proxyUrl, List<RelabelConfig> relabelings, String scheme, String scrapeTimeout, io.fabric8.kubernetes.api.model.IntOrString targetPort, TLSConfig tlsConfig) {
         super();
         this.authorization = authorization;
         this.basicAuth = basicAuth;
@@ -279,12 +279,12 @@ public class Endpoint implements Editable<EndpointBuilder> , KubernetesResource
 
     @JsonProperty("params")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public Map<String, ArrayList<String>> getParams() {
+    public Map<String, List<String>> getParams() {
         return params;
     }
 
     @JsonProperty("params")
-    public void setParams(Map<String, ArrayList<String>> params) {
+    public void setParams(Map<String, List<String>> params) {
         this.params = params;
     }
 

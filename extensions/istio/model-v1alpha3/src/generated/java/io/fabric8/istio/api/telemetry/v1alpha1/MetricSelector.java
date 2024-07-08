@@ -86,6 +86,7 @@ public class MetricSelector implements Editable<MetricSelectorBuilder> , Kuberne
     }
 
     @JsonProperty("MetricMatch")
+    @JsonUnwrapped
     public IsMetricSelectorMetricMatch getMetricMatch() {
         return metricMatch;
     }

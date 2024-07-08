@@ -90,6 +90,7 @@ public class HTTPFaultInjectionDelay implements Editable<HTTPFaultInjectionDelay
     }
 
     @JsonProperty("HttpDelayType")
+    @JsonUnwrapped
     public IsHTTPFaultInjectionDelayHttpDelayType getHttpDelayType() {
         return httpDelayType;
     }

@@ -90,6 +90,7 @@ public class EnvoyFilterEnvoyConfigObjectMatch implements Editable<EnvoyFilterEn
     }
 
     @JsonProperty("ObjectTypes")
+    @JsonUnwrapped
     public IsEnvoyFilterEnvoyConfigObjectMatchObjectTypes getObjectTypes() {
         return objectTypes;
     }

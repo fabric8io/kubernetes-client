@@ -82,6 +82,7 @@ public class HTTPBody implements Editable<HTTPBodyBuilder> , KubernetesResource
     }
 
     @JsonProperty("Specifier")
+    @JsonUnwrapped
     public IsHTTPBodySpecifier getSpecifier() {
         return specifier;
     }
