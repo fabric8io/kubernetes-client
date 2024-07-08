@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.jsonschema2pojo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.fasterxml.jackson.databind.JsonDeserializer;
@@ -25,6 +26,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.sun.codemodel.JAnnotationArrayMember;
 import com.sun.codemodel.JAnnotationUse;
+import com.sun.codemodel.JAnnotationValue;
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JClassAlreadyExistsException;
 import com.sun.codemodel.JCodeModel;
@@ -244,26 +246,35 @@ public class KubernetesCoreTypeAnnotator extends Jackson2Annotator {
     super.propertyGetter(getter, clazz, propertyName);
     // https://github.com/fabric8io/kubernetes-client/issues/6085
     // https://github.com/quarkusio/quarkus/issues/39934
-    final JFieldVar field = clazz.fields().get(propertyName);
+    final JFieldVar field = clazz.fields().values().stream()
+        .filter(f -> f.annotations().stream()
+            .anyMatch(a -> a.getAnnotationClass().fullName().equals(JsonProperty.class.getName())
+                && annotationValue(a.getAnnotationMembers().get("value")).equals("\"" + propertyName + "\"")))
+        .findAny().orElse(null);
     if (field != null) {
       for (JAnnotationUse annotation : field.annotations()) {
         if (annotation.getAnnotationClass().fullName().equals(JsonInclude.class.getName())) {
           final JAnnotationUse methodAnnotation = getter.annotate(JsonInclude.class);
           annotation.getAnnotationMembers()
-              .forEach((key, value) -> {
-                final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                final PrintWriter pw = new PrintWriter(new BufferedOutputStream(baos));
-                value.generate(new JFormatter(pw));
-                pw.flush();
-                methodAnnotation.param(key, Enum.valueOf(JsonInclude.Include.class,
-                    baos.toString().replace(JsonInclude.Include.class.getCanonicalName() + ".", "")));
-              });
+              .forEach((key, value) -> methodAnnotation.param(key, Enum.valueOf(JsonInclude.Include.class,
+                  annotationValue(value).replace(JsonInclude.Include.class.getCanonicalName() + ".", ""))));
         }
         if (annotation.getAnnotationClass().fullName().equals(JsonUnwrapped.class.getName())) {
           getter.annotate(JsonUnwrapped.class);
         }
       }
     }
+  }
+
+  private static String annotationValue(JAnnotationValue annotationValue) {
+    if (annotationValue == null) {
+      return "";
+    }
+    final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    final PrintWriter pw = new PrintWriter(new BufferedOutputStream(baos));
+    annotationValue.generate(new JFormatter(pw));
+    pw.flush();
+    return baos.toString();
   }
 
   protected void processBuildable(JDefinedClass clazz) {
