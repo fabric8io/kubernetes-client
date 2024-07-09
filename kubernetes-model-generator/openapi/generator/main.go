@@ -60,6 +60,7 @@ func main() {
 			reflect.TypeOf(coreV1.PodExecOptions{}),
 			reflect.TypeOf(metaV1.RootPaths{}),
 			reflect.TypeOf(metaV1.GroupKind{}),
+			reflect.TypeOf(metaV1.TypeMeta{}), // TODO: can be removed, it's an inline type not directly used
 		}, "api-machinery-extra"},
 		{[]reflect.Type{
 			reflect.TypeOf(admissionV1.AdmissionRequest{}),
