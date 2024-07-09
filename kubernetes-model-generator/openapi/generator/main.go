@@ -17,10 +17,12 @@ package main
 
 import (
 	"github.com/getkin/kin-openapi/openapi3"
-	v1admission "k8s.io/api/admission/v1"
-	v1beta1admission "k8s.io/api/admission/v1beta1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	configapi "k8s.io/client-go/tools/clientcmd/api/v1"
+	admissionV1 "k8s.io/api/admission/v1"
+	admissionV1Beta1 "k8s.io/api/admission/v1beta1"
+	apiextensionsV1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	apiextensionsV1Beta1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1beta1"
+	metaV1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	configapiV1 "k8s.io/client-go/tools/clientcmd/api/v1"
 	"os"
 	"path/filepath"
 	"reflect"
@@ -45,17 +47,23 @@ func main() {
 		panic(err)
 	}
 	schemas := []Schemas{
-		{[]reflect.Type{reflect.TypeOf(configapi.Config{})}, "kubernetes-config"},
+		{[]reflect.Type{reflect.TypeOf(configapiV1.Config{})}, "kubernetes-config"},
 		{[]reflect.Type{
-			reflect.TypeOf(v1admission.AdmissionRequest{}),
-			reflect.TypeOf(v1beta1admission.AdmissionRequest{}),
-		}, "admission-registration"},
-		{[]reflect.Type{
-			reflect.TypeOf(metav1.MicroTime{}),
+			reflect.TypeOf(metaV1.MicroTime{}),
 			//	reflect.TypeOf(metav1.GroupKind{}),
 			//	reflect.TypeOf(metav1.GroupVersionKind{}),
 			//	reflect.TypeOf(metav1.GroupVersionResource{}),
 		}, "api-machinery-extra"},
+		{[]reflect.Type{
+			reflect.TypeOf(admissionV1.AdmissionRequest{}),
+			reflect.TypeOf(admissionV1Beta1.AdmissionRequest{}),
+		}, "admission-registration"},
+		{[]reflect.Type{
+			reflect.TypeOf(apiextensionsV1.ConversionReview{}),
+			reflect.TypeOf(apiextensionsV1Beta1.ConversionReview{}),
+			reflect.TypeOf(apiextensionsV1Beta1.SelectableField{}),
+			reflect.TypeOf(apiextensionsV1Beta1.ValidationRule{}),
+		}, "apiextensions"},
 	}
 	generate(schemas, targetDirectory)
 }
