@@ -19,6 +19,7 @@ import (
 	"github.com/getkin/kin-openapi/openapi3"
 	admissionV1 "k8s.io/api/admission/v1"
 	admissionV1Beta1 "k8s.io/api/admission/v1beta1"
+	coreV1 "k8s.io/api/core/v1"
 	apiextensionsV1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	apiextensionsV1Beta1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1beta1"
 	metaV1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -56,6 +57,7 @@ func main() {
 			reflect.TypeOf(metaV1.ListOptions{}),
 			reflect.TypeOf(metaV1.PatchOptions{}),
 			reflect.TypeOf(metaV1.UpdateOptions{}),
+			reflect.TypeOf(coreV1.PodExecOptions{}),
 			reflect.TypeOf(metaV1.RootPaths{}),
 			reflect.TypeOf(metaV1.GroupKind{}),
 		}, "api-machinery-extra"},
@@ -180,6 +182,10 @@ func openApiKind(t reflect.Type) *openapi3.SchemaRef {
 	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32:
 		return &openapi3.SchemaRef{
 			Value: openapi3.NewIntegerSchema(),
+		}
+	case reflect.Int64, reflect.Uint64:
+		return &openapi3.SchemaRef{
+			Value: openapi3.NewInt64Schema(),
 		}
 	case reflect.Array, reflect.Slice:
 		// Byte-arrays as String (Fabric8)
