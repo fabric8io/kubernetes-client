@@ -50,9 +50,14 @@ func main() {
 		{[]reflect.Type{reflect.TypeOf(configapiV1.Config{})}, "kubernetes-config"},
 		{[]reflect.Type{
 			reflect.TypeOf(metaV1.MicroTime{}),
-			//	reflect.TypeOf(metav1.GroupKind{}),
-			//	reflect.TypeOf(metav1.GroupVersionKind{}),
-			//	reflect.TypeOf(metav1.GroupVersionResource{}),
+			reflect.TypeOf(metaV1.CreateOptions{}),
+			reflect.TypeOf(metaV1.DeleteOptions{}),
+			reflect.TypeOf(metaV1.GetOptions{}),
+			reflect.TypeOf(metaV1.ListOptions{}),
+			reflect.TypeOf(metaV1.PatchOptions{}),
+			reflect.TypeOf(metaV1.UpdateOptions{}),
+			reflect.TypeOf(metaV1.RootPaths{}),
+			reflect.TypeOf(metaV1.GroupKind{}),
 		}, "api-machinery-extra"},
 		{[]reflect.Type{
 			reflect.TypeOf(admissionV1.AdmissionRequest{}),
@@ -106,14 +111,16 @@ func generateType(schemas openapi3.Schemas, t reflect.Type) {
 	}
 	value := &openapi3.SchemaRef{Value: openapi3.NewObjectSchema()}
 	value.Value.Properties = make(map[string]*openapi3.SchemaRef)
-	for it := 0; it < t.NumField(); it++ {
-		field := t.Field(it)
-		fieldName := field.Tag.Get("json")
-		if len(fieldName) == 0 {
+	// Gather fields
+	fields := extractFields(make([]reflect.StructField, 0), t)
+	// Process fields
+	for _, field := range fields {
+		var fieldName string
+		jsonTag := field.Tag.Get("json")
+		if len(jsonTag) > 0 {
+			fieldName = strings.Split(jsonTag, ",")[0]
+		} else {
 			fieldName = field.Name
-		}
-		if strings.Index(fieldName, ",") > 0 {
-			fieldName = strings.Split(fieldName, ",")[0]
 		}
 		value.Value.Properties[fieldName] = openApiKind(field.Type)
 
@@ -128,6 +135,26 @@ func generateType(schemas openapi3.Schemas, t reflect.Type) {
 		}
 	}
 	schemas[getKey(t)] = value
+}
+
+func extractFields(fields []reflect.StructField, t reflect.Type) []reflect.StructField {
+	for it := 0; it < t.NumField(); it++ {
+		field := t.Field(it)
+		jsonTag := field.Tag.Get("json")
+		// Fields to Skip
+		if len(field.PkgPath) > 0 || // Private fields
+			strings.Index(jsonTag, "-,") == 0 { //unserialized fields
+			continue
+		}
+		if field.Anonymous && strings.Index(jsonTag, ",inline") == 0 {
+			// Inlined fields
+			fields = extractFields(fields, field.Type)
+		} else {
+			// Standard fields
+			fields = append(fields, field)
+		}
+	}
+	return fields
 }
 
 func openApiKind(t reflect.Type) *openapi3.SchemaRef {
