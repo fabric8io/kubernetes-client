@@ -70,7 +70,13 @@ func main() {
 		}, "admission-registration"},
 		{[]reflect.Type{
 			reflect.TypeOf(apiextensionsV1.ConversionReview{}),
+			reflect.TypeOf(apiextensionsV1.JSONSchemaPropsOrArray{}),
+			reflect.TypeOf(apiextensionsV1.JSONSchemaPropsOrBool{}),
+			reflect.TypeOf(apiextensionsV1.JSONSchemaPropsOrStringArray{}),
 			reflect.TypeOf(apiextensionsV1Beta1.ConversionReview{}),
+			reflect.TypeOf(apiextensionsV1Beta1.JSONSchemaPropsOrArray{}),
+			reflect.TypeOf(apiextensionsV1Beta1.JSONSchemaPropsOrBool{}),
+			reflect.TypeOf(apiextensionsV1Beta1.JSONSchemaPropsOrStringArray{}),
 			reflect.TypeOf(apiextensionsV1Beta1.SelectableField{}),
 			reflect.TypeOf(apiextensionsV1Beta1.ValidationRule{}),
 		}, "apiextensions"},
@@ -114,7 +120,12 @@ func generateType(schemas openapi3.Schemas, t reflect.Type) {
 	if t.Kind() != reflect.Struct {
 		return
 	}
+	if schemas[getKey(t)] != nil {
+		// Prevent cycles
+		return
+	}
 	value := &openapi3.SchemaRef{Value: openapi3.NewObjectSchema()}
+	schemas[getKey(t)] = value
 	value.Value.Properties = make(map[string]*openapi3.SchemaRef)
 	// Gather fields
 	fields := extractFields(make([]reflect.StructField, 0), t)
@@ -139,7 +150,6 @@ func generateType(schemas openapi3.Schemas, t reflect.Type) {
 			generateType(schemas, field.Type.Elem())
 		}
 	}
-	schemas[getKey(t)] = value
 }
 
 func extractFields(fields []reflect.StructField, t reflect.Type) []reflect.StructField {
@@ -189,6 +199,13 @@ func openApiKind(t reflect.Type) *openapi3.SchemaRef {
 	case reflect.Int64, reflect.Uint64:
 		return &openapi3.SchemaRef{
 			Value: openapi3.NewInt64Schema(),
+		}
+	case reflect.Float32, reflect.Float64, reflect.Complex64, reflect.Complex128:
+		return &openapi3.SchemaRef{
+			Value: &openapi3.Schema{
+				Type:   &openapi3.Types{openapi3.TypeNumber},
+				Format: "double",
+			},
 		}
 	case reflect.Array, reflect.Slice:
 		// Byte-arrays as String (Fabric8)
