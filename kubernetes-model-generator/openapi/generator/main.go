@@ -30,6 +30,7 @@ import (
 	"reflect"
 	gatewayApiV1 "sigs.k8s.io/gateway-api/apis/v1"
 	gatewayApiV1Beta1 "sigs.k8s.io/gateway-api/apis/v1beta1"
+	kustomize "sigs.k8s.io/kustomize/api/types"
 	"strings"
 	"time"
 )
@@ -96,6 +97,9 @@ func main() {
 			reflect.TypeOf(apiextensionsV1Beta1.SelectableField{}),
 			reflect.TypeOf(apiextensionsV1Beta1.ValidationRule{}),
 		}, "apiextensions"),
+		NewTypeSchema([]reflect.Type{
+			reflect.TypeOf(kustomize.Kustomization{}),
+		}, "kustomize"),
 		NewPathSchema(map[reflect.Type]string{
 			reflect.TypeOf(gatewayApiV1.GatewayList{}):             "/apis/" + gatewayApiV1.GroupName + "/v1/namespaces/{namespace}/gateways",
 			reflect.TypeOf(gatewayApiV1.Gateway{}):                 "/apis/" + gatewayApiV1.GroupName + "/v1/namespaces/{namespace}/gateways/{name}",
@@ -149,6 +153,12 @@ func extractSchemas(types []reflect.Type) openapi3.Schemas {
 }
 
 func generateType(schemas openapi3.Schemas, t reflect.Type) {
+	// Nested pointers
+	if t.Kind() == reflect.Ptr {
+		generateType(schemas, t.Elem())
+		return
+	}
+	// Types can only be generated for Structs (only ones that contain fields)
 	if t.Kind() != reflect.Struct {
 		return
 	}
@@ -265,7 +275,9 @@ func openApiKind(t reflect.Type) *openapi3.SchemaRef {
 		}
 	default:
 		println("unhandled default case " + t.Kind().String())
-		return stringSchema
+		return &openapi3.SchemaRef{
+			Value: openapi3.NewObjectSchema(),
+		}
 	}
 }
 
