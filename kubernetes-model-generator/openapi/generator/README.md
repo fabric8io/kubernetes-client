@@ -8,11 +8,13 @@ Many of these types are used for WebHooks.
 
 ## Generated Schemas
 
-| Schema                 | Description                                                         |
-|------------------------|---------------------------------------------------------------------|
-| kubernetes-config      | Types used in the Kuberenetes configuration file ( `.kube/config` ) |
-| admission-registration | Additional types required for the admission registration API        |
-| apiextensions          | Additional types required for the apiextension API                  |
+| Schema                 | Description                                                                             |
+|------------------------|-----------------------------------------------------------------------------------------|
+| kubernetes-config      | Types used in the Kuberenetes configuration file ( `.kube/config` )                     |
+| api-machinery-extra    | Required types not exposed in the OpenAPI spec                                          |
+| admission-registration | Additional types required for the admission registration API                            |
+| apiextensions          | Additional types required for the apiextension API                                      |
+| gateway-api            | https://github.com/kubernetes-sigs/gateway-api (should qualify as an extension instead) |
 
 
 ## Usage
