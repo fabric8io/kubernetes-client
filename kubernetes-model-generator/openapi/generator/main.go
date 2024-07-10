@@ -19,6 +19,7 @@ import (
 	"github.com/getkin/kin-openapi/openapi3"
 	admissionV1 "k8s.io/api/admission/v1"
 	admissionV1Beta1 "k8s.io/api/admission/v1beta1"
+	admissionregistrationV1 "k8s.io/api/admissionregistration/v1"
 	coreV1 "k8s.io/api/core/v1"
 	apiextensionsV1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	apiextensionsV1Beta1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1beta1"
@@ -63,8 +64,9 @@ func main() {
 			reflect.TypeOf(metaV1.TypeMeta{}), // TODO: can be removed, it's an inline type not directly used
 		}, "api-machinery-extra"},
 		{[]reflect.Type{
-			reflect.TypeOf(admissionV1.AdmissionRequest{}),
-			reflect.TypeOf(admissionV1Beta1.AdmissionRequest{}),
+			reflect.TypeOf(admissionV1.AdmissionReview{}),
+			reflect.TypeOf(admissionV1Beta1.AdmissionReview{}),
+			reflect.TypeOf(admissionregistrationV1.Rule{}),
 		}, "admission-registration"},
 		{[]reflect.Type{
 			reflect.TypeOf(apiextensionsV1.ConversionReview{}),
