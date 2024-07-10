@@ -25,6 +25,7 @@ import (
 	apiextensionsV1Beta1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1beta1"
 	metaV1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	configapiV1 "k8s.io/client-go/tools/clientcmd/api/v1"
+	metricsV1Beta1 "k8s.io/metrics/pkg/apis/metrics/v1beta1"
 	"os"
 	"path/filepath"
 	"reflect"
@@ -97,9 +98,6 @@ func main() {
 			reflect.TypeOf(apiextensionsV1Beta1.SelectableField{}),
 			reflect.TypeOf(apiextensionsV1Beta1.ValidationRule{}),
 		}, "apiextensions"),
-		NewTypeSchema([]reflect.Type{
-			reflect.TypeOf(kustomize.Kustomization{}),
-		}, "kustomize"),
 		NewPathSchema(map[reflect.Type]string{
 			reflect.TypeOf(gatewayApiV1.GatewayList{}):             "/apis/" + gatewayApiV1.GroupName + "/v1/namespaces/{namespace}/gateways",
 			reflect.TypeOf(gatewayApiV1.Gateway{}):                 "/apis/" + gatewayApiV1.GroupName + "/v1/namespaces/{namespace}/gateways/{name}",
@@ -116,6 +114,15 @@ func main() {
 			reflect.TypeOf(gatewayApiV1Beta1.ReferenceGrantList{}): "/apis/" + gatewayApiV1.GroupName + "/v1beta1/namespaces/{namespace}/referencegrants",
 			reflect.TypeOf(gatewayApiV1Beta1.ReferenceGrant{}):     "/apis/" + gatewayApiV1.GroupName + "/v1beta1/namespaces/{namespace}/referencegrants/{name}",
 		}, "gateway-api"),
+		NewTypeSchema([]reflect.Type{
+			reflect.TypeOf(kustomize.Kustomization{}),
+		}, "kustomize"),
+		NewPathSchema(map[reflect.Type]string{
+			reflect.TypeOf(metricsV1Beta1.NodeMetricsList{}): "/apis/" + metricsV1Beta1.SchemeGroupVersion.String() + "/nodes",
+			reflect.TypeOf(metricsV1Beta1.NodeMetrics{}):     "/apis/" + metricsV1Beta1.SchemeGroupVersion.String() + "/nodes/{name}",
+			reflect.TypeOf(metricsV1Beta1.PodMetricsList{}):  "/apis/" + metricsV1Beta1.SchemeGroupVersion.String() + "/namespaces/{namespace}/pods",
+			reflect.TypeOf(metricsV1Beta1.PodMetrics{}):      "/apis/" + metricsV1Beta1.SchemeGroupVersion.String() + "/namespaces/{namespace}/pods/{name}",
+		}, "metrics"),
 	}
 	generate(schemas, targetDirectory)
 }
