@@ -28,13 +28,29 @@ import (
 	"os"
 	"path/filepath"
 	"reflect"
+	gatewayApiV1 "sigs.k8s.io/gateway-api/apis/v1"
+	gatewayApiV1Beta1 "sigs.k8s.io/gateway-api/apis/v1beta1"
 	"strings"
 	"time"
 )
 
-type Schemas struct {
+type Schema struct {
 	Types []reflect.Type
 	Name  string
+	Paths map[reflect.Type]string
+}
+
+func NewTypeSchema(types []reflect.Type, name string) Schema {
+	return Schema{types, name, make(map[reflect.Type]string)}
+}
+
+func NewPathSchema(paths map[reflect.Type]string, name string) Schema {
+	schema := Schema{make([]reflect.Type, 0), name, paths}
+	for t := range paths {
+		schema.Types = append(schema.Types, t)
+
+	}
+	return schema
 }
 
 func main() {
@@ -48,9 +64,9 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	schemas := []Schemas{
-		{[]reflect.Type{reflect.TypeOf(configapiV1.Config{})}, "kubernetes-config"},
-		{[]reflect.Type{
+	schemas := []Schema{
+		NewTypeSchema([]reflect.Type{reflect.TypeOf(configapiV1.Config{})}, "kubernetes-config"),
+		NewTypeSchema([]reflect.Type{
 			reflect.TypeOf(metaV1.MicroTime{}),
 			reflect.TypeOf(metaV1.CreateOptions{}),
 			reflect.TypeOf(metaV1.DeleteOptions{}),
@@ -62,13 +78,13 @@ func main() {
 			reflect.TypeOf(metaV1.RootPaths{}),
 			reflect.TypeOf(metaV1.GroupKind{}),
 			reflect.TypeOf(metaV1.TypeMeta{}), // TODO: can be removed, it's an inline type not directly used
-		}, "api-machinery-extra"},
-		{[]reflect.Type{
+		}, "api-machinery-extra"),
+		NewTypeSchema([]reflect.Type{
 			reflect.TypeOf(admissionV1.AdmissionReview{}),
 			reflect.TypeOf(admissionV1Beta1.AdmissionReview{}),
 			reflect.TypeOf(admissionregistrationV1.Rule{}),
-		}, "admission-registration"},
-		{[]reflect.Type{
+		}, "admission-registration"),
+		NewTypeSchema([]reflect.Type{
 			reflect.TypeOf(apiextensionsV1.ConversionReview{}),
 			reflect.TypeOf(apiextensionsV1.JSONSchemaPropsOrArray{}),
 			reflect.TypeOf(apiextensionsV1.JSONSchemaPropsOrBool{}),
@@ -79,12 +95,26 @@ func main() {
 			reflect.TypeOf(apiextensionsV1Beta1.JSONSchemaPropsOrStringArray{}),
 			reflect.TypeOf(apiextensionsV1Beta1.SelectableField{}),
 			reflect.TypeOf(apiextensionsV1Beta1.ValidationRule{}),
-		}, "apiextensions"},
+		}, "apiextensions"),
+		NewPathSchema(map[reflect.Type]string{
+			reflect.TypeOf(gatewayApiV1.GatewayList{}):           "/apis/" + gatewayApiV1.GroupName + "/v1/namespaces/{namespace}/gateways",
+			reflect.TypeOf(gatewayApiV1.Gateway{}):               "/apis/" + gatewayApiV1.GroupName + "/v1/namespaces/{namespace}/gateways/{name}",
+			reflect.TypeOf(gatewayApiV1.GatewayClassList{}):      "/apis/" + gatewayApiV1.GroupName + "/v1/gatewayclasses",
+			reflect.TypeOf(gatewayApiV1.GatewayClass{}):          "/apis/" + gatewayApiV1.GroupName + "/v1/gatewayclasses/{name}",
+			reflect.TypeOf(gatewayApiV1.HTTPRouteList{}):         "/apis/" + gatewayApiV1.GroupName + "/v1/namespaces/{namespace}/httproutes",
+			reflect.TypeOf(gatewayApiV1.HTTPRoute{}):             "/apis/" + gatewayApiV1.GroupName + "/v1/namespaces/{namespace}/httproutes/{name}",
+			reflect.TypeOf(gatewayApiV1Beta1.GatewayList{}):      "/apis/" + gatewayApiV1.GroupName + "/v1beta1/namespaces/{namespace}/gateways",
+			reflect.TypeOf(gatewayApiV1Beta1.Gateway{}):          "/apis/" + gatewayApiV1.GroupName + "/v1beta1/namespaces/{namespace}/gateways/{name}",
+			reflect.TypeOf(gatewayApiV1Beta1.GatewayClassList{}): "/apis/" + gatewayApiV1.GroupName + "/v1beta1/gatewayclasses",
+			reflect.TypeOf(gatewayApiV1Beta1.GatewayClass{}):     "/apis/" + gatewayApiV1.GroupName + "/v1beta1/gatewayclasses/{name}",
+			reflect.TypeOf(gatewayApiV1Beta1.HTTPRouteList{}):    "/apis/" + gatewayApiV1.GroupName + "/v1beta1/namespaces/{namespace}/httproutes",
+			reflect.TypeOf(gatewayApiV1Beta1.HTTPRoute{}):        "/apis/" + gatewayApiV1.GroupName + "/v1beta1/namespaces/{namespace}/httproutes/{name}",
+		}, "gateway-api"),
 	}
 	generate(schemas, targetDirectory)
 }
 
-func generate(schemas []Schemas, targetDirectory string) {
+func generate(schemas []Schema, targetDirectory string) {
 	for _, schema := range schemas {
 		swagger := &openapi3.T{
 			OpenAPI: "3.0.0",
@@ -95,7 +125,7 @@ func generate(schemas []Schemas, targetDirectory string) {
 			Components: &openapi3.Components{
 				Schemas: extractSchemas(schema.Types),
 			},
-			Paths: &openapi3.Paths{},
+			Paths: extractPaths(schema.Paths),
 		}
 		json, err := swagger.MarshalJSON()
 		if err != nil {
@@ -126,6 +156,7 @@ func generateType(schemas openapi3.Schemas, t reflect.Type) {
 	}
 	value := &openapi3.SchemaRef{Value: openapi3.NewObjectSchema()}
 	schemas[getKey(t)] = value
+
 	value.Value.Properties = make(map[string]*openapi3.SchemaRef)
 	// Gather fields
 	fields := extractFields(make([]reflect.StructField, 0), t)
@@ -194,7 +225,10 @@ func openApiKind(t reflect.Type) *openapi3.SchemaRef {
 		}
 	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32:
 		return &openapi3.SchemaRef{
-			Value: openapi3.NewIntegerSchema(),
+			Value: &openapi3.Schema{
+				Type:   &openapi3.Types{openapi3.TypeInteger},
+				Format: "int32",
+			},
 		}
 	case reflect.Int64, reflect.Uint64:
 		return &openapi3.SchemaRef{
@@ -231,6 +265,27 @@ func openApiKind(t reflect.Type) *openapi3.SchemaRef {
 		println("unhandled default case " + t.Kind().String())
 		return stringSchema
 	}
+}
+
+// Create fake paths so that the OpenAPI generator can compute group, version, plural, scope (namespaced/cluster)
+func extractPaths(paths map[reflect.Type]string) *openapi3.Paths {
+	oApiPaths := openapi3.NewPaths()
+	for t, path := range paths {
+		pathItem := &openapi3.PathItem{}
+		pathItem.Get = openapi3.NewOperation()
+		pathItem.Get.AddResponse(200, openapi3.NewResponse().WithDescription("OK").WithJSONSchemaRef(&openapi3.SchemaRef{
+			Ref: "#/components/schemas/" + getKey(t),
+		}))
+		if strings.Contains(path, "{namespace}") {
+			pathItem.Get.AddParameter(openapi3.NewPathParameter("namespace"))
+		}
+		if strings.Contains(path, "{name}") {
+			pathItem.Get.AddParameter(openapi3.NewPathParameter("name"))
+		}
+		oApiPaths.Set(path, pathItem)
+
+	}
+	return oApiPaths
 }
 
 func getKey(t reflect.Type) string {
