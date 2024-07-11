@@ -19,6 +19,7 @@ public class KubeSchema {
     private APIResourceList aPIResourceList;
     private APIService aPIService;
     private APIServiceList aPIServiceList;
+    private APIVersions aPIVersions;
     private Binding binding;
     private ComponentStatus componentStatus;
     private ComponentStatusList componentStatusList;
@@ -87,7 +88,7 @@ public class KubeSchema {
     public KubeSchema() {
     }
 
-    public KubeSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, APIResource aPIResource, APIResourceList aPIResourceList, APIService aPIService, APIServiceList aPIServiceList, Binding binding, ComponentStatus componentStatus, ComponentStatusList componentStatusList, Condition condition, Config config, ConfigMap configMap, ConfigMapList configMapList, ContainerStatus containerStatus, CreateOptions createOptions, DeleteOptions deleteOptions, EndpointPort endpointPort, Endpoints endpoints, EndpointsList endpointsList, EnvVar envVar, Event event, EventList eventList, EventSeries eventSeries, EventSource eventSource, GetOptions getOptions, GroupKind groupKind, GroupVersionKind groupVersionKind, GroupVersionResource groupVersionResource, Info info, KubernetesList kubernetesList, LimitRangeList limitRangeList, ListOptions listOptions, MicroTime microTime, Namespace namespace, NamespaceList namespaceList, Node node, NodeList nodeList, ObjectMeta objectMeta, Patch patch, PatchOptions patchOptions, PersistentVolume persistentVolume, PersistentVolumeClaim persistentVolumeClaim, PersistentVolumeClaimList persistentVolumeClaimList, PersistentVolumeList persistentVolumeList, PodExecOptions podExecOptions, PodList podList, PodTemplateList podTemplateList, Quantity quantity, ReplicationControllerList replicationControllerList, ResourceQuota resourceQuota, ResourceQuotaList resourceQuotaList, RootPaths rootPaths, Secret secret, SecretList secretList, ServiceAccount serviceAccount, ServiceAccountList serviceAccountList, ServiceList serviceList, Status status, String time, Toleration toleration, TopologySelectorTerm topologySelectorTerm, TypeMeta typeMeta, UpdateOptions updateOptions, WatchEvent watchEvent) {
+    public KubeSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, APIResource aPIResource, APIResourceList aPIResourceList, APIService aPIService, APIServiceList aPIServiceList, APIVersions aPIVersions, Binding binding, ComponentStatus componentStatus, ComponentStatusList componentStatusList, Condition condition, Config config, ConfigMap configMap, ConfigMapList configMapList, ContainerStatus containerStatus, CreateOptions createOptions, DeleteOptions deleteOptions, EndpointPort endpointPort, Endpoints endpoints, EndpointsList endpointsList, EnvVar envVar, Event event, EventList eventList, EventSeries eventSeries, EventSource eventSource, GetOptions getOptions, GroupKind groupKind, GroupVersionKind groupVersionKind, GroupVersionResource groupVersionResource, Info info, KubernetesList kubernetesList, LimitRangeList limitRangeList, ListOptions listOptions, MicroTime microTime, Namespace namespace, NamespaceList namespaceList, Node node, NodeList nodeList, ObjectMeta objectMeta, Patch patch, PatchOptions patchOptions, PersistentVolume persistentVolume, PersistentVolumeClaim persistentVolumeClaim, PersistentVolumeClaimList persistentVolumeClaimList, PersistentVolumeList persistentVolumeList, PodExecOptions podExecOptions, PodList podList, PodTemplateList podTemplateList, Quantity quantity, ReplicationControllerList replicationControllerList, ResourceQuota resourceQuota, ResourceQuotaList resourceQuotaList, RootPaths rootPaths, Secret secret, SecretList secretList, ServiceAccount serviceAccount, ServiceAccountList serviceAccountList, ServiceList serviceList, Status status, String time, Toleration toleration, TopologySelectorTerm topologySelectorTerm, TypeMeta typeMeta, UpdateOptions updateOptions, WatchEvent watchEvent) {
         super();
         this.aPIGroup = aPIGroup;
         this.aPIGroupList = aPIGroupList;
@@ -95,6 +96,7 @@ public class KubeSchema {
         this.aPIResourceList = aPIResourceList;
         this.aPIService = aPIService;
         this.aPIServiceList = aPIServiceList;
+        this.aPIVersions = aPIVersions;
         this.binding = binding;
         this.componentStatus = componentStatus;
         this.componentStatusList = componentStatusList;
@@ -213,6 +215,16 @@ public class KubeSchema {
     @JsonProperty("APIServiceList")
     public void setAPIServiceList(APIServiceList aPIServiceList) {
         this.aPIServiceList = aPIServiceList;
+    }
+
+    @JsonProperty("APIVersions")
+    public APIVersions getAPIVersions() {
+        return aPIVersions;
+    }
+
+    @JsonProperty("APIVersions")
+    public void setAPIVersions(APIVersions aPIVersions) {
+        this.aPIVersions = aPIVersions;
     }
 
     @JsonProperty("Binding")
