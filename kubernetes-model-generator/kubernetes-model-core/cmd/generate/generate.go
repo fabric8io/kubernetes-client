@@ -43,6 +43,7 @@ type Schema struct {
 	APIGroupList         metav1.APIGroupList
 	APIResource          metav1.APIResource
 	APIResourceList      metav1.APIResourceList
+	APIVersions          metav1.APIVersions
 	KubernetesList       metav1.List
 	ObjectMeta           metav1.ObjectMeta
 	TypeMeta             metav1.TypeMeta
