@@ -1,5 +1,10 @@
 ## CHANGELOG
 
+### 6.13.2 (2024-08-09)
+
+#### Bugs
+* Fix #6066: Added support for missing `v1.APIVersions` in KubernetesClient
+
 ### 6.13.1 (2024-07-02)
 
 #### Bugs

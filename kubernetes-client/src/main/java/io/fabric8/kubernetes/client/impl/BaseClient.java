@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.client.impl;
 import io.fabric8.kubernetes.api.model.APIGroup;
 import io.fabric8.kubernetes.api.model.APIGroupList;
 import io.fabric8.kubernetes.api.model.APIResourceList;
+import io.fabric8.kubernetes.api.model.APIVersions;
 import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -79,6 +80,7 @@ public abstract class BaseClient implements Client {
   };
 
   public static final String APIS = "/apis";
+  private static final String API = "/api";
 
   private URL masterUrl;
   private String apiVersion;
@@ -295,6 +297,11 @@ public abstract class BaseClient implements Client {
   @Override
   public APIGroup getApiGroup(String name) {
     return getOperationSupport().restCall(APIGroup.class, APIS, name);
+  }
+
+  @Override
+  public APIVersions getAPIVersions() {
+    return getOperationSupport().restCall(APIVersions.class, API);
   }
 
   private OperationSupport getOperationSupport() {
