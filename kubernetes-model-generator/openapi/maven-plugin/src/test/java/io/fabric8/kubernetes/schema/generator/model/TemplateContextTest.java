@@ -22,9 +22,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import java.io.File;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.AbstractMap;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -46,8 +47,8 @@ class TemplateContextTest {
         .packageMapping("io.k8s.apimachinery.pkg.apis.meta.v1", "io.fabric8.kubernetes.api.model")
         .build();
 
-    final var schema = (Schema<?>) settings.getOpenAPI().getComponents().getSchemas().get("io.k8s.api.core.v1.Pod");
-    templateContext = new TemplateContext(settings, Map.entry("io.k8s.api.core.v1.Pod", schema));
+    final Schema<?> schema = (Schema<?>) settings.getOpenAPI().getComponents().getSchemas().get("io.k8s.api.core.v1.Pod");
+    templateContext = new TemplateContext(settings, new AbstractMap.SimpleEntry<>("io.k8s.api.core.v1.Pod", schema));
   }
 
   @Test
@@ -101,7 +102,7 @@ class TemplateContextTest {
   @Test
   void context() {
     assertEquals(1, templateContext.getContext().size());
-    assertEquals(Set.of("imports"), templateContext.getContext().keySet());
+    assertEquals(new HashSet<>(Collections.singletonList("imports")), templateContext.getContext().keySet());
   }
 
   @Test
@@ -113,13 +114,13 @@ class TemplateContextTest {
   @Test
   void addImport() {
     templateContext.addImport("java.util.List");
-    assertEquals(Set.of("java.util.List"), templateContext.getContext().get("imports"));
+    assertEquals(new HashSet<>(Collections.singletonList("java.util.List")), templateContext.getContext().get("imports"));
   }
 
   @Test
   void addAllImports() {
-    templateContext.addAllImports(List.of("java.util.List", "java.util.Map"));
-    assertEquals(Set.of("java.util.List", "java.util.Map"), templateContext.getContext().get("imports"));
+    templateContext.addAllImports(Arrays.asList("java.util.List", "java.util.Map"));
+    assertEquals(new HashSet<>(Arrays.asList("java.util.List", "java.util.Map")), templateContext.getContext().get("imports"));
   }
 
 }

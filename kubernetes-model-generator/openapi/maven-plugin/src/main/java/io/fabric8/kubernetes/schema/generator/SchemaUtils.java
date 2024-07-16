@@ -24,7 +24,10 @@ import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
@@ -40,64 +43,82 @@ public class SchemaUtils {
   private static final String OBJECT_PRIMITIVE = "Object";
   private static final String STRING_PRIMITIVE = "String";
 
-  private static final Map<String, String> REF_TO_JAVA_TYPE_MAP = Map.of(
-      "#/components/schemas/io.k8s.apimachinery.pkg.util.intstr.IntOrString", "io.fabric8.kubernetes.api.model.IntOrString",
-      "#/components/schemas/io.k8s.apimachinery.pkg.api.resource.Quantity", "io.fabric8.kubernetes.api.model.Quantity",
-      "#/components/schemas/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta", "io.fabric8.kubernetes.api.model.ObjectMeta",
-      "#/components/schemas/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta_v2", "io.fabric8.kubernetes.api.model.ObjectMeta",
-      "#/components/schemas/io.k8s.apimachinery.pkg.runtime.RawExtension", "io.fabric8.kubernetes.api.model.KubernetesResource",
-      "#/components/schemas/io.k8s.apiextensions-apiserver.pkg.apis.apiextensions.v1beta1.JSON",
-      "com.fasterxml.jackson.databind.JsonNode",
-      "#/components/schemas/io.k8s.apiextensions-apiserver.pkg.apis.apiextensions.v1.JSON",
-      "com.fasterxml.jackson.databind.JsonNode");
+  private static final Map<String, String> REF_TO_JAVA_TYPE_MAP = new LinkedHashMap<>();
+  static {
+    REF_TO_JAVA_TYPE_MAP.put("#/components/schemas/io.k8s.apimachinery.pkg.util.intstr.IntOrString",
+        "io.fabric8.kubernetes.api.model.IntOrString");
+    REF_TO_JAVA_TYPE_MAP.put("#/components/schemas/io.k8s.apimachinery.pkg.api.resource.Quantity",
+        "io.fabric8.kubernetes.api.model.Quantity");
+    REF_TO_JAVA_TYPE_MAP.put("#/components/schemas/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta",
+        "io.fabric8.kubernetes.api.model.ObjectMeta");
+    REF_TO_JAVA_TYPE_MAP.put("#/components/schemas/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta_v2",
+        "io.fabric8.kubernetes.api.model.ObjectMeta");
+    REF_TO_JAVA_TYPE_MAP.put("#/components/schemas/io.k8s.apimachinery.pkg.runtime.RawExtension",
+        "io.fabric8.kubernetes.api.model.KubernetesResource");
+    REF_TO_JAVA_TYPE_MAP.put("#/components/schemas/io.k8s.apiextensions-apiserver.pkg.apis.apiextensions.v1beta1.JSON",
+        "com.fasterxml.jackson.databind.JsonNode");
+    REF_TO_JAVA_TYPE_MAP.put("#/components/schemas/io.k8s.apiextensions-apiserver.pkg.apis.apiextensions.v1.JSON",
+        "com.fasterxml.jackson.databind.JsonNode");
+  }
 
-  private static final Map<String, String> REF_TO_JAVA_PRIMITIVE_MAP = Map.of(
-      "#/components/schemas/io.k8s.apimachinery.pkg.apis.meta.v1.Time", "String");
+  private static final Map<String, String> REF_TO_JAVA_PRIMITIVE_MAP = new LinkedHashMap<>();
+  static {
+    REF_TO_JAVA_PRIMITIVE_MAP.put("#/components/schemas/io.k8s.apimachinery.pkg.apis.meta.v1.Time", "String");
+  }
 
-  private static final Map<String, String> JAVA_CLASS_SERIALIZER_MAP = Map.of(
-      "io.fabric8.kubernetes.api.model.MicroTime", "io.fabric8.kubernetes.api.model.MicroTimeSerDes.Serializer.class",
-      "io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaPropsOrArray",
-      "io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaPropsOrArraySerDe.Serializer.class",
-      "io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaPropsOrArray",
-      "io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaPropsOrArraySerDe.Serializer.class",
-      "io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaPropsOrBool",
-      "io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaPropsOrBoolSerDe.Serializer.class",
-      "io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaPropsOrBool",
-      "io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaPropsOrBoolSerDe.Serializer.class",
-      "io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaPropsOrStringArray",
-      "io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaPropsOrStringArraySerDe.Serializer.class",
-      "io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaPropsOrStringArray",
-      "io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaPropsOrStringArraySerDe.Serializer.class");
+  private static final Map<String, String> JAVA_CLASS_SERIALIZER_MAP = new LinkedHashMap<>();
+  static {
+    JAVA_CLASS_SERIALIZER_MAP.put("io.fabric8.kubernetes.api.model.MicroTime",
+        "io.fabric8.kubernetes.api.model.MicroTimeSerDes.Serializer.class");
+    JAVA_CLASS_SERIALIZER_MAP.put("io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaPropsOrArray",
+        "io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaPropsOrArraySerDe.Serializer.class");
+    JAVA_CLASS_SERIALIZER_MAP.put("io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaPropsOrArray",
+        "io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaPropsOrArraySerDe.Serializer.class");
+    JAVA_CLASS_SERIALIZER_MAP.put("io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaPropsOrBool",
+        "io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaPropsOrBoolSerDe.Serializer.class");
+    JAVA_CLASS_SERIALIZER_MAP.put("io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaPropsOrBool",
+        "io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaPropsOrBoolSerDe.Serializer.class");
+    JAVA_CLASS_SERIALIZER_MAP.put("io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaPropsOrStringArray",
+        "io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaPropsOrStringArraySerDe.Serializer.class");
+    JAVA_CLASS_SERIALIZER_MAP.put("io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaPropsOrStringArray",
+        "io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaPropsOrStringArraySerDe.Serializer.class");
+  }
 
-  private static final Map<String, String> JAVA_CLASS_DESERIALIZER_MAP = Map.of(
-      "io.fabric8.kubernetes.api.model.MicroTime", "io.fabric8.kubernetes.api.model.MicroTimeSerDes.Deserializer.class",
-      "io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaPropsOrArray",
-      "io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaPropsOrArraySerDe.Deserializer.class",
-      "io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaPropsOrArray",
-      "io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaPropsOrArraySerDe.Deserializer.class",
-      "io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaPropsOrBool",
-      "io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaPropsOrBoolSerDe.Deserializer.class",
-      "io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaPropsOrBool",
-      "io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaPropsOrBoolSerDe.Deserializer.class",
-      "io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaPropsOrStringArray",
-      "io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaPropsOrStringArraySerDe.Deserializer.class",
-      "io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaPropsOrStringArray",
-      "io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaPropsOrStringArraySerDe.Deserializer.class");
+  private static final Map<String, String> JAVA_CLASS_DESERIALIZER_MAP = new LinkedHashMap<>();
+  static {
+    JAVA_CLASS_DESERIALIZER_MAP.put("io.fabric8.kubernetes.api.model.MicroTime",
+        "io.fabric8.kubernetes.api.model.MicroTimeSerDes.Deserializer.class");
+    JAVA_CLASS_DESERIALIZER_MAP.put("io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaPropsOrArray",
+        "io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaPropsOrArraySerDe.Deserializer.class");
+    JAVA_CLASS_DESERIALIZER_MAP.put("io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaPropsOrArray",
+        "io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaPropsOrArraySerDe.Deserializer.class");
+    JAVA_CLASS_DESERIALIZER_MAP.put("io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaPropsOrBool",
+        "io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaPropsOrBoolSerDe.Deserializer.class");
+    JAVA_CLASS_DESERIALIZER_MAP.put("io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaPropsOrBool",
+        "io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaPropsOrBoolSerDe.Deserializer.class");
+    JAVA_CLASS_DESERIALIZER_MAP.put("io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaPropsOrStringArray",
+        "io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaPropsOrStringArraySerDe.Deserializer.class");
+    JAVA_CLASS_DESERIALIZER_MAP.put("io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaPropsOrStringArray",
+        "io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaPropsOrStringArraySerDe.Deserializer.class");
+  }
 
-  private static final Map<String, String> REF_SERIALIZER_MAP = Map.of(
-  //    "#/components/schemas/io.k8s.apimachinery.pkg.util.intstr.IntOrString", "com.marcnuri.yakc.model.serialization.IntOrStringSerializer.class"
-  );
+  private static final Map<String, String> REF_SERIALIZER_MAP = Collections.emptyMap();// new LinkedHashMap<>();
+  static {
+    //    REF_SERIALIZER_MAP.put("#/components/schemas/io.k8s.apimachinery.pkg.util.intstr.IntOrString", "com.marcnuri.yakc.model.serialization.IntOrStringSerializer.class");
+  }
 
-  private static final Map<String, String> TYPE_MAP = Map.of(
-      "boolean", "Boolean",
-      "int32", "Integer",
-      "int64", "Long",
-      "double", "Double",
-      "number", "Number",
-      "object", OBJECT_PRIMITIVE,
-      "string", STRING_PRIMITIVE);
+  private static final Map<String, String> TYPE_MAP = new LinkedHashMap<>();
+  static {
+    TYPE_MAP.put("boolean", "Boolean");
+    TYPE_MAP.put("int32", "Integer");
+    TYPE_MAP.put("int64", "Long");
+    TYPE_MAP.put("double", "Double");
+    TYPE_MAP.put("number", "Number");
+    TYPE_MAP.put("object", OBJECT_PRIMITIVE);
+    TYPE_MAP.put("string", STRING_PRIMITIVE);
+  }
 
-  private static final Set<String> PROTECTED_WORDS = Set.of(
+  private static final Set<String> PROTECTED_WORDS = new HashSet<>(Arrays.asList(
       "continue",
       "default",
       "enum",
@@ -107,7 +128,7 @@ public class SchemaUtils {
       "private",
       "for",
       "return",
-      "package");
+      "package"));
 
   private final GeneratorSettings settings;
 
@@ -168,16 +189,18 @@ public class SchemaUtils {
     if (isString(schema)) {
       return "String";
     }
-    if (ref != null && !ref.isBlank()) {
-      return schemaRefToJavaPrimitive(schema)
-          .or(() -> schemaRefToJavaType(schema).map(javaType -> {
-            addImport.accept(javaType);
-            return javaType.substring(javaType.lastIndexOf('.') + 1);
-          }))
-          .orElseGet(() -> {
-            addImport.accept(refToModelPackage(ref));
-            return refToClassName(ref);
-          });
+    if (ref != null && !ref.trim().isEmpty()) {
+      final Optional<String> javaPrimitive = schemaRefToJavaPrimitive(schema);
+      if (javaPrimitive.isPresent()) {
+        return javaPrimitive.get();
+      }
+      final Optional<String> javaType = schemaRefToJavaType(schema);
+      if (javaType.isPresent()) {
+        addImport.accept(javaType.get());
+        return javaType.get().substring(javaType.get().lastIndexOf('.') + 1);
+      }
+      addImport.accept(refToModelPackage(ref));
+      return refToClassName(ref);
     }
     // Plain OpenAPI object map to KubernetesResource (deserializer will take care of the rest)
     if (isObject(schema)) {

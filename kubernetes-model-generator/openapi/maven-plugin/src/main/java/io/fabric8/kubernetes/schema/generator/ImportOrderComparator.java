@@ -15,11 +15,13 @@
  */
 package io.fabric8.kubernetes.schema.generator;
 
+import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.Set;
 
 public class ImportOrderComparator implements Comparator<String> {
-  private static final Set<String> JAVA_PACKAGES = Set.of("java", "javax");
+  private static final Set<String> JAVA_PACKAGES = new HashSet<>(Arrays.asList("java", "javax"));
 
   @Override
   public int compare(String o1, String o2) {

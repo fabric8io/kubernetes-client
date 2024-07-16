@@ -31,8 +31,9 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
@@ -56,7 +57,7 @@ class SchemaUtilsTest {
       "#/components/schemas/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta, ListMeta"
   })
   void refToClassName(String ref, String expected) {
-    final var result = SchemaUtils.refToClassName(ref);
+    final String result = SchemaUtils.refToClassName(ref);
     assertEquals(expected, result);
   }
 
@@ -68,12 +69,12 @@ class SchemaUtilsTest {
       "io.k8s.apimachinery, io.k8s.apimachinery"
   })
   void toModelPackage(String packageName, String expected) {
-    final var settings = generatorSettingsBuilder
+    final GeneratorSettings settings = generatorSettingsBuilder
         .packageMapping("io.k8s.api.core.v1", "io.fabric8.kubernetes.api.model")
         .packageMapping("io.k8s.api.core", "io.fabric8.kubernetes.api.model.core")
         .packageMapping("io.k8s.api.networking", "io.fabric8.kubernetes.api.model.networking")
         .build();
-    final var result = new SchemaUtils(settings).toModelPackage(packageName);
+    final String result = new SchemaUtils(settings).toModelPackage(packageName);
     assertEquals(expected, result);
   }
 
@@ -100,7 +101,7 @@ class SchemaUtilsTest {
       "items, getItems"
   })
   void getterName(String variable, String expected) {
-    final var result = SchemaUtils.getterName(variable);
+    final String result = SchemaUtils.getterName(variable);
     assertEquals(expected, result);
   }
 
@@ -113,7 +114,7 @@ class SchemaUtilsTest {
       "items, setItems"
   })
   void setterName(String variable, String expected) {
-    final var result = SchemaUtils.setterName(variable);
+    final String result = SchemaUtils.setterName(variable);
     assertEquals(expected, result);
   }
 
@@ -146,42 +147,42 @@ class SchemaUtilsTest {
 
     @Test
     void arrays() {
-      final var schema = new ArraySchema();
+      final ArraySchema schema = new ArraySchema();
       schema.items(new StringSchema());
-      final var result = schemaUtils.schemaToClassName(importConsumer, schema);
+      final String result = schemaUtils.schemaToClassName(importConsumer, schema);
       assertEquals("List<String>", result);
       assertEquals("java.util.List", addImport.get());
     }
 
     @Test
     void mapOfObjects() {
-      final var schema = new MapSchema();
-      final var result = schemaUtils.schemaToClassName(importConsumer, schema);
+      final MapSchema schema = new MapSchema();
+      final String result = schemaUtils.schemaToClassName(importConsumer, schema);
       assertEquals("Map<String, Object>", result);
       assertEquals("java.util.Map", addImport.get());
     }
 
     @Test
     void mapOfIntegers() {
-      final var schema = new MapSchema();
+      final MapSchema schema = new MapSchema();
       schema.additionalProperties(new IntegerSchema());
-      final var result = schemaUtils.schemaToClassName(importConsumer, schema);
+      final String result = schemaUtils.schemaToClassName(importConsumer, schema);
       assertEquals("Map<String, Integer>", result);
       assertEquals("java.util.Map", addImport.get());
     }
 
     @Test
     void date() {
-      final var schema = new DateSchema();
-      final var result = schemaUtils.schemaToClassName(importConsumer, schema);
+      final DateSchema schema = new DateSchema();
+      final String result = schemaUtils.schemaToClassName(importConsumer, schema);
       assertEquals("String", result);
       assertNull(addImport.get());
     }
 
     @Test
     void dateTime() {
-      final var schema = new DateTimeSchema();
-      final var result = schemaUtils.schemaToClassName(importConsumer, schema);
+      final DateTimeSchema schema = new DateTimeSchema();
+      final String result = schemaUtils.schemaToClassName(importConsumer, schema);
       assertEquals("String", result);
       assertNull(addImport.get());
     }
@@ -191,78 +192,78 @@ class SchemaUtilsTest {
     // Fabric8 has a special (legacy) handling for MicroTime, we might consider removing this
     // completely and use OffsetDateTime as for the rest of temporal types
     void microTime() {
-      final var schema = new ObjectSchema();
+      final ObjectSchema schema = new ObjectSchema();
       schema.set$ref("#/components/schemas/io.k8s.apimachinery.pkg.apis.meta.v1.MicroTime");
-      final var result = schemaUtils.schemaToClassName(importConsumer, schema);
+      final String result = schemaUtils.schemaToClassName(importConsumer, schema);
       assertEquals("MicroTime", result);
       assertEquals("io.fabric8.kubernetes.api.model.MicroTime", addImport.get());
     }
 
     @Test
     void string() {
-      final var schema = new StringSchema();
-      final var result = schemaUtils.schemaToClassName(importConsumer, schema);
+      final StringSchema schema = new StringSchema();
+      final String result = schemaUtils.schemaToClassName(importConsumer, schema);
       assertEquals("String", result);
       assertNull(addImport.get());
     }
 
     @Test
     void integer() {
-      final var schema = new IntegerSchema();
-      final var result = schemaUtils.schemaToClassName(importConsumer, schema);
+      final IntegerSchema schema = new IntegerSchema();
+      final String result = schemaUtils.schemaToClassName(importConsumer, schema);
       assertEquals("Integer", result);
       assertNull(addImport.get());
     }
 
     @Test
     void _long() {
-      final var schema = new NumberSchema();
+      final NumberSchema schema = new NumberSchema();
       schema.setFormat("int64");
-      final var result = schemaUtils.schemaToClassName(importConsumer, schema);
+      final String result = schemaUtils.schemaToClassName(importConsumer, schema);
       assertEquals("Long", result);
       assertNull(addImport.get());
     }
 
     @Test
     void _double() {
-      final var schema = new NumberSchema();
+      final NumberSchema schema = new NumberSchema();
       schema.setFormat("double");
-      final var result = schemaUtils.schemaToClassName(importConsumer, schema);
+      final String result = schemaUtils.schemaToClassName(importConsumer, schema);
       assertEquals("Double", result);
       assertNull(addImport.get());
     }
 
     @Test
     void ref() {
-      final var schema = new ObjectSchema();
+      final ObjectSchema schema = new ObjectSchema();
       schema.set$ref("#/definitions/io.k8s.api.core.v1.Pod");
-      final var result = schemaUtils.schemaToClassName(importConsumer, schema);
+      final String result = schemaUtils.schemaToClassName(importConsumer, schema);
       assertEquals("Pod", result);
       assertEquals("io.fabric8.kubernetes.api.model.Pod", addImport.get());
     }
 
     @Test
     void intOrString() {
-      final var schema = new ObjectSchema();
+      final ObjectSchema schema = new ObjectSchema();
       schema.set$ref("#/components/schemas/io.k8s.apimachinery.pkg.util.intstr.IntOrString");
-      final var result = schemaUtils.schemaToClassName(importConsumer, schema);
+      final String result = schemaUtils.schemaToClassName(importConsumer, schema);
       assertEquals("IntOrString", result);
       assertEquals("io.fabric8.kubernetes.api.model.IntOrString", addImport.get());
     }
 
     @Test
     void jsonNode() {
-      final var schema = new ObjectSchema();
+      final ObjectSchema schema = new ObjectSchema();
       schema.set$ref("#/components/schemas/io.k8s.apiextensions-apiserver.pkg.apis.apiextensions.v1.JSON");
-      final var result = schemaUtils.schemaToClassName(importConsumer, schema);
+      final String result = schemaUtils.schemaToClassName(importConsumer, schema);
       assertEquals("JsonNode", result);
       assertEquals("com.fasterxml.jackson.databind.JsonNode", addImport.get());
     }
 
     @Test
     void plainObject() {
-      final var schema = new ObjectSchema();
-      final var result = schemaUtils.schemaToClassName(importConsumer, schema);
+      final ObjectSchema schema = new ObjectSchema();
+      final String result = schemaUtils.schemaToClassName(importConsumer, schema);
       assertEquals("KubernetesResource", result);
       assertEquals("io.fabric8.kubernetes.api.model.KubernetesResource", addImport.get());
     }
@@ -274,14 +275,14 @@ class SchemaUtilsTest {
 
     @Test
     void nullSchema() {
-      final var result = SchemaUtils.propertyOrder(null);
+      final Map<String, Object> result = SchemaUtils.propertyOrder(null);
       assertEquals(1, result.size());
       assertEquals(true, result.get("isEmpty"));
     }
 
     @Test
     void emptySchema() {
-      final var result = SchemaUtils.propertyOrder(new ObjectSchema());
+      final Map<String, Object> result = SchemaUtils.propertyOrder(new ObjectSchema());
       assertEquals(1, result.size());
       assertEquals(true, result.get("isEmpty"));
     }
@@ -289,7 +290,7 @@ class SchemaUtilsTest {
     @Test
     void withProperties() {
       // Given
-      final var schema = new ObjectSchema();
+      final ObjectSchema schema = new ObjectSchema();
       schema.properties(new LinkedHashMap<>());
       schema.getProperties().put("propZ", new StringSchema());
       schema.getProperties().put("prop1", new StringSchema());
@@ -298,10 +299,10 @@ class SchemaUtilsTest {
       schema.getProperties().put("items", new ArraySchema());
       schema.getProperties().put("apiVersion", new StringSchema());
       // When
-      final var result = SchemaUtils.propertyOrder(schema);
+      final Map<String, Object> result = SchemaUtils.propertyOrder(schema);
       // Then
       assertEquals(false, result.get("isEmpty"));
-      assertEquals(List.of("apiVersion", "kind", "metadata", "propZ", "prop1", "items"), result.get("properties"));
+      assertEquals(Arrays.asList("apiVersion", "kind", "metadata", "propZ", "prop1", "items"), result.get("properties"));
     }
   }
 }

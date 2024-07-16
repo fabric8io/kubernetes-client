@@ -27,7 +27,7 @@ public class ApiVersion {
 
   @Override
   public String toString() {
-    if (group == null || group.isBlank()) {
+    if (group == null || group.trim().isEmpty()) {
       return version;
     }
     return group + "/" + version;

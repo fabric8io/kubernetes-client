@@ -17,9 +17,11 @@
 package io.fabric8.kubernetes.schema.generator;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -56,8 +58,9 @@ public class GeneratorUtils {
   }
 
   public String readTemplate(String name) {
-    try (var stream = SchemaUtils.class.getResourceAsStream("/templates/" + name + ".mustache")) {
-      return new String(Objects.requireNonNull(stream).readAllBytes(), StandardCharsets.UTF_8);
+    try (InputStream stream = Objects
+        .requireNonNull(SchemaUtils.class.getResourceAsStream("/templates/" + name + ".mustache"))) {
+      return IOUtils.toString(stream, StandardCharsets.UTF_8);
     } catch (IOException ex) {
       settings.getLogger().severe(ex.getMessage());
       throw new GeneratorException("Can't load template " + name);
@@ -66,7 +69,7 @@ public class GeneratorUtils {
 
   public final void writeFile(Path file, String fileContents) {
     try {
-      Files.writeString(file, fileContents,
+      Files.write(file, fileContents.getBytes(StandardCharsets.UTF_8),
           StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
     } catch (IOException ex) {
       settings.getLogger().severe(ex.getMessage());

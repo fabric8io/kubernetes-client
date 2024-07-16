@@ -118,7 +118,7 @@ class ModelGenerator {
         .orElse("com.fasterxml.jackson.databind.JsonDeserializer.None.class"));
     ret.put("package", ret.getPackageName());
     if (settings.isGenerateJavadoc()) {
-      ret.put("hasDescription", !sanitizeDescription(ret.getClassSchema().getDescription()).isBlank());
+      ret.put("hasDescription", !sanitizeDescription(ret.getClassSchema().getDescription()).trim().isEmpty());
       ret.put("description", sanitizeDescription(ret.getClassSchema().getDescription()));
     }
     ret.addImport("com.fasterxml.jackson.annotation.JsonInclude");
@@ -162,7 +162,7 @@ class ModelGenerator {
         templateProp.put("required", true);
       }
       if (settings.isGenerateJavadoc()) {
-        templateProp.put("hasDescription", !sanitizeDescription(propertySchema.getDescription()).isBlank());
+        templateProp.put("hasDescription", !sanitizeDescription(propertySchema.getDescription()).trim().isEmpty());
         templateProp.put("description", sanitizeDescription(propertySchema.getDescription()));
       }
       final String serializeUsing = serializerForSchema(propertySchema);

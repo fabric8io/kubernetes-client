@@ -32,9 +32,9 @@
   <packaging>maven-plugin</packaging>
 
   <properties>
-    <maven.compiler.release>11</maven.compiler.release>
-    <maven.compiler.target>11</maven.compiler.target>
-    <maven.compiler.source>11</maven.compiler.source>
+<!--    <maven.compiler.release>11</maven.compiler.release>-->
+<!--    <maven.compiler.target>11</maven.compiler.target>-->
+<!--    <maven.compiler.source>11</maven.compiler.source>-->
     <maven.deploy.skip>true</maven.deploy.skip><!-- Keep module private -->
   </properties>
 
