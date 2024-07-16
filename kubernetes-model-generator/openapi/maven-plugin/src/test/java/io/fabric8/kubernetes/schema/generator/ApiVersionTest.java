@@ -29,7 +29,7 @@ class ApiVersionTest {
       "group, v1, group/v1",
   })
   void toString(String group, String version, String expected) {
-    final var result = ApiVersion.builder().group(group).version(version).build()
+    final String result = ApiVersion.builder().group(group).version(version).build()
         .toString();
     assertEquals(expected, result);
   }
