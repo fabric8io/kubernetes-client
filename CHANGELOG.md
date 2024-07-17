@@ -18,6 +18,7 @@
 #### _**Note**_: Breaking changes
 * Check detailed migration documentation for breaking changes in [7.0.0](./doc/MIGRATION-v7.md)
 * `Config.errorMessages` has been removed. Please use Kubernetes status messages directly.
+* Fix #6138: Removed unused `io:fabric8:kubernetes-model` artifact
 
 ### 6.13.1 (2024-07-02)
 
