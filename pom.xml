@@ -99,7 +99,7 @@
     <jetty.version>11.0.22</jetty.version>
     <maven-core.version>3.9.8</maven-core.version>
     <maven-plugin-annotations.version>3.13.1</maven-plugin-annotations.version>
-    <vertx.version>4.5.8</vertx.version>
+    <vertx.version>4.5.9</vertx.version>
     <zjsonpatch.version>0.3.0</zjsonpatch.version>
 
     <!-- API versions -->
