@@ -1,0 +1,16 @@
+{
+  "defaultMode": "0555",
+  "sources": [
+    {
+      "secret": {
+        "name": "mysecret",
+        "items": [
+          {
+            "key": "username",
+            "path": "my-group/my-username"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -2237,7 +2237,8 @@
       "javaType": "io.fabric8.kubernetes.api.model.ConfigMapVolumeSource",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
+      ],
+      "deserializer": "io.fabric8.kubernetes.api.model.ConfigMapVolumeSourceDeserializer.class"
     },
     "kubernetes_core_Container": {
       "type": "object",
@@ -2647,7 +2648,8 @@
       "javaType": "io.fabric8.kubernetes.api.model.DownwardAPIVolumeSource",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
+      ],
+      "deserializer": "io.fabric8.kubernetes.api.model.DownwardAPIVolumeSourceDeserializer.class"
     },
     "kubernetes_core_EmptyDirVolumeSource": {
       "type": "object",
@@ -6130,7 +6132,8 @@
       "javaType": "io.fabric8.kubernetes.api.model.ProjectedVolumeSource",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
+      ],
+      "deserializer": "io.fabric8.kubernetes.api.model.ProjectedVolumeSourceDeserializer.class"
     },
     "kubernetes_core_QuobyteVolumeSource": {
       "type": "object",
@@ -6912,7 +6915,8 @@
       "javaType": "io.fabric8.kubernetes.api.model.SecretVolumeSource",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
+      ],
+      "deserializer": "io.fabric8.kubernetes.api.model.SecretVolumeSourceDeserializer.class"
     },
     "kubernetes_core_SecurityContext": {
       "type": "object",
