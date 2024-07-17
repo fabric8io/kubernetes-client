@@ -31,7 +31,6 @@
   <name>Fabric8 :: Kubernetes Model Parent</name>
 
   <modules>
-    <module>kubernetes-model</module>
     <module>kubernetes-model-common</module>
     <module>kubernetes-model-jsonschema2pojo</module>
     <module>kubernetes-model-core</module>
