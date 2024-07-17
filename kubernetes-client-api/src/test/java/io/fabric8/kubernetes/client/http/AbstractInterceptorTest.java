@@ -25,6 +25,8 @@ import org.junit.jupiter.api.Test;
 import java.net.URI;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -167,6 +169,28 @@ public abstract class AbstractInterceptorTest {
       assertThat(result)
           .returns("This works", HttpResponse::body)
           .returns(200, HttpResponse::code);
+    }
+  }
+
+  @Test
+  @DisplayName("afterFailure (HTTP), invoked when remote server offline")
+  public void afterHttpFailureRemoteOffline() {
+    // Given
+    server.shutdown();
+    final HttpClient.Builder builder = getHttpClientFactory().newBuilder()
+        .connectTimeout(1, TimeUnit.SECONDS)
+        .addOrReplaceInterceptor("test", new Interceptor() {
+          @Override
+          public CompletableFuture<Boolean> afterFailure(BasicBuilder builder, HttpResponse<?> response, RequestTags tags) {
+            return CompletableFuture.completedFuture(false);
+          }
+        });
+    // When
+    try (HttpClient client = builder.build()) {
+      final CompletableFuture<HttpResponse<String>> response = client.sendAsync(client.newHttpRequestBuilder().uri(server.url("/not-found")).build(), String.class);
+
+      // Then
+      assertThat(response).succeedsWithin(Duration.of(10, ChronoUnit.SECONDS));
     }
   }
 
