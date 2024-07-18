@@ -4,6 +4,7 @@
 
 #### Bugs
 * Fix #6066: Added support for missing `v1.APIVersions` in KubernetesClient
+* Fix #6110: VolumeSource (and other file mode fields) in Octal are correctly interpreted
 
 ### 6.13.1 (2024-07-02)
 

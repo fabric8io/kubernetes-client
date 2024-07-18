@@ -1,0 +1,11 @@
+{
+  "name": "conf",
+  "defaultMode": "0555",
+  "items": [
+    {
+      "key": "key1",
+      "path": "target",
+      "mode": "0O555"
+    }
+  ]
+}

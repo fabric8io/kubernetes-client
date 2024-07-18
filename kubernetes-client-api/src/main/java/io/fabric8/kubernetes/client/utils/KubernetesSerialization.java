@@ -39,6 +39,7 @@ import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.runtime.RawExtension;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.internal.KubernetesDeserializer;
+import io.fabric8.kubernetes.model.jackson.GoCompatibilityModule;
 import io.fabric8.kubernetes.model.jackson.UnmatchedFieldTypeModule;
 import org.snakeyaml.engine.v2.api.Dump;
 import org.snakeyaml.engine.v2.api.DumpSettings;
@@ -89,7 +90,7 @@ public class KubernetesSerialization {
   }
 
   protected void configureMapper(ObjectMapper mapper) {
-    mapper.registerModules(new JavaTimeModule(), unmatchedFieldTypeModule);
+    mapper.registerModules(new JavaTimeModule(), new GoCompatibilityModule(), unmatchedFieldTypeModule);
     mapper.disable(DeserializationFeature.FAIL_ON_INVALID_SUBTYPE);
     mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
     mapper.disable(SerializationFeature.WRITE_DURATIONS_AS_TIMESTAMPS);
