@@ -20,6 +20,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
+import io.fabric8.kubernetes.model.jackson.GoCompatibilityModule;
 import io.fabric8.kubernetes.model.jackson.UnmatchedFieldTypeModule;
 
 import java.io.InputStream;
@@ -88,7 +89,7 @@ public class Serialization {
         if (YAML_MAPPER == null) {
           YAML_MAPPER = new ObjectMapper(
               new YAMLFactory().disable(YAMLGenerator.Feature.USE_NATIVE_TYPE_ID));
-          YAML_MAPPER.registerModules(UNMATCHED_FIELD_TYPE_MODULE);
+          YAML_MAPPER.registerModules(new GoCompatibilityModule(), UNMATCHED_FIELD_TYPE_MODULE);
         }
       }
     }

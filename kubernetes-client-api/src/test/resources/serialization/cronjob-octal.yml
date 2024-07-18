@@ -37,7 +37,7 @@ spec:
             - name: application-code
               configMap:
                 name: conf
-                defaultMode: 0555
+                defaultMode: 0o555
                 items:
                   - key: key1
                     path: target

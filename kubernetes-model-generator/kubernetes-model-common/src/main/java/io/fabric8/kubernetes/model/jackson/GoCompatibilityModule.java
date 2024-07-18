@@ -15,25 +15,11 @@
  */
 package io.fabric8.kubernetes.model.jackson;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+public class GoCompatibilityModule extends SimpleModule {
 
-public class IntegerOctalHandlerUtil {
-  private static final Pattern OCTAL_NUMBER = Pattern.compile("(0[oO]?)[0-7]+");
-
-  private IntegerOctalHandlerUtil() {
-  }
-
-  public static Integer createIntegerValue(JsonNode node) {
-    String textValue = node.textValue();
-    if (textValue != null) {
-      Matcher octalNumberMatcher = OCTAL_NUMBER.matcher(textValue);
-      if (octalNumberMatcher.matches()) {
-        return Integer.valueOf(textValue.substring(octalNumberMatcher.group(1).length()), 8);
-      }
-    }
-    return node.intValue();
+  public GoCompatibilityModule() {
+    addDeserializer(Integer.class, new GoIntegerDeserializer());
   }
 }

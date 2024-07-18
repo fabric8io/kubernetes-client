@@ -16,7 +16,9 @@
 package io.fabric8.kubernetes.api.model;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.fabric8.kubernetes.model.jackson.GoCompatibilityModule;
 import org.assertj.core.api.InstanceOfAssertFactories;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -25,7 +27,14 @@ import java.io.InputStream;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 class ProjectedVolumeSourceTest {
-  private final ObjectMapper objectMapper = new ObjectMapper();
+
+  private ObjectMapper objectMapper;
+
+  @BeforeEach
+  void setUp() {
+    objectMapper = new ObjectMapper();
+    objectMapper.registerModule(new GoCompatibilityModule());
+  }
 
   @Test
   void deserializationWithOctalValueShouldWorkAsExpected() throws IOException {

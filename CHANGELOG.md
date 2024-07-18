@@ -4,11 +4,11 @@
 
 #### Bugs
 * Fix #6038: Support for Gradle configuration cache
+* Fix #6110: VolumeSource (and other file mode fields) in Octal are correctly interpreted
 
 #### Improvements
 * Fix #6008: removing the optional dependency on bouncy castle
 * Fix #5264: Remove deprecated `Config.errorMessages` field
-* Fix #6110: VolumeSource's Octal `defaultMode` notation in yaml not properly converted to json
 
 #### Dependency Upgrade
 * Fix #6052: Removed dependency on no longer maintained com.github.mifmif:generex

@@ -19,7 +19,7 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
-@JsonDeserialize(using = io.fabric8.kubernetes.api.model.DownwardAPIVolumeSourceDeserializer.class)
+@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "defaultMode",

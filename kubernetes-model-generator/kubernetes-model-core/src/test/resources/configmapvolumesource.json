@@ -5,7 +5,7 @@
     {
       "key": "key1",
       "path": "target",
-      "mode": "0555"
+      "mode": "0O555"
     }
   ]
 }

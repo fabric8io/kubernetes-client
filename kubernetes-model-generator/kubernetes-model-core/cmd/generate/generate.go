@@ -152,18 +152,6 @@ func main() {
 			Serializer:   "io.fabric8.kubernetes.api.model.MicroTimeSerDes.Serializer.class",
 			Deserializer: "io.fabric8.kubernetes.api.model.MicroTimeSerDes.Deserializer.class",
 		},
-		"kubernetes_core_ConfigMapVolumeSource": &schemagen.JavaSerDeDescriptor{
-			Deserializer: "io.fabric8.kubernetes.api.model.ConfigMapVolumeSourceDeserializer.class",
-		},
-		"kubernetes_core_SecretVolumeSource": &schemagen.JavaSerDeDescriptor{
-			Deserializer: "io.fabric8.kubernetes.api.model.SecretVolumeSourceDeserializer.class",
-		},
-		"kubernetes_core_DownwardAPIVolumeSource": &schemagen.JavaSerDeDescriptor{
-			Deserializer: "io.fabric8.kubernetes.api.model.DownwardAPIVolumeSourceDeserializer.class",
-		},
-		"kubernetes_core_ProjectedVolumeSource": &schemagen.JavaSerDeDescriptor{
-			Deserializer: "io.fabric8.kubernetes.api.model.ProjectedVolumeSourceDeserializer.class",
-		},
 	}
 
 	for definitionKey, descriptor := range serdes {
