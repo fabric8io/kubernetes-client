@@ -1,0 +1,12 @@
+{
+  "defaultMode": "0555",
+  "items": [
+    {
+      "path": "labels",
+      "fieldRef": {
+        "fieldPath": "metadata.labels"
+      },
+      "mode": "0555"
+    }
+  ]
+}
