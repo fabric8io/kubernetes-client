@@ -14,7 +14,7 @@
 # limitations under the License.
 #
 
-name: Go Generate Model
+name: Generate Model
 
 on:
   push:
@@ -55,11 +55,13 @@ jobs:
       - name: Check No Schema file modified
         run: |
           git add .
-          MODIFIED_KUBE_SCHEMA=`git status | grep -v 'validation-schema.json' | grep 'kube-schema.json\|src/generated/java' | wc -l`
-          if [ $MODIFIED_KUBE_SCHEMA -eq "0" ]; then
+          IGNORED_PATTERNS="validation-schema.json"
+          INCLUDE_PATTERNS="kube-schema.json\|src/generated/java\|openapi/schemas/"
+          MODIFIED_FILES_COUNT=$(git status | grep -v "$IGNORED_PATTERNS" | grep "$INCLUDE_PATTERNS" | wc -l)
+          if [ $MODIFIED_FILES_COUNT -eq "0" ]; then
             echo "No Schema files modified. Build Success.";
           else
-            git status | grep -v 'validation-schema.json' | grep 'kube-schema.json\|src/generated/java'
+            git status | grep -v "$IGNORED_PATTERNS" | grep "$INCLUDE_PATTERNS"
             echo "Schema files modified. Build Failure";
             exit 1;
           fi;

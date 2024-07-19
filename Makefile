@@ -29,9 +29,12 @@ generate-openapi:
 	./kubernetes-model-generator/openapi/generator/generator ./kubernetes-model-generator/openapi/schemas
 
 # Legacy generation of the model: TODO: remove
-.PHONY: generate-model
-generate-model:
+.PHONY: generate-model-legacy
+generate-model-legacy:
 	cd kubernetes-model-generator && ./generateModel.sh
+
+.PHONY: generate-model
+generate-model: generate-openapi generate-model-legacy
 
 .PHONY: sonar
 sonar:
