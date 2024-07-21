@@ -108,6 +108,13 @@ public abstract class StandardHttpClient<C extends HttpClient, F extends HttpCli
     final Consumer<List<ByteBuffer>> effectiveConsumer = consumer;
 
     CompletableFuture<HttpResponse<AsyncBody>> cf = consumeBytesDirect(effectiveRequest, effectiveConsumer);
+    cf.exceptionally(throwable -> {
+      builder.interceptors.forEach((s, interceptor) -> interceptor.afterConnectionFailure(effectiveRequest, throwable));
+      if (throwable instanceof CompletionException) {
+        throw (CompletionException) throwable;
+      }
+      throw new CompletionException(throwable);
+    });
     cf.thenAccept(
         response -> builder.getInterceptors().values().forEach(i -> i.after(effectiveRequest, response, effectiveConsumer)));
 
