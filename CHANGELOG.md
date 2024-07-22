@@ -8,6 +8,7 @@
 * Fix #6137: `ConfigBuilder.withAutoConfigure` is not working
 * Fix #6215: Suppressing rejected execution exception for port forwarder
 * Fix #6197: JettyHttp client error handling improvements. 
+* Fix #6143: Expands the HTTP interceptor API to include a call back for failed connection attempts
 
 #### Improvements
 * Fix #6008: removing the optional dependency on bouncy castle
