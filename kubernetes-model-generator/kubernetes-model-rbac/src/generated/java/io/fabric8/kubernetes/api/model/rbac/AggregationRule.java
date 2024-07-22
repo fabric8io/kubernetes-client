@@ -17,6 +17,7 @@ import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
+import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
@@ -42,7 +43,7 @@ import lombok.experimental.Accessors;
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.LabelSelector.class),
+    @BuildableReference(LabelSelector.class),
     @BuildableReference(Container.class),
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
@@ -57,7 +58,7 @@ public class AggregationRule implements Editable<AggregationRuleBuilder> , Kuber
 
     @JsonProperty("clusterRoleSelectors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.LabelSelector> clusterRoleSelectors = new ArrayList<>();
+    private List<LabelSelector> clusterRoleSelectors = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -68,19 +69,19 @@ public class AggregationRule implements Editable<AggregationRuleBuilder> , Kuber
     public AggregationRule() {
     }
 
-    public AggregationRule(List<io.fabric8.kubernetes.api.model.LabelSelector> clusterRoleSelectors) {
+    public AggregationRule(List<LabelSelector> clusterRoleSelectors) {
         super();
         this.clusterRoleSelectors = clusterRoleSelectors;
     }
 
     @JsonProperty("clusterRoleSelectors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<io.fabric8.kubernetes.api.model.LabelSelector> getClusterRoleSelectors() {
+    public List<LabelSelector> getClusterRoleSelectors() {
         return clusterRoleSelectors;
     }
 
     @JsonProperty("clusterRoleSelectors")
-    public void setClusterRoleSelectors(List<io.fabric8.kubernetes.api.model.LabelSelector> clusterRoleSelectors) {
+    public void setClusterRoleSelectors(List<LabelSelector> clusterRoleSelectors) {
         this.clusterRoleSelectors = clusterRoleSelectors;
     }
 

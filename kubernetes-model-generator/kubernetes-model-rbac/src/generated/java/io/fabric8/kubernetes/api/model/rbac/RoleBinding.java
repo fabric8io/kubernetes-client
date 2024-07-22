@@ -20,6 +20,7 @@ import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.Namespaced;
+import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
@@ -50,7 +51,7 @@ import lombok.experimental.Accessors;
     ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
+    @BuildableReference(ObjectMeta.class),
     @BuildableReference(LabelSelector.class),
     @BuildableReference(Container.class),
     @BuildableReference(PodTemplateSpec.class),
@@ -84,7 +85,7 @@ public class RoleBinding implements Editable<RoleBindingBuilder> , HasMetadata, 
     @JsonProperty("kind")
     private String kind = "RoleBinding";
     @JsonProperty("metadata")
-    private io.fabric8.kubernetes.api.model.ObjectMeta metadata;
+    private ObjectMeta metadata;
     @JsonProperty("roleRef")
     private RoleRef roleRef;
     @JsonProperty("subjects")
@@ -100,7 +101,7 @@ public class RoleBinding implements Editable<RoleBindingBuilder> , HasMetadata, 
     public RoleBinding() {
     }
 
-    public RoleBinding(String apiVersion, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, RoleRef roleRef, List<Subject> subjects) {
+    public RoleBinding(String apiVersion, String kind, ObjectMeta metadata, RoleRef roleRef, List<Subject> subjects) {
         super();
         this.apiVersion = apiVersion;
         this.kind = kind;
@@ -150,12 +151,12 @@ public class RoleBinding implements Editable<RoleBindingBuilder> , HasMetadata, 
     }
 
     @JsonProperty("metadata")
-    public io.fabric8.kubernetes.api.model.ObjectMeta getMetadata() {
+    public ObjectMeta getMetadata() {
         return metadata;
     }
 
     @JsonProperty("metadata")
-    public void setMetadata(io.fabric8.kubernetes.api.model.ObjectMeta metadata) {
+    public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
