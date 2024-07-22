@@ -50,10 +50,10 @@ public class PersistentVolumeClaimStatus implements Editable<PersistentVolumeCla
     private Map<String, String> allocatedResourceStatuses = new LinkedHashMap<>();
     @JsonProperty("allocatedResources")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, io.fabric8.kubernetes.api.model.Quantity> allocatedResources = new LinkedHashMap<>();
+    private Map<String, Quantity> allocatedResources = new LinkedHashMap<>();
     @JsonProperty("capacity")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, io.fabric8.kubernetes.api.model.Quantity> capacity = new LinkedHashMap<>();
+    private Map<String, Quantity> capacity = new LinkedHashMap<>();
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<PersistentVolumeClaimCondition> conditions = new ArrayList<>();
@@ -73,7 +73,7 @@ public class PersistentVolumeClaimStatus implements Editable<PersistentVolumeCla
     public PersistentVolumeClaimStatus() {
     }
 
-    public PersistentVolumeClaimStatus(List<String> accessModes, Map<String, String> allocatedResourceStatuses, Map<String, io.fabric8.kubernetes.api.model.Quantity> allocatedResources, Map<String, io.fabric8.kubernetes.api.model.Quantity> capacity, List<PersistentVolumeClaimCondition> conditions, String currentVolumeAttributesClassName, ModifyVolumeStatus modifyVolumeStatus, String phase) {
+    public PersistentVolumeClaimStatus(List<String> accessModes, Map<String, String> allocatedResourceStatuses, Map<String, Quantity> allocatedResources, Map<String, Quantity> capacity, List<PersistentVolumeClaimCondition> conditions, String currentVolumeAttributesClassName, ModifyVolumeStatus modifyVolumeStatus, String phase) {
         super();
         this.accessModes = accessModes;
         this.allocatedResourceStatuses = allocatedResourceStatuses;
@@ -109,23 +109,23 @@ public class PersistentVolumeClaimStatus implements Editable<PersistentVolumeCla
 
     @JsonProperty("allocatedResources")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public Map<String, io.fabric8.kubernetes.api.model.Quantity> getAllocatedResources() {
+    public Map<String, Quantity> getAllocatedResources() {
         return allocatedResources;
     }
 
     @JsonProperty("allocatedResources")
-    public void setAllocatedResources(Map<String, io.fabric8.kubernetes.api.model.Quantity> allocatedResources) {
+    public void setAllocatedResources(Map<String, Quantity> allocatedResources) {
         this.allocatedResources = allocatedResources;
     }
 
     @JsonProperty("capacity")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public Map<String, io.fabric8.kubernetes.api.model.Quantity> getCapacity() {
+    public Map<String, Quantity> getCapacity() {
         return capacity;
     }
 
     @JsonProperty("capacity")
-    public void setCapacity(Map<String, io.fabric8.kubernetes.api.model.Quantity> capacity) {
+    public void setCapacity(Map<String, Quantity> capacity) {
         this.capacity = capacity;
     }
 

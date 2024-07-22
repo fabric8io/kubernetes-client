@@ -28,13 +28,21 @@ generate-openapi:
 	cd kubernetes-model-generator/openapi/generator && go build
 	./kubernetes-model-generator/openapi/generator/generator ./kubernetes-model-generator/openapi/schemas
 
+.PHONY: generate-openapi-classes
+generate-openapi-classes:
+# TODO: Do for all modules once they've all been migrated
+#	cd kubernetes-model-generator && mvn -Pgenerate clean install
+	cd kubernetes-model-generator/kubernetes-model-common && mvn clean install
+	cd kubernetes-model-generator/openapi/maven-plugin && mvn clean verify
+	cd kubernetes-model-generator/kubernetes-model-core && mvn -Pgenerate clean install
+
 # Legacy generation of the model: TODO: remove
 .PHONY: generate-model-legacy
 generate-model-legacy:
 	cd kubernetes-model-generator && ./generateModel.sh
 
 .PHONY: generate-model
-generate-model: generate-openapi generate-model-legacy
+generate-model: generate-openapi generate-openapi-classes generate-model-legacy
 
 .PHONY: sonar
 sonar:

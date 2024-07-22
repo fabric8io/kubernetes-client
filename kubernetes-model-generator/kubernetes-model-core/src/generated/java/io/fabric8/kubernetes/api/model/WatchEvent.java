@@ -31,11 +31,11 @@ import lombok.experimental.Accessors;
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("jsonschema2pojo")
-public class WatchEvent implements Editable<WatchEventBuilder> , io.fabric8.kubernetes.api.model.KubernetesResource
+public class WatchEvent implements Editable<WatchEventBuilder> , KubernetesResource
 {
 
     @JsonProperty("object")
-    private io.fabric8.kubernetes.api.model.KubernetesResource object;
+    private KubernetesResource object;
     @JsonProperty("type")
     private String type;
     @JsonIgnore
@@ -48,19 +48,19 @@ public class WatchEvent implements Editable<WatchEventBuilder> , io.fabric8.kube
     public WatchEvent() {
     }
 
-    public WatchEvent(io.fabric8.kubernetes.api.model.KubernetesResource object, String type) {
+    public WatchEvent(KubernetesResource object, String type) {
         super();
         this.object = object;
         this.type = type;
     }
 
     @JsonProperty("object")
-    public io.fabric8.kubernetes.api.model.KubernetesResource getObject() {
+    public KubernetesResource getObject() {
         return object;
     }
 
     @JsonProperty("object")
-    public void setObject(io.fabric8.kubernetes.api.model.KubernetesResource object) {
+    public void setObject(KubernetesResource object) {
         this.object = object;
     }
 

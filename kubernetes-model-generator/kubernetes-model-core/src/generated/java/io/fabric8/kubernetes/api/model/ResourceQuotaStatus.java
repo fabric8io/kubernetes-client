@@ -36,10 +36,10 @@ public class ResourceQuotaStatus implements Editable<ResourceQuotaStatusBuilder>
 
     @JsonProperty("hard")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, io.fabric8.kubernetes.api.model.Quantity> hard = new LinkedHashMap<>();
+    private Map<String, Quantity> hard = new LinkedHashMap<>();
     @JsonProperty("used")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, io.fabric8.kubernetes.api.model.Quantity> used = new LinkedHashMap<>();
+    private Map<String, Quantity> used = new LinkedHashMap<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -50,7 +50,7 @@ public class ResourceQuotaStatus implements Editable<ResourceQuotaStatusBuilder>
     public ResourceQuotaStatus() {
     }
 
-    public ResourceQuotaStatus(Map<String, io.fabric8.kubernetes.api.model.Quantity> hard, Map<String, io.fabric8.kubernetes.api.model.Quantity> used) {
+    public ResourceQuotaStatus(Map<String, Quantity> hard, Map<String, Quantity> used) {
         super();
         this.hard = hard;
         this.used = used;
@@ -58,23 +58,23 @@ public class ResourceQuotaStatus implements Editable<ResourceQuotaStatusBuilder>
 
     @JsonProperty("hard")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public Map<String, io.fabric8.kubernetes.api.model.Quantity> getHard() {
+    public Map<String, Quantity> getHard() {
         return hard;
     }
 
     @JsonProperty("hard")
-    public void setHard(Map<String, io.fabric8.kubernetes.api.model.Quantity> hard) {
+    public void setHard(Map<String, Quantity> hard) {
         this.hard = hard;
     }
 
     @JsonProperty("used")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public Map<String, io.fabric8.kubernetes.api.model.Quantity> getUsed() {
+    public Map<String, Quantity> getUsed() {
         return used;
     }
 
     @JsonProperty("used")
-    public void setUsed(Map<String, io.fabric8.kubernetes.api.model.Quantity> used) {
+    public void setUsed(Map<String, Quantity> used) {
         this.used = used;
     }
 

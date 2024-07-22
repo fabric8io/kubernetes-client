@@ -203,11 +203,11 @@ public class GeneratorSettings {
           apiVersions.put(ref.replaceFirst("#/components/schemas/", ""), apiVersionBuilder.build());
         }
       }
-      // api machinery components always tagged as core v1
+      // api machinery + core components always tagged as core v1
       // TODO: see if we want to omit the addition of group and version altogether in the future
       openAPI.getComponents().getSchemas().entrySet().stream()
-          .filter(GeneratorSettings::isApplicableApiMachineryComponent)
-          .forEach(e -> apiVersions.put(e.getKey(), ApiVersion.builder().group("").version("v1").build()));
+          .filter(GeneratorSettings::isApplicableApiMachineryOrCoreComponent)
+          .forEach(e -> apiVersions.putIfAbsent(e.getKey(), ApiVersion.builder().group("").version("v1").build()));
     }
     return apiVersions;
   }
@@ -227,8 +227,9 @@ public class GeneratorSettings {
         pathParameters(post).stream().map(Parameter::getName).anyMatch("name"::equals);
   }
 
-  private static boolean isApplicableApiMachineryComponent(Map.Entry<String, Schema> componentSchema) {
-    if (!componentSchema.getKey().startsWith("io.k8s.apimachinery.pkg.apis")) {
+  private static boolean isApplicableApiMachineryOrCoreComponent(Map.Entry<String, Schema> componentSchema) {
+    if (!componentSchema.getKey().startsWith("io.k8s.apimachinery.pkg.apis")
+        && !componentSchema.getKey().startsWith("io.k8s.api.core.v1.PodExecOptions")) {
       return false;
     }
     if (componentSchema.getValue().getProperties() == null) {
