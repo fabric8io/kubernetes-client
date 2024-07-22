@@ -686,17 +686,6 @@
 
       <dependency>
         <groupId>io.fabric8</groupId>
-        <artifactId>servicecatalog-model</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>io.fabric8</groupId>
-        <artifactId>servicecatalog-client</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>io.fabric8</groupId>
         <artifactId>verticalpodautoscaler-model-v1</artifactId>
         <version>${project.version}</version>
       </dependency>

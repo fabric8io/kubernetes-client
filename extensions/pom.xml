@@ -31,7 +31,6 @@
   <modules>
     <module>knative</module>
     <module>tekton</module>
-    <module>service-catalog</module>
     <module>volumesnapshot</module>
     <module>chaosmesh</module>
     <module>certmanager</module>

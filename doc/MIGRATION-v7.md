@@ -4,6 +4,8 @@
 - [Bouncy Castle is no longer needed](#bouncy-castle)
 - [Model Changes](#model-changes)
   - [kubernetes-model artifact removed](#kubernetes-model-artifact-removed)
+- [Deprecations and Removals](#deprecations-and-removals)
+  - [Service Catalog API removed](#service-catalog) 
 
 
 > [!NOTE]
@@ -26,3 +28,11 @@ The Maven artifact `io.fabric8:kubernetes-model` has been removed from the proje
 
 This artifact was just an aggregator of _some_ of the Kubernetes model artifacts and had no specific purpose.
 It is no longer published, the `io.fabric8:kubernetes-client-api` or `io.fabric8:kubernetes-openshift-uberjar` artifacts should be used instead.
+
+## Deprecations and Removals <a href="#deprecations-and-removals" id="deprecations-and-removals"/>
+
+### Service Catalog API removed <a href="#service-catalog" id="service-catalog"/>
+
+The Service Catalog API extension has been removed.
+The upstream project has been archived since May 6, 2022.
+We are no longer supporting it.

@@ -40,8 +40,6 @@ import io.fabric8.mockwebserver.DefaultMockServer;
 import io.fabric8.mockwebserver.ServerRequest;
 import io.fabric8.mockwebserver.ServerResponse;
 import io.fabric8.mockwebserver.internal.MockDispatcher;
-import io.fabric8.servicecatalog.client.DefaultServiceCatalogClient;
-import io.fabric8.servicecatalog.client.NamespacedServiceCatalogClient;
 import okhttp3.mockwebserver.Dispatcher;
 import okhttp3.mockwebserver.MockWebServer;
 
@@ -226,15 +224,6 @@ public class KubernetesMockServer extends DefaultMockServer implements Resetable
         .withUsername("fabric8-mock-server-user")
         .withOauthToken("secret")
         .build();
-  }
-
-  /**
-   * @deprecated Use {@code client.adapt(NamespacedServiceCatalogClient.class)} instead.
-   * @return A {@link NamespacedServiceCatalogClient} instance.
-   */
-  @Deprecated
-  public NamespacedServiceCatalogClient createServiceCatalog() {
-    return new DefaultServiceCatalogClient(createClient());
   }
 
   @Override
