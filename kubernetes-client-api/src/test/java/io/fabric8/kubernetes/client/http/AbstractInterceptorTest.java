@@ -41,6 +41,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public abstract class AbstractInterceptorTest {
 
+  private static final Duration FUTURE_COMPLETION_TIME = Duration.of(10, ChronoUnit.SECONDS);
   private static DefaultMockServer server;
 
   @BeforeEach
@@ -179,6 +180,7 @@ public abstract class AbstractInterceptorTest {
   @DisplayName("afterConnectionFailure, invoked when remote server offline")
   public void afterConnectionFailureRemoteOffline() {
     // Given
+    final int originalPort = server.getPort();
     server.shutdown();
     final CountDownLatch connectionFailureCallbackInvoked = new CountDownLatch(1);
     final HttpClient.Builder builder = getHttpClientFactory().newBuilder()
@@ -187,6 +189,8 @@ public abstract class AbstractInterceptorTest {
           @Override
           public void afterConnectionFailure(HttpRequest request, Throwable failure) {
             connectionFailureCallbackInvoked.countDown();
+            server = newMockServer();
+            server.start(originalPort); // Need to restart on the original port as we can't alter the request during retry.
           }
         });
     // When
@@ -196,7 +200,7 @@ public abstract class AbstractInterceptorTest {
           .uri(server.url("/not-found")).build(), String.class);
 
       // Then
-      assertThat(response).failsWithin(Duration.of(30, ChronoUnit.SECONDS));
+      assertThat(response).succeedsWithin(FUTURE_COMPLETION_TIME);
       assertThat(connectionFailureCallbackInvoked).extracting(CountDownLatch::getCount).isEqualTo(0L);
     }
   }
@@ -214,8 +218,8 @@ public abstract class AbstractInterceptorTest {
           @Override
           public void afterConnectionFailure(HttpRequest request, Throwable failure) {
             server = newMockServer();
-            server.expect().withPath("/intercepted-url").andReturn(200, "This works").once();
             server.start(originalPort); // Need to restart on the original port as we can't alter the request during retry.
+            server.expect().withPath("/intercepted-url").andReturn(200, "This works").once();
           }
 
           @Override
@@ -230,7 +234,7 @@ public abstract class AbstractInterceptorTest {
           .uri(server.url("/intercepted-url")).build(), String.class);
 
       // Then
-      assertThat(response).succeedsWithin(Duration.of(30, ChronoUnit.SECONDS));
+      assertThat(response).succeedsWithin(FUTURE_COMPLETION_TIME);
       assertThat(afterInvoked).extracting(CountDownLatch::getCount).isEqualTo(0L);
     }
   }
@@ -261,7 +265,7 @@ public abstract class AbstractInterceptorTest {
           }, 1L).build(), String.class);
 
       // Then
-      assertThat(response).failsWithin(Duration.of(30, ChronoUnit.SECONDS));
+      assertThat(response).failsWithin(FUTURE_COMPLETION_TIME);
       assertThat(connectionFailureCallbackInvoked).extracting(CountDownLatch::getCount).isEqualTo(0L);
     }
   }
