@@ -108,13 +108,6 @@ public abstract class StandardHttpClient<C extends HttpClient, F extends HttpCli
     final Consumer<List<ByteBuffer>> effectiveConsumer = consumer;
 
     CompletableFuture<HttpResponse<AsyncBody>> cf = consumeBytesDirect(effectiveRequest, effectiveConsumer);
-    cf.exceptionally(throwable -> {
-      builder.interceptors.forEach((s, interceptor) -> interceptor.afterConnectionFailure(effectiveRequest, throwable));
-      if (throwable instanceof CompletionException) {
-        throw (CompletionException) throwable;
-      }
-      throw new CompletionException(throwable);
-    });
     cf.thenAccept(
         response -> builder.getInterceptors().values().forEach(i -> i.after(effectiveRequest, response, effectiveConsumer)));
 
@@ -184,15 +177,19 @@ public abstract class StandardHttpClient<C extends HttpClient, F extends HttpCli
               }
             }
           } else {
+            final Throwable finalThrowable;
             if (throwable instanceof CompletionException) {
-              throwable = throwable.getCause();
+              finalThrowable = throwable.getCause();
+            } else {
+              finalThrowable = throwable;
             }
-            if (throwable instanceof IOException) {
+            builder.interceptors.forEach((s, interceptor) -> interceptor.afterConnectionFailure(request, finalThrowable));
+            if (finalThrowable instanceof IOException) {
               // TODO: may not be specific enough - incorrect ssl settings for example will get caught here
               LOG.debug(
                   String.format("HTTP operation on url: %s should be retried after %d millis because of IOException",
                       uri, retryInterval),
-                  throwable);
+                  finalThrowable);
               return true;
             }
           }
