@@ -43,7 +43,7 @@ public abstract class AbstractInterceptorTest {
 
   @BeforeEach
   void startServer() {
-    server = new DefaultMockServer(false);
+    server = newMockServer();
     server.start();
   }
 
@@ -211,7 +211,7 @@ public abstract class AbstractInterceptorTest {
         .addOrReplaceInterceptor("test", new Interceptor() {
           @Override
           public void afterConnectionFailure(HttpRequest request, Throwable failure) {
-            server = new DefaultMockServer(false);
+            server = newMockServer();
             server.expect().withPath("/intercepted-url").andReturn(200, "This works").once();
             server.start(originalPort); // Need to restart on the original port as we can't alter the request during retry.
           }
@@ -475,4 +475,7 @@ public abstract class AbstractInterceptorTest {
         .containsEntry("test-header", Collections.singletonList("Test-Value-Override"));
   }
 
+  private static DefaultMockServer newMockServer() {
+    return new DefaultMockServer(false);
+  }
 }
