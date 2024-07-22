@@ -42,10 +42,10 @@ public class ResourceRequirements implements Editable<ResourceRequirementsBuilde
     private List<ResourceClaim> claims = new ArrayList<>();
     @JsonProperty("limits")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, io.fabric8.kubernetes.api.model.Quantity> limits = new LinkedHashMap<>();
+    private Map<String, Quantity> limits = new LinkedHashMap<>();
     @JsonProperty("requests")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, io.fabric8.kubernetes.api.model.Quantity> requests = new LinkedHashMap<>();
+    private Map<String, Quantity> requests = new LinkedHashMap<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -56,7 +56,7 @@ public class ResourceRequirements implements Editable<ResourceRequirementsBuilde
     public ResourceRequirements() {
     }
 
-    public ResourceRequirements(List<ResourceClaim> claims, Map<String, io.fabric8.kubernetes.api.model.Quantity> limits, Map<String, io.fabric8.kubernetes.api.model.Quantity> requests) {
+    public ResourceRequirements(List<ResourceClaim> claims, Map<String, Quantity> limits, Map<String, Quantity> requests) {
         super();
         this.claims = claims;
         this.limits = limits;
@@ -76,23 +76,23 @@ public class ResourceRequirements implements Editable<ResourceRequirementsBuilde
 
     @JsonProperty("limits")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public Map<String, io.fabric8.kubernetes.api.model.Quantity> getLimits() {
+    public Map<String, Quantity> getLimits() {
         return limits;
     }
 
     @JsonProperty("limits")
-    public void setLimits(Map<String, io.fabric8.kubernetes.api.model.Quantity> limits) {
+    public void setLimits(Map<String, Quantity> limits) {
         this.limits = limits;
     }
 
     @JsonProperty("requests")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public Map<String, io.fabric8.kubernetes.api.model.Quantity> getRequests() {
+    public Map<String, Quantity> getRequests() {
         return requests;
     }
 
     @JsonProperty("requests")
-    public void setRequests(Map<String, io.fabric8.kubernetes.api.model.Quantity> requests) {
+    public void setRequests(Map<String, Quantity> requests) {
         this.requests = requests;
     }
 

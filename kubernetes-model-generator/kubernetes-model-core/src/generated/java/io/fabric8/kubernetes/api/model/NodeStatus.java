@@ -51,10 +51,10 @@ public class NodeStatus implements Editable<NodeStatusBuilder> , KubernetesResou
     private List<NodeAddress> addresses = new ArrayList<>();
     @JsonProperty("allocatable")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, io.fabric8.kubernetes.api.model.Quantity> allocatable = new LinkedHashMap<>();
+    private Map<String, Quantity> allocatable = new LinkedHashMap<>();
     @JsonProperty("capacity")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, io.fabric8.kubernetes.api.model.Quantity> capacity = new LinkedHashMap<>();
+    private Map<String, Quantity> capacity = new LinkedHashMap<>();
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<NodeCondition> conditions = new ArrayList<>();
@@ -88,7 +88,7 @@ public class NodeStatus implements Editable<NodeStatusBuilder> , KubernetesResou
     public NodeStatus() {
     }
 
-    public NodeStatus(List<NodeAddress> addresses, Map<String, io.fabric8.kubernetes.api.model.Quantity> allocatable, Map<String, io.fabric8.kubernetes.api.model.Quantity> capacity, List<NodeCondition> conditions, NodeConfigStatus config, NodeDaemonEndpoints daemonEndpoints, List<ContainerImage> images, NodeSystemInfo nodeInfo, String phase, List<NodeRuntimeHandler> runtimeHandlers, List<AttachedVolume> volumesAttached, List<String> volumesInUse) {
+    public NodeStatus(List<NodeAddress> addresses, Map<String, Quantity> allocatable, Map<String, Quantity> capacity, List<NodeCondition> conditions, NodeConfigStatus config, NodeDaemonEndpoints daemonEndpoints, List<ContainerImage> images, NodeSystemInfo nodeInfo, String phase, List<NodeRuntimeHandler> runtimeHandlers, List<AttachedVolume> volumesAttached, List<String> volumesInUse) {
         super();
         this.addresses = addresses;
         this.allocatable = allocatable;
@@ -117,23 +117,23 @@ public class NodeStatus implements Editable<NodeStatusBuilder> , KubernetesResou
 
     @JsonProperty("allocatable")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public Map<String, io.fabric8.kubernetes.api.model.Quantity> getAllocatable() {
+    public Map<String, Quantity> getAllocatable() {
         return allocatable;
     }
 
     @JsonProperty("allocatable")
-    public void setAllocatable(Map<String, io.fabric8.kubernetes.api.model.Quantity> allocatable) {
+    public void setAllocatable(Map<String, Quantity> allocatable) {
         this.allocatable = allocatable;
     }
 
     @JsonProperty("capacity")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public Map<String, io.fabric8.kubernetes.api.model.Quantity> getCapacity() {
+    public Map<String, Quantity> getCapacity() {
         return capacity;
     }
 
     @JsonProperty("capacity")
-    public void setCapacity(Map<String, io.fabric8.kubernetes.api.model.Quantity> capacity) {
+    public void setCapacity(Map<String, Quantity> capacity) {
         this.capacity = capacity;
     }
 

@@ -36,10 +36,10 @@ public class VolumeResourceRequirements implements Editable<VolumeResourceRequir
 
     @JsonProperty("limits")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, io.fabric8.kubernetes.api.model.Quantity> limits = new LinkedHashMap<>();
+    private Map<String, Quantity> limits = new LinkedHashMap<>();
     @JsonProperty("requests")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, io.fabric8.kubernetes.api.model.Quantity> requests = new LinkedHashMap<>();
+    private Map<String, Quantity> requests = new LinkedHashMap<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -50,7 +50,7 @@ public class VolumeResourceRequirements implements Editable<VolumeResourceRequir
     public VolumeResourceRequirements() {
     }
 
-    public VolumeResourceRequirements(Map<String, io.fabric8.kubernetes.api.model.Quantity> limits, Map<String, io.fabric8.kubernetes.api.model.Quantity> requests) {
+    public VolumeResourceRequirements(Map<String, Quantity> limits, Map<String, Quantity> requests) {
         super();
         this.limits = limits;
         this.requests = requests;
@@ -58,23 +58,23 @@ public class VolumeResourceRequirements implements Editable<VolumeResourceRequir
 
     @JsonProperty("limits")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public Map<String, io.fabric8.kubernetes.api.model.Quantity> getLimits() {
+    public Map<String, Quantity> getLimits() {
         return limits;
     }
 
     @JsonProperty("limits")
-    public void setLimits(Map<String, io.fabric8.kubernetes.api.model.Quantity> limits) {
+    public void setLimits(Map<String, Quantity> limits) {
         this.limits = limits;
     }
 
     @JsonProperty("requests")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public Map<String, io.fabric8.kubernetes.api.model.Quantity> getRequests() {
+    public Map<String, Quantity> getRequests() {
         return requests;
     }
 
     @JsonProperty("requests")
-    public void setRequests(Map<String, io.fabric8.kubernetes.api.model.Quantity> requests) {
+    public void setRequests(Map<String, Quantity> requests) {
         this.requests = requests;
     }
 

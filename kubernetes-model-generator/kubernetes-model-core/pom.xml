@@ -130,73 +130,35 @@
     </dependency>
   </dependencies>
 
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>build-helper-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>attach-artifacts</id>
-            <configuration>
-              <skipAttach>false</skipAttach>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
-
   <profiles>
     <profile>
       <id>generate</id>
       <build>
         <plugins>
           <plugin>
-            <groupId>org.jsonschema2pojo</groupId>
-            <artifactId>jsonschema2pojo-maven-plugin</artifactId>
-            <configuration>
-              <customAnnotator>io.fabric8.kubernetes.jsonschema2pojo.KubernetesCoreTypeAnnotator</customAnnotator>
+            <groupId>io.fabric8</groupId>
+            <artifactId>openapi-model-generator-maven-plugin</artifactId>
+            <configuration >
+              <settings combine.self="append">
+                <addBuildableReferences>false</addBuildableReferences>
+                <schemas>
+                  <schema>${project.basedir}/../openapi/schemas/kubernetes-1.30.0.json</schema>
+                  <schema>${project.basedir}/../openapi/schemas/api-machinery-extra.json</schema>
+                  <schema>${project.basedir}/../openapi/schemas/admission-registration.json</schema>
+                </schemas>
+                <packageMappings combine.self="append">
+                  <io.k8s.client-go.tools.clientcmd.api.v1>io.fabric8.kubernetes.api.model</io.k8s.client-go.tools.clientcmd.api.v1>
+                  <io.k8s.kube-aggregator.pkg.apis.apiregistration.v1>io.fabric8.kubernetes.api.model</io.k8s.kube-aggregator.pkg.apis.apiregistration.v1>
+                </packageMappings>
+                <skipGenerationRegexes>
+                  <skipGenerationRegex>^io\.k8s\.apimachinery\.pkg\.runtime\.RawExtension$</skipGenerationRegex>
+                </skipGenerationRegexes>
+                <includeGenerationRegexes>
+                  <includeGenerationRegex>^io\.k8s\.api\.core\..*$</includeGenerationRegex>
+                  <includeGenerationRegex>^io\.k8s\.apimachinery\..*$</includeGenerationRegex>
+                </includeGenerationRegexes>
+              </settings>
             </configuration>
-          </plugin>
-          <plugin>
-            <artifactId>maven-antrun-plugin</artifactId>
-            <executions>
-              <execution>
-                <phase>generate-sources</phase>
-                <configuration>
-                  <target>
-                    <echo>Removing the duplicate generated class</echo>
-                    <delete
-                      file="${generate.targetDirectory}/io/fabric8/kubernetes/api/model/Duration.java"
-                      verbose="true" />
-                    <delete
-                      file="${generate.targetDirectory}/io/fabric8/kubernetes/api/model/HasMetadata.java"
-                      verbose="true" />
-                    <delete
-                      file="${generate.targetDirectory}/io/fabric8/kubernetes/api/model/IntOrString.java"
-                      verbose="true" />
-                    <delete
-                      file="${generate.targetDirectory}/io/fabric8/kubernetes/api/model/Quantity.java"
-                      verbose="true" />
-                    <delete
-                      file="${generate.targetDirectory}/io/fabric8/kubernetes/api/model/KubernetesResource.java"
-                      verbose="true" />
-                    <delete
-                      file="${generate.targetDirectory}/io/fabric8/kubernetes/api/model/KubernetesList.java"
-                      verbose="true" />
-                    <delete verbose="true">
-                      <fileset dir="${generate.targetDirectory}">
-                        <include name="*.java" />
-                      </fileset>
-                    </delete>
-                  </target>
-                </configuration>
-                <goals>
-                  <goal>run</goal>
-                </goals>
-              </execution>
-            </executions>
           </plugin>
         </plugins>
       </build>

@@ -141,6 +141,32 @@
     <pluginManagement>
       <plugins>
         <plugin>
+          <groupId>io.fabric8</groupId>
+          <artifactId>openapi-model-generator-maven-plugin</artifactId>
+          <version>${project.version}</version>
+          <configuration>
+            <settings>
+              <outputDirectory>${project.basedir}</outputDirectory>
+              <packageName>io.fabric8.kubernetes.api.model</packageName>
+              <builderPackage>io.fabric8.kubernetes.api.builder</builderPackage>
+              <addBuildableReferences>true</addBuildableReferences>
+              <generateJavadoc>false</generateJavadoc>
+              <packageMappings>
+                <io.k8s.api.core.v1>io.fabric8.kubernetes.api.model</io.k8s.api.core.v1>
+                <io.k8s.apimachinery.pkg>io.fabric8.kubernetes.api.model</io.k8s.apimachinery.pkg>
+                <io.k8s.apimachinery.pkg.apis.meta.v1>io.fabric8.kubernetes.api.model</io.k8s.apimachinery.pkg.apis.meta.v1>
+              </packageMappings>
+            </settings>
+          </configuration>
+          <executions>
+            <execution>
+              <goals>
+                <goal>generate-model</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>build-helper-maven-plugin</artifactId>
           <executions>
