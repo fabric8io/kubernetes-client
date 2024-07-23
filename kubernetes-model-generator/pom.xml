@@ -76,9 +76,9 @@
   <properties>
     <!-- should we include the integration test in this build? -->
     <itest>true</itest>
-
     <skipTests>false</skipTests>
     <testExclusionPattern>**/*KubernetesTest.java</testExclusionPattern>
+    <openapi.schema.kubernetes-latest>${project.parent.basedir}/openapi/schemas/kubernetes-1.30.0.json</openapi.schema.kubernetes-latest>
     <osgi.require-capability>
       osgi.extender;
       filter:="(osgi.extender=osgi.serviceloader.registrar)"

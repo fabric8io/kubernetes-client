@@ -60,7 +60,7 @@
             <configuration >
               <settings combine.self="append">
                 <schemas>
-                  <schema>${project.basedir}/../openapi/schemas/kubernetes-1.30.0.json</schema>
+                  <schema>${openapi.schema.kubernetes-latest}</schema>
                 </schemas>
                 <packageMappings combine.self="append">
                   <io.k8s.api.rbac.v1>io.fabric8.kubernetes.api.model.rbac</io.k8s.api.rbac.v1>
