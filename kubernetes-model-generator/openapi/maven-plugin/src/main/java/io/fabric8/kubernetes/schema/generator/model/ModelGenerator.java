@@ -45,6 +45,7 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
+import static io.fabric8.kubernetes.schema.generator.GeneratorUtils.cleanSourceDirectory;
 import static io.fabric8.kubernetes.schema.generator.SchemaUtils.deserializerForJavaClass;
 import static io.fabric8.kubernetes.schema.generator.SchemaUtils.getterName;
 import static io.fabric8.kubernetes.schema.generator.SchemaUtils.isArray;
@@ -74,6 +75,7 @@ class ModelGenerator {
   }
 
   void generate() {
+    cleanSourceDirectory(settings.getGeneratedSourcesDirectory());
     final Map<String, Schema<?>> schemas = utils.extractComponentSchemas();
     settings.getLogger().info(String.format("Found %s schemas", schemas.size()));
     final AtomicInteger generatedClasses = new AtomicInteger();
