@@ -1,5 +1,5 @@
 
-package io.fabric8.kubernetes.api.model.admissionregistration.v1;
+package io.fabric8.kubernetes.api.model.authentication.v1beta1;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -15,8 +15,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
+import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
@@ -24,12 +24,8 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.kubernetes.model.annotation.Group;
-import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import io.sundr.transform.annotations.TemplateTransformation;
-import io.sundr.transform.annotations.TemplateTransformations;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
@@ -37,10 +33,10 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "apiVersion",
-    "kind",
-    "metadata",
-    "webhooks"
+    "audiences",
+    "authenticated",
+    "error",
+    "user"
 })
 @ToString
 @EqualsAndHashCode
@@ -59,34 +55,19 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
-@TemplateTransformations({
-    @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true)
-})
-@Version("v1")
-@Group("admissionregistration.k8s.io")
 @Generated("jsonschema2pojo")
-public class MutatingWebhookConfiguration implements Editable<MutatingWebhookConfigurationBuilder> , HasMetadata
+public class TokenReviewStatus implements Editable<TokenReviewStatusBuilder> , KubernetesResource
 {
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
-    @JsonProperty("apiVersion")
-    private String apiVersion = "admissionregistration.k8s.io/v1";
-    /**
-     * 
-     * (Required)
-     * 
-     */
-    @JsonProperty("kind")
-    private String kind = "MutatingWebhookConfiguration";
-    @JsonProperty("metadata")
-    private ObjectMeta metadata;
-    @JsonProperty("webhooks")
+    @JsonProperty("audiences")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<MutatingWebhook> webhooks = new ArrayList<>();
+    private List<String> audiences = new ArrayList<>();
+    @JsonProperty("authenticated")
+    private Boolean authenticated;
+    @JsonProperty("error")
+    private String error;
+    @JsonProperty("user")
+    private UserInfo user;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -94,85 +75,65 @@ public class MutatingWebhookConfiguration implements Editable<MutatingWebhookCon
      * No args constructor for use in serialization
      * 
      */
-    public MutatingWebhookConfiguration() {
+    public TokenReviewStatus() {
     }
 
-    public MutatingWebhookConfiguration(String apiVersion, String kind, ObjectMeta metadata, List<MutatingWebhook> webhooks) {
+    public TokenReviewStatus(List<String> audiences, Boolean authenticated, String error, UserInfo user) {
         super();
-        this.apiVersion = apiVersion;
-        this.kind = kind;
-        this.metadata = metadata;
-        this.webhooks = webhooks;
+        this.audiences = audiences;
+        this.authenticated = authenticated;
+        this.error = error;
+        this.user = user;
     }
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
-    @JsonProperty("apiVersion")
-    public String getApiVersion() {
-        return apiVersion;
-    }
-
-    /**
-     * 
-     * (Required)
-     * 
-     */
-    @JsonProperty("apiVersion")
-    public void setApiVersion(String apiVersion) {
-        this.apiVersion = apiVersion;
-    }
-
-    /**
-     * 
-     * (Required)
-     * 
-     */
-    @JsonProperty("kind")
-    public String getKind() {
-        return kind;
-    }
-
-    /**
-     * 
-     * (Required)
-     * 
-     */
-    @JsonProperty("kind")
-    public void setKind(String kind) {
-        this.kind = kind;
-    }
-
-    @JsonProperty("metadata")
-    public ObjectMeta getMetadata() {
-        return metadata;
-    }
-
-    @JsonProperty("metadata")
-    public void setMetadata(ObjectMeta metadata) {
-        this.metadata = metadata;
-    }
-
-    @JsonProperty("webhooks")
+    @JsonProperty("audiences")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<MutatingWebhook> getWebhooks() {
-        return webhooks;
+    public List<String> getAudiences() {
+        return audiences;
     }
 
-    @JsonProperty("webhooks")
-    public void setWebhooks(List<MutatingWebhook> webhooks) {
-        this.webhooks = webhooks;
+    @JsonProperty("audiences")
+    public void setAudiences(List<String> audiences) {
+        this.audiences = audiences;
+    }
+
+    @JsonProperty("authenticated")
+    public Boolean getAuthenticated() {
+        return authenticated;
+    }
+
+    @JsonProperty("authenticated")
+    public void setAuthenticated(Boolean authenticated) {
+        this.authenticated = authenticated;
+    }
+
+    @JsonProperty("error")
+    public String getError() {
+        return error;
+    }
+
+    @JsonProperty("error")
+    public void setError(String error) {
+        this.error = error;
+    }
+
+    @JsonProperty("user")
+    public UserInfo getUser() {
+        return user;
+    }
+
+    @JsonProperty("user")
+    public void setUser(UserInfo user) {
+        this.user = user;
     }
 
     @JsonIgnore
-    public MutatingWebhookConfigurationBuilder edit() {
-        return new MutatingWebhookConfigurationBuilder(this);
+    public TokenReviewStatusBuilder edit() {
+        return new TokenReviewStatusBuilder(this);
     }
 
     @JsonIgnore
-    public MutatingWebhookConfigurationBuilder toBuilder() {
+    public TokenReviewStatusBuilder toBuilder() {
         return edit();
     }
 

@@ -17,6 +17,7 @@ import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
+import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
@@ -53,7 +54,7 @@ import lombok.experimental.Accessors;
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.LabelSelector.class),
+    @BuildableReference(LabelSelector.class),
     @BuildableReference(Container.class),
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
@@ -81,9 +82,9 @@ public class MutatingWebhook implements Editable<MutatingWebhookBuilder> , Kuber
     @JsonProperty("name")
     private String name;
     @JsonProperty("namespaceSelector")
-    private io.fabric8.kubernetes.api.model.LabelSelector namespaceSelector;
+    private LabelSelector namespaceSelector;
     @JsonProperty("objectSelector")
-    private io.fabric8.kubernetes.api.model.LabelSelector objectSelector;
+    private LabelSelector objectSelector;
     @JsonProperty("reinvocationPolicy")
     private String reinvocationPolicy;
     @JsonProperty("rules")
@@ -103,7 +104,7 @@ public class MutatingWebhook implements Editable<MutatingWebhookBuilder> , Kuber
     public MutatingWebhook() {
     }
 
-    public MutatingWebhook(List<String> admissionReviewVersions, WebhookClientConfig clientConfig, String failurePolicy, List<MatchCondition> matchConditions, String matchPolicy, String name, io.fabric8.kubernetes.api.model.LabelSelector namespaceSelector, io.fabric8.kubernetes.api.model.LabelSelector objectSelector, String reinvocationPolicy, List<RuleWithOperations> rules, String sideEffects, Integer timeoutSeconds) {
+    public MutatingWebhook(List<String> admissionReviewVersions, WebhookClientConfig clientConfig, String failurePolicy, List<MatchCondition> matchConditions, String matchPolicy, String name, LabelSelector namespaceSelector, LabelSelector objectSelector, String reinvocationPolicy, List<RuleWithOperations> rules, String sideEffects, Integer timeoutSeconds) {
         super();
         this.admissionReviewVersions = admissionReviewVersions;
         this.clientConfig = clientConfig;
@@ -182,22 +183,22 @@ public class MutatingWebhook implements Editable<MutatingWebhookBuilder> , Kuber
     }
 
     @JsonProperty("namespaceSelector")
-    public io.fabric8.kubernetes.api.model.LabelSelector getNamespaceSelector() {
+    public LabelSelector getNamespaceSelector() {
         return namespaceSelector;
     }
 
     @JsonProperty("namespaceSelector")
-    public void setNamespaceSelector(io.fabric8.kubernetes.api.model.LabelSelector namespaceSelector) {
+    public void setNamespaceSelector(LabelSelector namespaceSelector) {
         this.namespaceSelector = namespaceSelector;
     }
 
     @JsonProperty("objectSelector")
-    public io.fabric8.kubernetes.api.model.LabelSelector getObjectSelector() {
+    public LabelSelector getObjectSelector() {
         return objectSelector;
     }
 
     @JsonProperty("objectSelector")
-    public void setObjectSelector(io.fabric8.kubernetes.api.model.LabelSelector objectSelector) {
+    public void setObjectSelector(LabelSelector objectSelector) {
         this.objectSelector = objectSelector;
     }
 

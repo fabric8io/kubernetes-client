@@ -17,6 +17,7 @@ import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
+import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
@@ -46,7 +47,7 @@ import lombok.experimental.Accessors;
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.LabelSelector.class),
+    @BuildableReference(LabelSelector.class),
     @BuildableReference(Container.class),
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
@@ -65,9 +66,9 @@ public class MatchResources implements Editable<MatchResourcesBuilder> , Kuberne
     @JsonProperty("matchPolicy")
     private String matchPolicy;
     @JsonProperty("namespaceSelector")
-    private io.fabric8.kubernetes.api.model.LabelSelector namespaceSelector;
+    private LabelSelector namespaceSelector;
     @JsonProperty("objectSelector")
-    private io.fabric8.kubernetes.api.model.LabelSelector objectSelector;
+    private LabelSelector objectSelector;
     @JsonProperty("resourceRules")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<NamedRuleWithOperations> resourceRules = new ArrayList<>();
@@ -81,7 +82,7 @@ public class MatchResources implements Editable<MatchResourcesBuilder> , Kuberne
     public MatchResources() {
     }
 
-    public MatchResources(List<NamedRuleWithOperations> excludeResourceRules, String matchPolicy, io.fabric8.kubernetes.api.model.LabelSelector namespaceSelector, io.fabric8.kubernetes.api.model.LabelSelector objectSelector, List<NamedRuleWithOperations> resourceRules) {
+    public MatchResources(List<NamedRuleWithOperations> excludeResourceRules, String matchPolicy, LabelSelector namespaceSelector, LabelSelector objectSelector, List<NamedRuleWithOperations> resourceRules) {
         super();
         this.excludeResourceRules = excludeResourceRules;
         this.matchPolicy = matchPolicy;
@@ -112,22 +113,22 @@ public class MatchResources implements Editable<MatchResourcesBuilder> , Kuberne
     }
 
     @JsonProperty("namespaceSelector")
-    public io.fabric8.kubernetes.api.model.LabelSelector getNamespaceSelector() {
+    public LabelSelector getNamespaceSelector() {
         return namespaceSelector;
     }
 
     @JsonProperty("namespaceSelector")
-    public void setNamespaceSelector(io.fabric8.kubernetes.api.model.LabelSelector namespaceSelector) {
+    public void setNamespaceSelector(LabelSelector namespaceSelector) {
         this.namespaceSelector = namespaceSelector;
     }
 
     @JsonProperty("objectSelector")
-    public io.fabric8.kubernetes.api.model.LabelSelector getObjectSelector() {
+    public LabelSelector getObjectSelector() {
         return objectSelector;
     }
 
     @JsonProperty("objectSelector")
-    public void setObjectSelector(io.fabric8.kubernetes.api.model.LabelSelector objectSelector) {
+    public void setObjectSelector(LabelSelector objectSelector) {
         this.objectSelector = objectSelector;
     }
 

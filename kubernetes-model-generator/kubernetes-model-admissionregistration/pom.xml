@@ -57,52 +57,33 @@
     </dependency>
   </dependencies>
 
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>build-helper-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>attach-artifacts</id>
-            <configuration>
-              <skipAttach>false</skipAttach>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
-
-
   <profiles>
     <profile>
       <id>generate</id>
       <build>
         <plugins>
           <plugin>
-            <groupId>org.jsonschema2pojo</groupId>
-            <artifactId>jsonschema2pojo-maven-plugin</artifactId>
-          </plugin>
-          <plugin>
-            <artifactId>maven-antrun-plugin</artifactId>
-            <executions>
-              <execution>
-                <phase>generate-sources</phase>
-                <configuration>
-                  <target>
-                    <echo>removing the duplicate generated class</echo>
-                    <delete
-                      file="${generate.targetDirectory}/io/fabric8/kubernetes/api/model/admission/v1/AdmissionRequest.java" verbose="true" />
-                    <delete
-                      file="${generate.targetDirectory}/io/fabric8/kubernetes/api/model/admission/v1beta1/AdmissionRequest.java" verbose="true" />
-                  </target>
-                </configuration>
-                <goals>
-                  <goal>run</goal>
-                </goals>
-              </execution>
-            </executions>
+            <groupId>io.fabric8</groupId>
+            <artifactId>openapi-model-generator-maven-plugin</artifactId>
+            <configuration >
+              <settings combine.self="append">
+                <schemas>
+                  <schema>${project.basedir}/../openapi/schemas/kubernetes-1.21.14.json</schema>
+                  <schema>${openapi.schema.kubernetes-latest}</schema>
+                  <schema>${project.basedir}/../openapi/schemas/admission-registration.json</schema>
+                </schemas>
+                <packageMappings combine.self="append">
+                  <io.k8s.api>io.fabric8.kubernetes.api.model</io.k8s.api>
+                  <io.k8s.api.authentication.v1>io.fabric8.kubernetes.api.model.authentication</io.k8s.api.authentication.v1>
+                </packageMappings>
+                <includeGenerationRegexes>
+                  <includeGenerationRegex>^io\.k8s\.api\.admission\..*$</includeGenerationRegex>
+                  <includeGenerationRegex>^io\.k8s\.api\.admissionregistration\..*$</includeGenerationRegex>
+                  <includeGenerationRegex>^io\.k8s\.api\.authentication\..*$</includeGenerationRegex>
+                  <includeGenerationRegex>^io\.k8s\.api\.authorization\..*$</includeGenerationRegex>
+                </includeGenerationRegexes>
+              </settings>
+            </configuration>
           </plugin>
         </plugins>
       </build>

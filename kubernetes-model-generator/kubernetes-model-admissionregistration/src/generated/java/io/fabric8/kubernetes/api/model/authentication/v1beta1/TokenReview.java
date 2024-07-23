@@ -1,5 +1,5 @@
 
-package io.fabric8.kubernetes.api.model.admissionregistration.v1beta1;
+package io.fabric8.kubernetes.api.model.authentication.v1beta1;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -62,9 +62,9 @@ import lombok.experimental.Accessors;
     @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true)
 })
 @Version("v1beta1")
-@Group("admissionregistration.k8s.io")
+@Group("authentication.k8s.io")
 @Generated("jsonschema2pojo")
-public class ValidatingAdmissionPolicy implements Editable<ValidatingAdmissionPolicyBuilder> , HasMetadata
+public class TokenReview implements Editable<TokenReviewBuilder> , HasMetadata
 {
 
     /**
@@ -73,20 +73,20 @@ public class ValidatingAdmissionPolicy implements Editable<ValidatingAdmissionPo
      * 
      */
     @JsonProperty("apiVersion")
-    private String apiVersion = "admissionregistration.k8s.io/v1beta1";
+    private String apiVersion = "authentication.k8s.io/v1beta1";
     /**
      * 
      * (Required)
      * 
      */
     @JsonProperty("kind")
-    private String kind = "ValidatingAdmissionPolicy";
+    private String kind = "TokenReview";
     @JsonProperty("metadata")
     private ObjectMeta metadata;
     @JsonProperty("spec")
-    private ValidatingAdmissionPolicySpec spec;
+    private TokenReviewSpec spec;
     @JsonProperty("status")
-    private ValidatingAdmissionPolicyStatus status;
+    private TokenReviewStatus status;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -94,10 +94,10 @@ public class ValidatingAdmissionPolicy implements Editable<ValidatingAdmissionPo
      * No args constructor for use in serialization
      * 
      */
-    public ValidatingAdmissionPolicy() {
+    public TokenReview() {
     }
 
-    public ValidatingAdmissionPolicy(String apiVersion, String kind, ObjectMeta metadata, ValidatingAdmissionPolicySpec spec, ValidatingAdmissionPolicyStatus status) {
+    public TokenReview(String apiVersion, String kind, ObjectMeta metadata, TokenReviewSpec spec, TokenReviewStatus status) {
         super();
         this.apiVersion = apiVersion;
         this.kind = kind;
@@ -157,32 +157,32 @@ public class ValidatingAdmissionPolicy implements Editable<ValidatingAdmissionPo
     }
 
     @JsonProperty("spec")
-    public ValidatingAdmissionPolicySpec getSpec() {
+    public TokenReviewSpec getSpec() {
         return spec;
     }
 
     @JsonProperty("spec")
-    public void setSpec(ValidatingAdmissionPolicySpec spec) {
+    public void setSpec(TokenReviewSpec spec) {
         this.spec = spec;
     }
 
     @JsonProperty("status")
-    public ValidatingAdmissionPolicyStatus getStatus() {
+    public TokenReviewStatus getStatus() {
         return status;
     }
 
     @JsonProperty("status")
-    public void setStatus(ValidatingAdmissionPolicyStatus status) {
+    public void setStatus(TokenReviewStatus status) {
         this.status = status;
     }
 
     @JsonIgnore
-    public ValidatingAdmissionPolicyBuilder edit() {
-        return new ValidatingAdmissionPolicyBuilder(this);
+    public TokenReviewBuilder edit() {
+        return new TokenReviewBuilder(this);
     }
 
     @JsonIgnore
-    public ValidatingAdmissionPolicyBuilder toBuilder() {
+    public TokenReviewBuilder toBuilder() {
         return edit();
     }
 

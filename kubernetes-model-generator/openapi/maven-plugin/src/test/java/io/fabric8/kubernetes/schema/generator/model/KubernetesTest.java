@@ -46,41 +46,6 @@ class KubernetesTest {
   }
 
   @Test
-  void core() {
-    new ModelGenerator(baseSettings
-        .addBuildableReferences(false)
-        .schema(new File("../schemas/kubernetes-config.json"))
-        .schema(new File("../schemas/api-machinery-extra.json"))
-        .schema(new File("../schemas/admission-registration.json"))
-        .skipGenerationRegex("^io\\.k8s\\.apimachinery\\.pkg\\.runtime\\.RawExtension$")
-        .includeGenerationRegex("^io\\.k8s\\.api\\.core\\..*$")
-        .includeGenerationRegex("^io\\.k8s\\.apimachinery\\..*$")
-        .includeGenerationRegex("^io\\.k8s\\.client-go\\.tools\\.clientcmd\\.api\\.v1\\..*$") // Config
-        .includeGenerationRegex("^io\\.k8s\\.kube-aggregator\\.pkg\\.apis\\.apiregistration\\..*$")
-        .packageMapping("io.k8s.client-go.tools.clientcmd.api.v1", "io.fabric8.kubernetes.api.model") //Config // TODO: fix package sanitization
-        .packageMapping("io.k8s.kube-aggregator.pkg.apis.apiregistration.v1", "io.fabric8.kubernetes.api.model") // TODO: fix package sanitization
-        .build())
-        .generate();
-  }
-
-  @Test
-  void admissionRegistration() {
-    new ModelGenerator(baseSettings
-        .clearSchemas()
-        .schema(new File("../schemas/kubernetes-1.21.14.json"))
-        .schema(new File("../schemas/kubernetes-1.30.0.json"))
-        .schema(new File("../schemas/admission-registration.json"))
-        .includeGenerationRegex("^io\\.k8s\\.api\\.admission\\..*$")
-        .includeGenerationRegex("^io\\.k8s\\.api\\.admissionregistration\\..*$")
-        .includeGenerationRegex("^io\\.k8s\\.api\\.authentication\\..*$")
-        .includeGenerationRegex("^io\\.k8s\\.api\\.authorization\\..*$")
-        .packageMapping("io.k8s.api", "io.fabric8.kubernetes.api.model")
-        .packageMapping("io.k8s.api.authentication.v1", "io.fabric8.kubernetes.api.model.authentication")
-        .build())
-        .generate();
-  }
-
-  @Test
   void apiExtensions() {
     new ModelGenerator(baseSettings
         .clearSchemas()
@@ -264,17 +229,6 @@ class KubernetesTest {
         .schema(new File("../schemas/kubernetes-1.30.0.json"))
         .includeGenerationRegex("^io\\.k8s\\.api\\.policy\\..*$")
         .packageMapping("io.k8s.api.policy", "io.fabric8.kubernetes.api.model.policy")
-        .build())
-        .generate();
-  }
-
-  @Test
-  void rbac() {
-    new ModelGenerator(baseSettings
-        .clearSchemas()
-        .schema(new File("../schemas/kubernetes-1.30.0.json"))
-        .includeGenerationRegex("^io\\.k8s\\.api\\.rbac\\..*$")
-        .packageMapping("io.k8s.api.rbac.v1", "io.fabric8.kubernetes.api.model.rbac")
         .build())
         .generate();
   }
