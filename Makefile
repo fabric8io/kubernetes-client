@@ -36,6 +36,7 @@ generate-openapi-classes:
 	cd kubernetes-model-generator/openapi/maven-plugin && mvn clean verify
 	cd kubernetes-model-generator/kubernetes-model-core && mvn -Pgenerate clean install
 	cd kubernetes-model-generator/kubernetes-model-rbac && mvn -Pgenerate clean install
+	cd kubernetes-model-generator/kubernetes-model-admissionregistration && mvn -Pgenerate clean install
 
 # Legacy generation of the model: TODO: remove
 .PHONY: generate-model-legacy

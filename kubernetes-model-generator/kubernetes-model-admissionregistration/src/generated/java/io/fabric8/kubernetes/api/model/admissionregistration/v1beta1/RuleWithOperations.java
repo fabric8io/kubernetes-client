@@ -1,5 +1,5 @@
 
-package io.fabric8.kubernetes.api.model.admissionregistration.v1;
+package io.fabric8.kubernetes.api.model.admissionregistration.v1beta1;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -15,8 +15,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
+import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
@@ -24,12 +24,8 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.kubernetes.model.annotation.Group;
-import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import io.sundr.transform.annotations.TemplateTransformation;
-import io.sundr.transform.annotations.TemplateTransformations;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
@@ -37,10 +33,11 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "apiVersion",
-    "kind",
-    "metadata",
-    "webhooks"
+    "apiGroups",
+    "apiVersions",
+    "operations",
+    "resources",
+    "scope"
 })
 @ToString
 @EqualsAndHashCode
@@ -59,34 +56,24 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
-@TemplateTransformations({
-    @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true)
-})
-@Version("v1")
-@Group("admissionregistration.k8s.io")
 @Generated("jsonschema2pojo")
-public class MutatingWebhookConfiguration implements Editable<MutatingWebhookConfigurationBuilder> , HasMetadata
+public class RuleWithOperations implements Editable<RuleWithOperationsBuilder> , KubernetesResource
 {
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
-    @JsonProperty("apiVersion")
-    private String apiVersion = "admissionregistration.k8s.io/v1";
-    /**
-     * 
-     * (Required)
-     * 
-     */
-    @JsonProperty("kind")
-    private String kind = "MutatingWebhookConfiguration";
-    @JsonProperty("metadata")
-    private ObjectMeta metadata;
-    @JsonProperty("webhooks")
+    @JsonProperty("apiGroups")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<MutatingWebhook> webhooks = new ArrayList<>();
+    private List<String> apiGroups = new ArrayList<>();
+    @JsonProperty("apiVersions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> apiVersions = new ArrayList<>();
+    @JsonProperty("operations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> operations = new ArrayList<>();
+    @JsonProperty("resources")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> resources = new ArrayList<>();
+    @JsonProperty("scope")
+    private String scope;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -94,85 +81,79 @@ public class MutatingWebhookConfiguration implements Editable<MutatingWebhookCon
      * No args constructor for use in serialization
      * 
      */
-    public MutatingWebhookConfiguration() {
+    public RuleWithOperations() {
     }
 
-    public MutatingWebhookConfiguration(String apiVersion, String kind, ObjectMeta metadata, List<MutatingWebhook> webhooks) {
+    public RuleWithOperations(List<String> apiGroups, List<String> apiVersions, List<String> operations, List<String> resources, String scope) {
         super();
-        this.apiVersion = apiVersion;
-        this.kind = kind;
-        this.metadata = metadata;
-        this.webhooks = webhooks;
+        this.apiGroups = apiGroups;
+        this.apiVersions = apiVersions;
+        this.operations = operations;
+        this.resources = resources;
+        this.scope = scope;
     }
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
-    @JsonProperty("apiVersion")
-    public String getApiVersion() {
-        return apiVersion;
-    }
-
-    /**
-     * 
-     * (Required)
-     * 
-     */
-    @JsonProperty("apiVersion")
-    public void setApiVersion(String apiVersion) {
-        this.apiVersion = apiVersion;
-    }
-
-    /**
-     * 
-     * (Required)
-     * 
-     */
-    @JsonProperty("kind")
-    public String getKind() {
-        return kind;
-    }
-
-    /**
-     * 
-     * (Required)
-     * 
-     */
-    @JsonProperty("kind")
-    public void setKind(String kind) {
-        this.kind = kind;
-    }
-
-    @JsonProperty("metadata")
-    public ObjectMeta getMetadata() {
-        return metadata;
-    }
-
-    @JsonProperty("metadata")
-    public void setMetadata(ObjectMeta metadata) {
-        this.metadata = metadata;
-    }
-
-    @JsonProperty("webhooks")
+    @JsonProperty("apiGroups")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<MutatingWebhook> getWebhooks() {
-        return webhooks;
+    public List<String> getApiGroups() {
+        return apiGroups;
     }
 
-    @JsonProperty("webhooks")
-    public void setWebhooks(List<MutatingWebhook> webhooks) {
-        this.webhooks = webhooks;
+    @JsonProperty("apiGroups")
+    public void setApiGroups(List<String> apiGroups) {
+        this.apiGroups = apiGroups;
+    }
+
+    @JsonProperty("apiVersions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<String> getApiVersions() {
+        return apiVersions;
+    }
+
+    @JsonProperty("apiVersions")
+    public void setApiVersions(List<String> apiVersions) {
+        this.apiVersions = apiVersions;
+    }
+
+    @JsonProperty("operations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<String> getOperations() {
+        return operations;
+    }
+
+    @JsonProperty("operations")
+    public void setOperations(List<String> operations) {
+        this.operations = operations;
+    }
+
+    @JsonProperty("resources")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<String> getResources() {
+        return resources;
+    }
+
+    @JsonProperty("resources")
+    public void setResources(List<String> resources) {
+        this.resources = resources;
+    }
+
+    @JsonProperty("scope")
+    public String getScope() {
+        return scope;
+    }
+
+    @JsonProperty("scope")
+    public void setScope(String scope) {
+        this.scope = scope;
     }
 
     @JsonIgnore
-    public MutatingWebhookConfigurationBuilder edit() {
-        return new MutatingWebhookConfigurationBuilder(this);
+    public RuleWithOperationsBuilder edit() {
+        return new RuleWithOperationsBuilder(this);
     }
 
     @JsonIgnore
-    public MutatingWebhookConfigurationBuilder toBuilder() {
+    public RuleWithOperationsBuilder toBuilder() {
         return edit();
     }
 
