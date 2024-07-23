@@ -188,14 +188,21 @@ public class GeneratorSettings {
             || operation.getResponses().get("200").getContent().get(APPLICATION_JSON) == null) {
           continue;
         }
-        final String path = apiPath.getKey();
-        final String[] segments = path.split("/");
         final ApiVersion.ApiVersionBuilder apiVersionBuilder = ApiVersion.builder();
-        if (path.startsWith("/apis/") && segments.length > 3) {
-          apiVersionBuilder.group(segments[2]).version(segments[3]);
-        } else {
-          apiVersionBuilder.group("").version("v1");
+        //        final String path = apiPath.getKey();
+        //        final String[] segments = path.split("/");
+        //        if (path.startsWith("/apis/") && segments.length > 3) {
+        //          apiVersionBuilder.group(segments[2]).version(segments[3]);
+        //        } else {
+        //          apiVersionBuilder.group("").version("v1");
+        //        }
+        if (operation.getExtensions() == null || operation.getExtensions().get("x-kubernetes-group-version-kind") == null) {
+          continue;
         }
+        final Map<String, String> groupVersionKind = (Map<String, String>) operation.getExtensions()
+            .get("x-kubernetes-group-version-kind");
+        apiVersionBuilder.group(groupVersionKind.get("group"));
+        apiVersionBuilder.version(groupVersionKind.get("version"));
         apiVersionBuilder.namespaced(isNamespaced(operation));
         final String ref = operation.getResponses().get("200").getContent().get(APPLICATION_JSON)
             .getSchema().get$ref();
@@ -203,12 +210,12 @@ public class GeneratorSettings {
           apiVersions.put(ref.replaceFirst("#/components/schemas/", ""), apiVersionBuilder.build());
         }
       }
-      // api machinery + core components always tagged as core v1
-      // TODO: see if we want to omit the addition of group and version altogether in the future
-      openAPI.getComponents().getSchemas().entrySet().stream()
-          .filter(GeneratorSettings::isApplicableApiMachineryOrCoreComponent)
-          .forEach(e -> apiVersions.putIfAbsent(e.getKey(), ApiVersion.builder().group("").version("v1").build()));
     }
+    // api machinery + core components always tagged as core v1
+    // TODO: see if we want to omit the addition of group and version altogether in the future
+    openAPI.getComponents().getSchemas().entrySet().stream()
+        .filter(GeneratorSettings::isApplicableApiMachineryOrCoreComponent)
+        .forEach(e -> apiVersions.putIfAbsent(e.getKey(), ApiVersion.builder().group("").version("v1").build()));
     return apiVersions;
   }
 

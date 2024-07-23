@@ -31,11 +31,11 @@ import lombok.experimental.Accessors;
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("jsonschema2pojo")
-public class NamedExtension implements Editable<NamedExtensionBuilder> , io.fabric8.kubernetes.api.model.KubernetesResource
+public class NamedExtension implements Editable<NamedExtensionBuilder> , KubernetesResource
 {
 
     @JsonProperty("extension")
-    private io.fabric8.kubernetes.api.model.KubernetesResource extension;
+    private KubernetesResource extension;
     @JsonProperty("name")
     private String name;
     @JsonIgnore
@@ -48,19 +48,19 @@ public class NamedExtension implements Editable<NamedExtensionBuilder> , io.fabr
     public NamedExtension() {
     }
 
-    public NamedExtension(io.fabric8.kubernetes.api.model.KubernetesResource extension, String name) {
+    public NamedExtension(KubernetesResource extension, String name) {
         super();
         this.extension = extension;
         this.name = name;
     }
 
     @JsonProperty("extension")
-    public io.fabric8.kubernetes.api.model.KubernetesResource getExtension() {
+    public KubernetesResource getExtension() {
         return extension;
     }
 
     @JsonProperty("extension")
-    public void setExtension(io.fabric8.kubernetes.api.model.KubernetesResource extension) {
+    public void setExtension(KubernetesResource extension) {
         this.extension = extension;
     }
 

@@ -36,21 +36,27 @@ import (
 	"time"
 )
 
+type ApiVersion struct {
+	List         bool
+	GroupVersion string
+	Plural       string
+	Namespaced   bool
+}
+
 type Schema struct {
 	Types []reflect.Type
 	Name  string
-	Paths map[reflect.Type]string
+	Paths map[reflect.Type]ApiVersion
 }
 
 func NewTypeSchema(types []reflect.Type, name string) Schema {
-	return Schema{types, name, make(map[reflect.Type]string)}
+	return Schema{types, name, make(map[reflect.Type]ApiVersion)}
 }
 
-func NewPathSchema(paths map[reflect.Type]string, name string) Schema {
+func NewPathSchema(paths map[reflect.Type]ApiVersion, name string) Schema {
 	schema := Schema{make([]reflect.Type, 0), name, paths}
 	for t := range paths {
 		schema.Types = append(schema.Types, t)
-
 	}
 	return schema
 }
@@ -81,10 +87,11 @@ func main() {
 			reflect.TypeOf(metaV1.GroupKind{}),
 			reflect.TypeOf(metaV1.TypeMeta{}), // TODO: can be removed, it's an inline type not directly used
 		}, "api-machinery-extra"),
-		NewTypeSchema([]reflect.Type{
-			reflect.TypeOf(admissionV1.AdmissionReview{}),
-			reflect.TypeOf(admissionV1Beta1.AdmissionReview{}),
-			reflect.TypeOf(admissionregistrationV1.Rule{}),
+		// Webhooks, add fake paths so that Maven OpenAPI plugin adds deserialization type information
+		NewPathSchema(map[reflect.Type]ApiVersion{
+			reflect.TypeOf(admissionV1.AdmissionReview{}):      {false, admissionV1.SchemeGroupVersion.String(), "admissionreviews", false},
+			reflect.TypeOf(admissionV1Beta1.AdmissionReview{}): {false, admissionV1Beta1.SchemeGroupVersion.String(), "admissionreviews", false},
+			reflect.TypeOf(admissionregistrationV1.Rule{}):     {},
 		}, "admission-registration"),
 		NewTypeSchema([]reflect.Type{
 			reflect.TypeOf(apiextensionsV1.ConversionReview{}),
@@ -98,30 +105,30 @@ func main() {
 			reflect.TypeOf(apiextensionsV1Beta1.SelectableField{}),
 			reflect.TypeOf(apiextensionsV1Beta1.ValidationRule{}),
 		}, "apiextensions"),
-		NewPathSchema(map[reflect.Type]string{
-			reflect.TypeOf(gatewayApiV1.GatewayList{}):             "/apis/" + gatewayApiV1.GroupName + "/v1/namespaces/{namespace}/gateways",
-			reflect.TypeOf(gatewayApiV1.Gateway{}):                 "/apis/" + gatewayApiV1.GroupName + "/v1/namespaces/{namespace}/gateways/{name}",
-			reflect.TypeOf(gatewayApiV1.GatewayClassList{}):        "/apis/" + gatewayApiV1.GroupName + "/v1/gatewayclasses",
-			reflect.TypeOf(gatewayApiV1.GatewayClass{}):            "/apis/" + gatewayApiV1.GroupName + "/v1/gatewayclasses/{name}",
-			reflect.TypeOf(gatewayApiV1.HTTPRouteList{}):           "/apis/" + gatewayApiV1.GroupName + "/v1/namespaces/{namespace}/httproutes",
-			reflect.TypeOf(gatewayApiV1.HTTPRoute{}):               "/apis/" + gatewayApiV1.GroupName + "/v1/namespaces/{namespace}/httproutes/{name}",
-			reflect.TypeOf(gatewayApiV1Beta1.GatewayList{}):        "/apis/" + gatewayApiV1.GroupName + "/v1beta1/namespaces/{namespace}/gateways",
-			reflect.TypeOf(gatewayApiV1Beta1.Gateway{}):            "/apis/" + gatewayApiV1.GroupName + "/v1beta1/namespaces/{namespace}/gateways/{name}",
-			reflect.TypeOf(gatewayApiV1Beta1.GatewayClassList{}):   "/apis/" + gatewayApiV1.GroupName + "/v1beta1/gatewayclasses",
-			reflect.TypeOf(gatewayApiV1Beta1.GatewayClass{}):       "/apis/" + gatewayApiV1.GroupName + "/v1beta1/gatewayclasses/{name}",
-			reflect.TypeOf(gatewayApiV1Beta1.HTTPRouteList{}):      "/apis/" + gatewayApiV1.GroupName + "/v1beta1/namespaces/{namespace}/httproutes",
-			reflect.TypeOf(gatewayApiV1Beta1.HTTPRoute{}):          "/apis/" + gatewayApiV1.GroupName + "/v1beta1/namespaces/{namespace}/httproutes/{name}",
-			reflect.TypeOf(gatewayApiV1Beta1.ReferenceGrantList{}): "/apis/" + gatewayApiV1.GroupName + "/v1beta1/namespaces/{namespace}/referencegrants",
-			reflect.TypeOf(gatewayApiV1Beta1.ReferenceGrant{}):     "/apis/" + gatewayApiV1.GroupName + "/v1beta1/namespaces/{namespace}/referencegrants/{name}",
+		NewPathSchema(map[reflect.Type]ApiVersion{
+			reflect.TypeOf(gatewayApiV1.GatewayList{}):             {true, gatewayApiV1.GroupVersion.String(), "gateways", true},
+			reflect.TypeOf(gatewayApiV1.Gateway{}):                 {false, gatewayApiV1.GroupVersion.String(), "gateways", true},
+			reflect.TypeOf(gatewayApiV1.GatewayClassList{}):        {true, gatewayApiV1.GroupVersion.String(), "gatewayclasses", false},
+			reflect.TypeOf(gatewayApiV1.GatewayClass{}):            {false, gatewayApiV1.GroupVersion.String(), "gatewayclasses", false},
+			reflect.TypeOf(gatewayApiV1.HTTPRouteList{}):           {true, gatewayApiV1.GroupVersion.String(), "httproutes", true},
+			reflect.TypeOf(gatewayApiV1.HTTPRoute{}):               {false, gatewayApiV1.GroupVersion.String(), "httproutes", true},
+			reflect.TypeOf(gatewayApiV1Beta1.GatewayList{}):        {true, gatewayApiV1Beta1.GroupVersion.String(), "gateways", true},
+			reflect.TypeOf(gatewayApiV1Beta1.Gateway{}):            {false, gatewayApiV1Beta1.GroupVersion.String(), "gateways", true},
+			reflect.TypeOf(gatewayApiV1Beta1.GatewayClassList{}):   {true, gatewayApiV1Beta1.GroupVersion.String(), "gatewayclasses", false},
+			reflect.TypeOf(gatewayApiV1Beta1.GatewayClass{}):       {false, gatewayApiV1Beta1.GroupVersion.String(), "gatewayclasses", false},
+			reflect.TypeOf(gatewayApiV1Beta1.HTTPRouteList{}):      {true, gatewayApiV1Beta1.GroupVersion.String(), "httproutes", true},
+			reflect.TypeOf(gatewayApiV1Beta1.HTTPRoute{}):          {false, gatewayApiV1Beta1.GroupVersion.String(), "httproutes", true},
+			reflect.TypeOf(gatewayApiV1Beta1.ReferenceGrantList{}): {true, gatewayApiV1Beta1.GroupVersion.String(), "referencegrants", true},
+			reflect.TypeOf(gatewayApiV1Beta1.ReferenceGrant{}):     {false, gatewayApiV1Beta1.GroupVersion.String(), "referencegrants", true},
 		}, "gateway-api"),
 		NewTypeSchema([]reflect.Type{
 			reflect.TypeOf(kustomize.Kustomization{}),
 		}, "kustomize"),
-		NewPathSchema(map[reflect.Type]string{
-			reflect.TypeOf(metricsV1Beta1.NodeMetricsList{}): "/apis/" + metricsV1Beta1.SchemeGroupVersion.String() + "/nodes",
-			reflect.TypeOf(metricsV1Beta1.NodeMetrics{}):     "/apis/" + metricsV1Beta1.SchemeGroupVersion.String() + "/nodes/{name}",
-			reflect.TypeOf(metricsV1Beta1.PodMetricsList{}):  "/apis/" + metricsV1Beta1.SchemeGroupVersion.String() + "/namespaces/{namespace}/pods",
-			reflect.TypeOf(metricsV1Beta1.PodMetrics{}):      "/apis/" + metricsV1Beta1.SchemeGroupVersion.String() + "/namespaces/{namespace}/pods/{name}",
+		NewPathSchema(map[reflect.Type]ApiVersion{
+			reflect.TypeOf(metricsV1Beta1.NodeMetricsList{}): {true, metricsV1Beta1.SchemeGroupVersion.String(), "nodes", false},
+			reflect.TypeOf(metricsV1Beta1.NodeMetrics{}):     {false, metricsV1Beta1.SchemeGroupVersion.String(), "nodes", false},
+			reflect.TypeOf(metricsV1Beta1.PodMetricsList{}):  {true, metricsV1Beta1.SchemeGroupVersion.String(), "pods", true},
+			reflect.TypeOf(metricsV1Beta1.PodMetrics{}):      {false, metricsV1Beta1.SchemeGroupVersion.String(), "pods", true},
 		}, "metrics"),
 	}
 	generate(schemas, targetDirectory)
@@ -289,22 +296,34 @@ func openApiKind(t reflect.Type) *openapi3.SchemaRef {
 }
 
 // Create fake paths so that the OpenAPI generator can compute group, version, plural, scope (namespaced/cluster)
-func extractPaths(paths map[reflect.Type]string) *openapi3.Paths {
+func extractPaths(apiVersions map[reflect.Type]ApiVersion) *openapi3.Paths {
 	oApiPaths := openapi3.NewPaths()
-	for t, path := range paths {
+	for t, apiVersion := range apiVersions {
+		if apiVersion.GroupVersion == "" {
+			continue
+		}
 		pathItem := &openapi3.PathItem{}
 		pathItem.Get = openapi3.NewOperation()
 		pathItem.Get.AddResponse(200, openapi3.NewResponse().WithDescription("OK").WithJSONSchemaRef(&openapi3.SchemaRef{
 			Ref: "#/components/schemas/" + getKey(t),
 		}))
-		if strings.Contains(path, "{namespace}") {
+		pathItem.Get.Extensions = make(map[string]interface{})
+		pathItem.Get.Extensions["x-kubernetes-group-version-kind"] = map[string]interface{}{
+			"group":   strings.Split(apiVersion.GroupVersion, "/")[0],
+			"version": strings.Split(apiVersion.GroupVersion, "/")[1],
+			"kind":    t.Name(),
+		}
+		path := "/apis/" + apiVersion.GroupVersion
+		if apiVersion.Namespaced {
+			path += "/namespaces/{namespace}"
 			pathItem.Get.AddParameter(openapi3.NewPathParameter("namespace"))
 		}
-		if strings.Contains(path, "{name}") {
+		path += "/" + apiVersion.Plural
+		if !apiVersion.List {
+			path += "/{name}"
 			pathItem.Get.AddParameter(openapi3.NewPathParameter("name"))
 		}
 		oApiPaths.Set(path, pathItem)
-
 	}
 	return oApiPaths
 }

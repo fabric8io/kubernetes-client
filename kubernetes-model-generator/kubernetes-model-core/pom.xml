@@ -142,8 +142,9 @@
               <settings combine.self="append">
                 <addBuildableReferences>false</addBuildableReferences>
                 <schemas>
-                  <schema>${project.basedir}/../openapi/schemas/kubernetes-1.30.0.json</schema>
+                  <schema>${openapi.schema.kubernetes-latest}</schema>
                   <schema>${project.basedir}/../openapi/schemas/api-machinery-extra.json</schema>
+                  <schema>${project.basedir}/../openapi/schemas/kubernetes-config.json</schema>
                   <schema>${project.basedir}/../openapi/schemas/admission-registration.json</schema>
                 </schemas>
                 <packageMappings combine.self="append">
@@ -156,6 +157,8 @@
                 <includeGenerationRegexes>
                   <includeGenerationRegex>^io\.k8s\.api\.core\..*$</includeGenerationRegex>
                   <includeGenerationRegex>^io\.k8s\.apimachinery\..*$</includeGenerationRegex>
+                  <includeGenerationRegex>^io\.k8s\.kube-aggregator\.pkg\.apis\.apiregistration\..*$</includeGenerationRegex>
+                  <includeGenerationRegex>^io\.k8s\.client-go\.tools\.clientcmd\.api\.v1\..*$</includeGenerationRegex>
                 </includeGenerationRegexes>
               </settings>
             </configuration>
