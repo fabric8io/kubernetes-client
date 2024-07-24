@@ -52,31 +52,33 @@
     </dependency>
   </dependencies>
 
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>build-helper-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>attach-artifacts</id>
-            <configuration>
-              <skipAttach>false</skipAttach>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
-
   <profiles>
     <profile>
       <id>generate</id>
       <build>
         <plugins>
           <plugin>
-            <groupId>org.jsonschema2pojo</groupId>
-            <artifactId>jsonschema2pojo-maven-plugin</artifactId>
+            <groupId>io.fabric8</groupId>
+            <artifactId>openapi-model-generator-maven-plugin</artifactId>
+            <configuration >
+              <settings combine.self="append">
+                <schemas>
+                  <schema>${project.basedir}/../openapi/schemas/kubernetes-1.21.14.json</schema>
+                  <schema>${openapi.schema.kubernetes-latest}</schema>
+                  <schema>${project.basedir}/../openapi/schemas/apiextensions.json</schema>
+                </schemas>
+                <packageMappings combine.self="append">
+                  <io.k8s.apiextensions-apiserver.pkg.apis>io.fabric8.kubernetes.api.model</io.k8s.apiextensions-apiserver.pkg.apis>
+                </packageMappings>
+                <skipGenerationRegexes>
+                  <skipGenerationRegex>^io\.k8s\.apiextensions-apiserver\.pkg\.apis\.apiextensions\.v1beta1\.JSON$</skipGenerationRegex>
+                  <skipGenerationRegex>^io\.k8s\.apiextensions-apiserver\.pkg\.apis\.apiextensions\.v1\.JSON$</skipGenerationRegex>
+                </skipGenerationRegexes>
+                <includeGenerationRegexes>
+                  <includeGenerationRegex>^io\.k8s\.apiextensions-apiserver\..*$</includeGenerationRegex>
+                </includeGenerationRegexes>
+              </settings>
+            </configuration>
           </plugin>
         </plugins>
       </build>

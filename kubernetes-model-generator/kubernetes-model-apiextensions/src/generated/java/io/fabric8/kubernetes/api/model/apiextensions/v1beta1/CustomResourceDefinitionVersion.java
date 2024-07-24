@@ -38,7 +38,6 @@ import lombok.experimental.Accessors;
     "deprecationWarning",
     "name",
     "schema",
-    "selectableFields",
     "served",
     "storage",
     "subresources"
@@ -75,9 +74,6 @@ public class CustomResourceDefinitionVersion implements Editable<CustomResourceD
     private String name;
     @JsonProperty("schema")
     private CustomResourceValidation schema;
-    @JsonProperty("selectableFields")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<SelectableField> selectableFields = new ArrayList<>();
     @JsonProperty("served")
     private Boolean served;
     @JsonProperty("storage")
@@ -94,14 +90,13 @@ public class CustomResourceDefinitionVersion implements Editable<CustomResourceD
     public CustomResourceDefinitionVersion() {
     }
 
-    public CustomResourceDefinitionVersion(List<CustomResourceColumnDefinition> additionalPrinterColumns, Boolean deprecated, String deprecationWarning, String name, CustomResourceValidation schema, List<SelectableField> selectableFields, Boolean served, Boolean storage, CustomResourceSubresources subresources) {
+    public CustomResourceDefinitionVersion(List<CustomResourceColumnDefinition> additionalPrinterColumns, Boolean deprecated, String deprecationWarning, String name, CustomResourceValidation schema, Boolean served, Boolean storage, CustomResourceSubresources subresources) {
         super();
         this.additionalPrinterColumns = additionalPrinterColumns;
         this.deprecated = deprecated;
         this.deprecationWarning = deprecationWarning;
         this.name = name;
         this.schema = schema;
-        this.selectableFields = selectableFields;
         this.served = served;
         this.storage = storage;
         this.subresources = subresources;
@@ -156,17 +151,6 @@ public class CustomResourceDefinitionVersion implements Editable<CustomResourceD
     @JsonProperty("schema")
     public void setSchema(CustomResourceValidation schema) {
         this.schema = schema;
-    }
-
-    @JsonProperty("selectableFields")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<SelectableField> getSelectableFields() {
-        return selectableFields;
-    }
-
-    @JsonProperty("selectableFields")
-    public void setSelectableFields(List<SelectableField> selectableFields) {
-        this.selectableFields = selectableFields;
     }
 
     @JsonProperty("served")
