@@ -85,10 +85,10 @@ class ModelGenerator {
         .forEach(classEntry -> {
           final TemplateContext templateContext = new TemplateContext(settings, classEntry);
           if (hasOverride(templateContext)) {
-            settings.getLogger().info(String.format("Skipping %s since it has an override", templateContext.getClassName()));
+            settings.getLogger().fine(String.format("Skipping %s since it has an override", templateContext.getClassName()));
             return;
           }
-          settings.getLogger().info(String.format("Generating %ss", templateContext.getClassName()));
+          settings.getLogger().fine(String.format("Generating %ss", templateContext.getClassName()));
           mkPackageDirectories(templateContext);
           processTemplate(templateContext);
           final String fileContents = modelTemplate.execute(templateContext.getContext());
