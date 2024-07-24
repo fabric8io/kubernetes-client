@@ -35,5 +35,7 @@
     @JsonInclude(JsonInclude.Include.{{.}})
 {{/jsonInclude}}
     private {{type}} {{name}}{{#defaultValue}} = {{.}}{{/defaultValue}};{{/fields}}
+{{#additionalProperties}}
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
+{{/additionalProperties}}

@@ -142,14 +142,16 @@ class ModelGenerator {
     } else {
       ret.put("buildable", true);
     }
+    if (!ret.getSchemaProperties().containsKey("additionalProperties")) {
+      ret.put("additionalProperties", true);
+      ret.addImport("com.fasterxml.jackson.annotation.JsonAnyGetter");
+      ret.addImport("com.fasterxml.jackson.annotation.JsonAnySetter");
+    }
   }
 
   private List<Map<String, Object>> templateFields(TemplateContext templateContext) {
-    if (templateContext.getClassSchema().getProperties() == null) {
-      return Collections.emptyList();
-    }
     final List<Map<String, Object>> properties = new ArrayList<>();
-    for (Entry<String, Schema> property : templateContext.getClassSchema().getProperties().entrySet()) {
+    for (Entry<String, Schema> property : templateContext.getSchemaProperties().entrySet()) {
       final Map<String, Object> templateProp = new HashMap<>();
       final Schema<?> propertySchema = property.getValue();
       properties.add(templateProp);
@@ -287,8 +289,6 @@ class ModelGenerator {
         "java.util.LinkedHashMap",
         "java.util.Map",
         "javax.annotation.Generated",
-        "com.fasterxml.jackson.annotation.JsonAnyGetter",
-        "com.fasterxml.jackson.annotation.JsonAnySetter",
         "com.fasterxml.jackson.annotation.JsonIgnore",
         "com.fasterxml.jackson.annotation.JsonPropertyOrder",
         "com.fasterxml.jackson.databind.annotation.JsonDeserialize",
