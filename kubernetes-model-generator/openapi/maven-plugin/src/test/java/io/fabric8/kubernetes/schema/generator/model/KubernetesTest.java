@@ -46,21 +46,6 @@ class KubernetesTest {
   }
 
   @Test
-  void apiExtensions() {
-    new ModelGenerator(baseSettings
-        .clearSchemas()
-        .schema(new File("../schemas/kubernetes-1.21.14.json"))
-        .schema(new File("../schemas/kubernetes-1.30.0.json"))
-        .schema(new File("../schemas/apiextensions.json"))
-        .skipGenerationRegex("^io\\.k8s\\.apiextensions-apiserver\\.pkg\\.apis\\.apiextensions\\.v1beta1\\.JSON$")
-        .skipGenerationRegex("^io\\.k8s\\.apiextensions-apiserver\\.pkg\\.apis\\.apiextensions\\.v1\\.JSON$")
-        .includeGenerationRegex("^io\\.k8s\\.apiextensions-apiserver\\..*$")
-        .packageMapping("io.k8s.apiextensions-apiserver.pkg.apis", "io.fabric8.kubernetes.api.model")
-        .build())
-        .generate();
-  }
-
-  @Test
   void apps() {
     new ModelGenerator(baseSettings
         .includeGenerationRegex("^io\\.k8s\\.api\\.apps\\..*$")

@@ -116,7 +116,7 @@ public class JSONSchemaProps implements Editable<JSONSchemaPropsBuilder> , Kuber
     private JsonNode _default;
     @JsonProperty("definitions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps> definitions = new LinkedHashMap<>();
+    private Map<String, JSONSchemaProps> definitions = new LinkedHashMap<>();
     @JsonProperty("dependencies")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, JSONSchemaPropsOrStringArray> dependencies = new LinkedHashMap<>();
@@ -168,10 +168,10 @@ public class JSONSchemaProps implements Editable<JSONSchemaPropsBuilder> , Kuber
     private String pattern;
     @JsonProperty("patternProperties")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps> patternProperties = new LinkedHashMap<>();
+    private Map<String, JSONSchemaProps> patternProperties = new LinkedHashMap<>();
     @JsonProperty("properties")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps> properties = new LinkedHashMap<>();
+    private Map<String, JSONSchemaProps> properties = new LinkedHashMap<>();
     @JsonProperty("required")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> required = new ArrayList<>();
@@ -205,7 +205,7 @@ public class JSONSchemaProps implements Editable<JSONSchemaPropsBuilder> , Kuber
     public JSONSchemaProps() {
     }
 
-    public JSONSchemaProps(String $ref, String $schema, JSONSchemaPropsOrBool additionalItems, JSONSchemaPropsOrBool additionalProperties, List<JSONSchemaProps> allOf, List<JSONSchemaProps> anyOf, JsonNode _default, Map<String, io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps> definitions, Map<String, JSONSchemaPropsOrStringArray> dependencies, String description, List<JsonNode> _enum, JsonNode example, Boolean exclusiveMaximum, Boolean exclusiveMinimum, ExternalDocumentation externalDocs, String format, String id, JSONSchemaPropsOrArray items, Long maxItems, Long maxLength, Long maxProperties, Double maximum, Long minItems, Long minLength, Long minProperties, Double minimum, Double multipleOf, JSONSchemaProps not, Boolean nullable, List<JSONSchemaProps> oneOf, String pattern, Map<String, io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps> patternProperties, Map<String, io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps> properties, List<String> required, String title, String type, Boolean uniqueItems, Boolean xKubernetesEmbeddedResource, Boolean xKubernetesIntOrString, List<String> xKubernetesListMapKeys, String xKubernetesListType, String xKubernetesMapType, Boolean xKubernetesPreserveUnknownFields, List<ValidationRule> xKubernetesValidations) {
+    public JSONSchemaProps(String $ref, String $schema, JSONSchemaPropsOrBool additionalItems, JSONSchemaPropsOrBool additionalProperties, List<JSONSchemaProps> allOf, List<JSONSchemaProps> anyOf, JsonNode _default, Map<String, JSONSchemaProps> definitions, Map<String, JSONSchemaPropsOrStringArray> dependencies, String description, List<JsonNode> _enum, JsonNode example, Boolean exclusiveMaximum, Boolean exclusiveMinimum, ExternalDocumentation externalDocs, String format, String id, JSONSchemaPropsOrArray items, Long maxItems, Long maxLength, Long maxProperties, Double maximum, Long minItems, Long minLength, Long minProperties, Double minimum, Double multipleOf, JSONSchemaProps not, Boolean nullable, List<JSONSchemaProps> oneOf, String pattern, Map<String, JSONSchemaProps> patternProperties, Map<String, JSONSchemaProps> properties, List<String> required, String title, String type, Boolean uniqueItems, Boolean xKubernetesEmbeddedResource, Boolean xKubernetesIntOrString, List<String> xKubernetesListMapKeys, String xKubernetesListType, String xKubernetesMapType, Boolean xKubernetesPreserveUnknownFields, List<ValidationRule> xKubernetesValidations) {
         super();
         this.$ref = $ref;
         this.$schema = $schema;
@@ -327,12 +327,12 @@ public class JSONSchemaProps implements Editable<JSONSchemaPropsBuilder> , Kuber
 
     @JsonProperty("definitions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public Map<String, io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps> getDefinitions() {
+    public Map<String, JSONSchemaProps> getDefinitions() {
         return definitions;
     }
 
     @JsonProperty("definitions")
-    public void setDefinitions(Map<String, io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps> definitions) {
+    public void setDefinitions(Map<String, JSONSchemaProps> definitions) {
         this.definitions = definitions;
     }
 
@@ -571,23 +571,23 @@ public class JSONSchemaProps implements Editable<JSONSchemaPropsBuilder> , Kuber
 
     @JsonProperty("patternProperties")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public Map<String, io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps> getPatternProperties() {
+    public Map<String, JSONSchemaProps> getPatternProperties() {
         return patternProperties;
     }
 
     @JsonProperty("patternProperties")
-    public void setPatternProperties(Map<String, io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps> patternProperties) {
+    public void setPatternProperties(Map<String, JSONSchemaProps> patternProperties) {
         this.patternProperties = patternProperties;
     }
 
     @JsonProperty("properties")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public Map<String, io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps> getProperties() {
+    public Map<String, JSONSchemaProps> getProperties() {
         return properties;
     }
 
     @JsonProperty("properties")
-    public void setProperties(Map<String, io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps> properties) {
+    public void setProperties(Map<String, JSONSchemaProps> properties) {
         this.properties = properties;
     }
 
@@ -713,5 +713,6 @@ public class JSONSchemaProps implements Editable<JSONSchemaPropsBuilder> , Kuber
     public JSONSchemaPropsBuilder toBuilder() {
         return edit();
     }
+
 
 }
