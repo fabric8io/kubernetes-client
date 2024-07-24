@@ -266,7 +266,7 @@ class ModelGenerator {
   private Map<String, List<String>> buildableReferences(TemplateContext templateContext, List<Map<String, Object>> fields) {
     final List<String> references = new ArrayList<>(settings.getBuildableReferences());
     references.add(0, settings.getObjectMetaClass());
-    if (fields.stream().map(f -> f.get("type")).map(Object::toString)
+    if (fields.stream().map(f -> f.get("type")).filter(Objects::nonNull).map(Object::toString)
         .anyMatch(r -> r.contains("KubernetesResource") || r.contains("HasMetadata") || r.contains("RawExtension"))) {
       references.add(settings.getGenericKubernetesResourceClass());
       references.add(settings.getRawExtensionClass());

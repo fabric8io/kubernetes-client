@@ -185,7 +185,9 @@ public class GeneratorSettings {
       for (Operation operation : new Operation[] { apiPath.getValue().getGet(), apiPath.getValue().getPost() }) {
         if (operation == null
             || operation.getResponses().get("200") == null
-            || operation.getResponses().get("200").getContent().get(APPLICATION_JSON) == null) {
+            || operation.getResponses().get("200").getContent().get(APPLICATION_JSON) == null
+            || operation.getExtensions() == null
+            || operation.getExtensions().get("x-kubernetes-group-version-kind") == null) {
           continue;
         }
         final ApiVersion.ApiVersionBuilder apiVersionBuilder = ApiVersion.builder();
@@ -196,9 +198,6 @@ public class GeneratorSettings {
         //        } else {
         //          apiVersionBuilder.group("").version("v1");
         //        }
-        if (operation.getExtensions() == null || operation.getExtensions().get("x-kubernetes-group-version-kind") == null) {
-          continue;
-        }
         final Map<String, String> groupVersionKind = (Map<String, String>) operation.getExtensions()
             .get("x-kubernetes-group-version-kind");
         apiVersionBuilder.group(groupVersionKind.get("group"));
