@@ -72,7 +72,7 @@ public interface Interceptor {
   /**
    * Called after a websocket failure or by default from a normal request.
    * <p>
-   * Failure is determined by HTTP status code and will be invoked in addition to {@see Interceptor#after(HttpRequest,
+   * Failure is determined by HTTP status code and will be invoked in addition to {@link Interceptor#after(HttpRequest,
    * HttpResponse, AsyncBody.Consumer)}
    *
    * @param builder used to modify the request
@@ -86,7 +86,7 @@ public interface Interceptor {
   /**
    * Called after a non-websocket failure
    * <p>
-   * Failure is determined by HTTP status code and will be invoked in addition to {@see Interceptor#after(HttpRequest,
+   * Failure is determined by HTTP status code and will be invoked in addition to {@link Interceptor#after(HttpRequest,
    * HttpResponse, AsyncBody.Consumer)}
    * 
    * @param builder used to modify the request
