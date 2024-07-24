@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
+import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
@@ -45,7 +46,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Container.class),
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.IntOrString.class),
+    @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
@@ -55,7 +56,7 @@ public class RollingUpdateStatefulSetStrategy implements Editable<RollingUpdateS
 {
 
     @JsonProperty("maxUnavailable")
-    private io.fabric8.kubernetes.api.model.IntOrString maxUnavailable;
+    private IntOrString maxUnavailable;
     @JsonProperty("partition")
     private Integer partition;
     @JsonIgnore
@@ -68,19 +69,19 @@ public class RollingUpdateStatefulSetStrategy implements Editable<RollingUpdateS
     public RollingUpdateStatefulSetStrategy() {
     }
 
-    public RollingUpdateStatefulSetStrategy(io.fabric8.kubernetes.api.model.IntOrString maxUnavailable, Integer partition) {
+    public RollingUpdateStatefulSetStrategy(IntOrString maxUnavailable, Integer partition) {
         super();
         this.maxUnavailable = maxUnavailable;
         this.partition = partition;
     }
 
     @JsonProperty("maxUnavailable")
-    public io.fabric8.kubernetes.api.model.IntOrString getMaxUnavailable() {
+    public IntOrString getMaxUnavailable() {
         return maxUnavailable;
     }
 
     @JsonProperty("maxUnavailable")
-    public void setMaxUnavailable(io.fabric8.kubernetes.api.model.IntOrString maxUnavailable) {
+    public void setMaxUnavailable(IntOrString maxUnavailable) {
         this.maxUnavailable = maxUnavailable;
     }
 
