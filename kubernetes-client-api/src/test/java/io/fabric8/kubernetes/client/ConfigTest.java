@@ -18,7 +18,6 @@ package io.fabric8.kubernetes.client;
 import io.fabric8.kubernetes.api.model.ExecConfig;
 import io.fabric8.kubernetes.api.model.ExecConfigBuilder;
 import io.fabric8.kubernetes.api.model.NamedContext;
-import io.fabric8.kubernetes.api.model.NamedContextBuilder;
 import io.fabric8.kubernetes.client.http.TlsVersion;
 import io.fabric8.kubernetes.client.lib.FileSystem;
 import io.fabric8.kubernetes.client.utils.Utils;
@@ -176,13 +175,87 @@ class ConfigTest {
     @Test
     @DisplayName("no args Config constructor, should load from properties")
     void zeroArgumentConstructor_whenInvoked_shouldLoadFromProperties() {
-      assertConfig(new Config(), "http://somehost:80/", "testns", true);
+      assertThat(new Config())
+          .isNotNull()
+          .hasFieldOrPropertyWithValue("trustCerts", true)
+          .hasFieldOrPropertyWithValue("disableHostnameVerification", true)
+          .hasFieldOrPropertyWithValue("masterUrl", "http://somehost:80/")
+          .hasFieldOrPropertyWithValue("namespace", "testns")
+          .hasFieldOrPropertyWithValue("username", "user")
+          .hasFieldOrPropertyWithValue("password", "pass")
+          .hasFieldOrPropertyWithValue("caCertFile", "/path/to/cert")
+          .hasFieldOrPropertyWithValue("caCertData", "cacertdata")
+          .hasFieldOrPropertyWithValue("clientCertFile", "/path/to/clientcert")
+          .hasFieldOrPropertyWithValue("clientCertData", "clientcertdata")
+          .hasFieldOrPropertyWithValue("clientKeyFile", "/path/to/clientkey")
+          .hasFieldOrPropertyWithValue("clientKeyData", "clientkeydata")
+          .hasFieldOrPropertyWithValue("clientKeyAlgo", "algo")
+          .hasFieldOrPropertyWithValue("clientKeyPassphrase", "passphrase")
+          .hasFieldOrPropertyWithValue("httpProxy", "httpProxy")
+          .hasFieldOrPropertyWithValue("watchReconnectInterval", 5000)
+          .hasFieldOrPropertyWithValue("watchReconnectLimit", 5)
+          .hasFieldOrPropertyWithValue("requestTimeout", 5000)
+          .hasFieldOrPropertyWithValue("requestConfig.uploadRequestTimeout", 600000)
+          .hasFieldOrPropertyWithValue("tlsVersions", new TlsVersion[] { TlsVersion.TLS_1_2, TlsVersion.TLS_1_1 })
+          .hasFieldOrPropertyWithValue("trustStoreFile", "/path/to/truststore")
+          .hasFieldOrPropertyWithValue("trustStorePassphrase", "truststorePassphrase")
+          .hasFieldOrPropertyWithValue("keyStoreFile", "/path/to/keystore")
+          .hasFieldOrPropertyWithValue("keyStorePassphrase", "keystorePassphrase")
+          .hasFieldOrPropertyWithValue("maxConcurrentRequests", 120)
+          .hasFieldOrPropertyWithValue("maxConcurrentRequestsPerHost", 20)
+          .hasFieldOrPropertyWithValue("websocketPingInterval", 1000L)
+          .hasFieldOrPropertyWithValue("connectionTimeout", 1000)
+          .hasFieldOrPropertyWithValue("scaleTimeout", 1000L)
+          .hasFieldOrPropertyWithValue("watchReconnectInterval", 5000)
+          .hasFieldOrPropertyWithValue("http2Disable", false)
+          .hasFieldOrPropertyWithValue("httpsProxy", "httpsProxy")
+          .hasFieldOrPropertyWithValue("proxyUsername", "proxyUsername")
+          .hasFieldOrPropertyWithValue("proxyPassword", "proxyPassword")
+          .hasFieldOrPropertyWithValue("noProxy", new String[] { "no-proxy-url1.io", "no-proxy-url2.io" })
+          .hasFieldOrPropertyWithValue("autoOAuthToken", "token");
     }
 
     @Test
     @DisplayName("ConfigBuilder, should load from properties")
     void configBuilder_whenInvoked_shouldLoadFromProperties() {
-      assertConfig(new ConfigBuilder().build(), "http://somehost:80/", "testns", true);
+      assertThat(new ConfigBuilder().build())
+          .isNotNull()
+          .hasFieldOrPropertyWithValue("trustCerts", true)
+          .hasFieldOrPropertyWithValue("disableHostnameVerification", true)
+          .hasFieldOrPropertyWithValue("masterUrl", "http://somehost:80/")
+          .hasFieldOrPropertyWithValue("namespace", "testns")
+          .hasFieldOrPropertyWithValue("username", "user")
+          .hasFieldOrPropertyWithValue("password", "pass")
+          .hasFieldOrPropertyWithValue("caCertFile", "/path/to/cert")
+          .hasFieldOrPropertyWithValue("caCertData", "cacertdata")
+          .hasFieldOrPropertyWithValue("clientCertFile", "/path/to/clientcert")
+          .hasFieldOrPropertyWithValue("clientCertData", "clientcertdata")
+          .hasFieldOrPropertyWithValue("clientKeyFile", "/path/to/clientkey")
+          .hasFieldOrPropertyWithValue("clientKeyData", "clientkeydata")
+          .hasFieldOrPropertyWithValue("clientKeyAlgo", "algo")
+          .hasFieldOrPropertyWithValue("clientKeyPassphrase", "passphrase")
+          .hasFieldOrPropertyWithValue("httpProxy", "httpProxy")
+          .hasFieldOrPropertyWithValue("watchReconnectInterval", 5000)
+          .hasFieldOrPropertyWithValue("watchReconnectLimit", 5)
+          .hasFieldOrPropertyWithValue("requestTimeout", 5000)
+          .hasFieldOrPropertyWithValue("requestConfig.uploadRequestTimeout", 600000)
+          .hasFieldOrPropertyWithValue("tlsVersions", new TlsVersion[] { TlsVersion.TLS_1_2, TlsVersion.TLS_1_1 })
+          .hasFieldOrPropertyWithValue("trustStoreFile", "/path/to/truststore")
+          .hasFieldOrPropertyWithValue("trustStorePassphrase", "truststorePassphrase")
+          .hasFieldOrPropertyWithValue("keyStoreFile", "/path/to/keystore")
+          .hasFieldOrPropertyWithValue("keyStorePassphrase", "keystorePassphrase")
+          .hasFieldOrPropertyWithValue("maxConcurrentRequests", 120)
+          .hasFieldOrPropertyWithValue("maxConcurrentRequestsPerHost", 20)
+          .hasFieldOrPropertyWithValue("websocketPingInterval", 1000L)
+          .hasFieldOrPropertyWithValue("connectionTimeout", 1000)
+          .hasFieldOrPropertyWithValue("scaleTimeout", 1000L)
+          .hasFieldOrPropertyWithValue("watchReconnectInterval", 5000)
+          .hasFieldOrPropertyWithValue("http2Disable", false)
+          .hasFieldOrPropertyWithValue("httpsProxy", "httpsProxy")
+          .hasFieldOrPropertyWithValue("proxyUsername", "proxyUsername")
+          .hasFieldOrPropertyWithValue("proxyPassword", "proxyPassword")
+          .hasFieldOrPropertyWithValue("noProxy", new String[] { "no-proxy-url1.io", "no-proxy-url2.io" })
+          .hasFieldOrPropertyWithValue("autoOAuthToken", "token");
     }
 
     @Test
@@ -193,68 +266,138 @@ class ConfigTest {
           .withNamespace("testns-via-builder")
           .build();
 
-      assertConfig(config, "http://somehost-via-builder:80/", "testns-via-builder", true);
+      assertThat(config)
+          .isNotNull()
+          .hasFieldOrPropertyWithValue("trustCerts", true)
+          .hasFieldOrPropertyWithValue("disableHostnameVerification", true)
+          .hasFieldOrPropertyWithValue("masterUrl", "http://somehost-via-builder:80/")
+          .hasFieldOrPropertyWithValue("namespace", "testns-via-builder")
+          .hasFieldOrPropertyWithValue("username", "user")
+          .hasFieldOrPropertyWithValue("password", "pass")
+          .hasFieldOrPropertyWithValue("caCertFile", "/path/to/cert")
+          .hasFieldOrPropertyWithValue("caCertData", "cacertdata")
+          .hasFieldOrPropertyWithValue("clientCertFile", "/path/to/clientcert")
+          .hasFieldOrPropertyWithValue("clientCertData", "clientcertdata")
+          .hasFieldOrPropertyWithValue("clientKeyFile", "/path/to/clientkey")
+          .hasFieldOrPropertyWithValue("clientKeyData", "clientkeydata")
+          .hasFieldOrPropertyWithValue("clientKeyAlgo", "algo")
+          .hasFieldOrPropertyWithValue("clientKeyPassphrase", "passphrase")
+          .hasFieldOrPropertyWithValue("httpProxy", "httpProxy")
+          .hasFieldOrPropertyWithValue("watchReconnectInterval", 5000)
+          .hasFieldOrPropertyWithValue("watchReconnectLimit", 5)
+          .hasFieldOrPropertyWithValue("requestTimeout", 5000)
+          .hasFieldOrPropertyWithValue("requestConfig.uploadRequestTimeout", 600000)
+          .hasFieldOrPropertyWithValue("tlsVersions", new TlsVersion[] { TlsVersion.TLS_1_2, TlsVersion.TLS_1_1 })
+          .hasFieldOrPropertyWithValue("trustStoreFile", "/path/to/truststore")
+          .hasFieldOrPropertyWithValue("trustStorePassphrase", "truststorePassphrase")
+          .hasFieldOrPropertyWithValue("keyStoreFile", "/path/to/keystore")
+          .hasFieldOrPropertyWithValue("keyStorePassphrase", "keystorePassphrase")
+          .hasFieldOrPropertyWithValue("maxConcurrentRequests", 120)
+          .hasFieldOrPropertyWithValue("maxConcurrentRequestsPerHost", 20)
+          .hasFieldOrPropertyWithValue("websocketPingInterval", 1000L)
+          .hasFieldOrPropertyWithValue("connectionTimeout", 1000)
+          .hasFieldOrPropertyWithValue("scaleTimeout", 1000L)
+          .hasFieldOrPropertyWithValue("watchReconnectInterval", 5000)
+          .hasFieldOrPropertyWithValue("http2Disable", false)
+          .hasFieldOrPropertyWithValue("httpsProxy", "httpsProxy")
+          .hasFieldOrPropertyWithValue("proxyUsername", "proxyUsername")
+          .hasFieldOrPropertyWithValue("proxyPassword", "proxyPassword")
+          .hasFieldOrPropertyWithValue("noProxy", new String[] { "no-proxy-url1.io", "no-proxy-url2.io" })
+          .hasFieldOrPropertyWithValue("autoOAuthToken", "token");
     }
   }
 
-  @Nested
-  @DisplayName("ConfigBuilder")
-  class BuilderConfigured {
-    @Test
-    @DisplayName("when fields configured via builder, then fields get most precedence")
-    void testWithBuilder() {
-      // Given + When
-      Config config = new ConfigBuilder()
-          .withMasterUrl("http://somehost:80")
-          .withApiVersion("v1")
-          .withNamespace("testns")
-          .withOauthToken("token")
-          .withUsername("user")
-          .withPassword("pass")
-          .withTrustCerts(true)
-          .withDisableHostnameVerification(true)
-          .withCaCertFile("/path/to/cert")
-          .withCaCertData("cacertdata")
-          .withClientCertFile("/path/to/clientcert")
-          .withClientCertData("clientcertdata")
-          .withClientKeyFile("/path/to/clientkey")
-          .withClientKeyData("clientkeydata")
-          .withClientKeyAlgo("algo")
-          .withClientKeyPassphrase("passphrase")
-          .withMaxConcurrentRequests(120)
-          .withMaxConcurrentRequestsPerHost(20)
-          .withWatchReconnectInterval(5000)
-          .withWatchReconnectLimit(5)
-          .withRequestTimeout(5000)
-          .withUploadRequestTimeout(600000)
-          .withHttpProxy("httpProxy")
-          .withHttpsProxy("httpsProxy")
-          .withProxyUsername("proxyUsername")
-          .withProxyPassword("proxyPassword")
-          .withNoProxy("no-proxy-url1.io", "no-proxy-url2.io")
-          .withTlsVersions(TlsVersion.TLS_1_2, TlsVersion.TLS_1_1)
-          .withTrustStoreFile("/path/to/truststore")
-          .withTrustStorePassphrase("truststorePassphrase")
-          .withKeyStoreFile("/path/to/keystore")
-          .withKeyStorePassphrase("keystorePassphrase")
-          .withHttp2Disable(false)
-          .withWebsocketPingInterval(1000L)
-          .withConnectionTimeout(1000)
-          .withScaleTimeout(1000L)
-          .build();
-      // Then
-      assertConfig(config, "http://somehost:80/", "testns", false);
-    }
+  @Test
+  @DisplayName("when fields configured via builder, then fields get most precedence")
+  void builder_whenInvoked_shouldCreateConfigWithConfiguredFields() {
+    // Given + When
+    Config config = new ConfigBuilder()
+        .withMasterUrl("http://somehost:80")
+        .withApiVersion("v1")
+        .withNamespace("testns")
+        .withOauthToken("token")
+        .withUsername("user")
+        .withPassword("pass")
+        .withTrustCerts(true)
+        .withDisableHostnameVerification(true)
+        .withCaCertFile("/path/to/cert")
+        .withCaCertData("cacertdata")
+        .withClientCertFile("/path/to/clientcert")
+        .withClientCertData("clientcertdata")
+        .withClientKeyFile("/path/to/clientkey")
+        .withClientKeyData("clientkeydata")
+        .withClientKeyAlgo("algo")
+        .withClientKeyPassphrase("passphrase")
+        .withMaxConcurrentRequests(120)
+        .withMaxConcurrentRequestsPerHost(20)
+        .withWatchReconnectInterval(5000)
+        .withWatchReconnectLimit(5)
+        .withRequestTimeout(5000)
+        .withUploadRequestTimeout(600000)
+        .withHttpProxy("httpProxy")
+        .withHttpsProxy("httpsProxy")
+        .withProxyUsername("proxyUsername")
+        .withProxyPassword("proxyPassword")
+        .withNoProxy("no-proxy-url1.io", "no-proxy-url2.io")
+        .withTlsVersions(TlsVersion.TLS_1_2, TlsVersion.TLS_1_1)
+        .withTrustStoreFile("/path/to/truststore")
+        .withTrustStorePassphrase("truststorePassphrase")
+        .withKeyStoreFile("/path/to/keystore")
+        .withKeyStorePassphrase("keystorePassphrase")
+        .withHttp2Disable(false)
+        .withWebsocketPingInterval(1000L)
+        .withConnectionTimeout(1000)
+        .withScaleTimeout(1000L)
+        .build();
+    // Then
+    assertThat(config)
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("trustCerts", true)
+        .hasFieldOrPropertyWithValue("disableHostnameVerification", true)
+        .hasFieldOrPropertyWithValue("masterUrl", "http://somehost:80/")
+        .hasFieldOrPropertyWithValue("namespace", "testns")
+        .hasFieldOrPropertyWithValue("username", "user")
+        .hasFieldOrPropertyWithValue("password", "pass")
+        .hasFieldOrPropertyWithValue("caCertFile", "/path/to/cert")
+        .hasFieldOrPropertyWithValue("caCertData", "cacertdata")
+        .hasFieldOrPropertyWithValue("clientCertFile", "/path/to/clientcert")
+        .hasFieldOrPropertyWithValue("clientCertData", "clientcertdata")
+        .hasFieldOrPropertyWithValue("clientKeyFile", "/path/to/clientkey")
+        .hasFieldOrPropertyWithValue("clientKeyData", "clientkeydata")
+        .hasFieldOrPropertyWithValue("clientKeyAlgo", "algo")
+        .hasFieldOrPropertyWithValue("clientKeyPassphrase", "passphrase")
+        .hasFieldOrPropertyWithValue("httpProxy", "httpProxy")
+        .hasFieldOrPropertyWithValue("watchReconnectInterval", 5000)
+        .hasFieldOrPropertyWithValue("watchReconnectLimit", 5)
+        .hasFieldOrPropertyWithValue("requestTimeout", 5000)
+        .hasFieldOrPropertyWithValue("requestConfig.uploadRequestTimeout", 600000)
+        .hasFieldOrPropertyWithValue("tlsVersions", new TlsVersion[] { TlsVersion.TLS_1_2, TlsVersion.TLS_1_1 })
+        .hasFieldOrPropertyWithValue("trustStoreFile", "/path/to/truststore")
+        .hasFieldOrPropertyWithValue("trustStorePassphrase", "truststorePassphrase")
+        .hasFieldOrPropertyWithValue("keyStoreFile", "/path/to/keystore")
+        .hasFieldOrPropertyWithValue("keyStorePassphrase", "keystorePassphrase")
+        .hasFieldOrPropertyWithValue("maxConcurrentRequests", 120)
+        .hasFieldOrPropertyWithValue("maxConcurrentRequestsPerHost", 20)
+        .hasFieldOrPropertyWithValue("websocketPingInterval", 1000L)
+        .hasFieldOrPropertyWithValue("connectionTimeout", 1000)
+        .hasFieldOrPropertyWithValue("scaleTimeout", 1000L)
+        .hasFieldOrPropertyWithValue("watchReconnectInterval", 5000)
+        .hasFieldOrPropertyWithValue("http2Disable", false)
+        .hasFieldOrPropertyWithValue("httpsProxy", "httpsProxy")
+        .hasFieldOrPropertyWithValue("proxyUsername", "proxyUsername")
+        .hasFieldOrPropertyWithValue("proxyPassword", "proxyPassword")
+        .hasFieldOrPropertyWithValue("noProxy", new String[] { "no-proxy-url1.io", "no-proxy-url2.io" })
+        .hasFieldOrPropertyWithValue("oauthToken", "token");
+  }
 
-    @Test
-    @DisplayName("no additional config, should use default value for webSocketPingInterval")
-    void shouldHonorDefaultWebsocketPingInterval() {
-      // Given + When
-      Config config = new ConfigBuilder().build();
-      // Then
-      assertThat(config.getWebsocketPingInterval())
-          .isEqualTo(30000L);
-    }
+  @Test
+  @DisplayName("no additional config, should use default value for webSocketPingInterval")
+  void builder_whenInvoked_shouldHonorDefaultWebsocketPingInterval() {
+    // Given + When
+    Config config = new ConfigBuilder().build();
+    // Then
+    assertThat(config.getWebsocketPingInterval())
+        .isEqualTo(30000L);
   }
 
   @Nested
@@ -272,7 +415,8 @@ class ConfigTest {
     }
 
     @Test
-    void testMasterUrlWithServiceAccount() {
+    @DisplayName("when KUBERNETES_SERVICE_HOST,KUBERNETES_SERVICE_PORT env variables present, then compute masterUrl from environment variables")
+    void autoConfigure_whenKubernetesServiceEnvironmentVariablesPresent_thenComputeMasterUrlFromEnvironmentVariables() {
       try {
         // Given
         System.setProperty("KUBERNETES_SERVICE_HOST", "10.0.0.1");
@@ -290,7 +434,8 @@ class ConfigTest {
     }
 
     @Test
-    void testAutoConfig() {
+    @DisplayName("refresh() creates new instance when invoked")
+    void refresh_whenInvoked_shouldCreateNewInstance() {
       Config config = Config.autoConfigure(null);
       assertThat(config)
           .hasFieldOrPropertyWithValue("file", null)
@@ -305,7 +450,8 @@ class ConfigTest {
     }
 
     @Test
-    void testMasterUrlWithServiceAccountIPv6() {
+    @DisplayName("when KUBERNETES_SERVICE_HOST,KUBERNETES_SERVICE_PORT env variables present with IPv6 address, then compute masterUrl from environment variables")
+    void autoConfigure_whenKubernetesServiceEnvironmentVariablesPresentWithIPv6_thenComputeMasterUrlFromEnvironmentVariables() {
       try {
         // Given
         System.setProperty("KUBERNETES_SERVICE_HOST", "2001:db8:1f70::999:de8:7648:6e8");
@@ -397,7 +543,7 @@ class ConfigTest {
 
     @Test
     @DisplayName("Config.autoConfigure with overridden context")
-    void testOverrideContext() {
+    void overrideContext() {
       assertThat(Config.autoConfigure("production/172-28-128-4:8443/root"))
           .isNotNull()
           .hasFieldOrPropertyWithValue("masterUrl", "https://172.28.128.4:8443/")
@@ -405,46 +551,6 @@ class ConfigTest {
           .hasFieldOrPropertyWithValue("autoOAuthToken", "supertoken")
           .satisfies(c -> assertThat(c.getCaCertFile()).endsWith("testns/ca.pem".replace("/", File.separator)))
           .satisfies(c -> assertThat(new File(c.getCaCertFile())).isAbsolute());
-    }
-
-    @Test
-    @DisplayName("override via system property should get more precedence over kubeconfig")
-    void testOverrideViaSystemProperties() {
-      try {
-        // Given
-        System.setProperty("kubernetes.master", "http://somehost:80");
-
-        // When + Then
-        assertThat(new Config())
-            .isNotNull()
-            .hasFieldOrPropertyWithValue("masterUrl", "http://somehost:80/")
-            .hasFieldOrPropertyWithValue("namespace", "testns")
-            .hasFieldOrPropertyWithValue("autoOAuthToken", "token")
-            .hasFieldOrPropertyWithValue("file", new File(TEST_KUBECONFIG_FILE))
-            .satisfies(c -> assertThat(new File(c.getCaCertFile())).isAbsolute());
-      } finally {
-        System.clearProperty("kubernetes.master");
-      }
-    }
-
-    @Test
-    void testSystemPropertiesAndBuilderGetMorePrecedenceOverKubeconfig() {
-      try {
-        // Given
-        System.setProperty("kubernetes.master", "http://somehost:80");
-        // When
-        Config config = new ConfigBuilder()
-            .withNamespace("testns2")
-            .build();
-        // Then
-        assertThat(config)
-            .isNotNull()
-            .hasFieldOrPropertyWithValue("masterUrl", "http://somehost:80/")
-            .hasFieldOrPropertyWithValue("namespace", "testns2")
-            .hasFieldOrPropertyWithValue("autoOAuthToken", "token");
-      } finally {
-        System.clearProperty("kubernetes.master");
-      }
     }
   }
 
@@ -459,7 +565,7 @@ class ConfigTest {
 
     @Test
     @DisplayName("standard kubeconfig file")
-    void testFromKubeconfigContent() throws IOException {
+    void fromKubeConfigContent() throws IOException {
       // Given + When
       final Config config = Config.fromKubeconfig(prepareKubeConfigYamlFrom(TEST_KUBECONFIG_FILE));
       // Then
@@ -472,7 +578,7 @@ class ConfigTest {
 
     @Test
     @DisplayName("kubeconfig with EC Private Data in client key")
-    void testFromKubeconfigKeyAlgo() throws IOException {
+    void shouldAutoDetectClientKeyAlgo() throws IOException {
       // Given + When
       final Config config = Config.fromKubeconfig(prepareKubeConfigYamlFrom(TEST_EC_KUBECONFIG_FILE));
       // Then
@@ -486,7 +592,8 @@ class ConfigTest {
   }
 
   @Test
-  void testWithMultipleKubeConfigAndOverrideContext() {
+  @DisplayName("when multiple kube config files in property, then pick first one")
+  void autoConfigure_withMultipleKubeConfigAndOverrideContext_shouldPickFirstFile() {
     try {
       // Given
       System.setProperty("kubeconfig", TEST_KUBECONFIG_FILE + File.pathSeparator + "some-other-file");
@@ -506,7 +613,8 @@ class ConfigTest {
   }
 
   @Test
-  void testWithNamespacePath() {
+  @DisplayName("when kubenamespace file property provided, then read namespace from this file")
+  void whenNamespacePathFilePropertyConfigured_shouldUpdateNamespace() {
     try {
       // Given
       System.setProperty("kubeconfig", "nokubeconfigfile");
@@ -527,7 +635,8 @@ class ConfigTest {
   }
 
   @Test
-  void testWithNonExistingNamespacePath() {
+  @DisplayName("kubenamespace property configured with non existent file, then do NOT update Config's namespace")
+  void whenNamespacePathFilePropertyConfiguredWithNonExistentFile_shouldNotUpdateNamespace() {
     try {
       // Given
       System.setProperty("kubeconfig", "nokubeconfigfile");
@@ -548,7 +657,8 @@ class ConfigTest {
   }
 
   @Test
-  void testWithNamespacePathAndSystemProperties() {
+  @DisplayName("kubenamespace property and kubernetes.namespace property provided, then kubernetes.namespace takes precedence")
+  void whenNamespacePathFilePropertyAndNamespacePropertyProvided_thenNamespacePropertyTakesPrecedence() {
     try {
       // Given
       System.setProperty("kubenamespace", TEST_NAMESPACE_FILE);
@@ -569,7 +679,8 @@ class ConfigTest {
   }
 
   @Test
-  void testWithKubeConfigAndNoContext() {
+  @DisplayName("no currentContext set in kubeconfig, then do NOT set currentContext in kubeconfig")
+  void whenNoCurrentContextInKubeConfig_thenDoNotSetCurrentContext() {
     try {
       // Given
       System.setProperty("kubeconfig", TEST_KUBECONFIG_NO_CURRENT_CONTEXT_FILE);
@@ -590,7 +701,8 @@ class ConfigTest {
   }
 
   @Test
-  void testWithNamespacePathAndSystemPropertiesAndBuilder() {
+  @DisplayName("kubenamespace, kubernetes.namespace and ConfigBuilder.withNamespace provided, ConfigBuilder.withNamespace takes precedence")
+  void whenNamespacePathAndSystemPropertiesAndBuilderProvided_thenBuilderTakesPrecedence() {
     try {
       // Given
       System.setProperty("kubenamespace", TEST_NAMESPACE_FILE);
@@ -612,7 +724,8 @@ class ConfigTest {
   }
 
   @Test
-  void testWithCustomHeader() {
+  @DisplayName("customHeaders configured via builder, then set customHeaders in Config")
+  void whenCustomHeaderProvidedViaBuilder_thenSetCustomHeaderInConfig() {
     // Given
     Map<String, String> customHeaders = new HashMap<>();
     customHeaders.put("user-id", "test-user");
@@ -630,6 +743,7 @@ class ConfigTest {
   }
 
   @Test
+  @DisplayName("when impersonate-username, impersonate-extras configured via System Properties and ConfigBuilder, then ConfigBuilder takes precedence")
   void shouldSetImpersonateUsernameAndGroupFromSystemProperty() {
     try {
       // Given
@@ -710,7 +824,8 @@ class ConfigTest {
   }
 
   @Test
-  void testClientAuthenticationWithCert() throws Exception {
+  @DisplayName("when arguments in kubeconfig, then add client cert data to Config")
+  void autoConfigure_whenCommandLineArgsProvided_thenLoadClientCertData() throws Exception {
     try {
       // Given
       if (FileSystem.getCurrent() == FileSystem.WINDOWS) {
@@ -731,7 +846,8 @@ class ConfigTest {
   }
 
   @Test
-  void testClientAuthenticationWithCertAndECInvalid() throws Exception {
+  @DisplayName("when invalid arguments in kubeconfig, then do not add client cert data to Config")
+  void autoConfigure_whenInvalidArgsProvided_thenDoNotLoadClientCertData() throws Exception {
     try {
       // Given
       if (FileSystem.getCurrent() == FileSystem.WINDOWS) {
@@ -809,7 +925,8 @@ class ConfigTest {
   }
 
   @Test
-  void testKubeConfigWithAuthConfigProvider() throws URISyntaxException {
+  @DisplayName("kubeconfig contains auth-provider, then read token from auth-provider section")
+  void whenKubeConfigWithAuthConfigProvider_thenLoadTokenFromAuthProvider() throws URISyntaxException {
     try {
       // Given
       System.setProperty("kubeconfig", new File(getClass().getResource("/test-kubeconfig").toURI()).getAbsolutePath());
@@ -826,7 +943,8 @@ class ConfigTest {
   }
 
   @Test
-  void testEmptyConfig() {
+  @DisplayName("Config.empty() should create an empty non auto-configured instance")
+  void emptyConfig() {
     // Given
     Config emptyConfig = null;
 
@@ -920,54 +1038,9 @@ class ConfigTest {
         .satisfies(e -> assertThat(e.getUserAgent()).isEqualTo("fabric8-kubernetes-client/ConfigTest"));
   }
 
-  private void assertConfig(Config config, String masterUrl, String namespace, boolean autoToken) {
-    assertThat(config)
-        .isNotNull()
-        .hasFieldOrPropertyWithValue("trustCerts", true)
-        .hasFieldOrPropertyWithValue("disableHostnameVerification", true)
-        .hasFieldOrPropertyWithValue("masterUrl", masterUrl)
-        .hasFieldOrPropertyWithValue("namespace", namespace)
-        .hasFieldOrPropertyWithValue("username", "user")
-        .hasFieldOrPropertyWithValue("password", "pass")
-        .hasFieldOrPropertyWithValue("caCertFile", "/path/to/cert")
-        .hasFieldOrPropertyWithValue("caCertData", "cacertdata")
-        .hasFieldOrPropertyWithValue("clientCertFile", "/path/to/clientcert")
-        .hasFieldOrPropertyWithValue("clientCertData", "clientcertdata")
-        .hasFieldOrPropertyWithValue("clientKeyFile", "/path/to/clientkey")
-        .hasFieldOrPropertyWithValue("clientKeyData", "clientkeydata")
-        .hasFieldOrPropertyWithValue("clientKeyAlgo", "algo")
-        .hasFieldOrPropertyWithValue("clientKeyPassphrase", "passphrase")
-        .hasFieldOrPropertyWithValue("httpProxy", "httpProxy")
-        .hasFieldOrPropertyWithValue("watchReconnectInterval", 5000)
-        .hasFieldOrPropertyWithValue("watchReconnectLimit", 5)
-        .hasFieldOrPropertyWithValue("requestTimeout", 5000)
-        .hasFieldOrPropertyWithValue("requestConfig.uploadRequestTimeout", 600000)
-        .hasFieldOrPropertyWithValue("tlsVersions", new TlsVersion[] { TlsVersion.TLS_1_2, TlsVersion.TLS_1_1 })
-        .hasFieldOrPropertyWithValue("trustStoreFile", "/path/to/truststore")
-        .hasFieldOrPropertyWithValue("trustStorePassphrase", "truststorePassphrase")
-        .hasFieldOrPropertyWithValue("keyStoreFile", "/path/to/keystore")
-        .hasFieldOrPropertyWithValue("keyStorePassphrase", "keystorePassphrase")
-        .hasFieldOrPropertyWithValue("maxConcurrentRequests", 120)
-        .hasFieldOrPropertyWithValue("maxConcurrentRequestsPerHost", 20)
-        .hasFieldOrPropertyWithValue("websocketPingInterval", 1000L)
-        .hasFieldOrPropertyWithValue("connectionTimeout", 1000)
-        .hasFieldOrPropertyWithValue("scaleTimeout", 1000L)
-        .hasFieldOrPropertyWithValue("watchReconnectInterval", 5000)
-        .hasFieldOrPropertyWithValue("http2Disable", false)
-        .hasFieldOrPropertyWithValue("httpsProxy", "httpsProxy")
-        .hasFieldOrPropertyWithValue("proxyUsername", "proxyUsername")
-        .hasFieldOrPropertyWithValue("proxyPassword", "proxyPassword")
-        .hasFieldOrPropertyWithValue("noProxy", new String[] { "no-proxy-url1.io", "no-proxy-url2.io" });
-
-    if (autoToken) {
-      assertThat(config.getAutoOAuthToken()).isEqualTo("token");
-    } else {
-      assertThat(config.getOauthToken()).isEqualTo("token");
-    }
-  }
-
   @Test
-  void testGetAuthenticatorCommandFromExecConfig() throws IOException {
+  @DisplayName("should create expected authenticator command for aws")
+  void getAuthenticatorCommandFromExecConfig_whenAwsCommandUsed_thenUseCommandLineArgsInExecCommand() throws IOException {
     // Given
     File commandFolder = Files.createTempDirectory("test").toFile();
     File commandFile = new File(commandFolder, "aws");
@@ -995,7 +1068,8 @@ class ConfigTest {
   }
 
   @Test
-  void testGetAuthenticatorCommandFromExecConfigNullArgs() throws IOException {
+  @DisplayName("should generate expected authenticator command for gke-gcloud-auth-plugin")
+  void getAuthenticatorCommandFromExecConfig_whenGkeAuthPluginCommandProvided_thenUseCommandLineArgs() throws IOException {
     // Given
     File commandFolder = Files.createTempDirectory("test").toFile();
     File commandFile = new File(commandFolder, "gke-gcloud-auth-plugin");
@@ -1154,163 +1228,6 @@ class ConfigTest {
       assertThat(config).isNotNull();
     } finally {
       System.clearProperty("kubeconfig");
-    }
-
-  }
-
-  @Nested
-  @DisplayName("autoConfigure disabled")
-  class NoAutoConfiguration {
-    @Nested
-    @DisplayName("system properties present should be ignored with auto configuration disabled")
-    class SystemPropertiesConfigured extends AutoConfiguredDisabledScenarios {
-      @BeforeEach
-      void setUp() {
-        System.setProperty("kubernetes.master", "http://somehost:80");
-        System.setProperty("kubernetes.namespace", "testns");
-      }
-
-      @AfterEach
-      void tearDown() {
-        System.clearProperty("kubernetes.master");
-        System.clearProperty("kubernetes.namespace");
-      }
-    }
-
-    @Nested
-    @DisplayName("kubeconfig present should be ignored with auto configuration disabled")
-    class KubeConfigPresent extends AutoConfiguredDisabledScenarios {
-      @BeforeEach
-      void setUp() throws IOException {
-        if (FileSystem.getCurrent() == FileSystem.WINDOWS) {
-          System.setProperty("kubeconfig", TEST_KUBECONFIG_EXEC_FILE_WIN_NULL_ARGS);
-        } else {
-          Files.setPosixFilePermissions(Paths.get(TEST_TOKEN_GENERATOR_FILE), PosixFilePermissions.fromString("rwxrwxr-x"));
-          System.setProperty("kubeconfig", TEST_KUBECONFIG_EXEC_FILE_NULL_ARGS);
-        }
-      }
-
-      @AfterEach
-      void tearDown() {
-        System.clearProperty("kubeconfig");
-      }
-    }
-  }
-
-  private abstract static class AutoConfiguredDisabledScenarios {
-    private final NamedContext userConfiguredNamedContext = new NamedContextBuilder()
-        .withName("context1")
-        .withNewContext()
-        .withCluster("api-test-openshiftapps-com:6443")
-        .withUser("testuser/api-test-openshiftapps-com:6443")
-        .endContext()
-        .build();
-
-    @Nested
-    @DisplayName("kubernetes.disable.autoConfig=true")
-    class AutoConfigDisabledViaProperty {
-      @BeforeEach
-      void setUp() {
-        System.setProperty("kubernetes.disable.autoConfig", "true");
-      }
-
-      @Test
-      @DisplayName("no user configuration, the use default values")
-      void whenConfigDisabledViaPropertyAndUserProvidesNoConfiguration_thenUseConfigDefaultValues() {
-        assertConfigUsesDefaultValues(new ConfigBuilder().build());
-      }
-
-      @Test
-      @DisplayName("user configuration via builder, the user configuration used")
-      void whenConfigDisabledViaPropertyAndUserProvidesConfigurationViaConfigBuilder_thenUseConfigDefaultValues() {
-        assertConfigUsesUserProvidedValues(createConfigBuilderWithUserConfiguration().build());
-      }
-
-      @AfterEach
-      void tearDown() {
-        System.clearProperty("kubernetes.disable.autoConfig");
-      }
-    }
-
-    private io.fabric8.kubernetes.client.ConfigBuilder createConfigBuilderWithUserConfiguration() {
-      return new ConfigBuilder()
-          .withMasterUrl("https://api-test.openshiftapps.com:6443")
-          .withContexts(userConfiguredNamedContext)
-          .withCurrentContext(userConfiguredNamedContext)
-          .withMaxConcurrentRequests(30)
-          .withMaxConcurrentRequestsPerHost(10)
-          .withTrustCerts()
-          .withDisableHostnameVerification()
-          .withClientKeyAlgo("EC")
-          .withWatchReconnectInterval(500)
-          .withWatchReconnectLimit(10)
-          .withConnectionTimeout(1000)
-          .withRequestTimeout(1000)
-          .withScaleTimeout(1000)
-          .withLoggingInterval(1000)
-          .withWebsocketPingInterval(10000L)
-          .withUploadRequestTimeout(1000)
-          .withImpersonateExtras(Collections.singletonMap("acme%2Fproject", Collections.singletonList("some-project")))
-          .withHttp2Disable(true)
-          .withTlsVersions(new TlsVersion[] { TlsVersion.TLS_1_3 })
-          .withCurrentContext(userConfiguredNamedContext)
-          .withImpersonateGroups("developer", "admin")
-          .withUserAgent("custom-user-agent");
-    }
-
-    void assertConfigUsesDefaultValues(Config configWithoutAutoConfigure) {
-      assertThat(configWithoutAutoConfigure)
-          .hasFieldOrPropertyWithValue("autoConfigure", false)
-          .hasFieldOrPropertyWithValue("masterUrl", "https://kubernetes.default.svc/")
-          .hasFieldOrPropertyWithValue("contexts", Collections.emptyList())
-          .hasFieldOrPropertyWithValue("maxConcurrentRequests", 64)
-          .hasFieldOrPropertyWithValue("maxConcurrentRequestsPerHost", 5)
-          .hasFieldOrPropertyWithValue("trustCerts", false)
-          .hasFieldOrPropertyWithValue("disableHostnameVerification", false)
-          .hasFieldOrPropertyWithValue("clientKeyAlgo", "RSA")
-          .hasFieldOrPropertyWithValue("clientKeyPassphrase", "changeit")
-          .hasFieldOrPropertyWithValue("watchReconnectInterval", 1000)
-          .hasFieldOrPropertyWithValue("watchReconnectLimit", -1)
-          .hasFieldOrPropertyWithValue("connectionTimeout", 10000)
-          .hasFieldOrPropertyWithValue("requestTimeout", 10000)
-          .hasFieldOrPropertyWithValue("scaleTimeout", 600000L)
-          .hasFieldOrPropertyWithValue("loggingInterval", 20000)
-          .hasFieldOrPropertyWithValue("websocketPingInterval", 30000L)
-          .hasFieldOrPropertyWithValue("uploadRequestTimeout", 120000)
-          .hasFieldOrPropertyWithValue("impersonateExtras", Collections.emptyMap())
-          .hasFieldOrPropertyWithValue("http2Disable", false)
-          .hasFieldOrPropertyWithValue("tlsVersions", new TlsVersion[] { TlsVersion.TLS_1_3, TlsVersion.TLS_1_2 })
-          .satisfies(e -> assertThat(e.getCurrentContext()).isNull())
-          .satisfies(e -> assertThat(e.getImpersonateGroups()).isEmpty())
-          .satisfies(e -> assertThat(e.getUserAgent()).isNotNull());
-    }
-
-    void assertConfigUsesUserProvidedValues(Config config) {
-      assertThat(config)
-          .hasFieldOrPropertyWithValue("autoConfigure", false)
-          .hasFieldOrPropertyWithValue("masterUrl", "https://api-test.openshiftapps.com:6443/")
-          .hasFieldOrPropertyWithValue("contexts", Collections.singletonList(userConfiguredNamedContext))
-          .hasFieldOrPropertyWithValue("maxConcurrentRequests", 30)
-          .hasFieldOrPropertyWithValue("maxConcurrentRequestsPerHost", 10)
-          .hasFieldOrPropertyWithValue("trustCerts", true)
-          .hasFieldOrPropertyWithValue("disableHostnameVerification", true)
-          .hasFieldOrPropertyWithValue("clientKeyAlgo", "EC")
-          .hasFieldOrPropertyWithValue("clientKeyPassphrase", "changeit")
-          .hasFieldOrPropertyWithValue("watchReconnectInterval", 500)
-          .hasFieldOrPropertyWithValue("watchReconnectLimit", 10)
-          .hasFieldOrPropertyWithValue("connectionTimeout", 1000)
-          .hasFieldOrPropertyWithValue("requestTimeout", 1000)
-          .hasFieldOrPropertyWithValue("scaleTimeout", 1000L)
-          .hasFieldOrPropertyWithValue("loggingInterval", 1000)
-          .hasFieldOrPropertyWithValue("websocketPingInterval", 10000L)
-          .hasFieldOrPropertyWithValue("uploadRequestTimeout", 1000)
-          .hasFieldOrPropertyWithValue("impersonateExtras",
-              Collections.singletonMap("acme%2Fproject", Collections.singletonList("some-project")))
-          .hasFieldOrPropertyWithValue("http2Disable", true)
-          .hasFieldOrPropertyWithValue("tlsVersions", new TlsVersion[] { TlsVersion.TLS_1_3 })
-          .satisfies(e -> assertThat(e.getCurrentContext()).isEqualTo(userConfiguredNamedContext))
-          .satisfies(e -> assertThat(e.getImpersonateGroups()).containsExactly("developer", "admin"))
-          .satisfies(e -> assertThat(e.getUserAgent()).isEqualTo("custom-user-agent"));
     }
   }
 }
