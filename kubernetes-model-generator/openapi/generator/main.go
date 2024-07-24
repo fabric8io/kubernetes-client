@@ -99,7 +99,6 @@ func main() {
 			reflect.TypeOf(apiextensionsV1.JSONSchemaPropsOrArray{}):            {},
 			reflect.TypeOf(apiextensionsV1.JSONSchemaPropsOrBool{}):             {},
 			reflect.TypeOf(apiextensionsV1.JSONSchemaPropsOrStringArray{}):      {},
-			reflect.TypeOf(apiextensionsV1Beta1.ConversionReview{}):             {false, apiextensionsV1Beta1.SchemeGroupVersion.String(), "conversionreviews", false},
 			reflect.TypeOf(apiextensionsV1Beta1.JSONSchemaPropsOrArray{}):       {},
 			reflect.TypeOf(apiextensionsV1Beta1.JSONSchemaPropsOrBool{}):        {},
 			reflect.TypeOf(apiextensionsV1Beta1.JSONSchemaPropsOrStringArray{}): {},
