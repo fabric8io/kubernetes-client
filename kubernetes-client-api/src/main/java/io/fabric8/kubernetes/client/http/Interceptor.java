@@ -100,7 +100,7 @@ public interface Interceptor {
   /**
    * Called after a connection attempt fails.
    * <p>
-   * This method will be invoked on each failed connection attempt so can be invoked multiple times for the same request.ID.
+   * This method will be invoked on each failed connection attempt.
    *
    * @param request the HTTP request.
    * @param failure the Java exception that caused the failure.
