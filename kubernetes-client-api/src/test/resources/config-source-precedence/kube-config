@@ -1,0 +1,33 @@
+apiVersion: v1
+clusters:
+- cluster:
+    certificate-authority: ca.crt
+    extensions:
+    - extension:
+        last-update: Mon, 22 Jul 2024 15:23:30 IST
+        provider: test.sigs.k8s.io
+        version: v1.33.1
+      name: cluster_info
+    server: https://172.28.128.4:8443
+  name: test
+contexts:
+- context:
+    cluster: test
+    extensions:
+    - extension:
+        last-update: Mon, 22 Jul 2024 15:23:30 IST
+        provider: test.sigs.k8s.io
+        version: v1.33.1
+      name: context_info
+    namespace: namespace-from-kubeconfig
+    user: test
+  name: test
+current-context: test
+kind: Config
+preferences: {}
+users:
+- name: test
+  user:
+    client-certificate: client.crt
+    client-key: client.key
+    token: token-from-kubeconfig
