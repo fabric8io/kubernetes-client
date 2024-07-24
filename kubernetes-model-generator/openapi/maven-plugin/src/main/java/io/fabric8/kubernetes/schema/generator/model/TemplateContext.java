@@ -23,6 +23,7 @@ import io.swagger.v3.oas.models.media.Schema;
 import lombok.Getter;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -82,5 +83,9 @@ final class TemplateContext {
 
   void addAllImports(Collection<String> allImports) {
     allImports.forEach(this::addImport);
+  }
+
+  Map<String, Schema> getSchemaProperties() {
+    return classSchema.getProperties() == null ? Collections.emptyMap() : classSchema.getProperties();
   }
 }
