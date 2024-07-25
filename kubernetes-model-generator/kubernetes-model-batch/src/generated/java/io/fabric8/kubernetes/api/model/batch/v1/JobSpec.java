@@ -15,10 +15,12 @@ import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
+import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
+import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
@@ -54,9 +56,9 @@ import lombok.experimental.Accessors;
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.LabelSelector.class),
+    @BuildableReference(LabelSelector.class),
     @BuildableReference(Container.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.PodTemplateSpec.class),
+    @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
@@ -90,13 +92,13 @@ public class JobSpec implements Editable<JobSpecBuilder> , KubernetesResource
     @JsonProperty("podReplacementPolicy")
     private String podReplacementPolicy;
     @JsonProperty("selector")
-    private io.fabric8.kubernetes.api.model.LabelSelector selector;
+    private LabelSelector selector;
     @JsonProperty("successPolicy")
     private SuccessPolicy successPolicy;
     @JsonProperty("suspend")
     private Boolean suspend;
     @JsonProperty("template")
-    private io.fabric8.kubernetes.api.model.PodTemplateSpec template;
+    private PodTemplateSpec template;
     @JsonProperty("ttlSecondsAfterFinished")
     private Integer ttlSecondsAfterFinished;
     @JsonIgnore
@@ -109,7 +111,7 @@ public class JobSpec implements Editable<JobSpecBuilder> , KubernetesResource
     public JobSpec() {
     }
 
-    public JobSpec(Long activeDeadlineSeconds, Integer backoffLimit, Integer backoffLimitPerIndex, String completionMode, Integer completions, String managedBy, Boolean manualSelector, Integer maxFailedIndexes, Integer parallelism, PodFailurePolicy podFailurePolicy, String podReplacementPolicy, io.fabric8.kubernetes.api.model.LabelSelector selector, SuccessPolicy successPolicy, Boolean suspend, io.fabric8.kubernetes.api.model.PodTemplateSpec template, Integer ttlSecondsAfterFinished) {
+    public JobSpec(Long activeDeadlineSeconds, Integer backoffLimit, Integer backoffLimitPerIndex, String completionMode, Integer completions, String managedBy, Boolean manualSelector, Integer maxFailedIndexes, Integer parallelism, PodFailurePolicy podFailurePolicy, String podReplacementPolicy, LabelSelector selector, SuccessPolicy successPolicy, Boolean suspend, PodTemplateSpec template, Integer ttlSecondsAfterFinished) {
         super();
         this.activeDeadlineSeconds = activeDeadlineSeconds;
         this.backoffLimit = backoffLimit;
@@ -240,12 +242,12 @@ public class JobSpec implements Editable<JobSpecBuilder> , KubernetesResource
     }
 
     @JsonProperty("selector")
-    public io.fabric8.kubernetes.api.model.LabelSelector getSelector() {
+    public LabelSelector getSelector() {
         return selector;
     }
 
     @JsonProperty("selector")
-    public void setSelector(io.fabric8.kubernetes.api.model.LabelSelector selector) {
+    public void setSelector(LabelSelector selector) {
         this.selector = selector;
     }
 
@@ -270,12 +272,12 @@ public class JobSpec implements Editable<JobSpecBuilder> , KubernetesResource
     }
 
     @JsonProperty("template")
-    public io.fabric8.kubernetes.api.model.PodTemplateSpec getTemplate() {
+    public PodTemplateSpec getTemplate() {
         return template;
     }
 
     @JsonProperty("template")
-    public void setTemplate(io.fabric8.kubernetes.api.model.PodTemplateSpec template) {
+    public void setTemplate(PodTemplateSpec template) {
         this.template = template;
     }
 

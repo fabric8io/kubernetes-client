@@ -20,6 +20,7 @@ import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
+import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
@@ -49,7 +50,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
+    @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
@@ -59,7 +60,7 @@ public class CronJobStatus implements Editable<CronJobStatusBuilder> , Kubernete
 
     @JsonProperty("active")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.ObjectReference> active = new ArrayList<>();
+    private List<ObjectReference> active = new ArrayList<>();
     @JsonProperty("lastScheduleTime")
     private String lastScheduleTime;
     @JsonProperty("lastSuccessfulTime")
@@ -74,7 +75,7 @@ public class CronJobStatus implements Editable<CronJobStatusBuilder> , Kubernete
     public CronJobStatus() {
     }
 
-    public CronJobStatus(List<io.fabric8.kubernetes.api.model.ObjectReference> active, String lastScheduleTime, String lastSuccessfulTime) {
+    public CronJobStatus(List<ObjectReference> active, String lastScheduleTime, String lastSuccessfulTime) {
         super();
         this.active = active;
         this.lastScheduleTime = lastScheduleTime;
@@ -83,12 +84,12 @@ public class CronJobStatus implements Editable<CronJobStatusBuilder> , Kubernete
 
     @JsonProperty("active")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<io.fabric8.kubernetes.api.model.ObjectReference> getActive() {
+    public List<ObjectReference> getActive() {
         return active;
     }
 
     @JsonProperty("active")
-    public void setActive(List<io.fabric8.kubernetes.api.model.ObjectReference> active) {
+    public void setActive(List<ObjectReference> active) {
         this.active = active;
     }
 
