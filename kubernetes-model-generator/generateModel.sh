@@ -22,7 +22,6 @@ ABSOLUTE_BASEDIR=$(realpath "$BASEDIR")
 
 # Array for all existing modules
 declare -a modules=(
-    "kubernetes-model-certificates"
     "kubernetes-model-coordination"
     "kubernetes-model-discovery"
     "kubernetes-model-events"
