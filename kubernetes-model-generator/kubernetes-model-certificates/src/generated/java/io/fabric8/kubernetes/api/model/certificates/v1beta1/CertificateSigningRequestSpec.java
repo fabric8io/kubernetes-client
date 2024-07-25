@@ -33,7 +33,6 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "expirationSeconds",
     "extra",
     "groups",
     "request",
@@ -63,8 +62,6 @@ import lombok.experimental.Accessors;
 public class CertificateSigningRequestSpec implements Editable<CertificateSigningRequestSpecBuilder> , KubernetesResource
 {
 
-    @JsonProperty("expirationSeconds")
-    private Integer expirationSeconds;
     @JsonProperty("extra")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, List<String>> extra = new LinkedHashMap<>();
@@ -92,9 +89,8 @@ public class CertificateSigningRequestSpec implements Editable<CertificateSignin
     public CertificateSigningRequestSpec() {
     }
 
-    public CertificateSigningRequestSpec(Integer expirationSeconds, Map<String, List<String>> extra, List<String> groups, String request, String signerName, String uid, List<String> usages, String username) {
+    public CertificateSigningRequestSpec(Map<String, List<String>> extra, List<String> groups, String request, String signerName, String uid, List<String> usages, String username) {
         super();
-        this.expirationSeconds = expirationSeconds;
         this.extra = extra;
         this.groups = groups;
         this.request = request;
@@ -102,16 +98,6 @@ public class CertificateSigningRequestSpec implements Editable<CertificateSignin
         this.uid = uid;
         this.usages = usages;
         this.username = username;
-    }
-
-    @JsonProperty("expirationSeconds")
-    public Integer getExpirationSeconds() {
-        return expirationSeconds;
-    }
-
-    @JsonProperty("expirationSeconds")
-    public void setExpirationSeconds(Integer expirationSeconds) {
-        this.expirationSeconds = expirationSeconds;
     }
 
     @JsonProperty("extra")
