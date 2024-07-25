@@ -953,7 +953,7 @@ class ConfigTest {
 
     // Then
     assertThat(emptyConfig)
-        .hasFieldOrPropertyWithValue("masterUrl", "https://kubernetes.default.svc")
+        .hasFieldOrPropertyWithValue("masterUrl", "https://kubernetes.default.svc/")
         .hasFieldOrPropertyWithValue("contexts", Collections.emptyList())
         .hasFieldOrPropertyWithValue("maxConcurrentRequests", 64)
         .hasFieldOrPropertyWithValue("maxConcurrentRequestsPerHost", 5)

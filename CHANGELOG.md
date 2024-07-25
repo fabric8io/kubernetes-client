@@ -5,6 +5,7 @@
 #### Bugs
 * Fix #6038: Support for Gradle configuration cache
 * Fix #6110: VolumeSource (and other file mode fields) in Octal are correctly interpreted
+* Fix #6137: `ConfigBuilder.withAutoConfigure` is not working
 * Fix #6215: Suppressing rejected execution exception for port forwarder
 * Fix #6197: JettyHttp client error handling improvements. 
 
