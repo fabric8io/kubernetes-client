@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
+import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
@@ -45,7 +46,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Container.class),
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.IntOrString.class),
+    @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
@@ -55,9 +56,9 @@ public class RollingUpdateDaemonSet implements Editable<RollingUpdateDaemonSetBu
 {
 
     @JsonProperty("maxSurge")
-    private io.fabric8.kubernetes.api.model.IntOrString maxSurge;
+    private IntOrString maxSurge;
     @JsonProperty("maxUnavailable")
-    private io.fabric8.kubernetes.api.model.IntOrString maxUnavailable;
+    private IntOrString maxUnavailable;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -68,29 +69,29 @@ public class RollingUpdateDaemonSet implements Editable<RollingUpdateDaemonSetBu
     public RollingUpdateDaemonSet() {
     }
 
-    public RollingUpdateDaemonSet(io.fabric8.kubernetes.api.model.IntOrString maxSurge, io.fabric8.kubernetes.api.model.IntOrString maxUnavailable) {
+    public RollingUpdateDaemonSet(IntOrString maxSurge, IntOrString maxUnavailable) {
         super();
         this.maxSurge = maxSurge;
         this.maxUnavailable = maxUnavailable;
     }
 
     @JsonProperty("maxSurge")
-    public io.fabric8.kubernetes.api.model.IntOrString getMaxSurge() {
+    public IntOrString getMaxSurge() {
         return maxSurge;
     }
 
     @JsonProperty("maxSurge")
-    public void setMaxSurge(io.fabric8.kubernetes.api.model.IntOrString maxSurge) {
+    public void setMaxSurge(IntOrString maxSurge) {
         this.maxSurge = maxSurge;
     }
 
     @JsonProperty("maxUnavailable")
-    public io.fabric8.kubernetes.api.model.IntOrString getMaxUnavailable() {
+    public IntOrString getMaxUnavailable() {
         return maxUnavailable;
     }
 
     @JsonProperty("maxUnavailable")
-    public void setMaxUnavailable(io.fabric8.kubernetes.api.model.IntOrString maxUnavailable) {
+    public void setMaxUnavailable(IntOrString maxUnavailable) {
         this.maxUnavailable = maxUnavailable;
     }
 

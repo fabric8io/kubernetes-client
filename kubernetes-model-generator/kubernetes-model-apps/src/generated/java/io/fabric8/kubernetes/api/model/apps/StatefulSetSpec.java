@@ -17,9 +17,12 @@ import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
+import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
+import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
+import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
@@ -50,14 +53,14 @@ import lombok.experimental.Accessors;
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.LabelSelector.class),
+    @BuildableReference(LabelSelector.class),
     @BuildableReference(Container.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.PodTemplateSpec.class),
+    @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.PersistentVolumeClaim.class)
+    @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
 public class StatefulSetSpec implements Editable<StatefulSetSpecBuilder> , KubernetesResource
@@ -76,16 +79,16 @@ public class StatefulSetSpec implements Editable<StatefulSetSpecBuilder> , Kuber
     @JsonProperty("revisionHistoryLimit")
     private Integer revisionHistoryLimit;
     @JsonProperty("selector")
-    private io.fabric8.kubernetes.api.model.LabelSelector selector;
+    private LabelSelector selector;
     @JsonProperty("serviceName")
     private String serviceName;
     @JsonProperty("template")
-    private io.fabric8.kubernetes.api.model.PodTemplateSpec template;
+    private PodTemplateSpec template;
     @JsonProperty("updateStrategy")
     private StatefulSetUpdateStrategy updateStrategy;
     @JsonProperty("volumeClaimTemplates")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.PersistentVolumeClaim> volumeClaimTemplates = new ArrayList<>();
+    private List<PersistentVolumeClaim> volumeClaimTemplates = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -96,7 +99,7 @@ public class StatefulSetSpec implements Editable<StatefulSetSpecBuilder> , Kuber
     public StatefulSetSpec() {
     }
 
-    public StatefulSetSpec(Integer minReadySeconds, StatefulSetOrdinals ordinals, StatefulSetPersistentVolumeClaimRetentionPolicy persistentVolumeClaimRetentionPolicy, String podManagementPolicy, Integer replicas, Integer revisionHistoryLimit, io.fabric8.kubernetes.api.model.LabelSelector selector, String serviceName, io.fabric8.kubernetes.api.model.PodTemplateSpec template, StatefulSetUpdateStrategy updateStrategy, List<io.fabric8.kubernetes.api.model.PersistentVolumeClaim> volumeClaimTemplates) {
+    public StatefulSetSpec(Integer minReadySeconds, StatefulSetOrdinals ordinals, StatefulSetPersistentVolumeClaimRetentionPolicy persistentVolumeClaimRetentionPolicy, String podManagementPolicy, Integer replicas, Integer revisionHistoryLimit, LabelSelector selector, String serviceName, PodTemplateSpec template, StatefulSetUpdateStrategy updateStrategy, List<PersistentVolumeClaim> volumeClaimTemplates) {
         super();
         this.minReadySeconds = minReadySeconds;
         this.ordinals = ordinals;
@@ -172,12 +175,12 @@ public class StatefulSetSpec implements Editable<StatefulSetSpecBuilder> , Kuber
     }
 
     @JsonProperty("selector")
-    public io.fabric8.kubernetes.api.model.LabelSelector getSelector() {
+    public LabelSelector getSelector() {
         return selector;
     }
 
     @JsonProperty("selector")
-    public void setSelector(io.fabric8.kubernetes.api.model.LabelSelector selector) {
+    public void setSelector(LabelSelector selector) {
         this.selector = selector;
     }
 
@@ -192,12 +195,12 @@ public class StatefulSetSpec implements Editable<StatefulSetSpecBuilder> , Kuber
     }
 
     @JsonProperty("template")
-    public io.fabric8.kubernetes.api.model.PodTemplateSpec getTemplate() {
+    public PodTemplateSpec getTemplate() {
         return template;
     }
 
     @JsonProperty("template")
-    public void setTemplate(io.fabric8.kubernetes.api.model.PodTemplateSpec template) {
+    public void setTemplate(PodTemplateSpec template) {
         this.template = template;
     }
 
@@ -213,12 +216,12 @@ public class StatefulSetSpec implements Editable<StatefulSetSpecBuilder> , Kuber
 
     @JsonProperty("volumeClaimTemplates")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<io.fabric8.kubernetes.api.model.PersistentVolumeClaim> getVolumeClaimTemplates() {
+    public List<PersistentVolumeClaim> getVolumeClaimTemplates() {
         return volumeClaimTemplates;
     }
 
     @JsonProperty("volumeClaimTemplates")
-    public void setVolumeClaimTemplates(List<io.fabric8.kubernetes.api.model.PersistentVolumeClaim> volumeClaimTemplates) {
+    public void setVolumeClaimTemplates(List<PersistentVolumeClaim> volumeClaimTemplates) {
         this.volumeClaimTemplates = volumeClaimTemplates;
     }
 
