@@ -79,6 +79,11 @@ public abstract class JettyAsyncResponseListener extends Response.Listener.Adapt
     }
   }
 
+  @Override
+  public void onFailure(Response response, Throwable failure) {
+    asyncResponse.completeExceptionally(failure);
+  }
+
   public CompletableFuture<HttpResponse<AsyncBody>> listen(Request request) {
     request.send(this);
     return asyncResponse.thenApply(HttpResponse.class::cast);
