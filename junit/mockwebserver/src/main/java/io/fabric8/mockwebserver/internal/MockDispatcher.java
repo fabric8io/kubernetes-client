@@ -21,6 +21,7 @@ import io.fabric8.mockwebserver.dsl.HttpMethod;
 import okhttp3.mockwebserver.Dispatcher;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.RecordedRequest;
+import okhttp3.mockwebserver.SocketPolicy;
 
 import java.util.Collection;
 import java.util.Map;
@@ -34,6 +35,11 @@ public class MockDispatcher extends Dispatcher {
 
   public MockDispatcher(Map<ServerRequest, Queue<ServerResponse>> responses) {
     this.responses = responses;
+  }
+
+  @Override
+  public MockResponse peek() {
+    return new MockResponse().setSocketPolicy(SocketPolicy.EXPECT_CONTINUE);
   }
 
   @Override

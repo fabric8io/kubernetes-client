@@ -25,6 +25,7 @@ import org.junit.jupiter.api.Test;
 import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -128,20 +129,23 @@ public abstract class AbstractHttpPostTest {
 
   @Test
   public void expectContinue() throws Exception {
+    server.expect().post().withPath("/post-expect-continue").andReturn(200, "").always();
+
     // When
     try (HttpClient client = getHttpClientFactory().newBuilder().build()) {
-      client
+      final CompletableFuture<HttpResponse<String>> response = client
           .sendAsync(client.newHttpRequestBuilder()
               .post(Collections.emptyMap())
               .uri(server.url("/post-expect-continue"))
               .expectContinue()
-              .build(), String.class)
-          .get(10L, TimeUnit.SECONDS);
+              .build(), String.class);
+
+      // Then
+      assertThat(response).succeedsWithin(10, TimeUnit.SECONDS);
+      assertThat(server.getLastRequest())
+          .returns("POST", RecordedRequest::getMethod)
+          .extracting(rr -> rr.getHeader("Expect")).asString()
+          .isEqualTo("100-continue");
     }
-    // Then
-    assertThat(server.getLastRequest())
-        .returns("POST", RecordedRequest::getMethod)
-        .extracting(rr -> rr.getHeader("Expect")).asString()
-        .isEqualTo("100-continue");
   }
 }
