@@ -46,15 +46,6 @@ class KubernetesTest {
   }
 
   @Test
-  void apps() {
-    new ModelGenerator(baseSettings
-        .includeGenerationRegex("^io\\.k8s\\.api\\.apps\\..*$")
-        .packageMapping("io.k8s.api.apps.v1", "io.fabric8.kubernetes.api.model.apps")
-        .build())
-        .generate();
-  }
-
-  @Test
   void autoscaling() {
     new ModelGenerator(baseSettings
         .clearSchemas()

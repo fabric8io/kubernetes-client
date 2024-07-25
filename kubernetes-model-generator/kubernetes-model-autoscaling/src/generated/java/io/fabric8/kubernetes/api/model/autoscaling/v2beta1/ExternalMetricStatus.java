@@ -15,6 +15,7 @@ import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
+import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
@@ -44,7 +45,7 @@ import lombok.experimental.Accessors;
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.LabelSelector.class),
+    @BuildableReference(LabelSelector.class),
     @BuildableReference(Container.class),
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
@@ -64,7 +65,7 @@ public class ExternalMetricStatus implements Editable<ExternalMetricStatusBuilde
     @JsonProperty("metricName")
     private String metricName;
     @JsonProperty("metricSelector")
-    private io.fabric8.kubernetes.api.model.LabelSelector metricSelector;
+    private LabelSelector metricSelector;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -75,7 +76,7 @@ public class ExternalMetricStatus implements Editable<ExternalMetricStatusBuilde
     public ExternalMetricStatus() {
     }
 
-    public ExternalMetricStatus(Quantity currentAverageValue, Quantity currentValue, String metricName, io.fabric8.kubernetes.api.model.LabelSelector metricSelector) {
+    public ExternalMetricStatus(Quantity currentAverageValue, Quantity currentValue, String metricName, LabelSelector metricSelector) {
         super();
         this.currentAverageValue = currentAverageValue;
         this.currentValue = currentValue;
@@ -114,12 +115,12 @@ public class ExternalMetricStatus implements Editable<ExternalMetricStatusBuilde
     }
 
     @JsonProperty("metricSelector")
-    public io.fabric8.kubernetes.api.model.LabelSelector getMetricSelector() {
+    public LabelSelector getMetricSelector() {
         return metricSelector;
     }
 
     @JsonProperty("metricSelector")
-    public void setMetricSelector(io.fabric8.kubernetes.api.model.LabelSelector metricSelector) {
+    public void setMetricSelector(LabelSelector metricSelector) {
         this.metricSelector = metricSelector;
     }
 

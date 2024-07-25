@@ -43,10 +43,6 @@
       <groupId>io.fabric8</groupId>
       <artifactId>kubernetes-model-core</artifactId>
     </dependency>
-    <dependency>
-      <groupId>io.fabric8</groupId>
-      <artifactId>kubernetes-model-common</artifactId>
-    </dependency>
   </dependencies>
 
   <profiles>
