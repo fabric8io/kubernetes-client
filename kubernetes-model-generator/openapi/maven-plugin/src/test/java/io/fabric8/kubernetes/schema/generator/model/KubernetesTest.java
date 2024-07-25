@@ -46,30 +46,6 @@ class KubernetesTest {
   }
 
   @Test
-  void autoscaling() {
-    new ModelGenerator(baseSettings
-        .clearSchemas()
-        .schema(new File("../schemas/kubernetes-1.21.14.json"))
-        .schema(new File("../schemas/kubernetes-1.30.0.json"))
-        .includeGenerationRegex("^io\\.k8s\\.api\\.autoscaling\\..*$")
-        .packageMapping("io.k8s.api.autoscaling", "io.fabric8.kubernetes.api.model.autoscaling")
-        .build())
-        .generate();
-  }
-
-  @Test
-  void batch() {
-    new ModelGenerator(baseSettings
-        .clearSchemas()
-        .schema(new File("../schemas/kubernetes-1.21.14.json"))
-        .schema(new File("../schemas/kubernetes-1.30.0.json"))
-        .includeGenerationRegex("^io\\.k8s\\.api\\.batch\\..*$")
-        .packageMapping("io.k8s.api.batch", "io.fabric8.kubernetes.api.model.batch")
-        .build())
-        .generate();
-  }
-
-  @Test
   void certificates() {
     new ModelGenerator(baseSettings
         .clearSchemas()

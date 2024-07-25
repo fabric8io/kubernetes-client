@@ -37,8 +37,7 @@ import lombok.experimental.Accessors;
     "schedule",
     "startingDeadlineSeconds",
     "successfulJobsHistoryLimit",
-    "suspend",
-    "timeZone"
+    "suspend"
 })
 @ToString
 @EqualsAndHashCode
@@ -75,8 +74,6 @@ public class CronJobSpec implements Editable<CronJobSpecBuilder> , KubernetesRes
     private Integer successfulJobsHistoryLimit;
     @JsonProperty("suspend")
     private Boolean suspend;
-    @JsonProperty("timeZone")
-    private String timeZone;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -87,7 +84,7 @@ public class CronJobSpec implements Editable<CronJobSpecBuilder> , KubernetesRes
     public CronJobSpec() {
     }
 
-    public CronJobSpec(String concurrencyPolicy, Integer failedJobsHistoryLimit, JobTemplateSpec jobTemplate, String schedule, Long startingDeadlineSeconds, Integer successfulJobsHistoryLimit, Boolean suspend, String timeZone) {
+    public CronJobSpec(String concurrencyPolicy, Integer failedJobsHistoryLimit, JobTemplateSpec jobTemplate, String schedule, Long startingDeadlineSeconds, Integer successfulJobsHistoryLimit, Boolean suspend) {
         super();
         this.concurrencyPolicy = concurrencyPolicy;
         this.failedJobsHistoryLimit = failedJobsHistoryLimit;
@@ -96,7 +93,6 @@ public class CronJobSpec implements Editable<CronJobSpecBuilder> , KubernetesRes
         this.startingDeadlineSeconds = startingDeadlineSeconds;
         this.successfulJobsHistoryLimit = successfulJobsHistoryLimit;
         this.suspend = suspend;
-        this.timeZone = timeZone;
     }
 
     @JsonProperty("concurrencyPolicy")
@@ -167,16 +163,6 @@ public class CronJobSpec implements Editable<CronJobSpecBuilder> , KubernetesRes
     @JsonProperty("suspend")
     public void setSuspend(Boolean suspend) {
         this.suspend = suspend;
-    }
-
-    @JsonProperty("timeZone")
-    public String getTimeZone() {
-        return timeZone;
-    }
-
-    @JsonProperty("timeZone")
-    public void setTimeZone(String timeZone) {
-        this.timeZone = timeZone;
     }
 
     @JsonIgnore
