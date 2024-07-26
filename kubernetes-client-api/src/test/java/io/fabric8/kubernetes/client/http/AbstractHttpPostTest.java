@@ -23,9 +23,15 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.ServerSocket;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -46,6 +52,8 @@ public abstract class AbstractHttpPostTest {
   }
 
   protected abstract HttpClient.Factory getHttpClientFactory();
+
+  protected abstract Class<? extends Exception> getConnectionFailedExceptionType();
 
   @Test
   @DisplayName("String body, should send a POST request with body")
@@ -148,4 +156,34 @@ public abstract class AbstractHttpPostTest {
           .isEqualTo("100-continue");
     }
   }
+
+  @Test
+  public void expectFailure() throws IOException, URISyntaxException {
+    try (final ServerSocket serverSocket = new ServerSocket(0);) {
+
+      try (HttpClient client = getHttpClientFactory().newBuilder().build()) {
+        final URI uri = uriForPath(serverSocket, "/post-failing");
+        serverSocket.close();
+
+        // When
+        final CompletableFuture<HttpResponse<String>> response = client
+            .sendAsync(client.newHttpRequestBuilder()
+                .post("text/plain", new ByteArrayInputStream("A string body".getBytes(StandardCharsets.UTF_8)), -1)
+                .uri(uri)
+                .timeout(250, TimeUnit.MILLISECONDS)
+                .build(), String.class);
+
+        // Then
+        assertThat(response).failsWithin(30, TimeUnit.SECONDS)
+            .withThrowableOfType(ExecutionException.class)
+            .withCauseInstanceOf(getConnectionFailedExceptionType());
+      }
+    }
+  }
+
+  private static URI uriForPath(ServerSocket socket, String path) throws URISyntaxException {
+    final InetAddress httpServerAddress = socket.getInetAddress();
+    return new URI(String.format("http://%s:%s%s", httpServerAddress.getHostName(), socket.getLocalPort(), path));
+  }
+
 }
