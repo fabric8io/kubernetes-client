@@ -22,7 +22,7 @@ import com.samskivert.mustache.Template;
 import io.fabric8.kubernetes.schema.generator.GeneratorException;
 import io.fabric8.kubernetes.schema.generator.GeneratorSettings;
 import io.fabric8.kubernetes.schema.generator.GeneratorUtils;
-import io.fabric8.kubernetes.schema.generator.SchemaUtils;
+import io.fabric8.kubernetes.schema.generator.schema.SchemaUtils;
 import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import org.apache.commons.io.FileUtils;
@@ -46,15 +46,15 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 import static io.fabric8.kubernetes.schema.generator.GeneratorUtils.cleanSourceDirectory;
-import static io.fabric8.kubernetes.schema.generator.SchemaUtils.deserializerForJavaClass;
-import static io.fabric8.kubernetes.schema.generator.SchemaUtils.getterName;
-import static io.fabric8.kubernetes.schema.generator.SchemaUtils.isArray;
-import static io.fabric8.kubernetes.schema.generator.SchemaUtils.isMap;
-import static io.fabric8.kubernetes.schema.generator.SchemaUtils.sanitizeDescription;
-import static io.fabric8.kubernetes.schema.generator.SchemaUtils.sanitizeVariable;
-import static io.fabric8.kubernetes.schema.generator.SchemaUtils.serializerForJavaClass;
-import static io.fabric8.kubernetes.schema.generator.SchemaUtils.serializerForSchema;
-import static io.fabric8.kubernetes.schema.generator.SchemaUtils.setterName;
+import static io.fabric8.kubernetes.schema.generator.schema.SchemaUtils.deserializerForJavaClass;
+import static io.fabric8.kubernetes.schema.generator.schema.SchemaUtils.getterName;
+import static io.fabric8.kubernetes.schema.generator.schema.SchemaUtils.isArray;
+import static io.fabric8.kubernetes.schema.generator.schema.SchemaUtils.isMap;
+import static io.fabric8.kubernetes.schema.generator.schema.SchemaUtils.sanitizeDescription;
+import static io.fabric8.kubernetes.schema.generator.schema.SchemaUtils.sanitizeVariable;
+import static io.fabric8.kubernetes.schema.generator.schema.SchemaUtils.serializerForJavaClass;
+import static io.fabric8.kubernetes.schema.generator.schema.SchemaUtils.serializerForSchema;
+import static io.fabric8.kubernetes.schema.generator.schema.SchemaUtils.setterName;
 
 class ModelGenerator {
 

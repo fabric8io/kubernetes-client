@@ -14,16 +14,25 @@
  * limitations under the License.
  */
 // Ported from https://github.com/manusa/yakc/blob/9272d649bfe05cd536d417fec64dcf679877bd14/buildSrc/src/main/java/com/marcnuri/yakc/schema/SchemaUtils.java
-package io.fabric8.kubernetes.schema.generator;
+package io.fabric8.kubernetes.schema.generator.schema;
 
+import io.fabric8.kubernetes.schema.generator.GeneratorSettings;
+import io.fabric8.kubernetes.schema.generator.PropertyOrderComparator;
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.Paths;
+import io.swagger.v3.oas.models.SpecVersion;
 import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.ComposedSchema;
 import io.swagger.v3.oas.models.media.DateTimeSchema;
 import io.swagger.v3.oas.models.media.MapSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
+import io.swagger.v3.parser.OpenAPIV3Parser;
 
+import java.io.File;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -103,9 +112,9 @@ public class SchemaUtils {
   }
 
   private static final Map<String, String> REF_SERIALIZER_MAP = Collections.emptyMap();// new LinkedHashMap<>();
-  static {
-    //    REF_SERIALIZER_MAP.put("#/components/schemas/io.k8s.apimachinery.pkg.util.intstr.IntOrString", "com.marcnuri.yakc.model.serialization.IntOrStringSerializer.class");
-  }
+  //  static {
+  //    REF_SERIALIZER_MAP.put("#/components/schemas/io.k8s.apimachinery.pkg.util.intstr.IntOrString", "com.marcnuri.yakc.model.serialization.IntOrStringSerializer.class");
+  //  }
 
   private static final Map<String, String> TYPE_MAP = new LinkedHashMap<>();
   static {
@@ -378,6 +387,46 @@ public class SchemaUtils {
       ret.put("isEmpty", true);
     }
     return ret;
+  }
+
+  public static OpenAPI parse(File schema) {
+    if (schema == null || !schema.exists()) {
+      throw new IllegalArgumentException("Schema file not found: " + schema);
+    }
+    final OpenAPI openApi = new OpenAPIV3Parser().read(schema.getAbsolutePath());
+    new InlineModelResolver().flatten(openApi);
+    return openApi;
+  }
+
+  public static OpenAPI mergeSchemas(Collection<OpenAPI> schemas) {
+    final OpenAPI openAPI = new OpenAPI(SpecVersion.V31);
+    openAPI.setComponents(new Components());
+    openAPI.getComponents().setSchemas(new HashMap<>());
+    openAPI.getComponents().setResponses(new HashMap<>());
+    openAPI.getComponents().setParameters(new HashMap<>());
+    openAPI.getComponents().setExamples(new HashMap<>());
+    openAPI.getComponents().setRequestBodies(new HashMap<>());
+    openAPI.getComponents().setHeaders(new HashMap<>());
+    openAPI.getComponents().setSecuritySchemes(new HashMap<>());
+    openAPI.getComponents().setLinks(new HashMap<>());
+    openAPI.getComponents().setCallbacks(new HashMap<>());
+    openAPI.getComponents().setExtensions(new HashMap<>());
+    openAPI.setPaths(new Paths());
+    for (OpenAPI currentApi : schemas) {
+      openAPI.getPaths().putAll(currentApi.getPaths());
+      if (currentApi.getComponents() != null) {
+        Optional.ofNullable(currentApi.getComponents().getSchemas()).ifPresent(openAPI.getComponents().getSchemas()::putAll);
+        Optional.ofNullable(currentApi.getComponents().getResponses())
+            .ifPresent(openAPI.getComponents().getResponses()::putAll);
+        Optional.ofNullable(currentApi.getComponents().getParameters())
+            .ifPresent(openAPI.getComponents().getParameters()::putAll);
+        Optional.ofNullable(currentApi.getComponents().getExamples()).ifPresent(openAPI.getComponents().getExamples()::putAll);
+        Optional.ofNullable(currentApi.getComponents().getRequestBodies())
+            .ifPresent(openAPI.getComponents().getRequestBodies()::putAll);
+        Optional.ofNullable(currentApi.getComponents().getHeaders()).ifPresent(openAPI.getComponents().getHeaders()::putAll);
+      }
+    }
+    return openAPI;
   }
 
   public static String capitalize(String string) {
