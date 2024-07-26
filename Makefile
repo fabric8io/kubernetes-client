@@ -43,6 +43,7 @@ generate-openapi-classes:
 	cd kubernetes-model-generator/kubernetes-model-batch && mvn -Pgenerate clean install
 	cd kubernetes-model-generator/kubernetes-model-certificates && mvn -Pgenerate clean install
 	cd kubernetes-model-generator/kubernetes-model-coordination && mvn -Pgenerate clean install
+	cd kubernetes-model-generator/kubernetes-model-discovery && mvn -Pgenerate clean install
 
 # Legacy generation of the model: TODO: remove
 .PHONY: generate-model-legacy
