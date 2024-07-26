@@ -41,28 +41,7 @@
       <groupId>io.fabric8</groupId>
       <artifactId>kubernetes-model-core</artifactId>
     </dependency>
-    <dependency>
-      <groupId>io.fabric8</groupId>
-      <artifactId>kubernetes-model-common</artifactId>
-    </dependency>
   </dependencies>
-
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>build-helper-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>attach-artifacts</id>
-            <configuration>
-              <skipAttach>false</skipAttach>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
 
   <profiles>
     <profile>
@@ -70,25 +49,24 @@
       <build>
         <plugins>
           <plugin>
-            <groupId>org.jsonschema2pojo</groupId>
-            <artifactId>jsonschema2pojo-maven-plugin</artifactId>
-          </plugin>
-          <plugin>
-            <artifactId>maven-antrun-plugin</artifactId>
-            <executions>
-              <execution>
-                <phase>generate-sources</phase>
-                <configuration>
-                  <target>
-                    <echo>Removing the duplicate generated class</echo>
-                    <delete file="${generate.targetDirectory}/io/fabric8/kubernetes/api/model/coordination/v1/LeaseSpec.java" verbose="true" />
-                  </target>
-                </configuration>
-                <goals>
-                  <goal>run</goal>
-                </goals>
-              </execution>
-            </executions>
+            <groupId>io.fabric8</groupId>
+            <artifactId>openapi-model-generator-maven-plugin</artifactId>
+            <configuration >
+              <settings combine.self="append">
+                <schemas>
+                  <schema>${openapi.schema.kubernetes-latest}</schema>
+                </schemas>
+                <packageMappings combine.self="append">
+                  <io.k8s.api.coordination>io.fabric8.kubernetes.api.model.coordination</io.k8s.api.coordination>
+                </packageMappings>
+                <skipGenerationRegexes>
+                  <skipGenerationRegex>^io\.k8s\.api\.coordination\.v1\.LeaseSpec$</skipGenerationRegex>
+                </skipGenerationRegexes>
+                <includeGenerationRegexes>
+                  <includeGenerationRegex>^io\.k8s\.api\.coordination\..*$</includeGenerationRegex>
+                </includeGenerationRegexes>
+              </settings>
+            </configuration>
           </plugin>
         </plugins>
       </build>
