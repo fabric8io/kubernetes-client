@@ -6,6 +6,7 @@
 * Fix #6038: Support for Gradle configuration cache
 * Fix #6110: VolumeSource (and other file mode fields) in Octal are correctly interpreted
 * Fix #6215: Suppressing rejected execution exception for port forwarder
+* Fix #6197: JettyHttp client error handling improvements. 
 
 #### Improvements
 * Fix #6008: removing the optional dependency on bouncy castle
