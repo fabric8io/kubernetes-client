@@ -20,6 +20,8 @@ import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.MicroTime;
 import io.fabric8.kubernetes.api.model.Namespaced;
+import io.fabric8.kubernetes.api.model.ObjectMeta;
+import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
@@ -61,13 +63,13 @@ import lombok.experimental.Accessors;
     ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
+    @BuildableReference(ObjectMeta.class),
     @BuildableReference(LabelSelector.class),
     @BuildableReference(Container.class),
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
+    @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
@@ -107,15 +109,15 @@ public class Event implements Editable<EventBuilder> , HasMetadata, Namespaced
     @JsonProperty("kind")
     private String kind = "Event";
     @JsonProperty("metadata")
-    private io.fabric8.kubernetes.api.model.ObjectMeta metadata;
+    private ObjectMeta metadata;
     @JsonProperty("note")
     private String note;
     @JsonProperty("reason")
     private String reason;
     @JsonProperty("regarding")
-    private io.fabric8.kubernetes.api.model.ObjectReference regarding;
+    private ObjectReference regarding;
     @JsonProperty("related")
-    private io.fabric8.kubernetes.api.model.ObjectReference related;
+    private ObjectReference related;
     @JsonProperty("reportingController")
     private String reportingController;
     @JsonProperty("reportingInstance")
@@ -134,7 +136,7 @@ public class Event implements Editable<EventBuilder> , HasMetadata, Namespaced
     public Event() {
     }
 
-    public Event(String action, String apiVersion, Integer deprecatedCount, String deprecatedFirstTimestamp, String deprecatedLastTimestamp, EventSource deprecatedSource, MicroTime eventTime, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, String note, String reason, io.fabric8.kubernetes.api.model.ObjectReference regarding, io.fabric8.kubernetes.api.model.ObjectReference related, String reportingController, String reportingInstance, EventSeries series, String type) {
+    public Event(String action, String apiVersion, Integer deprecatedCount, String deprecatedFirstTimestamp, String deprecatedLastTimestamp, EventSource deprecatedSource, MicroTime eventTime, String kind, ObjectMeta metadata, String note, String reason, ObjectReference regarding, ObjectReference related, String reportingController, String reportingInstance, EventSeries series, String type) {
         super();
         this.action = action;
         this.apiVersion = apiVersion;
@@ -256,12 +258,12 @@ public class Event implements Editable<EventBuilder> , HasMetadata, Namespaced
     }
 
     @JsonProperty("metadata")
-    public io.fabric8.kubernetes.api.model.ObjectMeta getMetadata() {
+    public ObjectMeta getMetadata() {
         return metadata;
     }
 
     @JsonProperty("metadata")
-    public void setMetadata(io.fabric8.kubernetes.api.model.ObjectMeta metadata) {
+    public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
@@ -286,22 +288,22 @@ public class Event implements Editable<EventBuilder> , HasMetadata, Namespaced
     }
 
     @JsonProperty("regarding")
-    public io.fabric8.kubernetes.api.model.ObjectReference getRegarding() {
+    public ObjectReference getRegarding() {
         return regarding;
     }
 
     @JsonProperty("regarding")
-    public void setRegarding(io.fabric8.kubernetes.api.model.ObjectReference regarding) {
+    public void setRegarding(ObjectReference regarding) {
         this.regarding = regarding;
     }
 
     @JsonProperty("related")
-    public io.fabric8.kubernetes.api.model.ObjectReference getRelated() {
+    public ObjectReference getRelated() {
         return related;
     }
 
     @JsonProperty("related")
-    public void setRelated(io.fabric8.kubernetes.api.model.ObjectReference related) {
+    public void setRelated(ObjectReference related) {
         this.related = related;
     }
 
