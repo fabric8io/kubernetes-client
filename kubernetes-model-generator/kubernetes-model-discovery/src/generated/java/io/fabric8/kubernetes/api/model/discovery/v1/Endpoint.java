@@ -20,6 +20,7 @@ import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
+import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
@@ -54,7 +55,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
+    @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
@@ -77,7 +78,7 @@ public class Endpoint implements Editable<EndpointBuilder> , KubernetesResource
     @JsonProperty("nodeName")
     private String nodeName;
     @JsonProperty("targetRef")
-    private io.fabric8.kubernetes.api.model.ObjectReference targetRef;
+    private ObjectReference targetRef;
     @JsonProperty("zone")
     private String zone;
     @JsonIgnore
@@ -90,7 +91,7 @@ public class Endpoint implements Editable<EndpointBuilder> , KubernetesResource
     public Endpoint() {
     }
 
-    public Endpoint(List<String> addresses, EndpointConditions conditions, Map<String, String> deprecatedTopology, EndpointHints hints, String hostname, String nodeName, io.fabric8.kubernetes.api.model.ObjectReference targetRef, String zone) {
+    public Endpoint(List<String> addresses, EndpointConditions conditions, Map<String, String> deprecatedTopology, EndpointHints hints, String hostname, String nodeName, ObjectReference targetRef, String zone) {
         super();
         this.addresses = addresses;
         this.conditions = conditions;
@@ -165,12 +166,12 @@ public class Endpoint implements Editable<EndpointBuilder> , KubernetesResource
     }
 
     @JsonProperty("targetRef")
-    public io.fabric8.kubernetes.api.model.ObjectReference getTargetRef() {
+    public ObjectReference getTargetRef() {
         return targetRef;
     }
 
     @JsonProperty("targetRef")
-    public void setTargetRef(io.fabric8.kubernetes.api.model.ObjectReference targetRef) {
+    public void setTargetRef(ObjectReference targetRef) {
         this.targetRef = targetRef;
     }
 

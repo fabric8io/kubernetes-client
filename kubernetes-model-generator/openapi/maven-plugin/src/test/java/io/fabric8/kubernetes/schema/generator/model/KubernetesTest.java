@@ -46,18 +46,6 @@ class KubernetesTest {
   }
 
   @Test
-  void discovery() {
-    new ModelGenerator(baseSettings
-        .clearSchemas()
-        .schema(new File("../schemas/kubernetes-1.21.14.json"))
-        .schema(new File("../schemas/kubernetes-1.30.0.json"))
-        .includeGenerationRegex("^io\\.k8s\\.api\\.discovery\\..*$")
-        .packageMapping("io.k8s.api.discovery", "io.fabric8.kubernetes.api.model.discovery")
-        .build())
-        .generate();
-  }
-
-  @Test
   void events() {
     new ModelGenerator(baseSettings
         .clearSchemas()
