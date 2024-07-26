@@ -16,6 +16,7 @@
 // Ported from https://github.com/manusa/yakc/blob/9272d649bfe05cd536d417fec64dcf679877bd14/buildSrc/src/main/java/com/marcnuri/yakc/schema/GeneratorUtils.java
 package io.fabric8.kubernetes.schema.generator;
 
+import io.fabric8.kubernetes.schema.generator.schema.SchemaUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 

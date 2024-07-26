@@ -16,15 +16,12 @@
 // Ported from https://github.com/manusa/yakc/blob/9272d649bfe05cd536d417fec64dcf679877bd14/buildSrc/src/main/java/com/marcnuri/yakc/schema/GeneratorSettings.java
 package io.fabric8.kubernetes.schema.generator;
 
-import io.swagger.v3.oas.models.Components;
+import io.fabric8.kubernetes.schema.generator.schema.SchemaUtils;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.PathItem;
-import io.swagger.v3.oas.models.Paths;
-import io.swagger.v3.oas.models.SpecVersion;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.parameters.Parameter;
-import io.swagger.v3.parser.OpenAPIV3Parser;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -32,6 +29,7 @@ import lombok.NoArgsConstructor;
 import lombok.Singular;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
@@ -39,13 +37,13 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-import static io.fabric8.kubernetes.schema.generator.SchemaUtils.APPLICATION_JSON;
+import static io.fabric8.kubernetes.schema.generator.schema.SchemaUtils.APPLICATION_JSON;
+import static io.fabric8.kubernetes.schema.generator.schema.SchemaUtils.mergeSchemas;
 
 @Builder(toBuilder = true)
 @NoArgsConstructor
@@ -113,7 +111,9 @@ public class GeneratorSettings {
   public OpenAPI getOpenAPI() {
     synchronized (this) {
       if (openAPI == null) {
-        openAPI = mergeSchemas(schemas);
+        final List<OpenAPI> openApis = new ArrayList<>();
+        schemas.stream().map(SchemaUtils::parse).forEach(openApis::add);
+        openAPI = mergeSchemas(openApis);
       }
     }
     return openAPI;
@@ -258,39 +258,4 @@ public class GeneratorSettings {
         .collect(Collectors.toList());
   }
 
-  private static OpenAPI mergeSchemas(List<File> schemas) {
-    final OpenAPI openAPI = new OpenAPI(SpecVersion.V31);
-    openAPI.setComponents(new Components());
-    openAPI.getComponents().setSchemas(new HashMap<>());
-    openAPI.getComponents().setResponses(new HashMap<>());
-    openAPI.getComponents().setParameters(new HashMap<>());
-    openAPI.getComponents().setExamples(new HashMap<>());
-    openAPI.getComponents().setRequestBodies(new HashMap<>());
-    openAPI.getComponents().setHeaders(new HashMap<>());
-    openAPI.getComponents().setSecuritySchemes(new HashMap<>());
-    openAPI.getComponents().setLinks(new HashMap<>());
-    openAPI.getComponents().setCallbacks(new HashMap<>());
-    openAPI.getComponents().setExtensions(new HashMap<>());
-    openAPI.setPaths(new Paths());
-    for (File schema : schemas) {
-      if (schema == null || !schema.exists()) {
-        throw new IllegalArgumentException("Schema file not found: " + schema);
-      }
-      final OpenAPI currentApi = new OpenAPIV3Parser().read(schema.getAbsolutePath());
-      new InlineModelResolver().flatten(currentApi);
-      openAPI.getPaths().putAll(currentApi.getPaths());
-      if (currentApi.getComponents() != null) {
-        Optional.ofNullable(currentApi.getComponents().getSchemas()).ifPresent(openAPI.getComponents().getSchemas()::putAll);
-        Optional.ofNullable(currentApi.getComponents().getResponses())
-            .ifPresent(openAPI.getComponents().getResponses()::putAll);
-        Optional.ofNullable(currentApi.getComponents().getParameters())
-            .ifPresent(openAPI.getComponents().getParameters()::putAll);
-        Optional.ofNullable(currentApi.getComponents().getExamples()).ifPresent(openAPI.getComponents().getExamples()::putAll);
-        Optional.ofNullable(currentApi.getComponents().getRequestBodies())
-            .ifPresent(openAPI.getComponents().getRequestBodies()::putAll);
-        Optional.ofNullable(currentApi.getComponents().getHeaders()).ifPresent(openAPI.getComponents().getHeaders()::putAll);
-      }
-    }
-    return openAPI;
-  }
 }

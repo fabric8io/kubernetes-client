@@ -18,7 +18,7 @@ package io.fabric8.kubernetes.schema.generator.model;
 import io.fabric8.kubernetes.schema.generator.ApiVersion;
 import io.fabric8.kubernetes.schema.generator.GeneratorSettings;
 import io.fabric8.kubernetes.schema.generator.ImportOrderComparator;
-import io.fabric8.kubernetes.schema.generator.SchemaUtils;
+import io.fabric8.kubernetes.schema.generator.schema.SchemaUtils;
 import io.swagger.v3.oas.models.media.Schema;
 import lombok.Getter;
 
