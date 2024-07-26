@@ -46,28 +46,6 @@ class KubernetesTest {
   }
 
   @Test
-  void certificates() {
-    new ModelGenerator(baseSettings
-        .clearSchemas()
-        .schema(new File("../schemas/kubernetes-1.21.14.json"))
-        .schema(new File("../schemas/kubernetes-1.30.0.json"))
-        .includeGenerationRegex("^io\\.k8s\\.api\\.certificates\\..*$")
-        .packageMapping("io.k8s.api.certificates", "io.fabric8.kubernetes.api.model.certificates")
-        .build())
-        .generate();
-  }
-
-  @Test
-  void coordination() {
-    new ModelGenerator(baseSettings
-        .skipGenerationRegex("^io\\.k8s\\.api\\.coordination\\.v1\\.LeaseSpec$")
-        .includeGenerationRegex("^io\\.k8s\\.api\\.coordination\\..*$")
-        .packageMapping("io.k8s.api.coordination", "io.fabric8.kubernetes.api.model.coordination")
-        .build())
-        .generate();
-  }
-
-  @Test
   void discovery() {
     new ModelGenerator(baseSettings
         .clearSchemas()
