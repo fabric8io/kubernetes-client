@@ -34,7 +34,6 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "backend",
-    "ingressClassName",
     "rules",
     "tls"
 })
@@ -61,8 +60,6 @@ public class IngressSpec implements Editable<IngressSpecBuilder> , KubernetesRes
 
     @JsonProperty("backend")
     private IngressBackend backend;
-    @JsonProperty("ingressClassName")
-    private String ingressClassName;
     @JsonProperty("rules")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<IngressRule> rules = new ArrayList<>();
@@ -79,10 +76,9 @@ public class IngressSpec implements Editable<IngressSpecBuilder> , KubernetesRes
     public IngressSpec() {
     }
 
-    public IngressSpec(IngressBackend backend, String ingressClassName, List<IngressRule> rules, List<IngressTLS> tls) {
+    public IngressSpec(IngressBackend backend, List<IngressRule> rules, List<IngressTLS> tls) {
         super();
         this.backend = backend;
-        this.ingressClassName = ingressClassName;
         this.rules = rules;
         this.tls = tls;
     }
@@ -95,16 +91,6 @@ public class IngressSpec implements Editable<IngressSpecBuilder> , KubernetesRes
     @JsonProperty("backend")
     public void setBackend(IngressBackend backend) {
         this.backend = backend;
-    }
-
-    @JsonProperty("ingressClassName")
-    public String getIngressClassName() {
-        return ingressClassName;
-    }
-
-    @JsonProperty("ingressClassName")
-    public void setIngressClassName(String ingressClassName) {
-        this.ingressClassName = ingressClassName;
     }
 
     @JsonProperty("rules")

@@ -32,8 +32,7 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "backend",
-    "path",
-    "pathType"
+    "path"
 })
 @ToString
 @EqualsAndHashCode
@@ -60,8 +59,6 @@ public class HTTPIngressPath implements Editable<HTTPIngressPathBuilder> , Kuber
     private IngressBackend backend;
     @JsonProperty("path")
     private String path;
-    @JsonProperty("pathType")
-    private String pathType;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -72,11 +69,10 @@ public class HTTPIngressPath implements Editable<HTTPIngressPathBuilder> , Kuber
     public HTTPIngressPath() {
     }
 
-    public HTTPIngressPath(IngressBackend backend, String path, String pathType) {
+    public HTTPIngressPath(IngressBackend backend, String path) {
         super();
         this.backend = backend;
         this.path = path;
-        this.pathType = pathType;
     }
 
     @JsonProperty("backend")
@@ -97,16 +93,6 @@ public class HTTPIngressPath implements Editable<HTTPIngressPathBuilder> , Kuber
     @JsonProperty("path")
     public void setPath(String path) {
         this.path = path;
-    }
-
-    @JsonProperty("pathType")
-    public String getPathType() {
-        return pathType;
-    }
-
-    @JsonProperty("pathType")
-    public void setPathType(String pathType) {
-        this.pathType = pathType;
     }
 
     @JsonIgnore

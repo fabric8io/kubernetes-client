@@ -46,29 +46,6 @@ class KubernetesTest {
   }
 
   @Test
-  void events() {
-    new ModelGenerator(baseSettings
-        .clearSchemas()
-        .schema(new File("../schemas/kubernetes-1.21.14.json"))
-        .schema(new File("../schemas/kubernetes-1.30.0.json"))
-        .includeGenerationRegex("^io\\.k8s\\.api\\.events\\..*$")
-        .packageMapping("io.k8s.api.events", "io.fabric8.kubernetes.api.model.events")
-        .build())
-        .generate();
-  }
-
-  @Test
-  void extensions() {
-    new ModelGenerator(baseSettings
-        .clearSchemas()
-        .schema(new File("../schemas/kubernetes-1.17.17.json"))
-        .includeGenerationRegex("^io\\.k8s\\.api\\.extensions\\..*$")
-        .packageMapping("io.k8s.api.extensions.v1beta1", "io.fabric8.kubernetes.api.model.extensions")
-        .build())
-        .generate();
-  }
-
-  @Test
   void flowControl() {
     new ModelGenerator(baseSettings
         .clearSchemas()

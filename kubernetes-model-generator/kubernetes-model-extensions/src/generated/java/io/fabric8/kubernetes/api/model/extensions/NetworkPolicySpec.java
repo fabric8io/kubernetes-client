@@ -17,6 +17,7 @@ import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
+import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
@@ -45,7 +46,7 @@ import lombok.experimental.Accessors;
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.LabelSelector.class),
+    @BuildableReference(LabelSelector.class),
     @BuildableReference(Container.class),
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
@@ -65,7 +66,7 @@ public class NetworkPolicySpec implements Editable<NetworkPolicySpecBuilder> , K
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<NetworkPolicyIngressRule> ingress = new ArrayList<>();
     @JsonProperty("podSelector")
-    private io.fabric8.kubernetes.api.model.LabelSelector podSelector;
+    private LabelSelector podSelector;
     @JsonProperty("policyTypes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> policyTypes = new ArrayList<>();
@@ -79,7 +80,7 @@ public class NetworkPolicySpec implements Editable<NetworkPolicySpecBuilder> , K
     public NetworkPolicySpec() {
     }
 
-    public NetworkPolicySpec(List<NetworkPolicyEgressRule> egress, List<NetworkPolicyIngressRule> ingress, io.fabric8.kubernetes.api.model.LabelSelector podSelector, List<String> policyTypes) {
+    public NetworkPolicySpec(List<NetworkPolicyEgressRule> egress, List<NetworkPolicyIngressRule> ingress, LabelSelector podSelector, List<String> policyTypes) {
         super();
         this.egress = egress;
         this.ingress = ingress;
@@ -110,12 +111,12 @@ public class NetworkPolicySpec implements Editable<NetworkPolicySpecBuilder> , K
     }
 
     @JsonProperty("podSelector")
-    public io.fabric8.kubernetes.api.model.LabelSelector getPodSelector() {
+    public LabelSelector getPodSelector() {
         return podSelector;
     }
 
     @JsonProperty("podSelector")
-    public void setPodSelector(io.fabric8.kubernetes.api.model.LabelSelector podSelector) {
+    public void setPodSelector(LabelSelector podSelector) {
         this.podSelector = podSelector;
     }
 

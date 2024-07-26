@@ -31,9 +31,7 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "error",
-    "port",
-    "protocol"
+    "driver"
 })
 @ToString
 @EqualsAndHashCode
@@ -53,15 +51,11 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class IngressPortStatus implements Editable<IngressPortStatusBuilder> , KubernetesResource
+public class AllowedFlexVolume implements Editable<AllowedFlexVolumeBuilder> , KubernetesResource
 {
 
-    @JsonProperty("error")
-    private String error;
-    @JsonProperty("port")
-    private Integer port;
-    @JsonProperty("protocol")
-    private String protocol;
+    @JsonProperty("driver")
+    private String driver;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -69,53 +63,31 @@ public class IngressPortStatus implements Editable<IngressPortStatusBuilder> , K
      * No args constructor for use in serialization
      * 
      */
-    public IngressPortStatus() {
+    public AllowedFlexVolume() {
     }
 
-    public IngressPortStatus(String error, Integer port, String protocol) {
+    public AllowedFlexVolume(String driver) {
         super();
-        this.error = error;
-        this.port = port;
-        this.protocol = protocol;
+        this.driver = driver;
     }
 
-    @JsonProperty("error")
-    public String getError() {
-        return error;
+    @JsonProperty("driver")
+    public String getDriver() {
+        return driver;
     }
 
-    @JsonProperty("error")
-    public void setError(String error) {
-        this.error = error;
-    }
-
-    @JsonProperty("port")
-    public Integer getPort() {
-        return port;
-    }
-
-    @JsonProperty("port")
-    public void setPort(Integer port) {
-        this.port = port;
-    }
-
-    @JsonProperty("protocol")
-    public String getProtocol() {
-        return protocol;
-    }
-
-    @JsonProperty("protocol")
-    public void setProtocol(String protocol) {
-        this.protocol = protocol;
+    @JsonProperty("driver")
+    public void setDriver(String driver) {
+        this.driver = driver;
     }
 
     @JsonIgnore
-    public IngressPortStatusBuilder edit() {
-        return new IngressPortStatusBuilder(this);
+    public AllowedFlexVolumeBuilder edit() {
+        return new AllowedFlexVolumeBuilder(this);
     }
 
     @JsonIgnore
-    public IngressPortStatusBuilder toBuilder() {
+    public AllowedFlexVolumeBuilder toBuilder() {
         return edit();
     }
 

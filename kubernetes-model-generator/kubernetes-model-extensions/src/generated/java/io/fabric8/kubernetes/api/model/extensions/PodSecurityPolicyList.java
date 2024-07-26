@@ -17,15 +17,21 @@ import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
+import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.LabelSelector;
+import io.fabric8.kubernetes.api.model.ListMeta;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
+import io.fabric8.kubernetes.model.annotation.Group;
+import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
+import io.sundr.transform.annotations.TemplateTransformation;
+import io.sundr.transform.annotations.TemplateTransformations;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
@@ -33,7 +39,10 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "ingress"
+    "apiVersion",
+    "kind",
+    "metadata",
+    "items"
 })
 @ToString
 @EqualsAndHashCode
@@ -52,13 +61,34 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@TemplateTransformations({
+    @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true)
+})
+@Version("v1beta1")
+@Group("extensions")
 @Generated("jsonschema2pojo")
-public class IngressLoadBalancerStatus implements Editable<IngressLoadBalancerStatusBuilder> , KubernetesResource
+public class PodSecurityPolicyList implements Editable<PodSecurityPolicyListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.extensions.PodSecurityPolicy>
 {
 
-    @JsonProperty("ingress")
+    /**
+     * 
+     * (Required)
+     * 
+     */
+    @JsonProperty("apiVersion")
+    private String apiVersion = "extensions/v1beta1";
+    @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<IngressLoadBalancerIngress> ingress = new ArrayList<>();
+    private List<io.fabric8.kubernetes.api.model.extensions.PodSecurityPolicy> items = new ArrayList<>();
+    /**
+     * 
+     * (Required)
+     * 
+     */
+    @JsonProperty("kind")
+    private String kind = "PodSecurityPolicyList";
+    @JsonProperty("metadata")
+    private ListMeta metadata;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -66,32 +96,85 @@ public class IngressLoadBalancerStatus implements Editable<IngressLoadBalancerSt
      * No args constructor for use in serialization
      * 
      */
-    public IngressLoadBalancerStatus() {
+    public PodSecurityPolicyList() {
     }
 
-    public IngressLoadBalancerStatus(List<IngressLoadBalancerIngress> ingress) {
+    public PodSecurityPolicyList(String apiVersion, List<io.fabric8.kubernetes.api.model.extensions.PodSecurityPolicy> items, String kind, ListMeta metadata) {
         super();
-        this.ingress = ingress;
+        this.apiVersion = apiVersion;
+        this.items = items;
+        this.kind = kind;
+        this.metadata = metadata;
     }
 
-    @JsonProperty("ingress")
+    /**
+     * 
+     * (Required)
+     * 
+     */
+    @JsonProperty("apiVersion")
+    public String getApiVersion() {
+        return apiVersion;
+    }
+
+    /**
+     * 
+     * (Required)
+     * 
+     */
+    @JsonProperty("apiVersion")
+    public void setApiVersion(String apiVersion) {
+        this.apiVersion = apiVersion;
+    }
+
+    @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<IngressLoadBalancerIngress> getIngress() {
-        return ingress;
+    public List<io.fabric8.kubernetes.api.model.extensions.PodSecurityPolicy> getItems() {
+        return items;
     }
 
-    @JsonProperty("ingress")
-    public void setIngress(List<IngressLoadBalancerIngress> ingress) {
-        this.ingress = ingress;
+    @JsonProperty("items")
+    public void setItems(List<io.fabric8.kubernetes.api.model.extensions.PodSecurityPolicy> items) {
+        this.items = items;
+    }
+
+    /**
+     * 
+     * (Required)
+     * 
+     */
+    @JsonProperty("kind")
+    public String getKind() {
+        return kind;
+    }
+
+    /**
+     * 
+     * (Required)
+     * 
+     */
+    @JsonProperty("kind")
+    public void setKind(String kind) {
+        this.kind = kind;
+    }
+
+    @JsonProperty("metadata")
+    public ListMeta getMetadata() {
+        return metadata;
+    }
+
+    @JsonProperty("metadata")
+    public void setMetadata(ListMeta metadata) {
+        this.metadata = metadata;
     }
 
     @JsonIgnore
-    public IngressLoadBalancerStatusBuilder edit() {
-        return new IngressLoadBalancerStatusBuilder(this);
+    public PodSecurityPolicyListBuilder edit() {
+        return new PodSecurityPolicyListBuilder(this);
     }
 
     @JsonIgnore
-    public IngressLoadBalancerStatusBuilder toBuilder() {
+    public PodSecurityPolicyListBuilder toBuilder() {
         return edit();
     }
 

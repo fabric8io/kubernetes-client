@@ -17,7 +17,6 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
-import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
@@ -39,8 +38,7 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "spec",
-    "status"
+    "spec"
 })
 @ToString
 @EqualsAndHashCode
@@ -65,7 +63,7 @@ import lombok.experimental.Accessors;
 @Version("v1beta1")
 @Group("extensions")
 @Generated("jsonschema2pojo")
-public class ReplicaSet implements Editable<ReplicaSetBuilder> , HasMetadata, Namespaced
+public class PodSecurityPolicy implements Editable<PodSecurityPolicyBuilder> , HasMetadata
 {
 
     /**
@@ -81,13 +79,11 @@ public class ReplicaSet implements Editable<ReplicaSetBuilder> , HasMetadata, Na
      * 
      */
     @JsonProperty("kind")
-    private String kind = "ReplicaSet";
+    private String kind = "PodSecurityPolicy";
     @JsonProperty("metadata")
     private ObjectMeta metadata;
     @JsonProperty("spec")
-    private ReplicaSetSpec spec;
-    @JsonProperty("status")
-    private ReplicaSetStatus status;
+    private PodSecurityPolicySpec spec;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -95,16 +91,15 @@ public class ReplicaSet implements Editable<ReplicaSetBuilder> , HasMetadata, Na
      * No args constructor for use in serialization
      * 
      */
-    public ReplicaSet() {
+    public PodSecurityPolicy() {
     }
 
-    public ReplicaSet(String apiVersion, String kind, ObjectMeta metadata, ReplicaSetSpec spec, ReplicaSetStatus status) {
+    public PodSecurityPolicy(String apiVersion, String kind, ObjectMeta metadata, PodSecurityPolicySpec spec) {
         super();
         this.apiVersion = apiVersion;
         this.kind = kind;
         this.metadata = metadata;
         this.spec = spec;
-        this.status = status;
     }
 
     /**
@@ -158,32 +153,22 @@ public class ReplicaSet implements Editable<ReplicaSetBuilder> , HasMetadata, Na
     }
 
     @JsonProperty("spec")
-    public ReplicaSetSpec getSpec() {
+    public PodSecurityPolicySpec getSpec() {
         return spec;
     }
 
     @JsonProperty("spec")
-    public void setSpec(ReplicaSetSpec spec) {
+    public void setSpec(PodSecurityPolicySpec spec) {
         this.spec = spec;
     }
 
-    @JsonProperty("status")
-    public ReplicaSetStatus getStatus() {
-        return status;
-    }
-
-    @JsonProperty("status")
-    public void setStatus(ReplicaSetStatus status) {
-        this.status = status;
+    @JsonIgnore
+    public PodSecurityPolicyBuilder edit() {
+        return new PodSecurityPolicyBuilder(this);
     }
 
     @JsonIgnore
-    public ReplicaSetBuilder edit() {
-        return new ReplicaSetBuilder(this);
-    }
-
-    @JsonIgnore
-    public ReplicaSetBuilder toBuilder() {
+    public PodSecurityPolicyBuilder toBuilder() {
         return edit();
     }
 
