@@ -159,7 +159,7 @@ public abstract class AbstractHttpPostTest {
 
   @Test
   public void expectFailure() throws IOException, URISyntaxException {
-    try (final ServerSocket serverSocket = new ServerSocket(0);) {
+    try (final ServerSocket serverSocket = new ServerSocket(0)) {
 
       try (HttpClient client = getHttpClientFactory().newBuilder().build()) {
         final URI uri = uriForPath(serverSocket, "/post-failing");
