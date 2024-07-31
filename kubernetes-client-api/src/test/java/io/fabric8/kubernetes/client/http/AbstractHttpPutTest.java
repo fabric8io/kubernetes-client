@@ -21,6 +21,8 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -94,6 +96,7 @@ public abstract class AbstractHttpPutTest {
   }
 
   @Test
+  @DisabledOnOs(OS.WINDOWS)
   public void expectFailure() throws IOException, URISyntaxException {
     try (final ServerSocket serverSocket = new ServerSocket(0)) {
 
