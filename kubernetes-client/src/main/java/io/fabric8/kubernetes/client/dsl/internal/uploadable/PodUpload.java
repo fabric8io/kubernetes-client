@@ -184,7 +184,7 @@ public class PodUpload {
 
   static String createExecCommandForUpload(String file) {
     return String.format(
-        "mkdir -p %s && cat - > %s", shellQuote(getDirectoryFromFile(file)), shellQuote(file));
+        "mkdir -p %s && cat - > %s && echo $?", shellQuote(getDirectoryFromFile(file)), shellQuote(file));
   }
 
   private static String ensureEndsWithSlash(String path) {
