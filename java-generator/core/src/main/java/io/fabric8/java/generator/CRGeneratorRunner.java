@@ -19,22 +19,32 @@ import io.fabric8.java.generator.exceptions.JavaGeneratorException;
 import io.fabric8.java.generator.nodes.AbstractJSONSchema2Pojo;
 import io.fabric8.java.generator.nodes.GeneratorResult;
 import io.fabric8.java.generator.nodes.JCRObject;
+import io.fabric8.java.generator.nodes.JavaNameAndType;
+import io.fabric8.java.generator.nodes.JavaType;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinition;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionSpec;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionVersion;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps;
 
+import static java.util.stream.Collectors.toList;
+
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
+
+import javax.print.attribute.HashAttributeSet;
 
 public class CRGeneratorRunner {
 
   private final Config config;
+  private static final List<String> STD_PROPS = Arrays.asList("metadata", "spec", "status", "kind", "apiVersion");
 
   public CRGeneratorRunner(Config config) {
     this.config = config;
@@ -50,12 +60,15 @@ public class CRGeneratorRunner {
     for (CustomResourceDefinitionVersion crdv : crSpec.getVersions()) {
       String version = crdv.getName();
 
-      String pkg = Optional.ofNullable(basePackageName)
-          .map(p -> p + "." + version)
-          .orElse(version);
+      String pkgNotOverridden = Optional.ofNullable(basePackageName)
+              .map(p -> p + "." + version)
+              .orElse(version);
 
-      if (config.getPackageOverrides().containsKey(pkg)) {
-        pkg = config.getPackageOverrides().get(pkg);
+      String pkg;
+      if (config.getPackageOverrides().containsKey(pkgNotOverridden)) {
+    	  pkg = config.getPackageOverrides().get(pkgNotOverridden);
+      } else {
+    	  pkg = pkgNotOverridden;
       }
 
       AbstractJSONSchema2Pojo specGenerator = null;
@@ -73,6 +86,15 @@ public class CRGeneratorRunner {
             crName + "Status", status, pkg, config);
       }
 
+      List<Entry<String, JSONSchemaProps>> topLevelProps = crdv.getSchema().getOpenAPIV3Schema().getProperties().entrySet().stream()
+    	.filter(e -> !STD_PROPS.contains(e.getKey()))
+    	.collect(toList());
+      
+      List<AbstractJSONSchema2Pojo> topLevelPropGenerators = topLevelProps.stream()
+      	.map(e -> AbstractJSONSchema2Pojo.fromJsonSchema(
+            crName + firstUpper(e.getKey()), e.getValue(), pkg, config))
+      	.collect(toList());
+      
       AbstractJSONSchema2Pojo crGenerator = new JCRObject(
           pkg,
           crName,
@@ -81,6 +103,7 @@ public class CRGeneratorRunner {
           scope,
           crName + "Spec",
           crName + "Status",
+          topLevelProps.stream().collect(Collectors.toMap(Entry::getKey, Entry::getValue)),
           specGenerator != null,
           statusGenerator != null,
           crdv.getStorage(),
@@ -89,12 +112,22 @@ public class CRGeneratorRunner {
           crSpec.getNames().getPlural(),
           config);
 
-      List<GeneratorResult.ClassResult> classResults = validateAndAggregate(crGenerator, specGenerator, statusGenerator);
+      List<AbstractJSONSchema2Pojo> allPropGenerators = new ArrayList<>();
+      allPropGenerators.add(crGenerator);
+      allPropGenerators.add(specGenerator);
+      allPropGenerators.add(statusGenerator);
+      allPropGenerators.addAll(topLevelPropGenerators);
+
+      List<GeneratorResult.ClassResult> classResults = validateAndAggregate(allPropGenerators.toArray(new AbstractJSONSchema2Pojo[] {}));
 
       writableCUs.add(new WritableCRCompilationUnit(classResults, basePackageName));
     }
 
     return writableCUs;
+  }
+  
+  private String firstUpper(String str) {
+	  return str.substring(0, 1).toUpperCase() + str.substring(1);
   }
 
   private List<GeneratorResult.ClassResult> validateAndAggregate(

@@ -15,6 +15,11 @@
  */
 package io.fabric8.java.generator.nodes;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.PackageDeclaration;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
@@ -23,9 +28,9 @@ import com.github.javaparser.ast.expr.NameExpr;
 import com.github.javaparser.ast.expr.SingleMemberAnnotationExpr;
 import com.github.javaparser.ast.expr.StringLiteralExpr;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
-import io.fabric8.java.generator.Config;
 
-import java.util.Collections;
+import io.fabric8.java.generator.Config;
+import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps;
 
 public class JCRObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnnotations {
 
@@ -44,6 +49,8 @@ public class JCRObject extends AbstractJSONSchema2Pojo implements JObjectExtraAn
 
   private final boolean storage;
   private final boolean served;
+  
+  private final Map<String, JSONSchemaProps> toplevelProps;
 
   public JCRObject(
       String pkg,
@@ -53,6 +60,7 @@ public class JCRObject extends AbstractJSONSchema2Pojo implements JObjectExtraAn
       String scope,
       String specClassName,
       String statusClassName,
+      Map<String, JSONSchemaProps> toplevelProps,
       boolean withSpec,
       boolean withStatus,
       boolean storage,
@@ -70,6 +78,7 @@ public class JCRObject extends AbstractJSONSchema2Pojo implements JObjectExtraAn
     this.scope = scope;
     this.specClassName = specClassName;
     this.statusClassName = statusClassName;
+    this.toplevelProps = toplevelProps;
     this.withSpec = withSpec;
     this.withStatus = withStatus;
     this.storage = storage;
@@ -119,7 +128,7 @@ public class JCRObject extends AbstractJSONSchema2Pojo implements JObjectExtraAn
               new Name("io.fabric8.kubernetes.model.annotation.Plural"),
               new StringLiteralExpr(plural)));
     }
-
+    
     ClassOrInterfaceType jlVoid = new ClassOrInterfaceType().setName("java.lang.Void");
 
     ClassOrInterfaceType spec = (withSpec)
