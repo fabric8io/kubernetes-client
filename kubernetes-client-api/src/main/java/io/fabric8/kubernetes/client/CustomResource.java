@@ -86,9 +86,9 @@ public abstract class CustomResource<S, T> implements HasMetadata {
 
   private final String singular;
   private final String crdName;
-  @JsonProperty(access = Access.READ_ONLY)
+  @JsonProperty()
   private final String kind;
-  @JsonProperty(access = Access.READ_ONLY)
+  @JsonProperty()
   private final String apiVersion;
   private final String scope;
   private final String plural;
