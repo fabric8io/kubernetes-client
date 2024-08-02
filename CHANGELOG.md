@@ -3,6 +3,8 @@
 
 #### Bugs
 * Fix #6038: Support for Gradle configuration cache
+* Fix #6110: VolumeSource (and other file mode fields) in Octal are correctly interpreted
+* Fix #6214: Java generator does not recognize fields in CRDs other than metadata, spec, and status
 
 #### Improvements
 * Fix #5264: Remove deprecated `Config.errorMessages` field
