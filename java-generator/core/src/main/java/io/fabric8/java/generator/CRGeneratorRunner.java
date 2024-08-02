@@ -15,12 +15,11 @@
  */
 package io.fabric8.java.generator;
 
-import static java.util.stream.Collectors.toList;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Optional;
@@ -38,8 +37,8 @@ import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps;
 public class CRGeneratorRunner {
 
   private final Config config;
-  private static final List<String> STD_PROPS = Arrays.asList("metadata", "spec", "status", "kind", "apiVersion");
-
+  private static final List<String> STD_PROPS = Arrays.asList("metadata", "spec", "status", "apiVersion", "kind");
+  
   public CRGeneratorRunner(Config config) {
     this.config = config;
   }
@@ -80,9 +79,15 @@ public class CRGeneratorRunner {
             crName + "Status", status, pkg, config);
       }
 
-      List<Entry<String, JSONSchemaProps>> topLevelProps = crdv.getSchema().getOpenAPIV3Schema().getProperties().entrySet().stream()
+      boolean preserveUnknownFields = Boolean.TRUE.equals(crdv.getSchema().getOpenAPIV3Schema().getXKubernetesPreserveUnknownFields());
+      
+      Map<String, JSONSchemaProps> topLevelProps = crdv.getSchema().getOpenAPIV3Schema().getProperties().entrySet().stream()
     	.filter(e -> !STD_PROPS.contains(e.getKey()))
-    	.collect(toList());
+    	.collect(Collectors.toMap(Entry::getKey, Entry::getValue));
+
+      List<String> requiredTopLevelProps = crdv.getSchema().getOpenAPIV3Schema().getRequired().stream()
+      	.filter(prop -> !STD_PROPS.contains(prop))
+      	.collect(Collectors.toList());
       
       AbstractJSONSchema2Pojo crGenerator = new JCRObject(
           pkg,
@@ -92,10 +97,10 @@ public class CRGeneratorRunner {
           scope,
           crName + "Spec",
           crName + "Status",
-          topLevelProps.stream().collect(Collectors.toMap(Entry::getKey, Entry::getValue)),
-          new ArrayList<>(),//TODO
-          Boolean.TRUE.equals(crdv.getSchema().getOpenAPIV3Schema().getXKubernetesPreserveUnknownFields()),
-          "",//TODO
+          topLevelProps,
+          requiredTopLevelProps,
+          preserveUnknownFields,
+          crdv.getSchema().getOpenAPIV3Schema().getDescription(),
           specGenerator != null,
           statusGenerator != null,
           crdv.getStorage(),
