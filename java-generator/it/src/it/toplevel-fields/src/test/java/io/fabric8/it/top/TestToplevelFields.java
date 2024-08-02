@@ -35,7 +35,7 @@ class TestToplevelFields {
   @Test
   void testHasOperationField() {
     try {
-			Application.class.getField("operation");
+			Application.class.getDeclaredField("operation");
 		} catch (NoSuchFieldException e) {
       e.printStackTrace();
 			fail("No field operation");
@@ -44,7 +44,7 @@ class TestToplevelFields {
   @Test
   void testHasOperationGetter() {
     try {
-      Application.class.getMethod("getOperation", null);
+      Application.class.getMethod("getOperation");
 		} catch (NoSuchMethodException e) {
       e.printStackTrace();
 			fail("No getter for operation");
@@ -53,11 +53,15 @@ class TestToplevelFields {
 
   @Test
   void testHasOperationSetter() {
+    String expectedParamType = "io.argoproj.v1alpha1.application.Operation";
     try {
-      Application.class.getMethod("setOperation", null);
+      Application.class.getMethod("setOperation", Class.forName(expectedParamType));
 		} catch (NoSuchMethodException e) {
       e.printStackTrace();
 			fail("No setter for operation");
-		} 
+		} catch (ClassNotFoundException e) {
+      e.printStackTrace();
+			fail("Expected setter param type" + expectedParamType + "not found.");
+    }
   }
 }

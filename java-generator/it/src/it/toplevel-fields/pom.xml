@@ -71,6 +71,7 @@
         <configuration>
           <source>src/test/resources/application-crd.yml</source>
           <generatedAnnotations>false</generatedAnnotations>
+          <alwaysPreserveUnknown>true</alwaysPreserveUnknown>
         </configuration>
       </plugin>
       <plugin>
