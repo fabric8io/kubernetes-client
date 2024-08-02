@@ -45,9 +45,9 @@ import static io.fabric8.java.generator.nodes.JPrimitiveNameAndType.INT_OR_STRIN
 public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnnotations {
 
   public static final String DEPRECATED_FIELD_MARKER = "deprecated";
-  private final String type;
-  private final String className;
-  private final String pkg;
+  protected final String type;
+  protected final String className;
+  protected final String pkg;
   private final Map<String, AbstractJSONSchema2Pojo> fields;
   private final Set<String> required;
   private final Set<String> deprecated = new HashSet<>();
@@ -188,9 +188,17 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
 
     clz.addImplementedType(new ClassOrInterfaceType(null, "io.fabric8.kubernetes.api.model.KubernetesResource"));
 
-    List<GeneratorResult.ClassResult> buffer = new ArrayList<>(this.fields.size() + 1);
+    List<GeneratorResult.ClassResult> buffer = generateJavaFields(clz);
 
-    List<String> sortedKeys = this.fields.keySet().stream().sorted().collect(Collectors.toList());
+    buffer.add(new GeneratorResult.ClassResult(this.className, cu));
+
+    return new GeneratorResult(buffer);
+  }
+
+protected List<GeneratorResult.ClassResult> generateJavaFields(ClassOrInterfaceDeclaration clz) {
+	List<GeneratorResult.ClassResult> buffer = new ArrayList<>(this.fields.size() + 1);
+	
+	List<String> sortedKeys = this.fields.keySet().stream().sorted().collect(Collectors.toList());
     for (String k : sortedKeys) {
       AbstractJSONSchema2Pojo prop = this.fields.get(k);
       boolean isRequired = this.required.contains(k);
@@ -342,11 +350,8 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
       additionalSetter
           .setBody(new BlockStmt().addStatement(new NameExpr("this." + Keywords.ADDITIONAL_PROPERTIES + ".put(key, value)")));
     }
-
-    buffer.add(new GeneratorResult.ClassResult(this.className, cu));
-
-    return new GeneratorResult(buffer);
-  }
+    return buffer;
+}
 
   /**
    * This method is responsible for creating an expression that will initialize the default value if primitive
