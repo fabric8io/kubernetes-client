@@ -15,10 +15,10 @@
  */
 package io.fabric8.java.generator.nodes;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.PackageDeclaration;
@@ -32,11 +32,8 @@ import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import io.fabric8.java.generator.Config;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps;
 
-public class JCRObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnnotations {
+public class JCRObject extends JObject implements JObjectExtraAnnotations {
 
-  private final String pkg;
-  private final String type;
-  private final String className;
   private final String group;
   private final String version;
   private final String scope;
@@ -49,8 +46,6 @@ public class JCRObject extends AbstractJSONSchema2Pojo implements JObjectExtraAn
 
   private final boolean storage;
   private final boolean served;
-  
-  private final Map<String, JSONSchemaProps> toplevelProps;
 
   public JCRObject(
       String pkg,
@@ -61,6 +56,9 @@ public class JCRObject extends AbstractJSONSchema2Pojo implements JObjectExtraAn
       String specClassName,
       String statusClassName,
       Map<String, JSONSchemaProps> toplevelProps,
+      List<String> required,
+      boolean preserveUnknownFields,
+      String description,
       boolean withSpec,
       boolean withStatus,
       boolean storage,
@@ -68,17 +66,14 @@ public class JCRObject extends AbstractJSONSchema2Pojo implements JObjectExtraAn
       String singular,
       String plural,
       Config config) {
-    super(config, null, false, null, null);
 
-    this.pkg = (pkg == null) ? "" : pkg.trim();
-    this.type = (this.pkg.isEmpty()) ? type : pkg + "." + type;
-    this.className = type;
+	super(pkg, type, toplevelProps, required, preserveUnknownFields, config, description, false, null);
+
     this.group = group;
     this.version = version;
     this.scope = scope;
     this.specClassName = specClassName;
     this.statusClassName = statusClassName;
-    this.toplevelProps = toplevelProps;
     this.withSpec = withSpec;
     this.withStatus = withStatus;
     this.storage = storage;
@@ -155,7 +150,13 @@ public class JCRObject extends AbstractJSONSchema2Pojo implements JObjectExtraAn
     if (config.isObjectExtraAnnotations()) {
       addExtraAnnotations(clz);
     }
+    
+    List<GeneratorResult.ClassResult> buffer = generateJavaFields(clz);
+    
+    List<GeneratorResult.ClassResult> results = new ArrayList<>(); 
+    results.add(new GeneratorResult.ClassResult(className, cu));
+    results.addAll(buffer);
     return new GeneratorResult(
-        Collections.singletonList(new GeneratorResult.ClassResult(className, cu)));
+        Collections.unmodifiableList(results));
   }
 }

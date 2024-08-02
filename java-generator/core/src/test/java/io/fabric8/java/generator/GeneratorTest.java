@@ -56,13 +56,16 @@ class GeneratorTest {
     // Arrange
     JCRObject cro = new JCRObject(
         "v1alpha1",
-        "t",
+        "Type",
         "g",
         "v",
         "Namespaced",
         "Spec",
         "Status",
         Collections.emptyMap(),
+        Collections.emptyList(),
+        false,
+        "",
         true,
         true,
         true,
@@ -76,7 +79,7 @@ class GeneratorTest {
 
     // Assert
     assertEquals(1, res.getTopLevelClasses().size());
-    assertEquals("t", res.getTopLevelClasses().get(0).getName());
+    assertEquals("Type", res.getTopLevelClasses().get(0).getName());
     assertEquals("v1alpha1",
         res.getTopLevelClasses().get(0).getPackageDeclaration().get().getNameAsString());
   }
@@ -86,13 +89,16 @@ class GeneratorTest {
     // Arrange
     JCRObject cro = new JCRObject(
         null,
-        "t",
+        "Type",
         "g",
         "v",
         "Namespaced",
         "Spec",
         "Status",
         Collections.emptyMap(),
+        Collections.emptyList(),
+        false,
+        "",
         true,
         true,
         true,
@@ -106,7 +112,7 @@ class GeneratorTest {
 
     // Assert
     assertEquals("io.fabric8.kubernetes.api.model.Namespaced", res.getTopLevelClasses().get(0)
-        .getClassByName("t").get().getImplementedTypes().get(0).getNameWithScope());
+        .getClassByName("Type").get().getImplementedTypes().get(0).getNameWithScope());
   }
 
   @Test
@@ -114,13 +120,16 @@ class GeneratorTest {
     // Arrange
     JCRObject cro = new JCRObject(
         null,
-        "t",
+        "Type",
         "g",
         "v",
         "Cluster",
         "Spec",
         "Status",
         Collections.emptyMap(),
+        Collections.emptyList(),
+        false,
+        "",
         true,
         true,
         true,
@@ -133,7 +142,7 @@ class GeneratorTest {
     GeneratorResult res = cro.generateJava();
 
     // Assert
-    assertTrue(res.getTopLevelClasses().get(0).getClassByName("t").get().getImplementedTypes().isEmpty());
+    assertTrue(res.getTopLevelClasses().get(0).getClassByName("Type").get().getImplementedTypes().isEmpty());
   }
 
   @Test
@@ -141,13 +150,16 @@ class GeneratorTest {
     // Arrange
     JCRObject cro = new JCRObject(
         null,
-        "t",
+        "Type",
         "g",
         "v",
         "Namespaced",
         "Spec",
         "Status",
         Collections.emptyMap(),
+        Collections.emptyList(),
+        false,
+        "",
         true,
         true,
         true,
@@ -161,7 +173,7 @@ class GeneratorTest {
 
     // Assert
     assertEquals(1, res.getTopLevelClasses().size());
-    assertEquals("t", res.getTopLevelClasses().get(0).getName());
+    assertEquals("Type", res.getTopLevelClasses().get(0).getName());
   }
 
   @Test

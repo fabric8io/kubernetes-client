@@ -15,31 +15,25 @@
  */
 package io.fabric8.java.generator;
 
-import io.fabric8.java.generator.exceptions.JavaGeneratorException;
-import io.fabric8.java.generator.nodes.AbstractJSONSchema2Pojo;
-import io.fabric8.java.generator.nodes.GeneratorResult;
-import io.fabric8.java.generator.nodes.JCRObject;
-import io.fabric8.java.generator.nodes.JavaNameAndType;
-import io.fabric8.java.generator.nodes.JavaType;
-import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinition;
-import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionSpec;
-import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionVersion;
-import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps;
-
 import static java.util.stream.Collectors.toList;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
-import javax.print.attribute.HashAttributeSet;
+import io.fabric8.java.generator.exceptions.JavaGeneratorException;
+import io.fabric8.java.generator.nodes.AbstractJSONSchema2Pojo;
+import io.fabric8.java.generator.nodes.GeneratorResult;
+import io.fabric8.java.generator.nodes.JCRObject;
+import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinition;
+import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionSpec;
+import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionVersion;
+import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps;
 
 public class CRGeneratorRunner {
 
@@ -90,11 +84,6 @@ public class CRGeneratorRunner {
     	.filter(e -> !STD_PROPS.contains(e.getKey()))
     	.collect(toList());
       
-      List<AbstractJSONSchema2Pojo> topLevelPropGenerators = topLevelProps.stream()
-      	.map(e -> AbstractJSONSchema2Pojo.fromJsonSchema(
-            crName + firstUpper(e.getKey()), e.getValue(), pkg, config))
-      	.collect(toList());
-      
       AbstractJSONSchema2Pojo crGenerator = new JCRObject(
           pkg,
           crName,
@@ -104,6 +93,9 @@ public class CRGeneratorRunner {
           crName + "Spec",
           crName + "Status",
           topLevelProps.stream().collect(Collectors.toMap(Entry::getKey, Entry::getValue)),
+          new ArrayList<>(),//TODO
+          Boolean.TRUE.equals(crdv.getSchema().getOpenAPIV3Schema().getXKubernetesPreserveUnknownFields()),
+          "",//TODO
           specGenerator != null,
           statusGenerator != null,
           crdv.getStorage(),
@@ -112,13 +104,7 @@ public class CRGeneratorRunner {
           crSpec.getNames().getPlural(),
           config);
 
-      List<AbstractJSONSchema2Pojo> allPropGenerators = new ArrayList<>();
-      allPropGenerators.add(crGenerator);
-      allPropGenerators.add(specGenerator);
-      allPropGenerators.add(statusGenerator);
-      allPropGenerators.addAll(topLevelPropGenerators);
-
-      List<GeneratorResult.ClassResult> classResults = validateAndAggregate(allPropGenerators.toArray(new AbstractJSONSchema2Pojo[] {}));
+      List<GeneratorResult.ClassResult> classResults = validateAndAggregate(crGenerator, specGenerator, statusGenerator);
 
       writableCUs.add(new WritableCRCompilationUnit(classResults, basePackageName));
     }
@@ -126,10 +112,6 @@ public class CRGeneratorRunner {
     return writableCUs;
   }
   
-  private String firstUpper(String str) {
-	  return str.substring(0, 1).toUpperCase() + str.substring(1);
-  }
-
   private List<GeneratorResult.ClassResult> validateAndAggregate(
       AbstractJSONSchema2Pojo... generators) {
     return Arrays.stream(generators)
