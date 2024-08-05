@@ -32,6 +32,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.BooleanSupplier;
 
@@ -75,13 +76,17 @@ public class PortForwarderWebsocketListener implements WebSocket.Listener {
           if (e instanceof InterruptedException) {
             Thread.currentThread().interrupt();
           }
-          logger.debug("Error while writing client data");
-          if (alive.get()) {
-            clientThrowables.add(e);
-            closeBothWays(webSocket, 1001, "Client error");
-          }
+          clientError(webSocket, "writing client data", e);
         }
       });
+    }
+  }
+
+  private void clientError(final WebSocket webSocket, String operation, Exception e) {
+    if (alive.get()) {
+      logger.debug("Error while " + operation, e);
+      clientThrowables.add(e);
+      closeBothWays(webSocket, 1001, "Client error");
     }
   }
 
@@ -125,27 +130,27 @@ public class PortForwarderWebsocketListener implements WebSocket.Listener {
     } else {
       // Data
       if (out != null) {
-        serialExecutor.execute(() -> {
-          try {
-            while (buffer.hasRemaining()) {
-              int written = out.write(buffer); // channel byte already skipped
-              if (written == 0) {
-                // out is non-blocking, prevent a busy loop
-                Thread.sleep(50);
+        try {
+          serialExecutor.execute(() -> {
+            try {
+              while (buffer.hasRemaining()) {
+                int written = out.write(buffer); // channel byte already skipped
+                if (written == 0) {
+                  // out is non-blocking, prevent a busy loop
+                  Thread.sleep(50);
+                }
               }
+              webSocket.request();
+            } catch (IOException | InterruptedException e) {
+              if (e instanceof InterruptedException) {
+                Thread.currentThread().interrupt();
+              }
+              clientError(webSocket, "forwarding data to the client", e);
             }
-            webSocket.request();
-          } catch (IOException | InterruptedException e) {
-            if (e instanceof InterruptedException) {
-              Thread.currentThread().interrupt();
-            }
-            if (alive.get()) {
-              clientThrowables.add(e);
-              logger.debug("Error while forwarding data to the client", e);
-              closeBothWays(webSocket, 1002, PROTOCOL_ERROR);
-            }
-          }
-        });
+          });
+        } catch (RejectedExecutionException e) {
+          // just ignore 
+        }
       }
     }
   }
