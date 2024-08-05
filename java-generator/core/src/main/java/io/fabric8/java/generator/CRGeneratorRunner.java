@@ -15,6 +15,16 @@
  */
 package io.fabric8.java.generator;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 import io.fabric8.java.generator.exceptions.JavaGeneratorException;
 import io.fabric8.java.generator.nodes.AbstractJSONSchema2Pojo;
 import io.fabric8.java.generator.nodes.GeneratorResult;
@@ -24,18 +34,11 @@ import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinition
 import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionVersion;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
 public class CRGeneratorRunner {
 
   private final Config config;
-
+  private static final List<String> STD_PROPS = Arrays.asList("metadata", "spec", "status", "apiVersion", "kind");
+  
   public CRGeneratorRunner(Config config) {
     this.config = config;
   }
@@ -50,12 +53,15 @@ public class CRGeneratorRunner {
     for (CustomResourceDefinitionVersion crdv : crSpec.getVersions()) {
       String version = crdv.getName();
 
-      String pkg = Optional.ofNullable(basePackageName)
-          .map(p -> p + "." + version)
-          .orElse(version);
+      String pkgNotOverridden = Optional.ofNullable(basePackageName)
+              .map(p -> p + "." + version)
+              .orElse(version);
 
-      if (config.getPackageOverrides().containsKey(pkg)) {
-        pkg = config.getPackageOverrides().get(pkg);
+      String pkg;
+      if (config.getPackageOverrides().containsKey(pkgNotOverridden)) {
+    	  pkg = config.getPackageOverrides().get(pkgNotOverridden);
+      } else {
+    	  pkg = pkgNotOverridden;
       }
 
       AbstractJSONSchema2Pojo specGenerator = null;
@@ -73,6 +79,16 @@ public class CRGeneratorRunner {
             crName + "Status", status, pkg, config);
       }
 
+      boolean preserveUnknownFields = Boolean.TRUE.equals(crdv.getSchema().getOpenAPIV3Schema().getXKubernetesPreserveUnknownFields());
+      
+      Map<String, JSONSchemaProps> topLevelProps = crdv.getSchema().getOpenAPIV3Schema().getProperties().entrySet().stream()
+    	.filter(e -> !STD_PROPS.contains(e.getKey()))
+    	.collect(Collectors.toMap(Entry::getKey, Entry::getValue));
+
+      List<String> requiredTopLevelProps = crdv.getSchema().getOpenAPIV3Schema().getRequired().stream()
+      	.filter(prop -> !STD_PROPS.contains(prop))
+      	.collect(Collectors.toList());
+      
       AbstractJSONSchema2Pojo crGenerator = new JCRObject(
           pkg,
           crName,
@@ -81,6 +97,10 @@ public class CRGeneratorRunner {
           scope,
           crName + "Spec",
           crName + "Status",
+          topLevelProps,
+          requiredTopLevelProps,
+          preserveUnknownFields,
+          crdv.getSchema().getOpenAPIV3Schema().getDescription(),
           specGenerator != null,
           statusGenerator != null,
           crdv.getStorage(),
@@ -96,7 +116,7 @@ public class CRGeneratorRunner {
 
     return writableCUs;
   }
-
+  
   private List<GeneratorResult.ClassResult> validateAndAggregate(
       AbstractJSONSchema2Pojo... generators) {
     return Arrays.stream(generators)
