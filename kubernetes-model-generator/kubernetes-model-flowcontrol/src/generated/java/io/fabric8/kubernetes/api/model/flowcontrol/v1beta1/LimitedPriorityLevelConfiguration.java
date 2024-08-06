@@ -32,8 +32,6 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "assuredConcurrencyShares",
-    "borrowingLimitPercent",
-    "lendablePercent",
     "limitResponse"
 })
 @ToString
@@ -59,10 +57,6 @@ public class LimitedPriorityLevelConfiguration implements Editable<LimitedPriori
 
     @JsonProperty("assuredConcurrencyShares")
     private Integer assuredConcurrencyShares;
-    @JsonProperty("borrowingLimitPercent")
-    private Integer borrowingLimitPercent;
-    @JsonProperty("lendablePercent")
-    private Integer lendablePercent;
     @JsonProperty("limitResponse")
     private LimitResponse limitResponse;
     @JsonIgnore
@@ -75,11 +69,9 @@ public class LimitedPriorityLevelConfiguration implements Editable<LimitedPriori
     public LimitedPriorityLevelConfiguration() {
     }
 
-    public LimitedPriorityLevelConfiguration(Integer assuredConcurrencyShares, Integer borrowingLimitPercent, Integer lendablePercent, LimitResponse limitResponse) {
+    public LimitedPriorityLevelConfiguration(Integer assuredConcurrencyShares, LimitResponse limitResponse) {
         super();
         this.assuredConcurrencyShares = assuredConcurrencyShares;
-        this.borrowingLimitPercent = borrowingLimitPercent;
-        this.lendablePercent = lendablePercent;
         this.limitResponse = limitResponse;
     }
 
@@ -91,26 +83,6 @@ public class LimitedPriorityLevelConfiguration implements Editable<LimitedPriori
     @JsonProperty("assuredConcurrencyShares")
     public void setAssuredConcurrencyShares(Integer assuredConcurrencyShares) {
         this.assuredConcurrencyShares = assuredConcurrencyShares;
-    }
-
-    @JsonProperty("borrowingLimitPercent")
-    public Integer getBorrowingLimitPercent() {
-        return borrowingLimitPercent;
-    }
-
-    @JsonProperty("borrowingLimitPercent")
-    public void setBorrowingLimitPercent(Integer borrowingLimitPercent) {
-        this.borrowingLimitPercent = borrowingLimitPercent;
-    }
-
-    @JsonProperty("lendablePercent")
-    public Integer getLendablePercent() {
-        return lendablePercent;
-    }
-
-    @JsonProperty("lendablePercent")
-    public void setLendablePercent(Integer lendablePercent) {
-        this.lendablePercent = lendablePercent;
     }
 
     @JsonProperty("limitResponse")

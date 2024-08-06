@@ -46,19 +46,6 @@ class KubernetesTest {
   }
 
   @Test
-  void flowControl() {
-    new ModelGenerator(baseSettings
-        .clearSchemas()
-        .schema(new File("../schemas/kubernetes-1.21.14.json"))
-        .schema(new File("../schemas/kubernetes-1.26.15.json"))
-        .schema(new File("../schemas/kubernetes-1.30.0.json"))
-        .includeGenerationRegex("^io\\.k8s\\.api\\.flowcontrol\\..*$")
-        .packageMapping("io.k8s.api.flowcontrol", "io.fabric8.kubernetes.api.model.flowcontrol")
-        .build())
-        .generate();
-  }
-
-  @Test
   void gatewayApi() {
     new ModelGenerator(baseSettings
         .clearSchemas()
