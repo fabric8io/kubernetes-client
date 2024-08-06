@@ -65,7 +65,7 @@ import lombok.experimental.Accessors;
 @Version("v1beta1")
 @Group("extensions")
 @Generated("jsonschema2pojo")
-public class ReplicaSet implements Editable<ReplicaSetBuilder> , HasMetadata, Namespaced
+public class Scale implements Editable<ScaleBuilder> , HasMetadata, Namespaced
 {
 
     /**
@@ -81,13 +81,13 @@ public class ReplicaSet implements Editable<ReplicaSetBuilder> , HasMetadata, Na
      * 
      */
     @JsonProperty("kind")
-    private String kind = "ReplicaSet";
+    private String kind = "Scale";
     @JsonProperty("metadata")
     private ObjectMeta metadata;
     @JsonProperty("spec")
-    private ReplicaSetSpec spec;
+    private ScaleSpec spec;
     @JsonProperty("status")
-    private ReplicaSetStatus status;
+    private ScaleStatus status;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -95,10 +95,10 @@ public class ReplicaSet implements Editable<ReplicaSetBuilder> , HasMetadata, Na
      * No args constructor for use in serialization
      * 
      */
-    public ReplicaSet() {
+    public Scale() {
     }
 
-    public ReplicaSet(String apiVersion, String kind, ObjectMeta metadata, ReplicaSetSpec spec, ReplicaSetStatus status) {
+    public Scale(String apiVersion, String kind, ObjectMeta metadata, ScaleSpec spec, ScaleStatus status) {
         super();
         this.apiVersion = apiVersion;
         this.kind = kind;
@@ -158,32 +158,32 @@ public class ReplicaSet implements Editable<ReplicaSetBuilder> , HasMetadata, Na
     }
 
     @JsonProperty("spec")
-    public ReplicaSetSpec getSpec() {
+    public ScaleSpec getSpec() {
         return spec;
     }
 
     @JsonProperty("spec")
-    public void setSpec(ReplicaSetSpec spec) {
+    public void setSpec(ScaleSpec spec) {
         this.spec = spec;
     }
 
     @JsonProperty("status")
-    public ReplicaSetStatus getStatus() {
+    public ScaleStatus getStatus() {
         return status;
     }
 
     @JsonProperty("status")
-    public void setStatus(ReplicaSetStatus status) {
+    public void setStatus(ScaleStatus status) {
         this.status = status;
     }
 
     @JsonIgnore
-    public ReplicaSetBuilder edit() {
-        return new ReplicaSetBuilder(this);
+    public ScaleBuilder edit() {
+        return new ScaleBuilder(this);
     }
 
     @JsonIgnore
-    public ReplicaSetBuilder toBuilder() {
+    public ScaleBuilder toBuilder() {
         return edit();
     }
 

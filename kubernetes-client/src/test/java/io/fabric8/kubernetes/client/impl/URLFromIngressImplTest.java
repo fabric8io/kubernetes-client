@@ -173,7 +173,6 @@ class URLFromIngressImplTest {
         .withNewHttp()
         .addNewPath()
         .withPath("/testpath")
-        .withPathType("Prefix")
         .withNewBackend()
         .withServiceName("svc1")
         .withServicePort(new IntOrString(80))

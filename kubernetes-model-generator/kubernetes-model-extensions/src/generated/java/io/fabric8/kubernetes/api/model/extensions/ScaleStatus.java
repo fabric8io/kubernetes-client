@@ -13,22 +13,17 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
+import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
-import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.kubernetes.model.annotation.Group;
-import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import io.sundr.transform.annotations.TemplateTransformation;
-import io.sundr.transform.annotations.TemplateTransformations;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
@@ -36,11 +31,9 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "apiVersion",
-    "kind",
-    "metadata",
-    "spec",
-    "status"
+    "replicas",
+    "selector",
+    "targetSelector"
 })
 @ToString
 @EqualsAndHashCode
@@ -59,35 +52,17 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
-@TemplateTransformations({
-    @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true)
-})
-@Version("v1beta1")
-@Group("extensions")
 @Generated("jsonschema2pojo")
-public class ReplicaSet implements Editable<ReplicaSetBuilder> , HasMetadata, Namespaced
+public class ScaleStatus implements Editable<ScaleStatusBuilder> , KubernetesResource
 {
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
-    @JsonProperty("apiVersion")
-    private String apiVersion = "extensions/v1beta1";
-    /**
-     * 
-     * (Required)
-     * 
-     */
-    @JsonProperty("kind")
-    private String kind = "ReplicaSet";
-    @JsonProperty("metadata")
-    private ObjectMeta metadata;
-    @JsonProperty("spec")
-    private ReplicaSetSpec spec;
-    @JsonProperty("status")
-    private ReplicaSetStatus status;
+    @JsonProperty("replicas")
+    private Integer replicas;
+    @JsonProperty("selector")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, String> selector = new LinkedHashMap<>();
+    @JsonProperty("targetSelector")
+    private String targetSelector;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -95,95 +70,54 @@ public class ReplicaSet implements Editable<ReplicaSetBuilder> , HasMetadata, Na
      * No args constructor for use in serialization
      * 
      */
-    public ReplicaSet() {
+    public ScaleStatus() {
     }
 
-    public ReplicaSet(String apiVersion, String kind, ObjectMeta metadata, ReplicaSetSpec spec, ReplicaSetStatus status) {
+    public ScaleStatus(Integer replicas, Map<String, String> selector, String targetSelector) {
         super();
-        this.apiVersion = apiVersion;
-        this.kind = kind;
-        this.metadata = metadata;
-        this.spec = spec;
-        this.status = status;
+        this.replicas = replicas;
+        this.selector = selector;
+        this.targetSelector = targetSelector;
     }
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
-    @JsonProperty("apiVersion")
-    public String getApiVersion() {
-        return apiVersion;
+    @JsonProperty("replicas")
+    public Integer getReplicas() {
+        return replicas;
     }
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
-    @JsonProperty("apiVersion")
-    public void setApiVersion(String apiVersion) {
-        this.apiVersion = apiVersion;
+    @JsonProperty("replicas")
+    public void setReplicas(Integer replicas) {
+        this.replicas = replicas;
     }
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
-    @JsonProperty("kind")
-    public String getKind() {
-        return kind;
+    @JsonProperty("selector")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public Map<String, String> getSelector() {
+        return selector;
     }
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
-    @JsonProperty("kind")
-    public void setKind(String kind) {
-        this.kind = kind;
+    @JsonProperty("selector")
+    public void setSelector(Map<String, String> selector) {
+        this.selector = selector;
     }
 
-    @JsonProperty("metadata")
-    public ObjectMeta getMetadata() {
-        return metadata;
+    @JsonProperty("targetSelector")
+    public String getTargetSelector() {
+        return targetSelector;
     }
 
-    @JsonProperty("metadata")
-    public void setMetadata(ObjectMeta metadata) {
-        this.metadata = metadata;
-    }
-
-    @JsonProperty("spec")
-    public ReplicaSetSpec getSpec() {
-        return spec;
-    }
-
-    @JsonProperty("spec")
-    public void setSpec(ReplicaSetSpec spec) {
-        this.spec = spec;
-    }
-
-    @JsonProperty("status")
-    public ReplicaSetStatus getStatus() {
-        return status;
-    }
-
-    @JsonProperty("status")
-    public void setStatus(ReplicaSetStatus status) {
-        this.status = status;
+    @JsonProperty("targetSelector")
+    public void setTargetSelector(String targetSelector) {
+        this.targetSelector = targetSelector;
     }
 
     @JsonIgnore
-    public ReplicaSetBuilder edit() {
-        return new ReplicaSetBuilder(this);
+    public ScaleStatusBuilder edit() {
+        return new ScaleStatusBuilder(this);
     }
 
     @JsonIgnore
-    public ReplicaSetBuilder toBuilder() {
+    public ScaleStatusBuilder toBuilder() {
         return edit();
     }
 

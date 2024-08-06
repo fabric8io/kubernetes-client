@@ -33,9 +33,8 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "hostname",
-    "ip",
-    "ports"
+    "allowedRuntimeClassNames",
+    "defaultRuntimeClassName"
 })
 @ToString
 @EqualsAndHashCode
@@ -55,16 +54,14 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class IngressLoadBalancerIngress implements Editable<IngressLoadBalancerIngressBuilder> , KubernetesResource
+public class RuntimeClassStrategyOptions implements Editable<RuntimeClassStrategyOptionsBuilder> , KubernetesResource
 {
 
-    @JsonProperty("hostname")
-    private String hostname;
-    @JsonProperty("ip")
-    private String ip;
-    @JsonProperty("ports")
+    @JsonProperty("allowedRuntimeClassNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<IngressPortStatus> ports = new ArrayList<>();
+    private List<String> allowedRuntimeClassNames = new ArrayList<>();
+    @JsonProperty("defaultRuntimeClassName")
+    private String defaultRuntimeClassName;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -72,54 +69,43 @@ public class IngressLoadBalancerIngress implements Editable<IngressLoadBalancerI
      * No args constructor for use in serialization
      * 
      */
-    public IngressLoadBalancerIngress() {
+    public RuntimeClassStrategyOptions() {
     }
 
-    public IngressLoadBalancerIngress(String hostname, String ip, List<IngressPortStatus> ports) {
+    public RuntimeClassStrategyOptions(List<String> allowedRuntimeClassNames, String defaultRuntimeClassName) {
         super();
-        this.hostname = hostname;
-        this.ip = ip;
-        this.ports = ports;
+        this.allowedRuntimeClassNames = allowedRuntimeClassNames;
+        this.defaultRuntimeClassName = defaultRuntimeClassName;
     }
 
-    @JsonProperty("hostname")
-    public String getHostname() {
-        return hostname;
-    }
-
-    @JsonProperty("hostname")
-    public void setHostname(String hostname) {
-        this.hostname = hostname;
-    }
-
-    @JsonProperty("ip")
-    public String getIp() {
-        return ip;
-    }
-
-    @JsonProperty("ip")
-    public void setIp(String ip) {
-        this.ip = ip;
-    }
-
-    @JsonProperty("ports")
+    @JsonProperty("allowedRuntimeClassNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<IngressPortStatus> getPorts() {
-        return ports;
+    public List<String> getAllowedRuntimeClassNames() {
+        return allowedRuntimeClassNames;
     }
 
-    @JsonProperty("ports")
-    public void setPorts(List<IngressPortStatus> ports) {
-        this.ports = ports;
+    @JsonProperty("allowedRuntimeClassNames")
+    public void setAllowedRuntimeClassNames(List<String> allowedRuntimeClassNames) {
+        this.allowedRuntimeClassNames = allowedRuntimeClassNames;
+    }
+
+    @JsonProperty("defaultRuntimeClassName")
+    public String getDefaultRuntimeClassName() {
+        return defaultRuntimeClassName;
+    }
+
+    @JsonProperty("defaultRuntimeClassName")
+    public void setDefaultRuntimeClassName(String defaultRuntimeClassName) {
+        this.defaultRuntimeClassName = defaultRuntimeClassName;
     }
 
     @JsonIgnore
-    public IngressLoadBalancerIngressBuilder edit() {
-        return new IngressLoadBalancerIngressBuilder(this);
+    public RuntimeClassStrategyOptionsBuilder edit() {
+        return new RuntimeClassStrategyOptionsBuilder(this);
     }
 
     @JsonIgnore
-    public IngressLoadBalancerIngressBuilder toBuilder() {
+    public RuntimeClassStrategyOptionsBuilder toBuilder() {
         return edit();
     }
 

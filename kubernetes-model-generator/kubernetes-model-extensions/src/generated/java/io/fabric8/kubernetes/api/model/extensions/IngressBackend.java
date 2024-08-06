@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
+import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
@@ -21,7 +22,6 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.kubernetes.api.model.TypedLocalObjectReference;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -31,7 +31,6 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "resource",
     "serviceName",
     "servicePort"
 })
@@ -47,7 +46,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Container.class),
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.IntOrString.class),
+    @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
@@ -56,12 +55,10 @@ import lombok.experimental.Accessors;
 public class IngressBackend implements Editable<IngressBackendBuilder> , KubernetesResource
 {
 
-    @JsonProperty("resource")
-    private TypedLocalObjectReference resource;
     @JsonProperty("serviceName")
     private String serviceName;
     @JsonProperty("servicePort")
-    private io.fabric8.kubernetes.api.model.IntOrString servicePort;
+    private IntOrString servicePort;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -72,21 +69,10 @@ public class IngressBackend implements Editable<IngressBackendBuilder> , Kuberne
     public IngressBackend() {
     }
 
-    public IngressBackend(TypedLocalObjectReference resource, String serviceName, io.fabric8.kubernetes.api.model.IntOrString servicePort) {
+    public IngressBackend(String serviceName, IntOrString servicePort) {
         super();
-        this.resource = resource;
         this.serviceName = serviceName;
         this.servicePort = servicePort;
-    }
-
-    @JsonProperty("resource")
-    public TypedLocalObjectReference getResource() {
-        return resource;
-    }
-
-    @JsonProperty("resource")
-    public void setResource(TypedLocalObjectReference resource) {
-        this.resource = resource;
     }
 
     @JsonProperty("serviceName")
@@ -100,12 +86,12 @@ public class IngressBackend implements Editable<IngressBackendBuilder> , Kuberne
     }
 
     @JsonProperty("servicePort")
-    public io.fabric8.kubernetes.api.model.IntOrString getServicePort() {
+    public IntOrString getServicePort() {
         return servicePort;
     }
 
     @JsonProperty("servicePort")
-    public void setServicePort(io.fabric8.kubernetes.api.model.IntOrString servicePort) {
+    public void setServicePort(IntOrString servicePort) {
         this.servicePort = servicePort;
     }
 
