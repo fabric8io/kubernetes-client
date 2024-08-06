@@ -6,6 +6,7 @@
 * Fix #6066: Added support for missing `v1.APIVersions` in KubernetesClient
 * Fix #6110: VolumeSource (and other file mode fields) in Octal are correctly interpreted
 * Fix #6215: Suppressing rejected execution exception for port forwarder
+* Fix #6212: Improved reliability of file upload to Pod
 
 ### 6.13.1 (2024-07-02)
 
