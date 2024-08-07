@@ -141,7 +141,7 @@
 
     <!-- Maven plugin versions -->
     <buildnumber.plugin.version>3.2.0</buildnumber.plugin.version>
-    <exec.maven-plugin.version>3.3.0</exec.maven-plugin.version>
+    <exec.maven-plugin.version>3.4.0</exec.maven-plugin.version>
     <maven.compiler.plugin.version>3.13.0</maven.compiler.plugin.version>
     <maven.bundle.plugin.version>5.1.9</maven.bundle.plugin.version>
     <maven.buildhelper.plugin.version>3.6.0</maven.buildhelper.plugin.version>
