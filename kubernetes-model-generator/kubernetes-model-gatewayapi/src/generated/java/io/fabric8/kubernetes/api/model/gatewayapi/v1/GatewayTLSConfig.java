@@ -34,6 +34,7 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "certificateRefs",
+    "frontendValidation",
     "mode",
     "options"
 })
@@ -61,6 +62,8 @@ public class GatewayTLSConfig implements Editable<GatewayTLSConfigBuilder> , Kub
     @JsonProperty("certificateRefs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<SecretObjectReference> certificateRefs = new ArrayList<>();
+    @JsonProperty("frontendValidation")
+    private FrontendTLSValidation frontendValidation;
     @JsonProperty("mode")
     private String mode;
     @JsonProperty("options")
@@ -76,9 +79,10 @@ public class GatewayTLSConfig implements Editable<GatewayTLSConfigBuilder> , Kub
     public GatewayTLSConfig() {
     }
 
-    public GatewayTLSConfig(List<SecretObjectReference> certificateRefs, String mode, Map<String, String> options) {
+    public GatewayTLSConfig(List<SecretObjectReference> certificateRefs, FrontendTLSValidation frontendValidation, String mode, Map<String, String> options) {
         super();
         this.certificateRefs = certificateRefs;
+        this.frontendValidation = frontendValidation;
         this.mode = mode;
         this.options = options;
     }
@@ -92,6 +96,16 @@ public class GatewayTLSConfig implements Editable<GatewayTLSConfigBuilder> , Kub
     @JsonProperty("certificateRefs")
     public void setCertificateRefs(List<SecretObjectReference> certificateRefs) {
         this.certificateRefs = certificateRefs;
+    }
+
+    @JsonProperty("frontendValidation")
+    public FrontendTLSValidation getFrontendValidation() {
+        return frontendValidation;
+    }
+
+    @JsonProperty("frontendValidation")
+    public void setFrontendValidation(FrontendTLSValidation frontendValidation) {
+        this.frontendValidation = frontendValidation;
     }
 
     @JsonProperty("mode")

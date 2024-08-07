@@ -32,7 +32,8 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "annotations",
-    "labels"
+    "labels",
+    "parametersRef"
 })
 @ToString
 @EqualsAndHashCode
@@ -61,6 +62,8 @@ public class GatewayInfrastructure implements Editable<GatewayInfrastructureBuil
     @JsonProperty("labels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> labels = new LinkedHashMap<>();
+    @JsonProperty("parametersRef")
+    private LocalParametersReference parametersRef;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -71,10 +74,11 @@ public class GatewayInfrastructure implements Editable<GatewayInfrastructureBuil
     public GatewayInfrastructure() {
     }
 
-    public GatewayInfrastructure(Map<String, String> annotations, Map<String, String> labels) {
+    public GatewayInfrastructure(Map<String, String> annotations, Map<String, String> labels, LocalParametersReference parametersRef) {
         super();
         this.annotations = annotations;
         this.labels = labels;
+        this.parametersRef = parametersRef;
     }
 
     @JsonProperty("annotations")
@@ -97,6 +101,16 @@ public class GatewayInfrastructure implements Editable<GatewayInfrastructureBuil
     @JsonProperty("labels")
     public void setLabels(Map<String, String> labels) {
         this.labels = labels;
+    }
+
+    @JsonProperty("parametersRef")
+    public LocalParametersReference getParametersRef() {
+        return parametersRef;
+    }
+
+    @JsonProperty("parametersRef")
+    public void setParametersRef(LocalParametersReference parametersRef) {
+        this.parametersRef = parametersRef;
     }
 
     @JsonIgnore

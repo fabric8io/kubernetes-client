@@ -36,6 +36,7 @@ import lombok.experimental.Accessors;
     "backendRefs",
     "filters",
     "matches",
+    "sessionPersistence",
     "timeouts"
 })
 @ToString
@@ -68,6 +69,8 @@ public class HTTPRouteRule implements Editable<HTTPRouteRuleBuilder> , Kubernete
     @JsonProperty("matches")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<HTTPRouteMatch> matches = new ArrayList<>();
+    @JsonProperty("sessionPersistence")
+    private SessionPersistence sessionPersistence;
     @JsonProperty("timeouts")
     private HTTPRouteTimeouts timeouts;
     @JsonIgnore
@@ -80,11 +83,12 @@ public class HTTPRouteRule implements Editable<HTTPRouteRuleBuilder> , Kubernete
     public HTTPRouteRule() {
     }
 
-    public HTTPRouteRule(List<HTTPBackendRef> backendRefs, List<HTTPRouteFilter> filters, List<HTTPRouteMatch> matches, HTTPRouteTimeouts timeouts) {
+    public HTTPRouteRule(List<HTTPBackendRef> backendRefs, List<HTTPRouteFilter> filters, List<HTTPRouteMatch> matches, SessionPersistence sessionPersistence, HTTPRouteTimeouts timeouts) {
         super();
         this.backendRefs = backendRefs;
         this.filters = filters;
         this.matches = matches;
+        this.sessionPersistence = sessionPersistence;
         this.timeouts = timeouts;
     }
 
@@ -119,6 +123,16 @@ public class HTTPRouteRule implements Editable<HTTPRouteRuleBuilder> , Kubernete
     @JsonProperty("matches")
     public void setMatches(List<HTTPRouteMatch> matches) {
         this.matches = matches;
+    }
+
+    @JsonProperty("sessionPersistence")
+    public SessionPersistence getSessionPersistence() {
+        return sessionPersistence;
+    }
+
+    @JsonProperty("sessionPersistence")
+    public void setSessionPersistence(SessionPersistence sessionPersistence) {
+        this.sessionPersistence = sessionPersistence;
     }
 
     @JsonProperty("timeouts")
