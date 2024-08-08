@@ -13,7 +13,9 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
+import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
+import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
@@ -42,11 +44,11 @@ import lombok.experimental.Accessors;
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.LabelSelector.class),
+    @BuildableReference(LabelSelector.class),
     @BuildableReference(Container.class),
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.IntOrString.class),
+    @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
@@ -56,11 +58,11 @@ public class PodDisruptionBudgetSpec implements Editable<PodDisruptionBudgetSpec
 {
 
     @JsonProperty("maxUnavailable")
-    private io.fabric8.kubernetes.api.model.IntOrString maxUnavailable;
+    private IntOrString maxUnavailable;
     @JsonProperty("minAvailable")
-    private io.fabric8.kubernetes.api.model.IntOrString minAvailable;
+    private IntOrString minAvailable;
     @JsonProperty("selector")
-    private io.fabric8.kubernetes.api.model.LabelSelector selector;
+    private LabelSelector selector;
     @JsonProperty("unhealthyPodEvictionPolicy")
     private String unhealthyPodEvictionPolicy;
     @JsonIgnore
@@ -73,7 +75,7 @@ public class PodDisruptionBudgetSpec implements Editable<PodDisruptionBudgetSpec
     public PodDisruptionBudgetSpec() {
     }
 
-    public PodDisruptionBudgetSpec(io.fabric8.kubernetes.api.model.IntOrString maxUnavailable, io.fabric8.kubernetes.api.model.IntOrString minAvailable, io.fabric8.kubernetes.api.model.LabelSelector selector, String unhealthyPodEvictionPolicy) {
+    public PodDisruptionBudgetSpec(IntOrString maxUnavailable, IntOrString minAvailable, LabelSelector selector, String unhealthyPodEvictionPolicy) {
         super();
         this.maxUnavailable = maxUnavailable;
         this.minAvailable = minAvailable;
@@ -82,32 +84,32 @@ public class PodDisruptionBudgetSpec implements Editable<PodDisruptionBudgetSpec
     }
 
     @JsonProperty("maxUnavailable")
-    public io.fabric8.kubernetes.api.model.IntOrString getMaxUnavailable() {
+    public IntOrString getMaxUnavailable() {
         return maxUnavailable;
     }
 
     @JsonProperty("maxUnavailable")
-    public void setMaxUnavailable(io.fabric8.kubernetes.api.model.IntOrString maxUnavailable) {
+    public void setMaxUnavailable(IntOrString maxUnavailable) {
         this.maxUnavailable = maxUnavailable;
     }
 
     @JsonProperty("minAvailable")
-    public io.fabric8.kubernetes.api.model.IntOrString getMinAvailable() {
+    public IntOrString getMinAvailable() {
         return minAvailable;
     }
 
     @JsonProperty("minAvailable")
-    public void setMinAvailable(io.fabric8.kubernetes.api.model.IntOrString minAvailable) {
+    public void setMinAvailable(IntOrString minAvailable) {
         this.minAvailable = minAvailable;
     }
 
     @JsonProperty("selector")
-    public io.fabric8.kubernetes.api.model.LabelSelector getSelector() {
+    public LabelSelector getSelector() {
         return selector;
     }
 
     @JsonProperty("selector")
-    public void setSelector(io.fabric8.kubernetes.api.model.LabelSelector selector) {
+    public void setSelector(LabelSelector selector) {
         this.selector = selector;
     }
 

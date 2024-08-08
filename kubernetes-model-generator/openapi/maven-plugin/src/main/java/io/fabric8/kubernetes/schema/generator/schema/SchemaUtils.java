@@ -21,6 +21,7 @@ import io.fabric8.kubernetes.schema.generator.ImportManager;
 import io.fabric8.kubernetes.schema.generator.PropertyOrderComparator;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.PathItem;
 import io.swagger.v3.oas.models.Paths;
 import io.swagger.v3.oas.models.SpecVersion;
 import io.swagger.v3.oas.models.media.ArraySchema;
@@ -426,8 +427,22 @@ public class SchemaUtils {
     openAPI.getComponents().setCallbacks(new HashMap<>());
     openAPI.getComponents().setExtensions(new HashMap<>());
     openAPI.setPaths(new Paths());
+    int apiCounter = 0;
     for (OpenAPI currentApi : schemas) {
-      openAPI.getPaths().putAll(currentApi.getPaths());
+      apiCounter++;
+      // Merge Paths
+      for (Map.Entry<String, PathItem> paths : currentApi.getPaths().entrySet()) {
+        // Let's preserve the existing paths in case multiple versions of the same schema are added
+        // This is necessary for proper computation of APIVersion for the components
+        // We do this bases in the paths instead of the x-kubernetes-group-version-kind extension of the component
+        // because it's the only way to figure out if the object is namespaced or cluster scoped
+        if (openAPI.getPaths().containsKey(paths.getKey())) {
+          openAPI.getPaths().addPathItem(paths.getKey() + "/" + apiCounter, paths.getValue());
+        } else {
+          openAPI.getPaths().addPathItem(paths.getKey(), paths.getValue());
+        }
+      }
+      // Merge components
       if (currentApi.getComponents() != null) {
         Optional.ofNullable(currentApi.getComponents().getSchemas()).ifPresent(openAPI.getComponents().getSchemas()::putAll);
         Optional.ofNullable(currentApi.getComponents().getResponses())
