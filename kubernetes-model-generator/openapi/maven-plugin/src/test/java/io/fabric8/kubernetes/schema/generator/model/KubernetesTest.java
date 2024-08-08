@@ -46,17 +46,6 @@ class KubernetesTest {
   }
 
   @Test
-  void gatewayApi() {
-    new ModelGenerator(baseSettings
-        .clearSchemas()
-        .schema(new File("../schemas/gateway-api.json"))
-        .includeGenerationRegex("^io\\.k8s\\.sigs\\.gateway-api\\.apis\\..*$")
-        .packageMapping("io.k8s.sigs.gateway-api.apis", "io.fabric8.kubernetes.api.model.gatewayapi")
-        .build())
-        .generate();
-  }
-
-  @Test
   void kustomize() {
     new ModelGenerator(baseSettings
         .addBuildableReferences(false)
@@ -75,18 +64,6 @@ class KubernetesTest {
         .schema(new File("../schemas/metrics.json"))
         .includeGenerationRegex("^io\\.k8s\\.metrics\\.pkg\\.apis\\.metrics\\..*$")
         .packageMapping("io.k8s.metrics.pkg.apis.metrics", "io.fabric8.kubernetes.api.model.metrics")
-        .build())
-        .generate();
-  }
-
-  @Test
-  void networking() {
-    new ModelGenerator(baseSettings
-        .clearSchemas()
-        .schema(new File("../schemas/kubernetes-1.21.14.json"))
-        .schema(new File("../schemas/kubernetes-1.30.0.json"))
-        .includeGenerationRegex("^io\\.k8s\\.api\\.networking\\..*$")
-        .packageMapping("io.k8s.api.networking", "io.fabric8.kubernetes.api.model.networking")
         .build())
         .generate();
   }

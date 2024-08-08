@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
+import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
@@ -46,7 +47,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Container.class),
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.IntOrString.class),
+    @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
@@ -58,7 +59,7 @@ public class NetworkPolicyPort implements Editable<NetworkPolicyPortBuilder> , K
     @JsonProperty("endPort")
     private Integer endPort;
     @JsonProperty("port")
-    private io.fabric8.kubernetes.api.model.IntOrString port;
+    private IntOrString port;
     @JsonProperty("protocol")
     private String protocol;
     @JsonIgnore
@@ -71,7 +72,7 @@ public class NetworkPolicyPort implements Editable<NetworkPolicyPortBuilder> , K
     public NetworkPolicyPort() {
     }
 
-    public NetworkPolicyPort(Integer endPort, io.fabric8.kubernetes.api.model.IntOrString port, String protocol) {
+    public NetworkPolicyPort(Integer endPort, IntOrString port, String protocol) {
         super();
         this.endPort = endPort;
         this.port = port;
@@ -89,12 +90,12 @@ public class NetworkPolicyPort implements Editable<NetworkPolicyPortBuilder> , K
     }
 
     @JsonProperty("port")
-    public io.fabric8.kubernetes.api.model.IntOrString getPort() {
+    public IntOrString getPort() {
         return port;
     }
 
     @JsonProperty("port")
-    public void setPort(io.fabric8.kubernetes.api.model.IntOrString port) {
+    public void setPort(IntOrString port) {
         this.port = port;
     }
 

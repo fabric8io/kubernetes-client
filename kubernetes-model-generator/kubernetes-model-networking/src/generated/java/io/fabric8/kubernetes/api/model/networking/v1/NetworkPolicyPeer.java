@@ -15,6 +15,7 @@ import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
+import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
@@ -42,7 +43,7 @@ import lombok.experimental.Accessors;
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.LabelSelector.class),
+    @BuildableReference(LabelSelector.class),
     @BuildableReference(Container.class),
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
@@ -58,9 +59,9 @@ public class NetworkPolicyPeer implements Editable<NetworkPolicyPeerBuilder> , K
     @JsonProperty("ipBlock")
     private IPBlock ipBlock;
     @JsonProperty("namespaceSelector")
-    private io.fabric8.kubernetes.api.model.LabelSelector namespaceSelector;
+    private LabelSelector namespaceSelector;
     @JsonProperty("podSelector")
-    private io.fabric8.kubernetes.api.model.LabelSelector podSelector;
+    private LabelSelector podSelector;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -71,7 +72,7 @@ public class NetworkPolicyPeer implements Editable<NetworkPolicyPeerBuilder> , K
     public NetworkPolicyPeer() {
     }
 
-    public NetworkPolicyPeer(IPBlock ipBlock, io.fabric8.kubernetes.api.model.LabelSelector namespaceSelector, io.fabric8.kubernetes.api.model.LabelSelector podSelector) {
+    public NetworkPolicyPeer(IPBlock ipBlock, LabelSelector namespaceSelector, LabelSelector podSelector) {
         super();
         this.ipBlock = ipBlock;
         this.namespaceSelector = namespaceSelector;
@@ -89,22 +90,22 @@ public class NetworkPolicyPeer implements Editable<NetworkPolicyPeerBuilder> , K
     }
 
     @JsonProperty("namespaceSelector")
-    public io.fabric8.kubernetes.api.model.LabelSelector getNamespaceSelector() {
+    public LabelSelector getNamespaceSelector() {
         return namespaceSelector;
     }
 
     @JsonProperty("namespaceSelector")
-    public void setNamespaceSelector(io.fabric8.kubernetes.api.model.LabelSelector namespaceSelector) {
+    public void setNamespaceSelector(LabelSelector namespaceSelector) {
         this.namespaceSelector = namespaceSelector;
     }
 
     @JsonProperty("podSelector")
-    public io.fabric8.kubernetes.api.model.LabelSelector getPodSelector() {
+    public LabelSelector getPodSelector() {
         return podSelector;
     }
 
     @JsonProperty("podSelector")
-    public void setPodSelector(io.fabric8.kubernetes.api.model.LabelSelector podSelector) {
+    public void setPodSelector(LabelSelector podSelector) {
         this.podSelector = podSelector;
     }
 
