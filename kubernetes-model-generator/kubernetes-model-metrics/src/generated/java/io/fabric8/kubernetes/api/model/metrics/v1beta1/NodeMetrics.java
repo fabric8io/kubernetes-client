@@ -18,6 +18,7 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
+import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
@@ -50,7 +51,7 @@ import lombok.experimental.Accessors;
     ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
+    @BuildableReference(ObjectMeta.class),
     @BuildableReference(LabelSelector.class),
     @BuildableReference(Container.class),
     @BuildableReference(PodTemplateSpec.class),
@@ -84,7 +85,7 @@ public class NodeMetrics implements Editable<NodeMetricsBuilder> , HasMetadata
     @JsonProperty("kind")
     private String kind = "NodeMetrics";
     @JsonProperty("metadata")
-    private io.fabric8.kubernetes.api.model.ObjectMeta metadata;
+    private ObjectMeta metadata;
     @JsonProperty("timestamp")
     private String timestamp;
     @JsonProperty("usage")
@@ -102,7 +103,7 @@ public class NodeMetrics implements Editable<NodeMetricsBuilder> , HasMetadata
     public NodeMetrics() {
     }
 
-    public NodeMetrics(String apiVersion, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, String timestamp, Map<String, Quantity> usage, Duration window) {
+    public NodeMetrics(String apiVersion, String kind, ObjectMeta metadata, String timestamp, Map<String, Quantity> usage, Duration window) {
         super();
         this.apiVersion = apiVersion;
         this.kind = kind;
@@ -153,12 +154,12 @@ public class NodeMetrics implements Editable<NodeMetricsBuilder> , HasMetadata
     }
 
     @JsonProperty("metadata")
-    public io.fabric8.kubernetes.api.model.ObjectMeta getMetadata() {
+    public ObjectMeta getMetadata() {
         return metadata;
     }
 
     @JsonProperty("metadata")
-    public void setMetadata(io.fabric8.kubernetes.api.model.ObjectMeta metadata) {
+    public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
