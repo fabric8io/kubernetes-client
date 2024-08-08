@@ -222,4 +222,12 @@ class QuantityTest {
     Quantity quantity = new Quantity("0Mi");
     assertThat(quantity.subtract(new Quantity("1Ki"))).isEqualTo(new Quantity("-1Ki"));
   }
+
+  @Test
+  void testMultiply() {
+    Quantity quantity = new Quantity("4Gi");
+    assertThat(quantity.multiply(0)).isEqualTo(new Quantity("0"));
+    assertThat(quantity.multiply(3)).isEqualTo(new Quantity("12Gi"));
+    assertThat(quantity.multiply(-3)).isEqualTo(new Quantity("-12Gi"));
+  }
 }
