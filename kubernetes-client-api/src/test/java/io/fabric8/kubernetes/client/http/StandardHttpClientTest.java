@@ -34,6 +34,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -50,6 +51,7 @@ import static org.mockito.Mockito.when;
 
 class StandardHttpClientTest {
 
+  public static final String IO_ERROR_MESSAGE = "IO woopsie";
   private TestStandardHttpClient client;
 
   @BeforeEach
@@ -281,4 +283,26 @@ class StandardHttpClientTest {
     assertTrue(client.isClosed());
   }
 
+  @Test
+  void shouldUnwrapCompletionException() {
+    // Given
+
+    // When
+    final Throwable throwable = StandardHttpClient
+        .unwrapCompletionException(new CompletionException(new IOException(IO_ERROR_MESSAGE)));
+
+    // Then
+    assertThat(throwable).isInstanceOf(IOException.class).hasMessage(IO_ERROR_MESSAGE);
+  }
+
+  @Test
+  void shouldNotUnwrapOtherExceptions() {
+    // Given
+
+    // When
+    final Throwable throwable = StandardHttpClient.unwrapCompletionException(new IOException(IO_ERROR_MESSAGE));
+
+    // Then
+    assertThat(throwable).isInstanceOf(IOException.class).hasMessage(IO_ERROR_MESSAGE);
+  }
 }
