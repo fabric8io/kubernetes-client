@@ -37,7 +37,6 @@ import io.fabric8.kubernetes.client.readiness.Readiness;
 import io.fabric8.kubernetes.client.utils.IOHelpers;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.Utils;
-import io.sundr.builder.annotations.Buildable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -69,7 +68,7 @@ public class Config {
   private static final Logger LOGGER = LoggerFactory.getLogger(Config.class);
 
   /**
-   * Disables auto-configuration based on opinionated defaults in a {@link Config} object in the default constructor
+   * Disables auto-configuration based on opinionated defaults in a {@link Config} object in the all arguments constructor
    */
   public static final String KUBERNETES_DISABLE_AUTO_CONFIG_SYSTEM_PROPERTY = "kubernetes.disable.autoConfig";
   public static final String KUBERNETES_MASTER_SYSTEM_PROPERTY = "kubernetes.master";
@@ -151,21 +150,24 @@ public class Config {
 
   private static final String ACCESS_TOKEN = "access-token";
   private static final String ID_TOKEN = "id-token";
+  private static final int DEFAULT_WATCH_RECONNECT_INTERVAL = 1000;
+  private static final int DEFAULT_CONNECTION_TIMEOUT = 10 * 1000;
+  private static final String DEFAULT_CLIENT_KEY_PASSPHRASE = "changeit";
 
-  private boolean trustCerts;
-  private boolean disableHostnameVerification;
-  private String masterUrl = DEFAULT_MASTER_URL;
-  private String apiVersion = "v1";
+  private Boolean trustCerts;
+  private Boolean disableHostnameVerification;
+  private String masterUrl;
+  private String apiVersion;
   private String namespace;
-  private boolean defaultNamespace = true;
+  private Boolean defaultNamespace;
   private String caCertFile;
   private String caCertData;
   private String clientCertFile;
   private String clientCertData;
   private String clientKeyFile;
   private String clientKeyData;
-  private String clientKeyAlgo = "RSA";
-  private String clientKeyPassphrase = "changeit";
+  private String clientKeyAlgo;
+  private String clientKeyPassphrase;
   private String trustStoreFile;
   private String trustStorePassphrase;
   private String keyStoreFile;
@@ -177,27 +179,27 @@ public class Config {
   @JsonIgnore
   private volatile String autoOAuthToken;
   private OAuthTokenProvider oauthTokenProvider;
-  private long websocketPingInterval = DEFAULT_WEBSOCKET_PING_INTERVAL;
-  private int connectionTimeout = 10 * 1000;
-  private int maxConcurrentRequests = DEFAULT_MAX_CONCURRENT_REQUESTS;
-  private int maxConcurrentRequestsPerHost = DEFAULT_MAX_CONCURRENT_REQUESTS_PER_HOST;
+  private Long websocketPingInterval;
+  private Integer connectionTimeout;
+  private Integer maxConcurrentRequests;
+  private Integer maxConcurrentRequestsPerHost;
 
-  private RequestConfig requestConfig = new RequestConfig();
+  private final RequestConfig requestConfig;
 
-  private List<NamedContext> contexts = new ArrayList<>();
+  private List<NamedContext> contexts;
   private NamedContext currentContext = null;
 
   /**
    * fields not used but needed for builder generation.
    */
-  private int watchReconnectInterval = 1000;
-  private int watchReconnectLimit = -1;
-  private int uploadRequestTimeout = DEFAULT_UPLOAD_REQUEST_TIMEOUT;
-  private int requestRetryBackoffLimit;
-  private int requestRetryBackoffInterval;
-  private int requestTimeout = DEFAULT_REQUEST_TIMEOUT;
-  private long scaleTimeout = DEFAULT_SCALE_TIMEOUT;
-  private int loggingInterval = DEFAULT_LOGGING_INTERVAL;
+  private Integer watchReconnectInterval;
+  private Integer watchReconnectLimit;
+  private Integer uploadRequestTimeout;
+  private Integer requestRetryBackoffLimit;
+  private Integer requestRetryBackoffInterval;
+  private Integer requestTimeout;
+  private Long scaleTimeout;
+  private Integer loggingInterval;
   private String impersonateUsername;
 
   /**
@@ -211,28 +213,28 @@ public class Config {
    * end of fields not used but needed for builder generation.
    */
 
-  private boolean http2Disable;
+  private Boolean http2Disable;
   private String httpProxy;
   private String httpsProxy;
   private String proxyUsername;
   private String proxyPassword;
   private String[] noProxy;
-  private String userAgent = "fabric8-kubernetes-client/" + Version.clientVersion();
-  private TlsVersion[] tlsVersions = new TlsVersion[] { TlsVersion.TLS_1_3, TlsVersion.TLS_1_2 };
+  private String userAgent;
+  private TlsVersion[] tlsVersions;
 
-  private boolean onlyHttpWatches;
+  private Boolean onlyHttpWatches;
 
   /**
    * custom headers
    */
   private Map<String, String> customHeaders = null;
 
-  private boolean autoConfigure;
+  private Boolean autoConfigure;
 
   private File file;
 
   @JsonIgnore
-  protected Map<String, Object> additionalProperties = new HashMap<String, Object>();
+  protected Map<String, Object> additionalProperties = new HashMap<>();
 
   /**
    * @deprecated use {@link #autoConfigure(String)} or {@link ConfigBuilder} instead
@@ -242,14 +244,25 @@ public class Config {
     this(!disableAutoConfig());
   }
 
-  private static boolean disableAutoConfig() {
+  static boolean disableAutoConfig() {
     return Utils.getSystemPropertyOrEnvVar(KUBERNETES_DISABLE_AUTO_CONFIG_SYSTEM_PROPERTY, false);
   }
 
   private Config(boolean autoConfigure) {
-    if (autoConfigure) {
-      autoConfigure(this, null);
-    }
+    this(null, null, null, null, null,
+        null, null, null, null, null,
+        null, null, null, null, null,
+        null, null, null, null, null,
+        null, null, null, null,
+        null,
+        null, null, null, null,
+        null, null, null,
+        null,
+        null, null, null, null, null,
+        null, null, null,
+        null, null, null,
+        null, null, null, null,
+        null, autoConfigure, true);
   }
 
   /**
@@ -315,7 +328,7 @@ public class Config {
   }
 
   @Deprecated
-  public Config(String masterUrl, String apiVersion, String namespace, boolean trustCerts, boolean disableHostnameVerification,
+  public Config(String masterUrl, String apiVersion, String namespace, Boolean trustCerts, boolean disableHostnameVerification,
       String caCertFile, String caCertData, String clientCertFile, String clientCertData, String clientKeyFile,
       String clientKeyData, String clientKeyAlgo, String clientKeyPassphrase, String username, String password,
       String oauthToken, String autoOAuthToken, int watchReconnectInterval, int watchReconnectLimit, int connectionTimeout,
@@ -336,8 +349,8 @@ public class Config {
         DEFAULT_UPLOAD_REQUEST_TIMEOUT, false, null, Collections.emptyList());
   }
 
-  @Buildable(builderPackage = "io.fabric8.kubernetes.api.builder", editableEnabled = false)
-  public Config(String masterUrl, String apiVersion, String namespace, boolean trustCerts, boolean disableHostnameVerification,
+  @Deprecated
+  public Config(String masterUrl, String apiVersion, String namespace, Boolean trustCerts, boolean disableHostnameVerification,
       String caCertFile, String caCertData, String clientCertFile, String clientCertData, String clientKeyFile,
       String clientKeyData, String clientKeyAlgo, String clientKeyPassphrase, String username, String password,
       String oauthToken, String autoOAuthToken, int watchReconnectInterval, int watchReconnectLimit, int connectionTimeout,
@@ -350,56 +363,238 @@ public class Config {
       OAuthTokenProvider oauthTokenProvider, Map<String, String> customHeaders, int requestRetryBackoffLimit,
       int requestRetryBackoffInterval, int uploadRequestTimeout, boolean onlyHttpWatches, NamedContext currentContext,
       List<NamedContext> contexts) {
-    this.apiVersion = apiVersion;
-    this.namespace = namespace;
-    this.trustCerts = trustCerts;
-    this.disableHostnameVerification = disableHostnameVerification;
-    this.caCertFile = caCertFile;
-    this.caCertData = caCertData;
-    this.clientCertFile = clientCertFile;
-    this.clientCertData = clientCertData;
-    this.clientKeyFile = clientKeyFile;
-    this.clientKeyData = clientKeyData;
-    this.clientKeyAlgo = clientKeyAlgo;
-    this.clientKeyPassphrase = clientKeyPassphrase;
-    this.username = username;
-    this.password = password;
-    this.oauthToken = oauthToken;
-    this.websocketPingInterval = websocketPingInterval;
-    this.connectionTimeout = connectionTimeout;
+    this(masterUrl, apiVersion, namespace, trustCerts, disableHostnameVerification, caCertFile, caCertData,
+        clientCertFile, clientCertData, clientKeyFile, clientKeyData, clientKeyAlgo, clientKeyPassphrase, username,
+        password, oauthToken, autoOAuthToken, watchReconnectInterval, watchReconnectLimit, connectionTimeout, requestTimeout,
+        scaleTimeout, loggingInterval, maxConcurrentRequests, maxConcurrentRequestsPerHost, http2Disable,
+        httpProxy, httpsProxy, noProxy, userAgent, tlsVersions, websocketPingInterval, proxyUsername, proxyPassword,
+        trustStoreFile, trustStorePassphrase, keyStoreFile, keyStorePassphrase, impersonateUsername, impersonateGroups,
+        impersonateExtras, oauthTokenProvider, customHeaders, requestRetryBackoffLimit, requestRetryBackoffInterval,
+        uploadRequestTimeout, onlyHttpWatches, currentContext, contexts, false, true);
+  }
 
-    this.requestConfig = new RequestConfig(watchReconnectLimit, watchReconnectInterval,
-        requestTimeout, scaleTimeout, loggingInterval,
-        requestRetryBackoffLimit, requestRetryBackoffInterval, uploadRequestTimeout);
-    this.requestConfig.setImpersonateUsername(impersonateUsername);
-    this.requestConfig.setImpersonateGroups(impersonateGroups);
-    this.requestConfig.setImpersonateExtras(impersonateExtras);
+  public Config(String masterUrl, String apiVersion, String namespace, Boolean trustCerts, Boolean disableHostnameVerification,
+      String caCertFile, String caCertData, String clientCertFile, String clientCertData, String clientKeyFile,
+      String clientKeyData, String clientKeyAlgo, String clientKeyPassphrase, String username, String password,
+      String oauthToken, String autoOAuthToken, Integer watchReconnectInterval, Integer watchReconnectLimit,
+      Integer connectionTimeout,
+      Integer requestTimeout,
+      Long scaleTimeout, Integer loggingInterval, Integer maxConcurrentRequests, Integer maxConcurrentRequestsPerHost,
+      Boolean http2Disable, String httpProxy, String httpsProxy, String[] noProxy,
+      String userAgent, TlsVersion[] tlsVersions, Long websocketPingInterval, String proxyUsername,
+      String proxyPassword, String trustStoreFile, String trustStorePassphrase, String keyStoreFile, String keyStorePassphrase,
+      String impersonateUsername, String[] impersonateGroups, Map<String, List<String>> impersonateExtras,
+      OAuthTokenProvider oauthTokenProvider, Map<String, String> customHeaders, Integer requestRetryBackoffLimit,
+      Integer requestRetryBackoffInterval, Integer uploadRequestTimeout, Boolean onlyHttpWatches, NamedContext currentContext,
+      List<NamedContext> contexts, Boolean autoConfigure) {
+    this(masterUrl, apiVersion, namespace, trustCerts, disableHostnameVerification, caCertFile, caCertData,
+        clientCertFile, clientCertData, clientKeyFile, clientKeyData, clientKeyAlgo, clientKeyPassphrase, username,
+        password, oauthToken, autoOAuthToken, watchReconnectInterval, watchReconnectLimit, connectionTimeout, requestTimeout,
+        scaleTimeout, loggingInterval, maxConcurrentRequests, maxConcurrentRequestsPerHost, http2Disable,
+        httpProxy, httpsProxy, noProxy, userAgent, tlsVersions, websocketPingInterval, proxyUsername, proxyPassword,
+        trustStoreFile, trustStorePassphrase, keyStoreFile, keyStorePassphrase, impersonateUsername, impersonateGroups,
+        impersonateExtras, oauthTokenProvider, customHeaders, requestRetryBackoffLimit, requestRetryBackoffInterval,
+        uploadRequestTimeout, onlyHttpWatches, currentContext, contexts, autoConfigure, true);
+  }
 
-    this.http2Disable = http2Disable;
-    this.httpProxy = httpProxy;
-    this.httpsProxy = httpsProxy;
-    this.noProxy = noProxy;
-    this.proxyUsername = proxyUsername;
-    this.proxyPassword = proxyPassword;
-    this.userAgent = userAgent;
-    this.tlsVersions = tlsVersions;
-    this.trustStoreFile = trustStoreFile;
-    this.trustStorePassphrase = trustStorePassphrase;
-    this.keyStoreFile = keyStoreFile;
-    this.keyStorePassphrase = keyStorePassphrase;
+  /*
+   * The Builder is generated in SundrioConfig, if new fields need to be added here, please make sure to add them there too.
+   */
+  Config(String masterUrl, String apiVersion, String namespace, Boolean trustCerts, Boolean disableHostnameVerification,
+      String caCertFile, String caCertData, String clientCertFile, String clientCertData, String clientKeyFile,
+      String clientKeyData, String clientKeyAlgo, String clientKeyPassphrase, String username, String password,
+      String oauthToken, String autoOAuthToken, Integer watchReconnectInterval, Integer watchReconnectLimit,
+      Integer connectionTimeout,
+      Integer requestTimeout,
+      Long scaleTimeout, Integer loggingInterval, Integer maxConcurrentRequests, Integer maxConcurrentRequestsPerHost,
+      Boolean http2Disable, String httpProxy, String httpsProxy, String[] noProxy,
+      String userAgent, TlsVersion[] tlsVersions, Long websocketPingInterval, String proxyUsername,
+      String proxyPassword, String trustStoreFile, String trustStorePassphrase, String keyStoreFile, String keyStorePassphrase,
+      String impersonateUsername, String[] impersonateGroups, Map<String, List<String>> impersonateExtras,
+      OAuthTokenProvider oauthTokenProvider, Map<String, String> customHeaders, Integer requestRetryBackoffLimit,
+      Integer requestRetryBackoffInterval, Integer uploadRequestTimeout, Boolean onlyHttpWatches, NamedContext currentContext,
+      List<NamedContext> contexts, Boolean autoConfigure, Boolean shouldSetDefaultValues) {
+    if (Boolean.TRUE.equals(shouldSetDefaultValues)) {
+      this.masterUrl = DEFAULT_MASTER_URL;
+      this.apiVersion = "v1";
+      this.defaultNamespace = true;
+      this.trustCerts = false;
+      this.disableHostnameVerification = false;
+      this.onlyHttpWatches = false;
+      this.http2Disable = false;
+      this.clientKeyAlgo = "RSA";
+      this.clientKeyPassphrase = DEFAULT_CLIENT_KEY_PASSPHRASE;
+      this.websocketPingInterval = DEFAULT_WEBSOCKET_PING_INTERVAL;
+      this.connectionTimeout = DEFAULT_CONNECTION_TIMEOUT;
+      this.maxConcurrentRequests = DEFAULT_MAX_CONCURRENT_REQUESTS;
+      this.maxConcurrentRequestsPerHost = DEFAULT_MAX_CONCURRENT_REQUESTS_PER_HOST;
+      this.contexts = new ArrayList<>();
+      this.watchReconnectInterval = DEFAULT_WATCH_RECONNECT_INTERVAL;
+      this.watchReconnectLimit = -1;
+      this.uploadRequestTimeout = DEFAULT_UPLOAD_REQUEST_TIMEOUT;
+      this.requestRetryBackoffInterval = DEFAULT_REQUEST_RETRY_BACKOFFINTERVAL;
+      this.requestRetryBackoffLimit = DEFAULT_REQUEST_RETRY_BACKOFFLIMIT;
+      this.requestTimeout = DEFAULT_REQUEST_TIMEOUT;
+      this.scaleTimeout = DEFAULT_SCALE_TIMEOUT;
+      this.loggingInterval = DEFAULT_LOGGING_INTERVAL;
+      this.userAgent = "fabric8-kubernetes-client/" + Version.clientVersion();
+      this.tlsVersions = new TlsVersion[] { TlsVersion.TLS_1_3, TlsVersion.TLS_1_2 };
+      this.requestConfig = new RequestConfig(this.watchReconnectLimit, this.watchReconnectInterval,
+          this.requestTimeout, this.scaleTimeout, this.loggingInterval,
+          this.requestRetryBackoffLimit, this.requestRetryBackoffInterval, this.uploadRequestTimeout);
+    } else {
+      this.requestConfig = new RequestConfig(null, null, null, null, null, null, null, null);
+    }
+
+    if (Boolean.TRUE.equals(autoConfigure)) {
+      autoConfigure(this, null);
+    }
+    if (Utils.isNotNullOrEmpty(apiVersion)) {
+      this.apiVersion = apiVersion;
+    }
+    if (Utils.isNotNullOrEmpty(masterUrl)) {
+      this.masterUrl = masterUrl;
+    }
+    if (Utils.isNotNullOrEmpty(namespace)) {
+      this.namespace = namespace;
+    }
+    if (Boolean.TRUE.equals(trustCerts)) {
+      this.trustCerts = true;
+    }
+    if (Boolean.TRUE.equals(disableHostnameVerification)) {
+      this.disableHostnameVerification = true;
+    }
+    if (Utils.isNotNullOrEmpty(caCertFile)) {
+      this.caCertFile = caCertFile;
+    }
+    if (Utils.isNotNullOrEmpty(caCertData)) {
+      this.caCertData = caCertData;
+    }
+    if (Utils.isNotNullOrEmpty(clientCertFile)) {
+      this.clientCertFile = clientCertFile;
+    }
+    if (Utils.isNotNullOrEmpty(clientCertData)) {
+      this.clientCertData = clientCertData;
+    }
+    if (Utils.isNotNullOrEmpty(clientKeyFile)) {
+      this.clientKeyFile = clientKeyFile;
+    }
+    if (Utils.isNotNullOrEmpty(clientKeyData)) {
+      this.clientKeyData = clientKeyData;
+    }
+    if (Utils.isNotNullOrEmpty(clientKeyAlgo)) {
+      this.clientKeyAlgo = clientKeyAlgo;
+    }
+    if (Utils.isNotNullOrEmpty(clientKeyPassphrase)) {
+      this.clientKeyPassphrase = clientKeyPassphrase;
+    }
+    if (Utils.isNotNullOrEmpty(username)) {
+      this.username = username;
+    }
+    if (Utils.isNotNullOrEmpty(password)) {
+      this.password = password;
+    }
+    if (Utils.isNotNullOrEmpty(oauthToken)) {
+      this.oauthToken = oauthToken;
+    }
+    if (websocketPingInterval != null) {
+      this.websocketPingInterval = websocketPingInterval;
+    }
+    if (connectionTimeout != null) {
+      this.connectionTimeout = connectionTimeout;
+    }
+    if (watchReconnectLimit != null) {
+      setWatchReconnectLimit(watchReconnectLimit);
+    }
+    if (watchReconnectInterval != null) {
+      setWatchReconnectInterval(watchReconnectInterval);
+    }
+    if (requestTimeout != null) {
+      setRequestTimeout(requestTimeout);
+    }
+    if (scaleTimeout != null) {
+      setScaleTimeout(scaleTimeout);
+    }
+    if (loggingInterval != null) {
+      setLoggingInterval(loggingInterval);
+    }
+    if (requestRetryBackoffLimit != null) {
+      setRequestRetryBackoffLimit(requestRetryBackoffLimit);
+    }
+    if (requestRetryBackoffInterval != null) {
+      setRequestRetryBackoffInterval(requestRetryBackoffInterval);
+    }
+    if (uploadRequestTimeout != null) {
+      setUploadRequestTimeout(uploadRequestTimeout);
+    }
+    if (Utils.isNotNullOrEmpty(impersonateUsername)) {
+      setImpersonateUsername(impersonateUsername);
+    }
+    if (Utils.isNotNullOrEmpty(impersonateGroups)) {
+      setImpersonateGroups(impersonateGroups);
+    }
+    if (Utils.isNotNullOrEmpty(impersonateExtras)) {
+      setImpersonateExtras(impersonateExtras);
+    }
+    if (http2Disable != null) {
+      this.http2Disable = http2Disable;
+    }
+    if (Utils.isNotNullOrEmpty(httpProxy)) {
+      this.httpProxy = httpProxy;
+    }
+    if (Utils.isNotNullOrEmpty(httpsProxy)) {
+      this.httpsProxy = httpsProxy;
+    }
+    if (Utils.isNotNullOrEmpty(noProxy)) {
+      this.noProxy = noProxy;
+    }
+    if (Utils.isNotNullOrEmpty(proxyUsername)) {
+      this.proxyUsername = proxyUsername;
+    }
+    if (Utils.isNotNullOrEmpty(proxyPassword)) {
+      this.proxyPassword = proxyPassword;
+    }
+    if (Utils.isNotNullOrEmpty(userAgent)) {
+      this.userAgent = userAgent;
+    }
+    if (tlsVersions != null && tlsVersions.length > 0) {
+      this.tlsVersions = tlsVersions;
+    }
+    if (Utils.isNotNullOrEmpty(trustStoreFile)) {
+      this.trustStoreFile = trustStoreFile;
+    }
+    if (Utils.isNotNullOrEmpty(trustStorePassphrase)) {
+      this.trustStorePassphrase = trustStorePassphrase;
+    }
+    if (Utils.isNotNullOrEmpty(keyStoreFile)) {
+      this.keyStoreFile = keyStoreFile;
+    }
+    if (Utils.isNotNullOrEmpty(keyStorePassphrase)) {
+      this.keyStorePassphrase = keyStorePassphrase;
+    }
+    if (maxConcurrentRequests != null) {
+      this.maxConcurrentRequests = maxConcurrentRequests;
+    }
+    if (maxConcurrentRequestsPerHost != null) {
+      this.maxConcurrentRequestsPerHost = maxConcurrentRequestsPerHost;
+    }
+    if (Utils.isNotNullOrEmpty(autoOAuthToken)) {
+      this.autoOAuthToken = autoOAuthToken;
+    }
+    if (contexts != null && !contexts.isEmpty()) {
+      this.contexts = contexts;
+    }
+    if (Utils.isNotNull(currentContext)) {
+      this.currentContext = currentContext;
+    }
+
+    if (Utils.isNotNullOrEmpty(this.masterUrl)) {
+      this.masterUrl = ensureEndsWithSlash(ensureHttps(this.masterUrl, this));
+    }
+    this.autoConfigure = autoConfigure;
     this.oauthTokenProvider = oauthTokenProvider;
     this.customHeaders = customHeaders;
-
-    //We need to keep this after ssl configuration & masterUrl
-    //We set the masterUrl because it's needed by ensureHttps
-    this.masterUrl = masterUrl;
-    this.masterUrl = ensureEndsWithSlash(ensureHttps(masterUrl, this));
-    this.maxConcurrentRequests = maxConcurrentRequests;
-    this.maxConcurrentRequestsPerHost = maxConcurrentRequestsPerHost;
-    this.autoOAuthToken = autoOAuthToken;
     this.onlyHttpWatches = onlyHttpWatches;
-    this.contexts = contexts;
-    this.currentContext = currentContext;
   }
 
   public static void configFromSysPropsOrEnvVars(Config config) {
@@ -443,7 +638,7 @@ public class Config {
 
     String configuredImpersonateGroups = Utils.getSystemPropertyOrEnvVar(KUBERNETES_IMPERSONATE_GROUP, Arrays
         .stream(Optional.ofNullable(config.getImpersonateGroups()).orElse(new String[0])).collect(Collectors.joining(",")));
-    if (configuredImpersonateGroups != null) {
+    if (Utils.isNotNullOrEmpty(configuredImpersonateGroups)) {
       config.setImpersonateGroups(configuredImpersonateGroups.split(","));
     }
 
@@ -1149,6 +1344,10 @@ public class Config {
 
   @JsonProperty("trustCerts")
   public boolean isTrustCerts() {
+    return Optional.ofNullable(trustCerts).orElse(false);
+  }
+
+  Boolean getTrustCerts() {
     return trustCerts;
   }
 
@@ -1158,6 +1357,10 @@ public class Config {
 
   @JsonProperty("disableHostnameVerification")
   public boolean isDisableHostnameVerification() {
+    return Optional.ofNullable(disableHostnameVerification).orElse(false);
+  }
+
+  Boolean getDisableHostnameVerification() {
     return disableHostnameVerification;
   }
 
@@ -1166,20 +1369,20 @@ public class Config {
   }
 
   @JsonProperty("watchReconnectInterval")
-  public int getWatchReconnectInterval() {
+  public Integer getWatchReconnectInterval() {
     return requestConfig.getWatchReconnectInterval();
   }
 
-  public void setWatchReconnectInterval(int watchReconnectInterval) {
+  public void setWatchReconnectInterval(Integer watchReconnectInterval) {
     this.requestConfig.setWatchReconnectInterval(watchReconnectInterval);
   }
 
   @JsonProperty("watchReconnectLimit")
-  public int getWatchReconnectLimit() {
+  public Integer getWatchReconnectLimit() {
     return getRequestConfig().getWatchReconnectLimit();
   }
 
-  public void setWatchReconnectLimit(int watchReconnectLimit) {
+  public void setWatchReconnectLimit(Integer watchReconnectLimit) {
     this.requestConfig.setWatchReconnectLimit(watchReconnectLimit);
   }
 
@@ -1188,74 +1391,78 @@ public class Config {
   }
 
   @JsonProperty("connectionTimeout")
-  public int getConnectionTimeout() {
+  public Integer getConnectionTimeout() {
     return connectionTimeout;
   }
 
-  public void setConnectionTimeout(int connectionTimeout) {
+  public void setConnectionTimeout(Integer connectionTimeout) {
     this.connectionTimeout = connectionTimeout;
   }
 
   @JsonProperty("uploadRequestTimeout")
-  public int getUploadRequestTimeout() {
+  public Integer getUploadRequestTimeout() {
     return getRequestConfig().getUploadRequestTimeout();
   }
 
-  public void setUploadRequestTimeout(int requestTimeout) {
+  public void setUploadRequestTimeout(Integer requestTimeout) {
     this.requestConfig.setUploadRequestTimeout(requestTimeout);
   }
 
   @JsonProperty("requestTimeout")
-  public int getRequestTimeout() {
+  public Integer getRequestTimeout() {
     return getRequestConfig().getRequestTimeout();
   }
 
-  public void setRequestTimeout(int requestTimeout) {
+  public void setRequestTimeout(Integer requestTimeout) {
     this.requestConfig.setRequestTimeout(requestTimeout);
   }
 
   @JsonProperty("requestRetryBackoffLimit")
-  public int getRequestRetryBackoffLimit() {
+  public Integer getRequestRetryBackoffLimit() {
     return getRequestConfig().getRequestRetryBackoffLimit();
   }
 
-  public void setRequestRetryBackoffLimit(int requestRetryBackoffLimit) {
+  public void setRequestRetryBackoffLimit(Integer requestRetryBackoffLimit) {
     requestConfig.setRequestRetryBackoffLimit(requestRetryBackoffLimit);
   }
 
   @JsonProperty("requestRetryBackoffInterval")
-  public int getRequestRetryBackoffInterval() {
+  public Integer getRequestRetryBackoffInterval() {
     return getRequestConfig().getRequestRetryBackoffInterval();
   }
 
-  public void setRequestRetryBackoffInterval(int requestRetryBackoffInterval) {
+  public void setRequestRetryBackoffInterval(Integer requestRetryBackoffInterval) {
     requestConfig.setRequestRetryBackoffInterval(requestRetryBackoffInterval);
   }
 
   @JsonProperty("scaleTimeout")
-  public long getScaleTimeout() {
+  public Long getScaleTimeout() {
     return getRequestConfig().getScaleTimeout();
   }
 
-  public void setScaleTimeout(long scaleTimeout) {
+  public void setScaleTimeout(Long scaleTimeout) {
     this.requestConfig.setScaleTimeout(scaleTimeout);
   }
 
   @JsonProperty("loggingInterval")
-  public int getLoggingInterval() {
+  public Integer getLoggingInterval() {
     return getRequestConfig().getLoggingInterval();
   }
 
-  public void setLoggingInterval(int loggingInterval) {
+  public void setLoggingInterval(Integer loggingInterval) {
     this.requestConfig.setLoggingInterval(loggingInterval);
   }
 
   @JsonProperty("http2Disable")
   public boolean isHttp2Disable() {
+    return Optional.ofNullable(http2Disable).orElse(false);
+  }
+
+  Boolean getHttp2Disable() {
     return http2Disable;
   }
 
-  public void setHttp2Disable(boolean http2Disable) {
+  public void setHttp2Disable(Boolean http2Disable) {
     this.http2Disable = http2Disable;
   }
 
@@ -1297,7 +1504,7 @@ public class Config {
 
   @JsonProperty("defaultNamespace")
   public boolean isDefaultNamespace() {
-    return defaultNamespace;
+    return Optional.ofNullable(defaultNamespace).orElse(true);
   }
 
   public void setDefaultNamespace(boolean defaultNamespace) {
@@ -1323,27 +1530,27 @@ public class Config {
   }
 
   @JsonProperty("websocketPingInterval")
-  public long getWebsocketPingInterval() {
+  public Long getWebsocketPingInterval() {
     return websocketPingInterval;
   }
 
-  public void setWebsocketPingInterval(long websocketPingInterval) {
+  public void setWebsocketPingInterval(Long websocketPingInterval) {
     this.websocketPingInterval = websocketPingInterval;
   }
 
-  public int getMaxConcurrentRequests() {
+  public Integer getMaxConcurrentRequests() {
     return maxConcurrentRequests;
   }
 
-  public void setMaxConcurrentRequests(int maxConcurrentRequests) {
+  public void setMaxConcurrentRequests(Integer maxConcurrentRequests) {
     this.maxConcurrentRequests = maxConcurrentRequests;
   }
 
-  public int getMaxConcurrentRequestsPerHost() {
+  public Integer getMaxConcurrentRequestsPerHost() {
     return maxConcurrentRequestsPerHost;
   }
 
-  public void setMaxConcurrentRequestsPerHost(int maxConcurrentRequestsPerHost) {
+  public void setMaxConcurrentRequestsPerHost(Integer maxConcurrentRequestsPerHost) {
     this.maxConcurrentRequestsPerHost = maxConcurrentRequestsPerHost;
   }
 
@@ -1423,7 +1630,7 @@ public class Config {
     this.customHeaders = customHeaders;
   }
 
-  public boolean getAutoConfigure() {
+  public Boolean getAutoConfigure() {
     return autoConfigure;
   }
 
@@ -1507,7 +1714,7 @@ public class Config {
   }
 
   public boolean isOnlyHttpWatches() {
-    return onlyHttpWatches;
+    return Optional.ofNullable(onlyHttpWatches).orElse(false);
   }
 
   public void setOnlyHttpWatches(boolean onlyHttpWatches) {

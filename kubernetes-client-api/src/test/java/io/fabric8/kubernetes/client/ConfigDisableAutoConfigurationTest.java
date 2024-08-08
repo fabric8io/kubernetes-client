@@ -21,7 +21,6 @@ import io.fabric8.kubernetes.client.http.TlsVersion;
 import io.fabric8.kubernetes.client.utils.Utils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -112,7 +111,7 @@ class ConfigDisableAutoConfigurationTest {
             .withWatchReconnectLimit(10)
             .withConnectionTimeout(1000)
             .withRequestTimeout(1000)
-            .withScaleTimeout(1000)
+            .withScaleTimeout(1000L)
             .withLoggingInterval(1000)
             .withWebsocketPingInterval(10000L)
             .withUploadRequestTimeout(1000)
@@ -214,7 +213,7 @@ class ConfigDisableAutoConfigurationTest {
             .withWatchReconnectLimit(10)
             .withConnectionTimeout(1000)
             .withRequestTimeout(1000)
-            .withScaleTimeout(1000)
+            .withScaleTimeout(1000L)
             .withLoggingInterval(1000)
             .withWebsocketPingInterval(10000L)
             .withUploadRequestTimeout(1000)
@@ -314,7 +313,7 @@ class ConfigDisableAutoConfigurationTest {
             .withWatchReconnectLimit(10)
             .withConnectionTimeout(1000)
             .withRequestTimeout(1000)
-            .withScaleTimeout(1000)
+            .withScaleTimeout(1000L)
             .withLoggingInterval(1000)
             .withWebsocketPingInterval(10000L)
             .withUploadRequestTimeout(1000)
@@ -361,7 +360,6 @@ class ConfigDisableAutoConfigurationTest {
   }
 
   @Nested
-  @Disabled("https://github.com/fabric8io/kubernetes-client/issues/6137")
   @DisplayName("With autoConfigure(false) in ConfigBuilder")
   class AutoConfigDisabledViaBuilder {
     private ConfigBuilder configBuilder;
@@ -431,7 +429,7 @@ class ConfigDisableAutoConfigurationTest {
             .withWatchReconnectLimit(10)
             .withConnectionTimeout(1000)
             .withRequestTimeout(1000)
-            .withScaleTimeout(1000)
+            .withScaleTimeout(1000L)
             .withLoggingInterval(1000)
             .withWebsocketPingInterval(10000L)
             .withUploadRequestTimeout(1000)
@@ -533,7 +531,7 @@ class ConfigDisableAutoConfigurationTest {
             .withWatchReconnectLimit(10)
             .withConnectionTimeout(1000)
             .withRequestTimeout(1000)
-            .withScaleTimeout(1000)
+            .withScaleTimeout(1000L)
             .withLoggingInterval(1000)
             .withWebsocketPingInterval(10000L)
             .withUploadRequestTimeout(1000)

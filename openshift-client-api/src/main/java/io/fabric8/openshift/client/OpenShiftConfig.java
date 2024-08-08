@@ -52,8 +52,8 @@ public class OpenShiftConfig extends Config {
   // dummy fields so that Builder is created correctly
   private String oapiVersion;
   private String openShiftUrl;
-  private long buildTimeout;
-  private boolean disableApiGroupCheck; //If group hasn't been explicitly set.
+  private Long buildTimeout;
+  private Boolean disableApiGroupCheck; //If group hasn't been explicitly set.
 
   //This is not meant to be used. This constructor is used only by the generated builder.
   OpenShiftConfig() {
@@ -73,22 +73,22 @@ public class OpenShiftConfig extends Config {
   @Buildable(builderPackage = "io.fabric8.kubernetes.api.builder", editableEnabled = false, refs = {
       @BuildableReference(Config.class) })
   public OpenShiftConfig(String openShiftUrl, String oapiVersion, String masterUrl, String apiVersion, String namespace,
-      boolean trustCerts, boolean disableHostnameVerification, String caCertFile, String caCertData,
+      Boolean trustCerts, Boolean disableHostnameVerification, String caCertFile, String caCertData,
       String clientCertFile,
       String clientCertData, String clientKeyFile, String clientKeyData, String clientKeyAlgo,
       String clientKeyPassphrase,
-      String username, String password, String oauthToken, String autoOAuthToken, int watchReconnectInterval,
-      int watchReconnectLimit,
-      int connectionTimeout, int requestTimeout, long scaleTimeout, int loggingInterval,
-      int maxConcurrentRequests, int maxConcurrentRequestsPerHost, boolean http2Disable, String httpProxy,
+      String username, String password, String oauthToken, String autoOAuthToken, Integer watchReconnectInterval,
+      Integer watchReconnectLimit,
+      Integer connectionTimeout, Integer requestTimeout, Long scaleTimeout, Integer loggingInterval,
+      Integer maxConcurrentRequests, Integer maxConcurrentRequestsPerHost, Boolean http2Disable, String httpProxy,
       String httpsProxy,
       String[] noProxy, String userAgent, TlsVersion[] tlsVersions,
-      long websocketPingInterval, String proxyUsername, String proxyPassword, String trustStoreFile,
+      Long websocketPingInterval, String proxyUsername, String proxyPassword, String trustStoreFile,
       String trustStorePassphrase, String keyStoreFile, String keyStorePassphrase, String impersonateUsername,
       String[] impersonateGroups, Map<String, List<String>> impersonateExtras, OAuthTokenProvider oauthTokenProvider,
-      Map<String, String> customHeaders, int requestRetryBackoffLimit, int requestRetryBackoffInterval,
-      int uploadRequestTimeout, boolean onlyHttpWatches, long buildTimeout,
-      boolean disableApiGroupCheck, NamedContext currentContext, List<NamedContext> contexts) {
+      Map<String, String> customHeaders, Integer requestRetryBackoffLimit, Integer requestRetryBackoffInterval,
+      Integer uploadRequestTimeout, Boolean onlyHttpWatches, Long buildTimeout,
+      Boolean disableApiGroupCheck, NamedContext currentContext, List<NamedContext> contexts, Boolean autoConfigure) {
     super(masterUrl, apiVersion, namespace, trustCerts, disableHostnameVerification, caCertFile, caCertData,
         clientCertFile,
         clientCertData, clientKeyFile, clientKeyData, clientKeyAlgo, clientKeyPassphrase, username, password,
@@ -100,7 +100,7 @@ public class OpenShiftConfig extends Config {
         impersonateExtras, oauthTokenProvider, customHeaders,
         requestRetryBackoffLimit,
         requestRetryBackoffInterval,
-        uploadRequestTimeout, onlyHttpWatches, currentContext, contexts);
+        uploadRequestTimeout, onlyHttpWatches, currentContext, contexts, autoConfigure);
     this.setOapiVersion(oapiVersion);
     this.setBuildTimeout(buildTimeout);
     this.setDisableApiGroupCheck(disableApiGroupCheck);
@@ -144,7 +144,8 @@ public class OpenShiftConfig extends Config {
         buildTimeout,
         false,
         kubernetesConfig.getCurrentContext(),
-        kubernetesConfig.getContexts());
+        kubernetesConfig.getContexts(),
+        kubernetesConfig.getAutoConfigure());
   }
 
   public static OpenShiftConfig wrap(Config config) {
