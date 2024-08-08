@@ -58,17 +58,6 @@ class KubernetesTest {
   }
 
   @Test
-  void metrics() {
-    new ModelGenerator(baseSettings
-        .clearSchemas()
-        .schema(new File("../schemas/metrics.json"))
-        .includeGenerationRegex("^io\\.k8s\\.metrics\\.pkg\\.apis\\.metrics\\..*$")
-        .packageMapping("io.k8s.metrics.pkg.apis.metrics", "io.fabric8.kubernetes.api.model.metrics")
-        .build())
-        .generate();
-  }
-
-  @Test
   void node() {
     new ModelGenerator(baseSettings
         .clearSchemas()
