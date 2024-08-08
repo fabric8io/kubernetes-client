@@ -18,10 +18,17 @@ package io.fabric8.kubernetes.client.jdkhttp;
 import io.fabric8.kubernetes.client.http.AbstractHttpPutTest;
 import io.fabric8.kubernetes.client.http.HttpClient;
 
+import java.io.IOException;
+
 @SuppressWarnings("java:S2187")
 public class JdkHttpClientPutTest extends AbstractHttpPutTest {
   @Override
   protected HttpClient.Factory getHttpClientFactory() {
     return new JdkHttpClientFactory();
+  }
+
+  @Override
+  protected Class<? extends Exception> getConnectionFailedExceptionType() {
+    return IOException.class;
   }
 }

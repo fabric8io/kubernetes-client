@@ -18,10 +18,17 @@ package io.fabric8.kubernetes.client.jetty;
 import io.fabric8.kubernetes.client.http.AbstractHttpPutTest;
 import io.fabric8.kubernetes.client.http.HttpClient;
 
+import java.net.ConnectException;
+
 @SuppressWarnings("java:S2187")
 public class JettyHttpPutTest extends AbstractHttpPutTest {
   @Override
   protected HttpClient.Factory getHttpClientFactory() {
     return new JettyHttpClientFactory();
+  }
+
+  @Override
+  protected Class<? extends Exception> getConnectionFailedExceptionType() {
+    return ConnectException.class;
   }
 }
