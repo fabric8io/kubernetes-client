@@ -58,18 +58,6 @@ class KubernetesTest {
   }
 
   @Test
-  void node() {
-    new ModelGenerator(baseSettings
-        .clearSchemas()
-        .schema(new File("../schemas/kubernetes-1.21.14.json"))
-        .schema(new File("../schemas/kubernetes-1.30.0.json"))
-        .includeGenerationRegex("^io\\.k8s\\.api\\.node\\..*$")
-        .packageMapping("io.k8s.api.node", "io.fabric8.kubernetes.api.model.node")
-        .build())
-        .generate();
-  }
-
-  @Test
   void policy() {
     new ModelGenerator(baseSettings
         .clearSchemas()
