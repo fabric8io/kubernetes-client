@@ -37,22 +37,22 @@ public class RequestConfig {
   private String[] impersonateGroups = new String[0];
 
   private Map<String, List<String>> impersonateExtras = new HashMap<>();
-  private int watchReconnectInterval = 1000;
-  private int watchReconnectLimit = -1;
-  private int uploadRequestTimeout = DEFAULT_UPLOAD_REQUEST_TIMEOUT;
-  private int requestRetryBackoffLimit = DEFAULT_REQUEST_RETRY_BACKOFFLIMIT;
-  private int requestRetryBackoffInterval = DEFAULT_REQUEST_RETRY_BACKOFFINTERVAL;
-  private int requestTimeout = DEFAULT_REQUEST_TIMEOUT;
-  private long scaleTimeout = DEFAULT_SCALE_TIMEOUT;
-  private int loggingInterval = DEFAULT_LOGGING_INTERVAL;
+  private Integer watchReconnectInterval = 1000;
+  private Integer watchReconnectLimit = -1;
+  private Integer uploadRequestTimeout = DEFAULT_UPLOAD_REQUEST_TIMEOUT;
+  private Integer requestRetryBackoffLimit = DEFAULT_REQUEST_RETRY_BACKOFFLIMIT;
+  private Integer requestRetryBackoffInterval = DEFAULT_REQUEST_RETRY_BACKOFFINTERVAL;
+  private Integer requestTimeout = DEFAULT_REQUEST_TIMEOUT;
+  private Long scaleTimeout = DEFAULT_SCALE_TIMEOUT;
+  private Integer loggingInterval = DEFAULT_LOGGING_INTERVAL;
 
   RequestConfig() {
   }
 
   @Buildable(builderPackage = "io.fabric8.kubernetes.api.builder", editableEnabled = false)
-  public RequestConfig(int watchReconnectLimit, int watchReconnectInterval, int requestTimeout,
-      long scaleTimeout, int loggingInterval, int requestRetryBackoffLimit,
-      int requestRetryBackoffInterval, int uploadRequestTimeout) {
+  public RequestConfig(Integer watchReconnectLimit, Integer watchReconnectInterval, Integer requestTimeout,
+      Long scaleTimeout, Integer loggingInterval, Integer requestRetryBackoffLimit,
+      Integer requestRetryBackoffInterval, Integer uploadRequestTimeout) {
     this.watchReconnectLimit = watchReconnectLimit;
     this.watchReconnectInterval = watchReconnectInterval;
     this.requestTimeout = requestTimeout;
@@ -63,67 +63,67 @@ public class RequestConfig {
     this.uploadRequestTimeout = uploadRequestTimeout;
   }
 
-  public int getWatchReconnectInterval() {
+  public Integer getWatchReconnectInterval() {
     return watchReconnectInterval;
   }
 
-  public void setWatchReconnectInterval(int watchReconnectInterval) {
+  public void setWatchReconnectInterval(Integer watchReconnectInterval) {
     this.watchReconnectInterval = watchReconnectInterval;
   }
 
-  public int getWatchReconnectLimit() {
+  public Integer getWatchReconnectLimit() {
     return watchReconnectLimit;
   }
 
-  public void setWatchReconnectLimit(int watchReconnectLimit) {
+  public void setWatchReconnectLimit(Integer watchReconnectLimit) {
     this.watchReconnectLimit = watchReconnectLimit;
   }
 
-  public int getRequestTimeout() {
+  public Integer getRequestTimeout() {
     return requestTimeout;
   }
 
-  public void setRequestTimeout(int requestTimeout) {
+  public void setRequestTimeout(Integer requestTimeout) {
     this.requestTimeout = requestTimeout;
   }
 
-  public int getRequestRetryBackoffLimit() {
+  public Integer getRequestRetryBackoffLimit() {
     return requestRetryBackoffLimit;
   }
 
-  public void setRequestRetryBackoffLimit(int requestRetryBackoffLimit) {
+  public void setRequestRetryBackoffLimit(Integer requestRetryBackoffLimit) {
     this.requestRetryBackoffLimit = requestRetryBackoffLimit;
   }
 
-  public int getRequestRetryBackoffInterval() {
+  public Integer getRequestRetryBackoffInterval() {
     return requestRetryBackoffInterval;
   }
 
-  public void setRequestRetryBackoffInterval(int requestRetryBackoffInterval) {
+  public void setRequestRetryBackoffInterval(Integer requestRetryBackoffInterval) {
     this.requestRetryBackoffInterval = requestRetryBackoffInterval;
   }
 
-  public int getUploadRequestTimeout() {
+  public Integer getUploadRequestTimeout() {
     return uploadRequestTimeout;
   }
 
-  public void setUploadRequestTimeout(int uploadRequestTimeout) {
+  public void setUploadRequestTimeout(Integer uploadRequestTimeout) {
     this.uploadRequestTimeout = uploadRequestTimeout;
   }
 
-  public long getScaleTimeout() {
+  public Long getScaleTimeout() {
     return scaleTimeout;
   }
 
-  public void setScaleTimeout(long scaleTimeout) {
+  public void setScaleTimeout(Long scaleTimeout) {
     this.scaleTimeout = scaleTimeout;
   }
 
-  public int getLoggingInterval() {
+  public Integer getLoggingInterval() {
     return loggingInterval;
   }
 
-  public void setLoggingInterval(int loggingInterval) {
+  public void setLoggingInterval(Integer loggingInterval) {
     this.loggingInterval = loggingInterval;
   }
 

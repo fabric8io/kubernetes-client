@@ -835,7 +835,7 @@ class ConfigTest {
 
     // Then
     assertThat(emptyConfig)
-        .hasFieldOrPropertyWithValue("masterUrl", "https://kubernetes.default.svc")
+        .hasFieldOrPropertyWithValue("masterUrl", "https://kubernetes.default.svc/")
         .hasFieldOrPropertyWithValue("contexts", Collections.emptyList())
         .hasFieldOrPropertyWithValue("maxConcurrentRequests", 64)
         .hasFieldOrPropertyWithValue("maxConcurrentRequestsPerHost", 5)
@@ -1247,7 +1247,7 @@ class ConfigTest {
           .withWatchReconnectLimit(10)
           .withConnectionTimeout(1000)
           .withRequestTimeout(1000)
-          .withScaleTimeout(1000)
+          .withScaleTimeout(1000L)
           .withLoggingInterval(1000)
           .withWebsocketPingInterval(10000L)
           .withUploadRequestTimeout(1000)

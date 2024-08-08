@@ -131,7 +131,7 @@ public class ManagedOpenShiftClient extends NamespacedOpenShiftClientAdapter {
       builder.withOpenShiftUrl(URLUtils.join(builder.getMasterUrl(), "oapi", builder.getOapiVersion()));
     }
     if (properties.containsKey(OPENSHIFT_BUILD_TIMEOUT_SYSTEM_PROPERTY)) {
-      builder.withBuildTimeout(Integer.parseInt((String) properties.get(OPENSHIFT_BUILD_TIMEOUT_SYSTEM_PROPERTY)));
+      builder.withBuildTimeout(Long.parseLong((String) properties.get(OPENSHIFT_BUILD_TIMEOUT_SYSTEM_PROPERTY)));
     } else {
       builder.withBuildTimeout(DEFAULT_BUILD_TIMEOUT);
     }

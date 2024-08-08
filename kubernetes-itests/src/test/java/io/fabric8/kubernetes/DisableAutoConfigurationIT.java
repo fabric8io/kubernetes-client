@@ -32,6 +32,32 @@ class DisableAutoConfigurationIT {
   KubernetesClient client;
 
   @Test
+  @DisplayName("with autoConfigure=false, then client should not load kubeconfig contents")
+  void givenConfigWithAutoConfigureDisabled_shouldNotLoadLocalKubeConfig() {
+    // Given + When
+    client = new KubernetesClientBuilder().withConfig(new ConfigBuilder()
+        .withAutoConfigure(false)
+        .withRequestRetryBackoffLimit(0)
+        .build()).build();
+
+    // Then
+    assertThat(client.getConfiguration())
+        .hasFieldOrPropertyWithValue("namespace", null)
+        .hasFieldOrPropertyWithValue("masterUrl", "https://kubernetes.default.svc/")
+        .hasFieldOrPropertyWithValue("contexts", Collections.emptyList())
+        .hasFieldOrPropertyWithValue("currentContext", null)
+        .hasFieldOrPropertyWithValue("username", null)
+        .hasFieldOrPropertyWithValue("clientCertFile", null)
+        .hasFieldOrPropertyWithValue("clientKeyFile", null)
+        .hasFieldOrPropertyWithValue("clientCertData", null)
+        .hasFieldOrPropertyWithValue("caCertFile", null)
+        .hasFieldOrPropertyWithValue("caCertData", null);
+    assertThatExceptionOfType(KubernetesClientException.class)
+        .isThrownBy(() -> client.pods().list())
+        .withMessageContaining("Operation: [list]  for kind: [Pod]  with name: [null]  in namespace: [null]  failed.");
+  }
+
+  @Test
   @DisplayName("kubernetes.disable.autoConfig=true, then client should not load kubeconfig contents")
   void givenDisableAutoConfigPropertyTrue_shouldNotLoadLocalKubeConfig() {
     try {
