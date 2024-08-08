@@ -1,9 +1,7 @@
 
-package io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2;
+package io.fabric8.kubernetes.api.model.gatewayapi.v1;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -17,21 +15,14 @@ import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
-import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.LabelSelector;
-import io.fabric8.kubernetes.api.model.ListMeta;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
-import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.kubernetes.model.annotation.Group;
-import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import io.sundr.transform.annotations.TemplateTransformation;
-import io.sundr.transform.annotations.TemplateTransformations;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
@@ -39,10 +30,10 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "apiVersion",
     "kind",
-    "metadata",
-    "items"
+    "group",
+    "name",
+    "namespace"
 })
 @ToString
 @EqualsAndHashCode
@@ -57,38 +48,22 @@ import lombok.experimental.Accessors;
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
-    @BuildableReference(ObjectReference.class),
+    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
-@TemplateTransformations({
-    @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true)
-})
-@Version("v1alpha2")
-@Group("gateway.networking.k8s.io")
 @Generated("jsonschema2pojo")
-public class ReferenceGrantList implements Editable<ReferenceGrantListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.ReferenceGrant>
+public class ObjectReference implements Editable<ObjectReferenceBuilder> , KubernetesResource
 {
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
-    @JsonProperty("apiVersion")
-    private String apiVersion = "gateway.networking.k8s.io/v1alpha2";
-    @JsonProperty("items")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.ReferenceGrant> items = new ArrayList<>();
-    /**
-     * 
-     * (Required)
-     * 
-     */
+    @JsonProperty("group")
+    private String group;
     @JsonProperty("kind")
-    private String kind = "ReferenceGrantList";
-    @JsonProperty("metadata")
-    private ListMeta metadata;
+    private String kind;
+    @JsonProperty("name")
+    private String name;
+    @JsonProperty("namespace")
+    private String namespace;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -96,85 +71,64 @@ public class ReferenceGrantList implements Editable<ReferenceGrantListBuilder> ,
      * No args constructor for use in serialization
      * 
      */
-    public ReferenceGrantList() {
+    public ObjectReference() {
     }
 
-    public ReferenceGrantList(String apiVersion, List<io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.ReferenceGrant> items, String kind, ListMeta metadata) {
+    public ObjectReference(String group, String kind, String name, String namespace) {
         super();
-        this.apiVersion = apiVersion;
-        this.items = items;
+        this.group = group;
         this.kind = kind;
-        this.metadata = metadata;
+        this.name = name;
+        this.namespace = namespace;
     }
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
-    @JsonProperty("apiVersion")
-    public String getApiVersion() {
-        return apiVersion;
+    @JsonProperty("group")
+    public String getGroup() {
+        return group;
     }
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
-    @JsonProperty("apiVersion")
-    public void setApiVersion(String apiVersion) {
-        this.apiVersion = apiVersion;
+    @JsonProperty("group")
+    public void setGroup(String group) {
+        this.group = group;
     }
 
-    @JsonProperty("items")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.ReferenceGrant> getItems() {
-        return items;
-    }
-
-    @JsonProperty("items")
-    public void setItems(List<io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.ReferenceGrant> items) {
-        this.items = items;
-    }
-
-    /**
-     * 
-     * (Required)
-     * 
-     */
     @JsonProperty("kind")
     public String getKind() {
         return kind;
     }
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
-    @JsonProperty("metadata")
-    public ListMeta getMetadata() {
-        return metadata;
+    @JsonProperty("name")
+    public String getName() {
+        return name;
     }
 
-    @JsonProperty("metadata")
-    public void setMetadata(ListMeta metadata) {
-        this.metadata = metadata;
+    @JsonProperty("name")
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @JsonProperty("namespace")
+    public String getNamespace() {
+        return namespace;
+    }
+
+    @JsonProperty("namespace")
+    public void setNamespace(String namespace) {
+        this.namespace = namespace;
     }
 
     @JsonIgnore
-    public ReferenceGrantListBuilder edit() {
-        return new ReferenceGrantListBuilder(this);
+    public ObjectReferenceBuilder edit() {
+        return new ObjectReferenceBuilder(this);
     }
 
     @JsonIgnore
-    public ReferenceGrantListBuilder toBuilder() {
+    public ObjectReferenceBuilder toBuilder() {
         return edit();
     }
 

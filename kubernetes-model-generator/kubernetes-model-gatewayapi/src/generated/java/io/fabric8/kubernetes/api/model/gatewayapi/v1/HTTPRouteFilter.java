@@ -16,6 +16,7 @@ import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
+import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
@@ -52,7 +53,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.LocalObjectReference.class),
+    @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
@@ -60,7 +61,7 @@ public class HTTPRouteFilter implements Editable<HTTPRouteFilterBuilder> , Kuber
 {
 
     @JsonProperty("extensionRef")
-    private io.fabric8.kubernetes.api.model.gatewayapi.v1.LocalObjectReference extensionRef;
+    private LocalObjectReference extensionRef;
     @JsonProperty("requestHeaderModifier")
     private HTTPHeaderFilter requestHeaderModifier;
     @JsonProperty("requestMirror")
@@ -83,7 +84,7 @@ public class HTTPRouteFilter implements Editable<HTTPRouteFilterBuilder> , Kuber
     public HTTPRouteFilter() {
     }
 
-    public HTTPRouteFilter(io.fabric8.kubernetes.api.model.gatewayapi.v1.LocalObjectReference extensionRef, HTTPHeaderFilter requestHeaderModifier, HTTPRequestMirrorFilter requestMirror, HTTPRequestRedirectFilter requestRedirect, HTTPHeaderFilter responseHeaderModifier, String type, HTTPURLRewriteFilter urlRewrite) {
+    public HTTPRouteFilter(LocalObjectReference extensionRef, HTTPHeaderFilter requestHeaderModifier, HTTPRequestMirrorFilter requestMirror, HTTPRequestRedirectFilter requestRedirect, HTTPHeaderFilter responseHeaderModifier, String type, HTTPURLRewriteFilter urlRewrite) {
         super();
         this.extensionRef = extensionRef;
         this.requestHeaderModifier = requestHeaderModifier;
@@ -95,12 +96,12 @@ public class HTTPRouteFilter implements Editable<HTTPRouteFilterBuilder> , Kuber
     }
 
     @JsonProperty("extensionRef")
-    public io.fabric8.kubernetes.api.model.gatewayapi.v1.LocalObjectReference getExtensionRef() {
+    public LocalObjectReference getExtensionRef() {
         return extensionRef;
     }
 
     @JsonProperty("extensionRef")
-    public void setExtensionRef(io.fabric8.kubernetes.api.model.gatewayapi.v1.LocalObjectReference extensionRef) {
+    public void setExtensionRef(LocalObjectReference extensionRef) {
         this.extensionRef = extensionRef;
     }
 

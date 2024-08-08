@@ -17,40 +17,30 @@ package io.fabric8.kubernetes.schema.generator.model;
 
 import io.fabric8.kubernetes.schema.generator.ApiVersion;
 import io.fabric8.kubernetes.schema.generator.GeneratorSettings;
+import io.fabric8.kubernetes.schema.generator.ImportManager;
 import io.fabric8.kubernetes.schema.generator.ImportOrderComparator;
 import io.fabric8.kubernetes.schema.generator.schema.SchemaUtils;
 import io.swagger.v3.oas.models.media.Schema;
 import lombok.Getter;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
 
-final class TemplateContext {
+@Getter
+final class TemplateContext implements ImportManager {
 
-  @Getter
   private final String classKey;
-  @Getter
   private final Schema<?> classSchema;
-  @Getter
   private final ApiVersion apiVersion;
-  @Getter
   private final String packageName;
-  @Getter
   private final boolean inRootPackage;
-  @Getter
   private final String classSimpleName;
-  @Getter
   private final String className;
-  @Getter
   private final boolean hasMetadata;
-  @Getter
   private final String kubernetesListType;
-  @Getter
   private final Map<String, Object> context;
   private final Set<String> imports;
 
@@ -64,7 +54,7 @@ final class TemplateContext {
     classSimpleName = SchemaUtils.refToClassName(classKey);
     className = packageName + "." + classSimpleName;
     imports = new TreeSet<>(new ImportOrderComparator());
-    kubernetesListType = apiVersion == null ? null : schemaUtils.kubernetesListType(this::addImport, classSchema);
+    kubernetesListType = apiVersion == null ? null : schemaUtils.kubernetesListType(this, classSchema);
     hasMetadata = apiVersion != null && kubernetesListType == null && schemaUtils.isHasMetadata(classSchema);
     context = new HashMap<>();
     context.put("imports", imports);
@@ -72,17 +62,6 @@ final class TemplateContext {
 
   void put(String key, Object value) {
     context.put(key, value);
-  }
-
-  void addImport(String importedClass) {
-    // Only add import if it belongs to a different package
-    if (!Objects.equals(importedClass.substring(0, importedClass.lastIndexOf('.')), packageName)) {
-      imports.add(importedClass);
-    }
-  }
-
-  void addAllImports(Collection<String> allImports) {
-    allImports.forEach(this::addImport);
   }
 
   Map<String, Schema> getSchemaProperties() {

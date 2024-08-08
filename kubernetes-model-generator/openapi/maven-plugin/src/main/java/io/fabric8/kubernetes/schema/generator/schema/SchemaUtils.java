@@ -17,6 +17,7 @@
 package io.fabric8.kubernetes.schema.generator.schema;
 
 import io.fabric8.kubernetes.schema.generator.GeneratorSettings;
+import io.fabric8.kubernetes.schema.generator.ImportManager;
 import io.fabric8.kubernetes.schema.generator.PropertyOrderComparator;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -42,7 +43,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public class SchemaUtils {
@@ -145,6 +145,12 @@ public class SchemaUtils {
     this.settings = settings;
   }
 
+  /**
+   * Returns the simple class name associated to the provided Schema reference.
+   *
+   * @param ref the reference to extract the class name from.
+   * @return the simple class name associated to the provided Schema reference.
+   */
   public static String refToClassName(String ref) {
     return capitalize(ref.substring(ref.lastIndexOf('.') + 1));
   }
@@ -168,22 +174,21 @@ public class SchemaUtils {
    * Returns the mapped Class name associated to the provided {@link Schema} and adds
    * an import to the canonical path of the class represented by that name if necessary.
    *
-   * @param addImport function to add an import that might be needed for the referneced class.
+   * @param imports import manager to add an import to the class in case it's necessary.
    * @param schema the schema from which to retrieve the mapped Class name.
    * @return String containing the Class name mapped to the provided Schema.
    */
-  public String schemaToClassName(Consumer<String> addImport, Schema<?> schema) {
-    final String ref = schema.get$ref();
+  public String schemaToClassName(ImportManager imports, Schema<?> schema) {
     if (isArray(schema)) {
       final ArraySchema arraySchema = (ArraySchema) schema;
-      addImport.accept("java.util.List");
-      return String.format("List<%s>", schemaToClassName(addImport, arraySchema.getItems()));
+      imports.addImport("java.util.List");
+      return String.format("List<%s>", schemaToClassName(imports, arraySchema.getItems()));
     }
     if (isMap(schema)) {
-      addImport.accept("java.util.Map");
+      imports.addImport("java.util.Map");
       final String valueType;
       if (schema.getAdditionalProperties() instanceof Schema) {
-        valueType = schemaToClassName(addImport, (Schema<?>) schema.getAdditionalProperties());
+        valueType = schemaToClassName(imports, (Schema<?>) schema.getAdditionalProperties());
       } else {
         valueType = "Object";
       }
@@ -198,22 +203,27 @@ public class SchemaUtils {
     if (isString(schema)) {
       return "String";
     }
-    if (ref != null && !ref.trim().isEmpty()) {
+    if (isRef(schema)) {
+      final String ref = schema.get$ref();
       final Optional<String> javaPrimitive = schemaRefToJavaPrimitive(schema);
       if (javaPrimitive.isPresent()) {
         return javaPrimitive.get();
       }
       final Optional<String> javaType = schemaRefToJavaType(schema);
       if (javaType.isPresent()) {
-        addImport.accept(javaType.get());
+        imports.addImport(javaType.get());
         return javaType.get().substring(javaType.get().lastIndexOf('.') + 1);
       }
-      addImport.accept(refToModelPackage(ref));
-      return refToClassName(ref);
+      if (imports.hasSimpleClassName(refToModelPackage(ref))) {
+        return refToModelPackage(ref);
+      } else {
+        imports.addImport(refToModelPackage(ref));
+        return refToClassName(ref);
+      }
     }
     // Plain OpenAPI object map to KubernetesResource (deserializer will take care of the rest)
     if (isObject(schema)) {
-      addImport.accept(settings.getKubernetesResourceClass());
+      imports.addImport(settings.getKubernetesResourceClass());
       return settings.getKubernetesResourceClassSimpleName();
     }
     return schemaTypeToJavaPrimitive(schema);
@@ -255,7 +265,11 @@ public class SchemaUtils {
     return false;
   }
 
-  private static boolean isObject(Schema<?> schema) {
+  public static boolean isRef(Schema<?> schema) {
+    return schema != null && schema.get$ref() != null && !schema.get$ref().trim().isEmpty();
+  }
+
+  public static boolean isObject(Schema<?> schema) {
     return Optional.ofNullable(schema.getType()).orElse("").equals("object");
   }
 
@@ -280,7 +294,7 @@ public class SchemaUtils {
         .anyMatch(entry -> ref.endsWith(entry.getKey()));
   }
 
-  public String kubernetesListType(Consumer<String> addImport, Schema<?> schema) {
+  public String kubernetesListType(ImportManager imports, Schema<?> schema) {
     if (schema == null || !isObject(schema)) {
       return null;
     }
@@ -288,7 +302,7 @@ public class SchemaUtils {
         .map(p -> p.get("items"))
         .filter(s -> s instanceof ArraySchema)
         .map(s -> (ArraySchema) s)
-        .map(as -> schemaToClassName(addImport, as.getItems()))
+        .map(as -> schemaToClassName(imports, as.getItems()))
         .orElse(null);
   }
 

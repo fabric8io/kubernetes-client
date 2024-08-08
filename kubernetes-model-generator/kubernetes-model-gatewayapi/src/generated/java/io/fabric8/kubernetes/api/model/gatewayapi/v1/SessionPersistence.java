@@ -1,5 +1,5 @@
 
-package io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2;
+package io.fabric8.kubernetes.api.model.gatewayapi.v1;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -31,9 +31,11 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "name",
-    "type",
-    "value"
+    "absoluteTimeout",
+    "cookieConfig",
+    "idleTimeout",
+    "sessionName",
+    "type"
 })
 @ToString
 @EqualsAndHashCode
@@ -53,15 +55,19 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class GRPCHeaderMatch implements Editable<GRPCHeaderMatchBuilder> , KubernetesResource
+public class SessionPersistence implements Editable<SessionPersistenceBuilder> , KubernetesResource
 {
 
-    @JsonProperty("name")
-    private String name;
+    @JsonProperty("absoluteTimeout")
+    private String absoluteTimeout;
+    @JsonProperty("cookieConfig")
+    private CookieConfig cookieConfig;
+    @JsonProperty("idleTimeout")
+    private String idleTimeout;
+    @JsonProperty("sessionName")
+    private String sessionName;
     @JsonProperty("type")
     private String type;
-    @JsonProperty("value")
-    private String value;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -69,24 +75,56 @@ public class GRPCHeaderMatch implements Editable<GRPCHeaderMatchBuilder> , Kuber
      * No args constructor for use in serialization
      * 
      */
-    public GRPCHeaderMatch() {
+    public SessionPersistence() {
     }
 
-    public GRPCHeaderMatch(String name, String type, String value) {
+    public SessionPersistence(String absoluteTimeout, CookieConfig cookieConfig, String idleTimeout, String sessionName, String type) {
         super();
-        this.name = name;
+        this.absoluteTimeout = absoluteTimeout;
+        this.cookieConfig = cookieConfig;
+        this.idleTimeout = idleTimeout;
+        this.sessionName = sessionName;
         this.type = type;
-        this.value = value;
     }
 
-    @JsonProperty("name")
-    public String getName() {
-        return name;
+    @JsonProperty("absoluteTimeout")
+    public String getAbsoluteTimeout() {
+        return absoluteTimeout;
     }
 
-    @JsonProperty("name")
-    public void setName(String name) {
-        this.name = name;
+    @JsonProperty("absoluteTimeout")
+    public void setAbsoluteTimeout(String absoluteTimeout) {
+        this.absoluteTimeout = absoluteTimeout;
+    }
+
+    @JsonProperty("cookieConfig")
+    public CookieConfig getCookieConfig() {
+        return cookieConfig;
+    }
+
+    @JsonProperty("cookieConfig")
+    public void setCookieConfig(CookieConfig cookieConfig) {
+        this.cookieConfig = cookieConfig;
+    }
+
+    @JsonProperty("idleTimeout")
+    public String getIdleTimeout() {
+        return idleTimeout;
+    }
+
+    @JsonProperty("idleTimeout")
+    public void setIdleTimeout(String idleTimeout) {
+        this.idleTimeout = idleTimeout;
+    }
+
+    @JsonProperty("sessionName")
+    public String getSessionName() {
+        return sessionName;
+    }
+
+    @JsonProperty("sessionName")
+    public void setSessionName(String sessionName) {
+        this.sessionName = sessionName;
     }
 
     @JsonProperty("type")
@@ -99,23 +137,13 @@ public class GRPCHeaderMatch implements Editable<GRPCHeaderMatchBuilder> , Kuber
         this.type = type;
     }
 
-    @JsonProperty("value")
-    public String getValue() {
-        return value;
-    }
-
-    @JsonProperty("value")
-    public void setValue(String value) {
-        this.value = value;
+    @JsonIgnore
+    public SessionPersistenceBuilder edit() {
+        return new SessionPersistenceBuilder(this);
     }
 
     @JsonIgnore
-    public GRPCHeaderMatchBuilder edit() {
-        return new GRPCHeaderMatchBuilder(this);
-    }
-
-    @JsonIgnore
-    public GRPCHeaderMatchBuilder toBuilder() {
+    public SessionPersistenceBuilder toBuilder() {
         return edit();
     }
 

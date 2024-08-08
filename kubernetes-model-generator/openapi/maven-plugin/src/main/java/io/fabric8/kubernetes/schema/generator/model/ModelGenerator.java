@@ -155,7 +155,7 @@ class ModelGenerator {
       final Map<String, Object> templateProp = new HashMap<>();
       final Schema<?> propertySchema = property.getValue();
       properties.add(templateProp);
-      final String type = utils.schemaToClassName(templateContext::addImport, propertySchema);
+      final String type = utils.schemaToClassName(templateContext, propertySchema);
       templateProp.put("propertyName", property.getKey());
       templateProp.put("type", type);
       templateProp.put("name", sanitizeVariable(property.getKey()));
@@ -273,9 +273,15 @@ class ModelGenerator {
       references.add(settings.getGenericKubernetesResourceClass());
       references.add(settings.getRawExtensionClass());
     }
-    references.forEach(templateContext::addImport);
     return Collections.singletonMap("refs", references.stream()
-        .map(r -> r.substring(r.lastIndexOf('.') + 1))
+        .map(r -> {
+          final String referenceSimpleClass = r.substring(r.lastIndexOf('.') + 1);
+          if (templateContext.getClassSimpleName().equals(referenceSimpleClass)) {
+            return r;
+          }
+          templateContext.addImport(r);
+          return referenceSimpleClass;
+        })
         .map(ref -> ref.concat(".class")).collect(Collectors.toList()));
   }
 

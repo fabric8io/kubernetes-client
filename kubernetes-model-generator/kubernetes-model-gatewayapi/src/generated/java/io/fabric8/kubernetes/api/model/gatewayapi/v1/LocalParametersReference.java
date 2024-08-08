@@ -1,5 +1,5 @@
 
-package io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2;
+package io.fabric8.kubernetes.api.model.gatewayapi.v1;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -13,21 +13,17 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
+import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
-import io.fabric8.kubernetes.api.model.Namespaced;
+import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.kubernetes.model.annotation.Group;
-import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import io.sundr.transform.annotations.TemplateTransformation;
-import io.sundr.transform.annotations.TemplateTransformations;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
@@ -35,11 +31,9 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "apiVersion",
     "kind",
-    "metadata",
-    "spec",
-    "status"
+    "group",
+    "name"
 })
 @ToString
 @EqualsAndHashCode
@@ -48,7 +42,7 @@ import lombok.experimental.Accessors;
     ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
+    @BuildableReference(ObjectMeta.class),
     @BuildableReference(LabelSelector.class),
     @BuildableReference(Container.class),
     @BuildableReference(PodTemplateSpec.class),
@@ -58,35 +52,16 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
-@TemplateTransformations({
-    @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true)
-})
-@Version("v1alpha2")
-@Group("gateway.networking.k8s.io")
 @Generated("jsonschema2pojo")
-public class TCPRoute implements Editable<TCPRouteBuilder> , HasMetadata, Namespaced
+public class LocalParametersReference implements Editable<LocalParametersReferenceBuilder> , KubernetesResource
 {
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
-    @JsonProperty("apiVersion")
-    private String apiVersion = "gateway.networking.k8s.io/v1alpha2";
-    /**
-     * 
-     * (Required)
-     * 
-     */
+    @JsonProperty("group")
+    private String group;
     @JsonProperty("kind")
-    private String kind = "TCPRoute";
-    @JsonProperty("metadata")
-    private io.fabric8.kubernetes.api.model.ObjectMeta metadata;
-    @JsonProperty("spec")
-    private TCPRouteSpec spec;
-    @JsonProperty("status")
-    private TCPRouteStatus status;
+    private String kind;
+    @JsonProperty("name")
+    private String name;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -94,95 +69,53 @@ public class TCPRoute implements Editable<TCPRouteBuilder> , HasMetadata, Namesp
      * No args constructor for use in serialization
      * 
      */
-    public TCPRoute() {
+    public LocalParametersReference() {
     }
 
-    public TCPRoute(String apiVersion, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, TCPRouteSpec spec, TCPRouteStatus status) {
+    public LocalParametersReference(String group, String kind, String name) {
         super();
-        this.apiVersion = apiVersion;
+        this.group = group;
         this.kind = kind;
-        this.metadata = metadata;
-        this.spec = spec;
-        this.status = status;
+        this.name = name;
     }
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
-    @JsonProperty("apiVersion")
-    public String getApiVersion() {
-        return apiVersion;
+    @JsonProperty("group")
+    public String getGroup() {
+        return group;
     }
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
-    @JsonProperty("apiVersion")
-    public void setApiVersion(String apiVersion) {
-        this.apiVersion = apiVersion;
+    @JsonProperty("group")
+    public void setGroup(String group) {
+        this.group = group;
     }
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
     @JsonProperty("kind")
     public String getKind() {
         return kind;
     }
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
-    @JsonProperty("metadata")
-    public io.fabric8.kubernetes.api.model.ObjectMeta getMetadata() {
-        return metadata;
+    @JsonProperty("name")
+    public String getName() {
+        return name;
     }
 
-    @JsonProperty("metadata")
-    public void setMetadata(io.fabric8.kubernetes.api.model.ObjectMeta metadata) {
-        this.metadata = metadata;
-    }
-
-    @JsonProperty("spec")
-    public TCPRouteSpec getSpec() {
-        return spec;
-    }
-
-    @JsonProperty("spec")
-    public void setSpec(TCPRouteSpec spec) {
-        this.spec = spec;
-    }
-
-    @JsonProperty("status")
-    public TCPRouteStatus getStatus() {
-        return status;
-    }
-
-    @JsonProperty("status")
-    public void setStatus(TCPRouteStatus status) {
-        this.status = status;
+    @JsonProperty("name")
+    public void setName(String name) {
+        this.name = name;
     }
 
     @JsonIgnore
-    public TCPRouteBuilder edit() {
-        return new TCPRouteBuilder(this);
+    public LocalParametersReferenceBuilder edit() {
+        return new LocalParametersReferenceBuilder(this);
     }
 
     @JsonIgnore
-    public TCPRouteBuilder toBuilder() {
+    public LocalParametersReferenceBuilder toBuilder() {
         return edit();
     }
 

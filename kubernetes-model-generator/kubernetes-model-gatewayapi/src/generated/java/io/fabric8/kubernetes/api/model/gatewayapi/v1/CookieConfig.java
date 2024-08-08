@@ -1,9 +1,7 @@
 
-package io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2;
+package io.fabric8.kubernetes.api.model.gatewayapi.v1;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -24,7 +22,6 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.kubernetes.api.model.gatewayapi.v1.ParentReference;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -34,8 +31,7 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "parentRefs",
-    "rules"
+    "lifetimeType"
 })
 @ToString
 @EqualsAndHashCode
@@ -55,15 +51,11 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class TCPRouteSpec implements Editable<TCPRouteSpecBuilder> , KubernetesResource
+public class CookieConfig implements Editable<CookieConfigBuilder> , KubernetesResource
 {
 
-    @JsonProperty("parentRefs")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ParentReference> parentRefs = new ArrayList<>();
-    @JsonProperty("rules")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<TCPRouteRule> rules = new ArrayList<>();
+    @JsonProperty("lifetimeType")
+    private String lifetimeType;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -71,44 +63,31 @@ public class TCPRouteSpec implements Editable<TCPRouteSpecBuilder> , KubernetesR
      * No args constructor for use in serialization
      * 
      */
-    public TCPRouteSpec() {
+    public CookieConfig() {
     }
 
-    public TCPRouteSpec(List<ParentReference> parentRefs, List<TCPRouteRule> rules) {
+    public CookieConfig(String lifetimeType) {
         super();
-        this.parentRefs = parentRefs;
-        this.rules = rules;
+        this.lifetimeType = lifetimeType;
     }
 
-    @JsonProperty("parentRefs")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<ParentReference> getParentRefs() {
-        return parentRefs;
+    @JsonProperty("lifetimeType")
+    public String getLifetimeType() {
+        return lifetimeType;
     }
 
-    @JsonProperty("parentRefs")
-    public void setParentRefs(List<ParentReference> parentRefs) {
-        this.parentRefs = parentRefs;
-    }
-
-    @JsonProperty("rules")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<TCPRouteRule> getRules() {
-        return rules;
-    }
-
-    @JsonProperty("rules")
-    public void setRules(List<TCPRouteRule> rules) {
-        this.rules = rules;
+    @JsonProperty("lifetimeType")
+    public void setLifetimeType(String lifetimeType) {
+        this.lifetimeType = lifetimeType;
     }
 
     @JsonIgnore
-    public TCPRouteSpecBuilder edit() {
-        return new TCPRouteSpecBuilder(this);
+    public CookieConfigBuilder edit() {
+        return new CookieConfigBuilder(this);
     }
 
     @JsonIgnore
-    public TCPRouteSpecBuilder toBuilder() {
+    public CookieConfigBuilder toBuilder() {
         return edit();
     }
 

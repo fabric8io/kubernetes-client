@@ -67,13 +67,8 @@ public class HTTPBackendRef implements Editable<HTTPBackendRefBuilder> , Kuberne
     private List<HTTPRouteFilter> filters = new ArrayList<>();
     @JsonProperty("group")
     private String group;
-    /**
-     * 
-     * (Required)
-     * 
-     */
     @JsonProperty("kind")
-    private String kind = "HTTPBackendRef";
+    private String kind;
     @JsonProperty("name")
     private String name;
     @JsonProperty("namespace")
@@ -124,21 +119,11 @@ public class HTTPBackendRef implements Editable<HTTPBackendRefBuilder> , Kuberne
         this.group = group;
     }
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
     @JsonProperty("kind")
     public String getKind() {
         return kind;
     }
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;

@@ -1,5 +1,5 @@
 
-package io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2;
+package io.fabric8.kubernetes.api.model.gatewayapi.v1;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -17,21 +17,15 @@ import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
-import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.LabelSelector;
-import io.fabric8.kubernetes.api.model.ListMeta;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.kubernetes.model.annotation.Group;
-import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import io.sundr.transform.annotations.TemplateTransformation;
-import io.sundr.transform.annotations.TemplateTransformations;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
@@ -39,10 +33,7 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "apiVersion",
-    "kind",
-    "metadata",
-    "items"
+    "caCertificateRefs"
 })
 @ToString
 @EqualsAndHashCode
@@ -61,34 +52,13 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
-@TemplateTransformations({
-    @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true)
-})
-@Version("v1alpha2")
-@Group("gateway.networking.k8s.io")
 @Generated("jsonschema2pojo")
-public class TLSRouteList implements Editable<TLSRouteListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.TLSRoute>
+public class FrontendTLSValidation implements Editable<FrontendTLSValidationBuilder> , KubernetesResource
 {
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
-    @JsonProperty("apiVersion")
-    private String apiVersion = "gateway.networking.k8s.io/v1alpha2";
-    @JsonProperty("items")
+    @JsonProperty("caCertificateRefs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.TLSRoute> items = new ArrayList<>();
-    /**
-     * 
-     * (Required)
-     * 
-     */
-    @JsonProperty("kind")
-    private String kind = "TLSRouteList";
-    @JsonProperty("metadata")
-    private ListMeta metadata;
+    private List<ObjectReference> caCertificateRefs = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -96,85 +66,32 @@ public class TLSRouteList implements Editable<TLSRouteListBuilder> , KubernetesR
      * No args constructor for use in serialization
      * 
      */
-    public TLSRouteList() {
+    public FrontendTLSValidation() {
     }
 
-    public TLSRouteList(String apiVersion, List<io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.TLSRoute> items, String kind, ListMeta metadata) {
+    public FrontendTLSValidation(List<ObjectReference> caCertificateRefs) {
         super();
-        this.apiVersion = apiVersion;
-        this.items = items;
-        this.kind = kind;
-        this.metadata = metadata;
+        this.caCertificateRefs = caCertificateRefs;
     }
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
-    @JsonProperty("apiVersion")
-    public String getApiVersion() {
-        return apiVersion;
-    }
-
-    /**
-     * 
-     * (Required)
-     * 
-     */
-    @JsonProperty("apiVersion")
-    public void setApiVersion(String apiVersion) {
-        this.apiVersion = apiVersion;
-    }
-
-    @JsonProperty("items")
+    @JsonProperty("caCertificateRefs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.TLSRoute> getItems() {
-        return items;
+    public List<ObjectReference> getCaCertificateRefs() {
+        return caCertificateRefs;
     }
 
-    @JsonProperty("items")
-    public void setItems(List<io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.TLSRoute> items) {
-        this.items = items;
-    }
-
-    /**
-     * 
-     * (Required)
-     * 
-     */
-    @JsonProperty("kind")
-    public String getKind() {
-        return kind;
-    }
-
-    /**
-     * 
-     * (Required)
-     * 
-     */
-    @JsonProperty("kind")
-    public void setKind(String kind) {
-        this.kind = kind;
-    }
-
-    @JsonProperty("metadata")
-    public ListMeta getMetadata() {
-        return metadata;
-    }
-
-    @JsonProperty("metadata")
-    public void setMetadata(ListMeta metadata) {
-        this.metadata = metadata;
+    @JsonProperty("caCertificateRefs")
+    public void setCaCertificateRefs(List<ObjectReference> caCertificateRefs) {
+        this.caCertificateRefs = caCertificateRefs;
     }
 
     @JsonIgnore
-    public TLSRouteListBuilder edit() {
-        return new TLSRouteListBuilder(this);
+    public FrontendTLSValidationBuilder edit() {
+        return new FrontendTLSValidationBuilder(this);
     }
 
     @JsonIgnore
-    public TLSRouteListBuilder toBuilder() {
+    public FrontendTLSValidationBuilder toBuilder() {
         return edit();
     }
 
