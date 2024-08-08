@@ -17,11 +17,24 @@ package io.fabric8.kubernetes.client.okhttp;
 
 import io.fabric8.kubernetes.client.http.AbstractHttpPutTest;
 import io.fabric8.kubernetes.client.http.HttpClient;
+import org.junit.jupiter.api.condition.OS;
+
+import java.io.InterruptedIOException;
+import java.net.ConnectException;
 
 @SuppressWarnings("java:S2187")
 public class OkHttpPutTest extends AbstractHttpPutTest {
   @Override
   protected HttpClient.Factory getHttpClientFactory() {
     return new OkHttpClientFactory();
+  }
+
+  @Override
+  protected Class<? extends Exception> getConnectionFailedExceptionType() {
+    if (OS.WINDOWS.equals(OS.current())) {
+      return InterruptedIOException.class;
+    } else {
+      return ConnectException.class;
+    }
   }
 }

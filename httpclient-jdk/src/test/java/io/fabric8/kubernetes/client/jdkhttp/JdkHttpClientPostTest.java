@@ -18,6 +18,8 @@ package io.fabric8.kubernetes.client.jdkhttp;
 import io.fabric8.kubernetes.client.http.AbstractHttpPostTest;
 import io.fabric8.kubernetes.client.http.HttpClient;
 
+import java.io.IOException;
+
 @SuppressWarnings("java:S2187")
 public class JdkHttpClientPostTest extends AbstractHttpPostTest {
   @Override
@@ -30,5 +32,10 @@ public class JdkHttpClientPostTest extends AbstractHttpPostTest {
     // Disabled
     // Apparently the JDK sets the Expect header to 100-Continue which is not according to spec.
     // We should consider overriding the header manually instead.
+  }
+
+  @Override
+  protected Class<? extends Exception> getConnectionFailedExceptionType() {
+    return IOException.class;
   }
 }
