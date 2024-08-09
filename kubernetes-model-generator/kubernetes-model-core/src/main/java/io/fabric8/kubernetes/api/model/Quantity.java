@@ -408,6 +408,18 @@ public class Quantity implements Serializable, Comparable<Quantity> {
     return op(y, BigDecimal::subtract);
   }
 
+  /**
+   * Multiplies the quantity by the specified scalar multiplicand.
+   *
+   * @param multiplicand the scalar value to multiply by
+   * @return a new Quantity resulting from the multiplication of this quantity by the scalar multiplicand
+   */
+  public Quantity multiply(int multiplicand) {
+    BigDecimal numericalAmount = getNumericalAmount();
+    numericalAmount = numericalAmount.multiply(BigDecimal.valueOf(multiplicand));
+    return fromNumericalAmount(numericalAmount, format);
+  }
+
   Quantity op(Quantity y, BiFunction<BigDecimal, BigDecimal, BigDecimal> func) {
     BigDecimal numericalAmount = this.getNumericalAmount();
     numericalAmount = func.apply(numericalAmount, y.getNumericalAmount());
