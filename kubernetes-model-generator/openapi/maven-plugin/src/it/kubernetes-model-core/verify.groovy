@@ -16,17 +16,23 @@
 import static org.junit.jupiter.api.Assertions.assertEquals
 import static org.junit.jupiter.api.Assertions.assertTrue
 
-["PodList", "Pod", "PodSpec", "PodStatus", "PodTemplate"].each {
-  var file = new File(basedir, sprintf("/src/generated/java/io/fabric8/kubernetes/api/model/%s.java", it))
-  assertTrue(file.exists())
-  assertEquals(
-      new File(basedir, sprintf("/expected/%s.expected", it))
-          .getText("UTF-8")
-          .replace("\r\n", "\n")
-          .replaceAll(" +\n", "\n")
-          .trim(),
-      file.getText("UTF-8").replace("\r\n", "\n").replaceAll(" +\n", "\n").trim()
-  )
+[
+	"PodList",
+	"Pod",
+	"PodSpec",
+	"PodStatus",
+	"PodTemplate"
+].each {
+	var file = new File(basedir, sprintf("/src/generated/java/io/fabric8/kubernetes/api/model/%s.java", it))
+	assertTrue(file.exists())
+	assertEquals(
+			new File(basedir, sprintf("/expected/%s.expected", it))
+			.getText("UTF-8")
+			.replace("\r\n", "\n")
+			.replaceAll(" +\n", "\n")
+			.trim(),
+			file.getText("UTF-8").replace("\r\n", "\n").replaceAll(" +\n", "\n").trim()
+			)
 }
 
 true

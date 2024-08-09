@@ -23,67 +23,67 @@ import spock.util.concurrent.AsyncConditions
 
 class DefaultMockServerAnyMethodTest extends Specification {
 
-  @Shared
-  static def vertx = Vertx.vertx()
+	@Shared
+	static def vertx = Vertx.vertx()
 
-  DefaultMockServer server
+	DefaultMockServer server
 
-  WebClient client
+	WebClient client
 
-  def setup() {
-    server = new DefaultMockServer()
-    server.start()
-    client = WebClient.create(vertx)
-  }
+	def setup() {
+		server = new DefaultMockServer()
+		server.start()
+		client = WebClient.create(vertx)
+	}
 
-  def cleanup() {
-    server.shutdown()
-    client.close()
-  }
+	def cleanup() {
+		server.shutdown()
+		client.close()
+	}
 
-  def cleanupSpec() {
-    vertx.close()
-  }
+	def cleanupSpec() {
+		vertx.close()
+	}
 
-  def "when setting an expectation for ANY should respond to POST"() {
-    given: "An expectation with any"
-      server.expect().any().withPath("/api/v1/resource").andReturn(200, "OK").always()
-    and: "A POST request"
-      def req1 = client.post(server.port, server.getHostName(), "/api/v1/resource")
-        .send()
-    and: "An instance of AsyncConditions"
-      def async = new AsyncConditions(1)
+	def "when setting an expectation for ANY should respond to POST"() {
+		given: "An expectation with any"
+		server.expect().any().withPath("/api/v1/resource").andReturn(200, "OK").always()
+		and: "A POST request"
+		def req1 = client.post(server.port, server.getHostName(), "/api/v1/resource")
+				.send()
+		and: "An instance of AsyncConditions"
+		def async = new AsyncConditions(1)
 
-    when: "The request is sent and completed"
-      req1.onComplete { isr ->
-        async.evaluate {
-          assert req1.result().statusCode() == 200
-          assert req1.result().body().toString() == "OK"
-        }
-      }
+		when: "The request is sent and completed"
+		req1.onComplete { isr ->
+			async.evaluate {
+				assert req1.result().statusCode() == 200
+				assert req1.result().body().toString() == "OK"
+			}
+		}
 
-    then: "Expect the result to be completed in the specified time"
-      async.await(10)
-  }
+		then: "Expect the result to be completed in the specified time"
+		async.await(10)
+	}
 
-  def "when setting an expectation for ANY should respond to PUT"() {
-    given: "An expectation with any"
-      server.expect().any().withPath("/api/v1/resource").andReturn(200, "OK").always()
-    and: "A PUT request"
-      def req1 = client.put(server.port, server.getHostName(), "/api/v1/resource")
-        .send()
-    and: "An instance of AsyncConditions"
-      def async = new AsyncConditions(1)
+	def "when setting an expectation for ANY should respond to PUT"() {
+		given: "An expectation with any"
+		server.expect().any().withPath("/api/v1/resource").andReturn(200, "OK").always()
+		and: "A PUT request"
+		def req1 = client.put(server.port, server.getHostName(), "/api/v1/resource")
+				.send()
+		and: "An instance of AsyncConditions"
+		def async = new AsyncConditions(1)
 
-    when: "The request is sent and completed"
-      req1.onComplete { isr ->
-        async.evaluate {
-          assert req1.result().statusCode() == 200
-          assert req1.result().body().toString() == "OK"
-        }
-      }
+		when: "The request is sent and completed"
+		req1.onComplete { isr ->
+			async.evaluate {
+				assert req1.result().statusCode() == 200
+				assert req1.result().body().toString() == "OK"
+			}
+		}
 
-    then: "Expect the result to be completed in the specified time"
-      async.await(10)
-  }
+		then: "Expect the result to be completed in the specified time"
+		async.await(10)
+	}
 }

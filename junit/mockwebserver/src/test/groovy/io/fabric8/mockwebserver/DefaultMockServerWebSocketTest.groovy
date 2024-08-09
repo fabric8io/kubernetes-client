@@ -21,190 +21,189 @@ import io.vertx.core.Vertx
 import io.vertx.core.http.WebSocket
 import io.vertx.core.http.WebSocketClient
 import io.vertx.core.http.WebSocketConnectOptions
-import spock.lang.Shared
-import spock.lang.Specification
-import spock.util.concurrent.AsyncConditions
-
 import java.util.concurrent.ArrayBlockingQueue
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 import java.util.stream.IntStream
+import spock.lang.Shared
+import spock.lang.Specification
+import spock.util.concurrent.AsyncConditions
 
 class DefaultMockServerWebSocketTest extends Specification {
 
-  @Shared
-  static def vertx = Vertx.vertx()
+	@Shared
+	static def vertx = Vertx.vertx()
 
-  DefaultMockServer server
+	DefaultMockServer server
 
-  WebSocketClient wsClient
+	WebSocketClient wsClient
 
-  def setup() {
-    server = new DefaultMockServer()
-    server.start()
-    wsClient = vertx.createWebSocketClient()
-  }
+	def setup() {
+		server = new DefaultMockServer()
+		server.start()
+		wsClient = vertx.createWebSocketClient()
+	}
 
-  def cleanup() {
-    server.shutdown()
-    wsClient.close()
-  }
+	def cleanup() {
+		server.shutdown()
+		wsClient.close()
+	}
 
-  def "andUpgradeToWebSocket, with configured events, should emit events"() {
-    given: "A WebSocket expectation"
-      server.expect().withPath("/websocket")
-        .andUpgradeToWebSocket()
-        .open()
-        .waitFor(10L).andEmit("A text message")
-        .done()
-        .always()
-    and:
-      Queue<String> messages = new ArrayBlockingQueue<>(1)
-    and: "A WebSocket request"
-      def wsReq = wsClient.webSocket().connect(server.port, server.getHostName(), "/websocket")
-    and: "A WebSocket listener"
-      wsReq.onComplete { ws ->
-        ws.result().textMessageHandler { text ->
-          messages.add(text)
-        }
-        ws.result().closeHandler { _ ->
-          ws.result().close()
-        }
-      }
-    and: "An instance of AsyncConditions"
-      def async = new AsyncConditions(1)
+	def "andUpgradeToWebSocket, with configured events, should emit events"() {
+		given: "A WebSocket expectation"
+		server.expect().withPath("/websocket")
+				.andUpgradeToWebSocket()
+				.open()
+				.waitFor(10L).andEmit("A text message")
+				.done()
+				.always()
+		and:
+		Queue<String> messages = new ArrayBlockingQueue<>(1)
+		and: "A WebSocket request"
+		def wsReq = wsClient.webSocket().connect(server.port, server.getHostName(), "/websocket")
+		and: "A WebSocket listener"
+		wsReq.onComplete { ws ->
+			ws.result().textMessageHandler { text ->
+				messages.add(text)
+			}
+			ws.result().closeHandler { _ ->
+				ws.result().close()
+			}
+		}
+		and: "An instance of AsyncConditions"
+		def async = new AsyncConditions(1)
 
-    when: "The request is sent and completed"
-      async.evaluate {
-        assert messages.poll(10, TimeUnit.SECONDS) == "A text message"
-      }
+		when: "The request is sent and completed"
+		async.evaluate {
+			assert messages.poll(10, TimeUnit.SECONDS) == "A text message"
+		}
 
-    then: "Expect the result to be completed in the specified time"
-      async.await(10)
-  }
+		then: "Expect the result to be completed in the specified time"
+		async.await(10)
+	}
 
-  def "andUpgradeToWebSocket, with configured events, should emit onClose when done"() {
-    given: "A WebSocket expectation"
-      server.expect()
-          .withPath("/websocket")
-          .andUpgradeToWebSocket().open().immediately().andEmit("event").done().always()
-    and:
-      def future = new CompletableFuture()
-    and: "A WebSocket request"
-      def wsReq = wsClient.webSocket().connect(server.port, server.getHostName(), "/websocket")
-    and: "A WebSocket listener"
-      wsReq.onComplete { ws ->
-        ws.result().closeHandler { _ ->
-          ws.result().close()
-          future.complete(ws.result().closeReason())
-        }
-      }
-    and: "An instance of AsyncConditions"
-      def async = new AsyncConditions(1)
+	def "andUpgradeToWebSocket, with configured events, should emit onClose when done"() {
+		given: "A WebSocket expectation"
+		server.expect()
+				.withPath("/websocket")
+				.andUpgradeToWebSocket().open().immediately().andEmit("event").done().always()
+		and:
+		def future = new CompletableFuture()
+		and: "A WebSocket request"
+		def wsReq = wsClient.webSocket().connect(server.port, server.getHostName(), "/websocket")
+		and: "A WebSocket listener"
+		wsReq.onComplete { ws ->
+			ws.result().closeHandler { _ ->
+				ws.result().close()
+				future.complete(ws.result().closeReason())
+			}
+		}
+		and: "An instance of AsyncConditions"
+		def async = new AsyncConditions(1)
 
-    when: "The request is sent and completed"
-      async.evaluate {
-        assert future.get(10, TimeUnit.SECONDS) == "Closing..."
-      }
+		when: "The request is sent and completed"
+		async.evaluate {
+			assert future.get(10, TimeUnit.SECONDS) == "Closing..."
+		}
 
-    then: "Expect the result to be completed in the specified time"
-      async.await(10)
-  }
+		then: "Expect the result to be completed in the specified time"
+		async.await(10)
+	}
 
-  def "andUpgradeToWebSocket, with no events, should emit onClose"() {
-    given: "A WebSocket expectation"
-      server.expect()
-          .withPath("/websocket")
-          .andUpgradeToWebSocket().open().done().always()
-    and:
-      def future = new CompletableFuture()
-    and: "A WebSocket request"
-      def wsReq = wsClient.webSocket().connect(server.port, server.getHostName(), "/websocket")
-    and: "A WebSocket listener"
-      wsReq.onComplete { ws ->
-        if (ws.result().isClosed()) {
-          future.complete(ws.result().closeReason())
-        } else {
-          ws.result().closeHandler { _ ->
-            ws.result().close()
-            future.complete(ws.result().closeReason())
-          }
-        }
-      }
-    and: "An instance of AsyncConditions"
-      def async = new AsyncConditions(1)
+	def "andUpgradeToWebSocket, with no events, should emit onClose"() {
+		given: "A WebSocket expectation"
+		server.expect()
+				.withPath("/websocket")
+				.andUpgradeToWebSocket().open().done().always()
+		and:
+		def future = new CompletableFuture()
+		and: "A WebSocket request"
+		def wsReq = wsClient.webSocket().connect(server.port, server.getHostName(), "/websocket")
+		and: "A WebSocket listener"
+		wsReq.onComplete { ws ->
+			if (ws.result().isClosed()) {
+				future.complete(ws.result().closeReason())
+			} else {
+				ws.result().closeHandler { _ ->
+					ws.result().close()
+					future.complete(ws.result().closeReason())
+				}
+			}
+		}
+		and: "An instance of AsyncConditions"
+		def async = new AsyncConditions(1)
 
-    when: "The request is sent and completed"
-      async.evaluate {
-        assert future.get(10, TimeUnit.SECONDS) == "Closing..."
-      }
+		when: "The request is sent and completed"
+		async.evaluate {
+			assert future.get(10, TimeUnit.SECONDS) == "Closing..."
+		}
 
-    then: "Expect the result to be completed in the specified time"
-      async.await(10)
-  }
+		then: "Expect the result to be completed in the specified time"
+		async.await(10)
+	}
 
-  // https://github.com/fabric8io/mockwebserver/pull/66#issuecomment-944289335
-  def "andUpgradeToWebSocket, with multiple upgrades, should emit events for all websocket listeners"() {
-    given: "A WebSocket expectation"
-      server.expect()
-          .withPath("/websocket")
-          .andUpgradeToWebSocket().open().waitFor(10L).andEmit("A text message").done().always()
-    and: "A CountDown latch to verify the event count"
-      def latch = new CountDownLatch(15)
-    and: "A Vert.x WebSocket completion handler"
-      Handler<AsyncResult<WebSocket>> completionHandler =  { ws ->
-        ws.result().textMessageHandler { text ->
-          latch.countDown()
-        }
-        ws.result().closeHandler { _ ->
-          ws.result().close()
-        }
-      }
-    and: "WebSocket requests"
-      IntStream.range(0, 15).forEach {i ->
-        def wsReq = wsClient.webSocket().connect(server.port, server.getHostName(), "/websocket")
-        wsReq.onComplete(completionHandler)
-      }
-    and: "An instance of AsyncConditions"
-      def async = new AsyncConditions(1)
+	// https://github.com/fabric8io/mockwebserver/pull/66#issuecomment-944289335
+	def "andUpgradeToWebSocket, with multiple upgrades, should emit events for all websocket listeners"() {
+		given: "A WebSocket expectation"
+		server.expect()
+				.withPath("/websocket")
+				.andUpgradeToWebSocket().open().waitFor(10L).andEmit("A text message").done().always()
+		and: "A CountDown latch to verify the event count"
+		def latch = new CountDownLatch(15)
+		and: "A Vert.x WebSocket completion handler"
+		Handler<AsyncResult<WebSocket>> completionHandler =  { ws ->
+			ws.result().textMessageHandler { text ->
+				latch.countDown()
+			}
+			ws.result().closeHandler { _ ->
+				ws.result().close()
+			}
+		}
+		and: "WebSocket requests"
+		IntStream.range(0, 15).forEach {i ->
+			def wsReq = wsClient.webSocket().connect(server.port, server.getHostName(), "/websocket")
+			wsReq.onComplete(completionHandler)
+		}
+		and: "An instance of AsyncConditions"
+		def async = new AsyncConditions(1)
 
-    when: "The requests are sent and completed"
-      async.evaluate {
-        assert latch.await(10, TimeUnit.SECONDS)
-      }
+		when: "The requests are sent and completed"
+		async.evaluate {
+			assert latch.await(10, TimeUnit.SECONDS)
+		}
 
-    then: "Expect the result to be completed in the specified time"
-      async.await(10)
-  }
+		then: "Expect the result to be completed in the specified time"
+		async.await(10)
+	}
 
-  // https://github.com/fabric8io/mockwebserver/issues/77
-  def "andUpgradeToWebSocket, with request header 'sec-websocket-protocol', should create response with matching header"() {
-    given: "A WebSocket expectation"
-      server.expect()
-        .withPath("/websocket")
-        .andUpgradeToWebSocket().open().done().always()
-    and:
-      def future = new CompletableFuture()
-    and: "A WebSocket request"
-      def wsReq = wsClient.webSocket().connect(new WebSocketConnectOptions()
-        .setPort(server.port)
-        .setHost(server.getHostName())
-        .setURI("/websocket")
-        .addSubProtocol("v4.channel.k8s.io"))
-    and: "A WebSocket listener"
-      wsReq.onComplete { ws ->
-        future.complete(ws.result().headers().get("sec-websocket-protocol"))
-      }
-    and: "An instance of AsyncConditions"
-      def async = new AsyncConditions(1)
+	// https://github.com/fabric8io/mockwebserver/issues/77
+	def "andUpgradeToWebSocket, with request header 'sec-websocket-protocol', should create response with matching header"() {
+		given: "A WebSocket expectation"
+		server.expect()
+				.withPath("/websocket")
+				.andUpgradeToWebSocket().open().done().always()
+		and:
+		def future = new CompletableFuture()
+		and: "A WebSocket request"
+		def wsReq = wsClient.webSocket().connect(new WebSocketConnectOptions()
+				.setPort(server.port)
+				.setHost(server.getHostName())
+				.setURI("/websocket")
+				.addSubProtocol("v4.channel.k8s.io"))
+		and: "A WebSocket listener"
+		wsReq.onComplete { ws ->
+			future.complete(ws.result().headers().get("sec-websocket-protocol"))
+		}
+		and: "An instance of AsyncConditions"
+		def async = new AsyncConditions(1)
 
-    when: "The request is sent and completed"
-      async.evaluate {
-        assert future.get(10, TimeUnit.SECONDS) == "v4.channel.k8s.io"
-      }
+		when: "The request is sent and completed"
+		async.evaluate {
+			assert future.get(10, TimeUnit.SECONDS) == "v4.channel.k8s.io"
+		}
 
-    then: "Expect the result to be completed in the specified time"
-      async.await(10)
-  }
+		then: "Expect the result to be completed in the specified time"
+		async.await(10)
+	}
 }
