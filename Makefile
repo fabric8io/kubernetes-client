@@ -52,6 +52,7 @@ generate-openapi-classes:
 	cd kubernetes-model-generator/kubernetes-model-metrics && mvn -Pgenerate clean install
 	cd kubernetes-model-generator/kubernetes-model-node && mvn -Pgenerate clean install
 	cd kubernetes-model-generator/kubernetes-model-policy && mvn -Pgenerate clean install
+	cd kubernetes-model-generator/kubernetes-model-scheduling && mvn -Pgenerate clean install
 
 # Legacy generation of the model: TODO: remove
 .PHONY: generate-model-legacy
