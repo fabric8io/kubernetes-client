@@ -19,6 +19,13 @@ import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
+/**
+ * A collection of callback methods invoked through the various stages of the HTTP request lifecycle.
+ * Each invocation of {@link Interceptor#before(BasicBuilder, HttpRequest, RequestTags)} will be matched with a call to one of
+ * {@link Interceptor#afterConnectionFailure(HttpRequest, Throwable)} or
+ * {@link Interceptor#after(HttpRequest, HttpResponse, AsyncBody.Consumer)}.
+ * Callbacks that lead to a request being sent allow for that request to be customised.
+ */
 public interface Interceptor {
 
   interface RequestTags {
@@ -63,7 +70,10 @@ public interface Interceptor {
   }
 
   /**
-   * Called after a websocket failure or by default from a normal request
+   * Called after a websocket failure or by default from a normal request.
+   * <p>
+   * Failure is determined by HTTP status code and will be invoked in addition to {@link Interceptor#after(HttpRequest,
+   * HttpResponse, AsyncBody.Consumer)}
    *
    * @param builder used to modify the request
    * @param response the failed response
@@ -75,13 +85,27 @@ public interface Interceptor {
 
   /**
    * Called after a non-websocket failure
-   *
+   * <p>
+   * Failure is determined by HTTP status code and will be invoked in addition to {@link Interceptor#after(HttpRequest,
+   * HttpResponse, AsyncBody.Consumer)}
+   * 
    * @param builder used to modify the request
    * @param response the failed response
    * @return true if the builder should be used to execute a new request
    */
   default CompletableFuture<Boolean> afterFailure(HttpRequest.Builder builder, HttpResponse<?> response, RequestTags tags) {
     return afterFailure((BasicBuilder) builder, response, tags);
+  }
+
+  /**
+   * Called after a connection attempt fails.
+   * <p>
+   * This method will be invoked on each failed connection attempt.
+   *
+   * @param request the HTTP request.
+   * @param failure the Java exception that caused the failure.
+   */
+  default void afterConnectionFailure(HttpRequest request, Throwable failure) {
   }
 
 }
