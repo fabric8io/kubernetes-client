@@ -1,5 +1,5 @@
 
-package io.fabric8.kubernetes.api.model.storage;
+package io.fabric8.kubernetes.api.model.storage.v1beta1;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -13,8 +13,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
+import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
@@ -22,12 +22,8 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.kubernetes.model.annotation.Group;
-import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import io.sundr.transform.annotations.TemplateTransformation;
-import io.sundr.transform.annotations.TemplateTransformations;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
@@ -35,10 +31,10 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "apiVersion",
-    "kind",
-    "metadata",
-    "spec"
+    "attachError",
+    "attached",
+    "attachmentMetadata",
+    "detachError"
 })
 @ToString
 @EqualsAndHashCode
@@ -57,33 +53,19 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
-@TemplateTransformations({
-    @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true)
-})
-@Version("v1")
-@Group("storage.k8s.io")
 @Generated("jsonschema2pojo")
-public class CSINode implements Editable<CSINodeBuilder> , HasMetadata
+public class VolumeAttachmentStatus implements Editable<VolumeAttachmentStatusBuilder> , KubernetesResource
 {
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
-    @JsonProperty("apiVersion")
-    private String apiVersion = "storage.k8s.io/v1";
-    /**
-     * 
-     * (Required)
-     * 
-     */
-    @JsonProperty("kind")
-    private String kind = "CSINode";
-    @JsonProperty("metadata")
-    private ObjectMeta metadata;
-    @JsonProperty("spec")
-    private CSINodeSpec spec;
+    @JsonProperty("attachError")
+    private VolumeError attachError;
+    @JsonProperty("attached")
+    private Boolean attached;
+    @JsonProperty("attachmentMetadata")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, String> attachmentMetadata = new LinkedHashMap<>();
+    @JsonProperty("detachError")
+    private VolumeError detachError;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -91,84 +73,65 @@ public class CSINode implements Editable<CSINodeBuilder> , HasMetadata
      * No args constructor for use in serialization
      * 
      */
-    public CSINode() {
+    public VolumeAttachmentStatus() {
     }
 
-    public CSINode(String apiVersion, String kind, ObjectMeta metadata, CSINodeSpec spec) {
+    public VolumeAttachmentStatus(VolumeError attachError, Boolean attached, Map<String, String> attachmentMetadata, VolumeError detachError) {
         super();
-        this.apiVersion = apiVersion;
-        this.kind = kind;
-        this.metadata = metadata;
-        this.spec = spec;
+        this.attachError = attachError;
+        this.attached = attached;
+        this.attachmentMetadata = attachmentMetadata;
+        this.detachError = detachError;
     }
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
-    @JsonProperty("apiVersion")
-    public String getApiVersion() {
-        return apiVersion;
+    @JsonProperty("attachError")
+    public VolumeError getAttachError() {
+        return attachError;
     }
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
-    @JsonProperty("apiVersion")
-    public void setApiVersion(String apiVersion) {
-        this.apiVersion = apiVersion;
+    @JsonProperty("attachError")
+    public void setAttachError(VolumeError attachError) {
+        this.attachError = attachError;
     }
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
-    @JsonProperty("kind")
-    public String getKind() {
-        return kind;
+    @JsonProperty("attached")
+    public Boolean getAttached() {
+        return attached;
     }
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
-    @JsonProperty("kind")
-    public void setKind(String kind) {
-        this.kind = kind;
+    @JsonProperty("attached")
+    public void setAttached(Boolean attached) {
+        this.attached = attached;
     }
 
-    @JsonProperty("metadata")
-    public ObjectMeta getMetadata() {
-        return metadata;
+    @JsonProperty("attachmentMetadata")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public Map<String, String> getAttachmentMetadata() {
+        return attachmentMetadata;
     }
 
-    @JsonProperty("metadata")
-    public void setMetadata(ObjectMeta metadata) {
-        this.metadata = metadata;
+    @JsonProperty("attachmentMetadata")
+    public void setAttachmentMetadata(Map<String, String> attachmentMetadata) {
+        this.attachmentMetadata = attachmentMetadata;
     }
 
-    @JsonProperty("spec")
-    public CSINodeSpec getSpec() {
-        return spec;
+    @JsonProperty("detachError")
+    public VolumeError getDetachError() {
+        return detachError;
     }
 
-    @JsonProperty("spec")
-    public void setSpec(CSINodeSpec spec) {
-        this.spec = spec;
+    @JsonProperty("detachError")
+    public void setDetachError(VolumeError detachError) {
+        this.detachError = detachError;
     }
 
     @JsonIgnore
-    public CSINodeBuilder edit() {
-        return new CSINodeBuilder(this);
+    public VolumeAttachmentStatusBuilder edit() {
+        return new VolumeAttachmentStatusBuilder(this);
     }
 
     @JsonIgnore
-    public CSINodeBuilder toBuilder() {
+    public VolumeAttachmentStatusBuilder toBuilder() {
         return edit();
     }
 

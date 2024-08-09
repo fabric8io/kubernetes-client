@@ -92,19 +92,4 @@ class KubernetesTest {
         .generate();
   }
 
-  @Test
-  void storageclass() {
-    new ModelGenerator(baseSettings
-        .clearSchemas()
-        .schema(new File("../schemas/kubernetes-1.21.14.json"))
-        .schema(new File("../schemas/kubernetes-1.30.0.json"))
-        .includeGenerationRegex("^io\\.k8s\\.api\\.storage\\..*$")
-        .includeGenerationRegex("^io\\.k8s\\.api\\.storagemigration\\..*$")
-        .packageMapping("io.k8s.api.storage", "io.fabric8.kubernetes.api.model.storage")
-        .packageMapping("io.k8s.api.storage.v1", "io.fabric8.kubernetes.api.model.storage")
-        .packageMapping("io.k8s.api.storagemigration", "io.fabric8.kubernetes.api.model.storagemigration")
-        .build())
-        .generate();
-  }
-
 }

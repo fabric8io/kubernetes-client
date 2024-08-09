@@ -1,7 +1,9 @@
 
-package io.fabric8.kubernetes.api.model.storage;
+package io.fabric8.kubernetes.api.model.storage.v1alpha1;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -13,9 +15,11 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
+import io.fabric8.kubernetes.api.model.KubernetesResource;
+import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.LabelSelector;
+import io.fabric8.kubernetes.api.model.ListMeta;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
@@ -38,7 +42,7 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "spec"
+    "items"
 })
 @ToString
 @EqualsAndHashCode
@@ -60,10 +64,10 @@ import lombok.experimental.Accessors;
 @TemplateTransformations({
     @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true)
 })
-@Version("v1")
+@Version("v1alpha1")
 @Group("storage.k8s.io")
 @Generated("jsonschema2pojo")
-public class CSINode implements Editable<CSINodeBuilder> , HasMetadata
+public class VolumeAttachmentList implements Editable<VolumeAttachmentListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.storage.v1alpha1.VolumeAttachment>
 {
 
     /**
@@ -72,18 +76,19 @@ public class CSINode implements Editable<CSINodeBuilder> , HasMetadata
      * 
      */
     @JsonProperty("apiVersion")
-    private String apiVersion = "storage.k8s.io/v1";
+    private String apiVersion = "storage.k8s.io/v1alpha1";
+    @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<io.fabric8.kubernetes.api.model.storage.v1alpha1.VolumeAttachment> items = new ArrayList<>();
     /**
      * 
      * (Required)
      * 
      */
     @JsonProperty("kind")
-    private String kind = "CSINode";
+    private String kind = "VolumeAttachmentList";
     @JsonProperty("metadata")
-    private ObjectMeta metadata;
-    @JsonProperty("spec")
-    private CSINodeSpec spec;
+    private ListMeta metadata;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -91,15 +96,15 @@ public class CSINode implements Editable<CSINodeBuilder> , HasMetadata
      * No args constructor for use in serialization
      * 
      */
-    public CSINode() {
+    public VolumeAttachmentList() {
     }
 
-    public CSINode(String apiVersion, String kind, ObjectMeta metadata, CSINodeSpec spec) {
+    public VolumeAttachmentList(String apiVersion, List<io.fabric8.kubernetes.api.model.storage.v1alpha1.VolumeAttachment> items, String kind, ListMeta metadata) {
         super();
         this.apiVersion = apiVersion;
+        this.items = items;
         this.kind = kind;
         this.metadata = metadata;
-        this.spec = spec;
     }
 
     /**
@@ -120,6 +125,17 @@ public class CSINode implements Editable<CSINodeBuilder> , HasMetadata
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
+    }
+
+    @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<io.fabric8.kubernetes.api.model.storage.v1alpha1.VolumeAttachment> getItems() {
+        return items;
+    }
+
+    @JsonProperty("items")
+    public void setItems(List<io.fabric8.kubernetes.api.model.storage.v1alpha1.VolumeAttachment> items) {
+        this.items = items;
     }
 
     /**
@@ -143,32 +159,22 @@ public class CSINode implements Editable<CSINodeBuilder> , HasMetadata
     }
 
     @JsonProperty("metadata")
-    public ObjectMeta getMetadata() {
+    public ListMeta getMetadata() {
         return metadata;
     }
 
     @JsonProperty("metadata")
-    public void setMetadata(ObjectMeta metadata) {
+    public void setMetadata(ListMeta metadata) {
         this.metadata = metadata;
     }
 
-    @JsonProperty("spec")
-    public CSINodeSpec getSpec() {
-        return spec;
-    }
-
-    @JsonProperty("spec")
-    public void setSpec(CSINodeSpec spec) {
-        this.spec = spec;
+    @JsonIgnore
+    public VolumeAttachmentListBuilder edit() {
+        return new VolumeAttachmentListBuilder(this);
     }
 
     @JsonIgnore
-    public CSINodeBuilder edit() {
-        return new CSINodeBuilder(this);
-    }
-
-    @JsonIgnore
-    public CSINodeBuilder toBuilder() {
+    public VolumeAttachmentListBuilder toBuilder() {
         return edit();
     }
 
