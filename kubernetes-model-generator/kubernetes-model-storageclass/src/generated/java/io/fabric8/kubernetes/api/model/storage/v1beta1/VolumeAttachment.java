@@ -1,5 +1,5 @@
 
-package io.fabric8.kubernetes.api.model.storage;
+package io.fabric8.kubernetes.api.model.storage.v1beta1;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -38,7 +38,8 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "spec"
+    "spec",
+    "status"
 })
 @ToString
 @EqualsAndHashCode
@@ -60,10 +61,10 @@ import lombok.experimental.Accessors;
 @TemplateTransformations({
     @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true)
 })
-@Version("v1")
+@Version("v1beta1")
 @Group("storage.k8s.io")
 @Generated("jsonschema2pojo")
-public class CSINode implements Editable<CSINodeBuilder> , HasMetadata
+public class VolumeAttachment implements Editable<VolumeAttachmentBuilder> , HasMetadata
 {
 
     /**
@@ -72,18 +73,20 @@ public class CSINode implements Editable<CSINodeBuilder> , HasMetadata
      * 
      */
     @JsonProperty("apiVersion")
-    private String apiVersion = "storage.k8s.io/v1";
+    private String apiVersion = "storage.k8s.io/v1beta1";
     /**
      * 
      * (Required)
      * 
      */
     @JsonProperty("kind")
-    private String kind = "CSINode";
+    private String kind = "VolumeAttachment";
     @JsonProperty("metadata")
     private ObjectMeta metadata;
     @JsonProperty("spec")
-    private CSINodeSpec spec;
+    private VolumeAttachmentSpec spec;
+    @JsonProperty("status")
+    private VolumeAttachmentStatus status;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -91,15 +94,16 @@ public class CSINode implements Editable<CSINodeBuilder> , HasMetadata
      * No args constructor for use in serialization
      * 
      */
-    public CSINode() {
+    public VolumeAttachment() {
     }
 
-    public CSINode(String apiVersion, String kind, ObjectMeta metadata, CSINodeSpec spec) {
+    public VolumeAttachment(String apiVersion, String kind, ObjectMeta metadata, VolumeAttachmentSpec spec, VolumeAttachmentStatus status) {
         super();
         this.apiVersion = apiVersion;
         this.kind = kind;
         this.metadata = metadata;
         this.spec = spec;
+        this.status = status;
     }
 
     /**
@@ -153,22 +157,32 @@ public class CSINode implements Editable<CSINodeBuilder> , HasMetadata
     }
 
     @JsonProperty("spec")
-    public CSINodeSpec getSpec() {
+    public VolumeAttachmentSpec getSpec() {
         return spec;
     }
 
     @JsonProperty("spec")
-    public void setSpec(CSINodeSpec spec) {
+    public void setSpec(VolumeAttachmentSpec spec) {
         this.spec = spec;
     }
 
-    @JsonIgnore
-    public CSINodeBuilder edit() {
-        return new CSINodeBuilder(this);
+    @JsonProperty("status")
+    public VolumeAttachmentStatus getStatus() {
+        return status;
+    }
+
+    @JsonProperty("status")
+    public void setStatus(VolumeAttachmentStatus status) {
+        this.status = status;
     }
 
     @JsonIgnore
-    public CSINodeBuilder toBuilder() {
+    public VolumeAttachmentBuilder edit() {
+        return new VolumeAttachmentBuilder(this);
+    }
+
+    @JsonIgnore
+    public VolumeAttachmentBuilder toBuilder() {
         return edit();
     }
 

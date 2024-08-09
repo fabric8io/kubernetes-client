@@ -19,6 +19,7 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
+import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
@@ -55,7 +56,7 @@ import lombok.experimental.Accessors;
     ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
+    @BuildableReference(ObjectMeta.class),
     @BuildableReference(LabelSelector.class),
     @BuildableReference(Container.class),
     @BuildableReference(PodTemplateSpec.class),
@@ -94,7 +95,7 @@ public class StorageClass implements Editable<StorageClassBuilder> , HasMetadata
     @JsonProperty("kind")
     private String kind = "StorageClass";
     @JsonProperty("metadata")
-    private io.fabric8.kubernetes.api.model.ObjectMeta metadata;
+    private ObjectMeta metadata;
     @JsonProperty("mountOptions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> mountOptions = new ArrayList<>();
@@ -117,7 +118,7 @@ public class StorageClass implements Editable<StorageClassBuilder> , HasMetadata
     public StorageClass() {
     }
 
-    public StorageClass(Boolean allowVolumeExpansion, List<TopologySelectorTerm> allowedTopologies, String apiVersion, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, List<String> mountOptions, Map<String, String> parameters, String provisioner, String reclaimPolicy, String volumeBindingMode) {
+    public StorageClass(Boolean allowVolumeExpansion, List<TopologySelectorTerm> allowedTopologies, String apiVersion, String kind, ObjectMeta metadata, List<String> mountOptions, Map<String, String> parameters, String provisioner, String reclaimPolicy, String volumeBindingMode) {
         super();
         this.allowVolumeExpansion = allowVolumeExpansion;
         this.allowedTopologies = allowedTopologies;
@@ -193,12 +194,12 @@ public class StorageClass implements Editable<StorageClassBuilder> , HasMetadata
     }
 
     @JsonProperty("metadata")
-    public io.fabric8.kubernetes.api.model.ObjectMeta getMetadata() {
+    public ObjectMeta getMetadata() {
         return metadata;
     }
 
     @JsonProperty("metadata")
-    public void setMetadata(io.fabric8.kubernetes.api.model.ObjectMeta metadata) {
+    public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 

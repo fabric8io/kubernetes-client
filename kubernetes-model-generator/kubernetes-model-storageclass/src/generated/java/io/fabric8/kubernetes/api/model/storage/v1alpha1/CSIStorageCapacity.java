@@ -1,5 +1,5 @@
 
-package io.fabric8.kubernetes.api.model.storage;
+package io.fabric8.kubernetes.api.model.storage.v1alpha1;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -17,10 +17,12 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
+import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
+import io.fabric8.kubernetes.api.model.Quantity;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
@@ -38,7 +40,10 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "spec"
+    "capacity",
+    "maximumVolumeSize",
+    "nodeTopology",
+    "storageClassName"
 })
 @ToString
 @EqualsAndHashCode
@@ -60,10 +65,10 @@ import lombok.experimental.Accessors;
 @TemplateTransformations({
     @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true)
 })
-@Version("v1")
+@Version("v1alpha1")
 @Group("storage.k8s.io")
 @Generated("jsonschema2pojo")
-public class CSINode implements Editable<CSINodeBuilder> , HasMetadata
+public class CSIStorageCapacity implements Editable<CSIStorageCapacityBuilder> , HasMetadata, Namespaced
 {
 
     /**
@@ -72,18 +77,24 @@ public class CSINode implements Editable<CSINodeBuilder> , HasMetadata
      * 
      */
     @JsonProperty("apiVersion")
-    private String apiVersion = "storage.k8s.io/v1";
+    private String apiVersion = "storage.k8s.io/v1alpha1";
+    @JsonProperty("capacity")
+    private Quantity capacity;
     /**
      * 
      * (Required)
      * 
      */
     @JsonProperty("kind")
-    private String kind = "CSINode";
+    private String kind = "CSIStorageCapacity";
+    @JsonProperty("maximumVolumeSize")
+    private Quantity maximumVolumeSize;
     @JsonProperty("metadata")
     private ObjectMeta metadata;
-    @JsonProperty("spec")
-    private CSINodeSpec spec;
+    @JsonProperty("nodeTopology")
+    private LabelSelector nodeTopology;
+    @JsonProperty("storageClassName")
+    private String storageClassName;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -91,15 +102,18 @@ public class CSINode implements Editable<CSINodeBuilder> , HasMetadata
      * No args constructor for use in serialization
      * 
      */
-    public CSINode() {
+    public CSIStorageCapacity() {
     }
 
-    public CSINode(String apiVersion, String kind, ObjectMeta metadata, CSINodeSpec spec) {
+    public CSIStorageCapacity(String apiVersion, Quantity capacity, String kind, Quantity maximumVolumeSize, ObjectMeta metadata, LabelSelector nodeTopology, String storageClassName) {
         super();
         this.apiVersion = apiVersion;
+        this.capacity = capacity;
         this.kind = kind;
+        this.maximumVolumeSize = maximumVolumeSize;
         this.metadata = metadata;
-        this.spec = spec;
+        this.nodeTopology = nodeTopology;
+        this.storageClassName = storageClassName;
     }
 
     /**
@@ -122,6 +136,16 @@ public class CSINode implements Editable<CSINodeBuilder> , HasMetadata
         this.apiVersion = apiVersion;
     }
 
+    @JsonProperty("capacity")
+    public Quantity getCapacity() {
+        return capacity;
+    }
+
+    @JsonProperty("capacity")
+    public void setCapacity(Quantity capacity) {
+        this.capacity = capacity;
+    }
+
     /**
      * 
      * (Required)
@@ -142,6 +166,16 @@ public class CSINode implements Editable<CSINodeBuilder> , HasMetadata
         this.kind = kind;
     }
 
+    @JsonProperty("maximumVolumeSize")
+    public Quantity getMaximumVolumeSize() {
+        return maximumVolumeSize;
+    }
+
+    @JsonProperty("maximumVolumeSize")
+    public void setMaximumVolumeSize(Quantity maximumVolumeSize) {
+        this.maximumVolumeSize = maximumVolumeSize;
+    }
+
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
         return metadata;
@@ -152,23 +186,33 @@ public class CSINode implements Editable<CSINodeBuilder> , HasMetadata
         this.metadata = metadata;
     }
 
-    @JsonProperty("spec")
-    public CSINodeSpec getSpec() {
-        return spec;
+    @JsonProperty("nodeTopology")
+    public LabelSelector getNodeTopology() {
+        return nodeTopology;
     }
 
-    @JsonProperty("spec")
-    public void setSpec(CSINodeSpec spec) {
-        this.spec = spec;
+    @JsonProperty("nodeTopology")
+    public void setNodeTopology(LabelSelector nodeTopology) {
+        this.nodeTopology = nodeTopology;
+    }
+
+    @JsonProperty("storageClassName")
+    public String getStorageClassName() {
+        return storageClassName;
+    }
+
+    @JsonProperty("storageClassName")
+    public void setStorageClassName(String storageClassName) {
+        this.storageClassName = storageClassName;
     }
 
     @JsonIgnore
-    public CSINodeBuilder edit() {
-        return new CSINodeBuilder(this);
+    public CSIStorageCapacityBuilder edit() {
+        return new CSIStorageCapacityBuilder(this);
     }
 
     @JsonIgnore
-    public CSINodeBuilder toBuilder() {
+    public CSIStorageCapacityBuilder toBuilder() {
         return edit();
     }
 

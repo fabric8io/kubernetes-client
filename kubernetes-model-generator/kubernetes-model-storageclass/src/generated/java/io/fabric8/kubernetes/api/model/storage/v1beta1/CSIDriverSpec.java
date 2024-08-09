@@ -37,7 +37,6 @@ import lombok.experimental.Accessors;
     "fsGroupPolicy",
     "podInfoOnMount",
     "requiresRepublish",
-    "seLinuxMount",
     "storageCapacity",
     "tokenRequests",
     "volumeLifecycleModes"
@@ -71,8 +70,6 @@ public class CSIDriverSpec implements Editable<CSIDriverSpecBuilder> , Kubernete
     private Boolean podInfoOnMount;
     @JsonProperty("requiresRepublish")
     private Boolean requiresRepublish;
-    @JsonProperty("seLinuxMount")
-    private Boolean seLinuxMount;
     @JsonProperty("storageCapacity")
     private Boolean storageCapacity;
     @JsonProperty("tokenRequests")
@@ -91,13 +88,12 @@ public class CSIDriverSpec implements Editable<CSIDriverSpecBuilder> , Kubernete
     public CSIDriverSpec() {
     }
 
-    public CSIDriverSpec(Boolean attachRequired, String fsGroupPolicy, Boolean podInfoOnMount, Boolean requiresRepublish, Boolean seLinuxMount, Boolean storageCapacity, List<TokenRequest> tokenRequests, List<String> volumeLifecycleModes) {
+    public CSIDriverSpec(Boolean attachRequired, String fsGroupPolicy, Boolean podInfoOnMount, Boolean requiresRepublish, Boolean storageCapacity, List<TokenRequest> tokenRequests, List<String> volumeLifecycleModes) {
         super();
         this.attachRequired = attachRequired;
         this.fsGroupPolicy = fsGroupPolicy;
         this.podInfoOnMount = podInfoOnMount;
         this.requiresRepublish = requiresRepublish;
-        this.seLinuxMount = seLinuxMount;
         this.storageCapacity = storageCapacity;
         this.tokenRequests = tokenRequests;
         this.volumeLifecycleModes = volumeLifecycleModes;
@@ -141,16 +137,6 @@ public class CSIDriverSpec implements Editable<CSIDriverSpecBuilder> , Kubernete
     @JsonProperty("requiresRepublish")
     public void setRequiresRepublish(Boolean requiresRepublish) {
         this.requiresRepublish = requiresRepublish;
-    }
-
-    @JsonProperty("seLinuxMount")
-    public Boolean getSeLinuxMount() {
-        return seLinuxMount;
-    }
-
-    @JsonProperty("seLinuxMount")
-    public void setSeLinuxMount(Boolean seLinuxMount) {
-        this.seLinuxMount = seLinuxMount;
     }
 
     @JsonProperty("storageCapacity")

@@ -1,7 +1,9 @@
 
-package io.fabric8.kubernetes.api.model.storage;
+package io.fabric8.kubernetes.api.model.storage.v1beta1;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -22,6 +24,7 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
+import io.fabric8.kubernetes.api.model.TopologySelectorTerm;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
@@ -38,7 +41,13 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "spec"
+    "allowVolumeExpansion",
+    "allowedTopologies",
+    "mountOptions",
+    "parameters",
+    "provisioner",
+    "reclaimPolicy",
+    "volumeBindingMode"
 })
 @ToString
 @EqualsAndHashCode
@@ -60,30 +69,45 @@ import lombok.experimental.Accessors;
 @TemplateTransformations({
     @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true)
 })
-@Version("v1")
+@Version("v1beta1")
 @Group("storage.k8s.io")
 @Generated("jsonschema2pojo")
-public class CSINode implements Editable<CSINodeBuilder> , HasMetadata
+public class StorageClass implements Editable<StorageClassBuilder> , HasMetadata
 {
 
+    @JsonProperty("allowVolumeExpansion")
+    private Boolean allowVolumeExpansion;
+    @JsonProperty("allowedTopologies")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<TopologySelectorTerm> allowedTopologies = new ArrayList<>();
     /**
      * 
      * (Required)
      * 
      */
     @JsonProperty("apiVersion")
-    private String apiVersion = "storage.k8s.io/v1";
+    private String apiVersion = "storage.k8s.io/v1beta1";
     /**
      * 
      * (Required)
      * 
      */
     @JsonProperty("kind")
-    private String kind = "CSINode";
+    private String kind = "StorageClass";
     @JsonProperty("metadata")
     private ObjectMeta metadata;
-    @JsonProperty("spec")
-    private CSINodeSpec spec;
+    @JsonProperty("mountOptions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> mountOptions = new ArrayList<>();
+    @JsonProperty("parameters")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, String> parameters = new LinkedHashMap<>();
+    @JsonProperty("provisioner")
+    private String provisioner;
+    @JsonProperty("reclaimPolicy")
+    private String reclaimPolicy;
+    @JsonProperty("volumeBindingMode")
+    private String volumeBindingMode;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -91,15 +115,42 @@ public class CSINode implements Editable<CSINodeBuilder> , HasMetadata
      * No args constructor for use in serialization
      * 
      */
-    public CSINode() {
+    public StorageClass() {
     }
 
-    public CSINode(String apiVersion, String kind, ObjectMeta metadata, CSINodeSpec spec) {
+    public StorageClass(Boolean allowVolumeExpansion, List<TopologySelectorTerm> allowedTopologies, String apiVersion, String kind, ObjectMeta metadata, List<String> mountOptions, Map<String, String> parameters, String provisioner, String reclaimPolicy, String volumeBindingMode) {
         super();
+        this.allowVolumeExpansion = allowVolumeExpansion;
+        this.allowedTopologies = allowedTopologies;
         this.apiVersion = apiVersion;
         this.kind = kind;
         this.metadata = metadata;
-        this.spec = spec;
+        this.mountOptions = mountOptions;
+        this.parameters = parameters;
+        this.provisioner = provisioner;
+        this.reclaimPolicy = reclaimPolicy;
+        this.volumeBindingMode = volumeBindingMode;
+    }
+
+    @JsonProperty("allowVolumeExpansion")
+    public Boolean getAllowVolumeExpansion() {
+        return allowVolumeExpansion;
+    }
+
+    @JsonProperty("allowVolumeExpansion")
+    public void setAllowVolumeExpansion(Boolean allowVolumeExpansion) {
+        this.allowVolumeExpansion = allowVolumeExpansion;
+    }
+
+    @JsonProperty("allowedTopologies")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<TopologySelectorTerm> getAllowedTopologies() {
+        return allowedTopologies;
+    }
+
+    @JsonProperty("allowedTopologies")
+    public void setAllowedTopologies(List<TopologySelectorTerm> allowedTopologies) {
+        this.allowedTopologies = allowedTopologies;
     }
 
     /**
@@ -152,23 +203,65 @@ public class CSINode implements Editable<CSINodeBuilder> , HasMetadata
         this.metadata = metadata;
     }
 
-    @JsonProperty("spec")
-    public CSINodeSpec getSpec() {
-        return spec;
+    @JsonProperty("mountOptions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<String> getMountOptions() {
+        return mountOptions;
     }
 
-    @JsonProperty("spec")
-    public void setSpec(CSINodeSpec spec) {
-        this.spec = spec;
+    @JsonProperty("mountOptions")
+    public void setMountOptions(List<String> mountOptions) {
+        this.mountOptions = mountOptions;
+    }
+
+    @JsonProperty("parameters")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public Map<String, String> getParameters() {
+        return parameters;
+    }
+
+    @JsonProperty("parameters")
+    public void setParameters(Map<String, String> parameters) {
+        this.parameters = parameters;
+    }
+
+    @JsonProperty("provisioner")
+    public String getProvisioner() {
+        return provisioner;
+    }
+
+    @JsonProperty("provisioner")
+    public void setProvisioner(String provisioner) {
+        this.provisioner = provisioner;
+    }
+
+    @JsonProperty("reclaimPolicy")
+    public String getReclaimPolicy() {
+        return reclaimPolicy;
+    }
+
+    @JsonProperty("reclaimPolicy")
+    public void setReclaimPolicy(String reclaimPolicy) {
+        this.reclaimPolicy = reclaimPolicy;
+    }
+
+    @JsonProperty("volumeBindingMode")
+    public String getVolumeBindingMode() {
+        return volumeBindingMode;
+    }
+
+    @JsonProperty("volumeBindingMode")
+    public void setVolumeBindingMode(String volumeBindingMode) {
+        this.volumeBindingMode = volumeBindingMode;
     }
 
     @JsonIgnore
-    public CSINodeBuilder edit() {
-        return new CSINodeBuilder(this);
+    public StorageClassBuilder edit() {
+        return new StorageClassBuilder(this);
     }
 
     @JsonIgnore
-    public CSINodeBuilder toBuilder() {
+    public StorageClassBuilder toBuilder() {
         return edit();
     }
 
