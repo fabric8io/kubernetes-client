@@ -177,20 +177,29 @@ public abstract class StandardHttpClient<C extends HttpClient, F extends HttpCli
               }
             }
           } else {
-            if (throwable instanceof CompletionException) {
-              throwable = throwable.getCause();
-            }
-            if (throwable instanceof IOException) {
+            final Throwable actualCause = unwrapCompletionException(throwable);
+            builder.interceptors.forEach((s, interceptor) -> interceptor.afterConnectionFailure(request, actualCause));
+            if (actualCause instanceof IOException) {
               // TODO: may not be specific enough - incorrect ssl settings for example will get caught here
               LOG.debug(
                   String.format("HTTP operation on url: %s should be retried after %d millis because of IOException",
                       uri, retryInterval),
-                  throwable);
+                  actualCause);
               return true;
             }
           }
           return false;
         });
+  }
+
+  static Throwable unwrapCompletionException(Throwable throwable) {
+    final Throwable actualCause;
+    if (throwable instanceof CompletionException) {
+      actualCause = throwable.getCause();
+    } else {
+      actualCause = throwable;
+    }
+    return actualCause;
   }
 
   static long retryAfterMillis(HttpResponse<?> httpResponse) {

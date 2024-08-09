@@ -25,22 +25,26 @@ import org.junit.jupiter.api.Test;
 import java.net.URI;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public abstract class AbstractInterceptorTest {
 
+  private static final Duration FUTURE_COMPLETION_TIME = Duration.of(10, ChronoUnit.SECONDS);
   private static DefaultMockServer server;
 
   @BeforeEach
   void startServer() {
-    server = new DefaultMockServer(false);
+    server = newMockServer();
     server.start();
   }
 
@@ -167,6 +171,69 @@ public abstract class AbstractInterceptorTest {
       assertThat(result)
           .returns("This works", HttpResponse::body)
           .returns(200, HttpResponse::code);
+    }
+  }
+
+  @Test
+  @DisplayName("afterConnectionFailure, invoked when remote server offline")
+  public void afterConnectionFailureRemoteOffline() {
+    // Given
+    final int originalPort = server.getPort();
+    server.shutdown();
+    final CountDownLatch connectionFailureCallbackInvoked = new CountDownLatch(1);
+    final HttpClient.Builder builder = getHttpClientFactory().newBuilder()
+        .connectTimeout(1, TimeUnit.SECONDS)
+        .addOrReplaceInterceptor("test", new Interceptor() {
+          @Override
+          public void afterConnectionFailure(HttpRequest request, Throwable failure) {
+            connectionFailureCallbackInvoked.countDown();
+            server = newMockServer();
+            server.start(originalPort); // Need to restart on the original port as we can't alter the request during retry.
+          }
+        });
+    // When
+    try (HttpClient client = builder.build()) {
+      final CompletableFuture<HttpResponse<String>> response = client.sendAsync(client.newHttpRequestBuilder()
+          .timeout(1, TimeUnit.SECONDS)
+          .uri(server.url("/not-found")).build(), String.class);
+
+      // Then
+      assertThat(response).succeedsWithin(FUTURE_COMPLETION_TIME);
+      assertThat(connectionFailureCallbackInvoked).extracting(CountDownLatch::getCount).isEqualTo(0L);
+    }
+  }
+
+  @Test
+  @DisplayName("afterConnectionFailure, request is retried when remote server offline")
+  public void afterConnectionFailureRetry() {
+    // Given
+    final int originalPort = server.getPort();
+    server.shutdown();
+    final CountDownLatch afterInvoked = new CountDownLatch(1);
+    final HttpClient.Builder builder = getHttpClientFactory().newBuilder()
+        .connectTimeout(1, TimeUnit.SECONDS)
+        .addOrReplaceInterceptor("test", new Interceptor() {
+          @Override
+          public void afterConnectionFailure(HttpRequest request, Throwable failure) {
+            server = newMockServer();
+            server.start(originalPort); // Need to restart on the original port as we can't alter the request during retry.
+            server.expect().withPath("/intercepted-url").andReturn(200, "This works").once();
+          }
+
+          @Override
+          public void after(HttpRequest request, HttpResponse<?> response, Consumer<List<ByteBuffer>> consumer) {
+            afterInvoked.countDown();
+          }
+        });
+    // When
+    try (HttpClient client = builder.build()) {
+      final CompletableFuture<HttpResponse<String>> response = client.sendAsync(client.newHttpRequestBuilder()
+          .timeout(1, TimeUnit.SECONDS)
+          .uri(server.url("/intercepted-url")).build(), String.class);
+
+      // Then
+      assertThat(response).succeedsWithin(FUTURE_COMPLETION_TIME);
+      assertThat(afterInvoked).extracting(CountDownLatch::getCount).isEqualTo(0L);
     }
   }
 
@@ -412,4 +479,7 @@ public abstract class AbstractInterceptorTest {
         .containsEntry("test-header", Collections.singletonList("Test-Value-Override"));
   }
 
+  private static DefaultMockServer newMockServer() {
+    return new DefaultMockServer(false);
+  }
 }

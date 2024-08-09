@@ -6,6 +6,7 @@
 * Fix #6066: Added support for missing `v1.APIVersions` in KubernetesClient
 * Fix #6110: VolumeSource (and other file mode fields) in Octal are correctly interpreted
 * Fix #6137: `ConfigBuilder.withAutoConfigure` is not working
+* Fix #6143: Expands the HTTP interceptor API to include a call back for failed connection attempts
 * Fix #6197: JettyHttp client error handling improvements.
 * Fix #6215: Suppressing rejected execution exception for port forwarder
 * Fix #6212: Improved reliability of file upload to Pod
