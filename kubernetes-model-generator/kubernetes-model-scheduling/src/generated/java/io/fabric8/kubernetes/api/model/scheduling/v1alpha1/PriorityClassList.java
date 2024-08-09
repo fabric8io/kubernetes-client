@@ -1,7 +1,9 @@
 
-package io.fabric8.kubernetes.api.model.scheduling.v1beta1;
+package io.fabric8.kubernetes.api.model.scheduling.v1alpha1;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -13,9 +15,11 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
+import io.fabric8.kubernetes.api.model.KubernetesResource;
+import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.LabelSelector;
+import io.fabric8.kubernetes.api.model.ListMeta;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
@@ -38,10 +42,7 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "description",
-    "globalDefault",
-    "preemptionPolicy",
-    "value"
+    "items"
 })
 @ToString
 @EqualsAndHashCode
@@ -63,10 +64,10 @@ import lombok.experimental.Accessors;
 @TemplateTransformations({
     @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true)
 })
-@Version("v1beta1")
+@Version("v1alpha1")
 @Group("scheduling.k8s.io")
 @Generated("jsonschema2pojo")
-public class PriorityClass implements Editable<PriorityClassBuilder> , HasMetadata
+public class PriorityClassList implements Editable<PriorityClassListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.scheduling.v1alpha1.PriorityClass>
 {
 
     /**
@@ -75,24 +76,19 @@ public class PriorityClass implements Editable<PriorityClassBuilder> , HasMetada
      * 
      */
     @JsonProperty("apiVersion")
-    private String apiVersion = "scheduling.k8s.io/v1beta1";
-    @JsonProperty("description")
-    private String description;
-    @JsonProperty("globalDefault")
-    private Boolean globalDefault;
+    private String apiVersion = "scheduling.k8s.io/v1alpha1";
+    @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<io.fabric8.kubernetes.api.model.scheduling.v1alpha1.PriorityClass> items = new ArrayList<>();
     /**
      * 
      * (Required)
      * 
      */
     @JsonProperty("kind")
-    private String kind = "PriorityClass";
+    private String kind = "PriorityClassList";
     @JsonProperty("metadata")
-    private ObjectMeta metadata;
-    @JsonProperty("preemptionPolicy")
-    private String preemptionPolicy;
-    @JsonProperty("value")
-    private Integer value;
+    private ListMeta metadata;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -100,18 +96,15 @@ public class PriorityClass implements Editable<PriorityClassBuilder> , HasMetada
      * No args constructor for use in serialization
      * 
      */
-    public PriorityClass() {
+    public PriorityClassList() {
     }
 
-    public PriorityClass(String apiVersion, String description, Boolean globalDefault, String kind, ObjectMeta metadata, String preemptionPolicy, Integer value) {
+    public PriorityClassList(String apiVersion, List<io.fabric8.kubernetes.api.model.scheduling.v1alpha1.PriorityClass> items, String kind, ListMeta metadata) {
         super();
         this.apiVersion = apiVersion;
-        this.description = description;
-        this.globalDefault = globalDefault;
+        this.items = items;
         this.kind = kind;
         this.metadata = metadata;
-        this.preemptionPolicy = preemptionPolicy;
-        this.value = value;
     }
 
     /**
@@ -134,24 +127,15 @@ public class PriorityClass implements Editable<PriorityClassBuilder> , HasMetada
         this.apiVersion = apiVersion;
     }
 
-    @JsonProperty("description")
-    public String getDescription() {
-        return description;
+    @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<io.fabric8.kubernetes.api.model.scheduling.v1alpha1.PriorityClass> getItems() {
+        return items;
     }
 
-    @JsonProperty("description")
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    @JsonProperty("globalDefault")
-    public Boolean getGlobalDefault() {
-        return globalDefault;
-    }
-
-    @JsonProperty("globalDefault")
-    public void setGlobalDefault(Boolean globalDefault) {
-        this.globalDefault = globalDefault;
+    @JsonProperty("items")
+    public void setItems(List<io.fabric8.kubernetes.api.model.scheduling.v1alpha1.PriorityClass> items) {
+        this.items = items;
     }
 
     /**
@@ -175,42 +159,22 @@ public class PriorityClass implements Editable<PriorityClassBuilder> , HasMetada
     }
 
     @JsonProperty("metadata")
-    public ObjectMeta getMetadata() {
+    public ListMeta getMetadata() {
         return metadata;
     }
 
     @JsonProperty("metadata")
-    public void setMetadata(ObjectMeta metadata) {
+    public void setMetadata(ListMeta metadata) {
         this.metadata = metadata;
     }
 
-    @JsonProperty("preemptionPolicy")
-    public String getPreemptionPolicy() {
-        return preemptionPolicy;
-    }
-
-    @JsonProperty("preemptionPolicy")
-    public void setPreemptionPolicy(String preemptionPolicy) {
-        this.preemptionPolicy = preemptionPolicy;
-    }
-
-    @JsonProperty("value")
-    public Integer getValue() {
-        return value;
-    }
-
-    @JsonProperty("value")
-    public void setValue(Integer value) {
-        this.value = value;
+    @JsonIgnore
+    public PriorityClassListBuilder edit() {
+        return new PriorityClassListBuilder(this);
     }
 
     @JsonIgnore
-    public PriorityClassBuilder edit() {
-        return new PriorityClassBuilder(this);
-    }
-
-    @JsonIgnore
-    public PriorityClassBuilder toBuilder() {
+    public PriorityClassListBuilder toBuilder() {
         return edit();
     }
 

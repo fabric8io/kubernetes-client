@@ -1,5 +1,5 @@
 
-package io.fabric8.kubernetes.api.model.scheduling.v1beta1;
+package io.fabric8.kubernetes.api.model.scheduling.v1alpha1;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -63,7 +63,7 @@ import lombok.experimental.Accessors;
 @TemplateTransformations({
     @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true)
 })
-@Version("v1beta1")
+@Version("v1alpha1")
 @Group("scheduling.k8s.io")
 @Generated("jsonschema2pojo")
 public class PriorityClass implements Editable<PriorityClassBuilder> , HasMetadata
@@ -75,7 +75,7 @@ public class PriorityClass implements Editable<PriorityClassBuilder> , HasMetada
      * 
      */
     @JsonProperty("apiVersion")
-    private String apiVersion = "scheduling.k8s.io/v1beta1";
+    private String apiVersion = "scheduling.k8s.io/v1alpha1";
     @JsonProperty("description")
     private String description;
     @JsonProperty("globalDefault")
