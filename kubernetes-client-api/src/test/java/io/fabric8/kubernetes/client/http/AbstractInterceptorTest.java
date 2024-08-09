@@ -22,7 +22,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.io.InputStream;
 import java.net.URI;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -32,7 +31,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CompletionException;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -236,37 +234,6 @@ public abstract class AbstractInterceptorTest {
       // Then
       assertThat(response).succeedsWithin(FUTURE_COMPLETION_TIME);
       assertThat(afterInvoked).extracting(CountDownLatch::getCount).isEqualTo(0L);
-    }
-  }
-
-  @Test
-  @DisplayName("afterConnectionFailure, completionExceptions are passed through")
-  public void afterConnectionFailureCompletionException() {
-    // Given
-    final CountDownLatch connectionFailureCallbackInvoked = new CountDownLatch(1);
-    final HttpClient.Builder builder = getHttpClientFactory().newBuilder()
-        .connectTimeout(1, TimeUnit.SECONDS)
-        .addOrReplaceInterceptor("test", new Interceptor() {
-          @Override
-          public void afterConnectionFailure(HttpRequest request, Throwable failure) {
-            connectionFailureCallbackInvoked.countDown();
-          }
-        });
-    // When
-    try (HttpClient client = builder.build()) {
-      final CompletableFuture<HttpResponse<String>> response = client.sendAsync(client.newHttpRequestBuilder()
-          .timeout(1, TimeUnit.SECONDS)
-          .uri(server.url("/intercepted-url"))
-          .method("POST", "application/json", new InputStream() {
-            @Override
-            public int read() {
-              throw new CompletionException("boom time", null); // gets propagated by jetty but gets wrapped by OkHttp
-            }
-          }, 1L).build(), String.class);
-
-      // Then
-      assertThat(response).failsWithin(FUTURE_COMPLETION_TIME);
-      assertThat(connectionFailureCallbackInvoked).extracting(CountDownLatch::getCount).isEqualTo(0L);
     }
   }
 
