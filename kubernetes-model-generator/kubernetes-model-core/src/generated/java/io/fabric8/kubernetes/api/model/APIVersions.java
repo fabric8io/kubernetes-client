@@ -53,7 +53,14 @@ public class APIVersions implements Editable<APIVersionsBuilder> , KubernetesRes
      * 
      */
     @JsonProperty("apiVersion")
+<<<<<<<< HEAD:kubernetes-model-generator/kubernetes-model-core/src/generated/java/io/fabric8/kubernetes/api/model/APIVersions.java
     private String apiVersion = "v1";
+========
+    private String apiVersion = "gateway.networking.k8s.io/v1alpha2";
+    @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.TCPRoute> items = new ArrayList<>();
+>>>>>>>> refs/heads/6.13:kubernetes-model-generator/kubernetes-model-gatewayapi/src/generated/java/io/fabric8/kubernetes/api/model/gatewayapi/v1alpha2/TCPRouteList.java
     /**
      * 
      * (Required)
@@ -105,6 +112,20 @@ public class APIVersions implements Editable<APIVersionsBuilder> , KubernetesRes
         this.apiVersion = apiVersion;
     }
 
+<<<<<<<< HEAD:kubernetes-model-generator/kubernetes-model-core/src/generated/java/io/fabric8/kubernetes/api/model/APIVersions.java
+========
+    @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.TCPRoute> getItems() {
+        return items;
+    }
+
+    @JsonProperty("items")
+    public void setItems(List<io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.TCPRoute> items) {
+        this.items = items;
+    }
+
+>>>>>>>> refs/heads/6.13:kubernetes-model-generator/kubernetes-model-gatewayapi/src/generated/java/io/fabric8/kubernetes/api/model/gatewayapi/v1alpha2/TCPRouteList.java
     /**
      * 
      * (Required)

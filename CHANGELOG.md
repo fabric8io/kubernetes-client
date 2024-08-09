@@ -1,14 +1,8 @@
 ## CHANGELOG
-
 ### 7.0-SNAPSHOT
 
 #### Bugs
 * Fix #6038: Support for Gradle configuration cache
-* Fix #6110: VolumeSource (and other file mode fields) in Octal are correctly interpreted
-* Fix #6137: `ConfigBuilder.withAutoConfigure` is not working
-* Fix #6215: Suppressing rejected execution exception for port forwarder
-* Fix #6197: JettyHttp client error handling improvements. 
-* Fix #6143: Expands the HTTP interceptor API to include a call back for failed connection attempts
 
 #### Improvements
 * Fix #6008: removing the optional dependency on bouncy castle
@@ -18,13 +12,23 @@
 * Fix #6052: Removed dependency on no longer maintained com.github.mifmif:generex
 
 #### New Features
-* Fix #6066: Add support for `v1.APIVersions` in KubernetesClient
 
 #### _**Note**_: Breaking changes
 * Check detailed migration documentation for breaking changes in [7.0.0](./doc/MIGRATION-v7.md)
 * `Config.errorMessages` has been removed. Please use Kubernetes status messages directly.
 * Fix #6138: Removed unused `io:fabric8:kubernetes-model` artifact
 * Fix #6156: Removed deprecated extension `io:fabric8:service-catalog`
+
+### 6.13.2 (2024-08-09)
+
+#### Bugs
+* Fix #6066: Added support for missing `v1.APIVersions` in KubernetesClient
+* Fix #6110: VolumeSource (and other file mode fields) in Octal are correctly interpreted
+* Fix #6137: `ConfigBuilder.withAutoConfigure` is not working
+* Fix #6143: Expands the HTTP interceptor API to include a call back for failed connection attempts
+* Fix #6197: JettyHttp client error handling improvements.
+* Fix #6215: Suppressing rejected execution exception for port forwarder
+* Fix #6212: Improved reliability of file upload to Pod
 
 ### 6.13.1 (2024-07-02)
 
