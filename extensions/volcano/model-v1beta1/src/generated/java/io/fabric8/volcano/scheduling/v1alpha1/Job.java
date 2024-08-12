@@ -51,7 +51,6 @@ import java.util.Map;
         @BuildableReference(Volume.class),
         @BuildableReference(VolumeMount.class)
 })
-//@TemplateTransformations({ @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true)})
 @Version("v1alpha1")
 @Group("batch.volcano.sh")
 @Generated("jsonschema2pojo")
