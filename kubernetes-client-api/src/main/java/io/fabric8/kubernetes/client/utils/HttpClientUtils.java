@@ -123,10 +123,13 @@ public class HttpClientUtils {
     return interceptors;
   }
 
-  public static String basicCredentials(String username, String password) {
-    String usernameAndPassword = username + ":" + password;
+  public static String basicCredentials(String usernameAndPassword) {
     String encoded = Base64.getEncoder().encodeToString(usernameAndPassword.getBytes(StandardCharsets.UTF_8));
     return "Basic " + encoded;
+  }
+
+  public static String basicCredentials(String username, String password) {
+    return basicCredentials(username + ":" + password);
   }
 
   /**
@@ -227,6 +230,11 @@ public class HttpClientUtils {
 
       if (config.getProxyUsername() != null) {
         builder.proxyAuthorization(basicCredentials(config.getProxyUsername(), config.getProxyPassword()));
+      }
+
+      String userInfo = proxyUri.getUserInfo();
+      if (userInfo != null) {
+        builder.proxyAuthorization(basicCredentials(userInfo));
       }
 
       builder.proxyType(toProxyType(proxyUri.getScheme()));

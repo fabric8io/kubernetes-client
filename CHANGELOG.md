@@ -9,6 +9,7 @@
 * Fix #5264: Remove deprecated `Config.errorMessages` field
 * Fix #6008: removing the optional dependency on bouncy castle
 * Fix #6230: introduced Quantity.multiply(int) to allow for Quantity multiplication by an integer
+* Fix #6247: Support for proxy authentication from proxy URL user info
 * Fix #6281: use GitHub binary repo for Kube API Tests
 * Fix #6282: Allow annotated types with Pattern, Min, and Max with Lists and Maps and CRD generation
 * Fix #5480: Move `io.fabric8:zjsonpatch` to KubernetesClient project
