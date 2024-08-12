@@ -17,6 +17,8 @@ package io.fabric8.volcano.test.crud;
 
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.volcano.client.VolcanoClient;
+import io.fabric8.volcano.scheduling.v1alpha1.Job;
+import io.fabric8.volcano.scheduling.v1alpha1.builder.JobBuilder;
 import io.fabric8.volcano.scheduling.v1beta1.PodGroup;
 import io.fabric8.volcano.scheduling.v1beta1.PodGroupBuilder;
 import io.fabric8.volcano.scheduling.v1beta1.PodGroupList;
@@ -59,4 +61,15 @@ class V1Beta1VolcanoTest {
     assertNotNull(queueList);
     assertEquals(1, queueList.getItems().size());
   }
+
+  @Test
+  void testV1alpha1Job(){
+    Job job = new JobBuilder()
+      .editOrNewMetadata()
+      .withName("Job")
+      .endMetadata()
+      .build();
+    client.v1alpha1().jobs().inNamespace("namespace").create(job);
+  }
+
 }
