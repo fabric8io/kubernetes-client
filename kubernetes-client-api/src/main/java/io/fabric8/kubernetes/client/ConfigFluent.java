@@ -81,4 +81,71 @@ public class ConfigFluent<A extends ConfigFluent<A>> extends SundrioConfigFluent
       this.withFile(instance.getFile());
     }
   }
+
+  // Fix #https://github.com/fabric8io/kubernetes-client/issues/6249
+  // Unboxed builder methods (should allow for the co-existience of <6.13.2 and 6.13.x)
+  public A withTrustCerts(boolean trustCerts) {
+    return this.withTrustCerts(Boolean.valueOf(trustCerts));
+  }
+
+  public A withDisableHostnameVerification(boolean disableHostnameVerification) {
+    return this.withDisableHostnameVerification(Boolean.valueOf(disableHostnameVerification));
+  }
+
+  public A withWebsocketPingInterval(long websocketPingInterval) {
+    return this.withWebsocketPingInterval(Long.valueOf(websocketPingInterval));
+  }
+
+  public A withConnectionTimeout(int connectionTimeout) {
+    return this.withConnectionTimeout(Integer.valueOf(connectionTimeout));
+  }
+
+  public A withMaxConcurrentRequests(int maxConcurrentRequests) {
+    return this.withMaxConcurrentRequests(Integer.valueOf(maxConcurrentRequests));
+  }
+
+  public A withWatchReconnectInterval(int watchReconnectInterval) {
+    return this.withWatchReconnectInterval(Integer.valueOf(watchReconnectInterval));
+  }
+
+  public A withWatchReconnectLimit(int watchReconnectLimit) {
+    return this.withWatchReconnectLimit(Integer.valueOf(watchReconnectLimit));
+  }
+
+  public A withUploadRequestTimeout(int uploadRequestTimeout) {
+    return this.withUploadRequestTimeout(Integer.valueOf(uploadRequestTimeout));
+  }
+
+  public A withRequestRetryBackoffLimit(int requestRetryBackoffLimit) {
+    return this.withRequestRetryBackoffLimit(Integer.valueOf(requestRetryBackoffLimit));
+  }
+
+  public A withRequestRetryBackoffInterval(int requestRetryBackoffInterval) {
+    return this.withRequestRetryBackoffInterval(Integer.valueOf(requestRetryBackoffInterval));
+  }
+
+  public A withRequestTimeout(int requestTimeout) {
+    return this.withRequestTimeout(Integer.valueOf(requestTimeout));
+  }
+
+  public A withScaleTimeout(long scaleTimeout) {
+    return this.withScaleTimeout(Long.valueOf(scaleTimeout));
+  }
+
+  public A withLoggingInterval(int loggingInterval) {
+    return this.withLoggingInterval(Integer.valueOf(loggingInterval));
+  }
+
+  public A withHttp2Disable(boolean http2Disable) {
+    return this.withHttp2Disable(Boolean.valueOf(http2Disable));
+  }
+
+  public A withOnlyHttpWatches(boolean onlyHttpWatches) {
+    return this.withOnlyHttpWatches(Boolean.valueOf(onlyHttpWatches));
+  }
+
+  public A withAutoConfigure(boolean autoConfigure) {
+    return this.withAutoConfigure(Boolean.valueOf(autoConfigure));
+  }
+
 }
