@@ -1,5 +1,10 @@
 ## CHANGELOG
 
+### 6.13.3 (2024-08-13)
+
+#### Bugs
+* Fix #6249: Provide primitive type setters for ConfigBuilder
+
 ### 6.13.2 (2024-08-09)
 
 #### Bugs
