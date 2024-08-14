@@ -100,7 +100,7 @@
     <maven-core.version>3.9.9</maven-core.version>
     <maven-plugin-annotations.version>3.15.0</maven-plugin-annotations.version>
     <vertx.version>4.5.9</vertx.version>
-    <zjsonpatch.version>0.3.0</zjsonpatch.version>
+    <zjsonpatch.version>0.4.16</zjsonpatch.version>
     <jandex.version>3.2.2</jandex.version>
 
     <!-- API versions -->
@@ -205,6 +205,7 @@
   </properties>
   <modules>
     <module>kubernetes-model-generator</module>
+    <module>zjsonpatch</module>
     <module>kubernetes-client-api</module>
     <module>kubernetes-client</module>
     <module>junit/mockwebserver</module>
@@ -215,7 +216,6 @@
     <module>openshift-client</module>
     <module>extensions</module>
     <module>junit/openshift-server-mock</module>
-    <module>kubernetes-examples</module>
     <module>platforms</module>
     <module>kubernetes-tests</module>
     <module>uberjar</module>
@@ -226,6 +226,7 @@
     <module>httpclient-vertx</module>
     <module>kubernetes-client-deps-compatibility-tests</module>
     <module>log4j</module>
+    <module>kubernetes-examples</module>
   </modules>
 
   <dependencyManagement>
@@ -720,6 +721,11 @@
         <artifactId>kube-api-test-client-inject</artifactId>
         <version>${project.version}</version>
       </dependency>
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>zjsonpatch</artifactId>
+        <version>${project.version}</version>
+      </dependency>
 
 
       <!-- Jackson dependencies, imported as a BOM -->
@@ -898,6 +904,17 @@
         <groupId>io.smallrye</groupId>
         <artifactId>jandex</artifactId>
         <version>${jandex.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.flipkart.zjsonpatch</groupId>
+        <artifactId>zjsonpatch</artifactId>
+        <version>${zjsonpatch.version}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-collections4</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
 
       <!-- Testing and Mocking -->

@@ -199,6 +199,12 @@
       <artifactId>openshift-server-mock</artifactId>
       <version>${project.version}</version>
     </dependency>
+    
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>zjsonpatch</artifactId>
+      <version>${project.version}</version>
+    </dependency>
 
     <!-- Legal Transitives -->
     <dependency>
@@ -233,7 +239,7 @@
     </dependency>
 
     <dependency>
-      <groupId>io.fabric8</groupId>
+      <groupId>com.flipkart.zjsonpatch</groupId>
       <artifactId>zjsonpatch</artifactId>
       <version>${zjsonpatch.version}</version>
     </dependency>
