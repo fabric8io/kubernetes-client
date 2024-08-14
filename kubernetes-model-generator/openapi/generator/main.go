@@ -49,6 +49,10 @@ type Schema struct {
 	Paths map[reflect.Type]ApiVersion
 }
 
+var mappingOverrides = map[reflect.Type]string{
+	reflect.TypeOf(kustomize.ObjectMeta{}): "#/components/schemas/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta",
+}
+
 func NewTypeSchema(types []reflect.Type, name string) Schema {
 	return Schema{types, name, make(map[reflect.Type]ApiVersion)}
 }
@@ -230,6 +234,11 @@ func extractFields(fields []reflect.StructField, t reflect.Type) []reflect.Struc
 }
 
 func openApiKind(t reflect.Type) *openapi3.SchemaRef {
+	if mappingOverrides[t] != "" {
+		return &openapi3.SchemaRef{
+			Ref: mappingOverrides[t],
+		}
+	}
 	stringSchema := &openapi3.SchemaRef{
 		Value: openapi3.NewStringSchema(),
 	}
