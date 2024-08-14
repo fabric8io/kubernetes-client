@@ -57,39 +57,4 @@ class KubernetesTest {
         .generate();
   }
 
-  @Test
-  void policy() {
-    new ModelGenerator(baseSettings
-        .clearSchemas()
-        .schema(new File("../schemas/kubernetes-1.21.14.json"))
-        .schema(new File("../schemas/kubernetes-1.30.0.json"))
-        .includeGenerationRegex("^io\\.k8s\\.api\\.policy\\..*$")
-        .packageMapping("io.k8s.api.policy", "io.fabric8.kubernetes.api.model.policy")
-        .build())
-        .generate();
-  }
-
-  @Test
-  void resource() {
-    new ModelGenerator(baseSettings
-        .clearSchemas()
-        .schema(new File("../schemas/kubernetes-1.30.0.json"))
-        .includeGenerationRegex("^io\\.k8s\\.api\\.resource\\..*$")
-        .packageMapping("io.k8s.api.resource", "io.fabric8.kubernetes.api.model.resource")
-        .build())
-        .generate();
-  }
-
-  @Test
-  void scheduling() {
-    new ModelGenerator(baseSettings
-        .clearSchemas()
-        .schema(new File("../schemas/kubernetes-1.21.14.json"))
-        .schema(new File("../schemas/kubernetes-1.30.0.json"))
-        .includeGenerationRegex("^io\\.k8s\\.api\\.scheduling\\..*$")
-        .packageMapping("io.k8s.api.scheduling", "io.fabric8.kubernetes.api.model.scheduling")
-        .build())
-        .generate();
-  }
-
 }

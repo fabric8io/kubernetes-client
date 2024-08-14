@@ -22,7 +22,6 @@ ABSOLUTE_BASEDIR=$(realpath "$BASEDIR")
 
 # Array for all existing modules
 declare -a modules=(
-    "kubernetes-model-resource"
     "kubernetes-model-kustomize"
     "openshift-model-config"
     "openshift-model"

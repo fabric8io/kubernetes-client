@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
+import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
@@ -22,6 +23,7 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
+import io.fabric8.kubernetes.api.model.runtime.RawExtension;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -49,7 +51,9 @@ import lombok.experimental.Accessors;
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
-    @BuildableReference(PersistentVolumeClaim.class)
+    @BuildableReference(PersistentVolumeClaim.class),
+    @BuildableReference(GenericKubernetesResource.class),
+    @BuildableReference(RawExtension.class)
 })
 @Generated("jsonschema2pojo")
 public class DriverAllocationResult implements Editable<DriverAllocationResultBuilder> , KubernetesResource
@@ -58,10 +62,9 @@ public class DriverAllocationResult implements Editable<DriverAllocationResultBu
     @JsonProperty("namedResources")
     private NamedResourcesAllocationResult namedResources;
     @JsonProperty("vendorRequestParameters")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Object> vendorRequestParameters = new LinkedHashMap<>();
+    private KubernetesResource vendorRequestParameters;
     @JsonIgnore
-    private Map<java.lang.String, java.lang.Object> additionalProperties = new LinkedHashMap<java.lang.String, java.lang.Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -70,7 +73,7 @@ public class DriverAllocationResult implements Editable<DriverAllocationResultBu
     public DriverAllocationResult() {
     }
 
-    public DriverAllocationResult(NamedResourcesAllocationResult namedResources, Map<String, Object> vendorRequestParameters) {
+    public DriverAllocationResult(NamedResourcesAllocationResult namedResources, KubernetesResource vendorRequestParameters) {
         super();
         this.namedResources = namedResources;
         this.vendorRequestParameters = vendorRequestParameters;
@@ -87,13 +90,12 @@ public class DriverAllocationResult implements Editable<DriverAllocationResultBu
     }
 
     @JsonProperty("vendorRequestParameters")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public Map<String, Object> getVendorRequestParameters() {
+    public KubernetesResource getVendorRequestParameters() {
         return vendorRequestParameters;
     }
 
     @JsonProperty("vendorRequestParameters")
-    public void setVendorRequestParameters(Map<String, Object> vendorRequestParameters) {
+    public void setVendorRequestParameters(KubernetesResource vendorRequestParameters) {
         this.vendorRequestParameters = vendorRequestParameters;
     }
 
@@ -108,16 +110,16 @@ public class DriverAllocationResult implements Editable<DriverAllocationResultBu
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, java.lang.Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, java.lang.Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
-    public void setAdditionalProperties(Map<java.lang.String, java.lang.Object> additionalProperties) {
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
     }
 
