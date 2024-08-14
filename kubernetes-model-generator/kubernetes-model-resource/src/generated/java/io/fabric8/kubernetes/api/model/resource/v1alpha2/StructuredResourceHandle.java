@@ -15,6 +15,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
+import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
@@ -24,6 +25,7 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
+import io.fabric8.kubernetes.api.model.runtime.RawExtension;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -53,25 +55,25 @@ import lombok.experimental.Accessors;
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
-    @BuildableReference(PersistentVolumeClaim.class)
+    @BuildableReference(PersistentVolumeClaim.class),
+    @BuildableReference(GenericKubernetesResource.class),
+    @BuildableReference(RawExtension.class)
 })
 @Generated("jsonschema2pojo")
 public class StructuredResourceHandle implements Editable<StructuredResourceHandleBuilder> , KubernetesResource
 {
 
     @JsonProperty("nodeName")
-    private java.lang.String nodeName;
+    private String nodeName;
     @JsonProperty("results")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<DriverAllocationResult> results = new ArrayList<>();
     @JsonProperty("vendorClaimParameters")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Object> vendorClaimParameters = new LinkedHashMap<>();
+    private KubernetesResource vendorClaimParameters;
     @JsonProperty("vendorClassParameters")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Object> vendorClassParameters = new LinkedHashMap<>();
+    private KubernetesResource vendorClassParameters;
     @JsonIgnore
-    private Map<java.lang.String, java.lang.Object> additionalProperties = new LinkedHashMap<java.lang.String, java.lang.Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -80,7 +82,7 @@ public class StructuredResourceHandle implements Editable<StructuredResourceHand
     public StructuredResourceHandle() {
     }
 
-    public StructuredResourceHandle(java.lang.String nodeName, List<DriverAllocationResult> results, Map<String, Object> vendorClaimParameters, Map<String, Object> vendorClassParameters) {
+    public StructuredResourceHandle(String nodeName, List<DriverAllocationResult> results, KubernetesResource vendorClaimParameters, KubernetesResource vendorClassParameters) {
         super();
         this.nodeName = nodeName;
         this.results = results;
@@ -89,12 +91,12 @@ public class StructuredResourceHandle implements Editable<StructuredResourceHand
     }
 
     @JsonProperty("nodeName")
-    public java.lang.String getNodeName() {
+    public String getNodeName() {
         return nodeName;
     }
 
     @JsonProperty("nodeName")
-    public void setNodeName(java.lang.String nodeName) {
+    public void setNodeName(String nodeName) {
         this.nodeName = nodeName;
     }
 
@@ -110,24 +112,22 @@ public class StructuredResourceHandle implements Editable<StructuredResourceHand
     }
 
     @JsonProperty("vendorClaimParameters")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public Map<String, Object> getVendorClaimParameters() {
+    public KubernetesResource getVendorClaimParameters() {
         return vendorClaimParameters;
     }
 
     @JsonProperty("vendorClaimParameters")
-    public void setVendorClaimParameters(Map<String, Object> vendorClaimParameters) {
+    public void setVendorClaimParameters(KubernetesResource vendorClaimParameters) {
         this.vendorClaimParameters = vendorClaimParameters;
     }
 
     @JsonProperty("vendorClassParameters")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public Map<String, Object> getVendorClassParameters() {
+    public KubernetesResource getVendorClassParameters() {
         return vendorClassParameters;
     }
 
     @JsonProperty("vendorClassParameters")
-    public void setVendorClassParameters(Map<String, Object> vendorClassParameters) {
+    public void setVendorClassParameters(KubernetesResource vendorClassParameters) {
         this.vendorClassParameters = vendorClassParameters;
     }
 
@@ -142,16 +142,16 @@ public class StructuredResourceHandle implements Editable<StructuredResourceHand
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, java.lang.Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, java.lang.Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
-    public void setAdditionalProperties(Map<java.lang.String, java.lang.Object> additionalProperties) {
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
     }
 

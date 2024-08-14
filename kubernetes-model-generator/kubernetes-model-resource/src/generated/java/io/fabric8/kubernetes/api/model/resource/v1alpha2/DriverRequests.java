@@ -15,6 +15,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
+import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
@@ -24,6 +25,7 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
+import io.fabric8.kubernetes.api.model.runtime.RawExtension;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -52,22 +54,23 @@ import lombok.experimental.Accessors;
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
-    @BuildableReference(PersistentVolumeClaim.class)
+    @BuildableReference(PersistentVolumeClaim.class),
+    @BuildableReference(GenericKubernetesResource.class),
+    @BuildableReference(RawExtension.class)
 })
 @Generated("jsonschema2pojo")
 public class DriverRequests implements Editable<DriverRequestsBuilder> , KubernetesResource
 {
 
     @JsonProperty("driverName")
-    private java.lang.String driverName;
+    private String driverName;
     @JsonProperty("requests")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ResourceRequest> requests = new ArrayList<>();
     @JsonProperty("vendorParameters")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Object> vendorParameters = new LinkedHashMap<>();
+    private KubernetesResource vendorParameters;
     @JsonIgnore
-    private Map<java.lang.String, java.lang.Object> additionalProperties = new LinkedHashMap<java.lang.String, java.lang.Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -76,7 +79,7 @@ public class DriverRequests implements Editable<DriverRequestsBuilder> , Kuberne
     public DriverRequests() {
     }
 
-    public DriverRequests(java.lang.String driverName, List<ResourceRequest> requests, Map<String, Object> vendorParameters) {
+    public DriverRequests(String driverName, List<ResourceRequest> requests, KubernetesResource vendorParameters) {
         super();
         this.driverName = driverName;
         this.requests = requests;
@@ -84,12 +87,12 @@ public class DriverRequests implements Editable<DriverRequestsBuilder> , Kuberne
     }
 
     @JsonProperty("driverName")
-    public java.lang.String getDriverName() {
+    public String getDriverName() {
         return driverName;
     }
 
     @JsonProperty("driverName")
-    public void setDriverName(java.lang.String driverName) {
+    public void setDriverName(String driverName) {
         this.driverName = driverName;
     }
 
@@ -105,13 +108,12 @@ public class DriverRequests implements Editable<DriverRequestsBuilder> , Kuberne
     }
 
     @JsonProperty("vendorParameters")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public Map<String, Object> getVendorParameters() {
+    public KubernetesResource getVendorParameters() {
         return vendorParameters;
     }
 
     @JsonProperty("vendorParameters")
-    public void setVendorParameters(Map<String, Object> vendorParameters) {
+    public void setVendorParameters(KubernetesResource vendorParameters) {
         this.vendorParameters = vendorParameters;
     }
 
@@ -126,16 +128,16 @@ public class DriverRequests implements Editable<DriverRequestsBuilder> , Kuberne
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, java.lang.Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, java.lang.Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
-    public void setAdditionalProperties(Map<java.lang.String, java.lang.Object> additionalProperties) {
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
     }
 

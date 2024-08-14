@@ -16,6 +16,7 @@
 package io.fabric8.kubernetes.api.model.resource.v1alpha2;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.fabric8.kubernetes.api.model.GenericKubernetesResourceBuilder;
 import io.fabric8.kubernetes.api.model.Namespaced;
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.Test;
@@ -42,7 +43,8 @@ class ResourceClaimParametersTest {
   @Test
   void deserializationAndSerializationShouldWorkAsExpected() throws IOException {
     // Given
-    String originalJson = new Scanner(getClass().getResourceAsStream("/valid-resourceclaimparameters.json"))
+    String originalJson = new Scanner(
+        ResourceClaimParametersTest.class.getResourceAsStream("/valid-resourceclaimparameters.json"))
         .useDelimiter("\\A")
         .next();
 
@@ -65,15 +67,15 @@ class ResourceClaimParametersTest {
         .hasFieldOrPropertyWithValue("driverName", "driverNameValue")
         .hasFieldOrPropertyWithValue("vendorParameters.apiVersion", "example.com/v1")
         .hasFieldOrPropertyWithValue("vendorParameters.kind", "CustomType")
-        .hasFieldOrPropertyWithValue("vendorParameters.spec.replicas", 1)
-        .hasFieldOrPropertyWithValue("vendorParameters.status.available", 1)
+        .hasFieldOrPropertyWithValue("vendorParameters.additionalProperties.spec.replicas", 1)
+        .hasFieldOrPropertyWithValue("vendorParameters.additionalProperties.status.available", 1)
         .extracting("requests")
         .asInstanceOf(InstanceOfAssertFactories.LIST)
         .singleElement(InstanceOfAssertFactories.type(ResourceRequest.class))
         .hasFieldOrPropertyWithValue("vendorParameters.apiVersion", "example.com/v1")
         .hasFieldOrPropertyWithValue("vendorParameters.kind", "CustomType")
-        .hasFieldOrPropertyWithValue("vendorParameters.spec.replicas", 1)
-        .hasFieldOrPropertyWithValue("vendorParameters.status.available", 1)
+        .hasFieldOrPropertyWithValue("vendorParameters.additionalProperties.spec.replicas", 1)
+        .hasFieldOrPropertyWithValue("vendorParameters.additionalProperties.status.available", 1)
         .hasFieldOrPropertyWithValue("namedResources.selector", "selectorValue");
   }
 
@@ -90,16 +92,20 @@ class ResourceClaimParametersTest {
         .withShareable()
         .addNewDriverRequest()
         .withDriverName("driverNameValue")
-        .addToVendorParameters("apiVersion", "example.com/v1")
-        .addToVendorParameters("kind", "CustomType")
-        .addToVendorParameters("spec", Collections.singletonMap("replicas", 1))
-        .addToVendorParameters("status", Collections.singletonMap("available", 1))
+        .withVendorParameters(new GenericKubernetesResourceBuilder()
+            .withApiVersion("example.com/v1")
+            .withKind("CustomType")
+            .addToAdditionalProperties("spec", Collections.singletonMap("replicas", 1))
+            .addToAdditionalProperties("status", Collections.singletonMap("available", 1))
+            .build())
         .addNewRequest()
         .withNewNamedResources("selectorValue")
-        .addToVendorParameters("apiVersion", "example.com/v1")
-        .addToVendorParameters("kind", "CustomType")
-        .addToVendorParameters("spec", Collections.singletonMap("replicas", 1))
-        .addToVendorParameters("status", Collections.singletonMap("available", 1))
+        .withVendorParameters(new GenericKubernetesResourceBuilder()
+            .withApiVersion("example.com/v1")
+            .withKind("CustomType")
+            .addToAdditionalProperties("spec", Collections.singletonMap("replicas", 1))
+            .addToAdditionalProperties("status", Collections.singletonMap("available", 1))
+            .build())
         .endRequest()
         .endDriverRequest();
 
@@ -120,15 +126,15 @@ class ResourceClaimParametersTest {
         .hasFieldOrPropertyWithValue("driverName", "driverNameValue")
         .hasFieldOrPropertyWithValue("vendorParameters.apiVersion", "example.com/v1")
         .hasFieldOrPropertyWithValue("vendorParameters.kind", "CustomType")
-        .hasFieldOrPropertyWithValue("vendorParameters.spec.replicas", 1)
-        .hasFieldOrPropertyWithValue("vendorParameters.status.available", 1)
+        .hasFieldOrPropertyWithValue("vendorParameters.additionalProperties.spec.replicas", 1)
+        .hasFieldOrPropertyWithValue("vendorParameters.additionalProperties.status.available", 1)
         .extracting("requests")
         .asInstanceOf(InstanceOfAssertFactories.LIST)
         .singleElement(InstanceOfAssertFactories.type(ResourceRequest.class))
         .hasFieldOrPropertyWithValue("vendorParameters.apiVersion", "example.com/v1")
         .hasFieldOrPropertyWithValue("vendorParameters.kind", "CustomType")
-        .hasFieldOrPropertyWithValue("vendorParameters.spec.replicas", 1)
-        .hasFieldOrPropertyWithValue("vendorParameters.status.available", 1)
+        .hasFieldOrPropertyWithValue("vendorParameters.additionalProperties.spec.replicas", 1)
+        .hasFieldOrPropertyWithValue("vendorParameters.additionalProperties.status.available", 1)
         .hasFieldOrPropertyWithValue("namedResources.selector", "selectorValue");
   }
 }

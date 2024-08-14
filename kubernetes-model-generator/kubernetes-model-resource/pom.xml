@@ -44,32 +44,11 @@
       <artifactId>kubernetes-model-core</artifactId>
     </dependency>
     <dependency>
-      <groupId>io.fabric8</groupId>
-      <artifactId>kubernetes-model-common</artifactId>
-    </dependency>
-    <dependency>
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>
-
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>build-helper-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>attach-artifacts</id>
-            <configuration>
-              <skipAttach>false</skipAttach>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
 
   <profiles>
     <profile>
@@ -77,8 +56,30 @@
       <build>
         <plugins>
           <plugin>
-            <groupId>org.jsonschema2pojo</groupId>
-            <artifactId>jsonschema2pojo-maven-plugin</artifactId>
+            <groupId>io.fabric8</groupId>
+            <artifactId>openapi-model-generator-maven-plugin</artifactId>
+            <configuration >
+              <settings combine.self="append">
+                <schemas>
+                  <schema>${openapi.schema.kubernetes-latest}</schema>
+                </schemas>
+                <packageMappings combine.self="append">
+                  <io.k8s.api.resource>io.fabric8.kubernetes.api.model.resource</io.k8s.api.resource>
+                </packageMappings>
+                <includeGenerationRegexes>
+                  <includeGenerationRegex>^io\.k8s\.api\.resource\..*$</includeGenerationRegex>
+                </includeGenerationRegexes>
+                <skipGenerationRegexes>
+                  <!--
+                    Needs a manual override to avoid issues with Sundrio generating duplicate methods in the builder.
+                    Since the parameters field is typed as KubernetesResource when using the new openapi-genarator,
+                    Sundrio will generate withNewXxx methods for each class extending KubernetesResource.
+                    Sundrio seems to have a bug when some of these classes share a name and generates stuff twice.
+                   -->
+                  <skipGenerationRegex>^io\.k8s\.api\.resource\.resource\.v1alpha2\.VendorParameters$</skipGenerationRegex>
+                </skipGenerationRegexes>
+              </settings>
+            </configuration>
           </plugin>
         </plugins>
       </build>
