@@ -15,9 +15,12 @@
  */
 package io.fabric8.kubeapitest.binary;
 
+import io.fabric8.kubeapitest.binary.repo.ArchiveDescriptor;
 import io.fabric8.kubeapitest.binary.repo.GitHubBinaryRepo;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -35,12 +38,11 @@ class BinaryDownloaderTest {
         when(mockOsInfo.getOSName()).thenReturn("linux");
         when(mockOsInfo.getOSArch()).thenReturn("amd64");
 
-        // todo
-//        when(mockBinaryRepo.listObjectNames()).thenReturn(List.of(
-//                        "kubebuilder-tools-1.17.9-linux-amd64.tar.gz"
-//                        ,"kubebuilder-tools-1.26.1-darwin-amd64.tar.gz",
-//                        "kubebuilder-tools-"+VERSION+"-linux-amd64.tar.gz")
-//                .stream());
+        when(mockBinaryRepo.listObjectNames()).thenReturn(List.of(
+                        new ArchiveDescriptor("1.17.9","amd64","linux"),
+            new ArchiveDescriptor("1.26.1","amd64","darwin"),
+            new ArchiveDescriptor(VERSION,"amd64","linux"))
+                .stream());
 
         var latest = binaryDownloader.findLatestVersion();
 

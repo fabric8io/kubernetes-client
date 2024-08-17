@@ -19,10 +19,11 @@ import java.util.stream.Stream;
 
 public class GitHubBinaryRepo {
 
-  private static final Logger log = LoggerFactory.getLogger(BinaryRepo.class);
+  private static final Logger log = LoggerFactory.getLogger(GitHubBinaryRepo.class);
 
   private static final String BINARY_INDEX_URL = "https://raw.githubusercontent.com/kubernetes-sigs/controller-tools/HEAD/envtest-releases.yaml";
   private static final ObjectMapper MAPPER = new ObjectMapper(new YAMLFactory());
+
   private static List<ArchiveDescriptor> objectNames;
 
   private final OSInfo osInfo;
