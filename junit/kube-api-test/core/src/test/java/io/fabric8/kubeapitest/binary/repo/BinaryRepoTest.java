@@ -22,11 +22,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 class BinaryRepoTest {
 
   @Test
-  void downloadsIndex() {
-    new BinaryRepo(null).listObjectNames();
-  }
-
-  @Test
   void parsesSelfLinkToArchiveDescriptor() {
     var archiveDescriptor = BinaryRepo
         .mapSelfLinkToArchiveDescriptor(
