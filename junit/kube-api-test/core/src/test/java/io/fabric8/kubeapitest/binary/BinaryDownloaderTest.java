@@ -16,7 +16,7 @@
 package io.fabric8.kubeapitest.binary;
 
 import io.fabric8.kubeapitest.binary.repo.ArchiveDescriptor;
-import io.fabric8.kubeapitest.binary.repo.GitHubBinaryRepo;
+import io.fabric8.kubeapitest.binary.repo.BinaryRepo;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -29,7 +29,7 @@ import static org.mockito.Mockito.when;
 class BinaryDownloaderTest {
 
   public static final String VERSION = "1.23.1";
-  GitHubBinaryRepo mockBinaryRepo = mock(GitHubBinaryRepo.class);
+  BinaryRepo mockBinaryRepo = mock(BinaryRepo.class);
   OSInfo mockOsInfo = Mockito.mock(OSInfo.class);
   BinaryDownloader binaryDownloader = new BinaryDownloader("target", mockBinaryRepo, mockOsInfo);
 

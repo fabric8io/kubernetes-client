@@ -17,7 +17,7 @@ package io.fabric8.kubeapitest.binary;
 
 import io.fabric8.kubeapitest.KubeAPITestException;
 import io.fabric8.kubeapitest.Utils;
-import io.fabric8.kubeapitest.binary.repo.GitHubBinaryRepo;
+import io.fabric8.kubeapitest.binary.repo.BinaryRepo;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
@@ -42,17 +42,17 @@ public class BinaryDownloader {
   private static final String OBJECT_TAR_PREFIX = "kubebuilder-tools-";
 
   private final String kubeAPITestDir;
-  private final GitHubBinaryRepo binaryRepo;
+  private final BinaryRepo binaryRepo;
   private final OSInfo osInfoProvider;
   private static final Map<String, ReentrantLock> versionLocks = new ConcurrentHashMap<>();
 
   public BinaryDownloader(String kubeAPITestDir, OSInfo osInfoProvider) {
     this.kubeAPITestDir = kubeAPITestDir;
     this.osInfoProvider = osInfoProvider;
-    this.binaryRepo = new GitHubBinaryRepo(osInfoProvider);
+    this.binaryRepo = new BinaryRepo(osInfoProvider);
   }
 
-  BinaryDownloader(String kubeAPITestDir, GitHubBinaryRepo binaryRepo, OSInfo osInfoProvider) {
+  BinaryDownloader(String kubeAPITestDir, BinaryRepo binaryRepo, OSInfo osInfoProvider) {
     this.kubeAPITestDir = kubeAPITestDir;
     this.binaryRepo = binaryRepo;
     this.osInfoProvider = osInfoProvider;

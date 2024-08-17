@@ -32,9 +32,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class GitHubBinaryRepo {
+public class BinaryRepo {
 
-  private static final Logger log = LoggerFactory.getLogger(GitHubBinaryRepo.class);
+  private static final Logger log = LoggerFactory.getLogger(BinaryRepo.class);
 
   private static final String BINARY_INDEX_URL = "https://raw.githubusercontent.com/kubernetes-sigs/controller-tools/HEAD/envtest-releases.yaml";
   private static final ObjectMapper MAPPER = new ObjectMapper(new YAMLFactory());
@@ -43,14 +43,14 @@ public class GitHubBinaryRepo {
 
   private final OSInfo osInfo;
 
-  public GitHubBinaryRepo(OSInfo osInfo) {
+  public BinaryRepo(OSInfo osInfo) {
     this.osInfo = osInfo;
   }
 
   public synchronized Stream<ArchiveDescriptor> listObjectNames() {
     try {
       if (objectNames == null) {
-        var index = MAPPER.readValue(new URL(BINARY_INDEX_URL), GitHubIndex.class);
+        var index = MAPPER.readValue(new URL(BINARY_INDEX_URL), BinaryIndex.class);
         objectNames = index.getReleases().values().stream().flatMap(v -> v.values().stream()).map(
             a -> mapSelfLinkToArchiveDescriptor(a.getSelfLink()))
             .collect(Collectors.toList());

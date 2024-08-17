@@ -17,7 +17,7 @@ package io.fabric8.kubeapitest.binary.repo;
 
 import java.util.Map;
 
-public class GitHubIndex {
+public class BinaryIndex {
 
   private Map<String, Map<String, ArchiveReference>> releases;
 
