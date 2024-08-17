@@ -25,12 +25,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-class BinaryDownloaderTest {
+class CloudStorageBinaryDownloaderTest {
 
   public static final String VERSION = "1.23.1";
   BinaryRepo mockBinaryRepo = mock(BinaryRepo.class);
   OSInfo mockOsInfo = Mockito.mock(OSInfo.class);
-  BinaryDownloader binaryDownloader = new BinaryDownloader("target", mockBinaryRepo, mockOsInfo);
+  CloudStorageBinaryBinaryDownloader binaryDownloader = new CloudStorageBinaryBinaryDownloader("target", mockBinaryRepo, mockOsInfo);
 
   @Test
     void findsLatestBinary() {
