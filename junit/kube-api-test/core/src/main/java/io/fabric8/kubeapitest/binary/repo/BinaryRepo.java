@@ -38,6 +38,7 @@ public class BinaryRepo {
 
   private static final String BINARY_INDEX_URL = "https://raw.githubusercontent.com/kubernetes-sigs/controller-tools/HEAD/envtest-releases.yaml";
   private static final ObjectMapper MAPPER = new ObjectMapper(new YAMLFactory());
+  public static final String TAR_GZ_SUFFIX = ".tar.gz";
 
   private static List<ArchiveDescriptor> objectNames;
 
@@ -57,14 +58,14 @@ public class BinaryRepo {
       }
       return objectNames.stream();
     } catch (IOException e) {
-      throw new RuntimeException(e);
+      throw new KubeAPITestException(e);
     }
   }
 
   static ArchiveDescriptor mapSelfLinkToArchiveDescriptor(String selfLink) {
     var versionOsArch = selfLink.split("/")[8]
         .replace("envtest-v", "")
-        .replace(".tar.gz", "")
+        .replace(TAR_GZ_SUFFIX, "")
         .split("-");
 
     return new ArchiveDescriptor(versionOsArch[0], versionOsArch[2], versionOsArch[1]);
@@ -73,9 +74,9 @@ public class BinaryRepo {
   public File downloadVersionToTempFile(String version) {
     try {
       String url = "https://github.com/kubernetes-sigs/controller-tools/releases/download/envtest-v" + version +
-          "/envtest-v" + version + "-" + osInfo.getOSName() + "-" + osInfo.getOSArch() + ".tar.gz";
+          "/envtest-v" + version + "-" + osInfo.getOSName() + "-" + osInfo.getOSArch() + TAR_GZ_SUFFIX;
 
-      File tempFile = File.createTempFile("kubebuilder-tools-" + version, ".tar.gz");
+      File tempFile = File.createTempFile("kubebuilder-tools-" + version, TAR_GZ_SUFFIX);
       log.debug("Downloading binary from url: {} to Temp file: {}", url, tempFile.getPath());
       copyURLToFile(url, tempFile);
       return tempFile;

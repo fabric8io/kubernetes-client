@@ -39,8 +39,6 @@ public class BinaryDownloader {
 
   private static final Logger log = LoggerFactory.getLogger(BinaryDownloader.class);
 
-  private static final String OBJECT_TAR_PREFIX = "kubebuilder-tools-";
-
   private final String kubeAPITestDir;
   private final BinaryRepo binaryRepo;
   private final OSInfo osInfoProvider;
