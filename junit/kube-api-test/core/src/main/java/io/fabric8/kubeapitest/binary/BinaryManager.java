@@ -40,7 +40,7 @@ public class BinaryManager {
   public BinaryManager(KubeAPIServerConfig config) {
     this.config = config;
     this.osInfo = new OSInfo();
-    this.downloader = new CloudStorageBinaryBinaryDownloader(config.getKubeAPITestDir(), osInfo);
+    this.downloader = new BinaryDownloader(config.getKubeAPITestDir(), osInfo);
   }
 
   public void initAndDownloadIfRequired() {

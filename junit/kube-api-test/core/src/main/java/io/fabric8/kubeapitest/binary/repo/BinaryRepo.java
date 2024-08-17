@@ -37,6 +37,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@Deprecated
 public class BinaryRepo {
 
   private static final Logger log = LoggerFactory.getLogger(BinaryRepo.class);
