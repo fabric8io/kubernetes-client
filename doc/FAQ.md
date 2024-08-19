@@ -110,6 +110,17 @@ we should provide it like this:
 NO_PROXY: localhost,127.0.0.1,.google.com,.github.com
 ```
 
+### How does KubernetesClient loads proxy URL from various sources?
+
+KubernetesClient loads proxy URL from the following sources (in decreasing order of precedence):
+- `ConfigBuilder.withHttpProxy` / `ConfigBuilder.withHttpsProxy`
+- Cluster's `proxy-url` in `~/.kube/config`
+- System Properties or Environment Variables
+  - `HTTP_PROXY` : Should be used for HTTP requests (when Kubernetes ApiServer is serving plain HTTP requests)
+  - `HTTPS_PROXY` : Should be used for HTTPS requests (when Kubernetes ApiServer is serving HTTPS)
+
+URLs with `http`, `https`, and `socks5` schemes are supported.
+
 ### Optimistic Locking Behavior
 
 Unfortunately it's a little complicated as it depends on what operation you are doing - we'll work towards ensuring the Javadocs are as informative as possible.  Here is quick overview:

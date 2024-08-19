@@ -153,6 +153,7 @@ public class Config {
   private static final int DEFAULT_WATCH_RECONNECT_INTERVAL = 1000;
   private static final int DEFAULT_CONNECTION_TIMEOUT = 10 * 1000;
   private static final String DEFAULT_CLIENT_KEY_PASSPHRASE = "changeit";
+  private static final String SOCKS5_PROTOCOL_PREFIX = "socks5://";
 
   private Boolean trustCerts;
   private Boolean disableHostnameVerification;
@@ -696,11 +697,17 @@ public class Config {
 
     config.setHttp2Disable(Utils.getSystemPropertyOrEnvVar(KUBERNETES_HTTP2_DISABLE, config.isHttp2Disable()));
 
-    config.setHttpProxy(Utils.getSystemPropertyOrEnvVar(KUBERNETES_ALL_PROXY, config.getHttpProxy()));
-    config.setHttpsProxy(Utils.getSystemPropertyOrEnvVar(KUBERNETES_ALL_PROXY, config.getHttpsProxy()));
-
-    config.setHttpsProxy(Utils.getSystemPropertyOrEnvVar(KUBERNETES_HTTPS_PROXY, config.getHttpsProxy()));
-    config.setHttpProxy(Utils.getSystemPropertyOrEnvVar(KUBERNETES_HTTP_PROXY, config.getHttpProxy()));
+    // Only set http(s) proxy fields if they're not set. This is done in order to align behavior of
+    // KubernetesClient with kubectl / client-go . Please see https://github.com/fabric8io/kubernetes-client/issues/6150
+    // Precedence is given to proxy-url read from kubeconfig .
+    if (Utils.isNullOrEmpty(config.getHttpProxy())) {
+      config.setHttpProxy(Utils.getSystemPropertyOrEnvVar(KUBERNETES_ALL_PROXY, config.getHttpProxy()));
+      config.setHttpProxy(Utils.getSystemPropertyOrEnvVar(KUBERNETES_HTTP_PROXY, config.getHttpProxy()));
+    }
+    if (Utils.isNullOrEmpty(config.getHttpsProxy())) {
+      config.setHttpsProxy(Utils.getSystemPropertyOrEnvVar(KUBERNETES_ALL_PROXY, config.getHttpsProxy()));
+      config.setHttpsProxy(Utils.getSystemPropertyOrEnvVar(KUBERNETES_HTTPS_PROXY, config.getHttpsProxy()));
+    }
 
     config.setProxyUsername(Utils.getSystemPropertyOrEnvVar(KUBERNETES_PROXY_USERNAME, config.getProxyUsername()));
     config.setProxyPassword(Utils.getSystemPropertyOrEnvVar(KUBERNETES_PROXY_PASSWORD, config.getProxyPassword()));
@@ -925,6 +932,18 @@ public class Config {
       AuthInfo currentAuthInfo = KubeConfigUtils.getUserAuthInfo(kubeConfig, currentContext);
       if (currentAuthInfo != null) {
         mergeKubeConfigAuthInfo(config, currentCluster, currentAuthInfo);
+      }
+      String proxyUrl = currentCluster.getProxyUrl();
+      if (Utils.isNotNullOrEmpty(proxyUrl)) {
+        if (proxyUrl.startsWith(SOCKS5_PROTOCOL_PREFIX) && config.getMasterUrl().startsWith(HTTPS_PROTOCOL_PREFIX)) {
+          config.setHttpsProxy(proxyUrl);
+        } else if (proxyUrl.startsWith(SOCKS5_PROTOCOL_PREFIX)) {
+          config.setHttpProxy(proxyUrl);
+        } else if (proxyUrl.startsWith(HTTP_PROTOCOL_PREFIX)) {
+          config.setHttpProxy(proxyUrl);
+        } else if (proxyUrl.startsWith(HTTPS_PROTOCOL_PREFIX)) {
+          config.setHttpsProxy(proxyUrl);
+        }
       }
     }
   }
