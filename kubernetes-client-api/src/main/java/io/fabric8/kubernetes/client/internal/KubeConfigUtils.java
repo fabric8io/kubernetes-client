@@ -28,7 +28,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 /**
  * Helper class for working with the YAML config file thats located in
@@ -161,4 +164,28 @@ public class KubeConfigUtils {
       writer.write(Serialization.asYaml(kubeConfig));
     }
   }
+
+  /**
+   * Adds the given source list to the destination list that's provided by the given supplier
+   * and then set to the destination by the given setter.
+   * Creates the list if it doesn't exist yet (supplier returns {@code null}.
+   * Does not copy if the given list is {@code null}.
+   *
+   * @param source the source list to add to the destination
+   * @param destinationSupplier supplies the list that the source shall be added to
+   * @param destinationSetter sets the list, once the source was added to it
+   */
+  public static <T> void addTo(List<T> source, Supplier<List<T>> destinationSupplier, Consumer<List<T>> destinationSetter) {
+    if (source == null) {
+      return;
+    }
+
+    List<T> list = destinationSupplier.get();
+    if (list == null) {
+      list = new ArrayList<>();
+    }
+    list.addAll(source);
+    destinationSetter.accept(list);
+  }
+
 }

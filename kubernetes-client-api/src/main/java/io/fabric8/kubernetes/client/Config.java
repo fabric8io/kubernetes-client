@@ -56,10 +56,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
+
+import static io.fabric8.kubernetes.client.internal.KubeConfigUtils.addTo;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(allowGetters = true, allowSetters = true)
@@ -232,7 +235,9 @@ public class Config {
 
   private Boolean autoConfigure;
 
+  @Deprecated
   private File file;
+  private List<File> files = new ArrayList<>();
 
   @JsonIgnore
   protected Map<String, Object> additionalProperties = new HashMap<>();
@@ -856,35 +861,92 @@ public class Config {
     if (!Utils.getSystemPropertyOrEnvVar(KUBERNETES_AUTH_TRYKUBECONFIG_SYSTEM_PROPERTY, true)) {
       return false;
     }
-    File kubeConfigFile = new File(getKubeconfigFilename());
-    if (!kubeConfigFile.isFile()) {
-      LOGGER.debug("Did not find Kubernetes config at: [{}]. Ignoring.", kubeConfigFile.getPath());
+    List<String> kubeConfigFilenames = Arrays.asList(getKubeconfigFilenames());
+    if (kubeConfigFilenames.isEmpty()) {
       return false;
     }
-    LOGGER.debug("Found for Kubernetes config at: [{}].", kubeConfigFile.getPath());
-    String kubeconfigContents = getKubeconfigContents(kubeConfigFile);
-    if (kubeconfigContents == null) {
+    List<File> allKubeConfigFiles = kubeConfigFilenames.stream()
+            .map(File::new)
+            .collect(Collectors.toList());
+    File mainKubeConfig = allKubeConfigFiles.get(0);
+    io.fabric8.kubernetes.api.model.Config kubeConfig = createKubeconfig(mainKubeConfig);
+    if (kubeConfig == null) {
       return false;
     }
-    config.file = new File(kubeConfigFile.getPath());
-    return loadFromKubeconfig(config, context, kubeconfigContents);
+    config.file = mainKubeConfig;
+    config.files = allKubeConfigFiles;
+
+    List<File> additionalConfigs = config.files.subList(1, allKubeConfigFiles.size());
+    addAdditionalConfigs(kubeConfig, additionalConfigs);
+
+    return loadFromKubeconfig(config, context, mainKubeConfig);
   }
 
+  private static void addAdditionalConfigs(io.fabric8.kubernetes.api.model.Config kubeConfig, List<File> files) {
+    if (files == null
+    || files.isEmpty()) {
+      return;
+    }
+    files.stream()
+            .map(Config::createKubeconfig)
+            .filter(Objects::nonNull)
+            .forEach(additionalConfig -> {
+              addTo(additionalConfig.getContexts(), kubeConfig::getContexts, kubeConfig::setContexts);
+              addTo(additionalConfig.getClusters(), kubeConfig::getClusters, kubeConfig::setClusters);
+              addTo(additionalConfig.getUsers(), kubeConfig::getUsers, kubeConfig::setUsers);
+            });
+  }
+
+  private static io.fabric8.kubernetes.api.model.Config createKubeconfig(File file) {
+    if (file == null) {
+      return null;
+    }
+    if (!file.isFile()) {
+      LOGGER.debug("Did not find Kubernetes config at: [{}]. Ignoring.", file.getPath());
+      return null;
+    }
+    io.fabric8.kubernetes.api.model.Config kubeConfig = null;
+    LOGGER.debug("Found for Kubernetes config at: [{}].", file.getPath());
+    try {
+      String content = getKubeconfigContents(file);
+      if (content != null
+              && !content.isEmpty()) {
+        kubeConfig = KubeConfigUtils.parseConfigFromString(content);
+      }
+    } catch (KubernetesClientException e) {
+      LOGGER.error("Could not load Kubernetes config [{}].", file.getPath(), e);
+    }
+
+    return kubeConfig;
+  }
+
+  /**
+   * @deprecated use {@link #getKubeconfigFilenames()} instead
+   */
+  @Deprecated
   public static String getKubeconfigFilename() {
-    String fileName = Utils.getSystemPropertyOrEnvVar(KUBERNETES_KUBECONFIG_FILE,
-        new File(getHomeDir(), ".kube" + File.separator + "config").toString());
-
-    // if system property/env var contains multiple files take the first one based on the environment
-    // we are running in (eg. : for Linux, ; for Windows)
-    String[] fileNames = fileName.split(File.pathSeparator);
-
-    if (fileNames.length > 1) {
-      LOGGER.warn(
-          "Found multiple Kubernetes config files [{}], using the first one: [{}]. If not desired file, please change it by doing `export KUBECONFIG=/path/to/kubeconfig` on Unix systems or `$Env:KUBECONFIG=/path/to/kubeconfig` on Windows.",
-          fileNames, fileNames[0]);
+    String fileName = null;
+    String[] fileNames = getKubeconfigFilenames();
+    if (Utils.isNotNullOrEmpty(fileNames)) {
+      // if system property/env var contains multiple files take the first one based on the environment
       fileName = fileNames[0];
+      if (fileNames.length > 1) {
+        LOGGER.info("Found multiple Kubernetes config files [{}], returning the first one. Use #getKubeconfigFilenames instead",
+                fileNames[0]);
+      }
     }
     return fileName;
+  }
+
+  public static String[] getKubeconfigFilenames() {
+    String[] fileNames = null;
+    String fileName = Utils.getSystemPropertyOrEnvVar(KUBERNETES_KUBECONFIG_FILE);
+
+    fileNames = fileName.split(File.pathSeparator);
+    if (fileNames.length == 0) {
+      fileNames = new String[] { new File(getHomeDir(), ".kube" + File.separator + "config").toString() };
+    }
+    return fileNames;
   }
 
   private static String getKubeconfigContents(File kubeConfigFile) {
@@ -896,6 +958,14 @@ public class Config {
       return null;
     }
     return kubeconfigContents;
+  }
+
+  private static boolean loadFromKubeconfig(Config config, String context, File kubeConfigFile) {
+    String contents = getKubeconfigContents(kubeConfigFile);
+    if (contents == null) {
+      return false;
+    }
+    return loadFromKubeconfig(config, context, contents);
   }
 
   // Note: kubeconfigPath is optional
