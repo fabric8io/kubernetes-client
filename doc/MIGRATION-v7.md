@@ -2,6 +2,7 @@
 
 ## Contents
 - [Bouncy Castle is no longer needed](#bouncy-castle)
+- [Apache Felix SCR Annotations removed](#apache-felix-scr-annotations)
 - [Model Changes](#model-changes)
   - [kubernetes-model artifact removed](#kubernetes-model-artifact-removed)
 - [Deprecations and Removals](#deprecations-and-removals)
@@ -19,6 +20,12 @@
 The Bouncy Castle library is no longer needed as a dependency.
 In previous versions, this was an optional dependency needed for Elliptic Curve (EC) Keys.
 The Kubernetes client now uses the default Java security provider which should be enough to handle all scenarios.
+
+## Apache Felix SCR annotations removed <a href="#apache-felix-scr-annotations" id="apache-felix-scr-annotations" />
+
+[Apache Felix SCR annotations](https://felix.apache.org/documentation/subprojects/apache-felix-maven-scr-plugin/scr-annotations.html) are not supported anymore by community. Fabric8 Kubernetes Client no longer uses Apache Felix SCR annotations for OSGi
+Declarative Services. Fabric8 Kubernetes Client is now using official OSGi annotations instead. If you're using Apache Felix SCR
+annotations, you need to switch to [Official OSGi Component annotations](https://docs.osgi.org/javadoc/r6/cmpn/org/osgi/service/component/annotations/package-summary.html).
 
 ## Model Changes <a href="#model-changes" id="model-changes"/>
 

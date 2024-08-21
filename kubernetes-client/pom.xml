@@ -97,9 +97,8 @@
       <artifactId>lombok</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.apache.felix</groupId>
-      <artifactId>org.apache.felix.scr.annotations</artifactId>
-      <version>${scr.annotations.version}</version>
+      <groupId>org.osgi</groupId>
+      <artifactId>org.osgi.service.component.annotations</artifactId>
       <scope>compile</scope>
       <optional>true</optional>
     </dependency>
@@ -190,22 +189,6 @@
             <goals>
               <goal>test-jar</goal>
             </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.felix</groupId>
-        <artifactId>maven-scr-plugin</artifactId>
-        <version>${maven.scr.plugin.version}</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>scr</goal>
-            </goals>
-            <configuration>
-              <specVersion>1.2</specVersion>
-              <strictMode>true</strictMode>
-            </configuration>
           </execution>
         </executions>
       </plugin>

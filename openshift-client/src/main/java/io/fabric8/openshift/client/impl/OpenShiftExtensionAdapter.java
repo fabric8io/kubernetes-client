@@ -47,11 +47,9 @@ import io.fabric8.openshift.client.dsl.internal.build.BuildConfigOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.build.BuildOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.core.TemplateOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.project.ProjectOperationsImpl;
-import org.apache.felix.scr.annotations.Component;
-import org.apache.felix.scr.annotations.Service;
 
-@Component
-@Service
+@org.osgi.service.component.annotations.Component(name = "io.fabric8.openshift.client.impl.OpenShiftExtensionAdapter", scope = org.osgi.service.component.annotations.ServiceScope.SINGLETON, service = {
+    ExtensionAdapter.class, InternalExtensionAdapter.class })
 public class OpenShiftExtensionAdapter implements ExtensionAdapter<OpenShiftClient>, InternalExtensionAdapter {
 
   @Override

@@ -16,8 +16,11 @@
 
 -->
 <features xmlns="http://karaf.apache.org/xmlns/features/v1.2.0" name="kuberntes-features-${project.version}">
-
+  <feature name="scr" description="Declarative Service support" version="${project.version}">
+    <bundle start-level="30">mvn:org.apache.felix/org.apache.felix.scr/${felix.scr.version}</bundle>
+  </feature>
   <feature name="kubernetes-client" description="Fabric8 Kubernetes Client" version="${project.version}">
+    <feature>scr</feature>
     <bundle dependency='true'>mvn:com.google.code.findbugs/jsr305/${jsr305.version}</bundle>
     <bundle dependency='true'>mvn:com.fasterxml.jackson.core/jackson-core/${jackson.bundle.version}</bundle>
     <bundle dependency='true'>mvn:com.fasterxml.jackson.core/jackson-annotations/${jackson.bundle.version}</bundle>
