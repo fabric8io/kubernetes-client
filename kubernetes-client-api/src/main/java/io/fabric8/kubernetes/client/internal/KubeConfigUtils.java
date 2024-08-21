@@ -18,20 +18,21 @@ package io.fabric8.kubernetes.client.internal;
 import io.fabric8.kubernetes.api.model.AuthInfo;
 import io.fabric8.kubernetes.api.model.Cluster;
 import io.fabric8.kubernetes.api.model.Config;
+import io.fabric8.kubernetes.api.model.ConfigBuilder;
 import io.fabric8.kubernetes.api.model.Context;
 import io.fabric8.kubernetes.api.model.NamedAuthInfo;
 import io.fabric8.kubernetes.api.model.NamedCluster;
 import io.fabric8.kubernetes.api.model.NamedContext;
+import io.fabric8.kubernetes.api.model.NamedExtension;
+import io.fabric8.kubernetes.api.model.PreferencesBuilder;
 import io.fabric8.kubernetes.client.utils.Serialization;
+import io.fabric8.kubernetes.client.utils.Utils;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 /**
  * Helper class for working with the YAML config file thats located in
@@ -165,27 +166,40 @@ public class KubeConfigUtils {
     }
   }
 
-  /**
-   * Adds the given source list to the destination list that's provided by the given supplier
-   * and then set to the destination by the given setter.
-   * Creates the list if it doesn't exist yet (supplier returns {@code null}.
-   * Does not copy if the given list is {@code null}.
-   *
-   * @param source the source list to add to the destination
-   * @param destinationSupplier supplies the list that the source shall be added to
-   * @param destinationSetter sets the list, once the source was added to it
-   */
-  public static <T> void addTo(List<T> source, Supplier<List<T>> destinationSupplier, Consumer<List<T>> destinationSetter) {
-    if (source == null) {
-      return;
+  public static Config merge(Config thisConfig, Config thatConfig) {
+    if (thisConfig == null) {
+      return thatConfig;
     }
-
-    List<T> list = destinationSupplier.get();
-    if (list == null) {
-      list = new ArrayList<>();
+    ConfigBuilder builder = new ConfigBuilder(thatConfig);
+    if (thisConfig.getClusters() != null) {
+      builder.addAllToClusters(thisConfig.getClusters());
     }
-    list.addAll(source);
-    destinationSetter.accept(list);
+    if (thisConfig.getContexts() != null) {
+      builder.addAllToContexts(thisConfig.getContexts());
+    }
+    if (thisConfig.getUsers() != null) {
+      builder.addAllToUsers(thisConfig.getUsers());
+    }
+    if (thisConfig.getExtensions() != null) {
+      builder.addAllToExtensions(thisConfig.getExtensions());
+    }
+    if (!builder.hasCurrentContext()
+        && Utils.isNotNullOrEmpty(thisConfig.getCurrentContext())) {
+      builder.withCurrentContext(thisConfig.getCurrentContext());
+    }
+    Config merged = builder.build();
+    mergePreferences(thisConfig, merged);
+    return merged;
   }
 
+  public static void mergePreferences(io.fabric8.kubernetes.api.model.Config source,
+      io.fabric8.kubernetes.api.model.Config destination) {
+    if (source.getPreferences() != null) {
+      PreferencesBuilder builder = new PreferencesBuilder(destination.getPreferences());
+      if (source.getPreferences() != null) {
+        builder.addToExtensions(source.getExtensions().toArray(new NamedExtension[] {}));
+      }
+      destination.setPreferences(builder.build());
+    }
+  }
 }

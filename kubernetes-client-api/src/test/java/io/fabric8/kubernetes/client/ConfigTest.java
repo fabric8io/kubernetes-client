@@ -17,8 +17,11 @@ package io.fabric8.kubernetes.client;
 
 import io.fabric8.kubernetes.api.model.ExecConfig;
 import io.fabric8.kubernetes.api.model.ExecConfigBuilder;
+import io.fabric8.kubernetes.api.model.NamedAuthInfo;
+import io.fabric8.kubernetes.api.model.NamedCluster;
 import io.fabric8.kubernetes.api.model.NamedContext;
 import io.fabric8.kubernetes.client.http.TlsVersion;
+import io.fabric8.kubernetes.client.internal.KubeConfigUtils;
 import io.fabric8.kubernetes.client.lib.FileSystem;
 import io.fabric8.kubernetes.client.utils.Utils;
 import org.assertj.core.api.InstanceOfAssertFactories;
@@ -79,7 +82,7 @@ class ConfigTest {
       .filePath(ConfigTest.class.getResource("/test-kubeconfig-exec-args-with-spaces"));
 
   private static final String TEST_KUBECONFIG_NO_CURRENT_CONTEXT_FILE = Utils
-      .filePath(ConfigTest.class.getResource("/test-kubeconfig-nocurrentctxt.yml"));
+      .filePath(ConfigTest.class.getResource("/test-kubeconfig-nocurrentctxt"));
 
   private static final String TEST_KUBECONFIG_EXEC_FILE_CERT_AUTH = Utils
       .filePath(ConfigTest.class.getResource("/test-kubeconfig-exec-cert-auth"));
@@ -426,7 +429,7 @@ class ConfigTest {
         // Then
         assertThat(config)
             .hasFieldOrPropertyWithValue("masterUrl", "https://10.0.0.1:443/")
-            .hasFieldOrPropertyWithValue("file", null);
+            .hasFieldOrPropertyWithValue("files", Collections.singletonList(new File("/dev/null")));
       } finally {
         System.clearProperty("KUBERNETES_SERVICE_HOST");
         System.clearProperty("KUBERNETES_SERVICE_PORT");
@@ -438,14 +441,14 @@ class ConfigTest {
     void refresh_whenInvoked_shouldCreateNewInstance() {
       Config config = Config.autoConfigure(null);
       assertThat(config)
-          .hasFieldOrPropertyWithValue("file", null)
+          .hasFieldOrPropertyWithValue("files", Collections.singletonList(new File("/dev/null")))
           .hasFieldOrPropertyWithValue("autoConfigure", true);
 
       // ensure that refresh creates a new instance
       Config refresh = config.refresh();
       assertThat(refresh)
           .isNotSameAs(config)
-          .hasFieldOrPropertyWithValue("file", null)
+          .hasFieldOrPropertyWithValue("files", Collections.singletonList(new File("/dev/null")))
           .hasFieldOrPropertyWithValue("autoConfigure", true);
     }
 
@@ -461,7 +464,7 @@ class ConfigTest {
         // Then
         assertThat(config)
             .hasFieldOrPropertyWithValue("masterUrl", "https://[2001:db8:1f70::999:de8:7648:6e8]:443/")
-            .hasFieldOrPropertyWithValue("file", null);
+            .hasFieldOrPropertyWithValue("files", Collections.singletonList(new File("/dev/null")));
       } finally {
         System.clearProperty("KUBERNETES_SERVICE_HOST");
         System.clearProperty("KUBERNETES_SERVICE_PORT");
@@ -538,7 +541,7 @@ class ConfigTest {
           .hasFieldOrPropertyWithValue("autoOAuthToken", "token")
           .satisfies(c -> assertThat(c.getCaCertFile()).endsWith("testns/ca.pem".replace("/", File.separator)))
           .satisfies(c -> assertThat(new File(c.getCaCertFile())).isAbsolute())
-          .hasFieldOrPropertyWithValue("file", new File(TEST_KUBECONFIG_FILE));
+          .hasFieldOrPropertyWithValue("files", Collections.singletonList(new File(TEST_KUBECONFIG_FILE)));
     }
 
     @Test
@@ -572,7 +575,7 @@ class ConfigTest {
       assertThat(config)
           .hasFieldOrPropertyWithValue("masterUrl", "https://172.28.128.4:8443/")
           .hasFieldOrPropertyWithValue("autoConfigure", false)
-          .hasFieldOrPropertyWithValue("file", null)
+          .hasFieldOrPropertyWithValue("files", Collections.emptyList())
           .isSameAs(config.refresh());
     }
 
@@ -1215,11 +1218,11 @@ class ConfigTest {
   }
 
   @Test
-  void givenEmptyKubeConfig_whenConfigCreated_thenShouldNotProduceNPE() throws URISyntaxException {
+  void build_given_emptyKubeConfig_then_shouldNotProduceNPE() throws URISyntaxException {
     try {
       // Given
       System.setProperty("kubeconfig",
-          new File(Objects.requireNonNull(getClass().getResource("/test-empty-kubeconfig")).toURI()).getAbsolutePath());
+          getResourceAbsolutePath("/test-empty-kubeconfig"));
 
       // When
       Config config = new ConfigBuilder().build();
@@ -1230,4 +1233,189 @@ class ConfigTest {
       System.clearProperty("kubeconfig");
     }
   }
+
+  @Test
+  void builder_given_severalKubeConfigsAndCurrentContextInFirstFile_then_shouldUseCurrentContextInFirstFile()
+      throws URISyntaxException {
+    try {
+      // Given
+      System.setProperty("kubeconfig",
+          getResourceAbsolutePath("/test-kubeconfig-onlycurrentctx") + File.pathSeparator +
+              getResourceAbsolutePath("/test-kubeconfig"));
+
+      // When
+      Config config = new ConfigBuilder().build();
+
+      // Then
+      assertThat(config.getCurrentContext()).isNotNull();
+      // current-context set by 1st file, current context in 2nd file is ignored
+      assertThat(config.getCurrentContext().getName()).isEqualTo("production/172-28-128-4:8443/root");
+    } finally {
+      System.clearProperty("kubeconfig");
+    }
+  }
+
+  @Test
+  void builder_given_severalKubeConfigsAndCurrentContextInSecondFile_then_shouldUseCurrentContextInSecondFile()
+      throws URISyntaxException {
+    try {
+      // Given
+      System.setProperty("kubeconfig",
+          getResourceAbsolutePath("/test-kubeconfig-empty") + File.pathSeparator +
+          getResourceAbsolutePath("/test-kubeconfig"));
+
+      // When
+      Config config = new ConfigBuilder().build();
+
+      // Then
+      assertThat(config.getCurrentContext()).isNotNull();
+      // current-context set by 1st file, current context in 2nd file is ignored
+      assertThat(config.getCurrentContext().getName()).isEqualTo("testns/172-28-128-4:8443/user");
+    } finally {
+      System.clearProperty("kubeconfig");
+    }
+  }
+
+  @Test
+  void builder_given_severalKubeConfigsWithSameCluster_then_shouldUseFirstCluster()
+      throws URISyntaxException, IOException {
+    try {
+      // Given
+      String clusterName = "172-28-128-4:8443";
+
+      String withSecureCluster = getResourceAbsolutePath("/test-ec-kubeconfig-mangled");
+      NamedCluster secureCluster = getCluster(withSecureCluster, clusterName);
+      assertThat(secureCluster).isNotNull();
+      assertThat(secureCluster.getCluster().getServer()).isEqualTo("https://bogus.com");
+
+      String withInsecureCluster = getResourceAbsolutePath("/test-ec-kubeconfig");
+      NamedCluster insecureCluster = getCluster(withInsecureCluster, clusterName);
+      assertThat(insecureCluster).isNotNull();
+      assertThat(insecureCluster.getCluster().getServer()).isEqualTo("https://172.28.128.4:8443");
+
+      System.setProperty("kubeconfig",
+          withSecureCluster + File.pathSeparator +
+              withInsecureCluster);
+
+      // When
+      Config config = new ConfigBuilder().build();
+
+      // Then
+      // cluster in 1st file is not overriden by identically named cluster in 2nd file
+      assertThat(config.getMasterUrl()).startsWith("https://bogus.com");
+    } finally {
+      System.clearProperty("kubeconfig");
+    }
+  }
+
+  private static NamedCluster getCluster(String filePath, String clusterName) throws IOException {
+    io.fabric8.kubernetes.api.model.Config config = KubeConfigUtils.parseConfig(new File(filePath));
+    return config.getClusters().stream()
+        .filter(cluster -> clusterName.equals(cluster.getName()))
+        .findFirst()
+        .orElse(null);
+  }
+
+  @Test
+  void builder_given_severalKubeConfigsWithSameUser_then_shouldUseFirstUser()
+      throws URISyntaxException, IOException {
+    try {
+      // Given
+      String userName = "user/172-28-128-4:8443";
+
+      String withUserWithToken = getResourceAbsolutePath("/test-ec-kubeconfig-mangled");
+      NamedAuthInfo userWithToken = getUser(withUserWithToken, userName);
+      assertThat(userWithToken).isNotNull();
+      assertThat(userWithToken.getUser().getToken()).isEqualTo("token");
+
+      String withUserWithoutToken = getResourceAbsolutePath("/test-ec-kubeconfig");
+      NamedAuthInfo userWithoutToken = getUser(withUserWithoutToken, userName);
+      assertThat(userWithoutToken).isNotNull();
+      assertThat(userWithoutToken.getUser().getToken()).isNull();
+
+      System.setProperty("kubeconfig",
+          withUserWithToken + File.pathSeparator +
+              withUserWithoutToken);
+
+      // When
+      Config config = new ConfigBuilder().build();
+
+      // Then
+      // user in 1st file is not overriden by identically named user in 2nd file
+      assertThat(config.getAutoOAuthToken()).isEqualTo("token");
+    } finally {
+      System.clearProperty("kubeconfig");
+    }
+  }
+
+  private static NamedAuthInfo getUser(String filePath, String userName) throws IOException {
+    io.fabric8.kubernetes.api.model.Config config = KubeConfigUtils.parseConfig(new File(filePath));
+    return config.getUsers().stream()
+        .filter(user -> userName.equals(user.getName()))
+        .findFirst()
+        .orElse(null);
+  }
+
+  @Test
+  void getKubeconfigFilenames_given_severalFilenamesDefinedInKUBECONFIG_then_returnsAllFilenames() throws URISyntaxException {
+    try {
+      // Given
+      String file1 = getResourceAbsolutePath("/test-kubeconfig-empty");
+      // has all contexts, clusters, users
+      String file2 = getResourceAbsolutePath("/test-kubeconfig");
+      System.setProperty("kubeconfig", file1 + File.pathSeparator + file2);
+
+      // When
+      String[] filenames = Config.getKubeconfigFilenames();
+
+      // Then
+      assertThat(filenames)
+          .isNotNull()
+          .hasSize(2)
+          .containsExactly(file1, file2);
+    } finally {
+      System.clearProperty("kubeconfig");
+    }
+  }
+
+  private String getResourceAbsolutePath(String filename) throws URISyntaxException {
+    return new File(Objects.requireNonNull(getClass().getResource(filename)).toURI()).getAbsolutePath();
+  }
+
+  @Test
+  void getKubeconfigFilenames_given_KUBECONFNotSet_then_returnsDefault() {
+    // Given
+    System.clearProperty("kubeconfig");
+
+    // When
+    String[] filenames = Config.getKubeconfigFilenames();
+
+    // Then
+    assertThat(filenames)
+        .isNotNull()
+        .containsExactly(Config.DEFAULT_KUBECONFIG_FILE.getAbsolutePath());
+  }
+
+  @Test
+  void getFilenames_given_KUBECONFNotSet_then_returnsDefault() throws URISyntaxException {
+    try {
+      // Given
+      String fileWithToken = getResourceAbsolutePath("/test-kubeconfig-oidc");
+      System.setProperty("kubeconfig",
+          fileWithToken + File.pathSeparator +
+          Config.DEFAULT_KUBECONFIG_FILE.getAbsolutePath());
+      Config config = new ConfigBuilder().build();
+
+      // When
+      KubeConfigFile found = config.getFileWithAuthInfo("mmosley");
+
+      // Then
+      assertThat(found)
+          .isNotNull()
+          .returns(fileWithToken, kubeConfigFile -> kubeConfigFile.getFile().getAbsolutePath());
+    } finally {
+      System.clearProperty("kubeconfig");
+    }
+  }
+
 }

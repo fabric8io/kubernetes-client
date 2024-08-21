@@ -20,8 +20,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.fabric8.kubernetes.api.model.AuthInfo;
 import io.fabric8.kubernetes.api.model.AuthProviderConfig;
 import io.fabric8.kubernetes.api.model.NamedAuthInfo;
+import io.fabric8.kubernetes.api.model.NamedAuthInfoBuilder;
 import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.Config.KubeConfigFile;
+import io.fabric8.kubernetes.client.KubeConfigFile;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.HttpRequest;
@@ -84,22 +85,22 @@ public class OpenIDConnectionUtils {
    * @return access token for interacting with Kubernetes API
    */
   public static CompletableFuture<String> resolveOIDCTokenFromAuthConfig(
-          Config currentConfig, Map<String, String> currentAuthProviderConfig, HttpClient.Builder clientBuilder) {
+      Config currentConfig, Map<String, String> currentAuthProviderConfig, HttpClient.Builder clientBuilder) {
     String originalToken = currentAuthProviderConfig.get(ID_TOKEN_KUBECONFIG);
     String idpCert = currentAuthProviderConfig.getOrDefault(IDP_CERT_DATA, getClientCertDataFromConfig(currentConfig));
     if (isTokenRefreshSupported(currentAuthProviderConfig)) {
       final HttpClient httpClient = initHttpClientWithPemCert(idpCert, clientBuilder);
       final CompletableFuture<String> result = getOpenIdConfiguration(httpClient, currentAuthProviderConfig)
-              .thenCompose(openIdConfiguration -> refreshOpenIdToken(httpClient, currentAuthProviderConfig, openIdConfiguration))
-              .thenApply(oAuthToken -> persistOAuthToken(currentConfig, oAuthToken, null))
-              .thenApply(oAuthToken -> {
-                if (oAuthToken == null || Utils.isNullOrEmpty(oAuthToken.idToken)) {
-                  LOGGER.warn("token response did not contain an id_token, either the scope \\\"openid\\\" wasn't " +
-                          "requested upon login, or the provider doesn't support id_tokens as part of the refresh response.");
-                  return originalToken;
-                }
-                return oAuthToken.idToken;
-              });
+          .thenCompose(openIdConfiguration -> refreshOpenIdToken(httpClient, currentAuthProviderConfig, openIdConfiguration))
+          .thenApply(oAuthToken -> persistOAuthToken(currentConfig, oAuthToken, null))
+          .thenApply(oAuthToken -> {
+            if (oAuthToken == null || Utils.isNullOrEmpty(oAuthToken.idToken)) {
+              LOGGER.warn("token response did not contain an id_token, either the scope \\\"openid\\\" wasn't " +
+                  "requested upon login, or the provider doesn't support id_tokens as part of the refresh response.");
+              return originalToken;
+            }
+            return oAuthToken.idToken;
+          });
       result.whenComplete((s, t) -> httpClient.close());
       return result;
     }
@@ -128,9 +129,9 @@ public class OpenIDConnectionUtils {
    * @return the OpenID Configuration as returned by the OpenID provider
    */
   private static CompletableFuture<OpenIdConfiguration> getOpenIdConfiguration(HttpClient client,
-                                                                               Map<String, String> authProviderConfig) {
+      Map<String, String> authProviderConfig) {
     final HttpRequest request = client.newHttpRequestBuilder()
-            .uri(resolveWellKnownUrlForOpenIDIssuer(authProviderConfig)).build();
+        .uri(resolveWellKnownUrlForOpenIDIssuer(authProviderConfig)).build();
     return client.sendAsync(request, String.class).thenApply(response -> {
       try {
         if (response.isSuccessful() && response.body() != null) {
@@ -151,13 +152,13 @@ public class OpenIDConnectionUtils {
    * Issue Token Refresh HTTP Request to OIDC Provider
    */
   private static CompletableFuture<OAuthToken> refreshOpenIdToken(
-          HttpClient httpClient, Map<String, String> authProviderConfig, OpenIdConfiguration openIdConfiguration) {
+      HttpClient httpClient, Map<String, String> authProviderConfig, OpenIdConfiguration openIdConfiguration) {
     if (openIdConfiguration == null || Utils.isNullOrEmpty(openIdConfiguration.tokenEndpoint)) {
       LOGGER.warn("oidc: discovery object doesn't contain a valid token endpoint: {}", openIdConfiguration);
       return CompletableFuture.completedFuture(null);
     }
     final HttpRequest request = initTokenRefreshHttpRequest(httpClient, authProviderConfig,
-            openIdConfiguration.tokenEndpoint);
+        openIdConfiguration.tokenEndpoint);
     return httpClient.sendAsync(request, String.class).thenApply(r -> {
       String body = r.body();
       if (body != null) {
@@ -199,10 +200,11 @@ public class OpenIDConnectionUtils {
   }
 
   private static void persistOAuthTokenToFile(Config currentConfig, String token, Map<String, String> authProviderConfig) {
-    if (currentConfig.getFile() != null && currentConfig.getCurrentContext() != null) {
+    if (currentConfig.getCurrentContext() != null
+        && currentConfig.getCurrentContext().getContext() != null) {
       try {
         final String userName = currentConfig.getCurrentContext().getContext().getUser();
-        KubeConfigFile kubeConfigFile = currentConfig.getFile(userName);
+        KubeConfigFile kubeConfigFile = currentConfig.getFileWithAuthInfo(userName);
         if (kubeConfigFile == null) {
           LOGGER.warn("oidc: failure while persisting new tokens into KUBECONFIG: file for user {} not found", userName);
           return;
@@ -217,7 +219,8 @@ public class OpenIDConnectionUtils {
     }
   }
 
-  private static void setAuthProviderAndToken(String token, Map<String, String> authProviderConfig, NamedAuthInfo namedAuthInfo) {
+  private static void setAuthProviderAndToken(String token, Map<String, String> authProviderConfig,
+      NamedAuthInfo namedAuthInfo) {
     if (namedAuthInfo.getUser() == null) {
       namedAuthInfo.setUser(new AuthInfo());
     }
@@ -230,21 +233,28 @@ public class OpenIDConnectionUtils {
     }
   }
 
-  private static NamedAuthInfo getOrCreateNamedAuthInfo(String userName, io.fabric8.kubernetes.api.model.Config kubeConfig) {
+  private static NamedAuthInfo getOrCreateNamedAuthInfo(String name, io.fabric8.kubernetes.api.model.Config kubeConfig) {
     return kubeConfig.getUsers().stream()
-            .filter(n -> n.getName().equals(userName))
-            .findFirst()
-            .orElseGet(() -> {
-              NamedAuthInfo result = new NamedAuthInfo(userName, new AuthInfo());
-              kubeConfig.getUsers().add(result);
-              return result;
-            });
+        .filter(n -> n.getName().equals(name))
+        .findFirst()
+        .orElseGet(() -> {
+          NamedAuthInfo authInfo = new NamedAuthInfoBuilder()
+              .withName(name)
+              .withNewUser()
+              .endUser()
+              .build();
+          kubeConfig.getUsers().add(authInfo);
+          return authInfo;
+        });
   }
 
   private static void persistOAuthTokenToFile(AuthProviderConfig config, Map<String, String> authProviderConfig) {
+    if (config == null) {
+      return;
+    }
     Optional.of(config)
-            .map(AuthProviderConfig::getConfig)
-            .ifPresent(c -> c.putAll(authProviderConfig));
+        .map(AuthProviderConfig::getConfig)
+        .ifPresent(c -> c.putAll(authProviderConfig));
   }
 
   /**
@@ -268,19 +278,19 @@ public class OpenIDConnectionUtils {
       clientBuilder.sslContext(keyManagers, trustManagers);
       return clientBuilder.build();
     } catch (KeyStoreException | InvalidKeySpecException | NoSuchAlgorithmException | IOException | UnrecoverableKeyException
-             | CertificateException e) {
+        | CertificateException e) {
       throw KubernetesClientException.launderThrowable("Could not import idp certificate", e);
     }
   }
 
   private static HttpRequest initTokenRefreshHttpRequest(
-          HttpClient client, Map<String, String> authProviderConfig, String tokenRefreshUrl) {
+      HttpClient client, Map<String, String> authProviderConfig, String tokenRefreshUrl) {
 
     final String clientId = authProviderConfig.get(CLIENT_ID_KUBECONFIG);
     final String clientSecret = authProviderConfig.getOrDefault(CLIENT_SECRET_KUBECONFIG, "");
     final HttpRequest.Builder httpRequestBuilder = client.newHttpRequestBuilder().uri(tokenRefreshUrl);
     final String credentials = java.util.Base64.getEncoder().encodeToString((clientId + ':' + clientSecret)
-            .getBytes(StandardCharsets.UTF_8));
+        .getBytes(StandardCharsets.UTF_8));
     httpRequestBuilder.header("Authorization", "Basic " + credentials);
 
     final Map<String, String> requestBody = new LinkedHashMap<>();
@@ -305,8 +315,8 @@ public class OpenIDConnectionUtils {
           Map<String, Object> jwtPayloadMap = Serialization.unmarshal(jwtPayloadDecoded, Map.class);
           int expiryTimestampInSeconds = (Integer) jwtPayloadMap.get(JWT_TOKEN_EXPIRY_TIMESTAMP_KEY);
           return Instant.ofEpochSecond(expiryTimestampInSeconds)
-                  .minusSeconds(TOKEN_EXPIRY_DELTA)
-                  .isBefore(Instant.now());
+              .minusSeconds(TOKEN_EXPIRY_DELTA)
+              .isBefore(Instant.now());
         } catch (Exception e) {
           return true;
         }
