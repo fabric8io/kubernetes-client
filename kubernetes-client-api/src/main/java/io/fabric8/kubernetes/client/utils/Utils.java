@@ -36,6 +36,7 @@ import java.nio.file.Paths;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
@@ -291,8 +292,20 @@ public class Utils {
     return str == null || str.isEmpty();
   }
 
-  public static boolean isNotNullOrEmpty(Map map) {
-    return !(map == null || map.isEmpty());
+  public static boolean isNotNullOrEmpty(Map<?, ?> map) {
+    return !isNullOrEmpty(map);
+  }
+
+  public static boolean isNullOrEmpty(Map<?, ?> map) {
+    return map == null || map.isEmpty();
+  }
+
+  public static boolean isNotNullOrEmpty(Collection<?> collection) {
+    return !isNullOrEmpty(collection);
+  }
+
+  public static boolean isNullOrEmpty(Collection<?> collection) {
+    return collection == null || collection.isEmpty();
   }
 
   public static boolean isNotNullOrEmpty(String str) {
@@ -300,7 +313,11 @@ public class Utils {
   }
 
   public static boolean isNotNullOrEmpty(String[] array) {
-    return !(array == null || array.length == 0);
+    return !isNullOrEmpty(array);
+  }
+
+  public static boolean isNullOrEmpty(String[] array) {
+    return array == null || array.length == 0;
   }
 
   public static <T> boolean isNotNull(T... refList) {
