@@ -1200,6 +1200,11 @@
         <version>${spotless-maven-plugin.version}</version>
         <configuration>
           <java>
+            <includes>
+              <include>src/main/java/**/*.java</include>
+              <include>src/test/java/**/*.java</include>
+              <include>src/it/**/src/main/java/**/*.java</include>
+            </includes>
             <eclipse>
               <file>ide-config/eclipse-format.xml</file>
             </eclipse>
@@ -1208,6 +1213,15 @@
             </importOrder>
             <removeUnusedImports/>
           </java>
+          <groovy>
+            <includes>
+              <include>src/main/groovy/**/*.groovy</include>
+              <include>src/test/groovy/**/*.groovy</include>
+              <include>src/it/**/*.groovy</include>
+            </includes>
+            <importOrder/>
+            <greclipse/>
+          </groovy>
         </configuration>
       </plugin>
       <plugin>

@@ -16,12 +16,11 @@
 package io.fabric8.mockwebserver
 
 import io.fabric8.mockwebserver.crud.ResponseComposer
-
 import java.util.stream.Collectors
 
 class JsonResponseComposer implements ResponseComposer {
-  @Override
-  String compose(Collection<String> items) {
-    return "[" + items.stream().collect(Collectors.joining(",")) + "]"
-  }
+	@Override
+	String compose(Collection<String> items) {
+		return "[" + items.stream().collect(Collectors.joining(",")) + "]"
+	}
 }

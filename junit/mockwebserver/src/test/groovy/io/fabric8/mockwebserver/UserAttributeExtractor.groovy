@@ -22,19 +22,19 @@ import io.fabric8.mockwebserver.crud.AttributeSet
 
 class UserAttributeExtractor implements AttributeExtractor {
 
-  static def mapper = new ObjectMapper()
+	static def mapper = new ObjectMapper()
 
-  @Override
-  AttributeSet fromPath(String path) {
-    if (path.trim().isBlank() || path.trim() == "/") {
-      return new AttributeSet();
-    }
-    return new AttributeSet(new Attribute("id", path.substring(1)))
-  }
+	@Override
+	AttributeSet fromPath(String path) {
+		if (path.trim().isBlank() || path.trim() == "/") {
+			return new AttributeSet();
+		}
+		return new AttributeSet(new Attribute("id", path.substring(1)))
+	}
 
-  @Override
-  AttributeSet fromResource(String resource) {
-    def user = mapper.readValue(resource, User)
-    return new AttributeSet(new Attribute("id", user.getId().toString()))
-  }
+	@Override
+	AttributeSet fromResource(String resource) {
+		def user = mapper.readValue(resource, User)
+		return new AttributeSet(new Attribute("id", user.getId().toString()))
+	}
 }
