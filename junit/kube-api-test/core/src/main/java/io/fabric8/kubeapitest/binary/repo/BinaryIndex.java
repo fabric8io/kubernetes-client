@@ -15,16 +15,17 @@
  */
 package io.fabric8.kubeapitest.binary.repo;
 
-public class ObjectListItem {
+import java.util.Map;
 
-  private String name;
+public class BinaryIndex {
 
-  public String getName() {
-    return name;
+  private Map<String, Map<String, ArchiveReference>> releases;
+
+  public Map<String, Map<String, ArchiveReference>> getReleases() {
+    return releases;
   }
 
-  public ObjectListItem setName(String name) {
-    this.name = name;
-    return this;
+  public void setReleases(Map<String, Map<String, ArchiveReference>> releases) {
+    this.releases = releases;
   }
 }

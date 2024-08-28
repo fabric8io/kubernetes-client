@@ -39,8 +39,6 @@ public class BinaryDownloader {
 
   private static final Logger log = LoggerFactory.getLogger(BinaryDownloader.class);
 
-  private static final String OBJECT_TAR_PREFIX = "kubebuilder-tools-";
-
   private final String kubeAPITestDir;
   private final BinaryRepo binaryRepo;
   private final OSInfo osInfoProvider;
@@ -161,15 +159,8 @@ public class BinaryDownloader {
 
   private Stream<String> listAllRelevantVersions() {
     var objects = binaryRepo.listObjectNames();
-    return objects.filter(o -> o.contains(osInfoProvider.getOSName())
-        && o.contains(osInfoProvider.getOSArch()))
-        .map(o -> {
-          String stripped = o.replace(OBJECT_TAR_PREFIX, "");
-          String version = stripped.substring(0, stripped.indexOf("-"));
-          if (version.startsWith("v")) {
-            version = version.substring(1);
-          }
-          return version;
-        });
+    return objects.filter(o -> o.getOs().equals(osInfoProvider.getOSName())
+        && o.getArch().equals(osInfoProvider.getOSArch()))
+        .map(o -> o.getVersion());
   }
 }

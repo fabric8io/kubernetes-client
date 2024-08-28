@@ -15,18 +15,27 @@
  */
 package io.fabric8.kubeapitest.binary.repo;
 
-import java.util.List;
+public class ArchiveDescriptor {
 
-public class ObjectList {
+  private final String version;
+  private final String arch;
+  private final String os;
 
-  private List<ObjectListItem> items;
-
-  public List<ObjectListItem> getItems() {
-    return items;
+  public ArchiveDescriptor(String version, String arch, String os) {
+    this.version = version;
+    this.arch = arch;
+    this.os = os;
   }
 
-  public ObjectList setItems(List<ObjectListItem> items) {
-    this.items = items;
-    return this;
+  public String getVersion() {
+    return version;
+  }
+
+  public String getArch() {
+    return arch;
+  }
+
+  public String getOs() {
+    return os;
   }
 }
