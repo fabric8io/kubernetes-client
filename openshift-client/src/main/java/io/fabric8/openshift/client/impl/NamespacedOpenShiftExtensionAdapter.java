@@ -18,15 +18,12 @@ package io.fabric8.openshift.client.impl;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.extension.ExtensionAdapter;
 import io.fabric8.openshift.client.NamespacedOpenShiftClient;
-import org.apache.felix.scr.annotations.Component;
-import org.apache.felix.scr.annotations.Service;
 
 /**
  * This class is necessary because the extension logic checks for an exact class match,
  * even though an {@link OpenShiftClientImpl} is already known via the {@link OpenShiftExtensionAdapter}
  */
-@Component
-@Service
+@org.osgi.service.component.annotations.Component(name = "io.fabric8.openshift.client.impl.NamespacedOpenShiftExtensionAdapter", scope = org.osgi.service.component.annotations.ServiceScope.SINGLETON, service = ExtensionAdapter.class)
 public class NamespacedOpenShiftExtensionAdapter implements ExtensionAdapter<NamespacedOpenShiftClient> {
 
   @Override

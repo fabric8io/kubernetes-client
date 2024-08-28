@@ -21,11 +21,6 @@ import io.fabric8.openshift.client.NamespacedOpenShiftClient;
 import io.fabric8.openshift.client.NamespacedOpenShiftClientAdapter;
 import io.fabric8.openshift.client.OpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftConfigBuilder;
-import org.apache.felix.scr.annotations.Activate;
-import org.apache.felix.scr.annotations.Component;
-import org.apache.felix.scr.annotations.ConfigurationPolicy;
-import org.apache.felix.scr.annotations.Deactivate;
-import org.apache.felix.scr.annotations.Service;
 
 import java.util.Map;
 
@@ -54,11 +49,12 @@ import static io.fabric8.openshift.client.OpenShiftConfig.DEFAULT_BUILD_TIMEOUT;
 import static io.fabric8.openshift.client.OpenShiftConfig.OPENSHIFT_BUILD_TIMEOUT_SYSTEM_PROPERTY;
 import static io.fabric8.openshift.client.OpenShiftConfig.OPENSHIFT_URL_SYSTEM_PROPERTY;
 
-@Component(configurationPid = "io.fabric8.openshift.client", policy = ConfigurationPolicy.REQUIRE)
-@Service({ OpenShiftClient.class, NamespacedOpenShiftClient.class })
+@org.osgi.service.component.annotations.Component(configurationPid = "io.fabric8.openshift.client", name = "io.fabric8.openshift.client.osgi.ManagedOpenShiftClient", scope = org.osgi.service.component.annotations.ServiceScope.SINGLETON, service = {
+    OpenShiftClient.class,
+    NamespacedOpenShiftClient.class }, configurationPolicy = org.osgi.service.component.annotations.ConfigurationPolicy.REQUIRE)
 public class ManagedOpenShiftClient extends NamespacedOpenShiftClientAdapter {
 
-  @Activate
+  @org.osgi.service.component.annotations.Activate
   public void activate(Map<String, Object> properties) {
     final OpenShiftConfigBuilder builder = new OpenShiftConfigBuilder();
 
@@ -145,7 +141,7 @@ public class ManagedOpenShiftClient extends NamespacedOpenShiftClientAdapter {
     this.init(delegate);
   }
 
-  @Deactivate
+  @org.osgi.service.component.annotations.Deactivate
   public void deactivate() {
     getClient().close();
   }
