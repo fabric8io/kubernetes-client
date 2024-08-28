@@ -13,6 +13,7 @@
 * Fix #6052: Removed dependency on no longer maintained com.github.mifmif:generex
 
 #### New Features
+* Fix #6150: Config uses `proxy-url` in kubeconfig's cluster configuration
 
 #### _**Note**_: Breaking changes
 * Check detailed migration documentation for breaking changes in [7.0.0](./doc/MIGRATION-v7.md)
