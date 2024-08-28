@@ -133,7 +133,7 @@
     <commons-compress.version>1.27.1</commons-compress.version>
     <commons-io.version>2.16.1</commons-io.version> <!-- Required by Gradle Testing Toolkit -->
     <guava.version>33.3.0-jre</guava.version> <!-- Required by Gradle Testing Toolkit -->
-    <osgi.annotations.version>1.5.0</osgi.annotations.version>
+    <osgi.annotations.version>1.5.1</osgi.annotations.version>
     <felix.scr.version>2.0.6</felix.scr.version>
     <jsonschema2pojo.version>1.2.1</jsonschema2pojo.version>
     <picocli.version>4.7.6</picocli.version>
