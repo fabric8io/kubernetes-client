@@ -182,7 +182,7 @@ class DefaultMockServerWebSocketTest extends Specification {
 		given: "A WebSocket expectation"
 		server.expect()
 				.withPath("/websocket")
-				.andUpgradeToWebSocket().open().done().always()
+				.andUpgradeToWebSocket().open().waitFor(10L).andEmit("done").done().always()
 		and:
 		def future = new CompletableFuture()
 		and: "A WebSocket request"
@@ -197,8 +197,9 @@ class DefaultMockServerWebSocketTest extends Specification {
 				future.complete(ws.result().headers().get("sec-websocket-protocol"))
 			}
 		}
-		if (wsReq.result() != null && wsReq.result().headers() != null) {
-			future.complete(wsReq.result().headers().get("sec-websocket-protocol"))
+		def currentResult = wsReq.result()
+		if (currentResult != null && currentResult.headers() != null) {
+			future.complete(currentResult.headers().get("sec-websocket-protocol"))
 		}
 		and: "An instance of AsyncConditions"
 		def async = new AsyncConditions(1)
