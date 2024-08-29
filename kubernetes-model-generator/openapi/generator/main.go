@@ -171,6 +171,10 @@ func extractSchemas(types []reflect.Type) openapi3.Schemas {
 }
 
 func generateType(schemas openapi3.Schemas, t reflect.Type) {
+	// Skip generation of overridden types
+	if mappingOverrides[t] != "" {
+		return
+	}
 	// Nested pointers
 	if t.Kind() == reflect.Ptr {
 		generateType(schemas, t.Elem())
