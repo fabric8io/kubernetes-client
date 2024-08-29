@@ -107,7 +107,7 @@ jobs:
         uses: manusa/actions-setup-minikube@v2.11.0
         with:
           minikube version: v1.31.2
-          kubernetes version: v1.12.10
+          kubernetes version: v1.14.10
           github token: ${{ secrets.GITHUB_TOKEN }}
           start args: '--force'
       - name: Cache .m2 registry
