@@ -195,10 +195,10 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
     return new GeneratorResult(buffer);
   }
 
-protected List<GeneratorResult.ClassResult> generateJavaFields(ClassOrInterfaceDeclaration clz) {
-	List<GeneratorResult.ClassResult> buffer = new ArrayList<>(this.fields.size() + 1);
-	
-	List<String> sortedKeys = this.fields.keySet().stream().sorted().collect(Collectors.toList());
+  protected List<GeneratorResult.ClassResult> generateJavaFields(ClassOrInterfaceDeclaration clz) {
+    List<GeneratorResult.ClassResult> buffer = new ArrayList<>(this.fields.size() + 1);
+
+    List<String> sortedKeys = this.fields.keySet().stream().sorted().collect(Collectors.toList());
     for (String k : sortedKeys) {
       AbstractJSONSchema2Pojo prop = this.fields.get(k);
       boolean isRequired = this.required.contains(k);
@@ -351,7 +351,7 @@ protected List<GeneratorResult.ClassResult> generateJavaFields(ClassOrInterfaceD
           .setBody(new BlockStmt().addStatement(new NameExpr("this." + Keywords.ADDITIONAL_PROPERTIES + ".put(key, value)")));
     }
     return buffer;
-}
+  }
 
   /**
    * This method is responsible for creating an expression that will initialize the default value if primitive

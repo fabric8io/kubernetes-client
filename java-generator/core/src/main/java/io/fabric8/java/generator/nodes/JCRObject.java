@@ -15,11 +15,6 @@
  */
 package io.fabric8.java.generator.nodes;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.PackageDeclaration;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
@@ -28,9 +23,13 @@ import com.github.javaparser.ast.expr.NameExpr;
 import com.github.javaparser.ast.expr.SingleMemberAnnotationExpr;
 import com.github.javaparser.ast.expr.StringLiteralExpr;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
-
 import io.fabric8.java.generator.Config;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 public class JCRObject extends JObject implements JObjectExtraAnnotations {
 
@@ -67,7 +66,7 @@ public class JCRObject extends JObject implements JObjectExtraAnnotations {
       String plural,
       Config config) {
 
-	super(pkg, type, toplevelProps, required, preserveUnknownFields, config, description, false, null);
+    super(pkg, type, toplevelProps, required, preserveUnknownFields, config, description, false, null);
 
     this.group = group;
     this.version = version;
@@ -123,7 +122,7 @@ public class JCRObject extends JObject implements JObjectExtraAnnotations {
               new Name("io.fabric8.kubernetes.model.annotation.Plural"),
               new StringLiteralExpr(plural)));
     }
-    
+
     ClassOrInterfaceType jlVoid = new ClassOrInterfaceType().setName("java.lang.Void");
 
     ClassOrInterfaceType spec = (withSpec)
@@ -150,10 +149,10 @@ public class JCRObject extends JObject implements JObjectExtraAnnotations {
     if (config.isObjectExtraAnnotations()) {
       addExtraAnnotations(clz);
     }
-    
+
     List<GeneratorResult.ClassResult> buffer = generateJavaFields(clz);
-    
-    List<GeneratorResult.ClassResult> results = new ArrayList<>(); 
+
+    List<GeneratorResult.ClassResult> results = new ArrayList<>();
     results.add(new GeneratorResult.ClassResult(className, cu));
     results.addAll(buffer);
     return new GeneratorResult(
