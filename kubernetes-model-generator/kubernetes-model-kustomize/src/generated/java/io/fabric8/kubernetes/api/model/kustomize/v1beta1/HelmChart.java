@@ -14,8 +14,20 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
+import io.fabric8.kubernetes.api.model.Container;
+import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
+import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
+import io.fabric8.kubernetes.api.model.LabelSelector;
+import io.fabric8.kubernetes.api.model.LocalObjectReference;
+import io.fabric8.kubernetes.api.model.ObjectMeta;
+import io.fabric8.kubernetes.api.model.ObjectReference;
+import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
+import io.fabric8.kubernetes.api.model.PodTemplateSpec;
+import io.fabric8.kubernetes.api.model.ResourceRequirements;
+import io.fabric8.kubernetes.api.model.runtime.RawExtension;
 import io.sundr.builder.annotations.Buildable;
+import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
@@ -26,6 +38,7 @@ import lombok.experimental.Accessors;
     "additionalValuesFiles",
     "apiVersions",
     "includeCRDs",
+    "kubeVersion",
     "name",
     "nameTemplate",
     "namespace",
@@ -44,7 +57,19 @@ import lombok.experimental.Accessors;
     "_",
     ""
 })
-@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
+@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
+    @BuildableReference(ObjectMeta.class),
+    @BuildableReference(LabelSelector.class),
+    @BuildableReference(Container.class),
+    @BuildableReference(PodTemplateSpec.class),
+    @BuildableReference(ResourceRequirements.class),
+    @BuildableReference(IntOrString.class),
+    @BuildableReference(ObjectReference.class),
+    @BuildableReference(LocalObjectReference.class),
+    @BuildableReference(PersistentVolumeClaim.class),
+    @BuildableReference(GenericKubernetesResource.class),
+    @BuildableReference(RawExtension.class)
+})
 @Generated("jsonschema2pojo")
 public class HelmChart implements Editable<HelmChartBuilder> , KubernetesResource
 {
@@ -57,6 +82,8 @@ public class HelmChart implements Editable<HelmChartBuilder> , KubernetesResourc
     private List<String> apiVersions = new ArrayList<>();
     @JsonProperty("includeCRDs")
     private Boolean includeCRDs;
+    @JsonProperty("kubeVersion")
+    private String kubeVersion;
     @JsonProperty("name")
     private String name;
     @JsonProperty("nameTemplate")
@@ -75,7 +102,7 @@ public class HelmChart implements Editable<HelmChartBuilder> , KubernetesResourc
     private String valuesFile;
     @JsonProperty("valuesInline")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Object> valuesInline = new LinkedHashMap<>();
+    private Map<String, KubernetesResource> valuesInline = new LinkedHashMap<>();
     @JsonProperty("valuesMerge")
     private String valuesMerge;
     @JsonProperty("version")
@@ -90,11 +117,12 @@ public class HelmChart implements Editable<HelmChartBuilder> , KubernetesResourc
     public HelmChart() {
     }
 
-    public HelmChart(List<String> additionalValuesFiles, List<String> apiVersions, Boolean includeCRDs, String name, String nameTemplate, String namespace, String releaseName, String repo, Boolean skipHooks, Boolean skipTests, String valuesFile, Map<String, Object> valuesInline, String valuesMerge, String version) {
+    public HelmChart(List<String> additionalValuesFiles, List<String> apiVersions, Boolean includeCRDs, String kubeVersion, String name, String nameTemplate, String namespace, String releaseName, String repo, Boolean skipHooks, Boolean skipTests, String valuesFile, Map<String, KubernetesResource> valuesInline, String valuesMerge, String version) {
         super();
         this.additionalValuesFiles = additionalValuesFiles;
         this.apiVersions = apiVersions;
         this.includeCRDs = includeCRDs;
+        this.kubeVersion = kubeVersion;
         this.name = name;
         this.nameTemplate = nameTemplate;
         this.namespace = namespace;
@@ -138,6 +166,16 @@ public class HelmChart implements Editable<HelmChartBuilder> , KubernetesResourc
     @JsonProperty("includeCRDs")
     public void setIncludeCRDs(Boolean includeCRDs) {
         this.includeCRDs = includeCRDs;
+    }
+
+    @JsonProperty("kubeVersion")
+    public String getKubeVersion() {
+        return kubeVersion;
+    }
+
+    @JsonProperty("kubeVersion")
+    public void setKubeVersion(String kubeVersion) {
+        this.kubeVersion = kubeVersion;
     }
 
     @JsonProperty("name")
@@ -222,12 +260,12 @@ public class HelmChart implements Editable<HelmChartBuilder> , KubernetesResourc
 
     @JsonProperty("valuesInline")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public Map<String, Object> getValuesInline() {
+    public Map<String, KubernetesResource> getValuesInline() {
         return valuesInline;
     }
 
     @JsonProperty("valuesInline")
-    public void setValuesInline(Map<String, Object> valuesInline) {
+    public void setValuesInline(Map<String, KubernetesResource> valuesInline) {
         this.valuesInline = valuesInline;
     }
 

@@ -14,8 +14,20 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
+import io.fabric8.kubernetes.api.model.Container;
+import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
+import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
+import io.fabric8.kubernetes.api.model.LabelSelector;
+import io.fabric8.kubernetes.api.model.LocalObjectReference;
+import io.fabric8.kubernetes.api.model.ObjectMeta;
+import io.fabric8.kubernetes.api.model.ObjectReference;
+import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
+import io.fabric8.kubernetes.api.model.PodTemplateSpec;
+import io.fabric8.kubernetes.api.model.ResourceRequirements;
+import io.fabric8.kubernetes.api.model.runtime.RawExtension;
 import io.sundr.builder.annotations.Buildable;
+import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
@@ -43,7 +55,19 @@ import lombok.experimental.Accessors;
     "_",
     ""
 })
-@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
+@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
+    @BuildableReference(ObjectMeta.class),
+    @BuildableReference(LabelSelector.class),
+    @BuildableReference(Container.class),
+    @BuildableReference(PodTemplateSpec.class),
+    @BuildableReference(ResourceRequirements.class),
+    @BuildableReference(IntOrString.class),
+    @BuildableReference(ObjectReference.class),
+    @BuildableReference(LocalObjectReference.class),
+    @BuildableReference(PersistentVolumeClaim.class),
+    @BuildableReference(GenericKubernetesResource.class),
+    @BuildableReference(RawExtension.class)
+})
 @Generated("jsonschema2pojo")
 public class HelmChartArgs implements Editable<HelmChartArgsBuilder> , KubernetesResource
 {
@@ -73,7 +97,7 @@ public class HelmChartArgs implements Editable<HelmChartArgsBuilder> , Kubernete
     private String values;
     @JsonProperty("valuesLocal")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Object> valuesLocal = new LinkedHashMap<>();
+    private Map<String, KubernetesResource> valuesLocal = new LinkedHashMap<>();
     @JsonProperty("valuesMerge")
     private String valuesMerge;
     @JsonIgnore
@@ -86,7 +110,7 @@ public class HelmChartArgs implements Editable<HelmChartArgsBuilder> , Kubernete
     public HelmChartArgs() {
     }
 
-    public HelmChartArgs(String chartHome, String chartName, String chartRepoName, String chartRepoUrl, String chartVersion, List<String> extraArgs, String helmBin, String helmHome, String releaseName, String releaseNamespace, String values, Map<String, Object> valuesLocal, String valuesMerge) {
+    public HelmChartArgs(String chartHome, String chartName, String chartRepoName, String chartRepoUrl, String chartVersion, List<String> extraArgs, String helmBin, String helmHome, String releaseName, String releaseNamespace, String values, Map<String, KubernetesResource> valuesLocal, String valuesMerge) {
         super();
         this.chartHome = chartHome;
         this.chartName = chartName;
@@ -216,12 +240,12 @@ public class HelmChartArgs implements Editable<HelmChartArgsBuilder> , Kubernete
 
     @JsonProperty("valuesLocal")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public Map<String, Object> getValuesLocal() {
+    public Map<String, KubernetesResource> getValuesLocal() {
         return valuesLocal;
     }
 
     @JsonProperty("valuesLocal")
-    public void setValuesLocal(Map<String, Object> valuesLocal) {
+    public void setValuesLocal(Map<String, KubernetesResource> valuesLocal) {
         this.valuesLocal = valuesLocal;
     }
 
