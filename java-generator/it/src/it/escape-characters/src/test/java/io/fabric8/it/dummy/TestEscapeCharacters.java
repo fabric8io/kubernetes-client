@@ -15,19 +15,19 @@
  */
 package io.fabric8.it.dummy;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.example.v1.Dummy;
 import com.example.v1.DummySpec;
 import com.example.v1.dummyspec.Package;
 import com.example.v1.dummyspec.package_.Foo;
+import com.fasterxml.jackson.databind.JsonNode;
+import io.fabric8.java.generator.testing.KubernetesResourceDiff;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import org.junit.jupiter.api.Test;
-import io.fabric8.java.generator.testing.KubernetesResourceDiff;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.Files;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -37,8 +37,7 @@ class TestEscapeCharacters {
   @Test
   void testDeserialization() {
     // Arrange
-    Dummy sample =
-      Serialization.unmarshal(getClass().getResourceAsStream("/sample.yaml"), Dummy.class);
+    Dummy sample = Serialization.unmarshal(getClass().getResourceAsStream("/sample.yaml"), Dummy.class);
 
     // Act
     DummySpec spec = sample.getSpec();
