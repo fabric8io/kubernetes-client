@@ -85,52 +85,53 @@ public class OpenShiftOAuthInterceptor extends TokenRefreshInterceptor {
   }
 
   private static CompletableFuture<String> authorize(Config config, HttpClient client) {
-    HttpClient.DerivedClientBuilder builder = client.newBuilder();
-    builder.addOrReplaceInterceptor(TokenRefreshInterceptor.NAME, null);
-    HttpClient clone = builder.build();
+    try (HttpClient clone = client.newBuilder()
+      .addOrReplaceInterceptor(TokenRefreshInterceptor.NAME, null)
+      .build()) {
 
-    URL url;
-    try {
-      url = new URL(URLUtils.join(config.getMasterUrl(), AUTHORIZATION_SERVER_PATH));
-    } catch (MalformedURLException e) {
-      throw KubernetesClientException.launderThrowable(e);
-    }
-    CompletableFuture<HttpResponse<String>> responseFuture = clone.sendAsync(clone.newHttpRequestBuilder().url(url).build(),
-        String.class);
-    return responseFuture.thenCompose(response -> {
-      if (!response.isSuccessful() || response.body() == null) {
-        throw new KubernetesClientException("Unexpected response (" + response.code() + " " + response.message() + ")");
-      }
-
-      String body = response.body();
+      URL url;
       try {
-        Map<String, Object> jsonResponse = Serialization.unmarshal(body, Map.class);
-        String authorizationServer = String.valueOf(jsonResponse.get("authorization_endpoint"));
-
-        URL authorizeQuery = new URL(authorizationServer + AUTHORIZE_QUERY);
-        String credential = HttpClientUtils.basicCredentials(config.getUsername(), config.getPassword());
-
-        return clone.sendAsync(client.newHttpRequestBuilder().url(authorizeQuery).setHeader(AUTHORIZATION, credential).build(),
-            String.class);
-      } catch (Exception e) {
+        url = new URL(URLUtils.join(config.getMasterUrl(), AUTHORIZATION_SERVER_PATH));
+      } catch (MalformedURLException e) {
         throw KubernetesClientException.launderThrowable(e);
       }
+      CompletableFuture<HttpResponse<String>> responseFuture = clone.sendAsync(clone.newHttpRequestBuilder().url(url).build(),
+        String.class);
+      return responseFuture.thenCompose(response -> {
+        if (!response.isSuccessful() || response.body() == null) {
+          throw new KubernetesClientException("Unexpected response (" + response.code() + " " + response.message() + ")");
+        }
 
-    }).thenApply(response -> {
-      HttpResponse<?> responseOrPrevious = response.previousResponse().isPresent() ? response.previousResponse().get()
+        String body = response.body();
+        try {
+          Map<String, Object> jsonResponse = Serialization.unmarshal(body, Map.class);
+          String authorizationServer = String.valueOf(jsonResponse.get("authorization_endpoint"));
+
+          URL authorizeQuery = new URL(authorizationServer + AUTHORIZE_QUERY);
+          String credential = HttpClientUtils.basicCredentials(config.getUsername(), config.getPassword());
+
+          return clone.sendAsync(client.newHttpRequestBuilder().url(authorizeQuery).setHeader(AUTHORIZATION, credential).build(),
+            String.class);
+        } catch (Exception e) {
+          throw KubernetesClientException.launderThrowable(e);
+        }
+
+      }).thenApply(response -> {
+        HttpResponse<?> responseOrPrevious = response.previousResponse().isPresent() ? response.previousResponse().get()
           : response;
 
-      List<String> location = responseOrPrevious.headers(LOCATION);
-      String token = !location.isEmpty() ? location.get(0) : null;
-      if (token == null || token.isEmpty()) {
-        throw new KubernetesClientException("Unexpected response (" + responseOrPrevious.code() + " "
+        List<String> location = responseOrPrevious.headers(LOCATION);
+        String token = !location.isEmpty() ? location.get(0) : null;
+        if (token == null || token.isEmpty()) {
+          throw new KubernetesClientException("Unexpected response (" + responseOrPrevious.code() + " "
             + responseOrPrevious.message() + "), to the authorization request. Missing header:[" + LOCATION
             + "].  More than likely the username / password are not correct.");
-      }
-      token = token.substring(token.indexOf(BEFORE_TOKEN) + BEFORE_TOKEN.length());
-      token = token.substring(0, token.indexOf(AFTER_TOKEN));
-      return token;
-    });
+        }
+        token = token.substring(token.indexOf(BEFORE_TOKEN) + BEFORE_TOKEN.length());
+        token = token.substring(0, token.indexOf(AFTER_TOKEN));
+        return token;
+      });
+    }
   }
 
   @Override
