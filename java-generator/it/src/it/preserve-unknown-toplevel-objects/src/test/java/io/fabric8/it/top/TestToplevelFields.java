@@ -13,44 +13,42 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.it.top;
+package io.fabric8.it.dummy;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import io.fabric8.kubernetes.api.model.AnyType;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import org.junit.jupiter.api.Test;
 import io.fabric8.java.generator.testing.KubernetesResourceDiff;
-import io.argoproj.v1alpha1.Application;
-import io.argoproj.v1alpha1.ApplicationSpec;
-import io.argoproj.v1alpha1.applicationspec.Destination;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.List;
+import io.argoproj.v1alpha1.Application;
+import io.argoproj.v1alpha1.ApplicationSpec;
+import io.argoproj.v1alpha1.applicationspec.Destination;
+import io.argoproj.v1alpha1.application.Operation;
+import io.argoproj.v1alpha1.application.operation.InitiatedBy;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
-class TestPreserveUnknownUsabilityFromConfig {
+class TestToplevelFields {
 
   @Test
   void testDeserialization() {
     // Arrange
     Application sample =
-      Serialization.unmarshal(getClass().getResourceAsStream("/sample.yaml"), Application.class);
+      Serialization.unmarshal(getClass().getResourceAsStream("/sample-tl-operation.yaml"), Application.class);
     // Assert
-    System.out.println(sample.getAdditionalProperties());
-    assertEquals(5, sample.getAdditionalProperties().size());
+    assertEquals(0, sample.getAdditionalProperties().size());
   }
 
   private Application createSampleApplication() throws Exception {
     Application application = new Application();
     ObjectMeta meta = new ObjectMeta();
-    meta.setName("testapp");
+    meta.setName("testapp-tl-operation");
     meta.setNamespace("mynamespace");
     application.setMetadata(meta);
     ApplicationSpec spec = new ApplicationSpec();
@@ -60,22 +58,17 @@ class TestPreserveUnknownUsabilityFromConfig {
     des.setNamespace("targetnamespace");
     des.setServer("https://kubernetes.default.svc");
     spec.setDestination(des);
-    application.setAdditionalProperty("consumerID", new AnyType("{uuid}"));
-    application.setAdditionalProperty("url", new AnyType("tcp://admin:public@localhost:1883"));
-    application.setAdditionalProperty("qos", new AnyType(1));
-    application.setAdditionalProperty("anArray", new AnyType(new int[]{1, 2, 3}));
-   
-    Map<String, Object> obj = new HashMap();
-    obj.put("ONE", 1);
-    obj.put("TWO", 2);
-    application.setAdditionalProperty("anObject", new AnyType(obj));
+    Operation op = new Operation();
+    InitiatedBy initiatedBy = new InitiatedBy();
+    initiatedBy.setUsername("me");
+    op.setInitiatedBy(initiatedBy);
+    application.setOperation(op);
     return application;
   }
-
   @Test
   void testAgainstSample() throws Exception {
     // Arrange
-    Path resPath = Paths.get(getClass().getResource("/sample.yaml").toURI());
+    Path resPath = Paths.get(getClass().getResource("/sample-tl-operation.yaml").toURI());
     String yamlContent = new String(Files.readAllBytes(resPath), "UTF8");
     Application sample = createSampleApplication();
     KubernetesResourceDiff diff = new KubernetesResourceDiff(yamlContent, Serialization.asYaml(sample));
@@ -86,4 +79,5 @@ class TestPreserveUnknownUsabilityFromConfig {
     // Assert
     assertEquals(0, aggregatedDiffs.size());
   }
+
 }

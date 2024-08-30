@@ -17,20 +17,13 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: testapp
+  name: testapp-tl-operation
   namespace: mynamespace
-consumerID: "{uuid}"
-url: "tcp://admin:public@localhost:1883"
-qos: 1
-anArray:
-  - 1
-  - 2
-  - 3
-anObject:
-  ONE: 1
-  TWO: 2
 spec:
   destination:
     namespace: targetnamespace
     server: 'https://kubernetes.default.svc'
   project: default
+operation:
+  initiatedBy: 
+    username: "me"

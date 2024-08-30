@@ -1,0 +1,237 @@
+#
+# Copyright (C) 2015 Red Hat, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#         http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+kind: CustomResourceDefinition
+apiVersion: apiextensions.k8s.io/v1
+metadata:
+  name: applications.argoproj.io
+  uid: 1012051c-07b7-44a6-b656-aa74d0464868
+  resourceVersion: '5050848773'
+  generation: 12
+  creationTimestamp: '2020-04-03T21:21:50Z'
+  labels:
+    app.kubernetes.io/name: applications.argoproj.io
+    app.kubernetes.io/part-of: argocd
+    operators.coreos.com/openshift-gitops-operator.openshift-operators: ''
+  annotations:
+    operatorframework.io/installed-alongside-27ff3f11b7652ca2: openshift-operators/openshift-gitops-operator.v1.11.1
+    operatorframework.io/installed-alongside-27ff4011b7652e55: openshift-operators/openshift-gitops-operator.v1.11.0
+spec:
+  group: argoproj.io
+  names:
+    plural: applications
+    singular: application
+    shortNames:
+      - app
+      - apps
+    kind: Application
+    listKind: ApplicationList
+  scope: Namespaced
+  versions:
+    - name: v1alpha1
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          description: Application is a definition of Application resource.
+          type: object
+          required:
+            - metadata
+            - spec
+          properties:
+            apiVersion:
+              description: >-
+                APIVersion defines the versioned schema of this representation
+                of an object. Servers should convert recognized schemas to the
+                latest internal value, and may reject unrecognized values. More
+                info:
+                https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+              type: string
+            kind:
+              description: >-
+                Kind is a string value representing the REST resource this
+                object represents. Servers may infer this from the endpoint the
+                client submits requests to. Cannot be updated. In CamelCase.
+                More info:
+                https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+              type: string
+            metadata:
+              type: object
+            operation:
+              description: >-
+                Operation contains information about a requested or running
+                operation
+              type: object
+              properties:
+                initiatedBy:
+                  description: >-
+                    InitiatedBy contains information about who initiated the
+                    operations
+                  type: object
+                  properties:
+                    automated:
+                      description: >-
+                        Automated is set to true if operation was initiated
+                        automatically by the application controller.
+                      type: boolean
+                    username:
+                      description: >-
+                        Username contains the name of a user who started
+                        operation
+                      type: string
+            spec:
+              description: >-
+                ApplicationSpec represents desired application state. Contains
+                link to repository with application definition and additional
+                parameters link definition revision.
+              type: object
+              required:
+                - destination
+                - project
+              properties:
+                destination:
+                  description: >-
+                    Destination is a reference to the target Kubernetes server
+                    and namespace
+                  type: object
+                  properties:
+                    name:
+                      description: >-
+                        Name is an alternate way of specifying the target
+                        cluster by its symbolic name. This must be set if Server
+                        is not set.
+                      type: string
+                    namespace:
+                      description: >-
+                        Namespace specifies the target namespace for the
+                        application's resources. The namespace will only be set
+                        for namespace-scoped resources that have not set a value
+                        for .metadata.namespace
+                      type: string
+                    server:
+                      description: >-
+                        Server specifies the URL of the target cluster's
+                        Kubernetes control plane API. This must be set if Name
+                        is not set.
+                      type: string
+                ignoreDifferences:
+                  description: >-
+                    IgnoreDifferences is a list of resources and their fields
+                    which should be ignored during comparison
+                  type: array
+                  items:
+                    description: >-
+                      ResourceIgnoreDifferences contains resource filter and
+                      list of json paths which should be ignored during
+                      comparison with live state.
+                    type: object
+                    required:
+                      - kind
+                    properties:
+                      group:
+                        type: string
+                      jqPathExpressions:
+                        type: array
+                        items:
+                          type: string
+                      jsonPointers:
+                        type: array
+                        items:
+                          type: string
+                      kind:
+                        type: string
+                      managedFieldsManagers:
+                        description: >-
+                          ManagedFieldsManagers is a list of trusted managers.
+                          Fields mutated by those managers will take precedence
+                          over the desired state defined in the SCM and won't be
+                          displayed in diffs
+                        type: array
+                        items:
+                          type: string
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                info:
+                  description: >-
+                    Info contains a list of information (URLs, email addresses,
+                    and plain text) that relates to the application
+                  type: array
+                  items:
+                    type: object
+                    required:
+                      - name
+                      - value
+                    properties:
+                      name:
+                        type: string
+                      value:
+                        type: string
+                project:
+                  description: >-
+                    Project is a reference to the project this application
+                    belongs to. The empty string means that application belongs
+                    to the 'default' project.
+                  type: string
+            status:
+              description: >-
+                ApplicationStatus contains status information for the
+                application
+              type: object
+              properties:
+                resourceHealthSource:
+                  description: >-
+                    ResourceHealthSource indicates where the resource health
+                    status is stored: inline if not set or appTree
+                  type: string
+      subresources: {}
+      additionalPrinterColumns:
+        - name: Sync Status
+          type: string
+          jsonPath: .status.sync.status
+        - name: Health Status
+          type: string
+          jsonPath: .status.health.status
+        - name: Revision
+          type: string
+          priority: 10
+          jsonPath: .status.sync.revision
+  conversion:
+    strategy: None
+status:
+  conditions:
+    - type: NamesAccepted
+      status: 'True'
+      lastTransitionTime: '2020-04-03T21:21:51Z'
+      reason: NoConflicts
+      message: no conflicts found
+    - type: Established
+      status: 'True'
+      lastTransitionTime: '2020-04-03T21:21:51Z'
+      reason: InitialNamesAccepted
+      message: the initial names have been accepted
+  acceptedNames:
+    plural: applications
+    singular: application
+    shortNames:
+      - app
+      - apps
+    kind: Application
+    listKind: ApplicationList
+  storedVersions:
+    - v1alpha1
+
