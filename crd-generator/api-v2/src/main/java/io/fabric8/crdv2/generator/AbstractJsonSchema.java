@@ -20,7 +20,6 @@ import com.fasterxml.jackson.databind.BeanDescription;
 import com.fasterxml.jackson.databind.BeanProperty;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.introspect.AnnotatedMethod;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.module.jsonSchema.JsonSchema;
 import com.fasterxml.jackson.module.jsonSchema.types.ArraySchema.Items;
@@ -56,6 +55,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.AnnotatedElement;
+import java.lang.reflect.AnnotatedParameterizedType;
+import java.lang.reflect.AnnotatedType;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -68,6 +70,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TreeMap;
@@ -143,7 +146,7 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
       return resolveObject(new LinkedHashMap<>(), schemaSwaps, schema, "kind", "apiVersion", "metadata");
     }
     return resolveProperty(new LinkedHashMap<>(), schemaSwaps, null,
-        resolvingContext.objectMapper.getSerializationConfig().constructType(definition), schema);
+        resolvingContext.objectMapper.getSerializationConfig().constructType(definition), schema, null);
   }
 
   /**
@@ -157,13 +160,11 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
     }
   }
 
-  void collectValidationRules(BeanProperty beanProperty, List<V> validationRules) {
-    // TODO: the old logic allowed for picking up the annotation from both the getter and the field
-    // this requires a messy hack by convention because there doesn't seem to be a way to all annotations
-    // nor does jackson provide the field
-    if (beanProperty.getMember() instanceof AnnotatedMethod) {
+  Optional<Field> getFieldForMethod(BeanProperty beanProperty) {
+    AnnotatedElement annotated = beanProperty.getMember().getAnnotated();
+    if (annotated instanceof Method) {
       // field first
-      Method m = ((AnnotatedMethod) beanProperty.getMember()).getMember();
+      Method m = (Method) annotated;
       String name = m.getName();
       if (name.startsWith("get") || name.startsWith("set")) {
         name = name.substring(3);
@@ -173,16 +174,31 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
       if (name.length() > 0) {
         name = Character.toLowerCase(name.charAt(0)) + name.substring(1);
       }
+
       try {
-        Field f = beanProperty.getMember().getDeclaringClass().getDeclaredField(name);
-        ofNullable(f.getAnnotation(ValidationRule.class)).map(this::from)
-            .ifPresent(validationRules::add);
-        ofNullable(f.getAnnotation(ValidationRules.class))
-            .ifPresent(ann -> Stream.of(ann.value()).map(this::from).forEach(validationRules::add));
+        return Optional.of(m.getDeclaringClass().getDeclaredField(name));
       } catch (NoSuchFieldException | SecurityException e) {
       }
+    }
+    return Optional.empty();
+  }
+
+  void collectValidationRules(BeanProperty beanProperty, List<V> validationRules) {
+    // TODO: the old logic allowed for picking up the annotation from both the getter and the field
+    // this requires a messy hack by convention because there doesn't seem to be a way to all annotations
+    // nor does jackson provide the field
+    AnnotatedElement member = beanProperty.getMember().getAnnotated();
+    if (member instanceof Method) {
+      Optional<Field> field = getFieldForMethod(beanProperty);
+      try {
+        field.map(f -> f.getAnnotation(ValidationRule.class)).map(this::from)
+            .ifPresent(validationRules::add);
+        field.map(f -> f.getAnnotation(ValidationRules.class))
+            .ifPresent(ann -> Stream.of(ann.value()).map(this::from).forEach(validationRules::add));
+      } catch (SecurityException e) {
+      }
       // then method
-      Stream.of(m.getAnnotationsByType(ValidationRule.class)).map(this::from).forEach(validationRules::add);
+      Stream.of(((Method) member).getAnnotationsByType(ValidationRule.class)).map(this::from).forEach(validationRules::add);
       return;
     }
 
@@ -225,8 +241,8 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
         StringSchema stringSchema = value.asStringSchema();
         // only set if ValidationSchemaFactoryWrapper is used
         this.pattern = stringSchema.getPattern();
-        this.max = ofNullable(stringSchema.getMaxLength()).map(Integer::doubleValue).orElse(null);
-        this.min = ofNullable(stringSchema.getMinLength()).map(Integer::doubleValue).orElse(null);
+        //this.maxLength = ofNullable(stringSchema.getMaxLength()).map(Integer::doubleValue).orElse(null);
+        //this.minLength = ofNullable(stringSchema.getMinLength()).map(Integer::doubleValue).orElse(null);
       } else {
         // TODO: process the other schema types for validation values
       }
@@ -333,7 +349,7 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
         type = resolvingContext.objectMapper.getSerializationConfig().constructType(propertyMetadata.schemaFrom);
       }
 
-      T schema = resolveProperty(visited, schemaSwaps, name, type, propertySchema);
+      T schema = resolveProperty(visited, schemaSwaps, name, type, propertySchema, beanProperty);
 
       propertyMetadata.updateSchema(schema);
 
@@ -378,15 +394,19 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
   }
 
   private T resolveProperty(LinkedHashMap<String, String> visited, InternalSchemaSwaps schemaSwaps, String name,
-      JavaType type, JsonSchema jacksonSchema) {
+      JavaType type, JsonSchema jacksonSchema, BeanProperty beanProperty) {
 
     if (jacksonSchema.isArraySchema()) {
       Items items = jacksonSchema.asArraySchema().getItems();
+      if (items == null) { // raw collection
+        throw new IllegalStateException(String.format("Untyped collection %s", name));
+      }
       if (items.isArrayItems()) {
         throw new IllegalStateException("not yet supported");
       }
       JsonSchema arraySchema = jacksonSchema.asArraySchema().getItems().asSingleItems().getSchema();
-      final T schema = resolveProperty(visited, schemaSwaps, name, type.getContentType(), arraySchema);
+      final T schema = resolveProperty(visited, schemaSwaps, name, type.getContentType(), arraySchema, null);
+      handleTypeAnnotations(schema, beanProperty, List.class, 0);
       return arrayLikeProperty(schema);
     } else if (jacksonSchema.isIntegerSchema()) {
       return singleProperty("integer");
@@ -440,7 +460,8 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
       final JavaType valueType = type.getContentType();
       JsonSchema mapValueSchema = ((SchemaAdditionalProperties) ((ObjectSchema) jacksonSchema).getAdditionalProperties())
           .getJsonSchema();
-      T component = resolveProperty(visited, schemaSwaps, name, valueType, mapValueSchema);
+      T component = resolveProperty(visited, schemaSwaps, name, valueType, mapValueSchema, null);
+      handleTypeAnnotations(component, beanProperty, Map.class, 1);
       return mapLikeProperty(component);
     }
 
@@ -464,8 +485,34 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
     return res;
   }
 
+  private void handleTypeAnnotations(final T schema, BeanProperty beanProperty, Class<?> containerType, int typeIndex) {
+    if (beanProperty == null || !containerType.equals(beanProperty.getType().getRawClass())) {
+      return;
+    }
+
+    AnnotatedElement member = beanProperty.getMember().getAnnotated();
+    AnnotatedType fieldType = null;
+    AnnotatedType type = null;
+    if (member instanceof Field) {
+      fieldType = ((Field) member).getAnnotatedType();
+    } else if (member instanceof Method) {
+      fieldType = getFieldForMethod(beanProperty).map(Field::getAnnotatedType).orElse(null);
+      type = ((Method) member).getAnnotatedReceiverType();
+    }
+
+    Stream.of(fieldType, type).filter(o -> !Objects.isNull(o))
+        .filter(AnnotatedParameterizedType.class::isInstance).map(AnnotatedParameterizedType.class::cast)
+        .map(AnnotatedParameterizedType::getAnnotatedActualTypeArguments).map(a -> {
+          return a[typeIndex];
+        }).forEach(at -> {
+          Optional.ofNullable(at.getAnnotation(Pattern.class)).ifPresent(a -> schema.setPattern(a.value()));
+          Optional.ofNullable(at.getAnnotation(Min.class)).ifPresent(a -> schema.setMinimum(a.value()));
+          Optional.ofNullable(at.getAnnotation(Max.class)).ifPresent(a -> schema.setMaximum(a.value()));
+        });
+  }
+
   /**
-   * we've added support for ignoring an enum values, which complicates this processing
+   * we've added support for ignoring enum values, which complicates this processing
    * as that is something not supported directly by jackson
    */
   private Set<String> findIgnoredEnumConstants(JavaType type) {

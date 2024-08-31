@@ -15,7 +15,10 @@
  */
 package io.fabric8.generator.annotation;
 
-import java.lang.annotation.*;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  * Java representation of the {@code minimum} field of JSONSchemaProps.
@@ -25,7 +28,7 @@ import java.lang.annotation.*;
  *      Kubernetes Docs - API Reference - CRD v1 - JSONSchemaProps
  *      </a>
  */
-@Target({ ElementType.ANNOTATION_TYPE, ElementType.FIELD, ElementType.METHOD })
+@Target({ ElementType.ANNOTATION_TYPE, ElementType.FIELD, ElementType.METHOD, ElementType.TYPE_USE })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Min {
   double value();

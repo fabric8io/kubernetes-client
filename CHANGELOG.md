@@ -10,6 +10,7 @@
 * Fix #6008: removing the optional dependency on bouncy castle
 * Fix #6230: introduced Quantity.multiply(int) to allow for Quantity multiplication by an integer
 * Fix #6281: use GitHub binary repo for Kube API Tests
+* Fix #6282: Allow annotated types with Pattern, Min, and Max with Lists and Maps and CRD generation
 * Fix #5480: Move `io.fabric8:zjsonpatch` to KubernetesClient project
 
 #### Dependency Upgrade
