@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.Objects;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -113,6 +114,36 @@ class KubeConfigUtilsTest {
     // Then
     assertNotNull(authInfo);
     assertEquals("test-token-2", authInfo.getToken());
+  }
+
+  @Test
+  void hasAuthInfoNamed_when_authInfoExists_returnsTrue() {
+    // given
+    Config config = getTestKubeConfig();
+    // when
+    boolean hasIt = KubeConfigUtils.hasAuthInfoNamed("test/api-test-com:443", config);
+    // then
+    assertThat(hasIt).isTrue();
+  }
+
+  @Test
+  void hasAuthInfoNamed_when_authInfoDoesntExist_returnsFalse() {
+    // given
+    Config config = getTestKubeConfig();
+    // when
+    boolean hasIt = KubeConfigUtils.hasAuthInfoNamed("bogus", config);
+    // then
+    assertThat(hasIt).isFalse();
+  }
+
+  @Test
+  void hasAuthInfoNamed_when_hasNoAuthInfo_returnsFalse() {
+    // given
+    Config config = new ConfigBuilder().build();
+    // when
+    boolean hasIt = KubeConfigUtils.hasAuthInfoNamed("test/api-test-com:443", config);
+    // then
+    assertThat(hasIt).isFalse();
   }
 
   private Config getTestKubeConfig() {

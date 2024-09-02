@@ -1262,7 +1262,7 @@ class ConfigTest {
       // Given
       System.setProperty("kubeconfig",
           getResourceAbsolutePath("/test-kubeconfig-empty") + File.pathSeparator +
-          getResourceAbsolutePath("/test-kubeconfig"));
+              getResourceAbsolutePath("/test-kubeconfig"));
 
       // When
       Config config = new ConfigBuilder().build();
@@ -1403,7 +1403,7 @@ class ConfigTest {
       String fileWithToken = getResourceAbsolutePath("/test-kubeconfig-oidc");
       System.setProperty("kubeconfig",
           fileWithToken + File.pathSeparator +
-          Config.DEFAULT_KUBECONFIG_FILE.getAbsolutePath());
+              Config.DEFAULT_KUBECONFIG_FILE.getAbsolutePath());
       Config config = new ConfigBuilder().build();
 
       // When

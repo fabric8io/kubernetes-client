@@ -113,6 +113,24 @@ public class KubeConfigUtils {
   }
 
   /**
+   * Returns {@code true} if the given {@link Config} has a {@link NamedAuthInfo} with the given name.
+   * Returns {@code false} otherwise.
+   *
+   * @param name the name of the NamedAuthInfo that we are looking for
+   * @param config the Config to be searched
+   * @return true if it contains a NamedAuthInfo with the given name
+   */
+  public static boolean hasAuthInfoNamed(String name, Config config) {
+    if (Utils.isNullOrEmpty(name)
+        || config == null
+        || config.getUsers() == null) {
+      return false;
+    }
+    return config.getUsers().stream()
+        .anyMatch(namedAuthInfo -> name.equals(namedAuthInfo.getName()));
+  }
+
+  /**
    * Returns the current {@link Cluster} for the current context
    *
    * @param config {@link Config} config object

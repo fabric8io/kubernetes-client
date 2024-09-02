@@ -205,7 +205,8 @@ public class OpenIDConnectionUtils {
       try {
         final String userName = currentConfig.getCurrentContext().getContext().getUser();
         KubeConfigFile kubeConfigFile = currentConfig.getFileWithAuthInfo(userName);
-        if (kubeConfigFile == null) {
+        if (kubeConfigFile == null
+            || kubeConfigFile.getConfig() == null) {
           LOGGER.warn("oidc: failure while persisting new tokens into KUBECONFIG: file for user {} not found", userName);
           return;
         }

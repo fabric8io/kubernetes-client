@@ -15,6 +15,11 @@
  */
 package io.fabric8.kubernetes.client;
 
+import java.io.File;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class ConfigFluent<A extends ConfigFluent<A>> extends SundrioConfigFluent<A> {
   public ConfigFluent() {
     super();
@@ -78,7 +83,7 @@ public class ConfigFluent<A extends ConfigFluent<A>> extends SundrioConfigFluent
       this.withContexts(instance.getContexts());
       this.withAutoConfigure(instance.getAutoConfigure());
       this.withAuthProvider(instance.getAuthProvider());
-      this.withFiles(instance.getFiles());
+      this.withKubeConfigFiles(instance.getKubeConfigFiles());
     }
   }
 
@@ -146,6 +151,17 @@ public class ConfigFluent<A extends ConfigFluent<A>> extends SundrioConfigFluent
 
   public A withAutoConfigure(boolean autoConfigure) {
     return this.withAutoConfigure(Boolean.valueOf(autoConfigure));
+  }
+
+  public A withFiles(File... files) {
+    if (files != null
+        && files.length > 0) {
+      List<KubeConfigFile> configFiles = Arrays.stream(files)
+          .map(KubeConfigFile::new)
+          .collect(Collectors.toList());
+      withKubeConfigFiles(configFiles);
+    }
+    return (A) this;
   }
 
 }
