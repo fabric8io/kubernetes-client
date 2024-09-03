@@ -16,12 +16,11 @@
 package io.fabric8.zjsonpatch;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.flipkart.zjsonpatch.Operation;
 
 /**
  * This class is ported from <a href=
- * "https://github.com/flipkart-incubator/zjsonpatch/blob/a446bf598231c06006d4e3df69b846cdb16d8889/src/main/java/com/flipkart/zjsonpatch/Diff.java#L25">FlipKart
- * JSONPatch repository</a>
+ * "https://github.com/flipkart-incubator/zjsonpatch/blob/a446bf598231c06006d4e3df69b846cdb16d8889/src/main/java/com/flipkart/zjsonpatch/Diff.java">FlipKart
+ * zjsonpatch repository</a>
  */
 class Diff {
   private final Operation operation;

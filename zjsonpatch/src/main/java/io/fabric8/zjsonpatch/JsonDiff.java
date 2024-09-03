@@ -19,8 +19,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.flipkart.zjsonpatch.DiffFlags;
-import com.flipkart.zjsonpatch.Operation;
 import io.fabric8.zjsonpatch.internal.collections4.ListUtils;
 
 import java.util.ArrayList;
@@ -32,8 +30,8 @@ import java.util.Map;
 
 /**
  * This class is ported from <a href=
- * "https://github.com/flipkart-incubator/zjsonpatch/blob/a446bf598231c06006d4e3df69b846cdb16d8889/src/main/java/com/flipkart/zjsonpatch/JsonDiff.java#L36">FlipKart
- * JSONPatch repository</a>
+ * "https://github.com/flipkart-incubator/zjsonpatch/blob/a446bf598231c06006d4e3df69b846cdb16d8889/src/main/java/com/flipkart/zjsonpatch/JsonDiff.java">FlipKart
+ * zjsonpatch repository</a>
  */
 public class JsonDiff {
   private final List<Diff> diffs = new ArrayList<>();

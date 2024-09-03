@@ -199,7 +199,7 @@
       <artifactId>openshift-server-mock</artifactId>
       <version>${project.version}</version>
     </dependency>
-    
+
     <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>zjsonpatch</artifactId>
@@ -236,12 +236,6 @@
     <dependency>
       <groupId>com.fasterxml.jackson.datatype</groupId>
       <artifactId>jackson-datatype-jsr310</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>com.flipkart.zjsonpatch</groupId>
-      <artifactId>zjsonpatch</artifactId>
-      <version>${zjsonpatch.version}</version>
     </dependency>
 
     <dependency>

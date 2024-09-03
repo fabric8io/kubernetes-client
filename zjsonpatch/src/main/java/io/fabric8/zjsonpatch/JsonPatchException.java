@@ -15,28 +15,39 @@
  */
 package io.fabric8.zjsonpatch;
 
-import com.fasterxml.jackson.databind.JsonNode;
+public class JsonPatchException extends RuntimeException {
 
-/**
- * This class is ported from <a href=
- * "https://github.com/flipkart-incubator/zjsonpatch/blob/a446bf598231c06006d4e3df69b846cdb16d8889/src/main/java/com/flipkart/zjsonpatch/JsonPointerEvaluationException.java">FlipKart
- * zjsonpatch repository</a>
- */
-public class JsonPointerEvaluationException extends Exception {
+  private final Operation operation;
   private final JsonPointer path;
-  private final JsonNode target;
 
-  public JsonPointerEvaluationException(String message, JsonPointer path, JsonNode target) {
+  public JsonPatchException(String message) {
+    this(message, null, null);
+  }
+
+  public JsonPatchException(String message, Operation operation, JsonPointer path) {
     super(message);
+    this.operation = operation;
     this.path = path;
-    this.target = target;
+  }
+
+  public Operation getOperation() {
+    return operation;
   }
 
   public JsonPointer getPath() {
     return path;
   }
 
-  public JsonNode getTarget() {
-    return target;
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+    if (operation != null) {
+      sb.append('[').append(operation).append(" Operation] ");
+    }
+    sb.append(getMessage());
+    if (path != null) {
+      sb.append(" at ").append(path.isRoot() ? "root" : path);
+    }
+    return sb.toString();
   }
 }

@@ -17,26 +17,17 @@ package io.fabric8.zjsonpatch;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
+import java.util.EnumSet;
+
 /**
  * This class is ported from <a href=
- * "https://github.com/flipkart-incubator/zjsonpatch/blob/a446bf598231c06006d4e3df69b846cdb16d8889/src/main/java/com/flipkart/zjsonpatch/JsonPointerEvaluationException.java">FlipKart
+ * "https://github.com/flipkart-incubator/zjsonpatch/blob/a446bf598231c06006d4e3df69b846cdb16d8889/src/main/java/com/flipkart/zjsonpatch/CopyingApplyProcessor.java">FlipKart
  * zjsonpatch repository</a>
  */
-public class JsonPointerEvaluationException extends Exception {
-  private final JsonPointer path;
-  private final JsonNode target;
 
-  public JsonPointerEvaluationException(String message, JsonPointer path, JsonNode target) {
-    super(message);
-    this.path = path;
-    this.target = target;
-  }
+class CopyingApplyProcessor extends InPlaceApplyProcessor {
 
-  public JsonPointer getPath() {
-    return path;
-  }
-
-  public JsonNode getTarget() {
-    return target;
+  CopyingApplyProcessor(JsonNode target, EnumSet<CompatibilityFlags> flags) {
+    super(target.deepCopy(), flags);
   }
 }

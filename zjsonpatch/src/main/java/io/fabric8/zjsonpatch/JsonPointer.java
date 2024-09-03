@@ -25,8 +25,8 @@ import java.util.regex.Pattern;
 
 /**
  * This class is ported from <a href=
- * "https://github.com/flipkart-incubator/zjsonpatch/blob/a446bf598231c06006d4e3df69b846cdb16d8889/src/main/java/com/flipkart/zjsonpatch/JsonPointer#L36">FlipKart
- * JSONPatch repository</a>
+ * "https://github.com/flipkart-incubator/zjsonpatch/blob/a446bf598231c06006d4e3df69b846cdb16d8889/src/main/java/com/flipkart/zjsonpatch/JsonPointer">FlipKart
+ * zjsonpatch repository</a>
  */
 public class JsonPointer {
   private final RefToken[] tokens;
@@ -105,7 +105,7 @@ public class JsonPointer {
 
   /**
    * Indicates whether or not this instance points to the root of a JSON document.
-   * 
+   *
    * @return {@code true} if this pointer represents the root node, {@code false} otherwise.
    */
   public boolean isRoot() {

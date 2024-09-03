@@ -23,8 +23,8 @@ import java.util.Map;
 
 /**
  * This class is ported from <a href=
- * "https://github.com/flipkart-incubator/zjsonpatch/blob/a446bf598231c06006d4e3df69b846cdb16d8889/src/main/java/com/flipkart/zjsonpatch/NodeType.java#L25">FlipKart
- * JSONPatch repository</a>
+ * "https://github.com/flipkart-incubator/zjsonpatch/blob/a446bf598231c06006d4e3df69b846cdb16d8889/src/main/java/com/flipkart/zjsonpatch/NodeType.java">FlipKart
+ * zjsonpatch repository</a>
  */
 enum NodeType {
   /**
