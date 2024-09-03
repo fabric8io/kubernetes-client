@@ -16,27 +16,24 @@
     limitations under the License.
 
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
+
   <parent>
-    <groupId>io.fabric8</groupId>
-    <artifactId>kubernetes-client-project</artifactId>
-    <version>7.0-SNAPSHOT</version>
+    <groupId>io.fabric8.crd.generator.maven.it</groupId>
+    <artifactId>test-dependencies</artifactId>
+    <version>0.1-SNAPSHOT</version>
   </parent>
 
-  <artifactId>crd-generator-parent</artifactId>
-  <packaging>pom</packaging>
-  <name>Fabric8 :: CRD generator :: Parent</name>
+  <artifactId>intermediate-custom-resource-classes</artifactId>
+  <packaging>jar</packaging>
 
-  <modules>
-    <module>api</module>
-    <module>api-v2</module>
-    <module>apt</module>
-    <module>collector</module>
-    <module>maven-plugin</module>
-    <module>test</module>
-    <module>test-apt</module>
-  </modules>
+  <dependencies>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>kubernetes-client-api</artifactId>
+      <version>@fabric8-client.version@</version>
+    </dependency>
+  </dependencies>
+
 </project>

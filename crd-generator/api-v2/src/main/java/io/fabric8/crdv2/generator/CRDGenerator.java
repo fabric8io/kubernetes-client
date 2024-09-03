@@ -32,6 +32,7 @@ import java.io.OutputStreamWriter;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -42,7 +43,6 @@ import java.util.Set;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.ForkJoinTask;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class CRDGenerator {
 
@@ -112,7 +112,27 @@ public class CRDGenerator {
   // (we also cannot use @SafeVarargs, because that requires the method to be final, which is another signature change)
   @SuppressWarnings("unchecked")
   public final CRDGenerator customResourceClasses(Class<? extends HasMetadata>... crClasses) {
-    return customResources(Stream.of(crClasses).map(CustomResourceInfo::fromClass).toArray(CustomResourceInfo[]::new));
+    if (crClasses == null) {
+      return this;
+    }
+    return customResourceClasses(Arrays.asList(crClasses));
+  }
+
+  public CRDGenerator customResourceClasses(Collection<Class<? extends HasMetadata>> crClasses) {
+    if (crClasses == null) {
+      return this;
+    }
+    return customResources(crClasses.stream()
+        .filter(Objects::nonNull)
+        .map(CustomResourceInfo::fromClass)
+        .toArray(CustomResourceInfo[]::new));
+  }
+
+  public CRDGenerator customResources(Collection<CustomResourceInfo> infos) {
+    if (infos == null) {
+      return this;
+    }
+    return customResources(infos.toArray(new CustomResourceInfo[0]));
   }
 
   public CRDGenerator customResources(CustomResourceInfo... infos) {
