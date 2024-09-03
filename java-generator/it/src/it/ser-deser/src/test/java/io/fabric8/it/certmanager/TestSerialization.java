@@ -20,15 +20,15 @@ import io.cert_manager.v1.CertificateRequest;
 import io.cert_manager.v1.CertificateRequestSpec;
 import io.cert_manager.v1.CertificateRequestSpec.IntEnum;
 import io.cert_manager.v1.CertificateRequestSpec.LongEnum;
+import io.fabric8.java.generator.testing.KubernetesResourceDiff;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import org.junit.jupiter.api.Test;
-import io.fabric8.java.generator.testing.KubernetesResourceDiff;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.Files;
-import java.time.format.DateTimeFormatter;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -43,8 +43,8 @@ class TestSerialization {
   @Test
   void testDeserialization() {
     // Arrange
-    CertificateRequest sample =
-      Serialization.unmarshal(getClass().getResourceAsStream("/sample1.yaml"), CertificateRequest.class);
+    CertificateRequest sample = Serialization.unmarshal(getClass().getResourceAsStream("/sample1.yaml"),
+        CertificateRequest.class);
 
     // Act
     List<CertificateRequestSpec.Usages> usagesList = sample.getSpec().getUsages();
@@ -65,12 +65,12 @@ class TestSerialization {
   @Test
   void testAlternativeDateDeserialization() {
     // Arrange
-    CertificateRequest sample2 =
-      Serialization.unmarshal(getClass().getResourceAsStream("/sample2.yaml"), CertificateRequest.class);
-    CertificateRequest sample3 =
-      Serialization.unmarshal(getClass().getResourceAsStream("/sample3.yaml"), CertificateRequest.class);
-    CertificateRequest sample4 =
-      Serialization.unmarshal(getClass().getResourceAsStream("/sample4.yaml"), CertificateRequest.class);
+    CertificateRequest sample2 = Serialization.unmarshal(getClass().getResourceAsStream("/sample2.yaml"),
+        CertificateRequest.class);
+    CertificateRequest sample3 = Serialization.unmarshal(getClass().getResourceAsStream("/sample3.yaml"),
+        CertificateRequest.class);
+    CertificateRequest sample4 = Serialization.unmarshal(getClass().getResourceAsStream("/sample4.yaml"),
+        CertificateRequest.class);
 
     // Act
     ZonedDateTime datetime2 = sample2.getSpec().getDatetime();
@@ -86,8 +86,8 @@ class TestSerialization {
   @Test
   void testNumericEnum() {
     // Arrange
-    CertificateRequest sample8 =
-      Serialization.unmarshal(getClass().getResourceAsStream("/sample8.yaml"), CertificateRequest.class);
+    CertificateRequest sample8 = Serialization.unmarshal(getClass().getResourceAsStream("/sample8.yaml"),
+        CertificateRequest.class);
 
     // Act
     LongEnum longValue = sample8.getSpec().getLongEnum();
@@ -100,7 +100,7 @@ class TestSerialization {
     assertEquals(203, intValue.getValue());
   }
 
-    @Test
+  @Test
   void testIntEnumSerDeser() throws Exception {
     // Arrange
     Path resPath = Paths.get(getClass().getResource("/sample8.yaml").toURI());
@@ -117,15 +117,17 @@ class TestSerialization {
 
   @Test
   void testInvalidAlternativeDateDeserialization() {
-    assertThrows(IllegalArgumentException.class, () -> Serialization.unmarshal(getClass().getResourceAsStream("/sample5.yaml"), CertificateRequest.class));
-    assertThrows(IllegalArgumentException.class, () -> Serialization.unmarshal(getClass().getResourceAsStream("/sample6.yaml"), CertificateRequest.class));
+    assertThrows(IllegalArgumentException.class,
+        () -> Serialization.unmarshal(getClass().getResourceAsStream("/sample5.yaml"), CertificateRequest.class));
+    assertThrows(IllegalArgumentException.class,
+        () -> Serialization.unmarshal(getClass().getResourceAsStream("/sample6.yaml"), CertificateRequest.class));
   }
 
   @Test
   void testEmptyDateDeserialization() {
     // Arrange
-    CertificateRequest sample7 =
-      Serialization.unmarshal(getClass().getResourceAsStream("/sample7.yaml"), CertificateRequest.class);
+    CertificateRequest sample7 = Serialization.unmarshal(getClass().getResourceAsStream("/sample7.yaml"),
+        CertificateRequest.class);
 
     // Act
     ZonedDateTime datetime = sample7.getSpec().getDatetime();

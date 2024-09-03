@@ -18,19 +18,17 @@ package io.fabric8.it.certmanager;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.dapr.v1alpha1.Component;
 import io.dapr.v1alpha1.ComponentSpec;
-import io.fabric8.kubernetes.api.model.AnyType;
+import io.fabric8.java.generator.testing.KubernetesResourceDiff;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import org.junit.jupiter.api.Test;
-import io.fabric8.java.generator.testing.KubernetesResourceDiff;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.Files;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -39,8 +37,7 @@ class TestPreserveUnknownSerDeser {
   @Test
   void testDeserialization() {
     // Arrange
-    Component sample =
-      Serialization.unmarshal(getClass().getResourceAsStream("/sample.yaml"), Component.class);
+    Component sample = Serialization.unmarshal(getClass().getResourceAsStream("/sample.yaml"), Component.class);
 
     // Act
     Map<String, Object> testObj = sample.getSpec().getTest().getAdditionalProperties();
@@ -62,7 +59,7 @@ class TestPreserveUnknownSerDeser {
     twoContent.put("more", 1);
     twoContent.put("complex", true);
     t.setAdditionalProperty("two", twoContent);
-    
+
     spec.setTest(t);
 
     component.setSpec(spec);

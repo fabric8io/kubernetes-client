@@ -19,19 +19,19 @@ import com.fasterxml.jackson.databind.JsonNode;
 import io.dapr.v1alpha1.Component;
 import io.dapr.v1alpha1.ComponentSpec;
 import io.dapr.v1alpha1.componentspec.Metadata;
+import io.fabric8.java.generator.testing.KubernetesResourceDiff;
 import io.fabric8.kubernetes.api.model.AnyType;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import org.junit.jupiter.api.Test;
-import io.fabric8.java.generator.testing.KubernetesResourceDiff;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -40,8 +40,7 @@ class TestPreserveUnknownUsability {
   @Test
   void testDeserialization() {
     // Arrange
-    Component sample =
-      Serialization.unmarshal(getClass().getResourceAsStream("/sample.yaml"), Component.class);
+    Component sample = Serialization.unmarshal(getClass().getResourceAsStream("/sample.yaml"), Component.class);
 
     // Act
     List<Metadata> metadataList = sample.getSpec().getMetadata();
@@ -70,7 +69,7 @@ class TestPreserveUnknownUsability {
 
     Metadata meta4 = new Metadata();
     meta4.setName("anArray");
-    meta4.setValue(new AnyType(new int[]{1, 2, 3}));
+    meta4.setValue(new AnyType(new int[] { 1, 2, 3 }));
 
     Metadata meta5 = new Metadata();
     meta5.setName("anObject");

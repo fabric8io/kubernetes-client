@@ -1221,6 +1221,7 @@
               <include>src/main/java/**/*.java</include>
               <include>src/test/java/**/*.java</include>
               <include>src/it/**/src/main/java/**/*.java</include>
+              <include>src/it/**/src/test/java/**/*.java</include>
             </includes>
             <eclipse>
               <file>ide-config/eclipse-format.xml</file>
