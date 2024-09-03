@@ -121,6 +121,7 @@ public class SchemaUtils {
   static {
     TYPE_MAP.put("boolean", "Boolean");
     TYPE_MAP.put("int32", "Integer");
+    TYPE_MAP.put("integer", "Integer");
     TYPE_MAP.put("int64", "Long");
     TYPE_MAP.put("double", "Double");
     TYPE_MAP.put("number", "Number");
@@ -409,7 +410,7 @@ public class SchemaUtils {
       throw new IllegalArgumentException("Schema file not found: " + schema);
     }
     final OpenAPI openApi = new OpenAPIV3Parser().read(schema.getAbsolutePath());
-    new InlineModelResolver().flatten(openApi);
+    SchemaFlattener.flatten(openApi);
     return openApi;
   }
 
