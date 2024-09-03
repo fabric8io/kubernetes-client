@@ -16,31 +16,30 @@
 package io.fabric8.it.dummy;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import io.argoproj.v1alpha1.Application;
+import io.argoproj.v1alpha1.ApplicationSpec;
+import io.argoproj.v1alpha1.application.Operation;
+import io.argoproj.v1alpha1.application.operation.InitiatedBy;
+import io.argoproj.v1alpha1.applicationspec.Destination;
+import io.fabric8.java.generator.testing.KubernetesResourceDiff;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import org.junit.jupiter.api.Test;
-import io.fabric8.java.generator.testing.KubernetesResourceDiff;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.Files;
 import java.util.List;
-import io.argoproj.v1alpha1.Application;
-import io.argoproj.v1alpha1.ApplicationSpec;
-import io.argoproj.v1alpha1.applicationspec.Destination;
-import io.argoproj.v1alpha1.application.Operation;
-import io.argoproj.v1alpha1.application.operation.InitiatedBy;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
 
 class TestToplevelFields {
 
   @Test
   void testDeserialization() {
     // Arrange
-    Application sample =
-      Serialization.unmarshal(getClass().getResourceAsStream("/sample-tl-operation.yaml"), Application.class);
+    Application sample = Serialization.unmarshal(getClass().getResourceAsStream("/sample-tl-operation.yaml"),
+        Application.class);
     // Assert
     assertEquals(0, sample.getAdditionalProperties().size());
   }
@@ -65,6 +64,7 @@ class TestToplevelFields {
     application.setOperation(op);
     return application;
   }
+
   @Test
   void testAgainstSample() throws Exception {
     // Arrange
