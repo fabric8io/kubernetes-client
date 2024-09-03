@@ -1,0 +1,75 @@
+{
+  "errors": [
+    {
+      "op": [{ "op": "add", "path": "/a" }],
+      "node": {},
+      "type": "JsonPatchApplicationException",
+      "message": "Invalid JSON Patch payload (missing 'value' field)"
+    }
+  ],
+  "ops": [
+    {
+      "op": [{ "op": "add", "path": "/a", "value": "b" }],
+      "node": {},
+      "expected": { "a": "b" }
+    },
+    {
+      "op": [{ "op": "add", "path": "/a", "value": 1 }],
+      "node": { "a": "b" },
+      "expected": { "a": 1 }
+    },
+    {
+      "op": [{ "op": "add", "path": "/array/-", "value": 1 }],
+      "node": { "array": [ 2, null, {}, 1 ] },
+      "expected": { "array": [ 2, null, {}, 1, 1 ] }
+    },
+    {
+      "op": [{ "op": "add", "path": "/array/2", "value": "hello" }],
+      "node": { "array": [ 2, null, {}, 1] },
+      "expected": { "array": [ 2, null, "hello", {}, 1 ] }
+    },
+    {
+      "op": [{ "op": "add", "path": "/obj/inner/b", "value": [ 1, 2 ] }],
+      "node": {
+        "obj": {
+          "inner": {
+            "a": "hello"
+          }
+        }
+      },
+      "expected": {
+        "obj": {
+          "inner": {
+            "a": "hello",
+            "b": [ 1, 2 ]
+          }
+        }
+      }
+    },
+    {
+      "op": [{ "op": "add", "path": "/obj/inner/b", "value": [ 1, 2 ] }],
+      "node": {
+        "obj": {
+          "inner": {
+            "a": "hello",
+            "b": "world"
+          }
+        }
+      },
+      "expected": {
+        "obj": {
+          "inner": {
+            "a": "hello",
+            "b": [ 1, 2 ]
+          }
+        }
+      }
+    },
+    {
+      "message": "support of path with /",
+      "op": [{ "op": "add", "path": "/b~1c~1d/3", "value": 4 }],
+      "node": { "b/c/d": [1, 2, 3] },
+      "expected": { "b/c/d": [1, 2, 3, 4] }
+    }
+  ]
+}

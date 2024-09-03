@@ -1,0 +1,31 @@
+{
+  "errors": [
+    {
+      "op": [{ "op": "remove", "path": "/x/y" }],
+      "node": { "x": "just a string" },
+      "message": "Cannot reference past scalar value at /x"
+    },
+    {
+      "op": [{ "op": "remove", "path": "/x/1" }],
+      "node": { "x": [ "single" ] },
+      "message": "Array index 1 out of bounds at /x"
+    }
+  ],
+  "ops": [
+    {
+      "op": [{ "op": "remove", "path": "/x/y" }],
+      "node": { "x": { "a": "b", "y": {} } },
+      "expected": { "x": { "a": "b" } }
+    },
+    {
+      "op": [{ "op": "remove", "path": "/0/2" }],
+      "node": [ [ "a", "b", "c"], "d", "e" ],
+      "expected": [ [ "a", "b" ], "d", "e" ]
+    },
+    {
+      "op": [{ "op": "remove", "path": "/x/0" }],
+      "node": { "x": [ "y", "z" ], "foo": "bar" },
+      "expected": { "x": [ "z" ], "foo": "bar" }
+    }
+  ]
+}

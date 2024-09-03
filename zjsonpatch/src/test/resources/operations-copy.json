@@ -1,0 +1,31 @@
+{
+  "errors": [
+    {
+      "op": [{ "op": "copy", "from": "/a", "path": "/b/c" }],
+      "node": { "a": 1 },
+      "message": "Missing field \"b\" at root"
+    }
+  ],
+  "ops": [
+    {
+      "op": [{ "op": "copy", "from": "/a", "path": "/b" }],
+      "node": { "a": 1 },
+      "expected": { "a": 1, "b": 1 }
+    },
+    {
+      "op": [{ "op": "copy", "from": "/a", "path": "/b" }],
+      "node": { "a": 1, "b": false },
+      "expected": { "a": 1, "b": 1 }
+    },
+    {
+      "op": [{ "op": "copy", "from": "/0", "path": "/-" }],
+      "node": [ 1, 2, 3, 4 ],
+      "expected": [ 1, 2, 3, 4, 1 ]
+    },
+    {
+      "op": [{ "op": "copy", "from": "/0", "path": "/0" }],
+      "node": [ true ],
+      "expected": [ true, true ]
+    }
+  ]
+}
