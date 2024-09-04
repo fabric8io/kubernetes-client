@@ -25,7 +25,6 @@ import io.swagger.v3.oas.models.PathItem;
 import io.swagger.v3.oas.models.Paths;
 import io.swagger.v3.oas.models.SpecVersion;
 import io.swagger.v3.oas.models.media.ArraySchema;
-import io.swagger.v3.oas.models.media.ComposedSchema;
 import io.swagger.v3.oas.models.media.DateTimeSchema;
 import io.swagger.v3.oas.models.media.MapSchema;
 import io.swagger.v3.oas.models.media.Schema;
@@ -211,10 +210,10 @@ public class SchemaUtils {
       if (javaPrimitive.isPresent()) {
         return javaPrimitive.get();
       }
-      final Optional<String> javaType = schemaRefToJavaType(schema);
-      if (javaType.isPresent()) {
-        imports.addImport(javaType.get());
-        return javaType.get().substring(javaType.get().lastIndexOf('.') + 1);
+      final String javaType = schemaRefToJavaType(schema);
+      if (javaType != null) {
+        imports.addImport(javaType);
+        return javaType.substring(javaType.lastIndexOf('.') + 1);
       }
       if (imports.hasSimpleClassName(refToModelPackage(ref))) {
         return refToModelPackage(ref);
@@ -249,14 +248,10 @@ public class SchemaUtils {
     return schema != null
         && schema.getProperties() != null
         && schema.getProperties().containsKey("metadata")
-        && schemaRefToJavaType(schema.getProperties().get("metadata"))
-            .filter(settings.getObjectMetaClass()::equals).isPresent();
+        && Objects.equals(settings.getObjectMetaClass(), schemaRefToJavaType(schema.getProperties().get("metadata")));
   }
 
   public static boolean isMap(Schema<?> schema) {
-    if (schema instanceof MapSchema) {
-      return true;
-    }
     if (schema != null && schema.getAdditionalProperties() instanceof Schema) {
       return true;
     }
@@ -264,7 +259,7 @@ public class SchemaUtils {
         && (Boolean) schema.getAdditionalProperties()) {
       return true;
     }
-    return false;
+    return schema instanceof MapSchema;
   }
 
   public static boolean isRef(Schema<?> schema) {
@@ -277,14 +272,10 @@ public class SchemaUtils {
 
   public boolean isString(Schema<?> schema) {
     final String ref = schema.get$ref();
-    if (ref != null && (REF_TO_JAVA_PRIMITIVE_MAP.containsKey(ref) || REF_TO_JAVA_TYPE_MAP.containsKey(ref))) {
+    if (ref != null && (REF_TO_JAVA_PRIMITIVE_MAP.containsKey(ref) || schemaRefToJavaType(schema) != null)) {
       return false;
     }
     return schema instanceof StringSchema || isRefInstanceOf(ref, StringSchema.class);
-  }
-
-  public static boolean isComposed(Schema<?> schema) {
-    return schema instanceof ComposedSchema;
   }
 
   public boolean isRefInstanceOf(String ref, Class<?> clazz) {
@@ -312,8 +303,11 @@ public class SchemaUtils {
     return Optional.ofNullable(REF_TO_JAVA_PRIMITIVE_MAP.get(schema.get$ref()));
   }
 
-  private static Optional<String> schemaRefToJavaType(Schema<?> schema) {
-    return Optional.ofNullable(REF_TO_JAVA_TYPE_MAP.get(schema.get$ref()));
+  private String schemaRefToJavaType(Schema<?> schema) {
+    if (settings.getRefToJavaTypeMappings().containsKey(schema.get$ref())) {
+      return settings.getRefToJavaTypeMappings().getProperty(schema.get$ref());
+    }
+    return REF_TO_JAVA_TYPE_MAP.get(schema.get$ref());
   }
 
   private static String schemaTypeToJavaPrimitive(Schema<?> schema) {
@@ -334,8 +328,8 @@ public class SchemaUtils {
         .replace("*", "&#42;")
         .replace("<", "&lt;")
         .replace(">", "&gt;")
-        .replace('\u201C', '"')
-        .replace('\u201D', '"')
+        .replace('“', '"')
+        .replace('”', '"')
         .replace("\n", "<br><p> ");
   }
 
