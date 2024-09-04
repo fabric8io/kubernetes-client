@@ -209,7 +209,7 @@ SecurityContextConstraints scc = new SecurityContextConstraintsBuilder()
 Use `io.fabric8.kubernetes.api.model.Event` as T for Watcher:
 
 ```java
-client.events().inAnyNamespace().watch(new Watcher<Event>() {
+client.events().inAnyNamespace().watch(new Watcher<>() {
 
   @Override
   public void eventReceived(Action action, Event resource) {
@@ -217,7 +217,7 @@ client.events().inAnyNamespace().watch(new Watcher<Event>() {
   }
 
   @Override
-  public void onClose(KubernetesClientException cause) {
+  public void onClose(WatcherException cause) {
     System.out.println("Watcher close due to " + cause);
   }
 
@@ -339,7 +339,7 @@ public void testInCrudMode() {
     assertEquals(1, podList.getItems().size());
 
     //WATCH
-    Watch watch = client.pods().inNamespace("ns1").withName("pod1").watch(new Watcher<Pod>() {
+    Watch watch = client.pods().inNamespace("ns1").withName("pod1").watch(new Watcher<>() {
         @Override
         public void eventReceived(Action action, Pod resource) {
             switch (action) {
@@ -352,7 +352,7 @@ public void testInCrudMode() {
         }
 
         @Override
-        public void onClose(KubernetesClientException cause) {
+        public void onClose(WatcherException cause) {
             closeLatch.countDown();
         }
     });
