@@ -56,9 +56,9 @@ public class InfrastructureSpec implements Editable<InfrastructureSpecBuilder> ,
 {
 
     @JsonProperty("cloudConfig")
-    private ConfigMapFileReference cloudConfig;
+    private InfrastructureSpecCloudConfig cloudConfig;
     @JsonProperty("platformSpec")
-    private PlatformSpec platformSpec;
+    private InfrastructureSpecPlatformSpec platformSpec;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -69,29 +69,29 @@ public class InfrastructureSpec implements Editable<InfrastructureSpecBuilder> ,
     public InfrastructureSpec() {
     }
 
-    public InfrastructureSpec(ConfigMapFileReference cloudConfig, PlatformSpec platformSpec) {
+    public InfrastructureSpec(InfrastructureSpecCloudConfig cloudConfig, InfrastructureSpecPlatformSpec platformSpec) {
         super();
         this.cloudConfig = cloudConfig;
         this.platformSpec = platformSpec;
     }
 
     @JsonProperty("cloudConfig")
-    public ConfigMapFileReference getCloudConfig() {
+    public InfrastructureSpecCloudConfig getCloudConfig() {
         return cloudConfig;
     }
 
     @JsonProperty("cloudConfig")
-    public void setCloudConfig(ConfigMapFileReference cloudConfig) {
+    public void setCloudConfig(InfrastructureSpecCloudConfig cloudConfig) {
         this.cloudConfig = cloudConfig;
     }
 
     @JsonProperty("platformSpec")
-    public PlatformSpec getPlatformSpec() {
+    public InfrastructureSpecPlatformSpec getPlatformSpec() {
         return platformSpec;
     }
 
     @JsonProperty("platformSpec")
-    public void setPlatformSpec(PlatformSpec platformSpec) {
+    public void setPlatformSpec(InfrastructureSpecPlatformSpec platformSpec) {
         this.platformSpec = platformSpec;
     }
 

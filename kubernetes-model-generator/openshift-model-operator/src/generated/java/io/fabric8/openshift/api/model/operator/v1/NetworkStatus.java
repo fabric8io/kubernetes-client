@@ -62,10 +62,10 @@ public class NetworkStatus implements Editable<NetworkStatusBuilder> , Kubernete
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<OperatorCondition> conditions = new ArrayList<>();
+    private List<NetworkStatusConditions> conditions = new ArrayList<>();
     @JsonProperty("generations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<GenerationStatus> generations = new ArrayList<>();
+    private List<NetworkStatusGenerations> generations = new ArrayList<>();
     @JsonProperty("observedGeneration")
     private Long observedGeneration;
     @JsonProperty("readyReplicas")
@@ -82,7 +82,7 @@ public class NetworkStatus implements Editable<NetworkStatusBuilder> , Kubernete
     public NetworkStatus() {
     }
 
-    public NetworkStatus(List<OperatorCondition> conditions, List<GenerationStatus> generations, Long observedGeneration, Integer readyReplicas, String version) {
+    public NetworkStatus(List<NetworkStatusConditions> conditions, List<NetworkStatusGenerations> generations, Long observedGeneration, Integer readyReplicas, String version) {
         super();
         this.conditions = conditions;
         this.generations = generations;
@@ -93,23 +93,23 @@ public class NetworkStatus implements Editable<NetworkStatusBuilder> , Kubernete
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<OperatorCondition> getConditions() {
+    public List<NetworkStatusConditions> getConditions() {
         return conditions;
     }
 
     @JsonProperty("conditions")
-    public void setConditions(List<OperatorCondition> conditions) {
+    public void setConditions(List<NetworkStatusConditions> conditions) {
         this.conditions = conditions;
     }
 
     @JsonProperty("generations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<GenerationStatus> getGenerations() {
+    public List<NetworkStatusGenerations> getGenerations() {
         return generations;
     }
 
     @JsonProperty("generations")
-    public void setGenerations(List<GenerationStatus> generations) {
+    public void setGenerations(List<NetworkStatusGenerations> generations) {
         this.generations = generations;
     }
 

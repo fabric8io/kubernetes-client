@@ -62,7 +62,7 @@ public class SchedulerSpec implements Editable<SchedulerSpecBuilder> , Kubernete
     @JsonProperty("mastersSchedulable")
     private Boolean mastersSchedulable;
     @JsonProperty("policy")
-    private ConfigMapNameReference policy;
+    private SchedulerSpecPolicy policy;
     @JsonProperty("profile")
     private String profile;
     @JsonIgnore
@@ -75,7 +75,7 @@ public class SchedulerSpec implements Editable<SchedulerSpecBuilder> , Kubernete
     public SchedulerSpec() {
     }
 
-    public SchedulerSpec(String defaultNodeSelector, Boolean mastersSchedulable, ConfigMapNameReference policy, String profile) {
+    public SchedulerSpec(String defaultNodeSelector, Boolean mastersSchedulable, SchedulerSpecPolicy policy, String profile) {
         super();
         this.defaultNodeSelector = defaultNodeSelector;
         this.mastersSchedulable = mastersSchedulable;
@@ -104,12 +104,12 @@ public class SchedulerSpec implements Editable<SchedulerSpecBuilder> , Kubernete
     }
 
     @JsonProperty("policy")
-    public ConfigMapNameReference getPolicy() {
+    public SchedulerSpecPolicy getPolicy() {
         return policy;
     }
 
     @JsonProperty("policy")
-    public void setPolicy(ConfigMapNameReference policy) {
+    public void setPolicy(SchedulerSpecPolicy policy) {
         this.policy = policy;
     }
 

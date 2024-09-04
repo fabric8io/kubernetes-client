@@ -17,12 +17,12 @@ package io.fabric8.openshift.api.model.config.v1;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.kubernetes.api.model.Namespaced;
+import io.fabric8.kubernetes.model.util.Helper;
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.Collections;
-import java.util.Scanner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -37,9 +37,7 @@ class ImageTagMirrorSetTest {
   @Test
   void deserializationAndSerializationShouldWorkAsExpected() throws IOException {
     // Given
-    String originalJson = new Scanner(getClass().getResourceAsStream("/test-imagetagmirrorset.json"))
-        .useDelimiter("\\A")
-        .next();
+    String originalJson = Helper.loadJson("/test-imagetagmirrorset.json");
 
     // When
     final ImageTagMirrorSet imageTagMirrorSet = mapper.readValue(originalJson, ImageTagMirrorSet.class);
@@ -51,8 +49,7 @@ class ImageTagMirrorSetTest {
         .hasFieldOrPropertyWithValue("metadata.name", "tag-mirror")
         .extracting(ImageTagMirrorSet::getSpec)
         .extracting(ImageTagMirrorSetSpec::getImageTagMirrors)
-        .asList()
-        .singleElement(InstanceOfAssertFactories.type(ImageTagMirrors.class))
+        .asInstanceOf(InstanceOfAssertFactories.list(ImageTagMirrorSetSpecImageTagMirrors.class)).singleElement()
         .hasFieldOrPropertyWithValue("mirrors", Collections.singletonList("mirror.example.com/redhat"))
         .hasFieldOrPropertyWithValue("source", "registry.redhat.io/openshift4")
         .hasFieldOrPropertyWithValue("mirrorSourcePolicy", "AllowContactingSource");
@@ -81,8 +78,7 @@ class ImageTagMirrorSetTest {
         .hasFieldOrPropertyWithValue("metadata.name", "tag-mirror")
         .extracting(ImageTagMirrorSet::getSpec)
         .extracting(ImageTagMirrorSetSpec::getImageTagMirrors)
-        .asList()
-        .singleElement(InstanceOfAssertFactories.type(ImageTagMirrors.class))
+        .asInstanceOf(InstanceOfAssertFactories.list(ImageTagMirrorSetSpecImageTagMirrors.class)).singleElement()
         .hasFieldOrPropertyWithValue("mirrors", Collections.singletonList("example.com/example/ubi-minimal"))
         .hasFieldOrPropertyWithValue("source", "registry.access.redhat.com/ubi9/ubi-minimal")
         .hasFieldOrPropertyWithValue("mirrorSourcePolicy", "AllowContactingSource");

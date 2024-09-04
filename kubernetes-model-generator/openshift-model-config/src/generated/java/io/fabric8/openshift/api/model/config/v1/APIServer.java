@@ -17,6 +17,7 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
+import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
@@ -47,7 +48,7 @@ import lombok.experimental.Accessors;
     ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
+    @BuildableReference(ObjectMeta.class),
     @BuildableReference(LabelSelector.class),
     @BuildableReference(Container.class),
     @BuildableReference(PodTemplateSpec.class),
@@ -81,11 +82,12 @@ public class APIServer implements Editable<APIServerBuilder> , HasMetadata
     @JsonProperty("kind")
     private String kind = "APIServer";
     @JsonProperty("metadata")
-    private io.fabric8.kubernetes.api.model.ObjectMeta metadata;
+    private ObjectMeta metadata;
     @JsonProperty("spec")
     private APIServerSpec spec;
     @JsonProperty("status")
-    private APIServerStatus status;
+    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
+    private Object status;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -96,7 +98,7 @@ public class APIServer implements Editable<APIServerBuilder> , HasMetadata
     public APIServer() {
     }
 
-    public APIServer(String apiVersion, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, APIServerSpec spec, APIServerStatus status) {
+    public APIServer(String apiVersion, String kind, ObjectMeta metadata, APIServerSpec spec, Object status) {
         super();
         this.apiVersion = apiVersion;
         this.kind = kind;
@@ -146,12 +148,12 @@ public class APIServer implements Editable<APIServerBuilder> , HasMetadata
     }
 
     @JsonProperty("metadata")
-    public io.fabric8.kubernetes.api.model.ObjectMeta getMetadata() {
+    public ObjectMeta getMetadata() {
         return metadata;
     }
 
     @JsonProperty("metadata")
-    public void setMetadata(io.fabric8.kubernetes.api.model.ObjectMeta metadata) {
+    public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
@@ -166,12 +168,13 @@ public class APIServer implements Editable<APIServerBuilder> , HasMetadata
     }
 
     @JsonProperty("status")
-    public APIServerStatus getStatus() {
+    public Object getStatus() {
         return status;
     }
 
     @JsonProperty("status")
-    public void setStatus(APIServerStatus status) {
+    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
+    public void setStatus(Object status) {
         this.status = status;
     }
 

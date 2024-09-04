@@ -50,10 +50,25 @@ public class SchemaFlattener {
   private static final String PACKAGE_SEPARATOR_CHARACTER = ".";
   private static final String SEPARATOR_CHARACTER = "_";
 
-  private static final Map<String, String> sundrioBuilderWorkarounds = new HashMap<>();
+  private static final Set<String> preservedNames = ConcurrentHashMap.newKeySet();
   static {
-    sundrioBuilderWorkarounds.put("spec", "spc");
-    sundrioBuilderWorkarounds.put("status", "sts");
+    preservedNames.add("spec");
+    preservedNames.add("status");
+    // makes class names in openshift-model-config more user-friendly
+    preservedNames.add("aws");
+    preservedNames.add("azure");
+    preservedNames.add("baremetal");
+    preservedNames.add("gcp");
+    preservedNames.add("ibmcloud");
+    preservedNames.add("libvirt");
+    preservedNames.add("nutanix");
+    preservedNames.add("none");
+    preservedNames.add("openstack");
+    preservedNames.add("ovirt");
+    preservedNames.add("powervs");
+    preservedNames.add("vsphere");
+    preservedNames.add("basicAuth");
+    preservedNames.add("openID");
   }
   private static final ObjectMapper structureMapper = Json.mapper().copy();
   static {
@@ -148,7 +163,7 @@ public class SchemaFlattener {
 
     private final OpenAPI openAPI;
     private final Set<String> uniqueNames;
-    private final Map<String, String> generatedComponentSignatures;
+    private final Map<String, String> reusableComponentSignatures;
     private final Map<String, Schema<?>> componentsToAdd;
 
     public SchemaFlattenerContext(OpenAPI openAPI) {
@@ -160,11 +175,10 @@ public class SchemaFlattener {
         openAPI.getComponents().setSchemas(new HashMap<>());
       }
       uniqueNames = ConcurrentHashMap.newKeySet();
-      generatedComponentSignatures = new ConcurrentHashMap<>();
+      reusableComponentSignatures = new HashMap<>();
       // Compute signatures of all defined components to be able to reuse them from inlined component definitions
       for (String key : openAPI.getComponents().getSchemas().keySet()) {
-        final Schema<?> schema = openAPI.getComponents().getSchemas().get(key);
-        generatedComponentSignatures.put(toJson(schema), key);
+        reusableComponentSignatures.put(toJson(openAPI.getComponents().getSchemas().get(key)), key);
       }
       componentsToAdd = new ConcurrentHashMap<>();
     }
@@ -175,11 +189,10 @@ public class SchemaFlattener {
 
     void addComponentSchema(String key, Schema<?> componentSchema) {
       componentsToAdd.put(key, componentSchema);
-      generatedComponentSignatures.put(toJson(componentSchema), key);
     }
 
     Schema<?> toRef(Schema<?> schema, ComponentName componentName) {
-      final String existingModelName = generatedComponentSignatures.getOrDefault(toJson(schema), null);
+      final String existingModelName = reusableComponentSignatures.getOrDefault(toJson(schema), null);
       final Schema<?> refSchema = new Schema<>();
       refSchema.setRequired(schema.getRequired());
       if (existingModelName != null) {
@@ -211,7 +224,6 @@ public class SchemaFlattener {
         uniqueName = name + SEPARATOR_CHARACTER + ++count;
       }
     }
-
   }
 
   private static final class ComponentName {
@@ -273,19 +285,35 @@ public class SchemaFlattener {
       // Middle parts are contracted (unless preserved)
       for (int it = 1; it < nameParts.size() - 1; it++) {
         final String part = nameParts.get(it);
-        sb.append(part.substring(0, 1).toUpperCase());
-        if (sundrioBuilderWorkarounds.containsKey(part)) {
-          sb.append(part.substring(1));
+        if (preservedNames.contains(part)) {
+          sb.append(part.substring(0, 1).toUpperCase()).append(part.substring(1));
+        } else {
+          sb.append(contract(part));
         }
       }
       // Last part is capitalized
       if (nameParts.size() > 1) {
-        final String part = nameParts.get(nameParts.size() - 1);
-        final String lastPart = sundrioBuilderWorkarounds.getOrDefault(part, part);
+        final String lastPart = nameParts.get(nameParts.size() - 1);
         sb.append(lastPart.substring(0, 1).toUpperCase());
         sb.append(lastPart.substring(1));
       }
       return sb.toString();
     }
+  }
+
+  private static String contract(String word) {
+    final StringBuilder sb = new StringBuilder();
+    sb.append(word.substring(0, 1).toUpperCase());
+    boolean inWord = true;
+    for (int i = 1; i < word.length(); i++) {
+      final char c = word.charAt(i);
+      if (!inWord && Character.isUpperCase(c)) {
+        sb.append(c);
+        inWord = true;
+      } else if (inWord && Character.isLowerCase(c)) {
+        inWord = false;
+      }
+    }
+    return sb.toString();
   }
 }

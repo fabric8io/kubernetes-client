@@ -55,7 +55,7 @@ public class AuthenticationStatus implements Editable<AuthenticationStatusBuilde
 {
 
     @JsonProperty("integratedOAuthMetadata")
-    private ConfigMapNameReference integratedOAuthMetadata;
+    private AuthenticationStatusIntegratedOAuthMetadata integratedOAuthMetadata;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -66,18 +66,18 @@ public class AuthenticationStatus implements Editable<AuthenticationStatusBuilde
     public AuthenticationStatus() {
     }
 
-    public AuthenticationStatus(ConfigMapNameReference integratedOAuthMetadata) {
+    public AuthenticationStatus(AuthenticationStatusIntegratedOAuthMetadata integratedOAuthMetadata) {
         super();
         this.integratedOAuthMetadata = integratedOAuthMetadata;
     }
 
     @JsonProperty("integratedOAuthMetadata")
-    public ConfigMapNameReference getIntegratedOAuthMetadata() {
+    public AuthenticationStatusIntegratedOAuthMetadata getIntegratedOAuthMetadata() {
         return integratedOAuthMetadata;
     }
 
     @JsonProperty("integratedOAuthMetadata")
-    public void setIntegratedOAuthMetadata(ConfigMapNameReference integratedOAuthMetadata) {
+    public void setIntegratedOAuthMetadata(AuthenticationStatusIntegratedOAuthMetadata integratedOAuthMetadata) {
         this.integratedOAuthMetadata = integratedOAuthMetadata;
     }
 

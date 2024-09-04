@@ -62,10 +62,10 @@ public class OpenShiftControllerManagerStatus implements Editable<OpenShiftContr
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<OperatorCondition> conditions = new ArrayList<>();
+    private List<OpenShiftControllerManagerStatusConditions> conditions = new ArrayList<>();
     @JsonProperty("generations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<GenerationStatus> generations = new ArrayList<>();
+    private List<OpenShiftControllerManagerStatusGenerations> generations = new ArrayList<>();
     @JsonProperty("observedGeneration")
     private Long observedGeneration;
     @JsonProperty("readyReplicas")
@@ -82,7 +82,7 @@ public class OpenShiftControllerManagerStatus implements Editable<OpenShiftContr
     public OpenShiftControllerManagerStatus() {
     }
 
-    public OpenShiftControllerManagerStatus(List<OperatorCondition> conditions, List<GenerationStatus> generations, Long observedGeneration, Integer readyReplicas, String version) {
+    public OpenShiftControllerManagerStatus(List<OpenShiftControllerManagerStatusConditions> conditions, List<OpenShiftControllerManagerStatusGenerations> generations, Long observedGeneration, Integer readyReplicas, String version) {
         super();
         this.conditions = conditions;
         this.generations = generations;
@@ -93,23 +93,23 @@ public class OpenShiftControllerManagerStatus implements Editable<OpenShiftContr
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<OperatorCondition> getConditions() {
+    public List<OpenShiftControllerManagerStatusConditions> getConditions() {
         return conditions;
     }
 
     @JsonProperty("conditions")
-    public void setConditions(List<OperatorCondition> conditions) {
+    public void setConditions(List<OpenShiftControllerManagerStatusConditions> conditions) {
         this.conditions = conditions;
     }
 
     @JsonProperty("generations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<GenerationStatus> getGenerations() {
+    public List<OpenShiftControllerManagerStatusGenerations> getGenerations() {
         return generations;
     }
 
     @JsonProperty("generations")
-    public void setGenerations(List<GenerationStatus> generations) {
+    public void setGenerations(List<OpenShiftControllerManagerStatusGenerations> generations) {
         this.generations = generations;
     }
 

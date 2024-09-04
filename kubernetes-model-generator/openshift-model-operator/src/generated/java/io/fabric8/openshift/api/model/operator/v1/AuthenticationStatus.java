@@ -63,12 +63,12 @@ public class AuthenticationStatus implements Editable<AuthenticationStatusBuilde
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<OperatorCondition> conditions = new ArrayList<>();
+    private List<AuthenticationStatusConditions> conditions = new ArrayList<>();
     @JsonProperty("generations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<GenerationStatus> generations = new ArrayList<>();
+    private List<AuthenticationStatusGenerations> generations = new ArrayList<>();
     @JsonProperty("oauthAPIServer")
-    private OAuthAPIServerStatus oauthAPIServer;
+    private AuthenticationStatusOauthAPIServer oauthAPIServer;
     @JsonProperty("observedGeneration")
     private Long observedGeneration;
     @JsonProperty("readyReplicas")
@@ -85,7 +85,7 @@ public class AuthenticationStatus implements Editable<AuthenticationStatusBuilde
     public AuthenticationStatus() {
     }
 
-    public AuthenticationStatus(List<OperatorCondition> conditions, List<GenerationStatus> generations, OAuthAPIServerStatus oauthAPIServer, Long observedGeneration, Integer readyReplicas, String version) {
+    public AuthenticationStatus(List<AuthenticationStatusConditions> conditions, List<AuthenticationStatusGenerations> generations, AuthenticationStatusOauthAPIServer oauthAPIServer, Long observedGeneration, Integer readyReplicas, String version) {
         super();
         this.conditions = conditions;
         this.generations = generations;
@@ -97,33 +97,33 @@ public class AuthenticationStatus implements Editable<AuthenticationStatusBuilde
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<OperatorCondition> getConditions() {
+    public List<AuthenticationStatusConditions> getConditions() {
         return conditions;
     }
 
     @JsonProperty("conditions")
-    public void setConditions(List<OperatorCondition> conditions) {
+    public void setConditions(List<AuthenticationStatusConditions> conditions) {
         this.conditions = conditions;
     }
 
     @JsonProperty("generations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<GenerationStatus> getGenerations() {
+    public List<AuthenticationStatusGenerations> getGenerations() {
         return generations;
     }
 
     @JsonProperty("generations")
-    public void setGenerations(List<GenerationStatus> generations) {
+    public void setGenerations(List<AuthenticationStatusGenerations> generations) {
         this.generations = generations;
     }
 
     @JsonProperty("oauthAPIServer")
-    public OAuthAPIServerStatus getOauthAPIServer() {
+    public AuthenticationStatusOauthAPIServer getOauthAPIServer() {
         return oauthAPIServer;
     }
 
     @JsonProperty("oauthAPIServer")
-    public void setOauthAPIServer(OAuthAPIServerStatus oauthAPIServer) {
+    public void setOauthAPIServer(AuthenticationStatusOauthAPIServer oauthAPIServer) {
         this.oauthAPIServer = oauthAPIServer;
     }
 

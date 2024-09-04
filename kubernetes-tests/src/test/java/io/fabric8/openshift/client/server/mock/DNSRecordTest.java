@@ -15,10 +15,10 @@
  */
 package io.fabric8.openshift.client.server.mock;
 
-import io.fabric8.openshift.api.model.operator.v1.DNSRecord;
-import io.fabric8.openshift.api.model.operator.v1.DNSRecordBuilder;
-import io.fabric8.openshift.api.model.operator.v1.DNSRecordList;
-import io.fabric8.openshift.api.model.operator.v1.DNSRecordListBuilder;
+import io.fabric8.openshift.api.model.operator.ingress.v1.DNSRecord;
+import io.fabric8.openshift.api.model.operator.ingress.v1.DNSRecordBuilder;
+import io.fabric8.openshift.api.model.operator.ingress.v1.DNSRecordList;
+import io.fabric8.openshift.api.model.operator.ingress.v1.DNSRecordListBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
 import org.junit.jupiter.api.Test;
 

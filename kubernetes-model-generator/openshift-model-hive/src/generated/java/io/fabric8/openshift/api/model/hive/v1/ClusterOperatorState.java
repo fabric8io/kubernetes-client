@@ -24,7 +24,7 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.openshift.api.model.config.v1.ClusterOperatorStatusCondition;
+import io.fabric8.openshift.api.model.config.v1.ClusterOperatorStatusConditions;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -60,7 +60,7 @@ public class ClusterOperatorState implements Editable<ClusterOperatorStateBuilde
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ClusterOperatorStatusCondition> conditions = new ArrayList<>();
+    private List<ClusterOperatorStatusConditions> conditions = new ArrayList<>();
     @JsonProperty("name")
     private String name;
     @JsonIgnore
@@ -73,7 +73,7 @@ public class ClusterOperatorState implements Editable<ClusterOperatorStateBuilde
     public ClusterOperatorState() {
     }
 
-    public ClusterOperatorState(List<ClusterOperatorStatusCondition> conditions, String name) {
+    public ClusterOperatorState(List<ClusterOperatorStatusConditions> conditions, String name) {
         super();
         this.conditions = conditions;
         this.name = name;
@@ -81,12 +81,12 @@ public class ClusterOperatorState implements Editable<ClusterOperatorStateBuilde
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<ClusterOperatorStatusCondition> getConditions() {
+    public List<ClusterOperatorStatusConditions> getConditions() {
         return conditions;
     }
 
     @JsonProperty("conditions")
-    public void setConditions(List<ClusterOperatorStatusCondition> conditions) {
+    public void setConditions(List<ClusterOperatorStatusConditions> conditions) {
         this.conditions = conditions;
     }
 
