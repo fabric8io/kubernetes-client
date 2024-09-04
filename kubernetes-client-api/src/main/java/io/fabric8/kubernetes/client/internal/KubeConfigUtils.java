@@ -29,9 +29,9 @@ import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.Utils;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.List;
 
 /**
@@ -44,7 +44,7 @@ public class KubeConfigUtils {
   }
 
   public static Config parseConfig(File file) throws IOException {
-    return Serialization.unmarshal(new FileInputStream(file), Config.class);
+    return Serialization.unmarshal(Files.newInputStream(file.toPath()), Config.class);
   }
 
   public static Config parseConfigFromString(String contents) {
@@ -95,18 +95,27 @@ public class KubeConfigUtils {
    * @return {@link AuthInfo} for current context
    */
   public static AuthInfo getUserAuthInfo(Config config, Context context) {
-    AuthInfo authInfo = null;
-    if (config != null && context != null) {
-      String user = context.getUser();
-      if (user != null) {
-        List<NamedAuthInfo> users = config.getUsers();
-        if (users != null) {
-          authInfo = users.stream()
-              .filter(u -> u.getName().equals(user))
-              .findAny()
-              .map(NamedAuthInfo::getUser)
-              .orElse(null);
-        }
+    NamedAuthInfo namedAuthInfo = getAuthInfo(config, context.getUser());
+    return (namedAuthInfo != null) ? namedAuthInfo.getUser() : null;
+  }
+
+  /**
+   * Returns the {@link NamedAuthInfo} with the given name.
+   * Returns {@code null} otherwise
+   * 
+   * @param config the config to search
+   * @param name
+   * @return
+   */
+  public static NamedAuthInfo getAuthInfo(Config config, String name) {
+    NamedAuthInfo authInfo = null;
+    if (config != null && name != null) {
+      List<NamedAuthInfo> users = config.getUsers();
+      if (users != null) {
+        authInfo = users.stream()
+            .filter(toInspect -> name.equals(toInspect.getName()))
+            .findAny()
+            .orElse(null);
       }
     }
     return authInfo;
@@ -117,17 +126,16 @@ public class KubeConfigUtils {
    * Returns {@code false} otherwise.
    *
    * @param name the name of the NamedAuthInfo that we are looking for
-   * @param config the Config to be searched
+   * @param config the Config to search
    * @return true if it contains a NamedAuthInfo with the given name
    */
-  public static boolean hasAuthInfoNamed(String name, Config config) {
+  public static boolean hasAuthInfoNamed(Config config, String name) {
     if (Utils.isNullOrEmpty(name)
         || config == null
         || config.getUsers() == null) {
       return false;
     }
-    return config.getUsers().stream()
-        .anyMatch(namedAuthInfo -> name.equals(namedAuthInfo.getName()));
+    return getAuthInfo(config, name) != null;
   }
 
   /**

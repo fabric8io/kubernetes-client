@@ -28,6 +28,7 @@ import io.fabric8.kubernetes.api.model.ConfigBuilder;
 import io.fabric8.kubernetes.api.model.Context;
 import io.fabric8.kubernetes.api.model.ExecConfig;
 import io.fabric8.kubernetes.api.model.ExecEnvVar;
+import io.fabric8.kubernetes.api.model.NamedAuthInfo;
 import io.fabric8.kubernetes.api.model.NamedContext;
 import io.fabric8.kubernetes.client.http.TlsVersion;
 import io.fabric8.kubernetes.client.internal.CertUtils;
@@ -972,56 +973,70 @@ public class Config {
       config.setDisableHostnameVerification(
           currentCluster.getInsecureSkipTlsVerify() != null && currentCluster.getInsecureSkipTlsVerify());
       config.setCaCertData(currentCluster.getCertificateAuthorityData());
-      AuthInfo currentAuthInfo = KubeConfigUtils.getUserAuthInfo(kubeConfig, currentContext);
-      mergeKubeConfigAuthInfo(config, currentCluster, currentAuthInfo);
-      mergeProxyUrl(config, currentCluster.getProxyUrl());
-    }
-  }
-
-  private static void mergeProxyUrl(Config config, String proxyUrl) {
-    if (Utils.isNotNullOrEmpty(proxyUrl)) {
-      if (proxyUrl.startsWith(SOCKS5_PROTOCOL_PREFIX) && config.getMasterUrl().startsWith(HTTPS_PROTOCOL_PREFIX)) {
-        config.setHttpsProxy(proxyUrl);
-      } else if (proxyUrl.startsWith(SOCKS5_PROTOCOL_PREFIX)) {
-        config.setHttpProxy(proxyUrl);
-      } else if (proxyUrl.startsWith(HTTP_PROTOCOL_PREFIX)) {
-        config.setHttpProxy(proxyUrl);
-      } else if (proxyUrl.startsWith(HTTPS_PROTOCOL_PREFIX)) {
-        config.setHttpsProxy(proxyUrl);
+      if (currentContext != null) {
+        NamedAuthInfo currentAuthInfo = KubeConfigUtils.getAuthInfo(kubeConfig, currentContext.getUser());
+        mergeKubeConfigAuthInfo(config, currentCluster, currentAuthInfo);
+        mergeProxyUrl(config, currentCluster.getProxyUrl());
       }
     }
   }
 
-  private static void mergeKubeConfigAuthInfo(Config config, Cluster currentCluster, AuthInfo currentAuthInfo)
+  private static void mergeProxyUrl(Config config, String proxyUrl) {
+    if (Utils.isNullOrEmpty(proxyUrl)) {
+      return;
+    }
+    if (proxyUrl.startsWith(SOCKS5_PROTOCOL_PREFIX) && config.getMasterUrl().startsWith(HTTPS_PROTOCOL_PREFIX)) {
+      config.setHttpsProxy(proxyUrl);
+    } else if (proxyUrl.startsWith(SOCKS5_PROTOCOL_PREFIX)) {
+      config.setHttpProxy(proxyUrl);
+    } else if (proxyUrl.startsWith(HTTP_PROTOCOL_PREFIX)) {
+      config.setHttpProxy(proxyUrl);
+    } else if (proxyUrl.startsWith(HTTPS_PROTOCOL_PREFIX)) {
+      config.setHttpsProxy(proxyUrl);
+    }
+  }
+
+  private static void mergeKubeConfigAuthInfo(Config config, Cluster currentCluster, NamedAuthInfo currentAuthInfo)
       throws IOException {
     if (currentAuthInfo == null) {
       return;
     }
-    // rewrite tls asset paths if needed
+    AuthInfo user = currentAuthInfo.getUser();
+    KubeConfigFile kubeConfigFile = config.getFileWithAuthInfo(currentAuthInfo.getName());
+    File file = (kubeConfigFile != null) ? kubeConfigFile.getFile() : null;
+    mergeCertFiles(config, file, currentCluster, user);
+    config.setClientCertData(user.getClientCertificateData());
+    config.setClientKeyData(user.getClientKeyData());
+    config.setClientKeyAlgo(getKeyAlgorithm(config.getClientKeyFile(), config.getClientKeyData()));
+    config.setAutoOAuthToken(user.getToken());
+    config.setUsername(user.getUsername());
+    config.setPassword(user.getPassword());
+
+    if (Utils.isNullOrEmpty(config.getAutoOAuthToken()) && user.getAuthProvider() != null) {
+      mergeKubeConfigAuthProviderConfig(config, user);
+    } else if (config.getOauthTokenProvider() == null) { // https://kubernetes.io/docs/reference/access-authn-authz/authentication/#client-go-credential-plugins
+      mergeKubeConfigExecCredential(config, user.getExec(), file);
+    }
+  }
+
+  private static void mergeCertFiles(Config config, File file, Cluster currentCluster, AuthInfo currentAuthInfo) {
+    if (config == null
+        || currentCluster == null
+        || currentAuthInfo == null) {
+      return;
+    }
     String caCertFile = currentCluster.getCertificateAuthority();
     String clientCertFile = currentAuthInfo.getClientCertificate();
     String clientKeyFile = currentAuthInfo.getClientKey();
-    File configFile = config.getFile();
-    if (configFile != null) {
-      caCertFile = absolutify(configFile, currentCluster.getCertificateAuthority());
-      clientCertFile = absolutify(configFile, currentAuthInfo.getClientCertificate());
-      clientKeyFile = absolutify(configFile, currentAuthInfo.getClientKey());
+    if (file != null) {
+      // rewrite tls asset paths if needed
+      caCertFile = absolutify(file, currentCluster.getCertificateAuthority());
+      clientCertFile = absolutify(file, currentAuthInfo.getClientCertificate());
+      clientKeyFile = absolutify(file, currentAuthInfo.getClientKey());
     }
     config.setCaCertFile(caCertFile);
     config.setClientCertFile(clientCertFile);
-    config.setClientCertData(currentAuthInfo.getClientCertificateData());
     config.setClientKeyFile(clientKeyFile);
-    config.setClientKeyData(currentAuthInfo.getClientKeyData());
-    config.setClientKeyAlgo(getKeyAlgorithm(config.getClientKeyFile(), config.getClientKeyData()));
-    config.setAutoOAuthToken(currentAuthInfo.getToken());
-    config.setUsername(currentAuthInfo.getUsername());
-    config.setPassword(currentAuthInfo.getPassword());
-
-    if (Utils.isNullOrEmpty(config.getAutoOAuthToken()) && currentAuthInfo.getAuthProvider() != null) {
-      mergeKubeConfigAuthProviderConfig(config, currentAuthInfo);
-    } else if (config.getOauthTokenProvider() == null) { // https://kubernetes.io/docs/reference/access-authn-authz/authentication/#client-go-credential-plugins
-      mergeKubeConfigExecCredential(config, currentAuthInfo.getExec(), configFile);
-    }
   }
 
   private static void mergeKubeConfigAuthProviderConfig(Config config, AuthInfo currentAuthInfo) {
@@ -1739,7 +1754,7 @@ public class Config {
     }
     return kubeConfigFiles.stream()
         .filter(KubeConfigFile::isReadable)
-        .filter(entry -> KubeConfigUtils.hasAuthInfoNamed(name, entry.getConfig()))
+        .filter(entry -> KubeConfigUtils.hasAuthInfoNamed(entry.getConfig(), name))
         .findFirst()
         .orElse(null);
   }

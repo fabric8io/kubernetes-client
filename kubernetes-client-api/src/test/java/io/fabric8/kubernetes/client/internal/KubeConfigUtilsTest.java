@@ -20,6 +20,7 @@ import io.fabric8.kubernetes.api.model.Cluster;
 import io.fabric8.kubernetes.api.model.Config;
 import io.fabric8.kubernetes.api.model.ConfigBuilder;
 import io.fabric8.kubernetes.api.model.Context;
+import io.fabric8.kubernetes.api.model.NamedAuthInfo;
 import io.fabric8.kubernetes.api.model.NamedContext;
 import org.junit.jupiter.api.Test;
 
@@ -117,11 +118,31 @@ class KubeConfigUtilsTest {
   }
 
   @Test
+  void getAuthInfo_when_authInfoExists_returnsAuthInfo() {
+    // given
+    Config config = getTestKubeConfig();
+    // when
+    NamedAuthInfo found = KubeConfigUtils.getAuthInfo(config, "test/api-test-com:443");
+    // then
+    assertThat(found).isNotNull();
+  }
+
+  @Test
+  void getAuthInfo_when_authInfoDoesntExist_returnsNull() {
+    // given
+    Config config = getTestKubeConfig();
+    // when
+    NamedAuthInfo found = KubeConfigUtils.getAuthInfo(config, "bogus");
+    // then
+    assertThat(found).isNull();
+  }
+
+  @Test
   void hasAuthInfoNamed_when_authInfoExists_returnsTrue() {
     // given
     Config config = getTestKubeConfig();
     // when
-    boolean hasIt = KubeConfigUtils.hasAuthInfoNamed("test/api-test-com:443", config);
+    boolean hasIt = KubeConfigUtils.hasAuthInfoNamed(config, "test/api-test-com:443");
     // then
     assertThat(hasIt).isTrue();
   }
@@ -131,7 +152,7 @@ class KubeConfigUtilsTest {
     // given
     Config config = getTestKubeConfig();
     // when
-    boolean hasIt = KubeConfigUtils.hasAuthInfoNamed("bogus", config);
+    boolean hasIt = KubeConfigUtils.hasAuthInfoNamed(config, "bogus");
     // then
     assertThat(hasIt).isFalse();
   }
@@ -141,7 +162,7 @@ class KubeConfigUtilsTest {
     // given
     Config config = new ConfigBuilder().build();
     // when
-    boolean hasIt = KubeConfigUtils.hasAuthInfoNamed("test/api-test-com:443", config);
+    boolean hasIt = KubeConfigUtils.hasAuthInfoNamed(config, "test/api-test-com:443");
     // then
     assertThat(hasIt).isFalse();
   }

@@ -807,6 +807,26 @@ class ConfigTest {
   }
 
   @Test
+  @DisabledOnOs(OS.WINDOWS)
+  void autoconfigure_givenAuthenticationCommandIn2ndFile_then_honorClientAuthenticatorCommands() throws Exception {
+    try {
+      // Given
+      Files.setPosixFilePermissions(Paths.get(TEST_TOKEN_GENERATOR_FILE), PosixFilePermissions.fromString("rwxrwxr-x"));
+      System.setProperty("kubeconfig",
+          TEST_KUBECONFIG_FILE + File.pathSeparator +
+              TEST_KUBECONFIG_EXEC_FILE);
+      // When
+      Config config = Config.autoConfigure("test"); // context in 2nd file
+      // Then
+      assertThat(config)
+          .isNotNull()
+          .hasFieldOrPropertyWithValue("autoOAuthToken", "HELLO WORLD");
+    } finally {
+      System.clearProperty("kubeconfig");
+    }
+  }
+
+  @Test
   void should_accept_client_authentication_commands_with_null_args() throws Exception {
     try {
       // Given
@@ -1378,10 +1398,6 @@ class ConfigTest {
     }
   }
 
-  private String getResourceAbsolutePath(String filename) throws URISyntaxException {
-    return new File(Objects.requireNonNull(getClass().getResource(filename)).toURI()).getAbsolutePath();
-  }
-
   @Test
   void getKubeconfigFilenames_given_KUBECONFNotSet_then_returnsDefault() {
     // Given
@@ -1397,7 +1413,7 @@ class ConfigTest {
   }
 
   @Test
-  void getFilenames_given_KUBECONFNotSet_then_returnsDefault() throws URISyntaxException {
+  void getFileWithAuthInfo_given_2ConfigsExists_then_returnsFileWithUser() throws URISyntaxException {
     try {
       // Given
       String fileWithToken = getResourceAbsolutePath("/test-kubeconfig-oidc");
@@ -1416,6 +1432,10 @@ class ConfigTest {
     } finally {
       System.clearProperty("kubeconfig");
     }
+  }
+
+  private String getResourceAbsolutePath(String filename) throws URISyntaxException {
+    return new File(Objects.requireNonNull(getClass().getResource(filename)).toURI()).getAbsolutePath();
   }
 
 }
