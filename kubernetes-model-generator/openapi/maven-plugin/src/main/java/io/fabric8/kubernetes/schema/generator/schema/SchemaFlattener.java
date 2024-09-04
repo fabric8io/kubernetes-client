@@ -123,7 +123,7 @@ public class SchemaFlattener {
 
     /**
      * Retrieves the context from the provided OpenAPI extensions.
-     * 
+     *
      * @param openAPI the openAPI instance where the context is stored.
      * @return the context.
      */
@@ -137,7 +137,7 @@ public class SchemaFlattener {
 
     /**
      * Remove the context from the OpenAPI extensions.
-     * 
+     *
      * @param openAPI the openAPI instance where the context is stored.
      */
     private static synchronized void clear(OpenAPI openAPI) {
@@ -153,18 +153,23 @@ public class SchemaFlattener {
 
     public SchemaFlattenerContext(OpenAPI openAPI) {
       this.openAPI = openAPI;
-      uniqueNames = ConcurrentHashMap.newKeySet();
-      generatedComponentSignatures = new ConcurrentHashMap<>();
-      componentsToAdd = new ConcurrentHashMap<>();
-    }
-
-    Components getComponents() {
       if (openAPI.getComponents() == null) {
         openAPI.setComponents(new Components());
       }
       if (openAPI.getComponents().getSchemas() == null) {
         openAPI.getComponents().setSchemas(new HashMap<>());
       }
+      uniqueNames = ConcurrentHashMap.newKeySet();
+      generatedComponentSignatures = new ConcurrentHashMap<>();
+      // Compute signatures of all defined components to be able to reuse them from inlined component definitions
+      for (String key : openAPI.getComponents().getSchemas().keySet()) {
+        final Schema<?> schema = openAPI.getComponents().getSchemas().get(key);
+        generatedComponentSignatures.put(toJson(schema), key);
+      }
+      componentsToAdd = new ConcurrentHashMap<>();
+    }
+
+    Components getComponents() {
       return openAPI.getComponents();
     }
 

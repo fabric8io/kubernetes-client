@@ -37,6 +37,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Logger;
@@ -78,6 +79,8 @@ public class GeneratorSettings {
   @Singular
   private Map<String, String> packageMappings;
   private final AtomicBoolean packageMappingsProcessed = new AtomicBoolean(false);
+  @Builder.Default
+  private Properties refToJavaTypeMappings = new Properties();
   @Singular
   private Set<String> skipGenerationRegexes;
   @Singular
