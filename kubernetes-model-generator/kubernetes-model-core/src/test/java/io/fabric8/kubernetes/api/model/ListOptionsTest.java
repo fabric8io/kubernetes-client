@@ -19,9 +19,9 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class ListOptionsTest {
+class ListOptionsTest {
   @Test
-  public void testBuilder() {
+  void testBuilder() {
     ListOptions listOptions = new io.fabric8.kubernetes.api.model.ListOptionsBuilder()
         .withLimit(100L)
         .withContinue("23243434")

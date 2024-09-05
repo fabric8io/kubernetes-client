@@ -54,11 +54,10 @@ class KubernetesDeserializerTest {
   @Test
   void shouldNotRegisterKindWithoutVersionIfNullVersion() {
     // given
-    String version = null;
     String kind = "kind1";
-    TypeKey key = mapping.createKey(version, kind);
+    TypeKey key = mapping.createKey(null, kind);
     // when
-    mapping.registerKind(version, kind, SmurfResource.class);
+    mapping.registerKind(null, kind, SmurfResource.class);
     // then
     Class<? extends KubernetesResource> clazz = mapping.getForKey(key);
     assertThat(clazz).isNull();

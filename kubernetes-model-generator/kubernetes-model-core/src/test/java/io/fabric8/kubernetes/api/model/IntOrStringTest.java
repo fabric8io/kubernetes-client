@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.api.model;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -25,7 +26,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class IntOrStringTest {
-  private static final ObjectMapper mapper = new ObjectMapper();
+
+  private ObjectMapper mapper;
+
+  @BeforeEach
+  void setUp() {
+    mapper = new ObjectMapper();
+  }
 
   @Test
   void testIntOrStringJson() throws IOException {

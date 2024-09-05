@@ -62,8 +62,6 @@ public class SchemaUtils {
         "io.fabric8.kubernetes.api.model.ObjectMeta");
     REF_TO_JAVA_TYPE_MAP.put("#/components/schemas/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta_v2",
         "io.fabric8.kubernetes.api.model.ObjectMeta");
-    REF_TO_JAVA_TYPE_MAP.put("#/components/schemas/io.k8s.apimachinery.pkg.runtime.RawExtension",
-        "io.fabric8.kubernetes.api.model.KubernetesResource");
     REF_TO_JAVA_TYPE_MAP.put("#/components/schemas/io.k8s.apiextensions-apiserver.pkg.apis.apiextensions.v1beta1.JSON",
         "com.fasterxml.jackson.databind.JsonNode");
     REF_TO_JAVA_TYPE_MAP.put("#/components/schemas/io.k8s.apiextensions-apiserver.pkg.apis.apiextensions.v1.JSON",
@@ -72,7 +70,8 @@ public class SchemaUtils {
 
   private static final Map<String, String> REF_TO_JAVA_PRIMITIVE_MAP = new LinkedHashMap<>();
   static {
-    REF_TO_JAVA_PRIMITIVE_MAP.put("#/components/schemas/io.k8s.apimachinery.pkg.apis.meta.v1.Time", "String");
+    REF_TO_JAVA_PRIMITIVE_MAP.put("#/components/schemas/io.k8s.apimachinery.pkg.apis.meta.v1.Time", STRING_PRIMITIVE);
+    REF_TO_JAVA_PRIMITIVE_MAP.put("#/components/schemas/io.k8s.apimachinery.pkg.runtime.RawExtension", OBJECT_PRIMITIVE);
   }
 
   private static final Map<String, String> JAVA_CLASS_SERIALIZER_MAP = new LinkedHashMap<>();
@@ -115,6 +114,13 @@ public class SchemaUtils {
   //  static {
   //    REF_SERIALIZER_MAP.put("#/components/schemas/io.k8s.apimachinery.pkg.util.intstr.IntOrString", "com.marcnuri.yakc.model.serialization.IntOrStringSerializer.class");
   //  }
+
+  private static final Map<String, String> TYPE_DESERIALIZER_MAP = new LinkedHashMap<>();
+  static {
+    TYPE_DESERIALIZER_MAP.put(OBJECT_PRIMITIVE, "io.fabric8.kubernetes.internal.KubernetesDeserializer.class");
+    TYPE_DESERIALIZER_MAP.put("List<Object>", "io.fabric8.kubernetes.internal.KubernetesDeserializerForList.class");
+    TYPE_DESERIALIZER_MAP.put("Map<String, Object>", "io.fabric8.kubernetes.internal.KubernetesDeserializerForMap.class");
+  }
 
   private static final Map<String, String> TYPE_MAP = new LinkedHashMap<>();
   static {
@@ -222,10 +228,9 @@ public class SchemaUtils {
         return refToClassName(ref);
       }
     }
-    // Plain OpenAPI object map to KubernetesResource (deserializer will take care of the rest)
+    // Plain OpenAPI object map to Object (Model generator will need to annotate field with deserializer to take care of the rest)
     if (isObject(schema)) {
-      imports.addImport(settings.getKubernetesResourceClass());
-      return settings.getKubernetesResourceClassSimpleName();
+      return OBJECT_PRIMITIVE;
     }
     return schemaTypeToJavaPrimitive(schema);
   }
@@ -267,7 +272,7 @@ public class SchemaUtils {
   }
 
   public static boolean isObject(Schema<?> schema) {
-    return Optional.ofNullable(schema.getType()).orElse("").equals("object");
+    return schema != null && Objects.equals("object", schema.getType());
   }
 
   public boolean isString(Schema<?> schema) {
@@ -288,7 +293,7 @@ public class SchemaUtils {
   }
 
   public String kubernetesListType(ImportManager imports, Schema<?> schema) {
-    if (schema == null || !isObject(schema)) {
+    if (!isObject(schema)) {
       return null;
     }
     return Optional.ofNullable(schema.getProperties())
@@ -368,6 +373,13 @@ public class SchemaUtils {
         .map(Schema::get$ref)
         .map(REF_SERIALIZER_MAP::get)
         .orElse(null);
+  }
+
+  public static String deserializerForType(String type) {
+    if (TYPE_DESERIALIZER_MAP.containsKey(type)) {
+      return TYPE_DESERIALIZER_MAP.get(type);
+    }
+    return null;
   }
 
   public static String serializerForJavaClass(String java) {

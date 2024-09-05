@@ -15,7 +15,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
@@ -25,7 +24,6 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.kubernetes.api.model.runtime.RawExtension;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -55,9 +53,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
-    @BuildableReference(PersistentVolumeClaim.class),
-    @BuildableReference(GenericKubernetesResource.class),
-    @BuildableReference(RawExtension.class)
+    @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
 public class StructuredResourceHandle implements Editable<StructuredResourceHandleBuilder> , KubernetesResource
@@ -69,9 +65,11 @@ public class StructuredResourceHandle implements Editable<StructuredResourceHand
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<DriverAllocationResult> results = new ArrayList<>();
     @JsonProperty("vendorClaimParameters")
-    private KubernetesResource vendorClaimParameters;
+    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
+    private Object vendorClaimParameters;
     @JsonProperty("vendorClassParameters")
-    private KubernetesResource vendorClassParameters;
+    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
+    private Object vendorClassParameters;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -82,7 +80,7 @@ public class StructuredResourceHandle implements Editable<StructuredResourceHand
     public StructuredResourceHandle() {
     }
 
-    public StructuredResourceHandle(String nodeName, List<DriverAllocationResult> results, KubernetesResource vendorClaimParameters, KubernetesResource vendorClassParameters) {
+    public StructuredResourceHandle(String nodeName, List<DriverAllocationResult> results, Object vendorClaimParameters, Object vendorClassParameters) {
         super();
         this.nodeName = nodeName;
         this.results = results;
@@ -112,22 +110,24 @@ public class StructuredResourceHandle implements Editable<StructuredResourceHand
     }
 
     @JsonProperty("vendorClaimParameters")
-    public KubernetesResource getVendorClaimParameters() {
+    public Object getVendorClaimParameters() {
         return vendorClaimParameters;
     }
 
     @JsonProperty("vendorClaimParameters")
-    public void setVendorClaimParameters(KubernetesResource vendorClaimParameters) {
+    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
+    public void setVendorClaimParameters(Object vendorClaimParameters) {
         this.vendorClaimParameters = vendorClaimParameters;
     }
 
     @JsonProperty("vendorClassParameters")
-    public KubernetesResource getVendorClassParameters() {
+    public Object getVendorClassParameters() {
         return vendorClassParameters;
     }
 
     @JsonProperty("vendorClassParameters")
-    public void setVendorClassParameters(KubernetesResource vendorClassParameters) {
+    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
+    public void setVendorClassParameters(Object vendorClassParameters) {
         this.vendorClassParameters = vendorClassParameters;
     }
 

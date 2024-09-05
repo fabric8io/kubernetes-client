@@ -138,7 +138,6 @@
     <jsonschema2pojo.version>1.2.1</jsonschema2pojo.version>
     <picocli.version>4.7.6</picocli.version>
     <properties.maven.plugin.version>1.0.0</properties.maven.plugin.version>
-    <kubernetes.webhooks.framework.version>1.1.4</kubernetes.webhooks.framework.version>
 
     <!-- Maven plugin versions -->
     <buildnumber.plugin.version>3.2.1</buildnumber.plugin.version>
@@ -971,13 +970,6 @@
         <groupId>com.approvaltests</groupId>
         <artifactId>approvaltests</artifactId>
         <version>${approvaltests.version}</version>
-        <scope>test</scope>
-      </dependency>
-
-      <dependency>
-        <groupId>io.javaoperatorsdk</groupId>
-        <artifactId>kubernetes-webhooks-framework-core</artifactId>
-        <version>${kubernetes.webhooks.framework.version}</version>
         <scope>test</scope>
       </dependency>
     </dependencies>

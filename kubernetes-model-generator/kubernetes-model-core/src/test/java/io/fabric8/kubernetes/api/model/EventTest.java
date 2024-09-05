@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.api.model;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.kubernetes.model.util.Helper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static net.javacrumbs.jsonunit.core.Option.IGNORING_ARRAY_ORDER;
@@ -26,7 +27,13 @@ import static net.javacrumbs.jsonunit.core.Option.TREATING_NULL_AS_ABSENT;
 import static net.javacrumbs.jsonunit.fluent.JsonFluentAssert.assertThatJson;
 
 class EventTest {
-  private final ObjectMapper mapper = new ObjectMapper();
+
+  private ObjectMapper mapper;
+
+  @BeforeEach
+  void setUp() {
+    mapper = new ObjectMapper();
+  }
 
   @Test
   void testEventSerializationDeserialization() throws JsonProcessingException {

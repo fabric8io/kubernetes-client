@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.api.model;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.kubernetes.model.util.Helper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
@@ -28,11 +29,17 @@ import static net.javacrumbs.jsonunit.fluent.JsonFluentAssert.assertThatJson;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class SecretTest {
-  private final ObjectMapper mapper = new ObjectMapper();
+class SecretTest {
+
+  private ObjectMapper mapper;
+
+  @BeforeEach
+  void setUp() {
+    mapper = new ObjectMapper();
+  }
 
   @Test
-  public void secretTest() throws Exception {
+  void secretTest() throws Exception {
     // given
     final String originalJson = Helper.loadJson("/valid-secret.json");
 
@@ -46,8 +53,7 @@ public class SecretTest {
   }
 
   @Test
-  public void secretBuilderTest() {
-
+  void secretBuilderTest() {
     Secret secret = new io.fabric8.kubernetes.api.model.SecretBuilder()
         .withNewMetadata()
         .withName("test-secret")

@@ -35,7 +35,8 @@ public class NamedExtension implements Editable<NamedExtensionBuilder> , Kuberne
 {
 
     @JsonProperty("extension")
-    private KubernetesResource extension;
+    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
+    private Object extension;
     @JsonProperty("name")
     private String name;
     @JsonIgnore
@@ -48,19 +49,20 @@ public class NamedExtension implements Editable<NamedExtensionBuilder> , Kuberne
     public NamedExtension() {
     }
 
-    public NamedExtension(KubernetesResource extension, String name) {
+    public NamedExtension(Object extension, String name) {
         super();
         this.extension = extension;
         this.name = name;
     }
 
     @JsonProperty("extension")
-    public KubernetesResource getExtension() {
+    public Object getExtension() {
         return extension;
     }
 
     @JsonProperty("extension")
-    public void setExtension(KubernetesResource extension) {
+    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
+    public void setExtension(Object extension) {
         this.extension = extension;
     }
 

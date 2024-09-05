@@ -23,10 +23,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class KubernetesListTest {
+class KubernetesListTest {
 
   @Test
-  public void testDefaultValues() {
+  void testDefaultValues() {
     Service service = new io.fabric8.kubernetes.api.model.ServiceBuilder()
         .withNewMetadata()
         .withName("test-service")
@@ -91,7 +91,7 @@ public class KubernetesListTest {
   }
 
   @Test
-  public void testDefaultNullValues() {
+  void testDefaultNullValues() {
     Container container = new io.fabric8.kubernetes.api.model.ContainerBuilder().build();
     assertNull(container.getLifecycle());
     assertNull(container.getLivenessProbe());

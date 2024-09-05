@@ -102,10 +102,6 @@
             <artifactId>bcprov-jdk18on</artifactId>
             <scope>compile</scope>
         </dependency>
-        <dependency>
-            <groupId>io.javaoperatorsdk</groupId>
-            <artifactId>kubernetes-webhooks-framework-core</artifactId>
-        </dependency>
       <dependency>
         <groupId>com.fasterxml.jackson.dataformat</groupId>
         <artifactId>jackson-dataformat-yaml</artifactId>
