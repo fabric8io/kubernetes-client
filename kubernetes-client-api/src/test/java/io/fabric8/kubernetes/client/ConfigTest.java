@@ -1238,7 +1238,7 @@ class ConfigTest {
   }
 
   @Test
-  void build_given_emptyKubeConfig_then_shouldNotProduceNPE() throws URISyntaxException {
+  void builder_given_emptyKubeConfig_then_shouldNotProduceNPE() throws URISyntaxException {
     try {
       // Given
       System.setProperty("kubeconfig",
