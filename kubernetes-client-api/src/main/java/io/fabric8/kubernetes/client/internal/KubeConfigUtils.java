@@ -222,9 +222,7 @@ public class KubeConfigUtils {
       io.fabric8.kubernetes.api.model.Config destination) {
     if (source.getPreferences() != null) {
       PreferencesBuilder builder = new PreferencesBuilder(destination.getPreferences());
-      if (source.getPreferences() != null) {
-        builder.addToExtensions(source.getExtensions().toArray(new NamedExtension[] {}));
-      }
+      builder.addToExtensions(source.getExtensions().toArray(new NamedExtension[] {}));
       destination.setPreferences(builder.build());
     }
   }
