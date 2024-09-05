@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.api.model;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.OffsetDateTime;
@@ -26,14 +27,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class MicroTimeTest {
-  private static final ObjectMapper mapper = new ObjectMapper();
+
+  private ObjectMapper mapper;
+
+  @BeforeEach
+  void setUp() {
+    mapper = new ObjectMapper();
+  }
 
   private static final class MicroTimeHolder {
-    private MicroTime microTime;
-
-    public MicroTime getMicroTime() {
-      return microTime;
-    }
+    public MicroTime microTime;
   }
 
   @Test
@@ -59,6 +62,6 @@ class MicroTimeTest {
     MicroTimeHolder microTimeHolder = mapper.readValue(input, MicroTimeHolder.class);
 
     assertNotNull(microTimeHolder);
-    assertEquals(microTimeAsStr, microTimeHolder.getMicroTime().getTime());
+    assertEquals(microTimeAsStr, microTimeHolder.microTime.getTime());
   }
 }

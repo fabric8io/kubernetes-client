@@ -306,8 +306,8 @@ class SchemaUtilsTest {
     void plainObject() {
       final ObjectSchema schema = new ObjectSchema();
       final String result = schemaUtils.schemaToClassName(importManager, schema);
-      assertEquals("KubernetesResource", result);
-      assertEquals("io.fabric8.kubernetes.api.model.KubernetesResource", importManager.getImports().iterator().next());
+      assertEquals("Object", result);
+      assertTrue(importManager.getImports().isEmpty());
     }
 
     @Test

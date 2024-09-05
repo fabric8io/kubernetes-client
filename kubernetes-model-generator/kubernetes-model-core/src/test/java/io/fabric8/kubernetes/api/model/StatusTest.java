@@ -19,9 +19,10 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class StatusTest {
+class StatusTest {
+
   @Test
-  public void testBuilder() {
+  void testBuilder() {
     Status status = new io.fabric8.kubernetes.api.model.StatusBuilder()
         .withNewMetadata().withContinue("2343212").endMetadata()
         .withStatus("Some status")

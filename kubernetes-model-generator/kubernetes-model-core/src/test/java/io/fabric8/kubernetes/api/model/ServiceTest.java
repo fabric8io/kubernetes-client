@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.api.model;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.kubernetes.model.util.Helper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static net.javacrumbs.jsonunit.core.Option.IGNORING_ARRAY_ORDER;
@@ -26,11 +27,17 @@ import static net.javacrumbs.jsonunit.fluent.JsonFluentAssert.assertThatJson;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class ServiceTest {
-  private final ObjectMapper mapper = new ObjectMapper();
+class ServiceTest {
+
+  private ObjectMapper mapper;
+
+  @BeforeEach
+  void setUp() {
+    mapper = new ObjectMapper();
+  }
 
   @Test
-  public void serviceTest() throws Exception {
+  void serviceTest() throws Exception {
     // given
     final String originalJson = Helper.loadJson("/valid-service.json");
 
@@ -44,8 +51,7 @@ public class ServiceTest {
   }
 
   @Test
-  public void serviceBuilderTest() {
-
+  void serviceBuilderTest() {
     Service service = new io.fabric8.kubernetes.api.model.ServiceBuilder()
         .withNewMetadata()
         .withName("fabric8-maven-sample-zero-config")

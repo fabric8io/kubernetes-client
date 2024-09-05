@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.api.model;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.kubernetes.model.util.Helper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
@@ -28,11 +29,17 @@ import static net.javacrumbs.jsonunit.fluent.JsonFluentAssert.assertThatJson;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class ConfigMapTest {
-  private final ObjectMapper mapper = new ObjectMapper();
+class ConfigMapTest {
+
+  private ObjectMapper mapper;
+
+  @BeforeEach
+  void setUp() {
+    mapper = new ObjectMapper();
+  }
 
   @Test
-  public void configMapTest() throws Exception {
+  void configMapTest() throws Exception {
     // given
     final String originalJson = Helper.loadJson("/valid-configMap.json");
 
@@ -46,8 +53,7 @@ public class ConfigMapTest {
   }
 
   @Test
-  public void configMapBuilderTest() {
-
+  void configMapBuilderTest() {
     ConfigMap configMap = new io.fabric8.kubernetes.api.model.ConfigMapBuilder()
         .withNewMetadata()
         .withName("game-config")

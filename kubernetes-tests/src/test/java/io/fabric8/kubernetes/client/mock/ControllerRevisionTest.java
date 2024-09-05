@@ -20,6 +20,7 @@ import io.fabric8.kubernetes.api.model.apps.ControllerRevision;
 import io.fabric8.kubernetes.api.model.apps.ControllerRevisionBuilder;
 import io.fabric8.kubernetes.api.model.apps.ControllerRevisionList;
 import io.fabric8.kubernetes.api.model.apps.ControllerRevisionListBuilder;
+import io.fabric8.kubernetes.api.model.apps.DaemonSetBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
@@ -108,10 +109,7 @@ class ControllerRevisionTest {
   private ControllerRevision getMockControllerRevision(String name) {
     return new ControllerRevisionBuilder()
         .withNewMetadata().withName(name).endMetadata()
-        .withNewDaemonSetData()
-        .withApiVersion("apps/v1")
-        .withKind("DaemonSet")
-        .endDaemonSetData()
+        .withData(new DaemonSetBuilder().build())
         .build();
   }
 

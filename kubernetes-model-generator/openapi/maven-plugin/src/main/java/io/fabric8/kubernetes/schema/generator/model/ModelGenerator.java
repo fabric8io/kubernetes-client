@@ -47,6 +47,7 @@ import java.util.stream.Collectors;
 
 import static io.fabric8.kubernetes.schema.generator.GeneratorUtils.cleanSourceDirectory;
 import static io.fabric8.kubernetes.schema.generator.schema.SchemaUtils.deserializerForJavaClass;
+import static io.fabric8.kubernetes.schema.generator.schema.SchemaUtils.deserializerForType;
 import static io.fabric8.kubernetes.schema.generator.schema.SchemaUtils.getterName;
 import static io.fabric8.kubernetes.schema.generator.schema.SchemaUtils.isArray;
 import static io.fabric8.kubernetes.schema.generator.schema.SchemaUtils.isMap;
@@ -173,6 +174,11 @@ class ModelGenerator {
       if (serializeUsing != null) {
         templateContext.addImport("com.fasterxml.jackson.databind.annotation.JsonSerialize");
         templateProp.put("serializeUsing", serializeUsing);
+      }
+      final String deserializeUsing = deserializerForType(type);
+      if (deserializeUsing != null) {
+        templateContext.addImport("com.fasterxml.jackson.databind.annotation.JsonDeserialize");
+        templateProp.put("deserializeUsing", deserializeUsing);
       }
       // Default values
       if (isArray(propertySchema)) {

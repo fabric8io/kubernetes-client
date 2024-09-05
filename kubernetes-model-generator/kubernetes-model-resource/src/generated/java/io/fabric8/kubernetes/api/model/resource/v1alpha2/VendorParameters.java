@@ -1,9 +1,7 @@
 
-package io.fabric8.kubernetes.api.model.apiextensions.v1;
+package io.fabric8.kubernetes.api.model.resource.v1alpha2;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -24,7 +22,6 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.kubernetes.api.model.Status;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -34,9 +31,8 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "convertedObjects",
-    "result",
-    "uid"
+    "driverName",
+    "parameters"
 })
 @ToString
 @EqualsAndHashCode
@@ -56,17 +52,14 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ConversionResponse implements Editable<ConversionResponseBuilder> , KubernetesResource
+public class VendorParameters implements Editable<VendorParametersBuilder> , KubernetesResource
 {
 
-    @JsonProperty("convertedObjects")
-    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializerForList.class)
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Object> convertedObjects = new ArrayList<>();
-    @JsonProperty("result")
-    private Status result;
-    @JsonProperty("uid")
-    private String uid;
+    @JsonProperty("driverName")
+    private String driverName;
+    @JsonProperty("parameters")
+    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
+    private Object parameters;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -74,55 +67,43 @@ public class ConversionResponse implements Editable<ConversionResponseBuilder> ,
      * No args constructor for use in serialization
      * 
      */
-    public ConversionResponse() {
+    public VendorParameters() {
     }
 
-    public ConversionResponse(List<Object> convertedObjects, Status result, String uid) {
+    public VendorParameters(String driverName, Object parameters) {
         super();
-        this.convertedObjects = convertedObjects;
-        this.result = result;
-        this.uid = uid;
+        this.driverName = driverName;
+        this.parameters = parameters;
     }
 
-    @JsonProperty("convertedObjects")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<Object> getConvertedObjects() {
-        return convertedObjects;
+    @JsonProperty("driverName")
+    public String getDriverName() {
+        return driverName;
     }
 
-    @JsonProperty("convertedObjects")
-    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializerForList.class)
-    public void setConvertedObjects(List<Object> convertedObjects) {
-        this.convertedObjects = convertedObjects;
+    @JsonProperty("driverName")
+    public void setDriverName(String driverName) {
+        this.driverName = driverName;
     }
 
-    @JsonProperty("result")
-    public Status getResult() {
-        return result;
+    @JsonProperty("parameters")
+    public Object getParameters() {
+        return parameters;
     }
 
-    @JsonProperty("result")
-    public void setResult(Status result) {
-        this.result = result;
-    }
-
-    @JsonProperty("uid")
-    public String getUid() {
-        return uid;
-    }
-
-    @JsonProperty("uid")
-    public void setUid(String uid) {
-        this.uid = uid;
+    @JsonProperty("parameters")
+    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
+    public void setParameters(Object parameters) {
+        this.parameters = parameters;
     }
 
     @JsonIgnore
-    public ConversionResponseBuilder edit() {
-        return new ConversionResponseBuilder(this);
+    public VendorParametersBuilder edit() {
+        return new VendorParametersBuilder(this);
     }
 
     @JsonIgnore
-    public ConversionResponseBuilder toBuilder() {
+    public VendorParametersBuilder toBuilder() {
         return edit();
     }
 

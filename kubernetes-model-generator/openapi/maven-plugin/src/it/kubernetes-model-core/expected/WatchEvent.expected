@@ -44,7 +44,7 @@ public class WatchEvent implements Editable<WatchEventBuilder> , KubernetesResou
 
     /**
      * No args constructor for use in serialization
-     * 
+     *
      */
     public WatchEvent() {
     }

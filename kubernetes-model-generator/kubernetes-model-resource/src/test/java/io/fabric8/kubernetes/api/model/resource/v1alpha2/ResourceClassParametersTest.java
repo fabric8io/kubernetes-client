@@ -16,13 +16,14 @@
 package io.fabric8.kubernetes.api.model.resource.v1alpha2;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.fabric8.kubernetes.api.model.GenericKubernetesResourceBuilder;
 import io.fabric8.kubernetes.api.model.Namespaced;
+import io.fabric8.kubernetes.model.util.Helper;
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.Collections;
-import java.util.Scanner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -42,9 +43,7 @@ class ResourceClassParametersTest {
   @Test
   void deserializationAndSerializationShouldWorkAsExpected() throws IOException {
     // Given
-    String originalJson = new Scanner(getClass().getResourceAsStream("/valid-resourceclassparameters.json"))
-        .useDelimiter("\\A")
-        .next();
+    final String originalJson = Helper.loadJson("/valid-resourceclassparameters.json");
 
     // When
     final ResourceClassParameters resourceClassParameters = mapper.readValue(originalJson, ResourceClassParameters.class);
@@ -64,8 +63,8 @@ class ResourceClassParametersTest {
             .hasFieldOrPropertyWithValue("driverName", "driverNameValue")
             .hasFieldOrPropertyWithValue("parameters.apiVersion", "example.com/v1")
             .hasFieldOrPropertyWithValue("parameters.kind", "CustomType")
-            .hasFieldOrPropertyWithValue("parameters.spec.replicas", 1)
-            .hasFieldOrPropertyWithValue("parameters.status.available", 1))
+            .hasFieldOrPropertyWithValue("parameters.additionalProperties.spec.replicas", 1)
+            .hasFieldOrPropertyWithValue("parameters.additionalProperties.status.available", 1))
         .satisfies(r -> assertThat(r.getFilters())
             .asInstanceOf(InstanceOfAssertFactories.LIST)
             .singleElement(InstanceOfAssertFactories.type(ResourceFilter.class))
@@ -85,10 +84,12 @@ class ResourceClassParametersTest {
         .endGeneratedFrom()
         .addNewVendorParameter()
         .withDriverName("driverNameValue")
-        .addToParameters("apiVersion", "example.com/v1")
-        .addToParameters("kind", "CustomType")
-        .addToParameters("spec", Collections.singletonMap("replicas", 1))
-        .addToParameters("status", Collections.singletonMap("available", 1))
+        .withParameters(new GenericKubernetesResourceBuilder()
+            .withApiVersion("example.com/v1")
+            .withKind("CustomType")
+            .addToAdditionalProperties("spec", Collections.singletonMap("replicas", 1))
+            .addToAdditionalProperties("status", Collections.singletonMap("available", 1))
+            .build())
         .endVendorParameter()
         .addNewFilter()
         .withDriverName("driverNameValue")
@@ -111,8 +112,8 @@ class ResourceClassParametersTest {
             .hasFieldOrPropertyWithValue("driverName", "driverNameValue")
             .hasFieldOrPropertyWithValue("parameters.apiVersion", "example.com/v1")
             .hasFieldOrPropertyWithValue("parameters.kind", "CustomType")
-            .hasFieldOrPropertyWithValue("parameters.spec.replicas", 1)
-            .hasFieldOrPropertyWithValue("parameters.status.available", 1))
+            .hasFieldOrPropertyWithValue("parameters.additionalProperties.spec.replicas", 1)
+            .hasFieldOrPropertyWithValue("parameters.additionalProperties.status.available", 1))
         .satisfies(r -> assertThat(r.getFilters())
             .asInstanceOf(InstanceOfAssertFactories.LIST)
             .singleElement(InstanceOfAssertFactories.type(ResourceFilter.class))

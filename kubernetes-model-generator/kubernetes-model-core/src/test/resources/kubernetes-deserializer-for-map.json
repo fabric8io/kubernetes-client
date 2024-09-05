@@ -1,0 +1,37 @@
+{
+  "aMap": {
+    "aList": [
+      {
+        "kind": "Pod",
+        "apiVersion": "v1",
+        "metadata": {
+          "name": "pod-in-list"
+        }
+      },
+      {
+        "kind": "Generic",
+        "apiVersion": "generic.example.com",
+        "metadata": {
+          "name": "generic-in-list"
+        }
+      }
+    ],
+    "aPod": {
+      "kind": "Pod",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "pod"
+      }
+    },
+    "aGeneric": {
+      "kind": "Generic",
+      "apiVersion": "generic.example.com",
+      "metadata": {
+        "name": "generic"
+      }
+    },
+    "aRaw": {
+      "name": "raw-extension"
+    }
+  }
+}

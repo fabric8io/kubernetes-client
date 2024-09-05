@@ -13,7 +13,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
@@ -23,7 +22,6 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.kubernetes.api.model.runtime.RawExtension;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -51,9 +49,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
-    @BuildableReference(PersistentVolumeClaim.class),
-    @BuildableReference(GenericKubernetesResource.class),
-    @BuildableReference(RawExtension.class)
+    @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
 public class DriverAllocationResult implements Editable<DriverAllocationResultBuilder> , KubernetesResource
@@ -62,7 +58,8 @@ public class DriverAllocationResult implements Editable<DriverAllocationResultBu
     @JsonProperty("namedResources")
     private NamedResourcesAllocationResult namedResources;
     @JsonProperty("vendorRequestParameters")
-    private KubernetesResource vendorRequestParameters;
+    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
+    private Object vendorRequestParameters;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -73,7 +70,7 @@ public class DriverAllocationResult implements Editable<DriverAllocationResultBu
     public DriverAllocationResult() {
     }
 
-    public DriverAllocationResult(NamedResourcesAllocationResult namedResources, KubernetesResource vendorRequestParameters) {
+    public DriverAllocationResult(NamedResourcesAllocationResult namedResources, Object vendorRequestParameters) {
         super();
         this.namedResources = namedResources;
         this.vendorRequestParameters = vendorRequestParameters;
@@ -90,12 +87,13 @@ public class DriverAllocationResult implements Editable<DriverAllocationResultBu
     }
 
     @JsonProperty("vendorRequestParameters")
-    public KubernetesResource getVendorRequestParameters() {
+    public Object getVendorRequestParameters() {
         return vendorRequestParameters;
     }
 
     @JsonProperty("vendorRequestParameters")
-    public void setVendorRequestParameters(KubernetesResource vendorRequestParameters) {
+    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
+    public void setVendorRequestParameters(Object vendorRequestParameters) {
         this.vendorRequestParameters = vendorRequestParameters;
     }
 
