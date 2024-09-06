@@ -1748,13 +1748,30 @@ public class Config {
   }
 
   public KubeConfigFile getFileWithAuthInfo(String name) {
-    if (Utils.isNullOrEmpty(name)
-        || Utils.isNullOrEmpty(getFiles())) {
+    if (Utils.isNullOrEmpty(name)) {
+      return null;
+    }
+    return getFirstKubeConfigFileMatching(config -> KubeConfigUtils.hasAuthInfoNamed(config, name));
+  }
+
+  public KubeConfigFile getFileWithContext(String name) {
+    if (Utils.isNullOrEmpty(name)) {
+      return null;
+    }
+    return getFirstKubeConfigFileMatching(config -> KubeConfigUtils.getContext(config, name) != null);
+  }
+
+  public KubeConfigFile getFileWithCurrentContext() {
+    return getFirstKubeConfigFileMatching(config -> Utils.isNotNullOrEmpty(config.getCurrentContext()));
+  }
+
+  private KubeConfigFile getFirstKubeConfigFileMatching(Predicate<io.fabric8.kubernetes.api.model.Config> predicate) {
+    if (Utils.isNullOrEmpty(kubeConfigFiles)) {
       return null;
     }
     return kubeConfigFiles.stream()
         .filter(KubeConfigFile::isReadable)
-        .filter(entry -> KubeConfigUtils.hasAuthInfoNamed(entry.getConfig(), name))
+        .filter(entry -> predicate.test(entry.getConfig()))
         .findFirst()
         .orElse(null);
   }
@@ -1782,20 +1799,6 @@ public class Config {
     this.additionalProperties.put(name, value);
   }
 
-  public void setFile(File file) {
-    setFiles(Collections.singletonList(file));
-  }
-
-  public void setFiles(List<File> files) {
-    if (Utils.isNullOrEmpty(files)) {
-      this.kubeConfigFiles = Collections.emptyList();
-    } else {
-      this.kubeConfigFiles = files.stream()
-          .map(KubeConfigFile::new)
-          .collect(Collectors.toList());
-    }
-  }
-
   public void setKubeConfigFiles(List<KubeConfigFile> files) {
     if (Utils.isNullOrEmpty(files)) {
       this.kubeConfigFiles = Collections.emptyList();
@@ -1809,7 +1812,36 @@ public class Config {
    * Returns the files that are listed in the KUBERNETES_KUBECONFIG_FILES env or system variables.
    * Returns the default kube config file if it's not set'.
    *
-   * @return
+   * @return the files and Configs that configure this client
+   */
+  public List<KubeConfigFile> getKubeConfigFiles() {
+    if (this.kubeConfigFiles == null) {
+      return Collections.emptyList();
+    } else {
+      return new ArrayList<>(kubeConfigFiles);
+    }
+  }
+
+  public void setFile(File file) {
+    setFiles(Collections.singletonList(file));
+  }
+
+  public void setFiles(List<File> files) {
+    if (Utils.isNullOrEmpty(files)) {
+      setKubeConfigFiles(Collections.emptyList());
+    } else {
+      setKubeConfigFiles(files.stream()
+          .map(KubeConfigFile::new)
+          .collect(Collectors.toList()));
+    }
+  }
+
+  /**
+   * Returns the kube config files that are used to configure this client.
+   * Returns the files that are listed in the KUBERNETES_KUBECONFIG_FILES env or system variables.
+   * Returns the default kube config file if it's not set'.
+   *
+   * @return the files that configure this client
    */
   public List<File> getFiles() {
     if (this.kubeConfigFiles == null) {

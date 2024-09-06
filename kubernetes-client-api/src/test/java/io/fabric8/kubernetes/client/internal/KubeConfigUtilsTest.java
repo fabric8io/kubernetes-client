@@ -157,19 +157,19 @@ class KubeConfigUtilsTest {
     return Stream.of(
         // given config with authInfo, when getAuthInfoName with existing name, then should return true
         Arguments.of(
-            named("config with authInfo", getTestKubeConfig()),
-            named("existing name", "test/api-test-com:443"),
-            named("should return true", (Consumer<Boolean>) (hasIt -> assertThat(hasIt).isTrue()))),
+            named("given config with authInfo", getTestKubeConfig()),
+            named("given existing name", "test/api-test-com:443"),
+            named("then return true", (Consumer<Boolean>) (hasIt -> assertThat(hasIt).isTrue()))),
         // given config with authInfo, when getAuthInfoName with missing name, then should return false
         Arguments.of(
-            named("config with authInfo", getTestKubeConfig()),
-            named("missing authInfo name", "bogus"),
-            named("should return false", (Consumer<Boolean>) (hasIt -> assertThat(hasIt).isFalse()))),
+            named("given config with authInfo", getTestKubeConfig()),
+            named("given missing authInfo name", "bogus"),
+            named("then return false", (Consumer<Boolean>) (hasIt -> assertThat(hasIt).isFalse()))),
         // given config without authInfo, when getAuthInfoName with missing name, then should return false
         Arguments.of(
-            named("config without authInfo", new ConfigBuilder().build()),
-            named("missing authInfo name", "test/api-test-com:443"),
-            named("should return false", (Consumer<Boolean>) (hasIt -> assertThat(hasIt).isFalse()))));
+            named("given config without authInfo", new ConfigBuilder().build()),
+            named("given missing authInfo name", "test/api-test-com:443"),
+            named("then return false", (Consumer<Boolean>) (hasIt -> assertThat(hasIt).isFalse()))));
   }
 
   private static Config getTestKubeConfig() {

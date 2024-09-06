@@ -60,16 +60,31 @@ public class KubeConfigUtils {
   public static NamedContext getCurrentContext(Config config) {
     String contextName = config.getCurrentContext();
     if (contextName != null) {
-      List<NamedContext> contexts = config.getContexts();
-      if (contexts != null) {
-        for (NamedContext context : contexts) {
-          if (contextName.equals(context.getName())) {
-            return context;
-          }
-        }
-      }
+      return getContext(config, contextName);
     }
     return null;
+  }
+
+  /**
+   * Returns the {@link NamedContext} with the given name.
+   * Returns {@code null} otherwise
+   *
+   * @param config the config to search
+   * @param name the context name to match
+   * @return the context with the the given name
+   */
+  public static NamedContext getContext(Config config, String name) {
+    NamedContext context = null;
+    if (config != null && name != null) {
+      List<NamedContext> contexts = config.getContexts();
+      if (contexts != null) {
+        context = contexts.stream()
+            .filter(toInspect -> name.equals(toInspect.getName()))
+            .findAny()
+            .orElse(null);
+      }
+    }
+    return context;
   }
 
   /**

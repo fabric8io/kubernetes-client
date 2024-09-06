@@ -14,7 +14,6 @@
 * Fix #6281: use GitHub binary repo for Kube API Tests
 * Fix #6282: Allow annotated types with Pattern, Min, and Max with Lists and Maps and CRD generation
 * Fix #5480: Move `io.fabric8:zjsonpatch` to KubernetesClient project
-* Fix #6354: Prevent deadlock in okhttp AsyncBody.cancel
 * Fix #6240: Use kubeconfig files listed in the KUBECONFIG env var
 
 #### Dependency Upgrade
