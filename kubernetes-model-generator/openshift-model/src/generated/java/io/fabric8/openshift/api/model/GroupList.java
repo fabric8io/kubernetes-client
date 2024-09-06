@@ -26,6 +26,7 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
+import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
@@ -64,7 +65,7 @@ import lombok.experimental.Accessors;
     @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true)
 })
 @Version("v1")
-@io.fabric8.kubernetes.model.annotation.Group("user.openshift.io")
+@Group("user.openshift.io")
 @Generated("jsonschema2pojo")
 public class GroupList implements Editable<GroupListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.Group>
 {

@@ -20,6 +20,7 @@ import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
+import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
@@ -59,7 +60,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
+    @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
@@ -75,7 +76,7 @@ public class BuildStatus implements Editable<BuildStatusBuilder> , KubernetesRes
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<BuildCondition> conditions = new ArrayList<>();
     @JsonProperty("config")
-    private io.fabric8.kubernetes.api.model.ObjectReference config;
+    private ObjectReference config;
     @JsonProperty("duration")
     private Long duration;
     @JsonProperty("logSnippet")
@@ -105,7 +106,7 @@ public class BuildStatus implements Editable<BuildStatusBuilder> , KubernetesRes
     public BuildStatus() {
     }
 
-    public BuildStatus(Boolean cancelled, String completionTimestamp, List<BuildCondition> conditions, io.fabric8.kubernetes.api.model.ObjectReference config, Long duration, String logSnippet, String message, BuildStatusOutput output, String outputDockerImageReference, String phase, String reason, List<StageInfo> stages, String startTimestamp) {
+    public BuildStatus(Boolean cancelled, String completionTimestamp, List<BuildCondition> conditions, ObjectReference config, Long duration, String logSnippet, String message, BuildStatusOutput output, String outputDockerImageReference, String phase, String reason, List<StageInfo> stages, String startTimestamp) {
         super();
         this.cancelled = cancelled;
         this.completionTimestamp = completionTimestamp;
@@ -154,12 +155,12 @@ public class BuildStatus implements Editable<BuildStatusBuilder> , KubernetesRes
     }
 
     @JsonProperty("config")
-    public io.fabric8.kubernetes.api.model.ObjectReference getConfig() {
+    public ObjectReference getConfig() {
         return config;
     }
 
     @JsonProperty("config")
-    public void setConfig(io.fabric8.kubernetes.api.model.ObjectReference config) {
+    public void setConfig(ObjectReference config) {
         this.config = config;
     }
 

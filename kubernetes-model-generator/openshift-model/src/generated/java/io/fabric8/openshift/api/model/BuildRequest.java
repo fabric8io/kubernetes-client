@@ -21,6 +21,8 @@ import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.Namespaced;
+import io.fabric8.kubernetes.api.model.ObjectMeta;
+import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
@@ -57,13 +59,13 @@ import lombok.experimental.Accessors;
     ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
+    @BuildableReference(ObjectMeta.class),
     @BuildableReference(LabelSelector.class),
     @BuildableReference(Container.class),
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
+    @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
@@ -91,7 +93,7 @@ public class BuildRequest implements Editable<BuildRequestBuilder> , HasMetadata
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<EnvVar> env = new ArrayList<>();
     @JsonProperty("from")
-    private io.fabric8.kubernetes.api.model.ObjectReference from;
+    private ObjectReference from;
     /**
      * 
      * (Required)
@@ -102,7 +104,7 @@ public class BuildRequest implements Editable<BuildRequestBuilder> , HasMetadata
     @JsonProperty("lastVersion")
     private Long lastVersion;
     @JsonProperty("metadata")
-    private io.fabric8.kubernetes.api.model.ObjectMeta metadata;
+    private ObjectMeta metadata;
     @JsonProperty("revision")
     private SourceRevision revision;
     @JsonProperty("sourceStrategyOptions")
@@ -111,7 +113,7 @@ public class BuildRequest implements Editable<BuildRequestBuilder> , HasMetadata
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<BuildTriggerCause> triggeredBy = new ArrayList<>();
     @JsonProperty("triggeredByImage")
-    private io.fabric8.kubernetes.api.model.ObjectReference triggeredByImage;
+    private ObjectReference triggeredByImage;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -122,7 +124,7 @@ public class BuildRequest implements Editable<BuildRequestBuilder> , HasMetadata
     public BuildRequest() {
     }
 
-    public BuildRequest(String apiVersion, BinaryBuildSource binary, DockerStrategyOptions dockerStrategyOptions, List<EnvVar> env, io.fabric8.kubernetes.api.model.ObjectReference from, String kind, Long lastVersion, io.fabric8.kubernetes.api.model.ObjectMeta metadata, SourceRevision revision, SourceStrategyOptions sourceStrategyOptions, List<BuildTriggerCause> triggeredBy, io.fabric8.kubernetes.api.model.ObjectReference triggeredByImage) {
+    public BuildRequest(String apiVersion, BinaryBuildSource binary, DockerStrategyOptions dockerStrategyOptions, List<EnvVar> env, ObjectReference from, String kind, Long lastVersion, ObjectMeta metadata, SourceRevision revision, SourceStrategyOptions sourceStrategyOptions, List<BuildTriggerCause> triggeredBy, ObjectReference triggeredByImage) {
         super();
         this.apiVersion = apiVersion;
         this.binary = binary;
@@ -190,12 +192,12 @@ public class BuildRequest implements Editable<BuildRequestBuilder> , HasMetadata
     }
 
     @JsonProperty("from")
-    public io.fabric8.kubernetes.api.model.ObjectReference getFrom() {
+    public ObjectReference getFrom() {
         return from;
     }
 
     @JsonProperty("from")
-    public void setFrom(io.fabric8.kubernetes.api.model.ObjectReference from) {
+    public void setFrom(ObjectReference from) {
         this.from = from;
     }
 
@@ -230,12 +232,12 @@ public class BuildRequest implements Editable<BuildRequestBuilder> , HasMetadata
     }
 
     @JsonProperty("metadata")
-    public io.fabric8.kubernetes.api.model.ObjectMeta getMetadata() {
+    public ObjectMeta getMetadata() {
         return metadata;
     }
 
     @JsonProperty("metadata")
-    public void setMetadata(io.fabric8.kubernetes.api.model.ObjectMeta metadata) {
+    public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
@@ -271,12 +273,12 @@ public class BuildRequest implements Editable<BuildRequestBuilder> , HasMetadata
     }
 
     @JsonProperty("triggeredByImage")
-    public io.fabric8.kubernetes.api.model.ObjectReference getTriggeredByImage() {
+    public ObjectReference getTriggeredByImage() {
         return triggeredByImage;
     }
 
     @JsonProperty("triggeredByImage")
-    public void setTriggeredByImage(io.fabric8.kubernetes.api.model.ObjectReference triggeredByImage) {
+    public void setTriggeredByImage(ObjectReference triggeredByImage) {
         this.triggeredByImage = triggeredByImage;
     }
 

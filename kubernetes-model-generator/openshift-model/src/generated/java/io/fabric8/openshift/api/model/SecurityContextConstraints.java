@@ -19,6 +19,7 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
+import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
@@ -61,6 +62,7 @@ import lombok.experimental.Accessors;
     "seLinuxContext",
     "seccompProfiles",
     "supplementalGroups",
+    "userNamespaceLevel",
     "users",
     "volumes"
 })
@@ -71,7 +73,7 @@ import lombok.experimental.Accessors;
     ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
+    @BuildableReference(ObjectMeta.class),
     @BuildableReference(LabelSelector.class),
     @BuildableReference(Container.class),
     @BuildableReference(PodTemplateSpec.class),
@@ -141,7 +143,7 @@ public class SecurityContextConstraints implements Editable<SecurityContextConst
     @JsonProperty("kind")
     private String kind = "SecurityContextConstraints";
     @JsonProperty("metadata")
-    private io.fabric8.kubernetes.api.model.ObjectMeta metadata;
+    private ObjectMeta metadata;
     @JsonProperty("priority")
     private Integer priority;
     @JsonProperty("readOnlyRootFilesystem")
@@ -158,6 +160,8 @@ public class SecurityContextConstraints implements Editable<SecurityContextConst
     private List<String> seccompProfiles = new ArrayList<>();
     @JsonProperty("supplementalGroups")
     private SupplementalGroupsStrategyOptions supplementalGroups;
+    @JsonProperty("userNamespaceLevel")
+    private String userNamespaceLevel;
     @JsonProperty("users")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> users = new ArrayList<>();
@@ -174,7 +178,7 @@ public class SecurityContextConstraints implements Editable<SecurityContextConst
     public SecurityContextConstraints() {
     }
 
-    public SecurityContextConstraints(Boolean allowHostDirVolumePlugin, Boolean allowHostIPC, Boolean allowHostNetwork, Boolean allowHostPID, Boolean allowHostPorts, Boolean allowPrivilegeEscalation, Boolean allowPrivilegedContainer, List<String> allowedCapabilities, List<AllowedFlexVolume> allowedFlexVolumes, List<String> allowedUnsafeSysctls, String apiVersion, List<String> defaultAddCapabilities, Boolean defaultAllowPrivilegeEscalation, List<String> forbiddenSysctls, FSGroupStrategyOptions fsGroup, List<String> groups, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, Integer priority, Boolean readOnlyRootFilesystem, List<String> requiredDropCapabilities, RunAsUserStrategyOptions runAsUser, SELinuxContextStrategyOptions seLinuxContext, List<String> seccompProfiles, SupplementalGroupsStrategyOptions supplementalGroups, List<String> users, List<String> volumes) {
+    public SecurityContextConstraints(Boolean allowHostDirVolumePlugin, Boolean allowHostIPC, Boolean allowHostNetwork, Boolean allowHostPID, Boolean allowHostPorts, Boolean allowPrivilegeEscalation, Boolean allowPrivilegedContainer, List<String> allowedCapabilities, List<AllowedFlexVolume> allowedFlexVolumes, List<String> allowedUnsafeSysctls, String apiVersion, List<String> defaultAddCapabilities, Boolean defaultAllowPrivilegeEscalation, List<String> forbiddenSysctls, FSGroupStrategyOptions fsGroup, List<String> groups, String kind, ObjectMeta metadata, Integer priority, Boolean readOnlyRootFilesystem, List<String> requiredDropCapabilities, RunAsUserStrategyOptions runAsUser, SELinuxContextStrategyOptions seLinuxContext, List<String> seccompProfiles, SupplementalGroupsStrategyOptions supplementalGroups, String userNamespaceLevel, List<String> users, List<String> volumes) {
         super();
         this.allowHostDirVolumePlugin = allowHostDirVolumePlugin;
         this.allowHostIPC = allowHostIPC;
@@ -201,6 +205,7 @@ public class SecurityContextConstraints implements Editable<SecurityContextConst
         this.seLinuxContext = seLinuxContext;
         this.seccompProfiles = seccompProfiles;
         this.supplementalGroups = supplementalGroups;
+        this.userNamespaceLevel = userNamespaceLevel;
         this.users = users;
         this.volumes = volumes;
     }
@@ -402,12 +407,12 @@ public class SecurityContextConstraints implements Editable<SecurityContextConst
     }
 
     @JsonProperty("metadata")
-    public io.fabric8.kubernetes.api.model.ObjectMeta getMetadata() {
+    public ObjectMeta getMetadata() {
         return metadata;
     }
 
     @JsonProperty("metadata")
-    public void setMetadata(io.fabric8.kubernetes.api.model.ObjectMeta metadata) {
+    public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
@@ -481,6 +486,16 @@ public class SecurityContextConstraints implements Editable<SecurityContextConst
     @JsonProperty("supplementalGroups")
     public void setSupplementalGroups(SupplementalGroupsStrategyOptions supplementalGroups) {
         this.supplementalGroups = supplementalGroups;
+    }
+
+    @JsonProperty("userNamespaceLevel")
+    public String getUserNamespaceLevel() {
+        return userNamespaceLevel;
+    }
+
+    @JsonProperty("userNamespaceLevel")
+    public void setUserNamespaceLevel(String userNamespaceLevel) {
+        this.userNamespaceLevel = userNamespaceLevel;
     }
 
     @JsonProperty("users")

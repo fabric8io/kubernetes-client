@@ -14,7 +14,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
-import io.fabric8.kubernetes.api.model.Condition;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -63,12 +62,12 @@ public class APIRequestCountStatus implements Editable<APIRequestCountStatusBuil
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Condition> conditions = new ArrayList<>();
+    private List<APIRequestCountStatusConditions> conditions = new ArrayList<>();
     @JsonProperty("currentHour")
-    private PerResourceAPIRequestLog currentHour;
+    private APIRequestCountStatusCurrentHour currentHour;
     @JsonProperty("last24h")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<PerResourceAPIRequestLog> last24h = new ArrayList<>();
+    private List<APIRequestCountStatusLast24h> last24h = new ArrayList<>();
     @JsonProperty("removedInRelease")
     private String removedInRelease;
     @JsonProperty("requestCount")
@@ -83,7 +82,7 @@ public class APIRequestCountStatus implements Editable<APIRequestCountStatusBuil
     public APIRequestCountStatus() {
     }
 
-    public APIRequestCountStatus(List<Condition> conditions, PerResourceAPIRequestLog currentHour, List<PerResourceAPIRequestLog> last24h, String removedInRelease, Long requestCount) {
+    public APIRequestCountStatus(List<APIRequestCountStatusConditions> conditions, APIRequestCountStatusCurrentHour currentHour, List<APIRequestCountStatusLast24h> last24h, String removedInRelease, Long requestCount) {
         super();
         this.conditions = conditions;
         this.currentHour = currentHour;
@@ -94,33 +93,33 @@ public class APIRequestCountStatus implements Editable<APIRequestCountStatusBuil
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<Condition> getConditions() {
+    public List<APIRequestCountStatusConditions> getConditions() {
         return conditions;
     }
 
     @JsonProperty("conditions")
-    public void setConditions(List<Condition> conditions) {
+    public void setConditions(List<APIRequestCountStatusConditions> conditions) {
         this.conditions = conditions;
     }
 
     @JsonProperty("currentHour")
-    public PerResourceAPIRequestLog getCurrentHour() {
+    public APIRequestCountStatusCurrentHour getCurrentHour() {
         return currentHour;
     }
 
     @JsonProperty("currentHour")
-    public void setCurrentHour(PerResourceAPIRequestLog currentHour) {
+    public void setCurrentHour(APIRequestCountStatusCurrentHour currentHour) {
         this.currentHour = currentHour;
     }
 
     @JsonProperty("last24h")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<PerResourceAPIRequestLog> getLast24h() {
+    public List<APIRequestCountStatusLast24h> getLast24h() {
         return last24h;
     }
 
     @JsonProperty("last24h")
-    public void setLast24h(List<PerResourceAPIRequestLog> last24h) {
+    public void setLast24h(List<APIRequestCountStatusLast24h> last24h) {
         this.last24h = last24h;
     }
 

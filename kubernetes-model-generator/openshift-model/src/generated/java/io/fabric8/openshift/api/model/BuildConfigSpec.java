@@ -23,6 +23,7 @@ import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
+import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -58,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LabelSelector.class),
     @BuildableReference(Container.class),
     @BuildableReference(PodTemplateSpec.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.ResourceRequirements.class),
+    @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
@@ -82,7 +83,7 @@ public class BuildConfigSpec implements Editable<BuildConfigSpecBuilder> , Kuber
     @JsonProperty("postCommit")
     private BuildPostCommitSpec postCommit;
     @JsonProperty("resources")
-    private io.fabric8.kubernetes.api.model.ResourceRequirements resources;
+    private ResourceRequirements resources;
     @JsonProperty("revision")
     private SourceRevision revision;
     @JsonProperty("runPolicy")
@@ -108,7 +109,7 @@ public class BuildConfigSpec implements Editable<BuildConfigSpecBuilder> , Kuber
     public BuildConfigSpec() {
     }
 
-    public BuildConfigSpec(Long completionDeadlineSeconds, Integer failedBuildsHistoryLimit, Boolean mountTrustedCA, Map<String, String> nodeSelector, BuildOutput output, BuildPostCommitSpec postCommit, io.fabric8.kubernetes.api.model.ResourceRequirements resources, SourceRevision revision, String runPolicy, String serviceAccount, BuildSource source, BuildStrategy strategy, Integer successfulBuildsHistoryLimit, List<BuildTriggerPolicy> triggers) {
+    public BuildConfigSpec(Long completionDeadlineSeconds, Integer failedBuildsHistoryLimit, Boolean mountTrustedCA, Map<String, String> nodeSelector, BuildOutput output, BuildPostCommitSpec postCommit, ResourceRequirements resources, SourceRevision revision, String runPolicy, String serviceAccount, BuildSource source, BuildStrategy strategy, Integer successfulBuildsHistoryLimit, List<BuildTriggerPolicy> triggers) {
         super();
         this.completionDeadlineSeconds = completionDeadlineSeconds;
         this.failedBuildsHistoryLimit = failedBuildsHistoryLimit;
@@ -188,12 +189,12 @@ public class BuildConfigSpec implements Editable<BuildConfigSpecBuilder> , Kuber
     }
 
     @JsonProperty("resources")
-    public io.fabric8.kubernetes.api.model.ResourceRequirements getResources() {
+    public ResourceRequirements getResources() {
         return resources;
     }
 
     @JsonProperty("resources")
-    public void setResources(io.fabric8.kubernetes.api.model.ResourceRequirements resources) {
+    public void setResources(ResourceRequirements resources) {
         this.resources = resources;
     }
 

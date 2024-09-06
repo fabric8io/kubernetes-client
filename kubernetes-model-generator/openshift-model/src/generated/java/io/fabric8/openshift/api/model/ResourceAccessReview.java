@@ -13,7 +13,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
@@ -23,7 +22,6 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.kubernetes.api.model.runtime.RawExtension;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
@@ -64,9 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
-    @BuildableReference(PersistentVolumeClaim.class),
-    @BuildableReference(GenericKubernetesResource.class),
-    @BuildableReference(RawExtension.class)
+    @BuildableReference(PersistentVolumeClaim.class)
 })
 @TemplateTransformations({
     @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true)
@@ -85,7 +81,8 @@ public class ResourceAccessReview implements Editable<ResourceAccessReviewBuilde
     @JsonProperty("apiVersion")
     private String apiVersion = "authorization.openshift.io/v1";
     @JsonProperty("content")
-    private KubernetesResource content;
+    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
+    private Object content;
     @JsonProperty("isNonResourceURL")
     private Boolean isNonResourceURL;
     /**
@@ -119,7 +116,7 @@ public class ResourceAccessReview implements Editable<ResourceAccessReviewBuilde
     public ResourceAccessReview() {
     }
 
-    public ResourceAccessReview(String apiVersion, KubernetesResource content, Boolean isNonResourceURL, String kind, String namespace, String path, String resource, String resourceAPIGroup, String resourceAPIVersion, String resourceName, String verb) {
+    public ResourceAccessReview(String apiVersion, Object content, Boolean isNonResourceURL, String kind, String namespace, String path, String resource, String resourceAPIGroup, String resourceAPIVersion, String resourceName, String verb) {
         super();
         this.apiVersion = apiVersion;
         this.content = content;
@@ -155,12 +152,13 @@ public class ResourceAccessReview implements Editable<ResourceAccessReviewBuilde
     }
 
     @JsonProperty("content")
-    public KubernetesResource getContent() {
+    public Object getContent() {
         return content;
     }
 
     @JsonProperty("content")
-    public void setContent(KubernetesResource content) {
+    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
+    public void setContent(Object content) {
         this.content = content;
     }
 

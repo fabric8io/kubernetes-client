@@ -19,13 +19,13 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
+import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
-import io.fabric8.openshift.api.model.runtime.RawExtension;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import io.sundr.transform.annotations.TemplateTransformation;
@@ -58,7 +58,7 @@ import lombok.experimental.Accessors;
     ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
+    @BuildableReference(ObjectMeta.class),
     @BuildableReference(LabelSelector.class),
     @BuildableReference(Container.class),
     @BuildableReference(PodTemplateSpec.class),
@@ -97,7 +97,8 @@ public class Image implements Editable<ImageBuilder> , HasMetadata
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ImageManifest> dockerImageManifests = new ArrayList<>();
     @JsonProperty("dockerImageMetadata")
-    private RawExtension dockerImageMetadata;
+    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
+    private Object dockerImageMetadata;
     @JsonProperty("dockerImageMetadataVersion")
     private String dockerImageMetadataVersion;
     @JsonProperty("dockerImageReference")
@@ -113,7 +114,7 @@ public class Image implements Editable<ImageBuilder> , HasMetadata
     @JsonProperty("kind")
     private String kind = "Image";
     @JsonProperty("metadata")
-    private io.fabric8.kubernetes.api.model.ObjectMeta metadata;
+    private ObjectMeta metadata;
     @JsonProperty("signatures")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ImageSignature> signatures = new ArrayList<>();
@@ -127,7 +128,7 @@ public class Image implements Editable<ImageBuilder> , HasMetadata
     public Image() {
     }
 
-    public Image(String apiVersion, String dockerImageConfig, List<ImageLayer> dockerImageLayers, String dockerImageManifest, String dockerImageManifestMediaType, List<ImageManifest> dockerImageManifests, RawExtension dockerImageMetadata, String dockerImageMetadataVersion, String dockerImageReference, List<String> dockerImageSignatures, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, List<ImageSignature> signatures) {
+    public Image(String apiVersion, String dockerImageConfig, List<ImageLayer> dockerImageLayers, String dockerImageManifest, String dockerImageManifestMediaType, List<ImageManifest> dockerImageManifests, Object dockerImageMetadata, String dockerImageMetadataVersion, String dockerImageReference, List<String> dockerImageSignatures, String kind, ObjectMeta metadata, List<ImageSignature> signatures) {
         super();
         this.apiVersion = apiVersion;
         this.dockerImageConfig = dockerImageConfig;
@@ -217,12 +218,13 @@ public class Image implements Editable<ImageBuilder> , HasMetadata
     }
 
     @JsonProperty("dockerImageMetadata")
-    public RawExtension getDockerImageMetadata() {
+    public Object getDockerImageMetadata() {
         return dockerImageMetadata;
     }
 
     @JsonProperty("dockerImageMetadata")
-    public void setDockerImageMetadata(RawExtension dockerImageMetadata) {
+    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
+    public void setDockerImageMetadata(Object dockerImageMetadata) {
         this.dockerImageMetadata = dockerImageMetadata;
     }
 
@@ -278,12 +280,12 @@ public class Image implements Editable<ImageBuilder> , HasMetadata
     }
 
     @JsonProperty("metadata")
-    public io.fabric8.kubernetes.api.model.ObjectMeta getMetadata() {
+    public ObjectMeta getMetadata() {
         return metadata;
     }
 
     @JsonProperty("metadata")
-    public void setMetadata(io.fabric8.kubernetes.api.model.ObjectMeta metadata) {
+    public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 

@@ -22,6 +22,7 @@ import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
+import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
@@ -45,7 +46,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(ObjectMeta.class),
     @BuildableReference(LabelSelector.class),
     @BuildableReference(Container.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.PodTemplateSpec.class),
+    @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
@@ -60,7 +61,7 @@ public class PodSecurityPolicyReviewSpec implements Editable<PodSecurityPolicyRe
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> serviceAccountNames = new ArrayList<>();
     @JsonProperty("template")
-    private io.fabric8.kubernetes.api.model.PodTemplateSpec template;
+    private PodTemplateSpec template;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -71,7 +72,7 @@ public class PodSecurityPolicyReviewSpec implements Editable<PodSecurityPolicyRe
     public PodSecurityPolicyReviewSpec() {
     }
 
-    public PodSecurityPolicyReviewSpec(List<String> serviceAccountNames, io.fabric8.kubernetes.api.model.PodTemplateSpec template) {
+    public PodSecurityPolicyReviewSpec(List<String> serviceAccountNames, PodTemplateSpec template) {
         super();
         this.serviceAccountNames = serviceAccountNames;
         this.template = template;
@@ -89,12 +90,12 @@ public class PodSecurityPolicyReviewSpec implements Editable<PodSecurityPolicyRe
     }
 
     @JsonProperty("template")
-    public io.fabric8.kubernetes.api.model.PodTemplateSpec getTemplate() {
+    public PodTemplateSpec getTemplate() {
         return template;
     }
 
     @JsonProperty("template")
-    public void setTemplate(io.fabric8.kubernetes.api.model.PodTemplateSpec template) {
+    public void setTemplate(PodTemplateSpec template) {
         this.template = template;
     }
 

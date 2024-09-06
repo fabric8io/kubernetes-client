@@ -18,6 +18,7 @@ import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
+import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
@@ -51,7 +52,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
+    @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
@@ -63,7 +64,7 @@ public class TagReference implements Editable<TagReferenceBuilder> , KubernetesR
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> annotations = new LinkedHashMap<>();
     @JsonProperty("from")
-    private io.fabric8.kubernetes.api.model.ObjectReference from;
+    private ObjectReference from;
     @JsonProperty("generation")
     private Long generation;
     @JsonProperty("importPolicy")
@@ -84,7 +85,7 @@ public class TagReference implements Editable<TagReferenceBuilder> , KubernetesR
     public TagReference() {
     }
 
-    public TagReference(Map<String, String> annotations, io.fabric8.kubernetes.api.model.ObjectReference from, Long generation, TagImportPolicy importPolicy, String name, Boolean reference, TagReferencePolicy referencePolicy) {
+    public TagReference(Map<String, String> annotations, ObjectReference from, Long generation, TagImportPolicy importPolicy, String name, Boolean reference, TagReferencePolicy referencePolicy) {
         super();
         this.annotations = annotations;
         this.from = from;
@@ -107,12 +108,12 @@ public class TagReference implements Editable<TagReferenceBuilder> , KubernetesR
     }
 
     @JsonProperty("from")
-    public io.fabric8.kubernetes.api.model.ObjectReference getFrom() {
+    public ObjectReference getFrom() {
         return from;
     }
 
     @JsonProperty("from")
-    public void setFrom(io.fabric8.kubernetes.api.model.ObjectReference from) {
+    public void setFrom(ObjectReference from) {
         this.from = from;
     }
 

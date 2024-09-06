@@ -48,6 +48,7 @@ import static java.util.Collections.singletonMap;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -296,16 +297,15 @@ class TemplateTest {
             .hasFieldOrPropertyWithValue("additionalProperties.immutable", "${IMMUTABLE}"));
   }
 
-  protected void assertListIsServiceWithPort8080(KubernetesList list) {
-    assertNotNull(list);
+  protected static void assertListIsServiceWithPort8080(KubernetesList list) {
     assertListIsServiceWithPort8080(list.getItems());
   }
 
-  protected static void assertListIsServiceWithPort8080(List<HasMetadata> items) {
+  protected static void assertListIsServiceWithPort8080(List<?> items) {
     assertNotNull(items);
     assertEquals(1, items.size());
-    HasMetadata item = items.get(0);
-    assertTrue(item instanceof Service);
+    HasMetadata item = assertInstanceOf(HasMetadata.class, items.get(0));
+    assertInstanceOf(Service.class, item);
     Service service = (Service) item;
     ServiceSpec serviceSpec = service.getSpec();
     assertNotNull(serviceSpec);
@@ -327,8 +327,7 @@ class TemplateTest {
     map.put("PORT", "8080");
 
     Template template = client.templates().withParameters(map).withName("tmpl1").get();
-    List<HasMetadata> list = template.getObjects();
-    assertListIsServiceWithPort8080(list);
+    assertListIsServiceWithPort8080(template.getObjects());
   }
 
   @Test

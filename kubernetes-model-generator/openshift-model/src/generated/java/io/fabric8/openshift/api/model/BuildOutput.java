@@ -18,7 +18,9 @@ import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
+import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
+import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
@@ -48,8 +50,8 @@ import lombok.experimental.Accessors;
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.LocalObjectReference.class),
+    @BuildableReference(ObjectReference.class),
+    @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
@@ -60,9 +62,9 @@ public class BuildOutput implements Editable<BuildOutputBuilder> , KubernetesRes
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ImageLabel> imageLabels = new ArrayList<>();
     @JsonProperty("pushSecret")
-    private io.fabric8.kubernetes.api.model.LocalObjectReference pushSecret;
+    private LocalObjectReference pushSecret;
     @JsonProperty("to")
-    private io.fabric8.kubernetes.api.model.ObjectReference to;
+    private ObjectReference to;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -73,7 +75,7 @@ public class BuildOutput implements Editable<BuildOutputBuilder> , KubernetesRes
     public BuildOutput() {
     }
 
-    public BuildOutput(List<ImageLabel> imageLabels, io.fabric8.kubernetes.api.model.LocalObjectReference pushSecret, io.fabric8.kubernetes.api.model.ObjectReference to) {
+    public BuildOutput(List<ImageLabel> imageLabels, LocalObjectReference pushSecret, ObjectReference to) {
         super();
         this.imageLabels = imageLabels;
         this.pushSecret = pushSecret;
@@ -92,22 +94,22 @@ public class BuildOutput implements Editable<BuildOutputBuilder> , KubernetesRes
     }
 
     @JsonProperty("pushSecret")
-    public io.fabric8.kubernetes.api.model.LocalObjectReference getPushSecret() {
+    public LocalObjectReference getPushSecret() {
         return pushSecret;
     }
 
     @JsonProperty("pushSecret")
-    public void setPushSecret(io.fabric8.kubernetes.api.model.LocalObjectReference pushSecret) {
+    public void setPushSecret(LocalObjectReference pushSecret) {
         this.pushSecret = pushSecret;
     }
 
     @JsonProperty("to")
-    public io.fabric8.kubernetes.api.model.ObjectReference getTo() {
+    public ObjectReference getTo() {
         return to;
     }
 
     @JsonProperty("to")
-    public void setTo(io.fabric8.kubernetes.api.model.ObjectReference to) {
+    public void setTo(ObjectReference to) {
         this.to = to;
     }
 

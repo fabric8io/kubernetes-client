@@ -16,6 +16,7 @@ import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
+import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
@@ -47,7 +48,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.LocalObjectReference.class),
+    @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
@@ -57,7 +58,7 @@ public class SecretSpec implements Editable<SecretSpecBuilder> , KubernetesResou
     @JsonProperty("mountPath")
     private String mountPath;
     @JsonProperty("secretSource")
-    private io.fabric8.kubernetes.api.model.LocalObjectReference secretSource;
+    private LocalObjectReference secretSource;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -68,7 +69,7 @@ public class SecretSpec implements Editable<SecretSpecBuilder> , KubernetesResou
     public SecretSpec() {
     }
 
-    public SecretSpec(String mountPath, io.fabric8.kubernetes.api.model.LocalObjectReference secretSource) {
+    public SecretSpec(String mountPath, LocalObjectReference secretSource) {
         super();
         this.mountPath = mountPath;
         this.secretSource = secretSource;
@@ -85,12 +86,12 @@ public class SecretSpec implements Editable<SecretSpecBuilder> , KubernetesResou
     }
 
     @JsonProperty("secretSource")
-    public io.fabric8.kubernetes.api.model.LocalObjectReference getSecretSource() {
+    public LocalObjectReference getSecretSource() {
         return secretSource;
     }
 
     @JsonProperty("secretSource")
-    public void setSecretSource(io.fabric8.kubernetes.api.model.LocalObjectReference secretSource) {
+    public void setSecretSource(LocalObjectReference secretSource) {
         this.secretSource = secretSource;
     }
 

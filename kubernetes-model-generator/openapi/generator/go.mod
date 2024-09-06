@@ -4,6 +4,7 @@ go 1.22.0
 
 require (
 	github.com/getkin/kin-openapi v0.125.0
+	github.com/openshift/api v0.0.0-20240911192208-3e5de946111c
 	k8s.io/api v0.30.2
 	k8s.io/apiextensions-apiserver v0.30.2
 	k8s.io/apimachinery v0.30.2

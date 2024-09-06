@@ -15,7 +15,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
@@ -26,7 +25,6 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.kubernetes.api.model.runtime.RawExtension;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
@@ -70,9 +68,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
-    @BuildableReference(PersistentVolumeClaim.class),
-    @BuildableReference(GenericKubernetesResource.class),
-    @BuildableReference(RawExtension.class)
+    @BuildableReference(PersistentVolumeClaim.class)
 })
 @TemplateTransformations({
     @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true)
@@ -91,7 +87,8 @@ public class LocalSubjectAccessReview implements Editable<LocalSubjectAccessRevi
     @JsonProperty("apiVersion")
     private String apiVersion = "authorization.openshift.io/v1";
     @JsonProperty("content")
-    private KubernetesResource content;
+    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
+    private Object content;
     @JsonProperty("groups")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> groups = new ArrayList<>();
@@ -133,7 +130,7 @@ public class LocalSubjectAccessReview implements Editable<LocalSubjectAccessRevi
     public LocalSubjectAccessReview() {
     }
 
-    public LocalSubjectAccessReview(String apiVersion, KubernetesResource content, List<String> groups, Boolean isNonResourceURL, String kind, String namespace, String path, String resource, String resourceAPIGroup, String resourceAPIVersion, String resourceName, List<String> scopes, String user, String verb) {
+    public LocalSubjectAccessReview(String apiVersion, Object content, List<String> groups, Boolean isNonResourceURL, String kind, String namespace, String path, String resource, String resourceAPIGroup, String resourceAPIVersion, String resourceName, List<String> scopes, String user, String verb) {
         super();
         this.apiVersion = apiVersion;
         this.content = content;
@@ -172,12 +169,13 @@ public class LocalSubjectAccessReview implements Editable<LocalSubjectAccessRevi
     }
 
     @JsonProperty("content")
-    public KubernetesResource getContent() {
+    public Object getContent() {
         return content;
     }
 
     @JsonProperty("content")
-    public void setContent(KubernetesResource content) {
+    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
+    public void setContent(Object content) {
         this.content = content;
     }
 

@@ -20,6 +20,7 @@ import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
+import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
@@ -50,7 +51,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
+    @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
@@ -64,7 +65,7 @@ public class DeploymentTriggerImageChangeParams implements Editable<DeploymentTr
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> containerNames = new ArrayList<>();
     @JsonProperty("from")
-    private io.fabric8.kubernetes.api.model.ObjectReference from;
+    private ObjectReference from;
     @JsonProperty("lastTriggeredImage")
     private String lastTriggeredImage;
     @JsonIgnore
@@ -77,7 +78,7 @@ public class DeploymentTriggerImageChangeParams implements Editable<DeploymentTr
     public DeploymentTriggerImageChangeParams() {
     }
 
-    public DeploymentTriggerImageChangeParams(Boolean automatic, List<String> containerNames, io.fabric8.kubernetes.api.model.ObjectReference from, String lastTriggeredImage) {
+    public DeploymentTriggerImageChangeParams(Boolean automatic, List<String> containerNames, ObjectReference from, String lastTriggeredImage) {
         super();
         this.automatic = automatic;
         this.containerNames = containerNames;
@@ -107,12 +108,12 @@ public class DeploymentTriggerImageChangeParams implements Editable<DeploymentTr
     }
 
     @JsonProperty("from")
-    public io.fabric8.kubernetes.api.model.ObjectReference getFrom() {
+    public ObjectReference getFrom() {
         return from;
     }
 
     @JsonProperty("from")
-    public void setFrom(io.fabric8.kubernetes.api.model.ObjectReference from) {
+    public void setFrom(ObjectReference from) {
         this.from = from;
     }
 

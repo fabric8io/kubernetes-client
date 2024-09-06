@@ -17,10 +17,10 @@ package io.fabric8.openshift.client.server.mock;
 
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
-import io.fabric8.openshift.api.model.ProjectHelmChartRepository;
-import io.fabric8.openshift.api.model.ProjectHelmChartRepositoryBuilder;
-import io.fabric8.openshift.api.model.ProjectHelmChartRepositoryList;
-import io.fabric8.openshift.api.model.ProjectHelmChartRepositoryListBuilder;
+import io.fabric8.openshift.api.model.miscellaneous.helm.v1beta1.ProjectHelmChartRepository;
+import io.fabric8.openshift.api.model.miscellaneous.helm.v1beta1.ProjectHelmChartRepositoryBuilder;
+import io.fabric8.openshift.api.model.miscellaneous.helm.v1beta1.ProjectHelmChartRepositoryList;
+import io.fabric8.openshift.api.model.miscellaneous.helm.v1beta1.ProjectHelmChartRepositoryListBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
 import org.junit.jupiter.api.Test;
 

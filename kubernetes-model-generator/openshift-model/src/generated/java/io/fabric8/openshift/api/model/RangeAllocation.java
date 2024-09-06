@@ -17,6 +17,7 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
+import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
@@ -47,7 +48,7 @@ import lombok.experimental.Accessors;
     ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
+    @BuildableReference(ObjectMeta.class),
     @BuildableReference(LabelSelector.class),
     @BuildableReference(Container.class),
     @BuildableReference(PodTemplateSpec.class),
@@ -83,7 +84,7 @@ public class RangeAllocation implements Editable<RangeAllocationBuilder> , HasMe
     @JsonProperty("kind")
     private String kind = "RangeAllocation";
     @JsonProperty("metadata")
-    private io.fabric8.kubernetes.api.model.ObjectMeta metadata;
+    private ObjectMeta metadata;
     @JsonProperty("range")
     private String range;
     @JsonIgnore
@@ -96,7 +97,7 @@ public class RangeAllocation implements Editable<RangeAllocationBuilder> , HasMe
     public RangeAllocation() {
     }
 
-    public RangeAllocation(String apiVersion, String data, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, String range) {
+    public RangeAllocation(String apiVersion, String data, String kind, ObjectMeta metadata, String range) {
         super();
         this.apiVersion = apiVersion;
         this.data = data;
@@ -156,12 +157,12 @@ public class RangeAllocation implements Editable<RangeAllocationBuilder> , HasMe
     }
 
     @JsonProperty("metadata")
-    public io.fabric8.kubernetes.api.model.ObjectMeta getMetadata() {
+    public ObjectMeta getMetadata() {
         return metadata;
     }
 
     @JsonProperty("metadata")
-    public void setMetadata(io.fabric8.kubernetes.api.model.ObjectMeta metadata) {
+    public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 

@@ -16,6 +16,7 @@ import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
+import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
@@ -48,7 +49,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.LocalObjectReference.class),
+    @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
@@ -58,7 +59,7 @@ public class TemplateInstanceSpec implements Editable<TemplateInstanceSpecBuilde
     @JsonProperty("requester")
     private TemplateInstanceRequester requester;
     @JsonProperty("secret")
-    private io.fabric8.kubernetes.api.model.LocalObjectReference secret;
+    private LocalObjectReference secret;
     @JsonProperty("template")
     private Template template;
     @JsonIgnore
@@ -71,7 +72,7 @@ public class TemplateInstanceSpec implements Editable<TemplateInstanceSpecBuilde
     public TemplateInstanceSpec() {
     }
 
-    public TemplateInstanceSpec(TemplateInstanceRequester requester, io.fabric8.kubernetes.api.model.LocalObjectReference secret, Template template) {
+    public TemplateInstanceSpec(TemplateInstanceRequester requester, LocalObjectReference secret, Template template) {
         super();
         this.requester = requester;
         this.secret = secret;
@@ -89,12 +90,12 @@ public class TemplateInstanceSpec implements Editable<TemplateInstanceSpecBuilde
     }
 
     @JsonProperty("secret")
-    public io.fabric8.kubernetes.api.model.LocalObjectReference getSecret() {
+    public LocalObjectReference getSecret() {
         return secret;
     }
 
     @JsonProperty("secret")
-    public void setSecret(io.fabric8.kubernetes.api.model.LocalObjectReference secret) {
+    public void setSecret(LocalObjectReference secret) {
         this.secret = secret;
     }
 

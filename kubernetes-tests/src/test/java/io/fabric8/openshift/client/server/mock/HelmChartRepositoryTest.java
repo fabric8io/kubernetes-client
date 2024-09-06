@@ -15,10 +15,10 @@
  */
 package io.fabric8.openshift.client.server.mock;
 
-import io.fabric8.openshift.api.model.HelmChartRepository;
-import io.fabric8.openshift.api.model.HelmChartRepositoryBuilder;
-import io.fabric8.openshift.api.model.HelmChartRepositoryList;
-import io.fabric8.openshift.api.model.HelmChartRepositoryListBuilder;
+import io.fabric8.openshift.api.model.miscellaneous.helm.v1beta1.HelmChartRepository;
+import io.fabric8.openshift.api.model.miscellaneous.helm.v1beta1.HelmChartRepositoryBuilder;
+import io.fabric8.openshift.api.model.miscellaneous.helm.v1beta1.HelmChartRepositoryList;
+import io.fabric8.openshift.api.model.miscellaneous.helm.v1beta1.HelmChartRepositoryListBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
 import org.junit.jupiter.api.Test;
 

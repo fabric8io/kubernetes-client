@@ -18,6 +18,7 @@ import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
+import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
@@ -46,7 +47,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
+    @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
@@ -57,7 +58,7 @@ public class TagImageHook implements Editable<TagImageHookBuilder> , KubernetesR
     @JsonProperty("containerName")
     private String containerName;
     @JsonProperty("to")
-    private io.fabric8.kubernetes.api.model.ObjectReference to;
+    private ObjectReference to;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -68,7 +69,7 @@ public class TagImageHook implements Editable<TagImageHookBuilder> , KubernetesR
     public TagImageHook() {
     }
 
-    public TagImageHook(String containerName, io.fabric8.kubernetes.api.model.ObjectReference to) {
+    public TagImageHook(String containerName, ObjectReference to) {
         super();
         this.containerName = containerName;
         this.to = to;
@@ -85,12 +86,12 @@ public class TagImageHook implements Editable<TagImageHookBuilder> , KubernetesR
     }
 
     @JsonProperty("to")
-    public io.fabric8.kubernetes.api.model.ObjectReference getTo() {
+    public ObjectReference getTo() {
         return to;
     }
 
     @JsonProperty("to")
-    public void setTo(io.fabric8.kubernetes.api.model.ObjectReference to) {
+    public void setTo(ObjectReference to) {
         this.to = to;
     }
 

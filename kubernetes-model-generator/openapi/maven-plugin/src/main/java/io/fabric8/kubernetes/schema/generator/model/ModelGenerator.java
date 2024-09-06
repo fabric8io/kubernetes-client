@@ -106,8 +106,13 @@ class ModelGenerator {
     if (ret.getApiVersion() != null) {
       ret.addImport("io.fabric8.kubernetes.model.annotation.Version");
       ret.put("version", ret.getApiVersion().getVersion());
-      ret.addImport("io.fabric8.kubernetes.model.annotation.Group");
-      ret.put("group", ret.getApiVersion().getGroup());
+      // TODO: we might want to generify this logic for other annotations and imports
+      if (Objects.equals("Group", ret.getClassSimpleName())) {
+        ret.put("group", "@io.fabric8.kubernetes.model.annotation.Group(\"" + ret.getApiVersion().getGroup() + "\")");
+      } else {
+        ret.addImport("io.fabric8.kubernetes.model.annotation.Group");
+        ret.put("group", "@Group(\"" + ret.getApiVersion().getGroup() + "\")");
+      }
       ret.addImport("io.sundr.transform.annotations.TemplateTransformation");
       ret.addImport("io.sundr.transform.annotations.TemplateTransformations");
       ret.put("kubernetesResourceClass", settings.getKubernetesResourceClass());
@@ -243,12 +248,6 @@ class ModelGenerator {
         templateContext.addImport(settings.getHasMetadataClass());
       }
       implementedInterfaces.append(settings.getHasMetadataClassSimpleName());
-      if (templateContext.getApiVersion().isNamespaced()) {
-        if (!templateContext.isInRootPackage()) {
-          templateContext.addImport(settings.getNamespacedClass());
-        }
-        implementedInterfaces.append(", ").append(settings.getNamespacedClassSimpleName());
-      }
     }
     // KubernetesResource
     else {
@@ -256,6 +255,13 @@ class ModelGenerator {
         templateContext.addImport(settings.getKubernetesResourceClass());
       }
       implementedInterfaces.append(settings.getKubernetesResourceClassSimpleName());
+    }
+    // Namespaced
+    if (templateContext.isNamespaced() && templateContext.getKubernetesListType() == null) {
+      if (!templateContext.isInRootPackage()) {
+        templateContext.addImport(settings.getNamespacedClass());
+      }
+      implementedInterfaces.append(", ").append(settings.getNamespacedClassSimpleName());
     }
     // KubernetesResourceList
     if (templateContext.getKubernetesListType() != null) {

@@ -18,6 +18,7 @@ import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.Namespaced;
+import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
@@ -47,7 +48,7 @@ import lombok.experimental.Accessors;
     ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
+    @BuildableReference(ObjectMeta.class),
     @BuildableReference(LabelSelector.class),
     @BuildableReference(Container.class),
     @BuildableReference(PodTemplateSpec.class),
@@ -83,7 +84,7 @@ public class ImageStreamImage implements Editable<ImageStreamImageBuilder> , Has
     @JsonProperty("kind")
     private String kind = "ImageStreamImage";
     @JsonProperty("metadata")
-    private io.fabric8.kubernetes.api.model.ObjectMeta metadata;
+    private ObjectMeta metadata;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -94,7 +95,7 @@ public class ImageStreamImage implements Editable<ImageStreamImageBuilder> , Has
     public ImageStreamImage() {
     }
 
-    public ImageStreamImage(String apiVersion, Image image, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata) {
+    public ImageStreamImage(String apiVersion, Image image, String kind, ObjectMeta metadata) {
         super();
         this.apiVersion = apiVersion;
         this.image = image;
@@ -153,12 +154,12 @@ public class ImageStreamImage implements Editable<ImageStreamImageBuilder> , Has
     }
 
     @JsonProperty("metadata")
-    public io.fabric8.kubernetes.api.model.ObjectMeta getMetadata() {
+    public ObjectMeta getMetadata() {
         return metadata;
     }
 
     @JsonProperty("metadata")
-    public void setMetadata(io.fabric8.kubernetes.api.model.ObjectMeta metadata) {
+    public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 

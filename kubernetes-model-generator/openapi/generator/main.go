@@ -17,6 +17,8 @@ package main
 
 import (
 	"github.com/getkin/kin-openapi/openapi3"
+	openshiftauthorizationv1 "github.com/openshift/api/authorization/v1"
+	openshiftsecurityv1 "github.com/openshift/api/security/v1"
 	admissionV1 "k8s.io/api/admission/v1"
 	admissionV1Beta1 "k8s.io/api/admission/v1beta1"
 	admissionregistrationV1 "k8s.io/api/admissionregistration/v1"
@@ -134,6 +136,15 @@ func main() {
 			reflect.TypeOf(metricsV1Beta1.PodMetricsList{}):  {true, metricsV1Beta1.SchemeGroupVersion.String(), "pods", true},
 			reflect.TypeOf(metricsV1Beta1.PodMetrics{}):      {false, metricsV1Beta1.SchemeGroupVersion.String(), "pods", true},
 		}, "metrics"),
+		NewTypeSchema([]reflect.Type{
+			reflect.TypeOf(openshiftauthorizationv1.SubjectAccessReviewResponse{}),
+			reflect.TypeOf(openshiftauthorizationv1.ResourceAccessReviewResponse{}),
+		}, "openshift-authorization"),
+		// OpenAPI spec contains incomplete information for SecurityContextConstraints (only nested inline until certain level)
+		NewPathSchema(map[reflect.Type]ApiVersion{
+			reflect.TypeOf(openshiftsecurityv1.SecurityContextConstraintsList{}): {true, openshiftsecurityv1.GroupVersion.String(), "securitycontextconstraints", false},
+			reflect.TypeOf(openshiftsecurityv1.SecurityContextConstraints{}):     {false, openshiftsecurityv1.GroupVersion.String(), "securitycontextconstraints", false},
+		}, "openshift-security"),
 	}
 	generate(schemas, targetDirectory)
 }

@@ -16,13 +16,12 @@
 package io.fabric8.openshift.api.model.miscellaneous.metal3.v1beta1;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.fabric8.kubernetes.api.model.Duration;
 import io.fabric8.kubernetes.api.model.Namespaced;
+import io.fabric8.kubernetes.model.util.Helper;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.Scanner;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -37,9 +36,7 @@ class Metal3RemediationTemplateTest {
   @Test
   void deserializationAndSerializationShouldWorkAsExpected() throws IOException, ParseException {
     // Given
-    String originalJson = new Scanner(getClass().getResourceAsStream("/test-v1beta1-metal3remediationtemplate.json"))
-        .useDelimiter("\\A")
-        .next();
+    String originalJson = Helper.loadJson("/test-v1beta1-metal3remediationtemplate.json");
 
     // When
     final Metal3RemediationTemplate metal3RemediationTemplate = mapper.readValue(originalJson, Metal3RemediationTemplate.class);
@@ -51,9 +48,9 @@ class Metal3RemediationTemplateTest {
         .hasFieldOrPropertyWithValue("metadata.name", "test-remediation-template")
         .extracting(Metal3RemediationTemplate::getSpec)
         .extracting(Metal3RemediationTemplateSpec::getTemplate)
-        .extracting(Metal3RemediationTemplateResource::getSpec)
+        .extracting(Metal3RemediationTemplateSpecTemplate::getSpec)
         .hasFieldOrPropertyWithValue("strategy.retryLimit", 1)
-        .hasFieldOrPropertyWithValue("strategy.timeout", Duration.parse("5m0s"))
+        .hasFieldOrPropertyWithValue("strategy.timeout", "5m0s")
         .hasFieldOrPropertyWithValue("strategy.type", "Reboot");
   }
 
@@ -68,7 +65,7 @@ class Metal3RemediationTemplateTest {
         .withNewTemplate()
         .withNewSpec()
         .withNewStrategy()
-        .withTimeout(Duration.parse("5s"))
+        .withTimeout("5s")
         .withRetryLimit(5)
         .withType("Done")
         .endStrategy()
@@ -84,9 +81,9 @@ class Metal3RemediationTemplateTest {
         .hasFieldOrPropertyWithValue("metadata.name", "test-remediation-template")
         .extracting(Metal3RemediationTemplate::getSpec)
         .extracting(Metal3RemediationTemplateSpec::getTemplate)
-        .extracting(Metal3RemediationTemplateResource::getSpec)
+        .extracting(Metal3RemediationTemplateSpecTemplate::getSpec)
         .hasFieldOrPropertyWithValue("strategy.retryLimit", 5)
-        .hasFieldOrPropertyWithValue("strategy.timeout", Duration.parse("5s"))
+        .hasFieldOrPropertyWithValue("strategy.timeout", "5s")
         .hasFieldOrPropertyWithValue("strategy.type", "Done");
   }
 }

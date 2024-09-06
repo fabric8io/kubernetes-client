@@ -18,6 +18,7 @@ import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
+import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
@@ -45,7 +46,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
+    @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
@@ -54,7 +55,7 @@ public class DeploymentCauseImageTrigger implements Editable<DeploymentCauseImag
 {
 
     @JsonProperty("from")
-    private io.fabric8.kubernetes.api.model.ObjectReference from;
+    private ObjectReference from;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -65,18 +66,18 @@ public class DeploymentCauseImageTrigger implements Editable<DeploymentCauseImag
     public DeploymentCauseImageTrigger() {
     }
 
-    public DeploymentCauseImageTrigger(io.fabric8.kubernetes.api.model.ObjectReference from) {
+    public DeploymentCauseImageTrigger(ObjectReference from) {
         super();
         this.from = from;
     }
 
     @JsonProperty("from")
-    public io.fabric8.kubernetes.api.model.ObjectReference getFrom() {
+    public ObjectReference getFrom() {
         return from;
     }
 
     @JsonProperty("from")
-    public void setFrom(io.fabric8.kubernetes.api.model.ObjectReference from) {
+    public void setFrom(ObjectReference from) {
         this.from = from;
     }
 

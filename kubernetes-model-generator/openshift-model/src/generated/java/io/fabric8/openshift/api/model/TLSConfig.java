@@ -34,6 +34,7 @@ import lombok.experimental.Accessors;
     "caCertificate",
     "certificate",
     "destinationCACertificate",
+    "externalCertificate",
     "insecureEdgeTerminationPolicy",
     "key",
     "termination"
@@ -65,6 +66,8 @@ public class TLSConfig implements Editable<TLSConfigBuilder> , KubernetesResourc
     private String certificate;
     @JsonProperty("destinationCACertificate")
     private String destinationCACertificate;
+    @JsonProperty("externalCertificate")
+    private LocalObjectReference externalCertificate;
     @JsonProperty("insecureEdgeTerminationPolicy")
     private String insecureEdgeTerminationPolicy;
     @JsonProperty("key")
@@ -81,11 +84,12 @@ public class TLSConfig implements Editable<TLSConfigBuilder> , KubernetesResourc
     public TLSConfig() {
     }
 
-    public TLSConfig(String caCertificate, String certificate, String destinationCACertificate, String insecureEdgeTerminationPolicy, String key, String termination) {
+    public TLSConfig(String caCertificate, String certificate, String destinationCACertificate, LocalObjectReference externalCertificate, String insecureEdgeTerminationPolicy, String key, String termination) {
         super();
         this.caCertificate = caCertificate;
         this.certificate = certificate;
         this.destinationCACertificate = destinationCACertificate;
+        this.externalCertificate = externalCertificate;
         this.insecureEdgeTerminationPolicy = insecureEdgeTerminationPolicy;
         this.key = key;
         this.termination = termination;
@@ -119,6 +123,16 @@ public class TLSConfig implements Editable<TLSConfigBuilder> , KubernetesResourc
     @JsonProperty("destinationCACertificate")
     public void setDestinationCACertificate(String destinationCACertificate) {
         this.destinationCACertificate = destinationCACertificate;
+    }
+
+    @JsonProperty("externalCertificate")
+    public LocalObjectReference getExternalCertificate() {
+        return externalCertificate;
+    }
+
+    @JsonProperty("externalCertificate")
+    public void setExternalCertificate(LocalObjectReference externalCertificate) {
+        this.externalCertificate = externalCertificate;
     }
 
     @JsonProperty("insecureEdgeTerminationPolicy")

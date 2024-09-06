@@ -18,6 +18,7 @@ import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
+import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
@@ -46,7 +47,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
+    @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
@@ -55,7 +56,7 @@ public class ImageChangeCause implements Editable<ImageChangeCauseBuilder> , Kub
 {
 
     @JsonProperty("fromRef")
-    private io.fabric8.kubernetes.api.model.ObjectReference fromRef;
+    private ObjectReference fromRef;
     @JsonProperty("imageID")
     private String imageID;
     @JsonIgnore
@@ -68,19 +69,19 @@ public class ImageChangeCause implements Editable<ImageChangeCauseBuilder> , Kub
     public ImageChangeCause() {
     }
 
-    public ImageChangeCause(io.fabric8.kubernetes.api.model.ObjectReference fromRef, String imageID) {
+    public ImageChangeCause(ObjectReference fromRef, String imageID) {
         super();
         this.fromRef = fromRef;
         this.imageID = imageID;
     }
 
     @JsonProperty("fromRef")
-    public io.fabric8.kubernetes.api.model.ObjectReference getFromRef() {
+    public ObjectReference getFromRef() {
         return fromRef;
     }
 
     @JsonProperty("fromRef")
-    public void setFromRef(io.fabric8.kubernetes.api.model.ObjectReference fromRef) {
+    public void setFromRef(ObjectReference fromRef) {
         this.fromRef = fromRef;
     }
 

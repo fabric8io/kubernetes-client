@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
+import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
@@ -50,7 +51,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Container.class),
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.IntOrString.class),
+    @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
@@ -62,9 +63,9 @@ public class RollingDeploymentStrategyParams implements Editable<RollingDeployme
     @JsonProperty("intervalSeconds")
     private Long intervalSeconds;
     @JsonProperty("maxSurge")
-    private io.fabric8.kubernetes.api.model.IntOrString maxSurge;
+    private IntOrString maxSurge;
     @JsonProperty("maxUnavailable")
-    private io.fabric8.kubernetes.api.model.IntOrString maxUnavailable;
+    private IntOrString maxUnavailable;
     @JsonProperty("post")
     private LifecycleHook post;
     @JsonProperty("pre")
@@ -83,7 +84,7 @@ public class RollingDeploymentStrategyParams implements Editable<RollingDeployme
     public RollingDeploymentStrategyParams() {
     }
 
-    public RollingDeploymentStrategyParams(Long intervalSeconds, io.fabric8.kubernetes.api.model.IntOrString maxSurge, io.fabric8.kubernetes.api.model.IntOrString maxUnavailable, LifecycleHook post, LifecycleHook pre, Long timeoutSeconds, Long updatePeriodSeconds) {
+    public RollingDeploymentStrategyParams(Long intervalSeconds, IntOrString maxSurge, IntOrString maxUnavailable, LifecycleHook post, LifecycleHook pre, Long timeoutSeconds, Long updatePeriodSeconds) {
         super();
         this.intervalSeconds = intervalSeconds;
         this.maxSurge = maxSurge;
@@ -105,22 +106,22 @@ public class RollingDeploymentStrategyParams implements Editable<RollingDeployme
     }
 
     @JsonProperty("maxSurge")
-    public io.fabric8.kubernetes.api.model.IntOrString getMaxSurge() {
+    public IntOrString getMaxSurge() {
         return maxSurge;
     }
 
     @JsonProperty("maxSurge")
-    public void setMaxSurge(io.fabric8.kubernetes.api.model.IntOrString maxSurge) {
+    public void setMaxSurge(IntOrString maxSurge) {
         this.maxSurge = maxSurge;
     }
 
     @JsonProperty("maxUnavailable")
-    public io.fabric8.kubernetes.api.model.IntOrString getMaxUnavailable() {
+    public IntOrString getMaxUnavailable() {
         return maxUnavailable;
     }
 
     @JsonProperty("maxUnavailable")
-    public void setMaxUnavailable(io.fabric8.kubernetes.api.model.IntOrString maxUnavailable) {
+    public void setMaxUnavailable(IntOrString maxUnavailable) {
         this.maxUnavailable = maxUnavailable;
     }
 

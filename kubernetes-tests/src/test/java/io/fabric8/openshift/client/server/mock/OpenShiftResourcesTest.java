@@ -22,15 +22,11 @@ import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.openshift.api.model.AppliedClusterResourceQuota;
 import io.fabric8.openshift.api.model.BrokerTemplateInstance;
 import io.fabric8.openshift.api.model.BuildConfig;
-import io.fabric8.openshift.api.model.ClusterNetwork;
 import io.fabric8.openshift.api.model.ClusterResourceQuota;
 import io.fabric8.openshift.api.model.ClusterRole;
 import io.fabric8.openshift.api.model.ClusterRoleBinding;
 import io.fabric8.openshift.api.model.DeploymentConfig;
-import io.fabric8.openshift.api.model.EgressNetworkPolicy;
 import io.fabric8.openshift.api.model.Group;
-import io.fabric8.openshift.api.model.HelmChartRepository;
-import io.fabric8.openshift.api.model.HostSubnet;
 import io.fabric8.openshift.api.model.Identity;
 import io.fabric8.openshift.api.model.ImageSignature;
 import io.fabric8.openshift.api.model.ImageStream;
@@ -38,7 +34,6 @@ import io.fabric8.openshift.api.model.ImageStreamImport;
 import io.fabric8.openshift.api.model.ImageStreamMapping;
 import io.fabric8.openshift.api.model.ImageStreamTag;
 import io.fabric8.openshift.api.model.ImageTag;
-import io.fabric8.openshift.api.model.NetNamespace;
 import io.fabric8.openshift.api.model.OAuthAccessToken;
 import io.fabric8.openshift.api.model.OAuthAuthorizeToken;
 import io.fabric8.openshift.api.model.OAuthClient;
@@ -87,8 +82,9 @@ import io.fabric8.openshift.api.model.machineconfig.v1.MachineConfig;
 import io.fabric8.openshift.api.model.machineconfig.v1.MachineConfigPool;
 import io.fabric8.openshift.api.model.miscellaneous.apiserver.v1.APIRequestCount;
 import io.fabric8.openshift.api.model.miscellaneous.cloudcredential.v1.CredentialsRequest;
-import io.fabric8.openshift.api.model.miscellaneous.network.operator.v1.EgressRouter;
-import io.fabric8.openshift.api.model.miscellaneous.network.operator.v1.OperatorPKI;
+import io.fabric8.openshift.api.model.miscellaneous.helm.v1beta1.HelmChartRepository;
+import io.fabric8.openshift.api.model.operator.network.v1.EgressRouter;
+import io.fabric8.openshift.api.model.operator.network.v1.OperatorPKI;
 import io.fabric8.openshift.api.model.operator.v1.CSISnapshotController;
 import io.fabric8.openshift.api.model.operator.v1.CloudCredential;
 import io.fabric8.openshift.api.model.operator.v1.ClusterCSIDriver;
@@ -172,10 +168,6 @@ class OpenShiftResourcesTest {
         Arguments.of(KubeletConfig.class, false, "machineconfiguration.openshift.io", "v1", "kubeletconfigs"),
         Arguments.of(MachineConfigPool.class, false, "machineconfiguration.openshift.io", "v1", "machineconfigpools"),
         Arguments.of(MachineConfig.class, false, "machineconfiguration.openshift.io", "v1", "machineconfigs"),
-        Arguments.of(ClusterNetwork.class, false, "network.openshift.io", "v1", "clusternetworks"),
-        Arguments.of(EgressNetworkPolicy.class, true, "network.openshift.io", "v1", "egressnetworkpolicies"),
-        Arguments.of(HostSubnet.class, false, "network.openshift.io", "v1", "hostsubnets"),
-        Arguments.of(NetNamespace.class, false, "network.openshift.io", "v1", "netnamespaces"),
         Arguments.of(EgressRouter.class, true, "network.operator.openshift.io", "v1", "egressrouters"),
         Arguments.of(OperatorPKI.class, true, "network.operator.openshift.io", "v1", "operatorpkis"),
         Arguments.of(OAuthAccessToken.class, false, "oauth.openshift.io", "v1", "oauthaccesstokens"),

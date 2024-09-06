@@ -23,6 +23,7 @@ import io.fabric8.openshift.client.OpenShiftClient;
 import org.junit.jupiter.api.Test;
 
 import java.net.HttpURLConnection;
+import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -85,9 +86,8 @@ class RoleBindingRestrictionTest {
     return new RoleBindingRestrictionBuilder()
         .withNewMetadata().withName(name).endMetadata()
         .withNewSpec()
-        .withNewGrouprestriction()
-        .addToGroups("groups-rolebindingrestriction")
-        .endGrouprestriction()
+        .withGrouprestriction(
+            Collections.singletonMap("groups", Collections.singletonList("groups-rolebindingrestriction")))
         .endSpec()
         .build();
   }

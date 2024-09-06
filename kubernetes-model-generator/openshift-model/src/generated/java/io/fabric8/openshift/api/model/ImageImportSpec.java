@@ -16,7 +16,9 @@ import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
+import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
+import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
@@ -48,8 +50,8 @@ import lombok.experimental.Accessors;
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.LocalObjectReference.class),
+    @BuildableReference(ObjectReference.class),
+    @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
@@ -57,7 +59,7 @@ public class ImageImportSpec implements Editable<ImageImportSpecBuilder> , Kuber
 {
 
     @JsonProperty("from")
-    private io.fabric8.kubernetes.api.model.ObjectReference from;
+    private ObjectReference from;
     @JsonProperty("importPolicy")
     private TagImportPolicy importPolicy;
     @JsonProperty("includeManifest")
@@ -65,7 +67,7 @@ public class ImageImportSpec implements Editable<ImageImportSpecBuilder> , Kuber
     @JsonProperty("referencePolicy")
     private TagReferencePolicy referencePolicy;
     @JsonProperty("to")
-    private io.fabric8.kubernetes.api.model.LocalObjectReference to;
+    private LocalObjectReference to;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -76,7 +78,7 @@ public class ImageImportSpec implements Editable<ImageImportSpecBuilder> , Kuber
     public ImageImportSpec() {
     }
 
-    public ImageImportSpec(io.fabric8.kubernetes.api.model.ObjectReference from, TagImportPolicy importPolicy, Boolean includeManifest, TagReferencePolicy referencePolicy, io.fabric8.kubernetes.api.model.LocalObjectReference to) {
+    public ImageImportSpec(ObjectReference from, TagImportPolicy importPolicy, Boolean includeManifest, TagReferencePolicy referencePolicy, LocalObjectReference to) {
         super();
         this.from = from;
         this.importPolicy = importPolicy;
@@ -86,12 +88,12 @@ public class ImageImportSpec implements Editable<ImageImportSpecBuilder> , Kuber
     }
 
     @JsonProperty("from")
-    public io.fabric8.kubernetes.api.model.ObjectReference getFrom() {
+    public ObjectReference getFrom() {
         return from;
     }
 
     @JsonProperty("from")
-    public void setFrom(io.fabric8.kubernetes.api.model.ObjectReference from) {
+    public void setFrom(ObjectReference from) {
         this.from = from;
     }
 
@@ -126,12 +128,12 @@ public class ImageImportSpec implements Editable<ImageImportSpecBuilder> , Kuber
     }
 
     @JsonProperty("to")
-    public io.fabric8.kubernetes.api.model.LocalObjectReference getTo() {
+    public LocalObjectReference getTo() {
         return to;
     }
 
     @JsonProperty("to")
-    public void setTo(io.fabric8.kubernetes.api.model.LocalObjectReference to) {
+    public void setTo(LocalObjectReference to) {
         this.to = to;
     }
 

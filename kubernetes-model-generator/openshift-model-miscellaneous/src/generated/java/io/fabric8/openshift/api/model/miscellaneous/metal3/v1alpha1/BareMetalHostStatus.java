@@ -72,23 +72,23 @@ public class BareMetalHostStatus implements Editable<BareMetalHostStatusBuilder>
     @JsonProperty("errorType")
     private String errorType;
     @JsonProperty("goodCredentials")
-    private CredentialsStatus goodCredentials;
+    private BareMetalHostStatusGoodCredentials goodCredentials;
     @JsonProperty("hardware")
-    private HardwareDetails hardware;
+    private BareMetalHostStatusHardware hardware;
     @JsonProperty("hardwareProfile")
     private String hardwareProfile;
     @JsonProperty("lastUpdated")
     private String lastUpdated;
     @JsonProperty("operationHistory")
-    private OperationHistory operationHistory;
+    private BareMetalHostStatusOperationHistory operationHistory;
     @JsonProperty("operationalStatus")
     private String operationalStatus;
     @JsonProperty("poweredOn")
     private Boolean poweredOn;
     @JsonProperty("provisioning")
-    private ProvisionStatus provisioning;
+    private BareMetalHostStatusProvisioning provisioning;
     @JsonProperty("triedCredentials")
-    private CredentialsStatus triedCredentials;
+    private BareMetalHostStatusTriedCredentials triedCredentials;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -99,7 +99,7 @@ public class BareMetalHostStatus implements Editable<BareMetalHostStatusBuilder>
     public BareMetalHostStatus() {
     }
 
-    public BareMetalHostStatus(Integer errorCount, String errorMessage, String errorType, CredentialsStatus goodCredentials, HardwareDetails hardware, String hardwareProfile, String lastUpdated, OperationHistory operationHistory, String operationalStatus, Boolean poweredOn, ProvisionStatus provisioning, CredentialsStatus triedCredentials) {
+    public BareMetalHostStatus(Integer errorCount, String errorMessage, String errorType, BareMetalHostStatusGoodCredentials goodCredentials, BareMetalHostStatusHardware hardware, String hardwareProfile, String lastUpdated, BareMetalHostStatusOperationHistory operationHistory, String operationalStatus, Boolean poweredOn, BareMetalHostStatusProvisioning provisioning, BareMetalHostStatusTriedCredentials triedCredentials) {
         super();
         this.errorCount = errorCount;
         this.errorMessage = errorMessage;
@@ -146,22 +146,22 @@ public class BareMetalHostStatus implements Editable<BareMetalHostStatusBuilder>
     }
 
     @JsonProperty("goodCredentials")
-    public CredentialsStatus getGoodCredentials() {
+    public BareMetalHostStatusGoodCredentials getGoodCredentials() {
         return goodCredentials;
     }
 
     @JsonProperty("goodCredentials")
-    public void setGoodCredentials(CredentialsStatus goodCredentials) {
+    public void setGoodCredentials(BareMetalHostStatusGoodCredentials goodCredentials) {
         this.goodCredentials = goodCredentials;
     }
 
     @JsonProperty("hardware")
-    public HardwareDetails getHardware() {
+    public BareMetalHostStatusHardware getHardware() {
         return hardware;
     }
 
     @JsonProperty("hardware")
-    public void setHardware(HardwareDetails hardware) {
+    public void setHardware(BareMetalHostStatusHardware hardware) {
         this.hardware = hardware;
     }
 
@@ -186,12 +186,12 @@ public class BareMetalHostStatus implements Editable<BareMetalHostStatusBuilder>
     }
 
     @JsonProperty("operationHistory")
-    public OperationHistory getOperationHistory() {
+    public BareMetalHostStatusOperationHistory getOperationHistory() {
         return operationHistory;
     }
 
     @JsonProperty("operationHistory")
-    public void setOperationHistory(OperationHistory operationHistory) {
+    public void setOperationHistory(BareMetalHostStatusOperationHistory operationHistory) {
         this.operationHistory = operationHistory;
     }
 
@@ -216,22 +216,22 @@ public class BareMetalHostStatus implements Editable<BareMetalHostStatusBuilder>
     }
 
     @JsonProperty("provisioning")
-    public ProvisionStatus getProvisioning() {
+    public BareMetalHostStatusProvisioning getProvisioning() {
         return provisioning;
     }
 
     @JsonProperty("provisioning")
-    public void setProvisioning(ProvisionStatus provisioning) {
+    public void setProvisioning(BareMetalHostStatusProvisioning provisioning) {
         this.provisioning = provisioning;
     }
 
     @JsonProperty("triedCredentials")
-    public CredentialsStatus getTriedCredentials() {
+    public BareMetalHostStatusTriedCredentials getTriedCredentials() {
         return triedCredentials;
     }
 
     @JsonProperty("triedCredentials")
-    public void setTriedCredentials(CredentialsStatus triedCredentials) {
+    public void setTriedCredentials(BareMetalHostStatusTriedCredentials triedCredentials) {
         this.triedCredentials = triedCredentials;
     }
 

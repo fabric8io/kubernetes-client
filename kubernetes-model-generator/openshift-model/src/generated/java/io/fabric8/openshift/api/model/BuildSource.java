@@ -18,6 +18,7 @@ import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
+import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
@@ -56,7 +57,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.LocalObjectReference.class),
+    @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
@@ -81,7 +82,7 @@ public class BuildSource implements Editable<BuildSourceBuilder> , KubernetesRes
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<SecretBuildSource> secrets = new ArrayList<>();
     @JsonProperty("sourceSecret")
-    private io.fabric8.kubernetes.api.model.LocalObjectReference sourceSecret;
+    private LocalObjectReference sourceSecret;
     @JsonProperty("type")
     private String type;
     @JsonIgnore
@@ -94,7 +95,7 @@ public class BuildSource implements Editable<BuildSourceBuilder> , KubernetesRes
     public BuildSource() {
     }
 
-    public BuildSource(BinaryBuildSource binary, List<ConfigMapBuildSource> configMaps, String contextDir, String dockerfile, GitBuildSource git, List<ImageSource> images, List<SecretBuildSource> secrets, io.fabric8.kubernetes.api.model.LocalObjectReference sourceSecret, String type) {
+    public BuildSource(BinaryBuildSource binary, List<ConfigMapBuildSource> configMaps, String contextDir, String dockerfile, GitBuildSource git, List<ImageSource> images, List<SecretBuildSource> secrets, LocalObjectReference sourceSecret, String type) {
         super();
         this.binary = binary;
         this.configMaps = configMaps;
@@ -181,12 +182,12 @@ public class BuildSource implements Editable<BuildSourceBuilder> , KubernetesRes
     }
 
     @JsonProperty("sourceSecret")
-    public io.fabric8.kubernetes.api.model.LocalObjectReference getSourceSecret() {
+    public LocalObjectReference getSourceSecret() {
         return sourceSecret;
     }
 
     @JsonProperty("sourceSecret")
-    public void setSourceSecret(io.fabric8.kubernetes.api.model.LocalObjectReference sourceSecret) {
+    public void setSourceSecret(LocalObjectReference sourceSecret) {
         this.sourceSecret = sourceSecret;
     }
 
