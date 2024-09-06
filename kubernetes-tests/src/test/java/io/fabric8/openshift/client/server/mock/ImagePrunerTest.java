@@ -15,10 +15,10 @@
  */
 package io.fabric8.openshift.client.server.mock;
 
-import io.fabric8.openshift.api.model.operator.v1.ImagePruner;
-import io.fabric8.openshift.api.model.operator.v1.ImagePrunerBuilder;
-import io.fabric8.openshift.api.model.operator.v1.ImagePrunerList;
-import io.fabric8.openshift.api.model.operator.v1.ImagePrunerListBuilder;
+import io.fabric8.openshift.api.model.operator.imageregistry.v1.ImagePruner;
+import io.fabric8.openshift.api.model.operator.imageregistry.v1.ImagePrunerBuilder;
+import io.fabric8.openshift.api.model.operator.imageregistry.v1.ImagePrunerList;
+import io.fabric8.openshift.api.model.operator.imageregistry.v1.ImagePrunerListBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
 import org.junit.jupiter.api.Test;
 

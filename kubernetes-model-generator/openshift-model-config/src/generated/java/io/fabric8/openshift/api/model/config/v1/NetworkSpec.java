@@ -35,6 +35,7 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "clusterNetwork",
     "externalIP",
+    "networkDiagnostics",
     "networkType",
     "serviceNetwork",
     "serviceNodePortRange"
@@ -62,9 +63,11 @@ public class NetworkSpec implements Editable<NetworkSpecBuilder> , KubernetesRes
 
     @JsonProperty("clusterNetwork")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ClusterNetworkEntry> clusterNetwork = new ArrayList<>();
+    private List<NetworkSpecClusterNetwork> clusterNetwork = new ArrayList<>();
     @JsonProperty("externalIP")
-    private ExternalIPConfig externalIP;
+    private NetworkSpecExternalIP externalIP;
+    @JsonProperty("networkDiagnostics")
+    private NetworkSpecNetworkDiagnostics networkDiagnostics;
     @JsonProperty("networkType")
     private String networkType;
     @JsonProperty("serviceNetwork")
@@ -82,10 +85,11 @@ public class NetworkSpec implements Editable<NetworkSpecBuilder> , KubernetesRes
     public NetworkSpec() {
     }
 
-    public NetworkSpec(List<ClusterNetworkEntry> clusterNetwork, ExternalIPConfig externalIP, String networkType, List<String> serviceNetwork, String serviceNodePortRange) {
+    public NetworkSpec(List<NetworkSpecClusterNetwork> clusterNetwork, NetworkSpecExternalIP externalIP, NetworkSpecNetworkDiagnostics networkDiagnostics, String networkType, List<String> serviceNetwork, String serviceNodePortRange) {
         super();
         this.clusterNetwork = clusterNetwork;
         this.externalIP = externalIP;
+        this.networkDiagnostics = networkDiagnostics;
         this.networkType = networkType;
         this.serviceNetwork = serviceNetwork;
         this.serviceNodePortRange = serviceNodePortRange;
@@ -93,23 +97,33 @@ public class NetworkSpec implements Editable<NetworkSpecBuilder> , KubernetesRes
 
     @JsonProperty("clusterNetwork")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<ClusterNetworkEntry> getClusterNetwork() {
+    public List<NetworkSpecClusterNetwork> getClusterNetwork() {
         return clusterNetwork;
     }
 
     @JsonProperty("clusterNetwork")
-    public void setClusterNetwork(List<ClusterNetworkEntry> clusterNetwork) {
+    public void setClusterNetwork(List<NetworkSpecClusterNetwork> clusterNetwork) {
         this.clusterNetwork = clusterNetwork;
     }
 
     @JsonProperty("externalIP")
-    public ExternalIPConfig getExternalIP() {
+    public NetworkSpecExternalIP getExternalIP() {
         return externalIP;
     }
 
     @JsonProperty("externalIP")
-    public void setExternalIP(ExternalIPConfig externalIP) {
+    public void setExternalIP(NetworkSpecExternalIP externalIP) {
         this.externalIP = externalIP;
+    }
+
+    @JsonProperty("networkDiagnostics")
+    public NetworkSpecNetworkDiagnostics getNetworkDiagnostics() {
+        return networkDiagnostics;
+    }
+
+    @JsonProperty("networkDiagnostics")
+    public void setNetworkDiagnostics(NetworkSpecNetworkDiagnostics networkDiagnostics) {
+        this.networkDiagnostics = networkDiagnostics;
     }
 
     @JsonProperty("networkType")

@@ -21,6 +21,10 @@ import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.openshift.api.model.operator.controlplane.v1alpha1.PodNetworkConnectivityCheck;
 import io.fabric8.openshift.api.model.operator.controlplane.v1alpha1.PodNetworkConnectivityCheckList;
+import io.fabric8.openshift.api.model.operator.imageregistry.v1.ImagePruner;
+import io.fabric8.openshift.api.model.operator.imageregistry.v1.ImagePrunerList;
+import io.fabric8.openshift.api.model.operator.ingress.v1.DNSRecord;
+import io.fabric8.openshift.api.model.operator.ingress.v1.DNSRecordList;
 import io.fabric8.openshift.api.model.operator.v1.Authentication;
 import io.fabric8.openshift.api.model.operator.v1.AuthenticationList;
 import io.fabric8.openshift.api.model.operator.v1.CSISnapshotController;
@@ -35,12 +39,8 @@ import io.fabric8.openshift.api.model.operator.v1.Console;
 import io.fabric8.openshift.api.model.operator.v1.ConsoleList;
 import io.fabric8.openshift.api.model.operator.v1.DNS;
 import io.fabric8.openshift.api.model.operator.v1.DNSList;
-import io.fabric8.openshift.api.model.operator.v1.DNSRecord;
-import io.fabric8.openshift.api.model.operator.v1.DNSRecordList;
 import io.fabric8.openshift.api.model.operator.v1.Etcd;
 import io.fabric8.openshift.api.model.operator.v1.EtcdList;
-import io.fabric8.openshift.api.model.operator.v1.ImagePruner;
-import io.fabric8.openshift.api.model.operator.v1.ImagePrunerList;
 import io.fabric8.openshift.api.model.operator.v1.IngressController;
 import io.fabric8.openshift.api.model.operator.v1.IngressControllerList;
 import io.fabric8.openshift.api.model.operator.v1.KubeAPIServer;
@@ -59,10 +59,6 @@ import io.fabric8.openshift.api.model.operator.v1.OpenShiftControllerManager;
 import io.fabric8.openshift.api.model.operator.v1.OpenShiftControllerManagerList;
 import io.fabric8.openshift.api.model.operator.v1.ServiceCA;
 import io.fabric8.openshift.api.model.operator.v1.ServiceCAList;
-import io.fabric8.openshift.api.model.operator.v1.ServiceCatalogAPIServer;
-import io.fabric8.openshift.api.model.operator.v1.ServiceCatalogAPIServerList;
-import io.fabric8.openshift.api.model.operator.v1.ServiceCatalogControllerManager;
-import io.fabric8.openshift.api.model.operator.v1.ServiceCatalogControllerManagerList;
 import io.fabric8.openshift.api.model.operator.v1.Storage;
 import io.fabric8.openshift.api.model.operator.v1.StorageList;
 import io.fabric8.openshift.api.model.operator.v1alpha1.ImageContentSourcePolicy;
@@ -132,13 +128,6 @@ public interface OpenShiftOperatorAPIGroupDSL extends Client {
   NonNamespaceOperation<Console, ConsoleList, Resource<Console>> consoles();
 
   /**
-   * API entrypoint for ServiceCatalogControllerManager related operations(operator.openshift.io/v1)
-   *
-   * @return NonNamespaceOperation object for ServiceCatalogControllerManager type
-   */
-  NonNamespaceOperation<ServiceCatalogControllerManager, ServiceCatalogControllerManagerList, Resource<ServiceCatalogControllerManager>> serviceCatalogControllerManagers();
-
-  /**
    * API entrypoint for ServiceCA related operations(operator.openshift.io/v1)
    *
    * @return NonNamespaceOperation object for ServiceCA type
@@ -203,21 +192,14 @@ public interface OpenShiftOperatorAPIGroupDSL extends Client {
 
   /**
    * API entrypoint for PodNetworkConnectivityCheck (controlpane.operator.openshift.io/v1alpha1)
-   * 
+   *
    * @return {@link MixedOperation} for PodNetworkConnectivityCheck
    */
   MixedOperation<PodNetworkConnectivityCheck, PodNetworkConnectivityCheckList, Resource<PodNetworkConnectivityCheck>> podNetworkConnectivityChecks();
 
   /**
-   * API entrypoint for ServiceCatalogAPIServer related operations(operator.openshift.io/v1)
-   *
-   * @return NonNamespaceOperation object for ServiceCatalogAPIServer type
-   */
-  NonNamespaceOperation<ServiceCatalogAPIServer, ServiceCatalogAPIServerList, Resource<ServiceCatalogAPIServer>> serviceCatalogAPIServers();
-
-  /**
    * API entrypoing for Storage (operator.openshift.io/v1)
-   * 
+   *
    * @return {@link NonNamespaceOperation} for Storage
    */
   NonNamespaceOperation<Storage, StorageList, Resource<Storage>> storages();

@@ -22,7 +22,7 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.openshift.api.model.config.v1.MTUMigration;
+import io.fabric8.openshift.api.model.config.v1.NetworkStatusMMtu;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -56,7 +56,7 @@ public class NetworkInfo implements Editable<NetworkInfoBuilder> , KubernetesRes
 {
 
     @JsonProperty("mtuMigration")
-    private MTUMigration mtuMigration;
+    private NetworkStatusMMtu mtuMigration;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -67,18 +67,18 @@ public class NetworkInfo implements Editable<NetworkInfoBuilder> , KubernetesRes
     public NetworkInfo() {
     }
 
-    public NetworkInfo(MTUMigration mtuMigration) {
+    public NetworkInfo(NetworkStatusMMtu mtuMigration) {
         super();
         this.mtuMigration = mtuMigration;
     }
 
     @JsonProperty("mtuMigration")
-    public MTUMigration getMtuMigration() {
+    public NetworkStatusMMtu getMtuMigration() {
         return mtuMigration;
     }
 
     @JsonProperty("mtuMigration")
-    public void setMtuMigration(MTUMigration mtuMigration) {
+    public void setMtuMigration(NetworkStatusMMtu mtuMigration) {
         this.mtuMigration = mtuMigration;
     }
 

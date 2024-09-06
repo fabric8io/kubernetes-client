@@ -61,16 +61,16 @@ public class AuthenticationSpec implements Editable<AuthenticationSpecBuilder> ,
 {
 
     @JsonProperty("oauthMetadata")
-    private ConfigMapNameReference oauthMetadata;
+    private AuthenticationSpecOauthMetadata oauthMetadata;
     @JsonProperty("serviceAccountIssuer")
     private String serviceAccountIssuer;
     @JsonProperty("type")
     private String type;
     @JsonProperty("webhookTokenAuthenticator")
-    private WebhookTokenAuthenticator webhookTokenAuthenticator;
+    private AuthenticationSpecWebhookTokenAuthenticator webhookTokenAuthenticator;
     @JsonProperty("webhookTokenAuthenticators")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<DeprecatedWebhookTokenAuthenticator> webhookTokenAuthenticators = new ArrayList<>();
+    private List<AuthenticationSpecWebhookTokenAuthenticators> webhookTokenAuthenticators = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -81,7 +81,7 @@ public class AuthenticationSpec implements Editable<AuthenticationSpecBuilder> ,
     public AuthenticationSpec() {
     }
 
-    public AuthenticationSpec(ConfigMapNameReference oauthMetadata, String serviceAccountIssuer, String type, WebhookTokenAuthenticator webhookTokenAuthenticator, List<DeprecatedWebhookTokenAuthenticator> webhookTokenAuthenticators) {
+    public AuthenticationSpec(AuthenticationSpecOauthMetadata oauthMetadata, String serviceAccountIssuer, String type, AuthenticationSpecWebhookTokenAuthenticator webhookTokenAuthenticator, List<AuthenticationSpecWebhookTokenAuthenticators> webhookTokenAuthenticators) {
         super();
         this.oauthMetadata = oauthMetadata;
         this.serviceAccountIssuer = serviceAccountIssuer;
@@ -91,12 +91,12 @@ public class AuthenticationSpec implements Editable<AuthenticationSpecBuilder> ,
     }
 
     @JsonProperty("oauthMetadata")
-    public ConfigMapNameReference getOauthMetadata() {
+    public AuthenticationSpecOauthMetadata getOauthMetadata() {
         return oauthMetadata;
     }
 
     @JsonProperty("oauthMetadata")
-    public void setOauthMetadata(ConfigMapNameReference oauthMetadata) {
+    public void setOauthMetadata(AuthenticationSpecOauthMetadata oauthMetadata) {
         this.oauthMetadata = oauthMetadata;
     }
 
@@ -121,23 +121,23 @@ public class AuthenticationSpec implements Editable<AuthenticationSpecBuilder> ,
     }
 
     @JsonProperty("webhookTokenAuthenticator")
-    public WebhookTokenAuthenticator getWebhookTokenAuthenticator() {
+    public AuthenticationSpecWebhookTokenAuthenticator getWebhookTokenAuthenticator() {
         return webhookTokenAuthenticator;
     }
 
     @JsonProperty("webhookTokenAuthenticator")
-    public void setWebhookTokenAuthenticator(WebhookTokenAuthenticator webhookTokenAuthenticator) {
+    public void setWebhookTokenAuthenticator(AuthenticationSpecWebhookTokenAuthenticator webhookTokenAuthenticator) {
         this.webhookTokenAuthenticator = webhookTokenAuthenticator;
     }
 
     @JsonProperty("webhookTokenAuthenticators")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<DeprecatedWebhookTokenAuthenticator> getWebhookTokenAuthenticators() {
+    public List<AuthenticationSpecWebhookTokenAuthenticators> getWebhookTokenAuthenticators() {
         return webhookTokenAuthenticators;
     }
 
     @JsonProperty("webhookTokenAuthenticators")
-    public void setWebhookTokenAuthenticators(List<DeprecatedWebhookTokenAuthenticator> webhookTokenAuthenticators) {
+    public void setWebhookTokenAuthenticators(List<AuthenticationSpecWebhookTokenAuthenticators> webhookTokenAuthenticators) {
         this.webhookTokenAuthenticators = webhookTokenAuthenticators;
     }
 

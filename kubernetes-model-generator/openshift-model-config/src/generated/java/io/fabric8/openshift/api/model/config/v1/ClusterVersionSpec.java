@@ -62,16 +62,16 @@ public class ClusterVersionSpec implements Editable<ClusterVersionSpecBuilder> ,
 {
 
     @JsonProperty("capabilities")
-    private ClusterVersionCapabilitiesSpec capabilities;
+    private ClusterVersionSpecCapabilities capabilities;
     @JsonProperty("channel")
     private String channel;
     @JsonProperty("clusterID")
     private String clusterID;
     @JsonProperty("desiredUpdate")
-    private Update desiredUpdate;
+    private ClusterVersionSpecDesiredUpdate desiredUpdate;
     @JsonProperty("overrides")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ComponentOverride> overrides = new ArrayList<>();
+    private List<ClusterVersionSpecOverrides> overrides = new ArrayList<>();
     @JsonProperty("upstream")
     private String upstream;
     @JsonIgnore
@@ -84,7 +84,7 @@ public class ClusterVersionSpec implements Editable<ClusterVersionSpecBuilder> ,
     public ClusterVersionSpec() {
     }
 
-    public ClusterVersionSpec(ClusterVersionCapabilitiesSpec capabilities, String channel, String clusterID, Update desiredUpdate, List<ComponentOverride> overrides, String upstream) {
+    public ClusterVersionSpec(ClusterVersionSpecCapabilities capabilities, String channel, String clusterID, ClusterVersionSpecDesiredUpdate desiredUpdate, List<ClusterVersionSpecOverrides> overrides, String upstream) {
         super();
         this.capabilities = capabilities;
         this.channel = channel;
@@ -95,12 +95,12 @@ public class ClusterVersionSpec implements Editable<ClusterVersionSpecBuilder> ,
     }
 
     @JsonProperty("capabilities")
-    public ClusterVersionCapabilitiesSpec getCapabilities() {
+    public ClusterVersionSpecCapabilities getCapabilities() {
         return capabilities;
     }
 
     @JsonProperty("capabilities")
-    public void setCapabilities(ClusterVersionCapabilitiesSpec capabilities) {
+    public void setCapabilities(ClusterVersionSpecCapabilities capabilities) {
         this.capabilities = capabilities;
     }
 
@@ -125,23 +125,23 @@ public class ClusterVersionSpec implements Editable<ClusterVersionSpecBuilder> ,
     }
 
     @JsonProperty("desiredUpdate")
-    public Update getDesiredUpdate() {
+    public ClusterVersionSpecDesiredUpdate getDesiredUpdate() {
         return desiredUpdate;
     }
 
     @JsonProperty("desiredUpdate")
-    public void setDesiredUpdate(Update desiredUpdate) {
+    public void setDesiredUpdate(ClusterVersionSpecDesiredUpdate desiredUpdate) {
         this.desiredUpdate = desiredUpdate;
     }
 
     @JsonProperty("overrides")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<ComponentOverride> getOverrides() {
+    public List<ClusterVersionSpecOverrides> getOverrides() {
         return overrides;
     }
 
     @JsonProperty("overrides")
-    public void setOverrides(List<ComponentOverride> overrides) {
+    public void setOverrides(List<ClusterVersionSpecOverrides> overrides) {
         this.overrides = overrides;
     }
 

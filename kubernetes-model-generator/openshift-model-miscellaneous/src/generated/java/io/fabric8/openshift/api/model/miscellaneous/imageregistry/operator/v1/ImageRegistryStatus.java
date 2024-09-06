@@ -24,8 +24,8 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.openshift.api.model.operator.v1.GenerationStatus;
-import io.fabric8.openshift.api.model.operator.v1.OperatorCondition;
+import io.fabric8.openshift.api.model.operator.v1.AuthenticationStatusConditions;
+import io.fabric8.openshift.api.model.operator.v1.AuthenticationStatusGenerations;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -66,10 +66,10 @@ public class ImageRegistryStatus implements Editable<ImageRegistryStatusBuilder>
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<OperatorCondition> conditions = new ArrayList<>();
+    private List<AuthenticationStatusConditions> conditions = new ArrayList<>();
     @JsonProperty("generations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<GenerationStatus> generations = new ArrayList<>();
+    private List<AuthenticationStatusGenerations> generations = new ArrayList<>();
     @JsonProperty("observedGeneration")
     private Long observedGeneration;
     @JsonProperty("readyReplicas")
@@ -90,7 +90,7 @@ public class ImageRegistryStatus implements Editable<ImageRegistryStatusBuilder>
     public ImageRegistryStatus() {
     }
 
-    public ImageRegistryStatus(List<OperatorCondition> conditions, List<GenerationStatus> generations, Long observedGeneration, Integer readyReplicas, ImageRegistryConfigStorage storage, Boolean storageManaged, String version) {
+    public ImageRegistryStatus(List<AuthenticationStatusConditions> conditions, List<AuthenticationStatusGenerations> generations, Long observedGeneration, Integer readyReplicas, ImageRegistryConfigStorage storage, Boolean storageManaged, String version) {
         super();
         this.conditions = conditions;
         this.generations = generations;
@@ -103,23 +103,23 @@ public class ImageRegistryStatus implements Editable<ImageRegistryStatusBuilder>
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<OperatorCondition> getConditions() {
+    public List<AuthenticationStatusConditions> getConditions() {
         return conditions;
     }
 
     @JsonProperty("conditions")
-    public void setConditions(List<OperatorCondition> conditions) {
+    public void setConditions(List<AuthenticationStatusConditions> conditions) {
         this.conditions = conditions;
     }
 
     @JsonProperty("generations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<GenerationStatus> getGenerations() {
+    public List<AuthenticationStatusGenerations> getGenerations() {
         return generations;
     }
 
     @JsonProperty("generations")
-    public void setGenerations(List<GenerationStatus> generations) {
+    public void setGenerations(List<AuthenticationStatusGenerations> generations) {
         this.generations = generations;
     }
 

@@ -58,7 +58,7 @@ public class ImageTagMirrorSetSpec implements Editable<ImageTagMirrorSetSpecBuil
 
     @JsonProperty("imageTagMirrors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ImageTagMirrors> imageTagMirrors = new ArrayList<>();
+    private List<ImageTagMirrorSetSpecImageTagMirrors> imageTagMirrors = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -69,19 +69,19 @@ public class ImageTagMirrorSetSpec implements Editable<ImageTagMirrorSetSpecBuil
     public ImageTagMirrorSetSpec() {
     }
 
-    public ImageTagMirrorSetSpec(List<ImageTagMirrors> imageTagMirrors) {
+    public ImageTagMirrorSetSpec(List<ImageTagMirrorSetSpecImageTagMirrors> imageTagMirrors) {
         super();
         this.imageTagMirrors = imageTagMirrors;
     }
 
     @JsonProperty("imageTagMirrors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<ImageTagMirrors> getImageTagMirrors() {
+    public List<ImageTagMirrorSetSpecImageTagMirrors> getImageTagMirrors() {
         return imageTagMirrors;
     }
 
     @JsonProperty("imageTagMirrors")
-    public void setImageTagMirrors(List<ImageTagMirrors> imageTagMirrors) {
+    public void setImageTagMirrors(List<ImageTagMirrorSetSpecImageTagMirrors> imageTagMirrors) {
         this.imageTagMirrors = imageTagMirrors;
     }
 

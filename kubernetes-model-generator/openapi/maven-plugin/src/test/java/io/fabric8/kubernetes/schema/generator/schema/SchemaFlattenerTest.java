@@ -45,6 +45,8 @@ class SchemaFlattenerTest {
     openAPI = new OpenAPI(SpecVersion.V31);
     openAPI.setComponents(new Components());
     openAPI.setPaths(new Paths());
+    openAPI.getComponents().addSchemas("Common", new ObjectSchema()
+        .addProperty("name", new StringSchema()));
     openAPI.getComponents().addSchemas("Root", new ObjectSchema()
         .addProperty("child", new ObjectSchema()
             .addProperty("name", new StringSchema())
@@ -76,8 +78,10 @@ class SchemaFlattenerTest {
                 .addProperty("mName", new StringSchema())
                 .addProperty("child", new ObjectSchema()
                     .addProperty("mName", new StringSchema())
-                    .addProperty("common", new ObjectSchema()
-                        .addProperty("name", new StringSchema()))))));
+                    .addProperty("child", new ObjectSchema()
+                        .addProperty("mName", new StringSchema())
+                        .addProperty("common", new ObjectSchema()
+                            .addProperty("name", new StringSchema())))))));
     openAPI.getComponents().addSchemas("CommonArray", new ObjectSchema()
         .addProperty("child", new ArraySchema()
             .items(new ObjectSchema()
@@ -103,9 +107,20 @@ class SchemaFlattenerTest {
         .addProperty("metadata", new ObjectSchema())
         .addProperty("spec", new ObjectSchema()
             .addProperty("replicas", new IntegerSchema())
+            .addProperty("openAPI", new ObjectSchema()
+                .addProperty("in-openAPI", new StringSchema())
+                .addProperty("schema", new ObjectSchema()
+                    .addProperty("$ref", new StringSchema())))
             .addProperty("selector", new ObjectSchema()
                 .addProperty("in-spec", new BooleanSchema())
-                .addProperty("matchLabels", new MapSchema().additionalProperties(new StringSchema()))))
+                .addProperty("matchLabels", new MapSchema().additionalProperties(new StringSchema())))
+            .addProperty("aws", new ObjectSchema()
+                .addProperty("spec", new ObjectSchema()
+                    .addProperty("in-aws", new StringSchema())))
+            .addProperty("libvirt", new ObjectSchema()
+                .addProperty("spec", new ObjectSchema()
+                    .addProperty("in-libvirt", new StringSchema()))))
+
         .addProperty("status", new ObjectSchema()
             .addProperty("phase", new StringSchema())
             .addProperty("selector", new ObjectSchema()
@@ -116,7 +131,7 @@ class SchemaFlattenerTest {
   }
 
   @ParameterizedTest
-  @ValueSource(strings = { "RootChild", "RootCChild", "RootCCChild" })
+  @ValueSource(strings = { "Common", "RootChild", "RootCChild" })
   void preservesStringFields(String componentName) {
     assertEquals("string",
         ((Schema<?>) openAPI.getComponents().getSchemas().get(componentName).getProperties().get("name")).getType());
@@ -144,74 +159,65 @@ class SchemaFlattenerTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "RootCCChild", "GRootCCChild", "com.example.with.package.RootCCChild" })
+    @ValueSource(strings = { "GRootCCChild", "com.example.with.package.RootCCChild", "MapCCChild" })
     void contractsNameOfThirdInlined(String expectedComponentName) {
       assertTrue(openAPI.getComponents().getSchemas().containsKey(expectedComponentName));
+    }
+
+    @Test
+    void contractsContiguousUpperCaseProperly() {
+      assertTrue(openAPI.getComponents().getSchemas().containsKey("com.example.kubernetes.TypicalSpecOpenAPI"));
+      assertTrue(openAPI.getComponents().getSchemas().containsKey("com.example.kubernetes.TypicalSpecOASchema"));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "Aws", "Libvirt" })
+    void contractPreservesNames(String preservedName) {
+      assertTrue(
+          openAPI.getComponents().getSchemas().containsKey("com.example.kubernetes.TypicalSpec" + preservedName + "Spec"));
     }
 
   }
 
   @Nested
-  class ReusesCommonSchema {
+  class ReusesCommonTopLevelSchemas {
 
     @Test
-    void grootChildReusesRootSchema() {
-      assertEquals("#/components/schemas/RootCCChild",
+    void rootChildReusesCommonSchema() {
+      assertEquals("#/components/schemas/Common",
+          ((Schema<?>) openAPI.getComponents().getSchemas().get("RootCChild").getProperties().get("child")).get$ref());
+    }
+
+    @Test
+    void grootChildReusesCommonSchema() {
+      assertEquals("#/components/schemas/Common",
           ((Schema<?>) openAPI.getComponents().getSchemas().get("GRootCCChild").getProperties().get("common")).get$ref());
     }
 
     @Test
-    void arrayChildReusesRootSchema() {
-      assertEquals("#/components/schemas/RootCCChild",
+    void arrayChildReusesCommonSchema() {
+      assertEquals("#/components/schemas/Common",
           ((Schema<?>) openAPI.getComponents().getSchemas().get("ArrayCChild").getProperties().get("common")).get$ref());
     }
 
     @Test
-    void arraySchemaReusesRootSchema() {
-      assertEquals("#/components/schemas/RootCCChild",
+    void arraySchemaReusesCommonSchema() {
+      assertEquals("#/components/schemas/Common",
           ((Schema<?>) openAPI.getComponents().getSchemas().get("CommonArray").getProperties().get("child")).getItems()
               .get$ref());
     }
 
     @Test
-    void mapChildReusesRootSchema() {
-      assertEquals("#/components/schemas/RootCCChild",
-          ((Schema<?>) openAPI.getComponents().getSchemas().get("MapCChild").getProperties().get("common")).get$ref());
+    void mapChildReusesCommonSchema() {
+      assertEquals("#/components/schemas/Common",
+          ((Schema<?>) openAPI.getComponents().getSchemas().get("MapCCChild").getProperties().get("common")).get$ref());
     }
 
     @Test
-    void packagedChildReusesRootSchema() {
-      assertEquals("#/components/schemas/RootCCChild",
+    void packagedChildReusesCommonSchema() {
+      assertEquals("#/components/schemas/Common",
           ((Schema<?>) openAPI.getComponents().getSchemas().get("com.example.with.package.RootCCChild").getProperties()
               .get("common")).get$ref());
-    }
-  }
-
-  /**
-   * To avoid problems with Sundrio (https://github.com/fabric8io/kubernetes-client/issues/6320)
-   * we'll do special handling of inlined nested fields (spec, status, parameters)
-   * <p>
-   * This is required because their names will likely collision with the generated classes when creating the builders
-   */
-  @Nested
-  class SundrioHandling {
-
-    @ParameterizedTest
-    @ValueSource(strings = {
-        "com.example.kubernetes.TypicalSpc",
-        "com.example.kubernetes.TypicalSts"
-    })
-    void keywordsAreTranslated(String expectedComponentName) {
-      assertTrue(openAPI.getComponents().getSchemas().containsKey(expectedComponentName));
-    }
-
-    @ParameterizedTest
-    @ValueSource(strings = {
-        "com.example.kubernetes.TypicalSpecSelector",
-        "com.example.kubernetes.TypicalStatusSelector"
-    })
-    void preservesInlinedKeywords(String expectedComponentName) {
-      assertTrue(openAPI.getComponents().getSchemas().containsKey(expectedComponentName));
     }
   }
 }

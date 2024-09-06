@@ -22,8 +22,8 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.openshift.api.model.config.v1.ConfigMapNameReference;
-import io.fabric8.openshift.api.model.config.v1.SecretNameReference;
+import io.fabric8.openshift.api.model.config.v1.BuildSpecBDDPTrustedCA;
+import io.fabric8.openshift.api.model.config.v1.OAuthSpecIPBasicAuthCa;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -60,11 +60,11 @@ public class ConnectionConfigNamespaceScoped implements Editable<ConnectionConfi
 {
 
     @JsonProperty("basicAuthConfig")
-    private SecretNameReference basicAuthConfig;
+    private OAuthSpecIPBasicAuthCa basicAuthConfig;
     @JsonProperty("ca")
-    private ConfigMapNameReference ca;
+    private BuildSpecBDDPTrustedCA ca;
     @JsonProperty("tlsClientConfig")
-    private SecretNameReference tlsClientConfig;
+    private OAuthSpecIPBasicAuthCa tlsClientConfig;
     @JsonProperty("url")
     private String url;
     @JsonIgnore
@@ -77,7 +77,7 @@ public class ConnectionConfigNamespaceScoped implements Editable<ConnectionConfi
     public ConnectionConfigNamespaceScoped() {
     }
 
-    public ConnectionConfigNamespaceScoped(SecretNameReference basicAuthConfig, ConfigMapNameReference ca, SecretNameReference tlsClientConfig, String url) {
+    public ConnectionConfigNamespaceScoped(OAuthSpecIPBasicAuthCa basicAuthConfig, BuildSpecBDDPTrustedCA ca, OAuthSpecIPBasicAuthCa tlsClientConfig, String url) {
         super();
         this.basicAuthConfig = basicAuthConfig;
         this.ca = ca;
@@ -86,32 +86,32 @@ public class ConnectionConfigNamespaceScoped implements Editable<ConnectionConfi
     }
 
     @JsonProperty("basicAuthConfig")
-    public SecretNameReference getBasicAuthConfig() {
+    public OAuthSpecIPBasicAuthCa getBasicAuthConfig() {
         return basicAuthConfig;
     }
 
     @JsonProperty("basicAuthConfig")
-    public void setBasicAuthConfig(SecretNameReference basicAuthConfig) {
+    public void setBasicAuthConfig(OAuthSpecIPBasicAuthCa basicAuthConfig) {
         this.basicAuthConfig = basicAuthConfig;
     }
 
     @JsonProperty("ca")
-    public ConfigMapNameReference getCa() {
+    public BuildSpecBDDPTrustedCA getCa() {
         return ca;
     }
 
     @JsonProperty("ca")
-    public void setCa(ConfigMapNameReference ca) {
+    public void setCa(BuildSpecBDDPTrustedCA ca) {
         this.ca = ca;
     }
 
     @JsonProperty("tlsClientConfig")
-    public SecretNameReference getTlsClientConfig() {
+    public OAuthSpecIPBasicAuthCa getTlsClientConfig() {
         return tlsClientConfig;
     }
 
     @JsonProperty("tlsClientConfig")
-    public void setTlsClientConfig(SecretNameReference tlsClientConfig) {
+    public void setTlsClientConfig(OAuthSpecIPBasicAuthCa tlsClientConfig) {
         this.tlsClientConfig = tlsClientConfig;
     }
 

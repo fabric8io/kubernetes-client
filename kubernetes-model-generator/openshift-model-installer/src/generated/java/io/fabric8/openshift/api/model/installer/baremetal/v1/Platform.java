@@ -24,7 +24,7 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.openshift.api.model.config.v1.BareMetalPlatformLoadBalancer;
+import io.fabric8.openshift.api.model.config.v1.InfrastructureStatusPSBaremetalLoadBalancer;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -114,7 +114,7 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     @JsonProperty("libvirtURI")
     private String libvirtURI;
     @JsonProperty("loadBalancer")
-    private BareMetalPlatformLoadBalancer loadBalancer;
+    private InfrastructureStatusPSBaremetalLoadBalancer loadBalancer;
     @JsonProperty("provisioningBridge")
     private String provisioningBridge;
     @JsonProperty("provisioningDHCPExternal")
@@ -141,7 +141,7 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     public Platform() {
     }
 
-    public Platform(String apiVIP, List<String> apiVIPs, String bootstrapExternalStaticGateway, String bootstrapExternalStaticIP, String bootstrapOSImage, String bootstrapProvisioningIP, String clusterOSImage, String clusterProvisioningIP, MachinePool defaultMachinePlatform, String externalBridge, String externalMACAddress, List<Host> hosts, String ingressVIP, List<String> ingressVIPs, String libvirtURI, BareMetalPlatformLoadBalancer loadBalancer, String provisioningBridge, Boolean provisioningDHCPExternal, String provisioningDHCPRange, String provisioningHostIP, String provisioningMACAddress, String provisioningNetwork, String provisioningNetworkCIDR, String provisioningNetworkInterface) {
+    public Platform(String apiVIP, List<String> apiVIPs, String bootstrapExternalStaticGateway, String bootstrapExternalStaticIP, String bootstrapOSImage, String bootstrapProvisioningIP, String clusterOSImage, String clusterProvisioningIP, MachinePool defaultMachinePlatform, String externalBridge, String externalMACAddress, List<Host> hosts, String ingressVIP, List<String> ingressVIPs, String libvirtURI, InfrastructureStatusPSBaremetalLoadBalancer loadBalancer, String provisioningBridge, Boolean provisioningDHCPExternal, String provisioningDHCPRange, String provisioningHostIP, String provisioningMACAddress, String provisioningNetwork, String provisioningNetworkCIDR, String provisioningNetworkInterface) {
         super();
         this.apiVIP = apiVIP;
         this.apiVIPs = apiVIPs;
@@ -323,12 +323,12 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     }
 
     @JsonProperty("loadBalancer")
-    public BareMetalPlatformLoadBalancer getLoadBalancer() {
+    public InfrastructureStatusPSBaremetalLoadBalancer getLoadBalancer() {
         return loadBalancer;
     }
 
     @JsonProperty("loadBalancer")
-    public void setLoadBalancer(BareMetalPlatformLoadBalancer loadBalancer) {
+    public void setLoadBalancer(InfrastructureStatusPSBaremetalLoadBalancer loadBalancer) {
         this.loadBalancer = loadBalancer;
     }
 

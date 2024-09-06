@@ -6982,7 +6982,7 @@
         }
       },
       "additionalProperties": true,
-      "existingJavaType": "io.fabric8.openshift.api.model.config.v1.ConfigMapNameReference",
+      "existingJavaType": "io.fabric8.openshift.api.model.config.v1.BuildSpecBDDPTrustedCA",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -6995,7 +6995,7 @@
         }
       },
       "additionalProperties": true,
-      "existingJavaType": "io.fabric8.openshift.api.model.config.v1.SecretNameReference",
+      "existingJavaType": "io.fabric8.openshift.api.model.config.v1.OAuthSpecIPBasicAuthCa",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -7564,11 +7564,11 @@
       "properties": {
         "ca": {
           "$ref": "#/definitions/os_config_v1_ConfigMapNameReference",
-          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.ConfigMapNameReference"
+          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.BuildSpecBDDPTrustedCA"
         },
         "tlsClientConfig": {
           "$ref": "#/definitions/os_config_v1_SecretNameReference",
-          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.SecretNameReference"
+          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.OAuthSpecIPBasicAuthCa"
         },
         "url": {
           "type": "string"
@@ -7585,15 +7585,15 @@
       "properties": {
         "basicAuthConfig": {
           "$ref": "#/definitions/os_config_v1_SecretNameReference",
-          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.SecretNameReference"
+          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.OAuthSpecIPBasicAuthCa"
         },
         "ca": {
           "$ref": "#/definitions/os_config_v1_ConfigMapNameReference",
-          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.ConfigMapNameReference"
+          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.BuildSpecBDDPTrustedCA"
         },
         "tlsClientConfig": {
           "$ref": "#/definitions/os_config_v1_SecretNameReference",
-          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.SecretNameReference"
+          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.OAuthSpecIPBasicAuthCa"
         },
         "url": {
           "type": "string"
@@ -13501,11 +13501,11 @@
       "properties": {
         "ca": {
           "$ref": "#/definitions/os_config_v1_ConfigMapNameReference",
-          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.ConfigMapNameReference"
+          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.BuildSpecBDDPTrustedCA"
         },
         "tlsClientConfig": {
           "$ref": "#/definitions/os_config_v1_SecretNameReference",
-          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.SecretNameReference"
+          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.OAuthSpecIPBasicAuthCa"
         },
         "url": {
           "type": "string"
@@ -13517,15 +13517,15 @@
       "properties": {
         "basicAuthConfig": {
           "$ref": "#/definitions/os_config_v1_SecretNameReference",
-          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.SecretNameReference"
+          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.OAuthSpecIPBasicAuthCa"
         },
         "ca": {
           "$ref": "#/definitions/os_config_v1_ConfigMapNameReference",
-          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.ConfigMapNameReference"
+          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.BuildSpecBDDPTrustedCA"
         },
         "tlsClientConfig": {
           "$ref": "#/definitions/os_config_v1_SecretNameReference",
-          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.SecretNameReference"
+          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.OAuthSpecIPBasicAuthCa"
         },
         "url": {
           "type": "string"

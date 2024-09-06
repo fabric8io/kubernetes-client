@@ -35,6 +35,7 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "clusterNetwork",
     "clusterNetworkMTU",
+    "conditions",
     "migration",
     "networkType",
     "serviceNetwork"
@@ -62,11 +63,14 @@ public class NetworkStatus implements Editable<NetworkStatusBuilder> , Kubernete
 
     @JsonProperty("clusterNetwork")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ClusterNetworkEntry> clusterNetwork = new ArrayList<>();
+    private List<NetworkStatusClusterNetwork> clusterNetwork = new ArrayList<>();
     @JsonProperty("clusterNetworkMTU")
     private Integer clusterNetworkMTU;
+    @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<NetworkStatusConditions> conditions = new ArrayList<>();
     @JsonProperty("migration")
-    private NetworkMigration migration;
+    private NetworkStatusMigration migration;
     @JsonProperty("networkType")
     private String networkType;
     @JsonProperty("serviceNetwork")
@@ -82,10 +86,11 @@ public class NetworkStatus implements Editable<NetworkStatusBuilder> , Kubernete
     public NetworkStatus() {
     }
 
-    public NetworkStatus(List<ClusterNetworkEntry> clusterNetwork, Integer clusterNetworkMTU, NetworkMigration migration, String networkType, List<String> serviceNetwork) {
+    public NetworkStatus(List<NetworkStatusClusterNetwork> clusterNetwork, Integer clusterNetworkMTU, List<NetworkStatusConditions> conditions, NetworkStatusMigration migration, String networkType, List<String> serviceNetwork) {
         super();
         this.clusterNetwork = clusterNetwork;
         this.clusterNetworkMTU = clusterNetworkMTU;
+        this.conditions = conditions;
         this.migration = migration;
         this.networkType = networkType;
         this.serviceNetwork = serviceNetwork;
@@ -93,12 +98,12 @@ public class NetworkStatus implements Editable<NetworkStatusBuilder> , Kubernete
 
     @JsonProperty("clusterNetwork")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<ClusterNetworkEntry> getClusterNetwork() {
+    public List<NetworkStatusClusterNetwork> getClusterNetwork() {
         return clusterNetwork;
     }
 
     @JsonProperty("clusterNetwork")
-    public void setClusterNetwork(List<ClusterNetworkEntry> clusterNetwork) {
+    public void setClusterNetwork(List<NetworkStatusClusterNetwork> clusterNetwork) {
         this.clusterNetwork = clusterNetwork;
     }
 
@@ -112,13 +117,24 @@ public class NetworkStatus implements Editable<NetworkStatusBuilder> , Kubernete
         this.clusterNetworkMTU = clusterNetworkMTU;
     }
 
+    @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<NetworkStatusConditions> getConditions() {
+        return conditions;
+    }
+
+    @JsonProperty("conditions")
+    public void setConditions(List<NetworkStatusConditions> conditions) {
+        this.conditions = conditions;
+    }
+
     @JsonProperty("migration")
-    public NetworkMigration getMigration() {
+    public NetworkStatusMigration getMigration() {
         return migration;
     }
 
     @JsonProperty("migration")
-    public void setMigration(NetworkMigration migration) {
+    public void setMigration(NetworkStatusMigration migration) {
         this.migration = migration;
     }
 

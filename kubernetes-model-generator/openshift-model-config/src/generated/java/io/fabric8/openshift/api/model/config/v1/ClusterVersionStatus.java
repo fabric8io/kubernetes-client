@@ -64,21 +64,21 @@ public class ClusterVersionStatus implements Editable<ClusterVersionStatusBuilde
 {
 
     @JsonProperty("availableUpdates")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Release> availableUpdates = new ArrayList<>();
+    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
+    private Object availableUpdates;
     @JsonProperty("capabilities")
-    private ClusterVersionCapabilitiesStatus capabilities;
+    private ClusterVersionStatusCapabilities capabilities;
     @JsonProperty("conditionalUpdates")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ConditionalUpdate> conditionalUpdates = new ArrayList<>();
+    private List<ClusterVersionStatusConditionalUpdates> conditionalUpdates = new ArrayList<>();
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ClusterOperatorStatusCondition> conditions = new ArrayList<>();
+    private List<ClusterVersionStatusConditions> conditions = new ArrayList<>();
     @JsonProperty("desired")
-    private Release desired;
+    private ClusterVersionStatusDesired desired;
     @JsonProperty("history")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<UpdateHistory> history = new ArrayList<>();
+    private List<ClusterVersionStatusHistory> history = new ArrayList<>();
     @JsonProperty("observedGeneration")
     private Long observedGeneration;
     @JsonProperty("versionHash")
@@ -93,7 +93,7 @@ public class ClusterVersionStatus implements Editable<ClusterVersionStatusBuilde
     public ClusterVersionStatus() {
     }
 
-    public ClusterVersionStatus(List<Release> availableUpdates, ClusterVersionCapabilitiesStatus capabilities, List<ConditionalUpdate> conditionalUpdates, List<ClusterOperatorStatusCondition> conditions, Release desired, List<UpdateHistory> history, Long observedGeneration, String versionHash) {
+    public ClusterVersionStatus(Object availableUpdates, ClusterVersionStatusCapabilities capabilities, List<ClusterVersionStatusConditionalUpdates> conditionalUpdates, List<ClusterVersionStatusConditions> conditions, ClusterVersionStatusDesired desired, List<ClusterVersionStatusHistory> history, Long observedGeneration, String versionHash) {
         super();
         this.availableUpdates = availableUpdates;
         this.capabilities = capabilities;
@@ -106,66 +106,66 @@ public class ClusterVersionStatus implements Editable<ClusterVersionStatusBuilde
     }
 
     @JsonProperty("availableUpdates")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<Release> getAvailableUpdates() {
+    public Object getAvailableUpdates() {
         return availableUpdates;
     }
 
     @JsonProperty("availableUpdates")
-    public void setAvailableUpdates(List<Release> availableUpdates) {
+    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
+    public void setAvailableUpdates(Object availableUpdates) {
         this.availableUpdates = availableUpdates;
     }
 
     @JsonProperty("capabilities")
-    public ClusterVersionCapabilitiesStatus getCapabilities() {
+    public ClusterVersionStatusCapabilities getCapabilities() {
         return capabilities;
     }
 
     @JsonProperty("capabilities")
-    public void setCapabilities(ClusterVersionCapabilitiesStatus capabilities) {
+    public void setCapabilities(ClusterVersionStatusCapabilities capabilities) {
         this.capabilities = capabilities;
     }
 
     @JsonProperty("conditionalUpdates")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<ConditionalUpdate> getConditionalUpdates() {
+    public List<ClusterVersionStatusConditionalUpdates> getConditionalUpdates() {
         return conditionalUpdates;
     }
 
     @JsonProperty("conditionalUpdates")
-    public void setConditionalUpdates(List<ConditionalUpdate> conditionalUpdates) {
+    public void setConditionalUpdates(List<ClusterVersionStatusConditionalUpdates> conditionalUpdates) {
         this.conditionalUpdates = conditionalUpdates;
     }
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<ClusterOperatorStatusCondition> getConditions() {
+    public List<ClusterVersionStatusConditions> getConditions() {
         return conditions;
     }
 
     @JsonProperty("conditions")
-    public void setConditions(List<ClusterOperatorStatusCondition> conditions) {
+    public void setConditions(List<ClusterVersionStatusConditions> conditions) {
         this.conditions = conditions;
     }
 
     @JsonProperty("desired")
-    public Release getDesired() {
+    public ClusterVersionStatusDesired getDesired() {
         return desired;
     }
 
     @JsonProperty("desired")
-    public void setDesired(Release desired) {
+    public void setDesired(ClusterVersionStatusDesired desired) {
         this.desired = desired;
     }
 
     @JsonProperty("history")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<UpdateHistory> getHistory() {
+    public List<ClusterVersionStatusHistory> getHistory() {
         return history;
     }
 
     @JsonProperty("history")
-    public void setHistory(List<UpdateHistory> history) {
+    public void setHistory(List<ClusterVersionStatusHistory> history) {
         this.history = history;
     }
 

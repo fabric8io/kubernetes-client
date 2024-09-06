@@ -21,6 +21,10 @@ import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.extension.ClientAdapter;
 import io.fabric8.openshift.api.model.operator.controlplane.v1alpha1.PodNetworkConnectivityCheck;
 import io.fabric8.openshift.api.model.operator.controlplane.v1alpha1.PodNetworkConnectivityCheckList;
+import io.fabric8.openshift.api.model.operator.imageregistry.v1.ImagePruner;
+import io.fabric8.openshift.api.model.operator.imageregistry.v1.ImagePrunerList;
+import io.fabric8.openshift.api.model.operator.ingress.v1.DNSRecord;
+import io.fabric8.openshift.api.model.operator.ingress.v1.DNSRecordList;
 import io.fabric8.openshift.api.model.operator.v1.Authentication;
 import io.fabric8.openshift.api.model.operator.v1.AuthenticationList;
 import io.fabric8.openshift.api.model.operator.v1.CSISnapshotController;
@@ -34,12 +38,8 @@ import io.fabric8.openshift.api.model.operator.v1.Console;
 import io.fabric8.openshift.api.model.operator.v1.ConsoleList;
 import io.fabric8.openshift.api.model.operator.v1.DNS;
 import io.fabric8.openshift.api.model.operator.v1.DNSList;
-import io.fabric8.openshift.api.model.operator.v1.DNSRecord;
-import io.fabric8.openshift.api.model.operator.v1.DNSRecordList;
 import io.fabric8.openshift.api.model.operator.v1.Etcd;
 import io.fabric8.openshift.api.model.operator.v1.EtcdList;
-import io.fabric8.openshift.api.model.operator.v1.ImagePruner;
-import io.fabric8.openshift.api.model.operator.v1.ImagePrunerList;
 import io.fabric8.openshift.api.model.operator.v1.IngressController;
 import io.fabric8.openshift.api.model.operator.v1.IngressControllerList;
 import io.fabric8.openshift.api.model.operator.v1.KubeAPIServer;
@@ -58,10 +58,6 @@ import io.fabric8.openshift.api.model.operator.v1.OpenShiftControllerManager;
 import io.fabric8.openshift.api.model.operator.v1.OpenShiftControllerManagerList;
 import io.fabric8.openshift.api.model.operator.v1.ServiceCA;
 import io.fabric8.openshift.api.model.operator.v1.ServiceCAList;
-import io.fabric8.openshift.api.model.operator.v1.ServiceCatalogAPIServer;
-import io.fabric8.openshift.api.model.operator.v1.ServiceCatalogAPIServerList;
-import io.fabric8.openshift.api.model.operator.v1.ServiceCatalogControllerManager;
-import io.fabric8.openshift.api.model.operator.v1.ServiceCatalogControllerManagerList;
 import io.fabric8.openshift.api.model.operator.v1.Storage;
 import io.fabric8.openshift.api.model.operator.v1.StorageList;
 import io.fabric8.openshift.api.model.operator.v1alpha1.ImageContentSourcePolicy;
@@ -104,11 +100,6 @@ public class OpenShiftOperatorAPIGroupClient extends ClientAdapter<OpenShiftOper
   @Override
   public NonNamespaceOperation<Console, ConsoleList, Resource<Console>> consoles() {
     return resources(Console.class, ConsoleList.class);
-  }
-
-  @Override
-  public NonNamespaceOperation<ServiceCatalogControllerManager, ServiceCatalogControllerManagerList, Resource<ServiceCatalogControllerManager>> serviceCatalogControllerManagers() {
-    return resources(ServiceCatalogControllerManager.class, ServiceCatalogControllerManagerList.class);
   }
 
   @Override
@@ -159,11 +150,6 @@ public class OpenShiftOperatorAPIGroupClient extends ClientAdapter<OpenShiftOper
   @Override
   public MixedOperation<PodNetworkConnectivityCheck, PodNetworkConnectivityCheckList, Resource<PodNetworkConnectivityCheck>> podNetworkConnectivityChecks() {
     return resources(PodNetworkConnectivityCheck.class, PodNetworkConnectivityCheckList.class);
-  }
-
-  @Override
-  public NonNamespaceOperation<ServiceCatalogAPIServer, ServiceCatalogAPIServerList, Resource<ServiceCatalogAPIServer>> serviceCatalogAPIServers() {
-    return resources(ServiceCatalogAPIServer.class, ServiceCatalogAPIServerList.class);
   }
 
   @Override

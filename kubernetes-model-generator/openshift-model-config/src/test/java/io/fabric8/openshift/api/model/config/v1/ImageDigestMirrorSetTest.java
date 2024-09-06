@@ -17,12 +17,12 @@ package io.fabric8.openshift.api.model.config.v1;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.kubernetes.api.model.Namespaced;
+import io.fabric8.kubernetes.model.util.Helper;
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.Collections;
-import java.util.Scanner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -37,9 +37,7 @@ class ImageDigestMirrorSetTest {
   @Test
   void deserializationAndSerializationShouldWorkAsExpected() throws IOException {
     // Given
-    String originalJson = new Scanner(getClass().getResourceAsStream("/test-imagedigestmirrorset.json"))
-        .useDelimiter("\\A")
-        .next();
+    String originalJson = Helper.loadJson("/test-imagedigestmirrorset.json");
 
     // When
     final ImageDigestMirrorSet imageDigestMirrorSet = mapper.readValue(originalJson, ImageDigestMirrorSet.class);
@@ -51,8 +49,7 @@ class ImageDigestMirrorSetTest {
         .hasFieldOrPropertyWithValue("metadata.name", "ubi9repo")
         .extracting(ImageDigestMirrorSet::getSpec)
         .extracting(ImageDigestMirrorSetSpec::getImageDigestMirrors)
-        .asList()
-        .singleElement(InstanceOfAssertFactories.type(ImageDigestMirrors.class))
+        .asInstanceOf(InstanceOfAssertFactories.list(ImageDigestMirrorSetSpecImageDigestMirrors.class)).singleElement()
         .hasFieldOrPropertyWithValue("mirrors", Collections.singletonList("example.com/example/ubi-minimal"))
         .hasFieldOrPropertyWithValue("source", "registry.access.redhat.com/ubi9/ubi-minimal")
         .hasFieldOrPropertyWithValue("mirrorSourcePolicy", "AllowContactingSource");
@@ -81,8 +78,7 @@ class ImageDigestMirrorSetTest {
         .hasFieldOrPropertyWithValue("metadata.name", "ubi9repo")
         .extracting(ImageDigestMirrorSet::getSpec)
         .extracting(ImageDigestMirrorSetSpec::getImageDigestMirrors)
-        .asList()
-        .singleElement(InstanceOfAssertFactories.type(ImageDigestMirrors.class))
+        .asInstanceOf(InstanceOfAssertFactories.list(ImageDigestMirrorSetSpecImageDigestMirrors.class)).singleElement()
         .hasFieldOrPropertyWithValue("mirrors", Collections.singletonList("example.com/example/ubi-minimal"))
         .hasFieldOrPropertyWithValue("source", "registry.access.redhat.com/ubi9/ubi-minimal")
         .hasFieldOrPropertyWithValue("mirrorSourcePolicy", "AllowContactingSource");

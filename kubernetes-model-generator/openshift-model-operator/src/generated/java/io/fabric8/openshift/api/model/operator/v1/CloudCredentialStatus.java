@@ -62,10 +62,10 @@ public class CloudCredentialStatus implements Editable<CloudCredentialStatusBuil
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<OperatorCondition> conditions = new ArrayList<>();
+    private List<CloudCredentialStatusConditions> conditions = new ArrayList<>();
     @JsonProperty("generations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<GenerationStatus> generations = new ArrayList<>();
+    private List<CloudCredentialStatusGenerations> generations = new ArrayList<>();
     @JsonProperty("observedGeneration")
     private Long observedGeneration;
     @JsonProperty("readyReplicas")
@@ -82,7 +82,7 @@ public class CloudCredentialStatus implements Editable<CloudCredentialStatusBuil
     public CloudCredentialStatus() {
     }
 
-    public CloudCredentialStatus(List<OperatorCondition> conditions, List<GenerationStatus> generations, Long observedGeneration, Integer readyReplicas, String version) {
+    public CloudCredentialStatus(List<CloudCredentialStatusConditions> conditions, List<CloudCredentialStatusGenerations> generations, Long observedGeneration, Integer readyReplicas, String version) {
         super();
         this.conditions = conditions;
         this.generations = generations;
@@ -93,23 +93,23 @@ public class CloudCredentialStatus implements Editable<CloudCredentialStatusBuil
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<OperatorCondition> getConditions() {
+    public List<CloudCredentialStatusConditions> getConditions() {
         return conditions;
     }
 
     @JsonProperty("conditions")
-    public void setConditions(List<OperatorCondition> conditions) {
+    public void setConditions(List<CloudCredentialStatusConditions> conditions) {
         this.conditions = conditions;
     }
 
     @JsonProperty("generations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<GenerationStatus> getGenerations() {
+    public List<CloudCredentialStatusGenerations> getGenerations() {
         return generations;
     }
 
     @JsonProperty("generations")
-    public void setGenerations(List<GenerationStatus> generations) {
+    public void setGenerations(List<CloudCredentialStatusGenerations> generations) {
         this.generations = generations;
     }
 

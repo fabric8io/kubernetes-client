@@ -65,17 +65,17 @@ public class KubeSchedulerStatus implements Editable<KubeSchedulerStatusBuilder>
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<OperatorCondition> conditions = new ArrayList<>();
+    private List<KubeSchedulerStatusConditions> conditions = new ArrayList<>();
     @JsonProperty("generations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<GenerationStatus> generations = new ArrayList<>();
+    private List<KubeSchedulerStatusGenerations> generations = new ArrayList<>();
     @JsonProperty("latestAvailableRevision")
     private Integer latestAvailableRevision;
     @JsonProperty("latestAvailableRevisionReason")
     private String latestAvailableRevisionReason;
     @JsonProperty("nodeStatuses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<NodeStatus> nodeStatuses = new ArrayList<>();
+    private List<KubeSchedulerStatusNodeStatuses> nodeStatuses = new ArrayList<>();
     @JsonProperty("observedGeneration")
     private Long observedGeneration;
     @JsonProperty("readyReplicas")
@@ -92,7 +92,7 @@ public class KubeSchedulerStatus implements Editable<KubeSchedulerStatusBuilder>
     public KubeSchedulerStatus() {
     }
 
-    public KubeSchedulerStatus(List<OperatorCondition> conditions, List<GenerationStatus> generations, Integer latestAvailableRevision, String latestAvailableRevisionReason, List<NodeStatus> nodeStatuses, Long observedGeneration, Integer readyReplicas, String version) {
+    public KubeSchedulerStatus(List<KubeSchedulerStatusConditions> conditions, List<KubeSchedulerStatusGenerations> generations, Integer latestAvailableRevision, String latestAvailableRevisionReason, List<KubeSchedulerStatusNodeStatuses> nodeStatuses, Long observedGeneration, Integer readyReplicas, String version) {
         super();
         this.conditions = conditions;
         this.generations = generations;
@@ -106,23 +106,23 @@ public class KubeSchedulerStatus implements Editable<KubeSchedulerStatusBuilder>
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<OperatorCondition> getConditions() {
+    public List<KubeSchedulerStatusConditions> getConditions() {
         return conditions;
     }
 
     @JsonProperty("conditions")
-    public void setConditions(List<OperatorCondition> conditions) {
+    public void setConditions(List<KubeSchedulerStatusConditions> conditions) {
         this.conditions = conditions;
     }
 
     @JsonProperty("generations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<GenerationStatus> getGenerations() {
+    public List<KubeSchedulerStatusGenerations> getGenerations() {
         return generations;
     }
 
     @JsonProperty("generations")
-    public void setGenerations(List<GenerationStatus> generations) {
+    public void setGenerations(List<KubeSchedulerStatusGenerations> generations) {
         this.generations = generations;
     }
 
@@ -148,12 +148,12 @@ public class KubeSchedulerStatus implements Editable<KubeSchedulerStatusBuilder>
 
     @JsonProperty("nodeStatuses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<NodeStatus> getNodeStatuses() {
+    public List<KubeSchedulerStatusNodeStatuses> getNodeStatuses() {
         return nodeStatuses;
     }
 
     @JsonProperty("nodeStatuses")
-    public void setNodeStatuses(List<NodeStatus> nodeStatuses) {
+    public void setNodeStatuses(List<KubeSchedulerStatusNodeStatuses> nodeStatuses) {
         this.nodeStatuses = nodeStatuses;
     }
 

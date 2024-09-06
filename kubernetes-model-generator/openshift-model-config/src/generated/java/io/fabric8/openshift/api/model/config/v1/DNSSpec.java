@@ -60,11 +60,11 @@ public class DNSSpec implements Editable<DNSSpecBuilder> , KubernetesResource
     @JsonProperty("baseDomain")
     private String baseDomain;
     @JsonProperty("platform")
-    private DNSPlatformSpec platform;
+    private DNSSpecPlatform platform;
     @JsonProperty("privateZone")
-    private DNSZone privateZone;
+    private DNSSpecPrivateZone privateZone;
     @JsonProperty("publicZone")
-    private DNSZone publicZone;
+    private DNSSpecPublicZone publicZone;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -75,7 +75,7 @@ public class DNSSpec implements Editable<DNSSpecBuilder> , KubernetesResource
     public DNSSpec() {
     }
 
-    public DNSSpec(String baseDomain, DNSPlatformSpec platform, DNSZone privateZone, DNSZone publicZone) {
+    public DNSSpec(String baseDomain, DNSSpecPlatform platform, DNSSpecPrivateZone privateZone, DNSSpecPublicZone publicZone) {
         super();
         this.baseDomain = baseDomain;
         this.platform = platform;
@@ -94,32 +94,32 @@ public class DNSSpec implements Editable<DNSSpecBuilder> , KubernetesResource
     }
 
     @JsonProperty("platform")
-    public DNSPlatformSpec getPlatform() {
+    public DNSSpecPlatform getPlatform() {
         return platform;
     }
 
     @JsonProperty("platform")
-    public void setPlatform(DNSPlatformSpec platform) {
+    public void setPlatform(DNSSpecPlatform platform) {
         this.platform = platform;
     }
 
     @JsonProperty("privateZone")
-    public DNSZone getPrivateZone() {
+    public DNSSpecPrivateZone getPrivateZone() {
         return privateZone;
     }
 
     @JsonProperty("privateZone")
-    public void setPrivateZone(DNSZone privateZone) {
+    public void setPrivateZone(DNSSpecPrivateZone privateZone) {
         this.privateZone = privateZone;
     }
 
     @JsonProperty("publicZone")
-    public DNSZone getPublicZone() {
+    public DNSSpecPublicZone getPublicZone() {
         return publicZone;
     }
 
     @JsonProperty("publicZone")
-    public void setPublicZone(DNSZone publicZone) {
+    public void setPublicZone(DNSSpecPublicZone publicZone) {
         this.publicZone = publicZone;
     }
 

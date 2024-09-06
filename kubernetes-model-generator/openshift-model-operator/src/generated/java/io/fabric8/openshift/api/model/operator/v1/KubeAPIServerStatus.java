@@ -66,24 +66,24 @@ public class KubeAPIServerStatus implements Editable<KubeAPIServerStatusBuilder>
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<OperatorCondition> conditions = new ArrayList<>();
+    private List<KubeAPIServerStatusConditions> conditions = new ArrayList<>();
     @JsonProperty("generations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<GenerationStatus> generations = new ArrayList<>();
+    private List<KubeAPIServerStatusGenerations> generations = new ArrayList<>();
     @JsonProperty("latestAvailableRevision")
     private Integer latestAvailableRevision;
     @JsonProperty("latestAvailableRevisionReason")
     private String latestAvailableRevisionReason;
     @JsonProperty("nodeStatuses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<NodeStatus> nodeStatuses = new ArrayList<>();
+    private List<KubeAPIServerStatusNodeStatuses> nodeStatuses = new ArrayList<>();
     @JsonProperty("observedGeneration")
     private Long observedGeneration;
     @JsonProperty("readyReplicas")
     private Integer readyReplicas;
     @JsonProperty("serviceAccountIssuers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ServiceAccountIssuerStatus> serviceAccountIssuers = new ArrayList<>();
+    private List<KubeAPIServerStatusServiceAccountIssuers> serviceAccountIssuers = new ArrayList<>();
     @JsonProperty("version")
     private String version;
     @JsonIgnore
@@ -96,7 +96,7 @@ public class KubeAPIServerStatus implements Editable<KubeAPIServerStatusBuilder>
     public KubeAPIServerStatus() {
     }
 
-    public KubeAPIServerStatus(List<OperatorCondition> conditions, List<GenerationStatus> generations, Integer latestAvailableRevision, String latestAvailableRevisionReason, List<NodeStatus> nodeStatuses, Long observedGeneration, Integer readyReplicas, List<ServiceAccountIssuerStatus> serviceAccountIssuers, String version) {
+    public KubeAPIServerStatus(List<KubeAPIServerStatusConditions> conditions, List<KubeAPIServerStatusGenerations> generations, Integer latestAvailableRevision, String latestAvailableRevisionReason, List<KubeAPIServerStatusNodeStatuses> nodeStatuses, Long observedGeneration, Integer readyReplicas, List<KubeAPIServerStatusServiceAccountIssuers> serviceAccountIssuers, String version) {
         super();
         this.conditions = conditions;
         this.generations = generations;
@@ -111,23 +111,23 @@ public class KubeAPIServerStatus implements Editable<KubeAPIServerStatusBuilder>
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<OperatorCondition> getConditions() {
+    public List<KubeAPIServerStatusConditions> getConditions() {
         return conditions;
     }
 
     @JsonProperty("conditions")
-    public void setConditions(List<OperatorCondition> conditions) {
+    public void setConditions(List<KubeAPIServerStatusConditions> conditions) {
         this.conditions = conditions;
     }
 
     @JsonProperty("generations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<GenerationStatus> getGenerations() {
+    public List<KubeAPIServerStatusGenerations> getGenerations() {
         return generations;
     }
 
     @JsonProperty("generations")
-    public void setGenerations(List<GenerationStatus> generations) {
+    public void setGenerations(List<KubeAPIServerStatusGenerations> generations) {
         this.generations = generations;
     }
 
@@ -153,12 +153,12 @@ public class KubeAPIServerStatus implements Editable<KubeAPIServerStatusBuilder>
 
     @JsonProperty("nodeStatuses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<NodeStatus> getNodeStatuses() {
+    public List<KubeAPIServerStatusNodeStatuses> getNodeStatuses() {
         return nodeStatuses;
     }
 
     @JsonProperty("nodeStatuses")
-    public void setNodeStatuses(List<NodeStatus> nodeStatuses) {
+    public void setNodeStatuses(List<KubeAPIServerStatusNodeStatuses> nodeStatuses) {
         this.nodeStatuses = nodeStatuses;
     }
 
@@ -184,12 +184,12 @@ public class KubeAPIServerStatus implements Editable<KubeAPIServerStatusBuilder>
 
     @JsonProperty("serviceAccountIssuers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<ServiceAccountIssuerStatus> getServiceAccountIssuers() {
+    public List<KubeAPIServerStatusServiceAccountIssuers> getServiceAccountIssuers() {
         return serviceAccountIssuers;
     }
 
     @JsonProperty("serviceAccountIssuers")
-    public void setServiceAccountIssuers(List<ServiceAccountIssuerStatus> serviceAccountIssuers) {
+    public void setServiceAccountIssuers(List<KubeAPIServerStatusServiceAccountIssuers> serviceAccountIssuers) {
         this.serviceAccountIssuers = serviceAccountIssuers;
     }
 

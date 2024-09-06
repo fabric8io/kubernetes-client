@@ -468,7 +468,7 @@
         }
       },
       "additionalProperties": true,
-      "existingJavaType": "io.fabric8.openshift.api.model.config.v1.BareMetalPlatformLoadBalancer",
+      "existingJavaType": "io.fabric8.openshift.api.model.config.v1.InfrastructureStatusPSBaremetalLoadBalancer",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -481,7 +481,7 @@
         }
       },
       "additionalProperties": true,
-      "existingJavaType": "io.fabric8.openshift.api.model.config.v1.NutanixPlatformLoadBalancer",
+      "existingJavaType": "io.fabric8.openshift.api.model.config.v1.InfrastructureStatusPSNutanixLoadBalancer",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -494,7 +494,7 @@
         }
       },
       "additionalProperties": true,
-      "existingJavaType": "io.fabric8.openshift.api.model.config.v1.OpenStackPlatformLoadBalancer",
+      "existingJavaType": "io.fabric8.openshift.api.model.config.v1.InfrastructureStatusPSOpenstackLoadBalancer",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -507,7 +507,7 @@
         }
       },
       "additionalProperties": true,
-      "existingJavaType": "io.fabric8.openshift.api.model.config.v1.OvirtPlatformLoadBalancer",
+      "existingJavaType": "io.fabric8.openshift.api.model.config.v1.InfrastructureStatusPSOvirtLoadBalancer",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -520,7 +520,7 @@
         }
       },
       "additionalProperties": true,
-      "existingJavaType": "io.fabric8.openshift.api.model.config.v1.VSpherePlatformLoadBalancer",
+      "existingJavaType": "io.fabric8.openshift.api.model.config.v1.InfrastructureStatusPSVsphereLoadBalancer",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -1015,7 +1015,7 @@
         },
         "loadBalancer": {
           "$ref": "#/definitions/os_config_v1_BareMetalPlatformLoadBalancer",
-          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.BareMetalPlatformLoadBalancer"
+          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.InfrastructureStatusPSBaremetalLoadBalancer"
         },
         "provisioningBridge": {
           "type": "string"
@@ -1489,7 +1489,7 @@
         },
         "loadBalancer": {
           "$ref": "#/definitions/os_config_v1_NutanixPlatformLoadBalancer",
-          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.NutanixPlatformLoadBalancer"
+          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.InfrastructureStatusPSNutanixLoadBalancer"
         },
         "prismCentral": {
           "$ref": "#/definitions/os_installer_nutanix_v1_PrismCentral",
@@ -1761,7 +1761,7 @@
         },
         "loadBalancer": {
           "$ref": "#/definitions/os_config_v1_OpenStackPlatformLoadBalancer",
-          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.OpenStackPlatformLoadBalancer"
+          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.InfrastructureStatusPSOpenstackLoadBalancer"
         },
         "machinesSubnet": {
           "type": "string"
@@ -1966,7 +1966,7 @@
         },
         "loadBalancer": {
           "$ref": "#/definitions/os_config_v1_OvirtPlatformLoadBalancer",
-          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.OvirtPlatformLoadBalancer"
+          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.InfrastructureStatusPSOvirtLoadBalancer"
         },
         "ovirt_cluster_id": {
           "type": "string"
@@ -2592,7 +2592,7 @@
         },
         "loadBalancer": {
           "$ref": "#/definitions/os_config_v1_VSpherePlatformLoadBalancer",
-          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.VSpherePlatformLoadBalancer"
+          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.InfrastructureStatusPSVsphereLoadBalancer"
         },
         "network": {
           "type": "string"
@@ -3117,20 +3117,17 @@
     },
     "failuredomain": {
       "properties": {
-        "name": {
+        "computeAvailabilityZone": {
           "type": "string"
         },
-        "region": {
-          "type": "string"
+        "portTargets": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/os_installer_openstack_v1_NamedPortTarget",
+            "existingJavaType": "io.fabric8.openshift.api.model.installer.openstack.v1.NamedPortTarget"
+          }
         },
-        "server": {
-          "type": "string"
-        },
-        "topology": {
-          "$ref": "#/definitions/os_installer_vsphere_v1_Topology",
-          "existingJavaType": "io.fabric8.openshift.api.model.installer.vsphere.v1.Topology"
-        },
-        "zone": {
+        "storageAvailabilityZone": {
           "type": "string"
         }
       },
@@ -3384,24 +3381,21 @@
     },
     "machinepool": {
       "properties": {
-        "encryptionAtHost": {
-          "type": "boolean"
+        "amiID": {
+          "type": "string"
         },
-        "osDisk": {
-          "$ref": "#/definitions/os_installer_azure_v1_OSDisk",
-          "existingJavaType": "io.fabric8.openshift.api.model.installer.azure.v1.OSDisk"
+        "iamRole": {
+          "type": "string"
         },
-        "osImage": {
-          "$ref": "#/definitions/os_installer_azure_v1_OSImage",
-          "existingJavaType": "io.fabric8.openshift.api.model.installer.azure.v1.OSImage"
+        "metadataService": {
+          "$ref": "#/definitions/os_installer_aws_v1_EC2Metadata",
+          "existingJavaType": "io.fabric8.openshift.api.model.installer.aws.v1.EC2Metadata"
+        },
+        "rootVolume": {
+          "$ref": "#/definitions/os_installer_aws_v1_EC2RootVolume",
+          "existingJavaType": "io.fabric8.openshift.api.model.installer.aws.v1.EC2RootVolume"
         },
         "type": {
-          "type": "string"
-        },
-        "ultraSSDCapability": {
-          "type": "string"
-        },
-        "vmNetworkingType": {
           "type": "string"
         },
         "zones": {
@@ -3773,6 +3767,52 @@
       "additionalProperties": true
     },
     "platform": {
+      "properties": {
+        "armEndpoint": {
+          "type": "string"
+        },
+        "baseDomainResourceGroupName": {
+          "type": "string"
+        },
+        "cloudName": {
+          "type": "string"
+        },
+        "clusterOSImage": {
+          "type": "string"
+        },
+        "computeSubnet": {
+          "type": "string"
+        },
+        "controlPlaneSubnet": {
+          "type": "string"
+        },
+        "defaultMachinePlatform": {
+          "$ref": "#/definitions/os_installer_azure_v1_MachinePool",
+          "existingJavaType": "io.fabric8.openshift.api.model.installer.azure.v1.MachinePool"
+        },
+        "networkResourceGroupName": {
+          "type": "string"
+        },
+        "outboundType": {
+          "type": "string"
+        },
+        "region": {
+          "type": "string"
+        },
+        "resourceGroupName": {
+          "type": "string"
+        },
+        "userTags": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "existingJavaType": "java.util.Map\u003cjava.lang.String, java.lang.String\u003e"
+        },
+        "virtualNetwork": {
+          "type": "string"
+        }
+      },
       "additionalProperties": true
     },
     "porttarget": {

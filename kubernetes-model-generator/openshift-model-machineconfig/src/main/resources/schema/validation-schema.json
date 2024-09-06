@@ -1222,7 +1222,7 @@
         }
       },
       "additionalProperties": true,
-      "existingJavaType": "io.fabric8.openshift.api.model.config.v1.MTUMigration",
+      "existingJavaType": "io.fabric8.openshift.api.model.config.v1.NetworkStatusMMtu",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -1740,7 +1740,7 @@
         }
       },
       "additionalProperties": true,
-      "existingJavaType": "io.fabric8.openshift.api.model.config.v1.TLSSecurityProfile",
+      "existingJavaType": "io.fabric8.openshift.api.model.config.v1.APIServerSpecTlsSecurityProfile",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -2481,7 +2481,7 @@
         },
         "tlsSecurityProfile": {
           "$ref": "#/definitions/os_config_v1_TLSSecurityProfile",
-          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.TLSSecurityProfile"
+          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.APIServerSpecTlsSecurityProfile"
         }
       },
       "additionalProperties": true,
@@ -2822,7 +2822,7 @@
       "properties": {
         "mtuMigration": {
           "$ref": "#/definitions/os_config_v1_MTUMigration",
-          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.MTUMigration"
+          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.NetworkStatusMMtu"
         }
       },
       "additionalProperties": true,
@@ -3911,7 +3911,7 @@
         },
         "tlsSecurityProfile": {
           "$ref": "#/definitions/os_config_v1_TLSSecurityProfile",
-          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.TLSSecurityProfile"
+          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.APIServerSpecTlsSecurityProfile"
         }
       },
       "additionalProperties": true
@@ -4345,7 +4345,7 @@
       "properties": {
         "mtuMigration": {
           "$ref": "#/definitions/os_config_v1_MTUMigration",
-          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.MTUMigration"
+          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.NetworkStatusMMtu"
         }
       },
       "additionalProperties": true

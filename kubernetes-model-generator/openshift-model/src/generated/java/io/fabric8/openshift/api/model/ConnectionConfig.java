@@ -22,8 +22,8 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.openshift.api.model.config.v1.ConfigMapNameReference;
-import io.fabric8.openshift.api.model.config.v1.SecretNameReference;
+import io.fabric8.openshift.api.model.config.v1.BuildSpecBDDPTrustedCA;
+import io.fabric8.openshift.api.model.config.v1.OAuthSpecIPBasicAuthCa;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -59,9 +59,9 @@ public class ConnectionConfig implements Editable<ConnectionConfigBuilder> , Kub
 {
 
     @JsonProperty("ca")
-    private ConfigMapNameReference ca;
+    private BuildSpecBDDPTrustedCA ca;
     @JsonProperty("tlsClientConfig")
-    private SecretNameReference tlsClientConfig;
+    private OAuthSpecIPBasicAuthCa tlsClientConfig;
     @JsonProperty("url")
     private String url;
     @JsonIgnore
@@ -74,7 +74,7 @@ public class ConnectionConfig implements Editable<ConnectionConfigBuilder> , Kub
     public ConnectionConfig() {
     }
 
-    public ConnectionConfig(ConfigMapNameReference ca, SecretNameReference tlsClientConfig, String url) {
+    public ConnectionConfig(BuildSpecBDDPTrustedCA ca, OAuthSpecIPBasicAuthCa tlsClientConfig, String url) {
         super();
         this.ca = ca;
         this.tlsClientConfig = tlsClientConfig;
@@ -82,22 +82,22 @@ public class ConnectionConfig implements Editable<ConnectionConfigBuilder> , Kub
     }
 
     @JsonProperty("ca")
-    public ConfigMapNameReference getCa() {
+    public BuildSpecBDDPTrustedCA getCa() {
         return ca;
     }
 
     @JsonProperty("ca")
-    public void setCa(ConfigMapNameReference ca) {
+    public void setCa(BuildSpecBDDPTrustedCA ca) {
         this.ca = ca;
     }
 
     @JsonProperty("tlsClientConfig")
-    public SecretNameReference getTlsClientConfig() {
+    public OAuthSpecIPBasicAuthCa getTlsClientConfig() {
         return tlsClientConfig;
     }
 
     @JsonProperty("tlsClientConfig")
-    public void setTlsClientConfig(SecretNameReference tlsClientConfig) {
+    public void setTlsClientConfig(OAuthSpecIPBasicAuthCa tlsClientConfig) {
         this.tlsClientConfig = tlsClientConfig;
     }
 
