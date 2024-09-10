@@ -15,7 +15,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
@@ -25,7 +24,6 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.kubernetes.api.model.runtime.RawExtension;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -64,9 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
-    @BuildableReference(PersistentVolumeClaim.class),
-    @BuildableReference(GenericKubernetesResource.class),
-    @BuildableReference(RawExtension.class)
+    @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
 public class HelmChartArgs implements Editable<HelmChartArgsBuilder> , KubernetesResource
@@ -96,8 +92,9 @@ public class HelmChartArgs implements Editable<HelmChartArgsBuilder> , Kubernete
     @JsonProperty("values")
     private String values;
     @JsonProperty("valuesLocal")
+    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializerForMap.class)
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, KubernetesResource> valuesLocal = new LinkedHashMap<>();
+    private Map<String, Object> valuesLocal = new LinkedHashMap<>();
     @JsonProperty("valuesMerge")
     private String valuesMerge;
     @JsonIgnore
@@ -110,7 +107,7 @@ public class HelmChartArgs implements Editable<HelmChartArgsBuilder> , Kubernete
     public HelmChartArgs() {
     }
 
-    public HelmChartArgs(String chartHome, String chartName, String chartRepoName, String chartRepoUrl, String chartVersion, List<String> extraArgs, String helmBin, String helmHome, String releaseName, String releaseNamespace, String values, Map<String, KubernetesResource> valuesLocal, String valuesMerge) {
+    public HelmChartArgs(String chartHome, String chartName, String chartRepoName, String chartRepoUrl, String chartVersion, List<String> extraArgs, String helmBin, String helmHome, String releaseName, String releaseNamespace, String values, Map<String, Object> valuesLocal, String valuesMerge) {
         super();
         this.chartHome = chartHome;
         this.chartName = chartName;
@@ -240,12 +237,13 @@ public class HelmChartArgs implements Editable<HelmChartArgsBuilder> , Kubernete
 
     @JsonProperty("valuesLocal")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public Map<String, KubernetesResource> getValuesLocal() {
+    public Map<String, Object> getValuesLocal() {
         return valuesLocal;
     }
 
     @JsonProperty("valuesLocal")
-    public void setValuesLocal(Map<String, KubernetesResource> valuesLocal) {
+    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializerForMap.class)
+    public void setValuesLocal(Map<String, Object> valuesLocal) {
         this.valuesLocal = valuesLocal;
     }
 

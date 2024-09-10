@@ -36,6 +36,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Properties;
 import java.util.TreeSet;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -248,7 +249,7 @@ class SchemaUtilsTest {
     class Ref {
 
       @Test
-      void ref() {
+      void refFromDefault() {
         final ObjectSchema schema = new ObjectSchema();
         schema.set$ref("#/definitions/io.k8s.api.core.v1.Pod");
         final String result = schemaUtils.schemaToClassName(importManager, schema);
@@ -305,8 +306,42 @@ class SchemaUtilsTest {
     void plainObject() {
       final ObjectSchema schema = new ObjectSchema();
       final String result = schemaUtils.schemaToClassName(importManager, schema);
-      assertEquals("KubernetesResource", result);
-      assertEquals("io.fabric8.kubernetes.api.model.KubernetesResource", importManager.getImports().iterator().next());
+      assertEquals("Object", result);
+      assertTrue(importManager.getImports().isEmpty());
+    }
+
+    @Test
+    void mappingDefault() {
+      final ObjectSchema schema = new ObjectSchema();
+      schema.set$ref("#/components/schemas/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta");
+      final String result = schemaUtils.schemaToClassName(importManager, schema);
+      assertEquals("ObjectMeta", result);
+      assertEquals("io.fabric8.kubernetes.api.model.ObjectMeta", importManager.getImports().iterator().next());
+    }
+
+    @Test
+    void mappingConfiguredInSettings() {
+      final Properties properties = new Properties();
+      properties.put("io.k8s.api.core.v1.ToBeMapped", "io.fabric8.kubernetes.api.model.Mapped");
+      final ObjectSchema schema = new ObjectSchema();
+      schema.set$ref("io.k8s.api.core.v1.ToBeMapped");
+      schemaUtils = new SchemaUtils(generatorSettingsBuilder.refToJavaTypeMappings(properties).build());
+      final String result = schemaUtils.schemaToClassName(importManager, schema);
+      assertEquals("Mapped", result);
+      assertEquals("io.fabric8.kubernetes.api.model.Mapped", importManager.getImports().iterator().next());
+    }
+
+    @Test
+    void configuredInSettingsTakesPrecedence() {
+      final Properties properties = new Properties();
+      properties.put("#/components/schemas/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta",
+          "io.fabric8.kubernetes.api.model.Mapped");
+      final ObjectSchema schema = new ObjectSchema();
+      schema.set$ref("#/components/schemas/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta");
+      schemaUtils = new SchemaUtils(generatorSettingsBuilder.refToJavaTypeMappings(properties).build());
+      final String result = schemaUtils.schemaToClassName(importManager, schema);
+      assertEquals("Mapped", result);
+      assertEquals("io.fabric8.kubernetes.api.model.Mapped", importManager.getImports().iterator().next());
     }
 
   }

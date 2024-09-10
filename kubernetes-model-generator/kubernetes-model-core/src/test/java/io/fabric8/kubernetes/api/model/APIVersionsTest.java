@@ -16,24 +16,29 @@
 package io.fabric8.kubernetes.api.model;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.fabric8.kubernetes.model.util.Helper;
 import org.assertj.core.api.InstanceOfAssertFactories;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.Collections;
-import java.util.Scanner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 class APIVersionsTest {
-  private final ObjectMapper mapper = new ObjectMapper();
+
+  private ObjectMapper mapper;
+
+  @BeforeEach
+  void setUp() {
+    mapper = new ObjectMapper();
+  }
 
   @Test
   void deserializationAndSerializationShouldWorkAsExpected() throws IOException {
     // Given
-    String originalJson = new Scanner(getClass().getResourceAsStream("/valid-apiversions.json"))
-        .useDelimiter("\\A")
-        .next();
+    String originalJson = Helper.loadJson("/valid-apiversions.json");
 
     // When
     final APIVersions apiVersions = mapper.readValue(originalJson, APIVersions.class);

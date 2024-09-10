@@ -5,6 +5,7 @@
 - [Apache Felix SCR Annotations removed](#apache-felix-scr-annotations)
 - [Model Changes](#model-changes)
   - [kubernetes-model artifact removed](#kubernetes-model-artifact-removed)
+  - [Service Catalog removed (operator.openshift.io)](#service-catalog-removed)
 - [Deprecations and Removals](#deprecations-and-removals)
   - [Service Catalog API removed](#service-catalog) 
 
@@ -35,6 +36,13 @@ The Maven artifact `io.fabric8:kubernetes-model` has been removed from the proje
 
 This artifact was just an aggregator of _some_ of the Kubernetes model artifacts and had no specific purpose.
 It is no longer published, the `io.fabric8:kubernetes-client-api` or `io.fabric8:kubernetes-openshift-uberjar` artifacts should be used instead.
+
+### Service Catalog removed (operator.openshift.io) <a href="#service-catalog-removed" id="service-catalog-removed"/>
+
+The operator.openshift.io APIs have been deprecated since OpenShift 4.1.
+The model types and DSL entry points for these APIs have been removed from the OpenShift client.
+- [openshift/api: remove the service catalog crds](https://github.com/openshift/api/pull/596)
+- [OpenShift Container Platform 4.1 release notes](https://docs.openshift.com/container-platform/4.1/release_notes/ocp-4-1-release-notes.html#ocp-4-1-service-broker-service-catalog-deprecation)
 
 ## Deprecations and Removals <a href="#deprecations-and-removals" id="deprecations-and-removals"/>
 

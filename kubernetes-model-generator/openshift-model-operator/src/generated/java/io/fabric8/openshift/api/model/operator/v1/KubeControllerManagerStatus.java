@@ -65,17 +65,17 @@ public class KubeControllerManagerStatus implements Editable<KubeControllerManag
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<OperatorCondition> conditions = new ArrayList<>();
+    private List<KubeControllerManagerStatusConditions> conditions = new ArrayList<>();
     @JsonProperty("generations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<GenerationStatus> generations = new ArrayList<>();
+    private List<KubeControllerManagerStatusGenerations> generations = new ArrayList<>();
     @JsonProperty("latestAvailableRevision")
     private Integer latestAvailableRevision;
     @JsonProperty("latestAvailableRevisionReason")
     private String latestAvailableRevisionReason;
     @JsonProperty("nodeStatuses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<NodeStatus> nodeStatuses = new ArrayList<>();
+    private List<KubeControllerManagerStatusNodeStatuses> nodeStatuses = new ArrayList<>();
     @JsonProperty("observedGeneration")
     private Long observedGeneration;
     @JsonProperty("readyReplicas")
@@ -92,7 +92,7 @@ public class KubeControllerManagerStatus implements Editable<KubeControllerManag
     public KubeControllerManagerStatus() {
     }
 
-    public KubeControllerManagerStatus(List<OperatorCondition> conditions, List<GenerationStatus> generations, Integer latestAvailableRevision, String latestAvailableRevisionReason, List<NodeStatus> nodeStatuses, Long observedGeneration, Integer readyReplicas, String version) {
+    public KubeControllerManagerStatus(List<KubeControllerManagerStatusConditions> conditions, List<KubeControllerManagerStatusGenerations> generations, Integer latestAvailableRevision, String latestAvailableRevisionReason, List<KubeControllerManagerStatusNodeStatuses> nodeStatuses, Long observedGeneration, Integer readyReplicas, String version) {
         super();
         this.conditions = conditions;
         this.generations = generations;
@@ -106,23 +106,23 @@ public class KubeControllerManagerStatus implements Editable<KubeControllerManag
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<OperatorCondition> getConditions() {
+    public List<KubeControllerManagerStatusConditions> getConditions() {
         return conditions;
     }
 
     @JsonProperty("conditions")
-    public void setConditions(List<OperatorCondition> conditions) {
+    public void setConditions(List<KubeControllerManagerStatusConditions> conditions) {
         this.conditions = conditions;
     }
 
     @JsonProperty("generations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<GenerationStatus> getGenerations() {
+    public List<KubeControllerManagerStatusGenerations> getGenerations() {
         return generations;
     }
 
     @JsonProperty("generations")
-    public void setGenerations(List<GenerationStatus> generations) {
+    public void setGenerations(List<KubeControllerManagerStatusGenerations> generations) {
         this.generations = generations;
     }
 
@@ -148,12 +148,12 @@ public class KubeControllerManagerStatus implements Editable<KubeControllerManag
 
     @JsonProperty("nodeStatuses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<NodeStatus> getNodeStatuses() {
+    public List<KubeControllerManagerStatusNodeStatuses> getNodeStatuses() {
         return nodeStatuses;
     }
 
     @JsonProperty("nodeStatuses")
-    public void setNodeStatuses(List<NodeStatus> nodeStatuses) {
+    public void setNodeStatuses(List<KubeControllerManagerStatusNodeStatuses> nodeStatuses) {
         this.nodeStatuses = nodeStatuses;
     }
 

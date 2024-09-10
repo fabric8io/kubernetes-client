@@ -96,11 +96,10 @@
     <okio.version>1.17.6</okio.version>
     <okio.bundle.version>1.15.0_1</okio.bundle.version>
     <jackson.version>2.17.2</jackson.version>
-    <jetty.version>11.0.23</jetty.version>
+    <jetty.version>11.0.24</jetty.version>
     <maven-core.version>3.9.9</maven-core.version>
     <maven-plugin-annotations.version>3.15.0</maven-plugin-annotations.version>
-    <vertx.version>4.5.9</vertx.version>
-    <zjsonpatch.version>0.3.0</zjsonpatch.version>
+    <vertx.version>4.5.10</vertx.version>
     <jandex.version>3.2.2</jandex.version>
 
     <!-- API versions -->
@@ -124,7 +123,7 @@
     <asm.bundle.version>8.0.1</asm.bundle.version>
     <jackson.bundle.version>${jackson.version}</jackson.bundle.version>
     <slf4j.version>2.0.16</slf4j.version>
-    <log4j.version>2.23.1</log4j.version>
+    <log4j.version>2.24.0</log4j.version>
     <lombok.version>1.18.34</lombok.version>
     <snakeyaml.version>2.7</snakeyaml.version>
     <snakeyaml.bundle.version>2.2</snakeyaml.bundle.version> <!-- Transitive Jackson -->
@@ -139,7 +138,6 @@
     <jsonschema2pojo.version>1.2.1</jsonschema2pojo.version>
     <picocli.version>4.7.6</picocli.version>
     <properties.maven.plugin.version>1.0.0</properties.maven.plugin.version>
-    <kubernetes.webhooks.framework.version>1.1.4</kubernetes.webhooks.framework.version>
 
     <!-- Maven plugin versions -->
     <buildnumber.plugin.version>3.2.1</buildnumber.plugin.version>
@@ -205,6 +203,7 @@
   </properties>
   <modules>
     <module>kubernetes-model-generator</module>
+    <module>zjsonpatch</module>
     <module>kubernetes-client-api</module>
     <module>kubernetes-client</module>
     <module>junit/mockwebserver</module>
@@ -215,7 +214,6 @@
     <module>openshift-client</module>
     <module>extensions</module>
     <module>junit/openshift-server-mock</module>
-    <module>kubernetes-examples</module>
     <module>platforms</module>
     <module>kubernetes-tests</module>
     <module>uberjar</module>
@@ -226,6 +224,7 @@
     <module>httpclient-vertx</module>
     <module>kubernetes-client-deps-compatibility-tests</module>
     <module>log4j</module>
+    <module>kubernetes-examples</module>
   </modules>
 
   <dependencyManagement>
@@ -720,6 +719,11 @@
         <artifactId>kube-api-test-client-inject</artifactId>
         <version>${project.version}</version>
       </dependency>
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>zjsonpatch</artifactId>
+        <version>${project.version}</version>
+      </dependency>
 
 
       <!-- Jackson dependencies, imported as a BOM -->
@@ -902,11 +906,6 @@
 
       <!-- Testing and Mocking -->
       <dependency>
-        <groupId>io.fabric8</groupId>
-        <artifactId>zjsonpatch</artifactId>
-        <version>${zjsonpatch.version}</version>
-      </dependency>
-      <dependency>
         <groupId>org.mockito</groupId>
         <artifactId>mockito-core</artifactId>
         <version>${mockito.version}</version>
@@ -971,13 +970,6 @@
         <groupId>com.approvaltests</groupId>
         <artifactId>approvaltests</artifactId>
         <version>${approvaltests.version}</version>
-        <scope>test</scope>
-      </dependency>
-
-      <dependency>
-        <groupId>io.javaoperatorsdk</groupId>
-        <artifactId>kubernetes-webhooks-framework-core</artifactId>
-        <version>${kubernetes.webhooks.framework.version}</version>
         <scope>test</scope>
       </dependency>
     </dependencies>

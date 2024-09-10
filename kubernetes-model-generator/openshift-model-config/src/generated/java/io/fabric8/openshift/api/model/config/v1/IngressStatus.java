@@ -59,7 +59,7 @@ public class IngressStatus implements Editable<IngressStatusBuilder> , Kubernete
 
     @JsonProperty("componentRoutes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ComponentRouteStatus> componentRoutes = new ArrayList<>();
+    private List<IngressStatusComponentRoutes> componentRoutes = new ArrayList<>();
     @JsonProperty("defaultPlacement")
     private String defaultPlacement;
     @JsonIgnore
@@ -72,7 +72,7 @@ public class IngressStatus implements Editable<IngressStatusBuilder> , Kubernete
     public IngressStatus() {
     }
 
-    public IngressStatus(List<ComponentRouteStatus> componentRoutes, String defaultPlacement) {
+    public IngressStatus(List<IngressStatusComponentRoutes> componentRoutes, String defaultPlacement) {
         super();
         this.componentRoutes = componentRoutes;
         this.defaultPlacement = defaultPlacement;
@@ -80,12 +80,12 @@ public class IngressStatus implements Editable<IngressStatusBuilder> , Kubernete
 
     @JsonProperty("componentRoutes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<ComponentRouteStatus> getComponentRoutes() {
+    public List<IngressStatusComponentRoutes> getComponentRoutes() {
         return componentRoutes;
     }
 
     @JsonProperty("componentRoutes")
-    public void setComponentRoutes(List<ComponentRouteStatus> componentRoutes) {
+    public void setComponentRoutes(List<IngressStatusComponentRoutes> componentRoutes) {
         this.componentRoutes = componentRoutes;
     }
 

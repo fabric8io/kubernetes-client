@@ -15,7 +15,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
@@ -26,7 +25,6 @@ import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.kubernetes.api.model.Status;
-import io.fabric8.kubernetes.api.model.runtime.RawExtension;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -55,17 +53,16 @@ import lombok.experimental.Accessors;
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
-    @BuildableReference(PersistentVolumeClaim.class),
-    @BuildableReference(GenericKubernetesResource.class),
-    @BuildableReference(RawExtension.class)
+    @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
 public class ConversionResponse implements Editable<ConversionResponseBuilder> , KubernetesResource
 {
 
     @JsonProperty("convertedObjects")
+    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializerForList.class)
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<KubernetesResource> convertedObjects = new ArrayList<>();
+    private List<Object> convertedObjects = new ArrayList<>();
     @JsonProperty("result")
     private Status result;
     @JsonProperty("uid")
@@ -80,7 +77,7 @@ public class ConversionResponse implements Editable<ConversionResponseBuilder> ,
     public ConversionResponse() {
     }
 
-    public ConversionResponse(List<KubernetesResource> convertedObjects, Status result, String uid) {
+    public ConversionResponse(List<Object> convertedObjects, Status result, String uid) {
         super();
         this.convertedObjects = convertedObjects;
         this.result = result;
@@ -89,12 +86,13 @@ public class ConversionResponse implements Editable<ConversionResponseBuilder> ,
 
     @JsonProperty("convertedObjects")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<KubernetesResource> getConvertedObjects() {
+    public List<Object> getConvertedObjects() {
         return convertedObjects;
     }
 
     @JsonProperty("convertedObjects")
-    public void setConvertedObjects(List<KubernetesResource> convertedObjects) {
+    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializerForList.class)
+    public void setConvertedObjects(List<Object> convertedObjects) {
         this.convertedObjects = convertedObjects;
     }
 

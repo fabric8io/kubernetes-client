@@ -74,7 +74,6 @@
     <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>zjsonpatch</artifactId>
-      <version>${zjsonpatch.version}</version>
     </dependency>
 
     <dependency>

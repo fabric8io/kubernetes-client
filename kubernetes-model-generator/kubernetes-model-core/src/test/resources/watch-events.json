@@ -1,0 +1,40 @@
+[
+  {
+    "type": "ADDED",
+    "object": null
+  },
+  {
+    "type": "MODIFIED",
+    "object": {
+      "kind": "Pod",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "pod-modified"
+      }
+    }
+  },
+  {
+    "type": "DELETED",
+    "object": {
+      "kind": "UnknownKind",
+      "apiVersion": "unknown.example.com/v1",
+      "metadata": {
+        "name": "generic-deleted"
+      }
+    }
+  },
+  {
+    "type": "ERROR",
+    "object": {
+      "name": "raw-error"
+    }
+  },
+  {
+    "type": "BOOKMARK",
+    "object": "primitive-string-bookmark"
+  },
+  {
+    "type": "BOOKMARK",
+    "object": 1337
+  }
+]

@@ -3657,7 +3657,7 @@
       "properties": {
         "ca": {
           "$ref": "#/definitions/os_config_v1_ConfigMapNameReference",
-          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.ConfigMapNameReference"
+          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.BuildSpecBDDPTrustedCA"
         },
         "tlsClientCert": {
           "$ref": "#/definitions/os_config_v1_SecretNameReference",
@@ -3697,7 +3697,7 @@
         }
       },
       "additionalProperties": true,
-      "existingJavaType": "io.fabric8.openshift.api.model.config.v1.ClusterOperatorStatusCondition",
+      "existingJavaType": "io.fabric8.openshift.api.model.config.v1.ClusterOperatorStatusConditions",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -3710,7 +3710,7 @@
         }
       },
       "additionalProperties": true,
-      "existingJavaType": "io.fabric8.openshift.api.model.config.v1.ConfigMapNameReference",
+      "existingJavaType": "io.fabric8.openshift.api.model.config.v1.BuildSpecBDDPTrustedCA",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -3720,7 +3720,7 @@
       "properties": {
         "ca": {
           "$ref": "#/definitions/os_config_v1_ConfigMapNameReference",
-          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.ConfigMapNameReference"
+          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.BuildSpecBDDPTrustedCA"
         },
         "clientID": {
           "type": "string"
@@ -3758,7 +3758,7 @@
       "properties": {
         "ca": {
           "$ref": "#/definitions/os_config_v1_ConfigMapNameReference",
-          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.ConfigMapNameReference"
+          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.BuildSpecBDDPTrustedCA"
         },
         "clientID": {
           "type": "string"
@@ -3861,7 +3861,7 @@
         }
       },
       "additionalProperties": true,
-      "existingJavaType": "io.fabric8.openshift.api.model.config.v1.IdentityProvider",
+      "existingJavaType": "io.fabric8.openshift.api.model.config.v1.OAuthSpecIdentityProviders",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -3920,7 +3920,7 @@
       "properties": {
         "ca": {
           "$ref": "#/definitions/os_config_v1_ConfigMapNameReference",
-          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.ConfigMapNameReference"
+          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.BuildSpecBDDPTrustedCA"
         },
         "domainName": {
           "type": "string"
@@ -3996,7 +3996,7 @@
         },
         "ca": {
           "$ref": "#/definitions/os_config_v1_ConfigMapNameReference",
-          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.ConfigMapNameReference"
+          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.BuildSpecBDDPTrustedCA"
         },
         "insecure": {
           "type": "boolean"
@@ -4016,7 +4016,7 @@
       "properties": {
         "ca": {
           "$ref": "#/definitions/os_config_v1_ConfigMapNameReference",
-          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.ConfigMapNameReference"
+          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.BuildSpecBDDPTrustedCA"
         },
         "tlsClientCert": {
           "$ref": "#/definitions/os_config_v1_SecretNameReference",
@@ -4079,7 +4079,7 @@
       "properties": {
         "ca": {
           "$ref": "#/definitions/os_config_v1_ConfigMapNameReference",
-          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.ConfigMapNameReference"
+          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.BuildSpecBDDPTrustedCA"
         },
         "claims": {
           "$ref": "#/definitions/os_config_v1_OpenIDClaims",
@@ -4121,7 +4121,7 @@
       "properties": {
         "ca": {
           "$ref": "#/definitions/os_config_v1_ConfigMapNameReference",
-          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.ConfigMapNameReference"
+          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.BuildSpecBDDPTrustedCA"
         },
         "challengeURL": {
           "type": "string"
@@ -6108,7 +6108,7 @@
         },
         "httpErrorCodePages": {
           "$ref": "#/definitions/os_config_v1_ConfigMapNameReference",
-          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.ConfigMapNameReference"
+          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.BuildSpecBDDPTrustedCA"
         },
         "name": {
           "type": "string"
@@ -6189,7 +6189,7 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/os_config_v1_ClusterOperatorStatusCondition",
-            "existingJavaType": "io.fabric8.openshift.api.model.config.v1.ClusterOperatorStatusCondition"
+            "existingJavaType": "io.fabric8.openshift.api.model.config.v1.ClusterOperatorStatusConditions"
           }
         },
         "name": {
@@ -8251,7 +8251,7 @@
           "type": "array",
           "items": {
             "$ref": "#/definitions/os_config_v1_IdentityProvider",
-            "existingJavaType": "io.fabric8.openshift.api.model.config.v1.IdentityProvider"
+            "existingJavaType": "io.fabric8.openshift.api.model.config.v1.OAuthSpecIdentityProviders"
           }
         }
       },
@@ -8448,7 +8448,7 @@
           "type": "array",
           "items": {
             "$ref": "#/definitions/os_config_v1_IdentityProvider",
-            "existingJavaType": "io.fabric8.openshift.api.model.config.v1.IdentityProvider"
+            "existingJavaType": "io.fabric8.openshift.api.model.config.v1.OAuthSpecIdentityProviders"
           }
         }
       },
@@ -8504,7 +8504,7 @@
           "type": "array",
           "items": {
             "$ref": "#/definitions/os_config_v1_IdentityProvider",
-            "existingJavaType": "io.fabric8.openshift.api.model.config.v1.IdentityProvider"
+            "existingJavaType": "io.fabric8.openshift.api.model.config.v1.OAuthSpecIdentityProviders"
           }
         }
       },
@@ -8889,7 +8889,7 @@
     },
     "ClusterOperatorStatusCondition": {
       "$ref": "#/definitions/os_config_v1_ClusterOperatorStatusCondition",
-      "existingJavaType": "io.fabric8.openshift.api.model.config.v1.ClusterOperatorStatusCondition"
+      "existingJavaType": "io.fabric8.openshift.api.model.config.v1.ClusterOperatorStatusConditions"
     },
     "ClusterPool": {
       "$ref": "#/definitions/os_hive_v1_ClusterPool",

@@ -56,7 +56,8 @@ public class FeatureGateSpec implements Editable<FeatureGateSpecBuilder> , Kuber
 {
 
     @JsonProperty("customNoUpgrade")
-    private CustomFeatureGates customNoUpgrade;
+    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
+    private Object customNoUpgrade;
     @JsonProperty("featureSet")
     private String featureSet;
     @JsonIgnore
@@ -69,19 +70,20 @@ public class FeatureGateSpec implements Editable<FeatureGateSpecBuilder> , Kuber
     public FeatureGateSpec() {
     }
 
-    public FeatureGateSpec(CustomFeatureGates customNoUpgrade, String featureSet) {
+    public FeatureGateSpec(Object customNoUpgrade, String featureSet) {
         super();
         this.customNoUpgrade = customNoUpgrade;
         this.featureSet = featureSet;
     }
 
     @JsonProperty("customNoUpgrade")
-    public CustomFeatureGates getCustomNoUpgrade() {
+    public Object getCustomNoUpgrade() {
         return customNoUpgrade;
     }
 
     @JsonProperty("customNoUpgrade")
-    public void setCustomNoUpgrade(CustomFeatureGates customNoUpgrade) {
+    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
+    public void setCustomNoUpgrade(Object customNoUpgrade) {
         this.customNoUpgrade = customNoUpgrade;
     }
 

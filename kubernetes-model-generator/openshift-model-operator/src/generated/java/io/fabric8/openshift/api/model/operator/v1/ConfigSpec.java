@@ -13,7 +13,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
@@ -23,7 +22,6 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.kubernetes.api.model.runtime.RawExtension;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -54,9 +52,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
-    @BuildableReference(PersistentVolumeClaim.class),
-    @BuildableReference(GenericKubernetesResource.class),
-    @BuildableReference(RawExtension.class)
+    @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
 public class ConfigSpec implements Editable<ConfigSpecBuilder> , KubernetesResource
@@ -67,11 +63,13 @@ public class ConfigSpec implements Editable<ConfigSpecBuilder> , KubernetesResou
     @JsonProperty("managementState")
     private String managementState;
     @JsonProperty("observedConfig")
-    private KubernetesResource observedConfig;
+    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
+    private Object observedConfig;
     @JsonProperty("operatorLogLevel")
     private String operatorLogLevel;
     @JsonProperty("unsupportedConfigOverrides")
-    private KubernetesResource unsupportedConfigOverrides;
+    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
+    private Object unsupportedConfigOverrides;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -82,7 +80,7 @@ public class ConfigSpec implements Editable<ConfigSpecBuilder> , KubernetesResou
     public ConfigSpec() {
     }
 
-    public ConfigSpec(String logLevel, String managementState, KubernetesResource observedConfig, String operatorLogLevel, KubernetesResource unsupportedConfigOverrides) {
+    public ConfigSpec(String logLevel, String managementState, Object observedConfig, String operatorLogLevel, Object unsupportedConfigOverrides) {
         super();
         this.logLevel = logLevel;
         this.managementState = managementState;
@@ -112,12 +110,13 @@ public class ConfigSpec implements Editable<ConfigSpecBuilder> , KubernetesResou
     }
 
     @JsonProperty("observedConfig")
-    public KubernetesResource getObservedConfig() {
+    public Object getObservedConfig() {
         return observedConfig;
     }
 
     @JsonProperty("observedConfig")
-    public void setObservedConfig(KubernetesResource observedConfig) {
+    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
+    public void setObservedConfig(Object observedConfig) {
         this.observedConfig = observedConfig;
     }
 
@@ -132,12 +131,13 @@ public class ConfigSpec implements Editable<ConfigSpecBuilder> , KubernetesResou
     }
 
     @JsonProperty("unsupportedConfigOverrides")
-    public KubernetesResource getUnsupportedConfigOverrides() {
+    public Object getUnsupportedConfigOverrides() {
         return unsupportedConfigOverrides;
     }
 
     @JsonProperty("unsupportedConfigOverrides")
-    public void setUnsupportedConfigOverrides(KubernetesResource unsupportedConfigOverrides) {
+    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
+    public void setUnsupportedConfigOverrides(Object unsupportedConfigOverrides) {
         this.unsupportedConfigOverrides = unsupportedConfigOverrides;
     }
 

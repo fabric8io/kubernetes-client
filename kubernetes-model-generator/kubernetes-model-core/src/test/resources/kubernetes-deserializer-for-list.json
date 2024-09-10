@@ -1,0 +1,32 @@
+{
+  "aList": [
+    {
+      "kind": "Pod",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "pod"
+      }
+    },
+    {
+      "kind": "Generic",
+      "apiVersion": "generic.example.com",
+      "metadata": {
+        "name": "generic"
+      }
+    }
+  ],
+  "aListWithRaw": [
+    {
+      "name": "raw-extension"
+    },
+    [
+      {
+        "kind": "Pod",
+        "apiVersion": "v1",
+        "metadata": {
+          "name": "nested-pod"
+        }
+      }
+    ]
+  ]
+}

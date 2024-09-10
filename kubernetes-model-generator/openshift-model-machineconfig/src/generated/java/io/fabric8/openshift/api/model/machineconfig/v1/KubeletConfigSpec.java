@@ -21,7 +21,7 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.openshift.api.model.config.v1.TLSSecurityProfile;
+import io.fabric8.openshift.api.model.config.v1.APIServerSpecTlsSecurityProfile;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -68,7 +68,7 @@ public class KubeletConfigSpec implements Editable<KubeletConfigSpecBuilder> , K
     @JsonProperty("machineConfigPoolSelector")
     private io.fabric8.kubernetes.api.model.LabelSelector machineConfigPoolSelector;
     @JsonProperty("tlsSecurityProfile")
-    private TLSSecurityProfile tlsSecurityProfile;
+    private APIServerSpecTlsSecurityProfile tlsSecurityProfile;
     @JsonIgnore
     private Map<java.lang.String, java.lang.Object> additionalProperties = new LinkedHashMap<java.lang.String, java.lang.Object>();
 
@@ -79,7 +79,7 @@ public class KubeletConfigSpec implements Editable<KubeletConfigSpecBuilder> , K
     public KubeletConfigSpec() {
     }
 
-    public KubeletConfigSpec(Boolean autoSizingReserved, Map<String, Object> kubeletConfig, Integer logLevel, io.fabric8.kubernetes.api.model.LabelSelector machineConfigPoolSelector, TLSSecurityProfile tlsSecurityProfile) {
+    public KubeletConfigSpec(Boolean autoSizingReserved, Map<String, Object> kubeletConfig, Integer logLevel, io.fabric8.kubernetes.api.model.LabelSelector machineConfigPoolSelector, APIServerSpecTlsSecurityProfile tlsSecurityProfile) {
         super();
         this.autoSizingReserved = autoSizingReserved;
         this.kubeletConfig = kubeletConfig;
@@ -130,12 +130,12 @@ public class KubeletConfigSpec implements Editable<KubeletConfigSpecBuilder> , K
     }
 
     @JsonProperty("tlsSecurityProfile")
-    public TLSSecurityProfile getTlsSecurityProfile() {
+    public APIServerSpecTlsSecurityProfile getTlsSecurityProfile() {
         return tlsSecurityProfile;
     }
 
     @JsonProperty("tlsSecurityProfile")
-    public void setTlsSecurityProfile(TLSSecurityProfile tlsSecurityProfile) {
+    public void setTlsSecurityProfile(APIServerSpecTlsSecurityProfile tlsSecurityProfile) {
         this.tlsSecurityProfile = tlsSecurityProfile;
     }
 

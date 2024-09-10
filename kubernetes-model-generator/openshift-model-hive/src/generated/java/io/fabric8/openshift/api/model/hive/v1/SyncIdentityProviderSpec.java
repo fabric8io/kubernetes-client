@@ -23,7 +23,7 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.openshift.api.model.config.v1.IdentityProvider;
+import io.fabric8.openshift.api.model.config.v1.OAuthSpecIdentityProviders;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -62,7 +62,7 @@ public class SyncIdentityProviderSpec implements Editable<SyncIdentityProviderSp
     private List<io.fabric8.kubernetes.api.model.LocalObjectReference> clusterDeploymentRefs = new ArrayList<>();
     @JsonProperty("identityProviders")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<IdentityProvider> identityProviders = new ArrayList<>();
+    private List<OAuthSpecIdentityProviders> identityProviders = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -73,7 +73,7 @@ public class SyncIdentityProviderSpec implements Editable<SyncIdentityProviderSp
     public SyncIdentityProviderSpec() {
     }
 
-    public SyncIdentityProviderSpec(List<io.fabric8.kubernetes.api.model.LocalObjectReference> clusterDeploymentRefs, List<IdentityProvider> identityProviders) {
+    public SyncIdentityProviderSpec(List<io.fabric8.kubernetes.api.model.LocalObjectReference> clusterDeploymentRefs, List<OAuthSpecIdentityProviders> identityProviders) {
         super();
         this.clusterDeploymentRefs = clusterDeploymentRefs;
         this.identityProviders = identityProviders;
@@ -92,12 +92,12 @@ public class SyncIdentityProviderSpec implements Editable<SyncIdentityProviderSp
 
     @JsonProperty("identityProviders")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<IdentityProvider> getIdentityProviders() {
+    public List<OAuthSpecIdentityProviders> getIdentityProviders() {
         return identityProviders;
     }
 
     @JsonProperty("identityProviders")
-    public void setIdentityProviders(List<IdentityProvider> identityProviders) {
+    public void setIdentityProviders(List<OAuthSpecIdentityProviders> identityProviders) {
         this.identityProviders = identityProviders;
     }
 

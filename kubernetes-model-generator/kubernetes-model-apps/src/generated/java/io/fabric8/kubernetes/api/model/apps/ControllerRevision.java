@@ -13,10 +13,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
-import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.Namespaced;
@@ -25,7 +23,6 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.kubernetes.api.model.runtime.RawExtension;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
@@ -60,9 +57,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
-    @BuildableReference(PersistentVolumeClaim.class),
-    @BuildableReference(GenericKubernetesResource.class),
-    @BuildableReference(RawExtension.class)
+    @BuildableReference(PersistentVolumeClaim.class)
 })
 @TemplateTransformations({
     @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true)
@@ -81,7 +76,8 @@ public class ControllerRevision implements Editable<ControllerRevisionBuilder> ,
     @JsonProperty("apiVersion")
     private String apiVersion = "apps/v1";
     @JsonProperty("data")
-    private KubernetesResource data;
+    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
+    private Object data;
     /**
      * 
      * (Required)
@@ -103,7 +99,7 @@ public class ControllerRevision implements Editable<ControllerRevisionBuilder> ,
     public ControllerRevision() {
     }
 
-    public ControllerRevision(String apiVersion, KubernetesResource data, String kind, ObjectMeta metadata, Long revision) {
+    public ControllerRevision(String apiVersion, Object data, String kind, ObjectMeta metadata, Long revision) {
         super();
         this.apiVersion = apiVersion;
         this.data = data;
@@ -133,12 +129,13 @@ public class ControllerRevision implements Editable<ControllerRevisionBuilder> ,
     }
 
     @JsonProperty("data")
-    public KubernetesResource getData() {
+    public Object getData() {
         return data;
     }
 
     @JsonProperty("data")
-    public void setData(KubernetesResource data) {
+    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
+    public void setData(Object data) {
         this.data = data;
     }
 

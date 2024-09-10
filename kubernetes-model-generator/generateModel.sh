@@ -22,9 +22,7 @@ ABSOLUTE_BASEDIR=$(realpath "$BASEDIR")
 
 # Array for all existing modules
 declare -a modules=(
-    "openshift-model-config"
     "openshift-model"
-    "openshift-model-operator"
     "openshift-model-operatorhub"
     "openshift-model-console"
     "openshift-model-clusterautoscaling"

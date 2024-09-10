@@ -37,6 +37,9 @@
      */
 {{/legacyRequired}}
     @JsonProperty("{{propertyName}}")
+{{#deserializeUsing}}
+    @JsonDeserialize(using = {{.}})
+{{/deserializeUsing}}
     public void {{setterName}}({{type}} {{name}}) {
         this.{{name}} = {{name}};
     }

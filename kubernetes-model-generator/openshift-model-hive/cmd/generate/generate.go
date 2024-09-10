@@ -16,135 +16,137 @@
 package main
 
 import (
-  "bytes"
-  "encoding/json"
-  "fmt"
-  metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-  runtime "k8s.io/apimachinery/pkg/runtime"
-  kapi "k8s.io/api/core/v1"
-  openshiftconfigapi "github.com/openshift/api/config/v1"
-  "log"
-  "reflect"
-  "strings"
-  "time"
+	"bytes"
+	"encoding/json"
+	"fmt"
+	openshiftconfigapi "github.com/openshift/api/config/v1"
+	kapi "k8s.io/api/core/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	runtime "k8s.io/apimachinery/pkg/runtime"
+	"log"
+	"reflect"
+	"strings"
+	"time"
 
-  "os"
-  hivev1 "github.com/openshift/hive/apis/hive/v1"
-  azure "github.com/openshift/hive/apis/hive/v1/azure"
-  gcp "github.com/openshift/hive/apis/hive/v1/gcp"
-  vsphere "github.com/openshift/hive/apis/hive/v1/vsphere"
+	hivev1 "github.com/openshift/hive/apis/hive/v1"
+	azure "github.com/openshift/hive/apis/hive/v1/azure"
+	gcp "github.com/openshift/hive/apis/hive/v1/gcp"
+	vsphere "github.com/openshift/hive/apis/hive/v1/vsphere"
+	"os"
 
-
-  "github.com/fabric8io/kubernetes-client/kubernetes-model-generator/pkg/schemagen"
+	"github.com/fabric8io/kubernetes-client/kubernetes-model-generator/pkg/schemagen"
 )
 
 type Schema struct {
-  APIGroup                                 metav1.APIGroup
-  APIGroupList                             metav1.APIGroupList
-  BaseKubernetesList                       metav1.List
-  ObjectMeta                               metav1.ObjectMeta
-  LocalObjectReference                     kapi.LocalObjectReference
-  TypeMeta                                 metav1.TypeMeta
-  Status                                   metav1.Status
-  Patch                                    metav1.Patch
-  Time                                     metav1.Time
-  ClusterOperatorStatusCondition           openshiftconfigapi.ClusterOperatorStatusCondition
-  Checkpoint                               hivev1.Checkpoint
-  CheckpointList                           hivev1.CheckpointList
-  ClusterClaim                             hivev1.ClusterClaim
-  ClusterClaimList                         hivev1.ClusterClaimList
-  ClusterDeployment                        hivev1.ClusterDeployment
-  ClusterDeploymentList                    hivev1.ClusterDeploymentList
-  ClusterDeprovision                       hivev1.ClusterDeprovision
-  ClusterDeprovisionList                   hivev1.ClusterDeprovisionList
-  ClusterImageSet                          hivev1.ClusterImageSet
-  ClusterImageSetList                      hivev1.ClusterImageSetList
-  ClusterPool                              hivev1.ClusterPool
-  ClusterPoolList                          hivev1.ClusterPoolList
-  ClusterProvision                         hivev1.ClusterProvision
-  ClusterProvisionList                     hivev1.ClusterProvisionList
-  ClusterRelocate                          hivev1.ClusterRelocate
-  ClusterRelocateList                      hivev1.ClusterRelocateList
-  ClusterState                             hivev1.ClusterState
-  ClusterStateList                         hivev1.ClusterStateList
-  DNSZone                                  hivev1.DNSZone
-  DNSZoneList                              hivev1.DNSZoneList
-  HiveConfig                               hivev1.HiveConfig
-  HiveConfigList                           hivev1.HiveConfigList
-  MachinePoolNameLease                     hivev1.MachinePoolNameLease
-  MachinePoolNameLeaseList                 hivev1.MachinePoolNameLeaseList
-  MachinePool                              hivev1.MachinePool
-  MachinePoolList                          hivev1.MachinePoolList
-  SelectorSyncIdentityProvider             hivev1.SelectorSyncIdentityProvider
-  SelectorSyncIdentityProviderList         hivev1.SelectorSyncIdentityProviderList
-  SelectorSyncSet                          hivev1.SelectorSyncSet
-  SelectorSyncSetList                      hivev1.SelectorSyncSetList
-  SyncIdentityProvider                     hivev1.SyncIdentityProvider
-  SyncIdentityProviderList                 hivev1.SyncIdentityProviderList
-  SyncSet                                  hivev1.SyncSet
-  SyncSetList                              hivev1.SyncSetList
-  AzureOSDisk                              azure.OSDisk
-  GcpOSDisk                                gcp.OSDisk
-  VsphereOSDisk                            vsphere.OSDisk
+	APIGroup                         metav1.APIGroup
+	APIGroupList                     metav1.APIGroupList
+	BaseKubernetesList               metav1.List
+	ObjectMeta                       metav1.ObjectMeta
+	LocalObjectReference             kapi.LocalObjectReference
+	TypeMeta                         metav1.TypeMeta
+	Status                           metav1.Status
+	Patch                            metav1.Patch
+	Time                             metav1.Time
+	ClusterOperatorStatusCondition   openshiftconfigapi.ClusterOperatorStatusCondition
+	Checkpoint                       hivev1.Checkpoint
+	CheckpointList                   hivev1.CheckpointList
+	ClusterClaim                     hivev1.ClusterClaim
+	ClusterClaimList                 hivev1.ClusterClaimList
+	ClusterDeployment                hivev1.ClusterDeployment
+	ClusterDeploymentList            hivev1.ClusterDeploymentList
+	ClusterDeprovision               hivev1.ClusterDeprovision
+	ClusterDeprovisionList           hivev1.ClusterDeprovisionList
+	ClusterImageSet                  hivev1.ClusterImageSet
+	ClusterImageSetList              hivev1.ClusterImageSetList
+	ClusterPool                      hivev1.ClusterPool
+	ClusterPoolList                  hivev1.ClusterPoolList
+	ClusterProvision                 hivev1.ClusterProvision
+	ClusterProvisionList             hivev1.ClusterProvisionList
+	ClusterRelocate                  hivev1.ClusterRelocate
+	ClusterRelocateList              hivev1.ClusterRelocateList
+	ClusterState                     hivev1.ClusterState
+	ClusterStateList                 hivev1.ClusterStateList
+	DNSZone                          hivev1.DNSZone
+	DNSZoneList                      hivev1.DNSZoneList
+	HiveConfig                       hivev1.HiveConfig
+	HiveConfigList                   hivev1.HiveConfigList
+	MachinePoolNameLease             hivev1.MachinePoolNameLease
+	MachinePoolNameLeaseList         hivev1.MachinePoolNameLeaseList
+	MachinePool                      hivev1.MachinePool
+	MachinePoolList                  hivev1.MachinePoolList
+	SelectorSyncIdentityProvider     hivev1.SelectorSyncIdentityProvider
+	SelectorSyncIdentityProviderList hivev1.SelectorSyncIdentityProviderList
+	SelectorSyncSet                  hivev1.SelectorSyncSet
+	SelectorSyncSetList              hivev1.SelectorSyncSetList
+	SyncIdentityProvider             hivev1.SyncIdentityProvider
+	SyncIdentityProviderList         hivev1.SyncIdentityProviderList
+	SyncSet                          hivev1.SyncSet
+	SyncSetList                      hivev1.SyncSetList
+	AzureOSDisk                      azure.OSDisk
+	GcpOSDisk                        gcp.OSDisk
+	VsphereOSDisk                    vsphere.OSDisk
 }
 
 func main() {
-  packages := []schemagen.PackageDescriptor{
-    {"k8s.io/apimachinery/pkg/apis/meta/v1", "", "io.fabric8.kubernetes.api.model", "kubernetes_apimachinery_", false},
-    {"k8s.io/api/core/v1", "", "io.fabric8.kubernetes.api.model", "kubernetes_core_", false},
-    {"k8s.io/api/rbac/v1", "", "io.fabric8.kubernetes.api.model.rbac", "kubernetes_rbac_", false},
-    {"github.com/openshift/api/config/v1", "", "io.fabric8.openshift.api.model.config.v1", "os_config_v1_", false}, 
-    {"github.com/openshift/hive/apis/hive/v1", "hive", "io.fabric8.openshift.api.model.hive.v1", "os_hive_v1_", true},
-    {"github.com/openshift/hive/apis/hive/v1/alibabacloud", "hive", "io.fabric8.openshift.api.model.hive.alibabacloud.v1", "os_hive_alibabacloud_v1_", true},
-    {"github.com/openshift/hive/apis/hive/v1/ibmcloud", "hive", "io.fabric8.openshift.api.model.hive.ibmcloud.v1", "os_hive_ibmcloud_v1_", true},
-    {"github.com/openshift/hive/apis/hive/v1/aws", "hive", "io.fabric8.openshift.api.model.hive.aws.v1", "os_hive_aws_v1_", true},
-    {"github.com/openshift/hive/apis/hive/v1/azure", "hive", "io.fabric8.openshift.api.model.hive.azure.v1", "os_hive_azure_v1_", true},
-    {"github.com/openshift/hive/apis/hive/v1/baremetal", "hive", "io.fabric8.openshift.api.model.hive.baremetal.v1", "os_hive_baremetal_v1_", true},
-    {"github.com/openshift/hive/apis/hive/v1/gcp", "hive", "io.fabric8.openshift.api.model.hive.gcp.v1", "os_hive_gcp_v1_", true},
-    {"github.com/openshift/hive/apis/hive/v1/openstack", "hive", "io.fabric8.openshift.api.model.hive.openstack.v1", "os_hive_openstack_v1_", true},
-    {"github.com/openshift/hive/apis/hive/v1/vsphere", "hive", "io.fabric8.openshift.api.model.hive.vsphere.v1", "os_hive_vsphere_v1_", true},
-    {"github.com/openshift/hive/apis/hive/v1/ovirt", "hive", "io.fabric8.openshift.api.model.hive.ovirt.v1", "os_hive_ovirt_v1_", true},
-    {"github.com/openshift/hive/apis/hive/v1/agent", "hive", "io.fabric8.openshift.api.model.hive.agent.v1", "os_hive_agent_v1_", true},
-    {"github.com/openshift/hive/apis/hive/v1/none", "hive", "io.fabric8.openshift.api.model.hive.none.v1", "os_hive_none_v1_", true},
-    {"github.com/openshift/hive/apis/hive/v1/metricsconfig", "hive", "io.fabric8.openshift.api.model.hive.metricsconfig.v1", "os_hive_metricsconfig_v1_", true},
-  }
+	packages := []schemagen.PackageDescriptor{
+		{"k8s.io/apimachinery/pkg/apis/meta/v1", "", "io.fabric8.kubernetes.api.model", "kubernetes_apimachinery_", false},
+		{"k8s.io/api/core/v1", "", "io.fabric8.kubernetes.api.model", "kubernetes_core_", false},
+		{"k8s.io/api/rbac/v1", "", "io.fabric8.kubernetes.api.model.rbac", "kubernetes_rbac_", false},
+		{"github.com/openshift/api/config/v1", "", "io.fabric8.openshift.api.model.config.v1", "os_config_v1_", false},
+		{"github.com/openshift/hive/apis/hive/v1", "hive", "io.fabric8.openshift.api.model.hive.v1", "os_hive_v1_", true},
+		{"github.com/openshift/hive/apis/hive/v1/alibabacloud", "hive", "io.fabric8.openshift.api.model.hive.alibabacloud.v1", "os_hive_alibabacloud_v1_", true},
+		{"github.com/openshift/hive/apis/hive/v1/ibmcloud", "hive", "io.fabric8.openshift.api.model.hive.ibmcloud.v1", "os_hive_ibmcloud_v1_", true},
+		{"github.com/openshift/hive/apis/hive/v1/aws", "hive", "io.fabric8.openshift.api.model.hive.aws.v1", "os_hive_aws_v1_", true},
+		{"github.com/openshift/hive/apis/hive/v1/azure", "hive", "io.fabric8.openshift.api.model.hive.azure.v1", "os_hive_azure_v1_", true},
+		{"github.com/openshift/hive/apis/hive/v1/baremetal", "hive", "io.fabric8.openshift.api.model.hive.baremetal.v1", "os_hive_baremetal_v1_", true},
+		{"github.com/openshift/hive/apis/hive/v1/gcp", "hive", "io.fabric8.openshift.api.model.hive.gcp.v1", "os_hive_gcp_v1_", true},
+		{"github.com/openshift/hive/apis/hive/v1/openstack", "hive", "io.fabric8.openshift.api.model.hive.openstack.v1", "os_hive_openstack_v1_", true},
+		{"github.com/openshift/hive/apis/hive/v1/vsphere", "hive", "io.fabric8.openshift.api.model.hive.vsphere.v1", "os_hive_vsphere_v1_", true},
+		{"github.com/openshift/hive/apis/hive/v1/ovirt", "hive", "io.fabric8.openshift.api.model.hive.ovirt.v1", "os_hive_ovirt_v1_", true},
+		{"github.com/openshift/hive/apis/hive/v1/agent", "hive", "io.fabric8.openshift.api.model.hive.agent.v1", "os_hive_agent_v1_", true},
+		{"github.com/openshift/hive/apis/hive/v1/none", "hive", "io.fabric8.openshift.api.model.hive.none.v1", "os_hive_none_v1_", true},
+		{"github.com/openshift/hive/apis/hive/v1/metricsconfig", "hive", "io.fabric8.openshift.api.model.hive.metricsconfig.v1", "os_hive_metricsconfig_v1_", true},
+	}
 
-  typeMap := map[reflect.Type]reflect.Type{
-    reflect.TypeOf(time.Time{}): reflect.TypeOf(""),
-    reflect.TypeOf(struct{}{}):  reflect.TypeOf(""),
-  }
-  manualTypeMap := map[reflect.Type]string {
-    reflect.TypeOf(runtime.RawExtension{}): "java.util.Map<String, Object>",
-  }
-  schema, err := schemagen.GenerateSchema(reflect.TypeOf(Schema{}), packages, typeMap, manualTypeMap,"hive")
-  if err != nil {
-    fmt.Fprintf(os.Stderr, "An error occurred: %v", err)
-    return
-  }
+	typeMap := map[reflect.Type]reflect.Type{
+		reflect.TypeOf(time.Time{}): reflect.TypeOf(""),
+		reflect.TypeOf(struct{}{}):  reflect.TypeOf(""),
+	}
+	manualTypeMap := map[reflect.Type]string{
+		reflect.TypeOf(runtime.RawExtension{}):                              "java.util.Map<String, Object>",
+		reflect.TypeOf(openshiftconfigapi.ConfigMapNameReference{}):         "io.fabric8.openshift.api.model.config.v1.BuildSpecBDDPTrustedCA",
+		reflect.TypeOf(openshiftconfigapi.ClusterOperatorStatusCondition{}): "io.fabric8.openshift.api.model.config.v1.ClusterOperatorStatusConditions",
+		reflect.TypeOf(openshiftconfigapi.IdentityProvider{}):               "io.fabric8.openshift.api.model.config.v1.OAuthSpecIdentityProviders",
+	}
+	schema, err := schemagen.GenerateSchema(reflect.TypeOf(Schema{}), packages, typeMap, manualTypeMap, "hive")
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "An error occurred: %v", err)
+		return
+	}
 
-  args := os.Args[1:]
-  if len(args) < 1 || args[0] != "validation" {
-    schema.Resources = nil
-  }
+	args := os.Args[1:]
+	if len(args) < 1 || args[0] != "validation" {
+		schema.Resources = nil
+	}
 
-  b, err := json.Marshal(&schema)
-  if err != nil {
-    log.Fatal(err)
-  }
-  result := string(b)
-  result = strings.Replace(result, "\"additionalProperty\":", "\"additionalProperties\":", -1)
-  // Sundrio seems to be having problems with generating builders when there are fields with same class
-  // names but different packages
-  result = strings.Replace(result, "io.fabric8.openshift.api.model.hive.aws.v1.Metadata", "io.fabric8.openshift.api.model.hive.aws.v1.AwsMetadata", -1)
-  result = strings.Replace(result, "io.fabric8.openshift.api.model.hive.azure.v1.Metadata", "io.fabric8.openshift.api.model.hive.azure.v1.AzureMetadata", -1)
-  result = strings.Replace(result, "io.fabric8.openshift.api.model.hive.aws.v1.Platform", "io.fabric8.openshift.api.model.hive.aws.v1.AwsPlatform", -1)
-  result = strings.Replace(result, "io.fabric8.openshift.api.model.hive.azure.v1.Platform", "io.fabric8.openshift.api.model.hive.azure.v1.AzurePlatform", -1)
+	b, err := json.Marshal(&schema)
+	if err != nil {
+		log.Fatal(err)
+	}
+	result := string(b)
+	result = strings.Replace(result, "\"additionalProperty\":", "\"additionalProperties\":", -1)
+	// Sundrio seems to be having problems with generating builders when there are fields with same class
+	// names but different packages
+	result = strings.Replace(result, "io.fabric8.openshift.api.model.hive.aws.v1.Metadata", "io.fabric8.openshift.api.model.hive.aws.v1.AwsMetadata", -1)
+	result = strings.Replace(result, "io.fabric8.openshift.api.model.hive.azure.v1.Metadata", "io.fabric8.openshift.api.model.hive.azure.v1.AzureMetadata", -1)
+	result = strings.Replace(result, "io.fabric8.openshift.api.model.hive.aws.v1.Platform", "io.fabric8.openshift.api.model.hive.aws.v1.AwsPlatform", -1)
+	result = strings.Replace(result, "io.fabric8.openshift.api.model.hive.azure.v1.Platform", "io.fabric8.openshift.api.model.hive.azure.v1.AzurePlatform", -1)
 
-  var out bytes.Buffer
-  err = json.Indent(&out, []byte(result), "", "  ")
-  if err != nil {
-    log.Fatal(err)
-  }
+	var out bytes.Buffer
+	err = json.Indent(&out, []byte(result), "", "  ")
+	if err != nil {
+		log.Fatal(err)
+	}
 
-  fmt.Println(out.String())
+	fmt.Println(out.String())
 }

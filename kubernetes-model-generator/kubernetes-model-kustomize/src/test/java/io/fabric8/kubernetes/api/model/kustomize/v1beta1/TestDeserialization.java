@@ -18,21 +18,52 @@ package io.fabric8.kubernetes.api.model.kustomize.v1beta1;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
-import org.junit.jupiter.api.Assertions;
+import io.fabric8.kubernetes.api.model.runtime.RawExtension;
+import io.fabric8.kubernetes.model.util.Helper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class TestDeserialization {
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+
+class TestDeserialization {
+
+  private ObjectMapper objectMapper;
+
+  @BeforeEach
+  void setUp() {
+    objectMapper = new ObjectMapper(new YAMLFactory()
+        .enable(YAMLGenerator.Feature.MINIMIZE_QUOTES)
+        .disable(YAMLGenerator.Feature.USE_NATIVE_TYPE_ID));
+  }
 
   @Test
-  public void kustomizeDeserializationTest() throws Exception {
-    ObjectMapper mapper = new ObjectMapper(
-        new YAMLFactory().disable(YAMLGenerator.Feature.USE_NATIVE_TYPE_ID));
-    final Kustomization kustomization = mapper.readValue(this.getClass().getResourceAsStream("/kustomization.yaml"),
+  void kustomizeDeserializationTest() throws Exception {
+    final Kustomization kustomization = objectMapper.readValue(this.getClass().getResourceAsStream("/kustomization.yaml"),
         Kustomization.class);
-    Assertions.assertEquals(1, kustomization.getReplacements().size());
-    Assertions.assertEquals(1, kustomization.getReplacements().get(0).getTargets().size());
-    Assertions.assertEquals(1, kustomization.getReplacements().get(0).getTargets().get(0).getFieldPaths().size());
-    Assertions.assertEquals("spec.volumes.[name=.*].azureFile.shareName",
+    assertEquals(1, kustomization.getReplacements().size());
+    assertEquals(1, kustomization.getReplacements().get(0).getTargets().size());
+    assertEquals(1, kustomization.getReplacements().get(0).getTargets().get(0).getFieldPaths().size());
+    assertEquals("spec.volumes.[name=.*].azureFile.shareName",
         kustomization.getReplacements().get(0).getTargets().get(0).getFieldPaths().get(0));
+    assertEquals("chart", kustomization.getHelmCharts().get(0).getName());
+    assertInstanceOf(RawExtension.class, kustomization.getHelmCharts().get(0).getValuesInline().get("simple"));
+    assertEquals("simple-value",
+        ((RawExtension) kustomization.getHelmCharts().get(0).getValuesInline().get("simple")).getValue());
+    assertInstanceOf(RawExtension.class, kustomization.getHelmCharts().get(0).getValuesInline().get("complex"));
+    assertInstanceOf(Map.class,
+        ((RawExtension) kustomization.getHelmCharts().get(0).getValuesInline().get("complex")).getValue());
+  }
+
+  @Test
+  void deserializeSerialize() throws Exception {
+    final String originalWithComments = Helper.loadJson("/kustomization.yaml");
+    final String original = "---\n" + originalWithComments.substring(originalWithComments.indexOf("apiVersion")).trim()
+        .replace("\r\n", "\n");
+    final String processed = objectMapper.writeValueAsString(objectMapper.readValue(original, Kustomization.class)).trim()
+        .replace("\r\n", "\n");
+    assertEquals(original, processed);
   }
 }

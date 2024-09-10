@@ -17,12 +17,12 @@ package io.fabric8.kubernetes.api.model;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.kubernetes.model.jackson.GoCompatibilityModule;
+import io.fabric8.kubernetes.model.util.Helper;
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.io.InputStream;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -39,10 +39,10 @@ class ProjectedVolumeSourceTest {
   @Test
   void deserializationWithOctalValueShouldWorkAsExpected() throws IOException {
     // Given
-    InputStream inputStream = getClass().getResourceAsStream("/projectedvolumesource.json");
+    final String originalJson = Helper.loadJson("/projectedvolumesource.json");
 
     // When
-    ProjectedVolumeSource projectedVolumeSource = objectMapper.readValue(inputStream, ProjectedVolumeSource.class);
+    ProjectedVolumeSource projectedVolumeSource = objectMapper.readValue(originalJson, ProjectedVolumeSource.class);
 
     // Then
     assertThat(projectedVolumeSource)

@@ -27,7 +27,7 @@
         }
       },
       "additionalProperties": true,
-      "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.GenerationStatus",
+      "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.AuthenticationStatusGenerations",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -52,7 +52,7 @@
         }
       },
       "additionalProperties": true,
-      "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.OperatorCondition",
+      "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.AuthenticationStatusConditions",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -92,7 +92,7 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/github_com_openshift_api_operator_v1_OperatorCondition",
-            "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.OperatorCondition"
+            "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.AuthenticationStatusConditions"
           }
         },
         "generations": {
@@ -100,7 +100,7 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/github_com_openshift_api_operator_v1_GenerationStatus",
-            "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.GenerationStatus"
+            "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.AuthenticationStatusGenerations"
           }
         },
         "observedGeneration": {
@@ -2087,7 +2087,7 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/github_com_openshift_api_operator_v1_OperatorCondition",
-            "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.OperatorCondition"
+            "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.AuthenticationStatusConditions"
           }
         },
         "generations": {
@@ -2095,7 +2095,7 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/github_com_openshift_api_operator_v1_GenerationStatus",
-            "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.GenerationStatus"
+            "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.AuthenticationStatusGenerations"
           }
         },
         "observedGeneration": {

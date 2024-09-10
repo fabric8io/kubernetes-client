@@ -58,7 +58,7 @@ public class ImageContentPolicySpec implements Editable<ImageContentPolicySpecBu
 
     @JsonProperty("repositoryDigestMirrors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<RepositoryDigestMirrors> repositoryDigestMirrors = new ArrayList<>();
+    private List<ImageContentPolicySpecRepositoryDigestMirrors> repositoryDigestMirrors = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -69,19 +69,19 @@ public class ImageContentPolicySpec implements Editable<ImageContentPolicySpecBu
     public ImageContentPolicySpec() {
     }
 
-    public ImageContentPolicySpec(List<RepositoryDigestMirrors> repositoryDigestMirrors) {
+    public ImageContentPolicySpec(List<ImageContentPolicySpecRepositoryDigestMirrors> repositoryDigestMirrors) {
         super();
         this.repositoryDigestMirrors = repositoryDigestMirrors;
     }
 
     @JsonProperty("repositoryDigestMirrors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<RepositoryDigestMirrors> getRepositoryDigestMirrors() {
+    public List<ImageContentPolicySpecRepositoryDigestMirrors> getRepositoryDigestMirrors() {
         return repositoryDigestMirrors;
     }
 
     @JsonProperty("repositoryDigestMirrors")
-    public void setRepositoryDigestMirrors(List<RepositoryDigestMirrors> repositoryDigestMirrors) {
+    public void setRepositoryDigestMirrors(List<ImageContentPolicySpecRepositoryDigestMirrors> repositoryDigestMirrors) {
         this.repositoryDigestMirrors = repositoryDigestMirrors;
     }
 

@@ -15,7 +15,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
@@ -25,7 +24,6 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.kubernetes.api.model.runtime.RawExtension;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -54,9 +52,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
-    @BuildableReference(PersistentVolumeClaim.class),
-    @BuildableReference(GenericKubernetesResource.class),
-    @BuildableReference(RawExtension.class)
+    @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
 public class ConversionRequest implements Editable<ConversionRequestBuilder> , KubernetesResource
@@ -65,8 +61,9 @@ public class ConversionRequest implements Editable<ConversionRequestBuilder> , K
     @JsonProperty("desiredAPIVersion")
     private String desiredAPIVersion;
     @JsonProperty("objects")
+    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializerForList.class)
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<KubernetesResource> objects = new ArrayList<>();
+    private List<Object> objects = new ArrayList<>();
     @JsonProperty("uid")
     private String uid;
     @JsonIgnore
@@ -79,7 +76,7 @@ public class ConversionRequest implements Editable<ConversionRequestBuilder> , K
     public ConversionRequest() {
     }
 
-    public ConversionRequest(String desiredAPIVersion, List<KubernetesResource> objects, String uid) {
+    public ConversionRequest(String desiredAPIVersion, List<Object> objects, String uid) {
         super();
         this.desiredAPIVersion = desiredAPIVersion;
         this.objects = objects;
@@ -98,12 +95,13 @@ public class ConversionRequest implements Editable<ConversionRequestBuilder> , K
 
     @JsonProperty("objects")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<KubernetesResource> getObjects() {
+    public List<Object> getObjects() {
         return objects;
     }
 
     @JsonProperty("objects")
-    public void setObjects(List<KubernetesResource> objects) {
+    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializerForList.class)
+    public void setObjects(List<Object> objects) {
         this.objects = objects;
     }
 

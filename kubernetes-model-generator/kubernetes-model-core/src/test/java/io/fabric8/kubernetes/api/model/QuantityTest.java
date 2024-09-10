@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.api.model;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -30,7 +31,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
 class QuantityTest {
-  private final ObjectMapper mapper = new ObjectMapper();
+
+  private ObjectMapper mapper;
+
+  @BeforeEach
+  void setUp() {
+    mapper = new ObjectMapper();
+  }
 
   @Test
   @DisplayName("Test Serialization and Deserialization")
@@ -142,7 +149,6 @@ class QuantityTest {
     assertThat(new Quantity("2P")).isNotEqualTo("2P");
 
     Quantity quantity = new Quantity("100.035k");
-    assertThat(quantity).isEqualTo(quantity);
     assertThat(quantity.hashCode()).isEqualTo(100035);
   }
 

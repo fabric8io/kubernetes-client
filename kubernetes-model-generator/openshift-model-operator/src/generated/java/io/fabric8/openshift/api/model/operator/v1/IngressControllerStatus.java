@@ -17,13 +17,13 @@ import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
+import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.openshift.api.model.config.v1.TLSProfileSpec;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -51,7 +51,7 @@ import lombok.experimental.Accessors;
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.LabelSelector.class),
+    @BuildableReference(LabelSelector.class),
     @BuildableReference(Container.class),
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
@@ -68,21 +68,21 @@ public class IngressControllerStatus implements Editable<IngressControllerStatus
     private Integer availableReplicas;
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<OperatorCondition> conditions = new ArrayList<>();
+    private List<IngressControllerStatusConditions> conditions = new ArrayList<>();
     @JsonProperty("domain")
     private String domain;
     @JsonProperty("endpointPublishingStrategy")
-    private EndpointPublishingStrategy endpointPublishingStrategy;
+    private IngressControllerStatusEndpointPublishingStrategy endpointPublishingStrategy;
     @JsonProperty("namespaceSelector")
-    private io.fabric8.kubernetes.api.model.LabelSelector namespaceSelector;
+    private IngressControllerStatusNamespaceSelector namespaceSelector;
     @JsonProperty("observedGeneration")
     private Long observedGeneration;
     @JsonProperty("routeSelector")
-    private io.fabric8.kubernetes.api.model.LabelSelector routeSelector;
+    private IngressControllerStatusRouteSelector routeSelector;
     @JsonProperty("selector")
     private String selector;
     @JsonProperty("tlsProfile")
-    private TLSProfileSpec tlsProfile;
+    private IngressControllerStatusTlsProfile tlsProfile;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -93,7 +93,7 @@ public class IngressControllerStatus implements Editable<IngressControllerStatus
     public IngressControllerStatus() {
     }
 
-    public IngressControllerStatus(Integer availableReplicas, List<OperatorCondition> conditions, String domain, EndpointPublishingStrategy endpointPublishingStrategy, io.fabric8.kubernetes.api.model.LabelSelector namespaceSelector, Long observedGeneration, io.fabric8.kubernetes.api.model.LabelSelector routeSelector, String selector, TLSProfileSpec tlsProfile) {
+    public IngressControllerStatus(Integer availableReplicas, List<IngressControllerStatusConditions> conditions, String domain, IngressControllerStatusEndpointPublishingStrategy endpointPublishingStrategy, IngressControllerStatusNamespaceSelector namespaceSelector, Long observedGeneration, IngressControllerStatusRouteSelector routeSelector, String selector, IngressControllerStatusTlsProfile tlsProfile) {
         super();
         this.availableReplicas = availableReplicas;
         this.conditions = conditions;
@@ -118,12 +118,12 @@ public class IngressControllerStatus implements Editable<IngressControllerStatus
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<OperatorCondition> getConditions() {
+    public List<IngressControllerStatusConditions> getConditions() {
         return conditions;
     }
 
     @JsonProperty("conditions")
-    public void setConditions(List<OperatorCondition> conditions) {
+    public void setConditions(List<IngressControllerStatusConditions> conditions) {
         this.conditions = conditions;
     }
 
@@ -138,22 +138,22 @@ public class IngressControllerStatus implements Editable<IngressControllerStatus
     }
 
     @JsonProperty("endpointPublishingStrategy")
-    public EndpointPublishingStrategy getEndpointPublishingStrategy() {
+    public IngressControllerStatusEndpointPublishingStrategy getEndpointPublishingStrategy() {
         return endpointPublishingStrategy;
     }
 
     @JsonProperty("endpointPublishingStrategy")
-    public void setEndpointPublishingStrategy(EndpointPublishingStrategy endpointPublishingStrategy) {
+    public void setEndpointPublishingStrategy(IngressControllerStatusEndpointPublishingStrategy endpointPublishingStrategy) {
         this.endpointPublishingStrategy = endpointPublishingStrategy;
     }
 
     @JsonProperty("namespaceSelector")
-    public io.fabric8.kubernetes.api.model.LabelSelector getNamespaceSelector() {
+    public IngressControllerStatusNamespaceSelector getNamespaceSelector() {
         return namespaceSelector;
     }
 
     @JsonProperty("namespaceSelector")
-    public void setNamespaceSelector(io.fabric8.kubernetes.api.model.LabelSelector namespaceSelector) {
+    public void setNamespaceSelector(IngressControllerStatusNamespaceSelector namespaceSelector) {
         this.namespaceSelector = namespaceSelector;
     }
 
@@ -168,12 +168,12 @@ public class IngressControllerStatus implements Editable<IngressControllerStatus
     }
 
     @JsonProperty("routeSelector")
-    public io.fabric8.kubernetes.api.model.LabelSelector getRouteSelector() {
+    public IngressControllerStatusRouteSelector getRouteSelector() {
         return routeSelector;
     }
 
     @JsonProperty("routeSelector")
-    public void setRouteSelector(io.fabric8.kubernetes.api.model.LabelSelector routeSelector) {
+    public void setRouteSelector(IngressControllerStatusRouteSelector routeSelector) {
         this.routeSelector = routeSelector;
     }
 
@@ -188,12 +188,12 @@ public class IngressControllerStatus implements Editable<IngressControllerStatus
     }
 
     @JsonProperty("tlsProfile")
-    public TLSProfileSpec getTlsProfile() {
+    public IngressControllerStatusTlsProfile getTlsProfile() {
         return tlsProfile;
     }
 
     @JsonProperty("tlsProfile")
-    public void setTlsProfile(TLSProfileSpec tlsProfile) {
+    public void setTlsProfile(IngressControllerStatusTlsProfile tlsProfile) {
         this.tlsProfile = tlsProfile;
     }
 

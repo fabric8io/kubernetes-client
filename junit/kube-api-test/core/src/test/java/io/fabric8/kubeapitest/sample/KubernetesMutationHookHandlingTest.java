@@ -18,14 +18,17 @@ package io.fabric8.kubeapitest.sample;
 import io.fabric8.kubeapitest.cert.CertManager;
 import io.fabric8.kubeapitest.junit.EnableKubeAPIServer;
 import io.fabric8.kubeapitest.junit.KubeConfig;
+import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.api.model.admission.v1.AdmissionRequest;
 import io.fabric8.kubernetes.api.model.admission.v1.AdmissionReview;
+import io.fabric8.kubernetes.api.model.admission.v1.AdmissionReviewBuilder;
 import io.fabric8.kubernetes.api.model.admissionregistration.v1.MutatingWebhookConfiguration;
 import io.fabric8.kubernetes.api.model.networking.v1.*;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.kubernetes.client.utils.Serialization;
-import io.javaoperatorsdk.webhook.admission.AdmissionController;
+import io.fabric8.zjsonpatch.JsonDiff;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.bouncycastle.asn1.x509.GeneralName;
@@ -57,7 +60,8 @@ import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.Base64;
-import java.util.HashMap;
+import java.util.Collections;
+import java.util.Objects;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -76,22 +80,10 @@ class KubernetesMutationHookHandlingTest {
   private static final Logger log = LoggerFactory.getLogger(KubernetesMutationHookHandlingTest.class);
 
   public static final String PASSWORD = "secret";
-  public static final String TEST_LABEL_KEY = "test-label";
-  public static final String TEST_LABEL_VALUE = "mutation-test";
 
   static File certFile = new File("target", "mutation.crt");
   // server that handles mutation hooks
   static Server server = new Server();
-
-  // using https://github.com/java-operator-sdk/kubernetes-webooks-framework framework to implement
-  // the response
-  static AdmissionController<Ingress> mutationController = new AdmissionController<>((resource, operation) -> {
-    if (resource.getMetadata().getLabels() == null) {
-      resource.getMetadata().setLabels(new HashMap<>());
-    }
-    resource.getMetadata().getLabels().putIfAbsent(TEST_LABEL_KEY, TEST_LABEL_VALUE);
-    return resource;
-  });
 
   @Test
   void handleMutatingWebhook() {
@@ -100,7 +92,7 @@ class KubernetesMutationHookHandlingTest {
 
     var ingress = client.resource(testIngress()).create();
 
-    assertThat(ingress.getMetadata().getLabels()).containsEntry(TEST_LABEL_KEY, TEST_LABEL_VALUE);
+    assertThat(ingress.getMetadata().getLabels()).containsEntry("test", "mutation");
   }
 
   @BeforeAll
@@ -112,15 +104,33 @@ class KubernetesMutationHookHandlingTest {
           HttpServletResponse httpServletResponse) {
         try {
           request.setHandled(true);
-          AdmissionReview admissionReview = Serialization.unmarshal(httpServletRequest.getInputStream());
+          final AdmissionReview requestedAdmissionReview = Serialization.unmarshal(httpServletRequest.getInputStream());
+          final AdmissionRequest admissionRequest = requestedAdmissionReview.getRequest();
+          var originalResource = Objects.equals("DELETE", admissionRequest.getOperation())
+              ? admissionRequest.getOldObject()
+              : admissionRequest.getObject();
+          if (originalResource instanceof HasMetadata) {
+            var originalResourceJson = Serialization.jsonMapper().valueToTree(originalResource);
+            (((HasMetadata) originalResource)).getMetadata().setLabels(Collections.singletonMap("test", "mutation"));
+            var editedResourceJson = Serialization.jsonMapper().valueToTree(originalResource);
+            final AdmissionReview responseAdmissionReview = new AdmissionReviewBuilder()
+                .withNewResponse()
+                .withAllowed()
+                .withPatchType("JSONPatch")
+                .withPatch(Base64.getEncoder().encodeToString(
+                    JsonDiff.asJson(originalResourceJson, editedResourceJson).toString().getBytes(StandardCharsets.UTF_8)))
+                .withUid(admissionRequest.getUid())
+                .endResponse()
+                .build();
 
-          var response = mutationController.handle(admissionReview);
-
-          var out = httpServletResponse.getWriter();
-          httpServletResponse.setContentType("application/json");
-          httpServletResponse.setCharacterEncoding(StandardCharsets.UTF_8.toString());
-          httpServletResponse.setStatus(HttpServletResponse.SC_OK);
-          out.println(Serialization.asJson(response));
+            var out = httpServletResponse.getWriter();
+            httpServletResponse.setContentType("application/json");
+            httpServletResponse.setCharacterEncoding(StandardCharsets.UTF_8.toString());
+            httpServletResponse.setStatus(HttpServletResponse.SC_OK);
+            out.println(Serialization.asJson(responseAdmissionReview));
+          } else {
+            httpServletResponse.setStatus(422);
+          }
         } catch (Exception e) {
           log.error("Error in webhook", e);
           throw new RuntimeException(e);

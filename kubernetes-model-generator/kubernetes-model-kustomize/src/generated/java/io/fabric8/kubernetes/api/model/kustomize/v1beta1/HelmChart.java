@@ -15,7 +15,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
@@ -25,7 +24,6 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.kubernetes.api.model.runtime.RawExtension;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -66,9 +64,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
-    @BuildableReference(PersistentVolumeClaim.class),
-    @BuildableReference(GenericKubernetesResource.class),
-    @BuildableReference(RawExtension.class)
+    @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
 public class HelmChart implements Editable<HelmChartBuilder> , KubernetesResource
@@ -101,8 +97,9 @@ public class HelmChart implements Editable<HelmChartBuilder> , KubernetesResourc
     @JsonProperty("valuesFile")
     private String valuesFile;
     @JsonProperty("valuesInline")
+    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializerForMap.class)
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, KubernetesResource> valuesInline = new LinkedHashMap<>();
+    private Map<String, Object> valuesInline = new LinkedHashMap<>();
     @JsonProperty("valuesMerge")
     private String valuesMerge;
     @JsonProperty("version")
@@ -117,7 +114,7 @@ public class HelmChart implements Editable<HelmChartBuilder> , KubernetesResourc
     public HelmChart() {
     }
 
-    public HelmChart(List<String> additionalValuesFiles, List<String> apiVersions, Boolean includeCRDs, String kubeVersion, String name, String nameTemplate, String namespace, String releaseName, String repo, Boolean skipHooks, Boolean skipTests, String valuesFile, Map<String, KubernetesResource> valuesInline, String valuesMerge, String version) {
+    public HelmChart(List<String> additionalValuesFiles, List<String> apiVersions, Boolean includeCRDs, String kubeVersion, String name, String nameTemplate, String namespace, String releaseName, String repo, Boolean skipHooks, Boolean skipTests, String valuesFile, Map<String, Object> valuesInline, String valuesMerge, String version) {
         super();
         this.additionalValuesFiles = additionalValuesFiles;
         this.apiVersions = apiVersions;
@@ -260,12 +257,13 @@ public class HelmChart implements Editable<HelmChartBuilder> , KubernetesResourc
 
     @JsonProperty("valuesInline")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public Map<String, KubernetesResource> getValuesInline() {
+    public Map<String, Object> getValuesInline() {
         return valuesInline;
     }
 
     @JsonProperty("valuesInline")
-    public void setValuesInline(Map<String, KubernetesResource> valuesInline) {
+    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializerForMap.class)
+    public void setValuesInline(Map<String, Object> valuesInline) {
         this.valuesInline = valuesInline;
     }
 

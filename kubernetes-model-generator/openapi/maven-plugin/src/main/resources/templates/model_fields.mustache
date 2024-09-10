@@ -31,6 +31,9 @@
 {{#serializeUsing}}
     @JsonSerialize(using = {{.}})
 {{/serializeUsing}}
+{{#deserializeUsing}}
+    @JsonDeserialize(using = {{.}})
+{{/deserializeUsing}}
 {{#jsonInclude}}
     @JsonInclude(JsonInclude.Include.{{.}})
 {{/jsonInclude}}

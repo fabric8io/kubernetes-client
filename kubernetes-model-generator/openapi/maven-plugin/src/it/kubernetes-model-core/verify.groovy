@@ -21,17 +21,19 @@ import static org.junit.jupiter.api.Assertions.assertTrue
 	"Pod",
 	"PodSpec",
 	"PodStatus",
-	"PodTemplate"
+	"PodTemplate",
+	"WatchEvent"
 ].each {
 	var file = new File(basedir, sprintf("/src/generated/java/io/fabric8/kubernetes/api/model/%s.java", it))
-	assertTrue(file.exists())
+	assertTrue(file.exists(), sprintf("File %s does not exist", it))
 	assertEquals(
 			new File(basedir, sprintf("/expected/%s.expected", it))
 			.getText("UTF-8")
 			.replace("\r\n", "\n")
 			.replaceAll(" +\n", "\n")
 			.trim(),
-			file.getText("UTF-8").replace("\r\n", "\n").replaceAll(" +\n", "\n").trim()
+			file.getText("UTF-8").replace("\r\n", "\n").replaceAll(" +\n", "\n").trim(),
+			sprintf("File %s does not match expected content", it)
 			)
 }
 

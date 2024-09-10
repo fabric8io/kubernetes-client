@@ -24,7 +24,7 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.openshift.api.model.config.v1.OpenStackPlatformLoadBalancer;
+import io.fabric8.openshift.api.model.config.v1.InfrastructureStatusPSOpenstackLoadBalancer;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -108,7 +108,7 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     @JsonProperty("lbFloatingIP")
     private String lbFloatingIP;
     @JsonProperty("loadBalancer")
-    private OpenStackPlatformLoadBalancer loadBalancer;
+    private InfrastructureStatusPSOpenstackLoadBalancer loadBalancer;
     @JsonProperty("machinesSubnet")
     private String machinesSubnet;
     @JsonProperty("octaviaSupport")
@@ -127,7 +127,7 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     public Platform() {
     }
 
-    public Platform(String apiFloatingIP, String apiVIP, List<String> apiVIPs, String cloud, String clusterOSImage, Map<String, String> clusterOSImageProperties, String computeFlavor, MachinePool defaultMachinePlatform, List<String> externalDNS, String externalNetwork, String ingressFloatingIP, String ingressVIP, List<String> ingressVIPs, String lbFloatingIP, OpenStackPlatformLoadBalancer loadBalancer, String machinesSubnet, String octaviaSupport, String region, String trunkSupport) {
+    public Platform(String apiFloatingIP, String apiVIP, List<String> apiVIPs, String cloud, String clusterOSImage, Map<String, String> clusterOSImageProperties, String computeFlavor, MachinePool defaultMachinePlatform, List<String> externalDNS, String externalNetwork, String ingressFloatingIP, String ingressVIP, List<String> ingressVIPs, String lbFloatingIP, InfrastructureStatusPSOpenstackLoadBalancer loadBalancer, String machinesSubnet, String octaviaSupport, String region, String trunkSupport) {
         super();
         this.apiFloatingIP = apiFloatingIP;
         this.apiVIP = apiVIP;
@@ -295,12 +295,12 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     }
 
     @JsonProperty("loadBalancer")
-    public OpenStackPlatformLoadBalancer getLoadBalancer() {
+    public InfrastructureStatusPSOpenstackLoadBalancer getLoadBalancer() {
         return loadBalancer;
     }
 
     @JsonProperty("loadBalancer")
-    public void setLoadBalancer(OpenStackPlatformLoadBalancer loadBalancer) {
+    public void setLoadBalancer(InfrastructureStatusPSOpenstackLoadBalancer loadBalancer) {
         this.loadBalancer = loadBalancer;
     }
 

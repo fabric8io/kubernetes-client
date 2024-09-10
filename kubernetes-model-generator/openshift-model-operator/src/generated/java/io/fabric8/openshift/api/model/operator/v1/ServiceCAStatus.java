@@ -62,10 +62,10 @@ public class ServiceCAStatus implements Editable<ServiceCAStatusBuilder> , Kuber
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<OperatorCondition> conditions = new ArrayList<>();
+    private List<ServiceCAStatusConditions> conditions = new ArrayList<>();
     @JsonProperty("generations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<GenerationStatus> generations = new ArrayList<>();
+    private List<ServiceCAStatusGenerations> generations = new ArrayList<>();
     @JsonProperty("observedGeneration")
     private Long observedGeneration;
     @JsonProperty("readyReplicas")
@@ -82,7 +82,7 @@ public class ServiceCAStatus implements Editable<ServiceCAStatusBuilder> , Kuber
     public ServiceCAStatus() {
     }
 
-    public ServiceCAStatus(List<OperatorCondition> conditions, List<GenerationStatus> generations, Long observedGeneration, Integer readyReplicas, String version) {
+    public ServiceCAStatus(List<ServiceCAStatusConditions> conditions, List<ServiceCAStatusGenerations> generations, Long observedGeneration, Integer readyReplicas, String version) {
         super();
         this.conditions = conditions;
         this.generations = generations;
@@ -93,23 +93,23 @@ public class ServiceCAStatus implements Editable<ServiceCAStatusBuilder> , Kuber
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<OperatorCondition> getConditions() {
+    public List<ServiceCAStatusConditions> getConditions() {
         return conditions;
     }
 
     @JsonProperty("conditions")
-    public void setConditions(List<OperatorCondition> conditions) {
+    public void setConditions(List<ServiceCAStatusConditions> conditions) {
         this.conditions = conditions;
     }
 
     @JsonProperty("generations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<GenerationStatus> getGenerations() {
+    public List<ServiceCAStatusGenerations> getGenerations() {
         return generations;
     }
 
     @JsonProperty("generations")
-    public void setGenerations(List<GenerationStatus> generations) {
+    public void setGenerations(List<ServiceCAStatusGenerations> generations) {
         this.generations = generations;
     }
 

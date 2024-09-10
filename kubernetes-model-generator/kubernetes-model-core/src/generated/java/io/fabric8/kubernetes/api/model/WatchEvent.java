@@ -35,7 +35,8 @@ public class WatchEvent implements Editable<WatchEventBuilder> , KubernetesResou
 {
 
     @JsonProperty("object")
-    private KubernetesResource object;
+    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
+    private Object object;
     @JsonProperty("type")
     private String type;
     @JsonIgnore
@@ -48,19 +49,20 @@ public class WatchEvent implements Editable<WatchEventBuilder> , KubernetesResou
     public WatchEvent() {
     }
 
-    public WatchEvent(KubernetesResource object, String type) {
+    public WatchEvent(Object object, String type) {
         super();
         this.object = object;
         this.type = type;
     }
 
     @JsonProperty("object")
-    public KubernetesResource getObject() {
+    public Object getObject() {
         return object;
     }
 
     @JsonProperty("object")
-    public void setObject(KubernetesResource object) {
+    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
+    public void setObject(Object object) {
         this.object = object;
     }
 

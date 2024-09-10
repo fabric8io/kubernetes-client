@@ -24,7 +24,7 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.openshift.api.model.config.v1.VSpherePlatformLoadBalancer;
+import io.fabric8.openshift.api.model.config.v1.InfrastructureStatusPSVsphereLoadBalancer;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -103,7 +103,7 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> ingressVIPs = new ArrayList<>();
     @JsonProperty("loadBalancer")
-    private VSpherePlatformLoadBalancer loadBalancer;
+    private InfrastructureStatusPSVsphereLoadBalancer loadBalancer;
     @JsonProperty("network")
     private String network;
     @JsonProperty("password")
@@ -127,7 +127,7 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     public Platform() {
     }
 
-    public Platform(String apiVIP, List<String> apiVIPs, String cluster, String clusterOSImage, String datacenter, String defaultDatastore, MachinePool defaultMachinePlatform, String diskType, List<FailureDomain> failureDomains, String folder, String ingressVIP, List<String> ingressVIPs, VSpherePlatformLoadBalancer loadBalancer, String network, String password, String resourcePool, String username, String vCenter, List<VCenter> vcenters) {
+    public Platform(String apiVIP, List<String> apiVIPs, String cluster, String clusterOSImage, String datacenter, String defaultDatastore, MachinePool defaultMachinePlatform, String diskType, List<FailureDomain> failureDomains, String folder, String ingressVIP, List<String> ingressVIPs, InfrastructureStatusPSVsphereLoadBalancer loadBalancer, String network, String password, String resourcePool, String username, String vCenter, List<VCenter> vcenters) {
         super();
         this.apiVIP = apiVIP;
         this.apiVIPs = apiVIPs;
@@ -274,12 +274,12 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     }
 
     @JsonProperty("loadBalancer")
-    public VSpherePlatformLoadBalancer getLoadBalancer() {
+    public InfrastructureStatusPSVsphereLoadBalancer getLoadBalancer() {
         return loadBalancer;
     }
 
     @JsonProperty("loadBalancer")
-    public void setLoadBalancer(VSpherePlatformLoadBalancer loadBalancer) {
+    public void setLoadBalancer(InfrastructureStatusPSVsphereLoadBalancer loadBalancer) {
         this.loadBalancer = loadBalancer;
     }
 

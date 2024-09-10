@@ -23,7 +23,7 @@ import java.util.Map;
 class AdditionalPropertiesTest {
 
   @Test
-  void podBuilderDirectTest() throws Exception {
+  void podBuilderDirectTest() {
     // given new method due to setter
     PodBuilder builder = new PodBuilder().withNewMetadata().addToAdditionalProperties("x", "y").endMetadata();
 
@@ -34,7 +34,7 @@ class AdditionalPropertiesTest {
   }
 
   @Test
-  void podBuilderIndirectTest() throws Exception {
+  void podBuilderIndirectTest() {
     // given new method due to setter
     ObjectMeta meta = new ObjectMeta();
     meta.setAdditionalProperty("x", "y");

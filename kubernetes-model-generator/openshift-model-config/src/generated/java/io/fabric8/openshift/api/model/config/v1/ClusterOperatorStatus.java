@@ -20,10 +20,10 @@ import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
+import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.kubernetes.api.model.runtime.RawExtension;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -51,7 +51,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
+    @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
@@ -61,15 +61,16 @@ public class ClusterOperatorStatus implements Editable<ClusterOperatorStatusBuil
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ClusterOperatorStatusCondition> conditions = new ArrayList<>();
+    private List<ClusterOperatorStatusConditions> conditions = new ArrayList<>();
     @JsonProperty("extension")
-    private RawExtension extension;
+    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
+    private Object extension;
     @JsonProperty("relatedObjects")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.openshift.api.model.config.v1.ObjectReference> relatedObjects = new ArrayList<>();
+    private List<ClusterOperatorStatusRelatedObjects> relatedObjects = new ArrayList<>();
     @JsonProperty("versions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<OperandVersion> versions = new ArrayList<>();
+    private List<ClusterOperatorStatusVersions> versions = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -80,7 +81,7 @@ public class ClusterOperatorStatus implements Editable<ClusterOperatorStatusBuil
     public ClusterOperatorStatus() {
     }
 
-    public ClusterOperatorStatus(List<ClusterOperatorStatusCondition> conditions, RawExtension extension, List<io.fabric8.openshift.api.model.config.v1.ObjectReference> relatedObjects, List<OperandVersion> versions) {
+    public ClusterOperatorStatus(List<ClusterOperatorStatusConditions> conditions, Object extension, List<ClusterOperatorStatusRelatedObjects> relatedObjects, List<ClusterOperatorStatusVersions> versions) {
         super();
         this.conditions = conditions;
         this.extension = extension;
@@ -90,44 +91,45 @@ public class ClusterOperatorStatus implements Editable<ClusterOperatorStatusBuil
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<ClusterOperatorStatusCondition> getConditions() {
+    public List<ClusterOperatorStatusConditions> getConditions() {
         return conditions;
     }
 
     @JsonProperty("conditions")
-    public void setConditions(List<ClusterOperatorStatusCondition> conditions) {
+    public void setConditions(List<ClusterOperatorStatusConditions> conditions) {
         this.conditions = conditions;
     }
 
     @JsonProperty("extension")
-    public RawExtension getExtension() {
+    public Object getExtension() {
         return extension;
     }
 
     @JsonProperty("extension")
-    public void setExtension(RawExtension extension) {
+    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
+    public void setExtension(Object extension) {
         this.extension = extension;
     }
 
     @JsonProperty("relatedObjects")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<io.fabric8.openshift.api.model.config.v1.ObjectReference> getRelatedObjects() {
+    public List<ClusterOperatorStatusRelatedObjects> getRelatedObjects() {
         return relatedObjects;
     }
 
     @JsonProperty("relatedObjects")
-    public void setRelatedObjects(List<io.fabric8.openshift.api.model.config.v1.ObjectReference> relatedObjects) {
+    public void setRelatedObjects(List<ClusterOperatorStatusRelatedObjects> relatedObjects) {
         this.relatedObjects = relatedObjects;
     }
 
     @JsonProperty("versions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<OperandVersion> getVersions() {
+    public List<ClusterOperatorStatusVersions> getVersions() {
         return versions;
     }
 
     @JsonProperty("versions")
-    public void setVersions(List<OperandVersion> versions) {
+    public void setVersions(List<ClusterOperatorStatusVersions> versions) {
         this.versions = versions;
     }
 

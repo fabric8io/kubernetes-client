@@ -34,47 +34,21 @@
     <clone-kube>true</clone-kube>
     <osgi.import>*</osgi.import>
     <osgi.export>
-      io.fabric8.openshift.api.model.operator**,
-      io.fabric8.openshift.api.model.imageregistry**,
-      io.fabric8.openshift.api.model.controlpane.operator**,
+      io.fabric8.openshift.api.model.operator.v1**,
+      io.fabric8.openshift.api.model.operator.v1alpha1**,
+      io.fabric8.openshift.api.model.operator.controlplane**,
+      io.fabric8.openshift.api.model.operator.imageregistry**,
+      io.fabric8.openshift.api.model.operator.ingress**,
+      io.fabric8.openshift.api.model.operator.network**,
     </osgi.export>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>io.fabric8</groupId>
-      <artifactId>kubernetes-model-core</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.fabric8</groupId>
-      <artifactId>kubernetes-model-common</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.fabric8</groupId>
       <artifactId>kubernetes-model-admissionregistration</artifactId>
     </dependency>
-    <dependency>
-      <groupId>io.fabric8</groupId>
-      <artifactId>openshift-model-config</artifactId>
-    </dependency>
   </dependencies>
-
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>build-helper-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>attach-artifacts</id>
-            <configuration>
-              <skipAttach>false</skipAttach>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
 
   <profiles>
     <profile>
@@ -82,8 +56,29 @@
       <build>
         <plugins>
           <plugin>
-            <groupId>org.jsonschema2pojo</groupId>
-            <artifactId>jsonschema2pojo-maven-plugin</artifactId>
+            <groupId>io.fabric8</groupId>
+            <artifactId>openapi-model-generator-maven-plugin</artifactId>
+            <configuration >
+              <settings combine.self="append">
+                <schemas>
+                  <schema>${openapi.schema.openshift-latest}</schema>
+                </schemas>
+                <packageMappings combine.self="append">
+                  <io.k8s.api>io.fabric8.kubernetes.api.model</io.k8s.api>
+                  <io.openshift.operator>io.fabric8.openshift.api.model.operator</io.openshift.operator>
+                  <io.openshift.operatoringress>io.fabric8.openshift.api.model.operatoringress</io.openshift.operatoringress>
+                </packageMappings>
+                <includeGenerationRegexes>
+                  <includeGenerationRegex>^io\.openshift\.operator\..*$</includeGenerationRegex>
+                </includeGenerationRegexes>
+                <skipGenerationRegexes>
+                  <skipGenerationRegex>^io\.openshift\.operator\.samples\..*$</skipGenerationRegex>
+                </skipGenerationRegexes>
+                <refToJavaTypeMappings>
+                  <io.k8s.apimachinery.pkg.apis.meta.v1.LabelSelectorRequirement_v2>io.fabric8.kubernetes.api.model.LabelSelectorRequirement</io.k8s.apimachinery.pkg.apis.meta.v1.LabelSelectorRequirement_v2>
+                </refToJavaTypeMappings>
+              </settings>
+            </configuration>
           </plugin>
         </plugins>
       </build>

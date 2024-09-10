@@ -15,7 +15,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
@@ -25,7 +24,6 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.kubernetes.api.model.runtime.RawExtension;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -67,9 +65,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
-    @BuildableReference(PersistentVolumeClaim.class),
-    @BuildableReference(GenericKubernetesResource.class),
-    @BuildableReference(RawExtension.class)
+    @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
 public class NetworkSpec implements Editable<NetworkSpecBuilder> , KubernetesResource
@@ -77,12 +73,12 @@ public class NetworkSpec implements Editable<NetworkSpecBuilder> , KubernetesRes
 
     @JsonProperty("additionalNetworks")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<AdditionalNetworkDefinition> additionalNetworks = new ArrayList<>();
+    private List<NetworkSpecAdditionalNetworks> additionalNetworks = new ArrayList<>();
     @JsonProperty("clusterNetwork")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ClusterNetworkEntry> clusterNetwork = new ArrayList<>();
+    private List<NetworkSpecClusterNetwork> clusterNetwork = new ArrayList<>();
     @JsonProperty("defaultNetwork")
-    private DefaultNetworkDefinition defaultNetwork;
+    private NetworkSpecDefaultNetwork defaultNetwork;
     @JsonProperty("deployKubeProxy")
     private Boolean deployKubeProxy;
     @JsonProperty("disableMultiNetwork")
@@ -90,24 +86,26 @@ public class NetworkSpec implements Editable<NetworkSpecBuilder> , KubernetesRes
     @JsonProperty("disableNetworkDiagnostics")
     private Boolean disableNetworkDiagnostics;
     @JsonProperty("exportNetworkFlows")
-    private ExportNetworkFlows exportNetworkFlows;
+    private NetworkSpecExportNetworkFlows exportNetworkFlows;
     @JsonProperty("kubeProxyConfig")
-    private ProxyConfig kubeProxyConfig;
+    private NetworkSpecKubeProxyConfig kubeProxyConfig;
     @JsonProperty("logLevel")
     private String logLevel;
     @JsonProperty("managementState")
     private String managementState;
     @JsonProperty("migration")
-    private NetworkMigration migration;
+    private NetworkSpecMigration migration;
     @JsonProperty("observedConfig")
-    private KubernetesResource observedConfig;
+    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
+    private Object observedConfig;
     @JsonProperty("operatorLogLevel")
     private String operatorLogLevel;
     @JsonProperty("serviceNetwork")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> serviceNetwork = new ArrayList<>();
     @JsonProperty("unsupportedConfigOverrides")
-    private KubernetesResource unsupportedConfigOverrides;
+    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
+    private Object unsupportedConfigOverrides;
     @JsonProperty("useMultiNetworkPolicy")
     private Boolean useMultiNetworkPolicy;
     @JsonIgnore
@@ -120,7 +118,7 @@ public class NetworkSpec implements Editable<NetworkSpecBuilder> , KubernetesRes
     public NetworkSpec() {
     }
 
-    public NetworkSpec(List<AdditionalNetworkDefinition> additionalNetworks, List<ClusterNetworkEntry> clusterNetwork, DefaultNetworkDefinition defaultNetwork, Boolean deployKubeProxy, Boolean disableMultiNetwork, Boolean disableNetworkDiagnostics, ExportNetworkFlows exportNetworkFlows, ProxyConfig kubeProxyConfig, String logLevel, String managementState, NetworkMigration migration, KubernetesResource observedConfig, String operatorLogLevel, List<String> serviceNetwork, KubernetesResource unsupportedConfigOverrides, Boolean useMultiNetworkPolicy) {
+    public NetworkSpec(List<NetworkSpecAdditionalNetworks> additionalNetworks, List<NetworkSpecClusterNetwork> clusterNetwork, NetworkSpecDefaultNetwork defaultNetwork, Boolean deployKubeProxy, Boolean disableMultiNetwork, Boolean disableNetworkDiagnostics, NetworkSpecExportNetworkFlows exportNetworkFlows, NetworkSpecKubeProxyConfig kubeProxyConfig, String logLevel, String managementState, NetworkSpecMigration migration, Object observedConfig, String operatorLogLevel, List<String> serviceNetwork, Object unsupportedConfigOverrides, Boolean useMultiNetworkPolicy) {
         super();
         this.additionalNetworks = additionalNetworks;
         this.clusterNetwork = clusterNetwork;
@@ -142,33 +140,33 @@ public class NetworkSpec implements Editable<NetworkSpecBuilder> , KubernetesRes
 
     @JsonProperty("additionalNetworks")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<AdditionalNetworkDefinition> getAdditionalNetworks() {
+    public List<NetworkSpecAdditionalNetworks> getAdditionalNetworks() {
         return additionalNetworks;
     }
 
     @JsonProperty("additionalNetworks")
-    public void setAdditionalNetworks(List<AdditionalNetworkDefinition> additionalNetworks) {
+    public void setAdditionalNetworks(List<NetworkSpecAdditionalNetworks> additionalNetworks) {
         this.additionalNetworks = additionalNetworks;
     }
 
     @JsonProperty("clusterNetwork")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<ClusterNetworkEntry> getClusterNetwork() {
+    public List<NetworkSpecClusterNetwork> getClusterNetwork() {
         return clusterNetwork;
     }
 
     @JsonProperty("clusterNetwork")
-    public void setClusterNetwork(List<ClusterNetworkEntry> clusterNetwork) {
+    public void setClusterNetwork(List<NetworkSpecClusterNetwork> clusterNetwork) {
         this.clusterNetwork = clusterNetwork;
     }
 
     @JsonProperty("defaultNetwork")
-    public DefaultNetworkDefinition getDefaultNetwork() {
+    public NetworkSpecDefaultNetwork getDefaultNetwork() {
         return defaultNetwork;
     }
 
     @JsonProperty("defaultNetwork")
-    public void setDefaultNetwork(DefaultNetworkDefinition defaultNetwork) {
+    public void setDefaultNetwork(NetworkSpecDefaultNetwork defaultNetwork) {
         this.defaultNetwork = defaultNetwork;
     }
 
@@ -203,22 +201,22 @@ public class NetworkSpec implements Editable<NetworkSpecBuilder> , KubernetesRes
     }
 
     @JsonProperty("exportNetworkFlows")
-    public ExportNetworkFlows getExportNetworkFlows() {
+    public NetworkSpecExportNetworkFlows getExportNetworkFlows() {
         return exportNetworkFlows;
     }
 
     @JsonProperty("exportNetworkFlows")
-    public void setExportNetworkFlows(ExportNetworkFlows exportNetworkFlows) {
+    public void setExportNetworkFlows(NetworkSpecExportNetworkFlows exportNetworkFlows) {
         this.exportNetworkFlows = exportNetworkFlows;
     }
 
     @JsonProperty("kubeProxyConfig")
-    public ProxyConfig getKubeProxyConfig() {
+    public NetworkSpecKubeProxyConfig getKubeProxyConfig() {
         return kubeProxyConfig;
     }
 
     @JsonProperty("kubeProxyConfig")
-    public void setKubeProxyConfig(ProxyConfig kubeProxyConfig) {
+    public void setKubeProxyConfig(NetworkSpecKubeProxyConfig kubeProxyConfig) {
         this.kubeProxyConfig = kubeProxyConfig;
     }
 
@@ -243,22 +241,23 @@ public class NetworkSpec implements Editable<NetworkSpecBuilder> , KubernetesRes
     }
 
     @JsonProperty("migration")
-    public NetworkMigration getMigration() {
+    public NetworkSpecMigration getMigration() {
         return migration;
     }
 
     @JsonProperty("migration")
-    public void setMigration(NetworkMigration migration) {
+    public void setMigration(NetworkSpecMigration migration) {
         this.migration = migration;
     }
 
     @JsonProperty("observedConfig")
-    public KubernetesResource getObservedConfig() {
+    public Object getObservedConfig() {
         return observedConfig;
     }
 
     @JsonProperty("observedConfig")
-    public void setObservedConfig(KubernetesResource observedConfig) {
+    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
+    public void setObservedConfig(Object observedConfig) {
         this.observedConfig = observedConfig;
     }
 
@@ -284,12 +283,13 @@ public class NetworkSpec implements Editable<NetworkSpecBuilder> , KubernetesRes
     }
 
     @JsonProperty("unsupportedConfigOverrides")
-    public KubernetesResource getUnsupportedConfigOverrides() {
+    public Object getUnsupportedConfigOverrides() {
         return unsupportedConfigOverrides;
     }
 
     @JsonProperty("unsupportedConfigOverrides")
-    public void setUnsupportedConfigOverrides(KubernetesResource unsupportedConfigOverrides) {
+    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
+    public void setUnsupportedConfigOverrides(Object unsupportedConfigOverrides) {
         this.unsupportedConfigOverrides = unsupportedConfigOverrides;
     }
 

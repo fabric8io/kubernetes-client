@@ -27,6 +27,7 @@ import (
 	appsapi "github.com/openshift/api/apps/v1"
 	authapi "github.com/openshift/api/authorization/v1"
 	buildapi "github.com/openshift/api/build/v1"
+	openshiftconfig "github.com/openshift/api/config/v1"
 	helmapiv1beta1 "github.com/openshift/api/helm/v1beta1"
 	imageapi "github.com/openshift/api/image/v1"
 	networkapi "github.com/openshift/api/network/v1"
@@ -157,8 +158,8 @@ type Schema struct {
 	ClusterResourceQuotaList        quotaapi.ClusterResourceQuotaList
 	HelmChartRepository             helmapiv1beta1.HelmChartRepository
 	HelmChartRepositoryList         helmapiv1beta1.HelmChartRepositoryList
-        ProjectHelmChartRepository      helmapiv1beta1.ProjectHelmChartRepository
-        ProjectHelmChartRepositoryList  helmapiv1beta1.ProjectHelmChartRepositoryList
+	ProjectHelmChartRepository      helmapiv1beta1.ProjectHelmChartRepository
+	ProjectHelmChartRepositoryList  helmapiv1beta1.ProjectHelmChartRepositoryList
 }
 
 func main() {
@@ -196,24 +197,28 @@ func main() {
 		reflect.TypeOf(time.Time{}): reflect.TypeOf(""),
 		reflect.TypeOf(struct{}{}):  reflect.TypeOf(""),
 	}
-	schema, err := schemagen.GenerateSchema(reflect.TypeOf(Schema{}), packages, typeMap, map[reflect.Type]string{}, "openshift")
+	manualTypeMap := map[reflect.Type]string{
+		reflect.TypeOf(openshiftconfig.ConfigMapNameReference{}): "io.fabric8.openshift.api.model.config.v1.BuildSpecBDDPTrustedCA",
+		reflect.TypeOf(openshiftconfig.SecretNameReference{}):    "io.fabric8.openshift.api.model.config.v1.OAuthSpecIPBasicAuthCa",
+	}
+	schema, err := schemagen.GenerateSchema(reflect.TypeOf(Schema{}), packages, typeMap, manualTypeMap, "openshift")
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "An error occurred: %v", err)
 		return
 	}
 
-    // maintain the existing mapping
+	// maintain the existing mapping
 	schema.Resources["image"].Properties["dockerImageMetadata"] = schemagen.JSONPropertyDescriptor{
-        ExistingJavaTypeDescriptor: &schemagen.ExistingJavaTypeDescriptor{
-            ExistingJavaType: "io.fabric8.openshift.api.model.runtime.RawExtension",
-        },
-    }
-    // top level template objects need to be typed/hasmetadata to do anything
+		ExistingJavaTypeDescriptor: &schemagen.ExistingJavaTypeDescriptor{
+			ExistingJavaType: "io.fabric8.openshift.api.model.runtime.RawExtension",
+		},
+	}
+	// top level template objects need to be typed/hasmetadata to do anything
 	schema.Resources["template"].Properties["objects"] = schemagen.JSONPropertyDescriptor{
-        ExistingJavaTypeDescriptor: &schemagen.ExistingJavaTypeDescriptor{
-            ExistingJavaType: "java.util.List<io.fabric8.kubernetes.api.model.HasMetadata>",
-        },
-    } 
+		ExistingJavaTypeDescriptor: &schemagen.ExistingJavaTypeDescriptor{
+			ExistingJavaType: "java.util.List<io.fabric8.kubernetes.api.model.HasMetadata>",
+		},
+	}
 
 	serdes := map[string]*schemagen.JavaSerDeDescriptor{
 		"os_template_Template": &schemagen.JavaSerDeDescriptor{
