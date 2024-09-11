@@ -4,6 +4,7 @@
 #### Bugs
 * Fix #6038: Support for Gradle configuration cache
 * Fix #6214: Java generator does not recognize fields in CRDs other than metadata, spec, and status
+* Fix #6342: UnmatchedFieldTypeModule prevents certain jackson features from working
 
 #### Improvements
 * Fix #5264: Remove deprecated `Config.errorMessages` field

@@ -57,7 +57,8 @@ class SettableBeanPropertyDelegateTest {
   @DisplayName("withValueDeserializer, should return a new instance")
   void withValueDeserializer() {
     // Given
-    doReturn(delegateMock).when(delegateMock).withValueDeserializer(any());
+    SettableBeanProperty secondDelegateMock = mock(SettableBeanProperty.class, RETURNS_DEEP_STUBS);
+    doReturn(secondDelegateMock).when(delegateMock).withValueDeserializer(any());
     // When
     final SettableBeanProperty result = settableBeanPropertyDelegate.withValueDeserializer(null);
     // Then
@@ -65,14 +66,15 @@ class SettableBeanPropertyDelegateTest {
         .isInstanceOf(SettableBeanPropertyDelegate.class)
         .isNotSameAs(settableBeanPropertyDelegate)
         .hasFieldOrPropertyWithValue("anySetter", anySetterMock)
-        .hasFieldOrPropertyWithValue("delegate", delegateMock);
+        .hasFieldOrPropertyWithValue("delegate", secondDelegateMock);
   }
 
   @Test
   @DisplayName("withName, should return a new instance")
   void withName() {
     // Given
-    doReturn(delegateMock).when(delegateMock).withName(any());
+    SettableBeanProperty secondDelegateMock = mock(SettableBeanProperty.class, RETURNS_DEEP_STUBS);
+    doReturn(secondDelegateMock).when(delegateMock).withName(any());
     // When
     final SettableBeanProperty result = settableBeanPropertyDelegate.withName(null);
     // Then
@@ -80,14 +82,15 @@ class SettableBeanPropertyDelegateTest {
         .isInstanceOf(SettableBeanPropertyDelegate.class)
         .isNotSameAs(settableBeanPropertyDelegate)
         .hasFieldOrPropertyWithValue("anySetter", anySetterMock)
-        .hasFieldOrPropertyWithValue("delegate", delegateMock);
+        .hasFieldOrPropertyWithValue("delegate", secondDelegateMock);
   }
 
   @Test
   @DisplayName("withNullProvider, should return a new instance")
   void withNullProvider() {
     // Given
-    doReturn(delegateMock).when(delegateMock).withNullProvider(any());
+    SettableBeanProperty secondDelegateMock = mock(SettableBeanProperty.class, RETURNS_DEEP_STUBS);
+    doReturn(secondDelegateMock).when(delegateMock).withNullProvider(any());
     // When
     final SettableBeanProperty result = settableBeanPropertyDelegate.withNullProvider(null);
     // Then
@@ -95,7 +98,7 @@ class SettableBeanPropertyDelegateTest {
         .isInstanceOf(SettableBeanPropertyDelegate.class)
         .isNotSameAs(settableBeanPropertyDelegate)
         .hasFieldOrPropertyWithValue("anySetter", anySetterMock)
-        .hasFieldOrPropertyWithValue("delegate", delegateMock);
+        .hasFieldOrPropertyWithValue("delegate", secondDelegateMock);
   }
 
   @Test
@@ -107,6 +110,17 @@ class SettableBeanPropertyDelegateTest {
     final String result = settableBeanPropertyDelegate.getMember().getName();
     // Then
     assertThat(result).isEqualTo("the-member");
+  }
+
+  @Test
+  @DisplayName("getCreatorIndex, should return delegate's creator index")
+  void getCreatorIndex() {
+    // Given
+    when(delegateMock.getCreatorIndex()).thenReturn(3);
+    // When
+    final int result = settableBeanPropertyDelegate.getCreatorIndex();
+    // Then
+    assertThat(result).isEqualTo(3);
   }
 
   @Test
