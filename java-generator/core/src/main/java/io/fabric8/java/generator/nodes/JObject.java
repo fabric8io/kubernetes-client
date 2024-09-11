@@ -22,7 +22,6 @@ import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.PackageDeclaration;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
-import com.github.javaparser.ast.body.EnumDeclaration;
 import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.VariableDeclarator;
@@ -45,9 +44,9 @@ import static io.fabric8.java.generator.nodes.JPrimitiveNameAndType.INT_OR_STRIN
 public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnnotations {
 
   public static final String DEPRECATED_FIELD_MARKER = "deprecated";
-  private final String type;
-  private final String className;
-  private final String pkg;
+  protected final String type;
+  protected final String className;
+  protected final String pkg;
   private final Map<String, AbstractJSONSchema2Pojo> fields;
   private final Set<String> required;
   private final Set<String> deprecated = new HashSet<>();
@@ -142,7 +141,7 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
     StringBuilder sb = new StringBuilder();
     sb.append("{");
     while (!sortedFields.isEmpty()) {
-      sb.append("\"" + sortedFields.remove(0) + "\"");
+      sb.append("\"").append(sortedFields.remove(0)).append("\"");
       if (!sortedFields.isEmpty()) {
         sb.append(",");
       }
@@ -188,6 +187,14 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
 
     clz.addImplementedType(new ClassOrInterfaceType(null, "io.fabric8.kubernetes.api.model.KubernetesResource"));
 
+    List<GeneratorResult.ClassResult> buffer = generateJavaFields(clz);
+
+    buffer.add(new GeneratorResult.ClassResult(this.className, cu));
+
+    return new GeneratorResult(buffer);
+  }
+
+  protected List<GeneratorResult.ClassResult> generateJavaFields(ClassOrInterfaceDeclaration clz) {
     List<GeneratorResult.ClassResult> buffer = new ArrayList<>(this.fields.size() + 1);
 
     List<String> sortedKeys = this.fields.keySet().stream().sorted().collect(Collectors.toList());
@@ -201,12 +208,8 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
       // For now the inner types are only for enums
       boolean isEnum = !gr.getInnerClasses().isEmpty();
       if (isEnum) {
-        for (GeneratorResult.ClassResult enumCR : gr.getInnerClasses()) {
-          Optional<EnumDeclaration> ed = enumCR.getEnumByName(enumCR.getName());
-          if (ed.isPresent()) {
-            clz.addMember(ed.get());
-          }
-        }
+        gr.getInnerClasses()
+            .forEach(enumCR -> enumCR.getEnumByName(enumCR.getName()).ifPresent(clz::addMember));
       }
       buffer.addAll(gr.getTopLevelClasses());
 
@@ -342,10 +345,7 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
       additionalSetter
           .setBody(new BlockStmt().addStatement(new NameExpr("this." + Keywords.ADDITIONAL_PROPERTIES + ".put(key, value)")));
     }
-
-    buffer.add(new GeneratorResult.ClassResult(this.className, cu));
-
-    return new GeneratorResult(buffer);
+    return buffer;
   }
 
   /**

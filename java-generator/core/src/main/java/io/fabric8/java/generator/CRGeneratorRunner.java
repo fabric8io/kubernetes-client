@@ -28,13 +28,19 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class CRGeneratorRunner {
 
   private final Config config;
+  private static final Set<String> STD_PROPS = Stream.of("metadata", "spec", "status", "apiVersion", "kind")
+      .collect(Collectors.toSet());
 
   public CRGeneratorRunner(Config config) {
     this.config = config;
@@ -50,13 +56,11 @@ public class CRGeneratorRunner {
     for (CustomResourceDefinitionVersion crdv : crSpec.getVersions()) {
       String version = crdv.getName();
 
-      String pkg = Optional.ofNullable(basePackageName)
+      String pkgNotOverridden = Optional.ofNullable(basePackageName)
           .map(p -> p + "." + version)
           .orElse(version);
 
-      if (config.getPackageOverrides().containsKey(pkg)) {
-        pkg = config.getPackageOverrides().get(pkg);
-      }
+      final String pkg = config.getPackageOverrides().getOrDefault(pkgNotOverridden, pkgNotOverridden);
 
       AbstractJSONSchema2Pojo specGenerator = null;
 
@@ -73,6 +77,17 @@ public class CRGeneratorRunner {
             crName + "Status", status, pkg, config);
       }
 
+      boolean preserveUnknownFields = Boolean.TRUE
+          .equals(crdv.getSchema().getOpenAPIV3Schema().getXKubernetesPreserveUnknownFields());
+
+      Map<String, JSONSchemaProps> topLevelProps = crdv.getSchema().getOpenAPIV3Schema().getProperties().entrySet().stream()
+          .filter(e -> !STD_PROPS.contains(e.getKey()))
+          .collect(Collectors.toMap(Entry::getKey, Entry::getValue));
+
+      List<String> requiredTopLevelProps = crdv.getSchema().getOpenAPIV3Schema().getRequired().stream()
+          .filter(prop -> !STD_PROPS.contains(prop))
+          .collect(Collectors.toList());
+
       AbstractJSONSchema2Pojo crGenerator = new JCRObject(
           pkg,
           crName,
@@ -81,6 +96,10 @@ public class CRGeneratorRunner {
           scope,
           crName + "Spec",
           crName + "Status",
+          topLevelProps,
+          requiredTopLevelProps,
+          preserveUnknownFields,
+          crdv.getSchema().getOpenAPIV3Schema().getDescription(),
           specGenerator != null,
           statusGenerator != null,
           crdv.getStorage(),
