@@ -28,21 +28,23 @@ class SourceParameterTypeConverter
       "\\p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*");
 
   private static final Pattern FQCN_PATTERN = Pattern.compile(
-      "(" + VALID_JAVA_IDENTIFIER + "\\.)*" + VALID_JAVA_IDENTIFIER);
+      "(" + VALID_JAVA_IDENTIFIER + "\\.)*+" + VALID_JAVA_IDENTIFIER);
 
+  /**
+   * Checks, if the value is a valid full qualifying class name (FQCN).
+   *
+   * @param value the input value
+   * @return <code>true</code>, if valid.
+   */
   static boolean isFQCN(String value) {
     return FQCN_PATTERN.matcher(value).matches();
   }
 
   @Override
-  public SourceParameter convert(String value) {
+  public SourceParameter convert(String value) throws IOException {
     File f = new File(value);
     if (f.exists()) {
-      try {
-        return new SourceParameter.FileToScan(f.getCanonicalFile());
-      } catch (IOException e) {
-        throw new RuntimeException(e);
-      }
+      return new SourceParameter.FileToScan(f.getCanonicalFile());
     }
 
     if (isFQCN(value)) {

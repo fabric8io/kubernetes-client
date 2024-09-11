@@ -24,26 +24,26 @@ interface SourceParameter {
 
   class FileToScan implements SourceParameter {
 
-    private final File fileToScan;
+    private final File value;
 
-    FileToScan(File fileToScan) {
-      this.fileToScan = fileToScan;
+    FileToScan(File value) {
+      this.value = value;
     }
 
-    public File getFileToScan() {
-      return fileToScan;
+    public File getValue() {
+      return value;
     }
   }
 
   class CustomResourceClass implements SourceParameter {
-    private final String customResourceClass;
+    private final String value;
 
-    CustomResourceClass(String customResourceClass) {
-      this.customResourceClass = customResourceClass;
+    CustomResourceClass(String value) {
+      this.value = value;
     }
 
-    public String getCustomResourceClass() {
-      return customResourceClass;
+    public String getValue() {
+      return value;
     }
   }
 }

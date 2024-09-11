@@ -204,13 +204,13 @@ public class CRDGeneratorCLI implements Runnable {
     try {
       sanitizedOutputDirectory = outputDirectory.getCanonicalFile();
     } catch (IOException e) {
-      throw new RuntimeException("Could not get canonical file for " + outputDirectory, e);
+      throw new CRDGeneratorCliException("Could not get canonical file for " + outputDirectory, e);
     }
 
     try {
       Files.createDirectories(sanitizedOutputDirectory.toPath());
     } catch (IOException e) {
-      throw new RuntimeException(
+      throw new CRDGeneratorCliException(
           "Could not create output directory at " + sanitizedOutputDirectory, e);
     }
 
@@ -247,12 +247,12 @@ public class CRDGeneratorCLI implements Runnable {
       filesToScan.forEach(f -> sb.append(" ").append(f.getPath()).append("\n"));
     }
 
-    List<String> classpathElements = getClasspathElements();
-    if (classpathElements.isEmpty()) {
+    List<String> allClasspathElements = getClasspathElements();
+    if (allClasspathElements.isEmpty()) {
       sb.append("Classpath: []\n");
     } else {
       sb.append("\nClasspath:\n");
-      classpathElements.forEach(cpe -> sb.append(" ").append(cpe).append("\n"));
+      allClasspathElements.forEach(cpe -> sb.append(" ").append(cpe).append("\n"));
     }
     sb.append("\n");
     return sb.toString();
@@ -262,7 +262,7 @@ public class CRDGeneratorCLI implements Runnable {
     source.stream()
         .filter(s -> s instanceof SourceParameter.CustomResourceClass)
         .map(SourceParameter.CustomResourceClass.class::cast)
-        .map(SourceParameter.CustomResourceClass::getCustomResourceClass)
+        .map(SourceParameter.CustomResourceClass::getValue)
         .forEach(customResourceClassNames::add);
   }
 
@@ -270,14 +270,14 @@ public class CRDGeneratorCLI implements Runnable {
     source.stream()
         .filter(s -> s instanceof SourceParameter.FileToScan)
         .map(SourceParameter.FileToScan.class::cast)
-        .map(SourceParameter.FileToScan::getFileToScan)
+        .map(SourceParameter.FileToScan::getValue)
         .forEach(filesToScan::add);
   }
 
   private List<String> getClasspathElements() {
     List<String> allClasspathElements = new LinkedList<>(classpathElements);
-    // Add files to classpath elements to improve UX of the CLI:
-    // A scan target must be always in the classpath.
+    // Add files to classpath elements for better usability:
+    // If a scan target contains a custom resource class, it must be also in the classpath.
     filesToScan.stream()
         .map(File::getPath)
         .forEach(allClasspathElements::add);
@@ -318,9 +318,19 @@ public class CRDGeneratorCLI implements Runnable {
    * Exception to indicate that no custom resource classes
    * have been retained after scanning and filtering.
    */
-  static class CustomResourceClassNotFoundException extends RuntimeException {
+  static class CustomResourceClassNotFoundException extends CRDGeneratorCliException {
     CustomResourceClassNotFoundException() {
       super("No Custom Resource class retained after filtering");
+    }
+  }
+
+  private static class CRDGeneratorCliException extends RuntimeException {
+    CRDGeneratorCliException(String message) {
+      super(message);
+    }
+
+    CRDGeneratorCliException(String message, Throwable cause) {
+      super(message, cause);
     }
   }
 

@@ -32,12 +32,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class SourceArgumentConverterTest {
 
   @Test
-  void givenValidCustomResourceClassArgument_thenConvertToCustomResourceClassArgument() {
+  void givenValidCustomResourceClassArgument_thenConvertToCustomResourceClassArgument()
+      throws IOException {
     SourceParameterTypeConverter converter = new SourceParameterTypeConverter();
     SourceParameter sourceParameter = converter.convert("com.example.MyValidClassName");
     assertInstanceOf(SourceParameter.CustomResourceClass.class, sourceParameter);
     SourceParameter.CustomResourceClass customResourceClassArg = (SourceParameter.CustomResourceClass) sourceParameter;
-    assertEquals("com.example.MyValidClassName", customResourceClassArg.getCustomResourceClass());
+    assertEquals("com.example.MyValidClassName", customResourceClassArg.getValue());
   }
 
   @Test
@@ -49,7 +50,7 @@ class SourceArgumentConverterTest {
     SourceParameter sourceParameter = converter.convert(exampleFile.getAbsolutePath());
     assertInstanceOf(SourceParameter.FileToScan.class, sourceParameter);
     SourceParameter.FileToScan fileToScanArg = (SourceParameter.FileToScan) sourceParameter;
-    assertEquals(exampleFile, fileToScanArg.getFileToScan());
+    assertEquals(exampleFile, fileToScanArg.getValue());
   }
 
   @Test
