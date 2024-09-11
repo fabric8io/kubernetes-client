@@ -22,7 +22,6 @@ import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.PackageDeclaration;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
-import com.github.javaparser.ast.body.EnumDeclaration;
 import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.VariableDeclarator;
@@ -142,7 +141,7 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
     StringBuilder sb = new StringBuilder();
     sb.append("{");
     while (!sortedFields.isEmpty()) {
-      sb.append("\"" + sortedFields.remove(0) + "\"");
+      sb.append("\"").append(sortedFields.remove(0)).append("\"");
       if (!sortedFields.isEmpty()) {
         sb.append(",");
       }
@@ -209,12 +208,8 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
       // For now the inner types are only for enums
       boolean isEnum = !gr.getInnerClasses().isEmpty();
       if (isEnum) {
-        for (GeneratorResult.ClassResult enumCR : gr.getInnerClasses()) {
-          Optional<EnumDeclaration> ed = enumCR.getEnumByName(enumCR.getName());
-          if (ed.isPresent()) {
-            clz.addMember(ed.get());
-          }
-        }
+        gr.getInnerClasses()
+            .forEach(enumCR -> enumCR.getEnumByName(enumCR.getName()).ifPresent(clz::addMember));
       }
       buffer.addAll(gr.getTopLevelClasses());
 

@@ -32,12 +32,15 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class CRGeneratorRunner {
 
   private final Config config;
-  private static final List<String> STD_PROPS = Arrays.asList("metadata", "spec", "status", "apiVersion", "kind");
+  private static final Set<String> STD_PROPS = Stream.of("metadata", "spec", "status", "apiVersion", "kind")
+      .collect(Collectors.toSet());
 
   public CRGeneratorRunner(Config config) {
     this.config = config;
@@ -57,12 +60,7 @@ public class CRGeneratorRunner {
           .map(p -> p + "." + version)
           .orElse(version);
 
-      String pkg;
-      if (config.getPackageOverrides().containsKey(pkgNotOverridden)) {
-        pkg = config.getPackageOverrides().get(pkgNotOverridden);
-      } else {
-        pkg = pkgNotOverridden;
-      }
+      final String pkg = config.getPackageOverrides().getOrDefault(pkgNotOverridden, pkgNotOverridden);
 
       AbstractJSONSchema2Pojo specGenerator = null;
 
