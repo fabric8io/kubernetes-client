@@ -43,7 +43,7 @@ class SourceArgumentConverterTest {
 
   @Test
   void givenExistingFile_thenConvertToFileToScanArgument(@TempDir File tempDir) throws IOException {
-    File exampleFile = new File(tempDir, "example-file.txt");
+    File exampleFile = new File(tempDir, "example-file.txt").getCanonicalFile();
     Files.write(exampleFile.toPath(), Collections.singletonList("some-content"));
 
     SourceParameterTypeConverter converter = new SourceParameterTypeConverter();
