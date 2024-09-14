@@ -23,6 +23,8 @@
 
 #### New Features
 * Fix #6150: Config uses `proxy-url` in kubeconfig's cluster configuration
+* Fix #5944: (crd-generator) Add CRD-Generator Maven Plugin
+* Fix #5958: (crd-generator) Add CRD-Generator CLI Application
 * Fix #5719: io.fabric8:mockwebserver is now based on Vert.x
 
 #### _**Note**_: Breaking changes
