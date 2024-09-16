@@ -36,10 +36,6 @@ public class JCRObject extends JObject implements JObjectExtraAnnotations {
   private final String group;
   private final String version;
   private final String scope;
-  private final String specClassName;
-  private final String statusClassName;
-  private final boolean withSpec;
-  private final boolean withStatus;
   private final String singular;
   private final String plural;
 
@@ -52,29 +48,19 @@ public class JCRObject extends JObject implements JObjectExtraAnnotations {
       String group,
       String version,
       String scope,
-      String specClassName,
-      String statusClassName,
       Map<String, JSONSchemaProps> toplevelProps,
       List<String> required,
       boolean preserveUnknownFields,
       String description,
-      boolean withSpec,
-      boolean withStatus,
       boolean storage,
       boolean served,
       String singular,
       String plural,
       Config config) {
-
     super(pkg, type, toplevelProps, required, preserveUnknownFields, config, description, false, null);
-
     this.group = group;
     this.version = version;
     this.scope = scope;
-    this.specClassName = specClassName;
-    this.statusClassName = statusClassName;
-    this.withSpec = withSpec;
-    this.withStatus = withStatus;
     this.storage = storage;
     this.served = served;
     this.singular = singular;
@@ -125,13 +111,15 @@ public class JCRObject extends JObject implements JObjectExtraAnnotations {
 
     ClassOrInterfaceType jlVoid = new ClassOrInterfaceType().setName("java.lang.Void");
 
-    ClassOrInterfaceType spec = (withSpec)
-        ? new ClassOrInterfaceType().setName(this.pkg + "." + this.specClassName)
+    ClassOrInterfaceType spec = (fields.containsKey("spec"))
+        ? new ClassOrInterfaceType().setName(type + "Spec")
         : jlVoid;
+    fields.remove("spec");
 
-    ClassOrInterfaceType status = (withStatus)
-        ? new ClassOrInterfaceType().setName(this.pkg + "." + this.statusClassName)
+    ClassOrInterfaceType status = (fields.containsKey("status"))
+        ? new ClassOrInterfaceType().setName(type + "Status")
         : jlVoid;
+    fields.remove("status");
 
     ClassOrInterfaceType crType = new ClassOrInterfaceType()
         .setName("io.fabric8.kubernetes.client.CustomResource")

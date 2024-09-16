@@ -47,7 +47,7 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
   protected final String type;
   protected final String className;
   protected final String pkg;
-  private final Map<String, AbstractJSONSchema2Pojo> fields;
+  protected final Map<String, AbstractJSONSchema2Pojo> fields;
   private final Set<String> required;
   private final Set<String> deprecated = new HashSet<>();
 

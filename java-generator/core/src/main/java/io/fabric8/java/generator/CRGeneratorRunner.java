@@ -39,7 +39,7 @@ import java.util.stream.Stream;
 public class CRGeneratorRunner {
 
   private final Config config;
-  private static final Set<String> STD_PROPS = Stream.of("metadata", "spec", "status", "apiVersion", "kind")
+  private static final Set<String> STD_PROPS = Stream.of("metadata", "apiVersion", "kind")
       .collect(Collectors.toSet());
 
   public CRGeneratorRunner(Config config) {
@@ -94,14 +94,10 @@ public class CRGeneratorRunner {
           group,
           version,
           scope,
-          crName + "Spec",
-          crName + "Status",
           topLevelProps,
           requiredTopLevelProps,
           preserveUnknownFields,
           crdv.getSchema().getOpenAPIV3Schema().getDescription(),
-          specGenerator != null,
-          statusGenerator != null,
           crdv.getStorage(),
           crdv.getServed(),
           crSpec.getNames().getSingular(),
