@@ -133,10 +133,9 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
 
   /**
    * Creates the JSON schema for the class. This is template method where
-   * sub-classes are supposed to provide specific implementations of abstract methods.
+   * subclasses are supposed to provide specific implementations of abstract methods.
    *
    * @param definition The definition.
-   * @param ignore a potentially empty list of property names to ignore while generating the schema
    * @return The schema.
    */
   private T resolveRoot(Class<?> definition) {
@@ -171,13 +170,14 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
       } else if (name.startsWith("is")) {
         name = name.substring(2);
       }
-      if (name.length() > 0) {
+      if (!name.isEmpty()) {
         name = Character.toLowerCase(name.charAt(0)) + name.substring(1);
       }
 
       try {
         return Optional.of(m.getDeclaringClass().getDeclaredField(name));
       } catch (NoSuchFieldException | SecurityException e) {
+        // ignored
       }
     }
     return Optional.empty();
@@ -196,9 +196,10 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
         field.map(f -> f.getAnnotation(ValidationRules.class))
             .ifPresent(ann -> Stream.of(ann.value()).map(this::from).forEach(validationRules::add));
       } catch (SecurityException e) {
+        // ignored
       }
       // then method
-      Stream.of(((Method) member).getAnnotationsByType(ValidationRule.class)).map(this::from).forEach(validationRules::add);
+      Stream.of(member.getAnnotationsByType(ValidationRule.class)).map(this::from).forEach(validationRules::add);
       return;
     }
 
@@ -500,11 +501,13 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
       type = ((Method) member).getAnnotatedReceiverType();
     }
 
-    Stream.of(fieldType, type).filter(o -> !Objects.isNull(o))
-        .filter(AnnotatedParameterizedType.class::isInstance).map(AnnotatedParameterizedType.class::cast)
-        .map(AnnotatedParameterizedType::getAnnotatedActualTypeArguments).map(a -> {
-          return a[typeIndex];
-        }).forEach(at -> {
+    Stream.of(fieldType, type)
+        .filter(o -> !Objects.isNull(o))
+        .filter(AnnotatedParameterizedType.class::isInstance)
+        .map(AnnotatedParameterizedType.class::cast)
+        .map(AnnotatedParameterizedType::getAnnotatedActualTypeArguments)
+        .map(a -> a[typeIndex])
+        .forEach(at -> {
           Optional.ofNullable(at.getAnnotation(Pattern.class)).ifPresent(a -> schema.setPattern(a.value()));
           Optional.ofNullable(at.getAnnotation(Min.class)).ifPresent(a -> schema.setMinimum(a.value()));
           Optional.ofNullable(at.getAnnotation(Max.class)).ifPresent(a -> schema.setMaximum(a.value()));
@@ -525,6 +528,7 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
           Object value = field.get(null);
           toIgnore.add(resolvingContext.objectMapper.convertValue(value, String.class));
         } catch (IllegalArgumentException | IllegalAccessException e) {
+          // ignored
         }
       }
     }

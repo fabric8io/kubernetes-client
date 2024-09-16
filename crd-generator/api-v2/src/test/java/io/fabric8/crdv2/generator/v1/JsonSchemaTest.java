@@ -469,7 +469,7 @@ class JsonSchemaTest {
 
   private static class Cyclic2 {
 
-    public Cyclic2 parent[];
+    public Cyclic2[] parent;
 
   }
 
