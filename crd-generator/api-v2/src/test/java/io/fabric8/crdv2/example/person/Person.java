@@ -15,6 +15,8 @@
  */
 package io.fabric8.crdv2.example.person;
 
+import io.fabric8.generator.annotation.Pattern;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -24,7 +26,7 @@ public class Person {
   public Optional<String> middleName;
   public String lastName;
   public int birthYear;
-  public List<String> hobbies;
+  public List<@Pattern(".*ball") String> hobbies;
   public AddressList addresses;
   public Type type;
 

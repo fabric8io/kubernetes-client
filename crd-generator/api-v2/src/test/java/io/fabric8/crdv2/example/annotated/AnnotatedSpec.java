@@ -29,6 +29,8 @@ import io.fabric8.generator.annotation.ValidationRule;
 import lombok.Data;
 
 import java.time.ZonedDateTime;
+import java.util.List;
+import java.util.Map;
 
 @Data
 public class AnnotatedSpec {
@@ -57,6 +59,9 @@ public class AnnotatedSpec {
   private String numInt;
   private String numFloat;
   private ZonedDateTime issuedAt;
+
+  private List<@Pattern("[a-z].*") String> typeAnnotationCollection;
+  private Map<String, @Min(1) @Max(255) Integer> typeAnnotationMap;
 
   @JsonIgnore
   private int ignoredFoo;
