@@ -57,11 +57,14 @@ public class RoleBindingRestrictionSpec implements Editable<RoleBindingRestricti
 {
 
     @JsonProperty("grouprestriction")
-    private GroupRestriction grouprestriction;
+    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
+    private Object grouprestriction;
     @JsonProperty("serviceaccountrestriction")
-    private ServiceAccountRestriction serviceaccountrestriction;
+    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
+    private Object serviceaccountrestriction;
     @JsonProperty("userrestriction")
-    private UserRestriction userrestriction;
+    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
+    private Object userrestriction;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -72,7 +75,7 @@ public class RoleBindingRestrictionSpec implements Editable<RoleBindingRestricti
     public RoleBindingRestrictionSpec() {
     }
 
-    public RoleBindingRestrictionSpec(GroupRestriction grouprestriction, ServiceAccountRestriction serviceaccountrestriction, UserRestriction userrestriction) {
+    public RoleBindingRestrictionSpec(Object grouprestriction, Object serviceaccountrestriction, Object userrestriction) {
         super();
         this.grouprestriction = grouprestriction;
         this.serviceaccountrestriction = serviceaccountrestriction;
@@ -80,32 +83,35 @@ public class RoleBindingRestrictionSpec implements Editable<RoleBindingRestricti
     }
 
     @JsonProperty("grouprestriction")
-    public GroupRestriction getGrouprestriction() {
+    public Object getGrouprestriction() {
         return grouprestriction;
     }
 
     @JsonProperty("grouprestriction")
-    public void setGrouprestriction(GroupRestriction grouprestriction) {
+    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
+    public void setGrouprestriction(Object grouprestriction) {
         this.grouprestriction = grouprestriction;
     }
 
     @JsonProperty("serviceaccountrestriction")
-    public ServiceAccountRestriction getServiceaccountrestriction() {
+    public Object getServiceaccountrestriction() {
         return serviceaccountrestriction;
     }
 
     @JsonProperty("serviceaccountrestriction")
-    public void setServiceaccountrestriction(ServiceAccountRestriction serviceaccountrestriction) {
+    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
+    public void setServiceaccountrestriction(Object serviceaccountrestriction) {
         this.serviceaccountrestriction = serviceaccountrestriction;
     }
 
     @JsonProperty("userrestriction")
-    public UserRestriction getUserrestriction() {
+    public Object getUserrestriction() {
         return userrestriction;
     }
 
     @JsonProperty("userrestriction")
-    public void setUserrestriction(UserRestriction userrestriction) {
+    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
+    public void setUserrestriction(Object userrestriction) {
         this.userrestriction = userrestriction;
     }
 

@@ -17,6 +17,8 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
+import io.fabric8.kubernetes.api.model.ObjectMeta;
+import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
@@ -48,13 +50,13 @@ import lombok.experimental.Accessors;
     ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
+    @BuildableReference(ObjectMeta.class),
     @BuildableReference(LabelSelector.class),
     @BuildableReference(Container.class),
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
+    @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
@@ -85,13 +87,13 @@ public class Identity implements Editable<IdentityBuilder> , HasMetadata
     @JsonProperty("kind")
     private String kind = "Identity";
     @JsonProperty("metadata")
-    private io.fabric8.kubernetes.api.model.ObjectMeta metadata;
+    private ObjectMeta metadata;
     @JsonProperty("providerName")
     private String providerName;
     @JsonProperty("providerUserName")
     private String providerUserName;
     @JsonProperty("user")
-    private io.fabric8.kubernetes.api.model.ObjectReference user;
+    private ObjectReference user;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -102,7 +104,7 @@ public class Identity implements Editable<IdentityBuilder> , HasMetadata
     public Identity() {
     }
 
-    public Identity(String apiVersion, Map<String, String> extra, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, String providerName, String providerUserName, io.fabric8.kubernetes.api.model.ObjectReference user) {
+    public Identity(String apiVersion, Map<String, String> extra, String kind, ObjectMeta metadata, String providerName, String providerUserName, ObjectReference user) {
         super();
         this.apiVersion = apiVersion;
         this.extra = extra;
@@ -165,12 +167,12 @@ public class Identity implements Editable<IdentityBuilder> , HasMetadata
     }
 
     @JsonProperty("metadata")
-    public io.fabric8.kubernetes.api.model.ObjectMeta getMetadata() {
+    public ObjectMeta getMetadata() {
         return metadata;
     }
 
     @JsonProperty("metadata")
-    public void setMetadata(io.fabric8.kubernetes.api.model.ObjectMeta metadata) {
+    public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
@@ -195,12 +197,12 @@ public class Identity implements Editable<IdentityBuilder> , HasMetadata
     }
 
     @JsonProperty("user")
-    public io.fabric8.kubernetes.api.model.ObjectReference getUser() {
+    public ObjectReference getUser() {
         return user;
     }
 
     @JsonProperty("user")
-    public void setUser(io.fabric8.kubernetes.api.model.ObjectReference user) {
+    public void setUser(ObjectReference user) {
         this.user = user;
     }
 

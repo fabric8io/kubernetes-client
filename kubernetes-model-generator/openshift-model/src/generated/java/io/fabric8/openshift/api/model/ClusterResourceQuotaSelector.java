@@ -15,6 +15,7 @@ import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
+import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
@@ -41,7 +42,7 @@ import lombok.experimental.Accessors;
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.LabelSelector.class),
+    @BuildableReference(LabelSelector.class),
     @BuildableReference(Container.class),
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
@@ -58,7 +59,7 @@ public class ClusterResourceQuotaSelector implements Editable<ClusterResourceQuo
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> annotations = new LinkedHashMap<>();
     @JsonProperty("labels")
-    private io.fabric8.kubernetes.api.model.LabelSelector labels;
+    private LabelSelector labels;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -69,7 +70,7 @@ public class ClusterResourceQuotaSelector implements Editable<ClusterResourceQuo
     public ClusterResourceQuotaSelector() {
     }
 
-    public ClusterResourceQuotaSelector(Map<String, String> annotations, io.fabric8.kubernetes.api.model.LabelSelector labels) {
+    public ClusterResourceQuotaSelector(Map<String, String> annotations, LabelSelector labels) {
         super();
         this.annotations = annotations;
         this.labels = labels;
@@ -87,12 +88,12 @@ public class ClusterResourceQuotaSelector implements Editable<ClusterResourceQuo
     }
 
     @JsonProperty("labels")
-    public io.fabric8.kubernetes.api.model.LabelSelector getLabels() {
+    public LabelSelector getLabels() {
         return labels;
     }
 
     @JsonProperty("labels")
-    public void setLabels(io.fabric8.kubernetes.api.model.LabelSelector labels) {
+    public void setLabels(LabelSelector labels) {
         this.labels = labels;
     }
 

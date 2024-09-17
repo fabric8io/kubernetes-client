@@ -67,4 +67,9 @@ final class TemplateContext implements ImportManager {
   Map<String, Schema> getSchemaProperties() {
     return classSchema.getProperties() == null ? Collections.emptyMap() : classSchema.getProperties();
   }
+
+  boolean isNamespaced() {
+    return getApiVersion() != null && getApiVersion().isNamespaced();
+  }
+
 }

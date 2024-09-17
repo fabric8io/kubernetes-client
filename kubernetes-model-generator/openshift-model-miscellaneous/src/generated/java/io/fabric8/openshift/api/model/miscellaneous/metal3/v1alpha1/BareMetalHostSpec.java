@@ -20,11 +20,10 @@ import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
+import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.kubernetes.api.model.SecretReference;
-import io.fabric8.kubernetes.api.model.Taint;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -68,7 +67,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
+    @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
@@ -81,42 +80,42 @@ public class BareMetalHostSpec implements Editable<BareMetalHostSpecBuilder> , K
     @JsonProperty("automatedCleaningMode")
     private String automatedCleaningMode;
     @JsonProperty("bmc")
-    private BMCDetails bmc;
+    private BareMetalHostSpecBmc bmc;
     @JsonProperty("bootMACAddress")
     private String bootMACAddress;
     @JsonProperty("bootMode")
     private String bootMode;
     @JsonProperty("consumerRef")
-    private io.fabric8.kubernetes.api.model.ObjectReference consumerRef;
+    private BareMetalHostSpecConsumerRef consumerRef;
     @JsonProperty("customDeploy")
-    private CustomDeploy customDeploy;
+    private BareMetalHostSpecCustomDeploy customDeploy;
     @JsonProperty("description")
     private String description;
     @JsonProperty("externallyProvisioned")
     private Boolean externallyProvisioned;
     @JsonProperty("firmware")
-    private FirmwareConfig firmware;
+    private BareMetalHostSpecFirmware firmware;
     @JsonProperty("hardwareProfile")
     private String hardwareProfile;
     @JsonProperty("image")
-    private Image image;
+    private BareMetalHostSpecImage image;
     @JsonProperty("metaData")
-    private SecretReference metaData;
+    private BareMetalHostSpecMetaData metaData;
     @JsonProperty("networkData")
-    private SecretReference networkData;
+    private BareMetalHostSpecNetworkData networkData;
     @JsonProperty("online")
     private Boolean online;
     @JsonProperty("preprovisioningNetworkDataName")
     private String preprovisioningNetworkDataName;
     @JsonProperty("raid")
-    private RAIDConfig raid;
+    private BareMetalHostSpecRaid raid;
     @JsonProperty("rootDeviceHints")
-    private RootDeviceHints rootDeviceHints;
+    private BareMetalHostSpecRootDeviceHints rootDeviceHints;
     @JsonProperty("taints")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Taint> taints = new ArrayList<>();
+    private List<BareMetalHostSpecTaints> taints = new ArrayList<>();
     @JsonProperty("userData")
-    private SecretReference userData;
+    private BareMetalHostSpecUserData userData;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -127,7 +126,7 @@ public class BareMetalHostSpec implements Editable<BareMetalHostSpecBuilder> , K
     public BareMetalHostSpec() {
     }
 
-    public BareMetalHostSpec(String architecture, String automatedCleaningMode, BMCDetails bmc, String bootMACAddress, String bootMode, io.fabric8.kubernetes.api.model.ObjectReference consumerRef, CustomDeploy customDeploy, String description, Boolean externallyProvisioned, FirmwareConfig firmware, String hardwareProfile, Image image, SecretReference metaData, SecretReference networkData, Boolean online, String preprovisioningNetworkDataName, RAIDConfig raid, RootDeviceHints rootDeviceHints, List<Taint> taints, SecretReference userData) {
+    public BareMetalHostSpec(String architecture, String automatedCleaningMode, BareMetalHostSpecBmc bmc, String bootMACAddress, String bootMode, BareMetalHostSpecConsumerRef consumerRef, BareMetalHostSpecCustomDeploy customDeploy, String description, Boolean externallyProvisioned, BareMetalHostSpecFirmware firmware, String hardwareProfile, BareMetalHostSpecImage image, BareMetalHostSpecMetaData metaData, BareMetalHostSpecNetworkData networkData, Boolean online, String preprovisioningNetworkDataName, BareMetalHostSpecRaid raid, BareMetalHostSpecRootDeviceHints rootDeviceHints, List<BareMetalHostSpecTaints> taints, BareMetalHostSpecUserData userData) {
         super();
         this.architecture = architecture;
         this.automatedCleaningMode = automatedCleaningMode;
@@ -172,12 +171,12 @@ public class BareMetalHostSpec implements Editable<BareMetalHostSpecBuilder> , K
     }
 
     @JsonProperty("bmc")
-    public BMCDetails getBmc() {
+    public BareMetalHostSpecBmc getBmc() {
         return bmc;
     }
 
     @JsonProperty("bmc")
-    public void setBmc(BMCDetails bmc) {
+    public void setBmc(BareMetalHostSpecBmc bmc) {
         this.bmc = bmc;
     }
 
@@ -202,22 +201,22 @@ public class BareMetalHostSpec implements Editable<BareMetalHostSpecBuilder> , K
     }
 
     @JsonProperty("consumerRef")
-    public io.fabric8.kubernetes.api.model.ObjectReference getConsumerRef() {
+    public BareMetalHostSpecConsumerRef getConsumerRef() {
         return consumerRef;
     }
 
     @JsonProperty("consumerRef")
-    public void setConsumerRef(io.fabric8.kubernetes.api.model.ObjectReference consumerRef) {
+    public void setConsumerRef(BareMetalHostSpecConsumerRef consumerRef) {
         this.consumerRef = consumerRef;
     }
 
     @JsonProperty("customDeploy")
-    public CustomDeploy getCustomDeploy() {
+    public BareMetalHostSpecCustomDeploy getCustomDeploy() {
         return customDeploy;
     }
 
     @JsonProperty("customDeploy")
-    public void setCustomDeploy(CustomDeploy customDeploy) {
+    public void setCustomDeploy(BareMetalHostSpecCustomDeploy customDeploy) {
         this.customDeploy = customDeploy;
     }
 
@@ -242,12 +241,12 @@ public class BareMetalHostSpec implements Editable<BareMetalHostSpecBuilder> , K
     }
 
     @JsonProperty("firmware")
-    public FirmwareConfig getFirmware() {
+    public BareMetalHostSpecFirmware getFirmware() {
         return firmware;
     }
 
     @JsonProperty("firmware")
-    public void setFirmware(FirmwareConfig firmware) {
+    public void setFirmware(BareMetalHostSpecFirmware firmware) {
         this.firmware = firmware;
     }
 
@@ -262,32 +261,32 @@ public class BareMetalHostSpec implements Editable<BareMetalHostSpecBuilder> , K
     }
 
     @JsonProperty("image")
-    public Image getImage() {
+    public BareMetalHostSpecImage getImage() {
         return image;
     }
 
     @JsonProperty("image")
-    public void setImage(Image image) {
+    public void setImage(BareMetalHostSpecImage image) {
         this.image = image;
     }
 
     @JsonProperty("metaData")
-    public SecretReference getMetaData() {
+    public BareMetalHostSpecMetaData getMetaData() {
         return metaData;
     }
 
     @JsonProperty("metaData")
-    public void setMetaData(SecretReference metaData) {
+    public void setMetaData(BareMetalHostSpecMetaData metaData) {
         this.metaData = metaData;
     }
 
     @JsonProperty("networkData")
-    public SecretReference getNetworkData() {
+    public BareMetalHostSpecNetworkData getNetworkData() {
         return networkData;
     }
 
     @JsonProperty("networkData")
-    public void setNetworkData(SecretReference networkData) {
+    public void setNetworkData(BareMetalHostSpecNetworkData networkData) {
         this.networkData = networkData;
     }
 
@@ -312,43 +311,43 @@ public class BareMetalHostSpec implements Editable<BareMetalHostSpecBuilder> , K
     }
 
     @JsonProperty("raid")
-    public RAIDConfig getRaid() {
+    public BareMetalHostSpecRaid getRaid() {
         return raid;
     }
 
     @JsonProperty("raid")
-    public void setRaid(RAIDConfig raid) {
+    public void setRaid(BareMetalHostSpecRaid raid) {
         this.raid = raid;
     }
 
     @JsonProperty("rootDeviceHints")
-    public RootDeviceHints getRootDeviceHints() {
+    public BareMetalHostSpecRootDeviceHints getRootDeviceHints() {
         return rootDeviceHints;
     }
 
     @JsonProperty("rootDeviceHints")
-    public void setRootDeviceHints(RootDeviceHints rootDeviceHints) {
+    public void setRootDeviceHints(BareMetalHostSpecRootDeviceHints rootDeviceHints) {
         this.rootDeviceHints = rootDeviceHints;
     }
 
     @JsonProperty("taints")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<Taint> getTaints() {
+    public List<BareMetalHostSpecTaints> getTaints() {
         return taints;
     }
 
     @JsonProperty("taints")
-    public void setTaints(List<Taint> taints) {
+    public void setTaints(List<BareMetalHostSpecTaints> taints) {
         this.taints = taints;
     }
 
     @JsonProperty("userData")
-    public SecretReference getUserData() {
+    public BareMetalHostSpecUserData getUserData() {
         return userData;
     }
 
     @JsonProperty("userData")
-    public void setUserData(SecretReference userData) {
+    public void setUserData(BareMetalHostSpecUserData userData) {
         this.userData = userData;
     }
 

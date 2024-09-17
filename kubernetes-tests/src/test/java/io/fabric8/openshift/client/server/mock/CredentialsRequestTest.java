@@ -15,6 +15,7 @@
  */
 package io.fabric8.openshift.client.server.mock;
 
+import io.fabric8.kubernetes.api.model.GenericKubernetesResourceBuilder;
 import io.fabric8.openshift.api.model.miscellaneous.cloudcredential.v1.CredentialsRequest;
 import io.fabric8.openshift.api.model.miscellaneous.cloudcredential.v1.CredentialsRequestBuilder;
 import io.fabric8.openshift.api.model.miscellaneous.cloudcredential.v1.CredentialsRequestList;
@@ -84,9 +85,11 @@ class CredentialsRequestTest {
     return new CredentialsRequestBuilder()
         .withNewMetadata().withName(name).endMetadata()
         .withNewSpec()
-        .addToProviderSpec("apiVersion", "cloudcredential.openshift.io/v1")
-        .addToProviderSpec("kind", "GCPProviderSpec")
-        .addToProviderSpec("skipServiceCheck", "true")
+        .withProviderSpec(new GenericKubernetesResourceBuilder()
+            .withApiVersion("cloudcredential.openshift.io/v1")
+            .withKind("GCPProviderSpec")
+            .addToAdditionalProperties("skipServiceCheck", "true")
+            .build())
         .withNewSecretRef()
         .withName("cloud-credential-operator-gcp-ro-creds")
         .withNamespace("openshift-cloud-credential-operator")

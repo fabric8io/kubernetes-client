@@ -43,22 +43,14 @@ import io.fabric8.openshift.api.model.Build;
 import io.fabric8.openshift.api.model.BuildConfig;
 import io.fabric8.openshift.api.model.BuildConfigList;
 import io.fabric8.openshift.api.model.BuildList;
-import io.fabric8.openshift.api.model.ClusterNetwork;
-import io.fabric8.openshift.api.model.ClusterNetworkList;
 import io.fabric8.openshift.api.model.ClusterRole;
 import io.fabric8.openshift.api.model.ClusterRoleBinding;
 import io.fabric8.openshift.api.model.ClusterRoleBindingList;
 import io.fabric8.openshift.api.model.ClusterRoleList;
 import io.fabric8.openshift.api.model.DeploymentConfig;
 import io.fabric8.openshift.api.model.DeploymentConfigList;
-import io.fabric8.openshift.api.model.EgressNetworkPolicy;
-import io.fabric8.openshift.api.model.EgressNetworkPolicyList;
 import io.fabric8.openshift.api.model.Group;
 import io.fabric8.openshift.api.model.GroupList;
-import io.fabric8.openshift.api.model.HelmChartRepository;
-import io.fabric8.openshift.api.model.HelmChartRepositoryList;
-import io.fabric8.openshift.api.model.HostSubnet;
-import io.fabric8.openshift.api.model.HostSubnetList;
 import io.fabric8.openshift.api.model.Identity;
 import io.fabric8.openshift.api.model.IdentityList;
 import io.fabric8.openshift.api.model.Image;
@@ -74,8 +66,6 @@ import io.fabric8.openshift.api.model.ImageTag;
 import io.fabric8.openshift.api.model.ImageTagList;
 import io.fabric8.openshift.api.model.LocalResourceAccessReview;
 import io.fabric8.openshift.api.model.LocalSubjectAccessReview;
-import io.fabric8.openshift.api.model.NetNamespace;
-import io.fabric8.openshift.api.model.NetNamespaceList;
 import io.fabric8.openshift.api.model.OAuthAccessToken;
 import io.fabric8.openshift.api.model.OAuthAccessTokenList;
 import io.fabric8.openshift.api.model.OAuthAuthorizeToken;
@@ -87,8 +77,6 @@ import io.fabric8.openshift.api.model.OAuthClientList;
 import io.fabric8.openshift.api.model.PodSecurityPolicyReview;
 import io.fabric8.openshift.api.model.PodSecurityPolicySelfSubjectReview;
 import io.fabric8.openshift.api.model.PodSecurityPolicySubjectReview;
-import io.fabric8.openshift.api.model.ProjectHelmChartRepository;
-import io.fabric8.openshift.api.model.ProjectHelmChartRepositoryList;
 import io.fabric8.openshift.api.model.RangeAllocation;
 import io.fabric8.openshift.api.model.RangeAllocationList;
 import io.fabric8.openshift.api.model.ResourceAccessReview;
@@ -122,16 +110,20 @@ import io.fabric8.openshift.api.model.miscellaneous.cloudcredential.v1.Credentia
 import io.fabric8.openshift.api.model.miscellaneous.cloudcredential.v1.CredentialsRequestList;
 import io.fabric8.openshift.api.model.miscellaneous.cncf.cni.v1.NetworkAttachmentDefinition;
 import io.fabric8.openshift.api.model.miscellaneous.cncf.cni.v1.NetworkAttachmentDefinitionList;
+import io.fabric8.openshift.api.model.miscellaneous.helm.v1beta1.HelmChartRepository;
+import io.fabric8.openshift.api.model.miscellaneous.helm.v1beta1.HelmChartRepositoryList;
+import io.fabric8.openshift.api.model.miscellaneous.helm.v1beta1.ProjectHelmChartRepository;
+import io.fabric8.openshift.api.model.miscellaneous.helm.v1beta1.ProjectHelmChartRepositoryList;
 import io.fabric8.openshift.api.model.miscellaneous.metal3.v1alpha1.BareMetalHost;
 import io.fabric8.openshift.api.model.miscellaneous.metal3.v1alpha1.BareMetalHostList;
 import io.fabric8.openshift.api.model.miscellaneous.metal3.v1beta1.Metal3Remediation;
 import io.fabric8.openshift.api.model.miscellaneous.metal3.v1beta1.Metal3RemediationList;
 import io.fabric8.openshift.api.model.miscellaneous.metal3.v1beta1.Metal3RemediationTemplate;
 import io.fabric8.openshift.api.model.miscellaneous.metal3.v1beta1.Metal3RemediationTemplateList;
-import io.fabric8.openshift.api.model.miscellaneous.network.operator.v1.EgressRouter;
-import io.fabric8.openshift.api.model.miscellaneous.network.operator.v1.EgressRouterList;
-import io.fabric8.openshift.api.model.miscellaneous.network.operator.v1.OperatorPKI;
-import io.fabric8.openshift.api.model.miscellaneous.network.operator.v1.OperatorPKIList;
+import io.fabric8.openshift.api.model.operator.network.v1.EgressRouter;
+import io.fabric8.openshift.api.model.operator.network.v1.EgressRouterList;
+import io.fabric8.openshift.api.model.operator.network.v1.OperatorPKI;
+import io.fabric8.openshift.api.model.operator.network.v1.OperatorPKIList;
 import io.fabric8.openshift.client.dsl.BuildConfigResource;
 import io.fabric8.openshift.client.dsl.BuildResource;
 import io.fabric8.openshift.client.dsl.DeployableScalableResource;
@@ -269,34 +261,6 @@ public interface OpenShiftClient extends KubernetesClient, SupportTestingClient 
    * @return {@link OpenShiftMonitoringAPIGroupDSL} which contains respective resources in this API group
    */
   OpenShiftMonitoringAPIGroupDSL monitoring();
-
-  /**
-   * API entrypoint for handling NetNamespace(network.openshift.io/v1)
-   *
-   * @return NonNamespaceOperation instance for NetNamespace object
-   */
-  NonNamespaceOperation<NetNamespace, NetNamespaceList, Resource<NetNamespace>> netNamespaces();
-
-  /**
-   * API entrypoint for handling ClusterNetwork(network.openshift.io/v1)
-   *
-   * @return NonNamespaceOperation instance for ClusterNetwork object
-   */
-  NonNamespaceOperation<ClusterNetwork, ClusterNetworkList, Resource<ClusterNetwork>> clusterNetworks();
-
-  /**
-   * API entrypoint for handling EgressNetworkPolicy(network.openshift.io/v1)
-   *
-   * @return MixedOperation instance for EgressNetworkPolicy object
-   */
-  MixedOperation<EgressNetworkPolicy, EgressNetworkPolicyList, Resource<EgressNetworkPolicy>> egressNetworkPolicies();
-
-  /**
-   * API entrypoint for HostSubnet (network.openshift.io/v1)
-   *
-   * @return {@link NonNamespaceOperation} for HostSubnet
-   */
-  NonNamespaceOperation<HostSubnet, HostSubnetList, Resource<HostSubnet>> hostSubnets();
 
   /**
    * {@inheritDoc}
@@ -445,7 +409,7 @@ public interface OpenShiftClient extends KubernetesClient, SupportTestingClient 
    *
    * @return {@link NonNamespaceOperation} for Config
    */
-  NonNamespaceOperation<io.fabric8.openshift.api.model.miscellaneous.imageregistry.operator.v1.Config, io.fabric8.openshift.api.model.miscellaneous.imageregistry.operator.v1.ConfigList, Resource<io.fabric8.openshift.api.model.miscellaneous.imageregistry.operator.v1.Config>> imageRegistryOperatorConfigs();
+  NonNamespaceOperation<io.fabric8.openshift.api.model.operator.imageregistry.v1.Config, io.fabric8.openshift.api.model.operator.imageregistry.v1.ConfigList, Resource<io.fabric8.openshift.api.model.operator.imageregistry.v1.Config>> imageRegistryOperatorConfigs();
 
   /**
    * API entrypoint for Metal3Remediation (infrastructure.cluster.x-k8s.io/v1beta1)
@@ -631,7 +595,7 @@ public interface OpenShiftClient extends KubernetesClient, SupportTestingClient 
 
   /**
    * API entrypoint for SubjectAccessReview (authorization.openshift.io/v1)
-   * This only supports create operation. SubjectAccessReviewResponse from server is returned as output
+   * This only supports create operation. SubjectAccessReviewResponse from server is returned as output.
    *
    * @return {@link InOutCreateable} for SubjectAccessReview
    */

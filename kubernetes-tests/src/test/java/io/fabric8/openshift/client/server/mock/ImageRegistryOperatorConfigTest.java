@@ -15,11 +15,10 @@
  */
 package io.fabric8.openshift.client.server.mock;
 
-import io.fabric8.kubernetes.api.model.Duration;
-import io.fabric8.openshift.api.model.miscellaneous.imageregistry.operator.v1.Config;
-import io.fabric8.openshift.api.model.miscellaneous.imageregistry.operator.v1.ConfigBuilder;
-import io.fabric8.openshift.api.model.miscellaneous.imageregistry.operator.v1.ConfigList;
-import io.fabric8.openshift.api.model.miscellaneous.imageregistry.operator.v1.ConfigListBuilder;
+import io.fabric8.openshift.api.model.operator.imageregistry.v1.Config;
+import io.fabric8.openshift.api.model.operator.imageregistry.v1.ConfigBuilder;
+import io.fabric8.openshift.api.model.operator.imageregistry.v1.ConfigList;
+import io.fabric8.openshift.api.model.operator.imageregistry.v1.ConfigListBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
 import org.junit.jupiter.api.Test;
 
@@ -94,10 +93,10 @@ class ImageRegistryOperatorConfigTest {
         .withReplicas(1)
         .withNewRequests()
         .withNewRead()
-        .withMaxWaitInQueue(Duration.parse("0s"))
+        .withMaxWaitInQueue("0s")
         .endRead()
         .withNewWrite()
-        .withMaxWaitInQueue(Duration.parse("0s"))
+        .withMaxWaitInQueue("0s")
         .endWrite()
         .endRequests()
         .withRolloutStrategy("RollingUpdate")

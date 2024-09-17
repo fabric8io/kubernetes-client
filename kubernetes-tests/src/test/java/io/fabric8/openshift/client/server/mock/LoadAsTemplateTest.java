@@ -21,6 +21,7 @@ import io.fabric8.kubernetes.api.model.EnvVarBuilder;
 import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
 import io.fabric8.kubernetes.api.model.Pod;
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.openshift.client.DefaultOpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftClient;
@@ -45,7 +46,9 @@ class LoadAsTemplateTest {
 
   @BeforeEach
   public void setUp() {
-    client = createOpenShiftClientWithNoServer();
+
+    client = new KubernetesClientBuilder().withConfig(new OpenShiftConfigBuilder().withDisableApiGroupCheck(true).build())
+        .build().adapt(OpenShiftClient.class);
   }
 
   @AfterEach
@@ -118,7 +121,7 @@ class LoadAsTemplateTest {
   }
 
   private static DefaultOpenShiftClient createOpenShiftClientWithNoServer() {
-    return new DefaultOpenShiftClient(new OpenShiftConfigBuilder().withDisableApiGroupCheck(true).build());
+    return new DefaultOpenShiftClient();
   }
 
   //Check that the processed template is as expected

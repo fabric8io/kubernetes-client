@@ -108,6 +108,8 @@ public class SchemaUtils {
         "io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaPropsOrStringArraySerDe.Deserializer.class");
     JAVA_CLASS_DESERIALIZER_MAP.put("io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaPropsOrStringArray",
         "io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaPropsOrStringArraySerDe.Deserializer.class");
+    JAVA_CLASS_DESERIALIZER_MAP.put("io.fabric8.openshift.api.model.Template",
+        "io.fabric8.openshift.api.model.TemplateDeserializer.class");
   }
 
   private static final Map<String, String> REF_SERIALIZER_MAP = Collections.emptyMap();// new LinkedHashMap<>();

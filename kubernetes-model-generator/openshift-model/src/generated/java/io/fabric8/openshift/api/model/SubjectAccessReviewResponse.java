@@ -22,12 +22,8 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.kubernetes.model.annotation.Group;
-import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import io.sundr.transform.annotations.TemplateTransformation;
-import io.sundr.transform.annotations.TemplateTransformations;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
@@ -59,33 +55,18 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
-@TemplateTransformations({
-    @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true)
-})
-@Version("v1")
-@Group("authorization.openshift.io")
 @Generated("jsonschema2pojo")
 public class SubjectAccessReviewResponse implements Editable<SubjectAccessReviewResponseBuilder> , KubernetesResource
 {
 
     @JsonProperty("allowed")
     private Boolean allowed;
-    /**
-     * 
-     * (Required)
-     * 
-     */
     @JsonProperty("apiVersion")
-    private String apiVersion = "authorization.openshift.io/v1";
+    private String apiVersion;
     @JsonProperty("evaluationError")
     private String evaluationError;
-    /**
-     * 
-     * (Required)
-     * 
-     */
     @JsonProperty("kind")
-    private String kind = "SubjectAccessReviewResponse";
+    private String kind;
     @JsonProperty("namespace")
     private String namespace;
     @JsonProperty("reason")
@@ -120,21 +101,11 @@ public class SubjectAccessReviewResponse implements Editable<SubjectAccessReview
         this.allowed = allowed;
     }
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
         return apiVersion;
     }
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
@@ -150,21 +121,11 @@ public class SubjectAccessReviewResponse implements Editable<SubjectAccessReview
         this.evaluationError = evaluationError;
     }
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
     @JsonProperty("kind")
     public String getKind() {
         return kind;
     }
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;

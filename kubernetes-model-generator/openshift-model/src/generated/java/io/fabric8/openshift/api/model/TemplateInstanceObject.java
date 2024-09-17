@@ -18,6 +18,7 @@ import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
+import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
@@ -45,7 +46,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
+    @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
@@ -54,7 +55,7 @@ public class TemplateInstanceObject implements Editable<TemplateInstanceObjectBu
 {
 
     @JsonProperty("ref")
-    private io.fabric8.kubernetes.api.model.ObjectReference ref;
+    private ObjectReference ref;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -65,18 +66,18 @@ public class TemplateInstanceObject implements Editable<TemplateInstanceObjectBu
     public TemplateInstanceObject() {
     }
 
-    public TemplateInstanceObject(io.fabric8.kubernetes.api.model.ObjectReference ref) {
+    public TemplateInstanceObject(ObjectReference ref) {
         super();
         this.ref = ref;
     }
 
     @JsonProperty("ref")
-    public io.fabric8.kubernetes.api.model.ObjectReference getRef() {
+    public ObjectReference getRef() {
         return ref;
     }
 
     @JsonProperty("ref")
-    public void setRef(io.fabric8.kubernetes.api.model.ObjectReference ref) {
+    public void setRef(ObjectReference ref) {
         this.ref = ref;
     }
 

@@ -35,6 +35,7 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "alternateBackends",
     "host",
+    "httpHeaders",
     "path",
     "port",
     "subdomain",
@@ -68,6 +69,8 @@ public class RouteSpec implements Editable<RouteSpecBuilder> , KubernetesResourc
     private List<RouteTargetReference> alternateBackends = new ArrayList<>();
     @JsonProperty("host")
     private String host;
+    @JsonProperty("httpHeaders")
+    private RouteHTTPHeaders httpHeaders;
     @JsonProperty("path")
     private String path;
     @JsonProperty("port")
@@ -90,10 +93,11 @@ public class RouteSpec implements Editable<RouteSpecBuilder> , KubernetesResourc
     public RouteSpec() {
     }
 
-    public RouteSpec(List<RouteTargetReference> alternateBackends, String host, String path, RoutePort port, String subdomain, TLSConfig tls, RouteTargetReference to, String wildcardPolicy) {
+    public RouteSpec(List<RouteTargetReference> alternateBackends, String host, RouteHTTPHeaders httpHeaders, String path, RoutePort port, String subdomain, TLSConfig tls, RouteTargetReference to, String wildcardPolicy) {
         super();
         this.alternateBackends = alternateBackends;
         this.host = host;
+        this.httpHeaders = httpHeaders;
         this.path = path;
         this.port = port;
         this.subdomain = subdomain;
@@ -121,6 +125,16 @@ public class RouteSpec implements Editable<RouteSpecBuilder> , KubernetesResourc
     @JsonProperty("host")
     public void setHost(String host) {
         this.host = host;
+    }
+
+    @JsonProperty("httpHeaders")
+    public RouteHTTPHeaders getHttpHeaders() {
+        return httpHeaders;
+    }
+
+    @JsonProperty("httpHeaders")
+    public void setHttpHeaders(RouteHTTPHeaders httpHeaders) {
+        this.httpHeaders = httpHeaders;
     }
 
     @JsonProperty("path")

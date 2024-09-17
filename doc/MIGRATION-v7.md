@@ -5,9 +5,11 @@
 - [Apache Felix SCR Annotations removed](#apache-felix-scr-annotations)
 - [Model Changes](#model-changes)
   - [kubernetes-model artifact removed](#kubernetes-model-artifact-removed)
+  - [Moved packages](#model-changes-moved-packages)
   - [Service Catalog removed (operator.openshift.io)](#service-catalog-removed)
+  - [Removed deprecated types for network.openshift.io (OpenShift-SDN-only)](#openshift-network-removed)
 - [Deprecations and Removals](#deprecations-and-removals)
-  - [Service Catalog API removed](#service-catalog) 
+  - [Service Catalog API (extension) removed](#service-catalog-extension) 
 
 
 > [!NOTE]
@@ -37,6 +39,10 @@ The Maven artifact `io.fabric8:kubernetes-model` has been removed from the proje
 This artifact was just an aggregator of _some_ of the Kubernetes model artifacts and had no specific purpose.
 It is no longer published, the `io.fabric8:kubernetes-client-api` or `io.fabric8:kubernetes-openshift-uberjar` artifacts should be used instead.
 
+### Moved packages <a href="#model-changes-moved-packages" id="model-changes-moved-packages"/>
+
+Some of the types and packages have been moved to more suiting modules and package names.
+
 ### Service Catalog removed (operator.openshift.io) <a href="#service-catalog-removed" id="service-catalog-removed"/>
 
 The operator.openshift.io APIs have been deprecated since OpenShift 4.1.
@@ -44,9 +50,28 @@ The model types and DSL entry points for these APIs have been removed from the O
 - [openshift/api: remove the service catalog crds](https://github.com/openshift/api/pull/596)
 - [OpenShift Container Platform 4.1 release notes](https://docs.openshift.com/container-platform/4.1/release_notes/ocp-4-1-release-notes.html#ocp-4-1-service-broker-service-catalog-deprecation)
 
+### Removed deprecated types for network.openshift.io (OpenShift-SDN-only) <a href="#openshift-network-removed" id="openshift-network-removed" />
+
+Some of the types in the `network.openshift.io` API group have been removed.
+From the remaining types some of them have been moved to more appropriate modules.
+- [openshift/api: clean up openshift-sdn references in the API](https://github.com/openshift/api/pull/1981)
+
+The removed types include:
+- ClusterNetwork (`OpenShiftClient.clusterNetworks`)
+- EgressNetworkPolicy (`OpenShiftClient.egressNetworkPolicies`)
+- HostSubnet (`OpenShiftClient.hostSubnets`)
+- NetNamespace (`OpenShiftClient.netNamespaces`)
+
+The moved types include:
+- Config (io.fabric8.openshift.api.model.miscellaneous.imageregistry.operator.v1.Config) (`openshift-model-operator`)
+- EgressRouter (`openshift-model-operator`)
+- HelmChartRepository (`openshift-model-miscellaneous`)
+- OperatorPKI (`openshift-model-operator`)
+- ProjectHelmChartRepository (`openshift-model-miscellaneous`)
+
 ## Deprecations and Removals <a href="#deprecations-and-removals" id="deprecations-and-removals"/>
 
-### Service Catalog API removed <a href="#service-catalog" id="service-catalog"/>
+### Service Catalog API (extension) removed <a href="#service-catalog-extension" id="service-catalog-extension"/>
 
 The Service Catalog API extension has been removed.
 The upstream project has been archived since May 6, 2022.

@@ -19,7 +19,9 @@ import io.fabric8.kubernetes.api.model.EnvVar;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
+import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
+import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
@@ -53,8 +55,8 @@ import lombok.experimental.Accessors;
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.LocalObjectReference.class),
+    @BuildableReference(ObjectReference.class),
+    @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
@@ -67,11 +69,11 @@ public class SourceBuildStrategy implements Editable<SourceBuildStrategyBuilder>
     @JsonProperty("forcePull")
     private Boolean forcePull;
     @JsonProperty("from")
-    private io.fabric8.kubernetes.api.model.ObjectReference from;
+    private ObjectReference from;
     @JsonProperty("incremental")
     private Boolean incremental;
     @JsonProperty("pullSecret")
-    private io.fabric8.kubernetes.api.model.LocalObjectReference pullSecret;
+    private LocalObjectReference pullSecret;
     @JsonProperty("scripts")
     private String scripts;
     @JsonProperty("volumes")
@@ -87,7 +89,7 @@ public class SourceBuildStrategy implements Editable<SourceBuildStrategyBuilder>
     public SourceBuildStrategy() {
     }
 
-    public SourceBuildStrategy(List<EnvVar> env, Boolean forcePull, io.fabric8.kubernetes.api.model.ObjectReference from, Boolean incremental, io.fabric8.kubernetes.api.model.LocalObjectReference pullSecret, String scripts, List<BuildVolume> volumes) {
+    public SourceBuildStrategy(List<EnvVar> env, Boolean forcePull, ObjectReference from, Boolean incremental, LocalObjectReference pullSecret, String scripts, List<BuildVolume> volumes) {
         super();
         this.env = env;
         this.forcePull = forcePull;
@@ -120,12 +122,12 @@ public class SourceBuildStrategy implements Editable<SourceBuildStrategyBuilder>
     }
 
     @JsonProperty("from")
-    public io.fabric8.kubernetes.api.model.ObjectReference getFrom() {
+    public ObjectReference getFrom() {
         return from;
     }
 
     @JsonProperty("from")
-    public void setFrom(io.fabric8.kubernetes.api.model.ObjectReference from) {
+    public void setFrom(ObjectReference from) {
         this.from = from;
     }
 
@@ -140,12 +142,12 @@ public class SourceBuildStrategy implements Editable<SourceBuildStrategyBuilder>
     }
 
     @JsonProperty("pullSecret")
-    public io.fabric8.kubernetes.api.model.LocalObjectReference getPullSecret() {
+    public LocalObjectReference getPullSecret() {
         return pullSecret;
     }
 
     @JsonProperty("pullSecret")
-    public void setPullSecret(io.fabric8.kubernetes.api.model.LocalObjectReference pullSecret) {
+    public void setPullSecret(LocalObjectReference pullSecret) {
         this.pullSecret = pullSecret;
     }
 

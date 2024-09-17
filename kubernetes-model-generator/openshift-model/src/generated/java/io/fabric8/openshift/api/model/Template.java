@@ -15,17 +15,16 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.Namespaced;
+import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.kubernetes.api.model.runtime.RawExtension;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
@@ -54,7 +53,7 @@ import lombok.experimental.Accessors;
     ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
+    @BuildableReference(ObjectMeta.class),
     @BuildableReference(LabelSelector.class),
     @BuildableReference(Container.class),
     @BuildableReference(PodTemplateSpec.class),
@@ -62,9 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
-    @BuildableReference(PersistentVolumeClaim.class),
-    @BuildableReference(GenericKubernetesResource.class),
-    @BuildableReference(RawExtension.class)
+    @BuildableReference(PersistentVolumeClaim.class)
 })
 @TemplateTransformations({
     @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true)
@@ -95,10 +92,11 @@ public class Template implements Editable<TemplateBuilder> , HasMetadata, Namesp
     @JsonProperty("message")
     private String message;
     @JsonProperty("metadata")
-    private io.fabric8.kubernetes.api.model.ObjectMeta metadata;
+    private ObjectMeta metadata;
     @JsonProperty("objects")
+    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializerForList.class)
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<HasMetadata> objects = new ArrayList<>();
+    private List<Object> objects = new ArrayList<>();
     @JsonProperty("parameters")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Parameter> parameters = new ArrayList<>();
@@ -112,7 +110,7 @@ public class Template implements Editable<TemplateBuilder> , HasMetadata, Namesp
     public Template() {
     }
 
-    public Template(String apiVersion, String kind, Map<String, String> labels, String message, io.fabric8.kubernetes.api.model.ObjectMeta metadata, List<HasMetadata> objects, List<Parameter> parameters) {
+    public Template(String apiVersion, String kind, Map<String, String> labels, String message, ObjectMeta metadata, List<Object> objects, List<Parameter> parameters) {
         super();
         this.apiVersion = apiVersion;
         this.kind = kind;
@@ -185,23 +183,24 @@ public class Template implements Editable<TemplateBuilder> , HasMetadata, Namesp
     }
 
     @JsonProperty("metadata")
-    public io.fabric8.kubernetes.api.model.ObjectMeta getMetadata() {
+    public ObjectMeta getMetadata() {
         return metadata;
     }
 
     @JsonProperty("metadata")
-    public void setMetadata(io.fabric8.kubernetes.api.model.ObjectMeta metadata) {
+    public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
     @JsonProperty("objects")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<HasMetadata> getObjects() {
+    public List<Object> getObjects() {
         return objects;
     }
 
     @JsonProperty("objects")
-    public void setObjects(List<HasMetadata> objects) {
+    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializerForList.class)
+    public void setObjects(List<Object> objects) {
         this.objects = objects;
     }
 

@@ -18,7 +18,9 @@ import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
+import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
+import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
@@ -44,10 +46,10 @@ import lombok.experimental.Accessors;
     @BuildableReference(ObjectMeta.class),
     @BuildableReference(LabelSelector.class),
     @BuildableReference(Container.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.PodTemplateSpec.class),
+    @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
+    @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
@@ -56,13 +58,13 @@ public class ServiceAccountPodSecurityPolicyReviewStatus implements Editable<Ser
 {
 
     @JsonProperty("allowedBy")
-    private io.fabric8.kubernetes.api.model.ObjectReference allowedBy;
+    private ObjectReference allowedBy;
     @JsonProperty("name")
     private String name;
     @JsonProperty("reason")
     private String reason;
     @JsonProperty("template")
-    private io.fabric8.kubernetes.api.model.PodTemplateSpec template;
+    private PodTemplateSpec template;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -73,7 +75,7 @@ public class ServiceAccountPodSecurityPolicyReviewStatus implements Editable<Ser
     public ServiceAccountPodSecurityPolicyReviewStatus() {
     }
 
-    public ServiceAccountPodSecurityPolicyReviewStatus(io.fabric8.kubernetes.api.model.ObjectReference allowedBy, String name, String reason, io.fabric8.kubernetes.api.model.PodTemplateSpec template) {
+    public ServiceAccountPodSecurityPolicyReviewStatus(ObjectReference allowedBy, String name, String reason, PodTemplateSpec template) {
         super();
         this.allowedBy = allowedBy;
         this.name = name;
@@ -82,12 +84,12 @@ public class ServiceAccountPodSecurityPolicyReviewStatus implements Editable<Ser
     }
 
     @JsonProperty("allowedBy")
-    public io.fabric8.kubernetes.api.model.ObjectReference getAllowedBy() {
+    public ObjectReference getAllowedBy() {
         return allowedBy;
     }
 
     @JsonProperty("allowedBy")
-    public void setAllowedBy(io.fabric8.kubernetes.api.model.ObjectReference allowedBy) {
+    public void setAllowedBy(ObjectReference allowedBy) {
         this.allowedBy = allowedBy;
     }
 
@@ -112,12 +114,12 @@ public class ServiceAccountPodSecurityPolicyReviewStatus implements Editable<Ser
     }
 
     @JsonProperty("template")
-    public io.fabric8.kubernetes.api.model.PodTemplateSpec getTemplate() {
+    public PodTemplateSpec getTemplate() {
         return template;
     }
 
     @JsonProperty("template")
-    public void setTemplate(io.fabric8.kubernetes.api.model.PodTemplateSpec template) {
+    public void setTemplate(PodTemplateSpec template) {
         this.template = template;
     }
 

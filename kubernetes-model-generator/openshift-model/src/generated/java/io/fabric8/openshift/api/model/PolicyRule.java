@@ -15,7 +15,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
@@ -25,7 +24,6 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.kubernetes.api.model.runtime.RawExtension;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -57,9 +55,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
-    @BuildableReference(PersistentVolumeClaim.class),
-    @BuildableReference(GenericKubernetesResource.class),
-    @BuildableReference(RawExtension.class)
+    @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
 public class PolicyRule implements Editable<PolicyRuleBuilder> , KubernetesResource
@@ -69,7 +65,8 @@ public class PolicyRule implements Editable<PolicyRuleBuilder> , KubernetesResou
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> apiGroups = new ArrayList<>();
     @JsonProperty("attributeRestrictions")
-    private KubernetesResource attributeRestrictions;
+    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
+    private Object attributeRestrictions;
     @JsonProperty("nonResourceURLs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> nonResourceURLs = new ArrayList<>();
@@ -92,7 +89,7 @@ public class PolicyRule implements Editable<PolicyRuleBuilder> , KubernetesResou
     public PolicyRule() {
     }
 
-    public PolicyRule(List<String> apiGroups, KubernetesResource attributeRestrictions, List<String> nonResourceURLs, List<String> resourceNames, List<String> resources, List<String> verbs) {
+    public PolicyRule(List<String> apiGroups, Object attributeRestrictions, List<String> nonResourceURLs, List<String> resourceNames, List<String> resources, List<String> verbs) {
         super();
         this.apiGroups = apiGroups;
         this.attributeRestrictions = attributeRestrictions;
@@ -114,12 +111,13 @@ public class PolicyRule implements Editable<PolicyRuleBuilder> , KubernetesResou
     }
 
     @JsonProperty("attributeRestrictions")
-    public KubernetesResource getAttributeRestrictions() {
+    public Object getAttributeRestrictions() {
         return attributeRestrictions;
     }
 
     @JsonProperty("attributeRestrictions")
-    public void setAttributeRestrictions(KubernetesResource attributeRestrictions) {
+    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
+    public void setAttributeRestrictions(Object attributeRestrictions) {
         this.attributeRestrictions = attributeRestrictions;
     }
 

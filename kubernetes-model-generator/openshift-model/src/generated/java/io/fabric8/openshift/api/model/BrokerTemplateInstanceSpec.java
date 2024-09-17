@@ -20,6 +20,7 @@ import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
+import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
@@ -49,7 +50,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
+    @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
@@ -61,9 +62,9 @@ public class BrokerTemplateInstanceSpec implements Editable<BrokerTemplateInstan
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> bindingIDs = new ArrayList<>();
     @JsonProperty("secret")
-    private io.fabric8.kubernetes.api.model.ObjectReference secret;
+    private ObjectReference secret;
     @JsonProperty("templateInstance")
-    private io.fabric8.kubernetes.api.model.ObjectReference templateInstance;
+    private ObjectReference templateInstance;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -74,7 +75,7 @@ public class BrokerTemplateInstanceSpec implements Editable<BrokerTemplateInstan
     public BrokerTemplateInstanceSpec() {
     }
 
-    public BrokerTemplateInstanceSpec(List<String> bindingIDs, io.fabric8.kubernetes.api.model.ObjectReference secret, io.fabric8.kubernetes.api.model.ObjectReference templateInstance) {
+    public BrokerTemplateInstanceSpec(List<String> bindingIDs, ObjectReference secret, ObjectReference templateInstance) {
         super();
         this.bindingIDs = bindingIDs;
         this.secret = secret;
@@ -93,22 +94,22 @@ public class BrokerTemplateInstanceSpec implements Editable<BrokerTemplateInstan
     }
 
     @JsonProperty("secret")
-    public io.fabric8.kubernetes.api.model.ObjectReference getSecret() {
+    public ObjectReference getSecret() {
         return secret;
     }
 
     @JsonProperty("secret")
-    public void setSecret(io.fabric8.kubernetes.api.model.ObjectReference secret) {
+    public void setSecret(ObjectReference secret) {
         this.secret = secret;
     }
 
     @JsonProperty("templateInstance")
-    public io.fabric8.kubernetes.api.model.ObjectReference getTemplateInstance() {
+    public ObjectReference getTemplateInstance() {
         return templateInstance;
     }
 
     @JsonProperty("templateInstance")
-    public void setTemplateInstance(io.fabric8.kubernetes.api.model.ObjectReference templateInstance) {
+    public void setTemplateInstance(ObjectReference templateInstance) {
         this.templateInstance = templateInstance;
     }
 

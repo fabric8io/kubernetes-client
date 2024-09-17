@@ -16,6 +16,7 @@ import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
+import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
@@ -47,7 +48,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.LocalObjectReference.class),
+    @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
@@ -55,7 +56,7 @@ public class ConfigMapBuildSource implements Editable<ConfigMapBuildSourceBuilde
 {
 
     @JsonProperty("configMap")
-    private io.fabric8.kubernetes.api.model.LocalObjectReference configMap;
+    private LocalObjectReference configMap;
     @JsonProperty("destinationDir")
     private String destinationDir;
     @JsonIgnore
@@ -68,19 +69,19 @@ public class ConfigMapBuildSource implements Editable<ConfigMapBuildSourceBuilde
     public ConfigMapBuildSource() {
     }
 
-    public ConfigMapBuildSource(io.fabric8.kubernetes.api.model.LocalObjectReference configMap, String destinationDir) {
+    public ConfigMapBuildSource(LocalObjectReference configMap, String destinationDir) {
         super();
         this.configMap = configMap;
         this.destinationDir = destinationDir;
     }
 
     @JsonProperty("configMap")
-    public io.fabric8.kubernetes.api.model.LocalObjectReference getConfigMap() {
+    public LocalObjectReference getConfigMap() {
         return configMap;
     }
 
     @JsonProperty("configMap")
-    public void setConfigMap(io.fabric8.kubernetes.api.model.LocalObjectReference configMap) {
+    public void setConfigMap(LocalObjectReference configMap) {
         this.configMap = configMap;
     }
 

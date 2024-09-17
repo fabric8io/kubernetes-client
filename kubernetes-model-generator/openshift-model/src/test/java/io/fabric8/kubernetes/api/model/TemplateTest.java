@@ -38,7 +38,7 @@ class TemplateTest {
         .addToObjects(new ProjectBuilder().build())
         .build();
     // When
-    final List<HasMetadata> result = template.getObjects();
+    final List<Object> result = template.getObjects();
     // Then
     assertThat(result)
         .extracting("class")

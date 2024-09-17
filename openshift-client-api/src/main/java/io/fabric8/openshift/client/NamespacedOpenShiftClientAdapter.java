@@ -36,22 +36,14 @@ import io.fabric8.openshift.api.model.Build;
 import io.fabric8.openshift.api.model.BuildConfig;
 import io.fabric8.openshift.api.model.BuildConfigList;
 import io.fabric8.openshift.api.model.BuildList;
-import io.fabric8.openshift.api.model.ClusterNetwork;
-import io.fabric8.openshift.api.model.ClusterNetworkList;
 import io.fabric8.openshift.api.model.ClusterRole;
 import io.fabric8.openshift.api.model.ClusterRoleBinding;
 import io.fabric8.openshift.api.model.ClusterRoleBindingList;
 import io.fabric8.openshift.api.model.ClusterRoleList;
 import io.fabric8.openshift.api.model.DeploymentConfig;
 import io.fabric8.openshift.api.model.DeploymentConfigList;
-import io.fabric8.openshift.api.model.EgressNetworkPolicy;
-import io.fabric8.openshift.api.model.EgressNetworkPolicyList;
 import io.fabric8.openshift.api.model.Group;
 import io.fabric8.openshift.api.model.GroupList;
-import io.fabric8.openshift.api.model.HelmChartRepository;
-import io.fabric8.openshift.api.model.HelmChartRepositoryList;
-import io.fabric8.openshift.api.model.HostSubnet;
-import io.fabric8.openshift.api.model.HostSubnetList;
 import io.fabric8.openshift.api.model.Identity;
 import io.fabric8.openshift.api.model.IdentityList;
 import io.fabric8.openshift.api.model.Image;
@@ -67,8 +59,6 @@ import io.fabric8.openshift.api.model.ImageTag;
 import io.fabric8.openshift.api.model.ImageTagList;
 import io.fabric8.openshift.api.model.LocalResourceAccessReview;
 import io.fabric8.openshift.api.model.LocalSubjectAccessReview;
-import io.fabric8.openshift.api.model.NetNamespace;
-import io.fabric8.openshift.api.model.NetNamespaceList;
 import io.fabric8.openshift.api.model.OAuthAccessToken;
 import io.fabric8.openshift.api.model.OAuthAccessTokenList;
 import io.fabric8.openshift.api.model.OAuthAuthorizeToken;
@@ -80,8 +70,6 @@ import io.fabric8.openshift.api.model.OAuthClientList;
 import io.fabric8.openshift.api.model.PodSecurityPolicyReview;
 import io.fabric8.openshift.api.model.PodSecurityPolicySelfSubjectReview;
 import io.fabric8.openshift.api.model.PodSecurityPolicySubjectReview;
-import io.fabric8.openshift.api.model.ProjectHelmChartRepository;
-import io.fabric8.openshift.api.model.ProjectHelmChartRepositoryList;
 import io.fabric8.openshift.api.model.RangeAllocation;
 import io.fabric8.openshift.api.model.RangeAllocationList;
 import io.fabric8.openshift.api.model.ResourceAccessReview;
@@ -115,17 +103,20 @@ import io.fabric8.openshift.api.model.miscellaneous.cloudcredential.v1.Credentia
 import io.fabric8.openshift.api.model.miscellaneous.cloudcredential.v1.CredentialsRequestList;
 import io.fabric8.openshift.api.model.miscellaneous.cncf.cni.v1.NetworkAttachmentDefinition;
 import io.fabric8.openshift.api.model.miscellaneous.cncf.cni.v1.NetworkAttachmentDefinitionList;
-import io.fabric8.openshift.api.model.miscellaneous.imageregistry.operator.v1.ConfigList;
+import io.fabric8.openshift.api.model.miscellaneous.helm.v1beta1.HelmChartRepository;
+import io.fabric8.openshift.api.model.miscellaneous.helm.v1beta1.HelmChartRepositoryList;
+import io.fabric8.openshift.api.model.miscellaneous.helm.v1beta1.ProjectHelmChartRepository;
+import io.fabric8.openshift.api.model.miscellaneous.helm.v1beta1.ProjectHelmChartRepositoryList;
 import io.fabric8.openshift.api.model.miscellaneous.metal3.v1alpha1.BareMetalHost;
 import io.fabric8.openshift.api.model.miscellaneous.metal3.v1alpha1.BareMetalHostList;
 import io.fabric8.openshift.api.model.miscellaneous.metal3.v1beta1.Metal3Remediation;
 import io.fabric8.openshift.api.model.miscellaneous.metal3.v1beta1.Metal3RemediationList;
 import io.fabric8.openshift.api.model.miscellaneous.metal3.v1beta1.Metal3RemediationTemplate;
 import io.fabric8.openshift.api.model.miscellaneous.metal3.v1beta1.Metal3RemediationTemplateList;
-import io.fabric8.openshift.api.model.miscellaneous.network.operator.v1.EgressRouter;
-import io.fabric8.openshift.api.model.miscellaneous.network.operator.v1.EgressRouterList;
-import io.fabric8.openshift.api.model.miscellaneous.network.operator.v1.OperatorPKI;
-import io.fabric8.openshift.api.model.miscellaneous.network.operator.v1.OperatorPKIList;
+import io.fabric8.openshift.api.model.operator.network.v1.EgressRouter;
+import io.fabric8.openshift.api.model.operator.network.v1.EgressRouterList;
+import io.fabric8.openshift.api.model.operator.network.v1.OperatorPKI;
+import io.fabric8.openshift.api.model.operator.network.v1.OperatorPKIList;
 import io.fabric8.openshift.client.dsl.BuildConfigResource;
 import io.fabric8.openshift.client.dsl.BuildResource;
 import io.fabric8.openshift.client.dsl.DeployableScalableResource;
@@ -267,7 +258,7 @@ public class NamespacedOpenShiftClientAdapter extends NamespacedKubernetesClient
   }
 
   @Override
-  public NonNamespaceOperation<io.fabric8.openshift.api.model.miscellaneous.imageregistry.operator.v1.Config, ConfigList, Resource<io.fabric8.openshift.api.model.miscellaneous.imageregistry.operator.v1.Config>> imageRegistryOperatorConfigs() {
+  public NonNamespaceOperation<io.fabric8.openshift.api.model.operator.imageregistry.v1.Config, io.fabric8.openshift.api.model.operator.imageregistry.v1.ConfigList, Resource<io.fabric8.openshift.api.model.operator.imageregistry.v1.Config>> imageRegistryOperatorConfigs() {
     return getClient().imageRegistryOperatorConfigs();
   }
 
@@ -424,26 +415,6 @@ public class NamespacedOpenShiftClientAdapter extends NamespacedKubernetesClient
   @Override
   public OpenShiftMonitoringAPIGroupDSL monitoring() {
     return getClient().monitoring();
-  }
-
-  @Override
-  public NonNamespaceOperation<NetNamespace, NetNamespaceList, Resource<NetNamespace>> netNamespaces() {
-    return getClient().netNamespaces();
-  }
-
-  @Override
-  public NonNamespaceOperation<ClusterNetwork, ClusterNetworkList, Resource<ClusterNetwork>> clusterNetworks() {
-    return getClient().clusterNetworks();
-  }
-
-  @Override
-  public MixedOperation<EgressNetworkPolicy, EgressNetworkPolicyList, Resource<EgressNetworkPolicy>> egressNetworkPolicies() {
-    return getClient().egressNetworkPolicies();
-  }
-
-  @Override
-  public NonNamespaceOperation<HostSubnet, HostSubnetList, Resource<HostSubnet>> hostSubnets() {
-    return getClient().hostSubnets();
   }
 
   @Override

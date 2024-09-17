@@ -63,20 +63,20 @@ public class CredentialsRequestStatus implements Editable<CredentialsRequestStat
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<CredentialsRequestCondition> conditions = new ArrayList<>();
+    private List<CredentialsRequestStatusConditions> conditions = new ArrayList<>();
     @JsonProperty("lastSyncCloudCredsSecretResourceVersion")
-    private java.lang.String lastSyncCloudCredsSecretResourceVersion;
+    private String lastSyncCloudCredsSecretResourceVersion;
     @JsonProperty("lastSyncGeneration")
     private Long lastSyncGeneration;
     @JsonProperty("lastSyncTimestamp")
-    private java.lang.String lastSyncTimestamp;
+    private String lastSyncTimestamp;
     @JsonProperty("providerStatus")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Object> providerStatus = new LinkedHashMap<>();
+    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
+    private Object providerStatus;
     @JsonProperty("provisioned")
     private Boolean provisioned;
     @JsonIgnore
-    private Map<java.lang.String, java.lang.Object> additionalProperties = new LinkedHashMap<java.lang.String, java.lang.Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -85,7 +85,7 @@ public class CredentialsRequestStatus implements Editable<CredentialsRequestStat
     public CredentialsRequestStatus() {
     }
 
-    public CredentialsRequestStatus(List<CredentialsRequestCondition> conditions, java.lang.String lastSyncCloudCredsSecretResourceVersion, Long lastSyncGeneration, java.lang.String lastSyncTimestamp, Map<String, Object> providerStatus, Boolean provisioned) {
+    public CredentialsRequestStatus(List<CredentialsRequestStatusConditions> conditions, String lastSyncCloudCredsSecretResourceVersion, Long lastSyncGeneration, String lastSyncTimestamp, Object providerStatus, Boolean provisioned) {
         super();
         this.conditions = conditions;
         this.lastSyncCloudCredsSecretResourceVersion = lastSyncCloudCredsSecretResourceVersion;
@@ -97,22 +97,22 @@ public class CredentialsRequestStatus implements Editable<CredentialsRequestStat
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<CredentialsRequestCondition> getConditions() {
+    public List<CredentialsRequestStatusConditions> getConditions() {
         return conditions;
     }
 
     @JsonProperty("conditions")
-    public void setConditions(List<CredentialsRequestCondition> conditions) {
+    public void setConditions(List<CredentialsRequestStatusConditions> conditions) {
         this.conditions = conditions;
     }
 
     @JsonProperty("lastSyncCloudCredsSecretResourceVersion")
-    public java.lang.String getLastSyncCloudCredsSecretResourceVersion() {
+    public String getLastSyncCloudCredsSecretResourceVersion() {
         return lastSyncCloudCredsSecretResourceVersion;
     }
 
     @JsonProperty("lastSyncCloudCredsSecretResourceVersion")
-    public void setLastSyncCloudCredsSecretResourceVersion(java.lang.String lastSyncCloudCredsSecretResourceVersion) {
+    public void setLastSyncCloudCredsSecretResourceVersion(String lastSyncCloudCredsSecretResourceVersion) {
         this.lastSyncCloudCredsSecretResourceVersion = lastSyncCloudCredsSecretResourceVersion;
     }
 
@@ -127,23 +127,23 @@ public class CredentialsRequestStatus implements Editable<CredentialsRequestStat
     }
 
     @JsonProperty("lastSyncTimestamp")
-    public java.lang.String getLastSyncTimestamp() {
+    public String getLastSyncTimestamp() {
         return lastSyncTimestamp;
     }
 
     @JsonProperty("lastSyncTimestamp")
-    public void setLastSyncTimestamp(java.lang.String lastSyncTimestamp) {
+    public void setLastSyncTimestamp(String lastSyncTimestamp) {
         this.lastSyncTimestamp = lastSyncTimestamp;
     }
 
     @JsonProperty("providerStatus")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public Map<String, Object> getProviderStatus() {
+    public Object getProviderStatus() {
         return providerStatus;
     }
 
     @JsonProperty("providerStatus")
-    public void setProviderStatus(Map<String, Object> providerStatus) {
+    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
+    public void setProviderStatus(Object providerStatus) {
         this.providerStatus = providerStatus;
     }
 
@@ -168,16 +168,16 @@ public class CredentialsRequestStatus implements Editable<CredentialsRequestStat
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, java.lang.Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, java.lang.Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
-    public void setAdditionalProperties(Map<java.lang.String, java.lang.Object> additionalProperties) {
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
     }
 

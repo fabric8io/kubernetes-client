@@ -18,6 +18,7 @@ import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
+import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
@@ -50,7 +51,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
+    @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
@@ -59,7 +60,7 @@ public class DeploymentConfigRollbackSpec implements Editable<DeploymentConfigRo
 {
 
     @JsonProperty("from")
-    private io.fabric8.kubernetes.api.model.ObjectReference from;
+    private ObjectReference from;
     @JsonProperty("includeReplicationMeta")
     private Boolean includeReplicationMeta;
     @JsonProperty("includeStrategy")
@@ -80,7 +81,7 @@ public class DeploymentConfigRollbackSpec implements Editable<DeploymentConfigRo
     public DeploymentConfigRollbackSpec() {
     }
 
-    public DeploymentConfigRollbackSpec(io.fabric8.kubernetes.api.model.ObjectReference from, Boolean includeReplicationMeta, Boolean includeStrategy, Boolean includeTemplate, Boolean includeTriggers, Long revision) {
+    public DeploymentConfigRollbackSpec(ObjectReference from, Boolean includeReplicationMeta, Boolean includeStrategy, Boolean includeTemplate, Boolean includeTriggers, Long revision) {
         super();
         this.from = from;
         this.includeReplicationMeta = includeReplicationMeta;
@@ -91,12 +92,12 @@ public class DeploymentConfigRollbackSpec implements Editable<DeploymentConfigRo
     }
 
     @JsonProperty("from")
-    public io.fabric8.kubernetes.api.model.ObjectReference getFrom() {
+    public ObjectReference getFrom() {
         return from;
     }
 
     @JsonProperty("from")
-    public void setFrom(io.fabric8.kubernetes.api.model.ObjectReference from) {
+    public void setFrom(ObjectReference from) {
         this.from = from;
     }
 

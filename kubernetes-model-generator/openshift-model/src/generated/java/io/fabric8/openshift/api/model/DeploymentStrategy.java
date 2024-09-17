@@ -21,6 +21,7 @@ import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
+import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -50,7 +51,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LabelSelector.class),
     @BuildableReference(Container.class),
     @BuildableReference(PodTemplateSpec.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.ResourceRequirements.class),
+    @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
@@ -73,7 +74,7 @@ public class DeploymentStrategy implements Editable<DeploymentStrategyBuilder> ,
     @JsonProperty("recreateParams")
     private RecreateDeploymentStrategyParams recreateParams;
     @JsonProperty("resources")
-    private io.fabric8.kubernetes.api.model.ResourceRequirements resources;
+    private ResourceRequirements resources;
     @JsonProperty("rollingParams")
     private RollingDeploymentStrategyParams rollingParams;
     @JsonProperty("type")
@@ -88,7 +89,7 @@ public class DeploymentStrategy implements Editable<DeploymentStrategyBuilder> ,
     public DeploymentStrategy() {
     }
 
-    public DeploymentStrategy(Long activeDeadlineSeconds, Map<String, String> annotations, CustomDeploymentStrategyParams customParams, Map<String, String> labels, RecreateDeploymentStrategyParams recreateParams, io.fabric8.kubernetes.api.model.ResourceRequirements resources, RollingDeploymentStrategyParams rollingParams, String type) {
+    public DeploymentStrategy(Long activeDeadlineSeconds, Map<String, String> annotations, CustomDeploymentStrategyParams customParams, Map<String, String> labels, RecreateDeploymentStrategyParams recreateParams, ResourceRequirements resources, RollingDeploymentStrategyParams rollingParams, String type) {
         super();
         this.activeDeadlineSeconds = activeDeadlineSeconds;
         this.annotations = annotations;
@@ -153,12 +154,12 @@ public class DeploymentStrategy implements Editable<DeploymentStrategyBuilder> ,
     }
 
     @JsonProperty("resources")
-    public io.fabric8.kubernetes.api.model.ResourceRequirements getResources() {
+    public ResourceRequirements getResources() {
         return resources;
     }
 
     @JsonProperty("resources")
-    public void setResources(io.fabric8.kubernetes.api.model.ResourceRequirements resources) {
+    public void setResources(ResourceRequirements resources) {
         this.resources = resources;
     }
 

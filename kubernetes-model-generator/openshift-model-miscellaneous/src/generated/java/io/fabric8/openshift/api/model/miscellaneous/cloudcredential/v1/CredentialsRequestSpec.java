@@ -20,6 +20,7 @@ import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
+import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
@@ -50,7 +51,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
+    @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
@@ -59,17 +60,17 @@ public class CredentialsRequestSpec implements Editable<CredentialsRequestSpecBu
 {
 
     @JsonProperty("cloudTokenPath")
-    private java.lang.String cloudTokenPath;
+    private String cloudTokenPath;
     @JsonProperty("providerSpec")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Object> providerSpec = new LinkedHashMap<>();
+    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
+    private Object providerSpec;
     @JsonProperty("secretRef")
-    private io.fabric8.kubernetes.api.model.ObjectReference secretRef;
+    private CredentialsRequestSpecSecretRef secretRef;
     @JsonProperty("serviceAccountNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> serviceAccountNames = new ArrayList<>();
+    private List<String> serviceAccountNames = new ArrayList<>();
     @JsonIgnore
-    private Map<java.lang.String, java.lang.Object> additionalProperties = new LinkedHashMap<java.lang.String, java.lang.Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -78,7 +79,7 @@ public class CredentialsRequestSpec implements Editable<CredentialsRequestSpecBu
     public CredentialsRequestSpec() {
     }
 
-    public CredentialsRequestSpec(java.lang.String cloudTokenPath, Map<String, Object> providerSpec, io.fabric8.kubernetes.api.model.ObjectReference secretRef, List<java.lang.String> serviceAccountNames) {
+    public CredentialsRequestSpec(String cloudTokenPath, Object providerSpec, CredentialsRequestSpecSecretRef secretRef, List<String> serviceAccountNames) {
         super();
         this.cloudTokenPath = cloudTokenPath;
         this.providerSpec = providerSpec;
@@ -87,44 +88,44 @@ public class CredentialsRequestSpec implements Editable<CredentialsRequestSpecBu
     }
 
     @JsonProperty("cloudTokenPath")
-    public java.lang.String getCloudTokenPath() {
+    public String getCloudTokenPath() {
         return cloudTokenPath;
     }
 
     @JsonProperty("cloudTokenPath")
-    public void setCloudTokenPath(java.lang.String cloudTokenPath) {
+    public void setCloudTokenPath(String cloudTokenPath) {
         this.cloudTokenPath = cloudTokenPath;
     }
 
     @JsonProperty("providerSpec")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public Map<String, Object> getProviderSpec() {
+    public Object getProviderSpec() {
         return providerSpec;
     }
 
     @JsonProperty("providerSpec")
-    public void setProviderSpec(Map<String, Object> providerSpec) {
+    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
+    public void setProviderSpec(Object providerSpec) {
         this.providerSpec = providerSpec;
     }
 
     @JsonProperty("secretRef")
-    public io.fabric8.kubernetes.api.model.ObjectReference getSecretRef() {
+    public CredentialsRequestSpecSecretRef getSecretRef() {
         return secretRef;
     }
 
     @JsonProperty("secretRef")
-    public void setSecretRef(io.fabric8.kubernetes.api.model.ObjectReference secretRef) {
+    public void setSecretRef(CredentialsRequestSpecSecretRef secretRef) {
         this.secretRef = secretRef;
     }
 
     @JsonProperty("serviceAccountNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<java.lang.String> getServiceAccountNames() {
+    public List<String> getServiceAccountNames() {
         return serviceAccountNames;
     }
 
     @JsonProperty("serviceAccountNames")
-    public void setServiceAccountNames(List<java.lang.String> serviceAccountNames) {
+    public void setServiceAccountNames(List<String> serviceAccountNames) {
         this.serviceAccountNames = serviceAccountNames;
     }
 
@@ -139,16 +140,16 @@ public class CredentialsRequestSpec implements Editable<CredentialsRequestSpecBu
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, java.lang.Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, java.lang.Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
-    public void setAdditionalProperties(Map<java.lang.String, java.lang.Object> additionalProperties) {
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
     }
 

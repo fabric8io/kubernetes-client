@@ -19,6 +19,7 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
+import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
@@ -55,7 +56,7 @@ import lombok.experimental.Accessors;
     ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
+    @BuildableReference(ObjectMeta.class),
     @BuildableReference(LabelSelector.class),
     @BuildableReference(Container.class),
     @BuildableReference(PodTemplateSpec.class),
@@ -102,7 +103,7 @@ public class ImageSignature implements Editable<ImageSignatureBuilder> , HasMeta
     @JsonProperty("kind")
     private String kind = "ImageSignature";
     @JsonProperty("metadata")
-    private io.fabric8.kubernetes.api.model.ObjectMeta metadata;
+    private ObjectMeta metadata;
     @JsonProperty("signedClaims")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> signedClaims = new LinkedHashMap<>();
@@ -118,7 +119,7 @@ public class ImageSignature implements Editable<ImageSignatureBuilder> , HasMeta
     public ImageSignature() {
     }
 
-    public ImageSignature(String apiVersion, List<SignatureCondition> conditions, String content, String created, String imageIdentity, SignatureIssuer issuedBy, SignatureSubject issuedTo, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, Map<String, String> signedClaims, String type) {
+    public ImageSignature(String apiVersion, List<SignatureCondition> conditions, String content, String created, String imageIdentity, SignatureIssuer issuedBy, SignatureSubject issuedTo, String kind, ObjectMeta metadata, Map<String, String> signedClaims, String type) {
         super();
         this.apiVersion = apiVersion;
         this.conditions = conditions;
@@ -235,12 +236,12 @@ public class ImageSignature implements Editable<ImageSignatureBuilder> , HasMeta
     }
 
     @JsonProperty("metadata")
-    public io.fabric8.kubernetes.api.model.ObjectMeta getMetadata() {
+    public ObjectMeta getMetadata() {
         return metadata;
     }
 
     @JsonProperty("metadata")
-    public void setMetadata(io.fabric8.kubernetes.api.model.ObjectMeta metadata) {
+    public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 

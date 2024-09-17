@@ -15,7 +15,6 @@
  */
 package io.fabric8.openshift.client.server.mock;
 
-import io.fabric8.kubernetes.api.model.Duration;
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.openshift.api.model.miscellaneous.metal3.v1beta1.Metal3RemediationTemplate;
@@ -117,7 +116,7 @@ class Metal3RemediationTemplateTest {
         .withNewTemplate()
         .withNewSpec()
         .withNewStrategy()
-        .withTimeout(Duration.parse("5s"))
+        .withTimeout("5s")
         .withRetryLimit(5)
         .withType("Done")
         .endStrategy()

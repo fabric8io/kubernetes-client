@@ -19,6 +19,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
+import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
@@ -117,9 +118,13 @@ public class TemplateOperationsImpl
           .post(JSON, getKubernetesSerialization().asJson(t))
           .url(getProcessUrl());
       t = handleResponse(requestBuilder);
-      KubernetesList l = new KubernetesList();
-      l.setItems(t.getObjects());
-      return l;
+      final KubernetesListBuilder klb = new KubernetesListBuilder();
+      for (Object object : t.getObjects()) {
+        if (object instanceof HasMetadata) {
+          klb.addToItems((HasMetadata) object);
+        }
+      }
+      return klb.build();
     } catch (Exception e) {
       throw KubernetesClientException.launderThrowable(forOperationType("process"), e);
     }
@@ -166,14 +171,19 @@ public class TemplateOperationsImpl
   public KubernetesList processLocally(Map<String, String> valuesMap) {
     Template t = processParameters(getItemOrRequireFromServer());
 
+    final KubernetesListBuilder klb = new KubernetesListBuilder();
+    for (Object object : t.getObjects()) {
+      if (object instanceof HasMetadata) {
+        klb.addToItems((HasMetadata) object);
+      } else if (object instanceof KubernetesResourceList) {
+        for (HasMetadata listItem : ((KubernetesResourceList<HasMetadata>) object).getItems()) {
+          klb.addToItems(listItem);
+        }
+      }
+    }
+    String json = getKubernetesSerialization().asJson(klb.build());
     List<Parameter> parameters = t.getParameters();
-    KubernetesList list = new KubernetesListBuilder()
-        .withItems(t.getObjects())
-        .build();
-
-    String json = getKubernetesSerialization().asJson(list);
     String last = null;
-
     if (parameters != null && !parameters.isEmpty()) {
       while (!Objects.equals(last, json)) {
         last = json;

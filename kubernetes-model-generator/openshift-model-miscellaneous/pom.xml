@@ -44,40 +44,11 @@
       <artifactId>kubernetes-model-core</artifactId>
     </dependency>
     <dependency>
-      <groupId>io.fabric8</groupId>
-      <artifactId>kubernetes-model-common</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.fabric8</groupId>
-      <artifactId>openshift-model</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.fabric8</groupId>
-      <artifactId>openshift-model-operator</artifactId>
-    </dependency>
-    <dependency>
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>
-
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>build-helper-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>attach-artifacts</id>
-            <configuration>
-              <skipAttach>false</skipAttach>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
 
   <profiles>
     <profile>
@@ -85,8 +56,31 @@
       <build>
         <plugins>
           <plugin>
-            <groupId>org.jsonschema2pojo</groupId>
-            <artifactId>jsonschema2pojo-maven-plugin</artifactId>
+            <groupId>io.fabric8</groupId>
+            <artifactId>openapi-model-generator-maven-plugin</artifactId>
+            <configuration >
+              <settings combine.self="append">
+                <schemas>
+                  <schema>${openapi.schema.openshift-latest}</schema>
+                </schemas>
+                <packageMappings combine.self="append">
+                  <io.k8s.api>io.fabric8.kubernetes.api.model</io.k8s.api>
+                  <io.openshift>io.fabric8.openshift.api.model.miscellaneous</io.openshift>
+                  <io.cncf.cni.k8s>io.fabric8.openshift.api.model.miscellaneous.cncf.cni</io.cncf.cni.k8s>
+                  <io.metal3>io.fabric8.openshift.api.model.miscellaneous.metal3</io.metal3>
+                  <io.x-k8s.cluster.infrastructure.v1beta1>io.fabric8.openshift.api.model.miscellaneous.metal3.v1beta1</io.x-k8s.cluster.infrastructure.v1beta1>
+                </packageMappings>
+                <includeGenerationRegexes>
+                  <includeGenerationRegex>^io\.cncf\.cni\.k8s\..*$</includeGenerationRegex>
+                  <includeGenerationRegex>^io\.x\-k8s\.cluster\.infrastructure\.v1beta1\..*$</includeGenerationRegex>
+                  <includeGenerationRegex>^io\.metal3\..*$</includeGenerationRegex>
+                  <includeGenerationRegex>^io\.openshift\.apiserver\..*$</includeGenerationRegex>
+                  <includeGenerationRegex>^io\.openshift\.cloudcredential\..*$</includeGenerationRegex>
+                  <includeGenerationRegex>^io\.openshift\.helm\..*$</includeGenerationRegex>
+                  <includeGenerationRegex>^io\.openshift\.network\..*$</includeGenerationRegex>
+                </includeGenerationRegexes>
+              </settings>
+            </configuration>
           </plugin>
         </plugins>
       </build>

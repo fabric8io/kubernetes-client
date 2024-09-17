@@ -20,6 +20,8 @@ import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.Namespaced;
+import io.fabric8.kubernetes.api.model.ObjectMeta;
+import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
@@ -51,13 +53,13 @@ import lombok.experimental.Accessors;
     ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
+    @BuildableReference(ObjectMeta.class),
     @BuildableReference(LabelSelector.class),
     @BuildableReference(Container.class),
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
+    @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
@@ -88,12 +90,12 @@ public class RoleBinding implements Editable<RoleBindingBuilder> , HasMetadata, 
     @JsonProperty("kind")
     private String kind = "RoleBinding";
     @JsonProperty("metadata")
-    private io.fabric8.kubernetes.api.model.ObjectMeta metadata;
+    private ObjectMeta metadata;
     @JsonProperty("roleRef")
-    private io.fabric8.kubernetes.api.model.ObjectReference roleRef;
+    private ObjectReference roleRef;
     @JsonProperty("subjects")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.ObjectReference> subjects = new ArrayList<>();
+    private List<ObjectReference> subjects = new ArrayList<>();
     @JsonProperty("userNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> userNames = new ArrayList<>();
@@ -107,7 +109,7 @@ public class RoleBinding implements Editable<RoleBindingBuilder> , HasMetadata, 
     public RoleBinding() {
     }
 
-    public RoleBinding(String apiVersion, List<String> groupNames, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, io.fabric8.kubernetes.api.model.ObjectReference roleRef, List<io.fabric8.kubernetes.api.model.ObjectReference> subjects, List<String> userNames) {
+    public RoleBinding(String apiVersion, List<String> groupNames, String kind, ObjectMeta metadata, ObjectReference roleRef, List<ObjectReference> subjects, List<String> userNames) {
         super();
         this.apiVersion = apiVersion;
         this.groupNames = groupNames;
@@ -170,33 +172,33 @@ public class RoleBinding implements Editable<RoleBindingBuilder> , HasMetadata, 
     }
 
     @JsonProperty("metadata")
-    public io.fabric8.kubernetes.api.model.ObjectMeta getMetadata() {
+    public ObjectMeta getMetadata() {
         return metadata;
     }
 
     @JsonProperty("metadata")
-    public void setMetadata(io.fabric8.kubernetes.api.model.ObjectMeta metadata) {
+    public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
     @JsonProperty("roleRef")
-    public io.fabric8.kubernetes.api.model.ObjectReference getRoleRef() {
+    public ObjectReference getRoleRef() {
         return roleRef;
     }
 
     @JsonProperty("roleRef")
-    public void setRoleRef(io.fabric8.kubernetes.api.model.ObjectReference roleRef) {
+    public void setRoleRef(ObjectReference roleRef) {
         this.roleRef = roleRef;
     }
 
     @JsonProperty("subjects")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<io.fabric8.kubernetes.api.model.ObjectReference> getSubjects() {
+    public List<ObjectReference> getSubjects() {
         return subjects;
     }
 
     @JsonProperty("subjects")
-    public void setSubjects(List<io.fabric8.kubernetes.api.model.ObjectReference> subjects) {
+    public void setSubjects(List<ObjectReference> subjects) {
         this.subjects = subjects;
     }
 

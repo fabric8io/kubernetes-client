@@ -17,6 +17,7 @@ import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
+import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
@@ -64,7 +65,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("apps.openshift.io")
 @Generated("jsonschema2pojo")
-public class DeploymentConfigRollback implements Editable<DeploymentConfigRollbackBuilder> , KubernetesResource
+public class DeploymentConfigRollback implements Editable<DeploymentConfigRollbackBuilder> , KubernetesResource, Namespaced
 {
 
     /**

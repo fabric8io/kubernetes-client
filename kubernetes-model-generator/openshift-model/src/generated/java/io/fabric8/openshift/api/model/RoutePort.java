@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
+import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
@@ -44,7 +45,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Container.class),
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.IntOrString.class),
+    @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
@@ -54,7 +55,7 @@ public class RoutePort implements Editable<RoutePortBuilder> , KubernetesResourc
 {
 
     @JsonProperty("targetPort")
-    private io.fabric8.kubernetes.api.model.IntOrString targetPort;
+    private IntOrString targetPort;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -65,18 +66,18 @@ public class RoutePort implements Editable<RoutePortBuilder> , KubernetesResourc
     public RoutePort() {
     }
 
-    public RoutePort(io.fabric8.kubernetes.api.model.IntOrString targetPort) {
+    public RoutePort(IntOrString targetPort) {
         super();
         this.targetPort = targetPort;
     }
 
     @JsonProperty("targetPort")
-    public io.fabric8.kubernetes.api.model.IntOrString getTargetPort() {
+    public IntOrString getTargetPort() {
         return targetPort;
     }
 
     @JsonProperty("targetPort")
-    public void setTargetPort(io.fabric8.kubernetes.api.model.IntOrString targetPort) {
+    public void setTargetPort(IntOrString targetPort) {
         this.targetPort = targetPort;
     }
 

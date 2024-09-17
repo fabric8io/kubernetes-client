@@ -15,10 +15,10 @@
  */
 package io.fabric8.openshift.client.server.mock;
 
-import io.fabric8.openshift.api.model.miscellaneous.network.operator.v1.OperatorPKI;
-import io.fabric8.openshift.api.model.miscellaneous.network.operator.v1.OperatorPKIBuilder;
-import io.fabric8.openshift.api.model.miscellaneous.network.operator.v1.OperatorPKIList;
-import io.fabric8.openshift.api.model.miscellaneous.network.operator.v1.OperatorPKIListBuilder;
+import io.fabric8.openshift.api.model.operator.network.v1.OperatorPKI;
+import io.fabric8.openshift.api.model.operator.network.v1.OperatorPKIBuilder;
+import io.fabric8.openshift.api.model.operator.network.v1.OperatorPKIList;
+import io.fabric8.openshift.api.model.operator.network.v1.OperatorPKIListBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
 import org.junit.jupiter.api.Test;
 

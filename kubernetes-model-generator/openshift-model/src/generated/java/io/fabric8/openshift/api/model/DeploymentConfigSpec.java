@@ -22,6 +22,7 @@ import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
+import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
@@ -52,7 +53,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(ObjectMeta.class),
     @BuildableReference(LabelSelector.class),
     @BuildableReference(Container.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.PodTemplateSpec.class),
+    @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
@@ -77,7 +78,7 @@ public class DeploymentConfigSpec implements Editable<DeploymentConfigSpecBuilde
     @JsonProperty("strategy")
     private DeploymentStrategy strategy;
     @JsonProperty("template")
-    private io.fabric8.kubernetes.api.model.PodTemplateSpec template;
+    private PodTemplateSpec template;
     @JsonProperty("test")
     private Boolean test;
     @JsonProperty("triggers")
@@ -93,7 +94,7 @@ public class DeploymentConfigSpec implements Editable<DeploymentConfigSpecBuilde
     public DeploymentConfigSpec() {
     }
 
-    public DeploymentConfigSpec(Integer minReadySeconds, Boolean paused, Integer replicas, Integer revisionHistoryLimit, Map<String, String> selector, DeploymentStrategy strategy, io.fabric8.kubernetes.api.model.PodTemplateSpec template, Boolean test, List<DeploymentTriggerPolicy> triggers) {
+    public DeploymentConfigSpec(Integer minReadySeconds, Boolean paused, Integer replicas, Integer revisionHistoryLimit, Map<String, String> selector, DeploymentStrategy strategy, PodTemplateSpec template, Boolean test, List<DeploymentTriggerPolicy> triggers) {
         super();
         this.minReadySeconds = minReadySeconds;
         this.paused = paused;
@@ -168,12 +169,12 @@ public class DeploymentConfigSpec implements Editable<DeploymentConfigSpecBuilde
     }
 
     @JsonProperty("template")
-    public io.fabric8.kubernetes.api.model.PodTemplateSpec getTemplate() {
+    public PodTemplateSpec getTemplate() {
         return template;
     }
 
     @JsonProperty("template")
-    public void setTemplate(io.fabric8.kubernetes.api.model.PodTemplateSpec template) {
+    public void setTemplate(PodTemplateSpec template) {
         this.template = template;
     }
 

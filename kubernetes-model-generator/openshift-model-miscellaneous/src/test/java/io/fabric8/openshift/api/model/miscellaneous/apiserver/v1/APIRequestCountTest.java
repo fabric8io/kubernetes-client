@@ -16,10 +16,10 @@
 package io.fabric8.openshift.api.model.miscellaneous.apiserver.v1;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.fabric8.kubernetes.model.util.Helper;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.util.Scanner;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -30,9 +30,7 @@ class APIRequestCountTest {
   @Test
   void deserializationAndSerializationShouldWorkAsExpected() throws IOException {
     // Given
-    String originalJson = new Scanner(getClass().getResourceAsStream("/valid-apirequestcount.json"))
-        .useDelimiter("\\A")
-        .next();
+    String originalJson = Helper.loadJson("/valid-apirequestcount.json");
 
     // When
     final APIRequestCount apiRequestCount = mapper.readValue(originalJson, APIRequestCount.class);

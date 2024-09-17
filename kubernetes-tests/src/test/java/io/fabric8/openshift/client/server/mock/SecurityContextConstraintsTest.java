@@ -16,6 +16,7 @@
 package io.fabric8.openshift.client.server.mock;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.client.dsl.NonDeletingOperation;
 import io.fabric8.openshift.api.model.SecurityContextConstraints;
 import io.fabric8.openshift.api.model.SecurityContextConstraintsBuilder;
 import io.fabric8.openshift.api.model.SecurityContextConstraintsList;
@@ -24,12 +25,14 @@ import io.fabric8.openshift.client.OpenShiftClient;
 import org.junit.jupiter.api.Test;
 
 import java.net.HttpURLConnection;
+import java.util.Collections;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @EnableOpenShiftMockClient
 class SecurityContextConstraintsTest {
@@ -53,13 +56,14 @@ class SecurityContextConstraintsTest {
         .once();
 
     // When
-    scc = client.securityContextConstraints().createOrReplace(scc);
+    scc = client.securityContextConstraints().resource(scc).createOr(NonDeletingOperation::update);
 
     // Then
-    assertNotNull(scc);
-    assertEquals("scc1", scc.getMetadata().getName());
-    assertEquals(1, scc.getUsers().size());
-    assertEquals(1, scc.getGroups().size());
+    assertThat(scc)
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "scc1")
+        .hasFieldOrPropertyWithValue("users", Collections.singletonList("admin"))
+        .hasFieldOrPropertyWithValue("groups", Collections.singletonList("admin-group"));
   }
 
   @Test
@@ -75,7 +79,7 @@ class SecurityContextConstraintsTest {
     // Then
     assertNotNull(items);
     assertEquals(1, items.size());
-    assertTrue(items.get(0) instanceof SecurityContextConstraints);
+    assertInstanceOf(SecurityContextConstraints.class, items.get(0));
   }
 
   @Test
@@ -98,13 +102,11 @@ class SecurityContextConstraintsTest {
     server.expect().withPath("/apis/security.openshift.io/v1/securitycontextconstraints/scc2")
         .andReturn(200, new SecurityContextConstraintsBuilder().build()).once();
 
-    boolean deleted = client.securityContextConstraints().withName("scc1").delete().size() == 1;
+    client.securityContextConstraints().withName("scc1").delete();
 
-    deleted = client.securityContextConstraints().withName("scc1").delete().size() == 1;
-    assertFalse(deleted);
+    assertNotEquals(1, client.securityContextConstraints().withName("scc1").delete().size());
 
-    deleted = client.securityContextConstraints().withName("scc2").delete().size() == 1;
-    assertTrue(deleted);
+    assertEquals(1, client.securityContextConstraints().withName("scc2").delete().size());
   }
 
   @Test
@@ -113,13 +115,15 @@ class SecurityContextConstraintsTest {
         .andReturn(200, new SecurityContextConstraintsBuilder().withNewMetadata().withName("scc1").and().build()).once();
     server.expect().patch().withPath("/apis/security.openshift.io/v1/securitycontextconstraints/scc1")
         .andReturn(200, new SecurityContextConstraintsBuilder().withNewMetadata().withName("scc1").and()
-            .addToAllowedCapabilities("allowed").build())
+            .withAllowedCapabilities(Collections.singletonList("allowed")).build())
         .once();
 
     SecurityContextConstraints scc = client.securityContextConstraints().withName("scc1")
-        .edit(s -> new SecurityContextConstraintsBuilder(s).addToAllowedCapabilities("allowed").build());
-    assertNotNull(scc);
-    assertEquals(1, scc.getAllowedCapabilities().size());
+        .edit(s -> new SecurityContextConstraintsBuilder(s).withAllowedCapabilities(Collections.singletonList("allowed"))
+            .build());
+    assertThat(scc)
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("allowedCapabilities", Collections.singletonList("allowed"));
   }
 
 }

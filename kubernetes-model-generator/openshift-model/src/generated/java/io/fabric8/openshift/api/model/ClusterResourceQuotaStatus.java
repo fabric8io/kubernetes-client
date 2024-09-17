@@ -1,9 +1,7 @@
 
 package io.fabric8.openshift.api.model;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -23,7 +21,6 @@ import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
-import io.fabric8.kubernetes.api.model.ResourceQuotaStatus;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
@@ -59,10 +56,10 @@ public class ClusterResourceQuotaStatus implements Editable<ClusterResourceQuota
 {
 
     @JsonProperty("namespaces")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ResourceQuotaStatusByNamespace> namespaces = new ArrayList<>();
+    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
+    private Object namespaces;
     @JsonProperty("total")
-    private ResourceQuotaStatus total;
+    private ClusterResourceQuotaStatusTotal total;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -73,30 +70,30 @@ public class ClusterResourceQuotaStatus implements Editable<ClusterResourceQuota
     public ClusterResourceQuotaStatus() {
     }
 
-    public ClusterResourceQuotaStatus(List<ResourceQuotaStatusByNamespace> namespaces, ResourceQuotaStatus total) {
+    public ClusterResourceQuotaStatus(Object namespaces, ClusterResourceQuotaStatusTotal total) {
         super();
         this.namespaces = namespaces;
         this.total = total;
     }
 
     @JsonProperty("namespaces")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<ResourceQuotaStatusByNamespace> getNamespaces() {
+    public Object getNamespaces() {
         return namespaces;
     }
 
     @JsonProperty("namespaces")
-    public void setNamespaces(List<ResourceQuotaStatusByNamespace> namespaces) {
+    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
+    public void setNamespaces(Object namespaces) {
         this.namespaces = namespaces;
     }
 
     @JsonProperty("total")
-    public ResourceQuotaStatus getTotal() {
+    public ClusterResourceQuotaStatusTotal getTotal() {
         return total;
     }
 
     @JsonProperty("total")
-    public void setTotal(ResourceQuotaStatus total) {
+    public void setTotal(ClusterResourceQuotaStatusTotal total) {
         this.total = total;
     }
 

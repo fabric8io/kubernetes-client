@@ -17,6 +17,8 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
+import io.fabric8.kubernetes.api.model.ObjectMeta;
+import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
@@ -46,13 +48,13 @@ import lombok.experimental.Accessors;
     ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
+    @BuildableReference(ObjectMeta.class),
     @BuildableReference(LabelSelector.class),
     @BuildableReference(Container.class),
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
+    @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
@@ -73,7 +75,7 @@ public class UserIdentityMapping implements Editable<UserIdentityMappingBuilder>
     @JsonProperty("apiVersion")
     private String apiVersion = "user.openshift.io/v1";
     @JsonProperty("identity")
-    private io.fabric8.kubernetes.api.model.ObjectReference identity;
+    private ObjectReference identity;
     /**
      * 
      * (Required)
@@ -82,9 +84,9 @@ public class UserIdentityMapping implements Editable<UserIdentityMappingBuilder>
     @JsonProperty("kind")
     private String kind = "UserIdentityMapping";
     @JsonProperty("metadata")
-    private io.fabric8.kubernetes.api.model.ObjectMeta metadata;
+    private ObjectMeta metadata;
     @JsonProperty("user")
-    private io.fabric8.kubernetes.api.model.ObjectReference user;
+    private ObjectReference user;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -95,7 +97,7 @@ public class UserIdentityMapping implements Editable<UserIdentityMappingBuilder>
     public UserIdentityMapping() {
     }
 
-    public UserIdentityMapping(String apiVersion, io.fabric8.kubernetes.api.model.ObjectReference identity, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, io.fabric8.kubernetes.api.model.ObjectReference user) {
+    public UserIdentityMapping(String apiVersion, ObjectReference identity, String kind, ObjectMeta metadata, ObjectReference user) {
         super();
         this.apiVersion = apiVersion;
         this.identity = identity;
@@ -125,12 +127,12 @@ public class UserIdentityMapping implements Editable<UserIdentityMappingBuilder>
     }
 
     @JsonProperty("identity")
-    public io.fabric8.kubernetes.api.model.ObjectReference getIdentity() {
+    public ObjectReference getIdentity() {
         return identity;
     }
 
     @JsonProperty("identity")
-    public void setIdentity(io.fabric8.kubernetes.api.model.ObjectReference identity) {
+    public void setIdentity(ObjectReference identity) {
         this.identity = identity;
     }
 
@@ -155,22 +157,22 @@ public class UserIdentityMapping implements Editable<UserIdentityMappingBuilder>
     }
 
     @JsonProperty("metadata")
-    public io.fabric8.kubernetes.api.model.ObjectMeta getMetadata() {
+    public ObjectMeta getMetadata() {
         return metadata;
     }
 
     @JsonProperty("metadata")
-    public void setMetadata(io.fabric8.kubernetes.api.model.ObjectMeta metadata) {
+    public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
     @JsonProperty("user")
-    public io.fabric8.kubernetes.api.model.ObjectReference getUser() {
+    public ObjectReference getUser() {
         return user;
     }
 
     @JsonProperty("user")
-    public void setUser(io.fabric8.kubernetes.api.model.ObjectReference user) {
+    public void setUser(ObjectReference user) {
         this.user = user;
     }
 
