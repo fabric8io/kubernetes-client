@@ -15,11 +15,11 @@
  */
 package io.fabric8.openshift.client.server.mock;
 
-import io.fabric8.kubernetes.api.model.ConditionBuilder;
 import io.fabric8.openshift.api.model.operatorhub.v1.OperatorCondition;
 import io.fabric8.openshift.api.model.operatorhub.v1.OperatorConditionBuilder;
 import io.fabric8.openshift.api.model.operatorhub.v1.OperatorConditionList;
 import io.fabric8.openshift.api.model.operatorhub.v1.OperatorConditionListBuilder;
+import io.fabric8.openshift.api.model.operatorhub.v1.OperatorConditionSpecOverridesBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
 import org.junit.jupiter.api.Test;
 
@@ -86,7 +86,7 @@ class OperatorConditionTest {
     return new OperatorConditionBuilder()
         .withNewMetadata().withName(name).endMetadata()
         .withNewSpec()
-        .addToOverrides(new ConditionBuilder()
+        .addToOverrides(new OperatorConditionSpecOverridesBuilder()
             .withType("Upgradeable")
             .withStatus("True")
             .withReason("upgradeIsSafe")

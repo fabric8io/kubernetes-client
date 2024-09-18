@@ -55,7 +55,7 @@ public class OLMConfigSpec implements Editable<OLMConfigSpecBuilder> , Kubernete
 {
 
     @JsonProperty("features")
-    private Features features;
+    private OLMConfigSpecFeatures features;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -66,18 +66,18 @@ public class OLMConfigSpec implements Editable<OLMConfigSpecBuilder> , Kubernete
     public OLMConfigSpec() {
     }
 
-    public OLMConfigSpec(Features features) {
+    public OLMConfigSpec(OLMConfigSpecFeatures features) {
         super();
         this.features = features;
     }
 
     @JsonProperty("features")
-    public Features getFeatures() {
+    public OLMConfigSpecFeatures getFeatures() {
         return features;
     }
 
     @JsonProperty("features")
-    public void setFeatures(Features features) {
+    public void setFeatures(OLMConfigSpecFeatures features) {
         this.features = features;
     }
 

@@ -39,6 +39,7 @@ import lombok.experimental.Accessors;
     "catalogSourcePublisher",
     "channels",
     "defaultChannel",
+    "deprecation",
     "packageName",
     "provider"
 })
@@ -76,6 +77,8 @@ public class PackageManifestStatus implements Editable<PackageManifestStatusBuil
     private List<PackageChannel> channels = new ArrayList<>();
     @JsonProperty("defaultChannel")
     private String defaultChannel;
+    @JsonProperty("deprecation")
+    private Deprecation deprecation;
     @JsonProperty("packageName")
     private String packageName;
     @JsonProperty("provider")
@@ -90,7 +93,7 @@ public class PackageManifestStatus implements Editable<PackageManifestStatusBuil
     public PackageManifestStatus() {
     }
 
-    public PackageManifestStatus(String catalogSource, String catalogSourceDisplayName, String catalogSourceNamespace, String catalogSourcePublisher, List<PackageChannel> channels, String defaultChannel, String packageName, AppLink provider) {
+    public PackageManifestStatus(String catalogSource, String catalogSourceDisplayName, String catalogSourceNamespace, String catalogSourcePublisher, List<PackageChannel> channels, String defaultChannel, Deprecation deprecation, String packageName, AppLink provider) {
         super();
         this.catalogSource = catalogSource;
         this.catalogSourceDisplayName = catalogSourceDisplayName;
@@ -98,6 +101,7 @@ public class PackageManifestStatus implements Editable<PackageManifestStatusBuil
         this.catalogSourcePublisher = catalogSourcePublisher;
         this.channels = channels;
         this.defaultChannel = defaultChannel;
+        this.deprecation = deprecation;
         this.packageName = packageName;
         this.provider = provider;
     }
@@ -161,6 +165,16 @@ public class PackageManifestStatus implements Editable<PackageManifestStatusBuil
     @JsonProperty("defaultChannel")
     public void setDefaultChannel(String defaultChannel) {
         this.defaultChannel = defaultChannel;
+    }
+
+    @JsonProperty("deprecation")
+    public Deprecation getDeprecation() {
+        return deprecation;
+    }
+
+    @JsonProperty("deprecation")
+    public void setDeprecation(Deprecation deprecation) {
+        this.deprecation = deprecation;
     }
 
     @JsonProperty("packageName")

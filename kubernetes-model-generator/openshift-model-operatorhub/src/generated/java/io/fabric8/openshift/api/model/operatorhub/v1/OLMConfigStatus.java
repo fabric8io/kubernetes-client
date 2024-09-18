@@ -14,7 +14,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
-import io.fabric8.kubernetes.api.model.Condition;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -59,7 +58,7 @@ public class OLMConfigStatus implements Editable<OLMConfigStatusBuilder> , Kuber
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Condition> conditions = new ArrayList<>();
+    private List<OLMConfigStatusConditions> conditions = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -70,19 +69,19 @@ public class OLMConfigStatus implements Editable<OLMConfigStatusBuilder> , Kuber
     public OLMConfigStatus() {
     }
 
-    public OLMConfigStatus(List<Condition> conditions) {
+    public OLMConfigStatus(List<OLMConfigStatusConditions> conditions) {
         super();
         this.conditions = conditions;
     }
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<Condition> getConditions() {
+    public List<OLMConfigStatusConditions> getConditions() {
         return conditions;
     }
 
     @JsonProperty("conditions")
-    public void setConditions(List<Condition> conditions) {
+    public void setConditions(List<OLMConfigStatusConditions> conditions) {
         this.conditions = conditions;
     }
 

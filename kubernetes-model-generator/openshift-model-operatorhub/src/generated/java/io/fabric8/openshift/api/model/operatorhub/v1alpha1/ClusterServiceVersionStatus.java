@@ -70,10 +70,10 @@ public class ClusterServiceVersionStatus implements Editable<ClusterServiceVersi
     @JsonProperty("certsRotateAt")
     private String certsRotateAt;
     @JsonProperty("cleanup")
-    private CleanupStatus cleanup;
+    private ClusterServiceVersionStatusCleanup cleanup;
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ClusterServiceVersionCondition> conditions = new ArrayList<>();
+    private List<ClusterServiceVersionStatusConditions> conditions = new ArrayList<>();
     @JsonProperty("lastTransitionTime")
     private String lastTransitionTime;
     @JsonProperty("lastUpdateTime")
@@ -86,7 +86,7 @@ public class ClusterServiceVersionStatus implements Editable<ClusterServiceVersi
     private String reason;
     @JsonProperty("requirementStatus")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<RequirementStatus> requirementStatus = new ArrayList<>();
+    private List<ClusterServiceVersionStatusRequirementStatus> requirementStatus = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -97,7 +97,7 @@ public class ClusterServiceVersionStatus implements Editable<ClusterServiceVersi
     public ClusterServiceVersionStatus() {
     }
 
-    public ClusterServiceVersionStatus(String certsLastUpdated, String certsRotateAt, CleanupStatus cleanup, List<ClusterServiceVersionCondition> conditions, String lastTransitionTime, String lastUpdateTime, String message, String phase, String reason, List<RequirementStatus> requirementStatus) {
+    public ClusterServiceVersionStatus(String certsLastUpdated, String certsRotateAt, ClusterServiceVersionStatusCleanup cleanup, List<ClusterServiceVersionStatusConditions> conditions, String lastTransitionTime, String lastUpdateTime, String message, String phase, String reason, List<ClusterServiceVersionStatusRequirementStatus> requirementStatus) {
         super();
         this.certsLastUpdated = certsLastUpdated;
         this.certsRotateAt = certsRotateAt;
@@ -132,23 +132,23 @@ public class ClusterServiceVersionStatus implements Editable<ClusterServiceVersi
     }
 
     @JsonProperty("cleanup")
-    public CleanupStatus getCleanup() {
+    public ClusterServiceVersionStatusCleanup getCleanup() {
         return cleanup;
     }
 
     @JsonProperty("cleanup")
-    public void setCleanup(CleanupStatus cleanup) {
+    public void setCleanup(ClusterServiceVersionStatusCleanup cleanup) {
         this.cleanup = cleanup;
     }
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<ClusterServiceVersionCondition> getConditions() {
+    public List<ClusterServiceVersionStatusConditions> getConditions() {
         return conditions;
     }
 
     @JsonProperty("conditions")
-    public void setConditions(List<ClusterServiceVersionCondition> conditions) {
+    public void setConditions(List<ClusterServiceVersionStatusConditions> conditions) {
         this.conditions = conditions;
     }
 
@@ -204,12 +204,12 @@ public class ClusterServiceVersionStatus implements Editable<ClusterServiceVersi
 
     @JsonProperty("requirementStatus")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<RequirementStatus> getRequirementStatus() {
+    public List<ClusterServiceVersionStatusRequirementStatus> getRequirementStatus() {
         return requirementStatus;
     }
 
     @JsonProperty("requirementStatus")
-    public void setRequirementStatus(List<RequirementStatus> requirementStatus) {
+    public void setRequirementStatus(List<ClusterServiceVersionStatusRequirementStatus> requirementStatus) {
         this.requirementStatus = requirementStatus;
     }
 

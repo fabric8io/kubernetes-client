@@ -43,6 +43,8 @@ jobs:
       matrix:
         java: [17]
     steps:
+      - name: Support long filenames in git
+        run: git config --system core.longpaths true
       - name: Checkout
         uses: actions/checkout@v4
       - name: Setup Java

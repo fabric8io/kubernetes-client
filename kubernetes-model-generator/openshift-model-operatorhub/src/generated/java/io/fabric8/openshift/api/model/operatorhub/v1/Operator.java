@@ -17,6 +17,7 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
+import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
@@ -47,7 +48,7 @@ import lombok.experimental.Accessors;
     ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
+    @BuildableReference(ObjectMeta.class),
     @BuildableReference(LabelSelector.class),
     @BuildableReference(Container.class),
     @BuildableReference(PodTemplateSpec.class),
@@ -81,9 +82,10 @@ public class Operator implements Editable<OperatorBuilder> , HasMetadata
     @JsonProperty("kind")
     private String kind = "Operator";
     @JsonProperty("metadata")
-    private io.fabric8.kubernetes.api.model.ObjectMeta metadata;
+    private ObjectMeta metadata;
     @JsonProperty("spec")
-    private OperatorSpec spec;
+    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
+    private Object spec;
     @JsonProperty("status")
     private OperatorStatus status;
     @JsonIgnore
@@ -96,7 +98,7 @@ public class Operator implements Editable<OperatorBuilder> , HasMetadata
     public Operator() {
     }
 
-    public Operator(String apiVersion, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, OperatorSpec spec, OperatorStatus status) {
+    public Operator(String apiVersion, String kind, ObjectMeta metadata, Object spec, OperatorStatus status) {
         super();
         this.apiVersion = apiVersion;
         this.kind = kind;
@@ -146,22 +148,23 @@ public class Operator implements Editable<OperatorBuilder> , HasMetadata
     }
 
     @JsonProperty("metadata")
-    public io.fabric8.kubernetes.api.model.ObjectMeta getMetadata() {
+    public ObjectMeta getMetadata() {
         return metadata;
     }
 
     @JsonProperty("metadata")
-    public void setMetadata(io.fabric8.kubernetes.api.model.ObjectMeta metadata) {
+    public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
     @JsonProperty("spec")
-    public OperatorSpec getSpec() {
+    public Object getSpec() {
         return spec;
     }
 
     @JsonProperty("spec")
-    public void setSpec(OperatorSpec spec) {
+    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
+    public void setSpec(Object spec) {
         this.spec = spec;
     }
 
