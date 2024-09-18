@@ -17,6 +17,7 @@ package io.fabric8.mockwebserver.utils;
 
 import okhttp3.Headers;
 import okhttp3.mockwebserver.RecordedRequest;
+import okhttp3.mockwebserver.SocketPolicy;
 
 /**
  * A class that allows returning a response given a certain request.
@@ -28,5 +29,9 @@ public interface ResponseProvider<T> extends BodyProvider<T> {
   Headers getHeaders();
 
   void setHeaders(Headers headers);
+
+  default SocketPolicy getSocketPolicy(RecordedRequest request) {
+    return SocketPolicy.KEEP_OPEN;
+  }
 
 }

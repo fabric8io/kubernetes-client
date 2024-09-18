@@ -22,12 +22,12 @@ import java.util.List;
 
 public interface Replyable<T> {
 
-  T andReply(int statusCode, BodyProvider<Object> contentSupplier);
+  T andReply(int statusCode, BodyProvider<?> contentSupplier);
 
-  T andReply(ResponseProvider<Object> contentSupplier);
+  T andReply(ResponseProvider<?> contentSupplier);
 
-  T andReplyChunked(int statusCode, BodyProvider<List<Object>> content);
+  T andReplyChunked(int statusCode, BodyProvider<List<?>> content);
 
-  T andReplyChunked(ResponseProvider<List<Object>> content);
+  T andReplyChunked(ResponseProvider<List<?>> content);
 
 }

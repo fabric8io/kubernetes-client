@@ -15,14 +15,29 @@
  */
 package io.fabric8.kubernetes.client.okhttp;
 
-import io.fabric8.kubernetes.client.http.AbstractHttpClientProxyTest;
+import io.fabric8.kubernetes.client.http.AbstractHttpClientProxyHttpsTest;
 import io.fabric8.kubernetes.client.http.HttpClient;
+import okhttp3.OkHttpClient.Builder;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLSession;
 
 @SuppressWarnings("java:S2187")
-public class OkHttpClientProxyTest extends AbstractHttpClientProxyTest {
+public class OkHttpClientProxyHttpsTest extends AbstractHttpClientProxyHttpsTest {
   @Override
   protected HttpClient.Factory getHttpClientFactory() {
-    return new OkHttpClientFactory();
+    return new OkHttpClientFactory() {
+      @Override
+      protected Builder newOkHttpClientBuilder() {
+        Builder builder = super.newOkHttpClientBuilder();
+        builder.hostnameVerifier(new HostnameVerifier() {
+          @Override
+          public boolean verify(String hostname, SSLSession session) {
+            return true;
+          }
+        });
+        return builder;
+      }
+    };
   }
-
 }

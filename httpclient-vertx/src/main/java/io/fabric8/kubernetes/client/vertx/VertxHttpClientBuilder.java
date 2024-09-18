@@ -77,9 +77,10 @@ public class VertxHttpClientBuilder<F extends HttpClient.Factory>
       ProxyOptions proxyOptions = new ProxyOptions()
           .setHost(this.proxyAddress.getHostName())
           .setPort(this.proxyAddress.getPort())
+          .setUsername(this.proxyUsername)
+          .setPassword(this.proxyPassword)
           .setType(convertProxyType());
       options.setProxyOptions(proxyOptions);
-      addProxyAuthInterceptor();
     }
 
     final String[] protocols;

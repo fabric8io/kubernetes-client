@@ -24,15 +24,20 @@ import org.eclipse.jetty.client.HttpClientTransport;
 import org.eclipse.jetty.client.HttpProxy;
 import org.eclipse.jetty.client.Origin;
 import org.eclipse.jetty.client.Socks4Proxy;
+import org.eclipse.jetty.client.Socks5Proxy;
+import org.eclipse.jetty.client.api.Authentication;
 import org.eclipse.jetty.client.dynamic.HttpClientTransportDynamic;
 import org.eclipse.jetty.client.http.HttpClientConnectionFactory;
 import org.eclipse.jetty.client.http.HttpClientTransportOverHTTP;
+import org.eclipse.jetty.client.util.BasicAuthentication;
 import org.eclipse.jetty.http2.client.HTTP2Client;
 import org.eclipse.jetty.http2.client.http.ClientConnectionFactoryOverHTTP2;
 import org.eclipse.jetty.io.ClientConnector;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.eclipse.jetty.websocket.client.WebSocketClient;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.time.Duration;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -91,11 +96,20 @@ public class JettyHttpClientBuilder
         case SOCKS4:
           sharedHttpClient.getProxyConfiguration().addProxy(new Socks4Proxy(address, false));
           break;
+        case SOCKS5:
+          sharedHttpClient.getProxyConfiguration().addProxy(new Socks5Proxy(address, false));
+          break;
         default:
           throw new KubernetesClientException("Unsupported proxy type");
       }
-      sharedHttpClient.getProxyConfiguration().addProxy(new HttpProxy(address, false));
-      addProxyAuthInterceptor();
+      URI proxyUri;
+      try {
+        proxyUri = new URI("http://" + proxyAddress.getHostString() + ":" + proxyAddress.getPort());
+      } catch (URISyntaxException e) {
+        throw KubernetesClientException.launderThrowable(e);
+      }
+      sharedHttpClient.getAuthenticationStore()
+          .addAuthentication(new BasicAuthentication(proxyUri, Authentication.ANY_REALM, proxyUsername, proxyPassword));
     }
     clientFactory.additionalConfig(sharedHttpClient, sharedWebSocketClient);
     return new JettyHttpClient(this, sharedHttpClient, sharedWebSocketClient);

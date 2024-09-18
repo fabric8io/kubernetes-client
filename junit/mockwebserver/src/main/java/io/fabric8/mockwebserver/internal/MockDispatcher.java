@@ -32,14 +32,19 @@ public class MockDispatcher extends Dispatcher {
 
   private final Map<ServerRequest, Queue<ServerResponse>> responses;
   private final Collection<WebSocketSession> webSocketSessions = new ConcurrentLinkedQueue<>();
+  private SocketPolicy defaultSocketPolicy = SocketPolicy.EXPECT_CONTINUE;
 
   public MockDispatcher(Map<ServerRequest, Queue<ServerResponse>> responses) {
     this.responses = responses;
   }
 
+  public void setDefaultSocketPolicy(SocketPolicy defaultSocketPolicy) {
+    this.defaultSocketPolicy = defaultSocketPolicy;
+  }
+
   @Override
   public MockResponse peek() {
-    return new MockResponse().setSocketPolicy(SocketPolicy.EXPECT_CONTINUE);
+    return new MockResponse().setSocketPolicy(defaultSocketPolicy);
   }
 
   @Override

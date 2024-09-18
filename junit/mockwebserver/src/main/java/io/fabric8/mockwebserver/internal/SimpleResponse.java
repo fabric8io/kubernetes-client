@@ -66,6 +66,7 @@ public class SimpleResponse implements ServerResponse {
     MockResponse mockResponse = new MockResponse();
     mockResponse.setHeaders(bodyProvider.getHeaders());
     mockResponse.setResponseCode(bodyProvider.getStatusCode(request));
+    mockResponse.setSocketPolicy(bodyProvider.getSocketPolicy(request));
 
     if (webSocketSession != null) {
       mockResponse.withWebSocketUpgrade(webSocketSession);
@@ -99,10 +100,12 @@ public class SimpleResponse implements ServerResponse {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o)
+    if (this == o) {
       return true;
-    if (o == null || getClass() != o.getClass())
+    }
+    if (o == null || getClass() != o.getClass()) {
       return false;
+    }
     SimpleResponse that = (SimpleResponse) o;
     return repeatable == that.repeatable && responseDelay == that.responseDelay
         && Objects.equals(bodyProvider, that.bodyProvider) && Objects.equals(webSocketSession, that.webSocketSession)

@@ -32,6 +32,7 @@ import io.fabric8.mockwebserver.utils.ResponseProvider;
 import io.fabric8.mockwebserver.utils.ResponseProviders;
 import okhttp3.Headers;
 import okhttp3.mockwebserver.RecordedRequest;
+import okhttp3.mockwebserver.SocketPolicy;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -119,6 +120,13 @@ public class MockServerExpectationImpl implements MockServerExpectation {
   }
 
   @Override
+  public DelayPathable<ReturnOrWebsocketable<TimesOnceableOrHttpHeaderable<Void>>> connect() {
+    return new MockServerExpectationImpl(context, HttpMethod.CONNECT, path, bodyProvider, chunksProvider, delay, delayUnit,
+        times,
+        responses);
+  }
+
+  @Override
   public ReturnOrWebsocketable<TimesOnceableOrHttpHeaderable<Void>> withPath(String path) {
     return new MockServerExpectationImpl(context, method, path, bodyProvider, chunksProvider, delay, delayUnit, times,
         responses);
@@ -131,12 +139,12 @@ public class MockServerExpectationImpl implements MockServerExpectation {
   }
 
   @Override
-  public TimesOnceableOrHttpHeaderable<Void> andReply(int statusCode, BodyProvider<Object> content) {
+  public TimesOnceableOrHttpHeaderable<Void> andReply(int statusCode, BodyProvider<?> content) {
     return andReply(ResponseProviders.of(statusCode, content));
   }
 
   @Override
-  public TimesOnceableOrHttpHeaderable<Void> andReply(ResponseProvider<Object> content) {
+  public TimesOnceableOrHttpHeaderable<Void> andReply(ResponseProvider<?> content) {
     return new MockServerExpectationImpl(context, method, path, toString(content), chunksProvider, delay, delayUnit, times,
         responses);
   }
@@ -148,12 +156,12 @@ public class MockServerExpectationImpl implements MockServerExpectation {
   }
 
   @Override
-  public TimesOnceableOrHttpHeaderable<Void> andReplyChunked(int statusCode, BodyProvider<List<Object>> contents) {
+  public TimesOnceableOrHttpHeaderable<Void> andReplyChunked(int statusCode, BodyProvider<List<?>> contents) {
     return andReplyChunked(ResponseProviders.of(statusCode, contents));
   }
 
   @Override
-  public TimesOnceableOrHttpHeaderable<Void> andReplyChunked(ResponseProvider<List<Object>> contents) {
+  public TimesOnceableOrHttpHeaderable<Void> andReplyChunked(ResponseProvider<List<?>> contents) {
     return new MockServerExpectationImpl(context, method, path, bodyProvider, listToString(contents), delay, delayUnit, times,
         responses);
   }
@@ -229,56 +237,26 @@ public class MockServerExpectationImpl implements MockServerExpectation {
     }
   }
 
-  private ResponseProvider<String> toString(final ResponseProvider<Object> provider) {
-    return new ResponseProvider<String>() {
+  private ResponseProvider<String> toString(final ResponseProvider<?> provider) {
+    return new ResponseProviderWrapper<String>(provider) {
       @Override
       public String getBody(RecordedRequest request) {
         Object object = provider.getBody(request);
         return MockServerExpectationImpl.this.toString(object);
       }
-
-      @Override
-      public int getStatusCode(RecordedRequest request) {
-        return provider.getStatusCode(request);
-      }
-
-      @Override
-      public Headers getHeaders() {
-        return provider.getHeaders();
-      }
-
-      @Override
-      public void setHeaders(Headers headers) {
-        provider.setHeaders(headers);
-      }
     };
   }
 
-  private ResponseProvider<List<String>> listToString(final ResponseProvider<List<Object>> provider) {
-    return new ResponseProvider<List<String>>() {
+  private ResponseProvider<List<String>> listToString(final ResponseProvider<List<?>> provider) {
+    return new ResponseProviderWrapper<List<String>>(provider) {
       @Override
       public List<String> getBody(RecordedRequest request) {
-        List<Object> objects = provider.getBody(request);
+        List<?> objects = provider.getBody(request);
         List<String> strings = new ArrayList<>(objects.size());
         for (Object o : objects) {
           strings.add(MockServerExpectationImpl.this.toString(o));
         }
         return strings;
-      }
-
-      @Override
-      public int getStatusCode(RecordedRequest request) {
-        return provider.getStatusCode(request);
-      }
-
-      @Override
-      public Headers getHeaders() {
-        return provider.getHeaders();
-      }
-
-      @Override
-      public void setHeaders(Headers headers) {
-        provider.setHeaders(headers);
       }
     };
   }
@@ -299,6 +277,34 @@ public class MockServerExpectationImpl implements MockServerExpectation {
     return Stream.of(object)
         .map(this::toString)
         .collect(Collectors.toList());
+  }
+
+  private static abstract class ResponseProviderWrapper<T> implements ResponseProvider<T> {
+    private final ResponseProvider<?> provider;
+
+    private ResponseProviderWrapper(ResponseProvider<?> provider) {
+      this.provider = provider;
+    }
+
+    @Override
+    public int getStatusCode(RecordedRequest request) {
+      return provider.getStatusCode(request);
+    }
+
+    @Override
+    public Headers getHeaders() {
+      return provider.getHeaders();
+    }
+
+    @Override
+    public void setHeaders(Headers headers) {
+      provider.setHeaders(headers);
+    }
+
+    @Override
+    public SocketPolicy getSocketPolicy(RecordedRequest request) {
+      return provider.getSocketPolicy(request);
+    }
   }
 
   private static final class WebSocketSessionConverter

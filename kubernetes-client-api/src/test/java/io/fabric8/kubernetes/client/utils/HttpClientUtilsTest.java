@@ -99,7 +99,7 @@ class HttpClientUtilsTest {
     HttpClientUtils.configureProxy(config, builder);
 
     Mockito.verify(builder).proxyType(HttpClient.ProxyType.HTTP);
-    Mockito.verify(builder).proxyAuthorization("Basic dXNlcjpwYXNzd29yZA==");
+    Mockito.verify(builder).proxyBasicCredentials("user", "password");
   }
 
   @Test

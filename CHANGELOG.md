@@ -12,6 +12,7 @@
 * Fix #6247: Support for proxy authentication from proxy URL user info
 * Fix #6281: use GitHub binary repo for Kube API Tests
 * Fix #6282: Allow annotated types with Pattern, Min, and Max with Lists and Maps and CRD generation
+* Fix #6350: Allowing authenticated http proxy usage with Jetty, vertx, and JDK for https endpoints
 * Fix #5480: Move `io.fabric8:zjsonpatch` to KubernetesClient project
 
 #### Dependency Upgrade

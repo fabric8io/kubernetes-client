@@ -22,6 +22,7 @@ import io.fabric8.mockwebserver.internal.MockServerExpectationImpl;
 import okhttp3.mockwebserver.Dispatcher;
 import okhttp3.mockwebserver.MockWebServer;
 import okhttp3.mockwebserver.RecordedRequest;
+import okhttp3.mockwebserver.SocketPolicy;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -38,6 +39,7 @@ public class DefaultMockServer implements MockServer {
 
   private final Context context;
   private final boolean useHttps;
+  private boolean tunnelProxy;
   private final MockWebServer server;
   private final Map<ServerRequest, Queue<ServerResponse>> responses;
   private final AtomicInteger lastRequestCount;
@@ -45,6 +47,7 @@ public class DefaultMockServer implements MockServer {
 
   private final AtomicBoolean initialized = new AtomicBoolean();
   private final AtomicBoolean shutdown = new AtomicBoolean();
+  private Dispatcher dispatcher;
 
   public DefaultMockServer() {
     this(new Context(), new MockWebServer(), new HashMap<>(), false);
@@ -72,15 +75,32 @@ public class DefaultMockServer implements MockServer {
     this.lastRequest = new AtomicReference<>();
     this.lastRequestCount = new AtomicInteger(0);
     this.server.setDispatcher(dispatcher);
+    this.dispatcher = dispatcher;
+  }
+
+  public void setHttpsTunnelProxy(boolean tunnelProxy) {
+    this.tunnelProxy = tunnelProxy;
   }
 
   private void startInternal() {
     if (initialized.compareAndSet(false, true)) {
       if (useHttps) {
-        server.useHttps(MockSSLContextFactory.create().getSocketFactory(), false);
+        server.useHttps(MockSSLContextFactory.create().getSocketFactory(), tunnelProxy);
+        if (tunnelProxy) {
+          setDefaultSocketPolicy(SocketPolicy.UPGRADE_TO_SSL_AT_END);
+        }
       }
       onStart();
     }
+  }
+
+  /**
+   * Only works when using the default {@link MockDispatcher} type
+   * 
+   * @param socketPolicy to be returned when peeking at the dispatcher
+   */
+  public void setDefaultSocketPolicy(SocketPolicy socketPolicy) {
+    ((MockDispatcher) dispatcher).setDefaultSocketPolicy(socketPolicy);
   }
 
   private void shutdownInternal() {

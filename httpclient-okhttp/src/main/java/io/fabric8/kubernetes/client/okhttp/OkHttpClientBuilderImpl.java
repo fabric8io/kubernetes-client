@@ -19,6 +19,7 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.http.HttpClient.ProxyType;
 import io.fabric8.kubernetes.client.http.StandardHttpClientBuilder;
 import io.fabric8.kubernetes.client.http.StandardHttpHeaders;
+import io.fabric8.kubernetes.client.utils.HttpClientUtils;
 import okhttp3.Authenticator;
 import okhttp3.ConnectionSpec;
 import okhttp3.OkHttpClient;
@@ -74,10 +75,11 @@ class OkHttpClientBuilderImpl
       builder.proxy(Proxy.NO_PROXY);
     } else if (proxyAddress != null) {
       builder.proxy(new Proxy(convertProxyType(), proxyAddress));
-      if (proxyAuthorization != null) {
+      if (proxyUsername != null && proxyPassword != null) {
+        String auth = HttpClientUtils.basicCredentials(proxyUsername, proxyPassword);
         builder.proxyAuthenticator(
             (route, response) -> response.request().newBuilder()
-                .header(StandardHttpHeaders.PROXY_AUTHORIZATION, proxyAuthorization).build());
+                .header(StandardHttpHeaders.PROXY_AUTHORIZATION, auth).build());
       }
     }
     if (tlsVersions != null) {

@@ -25,11 +25,13 @@ import io.fabric8.kubernetes.client.internal.SSLUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.UnsupportedEncodingException;
 import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -229,12 +231,22 @@ public class HttpClientUtils {
       builder.proxyAddress(new InetSocketAddress(proxyUri.getHost(), proxyUri.getPort()));
 
       if (config.getProxyUsername() != null) {
-        builder.proxyAuthorization(basicCredentials(config.getProxyUsername(), config.getProxyPassword()));
+        builder.proxyBasicCredentials(config.getProxyUsername(), config.getProxyPassword());
       }
 
-      String userInfo = proxyUri.getUserInfo();
+      String userInfo = proxyUri.getRawUserInfo();
       if (userInfo != null) {
-        builder.proxyAuthorization(basicCredentials(userInfo));
+        String[] parts = userInfo.split(":");
+        if (parts.length == 2) {
+          try {
+            builder.proxyBasicCredentials(URLDecoder.decode(parts[0], StandardCharsets.UTF_8.name()),
+                URLDecoder.decode(parts[1], StandardCharsets.UTF_8.name()));
+          } catch (UnsupportedEncodingException e) {
+            throw KubernetesClientException.launderThrowable(e);
+          }
+        } else {
+          throw new KubernetesClientException("Proxy user info not in the form of username:password");
+        }
       }
 
       builder.proxyType(toProxyType(proxyUri.getScheme()));

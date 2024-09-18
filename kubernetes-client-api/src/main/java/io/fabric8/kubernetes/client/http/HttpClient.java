@@ -115,7 +115,7 @@ public interface HttpClient extends AutoCloseable {
 
     Builder proxyAddress(InetSocketAddress proxyAddress);
 
-    Builder proxyAuthorization(String credentials);
+    Builder proxyBasicCredentials(String username, String password);
 
     Builder tlsVersions(TlsVersion... tlsVersions);
 

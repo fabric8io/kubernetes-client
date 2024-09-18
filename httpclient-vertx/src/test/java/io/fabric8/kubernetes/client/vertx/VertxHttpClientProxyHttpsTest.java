@@ -13,21 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.mockwebserver.dsl;
+package io.fabric8.kubernetes.client.vertx;
 
-public interface HttpMethodable<T> {
+import io.fabric8.kubernetes.client.http.AbstractHttpClientProxyHttpsTest;
+import io.fabric8.kubernetes.client.http.HttpClient;
 
-  T any();
-
-  T post();
-
-  T get();
-
-  T put();
-
-  T delete();
-
-  T patch();
-
-  T connect();
+@SuppressWarnings("java:S2187")
+public class VertxHttpClientProxyHttpsTest extends AbstractHttpClientProxyHttpsTest {
+  @Override
+  protected HttpClient.Factory getHttpClientFactory() {
+    return new VertxHttpClientFactory();
+  }
 }

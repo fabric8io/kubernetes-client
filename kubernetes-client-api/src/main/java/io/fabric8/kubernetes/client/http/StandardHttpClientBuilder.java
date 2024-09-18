@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.client.http;
 import io.fabric8.kubernetes.client.http.HttpClient.DerivedClientBuilder;
 import io.fabric8.kubernetes.client.http.HttpClient.ProxyType;
 import io.fabric8.kubernetes.client.internal.SSLUtils;
+import io.fabric8.kubernetes.client.utils.HttpClientUtils;
 import lombok.Getter;
 import org.slf4j.LoggerFactory;
 
@@ -38,7 +39,8 @@ public abstract class StandardHttpClientBuilder<C extends HttpClient, F extends 
   protected LinkedHashMap<String, Interceptor> interceptors = new LinkedHashMap<>();
   protected Duration connectTimeout;
   protected SSLContext sslContext;
-  protected String proxyAuthorization;
+  protected String proxyUsername;
+  protected String proxyPassword;
   protected InetSocketAddress proxyAddress;
   protected boolean followRedirects;
   protected boolean preferHttp11;
@@ -102,8 +104,9 @@ public abstract class StandardHttpClientBuilder<C extends HttpClient, F extends 
   }
 
   @Override
-  public T proxyAuthorization(String credentials) {
-    this.proxyAuthorization = credentials;
+  public T proxyBasicCredentials(String username, String password) {
+    this.proxyUsername = username;
+    this.proxyPassword = password;
     return (T) this;
   }
 
@@ -148,7 +151,8 @@ public abstract class StandardHttpClientBuilder<C extends HttpClient, F extends 
     copy.keyManagers = this.keyManagers;
     copy.interceptors = new LinkedHashMap<>(this.interceptors);
     copy.proxyAddress = this.proxyAddress;
-    copy.proxyAuthorization = this.proxyAuthorization;
+    copy.proxyUsername = this.proxyUsername;
+    copy.proxyPassword = this.proxyPassword;
     copy.tlsVersions = this.tlsVersions;
     copy.preferHttp11 = this.preferHttp11;
     copy.followRedirects = this.followRedirects;
@@ -160,12 +164,13 @@ public abstract class StandardHttpClientBuilder<C extends HttpClient, F extends 
   }
 
   protected void addProxyAuthInterceptor() {
-    if (proxyAuthorization != null) {
+    if (proxyUsername != null && proxyPassword != null) {
+      String auth = HttpClientUtils.basicCredentials(proxyUsername, proxyPassword);
       this.interceptors.put("PROXY-AUTH", new Interceptor() {
 
         @Override
         public void before(BasicBuilder builder, HttpRequest httpRequest, RequestTags tags) {
-          builder.setHeader(StandardHttpHeaders.PROXY_AUTHORIZATION, proxyAuthorization);
+          builder.setHeader(StandardHttpHeaders.PROXY_AUTHORIZATION, auth);
         }
 
       });

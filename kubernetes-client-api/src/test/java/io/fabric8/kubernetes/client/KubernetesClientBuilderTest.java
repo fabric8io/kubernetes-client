@@ -32,9 +32,9 @@ class KubernetesClientBuilderTest {
     Factory mockFactory = Mockito.mock(HttpClient.Factory.class);
     HttpClient.Builder mockBuilder = Mockito.mock(HttpClient.Builder.class);
     Mockito.when(mockFactory.newBuilder(Mockito.any())).thenReturn(mockBuilder);
-    builder.withHttpClientFactory(mockFactory).withHttpClientBuilderConsumer(b -> b.proxyAuthorization("something"));
+    builder.withHttpClientFactory(mockFactory).withHttpClientBuilderConsumer(b -> b.proxyBasicCredentials("some", "thing"));
     builder.getHttpClient();
-    Mockito.verify(mockBuilder).proxyAuthorization("something");
+    Mockito.verify(mockBuilder).proxyBasicCredentials("some", "thing");
   }
 
   @Test
