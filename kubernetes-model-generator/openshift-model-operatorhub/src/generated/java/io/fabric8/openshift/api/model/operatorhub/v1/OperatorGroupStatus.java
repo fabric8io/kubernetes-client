@@ -14,13 +14,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
-import io.fabric8.kubernetes.api.model.Condition;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
+import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
@@ -51,7 +51,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
+    @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
@@ -61,14 +61,14 @@ public class OperatorGroupStatus implements Editable<OperatorGroupStatusBuilder>
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Condition> conditions = new ArrayList<>();
+    private List<OperatorGroupStatusConditions> conditions = new ArrayList<>();
     @JsonProperty("lastUpdated")
     private String lastUpdated;
     @JsonProperty("namespaces")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> namespaces = new ArrayList<>();
     @JsonProperty("serviceAccountRef")
-    private io.fabric8.kubernetes.api.model.ObjectReference serviceAccountRef;
+    private OperatorGroupStatusServiceAccountRef serviceAccountRef;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -79,7 +79,7 @@ public class OperatorGroupStatus implements Editable<OperatorGroupStatusBuilder>
     public OperatorGroupStatus() {
     }
 
-    public OperatorGroupStatus(List<Condition> conditions, String lastUpdated, List<String> namespaces, io.fabric8.kubernetes.api.model.ObjectReference serviceAccountRef) {
+    public OperatorGroupStatus(List<OperatorGroupStatusConditions> conditions, String lastUpdated, List<String> namespaces, OperatorGroupStatusServiceAccountRef serviceAccountRef) {
         super();
         this.conditions = conditions;
         this.lastUpdated = lastUpdated;
@@ -89,12 +89,12 @@ public class OperatorGroupStatus implements Editable<OperatorGroupStatusBuilder>
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<Condition> getConditions() {
+    public List<OperatorGroupStatusConditions> getConditions() {
         return conditions;
     }
 
     @JsonProperty("conditions")
-    public void setConditions(List<Condition> conditions) {
+    public void setConditions(List<OperatorGroupStatusConditions> conditions) {
         this.conditions = conditions;
     }
 
@@ -120,12 +120,12 @@ public class OperatorGroupStatus implements Editable<OperatorGroupStatusBuilder>
     }
 
     @JsonProperty("serviceAccountRef")
-    public io.fabric8.kubernetes.api.model.ObjectReference getServiceAccountRef() {
+    public OperatorGroupStatusServiceAccountRef getServiceAccountRef() {
         return serviceAccountRef;
     }
 
     @JsonProperty("serviceAccountRef")
-    public void setServiceAccountRef(io.fabric8.kubernetes.api.model.ObjectReference serviceAccountRef) {
+    public void setServiceAccountRef(OperatorGroupStatusServiceAccountRef serviceAccountRef) {
         this.serviceAccountRef = serviceAccountRef;
     }
 

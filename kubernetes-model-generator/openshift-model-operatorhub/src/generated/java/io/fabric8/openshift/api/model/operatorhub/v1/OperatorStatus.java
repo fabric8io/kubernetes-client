@@ -55,7 +55,7 @@ public class OperatorStatus implements Editable<OperatorStatusBuilder> , Kuberne
 {
 
     @JsonProperty("components")
-    private Components components;
+    private OperatorStatusComponents components;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -66,18 +66,18 @@ public class OperatorStatus implements Editable<OperatorStatusBuilder> , Kuberne
     public OperatorStatus() {
     }
 
-    public OperatorStatus(Components components) {
+    public OperatorStatus(OperatorStatusComponents components) {
         super();
         this.components = components;
     }
 
     @JsonProperty("components")
-    public Components getComponents() {
+    public OperatorStatusComponents getComponents() {
         return components;
     }
 
     @JsonProperty("components")
-    public void setComponents(Components components) {
+    public void setComponents(OperatorStatusComponents components) {
         this.components = components;
     }
 

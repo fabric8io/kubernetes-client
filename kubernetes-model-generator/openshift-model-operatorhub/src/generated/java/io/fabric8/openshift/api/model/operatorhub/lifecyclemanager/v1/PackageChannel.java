@@ -1,7 +1,9 @@
 
 package io.fabric8.openshift.api.model.operatorhub.lifecyclemanager.v1;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -33,6 +35,8 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "currentCSV",
     "currentCSVDesc",
+    "deprecation",
+    "entries",
     "name"
 })
 @ToString
@@ -60,6 +64,11 @@ public class PackageChannel implements Editable<PackageChannelBuilder> , Kuberne
     private String currentCSV;
     @JsonProperty("currentCSVDesc")
     private CSVDescription currentCSVDesc;
+    @JsonProperty("deprecation")
+    private Deprecation deprecation;
+    @JsonProperty("entries")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<ChannelEntry> entries = new ArrayList<>();
     @JsonProperty("name")
     private String name;
     @JsonIgnore
@@ -72,10 +81,12 @@ public class PackageChannel implements Editable<PackageChannelBuilder> , Kuberne
     public PackageChannel() {
     }
 
-    public PackageChannel(String currentCSV, CSVDescription currentCSVDesc, String name) {
+    public PackageChannel(String currentCSV, CSVDescription currentCSVDesc, Deprecation deprecation, List<ChannelEntry> entries, String name) {
         super();
         this.currentCSV = currentCSV;
         this.currentCSVDesc = currentCSVDesc;
+        this.deprecation = deprecation;
+        this.entries = entries;
         this.name = name;
     }
 
@@ -97,6 +108,27 @@ public class PackageChannel implements Editable<PackageChannelBuilder> , Kuberne
     @JsonProperty("currentCSVDesc")
     public void setCurrentCSVDesc(CSVDescription currentCSVDesc) {
         this.currentCSVDesc = currentCSVDesc;
+    }
+
+    @JsonProperty("deprecation")
+    public Deprecation getDeprecation() {
+        return deprecation;
+    }
+
+    @JsonProperty("deprecation")
+    public void setDeprecation(Deprecation deprecation) {
+        this.deprecation = deprecation;
+    }
+
+    @JsonProperty("entries")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<ChannelEntry> getEntries() {
+        return entries;
+    }
+
+    @JsonProperty("entries")
+    public void setEntries(List<ChannelEntry> entries) {
+        this.entries = entries;
     }
 
     @JsonProperty("name")

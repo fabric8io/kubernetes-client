@@ -17,6 +17,7 @@ import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
+import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
@@ -46,7 +47,7 @@ import lombok.experimental.Accessors;
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.LabelSelector.class),
+    @BuildableReference(LabelSelector.class),
     @BuildableReference(Container.class),
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
@@ -60,7 +61,7 @@ public class OperatorGroupSpec implements Editable<OperatorGroupSpecBuilder> , K
 {
 
     @JsonProperty("selector")
-    private io.fabric8.kubernetes.api.model.LabelSelector selector;
+    private OperatorGroupSpecSelector selector;
     @JsonProperty("serviceAccountName")
     private String serviceAccountName;
     @JsonProperty("staticProvidedAPIs")
@@ -80,7 +81,7 @@ public class OperatorGroupSpec implements Editable<OperatorGroupSpecBuilder> , K
     public OperatorGroupSpec() {
     }
 
-    public OperatorGroupSpec(io.fabric8.kubernetes.api.model.LabelSelector selector, String serviceAccountName, Boolean staticProvidedAPIs, List<String> targetNamespaces, String upgradeStrategy) {
+    public OperatorGroupSpec(OperatorGroupSpecSelector selector, String serviceAccountName, Boolean staticProvidedAPIs, List<String> targetNamespaces, String upgradeStrategy) {
         super();
         this.selector = selector;
         this.serviceAccountName = serviceAccountName;
@@ -90,12 +91,12 @@ public class OperatorGroupSpec implements Editable<OperatorGroupSpecBuilder> , K
     }
 
     @JsonProperty("selector")
-    public io.fabric8.kubernetes.api.model.LabelSelector getSelector() {
+    public OperatorGroupSpecSelector getSelector() {
         return selector;
     }
 
     @JsonProperty("selector")
-    public void setSelector(io.fabric8.kubernetes.api.model.LabelSelector selector) {
+    public void setSelector(OperatorGroupSpecSelector selector) {
         this.selector = selector;
     }
 

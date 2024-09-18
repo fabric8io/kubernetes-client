@@ -20,6 +20,7 @@ import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
+import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
@@ -54,7 +55,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
+    @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
@@ -63,23 +64,23 @@ public class InstallPlanStatus implements Editable<InstallPlanStatusBuilder> , K
 {
 
     @JsonProperty("attenuatedServiceAccountRef")
-    private io.fabric8.kubernetes.api.model.ObjectReference attenuatedServiceAccountRef;
+    private InstallPlanStatusAttenuatedServiceAccountRef attenuatedServiceAccountRef;
     @JsonProperty("bundleLookups")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<BundleLookup> bundleLookups = new ArrayList<>();
+    private List<InstallPlanStatusBundleLookups> bundleLookups = new ArrayList<>();
     @JsonProperty("catalogSources")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> catalogSources = new ArrayList<>();
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<InstallPlanCondition> conditions = new ArrayList<>();
+    private List<InstallPlanStatusConditions> conditions = new ArrayList<>();
     @JsonProperty("message")
     private String message;
     @JsonProperty("phase")
     private String phase;
     @JsonProperty("plan")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Step> plan = new ArrayList<>();
+    private List<InstallPlanStatusPlan> plan = new ArrayList<>();
     @JsonProperty("startTime")
     private String startTime;
     @JsonIgnore
@@ -92,7 +93,7 @@ public class InstallPlanStatus implements Editable<InstallPlanStatusBuilder> , K
     public InstallPlanStatus() {
     }
 
-    public InstallPlanStatus(io.fabric8.kubernetes.api.model.ObjectReference attenuatedServiceAccountRef, List<BundleLookup> bundleLookups, List<String> catalogSources, List<InstallPlanCondition> conditions, String message, String phase, List<Step> plan, String startTime) {
+    public InstallPlanStatus(InstallPlanStatusAttenuatedServiceAccountRef attenuatedServiceAccountRef, List<InstallPlanStatusBundleLookups> bundleLookups, List<String> catalogSources, List<InstallPlanStatusConditions> conditions, String message, String phase, List<InstallPlanStatusPlan> plan, String startTime) {
         super();
         this.attenuatedServiceAccountRef = attenuatedServiceAccountRef;
         this.bundleLookups = bundleLookups;
@@ -105,23 +106,23 @@ public class InstallPlanStatus implements Editable<InstallPlanStatusBuilder> , K
     }
 
     @JsonProperty("attenuatedServiceAccountRef")
-    public io.fabric8.kubernetes.api.model.ObjectReference getAttenuatedServiceAccountRef() {
+    public InstallPlanStatusAttenuatedServiceAccountRef getAttenuatedServiceAccountRef() {
         return attenuatedServiceAccountRef;
     }
 
     @JsonProperty("attenuatedServiceAccountRef")
-    public void setAttenuatedServiceAccountRef(io.fabric8.kubernetes.api.model.ObjectReference attenuatedServiceAccountRef) {
+    public void setAttenuatedServiceAccountRef(InstallPlanStatusAttenuatedServiceAccountRef attenuatedServiceAccountRef) {
         this.attenuatedServiceAccountRef = attenuatedServiceAccountRef;
     }
 
     @JsonProperty("bundleLookups")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<BundleLookup> getBundleLookups() {
+    public List<InstallPlanStatusBundleLookups> getBundleLookups() {
         return bundleLookups;
     }
 
     @JsonProperty("bundleLookups")
-    public void setBundleLookups(List<BundleLookup> bundleLookups) {
+    public void setBundleLookups(List<InstallPlanStatusBundleLookups> bundleLookups) {
         this.bundleLookups = bundleLookups;
     }
 
@@ -138,12 +139,12 @@ public class InstallPlanStatus implements Editable<InstallPlanStatusBuilder> , K
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<InstallPlanCondition> getConditions() {
+    public List<InstallPlanStatusConditions> getConditions() {
         return conditions;
     }
 
     @JsonProperty("conditions")
-    public void setConditions(List<InstallPlanCondition> conditions) {
+    public void setConditions(List<InstallPlanStatusConditions> conditions) {
         this.conditions = conditions;
     }
 
@@ -169,12 +170,12 @@ public class InstallPlanStatus implements Editable<InstallPlanStatusBuilder> , K
 
     @JsonProperty("plan")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<Step> getPlan() {
+    public List<InstallPlanStatusPlan> getPlan() {
         return plan;
     }
 
     @JsonProperty("plan")
-    public void setPlan(List<Step> plan) {
+    public void setPlan(List<InstallPlanStatusPlan> plan) {
         this.plan = plan;
     }
 

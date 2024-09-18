@@ -20,6 +20,7 @@ import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
+import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
@@ -56,7 +57,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
+    @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
@@ -66,20 +67,20 @@ public class SubscriptionStatus implements Editable<SubscriptionStatusBuilder> ,
 
     @JsonProperty("catalogHealth")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<SubscriptionCatalogHealth> catalogHealth = new ArrayList<>();
+    private List<SubscriptionStatusCatalogHealth> catalogHealth = new ArrayList<>();
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<SubscriptionCondition> conditions = new ArrayList<>();
+    private List<SubscriptionStatusConditions> conditions = new ArrayList<>();
     @JsonProperty("currentCSV")
     private String currentCSV;
     @JsonProperty("installPlanGeneration")
     private Integer installPlanGeneration;
     @JsonProperty("installPlanRef")
-    private io.fabric8.kubernetes.api.model.ObjectReference installPlanRef;
+    private SubscriptionStatusInstallPlanRef installPlanRef;
     @JsonProperty("installedCSV")
     private String installedCSV;
     @JsonProperty("installplan")
-    private InstallPlanReference installplan;
+    private SubscriptionStatusInstallplan installplan;
     @JsonProperty("lastUpdated")
     private String lastUpdated;
     @JsonProperty("reason")
@@ -96,7 +97,7 @@ public class SubscriptionStatus implements Editable<SubscriptionStatusBuilder> ,
     public SubscriptionStatus() {
     }
 
-    public SubscriptionStatus(List<SubscriptionCatalogHealth> catalogHealth, List<SubscriptionCondition> conditions, String currentCSV, Integer installPlanGeneration, io.fabric8.kubernetes.api.model.ObjectReference installPlanRef, String installedCSV, InstallPlanReference installplan, String lastUpdated, String reason, String state) {
+    public SubscriptionStatus(List<SubscriptionStatusCatalogHealth> catalogHealth, List<SubscriptionStatusConditions> conditions, String currentCSV, Integer installPlanGeneration, SubscriptionStatusInstallPlanRef installPlanRef, String installedCSV, SubscriptionStatusInstallplan installplan, String lastUpdated, String reason, String state) {
         super();
         this.catalogHealth = catalogHealth;
         this.conditions = conditions;
@@ -112,23 +113,23 @@ public class SubscriptionStatus implements Editable<SubscriptionStatusBuilder> ,
 
     @JsonProperty("catalogHealth")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<SubscriptionCatalogHealth> getCatalogHealth() {
+    public List<SubscriptionStatusCatalogHealth> getCatalogHealth() {
         return catalogHealth;
     }
 
     @JsonProperty("catalogHealth")
-    public void setCatalogHealth(List<SubscriptionCatalogHealth> catalogHealth) {
+    public void setCatalogHealth(List<SubscriptionStatusCatalogHealth> catalogHealth) {
         this.catalogHealth = catalogHealth;
     }
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<SubscriptionCondition> getConditions() {
+    public List<SubscriptionStatusConditions> getConditions() {
         return conditions;
     }
 
     @JsonProperty("conditions")
-    public void setConditions(List<SubscriptionCondition> conditions) {
+    public void setConditions(List<SubscriptionStatusConditions> conditions) {
         this.conditions = conditions;
     }
 
@@ -153,12 +154,12 @@ public class SubscriptionStatus implements Editable<SubscriptionStatusBuilder> ,
     }
 
     @JsonProperty("installPlanRef")
-    public io.fabric8.kubernetes.api.model.ObjectReference getInstallPlanRef() {
+    public SubscriptionStatusInstallPlanRef getInstallPlanRef() {
         return installPlanRef;
     }
 
     @JsonProperty("installPlanRef")
-    public void setInstallPlanRef(io.fabric8.kubernetes.api.model.ObjectReference installPlanRef) {
+    public void setInstallPlanRef(SubscriptionStatusInstallPlanRef installPlanRef) {
         this.installPlanRef = installPlanRef;
     }
 
@@ -173,12 +174,12 @@ public class SubscriptionStatus implements Editable<SubscriptionStatusBuilder> ,
     }
 
     @JsonProperty("installplan")
-    public InstallPlanReference getInstallplan() {
+    public SubscriptionStatusInstallplan getInstallplan() {
         return installplan;
     }
 
     @JsonProperty("installplan")
-    public void setInstallplan(InstallPlanReference installplan) {
+    public void setInstallplan(SubscriptionStatusInstallplan installplan) {
         this.installplan = installplan;
     }
 
