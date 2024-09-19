@@ -91,6 +91,18 @@ class HttpClientUtilsTest {
   }
 
   @Test
+  void testConfigureProxyAuth() throws Exception {
+    Config config = new ConfigBuilder().withMasterUrl("http://localhost").withHttpProxy("http://user:password@192.168.0.1:8080")
+        .build();
+    Builder builder = Mockito.mock(HttpClient.Builder.class, Mockito.RETURNS_SELF);
+
+    HttpClientUtils.configureProxy(config, builder);
+
+    Mockito.verify(builder).proxyType(HttpClient.ProxyType.HTTP);
+    Mockito.verify(builder).proxyAuthorization("Basic dXNlcjpwYXNzd29yZA==");
+  }
+
+  @Test
   void testCreateApplicableInterceptors() {
     // Given
     Config config = new ConfigBuilder().build();

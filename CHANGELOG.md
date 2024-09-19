@@ -1,5 +1,11 @@
 ## CHANGELOG
 
+### 6.13.4 (2024-09-25)
+
+#### Bugs
+* Fix #6247: Support for proxy authentication from proxy URL user info
+
+
 ### 6.13.3 (2024-08-13)
 
 #### Bugs
