@@ -15,10 +15,10 @@
  */
 package io.fabric8.openshift.client.server.mock;
 
-import io.fabric8.openshift.api.model.clusterautoscaling.v1beta1.MachineAutoscaler;
-import io.fabric8.openshift.api.model.clusterautoscaling.v1beta1.MachineAutoscalerBuilder;
-import io.fabric8.openshift.api.model.clusterautoscaling.v1beta1.MachineAutoscalerList;
-import io.fabric8.openshift.api.model.clusterautoscaling.v1beta1.MachineAutoscalerListBuilder;
+import io.fabric8.openshift.api.model.autoscaling.v1beta1.MachineAutoscaler;
+import io.fabric8.openshift.api.model.autoscaling.v1beta1.MachineAutoscalerBuilder;
+import io.fabric8.openshift.api.model.autoscaling.v1beta1.MachineAutoscalerList;
+import io.fabric8.openshift.api.model.autoscaling.v1beta1.MachineAutoscalerListBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
 import org.junit.jupiter.api.Test;
 
@@ -39,7 +39,7 @@ class MachineAutoscalerTest {
         .once();
 
     // When
-    MachineAutoscaler machineAutoscaler = client.clusterAutoscaling().v1beta1().machineAutoscalers()
+    MachineAutoscaler machineAutoscaler = client.openShiftAutoscaling().v1beta1().machineAutoscalers()
         .inNamespace("ns1")
         .withName("test-get").get();
 
@@ -59,7 +59,7 @@ class MachineAutoscalerTest {
         .once();
 
     // When
-    MachineAutoscalerList machineAutoscalerList = client.clusterAutoscaling().v1beta1().machineAutoscalers()
+    MachineAutoscalerList machineAutoscalerList = client.openShiftAutoscaling().v1beta1().machineAutoscalers()
         .inNamespace("ns1")
         .list();
 
@@ -78,7 +78,7 @@ class MachineAutoscalerTest {
         .once();
 
     // When
-    Boolean isDeleted = client.clusterAutoscaling().v1beta1().machineAutoscalers()
+    Boolean isDeleted = client.openShiftAutoscaling().v1beta1().machineAutoscalers()
         .inNamespace("ns1")
         .withName("ma").delete().size() == 1;
 

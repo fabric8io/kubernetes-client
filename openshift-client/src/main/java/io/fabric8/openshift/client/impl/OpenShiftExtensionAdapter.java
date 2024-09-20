@@ -27,7 +27,7 @@ import io.fabric8.openshift.api.model.RoleBinding;
 import io.fabric8.openshift.api.model.Template;
 import io.fabric8.openshift.client.OpenShiftClient;
 import io.fabric8.openshift.client.dsl.MachineConfigurationAPIGroupDSL;
-import io.fabric8.openshift.client.dsl.OpenShiftClusterAutoscalingAPIGroupDSL;
+import io.fabric8.openshift.client.dsl.OpenShiftAutoscalingAPIGroupDSL;
 import io.fabric8.openshift.client.dsl.OpenShiftConfigAPIGroupDSL;
 import io.fabric8.openshift.client.dsl.OpenShiftConsoleAPIGroupDSL;
 import io.fabric8.openshift.client.dsl.OpenShiftHiveAPIGroupDSL;
@@ -39,8 +39,8 @@ import io.fabric8.openshift.client.dsl.OpenShiftQuotaAPIGroupDSL;
 import io.fabric8.openshift.client.dsl.OpenShiftStorageVersionMigratorApiGroupDSL;
 import io.fabric8.openshift.client.dsl.OpenShiftTunedAPIGroupDSL;
 import io.fabric8.openshift.client.dsl.OpenShiftWhereaboutsAPIGroupDSL;
-import io.fabric8.openshift.client.dsl.V1ClusterAutoscalingAPIGroupDSL;
-import io.fabric8.openshift.client.dsl.V1beta1ClusterAutoscalingAPIGroupDSL;
+import io.fabric8.openshift.client.dsl.V1AutoscalingAPIGroupDSL;
+import io.fabric8.openshift.client.dsl.V1beta1AutoscalingAPIGroupDSL;
 import io.fabric8.openshift.client.dsl.internal.apps.DeploymentConfigOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.authorization.RoleBindingOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.build.BuildConfigOperationsImpl;
@@ -75,11 +75,11 @@ public class OpenShiftExtensionAdapter implements ExtensionAdapter<OpenShiftClie
   @Override
   public void registerClients(ClientFactory factory) {
     factory.register(OpenShiftConfigAPIGroupDSL.class, new OpenShiftConfigAPIGroupClient());
-    factory.register(OpenShiftClusterAutoscalingAPIGroupDSL.class, new OpenShiftClusterAutoscalingAPIGroupClient());
+    factory.register(OpenShiftAutoscalingAPIGroupDSL.class, new OpenShiftAutoscalingAPIGroupClient());
     factory.register(OpenShiftHiveAPIGroupDSL.class, new OpenShiftHiveAPIGroupClient());
-    factory.register(V1beta1ClusterAutoscalingAPIGroupDSL.class,
-        new V1beta1OpenShiftClusterAutoscalingAPIGroupClient());
-    factory.register(V1ClusterAutoscalingAPIGroupDSL.class, new V1OpenShiftClusterAutoscalingAPIGroupClient());
+    factory.register(V1beta1AutoscalingAPIGroupDSL.class,
+        new V1beta1OpenShiftAutoscalingAPIGroupClient());
+    factory.register(V1AutoscalingAPIGroupDSL.class, new V1OpenShiftAutoscalingAPIGroupClient());
     factory.register(OpenShiftConsoleAPIGroupDSL.class, new OpenShiftConsoleAPIGroupClient());
     factory.register(OpenShiftOperatorAPIGroupDSL.class, new OpenShiftOperatorAPIGroupClient());
     factory.register(OpenShiftOperatorHubAPIGroupDSL.class, new OpenShiftOperatorHubAPIGroupClient());

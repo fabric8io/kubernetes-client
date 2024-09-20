@@ -8,6 +8,7 @@
   - [Moved packages](#model-changes-moved-packages)
   - [Service Catalog removed (operator.openshift.io)](#service-catalog-removed)
   - [Removed deprecated types for network.openshift.io (OpenShift-SDN-only)](#openshift-network-removed)
+  - [Renamed clusterautoscaling to autoscaling](#openshift-clusterautoscaling-to-autoscaling)
 - [Deprecations and Removals](#deprecations-and-removals)
   - [Service Catalog API (extension) removed](#service-catalog-extension) 
 
@@ -31,6 +32,11 @@ Declarative Services. Fabric8 Kubernetes Client is now using official OSGi annot
 annotations, you need to switch to [Official OSGi Component annotations](https://docs.osgi.org/javadoc/r6/cmpn/org/osgi/service/component/annotations/package-summary.html).
 
 ## Model Changes <a href="#model-changes" id="model-changes"/>
+
+The way we generate the Kubernetes model types/classes has changed.
+We've moved from a reflection-based approach from the Go types, to a mixed approach leveraging the OpenAPI schemas that are publicly available.
+
+This change has had several impacts on the generated classes, including:
 
 ### kubernetes-model artifact removed <a href="#kubernetes-model-artifact-removed" id="kubernetes-model-artifact-removed"/>
 
@@ -68,6 +74,14 @@ The moved types include:
 - HelmChartRepository (`openshift-model-miscellaneous`)
 - OperatorPKI (`openshift-model-operator`)
 - ProjectHelmChartRepository (`openshift-model-miscellaneous`)
+
+### Renamed clusterautoscaling to autoscaling <a href="#openshift-clusterautoscaling-to-autoscaling" id="openshift-clusterautoscaling-to-autoscaling" />
+
+The module `openshift-model-clusterautoscaling` has been renamed to `openshift-model-autoscaling` to match the API group name.
+
+The package has also been renamed from `io.fabric8.openshift.api.model.clusterautoscaling` to `io.fabric8.openshift.api.model.autoscaling`.
+
+The OpenShiftClient DSL entry-point has also been renamed from `OpenShiftClient.clusterAutoscaling()` to `OpenShiftClient.openShiftAutoscaling()`.
 
 ## Deprecations and Removals <a href="#deprecations-and-removals" id="deprecations-and-removals"/>
 

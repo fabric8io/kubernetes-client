@@ -57,7 +57,7 @@
    </dependency>
    <dependency>
       <groupId>io.fabric8</groupId>
-      <artifactId>openshift-model-clusterautoscaling</artifactId>
+      <artifactId>openshift-model-autoscaling</artifactId>
     </dependency>
    <dependency>
       <groupId>io.fabric8</groupId>
@@ -111,7 +111,7 @@
       <groupId>io.fabric8</groupId>
       <artifactId>openshift-model-installer</artifactId>
     </dependency>
-    
+
     <!-- Compile Only Dependencies -->
     <dependency>
       <groupId>io.sundr</groupId>

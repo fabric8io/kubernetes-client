@@ -129,7 +129,7 @@ import io.fabric8.openshift.client.dsl.BuildResource;
 import io.fabric8.openshift.client.dsl.DeployableScalableResource;
 import io.fabric8.openshift.client.dsl.MachineConfigurationAPIGroupDSL;
 import io.fabric8.openshift.client.dsl.NameableCreateOrDeleteable;
-import io.fabric8.openshift.client.dsl.OpenShiftClusterAutoscalingAPIGroupDSL;
+import io.fabric8.openshift.client.dsl.OpenShiftAutoscalingAPIGroupDSL;
 import io.fabric8.openshift.client.dsl.OpenShiftConfigAPIGroupDSL;
 import io.fabric8.openshift.client.dsl.OpenShiftConsoleAPIGroupDSL;
 import io.fabric8.openshift.client.dsl.OpenShiftHiveAPIGroupDSL;
@@ -175,9 +175,9 @@ public interface OpenShiftClient extends KubernetesClient, SupportTestingClient 
   /**
    * API entrypoint for accessing OpenShift Cluster Operator resources (autoscaling.openshift.io)
    *
-   * @return {@link OpenShiftClusterAutoscalingAPIGroupDSL} which contains respective resources in this API group
+   * @return {@link OpenShiftAutoscalingAPIGroupDSL} which contains respective resources in this API group
    */
-  OpenShiftClusterAutoscalingAPIGroupDSL clusterAutoscaling();
+  OpenShiftAutoscalingAPIGroupDSL openShiftAutoscaling();
 
   /**
    * API entrypoint for accessing OpenShift Hive Operator resources (hive.openshift.io)
