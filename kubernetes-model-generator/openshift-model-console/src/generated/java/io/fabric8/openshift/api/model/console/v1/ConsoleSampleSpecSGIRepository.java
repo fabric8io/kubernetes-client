@@ -13,8 +13,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
+import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
@@ -22,12 +22,8 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.kubernetes.model.annotation.Group;
-import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import io.sundr.transform.annotations.TemplateTransformation;
-import io.sundr.transform.annotations.TemplateTransformations;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
@@ -35,10 +31,9 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "apiVersion",
-    "kind",
-    "metadata",
-    "spec"
+    "contextDir",
+    "revision",
+    "url"
 })
 @ToString
 @EqualsAndHashCode
@@ -57,33 +52,16 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
-@TemplateTransformations({
-    @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true)
-})
-@Version("v1")
-@Group("console.openshift.io")
 @Generated("jsonschema2pojo")
-public class ConsoleCLIDownload implements Editable<ConsoleCLIDownloadBuilder> , HasMetadata
+public class ConsoleSampleSpecSGIRepository implements Editable<ConsoleSampleSpecSGIRepositoryBuilder> , KubernetesResource
 {
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
-    @JsonProperty("apiVersion")
-    private String apiVersion = "console.openshift.io/v1";
-    /**
-     * 
-     * (Required)
-     * 
-     */
-    @JsonProperty("kind")
-    private String kind = "ConsoleCLIDownload";
-    @JsonProperty("metadata")
-    private ObjectMeta metadata;
-    @JsonProperty("spec")
-    private ConsoleCLIDownloadSpec spec;
+    @JsonProperty("contextDir")
+    private String contextDir;
+    @JsonProperty("revision")
+    private String revision;
+    @JsonProperty("url")
+    private String url;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -91,84 +69,53 @@ public class ConsoleCLIDownload implements Editable<ConsoleCLIDownloadBuilder> ,
      * No args constructor for use in serialization
      * 
      */
-    public ConsoleCLIDownload() {
+    public ConsoleSampleSpecSGIRepository() {
     }
 
-    public ConsoleCLIDownload(String apiVersion, String kind, ObjectMeta metadata, ConsoleCLIDownloadSpec spec) {
+    public ConsoleSampleSpecSGIRepository(String contextDir, String revision, String url) {
         super();
-        this.apiVersion = apiVersion;
-        this.kind = kind;
-        this.metadata = metadata;
-        this.spec = spec;
+        this.contextDir = contextDir;
+        this.revision = revision;
+        this.url = url;
     }
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
-    @JsonProperty("apiVersion")
-    public String getApiVersion() {
-        return apiVersion;
+    @JsonProperty("contextDir")
+    public String getContextDir() {
+        return contextDir;
     }
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
-    @JsonProperty("apiVersion")
-    public void setApiVersion(String apiVersion) {
-        this.apiVersion = apiVersion;
+    @JsonProperty("contextDir")
+    public void setContextDir(String contextDir) {
+        this.contextDir = contextDir;
     }
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
-    @JsonProperty("kind")
-    public String getKind() {
-        return kind;
+    @JsonProperty("revision")
+    public String getRevision() {
+        return revision;
     }
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
-    @JsonProperty("kind")
-    public void setKind(String kind) {
-        this.kind = kind;
+    @JsonProperty("revision")
+    public void setRevision(String revision) {
+        this.revision = revision;
     }
 
-    @JsonProperty("metadata")
-    public ObjectMeta getMetadata() {
-        return metadata;
+    @JsonProperty("url")
+    public String getUrl() {
+        return url;
     }
 
-    @JsonProperty("metadata")
-    public void setMetadata(ObjectMeta metadata) {
-        this.metadata = metadata;
-    }
-
-    @JsonProperty("spec")
-    public ConsoleCLIDownloadSpec getSpec() {
-        return spec;
-    }
-
-    @JsonProperty("spec")
-    public void setSpec(ConsoleCLIDownloadSpec spec) {
-        this.spec = spec;
+    @JsonProperty("url")
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     @JsonIgnore
-    public ConsoleCLIDownloadBuilder edit() {
-        return new ConsoleCLIDownloadBuilder(this);
+    public ConsoleSampleSpecSGIRepositoryBuilder edit() {
+        return new ConsoleSampleSpecSGIRepositoryBuilder(this);
     }
 
     @JsonIgnore
-    public ConsoleCLIDownloadBuilder toBuilder() {
+    public ConsoleSampleSpecSGIRepositoryBuilder toBuilder() {
         return edit();
     }
 

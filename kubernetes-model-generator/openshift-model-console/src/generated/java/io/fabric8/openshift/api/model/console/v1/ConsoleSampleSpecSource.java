@@ -1,5 +1,5 @@
 
-package io.fabric8.openshift.api.model.console.v1alpha1;
+package io.fabric8.openshift.api.model.console.v1;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -31,10 +31,8 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "alias",
-    "authorize",
-    "caCertificate",
-    "service",
+    "containerImport",
+    "gitImport",
     "type"
 })
 @ToString
@@ -55,17 +53,13 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ConsolePluginProxy implements Editable<ConsolePluginProxyBuilder> , KubernetesResource
+public class ConsoleSampleSpecSource implements Editable<ConsoleSampleSpecSourceBuilder> , KubernetesResource
 {
 
-    @JsonProperty("alias")
-    private String alias;
-    @JsonProperty("authorize")
-    private Boolean authorize;
-    @JsonProperty("caCertificate")
-    private String caCertificate;
-    @JsonProperty("service")
-    private ConsolePluginProxyServiceConfig service;
+    @JsonProperty("containerImport")
+    private ConsoleSampleSpecSContainerImport containerImport;
+    @JsonProperty("gitImport")
+    private ConsoleSampleSpecSGitImport gitImport;
     @JsonProperty("type")
     private String type;
     @JsonIgnore
@@ -75,56 +69,34 @@ public class ConsolePluginProxy implements Editable<ConsolePluginProxyBuilder> ,
      * No args constructor for use in serialization
      * 
      */
-    public ConsolePluginProxy() {
+    public ConsoleSampleSpecSource() {
     }
 
-    public ConsolePluginProxy(String alias, Boolean authorize, String caCertificate, ConsolePluginProxyServiceConfig service, String type) {
+    public ConsoleSampleSpecSource(ConsoleSampleSpecSContainerImport containerImport, ConsoleSampleSpecSGitImport gitImport, String type) {
         super();
-        this.alias = alias;
-        this.authorize = authorize;
-        this.caCertificate = caCertificate;
-        this.service = service;
+        this.containerImport = containerImport;
+        this.gitImport = gitImport;
         this.type = type;
     }
 
-    @JsonProperty("alias")
-    public String getAlias() {
-        return alias;
+    @JsonProperty("containerImport")
+    public ConsoleSampleSpecSContainerImport getContainerImport() {
+        return containerImport;
     }
 
-    @JsonProperty("alias")
-    public void setAlias(String alias) {
-        this.alias = alias;
+    @JsonProperty("containerImport")
+    public void setContainerImport(ConsoleSampleSpecSContainerImport containerImport) {
+        this.containerImport = containerImport;
     }
 
-    @JsonProperty("authorize")
-    public Boolean getAuthorize() {
-        return authorize;
+    @JsonProperty("gitImport")
+    public ConsoleSampleSpecSGitImport getGitImport() {
+        return gitImport;
     }
 
-    @JsonProperty("authorize")
-    public void setAuthorize(Boolean authorize) {
-        this.authorize = authorize;
-    }
-
-    @JsonProperty("caCertificate")
-    public String getCaCertificate() {
-        return caCertificate;
-    }
-
-    @JsonProperty("caCertificate")
-    public void setCaCertificate(String caCertificate) {
-        this.caCertificate = caCertificate;
-    }
-
-    @JsonProperty("service")
-    public ConsolePluginProxyServiceConfig getService() {
-        return service;
-    }
-
-    @JsonProperty("service")
-    public void setService(ConsolePluginProxyServiceConfig service) {
-        this.service = service;
+    @JsonProperty("gitImport")
+    public void setGitImport(ConsoleSampleSpecSGitImport gitImport) {
+        this.gitImport = gitImport;
     }
 
     @JsonProperty("type")
@@ -138,12 +110,12 @@ public class ConsolePluginProxy implements Editable<ConsolePluginProxyBuilder> ,
     }
 
     @JsonIgnore
-    public ConsolePluginProxyBuilder edit() {
-        return new ConsolePluginProxyBuilder(this);
+    public ConsoleSampleSpecSourceBuilder edit() {
+        return new ConsoleSampleSpecSourceBuilder(this);
     }
 
     @JsonIgnore
-    public ConsolePluginProxyBuilder toBuilder() {
+    public ConsoleSampleSpecSourceBuilder toBuilder() {
         return edit();
     }
 

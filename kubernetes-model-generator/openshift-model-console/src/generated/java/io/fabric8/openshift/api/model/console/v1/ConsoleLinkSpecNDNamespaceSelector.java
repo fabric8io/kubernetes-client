@@ -1,7 +1,9 @@
 
-package io.fabric8.openshift.api.model.console.v1alpha1;
+package io.fabric8.openshift.api.model.console.v1;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -16,6 +18,7 @@ import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
+import io.fabric8.kubernetes.api.model.LabelSelectorRequirement;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
@@ -31,10 +34,8 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "basePath",
-    "name",
-    "namespace",
-    "port"
+    "matchExpressions",
+    "matchLabels"
 })
 @ToString
 @EqualsAndHashCode
@@ -54,17 +55,15 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ConsolePluginService implements Editable<ConsolePluginServiceBuilder> , KubernetesResource
+public class ConsoleLinkSpecNDNamespaceSelector implements Editable<ConsoleLinkSpecNDNamespaceSelectorBuilder> , KubernetesResource
 {
 
-    @JsonProperty("basePath")
-    private String basePath;
-    @JsonProperty("name")
-    private String name;
-    @JsonProperty("namespace")
-    private String namespace;
-    @JsonProperty("port")
-    private Integer port;
+    @JsonProperty("matchExpressions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<LabelSelectorRequirement> matchExpressions = new ArrayList<>();
+    @JsonProperty("matchLabels")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, String> matchLabels = new LinkedHashMap<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -72,64 +71,44 @@ public class ConsolePluginService implements Editable<ConsolePluginServiceBuilde
      * No args constructor for use in serialization
      * 
      */
-    public ConsolePluginService() {
+    public ConsoleLinkSpecNDNamespaceSelector() {
     }
 
-    public ConsolePluginService(String basePath, String name, String namespace, Integer port) {
+    public ConsoleLinkSpecNDNamespaceSelector(List<LabelSelectorRequirement> matchExpressions, Map<String, String> matchLabels) {
         super();
-        this.basePath = basePath;
-        this.name = name;
-        this.namespace = namespace;
-        this.port = port;
+        this.matchExpressions = matchExpressions;
+        this.matchLabels = matchLabels;
     }
 
-    @JsonProperty("basePath")
-    public String getBasePath() {
-        return basePath;
+    @JsonProperty("matchExpressions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<LabelSelectorRequirement> getMatchExpressions() {
+        return matchExpressions;
     }
 
-    @JsonProperty("basePath")
-    public void setBasePath(String basePath) {
-        this.basePath = basePath;
+    @JsonProperty("matchExpressions")
+    public void setMatchExpressions(List<LabelSelectorRequirement> matchExpressions) {
+        this.matchExpressions = matchExpressions;
     }
 
-    @JsonProperty("name")
-    public String getName() {
-        return name;
+    @JsonProperty("matchLabels")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public Map<String, String> getMatchLabels() {
+        return matchLabels;
     }
 
-    @JsonProperty("name")
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @JsonProperty("namespace")
-    public String getNamespace() {
-        return namespace;
-    }
-
-    @JsonProperty("namespace")
-    public void setNamespace(String namespace) {
-        this.namespace = namespace;
-    }
-
-    @JsonProperty("port")
-    public Integer getPort() {
-        return port;
-    }
-
-    @JsonProperty("port")
-    public void setPort(Integer port) {
-        this.port = port;
+    @JsonProperty("matchLabels")
+    public void setMatchLabels(Map<String, String> matchLabels) {
+        this.matchLabels = matchLabels;
     }
 
     @JsonIgnore
-    public ConsolePluginServiceBuilder edit() {
-        return new ConsolePluginServiceBuilder(this);
+    public ConsoleLinkSpecNDNamespaceSelectorBuilder edit() {
+        return new ConsoleLinkSpecNDNamespaceSelectorBuilder(this);
     }
 
     @JsonIgnore
-    public ConsolePluginServiceBuilder toBuilder() {
+    public ConsoleLinkSpecNDNamespaceSelectorBuilder toBuilder() {
         return edit();
     }
 

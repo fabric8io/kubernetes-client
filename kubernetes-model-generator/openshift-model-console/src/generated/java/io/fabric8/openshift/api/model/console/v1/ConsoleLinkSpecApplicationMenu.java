@@ -1,9 +1,7 @@
 
 package io.fabric8.openshift.api.model.console.v1;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -17,6 +15,7 @@ import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
+import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
@@ -32,8 +31,8 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "namespaceSelector",
-    "namespaces"
+    "imageURL",
+    "section"
 })
 @ToString
 @EqualsAndHashCode
@@ -43,7 +42,7 @@ import lombok.experimental.Accessors;
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.LabelSelector.class),
+    @BuildableReference(LabelSelector.class),
     @BuildableReference(Container.class),
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
@@ -53,14 +52,13 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class NamespaceDashboardSpec implements Editable<NamespaceDashboardSpecBuilder> , KubernetesResource
+public class ConsoleLinkSpecApplicationMenu implements Editable<ConsoleLinkSpecApplicationMenuBuilder> , KubernetesResource
 {
 
-    @JsonProperty("namespaceSelector")
-    private io.fabric8.kubernetes.api.model.LabelSelector namespaceSelector;
-    @JsonProperty("namespaces")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> namespaces = new ArrayList<>();
+    @JsonProperty("imageURL")
+    private String imageURL;
+    @JsonProperty("section")
+    private String section;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -68,43 +66,42 @@ public class NamespaceDashboardSpec implements Editable<NamespaceDashboardSpecBu
      * No args constructor for use in serialization
      * 
      */
-    public NamespaceDashboardSpec() {
+    public ConsoleLinkSpecApplicationMenu() {
     }
 
-    public NamespaceDashboardSpec(io.fabric8.kubernetes.api.model.LabelSelector namespaceSelector, List<String> namespaces) {
+    public ConsoleLinkSpecApplicationMenu(String imageURL, String section) {
         super();
-        this.namespaceSelector = namespaceSelector;
-        this.namespaces = namespaces;
+        this.imageURL = imageURL;
+        this.section = section;
     }
 
-    @JsonProperty("namespaceSelector")
-    public io.fabric8.kubernetes.api.model.LabelSelector getNamespaceSelector() {
-        return namespaceSelector;
+    @JsonProperty("imageURL")
+    public String getImageURL() {
+        return imageURL;
     }
 
-    @JsonProperty("namespaceSelector")
-    public void setNamespaceSelector(io.fabric8.kubernetes.api.model.LabelSelector namespaceSelector) {
-        this.namespaceSelector = namespaceSelector;
+    @JsonProperty("imageURL")
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
     }
 
-    @JsonProperty("namespaces")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<String> getNamespaces() {
-        return namespaces;
+    @JsonProperty("section")
+    public String getSection() {
+        return section;
     }
 
-    @JsonProperty("namespaces")
-    public void setNamespaces(List<String> namespaces) {
-        this.namespaces = namespaces;
-    }
-
-    @JsonIgnore
-    public NamespaceDashboardSpecBuilder edit() {
-        return new NamespaceDashboardSpecBuilder(this);
+    @JsonProperty("section")
+    public void setSection(String section) {
+        this.section = section;
     }
 
     @JsonIgnore
-    public NamespaceDashboardSpecBuilder toBuilder() {
+    public ConsoleLinkSpecApplicationMenuBuilder edit() {
+        return new ConsoleLinkSpecApplicationMenuBuilder(this);
+    }
+
+    @JsonIgnore
+    public ConsoleLinkSpecApplicationMenuBuilder toBuilder() {
         return edit();
     }
 

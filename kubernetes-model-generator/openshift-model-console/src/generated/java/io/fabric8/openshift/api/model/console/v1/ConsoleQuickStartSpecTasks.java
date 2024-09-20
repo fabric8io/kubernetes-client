@@ -31,8 +31,10 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "imageURL",
-    "section"
+    "description",
+    "review",
+    "summary",
+    "title"
 })
 @ToString
 @EqualsAndHashCode
@@ -52,13 +54,17 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ApplicationMenuSpec implements Editable<ApplicationMenuSpecBuilder> , KubernetesResource
+public class ConsoleQuickStartSpecTasks implements Editable<ConsoleQuickStartSpecTasksBuilder> , KubernetesResource
 {
 
-    @JsonProperty("imageURL")
-    private String imageURL;
-    @JsonProperty("section")
-    private String section;
+    @JsonProperty("description")
+    private String description;
+    @JsonProperty("review")
+    private ConsoleQuickStartSpecTReview review;
+    @JsonProperty("summary")
+    private ConsoleQuickStartSpecTSummary summary;
+    @JsonProperty("title")
+    private String title;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -66,42 +72,64 @@ public class ApplicationMenuSpec implements Editable<ApplicationMenuSpecBuilder>
      * No args constructor for use in serialization
      * 
      */
-    public ApplicationMenuSpec() {
+    public ConsoleQuickStartSpecTasks() {
     }
 
-    public ApplicationMenuSpec(String imageURL, String section) {
+    public ConsoleQuickStartSpecTasks(String description, ConsoleQuickStartSpecTReview review, ConsoleQuickStartSpecTSummary summary, String title) {
         super();
-        this.imageURL = imageURL;
-        this.section = section;
+        this.description = description;
+        this.review = review;
+        this.summary = summary;
+        this.title = title;
     }
 
-    @JsonProperty("imageURL")
-    public String getImageURL() {
-        return imageURL;
+    @JsonProperty("description")
+    public String getDescription() {
+        return description;
     }
 
-    @JsonProperty("imageURL")
-    public void setImageURL(String imageURL) {
-        this.imageURL = imageURL;
+    @JsonProperty("description")
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    @JsonProperty("section")
-    public String getSection() {
-        return section;
+    @JsonProperty("review")
+    public ConsoleQuickStartSpecTReview getReview() {
+        return review;
     }
 
-    @JsonProperty("section")
-    public void setSection(String section) {
-        this.section = section;
+    @JsonProperty("review")
+    public void setReview(ConsoleQuickStartSpecTReview review) {
+        this.review = review;
+    }
+
+    @JsonProperty("summary")
+    public ConsoleQuickStartSpecTSummary getSummary() {
+        return summary;
+    }
+
+    @JsonProperty("summary")
+    public void setSummary(ConsoleQuickStartSpecTSummary summary) {
+        this.summary = summary;
+    }
+
+    @JsonProperty("title")
+    public String getTitle() {
+        return title;
+    }
+
+    @JsonProperty("title")
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     @JsonIgnore
-    public ApplicationMenuSpecBuilder edit() {
-        return new ApplicationMenuSpecBuilder(this);
+    public ConsoleQuickStartSpecTasksBuilder edit() {
+        return new ConsoleQuickStartSpecTasksBuilder(this);
     }
 
     @JsonIgnore
-    public ApplicationMenuSpecBuilder toBuilder() {
+    public ConsoleQuickStartSpecTasksBuilder toBuilder() {
         return edit();
     }
 

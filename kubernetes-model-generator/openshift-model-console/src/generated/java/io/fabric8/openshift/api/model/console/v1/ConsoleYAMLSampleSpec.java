@@ -22,7 +22,6 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.kubernetes.api.model.TypeMeta;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -64,7 +63,7 @@ public class ConsoleYAMLSampleSpec implements Editable<ConsoleYAMLSampleSpecBuil
     @JsonProperty("snippet")
     private Boolean snippet;
     @JsonProperty("targetResource")
-    private TypeMeta targetResource;
+    private ConsoleYAMLSampleSpecTargetResource targetResource;
     @JsonProperty("title")
     private String title;
     @JsonProperty("yaml")
@@ -79,7 +78,7 @@ public class ConsoleYAMLSampleSpec implements Editable<ConsoleYAMLSampleSpecBuil
     public ConsoleYAMLSampleSpec() {
     }
 
-    public ConsoleYAMLSampleSpec(String description, Boolean snippet, TypeMeta targetResource, String title, String yaml) {
+    public ConsoleYAMLSampleSpec(String description, Boolean snippet, ConsoleYAMLSampleSpecTargetResource targetResource, String title, String yaml) {
         super();
         this.description = description;
         this.snippet = snippet;
@@ -109,12 +108,12 @@ public class ConsoleYAMLSampleSpec implements Editable<ConsoleYAMLSampleSpecBuil
     }
 
     @JsonProperty("targetResource")
-    public TypeMeta getTargetResource() {
+    public ConsoleYAMLSampleSpecTargetResource getTargetResource() {
         return targetResource;
     }
 
     @JsonProperty("targetResource")
-    public void setTargetResource(TypeMeta targetResource) {
+    public void setTargetResource(ConsoleYAMLSampleSpecTargetResource targetResource) {
         this.targetResource = targetResource;
     }
 

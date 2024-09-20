@@ -1,5 +1,5 @@
 
-package io.fabric8.openshift.api.model.console.v1;
+package io.fabric8.openshift.api.model.console.v1alpha1;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -31,8 +31,9 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "href",
-    "text"
+    "name",
+    "namespace",
+    "port"
 })
 @ToString
 @EqualsAndHashCode
@@ -52,13 +53,15 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class CLIDownloadLink implements Editable<CLIDownloadLinkBuilder> , KubernetesResource
+public class ConsolePluginSpecPService implements Editable<ConsolePluginSpecPServiceBuilder> , KubernetesResource
 {
 
-    @JsonProperty("href")
-    private String href;
-    @JsonProperty("text")
-    private String text;
+    @JsonProperty("name")
+    private String name;
+    @JsonProperty("namespace")
+    private String namespace;
+    @JsonProperty("port")
+    private Integer port;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -66,42 +69,53 @@ public class CLIDownloadLink implements Editable<CLIDownloadLinkBuilder> , Kuber
      * No args constructor for use in serialization
      * 
      */
-    public CLIDownloadLink() {
+    public ConsolePluginSpecPService() {
     }
 
-    public CLIDownloadLink(String href, String text) {
+    public ConsolePluginSpecPService(String name, String namespace, Integer port) {
         super();
-        this.href = href;
-        this.text = text;
+        this.name = name;
+        this.namespace = namespace;
+        this.port = port;
     }
 
-    @JsonProperty("href")
-    public String getHref() {
-        return href;
+    @JsonProperty("name")
+    public String getName() {
+        return name;
     }
 
-    @JsonProperty("href")
-    public void setHref(String href) {
-        this.href = href;
+    @JsonProperty("name")
+    public void setName(String name) {
+        this.name = name;
     }
 
-    @JsonProperty("text")
-    public String getText() {
-        return text;
+    @JsonProperty("namespace")
+    public String getNamespace() {
+        return namespace;
     }
 
-    @JsonProperty("text")
-    public void setText(String text) {
-        this.text = text;
+    @JsonProperty("namespace")
+    public void setNamespace(String namespace) {
+        this.namespace = namespace;
+    }
+
+    @JsonProperty("port")
+    public Integer getPort() {
+        return port;
+    }
+
+    @JsonProperty("port")
+    public void setPort(Integer port) {
+        this.port = port;
     }
 
     @JsonIgnore
-    public CLIDownloadLinkBuilder edit() {
-        return new CLIDownloadLinkBuilder(this);
+    public ConsolePluginSpecPServiceBuilder edit() {
+        return new ConsolePluginSpecPServiceBuilder(this);
     }
 
     @JsonIgnore
-    public CLIDownloadLinkBuilder toBuilder() {
+    public ConsolePluginSpecPServiceBuilder toBuilder() {
         return edit();
     }
 

@@ -1,7 +1,9 @@
 
 package io.fabric8.openshift.api.model.console.v1;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -13,9 +15,11 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
+import io.fabric8.kubernetes.api.model.KubernetesResource;
+import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.LabelSelector;
+import io.fabric8.kubernetes.api.model.ListMeta;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
@@ -38,7 +42,7 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "spec"
+    "items"
 })
 @ToString
 @EqualsAndHashCode
@@ -63,7 +67,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("console.openshift.io")
 @Generated("jsonschema2pojo")
-public class ConsoleCLIDownload implements Editable<ConsoleCLIDownloadBuilder> , HasMetadata
+public class ConsoleSampleList implements Editable<ConsoleSampleListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.console.v1.ConsoleSample>
 {
 
     /**
@@ -73,17 +77,18 @@ public class ConsoleCLIDownload implements Editable<ConsoleCLIDownloadBuilder> ,
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "console.openshift.io/v1";
+    @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<io.fabric8.openshift.api.model.console.v1.ConsoleSample> items = new ArrayList<>();
     /**
      * 
      * (Required)
      * 
      */
     @JsonProperty("kind")
-    private String kind = "ConsoleCLIDownload";
+    private String kind = "ConsoleSampleList";
     @JsonProperty("metadata")
-    private ObjectMeta metadata;
-    @JsonProperty("spec")
-    private ConsoleCLIDownloadSpec spec;
+    private ListMeta metadata;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -91,15 +96,15 @@ public class ConsoleCLIDownload implements Editable<ConsoleCLIDownloadBuilder> ,
      * No args constructor for use in serialization
      * 
      */
-    public ConsoleCLIDownload() {
+    public ConsoleSampleList() {
     }
 
-    public ConsoleCLIDownload(String apiVersion, String kind, ObjectMeta metadata, ConsoleCLIDownloadSpec spec) {
+    public ConsoleSampleList(String apiVersion, List<io.fabric8.openshift.api.model.console.v1.ConsoleSample> items, String kind, ListMeta metadata) {
         super();
         this.apiVersion = apiVersion;
+        this.items = items;
         this.kind = kind;
         this.metadata = metadata;
-        this.spec = spec;
     }
 
     /**
@@ -120,6 +125,17 @@ public class ConsoleCLIDownload implements Editable<ConsoleCLIDownloadBuilder> ,
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
+    }
+
+    @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<io.fabric8.openshift.api.model.console.v1.ConsoleSample> getItems() {
+        return items;
+    }
+
+    @JsonProperty("items")
+    public void setItems(List<io.fabric8.openshift.api.model.console.v1.ConsoleSample> items) {
+        this.items = items;
     }
 
     /**
@@ -143,32 +159,22 @@ public class ConsoleCLIDownload implements Editable<ConsoleCLIDownloadBuilder> ,
     }
 
     @JsonProperty("metadata")
-    public ObjectMeta getMetadata() {
+    public ListMeta getMetadata() {
         return metadata;
     }
 
     @JsonProperty("metadata")
-    public void setMetadata(ObjectMeta metadata) {
+    public void setMetadata(ListMeta metadata) {
         this.metadata = metadata;
     }
 
-    @JsonProperty("spec")
-    public ConsoleCLIDownloadSpec getSpec() {
-        return spec;
-    }
-
-    @JsonProperty("spec")
-    public void setSpec(ConsoleCLIDownloadSpec spec) {
-        this.spec = spec;
+    @JsonIgnore
+    public ConsoleSampleListBuilder edit() {
+        return new ConsoleSampleListBuilder(this);
     }
 
     @JsonIgnore
-    public ConsoleCLIDownloadBuilder edit() {
-        return new ConsoleCLIDownloadBuilder(this);
-    }
-
-    @JsonIgnore
-    public ConsoleCLIDownloadBuilder toBuilder() {
+    public ConsoleSampleListBuilder toBuilder() {
         return edit();
     }
 

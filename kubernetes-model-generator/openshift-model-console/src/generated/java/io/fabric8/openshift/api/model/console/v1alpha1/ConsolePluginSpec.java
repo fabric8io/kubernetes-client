@@ -62,9 +62,9 @@ public class ConsolePluginSpec implements Editable<ConsolePluginSpecBuilder> , K
     private String displayName;
     @JsonProperty("proxy")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ConsolePluginProxy> proxy = new ArrayList<>();
+    private List<ConsolePluginSpecProxy> proxy = new ArrayList<>();
     @JsonProperty("service")
-    private ConsolePluginService service;
+    private ConsolePluginSpecService service;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -75,7 +75,7 @@ public class ConsolePluginSpec implements Editable<ConsolePluginSpecBuilder> , K
     public ConsolePluginSpec() {
     }
 
-    public ConsolePluginSpec(String displayName, List<ConsolePluginProxy> proxy, ConsolePluginService service) {
+    public ConsolePluginSpec(String displayName, List<ConsolePluginSpecProxy> proxy, ConsolePluginSpecService service) {
         super();
         this.displayName = displayName;
         this.proxy = proxy;
@@ -94,22 +94,22 @@ public class ConsolePluginSpec implements Editable<ConsolePluginSpecBuilder> , K
 
     @JsonProperty("proxy")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<ConsolePluginProxy> getProxy() {
+    public List<ConsolePluginSpecProxy> getProxy() {
         return proxy;
     }
 
     @JsonProperty("proxy")
-    public void setProxy(List<ConsolePluginProxy> proxy) {
+    public void setProxy(List<ConsolePluginSpecProxy> proxy) {
         this.proxy = proxy;
     }
 
     @JsonProperty("service")
-    public ConsolePluginService getService() {
+    public ConsolePluginSpecService getService() {
         return service;
     }
 
     @JsonProperty("service")
-    public void setService(ConsolePluginService service) {
+    public void setService(ConsolePluginSpecService service) {
         this.service = service;
     }
 
