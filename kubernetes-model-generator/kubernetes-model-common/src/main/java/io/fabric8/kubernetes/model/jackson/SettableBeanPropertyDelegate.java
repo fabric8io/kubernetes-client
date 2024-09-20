@@ -17,11 +17,19 @@ package io.fabric8.kubernetes.model.jackson;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.PropertyName;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.deser.NullValueProvider;
 import com.fasterxml.jackson.databind.deser.SettableAnyProperty;
 import com.fasterxml.jackson.databind.deser.SettableBeanProperty;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
+import com.fasterxml.jackson.databind.introspect.ObjectIdInfo;
+import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonObjectFormatVisitor;
 
 import java.io.IOException;
+import java.lang.annotation.Annotation;
 import java.util.function.BooleanSupplier;
 
 /**
@@ -64,6 +72,95 @@ public class SettableBeanPropertyDelegate extends SettableBeanProperty.Delegatin
   @Override
   public boolean isIgnorable() {
     return delegate.isIgnorable();
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void setViews(Class<?>[] views) {
+    delegate.setViews(views);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public <A extends Annotation> A getContextAnnotation(Class<A> acls) {
+    return delegate.getContextAnnotation(acls);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public PropertyName getWrapperName() {
+    return delegate.getWrapperName();
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public NullValueProvider getNullValueProvider() {
+    return delegate.getNullValueProvider();
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void depositSchemaProperty(JsonObjectFormatVisitor objectVisitor, SerializerProvider provider)
+      throws JsonMappingException {
+    delegate.depositSchemaProperty(objectVisitor, provider);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public JavaType getType() {
+    return delegate.getType();
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public PropertyName getFullName() {
+    return delegate.getFullName();
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void setManagedReferenceName(String n) {
+    delegate.setManagedReferenceName(n);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public SettableBeanProperty withSimpleName(String simpleName) {
+    return _with(delegate.withSimpleName(simpleName));
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void setObjectIdInfo(ObjectIdInfo objectIdInfo) {
+    delegate.setObjectIdInfo(objectIdInfo);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public String toString() {
+    return delegate.toString();
   }
 
   /**
