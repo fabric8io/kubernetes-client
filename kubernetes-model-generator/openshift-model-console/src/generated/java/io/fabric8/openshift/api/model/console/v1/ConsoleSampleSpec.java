@@ -1,7 +1,9 @@
 
 package io.fabric8.openshift.api.model.console.v1;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -31,10 +33,14 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "abstract",
     "description",
-    "review",
-    "summary",
-    "title"
+    "icon",
+    "provider",
+    "source",
+    "tags",
+    "title",
+    "type"
 })
 @ToString
 @EqualsAndHashCode
@@ -54,17 +60,26 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ConsoleQuickStartTask implements Editable<ConsoleQuickStartTaskBuilder> , KubernetesResource
+public class ConsoleSampleSpec implements Editable<ConsoleSampleSpecBuilder> , KubernetesResource
 {
 
+    @JsonProperty("abstract")
+    private String _abstract;
     @JsonProperty("description")
     private String description;
-    @JsonProperty("review")
-    private ConsoleQuickStartTaskReview review;
-    @JsonProperty("summary")
-    private ConsoleQuickStartTaskSummary summary;
+    @JsonProperty("icon")
+    private String icon;
+    @JsonProperty("provider")
+    private String provider;
+    @JsonProperty("source")
+    private ConsoleSampleSpecSource source;
+    @JsonProperty("tags")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> tags = new ArrayList<>();
     @JsonProperty("title")
     private String title;
+    @JsonProperty("type")
+    private String type;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -72,15 +87,29 @@ public class ConsoleQuickStartTask implements Editable<ConsoleQuickStartTaskBuil
      * No args constructor for use in serialization
      * 
      */
-    public ConsoleQuickStartTask() {
+    public ConsoleSampleSpec() {
     }
 
-    public ConsoleQuickStartTask(String description, ConsoleQuickStartTaskReview review, ConsoleQuickStartTaskSummary summary, String title) {
+    public ConsoleSampleSpec(String _abstract, String description, String icon, String provider, ConsoleSampleSpecSource source, List<String> tags, String title, String type) {
         super();
+        this._abstract = _abstract;
         this.description = description;
-        this.review = review;
-        this.summary = summary;
+        this.icon = icon;
+        this.provider = provider;
+        this.source = source;
+        this.tags = tags;
         this.title = title;
+        this.type = type;
+    }
+
+    @JsonProperty("abstract")
+    public String getAbstract() {
+        return _abstract;
+    }
+
+    @JsonProperty("abstract")
+    public void setAbstract(String _abstract) {
+        this._abstract = _abstract;
     }
 
     @JsonProperty("description")
@@ -93,24 +122,45 @@ public class ConsoleQuickStartTask implements Editable<ConsoleQuickStartTaskBuil
         this.description = description;
     }
 
-    @JsonProperty("review")
-    public ConsoleQuickStartTaskReview getReview() {
-        return review;
+    @JsonProperty("icon")
+    public String getIcon() {
+        return icon;
     }
 
-    @JsonProperty("review")
-    public void setReview(ConsoleQuickStartTaskReview review) {
-        this.review = review;
+    @JsonProperty("icon")
+    public void setIcon(String icon) {
+        this.icon = icon;
     }
 
-    @JsonProperty("summary")
-    public ConsoleQuickStartTaskSummary getSummary() {
-        return summary;
+    @JsonProperty("provider")
+    public String getProvider() {
+        return provider;
     }
 
-    @JsonProperty("summary")
-    public void setSummary(ConsoleQuickStartTaskSummary summary) {
-        this.summary = summary;
+    @JsonProperty("provider")
+    public void setProvider(String provider) {
+        this.provider = provider;
+    }
+
+    @JsonProperty("source")
+    public ConsoleSampleSpecSource getSource() {
+        return source;
+    }
+
+    @JsonProperty("source")
+    public void setSource(ConsoleSampleSpecSource source) {
+        this.source = source;
+    }
+
+    @JsonProperty("tags")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<String> getTags() {
+        return tags;
+    }
+
+    @JsonProperty("tags")
+    public void setTags(List<String> tags) {
+        this.tags = tags;
     }
 
     @JsonProperty("title")
@@ -123,13 +173,23 @@ public class ConsoleQuickStartTask implements Editable<ConsoleQuickStartTaskBuil
         this.title = title;
     }
 
-    @JsonIgnore
-    public ConsoleQuickStartTaskBuilder edit() {
-        return new ConsoleQuickStartTaskBuilder(this);
+    @JsonProperty("type")
+    public String getType() {
+        return type;
+    }
+
+    @JsonProperty("type")
+    public void setType(String type) {
+        this.type = type;
     }
 
     @JsonIgnore
-    public ConsoleQuickStartTaskBuilder toBuilder() {
+    public ConsoleSampleSpecBuilder edit() {
+        return new ConsoleSampleSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public ConsoleSampleSpecBuilder toBuilder() {
         return edit();
     }
 

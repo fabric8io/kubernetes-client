@@ -52,7 +52,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ConsoleQuickStartTaskSummary implements Editable<ConsoleQuickStartTaskSummaryBuilder> , KubernetesResource
+public class ConsoleQuickStartSpecTSummary implements Editable<ConsoleQuickStartSpecTSummaryBuilder> , KubernetesResource
 {
 
     @JsonProperty("failed")
@@ -66,10 +66,10 @@ public class ConsoleQuickStartTaskSummary implements Editable<ConsoleQuickStartT
      * No args constructor for use in serialization
      * 
      */
-    public ConsoleQuickStartTaskSummary() {
+    public ConsoleQuickStartSpecTSummary() {
     }
 
-    public ConsoleQuickStartTaskSummary(String failed, String success) {
+    public ConsoleQuickStartSpecTSummary(String failed, String success) {
         super();
         this.failed = failed;
         this.success = success;
@@ -96,12 +96,12 @@ public class ConsoleQuickStartTaskSummary implements Editable<ConsoleQuickStartT
     }
 
     @JsonIgnore
-    public ConsoleQuickStartTaskSummaryBuilder edit() {
-        return new ConsoleQuickStartTaskSummaryBuilder(this);
+    public ConsoleQuickStartSpecTSummaryBuilder edit() {
+        return new ConsoleQuickStartSpecTSummaryBuilder(this);
     }
 
     @JsonIgnore
-    public ConsoleQuickStartTaskSummaryBuilder toBuilder() {
+    public ConsoleQuickStartSpecTSummaryBuilder toBuilder() {
         return edit();
     }
 

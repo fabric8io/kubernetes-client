@@ -31,8 +31,10 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "href",
-    "text"
+    "basePath",
+    "name",
+    "namespace",
+    "port"
 })
 @ToString
 @EqualsAndHashCode
@@ -52,13 +54,17 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class Link implements Editable<LinkBuilder> , KubernetesResource
+public class ConsolePluginSpecBService implements Editable<ConsolePluginSpecBServiceBuilder> , KubernetesResource
 {
 
-    @JsonProperty("href")
-    private String href;
-    @JsonProperty("text")
-    private String text;
+    @JsonProperty("basePath")
+    private String basePath;
+    @JsonProperty("name")
+    private String name;
+    @JsonProperty("namespace")
+    private String namespace;
+    @JsonProperty("port")
+    private Integer port;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -66,42 +72,64 @@ public class Link implements Editable<LinkBuilder> , KubernetesResource
      * No args constructor for use in serialization
      * 
      */
-    public Link() {
+    public ConsolePluginSpecBService() {
     }
 
-    public Link(String href, String text) {
+    public ConsolePluginSpecBService(String basePath, String name, String namespace, Integer port) {
         super();
-        this.href = href;
-        this.text = text;
+        this.basePath = basePath;
+        this.name = name;
+        this.namespace = namespace;
+        this.port = port;
     }
 
-    @JsonProperty("href")
-    public String getHref() {
-        return href;
+    @JsonProperty("basePath")
+    public String getBasePath() {
+        return basePath;
     }
 
-    @JsonProperty("href")
-    public void setHref(String href) {
-        this.href = href;
+    @JsonProperty("basePath")
+    public void setBasePath(String basePath) {
+        this.basePath = basePath;
     }
 
-    @JsonProperty("text")
-    public String getText() {
-        return text;
+    @JsonProperty("name")
+    public String getName() {
+        return name;
     }
 
-    @JsonProperty("text")
-    public void setText(String text) {
-        this.text = text;
+    @JsonProperty("name")
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @JsonProperty("namespace")
+    public String getNamespace() {
+        return namespace;
+    }
+
+    @JsonProperty("namespace")
+    public void setNamespace(String namespace) {
+        this.namespace = namespace;
+    }
+
+    @JsonProperty("port")
+    public Integer getPort() {
+        return port;
+    }
+
+    @JsonProperty("port")
+    public void setPort(Integer port) {
+        this.port = port;
     }
 
     @JsonIgnore
-    public LinkBuilder edit() {
-        return new LinkBuilder(this);
+    public ConsolePluginSpecBServiceBuilder edit() {
+        return new ConsolePluginSpecBServiceBuilder(this);
     }
 
     @JsonIgnore
-    public LinkBuilder toBuilder() {
+    public ConsolePluginSpecBServiceBuilder toBuilder() {
         return edit();
     }
 

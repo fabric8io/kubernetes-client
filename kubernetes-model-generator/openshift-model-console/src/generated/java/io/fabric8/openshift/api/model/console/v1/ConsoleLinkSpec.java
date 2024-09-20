@@ -59,13 +59,13 @@ public class ConsoleLinkSpec implements Editable<ConsoleLinkSpecBuilder> , Kuber
 {
 
     @JsonProperty("applicationMenu")
-    private ApplicationMenuSpec applicationMenu;
+    private ConsoleLinkSpecApplicationMenu applicationMenu;
     @JsonProperty("href")
     private String href;
     @JsonProperty("location")
     private String location;
     @JsonProperty("namespaceDashboard")
-    private NamespaceDashboardSpec namespaceDashboard;
+    private ConsoleLinkSpecNamespaceDashboard namespaceDashboard;
     @JsonProperty("text")
     private String text;
     @JsonIgnore
@@ -78,7 +78,7 @@ public class ConsoleLinkSpec implements Editable<ConsoleLinkSpecBuilder> , Kuber
     public ConsoleLinkSpec() {
     }
 
-    public ConsoleLinkSpec(ApplicationMenuSpec applicationMenu, String href, String location, NamespaceDashboardSpec namespaceDashboard, String text) {
+    public ConsoleLinkSpec(ConsoleLinkSpecApplicationMenu applicationMenu, String href, String location, ConsoleLinkSpecNamespaceDashboard namespaceDashboard, String text) {
         super();
         this.applicationMenu = applicationMenu;
         this.href = href;
@@ -88,12 +88,12 @@ public class ConsoleLinkSpec implements Editable<ConsoleLinkSpecBuilder> , Kuber
     }
 
     @JsonProperty("applicationMenu")
-    public ApplicationMenuSpec getApplicationMenu() {
+    public ConsoleLinkSpecApplicationMenu getApplicationMenu() {
         return applicationMenu;
     }
 
     @JsonProperty("applicationMenu")
-    public void setApplicationMenu(ApplicationMenuSpec applicationMenu) {
+    public void setApplicationMenu(ConsoleLinkSpecApplicationMenu applicationMenu) {
         this.applicationMenu = applicationMenu;
     }
 
@@ -118,12 +118,12 @@ public class ConsoleLinkSpec implements Editable<ConsoleLinkSpecBuilder> , Kuber
     }
 
     @JsonProperty("namespaceDashboard")
-    public NamespaceDashboardSpec getNamespaceDashboard() {
+    public ConsoleLinkSpecNamespaceDashboard getNamespaceDashboard() {
         return namespaceDashboard;
     }
 
     @JsonProperty("namespaceDashboard")
-    public void setNamespaceDashboard(NamespaceDashboardSpec namespaceDashboard) {
+    public void setNamespaceDashboard(ConsoleLinkSpecNamespaceDashboard namespaceDashboard) {
         this.namespaceDashboard = namespaceDashboard;
     }
 

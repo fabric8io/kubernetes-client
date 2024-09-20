@@ -1,7 +1,9 @@
 
 package io.fabric8.openshift.api.model.console.v1;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -13,8 +15,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
+import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
@@ -22,12 +24,8 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.kubernetes.model.annotation.Group;
-import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import io.sundr.transform.annotations.TemplateTransformation;
-import io.sundr.transform.annotations.TemplateTransformations;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
@@ -35,10 +33,10 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "apiVersion",
-    "kind",
-    "metadata",
-    "spec"
+    "backend",
+    "displayName",
+    "i18n",
+    "proxy"
 })
 @ToString
 @EqualsAndHashCode
@@ -57,33 +55,19 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
-@TemplateTransformations({
-    @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true)
-})
-@Version("v1")
-@Group("console.openshift.io")
 @Generated("jsonschema2pojo")
-public class ConsoleCLIDownload implements Editable<ConsoleCLIDownloadBuilder> , HasMetadata
+public class ConsolePluginSpec implements Editable<ConsolePluginSpecBuilder> , KubernetesResource
 {
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
-    @JsonProperty("apiVersion")
-    private String apiVersion = "console.openshift.io/v1";
-    /**
-     * 
-     * (Required)
-     * 
-     */
-    @JsonProperty("kind")
-    private String kind = "ConsoleCLIDownload";
-    @JsonProperty("metadata")
-    private ObjectMeta metadata;
-    @JsonProperty("spec")
-    private ConsoleCLIDownloadSpec spec;
+    @JsonProperty("backend")
+    private ConsolePluginSpecBackend backend;
+    @JsonProperty("displayName")
+    private String displayName;
+    @JsonProperty("i18n")
+    private ConsolePluginSpecI18n i18n;
+    @JsonProperty("proxy")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<ConsolePluginSpecProxy> proxy = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -91,84 +75,65 @@ public class ConsoleCLIDownload implements Editable<ConsoleCLIDownloadBuilder> ,
      * No args constructor for use in serialization
      * 
      */
-    public ConsoleCLIDownload() {
+    public ConsolePluginSpec() {
     }
 
-    public ConsoleCLIDownload(String apiVersion, String kind, ObjectMeta metadata, ConsoleCLIDownloadSpec spec) {
+    public ConsolePluginSpec(ConsolePluginSpecBackend backend, String displayName, ConsolePluginSpecI18n i18n, List<ConsolePluginSpecProxy> proxy) {
         super();
-        this.apiVersion = apiVersion;
-        this.kind = kind;
-        this.metadata = metadata;
-        this.spec = spec;
+        this.backend = backend;
+        this.displayName = displayName;
+        this.i18n = i18n;
+        this.proxy = proxy;
     }
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
-    @JsonProperty("apiVersion")
-    public String getApiVersion() {
-        return apiVersion;
+    @JsonProperty("backend")
+    public ConsolePluginSpecBackend getBackend() {
+        return backend;
     }
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
-    @JsonProperty("apiVersion")
-    public void setApiVersion(String apiVersion) {
-        this.apiVersion = apiVersion;
+    @JsonProperty("backend")
+    public void setBackend(ConsolePluginSpecBackend backend) {
+        this.backend = backend;
     }
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
-    @JsonProperty("kind")
-    public String getKind() {
-        return kind;
+    @JsonProperty("displayName")
+    public String getDisplayName() {
+        return displayName;
     }
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
-    @JsonProperty("kind")
-    public void setKind(String kind) {
-        this.kind = kind;
+    @JsonProperty("displayName")
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
-    @JsonProperty("metadata")
-    public ObjectMeta getMetadata() {
-        return metadata;
+    @JsonProperty("i18n")
+    public ConsolePluginSpecI18n getI18n() {
+        return i18n;
     }
 
-    @JsonProperty("metadata")
-    public void setMetadata(ObjectMeta metadata) {
-        this.metadata = metadata;
+    @JsonProperty("i18n")
+    public void setI18n(ConsolePluginSpecI18n i18n) {
+        this.i18n = i18n;
     }
 
-    @JsonProperty("spec")
-    public ConsoleCLIDownloadSpec getSpec() {
-        return spec;
+    @JsonProperty("proxy")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<ConsolePluginSpecProxy> getProxy() {
+        return proxy;
     }
 
-    @JsonProperty("spec")
-    public void setSpec(ConsoleCLIDownloadSpec spec) {
-        this.spec = spec;
+    @JsonProperty("proxy")
+    public void setProxy(List<ConsolePluginSpecProxy> proxy) {
+        this.proxy = proxy;
     }
 
     @JsonIgnore
-    public ConsoleCLIDownloadBuilder edit() {
-        return new ConsoleCLIDownloadBuilder(this);
+    public ConsolePluginSpecBuilder edit() {
+        return new ConsolePluginSpecBuilder(this);
     }
 
     @JsonIgnore
-    public ConsoleCLIDownloadBuilder toBuilder() {
+    public ConsolePluginSpecBuilder toBuilder() {
         return edit();
     }
 

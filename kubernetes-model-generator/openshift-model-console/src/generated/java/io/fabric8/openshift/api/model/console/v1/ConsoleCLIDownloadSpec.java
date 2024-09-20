@@ -64,7 +64,7 @@ public class ConsoleCLIDownloadSpec implements Editable<ConsoleCLIDownloadSpecBu
     private String displayName;
     @JsonProperty("links")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<CLIDownloadLink> links = new ArrayList<>();
+    private List<ConsoleCLIDownloadSpecLinks> links = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -75,7 +75,7 @@ public class ConsoleCLIDownloadSpec implements Editable<ConsoleCLIDownloadSpecBu
     public ConsoleCLIDownloadSpec() {
     }
 
-    public ConsoleCLIDownloadSpec(String description, String displayName, List<CLIDownloadLink> links) {
+    public ConsoleCLIDownloadSpec(String description, String displayName, List<ConsoleCLIDownloadSpecLinks> links) {
         super();
         this.description = description;
         this.displayName = displayName;
@@ -104,12 +104,12 @@ public class ConsoleCLIDownloadSpec implements Editable<ConsoleCLIDownloadSpecBu
 
     @JsonProperty("links")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<CLIDownloadLink> getLinks() {
+    public List<ConsoleCLIDownloadSpecLinks> getLinks() {
         return links;
     }
 
     @JsonProperty("links")
-    public void setLinks(List<CLIDownloadLink> links) {
+    public void setLinks(List<ConsoleCLIDownloadSpecLinks> links) {
         this.links = links;
     }
 

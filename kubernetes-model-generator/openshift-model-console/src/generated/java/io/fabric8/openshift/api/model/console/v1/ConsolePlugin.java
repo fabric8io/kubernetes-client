@@ -63,7 +63,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("console.openshift.io")
 @Generated("jsonschema2pojo")
-public class ConsoleCLIDownload implements Editable<ConsoleCLIDownloadBuilder> , HasMetadata
+public class ConsolePlugin implements Editable<ConsolePluginBuilder> , HasMetadata
 {
 
     /**
@@ -79,11 +79,11 @@ public class ConsoleCLIDownload implements Editable<ConsoleCLIDownloadBuilder> ,
      * 
      */
     @JsonProperty("kind")
-    private String kind = "ConsoleCLIDownload";
+    private String kind = "ConsolePlugin";
     @JsonProperty("metadata")
     private ObjectMeta metadata;
     @JsonProperty("spec")
-    private ConsoleCLIDownloadSpec spec;
+    private ConsolePluginSpec spec;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -91,10 +91,10 @@ public class ConsoleCLIDownload implements Editable<ConsoleCLIDownloadBuilder> ,
      * No args constructor for use in serialization
      * 
      */
-    public ConsoleCLIDownload() {
+    public ConsolePlugin() {
     }
 
-    public ConsoleCLIDownload(String apiVersion, String kind, ObjectMeta metadata, ConsoleCLIDownloadSpec spec) {
+    public ConsolePlugin(String apiVersion, String kind, ObjectMeta metadata, ConsolePluginSpec spec) {
         super();
         this.apiVersion = apiVersion;
         this.kind = kind;
@@ -153,22 +153,22 @@ public class ConsoleCLIDownload implements Editable<ConsoleCLIDownloadBuilder> ,
     }
 
     @JsonProperty("spec")
-    public ConsoleCLIDownloadSpec getSpec() {
+    public ConsolePluginSpec getSpec() {
         return spec;
     }
 
     @JsonProperty("spec")
-    public void setSpec(ConsoleCLIDownloadSpec spec) {
+    public void setSpec(ConsolePluginSpec spec) {
         this.spec = spec;
     }
 
     @JsonIgnore
-    public ConsoleCLIDownloadBuilder edit() {
-        return new ConsoleCLIDownloadBuilder(this);
+    public ConsolePluginBuilder edit() {
+        return new ConsolePluginBuilder(this);
     }
 
     @JsonIgnore
-    public ConsoleCLIDownloadBuilder toBuilder() {
+    public ConsolePluginBuilder toBuilder() {
         return edit();
     }
 

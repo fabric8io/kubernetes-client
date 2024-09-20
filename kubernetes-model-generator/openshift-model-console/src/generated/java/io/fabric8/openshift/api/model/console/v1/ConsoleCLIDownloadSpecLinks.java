@@ -1,5 +1,5 @@
 
-package io.fabric8.openshift.api.model.console.v1alpha1;
+package io.fabric8.openshift.api.model.console.v1;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -31,9 +31,8 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "name",
-    "namespace",
-    "port"
+    "href",
+    "text"
 })
 @ToString
 @EqualsAndHashCode
@@ -53,15 +52,13 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ConsolePluginProxyServiceConfig implements Editable<ConsolePluginProxyServiceConfigBuilder> , KubernetesResource
+public class ConsoleCLIDownloadSpecLinks implements Editable<ConsoleCLIDownloadSpecLinksBuilder> , KubernetesResource
 {
 
-    @JsonProperty("name")
-    private String name;
-    @JsonProperty("namespace")
-    private String namespace;
-    @JsonProperty("port")
-    private Integer port;
+    @JsonProperty("href")
+    private String href;
+    @JsonProperty("text")
+    private String text;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -69,53 +66,42 @@ public class ConsolePluginProxyServiceConfig implements Editable<ConsolePluginPr
      * No args constructor for use in serialization
      * 
      */
-    public ConsolePluginProxyServiceConfig() {
+    public ConsoleCLIDownloadSpecLinks() {
     }
 
-    public ConsolePluginProxyServiceConfig(String name, String namespace, Integer port) {
+    public ConsoleCLIDownloadSpecLinks(String href, String text) {
         super();
-        this.name = name;
-        this.namespace = namespace;
-        this.port = port;
+        this.href = href;
+        this.text = text;
     }
 
-    @JsonProperty("name")
-    public String getName() {
-        return name;
+    @JsonProperty("href")
+    public String getHref() {
+        return href;
     }
 
-    @JsonProperty("name")
-    public void setName(String name) {
-        this.name = name;
+    @JsonProperty("href")
+    public void setHref(String href) {
+        this.href = href;
     }
 
-    @JsonProperty("namespace")
-    public String getNamespace() {
-        return namespace;
+    @JsonProperty("text")
+    public String getText() {
+        return text;
     }
 
-    @JsonProperty("namespace")
-    public void setNamespace(String namespace) {
-        this.namespace = namespace;
-    }
-
-    @JsonProperty("port")
-    public Integer getPort() {
-        return port;
-    }
-
-    @JsonProperty("port")
-    public void setPort(Integer port) {
-        this.port = port;
+    @JsonProperty("text")
+    public void setText(String text) {
+        this.text = text;
     }
 
     @JsonIgnore
-    public ConsolePluginProxyServiceConfigBuilder edit() {
-        return new ConsolePluginProxyServiceConfigBuilder(this);
+    public ConsoleCLIDownloadSpecLinksBuilder edit() {
+        return new ConsoleCLIDownloadSpecLinksBuilder(this);
     }
 
     @JsonIgnore
-    public ConsolePluginProxyServiceConfigBuilder toBuilder() {
+    public ConsoleCLIDownloadSpecLinksBuilder toBuilder() {
         return edit();
     }
 

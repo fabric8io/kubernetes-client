@@ -137,6 +137,7 @@ public class SchemaUtils {
   }
 
   private static final Set<String> PROTECTED_WORDS = new HashSet<>(Arrays.asList(
+      "abstract",
       "continue",
       "default",
       "enum",
