@@ -151,7 +151,10 @@ public class OkHttpClientImpl extends StandardHttpClient<OkHttpClientImpl, OkHtt
 
     @Override
     public void cancel() {
-      Utils.closeQuietly(source);
+      // closing from a non dispatcher thread risks deadlock because close is
+      // a long-running operation that may need to re-obtain the dispatcher lock
+      // and the thread may already be holding other locks
+      executor.execute(() -> Utils.closeQuietly(source));
       done.cancel(false);
     }
   }
