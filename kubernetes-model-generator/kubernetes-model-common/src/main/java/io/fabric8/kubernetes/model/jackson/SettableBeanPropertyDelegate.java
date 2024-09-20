@@ -25,7 +25,7 @@ import java.io.IOException;
 import java.util.function.BooleanSupplier;
 
 /**
- * This concrete sub-class encapsulates a {@link SettableBeanProperty} delegate that is always tried first.
+ * This concrete subclass encapsulates a {@link SettableBeanProperty} delegate that is always tried first.
  *
  * <p>
  * A fall-back mechanism is implemented in the deserializeAndSet methods to allow field values that don't match the
@@ -103,7 +103,7 @@ public class SettableBeanPropertyDelegate extends SettableBeanProperty.Delegatin
     } catch (MismatchedInputException ex) {
       deserializeAndSet(p, ctxt, instance);
     }
-    return null;
+    return instance;
   }
 
   private boolean shouldUseAnySetter() {
