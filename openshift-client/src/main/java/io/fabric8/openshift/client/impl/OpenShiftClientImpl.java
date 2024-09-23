@@ -138,7 +138,7 @@ import io.fabric8.openshift.client.dsl.BuildResource;
 import io.fabric8.openshift.client.dsl.DeployableScalableResource;
 import io.fabric8.openshift.client.dsl.MachineConfigurationAPIGroupDSL;
 import io.fabric8.openshift.client.dsl.NameableCreateOrDeleteable;
-import io.fabric8.openshift.client.dsl.OpenShiftClusterAutoscalingAPIGroupDSL;
+import io.fabric8.openshift.client.dsl.OpenShiftAutoscalingAPIGroupDSL;
 import io.fabric8.openshift.client.dsl.OpenShiftConfigAPIGroupDSL;
 import io.fabric8.openshift.client.dsl.OpenShiftConsoleAPIGroupDSL;
 import io.fabric8.openshift.client.dsl.OpenShiftHiveAPIGroupDSL;
@@ -252,8 +252,8 @@ public class OpenShiftClientImpl extends KubernetesClientImpl
   }
 
   @Override
-  public OpenShiftClusterAutoscalingAPIGroupDSL clusterAutoscaling() {
-    return adapt(OpenShiftClusterAutoscalingAPIGroupClient.class);
+  public OpenShiftAutoscalingAPIGroupDSL openShiftAutoscaling() {
+    return adapt(OpenShiftAutoscalingAPIGroupClient.class);
   }
 
   @Override
