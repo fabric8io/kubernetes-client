@@ -4,7 +4,7 @@
 
 #### Bugs
 * Fix #6247: Support for proxy authentication from proxy URL user info
-
+* Fix #6342: UnmatchedFieldTypeModule prevents certain jackson features from working
 
 ### 6.13.3 (2024-08-13)
 
