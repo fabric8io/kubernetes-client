@@ -61,7 +61,7 @@ public class MachineHealthCheckStatus implements Editable<MachineHealthCheckStat
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Condition> conditions = new ArrayList<>();
+    private List<MachineHealthCheckStatusConditions> conditions = new ArrayList<>();
     @JsonProperty("currentHealthy")
     private Integer currentHealthy;
     @JsonProperty("expectedMachines")
@@ -78,7 +78,7 @@ public class MachineHealthCheckStatus implements Editable<MachineHealthCheckStat
     public MachineHealthCheckStatus() {
     }
 
-    public MachineHealthCheckStatus(List<Condition> conditions, Integer currentHealthy, Integer expectedMachines, Integer remediationsAllowed) {
+    public MachineHealthCheckStatus(List<MachineHealthCheckStatusConditions> conditions, Integer currentHealthy, Integer expectedMachines, Integer remediationsAllowed) {
         super();
         this.conditions = conditions;
         this.currentHealthy = currentHealthy;
@@ -88,12 +88,12 @@ public class MachineHealthCheckStatus implements Editable<MachineHealthCheckStat
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<Condition> getConditions() {
+    public List<MachineHealthCheckStatusConditions> getConditions() {
         return conditions;
     }
 
     @JsonProperty("conditions")
-    public void setConditions(List<Condition> conditions) {
+    public void setConditions(List<MachineHealthCheckStatusConditions> conditions) {
         this.conditions = conditions;
     }
 

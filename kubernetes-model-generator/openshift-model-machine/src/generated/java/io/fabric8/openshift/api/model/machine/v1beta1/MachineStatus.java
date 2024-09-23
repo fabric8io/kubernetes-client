@@ -21,6 +21,7 @@ import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.NodeAddress;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
+import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
@@ -56,7 +57,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
+    @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
@@ -69,24 +70,24 @@ public class MachineStatus implements Editable<MachineStatusBuilder> , Kubernete
     private List<NodeAddress> addresses = new ArrayList<>();
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Condition> conditions = new ArrayList<>();
+    private List<MachineStatusConditions> conditions = new ArrayList<>();
     @JsonProperty("errorMessage")
-    private java.lang.String errorMessage;
+    private String errorMessage;
     @JsonProperty("errorReason")
-    private java.lang.String errorReason;
+    private String errorReason;
     @JsonProperty("lastOperation")
-    private LastOperation lastOperation;
+    private MachineStatusLastOperation lastOperation;
     @JsonProperty("lastUpdated")
-    private java.lang.String lastUpdated;
+    private String lastUpdated;
     @JsonProperty("nodeRef")
-    private io.fabric8.kubernetes.api.model.ObjectReference nodeRef;
+    private MachineStatusNodeRef nodeRef;
     @JsonProperty("phase")
-    private java.lang.String phase;
+    private String phase;
     @JsonProperty("providerStatus")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Object> providerStatus = new LinkedHashMap<>();
+    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
+    private Object providerStatus;
     @JsonIgnore
-    private Map<java.lang.String, java.lang.Object> additionalProperties = new LinkedHashMap<java.lang.String, java.lang.Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -95,7 +96,7 @@ public class MachineStatus implements Editable<MachineStatusBuilder> , Kubernete
     public MachineStatus() {
     }
 
-    public MachineStatus(List<NodeAddress> addresses, List<Condition> conditions, java.lang.String errorMessage, java.lang.String errorReason, LastOperation lastOperation, java.lang.String lastUpdated, io.fabric8.kubernetes.api.model.ObjectReference nodeRef, java.lang.String phase, Map<String, Object> providerStatus) {
+    public MachineStatus(List<NodeAddress> addresses, List<MachineStatusConditions> conditions, String errorMessage, String errorReason, MachineStatusLastOperation lastOperation, String lastUpdated, MachineStatusNodeRef nodeRef, String phase, Object providerStatus) {
         super();
         this.addresses = addresses;
         this.conditions = conditions;
@@ -121,83 +122,83 @@ public class MachineStatus implements Editable<MachineStatusBuilder> , Kubernete
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<Condition> getConditions() {
+    public List<MachineStatusConditions> getConditions() {
         return conditions;
     }
 
     @JsonProperty("conditions")
-    public void setConditions(List<Condition> conditions) {
+    public void setConditions(List<MachineStatusConditions> conditions) {
         this.conditions = conditions;
     }
 
     @JsonProperty("errorMessage")
-    public java.lang.String getErrorMessage() {
+    public String getErrorMessage() {
         return errorMessage;
     }
 
     @JsonProperty("errorMessage")
-    public void setErrorMessage(java.lang.String errorMessage) {
+    public void setErrorMessage(String errorMessage) {
         this.errorMessage = errorMessage;
     }
 
     @JsonProperty("errorReason")
-    public java.lang.String getErrorReason() {
+    public String getErrorReason() {
         return errorReason;
     }
 
     @JsonProperty("errorReason")
-    public void setErrorReason(java.lang.String errorReason) {
+    public void setErrorReason(String errorReason) {
         this.errorReason = errorReason;
     }
 
     @JsonProperty("lastOperation")
-    public LastOperation getLastOperation() {
+    public MachineStatusLastOperation getLastOperation() {
         return lastOperation;
     }
 
     @JsonProperty("lastOperation")
-    public void setLastOperation(LastOperation lastOperation) {
+    public void setLastOperation(MachineStatusLastOperation lastOperation) {
         this.lastOperation = lastOperation;
     }
 
     @JsonProperty("lastUpdated")
-    public java.lang.String getLastUpdated() {
+    public String getLastUpdated() {
         return lastUpdated;
     }
 
     @JsonProperty("lastUpdated")
-    public void setLastUpdated(java.lang.String lastUpdated) {
+    public void setLastUpdated(String lastUpdated) {
         this.lastUpdated = lastUpdated;
     }
 
     @JsonProperty("nodeRef")
-    public io.fabric8.kubernetes.api.model.ObjectReference getNodeRef() {
+    public MachineStatusNodeRef getNodeRef() {
         return nodeRef;
     }
 
     @JsonProperty("nodeRef")
-    public void setNodeRef(io.fabric8.kubernetes.api.model.ObjectReference nodeRef) {
+    public void setNodeRef(MachineStatusNodeRef nodeRef) {
         this.nodeRef = nodeRef;
     }
 
     @JsonProperty("phase")
-    public java.lang.String getPhase() {
+    public String getPhase() {
         return phase;
     }
 
     @JsonProperty("phase")
-    public void setPhase(java.lang.String phase) {
+    public void setPhase(String phase) {
         this.phase = phase;
     }
 
     @JsonProperty("providerStatus")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public Map<String, Object> getProviderStatus() {
+    public Object getProviderStatus() {
         return providerStatus;
     }
 
     @JsonProperty("providerStatus")
-    public void setProviderStatus(Map<String, Object> providerStatus) {
+    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
+    public void setProviderStatus(Object providerStatus) {
         this.providerStatus = providerStatus;
     }
 
@@ -212,16 +213,16 @@ public class MachineStatus implements Editable<MachineStatusBuilder> , Kubernete
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, java.lang.Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, java.lang.Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
-    public void setAdditionalProperties(Map<java.lang.String, java.lang.Object> additionalProperties) {
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
     }
 

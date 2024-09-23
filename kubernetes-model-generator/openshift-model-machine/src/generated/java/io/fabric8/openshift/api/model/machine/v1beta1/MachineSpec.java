@@ -19,11 +19,11 @@ import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
+import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.kubernetes.api.model.Taint;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -46,7 +46,7 @@ import lombok.experimental.Accessors;
     ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
+    @BuildableReference(ObjectMeta.class),
     @BuildableReference(LabelSelector.class),
     @BuildableReference(Container.class),
     @BuildableReference(PodTemplateSpec.class),
@@ -61,16 +61,16 @@ public class MachineSpec implements Editable<MachineSpecBuilder> , KubernetesRes
 {
 
     @JsonProperty("lifecycleHooks")
-    private LifecycleHooks lifecycleHooks;
+    private MachineSpecLifecycleHooks lifecycleHooks;
     @JsonProperty("metadata")
-    private io.fabric8.openshift.api.model.machine.v1beta1.ObjectMeta metadata;
+    private MachineSpecMetadata metadata;
     @JsonProperty("providerID")
     private String providerID;
     @JsonProperty("providerSpec")
-    private ProviderSpec providerSpec;
+    private MachineSpecProviderSpec providerSpec;
     @JsonProperty("taints")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Taint> taints = new ArrayList<>();
+    private List<MachineSpecTaints> taints = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -81,7 +81,7 @@ public class MachineSpec implements Editable<MachineSpecBuilder> , KubernetesRes
     public MachineSpec() {
     }
 
-    public MachineSpec(LifecycleHooks lifecycleHooks, io.fabric8.openshift.api.model.machine.v1beta1.ObjectMeta metadata, String providerID, ProviderSpec providerSpec, List<Taint> taints) {
+    public MachineSpec(MachineSpecLifecycleHooks lifecycleHooks, MachineSpecMetadata metadata, String providerID, MachineSpecProviderSpec providerSpec, List<MachineSpecTaints> taints) {
         super();
         this.lifecycleHooks = lifecycleHooks;
         this.metadata = metadata;
@@ -91,22 +91,22 @@ public class MachineSpec implements Editable<MachineSpecBuilder> , KubernetesRes
     }
 
     @JsonProperty("lifecycleHooks")
-    public LifecycleHooks getLifecycleHooks() {
+    public MachineSpecLifecycleHooks getLifecycleHooks() {
         return lifecycleHooks;
     }
 
     @JsonProperty("lifecycleHooks")
-    public void setLifecycleHooks(LifecycleHooks lifecycleHooks) {
+    public void setLifecycleHooks(MachineSpecLifecycleHooks lifecycleHooks) {
         this.lifecycleHooks = lifecycleHooks;
     }
 
     @JsonProperty("metadata")
-    public io.fabric8.openshift.api.model.machine.v1beta1.ObjectMeta getMetadata() {
+    public MachineSpecMetadata getMetadata() {
         return metadata;
     }
 
     @JsonProperty("metadata")
-    public void setMetadata(io.fabric8.openshift.api.model.machine.v1beta1.ObjectMeta metadata) {
+    public void setMetadata(MachineSpecMetadata metadata) {
         this.metadata = metadata;
     }
 
@@ -121,23 +121,23 @@ public class MachineSpec implements Editable<MachineSpecBuilder> , KubernetesRes
     }
 
     @JsonProperty("providerSpec")
-    public ProviderSpec getProviderSpec() {
+    public MachineSpecProviderSpec getProviderSpec() {
         return providerSpec;
     }
 
     @JsonProperty("providerSpec")
-    public void setProviderSpec(ProviderSpec providerSpec) {
+    public void setProviderSpec(MachineSpecProviderSpec providerSpec) {
         this.providerSpec = providerSpec;
     }
 
     @JsonProperty("taints")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<Taint> getTaints() {
+    public List<MachineSpecTaints> getTaints() {
         return taints;
     }
 
     @JsonProperty("taints")
-    public void setTaints(List<Taint> taints) {
+    public void setTaints(List<MachineSpecTaints> taints) {
         this.taints = taints;
     }
 

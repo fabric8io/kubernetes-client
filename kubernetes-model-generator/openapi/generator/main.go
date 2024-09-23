@@ -18,6 +18,8 @@ package main
 import (
 	"github.com/getkin/kin-openapi/openapi3"
 	openshiftauthorizationv1 "github.com/openshift/api/authorization/v1"
+	openshiftmachinev1 "github.com/openshift/api/machine/v1"
+	openshiftmachinev1alpha1 "github.com/openshift/api/machine/v1alpha1"
 	openshiftsecurityv1 "github.com/openshift/api/security/v1"
 	admissionV1 "k8s.io/api/admission/v1"
 	admissionV1Beta1 "k8s.io/api/admission/v1beta1"
@@ -140,6 +142,12 @@ func main() {
 			reflect.TypeOf(openshiftauthorizationv1.SubjectAccessReviewResponse{}),
 			reflect.TypeOf(openshiftauthorizationv1.ResourceAccessReviewResponse{}),
 		}, "openshift-authorization"),
+		// Provider Specs are not included in OpenAPI https://docs.openshift.com/container-platform/4.16/machine_management/index.html#machine-mgmt-intro-managing-compute_overview-of-machine-management
+		NewPathSchema(map[reflect.Type]ApiVersion{
+			reflect.TypeOf(openshiftmachinev1alpha1.OpenstackProviderSpec{}):  {false, openshiftmachinev1alpha1.GroupVersion.String(), "openstackproviderspecs", true},
+			reflect.TypeOf(openshiftmachinev1.NutanixMachineProviderConfig{}): {false, openshiftmachinev1.GroupVersion.String(), "nutanixmachineproviderconfigs", true},
+			reflect.TypeOf(openshiftmachinev1.PowerVSMachineProviderConfig{}): {false, openshiftmachinev1.GroupVersion.String(), "powervsmachineproviderconfigs", true},
+		}, "openshift-machine"),
 		// OpenAPI spec contains incomplete information for SecurityContextConstraints (only nested inline until certain level)
 		NewPathSchema(map[reflect.Type]ApiVersion{
 			reflect.TypeOf(openshiftsecurityv1.SecurityContextConstraintsList{}): {true, openshiftsecurityv1.GroupVersion.String(), "securitycontextconstraints", false},

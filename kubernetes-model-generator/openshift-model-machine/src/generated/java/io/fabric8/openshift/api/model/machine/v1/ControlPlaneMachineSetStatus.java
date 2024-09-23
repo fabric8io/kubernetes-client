@@ -14,7 +14,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
-import io.fabric8.kubernetes.api.model.Condition;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -64,7 +63,7 @@ public class ControlPlaneMachineSetStatus implements Editable<ControlPlaneMachin
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Condition> conditions = new ArrayList<>();
+    private List<ControlPlaneMachineSetStatusConditions> conditions = new ArrayList<>();
     @JsonProperty("observedGeneration")
     private Long observedGeneration;
     @JsonProperty("readyReplicas")
@@ -85,7 +84,7 @@ public class ControlPlaneMachineSetStatus implements Editable<ControlPlaneMachin
     public ControlPlaneMachineSetStatus() {
     }
 
-    public ControlPlaneMachineSetStatus(List<Condition> conditions, Long observedGeneration, Integer readyReplicas, Integer replicas, Integer unavailableReplicas, Integer updatedReplicas) {
+    public ControlPlaneMachineSetStatus(List<ControlPlaneMachineSetStatusConditions> conditions, Long observedGeneration, Integer readyReplicas, Integer replicas, Integer unavailableReplicas, Integer updatedReplicas) {
         super();
         this.conditions = conditions;
         this.observedGeneration = observedGeneration;
@@ -97,12 +96,12 @@ public class ControlPlaneMachineSetStatus implements Editable<ControlPlaneMachin
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<Condition> getConditions() {
+    public List<ControlPlaneMachineSetStatusConditions> getConditions() {
         return conditions;
     }
 
     @JsonProperty("conditions")
-    public void setConditions(List<Condition> conditions) {
+    public void setConditions(List<ControlPlaneMachineSetStatusConditions> conditions) {
         this.conditions = conditions;
     }
 
