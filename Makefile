@@ -64,6 +64,7 @@ generate-openapi-classes:
 	cd kubernetes-model-generator/openshift-model-console && mvn -Pgenerate clean install
 	cd kubernetes-model-generator/openshift-model-autoscaling && mvn -Pgenerate clean install
 	cd kubernetes-model-generator/openshift-model-machine && mvn -Pgenerate clean install
+	cd kubernetes-model-generator/openshift-model-machineconfiguration && mvn -Pgenerate clean install
 
 # Legacy generation of the model: TODO: remove
 .PHONY: generate-model-legacy

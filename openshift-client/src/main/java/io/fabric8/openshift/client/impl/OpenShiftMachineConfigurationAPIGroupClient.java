@@ -18,16 +18,16 @@ package io.fabric8.openshift.client.impl;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.extension.ClientAdapter;
-import io.fabric8.openshift.api.model.machineconfig.v1.ContainerRuntimeConfig;
-import io.fabric8.openshift.api.model.machineconfig.v1.ContainerRuntimeConfigList;
-import io.fabric8.openshift.api.model.machineconfig.v1.ControllerConfig;
-import io.fabric8.openshift.api.model.machineconfig.v1.ControllerConfigList;
-import io.fabric8.openshift.api.model.machineconfig.v1.KubeletConfig;
-import io.fabric8.openshift.api.model.machineconfig.v1.KubeletConfigList;
-import io.fabric8.openshift.api.model.machineconfig.v1.MachineConfig;
-import io.fabric8.openshift.api.model.machineconfig.v1.MachineConfigList;
-import io.fabric8.openshift.api.model.machineconfig.v1.MachineConfigPool;
-import io.fabric8.openshift.api.model.machineconfig.v1.MachineConfigPoolList;
+import io.fabric8.openshift.api.model.machineconfiguration.v1.ContainerRuntimeConfig;
+import io.fabric8.openshift.api.model.machineconfiguration.v1.ContainerRuntimeConfigList;
+import io.fabric8.openshift.api.model.machineconfiguration.v1.ControllerConfig;
+import io.fabric8.openshift.api.model.machineconfiguration.v1.ControllerConfigList;
+import io.fabric8.openshift.api.model.machineconfiguration.v1.KubeletConfig;
+import io.fabric8.openshift.api.model.machineconfiguration.v1.KubeletConfigList;
+import io.fabric8.openshift.api.model.machineconfiguration.v1.MachineConfig;
+import io.fabric8.openshift.api.model.machineconfiguration.v1.MachineConfigList;
+import io.fabric8.openshift.api.model.machineconfiguration.v1.MachineConfigPool;
+import io.fabric8.openshift.api.model.machineconfiguration.v1.MachineConfigPoolList;
 import io.fabric8.openshift.client.dsl.MachineConfigurationAPIGroupDSL;
 
 public class OpenShiftMachineConfigurationAPIGroupClient extends ClientAdapter<OpenShiftMachineConfigurationAPIGroupClient>

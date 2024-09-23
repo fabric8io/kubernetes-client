@@ -15,10 +15,10 @@
  */
 package io.fabric8.openshift.client.server.mock;
 
-import io.fabric8.openshift.api.model.machineconfig.v1.ContainerRuntimeConfig;
-import io.fabric8.openshift.api.model.machineconfig.v1.ContainerRuntimeConfigBuilder;
-import io.fabric8.openshift.api.model.machineconfig.v1.ContainerRuntimeConfigList;
-import io.fabric8.openshift.api.model.machineconfig.v1.ContainerRuntimeConfigListBuilder;
+import io.fabric8.openshift.api.model.machineconfiguration.v1.ContainerRuntimeConfig;
+import io.fabric8.openshift.api.model.machineconfiguration.v1.ContainerRuntimeConfigBuilder;
+import io.fabric8.openshift.api.model.machineconfiguration.v1.ContainerRuntimeConfigList;
+import io.fabric8.openshift.api.model.machineconfiguration.v1.ContainerRuntimeConfigListBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
 import org.junit.jupiter.api.Test;
 

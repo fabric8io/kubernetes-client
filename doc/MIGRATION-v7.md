@@ -9,6 +9,7 @@
   - [Service Catalog removed (operator.openshift.io)](#service-catalog-removed)
   - [Removed deprecated types for network.openshift.io (OpenShift-SDN-only)](#openshift-network-removed)
   - [Renamed clusterautoscaling to autoscaling](#openshift-clusterautoscaling-to-autoscaling)
+  - [Renamed machineconfig to machineconfiguration](#openshift-machineconfig-to-machineconfiguration)
 - [Deprecations and Removals](#deprecations-and-removals)
   - [Service Catalog API (extension) removed](#service-catalog-extension) 
 
@@ -82,6 +83,14 @@ The module `openshift-model-clusterautoscaling` has been renamed to `openshift-m
 The package has also been renamed from `io.fabric8.openshift.api.model.clusterautoscaling` to `io.fabric8.openshift.api.model.autoscaling`.
 
 The OpenShiftClient DSL entry-point has also been renamed from `OpenShiftClient.clusterAutoscaling()` to `OpenShiftClient.openShiftAutoscaling()`.
+
+### Renamed machineconfig to machineconfiguration <a href="#openshift-machineconfig-to-machineconfiguration" id="openshift-machineconfig-to-machineconfiguration" />
+
+The module `openshift-model-machineconfig` has been renamed to `openshift-model-machineconfiguration` to match the API group name.
+
+The package has also been renamed from `io.fabric8.openshift.api.model.machineconfig` to `io.fabric8.openshift.api.model.machineconfiguration`.
+
+The OpenShiftClient DSL entry-point remains the same: `OpenShiftClient.machineConfigurations()`.
 
 ## Deprecations and Removals <a href="#deprecations-and-removals" id="deprecations-and-removals"/>
 
