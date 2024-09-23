@@ -15,7 +15,6 @@
  */
 package io.fabric8.openshift.client.server.mock;
 
-import io.fabric8.kubernetes.api.model.Duration;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.openshift.api.model.machine.v1beta1.MachineHealthCheck;
 import io.fabric8.openshift.api.model.machine.v1beta1.MachineHealthCheckBuilder;
@@ -92,9 +91,9 @@ class MachineHealthCheckTest {
         .addToMatchLabels("machine.openshift.io/interruptible-instance", "")
         .endSelector()
         .withMaxUnhealthy(new IntOrString("100%"))
-        .withNodeStartupTimeout(Duration.parse("0s"))
+        .withNodeStartupTimeout("0s")
         .addNewUnhealthyCondition()
-        .withTimeout(Duration.parse("0s"))
+        .withTimeout("0s")
         .withStatus("True")
         .withType("Terminating")
         .endUnhealthyCondition()

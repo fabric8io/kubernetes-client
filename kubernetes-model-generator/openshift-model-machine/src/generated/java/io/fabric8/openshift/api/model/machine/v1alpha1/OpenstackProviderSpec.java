@@ -20,6 +20,7 @@ import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.Namespaced;
+import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
@@ -41,6 +42,7 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
+    "additionalBlockDevices",
     "availabilityZone",
     "cloudName",
     "cloudsSecret",
@@ -69,7 +71,7 @@ import lombok.experimental.Accessors;
     ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
+    @BuildableReference(ObjectMeta.class),
     @BuildableReference(LabelSelector.class),
     @BuildableReference(Container.class),
     @BuildableReference(PodTemplateSpec.class),
@@ -88,6 +90,9 @@ import lombok.experimental.Accessors;
 public class OpenstackProviderSpec implements Editable<OpenstackProviderSpecBuilder> , HasMetadata, Namespaced
 {
 
+    @JsonProperty("additionalBlockDevices")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<AdditionalBlockDevice> additionalBlockDevices = new ArrayList<>();
     /**
      * 
      * (Required)
@@ -119,7 +124,7 @@ public class OpenstackProviderSpec implements Editable<OpenstackProviderSpecBuil
     @JsonProperty("kind")
     private String kind = "OpenstackProviderSpec";
     @JsonProperty("metadata")
-    private io.fabric8.kubernetes.api.model.ObjectMeta metadata;
+    private ObjectMeta metadata;
     @JsonProperty("networks")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<NetworkParam> networks = new ArrayList<>();
@@ -159,8 +164,9 @@ public class OpenstackProviderSpec implements Editable<OpenstackProviderSpecBuil
     public OpenstackProviderSpec() {
     }
 
-    public OpenstackProviderSpec(String apiVersion, String availabilityZone, String cloudName, SecretReference cloudsSecret, Boolean configDrive, String flavor, String floatingIP, String image, String keyName, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, List<NetworkParam> networks, List<PortOpts> ports, String primarySubnet, RootVolume rootVolume, List<SecurityGroupParam> securityGroups, String serverGroupID, String serverGroupName, Map<String, String> serverMetadata, String sshUserName, List<String> tags, Boolean trunk, SecretReference userDataSecret) {
+    public OpenstackProviderSpec(List<AdditionalBlockDevice> additionalBlockDevices, String apiVersion, String availabilityZone, String cloudName, SecretReference cloudsSecret, Boolean configDrive, String flavor, String floatingIP, String image, String keyName, String kind, ObjectMeta metadata, List<NetworkParam> networks, List<PortOpts> ports, String primarySubnet, RootVolume rootVolume, List<SecurityGroupParam> securityGroups, String serverGroupID, String serverGroupName, Map<String, String> serverMetadata, String sshUserName, List<String> tags, Boolean trunk, SecretReference userDataSecret) {
         super();
+        this.additionalBlockDevices = additionalBlockDevices;
         this.apiVersion = apiVersion;
         this.availabilityZone = availabilityZone;
         this.cloudName = cloudName;
@@ -184,6 +190,17 @@ public class OpenstackProviderSpec implements Editable<OpenstackProviderSpecBuil
         this.tags = tags;
         this.trunk = trunk;
         this.userDataSecret = userDataSecret;
+    }
+
+    @JsonProperty("additionalBlockDevices")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<AdditionalBlockDevice> getAdditionalBlockDevices() {
+        return additionalBlockDevices;
+    }
+
+    @JsonProperty("additionalBlockDevices")
+    public void setAdditionalBlockDevices(List<AdditionalBlockDevice> additionalBlockDevices) {
+        this.additionalBlockDevices = additionalBlockDevices;
     }
 
     /**
@@ -307,12 +324,12 @@ public class OpenstackProviderSpec implements Editable<OpenstackProviderSpecBuil
     }
 
     @JsonProperty("metadata")
-    public io.fabric8.kubernetes.api.model.ObjectMeta getMetadata() {
+    public ObjectMeta getMetadata() {
         return metadata;
     }
 
     @JsonProperty("metadata")
-    public void setMetadata(io.fabric8.kubernetes.api.model.ObjectMeta metadata) {
+    public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 

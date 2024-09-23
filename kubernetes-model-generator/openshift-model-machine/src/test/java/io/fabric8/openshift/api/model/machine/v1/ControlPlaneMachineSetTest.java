@@ -17,15 +17,16 @@ package io.fabric8.openshift.api.model.machine.v1;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.kubernetes.api.model.Namespaced;
+import io.fabric8.kubernetes.model.util.Helper;
 import io.fabric8.openshift.api.model.machine.v1alpha1.OpenstackProviderSpec;
 import io.fabric8.openshift.api.model.machine.v1alpha1.OpenstackProviderSpecBuilder;
+import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Scanner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -40,14 +41,10 @@ class ControlPlaneMachineSetTest {
   @Test
   void deserializationAndSerializationShouldWorkAsExpected() throws IOException {
     // Given
-    String originalJson = new Scanner(getClass().getResourceAsStream("/test-controlplanemachineset.json"))
-        .useDelimiter("\\A")
-        .next();
-
+    final String originalJson = Helper.loadJson("/test-controlplanemachineset.json");
     // When
     final ControlPlaneMachineSet controlPlaneMachineSet = mapper.readValue(originalJson, ControlPlaneMachineSet.class);
     final String serializedJson = mapper.writeValueAsString(controlPlaneMachineSet);
-
     // Then
     assertThat(serializedJson).isNotNull();
     assertThat(controlPlaneMachineSet)
@@ -57,46 +54,47 @@ class ControlPlaneMachineSetTest {
         .hasFieldOrPropertyWithValue("selector.matchLabels",
             Collections.singletonMap("machine.openshift.io/cluster-api-machine-type", "master"))
         .hasFieldOrPropertyWithValue("state", "Active")
-        .hasFieldOrPropertyWithValue("template.machineType", "machines_v1beta1_machine_openshift_io")
-        .hasFieldOrPropertyWithValue("template.machinesV1beta1MachineOpenshiftIo.failureDomains.openstack",
-            Collections.singletonList(new OpenStackFailureDomainBuilder()
+        .extracting(ControlPlaneMachineSetSpec::getTemplate)
+        .hasFieldOrPropertyWithValue("machineType", "machines_v1beta1_machine_openshift_io")
+        .extracting(ControlPlaneMachineSetSpecTemplate::getMachines_v1beta1_machine_openshift_io)
+        .hasFieldOrPropertyWithValue("failureDomains.openstack",
+            Collections.singletonList(new ControlPlaneMachineSetSpecTMFDOpenstackBuilder()
                 .withAvailabilityZone("nova-one")
                 .withNewRootVolume()
                 .withAvailabilityZone("cinder-one")
                 .endRootVolume()
                 .build()))
-        .hasFieldOrPropertyWithValue("template.machinesV1beta1MachineOpenshiftIo.metadata.labels",
+        .hasFieldOrPropertyWithValue("metadata.labels",
             Collections.singletonMap("machine.openshift.io/cluster-api-machine-type", "master"))
-        .hasFieldOrPropertyWithValue("template.machinesV1beta1MachineOpenshiftIo.spec.providerSpec.value.apiVersion",
+        .extracting(ControlPlaneMachineSetSpecTMachines_v1beta1_machine_openshift_io::getSpec)
+        .extracting(ControlPlaneMachineSetSpecTMSpec::getProviderSpec)
+        .extracting(ControlPlaneMachineSetSpecTMSpecProviderSpec::getValue)
+        .hasFieldOrPropertyWithValue("apiVersion",
             "machine.openshift.io/v1alpha1")
-        .hasFieldOrPropertyWithValue("template.machinesV1beta1MachineOpenshiftIo.spec.providerSpec.value.kind",
+        .hasFieldOrPropertyWithValue("kind",
             "OpenstackProviderSpec")
-        .hasFieldOrPropertyWithValue("template.machinesV1beta1MachineOpenshiftIo.spec.providerSpec.value.cloudName",
+        .hasFieldOrPropertyWithValue("cloudName",
             "openstack")
-        .hasFieldOrPropertyWithValue("template.machinesV1beta1MachineOpenshiftIo.spec.providerSpec.value.cloudsSecret.name",
+        .hasFieldOrPropertyWithValue("cloudsSecret.name",
             "openstack-cloud-credentials")
         .hasFieldOrPropertyWithValue(
-            "template.machinesV1beta1MachineOpenshiftIo.spec.providerSpec.value.cloudsSecret.namespace",
+            "cloudsSecret.namespace",
             "openshift-machine-api")
-        .hasFieldOrPropertyWithValue("template.machinesV1beta1MachineOpenshiftIo.spec.providerSpec.value.flavor", "m1.xlarge")
-        .hasFieldOrPropertyWithValue("template.machinesV1beta1MachineOpenshiftIo.spec.providerSpec.value.rootVolume.diskSize",
-            30)
-        .hasFieldOrPropertyWithValue("template.machinesV1beta1MachineOpenshiftIo.spec.providerSpec.value.rootVolume.volumeType",
-            "performance")
-        .hasFieldOrPropertyWithValue("template.machinesV1beta1MachineOpenshiftIo.spec.providerSpec.value.serverGroupName",
-            "ocp1-2g2xs-master")
-        .hasFieldOrPropertyWithValue("template.machinesV1beta1MachineOpenshiftIo.spec.providerSpec.value.tags",
+        .hasFieldOrPropertyWithValue("flavor", "m1.xlarge")
+        .hasFieldOrPropertyWithValue("rootVolume.diskSize", 30)
+        .hasFieldOrPropertyWithValue("rootVolume.volumeType", "performance")
+        .hasFieldOrPropertyWithValue("serverGroupName", "ocp1-2g2xs-master")
+        .hasFieldOrPropertyWithValue("tags",
             Collections.singletonList("openshiftClusterID=ocp1-2g2xs"))
-        .hasFieldOrPropertyWithValue("template.machinesV1beta1MachineOpenshiftIo.spec.providerSpec.value.trunk", true)
-        .hasFieldOrPropertyWithValue("template.machinesV1beta1MachineOpenshiftIo.spec.providerSpec.value.userDataSecret.name",
-            "master-user-data")
-        .satisfies(c -> assertThat(
-            c.getTemplate().getMachinesV1beta1MachineOpenshiftIo().getSpec().getProviderSpec().getValue().get("securityGroups"))
-            .asList()
+        .hasFieldOrPropertyWithValue("trunk", true)
+        .hasFieldOrPropertyWithValue("userDataSecret.name", "master-user-data")
+        .satisfies(v -> assertThat(v)
+            .extracting("securityGroups")
+            .asInstanceOf(InstanceOfAssertFactories.list(String.class))
             .hasSize(1))
-        .satisfies(c -> assertThat(
-            c.getTemplate().getMachinesV1beta1MachineOpenshiftIo().getSpec().getProviderSpec().getValue().get("networks"))
-            .asList()
+        .satisfies(v -> assertThat(v)
+            .extracting("networks")
+            .asInstanceOf(InstanceOfAssertFactories.list(String.class))
             .hasSize(1));
   }
 
@@ -133,7 +131,7 @@ class ControlPlaneMachineSetTest {
         .withTrunk(true)
         .withNewUserDataSecret("master-user-data", "test")
         .build();
-    Map<String, Object> providerValue = mapper.convertValue(openstackProviderSpec, Map.class);
+    //    Map<String, Object> providerValue = mapper.convertValue(openstackProviderSpec, Map.class);
     ControlPlaneMachineSetBuilder controlPlaneMachineSetBuilder = new ControlPlaneMachineSetBuilder()
         .withNewMetadata()
         .withName("cluster")
@@ -159,16 +157,14 @@ class ControlPlaneMachineSetTest {
         .endMetadata()
         .withNewSpec()
         .withNewProviderSpec()
-        .withValue(providerValue)
+        .withValue(openstackProviderSpec)
         .endProviderSpec()
         .endSpec()
         .endMachinesV1beta1MachineOpenshiftIo()
         .endTemplate()
         .endSpec();
-
     // When
     ControlPlaneMachineSet controlPlaneMachineSet = controlPlaneMachineSetBuilder.build();
-
     // Then
     assertThat(controlPlaneMachineSet)
         .hasFieldOrPropertyWithValue("metadata.name", "cluster")
@@ -177,44 +173,40 @@ class ControlPlaneMachineSetTest {
         .hasFieldOrPropertyWithValue("selector.matchLabels", matchLabels)
         .hasFieldOrPropertyWithValue("state", "Active")
         .hasFieldOrPropertyWithValue("template.machineType", "machines_v1beta1_machine_openshift_io")
-        .hasFieldOrPropertyWithValue("template.machinesV1beta1MachineOpenshiftIo.failureDomains.openstack",
-            Collections.singletonList(new OpenStackFailureDomainBuilder()
+        .extracting(ControlPlaneMachineSetSpec::getTemplate)
+        .extracting(ControlPlaneMachineSetSpecTemplate::getMachines_v1beta1_machine_openshift_io)
+        .hasFieldOrPropertyWithValue("failureDomains.openstack",
+            Collections.singletonList(new ControlPlaneMachineSetSpecTMFDOpenstackBuilder()
                 .withAvailabilityZone("nova-one")
                 .withNewRootVolume()
                 .withAvailabilityZone("cinder-one")
                 .endRootVolume()
                 .build()))
-        .hasFieldOrPropertyWithValue("template.machinesV1beta1MachineOpenshiftIo.metadata.labels", matchLabels)
-        .hasFieldOrPropertyWithValue("template.machinesV1beta1MachineOpenshiftIo.spec.providerSpec.value.apiVersion",
+        .hasFieldOrPropertyWithValue("metadata.labels", matchLabels)
+        .extracting(ControlPlaneMachineSetSpecTMachines_v1beta1_machine_openshift_io::getSpec)
+        .extracting(ControlPlaneMachineSetSpecTMSpec::getProviderSpec)
+        .extracting(ControlPlaneMachineSetSpecTMSpecProviderSpec::getValue)
+        .hasFieldOrPropertyWithValue("apiVersion",
             "machine.openshift.io/v1alpha1")
-        .hasFieldOrPropertyWithValue("template.machinesV1beta1MachineOpenshiftIo.spec.providerSpec.value.kind",
-            "OpenstackProviderSpec")
-        .hasFieldOrPropertyWithValue("template.machinesV1beta1MachineOpenshiftIo.spec.providerSpec.value.cloudName",
-            "openstack")
-        .hasFieldOrPropertyWithValue("template.machinesV1beta1MachineOpenshiftIo.spec.providerSpec.value.cloudsSecret.name",
-            "openstack-cloud-credentials")
-        .hasFieldOrPropertyWithValue(
-            "template.machinesV1beta1MachineOpenshiftIo.spec.providerSpec.value.cloudsSecret.namespace",
-            "openshift-machine-api")
-        .hasFieldOrPropertyWithValue("template.machinesV1beta1MachineOpenshiftIo.spec.providerSpec.value.flavor", "m1.xlarge")
-        .hasFieldOrPropertyWithValue("template.machinesV1beta1MachineOpenshiftIo.spec.providerSpec.value.rootVolume.diskSize",
-            30)
-        .hasFieldOrPropertyWithValue("template.machinesV1beta1MachineOpenshiftIo.spec.providerSpec.value.rootVolume.volumeType",
-            "performance")
-        .hasFieldOrPropertyWithValue("template.machinesV1beta1MachineOpenshiftIo.spec.providerSpec.value.serverGroupName",
-            "ocp1-2g2xs-master")
-        .hasFieldOrPropertyWithValue("template.machinesV1beta1MachineOpenshiftIo.spec.providerSpec.value.tags",
-            Collections.singletonList("openshiftClusterID=ocp1-2g2xs"))
-        .hasFieldOrPropertyWithValue("template.machinesV1beta1MachineOpenshiftIo.spec.providerSpec.value.trunk", true)
-        .hasFieldOrPropertyWithValue("template.machinesV1beta1MachineOpenshiftIo.spec.providerSpec.value.userDataSecret.name",
+        .hasFieldOrPropertyWithValue("kind", "OpenstackProviderSpec")
+        .hasFieldOrPropertyWithValue("cloudName", "openstack")
+        .hasFieldOrPropertyWithValue("cloudsSecret.name", "openstack-cloud-credentials")
+        .hasFieldOrPropertyWithValue("cloudsSecret.namespace", "openshift-machine-api")
+        .hasFieldOrPropertyWithValue("flavor", "m1.xlarge")
+        .hasFieldOrPropertyWithValue("rootVolume.diskSize", 30)
+        .hasFieldOrPropertyWithValue("rootVolume.volumeType", "performance")
+        .hasFieldOrPropertyWithValue("serverGroupName", "ocp1-2g2xs-master")
+        .hasFieldOrPropertyWithValue("tags", Collections.singletonList("openshiftClusterID=ocp1-2g2xs"))
+        .hasFieldOrPropertyWithValue("trunk", true)
+        .hasFieldOrPropertyWithValue("userDataSecret.name",
             "master-user-data")
-        .satisfies(c -> assertThat(
-            c.getTemplate().getMachinesV1beta1MachineOpenshiftIo().getSpec().getProviderSpec().getValue().get("securityGroups"))
-            .asList()
+        .satisfies(v -> assertThat(v)
+            .extracting("securityGroups")
+            .asInstanceOf(InstanceOfAssertFactories.list(String.class))
             .hasSize(1))
-        .satisfies(c -> assertThat(
-            c.getTemplate().getMachinesV1beta1MachineOpenshiftIo().getSpec().getProviderSpec().getValue().get("networks"))
-            .asList()
+        .satisfies(v -> assertThat(v)
+            .extracting("networks")
+            .asInstanceOf(InstanceOfAssertFactories.list(String.class))
             .hasSize(1));
   }
 }

@@ -81,7 +81,7 @@ public class SubnetFilter implements Editable<SubnetFilterBuilder> , KubernetesR
     @JsonProperty("enableDhcp")
     private Boolean enableDhcp;
     @JsonProperty("gateway_ip")
-    private String gatewayIp;
+    private String gateway_ip;
     @JsonProperty("id")
     private String id;
     @JsonProperty("ipVersion")
@@ -126,12 +126,12 @@ public class SubnetFilter implements Editable<SubnetFilterBuilder> , KubernetesR
     public SubnetFilter() {
     }
 
-    public SubnetFilter(String cidr, String description, Boolean enableDhcp, String gatewayIp, String id, Integer ipVersion, String ipv6AddressMode, String ipv6RaMode, Integer limit, String marker, String name, String networkId, String notTags, String notTagsAny, String projectId, String sortDir, String sortKey, String subnetpoolId, String tags, String tagsAny, String tenantId) {
+    public SubnetFilter(String cidr, String description, Boolean enableDhcp, String gateway_ip, String id, Integer ipVersion, String ipv6AddressMode, String ipv6RaMode, Integer limit, String marker, String name, String networkId, String notTags, String notTagsAny, String projectId, String sortDir, String sortKey, String subnetpoolId, String tags, String tagsAny, String tenantId) {
         super();
         this.cidr = cidr;
         this.description = description;
         this.enableDhcp = enableDhcp;
-        this.gatewayIp = gatewayIp;
+        this.gateway_ip = gateway_ip;
         this.id = id;
         this.ipVersion = ipVersion;
         this.ipv6AddressMode = ipv6AddressMode;
@@ -182,13 +182,13 @@ public class SubnetFilter implements Editable<SubnetFilterBuilder> , KubernetesR
     }
 
     @JsonProperty("gateway_ip")
-    public String getGatewayIp() {
-        return gatewayIp;
+    public String getGateway_ip() {
+        return gateway_ip;
     }
 
     @JsonProperty("gateway_ip")
-    public void setGatewayIp(String gatewayIp) {
-        this.gatewayIp = gatewayIp;
+    public void setGateway_ip(String gateway_ip) {
+        this.gateway_ip = gateway_ip;
     }
 
     @JsonProperty("id")

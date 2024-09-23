@@ -15,6 +15,7 @@ import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
+import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
@@ -44,7 +45,7 @@ import lombok.experimental.Accessors;
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.LabelSelector.class),
+    @BuildableReference(LabelSelector.class),
     @BuildableReference(Container.class),
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
@@ -60,13 +61,13 @@ public class ControlPlaneMachineSetSpec implements Editable<ControlPlaneMachineS
     @JsonProperty("replicas")
     private Integer replicas;
     @JsonProperty("selector")
-    private io.fabric8.kubernetes.api.model.LabelSelector selector;
+    private ControlPlaneMachineSetSpecSelector selector;
     @JsonProperty("state")
     private String state;
     @JsonProperty("strategy")
-    private ControlPlaneMachineSetStrategy strategy;
+    private ControlPlaneMachineSetSpecStrategy strategy;
     @JsonProperty("template")
-    private ControlPlaneMachineSetTemplate template;
+    private ControlPlaneMachineSetSpecTemplate template;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -77,7 +78,7 @@ public class ControlPlaneMachineSetSpec implements Editable<ControlPlaneMachineS
     public ControlPlaneMachineSetSpec() {
     }
 
-    public ControlPlaneMachineSetSpec(Integer replicas, io.fabric8.kubernetes.api.model.LabelSelector selector, String state, ControlPlaneMachineSetStrategy strategy, ControlPlaneMachineSetTemplate template) {
+    public ControlPlaneMachineSetSpec(Integer replicas, ControlPlaneMachineSetSpecSelector selector, String state, ControlPlaneMachineSetSpecStrategy strategy, ControlPlaneMachineSetSpecTemplate template) {
         super();
         this.replicas = replicas;
         this.selector = selector;
@@ -97,12 +98,12 @@ public class ControlPlaneMachineSetSpec implements Editable<ControlPlaneMachineS
     }
 
     @JsonProperty("selector")
-    public io.fabric8.kubernetes.api.model.LabelSelector getSelector() {
+    public ControlPlaneMachineSetSpecSelector getSelector() {
         return selector;
     }
 
     @JsonProperty("selector")
-    public void setSelector(io.fabric8.kubernetes.api.model.LabelSelector selector) {
+    public void setSelector(ControlPlaneMachineSetSpecSelector selector) {
         this.selector = selector;
     }
 
@@ -117,22 +118,22 @@ public class ControlPlaneMachineSetSpec implements Editable<ControlPlaneMachineS
     }
 
     @JsonProperty("strategy")
-    public ControlPlaneMachineSetStrategy getStrategy() {
+    public ControlPlaneMachineSetSpecStrategy getStrategy() {
         return strategy;
     }
 
     @JsonProperty("strategy")
-    public void setStrategy(ControlPlaneMachineSetStrategy strategy) {
+    public void setStrategy(ControlPlaneMachineSetSpecStrategy strategy) {
         this.strategy = strategy;
     }
 
     @JsonProperty("template")
-    public ControlPlaneMachineSetTemplate getTemplate() {
+    public ControlPlaneMachineSetSpecTemplate getTemplate() {
         return template;
     }
 
     @JsonProperty("template")
-    public void setTemplate(ControlPlaneMachineSetTemplate template) {
+    public void setTemplate(ControlPlaneMachineSetSpecTemplate template) {
         this.template = template;
     }
 

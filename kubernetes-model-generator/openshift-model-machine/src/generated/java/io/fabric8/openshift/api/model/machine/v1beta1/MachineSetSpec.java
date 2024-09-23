@@ -15,6 +15,7 @@ import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
+import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
@@ -44,7 +45,7 @@ import lombok.experimental.Accessors;
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.LabelSelector.class),
+    @BuildableReference(LabelSelector.class),
     @BuildableReference(Container.class),
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
@@ -64,9 +65,9 @@ public class MachineSetSpec implements Editable<MachineSetSpecBuilder> , Kuberne
     @JsonProperty("replicas")
     private Integer replicas;
     @JsonProperty("selector")
-    private io.fabric8.kubernetes.api.model.LabelSelector selector;
+    private MachineSetSpecSelector selector;
     @JsonProperty("template")
-    private MachineTemplateSpec template;
+    private MachineSetSpecTemplate template;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -77,7 +78,7 @@ public class MachineSetSpec implements Editable<MachineSetSpecBuilder> , Kuberne
     public MachineSetSpec() {
     }
 
-    public MachineSetSpec(String deletePolicy, Integer minReadySeconds, Integer replicas, io.fabric8.kubernetes.api.model.LabelSelector selector, MachineTemplateSpec template) {
+    public MachineSetSpec(String deletePolicy, Integer minReadySeconds, Integer replicas, MachineSetSpecSelector selector, MachineSetSpecTemplate template) {
         super();
         this.deletePolicy = deletePolicy;
         this.minReadySeconds = minReadySeconds;
@@ -117,22 +118,22 @@ public class MachineSetSpec implements Editable<MachineSetSpecBuilder> , Kuberne
     }
 
     @JsonProperty("selector")
-    public io.fabric8.kubernetes.api.model.LabelSelector getSelector() {
+    public MachineSetSpecSelector getSelector() {
         return selector;
     }
 
     @JsonProperty("selector")
-    public void setSelector(io.fabric8.kubernetes.api.model.LabelSelector selector) {
+    public void setSelector(MachineSetSpecSelector selector) {
         this.selector = selector;
     }
 
     @JsonProperty("template")
-    public MachineTemplateSpec getTemplate() {
+    public MachineSetSpecTemplate getTemplate() {
         return template;
     }
 
     @JsonProperty("template")
-    public void setTemplate(MachineTemplateSpec template) {
+    public void setTemplate(MachineSetSpecTemplate template) {
         this.template = template;
     }
 

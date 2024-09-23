@@ -1,7 +1,9 @@
 
 package io.fabric8.openshift.api.model.machine.v1beta1;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -32,6 +34,7 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "availableReplicas",
+    "conditions",
     "errorMessage",
     "errorReason",
     "fullyLabeledReplicas",
@@ -62,6 +65,9 @@ public class MachineSetStatus implements Editable<MachineSetStatusBuilder> , Kub
 
     @JsonProperty("availableReplicas")
     private Integer availableReplicas;
+    @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<MachineSetStatusConditions> conditions = new ArrayList<>();
     @JsonProperty("errorMessage")
     private String errorMessage;
     @JsonProperty("errorReason")
@@ -84,9 +90,10 @@ public class MachineSetStatus implements Editable<MachineSetStatusBuilder> , Kub
     public MachineSetStatus() {
     }
 
-    public MachineSetStatus(Integer availableReplicas, String errorMessage, String errorReason, Integer fullyLabeledReplicas, Long observedGeneration, Integer readyReplicas, Integer replicas) {
+    public MachineSetStatus(Integer availableReplicas, List<MachineSetStatusConditions> conditions, String errorMessage, String errorReason, Integer fullyLabeledReplicas, Long observedGeneration, Integer readyReplicas, Integer replicas) {
         super();
         this.availableReplicas = availableReplicas;
+        this.conditions = conditions;
         this.errorMessage = errorMessage;
         this.errorReason = errorReason;
         this.fullyLabeledReplicas = fullyLabeledReplicas;
@@ -103,6 +110,17 @@ public class MachineSetStatus implements Editable<MachineSetStatusBuilder> , Kub
     @JsonProperty("availableReplicas")
     public void setAvailableReplicas(Integer availableReplicas) {
         this.availableReplicas = availableReplicas;
+    }
+
+    @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<MachineSetStatusConditions> getConditions() {
+        return conditions;
+    }
+
+    @JsonProperty("conditions")
+    public void setConditions(List<MachineSetStatusConditions> conditions) {
+        this.conditions = conditions;
     }
 
     @JsonProperty("errorMessage")
