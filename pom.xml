@@ -132,7 +132,7 @@
     <bcpkix-fips.version>2.0.7</bcpkix-fips.version>
     <commons-compress.version>1.27.1</commons-compress.version>
     <commons-io.version>2.17.0</commons-io.version> <!-- Required by Gradle Testing Toolkit -->
-    <guava.version>33.3.0-jre</guava.version> <!-- Required by Gradle Testing Toolkit -->
+    <guava.version>33.3.1-jre</guava.version> <!-- Required by Gradle Testing Toolkit -->
     <osgi.annotations.version>1.5.1</osgi.annotations.version>
     <felix.scr.version>2.0.6</felix.scr.version>
     <jsonschema2pojo.version>1.2.2</jsonschema2pojo.version>
