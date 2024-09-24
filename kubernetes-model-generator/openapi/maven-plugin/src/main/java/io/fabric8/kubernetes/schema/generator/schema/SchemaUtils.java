@@ -138,16 +138,23 @@ public class SchemaUtils {
 
   private static final Set<String> PROTECTED_WORDS = new HashSet<>(Arrays.asList(
       "abstract",
+      "class",
       "continue",
       "default",
       "enum",
-      "class",
+      "for",
       "import",
       "int",
+      "package",
       "private",
-      "for",
       "return",
-      "package"));
+      "short",
+      "static"));
+
+  private static final Map<String, String> MAPPED_WORDS = new LinkedHashMap<>();
+  static {
+    MAPPED_WORDS.put("class", "clazz");
+  }
 
   private final GeneratorSettings settings;
 
@@ -355,15 +362,20 @@ public class SchemaUtils {
 
   public static String sanitizeVariable(String variable) {
     final String sanitized = uncapitalize(removeDashes(variable));
-    return PROTECTED_WORDS.contains(sanitized) ? "_" + sanitized : sanitized;
+    final String mapped = MAPPED_WORDS.getOrDefault(sanitized, sanitized);
+    return PROTECTED_WORDS.contains(mapped) ? "_" + mapped : mapped;
   }
 
   public static String getterName(String variable) {
-    return "get".concat(capitalize(removeDashes(variable)));
+    final String property = removeDashes(variable);
+    final String mapped = MAPPED_WORDS.getOrDefault(property, property);
+    return "get".concat(capitalize(mapped));
   }
 
   public static String setterName(String variable) {
-    return "set".concat(capitalize(removeDashes(variable)));
+    final String property = removeDashes(variable);
+    final String mapped = MAPPED_WORDS.getOrDefault(property, property);
+    return "set".concat(capitalize(mapped));
   }
 
   public Map<String, Schema<?>> extractComponentSchemas() {

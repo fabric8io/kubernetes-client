@@ -15,10 +15,10 @@
  */
 package io.fabric8.openshift.client.server.mock;
 
-import io.fabric8.openshift.api.model.monitoring.v1alpha1.AlertmanagerConfig;
-import io.fabric8.openshift.api.model.monitoring.v1alpha1.AlertmanagerConfigBuilder;
-import io.fabric8.openshift.api.model.monitoring.v1alpha1.AlertmanagerConfigList;
-import io.fabric8.openshift.api.model.monitoring.v1alpha1.AlertmanagerConfigListBuilder;
+import io.fabric8.openshift.api.model.monitoring.v1beta1.AlertmanagerConfig;
+import io.fabric8.openshift.api.model.monitoring.v1beta1.AlertmanagerConfigBuilder;
+import io.fabric8.openshift.api.model.monitoring.v1beta1.AlertmanagerConfigList;
+import io.fabric8.openshift.api.model.monitoring.v1beta1.AlertmanagerConfigListBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
 import org.junit.jupiter.api.Test;
 
@@ -34,7 +34,7 @@ class AlertmanagerConfigTest {
   @Test
   void get() {
     // Given
-    server.expect().get().withPath("/apis/monitoring.coreos.com/v1alpha1/namespaces/ns1/alertmanagerconfigs/test-get")
+    server.expect().get().withPath("/apis/monitoring.coreos.com/v1beta1/namespaces/ns1/alertmanagerconfigs/test-get")
         .andReturn(HttpURLConnection.HTTP_OK, createNewAlertmanagerConfig("test-get"))
         .once();
 
@@ -51,7 +51,7 @@ class AlertmanagerConfigTest {
   @Test
   void list() {
     // Given
-    server.expect().get().withPath("/apis/monitoring.coreos.com/v1alpha1/namespaces/ns1/alertmanagerconfigs")
+    server.expect().get().withPath("/apis/monitoring.coreos.com/v1beta1/namespaces/ns1/alertmanagerconfigs")
         .andReturn(HttpURLConnection.HTTP_OK, new AlertmanagerConfigListBuilder()
             .addToItems(createNewAlertmanagerConfig("test-list"))
             .build())
@@ -70,7 +70,7 @@ class AlertmanagerConfigTest {
   @Test
   void delete() {
     // Given
-    server.expect().delete().withPath("/apis/monitoring.coreos.com/v1alpha1/namespaces/ns1/alertmanagerconfigs/test-delete")
+    server.expect().delete().withPath("/apis/monitoring.coreos.com/v1beta1/namespaces/ns1/alertmanagerconfigs/test-delete")
         .andReturn(HttpURLConnection.HTTP_OK, createNewAlertmanagerConfig("test-delete"))
         .once();
 

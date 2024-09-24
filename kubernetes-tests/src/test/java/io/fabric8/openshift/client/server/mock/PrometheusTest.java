@@ -17,18 +17,15 @@ package io.fabric8.openshift.client.server.mock;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
-import io.fabric8.openshift.api.model.monitoring.v1.AlertingSpec;
-import io.fabric8.openshift.api.model.monitoring.v1.AlertmanagerEndpoints;
-import io.fabric8.openshift.api.model.monitoring.v1.AlertmanagerEndpointsBuilder;
 import io.fabric8.openshift.api.model.monitoring.v1.Prometheus;
 import io.fabric8.openshift.api.model.monitoring.v1.PrometheusBuilder;
 import io.fabric8.openshift.api.model.monitoring.v1.PrometheusList;
 import io.fabric8.openshift.api.model.monitoring.v1.PrometheusListBuilder;
+import io.fabric8.openshift.api.model.monitoring.v1.PrometheusSpecAAlertmanagersBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
 import org.junit.jupiter.api.Test;
 
 import java.net.HttpURLConnection;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -117,22 +114,17 @@ class PrometheusTest {
   }
 
   private Prometheus getPrometheus() {
-    AlertmanagerEndpoints alertmanagerEndpoints = new AlertmanagerEndpointsBuilder()
-        .withName("alertmanager-main")
-        .withNamespace("monitoring")
-        .withPort(new IntOrString("web"))
-        .build();
-    List<AlertmanagerEndpoints> alertmanagerEndpointsList = new ArrayList<>();
-    alertmanagerEndpointsList.add(alertmanagerEndpoints);
-
-    AlertingSpec alertingSpec = new AlertingSpec();
-    alertingSpec.setAlertmanagers(alertmanagerEndpointsList);
-
     return new PrometheusBuilder()
         .withNewMetadata().withName("foo").endMetadata()
         .withNewSpec()
         .withServiceAccountName("prometheus-k8s")
-        .withAlerting(alertingSpec)
+        .withNewAlerting()
+        .addToAlertmanagers(new PrometheusSpecAAlertmanagersBuilder()
+            .withName("alertmanager-main")
+            .withNamespace("monitoring")
+            .withPort(new IntOrString("web"))
+            .build())
+        .endAlerting()
         .endSpec()
         .build();
   }

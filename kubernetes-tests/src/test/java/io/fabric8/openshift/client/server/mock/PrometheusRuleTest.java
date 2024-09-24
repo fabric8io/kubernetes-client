@@ -120,7 +120,7 @@ class PrometheusRuleTest {
         .withName("./example-rules")
         .addNewRule()
         .withAlert("ExampleAlert")
-        .withNewExpr("vector(1)")
+        .withExpr("vector(1)")
         .endRule()
         .endGroup()
         .endSpec()

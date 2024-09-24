@@ -24,7 +24,6 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.kubernetes.api.model.SecretKeySelector;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -48,6 +47,8 @@ import lombok.experimental.Accessors;
     "oauth2",
     "prober",
     "sampleLimit",
+    "scrapeClass",
+    "scrapeProtocols",
     "scrapeTimeout",
     "targetLimit",
     "targets",
@@ -75,11 +76,11 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder> , KubernetesResourc
 {
 
     @JsonProperty("authorization")
-    private SafeAuthorization authorization;
+    private ProbeSpecAuthorization authorization;
     @JsonProperty("basicAuth")
-    private BasicAuth basicAuth;
+    private ProbeSpecBasicAuth basicAuth;
     @JsonProperty("bearerTokenSecret")
-    private SecretKeySelector bearerTokenSecret;
+    private ProbeSpecBearerTokenSecret bearerTokenSecret;
     @JsonProperty("interval")
     private String interval;
     @JsonProperty("jobName")
@@ -94,23 +95,28 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder> , KubernetesResourc
     private Long labelValueLengthLimit;
     @JsonProperty("metricRelabelings")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<RelabelConfig> metricRelabelings = new ArrayList<>();
+    private List<ProbeSpecMetricRelabelings> metricRelabelings = new ArrayList<>();
     @JsonProperty("module")
     private String module;
     @JsonProperty("oauth2")
-    private OAuth2 oauth2;
+    private ProbeSpecOauth2 oauth2;
     @JsonProperty("prober")
-    private ProberSpec prober;
+    private ProbeSpecProber prober;
     @JsonProperty("sampleLimit")
     private Long sampleLimit;
+    @JsonProperty("scrapeClass")
+    private String scrapeClass;
+    @JsonProperty("scrapeProtocols")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> scrapeProtocols = new ArrayList<>();
     @JsonProperty("scrapeTimeout")
     private String scrapeTimeout;
     @JsonProperty("targetLimit")
     private Long targetLimit;
     @JsonProperty("targets")
-    private ProbeTargets targets;
+    private ProbeSpecTargets targets;
     @JsonProperty("tlsConfig")
-    private ProbeTLSConfig tlsConfig;
+    private ProbeSpecTlsConfig tlsConfig;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -121,7 +127,7 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder> , KubernetesResourc
     public ProbeSpec() {
     }
 
-    public ProbeSpec(SafeAuthorization authorization, BasicAuth basicAuth, SecretKeySelector bearerTokenSecret, String interval, String jobName, Long keepDroppedTargets, Long labelLimit, Long labelNameLengthLimit, Long labelValueLengthLimit, List<RelabelConfig> metricRelabelings, String module, OAuth2 oauth2, ProberSpec prober, Long sampleLimit, String scrapeTimeout, Long targetLimit, ProbeTargets targets, ProbeTLSConfig tlsConfig) {
+    public ProbeSpec(ProbeSpecAuthorization authorization, ProbeSpecBasicAuth basicAuth, ProbeSpecBearerTokenSecret bearerTokenSecret, String interval, String jobName, Long keepDroppedTargets, Long labelLimit, Long labelNameLengthLimit, Long labelValueLengthLimit, List<ProbeSpecMetricRelabelings> metricRelabelings, String module, ProbeSpecOauth2 oauth2, ProbeSpecProber prober, Long sampleLimit, String scrapeClass, List<String> scrapeProtocols, String scrapeTimeout, Long targetLimit, ProbeSpecTargets targets, ProbeSpecTlsConfig tlsConfig) {
         super();
         this.authorization = authorization;
         this.basicAuth = basicAuth;
@@ -137,6 +143,8 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder> , KubernetesResourc
         this.oauth2 = oauth2;
         this.prober = prober;
         this.sampleLimit = sampleLimit;
+        this.scrapeClass = scrapeClass;
+        this.scrapeProtocols = scrapeProtocols;
         this.scrapeTimeout = scrapeTimeout;
         this.targetLimit = targetLimit;
         this.targets = targets;
@@ -144,32 +152,32 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder> , KubernetesResourc
     }
 
     @JsonProperty("authorization")
-    public SafeAuthorization getAuthorization() {
+    public ProbeSpecAuthorization getAuthorization() {
         return authorization;
     }
 
     @JsonProperty("authorization")
-    public void setAuthorization(SafeAuthorization authorization) {
+    public void setAuthorization(ProbeSpecAuthorization authorization) {
         this.authorization = authorization;
     }
 
     @JsonProperty("basicAuth")
-    public BasicAuth getBasicAuth() {
+    public ProbeSpecBasicAuth getBasicAuth() {
         return basicAuth;
     }
 
     @JsonProperty("basicAuth")
-    public void setBasicAuth(BasicAuth basicAuth) {
+    public void setBasicAuth(ProbeSpecBasicAuth basicAuth) {
         this.basicAuth = basicAuth;
     }
 
     @JsonProperty("bearerTokenSecret")
-    public SecretKeySelector getBearerTokenSecret() {
+    public ProbeSpecBearerTokenSecret getBearerTokenSecret() {
         return bearerTokenSecret;
     }
 
     @JsonProperty("bearerTokenSecret")
-    public void setBearerTokenSecret(SecretKeySelector bearerTokenSecret) {
+    public void setBearerTokenSecret(ProbeSpecBearerTokenSecret bearerTokenSecret) {
         this.bearerTokenSecret = bearerTokenSecret;
     }
 
@@ -235,12 +243,12 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder> , KubernetesResourc
 
     @JsonProperty("metricRelabelings")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<RelabelConfig> getMetricRelabelings() {
+    public List<ProbeSpecMetricRelabelings> getMetricRelabelings() {
         return metricRelabelings;
     }
 
     @JsonProperty("metricRelabelings")
-    public void setMetricRelabelings(List<RelabelConfig> metricRelabelings) {
+    public void setMetricRelabelings(List<ProbeSpecMetricRelabelings> metricRelabelings) {
         this.metricRelabelings = metricRelabelings;
     }
 
@@ -255,22 +263,22 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder> , KubernetesResourc
     }
 
     @JsonProperty("oauth2")
-    public OAuth2 getOauth2() {
+    public ProbeSpecOauth2 getOauth2() {
         return oauth2;
     }
 
     @JsonProperty("oauth2")
-    public void setOauth2(OAuth2 oauth2) {
+    public void setOauth2(ProbeSpecOauth2 oauth2) {
         this.oauth2 = oauth2;
     }
 
     @JsonProperty("prober")
-    public ProberSpec getProber() {
+    public ProbeSpecProber getProber() {
         return prober;
     }
 
     @JsonProperty("prober")
-    public void setProber(ProberSpec prober) {
+    public void setProber(ProbeSpecProber prober) {
         this.prober = prober;
     }
 
@@ -282,6 +290,27 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder> , KubernetesResourc
     @JsonProperty("sampleLimit")
     public void setSampleLimit(Long sampleLimit) {
         this.sampleLimit = sampleLimit;
+    }
+
+    @JsonProperty("scrapeClass")
+    public String getScrapeClass() {
+        return scrapeClass;
+    }
+
+    @JsonProperty("scrapeClass")
+    public void setScrapeClass(String scrapeClass) {
+        this.scrapeClass = scrapeClass;
+    }
+
+    @JsonProperty("scrapeProtocols")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<String> getScrapeProtocols() {
+        return scrapeProtocols;
+    }
+
+    @JsonProperty("scrapeProtocols")
+    public void setScrapeProtocols(List<String> scrapeProtocols) {
+        this.scrapeProtocols = scrapeProtocols;
     }
 
     @JsonProperty("scrapeTimeout")
@@ -305,22 +334,22 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder> , KubernetesResourc
     }
 
     @JsonProperty("targets")
-    public ProbeTargets getTargets() {
+    public ProbeSpecTargets getTargets() {
         return targets;
     }
 
     @JsonProperty("targets")
-    public void setTargets(ProbeTargets targets) {
+    public void setTargets(ProbeSpecTargets targets) {
         this.targets = targets;
     }
 
     @JsonProperty("tlsConfig")
-    public ProbeTLSConfig getTlsConfig() {
+    public ProbeSpecTlsConfig getTlsConfig() {
         return tlsConfig;
     }
 
     @JsonProperty("tlsConfig")
-    public void setTlsConfig(ProbeTLSConfig tlsConfig) {
+    public void setTlsConfig(ProbeSpecTlsConfig tlsConfig) {
         this.tlsConfig = tlsConfig;
     }
 

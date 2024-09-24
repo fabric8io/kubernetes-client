@@ -65,7 +65,7 @@ public class ThanosRulerStatus implements Editable<ThanosRulerStatusBuilder> , K
     private Integer availableReplicas;
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Condition> conditions = new ArrayList<>();
+    private List<ThanosRulerStatusConditions> conditions = new ArrayList<>();
     @JsonProperty("paused")
     private Boolean paused;
     @JsonProperty("replicas")
@@ -84,7 +84,7 @@ public class ThanosRulerStatus implements Editable<ThanosRulerStatusBuilder> , K
     public ThanosRulerStatus() {
     }
 
-    public ThanosRulerStatus(Integer availableReplicas, List<Condition> conditions, Boolean paused, Integer replicas, Integer unavailableReplicas, Integer updatedReplicas) {
+    public ThanosRulerStatus(Integer availableReplicas, List<ThanosRulerStatusConditions> conditions, Boolean paused, Integer replicas, Integer unavailableReplicas, Integer updatedReplicas) {
         super();
         this.availableReplicas = availableReplicas;
         this.conditions = conditions;
@@ -106,12 +106,12 @@ public class ThanosRulerStatus implements Editable<ThanosRulerStatusBuilder> , K
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<Condition> getConditions() {
+    public List<ThanosRulerStatusConditions> getConditions() {
         return conditions;
     }
 
     @JsonProperty("conditions")
-    public void setConditions(List<Condition> conditions) {
+    public void setConditions(List<ThanosRulerStatusConditions> conditions) {
         this.conditions = conditions;
     }
 

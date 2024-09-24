@@ -32,8 +32,8 @@ import io.fabric8.openshift.api.model.monitoring.v1.ServiceMonitor;
 import io.fabric8.openshift.api.model.monitoring.v1.ServiceMonitorList;
 import io.fabric8.openshift.api.model.monitoring.v1.ThanosRuler;
 import io.fabric8.openshift.api.model.monitoring.v1.ThanosRulerList;
-import io.fabric8.openshift.api.model.monitoring.v1alpha1.AlertmanagerConfig;
-import io.fabric8.openshift.api.model.monitoring.v1alpha1.AlertmanagerConfigList;
+import io.fabric8.openshift.api.model.monitoring.v1beta1.AlertmanagerConfig;
+import io.fabric8.openshift.api.model.monitoring.v1beta1.AlertmanagerConfigList;
 import io.fabric8.openshift.client.dsl.OpenShiftMonitoringAPIGroupDSL;
 
 public class OpenShiftMonitoringAPIGroupClient extends ClientAdapter<OpenShiftMonitoringAPIGroupClient>

@@ -58,7 +58,7 @@ public class PrometheusRuleSpec implements Editable<PrometheusRuleSpecBuilder> ,
 
     @JsonProperty("groups")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<RuleGroup> groups = new ArrayList<>();
+    private List<PrometheusRuleSpecGroups> groups = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -69,19 +69,19 @@ public class PrometheusRuleSpec implements Editable<PrometheusRuleSpecBuilder> ,
     public PrometheusRuleSpec() {
     }
 
-    public PrometheusRuleSpec(List<RuleGroup> groups) {
+    public PrometheusRuleSpec(List<PrometheusRuleSpecGroups> groups) {
         super();
         this.groups = groups;
     }
 
     @JsonProperty("groups")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<RuleGroup> getGroups() {
+    public List<PrometheusRuleSpecGroups> getGroups() {
         return groups;
     }
 
     @JsonProperty("groups")
-    public void setGroups(List<RuleGroup> groups) {
+    public void setGroups(List<PrometheusRuleSpecGroups> groups) {
         this.groups = groups;
     }
 

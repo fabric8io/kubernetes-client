@@ -65,7 +65,7 @@ public class AlertmanagerStatus implements Editable<AlertmanagerStatusBuilder> ,
     private Integer availableReplicas;
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Condition> conditions = new ArrayList<>();
+    private List<AlertmanagerStatusConditions> conditions = new ArrayList<>();
     @JsonProperty("paused")
     private Boolean paused;
     @JsonProperty("replicas")
@@ -84,7 +84,7 @@ public class AlertmanagerStatus implements Editable<AlertmanagerStatusBuilder> ,
     public AlertmanagerStatus() {
     }
 
-    public AlertmanagerStatus(Integer availableReplicas, List<Condition> conditions, Boolean paused, Integer replicas, Integer unavailableReplicas, Integer updatedReplicas) {
+    public AlertmanagerStatus(Integer availableReplicas, List<AlertmanagerStatusConditions> conditions, Boolean paused, Integer replicas, Integer unavailableReplicas, Integer updatedReplicas) {
         super();
         this.availableReplicas = availableReplicas;
         this.conditions = conditions;
@@ -106,12 +106,12 @@ public class AlertmanagerStatus implements Editable<AlertmanagerStatusBuilder> ,
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<Condition> getConditions() {
+    public List<AlertmanagerStatusConditions> getConditions() {
         return conditions;
     }
 
     @JsonProperty("conditions")
-    public void setConditions(List<Condition> conditions) {
+    public void setConditions(List<AlertmanagerStatusConditions> conditions) {
         this.conditions = conditions;
     }
 

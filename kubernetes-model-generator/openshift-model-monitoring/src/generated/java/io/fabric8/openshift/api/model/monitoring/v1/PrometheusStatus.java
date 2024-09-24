@@ -37,7 +37,9 @@ import lombok.experimental.Accessors;
     "conditions",
     "paused",
     "replicas",
+    "selector",
     "shardStatuses",
+    "shards",
     "unavailableReplicas",
     "updatedReplicas"
 })
@@ -66,14 +68,18 @@ public class PrometheusStatus implements Editable<PrometheusStatusBuilder> , Kub
     private Integer availableReplicas;
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Condition> conditions = new ArrayList<>();
+    private List<PrometheusStatusConditions> conditions = new ArrayList<>();
     @JsonProperty("paused")
     private Boolean paused;
     @JsonProperty("replicas")
     private Integer replicas;
+    @JsonProperty("selector")
+    private String selector;
     @JsonProperty("shardStatuses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ShardStatus> shardStatuses = new ArrayList<>();
+    private List<PrometheusStatusShardStatuses> shardStatuses = new ArrayList<>();
+    @JsonProperty("shards")
+    private Integer shards;
     @JsonProperty("unavailableReplicas")
     private Integer unavailableReplicas;
     @JsonProperty("updatedReplicas")
@@ -88,13 +94,15 @@ public class PrometheusStatus implements Editable<PrometheusStatusBuilder> , Kub
     public PrometheusStatus() {
     }
 
-    public PrometheusStatus(Integer availableReplicas, List<Condition> conditions, Boolean paused, Integer replicas, List<ShardStatus> shardStatuses, Integer unavailableReplicas, Integer updatedReplicas) {
+    public PrometheusStatus(Integer availableReplicas, List<PrometheusStatusConditions> conditions, Boolean paused, Integer replicas, String selector, List<PrometheusStatusShardStatuses> shardStatuses, Integer shards, Integer unavailableReplicas, Integer updatedReplicas) {
         super();
         this.availableReplicas = availableReplicas;
         this.conditions = conditions;
         this.paused = paused;
         this.replicas = replicas;
+        this.selector = selector;
         this.shardStatuses = shardStatuses;
+        this.shards = shards;
         this.unavailableReplicas = unavailableReplicas;
         this.updatedReplicas = updatedReplicas;
     }
@@ -111,12 +119,12 @@ public class PrometheusStatus implements Editable<PrometheusStatusBuilder> , Kub
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<Condition> getConditions() {
+    public List<PrometheusStatusConditions> getConditions() {
         return conditions;
     }
 
     @JsonProperty("conditions")
-    public void setConditions(List<Condition> conditions) {
+    public void setConditions(List<PrometheusStatusConditions> conditions) {
         this.conditions = conditions;
     }
 
@@ -140,15 +148,35 @@ public class PrometheusStatus implements Editable<PrometheusStatusBuilder> , Kub
         this.replicas = replicas;
     }
 
+    @JsonProperty("selector")
+    public String getSelector() {
+        return selector;
+    }
+
+    @JsonProperty("selector")
+    public void setSelector(String selector) {
+        this.selector = selector;
+    }
+
     @JsonProperty("shardStatuses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<ShardStatus> getShardStatuses() {
+    public List<PrometheusStatusShardStatuses> getShardStatuses() {
         return shardStatuses;
     }
 
     @JsonProperty("shardStatuses")
-    public void setShardStatuses(List<ShardStatus> shardStatuses) {
+    public void setShardStatuses(List<PrometheusStatusShardStatuses> shardStatuses) {
         this.shardStatuses = shardStatuses;
+    }
+
+    @JsonProperty("shards")
+    public Integer getShards() {
+        return shards;
+    }
+
+    @JsonProperty("shards")
+    public void setShards(Integer shards) {
+        this.shards = shards;
     }
 
     @JsonProperty("unavailableReplicas")

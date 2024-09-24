@@ -14,18 +14,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
-import io.fabric8.kubernetes.api.model.Affinity;
+import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
+import io.fabric8.kubernetes.api.model.LabelSelector;
+import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
+import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
-import io.fabric8.kubernetes.api.model.PodSecurityContext;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
-import io.fabric8.kubernetes.api.model.SecretKeySelector;
-import io.fabric8.kubernetes.api.model.Toleration;
-import io.fabric8.kubernetes.api.model.TopologySpreadConstraint;
-import io.fabric8.kubernetes.api.model.Volume;
-import io.fabric8.kubernetes.api.model.VolumeMount;
+import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -84,7 +82,8 @@ import lombok.experimental.Accessors;
     "tracingConfigFile",
     "version",
     "volumeMounts",
-    "volumes"
+    "volumes",
+    "web"
 })
 @ToString
 @EqualsAndHashCode
@@ -94,13 +93,13 @@ import lombok.experimental.Accessors;
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.LabelSelector.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.Container.class),
+    @BuildableReference(LabelSelector.class),
+    @BuildableReference(Container.class),
     @BuildableReference(PodTemplateSpec.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.ResourceRequirements.class),
+    @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.LocalObjectReference.class),
+    @BuildableReference(ObjectReference.class),
+    @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
@@ -109,9 +108,9 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder> , Kuber
 
     @JsonProperty("additionalArgs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Argument> additionalArgs = new ArrayList<>();
+    private List<ThanosRulerSpecAdditionalArgs> additionalArgs = new ArrayList<>();
     @JsonProperty("affinity")
-    private Affinity affinity;
+    private ThanosRulerSpecAffinity affinity;
     @JsonProperty("alertDropLabels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> alertDropLabels = new ArrayList<>();
@@ -120,39 +119,39 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder> , Kuber
     @JsonProperty("alertRelabelConfigFile")
     private String alertRelabelConfigFile;
     @JsonProperty("alertRelabelConfigs")
-    private SecretKeySelector alertRelabelConfigs;
+    private ThanosRulerSpecAlertRelabelConfigs alertRelabelConfigs;
     @JsonProperty("alertmanagersConfig")
-    private SecretKeySelector alertmanagersConfig;
+    private ThanosRulerSpecAlertmanagersConfig alertmanagersConfig;
     @JsonProperty("alertmanagersUrl")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> alertmanagersUrl = new ArrayList<>();
     @JsonProperty("containers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.Container> containers = new ArrayList<>();
+    private List<ThanosRulerSpecContainers> containers = new ArrayList<>();
     @JsonProperty("enforcedNamespaceLabel")
     private String enforcedNamespaceLabel;
     @JsonProperty("evaluationInterval")
     private String evaluationInterval;
     @JsonProperty("excludedFromEnforcement")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.openshift.api.model.monitoring.v1.ObjectReference> excludedFromEnforcement = new ArrayList<>();
+    private List<ThanosRulerSpecExcludedFromEnforcement> excludedFromEnforcement = new ArrayList<>();
     @JsonProperty("externalPrefix")
     private String externalPrefix;
     @JsonProperty("grpcServerTlsConfig")
-    private TLSConfig grpcServerTlsConfig;
+    private ThanosRulerSpecGrpcServerTlsConfig grpcServerTlsConfig;
     @JsonProperty("hostAliases")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<HostAlias> hostAliases = new ArrayList<>();
+    private List<ThanosRulerSpecHostAliases> hostAliases = new ArrayList<>();
     @JsonProperty("image")
     private String image;
     @JsonProperty("imagePullPolicy")
     private String imagePullPolicy;
     @JsonProperty("imagePullSecrets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.LocalObjectReference> imagePullSecrets = new ArrayList<>();
+    private List<ThanosRulerSpecImagePullSecrets> imagePullSecrets = new ArrayList<>();
     @JsonProperty("initContainers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.Container> initContainers = new ArrayList<>();
+    private List<ThanosRulerSpecInitContainers> initContainers = new ArrayList<>();
     @JsonProperty("labels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> labels = new LinkedHashMap<>();
@@ -168,61 +167,63 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder> , Kuber
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> nodeSelector = new LinkedHashMap<>();
     @JsonProperty("objectStorageConfig")
-    private SecretKeySelector objectStorageConfig;
+    private ThanosRulerSpecObjectStorageConfig objectStorageConfig;
     @JsonProperty("objectStorageConfigFile")
     private String objectStorageConfigFile;
     @JsonProperty("paused")
     private Boolean paused;
     @JsonProperty("podMetadata")
-    private EmbeddedObjectMetadata podMetadata;
+    private ThanosRulerSpecPodMetadata podMetadata;
     @JsonProperty("portName")
     private String portName;
     @JsonProperty("priorityClassName")
     private String priorityClassName;
     @JsonProperty("prometheusRulesExcludedFromEnforce")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<PrometheusRuleExcludeConfig> prometheusRulesExcludedFromEnforce = new ArrayList<>();
+    private List<ThanosRulerSpecPrometheusRulesExcludedFromEnforce> prometheusRulesExcludedFromEnforce = new ArrayList<>();
     @JsonProperty("queryConfig")
-    private SecretKeySelector queryConfig;
+    private ThanosRulerSpecQueryConfig queryConfig;
     @JsonProperty("queryEndpoints")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> queryEndpoints = new ArrayList<>();
     @JsonProperty("replicas")
     private Integer replicas;
     @JsonProperty("resources")
-    private io.fabric8.kubernetes.api.model.ResourceRequirements resources;
+    private ThanosRulerSpecResources resources;
     @JsonProperty("retention")
     private String retention;
     @JsonProperty("routePrefix")
     private String routePrefix;
     @JsonProperty("ruleNamespaceSelector")
-    private io.fabric8.kubernetes.api.model.LabelSelector ruleNamespaceSelector;
+    private ThanosRulerSpecRuleNamespaceSelector ruleNamespaceSelector;
     @JsonProperty("ruleSelector")
-    private io.fabric8.kubernetes.api.model.LabelSelector ruleSelector;
+    private ThanosRulerSpecRuleSelector ruleSelector;
     @JsonProperty("securityContext")
-    private PodSecurityContext securityContext;
+    private ThanosRulerSpecSecurityContext securityContext;
     @JsonProperty("serviceAccountName")
     private String serviceAccountName;
     @JsonProperty("storage")
-    private StorageSpec storage;
+    private ThanosRulerSpecStorage storage;
     @JsonProperty("tolerations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Toleration> tolerations = new ArrayList<>();
+    private List<ThanosRulerSpecTolerations> tolerations = new ArrayList<>();
     @JsonProperty("topologySpreadConstraints")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<TopologySpreadConstraint> topologySpreadConstraints = new ArrayList<>();
+    private List<ThanosRulerSpecTopologySpreadConstraints> topologySpreadConstraints = new ArrayList<>();
     @JsonProperty("tracingConfig")
-    private SecretKeySelector tracingConfig;
+    private ThanosRulerSpecTracingConfig tracingConfig;
     @JsonProperty("tracingConfigFile")
     private String tracingConfigFile;
     @JsonProperty("version")
     private String version;
     @JsonProperty("volumeMounts")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<VolumeMount> volumeMounts = new ArrayList<>();
+    private List<ThanosRulerSpecVolumeMounts> volumeMounts = new ArrayList<>();
     @JsonProperty("volumes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Volume> volumes = new ArrayList<>();
+    private List<ThanosRulerSpecVolumes> volumes = new ArrayList<>();
+    @JsonProperty("web")
+    private ThanosRulerSpecWeb web;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -233,7 +234,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder> , Kuber
     public ThanosRulerSpec() {
     }
 
-    public ThanosRulerSpec(List<Argument> additionalArgs, Affinity affinity, List<String> alertDropLabels, String alertQueryUrl, String alertRelabelConfigFile, SecretKeySelector alertRelabelConfigs, SecretKeySelector alertmanagersConfig, List<String> alertmanagersUrl, List<io.fabric8.kubernetes.api.model.Container> containers, String enforcedNamespaceLabel, String evaluationInterval, List<io.fabric8.openshift.api.model.monitoring.v1.ObjectReference> excludedFromEnforcement, String externalPrefix, TLSConfig grpcServerTlsConfig, List<HostAlias> hostAliases, String image, String imagePullPolicy, List<io.fabric8.kubernetes.api.model.LocalObjectReference> imagePullSecrets, List<io.fabric8.kubernetes.api.model.Container> initContainers, Map<String, String> labels, Boolean listenLocal, String logFormat, String logLevel, Integer minReadySeconds, Map<String, String> nodeSelector, SecretKeySelector objectStorageConfig, String objectStorageConfigFile, Boolean paused, EmbeddedObjectMetadata podMetadata, String portName, String priorityClassName, List<PrometheusRuleExcludeConfig> prometheusRulesExcludedFromEnforce, SecretKeySelector queryConfig, List<String> queryEndpoints, Integer replicas, io.fabric8.kubernetes.api.model.ResourceRequirements resources, String retention, String routePrefix, io.fabric8.kubernetes.api.model.LabelSelector ruleNamespaceSelector, io.fabric8.kubernetes.api.model.LabelSelector ruleSelector, PodSecurityContext securityContext, String serviceAccountName, StorageSpec storage, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, SecretKeySelector tracingConfig, String tracingConfigFile, String version, List<VolumeMount> volumeMounts, List<Volume> volumes) {
+    public ThanosRulerSpec(List<ThanosRulerSpecAdditionalArgs> additionalArgs, ThanosRulerSpecAffinity affinity, List<String> alertDropLabels, String alertQueryUrl, String alertRelabelConfigFile, ThanosRulerSpecAlertRelabelConfigs alertRelabelConfigs, ThanosRulerSpecAlertmanagersConfig alertmanagersConfig, List<String> alertmanagersUrl, List<ThanosRulerSpecContainers> containers, String enforcedNamespaceLabel, String evaluationInterval, List<ThanosRulerSpecExcludedFromEnforcement> excludedFromEnforcement, String externalPrefix, ThanosRulerSpecGrpcServerTlsConfig grpcServerTlsConfig, List<ThanosRulerSpecHostAliases> hostAliases, String image, String imagePullPolicy, List<ThanosRulerSpecImagePullSecrets> imagePullSecrets, List<ThanosRulerSpecInitContainers> initContainers, Map<String, String> labels, Boolean listenLocal, String logFormat, String logLevel, Integer minReadySeconds, Map<String, String> nodeSelector, ThanosRulerSpecObjectStorageConfig objectStorageConfig, String objectStorageConfigFile, Boolean paused, ThanosRulerSpecPodMetadata podMetadata, String portName, String priorityClassName, List<ThanosRulerSpecPrometheusRulesExcludedFromEnforce> prometheusRulesExcludedFromEnforce, ThanosRulerSpecQueryConfig queryConfig, List<String> queryEndpoints, Integer replicas, ThanosRulerSpecResources resources, String retention, String routePrefix, ThanosRulerSpecRuleNamespaceSelector ruleNamespaceSelector, ThanosRulerSpecRuleSelector ruleSelector, ThanosRulerSpecSecurityContext securityContext, String serviceAccountName, ThanosRulerSpecStorage storage, List<ThanosRulerSpecTolerations> tolerations, List<ThanosRulerSpecTopologySpreadConstraints> topologySpreadConstraints, ThanosRulerSpecTracingConfig tracingConfig, String tracingConfigFile, String version, List<ThanosRulerSpecVolumeMounts> volumeMounts, List<ThanosRulerSpecVolumes> volumes, ThanosRulerSpecWeb web) {
         super();
         this.additionalArgs = additionalArgs;
         this.affinity = affinity;
@@ -285,26 +286,27 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder> , Kuber
         this.version = version;
         this.volumeMounts = volumeMounts;
         this.volumes = volumes;
+        this.web = web;
     }
 
     @JsonProperty("additionalArgs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<Argument> getAdditionalArgs() {
+    public List<ThanosRulerSpecAdditionalArgs> getAdditionalArgs() {
         return additionalArgs;
     }
 
     @JsonProperty("additionalArgs")
-    public void setAdditionalArgs(List<Argument> additionalArgs) {
+    public void setAdditionalArgs(List<ThanosRulerSpecAdditionalArgs> additionalArgs) {
         this.additionalArgs = additionalArgs;
     }
 
     @JsonProperty("affinity")
-    public Affinity getAffinity() {
+    public ThanosRulerSpecAffinity getAffinity() {
         return affinity;
     }
 
     @JsonProperty("affinity")
-    public void setAffinity(Affinity affinity) {
+    public void setAffinity(ThanosRulerSpecAffinity affinity) {
         this.affinity = affinity;
     }
 
@@ -340,22 +342,22 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder> , Kuber
     }
 
     @JsonProperty("alertRelabelConfigs")
-    public SecretKeySelector getAlertRelabelConfigs() {
+    public ThanosRulerSpecAlertRelabelConfigs getAlertRelabelConfigs() {
         return alertRelabelConfigs;
     }
 
     @JsonProperty("alertRelabelConfigs")
-    public void setAlertRelabelConfigs(SecretKeySelector alertRelabelConfigs) {
+    public void setAlertRelabelConfigs(ThanosRulerSpecAlertRelabelConfigs alertRelabelConfigs) {
         this.alertRelabelConfigs = alertRelabelConfigs;
     }
 
     @JsonProperty("alertmanagersConfig")
-    public SecretKeySelector getAlertmanagersConfig() {
+    public ThanosRulerSpecAlertmanagersConfig getAlertmanagersConfig() {
         return alertmanagersConfig;
     }
 
     @JsonProperty("alertmanagersConfig")
-    public void setAlertmanagersConfig(SecretKeySelector alertmanagersConfig) {
+    public void setAlertmanagersConfig(ThanosRulerSpecAlertmanagersConfig alertmanagersConfig) {
         this.alertmanagersConfig = alertmanagersConfig;
     }
 
@@ -372,12 +374,12 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder> , Kuber
 
     @JsonProperty("containers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<io.fabric8.kubernetes.api.model.Container> getContainers() {
+    public List<ThanosRulerSpecContainers> getContainers() {
         return containers;
     }
 
     @JsonProperty("containers")
-    public void setContainers(List<io.fabric8.kubernetes.api.model.Container> containers) {
+    public void setContainers(List<ThanosRulerSpecContainers> containers) {
         this.containers = containers;
     }
 
@@ -403,12 +405,12 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder> , Kuber
 
     @JsonProperty("excludedFromEnforcement")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<io.fabric8.openshift.api.model.monitoring.v1.ObjectReference> getExcludedFromEnforcement() {
+    public List<ThanosRulerSpecExcludedFromEnforcement> getExcludedFromEnforcement() {
         return excludedFromEnforcement;
     }
 
     @JsonProperty("excludedFromEnforcement")
-    public void setExcludedFromEnforcement(List<io.fabric8.openshift.api.model.monitoring.v1.ObjectReference> excludedFromEnforcement) {
+    public void setExcludedFromEnforcement(List<ThanosRulerSpecExcludedFromEnforcement> excludedFromEnforcement) {
         this.excludedFromEnforcement = excludedFromEnforcement;
     }
 
@@ -423,23 +425,23 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder> , Kuber
     }
 
     @JsonProperty("grpcServerTlsConfig")
-    public TLSConfig getGrpcServerTlsConfig() {
+    public ThanosRulerSpecGrpcServerTlsConfig getGrpcServerTlsConfig() {
         return grpcServerTlsConfig;
     }
 
     @JsonProperty("grpcServerTlsConfig")
-    public void setGrpcServerTlsConfig(TLSConfig grpcServerTlsConfig) {
+    public void setGrpcServerTlsConfig(ThanosRulerSpecGrpcServerTlsConfig grpcServerTlsConfig) {
         this.grpcServerTlsConfig = grpcServerTlsConfig;
     }
 
     @JsonProperty("hostAliases")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<HostAlias> getHostAliases() {
+    public List<ThanosRulerSpecHostAliases> getHostAliases() {
         return hostAliases;
     }
 
     @JsonProperty("hostAliases")
-    public void setHostAliases(List<HostAlias> hostAliases) {
+    public void setHostAliases(List<ThanosRulerSpecHostAliases> hostAliases) {
         this.hostAliases = hostAliases;
     }
 
@@ -465,23 +467,23 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder> , Kuber
 
     @JsonProperty("imagePullSecrets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<io.fabric8.kubernetes.api.model.LocalObjectReference> getImagePullSecrets() {
+    public List<ThanosRulerSpecImagePullSecrets> getImagePullSecrets() {
         return imagePullSecrets;
     }
 
     @JsonProperty("imagePullSecrets")
-    public void setImagePullSecrets(List<io.fabric8.kubernetes.api.model.LocalObjectReference> imagePullSecrets) {
+    public void setImagePullSecrets(List<ThanosRulerSpecImagePullSecrets> imagePullSecrets) {
         this.imagePullSecrets = imagePullSecrets;
     }
 
     @JsonProperty("initContainers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<io.fabric8.kubernetes.api.model.Container> getInitContainers() {
+    public List<ThanosRulerSpecInitContainers> getInitContainers() {
         return initContainers;
     }
 
     @JsonProperty("initContainers")
-    public void setInitContainers(List<io.fabric8.kubernetes.api.model.Container> initContainers) {
+    public void setInitContainers(List<ThanosRulerSpecInitContainers> initContainers) {
         this.initContainers = initContainers;
     }
 
@@ -548,12 +550,12 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder> , Kuber
     }
 
     @JsonProperty("objectStorageConfig")
-    public SecretKeySelector getObjectStorageConfig() {
+    public ThanosRulerSpecObjectStorageConfig getObjectStorageConfig() {
         return objectStorageConfig;
     }
 
     @JsonProperty("objectStorageConfig")
-    public void setObjectStorageConfig(SecretKeySelector objectStorageConfig) {
+    public void setObjectStorageConfig(ThanosRulerSpecObjectStorageConfig objectStorageConfig) {
         this.objectStorageConfig = objectStorageConfig;
     }
 
@@ -578,12 +580,12 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder> , Kuber
     }
 
     @JsonProperty("podMetadata")
-    public EmbeddedObjectMetadata getPodMetadata() {
+    public ThanosRulerSpecPodMetadata getPodMetadata() {
         return podMetadata;
     }
 
     @JsonProperty("podMetadata")
-    public void setPodMetadata(EmbeddedObjectMetadata podMetadata) {
+    public void setPodMetadata(ThanosRulerSpecPodMetadata podMetadata) {
         this.podMetadata = podMetadata;
     }
 
@@ -609,22 +611,22 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder> , Kuber
 
     @JsonProperty("prometheusRulesExcludedFromEnforce")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<PrometheusRuleExcludeConfig> getPrometheusRulesExcludedFromEnforce() {
+    public List<ThanosRulerSpecPrometheusRulesExcludedFromEnforce> getPrometheusRulesExcludedFromEnforce() {
         return prometheusRulesExcludedFromEnforce;
     }
 
     @JsonProperty("prometheusRulesExcludedFromEnforce")
-    public void setPrometheusRulesExcludedFromEnforce(List<PrometheusRuleExcludeConfig> prometheusRulesExcludedFromEnforce) {
+    public void setPrometheusRulesExcludedFromEnforce(List<ThanosRulerSpecPrometheusRulesExcludedFromEnforce> prometheusRulesExcludedFromEnforce) {
         this.prometheusRulesExcludedFromEnforce = prometheusRulesExcludedFromEnforce;
     }
 
     @JsonProperty("queryConfig")
-    public SecretKeySelector getQueryConfig() {
+    public ThanosRulerSpecQueryConfig getQueryConfig() {
         return queryConfig;
     }
 
     @JsonProperty("queryConfig")
-    public void setQueryConfig(SecretKeySelector queryConfig) {
+    public void setQueryConfig(ThanosRulerSpecQueryConfig queryConfig) {
         this.queryConfig = queryConfig;
     }
 
@@ -650,12 +652,12 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder> , Kuber
     }
 
     @JsonProperty("resources")
-    public io.fabric8.kubernetes.api.model.ResourceRequirements getResources() {
+    public ThanosRulerSpecResources getResources() {
         return resources;
     }
 
     @JsonProperty("resources")
-    public void setResources(io.fabric8.kubernetes.api.model.ResourceRequirements resources) {
+    public void setResources(ThanosRulerSpecResources resources) {
         this.resources = resources;
     }
 
@@ -680,32 +682,32 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder> , Kuber
     }
 
     @JsonProperty("ruleNamespaceSelector")
-    public io.fabric8.kubernetes.api.model.LabelSelector getRuleNamespaceSelector() {
+    public ThanosRulerSpecRuleNamespaceSelector getRuleNamespaceSelector() {
         return ruleNamespaceSelector;
     }
 
     @JsonProperty("ruleNamespaceSelector")
-    public void setRuleNamespaceSelector(io.fabric8.kubernetes.api.model.LabelSelector ruleNamespaceSelector) {
+    public void setRuleNamespaceSelector(ThanosRulerSpecRuleNamespaceSelector ruleNamespaceSelector) {
         this.ruleNamespaceSelector = ruleNamespaceSelector;
     }
 
     @JsonProperty("ruleSelector")
-    public io.fabric8.kubernetes.api.model.LabelSelector getRuleSelector() {
+    public ThanosRulerSpecRuleSelector getRuleSelector() {
         return ruleSelector;
     }
 
     @JsonProperty("ruleSelector")
-    public void setRuleSelector(io.fabric8.kubernetes.api.model.LabelSelector ruleSelector) {
+    public void setRuleSelector(ThanosRulerSpecRuleSelector ruleSelector) {
         this.ruleSelector = ruleSelector;
     }
 
     @JsonProperty("securityContext")
-    public PodSecurityContext getSecurityContext() {
+    public ThanosRulerSpecSecurityContext getSecurityContext() {
         return securityContext;
     }
 
     @JsonProperty("securityContext")
-    public void setSecurityContext(PodSecurityContext securityContext) {
+    public void setSecurityContext(ThanosRulerSpecSecurityContext securityContext) {
         this.securityContext = securityContext;
     }
 
@@ -720,44 +722,44 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder> , Kuber
     }
 
     @JsonProperty("storage")
-    public StorageSpec getStorage() {
+    public ThanosRulerSpecStorage getStorage() {
         return storage;
     }
 
     @JsonProperty("storage")
-    public void setStorage(StorageSpec storage) {
+    public void setStorage(ThanosRulerSpecStorage storage) {
         this.storage = storage;
     }
 
     @JsonProperty("tolerations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<Toleration> getTolerations() {
+    public List<ThanosRulerSpecTolerations> getTolerations() {
         return tolerations;
     }
 
     @JsonProperty("tolerations")
-    public void setTolerations(List<Toleration> tolerations) {
+    public void setTolerations(List<ThanosRulerSpecTolerations> tolerations) {
         this.tolerations = tolerations;
     }
 
     @JsonProperty("topologySpreadConstraints")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<TopologySpreadConstraint> getTopologySpreadConstraints() {
+    public List<ThanosRulerSpecTopologySpreadConstraints> getTopologySpreadConstraints() {
         return topologySpreadConstraints;
     }
 
     @JsonProperty("topologySpreadConstraints")
-    public void setTopologySpreadConstraints(List<TopologySpreadConstraint> topologySpreadConstraints) {
+    public void setTopologySpreadConstraints(List<ThanosRulerSpecTopologySpreadConstraints> topologySpreadConstraints) {
         this.topologySpreadConstraints = topologySpreadConstraints;
     }
 
     @JsonProperty("tracingConfig")
-    public SecretKeySelector getTracingConfig() {
+    public ThanosRulerSpecTracingConfig getTracingConfig() {
         return tracingConfig;
     }
 
     @JsonProperty("tracingConfig")
-    public void setTracingConfig(SecretKeySelector tracingConfig) {
+    public void setTracingConfig(ThanosRulerSpecTracingConfig tracingConfig) {
         this.tracingConfig = tracingConfig;
     }
 
@@ -783,24 +785,34 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder> , Kuber
 
     @JsonProperty("volumeMounts")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<VolumeMount> getVolumeMounts() {
+    public List<ThanosRulerSpecVolumeMounts> getVolumeMounts() {
         return volumeMounts;
     }
 
     @JsonProperty("volumeMounts")
-    public void setVolumeMounts(List<VolumeMount> volumeMounts) {
+    public void setVolumeMounts(List<ThanosRulerSpecVolumeMounts> volumeMounts) {
         this.volumeMounts = volumeMounts;
     }
 
     @JsonProperty("volumes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<Volume> getVolumes() {
+    public List<ThanosRulerSpecVolumes> getVolumes() {
         return volumes;
     }
 
     @JsonProperty("volumes")
-    public void setVolumes(List<Volume> volumes) {
+    public void setVolumes(List<ThanosRulerSpecVolumes> volumes) {
         this.volumes = volumes;
+    }
+
+    @JsonProperty("web")
+    public ThanosRulerSpecWeb getWeb() {
+        return web;
+    }
+
+    @JsonProperty("web")
+    public void setWeb(ThanosRulerSpecWeb web) {
+        this.web = web;
     }
 
     @JsonIgnore
