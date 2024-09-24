@@ -24,7 +24,6 @@ ABSOLUTE_BASEDIR=$(realpath "$BASEDIR")
 declare -a modules=(
     "openshift-model-hive"
     "openshift-model-installer"
-    "openshift-model-machineconfig"
     "openshift-model-monitoring"
     "openshift-model-tuned"
     "openshift-model-whereabouts"

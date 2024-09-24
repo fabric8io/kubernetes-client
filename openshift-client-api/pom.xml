@@ -97,7 +97,7 @@
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>
-      <artifactId>openshift-model-machineconfig</artifactId>
+      <artifactId>openshift-model-machineconfiguration</artifactId>
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>

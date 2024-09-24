@@ -15,11 +15,13 @@
  */
 package io.fabric8.openshift.client.server.mock;
 
-import io.fabric8.openshift.api.model.config.v1.InfrastructureBuilder;
-import io.fabric8.openshift.api.model.machineconfig.v1.ControllerConfig;
-import io.fabric8.openshift.api.model.machineconfig.v1.ControllerConfigBuilder;
-import io.fabric8.openshift.api.model.machineconfig.v1.ControllerConfigList;
-import io.fabric8.openshift.api.model.machineconfig.v1.ControllerConfigListBuilder;
+import io.fabric8.openshift.api.model.config.v1.InfrastructureSpecBuilder;
+import io.fabric8.openshift.api.model.config.v1.InfrastructureStatusBuilder;
+import io.fabric8.openshift.api.model.machineconfiguration.v1.ControllerConfig;
+import io.fabric8.openshift.api.model.machineconfiguration.v1.ControllerConfigBuilder;
+import io.fabric8.openshift.api.model.machineconfiguration.v1.ControllerConfigList;
+import io.fabric8.openshift.api.model.machineconfiguration.v1.ControllerConfigListBuilder;
+import io.fabric8.openshift.api.model.machineconfiguration.v1.ControllerConfigSpecInfraBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
 import org.junit.jupiter.api.Test;
 
@@ -85,17 +87,17 @@ class ControllerConfigTest {
     return new ControllerConfigBuilder()
         .withNewMetadata().withName(name).endMetadata()
         .withNewSpec()
-        .withInfra(new InfrastructureBuilder()
-            .withNewSpec()
-            .withNewCloudConfig()
-            .withName("")
-            .endCloudConfig()
-            .endSpec()
-            .withNewStatus()
-            .withNewPlatformStatus()
-            .withType("Libvirt")
-            .endPlatformStatus()
-            .endStatus()
+        .withInfra(new ControllerConfigSpecInfraBuilder()
+            .addToAdditionalProperties("spec", new InfrastructureSpecBuilder()
+                .withNewCloudConfig()
+                .withName("")
+                .endCloudConfig()
+                .build())
+            .addToAdditionalProperties("status", new InfrastructureStatusBuilder()
+                .withNewPlatformStatus()
+                .withType("Libvirt")
+                .endPlatformStatus()
+                .build())
             .build())
         .withClusterDNSIP("10.2.3.10")
         .endSpec()
