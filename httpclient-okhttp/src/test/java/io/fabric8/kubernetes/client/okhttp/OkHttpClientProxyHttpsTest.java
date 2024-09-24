@@ -15,18 +15,21 @@
  */
 package io.fabric8.kubernetes.client.okhttp;
 
-import io.fabric8.kubernetes.client.http.AbstractHttpClientProxyTest;
+import io.fabric8.kubernetes.client.http.AbstractHttpClientProxyHttpsTest;
 import io.fabric8.kubernetes.client.http.HttpClient;
+import okhttp3.OkHttpClient.Builder;
 
 @SuppressWarnings("java:S2187")
-public class OkHttpClientProxyTest extends AbstractHttpClientProxyTest {
+public class OkHttpClientProxyHttpsTest extends AbstractHttpClientProxyHttpsTest {
   @Override
   protected HttpClient.Factory getHttpClientFactory() {
-    return new OkHttpClientFactory();
-  }
-
-  @Override
-  protected void proxyConfigurationOtherAuthAddsRequiredHeaders() throws Exception {
-    // OkHttp uses a response intercept to add the auth proxy headers in case the original response failed
+    return new OkHttpClientFactory() {
+      @Override
+      protected Builder newOkHttpClientBuilder() {
+        Builder builder = super.newOkHttpClientBuilder();
+        builder.hostnameVerifier((hostname, session) -> true);
+        return builder;
+      }
+    };
   }
 }
