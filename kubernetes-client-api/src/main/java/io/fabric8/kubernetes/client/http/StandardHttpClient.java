@@ -27,7 +27,6 @@ import org.slf4j.LoggerFactory;
 
 import java.io.Closeable;
 import java.io.IOException;
-import java.net.URI;
 import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.time.ZonedDateTime;
@@ -152,7 +151,6 @@ public abstract class StandardHttpClient<C extends HttpClient, F extends HttpCli
   private <V> CompletableFuture<V> retryWithExponentialBackoff(
       StandardHttpRequest request, Supplier<CompletableFuture<V>> action, java.util.function.Consumer<V> onCancel,
       Function<V, HttpResponse<?>> responseExtractor) {
-    final URI uri = request.uri();
     final RequestConfig requestConfig = getTag(RequestConfig.class);
     final ExponentialBackoffIntervalCalculator retryIntervalCalculator = ExponentialBackoffIntervalCalculator
         .from(requestConfig);
@@ -164,32 +162,37 @@ public abstract class StandardHttpClient<C extends HttpClient, F extends HttpCli
     }
     return AsyncUtils.retryWithExponentialBackoff(action, onCancel, timeout, retryIntervalCalculator,
         (response, throwable, retryInterval) -> {
-          if (response != null) {
-            HttpResponse<?> httpResponse = responseExtractor.apply(response);
-            if (httpResponse != null) {
-              final int code = httpResponse.code();
-              if (code == 429 || code >= 500) {
-                retryInterval = Math.max(retryAfterMillis(httpResponse), retryInterval);
-                LOG.debug(
-                    "HTTP operation on url: {} should be retried as the response code was {}, retrying after {} millis",
-                    uri, code, retryInterval);
-                return true;
-              }
-            }
-          } else {
-            final Throwable actualCause = unwrapCompletionException(throwable);
-            builder.interceptors.forEach((s, interceptor) -> interceptor.afterConnectionFailure(request, actualCause));
-            if (actualCause instanceof IOException) {
-              // TODO: may not be specific enough - incorrect ssl settings for example will get caught here
-              LOG.debug(
-                  String.format("HTTP operation on url: %s should be retried after %d millis because of IOException",
-                      uri, retryInterval),
-                  actualCause);
-              return true;
-            }
-          }
-          return false;
+          return shouldRetry(request, responseExtractor, response, throwable, retryInterval);
         });
+  }
+
+  <V> long shouldRetry(StandardHttpRequest request, Function<V, HttpResponse<?>> responseExtractor, V response,
+      Throwable throwable, long retryInterval) {
+    if (response != null) {
+      HttpResponse<?> httpResponse = responseExtractor.apply(response);
+      if (httpResponse != null) {
+        final int code = httpResponse.code();
+        if (code == 429 || code >= 500) {
+          retryInterval = Math.max(retryAfterMillis(httpResponse), retryInterval);
+          LOG.debug(
+              "HTTP operation on url: {} should be retried as the response code was {}, retrying after {} millis",
+              request.uri(), code, retryInterval);
+          return retryInterval;
+        }
+      }
+    } else {
+      final Throwable actualCause = unwrapCompletionException(throwable);
+      builder.interceptors.forEach((s, interceptor) -> interceptor.afterConnectionFailure(request, actualCause));
+      if (actualCause instanceof IOException) {
+        // TODO: may not be specific enough - incorrect ssl settings for example will get caught here
+        LOG.debug(
+            String.format("HTTP operation on url: %s should be retried after %d millis because of IOException",
+                request.uri(), retryInterval),
+            actualCause);
+        return retryInterval;
+      }
+    }
+    return -1;
   }
 
   static Throwable unwrapCompletionException(Throwable throwable) {

@@ -32,7 +32,9 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.ExecutionException;
@@ -176,6 +178,22 @@ class StandardHttpClientTest {
     // only 4 requests issued
     assertThat(client.getRecordedConsumeBytesDirects())
         .hasSize(4);
+  }
+
+  @Test
+  void testShouldRetryUsesRetryAfterHeader() throws Exception {
+    client = client.newBuilder().tag(new RequestConfigBuilder()
+        .withRequestRetryBackoffLimit(3)
+        .withRequestRetryBackoffInterval(50).build())
+        .build();
+
+    Map<String, List<String>> headers = new HashMap<>();
+    headers.put(StandardHttpHeaders.RETRY_AFTER, Arrays.asList("5"));
+    // the exception type doesn't matter
+    final WebSocketResponse error = new WebSocketResponse(new WebSocketUpgradeResponse(null, 429, headers), new IOException());
+
+    assertThat(client.shouldRetry((StandardHttpRequest) client.newHttpRequestBuilder().uri("http://localhost").build(),
+        r -> r.webSocketUpgradeResponse, error, null, 1000)).isEqualTo(5000);
   }
 
   @Test
