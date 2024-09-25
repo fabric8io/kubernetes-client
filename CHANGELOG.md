@@ -5,6 +5,7 @@
 #### Bugs
 * Fix #6247: Support for proxy authentication from proxy URL user info
 * Fix #6342: UnmatchedFieldTypeModule prevents certain jackson features from working
+* Fix #6350: Allowing authenticated http proxy usage with Jetty, vertx, and JDK for https endpoints
 * Fix #6354: Prevent deadlock in okhttp AsyncBody.cancel
 * Fix #6366: Allow Retry-After header to be considered in retries
 
