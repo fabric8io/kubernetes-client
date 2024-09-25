@@ -13,20 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.okhttp;
+package io.fabric8.kubernetes.client.jetty;
 
-import io.fabric8.kubernetes.client.http.AbstractHttpClientProxyTest;
+import io.fabric8.kubernetes.client.http.AbstractHttpClientProxyHttpsTest;
 import io.fabric8.kubernetes.client.http.HttpClient;
 
 @SuppressWarnings("java:S2187")
-public class OkHttpClientProxyTest extends AbstractHttpClientProxyTest {
+public class JettyHttpClientProxyHttpsTest extends AbstractHttpClientProxyHttpsTest {
   @Override
   protected HttpClient.Factory getHttpClientFactory() {
-    return new OkHttpClientFactory();
-  }
-
-  @Override
-  protected void proxyConfigurationOtherAuthAddsRequiredHeaders() throws Exception {
-    // OkHttp uses a response intercept to add the auth proxy headers in case the original response failed
+    return new JettyHttpClientFactory();
   }
 }

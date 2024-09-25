@@ -36,6 +36,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Stream;
 
+import static io.fabric8.kubernetes.client.utils.HttpClientUtils.decodeBasicCredentials;
+
 public class VertxHttpClientBuilder<F extends HttpClient.Factory>
     extends StandardHttpClientBuilder<VertxHttpClient<F>, F, VertxHttpClientBuilder<F>> {
 
@@ -74,12 +76,18 @@ public class VertxHttpClientBuilder<F extends HttpClient.Factory>
     }
 
     if (this.proxyType != HttpClient.ProxyType.DIRECT && this.proxyAddress != null) {
-      ProxyOptions proxyOptions = new ProxyOptions()
+      final ProxyOptions proxyOptions = new ProxyOptions()
           .setHost(this.proxyAddress.getHostName())
           .setPort(this.proxyAddress.getPort())
           .setType(convertProxyType());
+      final String[] userPassword = decodeBasicCredentials(this.proxyAuthorization);
+      if (userPassword != null) {
+        proxyOptions.setUsername(userPassword[0]);
+        proxyOptions.setPassword(userPassword[1]);
+      } else {
+        addProxyAuthInterceptor();
+      }
       options.setProxyOptions(proxyOptions);
-      addProxyAuthInterceptor();
     }
 
     final String[] protocols;
