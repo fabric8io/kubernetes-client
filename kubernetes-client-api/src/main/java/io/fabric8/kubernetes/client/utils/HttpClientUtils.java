@@ -132,6 +132,24 @@ public class HttpClientUtils {
     return basicCredentials(username + ":" + password);
   }
 
+  public static String[] decodeBasicCredentials(String basicCredentials) {
+    if (basicCredentials == null) {
+      return null;
+    }
+    try {
+      final String encodedCredentials = basicCredentials.replaceFirst("Basic ", "");
+      final String decodedProxyAuthorization = new String(Base64.getDecoder().decode(encodedCredentials),
+          StandardCharsets.UTF_8);
+      final String[] userPassword = decodedProxyAuthorization.split(":");
+      if (userPassword.length == 2) {
+        return userPassword;
+      }
+    } catch (Exception ignored) {
+      // Ignored
+    }
+    return null;
+  }
+
   /**
    * @deprecated you should not need to call this method directly. Please create your own HttpClient.Factory
    *             should you need to customize your clients.
