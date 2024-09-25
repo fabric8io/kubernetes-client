@@ -49,7 +49,7 @@ public class AsyncUtils {
   /**
    * Returns a new {@link CompletableFuture} that will complete once the action provided by the action supplier completes.
    * The action will be retried with an exponential backoff using the {@link ExponentialBackoffIntervalCalculator} as
-   * long as the {@link ShouldRetry} predicate returns true.
+   * long as the {@link ShouldRetry} predicate returns a non-negative value.
    * Each action retrieval retry will time out after the provided timeout {@link Duration}.
    * 
    * @param action the action supplier.
@@ -75,7 +75,8 @@ public class AsyncUtils {
     withTimeout(action.get(), timeout).whenComplete((r, t) -> {
       if (retryIntervalCalculator.shouldRetry() && !result.isDone()) {
         final long retryInterval = retryIntervalCalculator.nextReconnectInterval();
-        if (shouldRetry.shouldRetry(r, t, retryInterval)) {
+        long retryValue = shouldRetry.shouldRetry(r, t, retryInterval);
+        if (retryValue >= 0) {
           if (r != null) {
             onCancel.accept(r);
           }
@@ -95,6 +96,9 @@ public class AsyncUtils {
 
   @FunctionalInterface
   public interface ShouldRetry<T> {
-    boolean shouldRetry(T result, Throwable exception, long retryInterval);
+    /**
+     * @return the retry interval in ms, or a negative value indicating retries should be aborted
+     */
+    long shouldRetry(T result, Throwable exception, long retryInterval);
   }
 }
