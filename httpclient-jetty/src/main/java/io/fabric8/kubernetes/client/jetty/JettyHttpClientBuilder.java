@@ -115,7 +115,6 @@ public class JettyHttpClientBuilder
         sharedHttpClient.getAuthenticationStore()
             .addAuthentication(new BasicAuthentication(proxyUri, Authentication.ANY_REALM, userPassword[0], userPassword[1]));
       } else {
-        sharedHttpClient.getProxyConfiguration().addProxy(new HttpProxy(address, false));
         addProxyAuthInterceptor();
       }
     }
