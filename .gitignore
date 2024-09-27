@@ -81,8 +81,9 @@ com_crashlytics_export_strings.xml
 crashlytics.properties
 crashlytics-build.properties
 
-# Ignore generator binary output file
+# Ignore generator binary output file and vendor directory
 kubernetes-model-generator/openapi/generator/generator
+kubernetes-model-generator/openapi/generator/vendor
 kubernetes-model-generator/*/generate
 extensions/*/generator/generate
 

@@ -21,6 +21,7 @@ import (
 	openshiftmachinev1 "github.com/openshift/api/machine/v1"
 	openshiftmachinev1alpha1 "github.com/openshift/api/machine/v1alpha1"
 	openshiftsecurityv1 "github.com/openshift/api/security/v1"
+	"github.com/spf13/cobra"
 	admissionV1 "k8s.io/api/admission/v1"
 	admissionV1Beta1 "k8s.io/api/admission/v1beta1"
 	admissionregistrationV1 "k8s.io/api/admissionregistration/v1"
@@ -40,39 +41,21 @@ import (
 	"time"
 )
 
-type ApiVersion struct {
-	List         bool
-	GroupVersion string
-	Plural       string
-	Namespaced   bool
+var reflection = &cobra.Command{
+	Use:   "reflection [targetDirectory]",
+	Short: "Generate OpenAPI definitions from Go type reflection",
+	Args:  cobra.MaximumNArgs(1),
+	Run:   reflectionRun,
 }
 
-type Schema struct {
-	Types []reflect.Type
-	Name  string
-	Paths map[reflect.Type]ApiVersion
+func init() {
+	rootCmd.AddCommand(reflection)
 }
 
-var mappingOverrides = map[reflect.Type]string{
-	reflect.TypeOf(kustomize.ObjectMeta{}): "#/components/schemas/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta",
-}
-
-func NewTypeSchema(types []reflect.Type, name string) Schema {
-	return Schema{types, name, make(map[reflect.Type]ApiVersion)}
-}
-
-func NewPathSchema(paths map[reflect.Type]ApiVersion, name string) Schema {
-	schema := Schema{make([]reflect.Type, 0), name, paths}
-	for t := range paths {
-		schema.Types = append(schema.Types, t)
-	}
-	return schema
-}
-
-func main() {
+var reflectionRun = func(cmd *cobra.Command, args []string) {
 	var targetDirectory string
-	if len(os.Args) > 1 {
-		targetDirectory = os.Args[1]
+	if len(args) > 0 {
+		targetDirectory = args[0]
 	} else {
 		targetDirectory = "."
 	}

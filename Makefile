@@ -15,6 +15,11 @@
 #
 
 MAVEN_OPTIONS ?=
+OPENAPI_DIR=./kubernetes-model-generator/openapi
+OPENAPI_GENERATOR_DIR=$(OPENAPI_DIR)/generator
+OPENAPI_GENERATOR_BINARY_NAME=generator
+OPENAPI_GENERATOR_BINARY=$(OPENAPI_GENERATOR_DIR)/$(OPENAPI_GENERATOR_BINARY_NAME)
+OPENAPI_SCHEMAS_DIR=$(OPENAPI_DIR)/schemas
 
 .PHONY: clean-java
 clean-java:
@@ -25,8 +30,9 @@ clean: clean-java
 
 .PHONY: generate-openapi
 generate-openapi:
-	cd kubernetes-model-generator/openapi/generator && go build
-	./kubernetes-model-generator/openapi/generator/generator ./kubernetes-model-generator/openapi/schemas
+	cd $(OPENAPI_GENERATOR_DIR) && go build -o $(OPENAPI_GENERATOR_BINARY_NAME) ./cmd
+	$(OPENAPI_GENERATOR_BINARY) reflection $(OPENAPI_SCHEMAS_DIR)
+	$(OPENAPI_GENERATOR_BINARY) open-api $(OPENAPI_SCHEMAS_DIR)
 
 .PHONY: generate-openapi-classes
 generate-openapi-classes:

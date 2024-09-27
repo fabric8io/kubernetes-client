@@ -130,6 +130,7 @@ public class SchemaUtils {
     TYPE_MAP.put("int32", "Integer");
     TYPE_MAP.put("integer", "Integer");
     TYPE_MAP.put("int64", "Long");
+    TYPE_MAP.put("float", "Float");
     TYPE_MAP.put("double", "Double");
     TYPE_MAP.put("number", "Number");
     TYPE_MAP.put("object", OBJECT_PRIMITIVE);

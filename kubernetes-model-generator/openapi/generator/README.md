@@ -22,7 +22,7 @@ Many of these types are used for WebHooks.
 ## Usage
 
 ```shell
-./generator $pathToTargetDirectory
+./generator reflection $pathToTargetDirectory
 ```
 
 ## Additional notes and resources

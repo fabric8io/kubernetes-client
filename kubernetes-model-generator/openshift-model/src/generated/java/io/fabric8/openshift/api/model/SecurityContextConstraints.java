@@ -62,7 +62,6 @@ import lombok.experimental.Accessors;
     "seLinuxContext",
     "seccompProfiles",
     "supplementalGroups",
-    "userNamespaceLevel",
     "users",
     "volumes"
 })
@@ -160,8 +159,6 @@ public class SecurityContextConstraints implements Editable<SecurityContextConst
     private List<String> seccompProfiles = new ArrayList<>();
     @JsonProperty("supplementalGroups")
     private SupplementalGroupsStrategyOptions supplementalGroups;
-    @JsonProperty("userNamespaceLevel")
-    private String userNamespaceLevel;
     @JsonProperty("users")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> users = new ArrayList<>();
@@ -178,7 +175,7 @@ public class SecurityContextConstraints implements Editable<SecurityContextConst
     public SecurityContextConstraints() {
     }
 
-    public SecurityContextConstraints(Boolean allowHostDirVolumePlugin, Boolean allowHostIPC, Boolean allowHostNetwork, Boolean allowHostPID, Boolean allowHostPorts, Boolean allowPrivilegeEscalation, Boolean allowPrivilegedContainer, List<String> allowedCapabilities, List<AllowedFlexVolume> allowedFlexVolumes, List<String> allowedUnsafeSysctls, String apiVersion, List<String> defaultAddCapabilities, Boolean defaultAllowPrivilegeEscalation, List<String> forbiddenSysctls, FSGroupStrategyOptions fsGroup, List<String> groups, String kind, ObjectMeta metadata, Integer priority, Boolean readOnlyRootFilesystem, List<String> requiredDropCapabilities, RunAsUserStrategyOptions runAsUser, SELinuxContextStrategyOptions seLinuxContext, List<String> seccompProfiles, SupplementalGroupsStrategyOptions supplementalGroups, String userNamespaceLevel, List<String> users, List<String> volumes) {
+    public SecurityContextConstraints(Boolean allowHostDirVolumePlugin, Boolean allowHostIPC, Boolean allowHostNetwork, Boolean allowHostPID, Boolean allowHostPorts, Boolean allowPrivilegeEscalation, Boolean allowPrivilegedContainer, List<String> allowedCapabilities, List<AllowedFlexVolume> allowedFlexVolumes, List<String> allowedUnsafeSysctls, String apiVersion, List<String> defaultAddCapabilities, Boolean defaultAllowPrivilegeEscalation, List<String> forbiddenSysctls, FSGroupStrategyOptions fsGroup, List<String> groups, String kind, ObjectMeta metadata, Integer priority, Boolean readOnlyRootFilesystem, List<String> requiredDropCapabilities, RunAsUserStrategyOptions runAsUser, SELinuxContextStrategyOptions seLinuxContext, List<String> seccompProfiles, SupplementalGroupsStrategyOptions supplementalGroups, List<String> users, List<String> volumes) {
         super();
         this.allowHostDirVolumePlugin = allowHostDirVolumePlugin;
         this.allowHostIPC = allowHostIPC;
@@ -205,7 +202,6 @@ public class SecurityContextConstraints implements Editable<SecurityContextConst
         this.seLinuxContext = seLinuxContext;
         this.seccompProfiles = seccompProfiles;
         this.supplementalGroups = supplementalGroups;
-        this.userNamespaceLevel = userNamespaceLevel;
         this.users = users;
         this.volumes = volumes;
     }
@@ -486,16 +482,6 @@ public class SecurityContextConstraints implements Editable<SecurityContextConst
     @JsonProperty("supplementalGroups")
     public void setSupplementalGroups(SupplementalGroupsStrategyOptions supplementalGroups) {
         this.supplementalGroups = supplementalGroups;
-    }
-
-    @JsonProperty("userNamespaceLevel")
-    public String getUserNamespaceLevel() {
-        return userNamespaceLevel;
-    }
-
-    @JsonProperty("userNamespaceLevel")
-    public void setUserNamespaceLevel(String userNamespaceLevel) {
-        this.userNamespaceLevel = userNamespaceLevel;
     }
 
     @JsonProperty("users")
