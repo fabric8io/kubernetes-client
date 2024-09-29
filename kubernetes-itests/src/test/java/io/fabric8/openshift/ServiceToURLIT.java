@@ -20,7 +20,7 @@ import io.fabric8.junit.jupiter.api.RequireK8sSupport;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.ServiceBuilder;
-import io.fabric8.kubernetes.api.model.extensions.Ingress;
+import io.fabric8.kubernetes.client.dsl.NonDeletingOperation;
 import io.fabric8.openshift.api.model.Route;
 import io.fabric8.openshift.api.model.RouteBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
@@ -75,8 +75,8 @@ class ServiceToURLIT {
         .endStatus()
         .build();
 
-    client.services().createOrReplace(svc1);
-    client.services().createOrReplace(svc2);
+    client.services().resource(svc1).createOr(NonDeletingOperation::update);
+    client.services().resource(svc2).createOr(NonDeletingOperation::update);
   }
 
   @Test
@@ -86,29 +86,39 @@ class ServiceToURLIT {
     assertNotNull(url);
 
     // Testing Ingress Impl
-    Ingress ingress = client.extensions().ingresses().load(getClass().getResourceAsStream("/test-ingress-extensions.yml"))
-        .item();
-    client.extensions().ingresses().create(ingress);
+    if (client.supports(io.fabric8.kubernetes.api.model.extensions.Ingress.class)) {
+      io.fabric8.kubernetes.api.model.extensions.Ingress ingress = client.extensions().ingresses()
+          .load(getClass().getResourceAsStream("/test-ingress-extensions.yml"))
+          .item();
+      client.extensions().ingresses().resource(ingress).create();
+    } else if (client.supports(io.fabric8.kubernetes.api.model.networking.v1.Ingress.class)) {
+      io.fabric8.kubernetes.api.model.networking.v1.Ingress ingress = client.network().v1().ingresses()
+          .load(getClass().getResourceAsStream("/service-to-url-it-network-v1-ingress.yml"))
+          .item();
+      client.network().v1().ingresses().resource(ingress).create();
+    }
 
     url = client.services().withName("svc2").getURL("80");
     assertNotNull(url);
 
     // Testing OpenShift Route Impl
-    Service svc3 = client.services().create(new ServiceBuilder()
+    Service svc3 = client.services().resource(new ServiceBuilder()
         .withNewMetadata().withName("svc3").endMetadata()
         .withNewSpec()
         .addNewPort().withName("80").withProtocol("TCP").withPort(80).endPort()
         .endSpec()
-        .build());
+        .build())
+        .create();
 
     OpenShiftClient openshiftClient = client.adapt(OpenShiftClient.class);
-    openshiftClient.routes().create(new RouteBuilder()
+    openshiftClient.routes().resource(new RouteBuilder()
         .withNewMetadata().withName(svc3.getMetadata().getName()).endMetadata()
         .withNewSpec()
         .withHost("www.example.com")
         .withNewTo().withName(svc3.getMetadata().getName()).withKind("Service").endTo()
         .endSpec()
-        .build());
+        .build())
+        .create();
 
     url = client.services().withName("svc3").getURL("80");
     assertNotNull(url);
