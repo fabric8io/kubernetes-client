@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: test-multiple-paths
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: nginx-example
+  rules:
+    - host: foo.bar.com
+      http:
+        paths:
+          - path: /foo
+            pathType: Prefix
+            backend:
+              service:
+                name: svc2
+                port:
+                  number: 80
+          - path: /bar
+            pathType: Prefix
+            backend:
+              service:
+                name: s2
+                port:
+                  number: 80
