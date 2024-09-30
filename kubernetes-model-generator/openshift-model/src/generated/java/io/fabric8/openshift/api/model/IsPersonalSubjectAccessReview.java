@@ -37,11 +37,7 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "apiVersion",
-    "kind",
-    "allowed",
-    "evaluationError",
-    "namespace",
-    "reason"
+    "kind"
 })
 @ToString
 @EqualsAndHashCode
@@ -66,11 +62,9 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("authorization.openshift.io")
 @Generated("jsonschema2pojo")
-public class SubjectAccessReviewResponse implements Editable<SubjectAccessReviewResponseBuilder> , KubernetesResource, Namespaced
+public class IsPersonalSubjectAccessReview implements Editable<IsPersonalSubjectAccessReviewBuilder> , KubernetesResource, Namespaced
 {
 
-    @JsonProperty("allowed")
-    private Boolean allowed;
     /**
      * 
      * (Required)
@@ -78,19 +72,13 @@ public class SubjectAccessReviewResponse implements Editable<SubjectAccessReview
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "authorization.openshift.io/v1";
-    @JsonProperty("evaluationError")
-    private String evaluationError;
     /**
      * 
      * (Required)
      * 
      */
     @JsonProperty("kind")
-    private String kind = "SubjectAccessReviewResponse";
-    @JsonProperty("namespace")
-    private String namespace;
-    @JsonProperty("reason")
-    private String reason;
+    private String kind = "IsPersonalSubjectAccessReview";
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -98,27 +86,13 @@ public class SubjectAccessReviewResponse implements Editable<SubjectAccessReview
      * No args constructor for use in serialization
      * 
      */
-    public SubjectAccessReviewResponse() {
+    public IsPersonalSubjectAccessReview() {
     }
 
-    public SubjectAccessReviewResponse(Boolean allowed, String apiVersion, String evaluationError, String kind, String namespace, String reason) {
+    public IsPersonalSubjectAccessReview(String apiVersion, String kind) {
         super();
-        this.allowed = allowed;
         this.apiVersion = apiVersion;
-        this.evaluationError = evaluationError;
         this.kind = kind;
-        this.namespace = namespace;
-        this.reason = reason;
-    }
-
-    @JsonProperty("allowed")
-    public Boolean getAllowed() {
-        return allowed;
-    }
-
-    @JsonProperty("allowed")
-    public void setAllowed(Boolean allowed) {
-        this.allowed = allowed;
     }
 
     /**
@@ -141,16 +115,6 @@ public class SubjectAccessReviewResponse implements Editable<SubjectAccessReview
         this.apiVersion = apiVersion;
     }
 
-    @JsonProperty("evaluationError")
-    public String getEvaluationError() {
-        return evaluationError;
-    }
-
-    @JsonProperty("evaluationError")
-    public void setEvaluationError(String evaluationError) {
-        this.evaluationError = evaluationError;
-    }
-
     /**
      * 
      * (Required)
@@ -171,33 +135,13 @@ public class SubjectAccessReviewResponse implements Editable<SubjectAccessReview
         this.kind = kind;
     }
 
-    @JsonProperty("namespace")
-    public String getNamespace() {
-        return namespace;
-    }
-
-    @JsonProperty("namespace")
-    public void setNamespace(String namespace) {
-        this.namespace = namespace;
-    }
-
-    @JsonProperty("reason")
-    public String getReason() {
-        return reason;
-    }
-
-    @JsonProperty("reason")
-    public void setReason(String reason) {
-        this.reason = reason;
+    @JsonIgnore
+    public IsPersonalSubjectAccessReviewBuilder edit() {
+        return new IsPersonalSubjectAccessReviewBuilder(this);
     }
 
     @JsonIgnore
-    public SubjectAccessReviewResponseBuilder edit() {
-        return new SubjectAccessReviewResponseBuilder(this);
-    }
-
-    @JsonIgnore
-    public SubjectAccessReviewResponseBuilder toBuilder() {
+    public IsPersonalSubjectAccessReviewBuilder toBuilder() {
         return edit();
     }
 

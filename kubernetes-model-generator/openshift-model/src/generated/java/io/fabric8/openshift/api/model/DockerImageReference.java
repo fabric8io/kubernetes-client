@@ -17,18 +17,13 @@ import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
-import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.kubernetes.model.annotation.Group;
-import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import io.sundr.transform.annotations.TemplateTransformation;
-import io.sundr.transform.annotations.TemplateTransformations;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
@@ -36,12 +31,11 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "apiVersion",
-    "kind",
-    "allowed",
-    "evaluationError",
-    "namespace",
-    "reason"
+    "ID",
+    "Name",
+    "Namespace",
+    "Registry",
+    "Tag"
 })
 @ToString
 @EqualsAndHashCode
@@ -60,37 +54,20 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
-@TemplateTransformations({
-    @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true)
-})
-@Version("v1")
-@Group("authorization.openshift.io")
 @Generated("jsonschema2pojo")
-public class SubjectAccessReviewResponse implements Editable<SubjectAccessReviewResponseBuilder> , KubernetesResource, Namespaced
+public class DockerImageReference implements Editable<DockerImageReferenceBuilder> , KubernetesResource
 {
 
-    @JsonProperty("allowed")
-    private Boolean allowed;
-    /**
-     * 
-     * (Required)
-     * 
-     */
-    @JsonProperty("apiVersion")
-    private String apiVersion = "authorization.openshift.io/v1";
-    @JsonProperty("evaluationError")
-    private String evaluationError;
-    /**
-     * 
-     * (Required)
-     * 
-     */
-    @JsonProperty("kind")
-    private String kind = "SubjectAccessReviewResponse";
-    @JsonProperty("namespace")
+    @JsonProperty("ID")
+    private String iD;
+    @JsonProperty("Name")
+    private String name;
+    @JsonProperty("Namespace")
     private String namespace;
-    @JsonProperty("reason")
-    private String reason;
+    @JsonProperty("Registry")
+    private String registry;
+    @JsonProperty("Tag")
+    private String tag;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -98,106 +75,75 @@ public class SubjectAccessReviewResponse implements Editable<SubjectAccessReview
      * No args constructor for use in serialization
      * 
      */
-    public SubjectAccessReviewResponse() {
+    public DockerImageReference() {
     }
 
-    public SubjectAccessReviewResponse(Boolean allowed, String apiVersion, String evaluationError, String kind, String namespace, String reason) {
+    public DockerImageReference(String iD, String name, String namespace, String registry, String tag) {
         super();
-        this.allowed = allowed;
-        this.apiVersion = apiVersion;
-        this.evaluationError = evaluationError;
-        this.kind = kind;
+        this.iD = iD;
+        this.name = name;
         this.namespace = namespace;
-        this.reason = reason;
+        this.registry = registry;
+        this.tag = tag;
     }
 
-    @JsonProperty("allowed")
-    public Boolean getAllowed() {
-        return allowed;
+    @JsonProperty("ID")
+    public String getID() {
+        return iD;
     }
 
-    @JsonProperty("allowed")
-    public void setAllowed(Boolean allowed) {
-        this.allowed = allowed;
+    @JsonProperty("ID")
+    public void setID(String iD) {
+        this.iD = iD;
     }
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
-    @JsonProperty("apiVersion")
-    public String getApiVersion() {
-        return apiVersion;
+    @JsonProperty("Name")
+    public String getName() {
+        return name;
     }
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
-    @JsonProperty("apiVersion")
-    public void setApiVersion(String apiVersion) {
-        this.apiVersion = apiVersion;
+    @JsonProperty("Name")
+    public void setName(String name) {
+        this.name = name;
     }
 
-    @JsonProperty("evaluationError")
-    public String getEvaluationError() {
-        return evaluationError;
-    }
-
-    @JsonProperty("evaluationError")
-    public void setEvaluationError(String evaluationError) {
-        this.evaluationError = evaluationError;
-    }
-
-    /**
-     * 
-     * (Required)
-     * 
-     */
-    @JsonProperty("kind")
-    public String getKind() {
-        return kind;
-    }
-
-    /**
-     * 
-     * (Required)
-     * 
-     */
-    @JsonProperty("kind")
-    public void setKind(String kind) {
-        this.kind = kind;
-    }
-
-    @JsonProperty("namespace")
+    @JsonProperty("Namespace")
     public String getNamespace() {
         return namespace;
     }
 
-    @JsonProperty("namespace")
+    @JsonProperty("Namespace")
     public void setNamespace(String namespace) {
         this.namespace = namespace;
     }
 
-    @JsonProperty("reason")
-    public String getReason() {
-        return reason;
+    @JsonProperty("Registry")
+    public String getRegistry() {
+        return registry;
     }
 
-    @JsonProperty("reason")
-    public void setReason(String reason) {
-        this.reason = reason;
+    @JsonProperty("Registry")
+    public void setRegistry(String registry) {
+        this.registry = registry;
+    }
+
+    @JsonProperty("Tag")
+    public String getTag() {
+        return tag;
+    }
+
+    @JsonProperty("Tag")
+    public void setTag(String tag) {
+        this.tag = tag;
     }
 
     @JsonIgnore
-    public SubjectAccessReviewResponseBuilder edit() {
-        return new SubjectAccessReviewResponseBuilder(this);
+    public DockerImageReferenceBuilder edit() {
+        return new DockerImageReferenceBuilder(this);
     }
 
     @JsonIgnore
-    public SubjectAccessReviewResponseBuilder toBuilder() {
+    public DockerImageReferenceBuilder toBuilder() {
         return edit();
     }
 

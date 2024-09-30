@@ -23,7 +23,6 @@ import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
-import io.fabric8.kubernetes.api.model.ResourceQuotaStatus;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
@@ -35,7 +34,7 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "namespaces",
-    "total"
+    "serviceaccounts"
 })
 @ToString
 @EqualsAndHashCode
@@ -55,14 +54,15 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ClusterResourceQuotaStatus implements Editable<ClusterResourceQuotaStatusBuilder> , KubernetesResource
+public class ServiceAccountRestriction implements Editable<ServiceAccountRestrictionBuilder> , KubernetesResource
 {
 
     @JsonProperty("namespaces")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ResourceQuotaStatusByNamespace> namespaces = new ArrayList<>();
-    @JsonProperty("total")
-    private ResourceQuotaStatus total;
+    private List<String> namespaces = new ArrayList<>();
+    @JsonProperty("serviceaccounts")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<ServiceAccountReference> serviceaccounts = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -70,43 +70,44 @@ public class ClusterResourceQuotaStatus implements Editable<ClusterResourceQuota
      * No args constructor for use in serialization
      * 
      */
-    public ClusterResourceQuotaStatus() {
+    public ServiceAccountRestriction() {
     }
 
-    public ClusterResourceQuotaStatus(List<ResourceQuotaStatusByNamespace> namespaces, ResourceQuotaStatus total) {
+    public ServiceAccountRestriction(List<String> namespaces, List<ServiceAccountReference> serviceaccounts) {
         super();
         this.namespaces = namespaces;
-        this.total = total;
+        this.serviceaccounts = serviceaccounts;
     }
 
     @JsonProperty("namespaces")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<ResourceQuotaStatusByNamespace> getNamespaces() {
+    public List<String> getNamespaces() {
         return namespaces;
     }
 
     @JsonProperty("namespaces")
-    public void setNamespaces(List<ResourceQuotaStatusByNamespace> namespaces) {
+    public void setNamespaces(List<String> namespaces) {
         this.namespaces = namespaces;
     }
 
-    @JsonProperty("total")
-    public ResourceQuotaStatus getTotal() {
-        return total;
+    @JsonProperty("serviceaccounts")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<ServiceAccountReference> getServiceaccounts() {
+        return serviceaccounts;
     }
 
-    @JsonProperty("total")
-    public void setTotal(ResourceQuotaStatus total) {
-        this.total = total;
-    }
-
-    @JsonIgnore
-    public ClusterResourceQuotaStatusBuilder edit() {
-        return new ClusterResourceQuotaStatusBuilder(this);
+    @JsonProperty("serviceaccounts")
+    public void setServiceaccounts(List<ServiceAccountReference> serviceaccounts) {
+        this.serviceaccounts = serviceaccounts;
     }
 
     @JsonIgnore
-    public ClusterResourceQuotaStatusBuilder toBuilder() {
+    public ServiceAccountRestrictionBuilder edit() {
+        return new ServiceAccountRestrictionBuilder(this);
+    }
+
+    @JsonIgnore
+    public ServiceAccountRestrictionBuilder toBuilder() {
         return edit();
     }
 

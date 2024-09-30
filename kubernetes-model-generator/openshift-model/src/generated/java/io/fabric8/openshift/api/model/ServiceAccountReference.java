@@ -17,18 +17,13 @@ import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
-import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.kubernetes.model.annotation.Group;
-import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import io.sundr.transform.annotations.TemplateTransformation;
-import io.sundr.transform.annotations.TemplateTransformations;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
@@ -36,12 +31,8 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "apiVersion",
-    "kind",
-    "allowed",
-    "evaluationError",
-    "namespace",
-    "reason"
+    "name",
+    "namespace"
 })
 @ToString
 @EqualsAndHashCode
@@ -60,37 +51,14 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
-@TemplateTransformations({
-    @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true)
-})
-@Version("v1")
-@Group("authorization.openshift.io")
 @Generated("jsonschema2pojo")
-public class SubjectAccessReviewResponse implements Editable<SubjectAccessReviewResponseBuilder> , KubernetesResource, Namespaced
+public class ServiceAccountReference implements Editable<ServiceAccountReferenceBuilder> , KubernetesResource
 {
 
-    @JsonProperty("allowed")
-    private Boolean allowed;
-    /**
-     * 
-     * (Required)
-     * 
-     */
-    @JsonProperty("apiVersion")
-    private String apiVersion = "authorization.openshift.io/v1";
-    @JsonProperty("evaluationError")
-    private String evaluationError;
-    /**
-     * 
-     * (Required)
-     * 
-     */
-    @JsonProperty("kind")
-    private String kind = "SubjectAccessReviewResponse";
+    @JsonProperty("name")
+    private String name;
     @JsonProperty("namespace")
     private String namespace;
-    @JsonProperty("reason")
-    private String reason;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -98,77 +66,23 @@ public class SubjectAccessReviewResponse implements Editable<SubjectAccessReview
      * No args constructor for use in serialization
      * 
      */
-    public SubjectAccessReviewResponse() {
+    public ServiceAccountReference() {
     }
 
-    public SubjectAccessReviewResponse(Boolean allowed, String apiVersion, String evaluationError, String kind, String namespace, String reason) {
+    public ServiceAccountReference(String name, String namespace) {
         super();
-        this.allowed = allowed;
-        this.apiVersion = apiVersion;
-        this.evaluationError = evaluationError;
-        this.kind = kind;
+        this.name = name;
         this.namespace = namespace;
-        this.reason = reason;
     }
 
-    @JsonProperty("allowed")
-    public Boolean getAllowed() {
-        return allowed;
+    @JsonProperty("name")
+    public String getName() {
+        return name;
     }
 
-    @JsonProperty("allowed")
-    public void setAllowed(Boolean allowed) {
-        this.allowed = allowed;
-    }
-
-    /**
-     * 
-     * (Required)
-     * 
-     */
-    @JsonProperty("apiVersion")
-    public String getApiVersion() {
-        return apiVersion;
-    }
-
-    /**
-     * 
-     * (Required)
-     * 
-     */
-    @JsonProperty("apiVersion")
-    public void setApiVersion(String apiVersion) {
-        this.apiVersion = apiVersion;
-    }
-
-    @JsonProperty("evaluationError")
-    public String getEvaluationError() {
-        return evaluationError;
-    }
-
-    @JsonProperty("evaluationError")
-    public void setEvaluationError(String evaluationError) {
-        this.evaluationError = evaluationError;
-    }
-
-    /**
-     * 
-     * (Required)
-     * 
-     */
-    @JsonProperty("kind")
-    public String getKind() {
-        return kind;
-    }
-
-    /**
-     * 
-     * (Required)
-     * 
-     */
-    @JsonProperty("kind")
-    public void setKind(String kind) {
-        this.kind = kind;
+    @JsonProperty("name")
+    public void setName(String name) {
+        this.name = name;
     }
 
     @JsonProperty("namespace")
@@ -181,23 +95,13 @@ public class SubjectAccessReviewResponse implements Editable<SubjectAccessReview
         this.namespace = namespace;
     }
 
-    @JsonProperty("reason")
-    public String getReason() {
-        return reason;
-    }
-
-    @JsonProperty("reason")
-    public void setReason(String reason) {
-        this.reason = reason;
+    @JsonIgnore
+    public ServiceAccountReferenceBuilder edit() {
+        return new ServiceAccountReferenceBuilder(this);
     }
 
     @JsonIgnore
-    public SubjectAccessReviewResponseBuilder edit() {
-        return new SubjectAccessReviewResponseBuilder(this);
-    }
-
-    @JsonIgnore
-    public SubjectAccessReviewResponseBuilder toBuilder() {
+    public ServiceAccountReferenceBuilder toBuilder() {
         return edit();
     }
 

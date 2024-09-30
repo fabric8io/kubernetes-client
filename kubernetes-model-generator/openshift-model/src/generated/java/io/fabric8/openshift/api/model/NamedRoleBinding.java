@@ -1,9 +1,7 @@
 
 package io.fabric8.openshift.api.model;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -23,7 +21,6 @@ import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
-import io.fabric8.kubernetes.api.model.ResourceQuotaStatus;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
@@ -34,8 +31,8 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "namespaces",
-    "total"
+    "name",
+    "roleBinding"
 })
 @ToString
 @EqualsAndHashCode
@@ -55,14 +52,13 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ClusterResourceQuotaStatus implements Editable<ClusterResourceQuotaStatusBuilder> , KubernetesResource
+public class NamedRoleBinding implements Editable<NamedRoleBindingBuilder> , KubernetesResource
 {
 
-    @JsonProperty("namespaces")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ResourceQuotaStatusByNamespace> namespaces = new ArrayList<>();
-    @JsonProperty("total")
-    private ResourceQuotaStatus total;
+    @JsonProperty("name")
+    private String name;
+    @JsonProperty("roleBinding")
+    private RoleBinding roleBinding;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -70,43 +66,42 @@ public class ClusterResourceQuotaStatus implements Editable<ClusterResourceQuota
      * No args constructor for use in serialization
      * 
      */
-    public ClusterResourceQuotaStatus() {
+    public NamedRoleBinding() {
     }
 
-    public ClusterResourceQuotaStatus(List<ResourceQuotaStatusByNamespace> namespaces, ResourceQuotaStatus total) {
+    public NamedRoleBinding(String name, RoleBinding roleBinding) {
         super();
-        this.namespaces = namespaces;
-        this.total = total;
+        this.name = name;
+        this.roleBinding = roleBinding;
     }
 
-    @JsonProperty("namespaces")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<ResourceQuotaStatusByNamespace> getNamespaces() {
-        return namespaces;
+    @JsonProperty("name")
+    public String getName() {
+        return name;
     }
 
-    @JsonProperty("namespaces")
-    public void setNamespaces(List<ResourceQuotaStatusByNamespace> namespaces) {
-        this.namespaces = namespaces;
+    @JsonProperty("name")
+    public void setName(String name) {
+        this.name = name;
     }
 
-    @JsonProperty("total")
-    public ResourceQuotaStatus getTotal() {
-        return total;
+    @JsonProperty("roleBinding")
+    public RoleBinding getRoleBinding() {
+        return roleBinding;
     }
 
-    @JsonProperty("total")
-    public void setTotal(ResourceQuotaStatus total) {
-        this.total = total;
-    }
-
-    @JsonIgnore
-    public ClusterResourceQuotaStatusBuilder edit() {
-        return new ClusterResourceQuotaStatusBuilder(this);
+    @JsonProperty("roleBinding")
+    public void setRoleBinding(RoleBinding roleBinding) {
+        this.roleBinding = roleBinding;
     }
 
     @JsonIgnore
-    public ClusterResourceQuotaStatusBuilder toBuilder() {
+    public NamedRoleBindingBuilder edit() {
+        return new NamedRoleBindingBuilder(this);
+    }
+
+    @JsonIgnore
+    public NamedRoleBindingBuilder toBuilder() {
         return edit();
     }
 

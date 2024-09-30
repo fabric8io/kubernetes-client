@@ -47,6 +47,10 @@
       <groupId>io.fabric8</groupId>
       <artifactId>kubernetes-model-rbac</artifactId>
     </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>openshift-model-config</artifactId>
+    </dependency>
 
     <dependency>
       <groupId>org.assertj</groupId>
@@ -66,67 +70,27 @@
             <configuration >
               <settings combine.self="append">
                 <schemas>
-                  <schema>${openapi.schema.openshift-latest}</schema>
-                  <schema>${project.basedir}/../openapi/schemas/openshift-authorization.json</schema>
-                  <schema>${project.basedir}/../openapi/schemas/openshift-security.json</schema>
+                  <schema>${openapi.schema.openshift-generated}</schema>
                 </schemas>
                 <packageMappings combine.self="append">
-                  <io.k8s.api>io.fabric8.kubernetes.api.model</io.k8s.api>
-                  <io.openshift>io.fabric8.openshift.api.model</io.openshift>
-                  <com.github.openshift.api.apps.v1>io.fabric8.openshift.api.model</com.github.openshift.api.apps.v1>
-                  <com.github.openshift.api.authorization.v1>io.fabric8.openshift.api.model</com.github.openshift.api.authorization.v1>
-                  <io.openshift.authorization.v1>io.fabric8.openshift.api.model</io.openshift.authorization.v1>
-                  <com.github.openshift.api.build.v1>io.fabric8.openshift.api.model</com.github.openshift.api.build.v1>
-                  <com.github.openshift.api.image.v1>io.fabric8.openshift.api.model</com.github.openshift.api.image.v1>
-                  <com.github.openshift.api.oauth.v1>io.fabric8.openshift.api.model</com.github.openshift.api.oauth.v1>
-                  <com.github.openshift.api.project.v1>io.fabric8.openshift.api.model</com.github.openshift.api.project.v1>
-                  <com.github.openshift.api.quota.v1>io.fabric8.openshift.api.model</com.github.openshift.api.quota.v1>
-                  <io.openshift.quota.v1>io.fabric8.openshift.api.model</io.openshift.quota.v1>
-                  <com.github.openshift.api.route.v1>io.fabric8.openshift.api.model</com.github.openshift.api.route.v1>
-                  <com.github.openshift.api.security.v1>io.fabric8.openshift.api.model</com.github.openshift.api.security.v1>
-                  <io.openshift.security.v1>io.fabric8.openshift.api.model</io.openshift.security.v1>
-                  <com.github.openshift.api.template.v1>io.fabric8.openshift.api.model</com.github.openshift.api.template.v1>
-                  <com.github.openshift.api.user.v1>io.fabric8.openshift.api.model</com.github.openshift.api.user.v1>
                 </packageMappings>
                 <includeGenerationRegexes>
-                  <includeGenerationRegex>^com\.github\.openshift\.api\..*$</includeGenerationRegex>
+                  <includeGenerationRegex>^io\.openshift\.apps\..*$</includeGenerationRegex>
                   <includeGenerationRegex>^io\.openshift\.authorization\..*$</includeGenerationRegex>
+                  <includeGenerationRegex>^io\.openshift\.build\..*$</includeGenerationRegex>
+                  <includeGenerationRegex>^io\.openshift\.image\..*$</includeGenerationRegex>
+                  <includeGenerationRegex>^io\.openshift\.oauth\..*$</includeGenerationRegex>
+                  <includeGenerationRegex>^io\.openshift\.project\..*$</includeGenerationRegex>
                   <includeGenerationRegex>^io\.openshift\.quota\..*$</includeGenerationRegex>
+                  <includeGenerationRegex>^io\.openshift\.route\..*$</includeGenerationRegex>
                   <includeGenerationRegex>^io\.openshift\.security\..*$</includeGenerationRegex>
+                  <includeGenerationRegex>^io\.openshift\.template\..*$</includeGenerationRegex>
+                  <includeGenerationRegex>^io\.openshift\.user\..*$</includeGenerationRegex>
                 </includeGenerationRegexes>
                 <skipGenerationRegexes>
-                  <skipGenerationRegex>^com\.github\.openshift\.api\.image\.v1\.SecretList$</skipGenerationRegex>
+                  <skipGenerationRegex>^io\.openshift\.build\.v1\.BinaryBuildRequestOptions$</skipGenerationRegex>
+                  <skipGenerationRegex>^io\.openshift\.image\.v1\.SecretList$</skipGenerationRegex>
                 </skipGenerationRegexes>
-                <refToJavaTypeMappings>
-                  <property>
-                    <name>#/components/schemas/io.k8s.api.core.v1.ConfigMapVolumeSource_v2</name>
-                    <value>io.fabric8.kubernetes.api.model.ConfigMapVolumeSource</value>
-                  </property>
-                  <property>
-                    <name>#/components/schemas/io.k8s.api.core.v1.LocalObjectReference_v2</name>
-                    <value>io.fabric8.kubernetes.api.model.LocalObjectReference</value>
-                  </property>
-                  <property>
-                    <name>#/components/schemas/io.k8s.api.core.v1.ResourceQuotaSpec_v2</name>
-                    <value>io.fabric8.kubernetes.api.model.ResourceQuotaSpec</value>
-                  </property>
-                  <property>
-                    <name>#/components/schemas/io.k8s.api.core.v1.SecretVolumeSource_v2</name>
-                    <value>io.fabric8.kubernetes.api.model.SecretVolumeSource</value>
-                  </property>
-                  <property>
-                    <name>#/components/schemas/io.k8s.apimachinery.pkg.apis.meta.v1.Status_v5</name>
-                    <value>io.fabric8.kubernetes.api.model.Status</value>
-                  </property>
-                  <property>
-                    <name>#/components/schemas/io.k8s.apimachinery.pkg.apis.meta.v1.LabelSelector_v4</name>
-                    <value>io.fabric8.kubernetes.api.model.LabelSelector</value>
-                  </property>
-                  <property>
-                    <name>#/components/schemas/io.k8s.api.rbac.v1.AggregationRule_v2</name>
-                    <value>io.fabric8.kubernetes.api.model.rbac.AggregationRule</value>
-                  </property>
-                </refToJavaTypeMappings>
               </settings>
             </configuration>
           </plugin>

@@ -1,9 +1,7 @@
 
 package io.fabric8.openshift.api.model;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -15,17 +13,22 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
+import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
-import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
+import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
+import io.fabric8.kubernetes.model.annotation.Group;
+import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
+import io.sundr.transform.annotations.TemplateTransformation;
+import io.sundr.transform.annotations.TemplateTransformations;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
@@ -33,9 +36,10 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "hard",
-    "scopeSelector",
-    "scopes"
+    "apiVersion",
+    "kind",
+    "metadata",
+    "reference"
 })
 @ToString
 @EqualsAndHashCode
@@ -54,19 +58,33 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@TemplateTransformations({
+    @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true)
+})
+@Version("v1")
+@Group("oauth.openshift.io")
 @Generated("jsonschema2pojo")
-public class ClusterResourceQuotaSpecQuota implements Editable<ClusterResourceQuotaSpecQuotaBuilder> , KubernetesResource
+public class OAuthRedirectReference implements Editable<OAuthRedirectReferenceBuilder> , HasMetadata, Namespaced
 {
 
-    @JsonProperty("hard")
-    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializerForMap.class)
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Object> hard = new LinkedHashMap<>();
-    @JsonProperty("scopeSelector")
-    private ClusterResourceQuotaSpecQScopeSelector scopeSelector;
-    @JsonProperty("scopes")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> scopes = new ArrayList<>();
+    /**
+     * 
+     * (Required)
+     * 
+     */
+    @JsonProperty("apiVersion")
+    private String apiVersion = "oauth.openshift.io/v1";
+    /**
+     * 
+     * (Required)
+     * 
+     */
+    @JsonProperty("kind")
+    private String kind = "OAuthRedirectReference";
+    @JsonProperty("metadata")
+    private ObjectMeta metadata;
+    @JsonProperty("reference")
+    private RedirectReference reference;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -74,56 +92,84 @@ public class ClusterResourceQuotaSpecQuota implements Editable<ClusterResourceQu
      * No args constructor for use in serialization
      * 
      */
-    public ClusterResourceQuotaSpecQuota() {
+    public OAuthRedirectReference() {
     }
 
-    public ClusterResourceQuotaSpecQuota(Map<String, Object> hard, ClusterResourceQuotaSpecQScopeSelector scopeSelector, List<String> scopes) {
+    public OAuthRedirectReference(String apiVersion, String kind, ObjectMeta metadata, RedirectReference reference) {
         super();
-        this.hard = hard;
-        this.scopeSelector = scopeSelector;
-        this.scopes = scopes;
+        this.apiVersion = apiVersion;
+        this.kind = kind;
+        this.metadata = metadata;
+        this.reference = reference;
     }
 
-    @JsonProperty("hard")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public Map<String, Object> getHard() {
-        return hard;
+    /**
+     * 
+     * (Required)
+     * 
+     */
+    @JsonProperty("apiVersion")
+    public String getApiVersion() {
+        return apiVersion;
     }
 
-    @JsonProperty("hard")
-    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializerForMap.class)
-    public void setHard(Map<String, Object> hard) {
-        this.hard = hard;
+    /**
+     * 
+     * (Required)
+     * 
+     */
+    @JsonProperty("apiVersion")
+    public void setApiVersion(String apiVersion) {
+        this.apiVersion = apiVersion;
     }
 
-    @JsonProperty("scopeSelector")
-    public ClusterResourceQuotaSpecQScopeSelector getScopeSelector() {
-        return scopeSelector;
+    /**
+     * 
+     * (Required)
+     * 
+     */
+    @JsonProperty("kind")
+    public String getKind() {
+        return kind;
     }
 
-    @JsonProperty("scopeSelector")
-    public void setScopeSelector(ClusterResourceQuotaSpecQScopeSelector scopeSelector) {
-        this.scopeSelector = scopeSelector;
+    /**
+     * 
+     * (Required)
+     * 
+     */
+    @JsonProperty("kind")
+    public void setKind(String kind) {
+        this.kind = kind;
     }
 
-    @JsonProperty("scopes")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<String> getScopes() {
-        return scopes;
+    @JsonProperty("metadata")
+    public ObjectMeta getMetadata() {
+        return metadata;
     }
 
-    @JsonProperty("scopes")
-    public void setScopes(List<String> scopes) {
-        this.scopes = scopes;
+    @JsonProperty("metadata")
+    public void setMetadata(ObjectMeta metadata) {
+        this.metadata = metadata;
+    }
+
+    @JsonProperty("reference")
+    public RedirectReference getReference() {
+        return reference;
+    }
+
+    @JsonProperty("reference")
+    public void setReference(RedirectReference reference) {
+        this.reference = reference;
     }
 
     @JsonIgnore
-    public ClusterResourceQuotaSpecQuotaBuilder edit() {
-        return new ClusterResourceQuotaSpecQuotaBuilder(this);
+    public OAuthRedirectReferenceBuilder edit() {
+        return new OAuthRedirectReferenceBuilder(this);
     }
 
     @JsonIgnore
-    public ClusterResourceQuotaSpecQuotaBuilder toBuilder() {
+    public OAuthRedirectReferenceBuilder toBuilder() {
         return edit();
     }
 

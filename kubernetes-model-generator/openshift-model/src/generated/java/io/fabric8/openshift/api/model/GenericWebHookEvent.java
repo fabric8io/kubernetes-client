@@ -1,7 +1,9 @@
 
 package io.fabric8.openshift.api.model;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -13,6 +15,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
+import io.fabric8.kubernetes.api.model.EnvVar;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
@@ -31,8 +34,10 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "hard",
-    "used"
+    "dockerStrategyOptions",
+    "env",
+    "git",
+    "type"
 })
 @ToString
 @EqualsAndHashCode
@@ -52,17 +57,18 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ClusterResourceQuotaStatusTotal implements Editable<ClusterResourceQuotaStatusTotalBuilder> , KubernetesResource
+public class GenericWebHookEvent implements Editable<GenericWebHookEventBuilder> , KubernetesResource
 {
 
-    @JsonProperty("hard")
-    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializerForMap.class)
+    @JsonProperty("dockerStrategyOptions")
+    private DockerStrategyOptions dockerStrategyOptions;
+    @JsonProperty("env")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Object> hard = new LinkedHashMap<>();
-    @JsonProperty("used")
-    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializerForMap.class)
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Object> used = new LinkedHashMap<>();
+    private List<EnvVar> env = new ArrayList<>();
+    @JsonProperty("git")
+    private GitInfo git;
+    @JsonProperty("type")
+    private String type;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -70,46 +76,65 @@ public class ClusterResourceQuotaStatusTotal implements Editable<ClusterResource
      * No args constructor for use in serialization
      * 
      */
-    public ClusterResourceQuotaStatusTotal() {
+    public GenericWebHookEvent() {
     }
 
-    public ClusterResourceQuotaStatusTotal(Map<String, Object> hard, Map<String, Object> used) {
+    public GenericWebHookEvent(DockerStrategyOptions dockerStrategyOptions, List<EnvVar> env, GitInfo git, String type) {
         super();
-        this.hard = hard;
-        this.used = used;
+        this.dockerStrategyOptions = dockerStrategyOptions;
+        this.env = env;
+        this.git = git;
+        this.type = type;
     }
 
-    @JsonProperty("hard")
+    @JsonProperty("dockerStrategyOptions")
+    public DockerStrategyOptions getDockerStrategyOptions() {
+        return dockerStrategyOptions;
+    }
+
+    @JsonProperty("dockerStrategyOptions")
+    public void setDockerStrategyOptions(DockerStrategyOptions dockerStrategyOptions) {
+        this.dockerStrategyOptions = dockerStrategyOptions;
+    }
+
+    @JsonProperty("env")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public Map<String, Object> getHard() {
-        return hard;
+    public List<EnvVar> getEnv() {
+        return env;
     }
 
-    @JsonProperty("hard")
-    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializerForMap.class)
-    public void setHard(Map<String, Object> hard) {
-        this.hard = hard;
+    @JsonProperty("env")
+    public void setEnv(List<EnvVar> env) {
+        this.env = env;
     }
 
-    @JsonProperty("used")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public Map<String, Object> getUsed() {
-        return used;
+    @JsonProperty("git")
+    public GitInfo getGit() {
+        return git;
     }
 
-    @JsonProperty("used")
-    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializerForMap.class)
-    public void setUsed(Map<String, Object> used) {
-        this.used = used;
+    @JsonProperty("git")
+    public void setGit(GitInfo git) {
+        this.git = git;
+    }
+
+    @JsonProperty("type")
+    public String getType() {
+        return type;
+    }
+
+    @JsonProperty("type")
+    public void setType(String type) {
+        this.type = type;
     }
 
     @JsonIgnore
-    public ClusterResourceQuotaStatusTotalBuilder edit() {
-        return new ClusterResourceQuotaStatusTotalBuilder(this);
+    public GenericWebHookEventBuilder edit() {
+        return new GenericWebHookEventBuilder(this);
     }
 
     @JsonIgnore
-    public ClusterResourceQuotaStatusTotalBuilder toBuilder() {
+    public GenericWebHookEventBuilder toBuilder() {
         return edit();
     }
 

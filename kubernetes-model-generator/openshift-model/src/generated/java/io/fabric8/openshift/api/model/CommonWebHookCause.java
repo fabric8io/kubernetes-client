@@ -1,9 +1,7 @@
 
 package io.fabric8.openshift.api.model;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -23,7 +21,6 @@ import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
-import io.fabric8.kubernetes.api.model.ResourceQuotaStatus;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
@@ -34,8 +31,8 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "namespaces",
-    "total"
+    "revision",
+    "secret"
 })
 @ToString
 @EqualsAndHashCode
@@ -55,14 +52,13 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ClusterResourceQuotaStatus implements Editable<ClusterResourceQuotaStatusBuilder> , KubernetesResource
+public class CommonWebHookCause implements Editable<CommonWebHookCauseBuilder> , KubernetesResource
 {
 
-    @JsonProperty("namespaces")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ResourceQuotaStatusByNamespace> namespaces = new ArrayList<>();
-    @JsonProperty("total")
-    private ResourceQuotaStatus total;
+    @JsonProperty("revision")
+    private SourceRevision revision;
+    @JsonProperty("secret")
+    private String secret;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -70,43 +66,42 @@ public class ClusterResourceQuotaStatus implements Editable<ClusterResourceQuota
      * No args constructor for use in serialization
      * 
      */
-    public ClusterResourceQuotaStatus() {
+    public CommonWebHookCause() {
     }
 
-    public ClusterResourceQuotaStatus(List<ResourceQuotaStatusByNamespace> namespaces, ResourceQuotaStatus total) {
+    public CommonWebHookCause(SourceRevision revision, String secret) {
         super();
-        this.namespaces = namespaces;
-        this.total = total;
+        this.revision = revision;
+        this.secret = secret;
     }
 
-    @JsonProperty("namespaces")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<ResourceQuotaStatusByNamespace> getNamespaces() {
-        return namespaces;
+    @JsonProperty("revision")
+    public SourceRevision getRevision() {
+        return revision;
     }
 
-    @JsonProperty("namespaces")
-    public void setNamespaces(List<ResourceQuotaStatusByNamespace> namespaces) {
-        this.namespaces = namespaces;
+    @JsonProperty("revision")
+    public void setRevision(SourceRevision revision) {
+        this.revision = revision;
     }
 
-    @JsonProperty("total")
-    public ResourceQuotaStatus getTotal() {
-        return total;
+    @JsonProperty("secret")
+    public String getSecret() {
+        return secret;
     }
 
-    @JsonProperty("total")
-    public void setTotal(ResourceQuotaStatus total) {
-        this.total = total;
-    }
-
-    @JsonIgnore
-    public ClusterResourceQuotaStatusBuilder edit() {
-        return new ClusterResourceQuotaStatusBuilder(this);
+    @JsonProperty("secret")
+    public void setSecret(String secret) {
+        this.secret = secret;
     }
 
     @JsonIgnore
-    public ClusterResourceQuotaStatusBuilder toBuilder() {
+    public CommonWebHookCauseBuilder edit() {
+        return new CommonWebHookCauseBuilder(this);
+    }
+
+    @JsonIgnore
+    public CommonWebHookCauseBuilder toBuilder() {
         return edit();
     }
 

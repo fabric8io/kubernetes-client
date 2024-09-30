@@ -38,10 +38,16 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "apiVersion",
     "kind",
-    "allowed",
-    "evaluationError",
-    "namespace",
-    "reason"
+    "container",
+    "follow",
+    "limitBytes",
+    "nowait",
+    "previous",
+    "sinceSeconds",
+    "sinceTime",
+    "tailLines",
+    "timestamps",
+    "version"
 })
 @ToString
 @EqualsAndHashCode
@@ -64,33 +70,45 @@ import lombok.experimental.Accessors;
     @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true)
 })
 @Version("v1")
-@Group("authorization.openshift.io")
+@Group("apps.openshift.io")
 @Generated("jsonschema2pojo")
-public class SubjectAccessReviewResponse implements Editable<SubjectAccessReviewResponseBuilder> , KubernetesResource, Namespaced
+public class DeploymentLogOptions implements Editable<DeploymentLogOptionsBuilder> , KubernetesResource, Namespaced
 {
 
-    @JsonProperty("allowed")
-    private Boolean allowed;
     /**
      * 
      * (Required)
      * 
      */
     @JsonProperty("apiVersion")
-    private String apiVersion = "authorization.openshift.io/v1";
-    @JsonProperty("evaluationError")
-    private String evaluationError;
+    private String apiVersion = "apps.openshift.io/v1";
+    @JsonProperty("container")
+    private String container;
+    @JsonProperty("follow")
+    private Boolean follow;
     /**
      * 
      * (Required)
      * 
      */
     @JsonProperty("kind")
-    private String kind = "SubjectAccessReviewResponse";
-    @JsonProperty("namespace")
-    private String namespace;
-    @JsonProperty("reason")
-    private String reason;
+    private String kind = "DeploymentLogOptions";
+    @JsonProperty("limitBytes")
+    private Long limitBytes;
+    @JsonProperty("nowait")
+    private Boolean nowait;
+    @JsonProperty("previous")
+    private Boolean previous;
+    @JsonProperty("sinceSeconds")
+    private Long sinceSeconds;
+    @JsonProperty("sinceTime")
+    private String sinceTime;
+    @JsonProperty("tailLines")
+    private Long tailLines;
+    @JsonProperty("timestamps")
+    private Boolean timestamps;
+    @JsonProperty("version")
+    private Long version;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -98,27 +116,23 @@ public class SubjectAccessReviewResponse implements Editable<SubjectAccessReview
      * No args constructor for use in serialization
      * 
      */
-    public SubjectAccessReviewResponse() {
+    public DeploymentLogOptions() {
     }
 
-    public SubjectAccessReviewResponse(Boolean allowed, String apiVersion, String evaluationError, String kind, String namespace, String reason) {
+    public DeploymentLogOptions(String apiVersion, String container, Boolean follow, String kind, Long limitBytes, Boolean nowait, Boolean previous, Long sinceSeconds, String sinceTime, Long tailLines, Boolean timestamps, Long version) {
         super();
-        this.allowed = allowed;
         this.apiVersion = apiVersion;
-        this.evaluationError = evaluationError;
+        this.container = container;
+        this.follow = follow;
         this.kind = kind;
-        this.namespace = namespace;
-        this.reason = reason;
-    }
-
-    @JsonProperty("allowed")
-    public Boolean getAllowed() {
-        return allowed;
-    }
-
-    @JsonProperty("allowed")
-    public void setAllowed(Boolean allowed) {
-        this.allowed = allowed;
+        this.limitBytes = limitBytes;
+        this.nowait = nowait;
+        this.previous = previous;
+        this.sinceSeconds = sinceSeconds;
+        this.sinceTime = sinceTime;
+        this.tailLines = tailLines;
+        this.timestamps = timestamps;
+        this.version = version;
     }
 
     /**
@@ -141,14 +155,24 @@ public class SubjectAccessReviewResponse implements Editable<SubjectAccessReview
         this.apiVersion = apiVersion;
     }
 
-    @JsonProperty("evaluationError")
-    public String getEvaluationError() {
-        return evaluationError;
+    @JsonProperty("container")
+    public String getContainer() {
+        return container;
     }
 
-    @JsonProperty("evaluationError")
-    public void setEvaluationError(String evaluationError) {
-        this.evaluationError = evaluationError;
+    @JsonProperty("container")
+    public void setContainer(String container) {
+        this.container = container;
+    }
+
+    @JsonProperty("follow")
+    public Boolean getFollow() {
+        return follow;
+    }
+
+    @JsonProperty("follow")
+    public void setFollow(Boolean follow) {
+        this.follow = follow;
     }
 
     /**
@@ -171,33 +195,93 @@ public class SubjectAccessReviewResponse implements Editable<SubjectAccessReview
         this.kind = kind;
     }
 
-    @JsonProperty("namespace")
-    public String getNamespace() {
-        return namespace;
+    @JsonProperty("limitBytes")
+    public Long getLimitBytes() {
+        return limitBytes;
     }
 
-    @JsonProperty("namespace")
-    public void setNamespace(String namespace) {
-        this.namespace = namespace;
+    @JsonProperty("limitBytes")
+    public void setLimitBytes(Long limitBytes) {
+        this.limitBytes = limitBytes;
     }
 
-    @JsonProperty("reason")
-    public String getReason() {
-        return reason;
+    @JsonProperty("nowait")
+    public Boolean getNowait() {
+        return nowait;
     }
 
-    @JsonProperty("reason")
-    public void setReason(String reason) {
-        this.reason = reason;
+    @JsonProperty("nowait")
+    public void setNowait(Boolean nowait) {
+        this.nowait = nowait;
+    }
+
+    @JsonProperty("previous")
+    public Boolean getPrevious() {
+        return previous;
+    }
+
+    @JsonProperty("previous")
+    public void setPrevious(Boolean previous) {
+        this.previous = previous;
+    }
+
+    @JsonProperty("sinceSeconds")
+    public Long getSinceSeconds() {
+        return sinceSeconds;
+    }
+
+    @JsonProperty("sinceSeconds")
+    public void setSinceSeconds(Long sinceSeconds) {
+        this.sinceSeconds = sinceSeconds;
+    }
+
+    @JsonProperty("sinceTime")
+    public String getSinceTime() {
+        return sinceTime;
+    }
+
+    @JsonProperty("sinceTime")
+    public void setSinceTime(String sinceTime) {
+        this.sinceTime = sinceTime;
+    }
+
+    @JsonProperty("tailLines")
+    public Long getTailLines() {
+        return tailLines;
+    }
+
+    @JsonProperty("tailLines")
+    public void setTailLines(Long tailLines) {
+        this.tailLines = tailLines;
+    }
+
+    @JsonProperty("timestamps")
+    public Boolean getTimestamps() {
+        return timestamps;
+    }
+
+    @JsonProperty("timestamps")
+    public void setTimestamps(Boolean timestamps) {
+        this.timestamps = timestamps;
+    }
+
+    @JsonProperty("version")
+    public Long getVersion() {
+        return version;
+    }
+
+    @JsonProperty("version")
+    public void setVersion(Long version) {
+        this.version = version;
     }
 
     @JsonIgnore
-    public SubjectAccessReviewResponseBuilder edit() {
-        return new SubjectAccessReviewResponseBuilder(this);
+    public DeploymentLogOptionsBuilder edit() {
+        return new DeploymentLogOptionsBuilder(this);
     }
 
     @JsonIgnore
-    public SubjectAccessReviewResponseBuilder toBuilder() {
+    public DeploymentLogOptionsBuilder toBuilder() {
         return edit();
     }
 

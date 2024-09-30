@@ -158,6 +158,20 @@
                 <io.k8s.api.core.v1>io.fabric8.kubernetes.api.model</io.k8s.api.core.v1>
                 <io.k8s.apimachinery.pkg>io.fabric8.kubernetes.api.model</io.k8s.apimachinery.pkg>
                 <io.k8s.apimachinery.pkg.apis.meta.v1>io.fabric8.kubernetes.api.model</io.k8s.apimachinery.pkg.apis.meta.v1>
+                <io.k8s.api>io.fabric8.kubernetes.api.model</io.k8s.api>
+                <io.k8s.api.rbac.v1>io.fabric8.kubernetes.api.model.rbac</io.k8s.api.rbac.v1>
+                <io.openshift>io.fabric8.openshift.api.model</io.openshift>
+                <io.openshift.apps.v1>io.fabric8.openshift.api.model</io.openshift.apps.v1>
+                <io.openshift.authorization.v1>io.fabric8.openshift.api.model</io.openshift.authorization.v1>
+                <io.openshift.build.v1>io.fabric8.openshift.api.model</io.openshift.build.v1>
+                <io.openshift.image.v1>io.fabric8.openshift.api.model</io.openshift.image.v1>
+                <io.openshift.oauth.v1>io.fabric8.openshift.api.model</io.openshift.oauth.v1>
+                <io.openshift.project.v1>io.fabric8.openshift.api.model</io.openshift.project.v1>
+                <io.openshift.quota.v1>io.fabric8.openshift.api.model</io.openshift.quota.v1>
+                <io.openshift.route.v1>io.fabric8.openshift.api.model</io.openshift.route.v1>
+                <io.openshift.security.v1>io.fabric8.openshift.api.model</io.openshift.security.v1>
+                <io.openshift.template.v1>io.fabric8.openshift.api.model</io.openshift.template.v1>
+                <io.openshift.user.v1>io.fabric8.openshift.api.model</io.openshift.user.v1>
               </packageMappings>
             </settings>
           </configuration>

@@ -767,7 +767,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "",
         "Version": "v1",
         "Kind": "Binding",
@@ -4417,7 +4417,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "",
         "Version": "v1",
         "Kind": "NodeProxyOptions",
@@ -5764,7 +5764,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "",
         "Version": "v1",
         "Kind": "PodAttachOptions",
@@ -5922,7 +5922,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "",
         "Version": "v1",
         "Kind": "PodExecOptions",
@@ -6036,7 +6036,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "",
         "Version": "v1",
         "Kind": "PodLogOptions",
@@ -6088,7 +6088,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "",
         "Version": "v1",
         "Kind": "PodPortForwardOptions",
@@ -6113,7 +6113,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "",
         "Version": "v1",
         "Kind": "PodProxyOptions",
@@ -6770,7 +6770,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "",
         "Version": "v1",
         "Kind": "PodStatusResult",
@@ -7296,7 +7296,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "",
         "Version": "v1",
         "Kind": "RangeAllocation",
@@ -8311,7 +8311,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "",
         "Version": "v1",
         "Kind": "SerializedReference",
@@ -8579,7 +8579,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "",
         "Version": "v1",
         "Kind": "ServiceProxyOptions",
@@ -10292,7 +10292,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "meta.k8s.io",
         "Version": "v1",
         "Kind": "APIGroup",
@@ -10325,7 +10325,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "meta.k8s.io",
         "Version": "v1",
         "Kind": "APIGroupList",
@@ -10442,7 +10442,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "meta.k8s.io",
         "Version": "v1",
         "Kind": "APIResourceList",
@@ -10485,7 +10485,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "meta.k8s.io",
         "Version": "v1",
         "Kind": "APIVersions",
@@ -10529,7 +10529,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "meta.k8s.io",
         "Version": "v1",
         "Kind": "ApplyOptions",
@@ -10617,7 +10617,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "meta.k8s.io",
         "Version": "v1",
         "Kind": "CreateOptions",
@@ -10664,7 +10664,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "meta.k8s.io",
         "Version": "v1",
         "Kind": "DeleteOptions",
@@ -10711,7 +10711,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "meta.k8s.io",
         "Version": "v1",
         "Kind": "GetOptions",
@@ -11095,7 +11095,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "meta.k8s.io",
         "Version": "v1",
         "Kind": "ListOptions",
@@ -11327,7 +11327,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "meta.k8s.io",
         "Version": "v1",
         "Kind": "PartialObjectMetadata",
@@ -11417,7 +11417,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "meta.k8s.io",
         "Version": "v1",
         "Kind": "PatchOptions",
@@ -11725,7 +11725,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "meta.k8s.io",
         "Version": "v1",
         "Kind": "TableOptions",
@@ -11898,7 +11898,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "meta.k8s.io",
         "Version": "v1",
         "Kind": "UpdateOptions",
@@ -12516,7 +12516,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "apps.openshift.io",
         "Version": "v1",
         "Kind": "DeploymentConfigRollback",
@@ -12754,7 +12754,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "apps.openshift.io",
         "Version": "v1",
         "Kind": "DeploymentLog",
@@ -12819,7 +12819,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "apps.openshift.io",
         "Version": "v1",
         "Kind": "DeploymentLogOptions",
@@ -12868,7 +12868,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "apps.openshift.io",
         "Version": "v1",
         "Kind": "DeploymentRequest",
@@ -13457,7 +13457,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "authorization.openshift.io",
         "Version": "v1",
         "Kind": "IsPersonalSubjectAccessReview",
@@ -13930,7 +13930,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "authorization.openshift.io",
         "Version": "v1",
         "Kind": "ResourceAccessReviewResponse",
@@ -14461,7 +14461,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "authorization.openshift.io",
         "Version": "v1",
         "Kind": "SubjectAccessReviewResponse",
@@ -14658,7 +14658,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "build.openshift.io",
         "Version": "v1",
         "Kind": "BinaryBuildRequestOptions",
@@ -15029,7 +15029,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "build.openshift.io",
         "Version": "v1",
         "Kind": "BuildLog",
@@ -15098,7 +15098,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "build.openshift.io",
         "Version": "v1",
         "Kind": "BuildLogOptions",
@@ -15231,7 +15231,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "build.openshift.io",
         "Version": "v1",
         "Kind": "BuildRequest",
@@ -24756,7 +24756,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "config.openshift.io",
         "Version": "v1",
         "Kind": "TestReporting",
@@ -27724,7 +27724,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "console.openshift.io",
         "Version": "v1",
         "Kind": "ConsoleYAMLSampleSpec",
@@ -29119,7 +29119,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "image.openshift.io",
         "Version": "v1",
         "Kind": "ImageStreamLayers",
@@ -30395,7 +30395,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "kubecontrolplane.config.openshift.io",
         "Version": "v1",
         "Kind": "KubeAPIServerConfig",
@@ -30491,7 +30491,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "kubecontrolplane.config.openshift.io",
         "Version": "v1",
         "Kind": "KubeControllerManagerConfig",
@@ -30935,7 +30935,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "legacy.config.openshift.io",
         "Version": "v1",
         "Kind": "AllowAllPasswordIdentityProvider",
@@ -31120,7 +31120,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "legacy.config.openshift.io",
         "Version": "v1",
         "Kind": "BasicAuthPasswordIdentityProvider",
@@ -31194,7 +31194,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "legacy.config.openshift.io",
         "Version": "v1",
         "Kind": "BuildDefaultsConfig",
@@ -31255,7 +31255,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "legacy.config.openshift.io",
         "Version": "v1",
         "Kind": "BuildOverridesConfig",
@@ -31481,7 +31481,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "legacy.config.openshift.io",
         "Version": "v1",
         "Kind": "DefaultAdmissionConfig",
@@ -31502,7 +31502,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "legacy.config.openshift.io",
         "Version": "v1",
         "Kind": "DenyAllPasswordIdentityProvider",
@@ -31726,7 +31726,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "legacy.config.openshift.io",
         "Version": "v1",
         "Kind": "GitHubIdentityProvider",
@@ -31777,7 +31777,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "legacy.config.openshift.io",
         "Version": "v1",
         "Kind": "GitLabIdentityProvider",
@@ -31818,7 +31818,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "legacy.config.openshift.io",
         "Version": "v1",
         "Kind": "GoogleIdentityProvider",
@@ -31901,7 +31901,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "legacy.config.openshift.io",
         "Version": "v1",
         "Kind": "HTPasswdPasswordIdentityProvider",
@@ -32221,7 +32221,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "legacy.config.openshift.io",
         "Version": "v1",
         "Kind": "KeystonePasswordIdentityProvider",
@@ -32486,7 +32486,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "legacy.config.openshift.io",
         "Version": "v1",
         "Kind": "LDAPPasswordIdentityProvider",
@@ -32613,7 +32613,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "legacy.config.openshift.io",
         "Version": "v1",
         "Kind": "LDAPSyncConfig",
@@ -32882,7 +32882,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "legacy.config.openshift.io",
         "Version": "v1",
         "Kind": "MasterConfig",
@@ -33213,7 +33213,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "legacy.config.openshift.io",
         "Version": "v1",
         "Kind": "NodeConfig",
@@ -33492,7 +33492,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "legacy.config.openshift.io",
         "Version": "v1",
         "Kind": "OpenIDIdentityProvider",
@@ -33897,7 +33897,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "legacy.config.openshift.io",
         "Version": "v1",
         "Kind": "RequestHeaderIdentityProvider",
@@ -34182,7 +34182,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "legacy.config.openshift.io",
         "Version": "v1",
         "Kind": "SessionSecrets",
@@ -34684,7 +34684,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "machine.openshift.io",
         "Version": "v1",
         "Kind": "AlibabaCloudMachineProviderConfig",
@@ -34762,7 +34762,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "machine.openshift.io",
         "Version": "v1",
         "Kind": "AlibabaCloudMachineProviderStatus",
@@ -35502,7 +35502,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "machine.openshift.io",
         "Version": "v1",
         "Kind": "NutanixMachineProviderConfig",
@@ -35535,7 +35535,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "machine.openshift.io",
         "Version": "v1",
         "Kind": "NutanixMachineProviderStatus",
@@ -35831,7 +35831,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "machine.openshift.io",
         "Version": "v1",
         "Kind": "PowerVSMachineProviderConfig",
@@ -35878,7 +35878,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "machine.openshift.io",
         "Version": "v1",
         "Kind": "PowerVSMachineProviderStatus",
@@ -36453,7 +36453,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "machine.openshift.io",
         "Version": "v1alpha1",
         "Kind": "OpenstackProviderSpec",
@@ -36943,7 +36943,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "machine.openshift.io",
         "Version": "v1beta1",
         "Kind": "AWSMachineProviderConfig",
@@ -37015,7 +37015,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "machine.openshift.io",
         "Version": "v1beta1",
         "Kind": "AWSMachineProviderStatus",
@@ -37309,7 +37309,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "machine.openshift.io",
         "Version": "v1beta1",
         "Kind": "AzureMachineProviderSpec",
@@ -37350,7 +37350,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "machine.openshift.io",
         "Version": "v1beta1",
         "Kind": "AzureMachineProviderStatus",
@@ -37927,7 +37927,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "machine.openshift.io",
         "Version": "v1beta1",
         "Kind": "GCPMachineProviderSpec",
@@ -37968,7 +37968,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "machine.openshift.io",
         "Version": "v1beta1",
         "Kind": "GCPMachineProviderStatus",
@@ -39382,7 +39382,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "machine.openshift.io",
         "Version": "v1beta1",
         "Kind": "VSphereMachineProviderSpec",
@@ -39423,7 +39423,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "machine.openshift.io",
         "Version": "v1beta1",
         "Kind": "VSphereMachineProviderStatus",
@@ -41614,7 +41614,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "network.operator.openshift.io",
         "Version": "v1",
         "Kind": "EgressRouter",
@@ -42126,7 +42126,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "oauth.openshift.io",
         "Version": "v1",
         "Kind": "OAuthRedirectReference",
@@ -42418,7 +42418,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "openshiftcontrolplane.config.openshift.io",
         "Version": "v1",
         "Kind": "BuildDefaultsConfig",
@@ -42475,7 +42475,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "openshiftcontrolplane.config.openshift.io",
         "Version": "v1",
         "Kind": "BuildOverridesConfig",
@@ -42946,7 +42946,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "openshiftcontrolplane.config.openshift.io",
         "Version": "v1",
         "Kind": "OpenShiftAPIServerConfig",
@@ -43053,7 +43053,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "openshiftcontrolplane.config.openshift.io",
         "Version": "v1",
         "Kind": "OpenShiftControllerManagerConfig",
@@ -48412,7 +48412,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "operator.openshift.io",
         "Version": "v1",
         "Kind": "MyOperatorResource",
@@ -51659,7 +51659,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "operator.openshift.io",
         "Version": "v1alpha1",
         "Kind": "GenericOperatorConfig",
@@ -52776,7 +52776,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "osin.config.openshift.io",
         "Version": "v1",
         "Kind": "AllowAllPasswordIdentityProvider",
@@ -52823,7 +52823,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "osin.config.openshift.io",
         "Version": "v1",
         "Kind": "BasicAuthPasswordIdentityProvider",
@@ -52844,7 +52844,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "osin.config.openshift.io",
         "Version": "v1",
         "Kind": "DenyAllPasswordIdentityProvider",
@@ -52909,7 +52909,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "osin.config.openshift.io",
         "Version": "v1",
         "Kind": "GitHubIdentityProvider",
@@ -52960,7 +52960,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "osin.config.openshift.io",
         "Version": "v1",
         "Kind": "GitLabIdentityProvider",
@@ -53001,7 +53001,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "osin.config.openshift.io",
         "Version": "v1",
         "Kind": "GoogleIdentityProvider",
@@ -53057,7 +53057,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "osin.config.openshift.io",
         "Version": "v1",
         "Kind": "HTPasswdPasswordIdentityProvider",
@@ -53161,7 +53161,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "osin.config.openshift.io",
         "Version": "v1",
         "Kind": "KeystonePasswordIdentityProvider",
@@ -53271,7 +53271,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "osin.config.openshift.io",
         "Version": "v1",
         "Kind": "LDAPPasswordIdentityProvider",
@@ -53516,7 +53516,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "osin.config.openshift.io",
         "Version": "v1",
         "Kind": "OpenIDIdentityProvider",
@@ -53616,7 +53616,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "osin.config.openshift.io",
         "Version": "v1",
         "Kind": "OsinServerConfig",
@@ -53702,7 +53702,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "osin.config.openshift.io",
         "Version": "v1",
         "Kind": "RequestHeaderIdentityProvider",
@@ -53795,7 +53795,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "nested",
+        "Type": "object",
         "Group": "osin.config.openshift.io",
         "Version": "v1",
         "Kind": "SessionSecrets",
