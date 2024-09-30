@@ -37,6 +37,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -213,6 +214,21 @@ public class GeneratorSettings {
         }
       }
     }
+    openAPI.getComponents().getSchemas().entrySet().stream()
+        .filter(e -> e.getValue().getExtensions() != null)
+        .filter(e -> e.getValue().getExtensions().containsKey("x-fabric8-info"))
+        .forEach(e -> {
+          final Map<String, Object> fabric8Info = (Map<String, Object>) e.getValue().getExtensions().get("x-fabric8-info");
+          // Consider only Kubernetes object and list types (top-level resources)
+          if (!Objects.equals(fabric8Info.get("Type"), "nested")) {
+            apiVersions.putIfAbsent(e.getKey(),
+                ApiVersion.builder()
+                    .group(fabric8Info.get("Group").toString())
+                    .version(fabric8Info.get("Version").toString())
+                    .namespaced(Objects.equals(fabric8Info.get("Scope").toString(), "Namespaced"))
+                    .build());
+          }
+        });
     // api machinery + core components always tagged as core v1
     // TODO: see if we want to omit the addition of group and version altogether in the future
     openAPI.getComponents().getSchemas().entrySet().stream()
