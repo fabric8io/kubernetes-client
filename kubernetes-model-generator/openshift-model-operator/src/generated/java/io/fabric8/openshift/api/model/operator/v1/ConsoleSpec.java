@@ -66,9 +66,9 @@ public class ConsoleSpec implements Editable<ConsoleSpecBuilder> , KubernetesRes
 {
 
     @JsonProperty("customization")
-    private ConsoleSpecCustomization customization;
+    private ConsoleCustomization customization;
     @JsonProperty("ingress")
-    private ConsoleSpecIngress ingress;
+    private Ingress ingress;
     @JsonProperty("logLevel")
     private String logLevel;
     @JsonProperty("managementState")
@@ -82,9 +82,9 @@ public class ConsoleSpec implements Editable<ConsoleSpecBuilder> , KubernetesRes
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> plugins = new ArrayList<>();
     @JsonProperty("providers")
-    private ConsoleSpecProviders providers;
+    private ConsoleProviders providers;
     @JsonProperty("route")
-    private ConsoleSpecRoute route;
+    private ConsoleConfigRoute route;
     @JsonProperty("unsupportedConfigOverrides")
     @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
     private Object unsupportedConfigOverrides;
@@ -98,7 +98,7 @@ public class ConsoleSpec implements Editable<ConsoleSpecBuilder> , KubernetesRes
     public ConsoleSpec() {
     }
 
-    public ConsoleSpec(ConsoleSpecCustomization customization, ConsoleSpecIngress ingress, String logLevel, String managementState, Object observedConfig, String operatorLogLevel, List<String> plugins, ConsoleSpecProviders providers, ConsoleSpecRoute route, Object unsupportedConfigOverrides) {
+    public ConsoleSpec(ConsoleCustomization customization, Ingress ingress, String logLevel, String managementState, Object observedConfig, String operatorLogLevel, List<String> plugins, ConsoleProviders providers, ConsoleConfigRoute route, Object unsupportedConfigOverrides) {
         super();
         this.customization = customization;
         this.ingress = ingress;
@@ -113,22 +113,22 @@ public class ConsoleSpec implements Editable<ConsoleSpecBuilder> , KubernetesRes
     }
 
     @JsonProperty("customization")
-    public ConsoleSpecCustomization getCustomization() {
+    public ConsoleCustomization getCustomization() {
         return customization;
     }
 
     @JsonProperty("customization")
-    public void setCustomization(ConsoleSpecCustomization customization) {
+    public void setCustomization(ConsoleCustomization customization) {
         this.customization = customization;
     }
 
     @JsonProperty("ingress")
-    public ConsoleSpecIngress getIngress() {
+    public Ingress getIngress() {
         return ingress;
     }
 
     @JsonProperty("ingress")
-    public void setIngress(ConsoleSpecIngress ingress) {
+    public void setIngress(Ingress ingress) {
         this.ingress = ingress;
     }
 
@@ -185,22 +185,22 @@ public class ConsoleSpec implements Editable<ConsoleSpecBuilder> , KubernetesRes
     }
 
     @JsonProperty("providers")
-    public ConsoleSpecProviders getProviders() {
+    public ConsoleProviders getProviders() {
         return providers;
     }
 
     @JsonProperty("providers")
-    public void setProviders(ConsoleSpecProviders providers) {
+    public void setProviders(ConsoleProviders providers) {
         this.providers = providers;
     }
 
     @JsonProperty("route")
-    public ConsoleSpecRoute getRoute() {
+    public ConsoleConfigRoute getRoute() {
         return route;
     }
 
     @JsonProperty("route")
-    public void setRoute(ConsoleSpecRoute route) {
+    public void setRoute(ConsoleConfigRoute route) {
         this.route = route;
     }
 

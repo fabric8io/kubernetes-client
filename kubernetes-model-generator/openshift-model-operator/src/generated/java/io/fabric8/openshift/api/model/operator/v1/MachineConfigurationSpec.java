@@ -34,7 +34,9 @@ import lombok.experimental.Accessors;
     "failedRevisionLimit",
     "forceRedeploymentReason",
     "logLevel",
+    "managedBootImages",
     "managementState",
+    "nodeDisruptionPolicy",
     "observedConfig",
     "operatorLogLevel",
     "succeededRevisionLimit",
@@ -67,8 +69,12 @@ public class MachineConfigurationSpec implements Editable<MachineConfigurationSp
     private String forceRedeploymentReason;
     @JsonProperty("logLevel")
     private String logLevel;
+    @JsonProperty("managedBootImages")
+    private ManagedBootImages managedBootImages;
     @JsonProperty("managementState")
     private String managementState;
+    @JsonProperty("nodeDisruptionPolicy")
+    private NodeDisruptionPolicyConfig nodeDisruptionPolicy;
     @JsonProperty("observedConfig")
     @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
     private Object observedConfig;
@@ -89,12 +95,14 @@ public class MachineConfigurationSpec implements Editable<MachineConfigurationSp
     public MachineConfigurationSpec() {
     }
 
-    public MachineConfigurationSpec(Integer failedRevisionLimit, String forceRedeploymentReason, String logLevel, String managementState, Object observedConfig, String operatorLogLevel, Integer succeededRevisionLimit, Object unsupportedConfigOverrides) {
+    public MachineConfigurationSpec(Integer failedRevisionLimit, String forceRedeploymentReason, String logLevel, ManagedBootImages managedBootImages, String managementState, NodeDisruptionPolicyConfig nodeDisruptionPolicy, Object observedConfig, String operatorLogLevel, Integer succeededRevisionLimit, Object unsupportedConfigOverrides) {
         super();
         this.failedRevisionLimit = failedRevisionLimit;
         this.forceRedeploymentReason = forceRedeploymentReason;
         this.logLevel = logLevel;
+        this.managedBootImages = managedBootImages;
         this.managementState = managementState;
+        this.nodeDisruptionPolicy = nodeDisruptionPolicy;
         this.observedConfig = observedConfig;
         this.operatorLogLevel = operatorLogLevel;
         this.succeededRevisionLimit = succeededRevisionLimit;
@@ -131,6 +139,16 @@ public class MachineConfigurationSpec implements Editable<MachineConfigurationSp
         this.logLevel = logLevel;
     }
 
+    @JsonProperty("managedBootImages")
+    public ManagedBootImages getManagedBootImages() {
+        return managedBootImages;
+    }
+
+    @JsonProperty("managedBootImages")
+    public void setManagedBootImages(ManagedBootImages managedBootImages) {
+        this.managedBootImages = managedBootImages;
+    }
+
     @JsonProperty("managementState")
     public String getManagementState() {
         return managementState;
@@ -139,6 +157,16 @@ public class MachineConfigurationSpec implements Editable<MachineConfigurationSp
     @JsonProperty("managementState")
     public void setManagementState(String managementState) {
         this.managementState = managementState;
+    }
+
+    @JsonProperty("nodeDisruptionPolicy")
+    public NodeDisruptionPolicyConfig getNodeDisruptionPolicy() {
+        return nodeDisruptionPolicy;
+    }
+
+    @JsonProperty("nodeDisruptionPolicy")
+    public void setNodeDisruptionPolicy(NodeDisruptionPolicyConfig nodeDisruptionPolicy) {
+        this.nodeDisruptionPolicy = nodeDisruptionPolicy;
     }
 
     @JsonProperty("observedConfig")

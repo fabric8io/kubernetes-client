@@ -63,10 +63,10 @@ public class OpenShiftAPIServerStatus implements Editable<OpenShiftAPIServerStat
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<OpenShiftAPIServerStatusConditions> conditions = new ArrayList<>();
+    private List<OperatorCondition> conditions = new ArrayList<>();
     @JsonProperty("generations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<OpenShiftAPIServerStatusGenerations> generations = new ArrayList<>();
+    private List<GenerationStatus> generations = new ArrayList<>();
     @JsonProperty("latestAvailableRevision")
     private Integer latestAvailableRevision;
     @JsonProperty("observedGeneration")
@@ -85,7 +85,7 @@ public class OpenShiftAPIServerStatus implements Editable<OpenShiftAPIServerStat
     public OpenShiftAPIServerStatus() {
     }
 
-    public OpenShiftAPIServerStatus(List<OpenShiftAPIServerStatusConditions> conditions, List<OpenShiftAPIServerStatusGenerations> generations, Integer latestAvailableRevision, Long observedGeneration, Integer readyReplicas, String version) {
+    public OpenShiftAPIServerStatus(List<OperatorCondition> conditions, List<GenerationStatus> generations, Integer latestAvailableRevision, Long observedGeneration, Integer readyReplicas, String version) {
         super();
         this.conditions = conditions;
         this.generations = generations;
@@ -97,23 +97,23 @@ public class OpenShiftAPIServerStatus implements Editable<OpenShiftAPIServerStat
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<OpenShiftAPIServerStatusConditions> getConditions() {
+    public List<OperatorCondition> getConditions() {
         return conditions;
     }
 
     @JsonProperty("conditions")
-    public void setConditions(List<OpenShiftAPIServerStatusConditions> conditions) {
+    public void setConditions(List<OperatorCondition> conditions) {
         this.conditions = conditions;
     }
 
     @JsonProperty("generations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<OpenShiftAPIServerStatusGenerations> getGenerations() {
+    public List<GenerationStatus> getGenerations() {
         return generations;
     }
 
     @JsonProperty("generations")
-    public void setGenerations(List<OpenShiftAPIServerStatusGenerations> generations) {
+    public void setGenerations(List<GenerationStatus> generations) {
         this.generations = generations;
     }
 

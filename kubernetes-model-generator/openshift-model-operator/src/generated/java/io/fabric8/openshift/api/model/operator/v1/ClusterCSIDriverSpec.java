@@ -61,7 +61,7 @@ public class ClusterCSIDriverSpec implements Editable<ClusterCSIDriverSpecBuilde
 {
 
     @JsonProperty("driverConfig")
-    private ClusterCSIDriverSpecDriverConfig driverConfig;
+    private CSIDriverConfigSpec driverConfig;
     @JsonProperty("logLevel")
     private String logLevel;
     @JsonProperty("managementState")
@@ -86,7 +86,7 @@ public class ClusterCSIDriverSpec implements Editable<ClusterCSIDriverSpecBuilde
     public ClusterCSIDriverSpec() {
     }
 
-    public ClusterCSIDriverSpec(ClusterCSIDriverSpecDriverConfig driverConfig, String logLevel, String managementState, Object observedConfig, String operatorLogLevel, String storageClassState, Object unsupportedConfigOverrides) {
+    public ClusterCSIDriverSpec(CSIDriverConfigSpec driverConfig, String logLevel, String managementState, Object observedConfig, String operatorLogLevel, String storageClassState, Object unsupportedConfigOverrides) {
         super();
         this.driverConfig = driverConfig;
         this.logLevel = logLevel;
@@ -98,12 +98,12 @@ public class ClusterCSIDriverSpec implements Editable<ClusterCSIDriverSpecBuilde
     }
 
     @JsonProperty("driverConfig")
-    public ClusterCSIDriverSpecDriverConfig getDriverConfig() {
+    public CSIDriverConfigSpec getDriverConfig() {
         return driverConfig;
     }
 
     @JsonProperty("driverConfig")
-    public void setDriverConfig(ClusterCSIDriverSpecDriverConfig driverConfig) {
+    public void setDriverConfig(CSIDriverConfigSpec driverConfig) {
         this.driverConfig = driverConfig;
     }
 

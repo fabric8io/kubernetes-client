@@ -24,6 +24,7 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
+import io.fabric8.openshift.api.model.operator.v1.OperatorCondition;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -59,7 +60,7 @@ public class ImagePrunerStatus implements Editable<ImagePrunerStatusBuilder> , K
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ImagePrunerStatusConditions> conditions = new ArrayList<>();
+    private List<OperatorCondition> conditions = new ArrayList<>();
     @JsonProperty("observedGeneration")
     private Long observedGeneration;
     @JsonIgnore
@@ -72,7 +73,7 @@ public class ImagePrunerStatus implements Editable<ImagePrunerStatusBuilder> , K
     public ImagePrunerStatus() {
     }
 
-    public ImagePrunerStatus(List<ImagePrunerStatusConditions> conditions, Long observedGeneration) {
+    public ImagePrunerStatus(List<OperatorCondition> conditions, Long observedGeneration) {
         super();
         this.conditions = conditions;
         this.observedGeneration = observedGeneration;
@@ -80,12 +81,12 @@ public class ImagePrunerStatus implements Editable<ImagePrunerStatusBuilder> , K
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<ImagePrunerStatusConditions> getConditions() {
+    public List<OperatorCondition> getConditions() {
         return conditions;
     }
 
     @JsonProperty("conditions")
-    public void setConditions(List<ImagePrunerStatusConditions> conditions) {
+    public void setConditions(List<OperatorCondition> conditions) {
         this.conditions = conditions;
     }
 

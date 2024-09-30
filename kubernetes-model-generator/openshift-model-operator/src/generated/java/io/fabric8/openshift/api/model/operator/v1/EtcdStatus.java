@@ -66,19 +66,19 @@ public class EtcdStatus implements Editable<EtcdStatusBuilder> , KubernetesResou
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<EtcdStatusConditions> conditions = new ArrayList<>();
+    private List<OperatorCondition> conditions = new ArrayList<>();
     @JsonProperty("controlPlaneHardwareSpeed")
     private String controlPlaneHardwareSpeed;
     @JsonProperty("generations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<EtcdStatusGenerations> generations = new ArrayList<>();
+    private List<GenerationStatus> generations = new ArrayList<>();
     @JsonProperty("latestAvailableRevision")
     private Integer latestAvailableRevision;
     @JsonProperty("latestAvailableRevisionReason")
     private String latestAvailableRevisionReason;
     @JsonProperty("nodeStatuses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<EtcdStatusNodeStatuses> nodeStatuses = new ArrayList<>();
+    private List<NodeStatus> nodeStatuses = new ArrayList<>();
     @JsonProperty("observedGeneration")
     private Long observedGeneration;
     @JsonProperty("readyReplicas")
@@ -95,7 +95,7 @@ public class EtcdStatus implements Editable<EtcdStatusBuilder> , KubernetesResou
     public EtcdStatus() {
     }
 
-    public EtcdStatus(List<EtcdStatusConditions> conditions, String controlPlaneHardwareSpeed, List<EtcdStatusGenerations> generations, Integer latestAvailableRevision, String latestAvailableRevisionReason, List<EtcdStatusNodeStatuses> nodeStatuses, Long observedGeneration, Integer readyReplicas, String version) {
+    public EtcdStatus(List<OperatorCondition> conditions, String controlPlaneHardwareSpeed, List<GenerationStatus> generations, Integer latestAvailableRevision, String latestAvailableRevisionReason, List<NodeStatus> nodeStatuses, Long observedGeneration, Integer readyReplicas, String version) {
         super();
         this.conditions = conditions;
         this.controlPlaneHardwareSpeed = controlPlaneHardwareSpeed;
@@ -110,12 +110,12 @@ public class EtcdStatus implements Editable<EtcdStatusBuilder> , KubernetesResou
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<EtcdStatusConditions> getConditions() {
+    public List<OperatorCondition> getConditions() {
         return conditions;
     }
 
     @JsonProperty("conditions")
-    public void setConditions(List<EtcdStatusConditions> conditions) {
+    public void setConditions(List<OperatorCondition> conditions) {
         this.conditions = conditions;
     }
 
@@ -131,12 +131,12 @@ public class EtcdStatus implements Editable<EtcdStatusBuilder> , KubernetesResou
 
     @JsonProperty("generations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<EtcdStatusGenerations> getGenerations() {
+    public List<GenerationStatus> getGenerations() {
         return generations;
     }
 
     @JsonProperty("generations")
-    public void setGenerations(List<EtcdStatusGenerations> generations) {
+    public void setGenerations(List<GenerationStatus> generations) {
         this.generations = generations;
     }
 
@@ -162,12 +162,12 @@ public class EtcdStatus implements Editable<EtcdStatusBuilder> , KubernetesResou
 
     @JsonProperty("nodeStatuses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<EtcdStatusNodeStatuses> getNodeStatuses() {
+    public List<NodeStatus> getNodeStatuses() {
         return nodeStatuses;
     }
 
     @JsonProperty("nodeStatuses")
-    public void setNodeStatuses(List<EtcdStatusNodeStatuses> nodeStatuses) {
+    public void setNodeStatuses(List<NodeStatus> nodeStatuses) {
         this.nodeStatuses = nodeStatuses;
     }
 

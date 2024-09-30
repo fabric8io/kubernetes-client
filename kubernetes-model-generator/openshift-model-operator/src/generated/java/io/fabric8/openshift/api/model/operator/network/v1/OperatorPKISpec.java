@@ -55,7 +55,7 @@ public class OperatorPKISpec implements Editable<OperatorPKISpecBuilder> , Kuber
 {
 
     @JsonProperty("targetCert")
-    private OperatorPKISpecTargetCert targetCert;
+    private CertSpec targetCert;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -66,18 +66,18 @@ public class OperatorPKISpec implements Editable<OperatorPKISpecBuilder> , Kuber
     public OperatorPKISpec() {
     }
 
-    public OperatorPKISpec(OperatorPKISpecTargetCert targetCert) {
+    public OperatorPKISpec(CertSpec targetCert) {
         super();
         this.targetCert = targetCert;
     }
 
     @JsonProperty("targetCert")
-    public OperatorPKISpecTargetCert getTargetCert() {
+    public CertSpec getTargetCert() {
         return targetCert;
     }
 
     @JsonProperty("targetCert")
-    public void setTargetCert(OperatorPKISpecTargetCert targetCert) {
+    public void setTargetCert(CertSpec targetCert) {
         this.targetCert = targetCert;
     }
 

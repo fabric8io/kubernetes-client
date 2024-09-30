@@ -35,6 +35,7 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "conditions",
     "generations",
+    "latestAvailableRevision",
     "observedGeneration",
     "readyReplicas",
     "version"
@@ -62,10 +63,12 @@ public class CloudCredentialStatus implements Editable<CloudCredentialStatusBuil
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<CloudCredentialStatusConditions> conditions = new ArrayList<>();
+    private List<OperatorCondition> conditions = new ArrayList<>();
     @JsonProperty("generations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<CloudCredentialStatusGenerations> generations = new ArrayList<>();
+    private List<GenerationStatus> generations = new ArrayList<>();
+    @JsonProperty("latestAvailableRevision")
+    private Integer latestAvailableRevision;
     @JsonProperty("observedGeneration")
     private Long observedGeneration;
     @JsonProperty("readyReplicas")
@@ -82,10 +85,11 @@ public class CloudCredentialStatus implements Editable<CloudCredentialStatusBuil
     public CloudCredentialStatus() {
     }
 
-    public CloudCredentialStatus(List<CloudCredentialStatusConditions> conditions, List<CloudCredentialStatusGenerations> generations, Long observedGeneration, Integer readyReplicas, String version) {
+    public CloudCredentialStatus(List<OperatorCondition> conditions, List<GenerationStatus> generations, Integer latestAvailableRevision, Long observedGeneration, Integer readyReplicas, String version) {
         super();
         this.conditions = conditions;
         this.generations = generations;
+        this.latestAvailableRevision = latestAvailableRevision;
         this.observedGeneration = observedGeneration;
         this.readyReplicas = readyReplicas;
         this.version = version;
@@ -93,24 +97,34 @@ public class CloudCredentialStatus implements Editable<CloudCredentialStatusBuil
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<CloudCredentialStatusConditions> getConditions() {
+    public List<OperatorCondition> getConditions() {
         return conditions;
     }
 
     @JsonProperty("conditions")
-    public void setConditions(List<CloudCredentialStatusConditions> conditions) {
+    public void setConditions(List<OperatorCondition> conditions) {
         this.conditions = conditions;
     }
 
     @JsonProperty("generations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<CloudCredentialStatusGenerations> getGenerations() {
+    public List<GenerationStatus> getGenerations() {
         return generations;
     }
 
     @JsonProperty("generations")
-    public void setGenerations(List<CloudCredentialStatusGenerations> generations) {
+    public void setGenerations(List<GenerationStatus> generations) {
         this.generations = generations;
+    }
+
+    @JsonProperty("latestAvailableRevision")
+    public Integer getLatestAvailableRevision() {
+        return latestAvailableRevision;
+    }
+
+    @JsonProperty("latestAvailableRevision")
+    public void setLatestAvailableRevision(Integer latestAvailableRevision) {
+        this.latestAvailableRevision = latestAvailableRevision;
     }
 
     @JsonProperty("observedGeneration")

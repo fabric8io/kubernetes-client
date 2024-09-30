@@ -63,20 +63,20 @@ public class DNSSpec implements Editable<DNSSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("cache")
-    private DNSSpecCache cache;
+    private DNSCache cache;
     @JsonProperty("logLevel")
     private String logLevel;
     @JsonProperty("managementState")
     private String managementState;
     @JsonProperty("nodePlacement")
-    private DNSSpecNodePlacement nodePlacement;
+    private DNSNodePlacement nodePlacement;
     @JsonProperty("operatorLogLevel")
     private String operatorLogLevel;
     @JsonProperty("servers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<DNSSpecServers> servers = new ArrayList<>();
+    private List<Server> servers = new ArrayList<>();
     @JsonProperty("upstreamResolvers")
-    private DNSSpecUpstreamResolvers upstreamResolvers;
+    private UpstreamResolvers upstreamResolvers;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -87,7 +87,7 @@ public class DNSSpec implements Editable<DNSSpecBuilder> , KubernetesResource
     public DNSSpec() {
     }
 
-    public DNSSpec(DNSSpecCache cache, String logLevel, String managementState, DNSSpecNodePlacement nodePlacement, String operatorLogLevel, List<DNSSpecServers> servers, DNSSpecUpstreamResolvers upstreamResolvers) {
+    public DNSSpec(DNSCache cache, String logLevel, String managementState, DNSNodePlacement nodePlacement, String operatorLogLevel, List<Server> servers, UpstreamResolvers upstreamResolvers) {
         super();
         this.cache = cache;
         this.logLevel = logLevel;
@@ -99,12 +99,12 @@ public class DNSSpec implements Editable<DNSSpecBuilder> , KubernetesResource
     }
 
     @JsonProperty("cache")
-    public DNSSpecCache getCache() {
+    public DNSCache getCache() {
         return cache;
     }
 
     @JsonProperty("cache")
-    public void setCache(DNSSpecCache cache) {
+    public void setCache(DNSCache cache) {
         this.cache = cache;
     }
 
@@ -129,12 +129,12 @@ public class DNSSpec implements Editable<DNSSpecBuilder> , KubernetesResource
     }
 
     @JsonProperty("nodePlacement")
-    public DNSSpecNodePlacement getNodePlacement() {
+    public DNSNodePlacement getNodePlacement() {
         return nodePlacement;
     }
 
     @JsonProperty("nodePlacement")
-    public void setNodePlacement(DNSSpecNodePlacement nodePlacement) {
+    public void setNodePlacement(DNSNodePlacement nodePlacement) {
         this.nodePlacement = nodePlacement;
     }
 
@@ -150,22 +150,22 @@ public class DNSSpec implements Editable<DNSSpecBuilder> , KubernetesResource
 
     @JsonProperty("servers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<DNSSpecServers> getServers() {
+    public List<Server> getServers() {
         return servers;
     }
 
     @JsonProperty("servers")
-    public void setServers(List<DNSSpecServers> servers) {
+    public void setServers(List<Server> servers) {
         this.servers = servers;
     }
 
     @JsonProperty("upstreamResolvers")
-    public DNSSpecUpstreamResolvers getUpstreamResolvers() {
+    public UpstreamResolvers getUpstreamResolvers() {
         return upstreamResolvers;
     }
 
     @JsonProperty("upstreamResolvers")
-    public void setUpstreamResolvers(DNSSpecUpstreamResolvers upstreamResolvers) {
+    public void setUpstreamResolvers(UpstreamResolvers upstreamResolvers) {
         this.upstreamResolvers = upstreamResolvers;
     }
 

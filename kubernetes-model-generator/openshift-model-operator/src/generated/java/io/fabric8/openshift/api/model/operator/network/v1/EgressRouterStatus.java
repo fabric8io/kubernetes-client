@@ -58,7 +58,7 @@ public class EgressRouterStatus implements Editable<EgressRouterStatusBuilder> ,
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<EgressRouterStatusConditions> conditions = new ArrayList<>();
+    private List<EgressRouterStatusCondition> conditions = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -69,19 +69,19 @@ public class EgressRouterStatus implements Editable<EgressRouterStatusBuilder> ,
     public EgressRouterStatus() {
     }
 
-    public EgressRouterStatus(List<EgressRouterStatusConditions> conditions) {
+    public EgressRouterStatus(List<EgressRouterStatusCondition> conditions) {
         super();
         this.conditions = conditions;
     }
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<EgressRouterStatusConditions> getConditions() {
+    public List<EgressRouterStatusCondition> getConditions() {
         return conditions;
     }
 
     @JsonProperty("conditions")
-    public void setConditions(List<EgressRouterStatusConditions> conditions) {
+    public void setConditions(List<EgressRouterStatusCondition> conditions) {
         this.conditions = conditions;
     }
 

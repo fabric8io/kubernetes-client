@@ -64,7 +64,7 @@ public class DNSStatus implements Editable<DNSStatusBuilder> , KubernetesResourc
     private String clusterIP;
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<DNSStatusConditions> conditions = new ArrayList<>();
+    private List<OperatorCondition> conditions = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -75,7 +75,7 @@ public class DNSStatus implements Editable<DNSStatusBuilder> , KubernetesResourc
     public DNSStatus() {
     }
 
-    public DNSStatus(String clusterDomain, String clusterIP, List<DNSStatusConditions> conditions) {
+    public DNSStatus(String clusterDomain, String clusterIP, List<OperatorCondition> conditions) {
         super();
         this.clusterDomain = clusterDomain;
         this.clusterIP = clusterIP;
@@ -104,12 +104,12 @@ public class DNSStatus implements Editable<DNSStatusBuilder> , KubernetesResourc
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<DNSStatusConditions> getConditions() {
+    public List<OperatorCondition> getConditions() {
         return conditions;
     }
 
     @JsonProperty("conditions")
-    public void setConditions(List<DNSStatusConditions> conditions) {
+    public void setConditions(List<OperatorCondition> conditions) {
         this.conditions = conditions;
     }
 

@@ -6,7 +6,7 @@ toolchain go1.23.1
 
 require (
 	github.com/getkin/kin-openapi v0.125.0
-	// Match lastest commit in the version branch (e.g. release-4.17)
+	// Match latest commit in the version branch (e.g. release-4.17)
 	github.com/openshift/api v0.0.0-20240912201240-0a8800162826
 	k8s.io/api v0.30.2
 	k8s.io/apiextensions-apiserver v0.30.2
@@ -17,7 +17,11 @@ require (
 	sigs.k8s.io/kustomize/api v0.17.2
 )
 
+// TODO: WIP while this gets merged or fixed https://github.com/openshift/api/pull/2050
+replace github.com/openshift/api => github.com/marcnuri-forks/api v0.0.0-20240930125604-62d5277244a4
+
 require (
+	github.com/openshift/cluster-network-operator v0.0.0-20240912134426-a3188633549d
 	github.com/spf13/cobra v1.8.1
 	k8s.io/gengo/v2 v2.0.0-20240911193312-2b36238f13e9
 	k8s.io/kube-openapi v0.0.0-20240903163716-9e1beecbcb38
@@ -44,7 +48,7 @@ require (
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/mohae/deepcopy v0.0.0-20170929034955-c48cc78d4826 // indirect
 	github.com/perimeterx/marshmallow v1.1.5 // indirect
-	github.com/spf13/pflag v1.0.5 // indirect
+	github.com/spf13/pflag v1.0.6-0.20210604193023-d5e0c0615ace // indirect
 	golang.org/x/mod v0.20.0 // indirect
 	golang.org/x/net v0.28.0 // indirect
 	golang.org/x/sync v0.8.0 // indirect

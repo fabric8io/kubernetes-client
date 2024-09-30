@@ -24,6 +24,7 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
+import io.fabric8.openshift.api.model.config.v1.TLSProfileSpec;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -68,21 +69,21 @@ public class IngressControllerStatus implements Editable<IngressControllerStatus
     private Integer availableReplicas;
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<IngressControllerStatusConditions> conditions = new ArrayList<>();
+    private List<OperatorCondition> conditions = new ArrayList<>();
     @JsonProperty("domain")
     private String domain;
     @JsonProperty("endpointPublishingStrategy")
-    private IngressControllerStatusEndpointPublishingStrategy endpointPublishingStrategy;
+    private EndpointPublishingStrategy endpointPublishingStrategy;
     @JsonProperty("namespaceSelector")
-    private IngressControllerStatusNamespaceSelector namespaceSelector;
+    private LabelSelector namespaceSelector;
     @JsonProperty("observedGeneration")
     private Long observedGeneration;
     @JsonProperty("routeSelector")
-    private IngressControllerStatusRouteSelector routeSelector;
+    private LabelSelector routeSelector;
     @JsonProperty("selector")
     private String selector;
     @JsonProperty("tlsProfile")
-    private IngressControllerStatusTlsProfile tlsProfile;
+    private TLSProfileSpec tlsProfile;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -93,7 +94,7 @@ public class IngressControllerStatus implements Editable<IngressControllerStatus
     public IngressControllerStatus() {
     }
 
-    public IngressControllerStatus(Integer availableReplicas, List<IngressControllerStatusConditions> conditions, String domain, IngressControllerStatusEndpointPublishingStrategy endpointPublishingStrategy, IngressControllerStatusNamespaceSelector namespaceSelector, Long observedGeneration, IngressControllerStatusRouteSelector routeSelector, String selector, IngressControllerStatusTlsProfile tlsProfile) {
+    public IngressControllerStatus(Integer availableReplicas, List<OperatorCondition> conditions, String domain, EndpointPublishingStrategy endpointPublishingStrategy, LabelSelector namespaceSelector, Long observedGeneration, LabelSelector routeSelector, String selector, TLSProfileSpec tlsProfile) {
         super();
         this.availableReplicas = availableReplicas;
         this.conditions = conditions;
@@ -118,12 +119,12 @@ public class IngressControllerStatus implements Editable<IngressControllerStatus
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<IngressControllerStatusConditions> getConditions() {
+    public List<OperatorCondition> getConditions() {
         return conditions;
     }
 
     @JsonProperty("conditions")
-    public void setConditions(List<IngressControllerStatusConditions> conditions) {
+    public void setConditions(List<OperatorCondition> conditions) {
         this.conditions = conditions;
     }
 
@@ -138,22 +139,22 @@ public class IngressControllerStatus implements Editable<IngressControllerStatus
     }
 
     @JsonProperty("endpointPublishingStrategy")
-    public IngressControllerStatusEndpointPublishingStrategy getEndpointPublishingStrategy() {
+    public EndpointPublishingStrategy getEndpointPublishingStrategy() {
         return endpointPublishingStrategy;
     }
 
     @JsonProperty("endpointPublishingStrategy")
-    public void setEndpointPublishingStrategy(IngressControllerStatusEndpointPublishingStrategy endpointPublishingStrategy) {
+    public void setEndpointPublishingStrategy(EndpointPublishingStrategy endpointPublishingStrategy) {
         this.endpointPublishingStrategy = endpointPublishingStrategy;
     }
 
     @JsonProperty("namespaceSelector")
-    public IngressControllerStatusNamespaceSelector getNamespaceSelector() {
+    public LabelSelector getNamespaceSelector() {
         return namespaceSelector;
     }
 
     @JsonProperty("namespaceSelector")
-    public void setNamespaceSelector(IngressControllerStatusNamespaceSelector namespaceSelector) {
+    public void setNamespaceSelector(LabelSelector namespaceSelector) {
         this.namespaceSelector = namespaceSelector;
     }
 
@@ -168,12 +169,12 @@ public class IngressControllerStatus implements Editable<IngressControllerStatus
     }
 
     @JsonProperty("routeSelector")
-    public IngressControllerStatusRouteSelector getRouteSelector() {
+    public LabelSelector getRouteSelector() {
         return routeSelector;
     }
 
     @JsonProperty("routeSelector")
-    public void setRouteSelector(IngressControllerStatusRouteSelector routeSelector) {
+    public void setRouteSelector(LabelSelector routeSelector) {
         this.routeSelector = routeSelector;
     }
 
@@ -188,12 +189,12 @@ public class IngressControllerStatus implements Editable<IngressControllerStatus
     }
 
     @JsonProperty("tlsProfile")
-    public IngressControllerStatusTlsProfile getTlsProfile() {
+    public TLSProfileSpec getTlsProfile() {
         return tlsProfile;
     }
 
     @JsonProperty("tlsProfile")
-    public void setTlsProfile(IngressControllerStatusTlsProfile tlsProfile) {
+    public void setTlsProfile(TLSProfileSpec tlsProfile) {
         this.tlsProfile = tlsProfile;
     }
 

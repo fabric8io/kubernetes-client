@@ -22,6 +22,7 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
+import io.fabric8.openshift.api.model.config.v1.SecretNameReference;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -61,7 +62,7 @@ public class PodNetworkConnectivityCheckSpec implements Editable<PodNetworkConne
     @JsonProperty("targetEndpoint")
     private String targetEndpoint;
     @JsonProperty("tlsClientCert")
-    private PodNetworkConnectivityCheckSpecTlsClientCert tlsClientCert;
+    private SecretNameReference tlsClientCert;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -72,7 +73,7 @@ public class PodNetworkConnectivityCheckSpec implements Editable<PodNetworkConne
     public PodNetworkConnectivityCheckSpec() {
     }
 
-    public PodNetworkConnectivityCheckSpec(String sourcePod, String targetEndpoint, PodNetworkConnectivityCheckSpecTlsClientCert tlsClientCert) {
+    public PodNetworkConnectivityCheckSpec(String sourcePod, String targetEndpoint, SecretNameReference tlsClientCert) {
         super();
         this.sourcePod = sourcePod;
         this.targetEndpoint = targetEndpoint;
@@ -100,12 +101,12 @@ public class PodNetworkConnectivityCheckSpec implements Editable<PodNetworkConne
     }
 
     @JsonProperty("tlsClientCert")
-    public PodNetworkConnectivityCheckSpecTlsClientCert getTlsClientCert() {
+    public SecretNameReference getTlsClientCert() {
         return tlsClientCert;
     }
 
     @JsonProperty("tlsClientCert")
-    public void setTlsClientCert(PodNetworkConnectivityCheckSpecTlsClientCert tlsClientCert) {
+    public void setTlsClientCert(SecretNameReference tlsClientCert) {
         this.tlsClientCert = tlsClientCert;
     }
 
