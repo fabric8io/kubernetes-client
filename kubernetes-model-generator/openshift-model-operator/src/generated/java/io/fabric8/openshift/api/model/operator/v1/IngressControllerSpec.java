@@ -22,6 +22,8 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
+import io.fabric8.openshift.api.model.config.v1.ConfigMapNameReference;
+import io.fabric8.openshift.api.model.config.v1.TLSSecurityProfile;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -71,37 +73,37 @@ public class IngressControllerSpec implements Editable<IngressControllerSpecBuil
 {
 
     @JsonProperty("clientTLS")
-    private IngressControllerSpecClientTLS clientTLS;
+    private ClientTLS clientTLS;
     @JsonProperty("defaultCertificate")
-    private IngressControllerSpecDefaultCertificate defaultCertificate;
+    private LocalObjectReference defaultCertificate;
     @JsonProperty("domain")
     private String domain;
     @JsonProperty("endpointPublishingStrategy")
-    private IngressControllerSpecEndpointPublishingStrategy endpointPublishingStrategy;
+    private EndpointPublishingStrategy endpointPublishingStrategy;
     @JsonProperty("httpCompression")
-    private IngressControllerSpecHttpCompression httpCompression;
+    private HTTPCompressionPolicy httpCompression;
     @JsonProperty("httpEmptyRequestsPolicy")
     private String httpEmptyRequestsPolicy;
     @JsonProperty("httpErrorCodePages")
-    private IngressControllerSpecHttpErrorCodePages httpErrorCodePages;
+    private ConfigMapNameReference httpErrorCodePages;
     @JsonProperty("httpHeaders")
-    private IngressControllerSpecHttpHeaders httpHeaders;
+    private IngressControllerHTTPHeaders httpHeaders;
     @JsonProperty("logging")
-    private IngressControllerSpecLogging logging;
+    private IngressControllerLogging logging;
     @JsonProperty("namespaceSelector")
-    private IngressControllerSpecNamespaceSelector namespaceSelector;
+    private LabelSelector namespaceSelector;
     @JsonProperty("nodePlacement")
-    private IngressControllerSpecNodePlacement nodePlacement;
+    private NodePlacement nodePlacement;
     @JsonProperty("replicas")
     private Integer replicas;
     @JsonProperty("routeAdmission")
-    private IngressControllerSpecRouteAdmission routeAdmission;
+    private RouteAdmissionPolicy routeAdmission;
     @JsonProperty("routeSelector")
-    private IngressControllerSpecRouteSelector routeSelector;
+    private LabelSelector routeSelector;
     @JsonProperty("tlsSecurityProfile")
-    private IngressControllerSpecTlsSecurityProfile tlsSecurityProfile;
+    private TLSSecurityProfile tlsSecurityProfile;
     @JsonProperty("tuningOptions")
-    private IngressControllerSpecTuningOptions tuningOptions;
+    private IngressControllerTuningOptions tuningOptions;
     @JsonProperty("unsupportedConfigOverrides")
     @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
     private Object unsupportedConfigOverrides;
@@ -115,7 +117,7 @@ public class IngressControllerSpec implements Editable<IngressControllerSpecBuil
     public IngressControllerSpec() {
     }
 
-    public IngressControllerSpec(IngressControllerSpecClientTLS clientTLS, IngressControllerSpecDefaultCertificate defaultCertificate, String domain, IngressControllerSpecEndpointPublishingStrategy endpointPublishingStrategy, IngressControllerSpecHttpCompression httpCompression, String httpEmptyRequestsPolicy, IngressControllerSpecHttpErrorCodePages httpErrorCodePages, IngressControllerSpecHttpHeaders httpHeaders, IngressControllerSpecLogging logging, IngressControllerSpecNamespaceSelector namespaceSelector, IngressControllerSpecNodePlacement nodePlacement, Integer replicas, IngressControllerSpecRouteAdmission routeAdmission, IngressControllerSpecRouteSelector routeSelector, IngressControllerSpecTlsSecurityProfile tlsSecurityProfile, IngressControllerSpecTuningOptions tuningOptions, Object unsupportedConfigOverrides) {
+    public IngressControllerSpec(ClientTLS clientTLS, LocalObjectReference defaultCertificate, String domain, EndpointPublishingStrategy endpointPublishingStrategy, HTTPCompressionPolicy httpCompression, String httpEmptyRequestsPolicy, ConfigMapNameReference httpErrorCodePages, IngressControllerHTTPHeaders httpHeaders, IngressControllerLogging logging, LabelSelector namespaceSelector, NodePlacement nodePlacement, Integer replicas, RouteAdmissionPolicy routeAdmission, LabelSelector routeSelector, TLSSecurityProfile tlsSecurityProfile, IngressControllerTuningOptions tuningOptions, Object unsupportedConfigOverrides) {
         super();
         this.clientTLS = clientTLS;
         this.defaultCertificate = defaultCertificate;
@@ -137,22 +139,22 @@ public class IngressControllerSpec implements Editable<IngressControllerSpecBuil
     }
 
     @JsonProperty("clientTLS")
-    public IngressControllerSpecClientTLS getClientTLS() {
+    public ClientTLS getClientTLS() {
         return clientTLS;
     }
 
     @JsonProperty("clientTLS")
-    public void setClientTLS(IngressControllerSpecClientTLS clientTLS) {
+    public void setClientTLS(ClientTLS clientTLS) {
         this.clientTLS = clientTLS;
     }
 
     @JsonProperty("defaultCertificate")
-    public IngressControllerSpecDefaultCertificate getDefaultCertificate() {
+    public LocalObjectReference getDefaultCertificate() {
         return defaultCertificate;
     }
 
     @JsonProperty("defaultCertificate")
-    public void setDefaultCertificate(IngressControllerSpecDefaultCertificate defaultCertificate) {
+    public void setDefaultCertificate(LocalObjectReference defaultCertificate) {
         this.defaultCertificate = defaultCertificate;
     }
 
@@ -167,22 +169,22 @@ public class IngressControllerSpec implements Editable<IngressControllerSpecBuil
     }
 
     @JsonProperty("endpointPublishingStrategy")
-    public IngressControllerSpecEndpointPublishingStrategy getEndpointPublishingStrategy() {
+    public EndpointPublishingStrategy getEndpointPublishingStrategy() {
         return endpointPublishingStrategy;
     }
 
     @JsonProperty("endpointPublishingStrategy")
-    public void setEndpointPublishingStrategy(IngressControllerSpecEndpointPublishingStrategy endpointPublishingStrategy) {
+    public void setEndpointPublishingStrategy(EndpointPublishingStrategy endpointPublishingStrategy) {
         this.endpointPublishingStrategy = endpointPublishingStrategy;
     }
 
     @JsonProperty("httpCompression")
-    public IngressControllerSpecHttpCompression getHttpCompression() {
+    public HTTPCompressionPolicy getHttpCompression() {
         return httpCompression;
     }
 
     @JsonProperty("httpCompression")
-    public void setHttpCompression(IngressControllerSpecHttpCompression httpCompression) {
+    public void setHttpCompression(HTTPCompressionPolicy httpCompression) {
         this.httpCompression = httpCompression;
     }
 
@@ -197,52 +199,52 @@ public class IngressControllerSpec implements Editable<IngressControllerSpecBuil
     }
 
     @JsonProperty("httpErrorCodePages")
-    public IngressControllerSpecHttpErrorCodePages getHttpErrorCodePages() {
+    public ConfigMapNameReference getHttpErrorCodePages() {
         return httpErrorCodePages;
     }
 
     @JsonProperty("httpErrorCodePages")
-    public void setHttpErrorCodePages(IngressControllerSpecHttpErrorCodePages httpErrorCodePages) {
+    public void setHttpErrorCodePages(ConfigMapNameReference httpErrorCodePages) {
         this.httpErrorCodePages = httpErrorCodePages;
     }
 
     @JsonProperty("httpHeaders")
-    public IngressControllerSpecHttpHeaders getHttpHeaders() {
+    public IngressControllerHTTPHeaders getHttpHeaders() {
         return httpHeaders;
     }
 
     @JsonProperty("httpHeaders")
-    public void setHttpHeaders(IngressControllerSpecHttpHeaders httpHeaders) {
+    public void setHttpHeaders(IngressControllerHTTPHeaders httpHeaders) {
         this.httpHeaders = httpHeaders;
     }
 
     @JsonProperty("logging")
-    public IngressControllerSpecLogging getLogging() {
+    public IngressControllerLogging getLogging() {
         return logging;
     }
 
     @JsonProperty("logging")
-    public void setLogging(IngressControllerSpecLogging logging) {
+    public void setLogging(IngressControllerLogging logging) {
         this.logging = logging;
     }
 
     @JsonProperty("namespaceSelector")
-    public IngressControllerSpecNamespaceSelector getNamespaceSelector() {
+    public LabelSelector getNamespaceSelector() {
         return namespaceSelector;
     }
 
     @JsonProperty("namespaceSelector")
-    public void setNamespaceSelector(IngressControllerSpecNamespaceSelector namespaceSelector) {
+    public void setNamespaceSelector(LabelSelector namespaceSelector) {
         this.namespaceSelector = namespaceSelector;
     }
 
     @JsonProperty("nodePlacement")
-    public IngressControllerSpecNodePlacement getNodePlacement() {
+    public NodePlacement getNodePlacement() {
         return nodePlacement;
     }
 
     @JsonProperty("nodePlacement")
-    public void setNodePlacement(IngressControllerSpecNodePlacement nodePlacement) {
+    public void setNodePlacement(NodePlacement nodePlacement) {
         this.nodePlacement = nodePlacement;
     }
 
@@ -257,42 +259,42 @@ public class IngressControllerSpec implements Editable<IngressControllerSpecBuil
     }
 
     @JsonProperty("routeAdmission")
-    public IngressControllerSpecRouteAdmission getRouteAdmission() {
+    public RouteAdmissionPolicy getRouteAdmission() {
         return routeAdmission;
     }
 
     @JsonProperty("routeAdmission")
-    public void setRouteAdmission(IngressControllerSpecRouteAdmission routeAdmission) {
+    public void setRouteAdmission(RouteAdmissionPolicy routeAdmission) {
         this.routeAdmission = routeAdmission;
     }
 
     @JsonProperty("routeSelector")
-    public IngressControllerSpecRouteSelector getRouteSelector() {
+    public LabelSelector getRouteSelector() {
         return routeSelector;
     }
 
     @JsonProperty("routeSelector")
-    public void setRouteSelector(IngressControllerSpecRouteSelector routeSelector) {
+    public void setRouteSelector(LabelSelector routeSelector) {
         this.routeSelector = routeSelector;
     }
 
     @JsonProperty("tlsSecurityProfile")
-    public IngressControllerSpecTlsSecurityProfile getTlsSecurityProfile() {
+    public TLSSecurityProfile getTlsSecurityProfile() {
         return tlsSecurityProfile;
     }
 
     @JsonProperty("tlsSecurityProfile")
-    public void setTlsSecurityProfile(IngressControllerSpecTlsSecurityProfile tlsSecurityProfile) {
+    public void setTlsSecurityProfile(TLSSecurityProfile tlsSecurityProfile) {
         this.tlsSecurityProfile = tlsSecurityProfile;
     }
 
     @JsonProperty("tuningOptions")
-    public IngressControllerSpecTuningOptions getTuningOptions() {
+    public IngressControllerTuningOptions getTuningOptions() {
         return tuningOptions;
     }
 
     @JsonProperty("tuningOptions")
-    public void setTuningOptions(IngressControllerSpecTuningOptions tuningOptions) {
+    public void setTuningOptions(IngressControllerTuningOptions tuningOptions) {
         this.tuningOptions = tuningOptions;
     }
 

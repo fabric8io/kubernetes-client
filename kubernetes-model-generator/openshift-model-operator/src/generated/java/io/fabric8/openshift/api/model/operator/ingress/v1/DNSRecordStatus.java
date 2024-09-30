@@ -61,7 +61,7 @@ public class DNSRecordStatus implements Editable<DNSRecordStatusBuilder> , Kuber
     private Long observedGeneration;
     @JsonProperty("zones")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<DNSRecordStatusZones> zones = new ArrayList<>();
+    private List<DNSZoneStatus> zones = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -72,7 +72,7 @@ public class DNSRecordStatus implements Editable<DNSRecordStatusBuilder> , Kuber
     public DNSRecordStatus() {
     }
 
-    public DNSRecordStatus(Long observedGeneration, List<DNSRecordStatusZones> zones) {
+    public DNSRecordStatus(Long observedGeneration, List<DNSZoneStatus> zones) {
         super();
         this.observedGeneration = observedGeneration;
         this.zones = zones;
@@ -90,12 +90,12 @@ public class DNSRecordStatus implements Editable<DNSRecordStatusBuilder> , Kuber
 
     @JsonProperty("zones")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<DNSRecordStatusZones> getZones() {
+    public List<DNSZoneStatus> getZones() {
         return zones;
     }
 
     @JsonProperty("zones")
-    public void setZones(List<DNSRecordStatusZones> zones) {
+    public void setZones(List<DNSZoneStatus> zones) {
         this.zones = zones;
     }
 

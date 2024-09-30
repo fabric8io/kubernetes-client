@@ -31,6 +31,7 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "backendQuotaGiB",
     "controlPlaneHardwareSpeed",
     "failedRevisionLimit",
     "forceRedeploymentReason",
@@ -62,6 +63,8 @@ import lombok.experimental.Accessors;
 public class EtcdSpec implements Editable<EtcdSpecBuilder> , KubernetesResource
 {
 
+    @JsonProperty("backendQuotaGiB")
+    private Integer backendQuotaGiB;
     @JsonProperty("controlPlaneHardwareSpeed")
     private String controlPlaneHardwareSpeed;
     @JsonProperty("failedRevisionLimit")
@@ -92,8 +95,9 @@ public class EtcdSpec implements Editable<EtcdSpecBuilder> , KubernetesResource
     public EtcdSpec() {
     }
 
-    public EtcdSpec(String controlPlaneHardwareSpeed, Integer failedRevisionLimit, String forceRedeploymentReason, String logLevel, String managementState, Object observedConfig, String operatorLogLevel, Integer succeededRevisionLimit, Object unsupportedConfigOverrides) {
+    public EtcdSpec(Integer backendQuotaGiB, String controlPlaneHardwareSpeed, Integer failedRevisionLimit, String forceRedeploymentReason, String logLevel, String managementState, Object observedConfig, String operatorLogLevel, Integer succeededRevisionLimit, Object unsupportedConfigOverrides) {
         super();
+        this.backendQuotaGiB = backendQuotaGiB;
         this.controlPlaneHardwareSpeed = controlPlaneHardwareSpeed;
         this.failedRevisionLimit = failedRevisionLimit;
         this.forceRedeploymentReason = forceRedeploymentReason;
@@ -103,6 +107,16 @@ public class EtcdSpec implements Editable<EtcdSpecBuilder> , KubernetesResource
         this.operatorLogLevel = operatorLogLevel;
         this.succeededRevisionLimit = succeededRevisionLimit;
         this.unsupportedConfigOverrides = unsupportedConfigOverrides;
+    }
+
+    @JsonProperty("backendQuotaGiB")
+    public Integer getBackendQuotaGiB() {
+        return backendQuotaGiB;
+    }
+
+    @JsonProperty("backendQuotaGiB")
+    public void setBackendQuotaGiB(Integer backendQuotaGiB) {
+        this.backendQuotaGiB = backendQuotaGiB;
     }
 
     @JsonProperty("controlPlaneHardwareSpeed")

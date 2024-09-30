@@ -36,6 +36,7 @@ import lombok.experimental.Accessors;
     "additionalTrustedCA",
     "allowedRegistriesForImport",
     "externalRegistryHostnames",
+    "imageStreamImportMode",
     "registrySources"
 })
 @ToString
@@ -67,6 +68,8 @@ public class ImageSpec implements Editable<ImageSpecBuilder> , KubernetesResourc
     @JsonProperty("externalRegistryHostnames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> externalRegistryHostnames = new ArrayList<>();
+    @JsonProperty("imageStreamImportMode")
+    private String imageStreamImportMode;
     @JsonProperty("registrySources")
     private RegistrySources registrySources;
     @JsonIgnore
@@ -79,11 +82,12 @@ public class ImageSpec implements Editable<ImageSpecBuilder> , KubernetesResourc
     public ImageSpec() {
     }
 
-    public ImageSpec(ConfigMapNameReference additionalTrustedCA, List<RegistryLocation> allowedRegistriesForImport, List<String> externalRegistryHostnames, RegistrySources registrySources) {
+    public ImageSpec(ConfigMapNameReference additionalTrustedCA, List<RegistryLocation> allowedRegistriesForImport, List<String> externalRegistryHostnames, String imageStreamImportMode, RegistrySources registrySources) {
         super();
         this.additionalTrustedCA = additionalTrustedCA;
         this.allowedRegistriesForImport = allowedRegistriesForImport;
         this.externalRegistryHostnames = externalRegistryHostnames;
+        this.imageStreamImportMode = imageStreamImportMode;
         this.registrySources = registrySources;
     }
 
@@ -117,6 +121,16 @@ public class ImageSpec implements Editable<ImageSpecBuilder> , KubernetesResourc
     @JsonProperty("externalRegistryHostnames")
     public void setExternalRegistryHostnames(List<String> externalRegistryHostnames) {
         this.externalRegistryHostnames = externalRegistryHostnames;
+    }
+
+    @JsonProperty("imageStreamImportMode")
+    public String getImageStreamImportMode() {
+        return imageStreamImportMode;
+    }
+
+    @JsonProperty("imageStreamImportMode")
+    public void setImageStreamImportMode(String imageStreamImportMode) {
+        this.imageStreamImportMode = imageStreamImportMode;
     }
 
     @JsonProperty("registrySources")

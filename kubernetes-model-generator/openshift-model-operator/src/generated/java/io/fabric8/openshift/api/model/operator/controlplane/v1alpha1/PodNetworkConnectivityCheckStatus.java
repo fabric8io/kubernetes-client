@@ -61,16 +61,16 @@ public class PodNetworkConnectivityCheckStatus implements Editable<PodNetworkCon
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<PodNetworkConnectivityCheckStatusConditions> conditions = new ArrayList<>();
+    private List<PodNetworkConnectivityCheckCondition> conditions = new ArrayList<>();
     @JsonProperty("failures")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<PodNetworkConnectivityCheckStatusFailures> failures = new ArrayList<>();
+    private List<LogEntry> failures = new ArrayList<>();
     @JsonProperty("outages")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<PodNetworkConnectivityCheckStatusOutages> outages = new ArrayList<>();
+    private List<OutageEntry> outages = new ArrayList<>();
     @JsonProperty("successes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<PodNetworkConnectivityCheckStatusSuccesses> successes = new ArrayList<>();
+    private List<LogEntry> successes = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -81,7 +81,7 @@ public class PodNetworkConnectivityCheckStatus implements Editable<PodNetworkCon
     public PodNetworkConnectivityCheckStatus() {
     }
 
-    public PodNetworkConnectivityCheckStatus(List<PodNetworkConnectivityCheckStatusConditions> conditions, List<PodNetworkConnectivityCheckStatusFailures> failures, List<PodNetworkConnectivityCheckStatusOutages> outages, List<PodNetworkConnectivityCheckStatusSuccesses> successes) {
+    public PodNetworkConnectivityCheckStatus(List<PodNetworkConnectivityCheckCondition> conditions, List<LogEntry> failures, List<OutageEntry> outages, List<LogEntry> successes) {
         super();
         this.conditions = conditions;
         this.failures = failures;
@@ -91,45 +91,45 @@ public class PodNetworkConnectivityCheckStatus implements Editable<PodNetworkCon
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<PodNetworkConnectivityCheckStatusConditions> getConditions() {
+    public List<PodNetworkConnectivityCheckCondition> getConditions() {
         return conditions;
     }
 
     @JsonProperty("conditions")
-    public void setConditions(List<PodNetworkConnectivityCheckStatusConditions> conditions) {
+    public void setConditions(List<PodNetworkConnectivityCheckCondition> conditions) {
         this.conditions = conditions;
     }
 
     @JsonProperty("failures")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<PodNetworkConnectivityCheckStatusFailures> getFailures() {
+    public List<LogEntry> getFailures() {
         return failures;
     }
 
     @JsonProperty("failures")
-    public void setFailures(List<PodNetworkConnectivityCheckStatusFailures> failures) {
+    public void setFailures(List<LogEntry> failures) {
         this.failures = failures;
     }
 
     @JsonProperty("outages")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<PodNetworkConnectivityCheckStatusOutages> getOutages() {
+    public List<OutageEntry> getOutages() {
         return outages;
     }
 
     @JsonProperty("outages")
-    public void setOutages(List<PodNetworkConnectivityCheckStatusOutages> outages) {
+    public void setOutages(List<OutageEntry> outages) {
         this.outages = outages;
     }
 
     @JsonProperty("successes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<PodNetworkConnectivityCheckStatusSuccesses> getSuccesses() {
+    public List<LogEntry> getSuccesses() {
         return successes;
     }
 
     @JsonProperty("successes")
-    public void setSuccesses(List<PodNetworkConnectivityCheckStatusSuccesses> successes) {
+    public void setSuccesses(List<LogEntry> successes) {
         this.successes = successes;
     }
 

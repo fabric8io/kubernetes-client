@@ -84,9 +84,9 @@ public class Config implements Editable<ConfigBuilder> , HasMetadata
     @JsonProperty("metadata")
     private ObjectMeta metadata;
     @JsonProperty("spec")
-    private ConfigSpec spec;
+    private ImageRegistrySpec spec;
     @JsonProperty("status")
-    private ConfigStatus status;
+    private ImageRegistryStatus status;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -97,7 +97,7 @@ public class Config implements Editable<ConfigBuilder> , HasMetadata
     public Config() {
     }
 
-    public Config(String apiVersion, String kind, ObjectMeta metadata, ConfigSpec spec, ConfigStatus status) {
+    public Config(String apiVersion, String kind, ObjectMeta metadata, ImageRegistrySpec spec, ImageRegistryStatus status) {
         super();
         this.apiVersion = apiVersion;
         this.kind = kind;
@@ -157,22 +157,22 @@ public class Config implements Editable<ConfigBuilder> , HasMetadata
     }
 
     @JsonProperty("spec")
-    public ConfigSpec getSpec() {
+    public ImageRegistrySpec getSpec() {
         return spec;
     }
 
     @JsonProperty("spec")
-    public void setSpec(ConfigSpec spec) {
+    public void setSpec(ImageRegistrySpec spec) {
         this.spec = spec;
     }
 
     @JsonProperty("status")
-    public ConfigStatus getStatus() {
+    public ImageRegistryStatus getStatus() {
         return status;
     }
 
     @JsonProperty("status")
-    public void setStatus(ConfigStatus status) {
+    public void setStatus(ImageRegistryStatus status) {
         this.status = status;
     }
 

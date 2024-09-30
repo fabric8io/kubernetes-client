@@ -87,8 +87,7 @@ public class OperatorPKI implements Editable<OperatorPKIBuilder> , HasMetadata, 
     @JsonProperty("spec")
     private OperatorPKISpec spec;
     @JsonProperty("status")
-    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
-    private Object status;
+    private OperatorPKIStatus status;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -99,7 +98,7 @@ public class OperatorPKI implements Editable<OperatorPKIBuilder> , HasMetadata, 
     public OperatorPKI() {
     }
 
-    public OperatorPKI(String apiVersion, String kind, ObjectMeta metadata, OperatorPKISpec spec, Object status) {
+    public OperatorPKI(String apiVersion, String kind, ObjectMeta metadata, OperatorPKISpec spec, OperatorPKIStatus status) {
         super();
         this.apiVersion = apiVersion;
         this.kind = kind;
@@ -169,13 +168,12 @@ public class OperatorPKI implements Editable<OperatorPKIBuilder> , HasMetadata, 
     }
 
     @JsonProperty("status")
-    public Object getStatus() {
+    public OperatorPKIStatus getStatus() {
         return status;
     }
 
     @JsonProperty("status")
-    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
-    public void setStatus(Object status) {
+    public void setStatus(OperatorPKIStatus status) {
         this.status = status;
     }
 

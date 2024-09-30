@@ -14,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
+import io.fabric8.kubernetes.api.model.Affinity;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -24,6 +25,7 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
+import io.fabric8.kubernetes.api.model.Toleration;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -69,7 +71,7 @@ public class ImagePrunerSpec implements Editable<ImagePrunerSpecBuilder> , Kuber
 {
 
     @JsonProperty("affinity")
-    private ImagePrunerSpecAffinity affinity;
+    private Affinity affinity;
     @JsonProperty("failedJobsHistoryLimit")
     private Integer failedJobsHistoryLimit;
     @JsonProperty("ignoreInvalidImageReferences")
@@ -86,7 +88,7 @@ public class ImagePrunerSpec implements Editable<ImagePrunerSpecBuilder> , Kuber
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> nodeSelector = new LinkedHashMap<>();
     @JsonProperty("resources")
-    private ImagePrunerSpecResources resources;
+    private ResourceRequirements resources;
     @JsonProperty("schedule")
     private String schedule;
     @JsonProperty("successfulJobsHistoryLimit")
@@ -95,7 +97,7 @@ public class ImagePrunerSpec implements Editable<ImagePrunerSpecBuilder> , Kuber
     private Boolean suspend;
     @JsonProperty("tolerations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ImagePrunerSpecTolerations> tolerations = new ArrayList<>();
+    private List<Toleration> tolerations = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -106,7 +108,7 @@ public class ImagePrunerSpec implements Editable<ImagePrunerSpecBuilder> , Kuber
     public ImagePrunerSpec() {
     }
 
-    public ImagePrunerSpec(ImagePrunerSpecAffinity affinity, Integer failedJobsHistoryLimit, Boolean ignoreInvalidImageReferences, Integer keepTagRevisions, Long keepYoungerThan, String keepYoungerThanDuration, String logLevel, Map<String, String> nodeSelector, ImagePrunerSpecResources resources, String schedule, Integer successfulJobsHistoryLimit, Boolean suspend, List<ImagePrunerSpecTolerations> tolerations) {
+    public ImagePrunerSpec(Affinity affinity, Integer failedJobsHistoryLimit, Boolean ignoreInvalidImageReferences, Integer keepTagRevisions, Long keepYoungerThan, String keepYoungerThanDuration, String logLevel, Map<String, String> nodeSelector, ResourceRequirements resources, String schedule, Integer successfulJobsHistoryLimit, Boolean suspend, List<Toleration> tolerations) {
         super();
         this.affinity = affinity;
         this.failedJobsHistoryLimit = failedJobsHistoryLimit;
@@ -124,12 +126,12 @@ public class ImagePrunerSpec implements Editable<ImagePrunerSpecBuilder> , Kuber
     }
 
     @JsonProperty("affinity")
-    public ImagePrunerSpecAffinity getAffinity() {
+    public Affinity getAffinity() {
         return affinity;
     }
 
     @JsonProperty("affinity")
-    public void setAffinity(ImagePrunerSpecAffinity affinity) {
+    public void setAffinity(Affinity affinity) {
         this.affinity = affinity;
     }
 
@@ -205,12 +207,12 @@ public class ImagePrunerSpec implements Editable<ImagePrunerSpecBuilder> , Kuber
     }
 
     @JsonProperty("resources")
-    public ImagePrunerSpecResources getResources() {
+    public ResourceRequirements getResources() {
         return resources;
     }
 
     @JsonProperty("resources")
-    public void setResources(ImagePrunerSpecResources resources) {
+    public void setResources(ResourceRequirements resources) {
         this.resources = resources;
     }
 
@@ -246,12 +248,12 @@ public class ImagePrunerSpec implements Editable<ImagePrunerSpecBuilder> , Kuber
 
     @JsonProperty("tolerations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<ImagePrunerSpecTolerations> getTolerations() {
+    public List<Toleration> getTolerations() {
         return tolerations;
     }
 
     @JsonProperty("tolerations")
-    public void setTolerations(List<ImagePrunerSpecTolerations> tolerations) {
+    public void setTolerations(List<Toleration> tolerations) {
         this.tolerations = tolerations;
     }
 

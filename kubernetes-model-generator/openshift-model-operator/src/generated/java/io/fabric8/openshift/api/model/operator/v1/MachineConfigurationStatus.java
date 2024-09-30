@@ -14,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
+import io.fabric8.kubernetes.api.model.Condition;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -34,6 +35,7 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "conditions",
+    "nodeDisruptionPolicyStatus",
     "observedGeneration"
 })
 @ToString
@@ -59,7 +61,9 @@ public class MachineConfigurationStatus implements Editable<MachineConfiguration
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<MachineConfigurationStatusConditions> conditions = new ArrayList<>();
+    private List<Condition> conditions = new ArrayList<>();
+    @JsonProperty("nodeDisruptionPolicyStatus")
+    private NodeDisruptionPolicyStatus nodeDisruptionPolicyStatus;
     @JsonProperty("observedGeneration")
     private Long observedGeneration;
     @JsonIgnore
@@ -72,21 +76,32 @@ public class MachineConfigurationStatus implements Editable<MachineConfiguration
     public MachineConfigurationStatus() {
     }
 
-    public MachineConfigurationStatus(List<MachineConfigurationStatusConditions> conditions, Long observedGeneration) {
+    public MachineConfigurationStatus(List<Condition> conditions, NodeDisruptionPolicyStatus nodeDisruptionPolicyStatus, Long observedGeneration) {
         super();
         this.conditions = conditions;
+        this.nodeDisruptionPolicyStatus = nodeDisruptionPolicyStatus;
         this.observedGeneration = observedGeneration;
     }
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<MachineConfigurationStatusConditions> getConditions() {
+    public List<Condition> getConditions() {
         return conditions;
     }
 
     @JsonProperty("conditions")
-    public void setConditions(List<MachineConfigurationStatusConditions> conditions) {
+    public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;
+    }
+
+    @JsonProperty("nodeDisruptionPolicyStatus")
+    public NodeDisruptionPolicyStatus getNodeDisruptionPolicyStatus() {
+        return nodeDisruptionPolicyStatus;
+    }
+
+    @JsonProperty("nodeDisruptionPolicyStatus")
+    public void setNodeDisruptionPolicyStatus(NodeDisruptionPolicyStatus nodeDisruptionPolicyStatus) {
+        this.nodeDisruptionPolicyStatus = nodeDisruptionPolicyStatus;
     }
 
     @JsonProperty("observedGeneration")

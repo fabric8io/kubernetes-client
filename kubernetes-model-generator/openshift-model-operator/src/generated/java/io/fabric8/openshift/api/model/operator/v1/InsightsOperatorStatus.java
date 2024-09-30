@@ -37,6 +37,7 @@ import lombok.experimental.Accessors;
     "gatherStatus",
     "generations",
     "insightsReport",
+    "latestAvailableRevision",
     "observedGeneration",
     "readyReplicas",
     "version"
@@ -64,14 +65,16 @@ public class InsightsOperatorStatus implements Editable<InsightsOperatorStatusBu
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<InsightsOperatorStatusConditions> conditions = new ArrayList<>();
+    private List<OperatorCondition> conditions = new ArrayList<>();
     @JsonProperty("gatherStatus")
-    private InsightsOperatorStatusGatherStatus gatherStatus;
+    private GatherStatus gatherStatus;
     @JsonProperty("generations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<InsightsOperatorStatusGenerations> generations = new ArrayList<>();
+    private List<GenerationStatus> generations = new ArrayList<>();
     @JsonProperty("insightsReport")
-    private InsightsOperatorStatusInsightsReport insightsReport;
+    private InsightsReport insightsReport;
+    @JsonProperty("latestAvailableRevision")
+    private Integer latestAvailableRevision;
     @JsonProperty("observedGeneration")
     private Long observedGeneration;
     @JsonProperty("readyReplicas")
@@ -88,12 +91,13 @@ public class InsightsOperatorStatus implements Editable<InsightsOperatorStatusBu
     public InsightsOperatorStatus() {
     }
 
-    public InsightsOperatorStatus(List<InsightsOperatorStatusConditions> conditions, InsightsOperatorStatusGatherStatus gatherStatus, List<InsightsOperatorStatusGenerations> generations, InsightsOperatorStatusInsightsReport insightsReport, Long observedGeneration, Integer readyReplicas, String version) {
+    public InsightsOperatorStatus(List<OperatorCondition> conditions, GatherStatus gatherStatus, List<GenerationStatus> generations, InsightsReport insightsReport, Integer latestAvailableRevision, Long observedGeneration, Integer readyReplicas, String version) {
         super();
         this.conditions = conditions;
         this.gatherStatus = gatherStatus;
         this.generations = generations;
         this.insightsReport = insightsReport;
+        this.latestAvailableRevision = latestAvailableRevision;
         this.observedGeneration = observedGeneration;
         this.readyReplicas = readyReplicas;
         this.version = version;
@@ -101,44 +105,54 @@ public class InsightsOperatorStatus implements Editable<InsightsOperatorStatusBu
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<InsightsOperatorStatusConditions> getConditions() {
+    public List<OperatorCondition> getConditions() {
         return conditions;
     }
 
     @JsonProperty("conditions")
-    public void setConditions(List<InsightsOperatorStatusConditions> conditions) {
+    public void setConditions(List<OperatorCondition> conditions) {
         this.conditions = conditions;
     }
 
     @JsonProperty("gatherStatus")
-    public InsightsOperatorStatusGatherStatus getGatherStatus() {
+    public GatherStatus getGatherStatus() {
         return gatherStatus;
     }
 
     @JsonProperty("gatherStatus")
-    public void setGatherStatus(InsightsOperatorStatusGatherStatus gatherStatus) {
+    public void setGatherStatus(GatherStatus gatherStatus) {
         this.gatherStatus = gatherStatus;
     }
 
     @JsonProperty("generations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<InsightsOperatorStatusGenerations> getGenerations() {
+    public List<GenerationStatus> getGenerations() {
         return generations;
     }
 
     @JsonProperty("generations")
-    public void setGenerations(List<InsightsOperatorStatusGenerations> generations) {
+    public void setGenerations(List<GenerationStatus> generations) {
         this.generations = generations;
     }
 
     @JsonProperty("insightsReport")
-    public InsightsOperatorStatusInsightsReport getInsightsReport() {
+    public InsightsReport getInsightsReport() {
         return insightsReport;
     }
 
     @JsonProperty("insightsReport")
-    public void setInsightsReport(InsightsOperatorStatusInsightsReport insightsReport) {
+    public void setInsightsReport(InsightsReport insightsReport) {
         this.insightsReport = insightsReport;
+    }
+
+    @JsonProperty("latestAvailableRevision")
+    public Integer getLatestAvailableRevision() {
+        return latestAvailableRevision;
+    }
+
+    @JsonProperty("latestAvailableRevision")
+    public void setLatestAvailableRevision(Integer latestAvailableRevision) {
+        this.latestAvailableRevision = latestAvailableRevision;
     }
 
     @JsonProperty("observedGeneration")

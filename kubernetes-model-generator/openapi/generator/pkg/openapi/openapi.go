@@ -28,7 +28,6 @@ type Generator struct {
 	name            string
 	targetDirectory string
 	definitions     map[string]spec.Schema
-	packageMappings map[string]string
 }
 
 func NewGenerator(targetDirectory string, name string) *Generator {
@@ -36,16 +35,11 @@ func NewGenerator(targetDirectory string, name string) *Generator {
 		name:            name,
 		targetDirectory: targetDirectory,
 		definitions:     make(map[string]spec.Schema),
-		packageMappings: make(map[string]string),
 	}
 }
 
 func (g *Generator) PutDefinition(name string, schema spec.Schema) {
 	g.definitions[name] = schema
-}
-
-func (g *Generator) PutPackageMapping(name, target string) {
-	g.packageMappings[name] = target
 }
 
 func (g *Generator) WriteDefinitions() error {
@@ -74,13 +68,7 @@ func (g *Generator) WriteDefinitions() error {
 // FriendlyName returns an OpenAPI friendly name for the given name.
 // From vendor/k8s.io/apiserver/pkg/endpoints/openapi/openapi.go
 // https://github.com/kubernetes/apiserver/blob/60d1ca672541e1b30b558e32e53cad7c172345a6/pkg/endpoints/openapi/openapi.go#L136-L147
-func (g *Generator) FriendlyName(name string) string {
-	for k, v := range g.packageMappings {
-		if strings.HasPrefix(name, k) {
-			name = strings.Replace(name, k, v, 1)
-			break
-		}
-	}
+func FriendlyName(name string) string {
 	nameParts := strings.Split(name, "/")
 	// Reverse first part. e.g., io.k8s... instead of k8s.io...
 	if len(nameParts) > 0 && strings.Contains(nameParts[0], ".") {

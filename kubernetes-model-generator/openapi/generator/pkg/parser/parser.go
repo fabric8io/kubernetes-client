@@ -17,6 +17,7 @@ package parser
 
 import (
 	"fmt"
+	"github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi/generator/pkg/openapi"
 	"k8s.io/gengo/v2/parser"
 	"k8s.io/gengo/v2/types"
 	"strings"
@@ -75,7 +76,7 @@ func (oam *Module) ExtractInfo(definitionName string) *Fabric8Info {
 
 func (oam *Module) ApiName(definitionName string) string {
 	if strings.Index(definitionName, oam.Name) != 0 {
-		return definitionName
+		return openapi.FriendlyName(definitionName)
 	}
 	lastSeparator := strings.LastIndex(definitionName, ".")
 	typeName := definitionName[lastSeparator+1:]
@@ -85,7 +86,7 @@ func (oam *Module) ApiName(definitionName string) string {
 	for i, j := 0, len(groupParts)-1; i < j; i, j = i+1, j-1 {
 		groupParts[i], groupParts[j] = groupParts[j], groupParts[i]
 	}
-	return strings.Join(groupParts, ".") + "." + typeName
+	return strings.Join(groupParts, ".") + "." + pkg.Name + "." + typeName
 }
 
 func (oam *Module) resolvePackage(definitionName string) *types.Package {

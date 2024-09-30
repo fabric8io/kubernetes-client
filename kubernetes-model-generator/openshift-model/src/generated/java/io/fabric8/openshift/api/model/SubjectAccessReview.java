@@ -15,8 +15,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
+import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
-import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
@@ -39,6 +39,7 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "apiVersion",
     "kind",
+    "metadata",
     "content",
     "groups",
     "isNonResourceURL",
@@ -75,7 +76,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("authorization.openshift.io")
 @Generated("jsonschema2pojo")
-public class SubjectAccessReview implements Editable<SubjectAccessReviewBuilder> , KubernetesResource
+public class SubjectAccessReview implements Editable<SubjectAccessReviewBuilder> , HasMetadata
 {
 
     /**
@@ -100,6 +101,8 @@ public class SubjectAccessReview implements Editable<SubjectAccessReviewBuilder>
      */
     @JsonProperty("kind")
     private String kind = "SubjectAccessReview";
+    @JsonProperty("metadata")
+    private ObjectMeta metadata;
     @JsonProperty("namespace")
     private String namespace;
     @JsonProperty("path")
@@ -129,13 +132,14 @@ public class SubjectAccessReview implements Editable<SubjectAccessReviewBuilder>
     public SubjectAccessReview() {
     }
 
-    public SubjectAccessReview(String apiVersion, Object content, List<String> groups, Boolean isNonResourceURL, String kind, String namespace, String path, String resource, String resourceAPIGroup, String resourceAPIVersion, String resourceName, List<String> scopes, String user, String verb) {
+    public SubjectAccessReview(String apiVersion, Object content, List<String> groups, Boolean isNonResourceURL, String kind, ObjectMeta metadata, String namespace, String path, String resource, String resourceAPIGroup, String resourceAPIVersion, String resourceName, List<String> scopes, String user, String verb) {
         super();
         this.apiVersion = apiVersion;
         this.content = content;
         this.groups = groups;
         this.isNonResourceURL = isNonResourceURL;
         this.kind = kind;
+        this.metadata = metadata;
         this.namespace = namespace;
         this.path = path;
         this.resource = resource;
@@ -217,6 +221,16 @@ public class SubjectAccessReview implements Editable<SubjectAccessReviewBuilder>
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
+    }
+
+    @JsonProperty("metadata")
+    public ObjectMeta getMetadata() {
+        return metadata;
+    }
+
+    @JsonProperty("metadata")
+    public void setMetadata(ObjectMeta metadata) {
+        this.metadata = metadata;
     }
 
     @JsonProperty("namespace")

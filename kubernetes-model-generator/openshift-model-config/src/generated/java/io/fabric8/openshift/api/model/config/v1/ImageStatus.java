@@ -34,6 +34,7 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "externalRegistryHostnames",
+    "imageStreamImportMode",
     "internalRegistryHostname"
 })
 @ToString
@@ -60,6 +61,8 @@ public class ImageStatus implements Editable<ImageStatusBuilder> , KubernetesRes
     @JsonProperty("externalRegistryHostnames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> externalRegistryHostnames = new ArrayList<>();
+    @JsonProperty("imageStreamImportMode")
+    private String imageStreamImportMode;
     @JsonProperty("internalRegistryHostname")
     private String internalRegistryHostname;
     @JsonIgnore
@@ -72,9 +75,10 @@ public class ImageStatus implements Editable<ImageStatusBuilder> , KubernetesRes
     public ImageStatus() {
     }
 
-    public ImageStatus(List<String> externalRegistryHostnames, String internalRegistryHostname) {
+    public ImageStatus(List<String> externalRegistryHostnames, String imageStreamImportMode, String internalRegistryHostname) {
         super();
         this.externalRegistryHostnames = externalRegistryHostnames;
+        this.imageStreamImportMode = imageStreamImportMode;
         this.internalRegistryHostname = internalRegistryHostname;
     }
 
@@ -87,6 +91,16 @@ public class ImageStatus implements Editable<ImageStatusBuilder> , KubernetesRes
     @JsonProperty("externalRegistryHostnames")
     public void setExternalRegistryHostnames(List<String> externalRegistryHostnames) {
         this.externalRegistryHostnames = externalRegistryHostnames;
+    }
+
+    @JsonProperty("imageStreamImportMode")
+    public String getImageStreamImportMode() {
+        return imageStreamImportMode;
+    }
+
+    @JsonProperty("imageStreamImportMode")
+    public void setImageStreamImportMode(String imageStreamImportMode) {
+        this.imageStreamImportMode = imageStreamImportMode;
     }
 
     @JsonProperty("internalRegistryHostname")

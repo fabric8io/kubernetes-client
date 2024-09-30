@@ -71,6 +71,11 @@
                 </includeGenerationRegexes>
                 <skipGenerationRegexes>
                   <skipGenerationRegex>^io\.openshift\.config\.v1alpha1\..*$</skipGenerationRegex>
+                  <skipGenerationRegex>^io\.openshift\.config\.kubecontrolplane\..*$</skipGenerationRegex>
+                  <skipGenerationRegex>^io\.openshift\.config\.legacy\..*$</skipGenerationRegex>
+                  <skipGenerationRegex>^io\.openshift\.config\.openshiftcontrolplane\..*$</skipGenerationRegex>
+                  <skipGenerationRegex>^io\.openshift\.config\.osin\..*$</skipGenerationRegex>
+                  <skipGenerationRegex>^io\.openshift\.config\.servicecertsigner\..*$</skipGenerationRegex>
                 </skipGenerationRegexes>
               </settings>
             </configuration>

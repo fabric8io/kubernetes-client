@@ -61,13 +61,13 @@ public class EgressRouterSpec implements Editable<EgressRouterSpecBuilder> , Kub
 
     @JsonProperty("addresses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<EgressRouterSpecAddresses> addresses = new ArrayList<>();
+    private List<EgressRouterAddress> addresses = new ArrayList<>();
     @JsonProperty("mode")
     private String mode;
     @JsonProperty("networkInterface")
-    private EgressRouterSpecNetworkInterface networkInterface;
+    private EgressRouterInterface networkInterface;
     @JsonProperty("redirect")
-    private EgressRouterSpecRedirect redirect;
+    private RedirectConfig redirect;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -78,7 +78,7 @@ public class EgressRouterSpec implements Editable<EgressRouterSpecBuilder> , Kub
     public EgressRouterSpec() {
     }
 
-    public EgressRouterSpec(List<EgressRouterSpecAddresses> addresses, String mode, EgressRouterSpecNetworkInterface networkInterface, EgressRouterSpecRedirect redirect) {
+    public EgressRouterSpec(List<EgressRouterAddress> addresses, String mode, EgressRouterInterface networkInterface, RedirectConfig redirect) {
         super();
         this.addresses = addresses;
         this.mode = mode;
@@ -88,12 +88,12 @@ public class EgressRouterSpec implements Editable<EgressRouterSpecBuilder> , Kub
 
     @JsonProperty("addresses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<EgressRouterSpecAddresses> getAddresses() {
+    public List<EgressRouterAddress> getAddresses() {
         return addresses;
     }
 
     @JsonProperty("addresses")
-    public void setAddresses(List<EgressRouterSpecAddresses> addresses) {
+    public void setAddresses(List<EgressRouterAddress> addresses) {
         this.addresses = addresses;
     }
 
@@ -108,22 +108,22 @@ public class EgressRouterSpec implements Editable<EgressRouterSpecBuilder> , Kub
     }
 
     @JsonProperty("networkInterface")
-    public EgressRouterSpecNetworkInterface getNetworkInterface() {
+    public EgressRouterInterface getNetworkInterface() {
         return networkInterface;
     }
 
     @JsonProperty("networkInterface")
-    public void setNetworkInterface(EgressRouterSpecNetworkInterface networkInterface) {
+    public void setNetworkInterface(EgressRouterInterface networkInterface) {
         this.networkInterface = networkInterface;
     }
 
     @JsonProperty("redirect")
-    public EgressRouterSpecRedirect getRedirect() {
+    public RedirectConfig getRedirect() {
         return redirect;
     }
 
     @JsonProperty("redirect")
-    public void setRedirect(EgressRouterSpecRedirect redirect) {
+    public void setRedirect(RedirectConfig redirect) {
         this.redirect = redirect;
     }
 

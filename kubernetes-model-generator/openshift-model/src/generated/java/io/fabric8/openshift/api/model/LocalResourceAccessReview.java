@@ -13,8 +13,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
+import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
-import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.Namespaced;
@@ -38,6 +38,7 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "apiVersion",
     "kind",
+    "metadata",
     "content",
     "isNonResourceURL",
     "namespace",
@@ -71,7 +72,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("authorization.openshift.io")
 @Generated("jsonschema2pojo")
-public class LocalResourceAccessReview implements Editable<LocalResourceAccessReviewBuilder> , KubernetesResource, Namespaced
+public class LocalResourceAccessReview implements Editable<LocalResourceAccessReviewBuilder> , HasMetadata, Namespaced
 {
 
     /**
@@ -93,6 +94,8 @@ public class LocalResourceAccessReview implements Editable<LocalResourceAccessRe
      */
     @JsonProperty("kind")
     private String kind = "LocalResourceAccessReview";
+    @JsonProperty("metadata")
+    private ObjectMeta metadata;
     @JsonProperty("namespace")
     private String namespace;
     @JsonProperty("path")
@@ -117,12 +120,13 @@ public class LocalResourceAccessReview implements Editable<LocalResourceAccessRe
     public LocalResourceAccessReview() {
     }
 
-    public LocalResourceAccessReview(String apiVersion, Object content, Boolean isNonResourceURL, String kind, String namespace, String path, String resource, String resourceAPIGroup, String resourceAPIVersion, String resourceName, String verb) {
+    public LocalResourceAccessReview(String apiVersion, Object content, Boolean isNonResourceURL, String kind, ObjectMeta metadata, String namespace, String path, String resource, String resourceAPIGroup, String resourceAPIVersion, String resourceName, String verb) {
         super();
         this.apiVersion = apiVersion;
         this.content = content;
         this.isNonResourceURL = isNonResourceURL;
         this.kind = kind;
+        this.metadata = metadata;
         this.namespace = namespace;
         this.path = path;
         this.resource = resource;
@@ -191,6 +195,16 @@ public class LocalResourceAccessReview implements Editable<LocalResourceAccessRe
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
+    }
+
+    @JsonProperty("metadata")
+    public ObjectMeta getMetadata() {
+        return metadata;
+    }
+
+    @JsonProperty("metadata")
+    public void setMetadata(ObjectMeta metadata) {
+        this.metadata = metadata;
     }
 
     @JsonProperty("namespace")

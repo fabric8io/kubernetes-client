@@ -43,12 +43,11 @@ var openApiRun = func(cobraCmd *cobra.Command, args []string) {
 		targetDirectory = "."
 	}
 	openApiGenerator := openapi.NewGenerator(targetDirectory, "openshift-generated")
-	openApiGenerator.PutPackageMapping("github.com/openshift/api", "openshift.io")
 	openShiftModule := parser.NewModule("github.com/openshift/api")
 	/////////////////////////////////////////////////////////////////////////////////
 	// Ported from github.com/openshift/api/openapi/cmd/models-schema/main.go
 	refFunc := func(name string) spec.Ref {
-		return spec.MustCreateRef(fmt.Sprintf("#/definitions/%s", openApiGenerator.FriendlyName(name)))
+		return spec.MustCreateRef(fmt.Sprintf("#/definitions/%s", openShiftModule.ApiName(name)))
 	}
 	defs := generated_openapi.GetOpenAPIDefinitions(refFunc)
 	for k, v := range defs {
@@ -66,11 +65,11 @@ var openApiRun = func(cobraCmd *cobra.Command, args []string) {
 		// the type.
 		if schema, ok := v.Schema.Extensions[common.ExtensionV2Schema]; ok {
 			if v2Schema, isOpenAPISchema := schema.(spec.Schema); isOpenAPISchema {
-				openApiGenerator.PutDefinition(openApiGenerator.FriendlyName(k), v2Schema)
+				openApiGenerator.PutDefinition(openShiftModule.ApiName(k), v2Schema)
 				continue
 			}
 		}
-		openApiGenerator.PutDefinition(openApiGenerator.FriendlyName(k), v.Schema)
+		openApiGenerator.PutDefinition(openShiftModule.ApiName(k), v.Schema)
 	}
 
 	if err := openApiGenerator.WriteDefinitions(); err != nil {
