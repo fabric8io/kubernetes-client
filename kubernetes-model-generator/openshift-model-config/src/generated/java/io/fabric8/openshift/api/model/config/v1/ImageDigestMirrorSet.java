@@ -86,8 +86,7 @@ public class ImageDigestMirrorSet implements Editable<ImageDigestMirrorSetBuilde
     @JsonProperty("spec")
     private ImageDigestMirrorSetSpec spec;
     @JsonProperty("status")
-    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
-    private Object status;
+    private ImageDigestMirrorSetStatus status;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -98,7 +97,7 @@ public class ImageDigestMirrorSet implements Editable<ImageDigestMirrorSetBuilde
     public ImageDigestMirrorSet() {
     }
 
-    public ImageDigestMirrorSet(String apiVersion, String kind, ObjectMeta metadata, ImageDigestMirrorSetSpec spec, Object status) {
+    public ImageDigestMirrorSet(String apiVersion, String kind, ObjectMeta metadata, ImageDigestMirrorSetSpec spec, ImageDigestMirrorSetStatus status) {
         super();
         this.apiVersion = apiVersion;
         this.kind = kind;
@@ -168,13 +167,12 @@ public class ImageDigestMirrorSet implements Editable<ImageDigestMirrorSetBuilde
     }
 
     @JsonProperty("status")
-    public Object getStatus() {
+    public ImageDigestMirrorSetStatus getStatus() {
         return status;
     }
 
     @JsonProperty("status")
-    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
-    public void setStatus(Object status) {
+    public void setStatus(ImageDigestMirrorSetStatus status) {
         this.status = status;
     }
 

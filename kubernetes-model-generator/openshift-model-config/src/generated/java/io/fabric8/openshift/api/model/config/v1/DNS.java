@@ -86,8 +86,7 @@ public class DNS implements Editable<DNSBuilder> , HasMetadata
     @JsonProperty("spec")
     private DNSSpec spec;
     @JsonProperty("status")
-    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
-    private Object status;
+    private DNSStatus status;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -98,7 +97,7 @@ public class DNS implements Editable<DNSBuilder> , HasMetadata
     public DNS() {
     }
 
-    public DNS(String apiVersion, String kind, ObjectMeta metadata, DNSSpec spec, Object status) {
+    public DNS(String apiVersion, String kind, ObjectMeta metadata, DNSSpec spec, DNSStatus status) {
         super();
         this.apiVersion = apiVersion;
         this.kind = kind;
@@ -168,13 +167,12 @@ public class DNS implements Editable<DNSBuilder> , HasMetadata
     }
 
     @JsonProperty("status")
-    public Object getStatus() {
+    public DNSStatus getStatus() {
         return status;
     }
 
     @JsonProperty("status")
-    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
-    public void setStatus(Object status) {
+    public void setStatus(DNSStatus status) {
         this.status = status;
     }
 

@@ -55,7 +55,7 @@ public class ConsoleSpec implements Editable<ConsoleSpecBuilder> , KubernetesRes
 {
 
     @JsonProperty("authentication")
-    private ConsoleSpecAuthentication authentication;
+    private ConsoleAuthentication authentication;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -66,18 +66,18 @@ public class ConsoleSpec implements Editable<ConsoleSpecBuilder> , KubernetesRes
     public ConsoleSpec() {
     }
 
-    public ConsoleSpec(ConsoleSpecAuthentication authentication) {
+    public ConsoleSpec(ConsoleAuthentication authentication) {
         super();
         this.authentication = authentication;
     }
 
     @JsonProperty("authentication")
-    public ConsoleSpecAuthentication getAuthentication() {
+    public ConsoleAuthentication getAuthentication() {
         return authentication;
     }
 
     @JsonProperty("authentication")
-    public void setAuthentication(ConsoleSpecAuthentication authentication) {
+    public void setAuthentication(ConsoleAuthentication authentication) {
         this.authentication = authentication;
     }
 

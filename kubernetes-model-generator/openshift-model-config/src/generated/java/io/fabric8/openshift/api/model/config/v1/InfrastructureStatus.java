@@ -79,7 +79,7 @@ public class InfrastructureStatus implements Editable<InfrastructureStatusBuilde
     @JsonProperty("platform")
     private String platform;
     @JsonProperty("platformStatus")
-    private InfrastructureStatusPlatformStatus platformStatus;
+    private PlatformStatus platformStatus;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -90,7 +90,7 @@ public class InfrastructureStatus implements Editable<InfrastructureStatusBuilde
     public InfrastructureStatus() {
     }
 
-    public InfrastructureStatus(String apiServerInternalURI, String apiServerURL, String controlPlaneTopology, String cpuPartitioning, String etcdDiscoveryDomain, String infrastructureName, String infrastructureTopology, String platform, InfrastructureStatusPlatformStatus platformStatus) {
+    public InfrastructureStatus(String apiServerInternalURI, String apiServerURL, String controlPlaneTopology, String cpuPartitioning, String etcdDiscoveryDomain, String infrastructureName, String infrastructureTopology, String platform, PlatformStatus platformStatus) {
         super();
         this.apiServerInternalURI = apiServerInternalURI;
         this.apiServerURL = apiServerURL;
@@ -184,12 +184,12 @@ public class InfrastructureStatus implements Editable<InfrastructureStatusBuilde
     }
 
     @JsonProperty("platformStatus")
-    public InfrastructureStatusPlatformStatus getPlatformStatus() {
+    public PlatformStatus getPlatformStatus() {
         return platformStatus;
     }
 
     @JsonProperty("platformStatus")
-    public void setPlatformStatus(InfrastructureStatusPlatformStatus platformStatus) {
+    public void setPlatformStatus(PlatformStatus platformStatus) {
         this.platformStatus = platformStatus;
     }
 

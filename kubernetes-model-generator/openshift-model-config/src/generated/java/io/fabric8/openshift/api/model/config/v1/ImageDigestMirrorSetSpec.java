@@ -58,7 +58,7 @@ public class ImageDigestMirrorSetSpec implements Editable<ImageDigestMirrorSetSp
 
     @JsonProperty("imageDigestMirrors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ImageDigestMirrorSetSpecImageDigestMirrors> imageDigestMirrors = new ArrayList<>();
+    private List<ImageDigestMirrors> imageDigestMirrors = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -69,19 +69,19 @@ public class ImageDigestMirrorSetSpec implements Editable<ImageDigestMirrorSetSp
     public ImageDigestMirrorSetSpec() {
     }
 
-    public ImageDigestMirrorSetSpec(List<ImageDigestMirrorSetSpecImageDigestMirrors> imageDigestMirrors) {
+    public ImageDigestMirrorSetSpec(List<ImageDigestMirrors> imageDigestMirrors) {
         super();
         this.imageDigestMirrors = imageDigestMirrors;
     }
 
     @JsonProperty("imageDigestMirrors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<ImageDigestMirrorSetSpecImageDigestMirrors> getImageDigestMirrors() {
+    public List<ImageDigestMirrors> getImageDigestMirrors() {
         return imageDigestMirrors;
     }
 
     @JsonProperty("imageDigestMirrors")
-    public void setImageDigestMirrors(List<ImageDigestMirrorSetSpecImageDigestMirrors> imageDigestMirrors) {
+    public void setImageDigestMirrors(List<ImageDigestMirrors> imageDigestMirrors) {
         this.imageDigestMirrors = imageDigestMirrors;
     }
 

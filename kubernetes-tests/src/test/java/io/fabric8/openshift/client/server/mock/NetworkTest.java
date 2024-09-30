@@ -86,7 +86,7 @@ class NetworkTest {
         .withNewSpec()
         .addNewClusterNetwork()
         .withCidr("10.217.0.0/22")
-        .withHostPrefix(23)
+        .withHostPrefix(23L)
         .endClusterNetwork()
         .withNewExternalIP().withNewPolicy().endPolicy().endExternalIP()
         .withNetworkType("OpenShiftSDN")

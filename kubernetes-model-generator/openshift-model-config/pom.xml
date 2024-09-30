@@ -61,7 +61,7 @@
             <configuration >
               <settings combine.self="append">
                 <schemas>
-                  <schema>${openapi.schema.openshift-latest}</schema>
+                  <schema>${openapi.schema.openshift-generated}</schema>
                 </schemas>
                 <packageMappings combine.self="append">
                   <io.openshift.config>io.fabric8.openshift.api.model.config</io.openshift.config>
@@ -70,23 +70,8 @@
                   <includeGenerationRegex>^io\.openshift\.config\..*$</includeGenerationRegex>
                 </includeGenerationRegexes>
                 <skipGenerationRegexes>
-                  <skipGenerationRegex>^io\.openshift\.config\.v1\.BuildSpecBDEnv$</skipGenerationRegex>
-                  <skipGenerationRegex>^io\.openshift\.config\.v1\.BuildSpecBDEValueFrom$</skipGenerationRegex>
-                  <skipGenerationRegex>^io\.openshift\.config\.v1\.BuildSpecBDResources$</skipGenerationRegex>
+                  <skipGenerationRegex>^io\.openshift\.config\.v1alpha1\..*$</skipGenerationRegex>
                 </skipGenerationRegexes>
-                <refToJavaTypeMappings>
-                  <io.metal3.v1alpha1.HostFirmwareComponentsStatusConditions>io.fabric8.kubernetes.api.model.Condition</io.metal3.v1alpha1.HostFirmwareComponentsStatusConditions>
-                  <io.openshift.config.v1.BuildSpecBDEnv>io.fabric8.kubernetes.api.model.EnvVar</io.openshift.config.v1.BuildSpecBDEnv>
-                  <io.openshift.config.v1.BuildSpecBDResources>io.fabric8.kubernetes.api.model.ResourceRequirements</io.openshift.config.v1.BuildSpecBDResources>
-                  <property>
-                    <!--
-                      Should be automatically picked up, however:
-                      The io.k8s.api.core.v1.Toleration definition in openshift-4.17.0 is outdated as compared to the ones used inline
-                    -->
-                    <name>com.coreos.monitoring.v1.AlertmanagerSpecTolerations</name>
-                    <value>io.fabric8.kubernetes.api.model.Toleration</value>
-                  </property>
-                </refToJavaTypeMappings>
               </settings>
             </configuration>
           </plugin>

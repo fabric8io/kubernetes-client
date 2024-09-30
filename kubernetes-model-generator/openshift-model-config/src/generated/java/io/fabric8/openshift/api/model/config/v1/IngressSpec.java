@@ -64,14 +64,14 @@ public class IngressSpec implements Editable<IngressSpecBuilder> , KubernetesRes
     private String appsDomain;
     @JsonProperty("componentRoutes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<IngressSpecComponentRoutes> componentRoutes = new ArrayList<>();
+    private List<ComponentRouteSpec> componentRoutes = new ArrayList<>();
     @JsonProperty("domain")
     private String domain;
     @JsonProperty("loadBalancer")
-    private IngressSpecLoadBalancer loadBalancer;
+    private LoadBalancer loadBalancer;
     @JsonProperty("requiredHSTSPolicies")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<IngressSpecRequiredHSTSPolicies> requiredHSTSPolicies = new ArrayList<>();
+    private List<RequiredHSTSPolicy> requiredHSTSPolicies = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -82,7 +82,7 @@ public class IngressSpec implements Editable<IngressSpecBuilder> , KubernetesRes
     public IngressSpec() {
     }
 
-    public IngressSpec(String appsDomain, List<IngressSpecComponentRoutes> componentRoutes, String domain, IngressSpecLoadBalancer loadBalancer, List<IngressSpecRequiredHSTSPolicies> requiredHSTSPolicies) {
+    public IngressSpec(String appsDomain, List<ComponentRouteSpec> componentRoutes, String domain, LoadBalancer loadBalancer, List<RequiredHSTSPolicy> requiredHSTSPolicies) {
         super();
         this.appsDomain = appsDomain;
         this.componentRoutes = componentRoutes;
@@ -103,12 +103,12 @@ public class IngressSpec implements Editable<IngressSpecBuilder> , KubernetesRes
 
     @JsonProperty("componentRoutes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<IngressSpecComponentRoutes> getComponentRoutes() {
+    public List<ComponentRouteSpec> getComponentRoutes() {
         return componentRoutes;
     }
 
     @JsonProperty("componentRoutes")
-    public void setComponentRoutes(List<IngressSpecComponentRoutes> componentRoutes) {
+    public void setComponentRoutes(List<ComponentRouteSpec> componentRoutes) {
         this.componentRoutes = componentRoutes;
     }
 
@@ -123,23 +123,23 @@ public class IngressSpec implements Editable<IngressSpecBuilder> , KubernetesRes
     }
 
     @JsonProperty("loadBalancer")
-    public IngressSpecLoadBalancer getLoadBalancer() {
+    public LoadBalancer getLoadBalancer() {
         return loadBalancer;
     }
 
     @JsonProperty("loadBalancer")
-    public void setLoadBalancer(IngressSpecLoadBalancer loadBalancer) {
+    public void setLoadBalancer(LoadBalancer loadBalancer) {
         this.loadBalancer = loadBalancer;
     }
 
     @JsonProperty("requiredHSTSPolicies")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<IngressSpecRequiredHSTSPolicies> getRequiredHSTSPolicies() {
+    public List<RequiredHSTSPolicy> getRequiredHSTSPolicies() {
         return requiredHSTSPolicies;
     }
 
     @JsonProperty("requiredHSTSPolicies")
-    public void setRequiredHSTSPolicies(List<IngressSpecRequiredHSTSPolicies> requiredHSTSPolicies) {
+    public void setRequiredHSTSPolicies(List<RequiredHSTSPolicy> requiredHSTSPolicies) {
         this.requiredHSTSPolicies = requiredHSTSPolicies;
     }
 

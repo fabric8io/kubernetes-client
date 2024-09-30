@@ -34,6 +34,7 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "oauthMetadata",
+    "oidcProviders",
     "serviceAccountIssuer",
     "type",
     "webhookTokenAuthenticator",
@@ -61,16 +62,19 @@ public class AuthenticationSpec implements Editable<AuthenticationSpecBuilder> ,
 {
 
     @JsonProperty("oauthMetadata")
-    private AuthenticationSpecOauthMetadata oauthMetadata;
+    private ConfigMapNameReference oauthMetadata;
+    @JsonProperty("oidcProviders")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<OIDCProvider> oidcProviders = new ArrayList<>();
     @JsonProperty("serviceAccountIssuer")
     private String serviceAccountIssuer;
     @JsonProperty("type")
     private String type;
     @JsonProperty("webhookTokenAuthenticator")
-    private AuthenticationSpecWebhookTokenAuthenticator webhookTokenAuthenticator;
+    private WebhookTokenAuthenticator webhookTokenAuthenticator;
     @JsonProperty("webhookTokenAuthenticators")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<AuthenticationSpecWebhookTokenAuthenticators> webhookTokenAuthenticators = new ArrayList<>();
+    private List<DeprecatedWebhookTokenAuthenticator> webhookTokenAuthenticators = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -81,9 +85,10 @@ public class AuthenticationSpec implements Editable<AuthenticationSpecBuilder> ,
     public AuthenticationSpec() {
     }
 
-    public AuthenticationSpec(AuthenticationSpecOauthMetadata oauthMetadata, String serviceAccountIssuer, String type, AuthenticationSpecWebhookTokenAuthenticator webhookTokenAuthenticator, List<AuthenticationSpecWebhookTokenAuthenticators> webhookTokenAuthenticators) {
+    public AuthenticationSpec(ConfigMapNameReference oauthMetadata, List<OIDCProvider> oidcProviders, String serviceAccountIssuer, String type, WebhookTokenAuthenticator webhookTokenAuthenticator, List<DeprecatedWebhookTokenAuthenticator> webhookTokenAuthenticators) {
         super();
         this.oauthMetadata = oauthMetadata;
+        this.oidcProviders = oidcProviders;
         this.serviceAccountIssuer = serviceAccountIssuer;
         this.type = type;
         this.webhookTokenAuthenticator = webhookTokenAuthenticator;
@@ -91,13 +96,24 @@ public class AuthenticationSpec implements Editable<AuthenticationSpecBuilder> ,
     }
 
     @JsonProperty("oauthMetadata")
-    public AuthenticationSpecOauthMetadata getOauthMetadata() {
+    public ConfigMapNameReference getOauthMetadata() {
         return oauthMetadata;
     }
 
     @JsonProperty("oauthMetadata")
-    public void setOauthMetadata(AuthenticationSpecOauthMetadata oauthMetadata) {
+    public void setOauthMetadata(ConfigMapNameReference oauthMetadata) {
         this.oauthMetadata = oauthMetadata;
+    }
+
+    @JsonProperty("oidcProviders")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<OIDCProvider> getOidcProviders() {
+        return oidcProviders;
+    }
+
+    @JsonProperty("oidcProviders")
+    public void setOidcProviders(List<OIDCProvider> oidcProviders) {
+        this.oidcProviders = oidcProviders;
     }
 
     @JsonProperty("serviceAccountIssuer")
@@ -121,23 +137,23 @@ public class AuthenticationSpec implements Editable<AuthenticationSpecBuilder> ,
     }
 
     @JsonProperty("webhookTokenAuthenticator")
-    public AuthenticationSpecWebhookTokenAuthenticator getWebhookTokenAuthenticator() {
+    public WebhookTokenAuthenticator getWebhookTokenAuthenticator() {
         return webhookTokenAuthenticator;
     }
 
     @JsonProperty("webhookTokenAuthenticator")
-    public void setWebhookTokenAuthenticator(AuthenticationSpecWebhookTokenAuthenticator webhookTokenAuthenticator) {
+    public void setWebhookTokenAuthenticator(WebhookTokenAuthenticator webhookTokenAuthenticator) {
         this.webhookTokenAuthenticator = webhookTokenAuthenticator;
     }
 
     @JsonProperty("webhookTokenAuthenticators")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<AuthenticationSpecWebhookTokenAuthenticators> getWebhookTokenAuthenticators() {
+    public List<DeprecatedWebhookTokenAuthenticator> getWebhookTokenAuthenticators() {
         return webhookTokenAuthenticators;
     }
 
     @JsonProperty("webhookTokenAuthenticators")
-    public void setWebhookTokenAuthenticators(List<AuthenticationSpecWebhookTokenAuthenticators> webhookTokenAuthenticators) {
+    public void setWebhookTokenAuthenticators(List<DeprecatedWebhookTokenAuthenticator> webhookTokenAuthenticators) {
         this.webhookTokenAuthenticators = webhookTokenAuthenticators;
     }
 

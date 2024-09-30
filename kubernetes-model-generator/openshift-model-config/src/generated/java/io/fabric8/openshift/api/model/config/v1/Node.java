@@ -86,8 +86,7 @@ public class Node implements Editable<NodeBuilder> , HasMetadata
     @JsonProperty("spec")
     private NodeSpec spec;
     @JsonProperty("status")
-    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
-    private Object status;
+    private NodeStatus status;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -98,7 +97,7 @@ public class Node implements Editable<NodeBuilder> , HasMetadata
     public Node() {
     }
 
-    public Node(String apiVersion, String kind, ObjectMeta metadata, NodeSpec spec, Object status) {
+    public Node(String apiVersion, String kind, ObjectMeta metadata, NodeSpec spec, NodeStatus status) {
         super();
         this.apiVersion = apiVersion;
         this.kind = kind;
@@ -168,13 +167,12 @@ public class Node implements Editable<NodeBuilder> , HasMetadata
     }
 
     @JsonProperty("status")
-    public Object getStatus() {
+    public NodeStatus getStatus() {
         return status;
     }
 
     @JsonProperty("status")
-    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
-    public void setStatus(Object status) {
+    public void setStatus(NodeStatus status) {
         this.status = status;
     }
 

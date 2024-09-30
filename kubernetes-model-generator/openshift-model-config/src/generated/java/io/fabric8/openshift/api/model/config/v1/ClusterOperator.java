@@ -84,8 +84,7 @@ public class ClusterOperator implements Editable<ClusterOperatorBuilder> , HasMe
     @JsonProperty("metadata")
     private ObjectMeta metadata;
     @JsonProperty("spec")
-    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
-    private Object spec;
+    private ClusterOperatorSpec spec;
     @JsonProperty("status")
     private ClusterOperatorStatus status;
     @JsonIgnore
@@ -98,7 +97,7 @@ public class ClusterOperator implements Editable<ClusterOperatorBuilder> , HasMe
     public ClusterOperator() {
     }
 
-    public ClusterOperator(String apiVersion, String kind, ObjectMeta metadata, Object spec, ClusterOperatorStatus status) {
+    public ClusterOperator(String apiVersion, String kind, ObjectMeta metadata, ClusterOperatorSpec spec, ClusterOperatorStatus status) {
         super();
         this.apiVersion = apiVersion;
         this.kind = kind;
@@ -158,13 +157,12 @@ public class ClusterOperator implements Editable<ClusterOperatorBuilder> , HasMe
     }
 
     @JsonProperty("spec")
-    public Object getSpec() {
+    public ClusterOperatorSpec getSpec() {
         return spec;
     }
 
     @JsonProperty("spec")
-    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
-    public void setSpec(Object spec) {
+    public void setSpec(ClusterOperatorSpec spec) {
         this.spec = spec;
     }
 

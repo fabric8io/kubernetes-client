@@ -14,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
+import io.fabric8.kubernetes.api.model.Condition;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -63,14 +64,14 @@ public class NetworkStatus implements Editable<NetworkStatusBuilder> , Kubernete
 
     @JsonProperty("clusterNetwork")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<NetworkStatusClusterNetwork> clusterNetwork = new ArrayList<>();
+    private List<ClusterNetworkEntry> clusterNetwork = new ArrayList<>();
     @JsonProperty("clusterNetworkMTU")
     private Integer clusterNetworkMTU;
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<NetworkStatusConditions> conditions = new ArrayList<>();
+    private List<Condition> conditions = new ArrayList<>();
     @JsonProperty("migration")
-    private NetworkStatusMigration migration;
+    private NetworkMigration migration;
     @JsonProperty("networkType")
     private String networkType;
     @JsonProperty("serviceNetwork")
@@ -86,7 +87,7 @@ public class NetworkStatus implements Editable<NetworkStatusBuilder> , Kubernete
     public NetworkStatus() {
     }
 
-    public NetworkStatus(List<NetworkStatusClusterNetwork> clusterNetwork, Integer clusterNetworkMTU, List<NetworkStatusConditions> conditions, NetworkStatusMigration migration, String networkType, List<String> serviceNetwork) {
+    public NetworkStatus(List<ClusterNetworkEntry> clusterNetwork, Integer clusterNetworkMTU, List<Condition> conditions, NetworkMigration migration, String networkType, List<String> serviceNetwork) {
         super();
         this.clusterNetwork = clusterNetwork;
         this.clusterNetworkMTU = clusterNetworkMTU;
@@ -98,12 +99,12 @@ public class NetworkStatus implements Editable<NetworkStatusBuilder> , Kubernete
 
     @JsonProperty("clusterNetwork")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<NetworkStatusClusterNetwork> getClusterNetwork() {
+    public List<ClusterNetworkEntry> getClusterNetwork() {
         return clusterNetwork;
     }
 
     @JsonProperty("clusterNetwork")
-    public void setClusterNetwork(List<NetworkStatusClusterNetwork> clusterNetwork) {
+    public void setClusterNetwork(List<ClusterNetworkEntry> clusterNetwork) {
         this.clusterNetwork = clusterNetwork;
     }
 
@@ -119,22 +120,22 @@ public class NetworkStatus implements Editable<NetworkStatusBuilder> , Kubernete
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<NetworkStatusConditions> getConditions() {
+    public List<Condition> getConditions() {
         return conditions;
     }
 
     @JsonProperty("conditions")
-    public void setConditions(List<NetworkStatusConditions> conditions) {
+    public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;
     }
 
     @JsonProperty("migration")
-    public NetworkStatusMigration getMigration() {
+    public NetworkMigration getMigration() {
         return migration;
     }
 
     @JsonProperty("migration")
-    public void setMigration(NetworkStatusMigration migration) {
+    public void setMigration(NetworkMigration migration) {
         this.migration = migration;
     }
 

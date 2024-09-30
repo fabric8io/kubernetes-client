@@ -49,7 +49,7 @@ class ImageDigestMirrorSetTest {
         .hasFieldOrPropertyWithValue("metadata.name", "ubi9repo")
         .extracting(ImageDigestMirrorSet::getSpec)
         .extracting(ImageDigestMirrorSetSpec::getImageDigestMirrors)
-        .asInstanceOf(InstanceOfAssertFactories.list(ImageDigestMirrorSetSpecImageDigestMirrors.class)).singleElement()
+        .asInstanceOf(InstanceOfAssertFactories.list(ImageDigestMirrors.class)).singleElement()
         .hasFieldOrPropertyWithValue("mirrors", Collections.singletonList("example.com/example/ubi-minimal"))
         .hasFieldOrPropertyWithValue("source", "registry.access.redhat.com/ubi9/ubi-minimal")
         .hasFieldOrPropertyWithValue("mirrorSourcePolicy", "AllowContactingSource");
@@ -78,7 +78,7 @@ class ImageDigestMirrorSetTest {
         .hasFieldOrPropertyWithValue("metadata.name", "ubi9repo")
         .extracting(ImageDigestMirrorSet::getSpec)
         .extracting(ImageDigestMirrorSetSpec::getImageDigestMirrors)
-        .asInstanceOf(InstanceOfAssertFactories.list(ImageDigestMirrorSetSpecImageDigestMirrors.class)).singleElement()
+        .asInstanceOf(InstanceOfAssertFactories.list(ImageDigestMirrors.class)).singleElement()
         .hasFieldOrPropertyWithValue("mirrors", Collections.singletonList("example.com/example/ubi-minimal"))
         .hasFieldOrPropertyWithValue("source", "registry.access.redhat.com/ubi9/ubi-minimal")
         .hasFieldOrPropertyWithValue("mirrorSourcePolicy", "AllowContactingSource");

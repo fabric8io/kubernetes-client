@@ -24,7 +24,7 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.openshift.api.model.config.v1.InfrastructureStatusPSOvirtLoadBalancer;
+import io.fabric8.openshift.api.model.config.v1.OvirtPlatformLoadBalancer;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -83,7 +83,7 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> ingressVips = new ArrayList<>();
     @JsonProperty("loadBalancer")
-    private InfrastructureStatusPSOvirtLoadBalancer loadBalancer;
+    private OvirtPlatformLoadBalancer loadBalancer;
     @JsonProperty("ovirt_cluster_id")
     private String ovirtClusterId;
     @JsonProperty("ovirt_network_name")
@@ -102,7 +102,7 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     public Platform() {
     }
 
-    public Platform(List<AffinityGroup> affinityGroups, String apiVip, List<String> apiVips, MachinePool defaultMachinePlatform, String ingressVip, List<String> ingressVips, InfrastructureStatusPSOvirtLoadBalancer loadBalancer, String ovirtClusterId, String ovirtNetworkName, String ovirtStorageDomainId, String vnicProfileID) {
+    public Platform(List<AffinityGroup> affinityGroups, String apiVip, List<String> apiVips, MachinePool defaultMachinePlatform, String ingressVip, List<String> ingressVips, OvirtPlatformLoadBalancer loadBalancer, String ovirtClusterId, String ovirtNetworkName, String ovirtStorageDomainId, String vnicProfileID) {
         super();
         this.affinityGroups = affinityGroups;
         this.apiVip = apiVip;
@@ -181,12 +181,12 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     }
 
     @JsonProperty("loadBalancer")
-    public InfrastructureStatusPSOvirtLoadBalancer getLoadBalancer() {
+    public OvirtPlatformLoadBalancer getLoadBalancer() {
         return loadBalancer;
     }
 
     @JsonProperty("loadBalancer")
-    public void setLoadBalancer(InfrastructureStatusPSOvirtLoadBalancer loadBalancer) {
+    public void setLoadBalancer(OvirtPlatformLoadBalancer loadBalancer) {
         this.loadBalancer = loadBalancer;
     }
 

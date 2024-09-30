@@ -38,6 +38,7 @@ import lombok.experimental.Accessors;
     "clusterID",
     "desiredUpdate",
     "overrides",
+    "signatureStores",
     "upstream"
 })
 @ToString
@@ -62,16 +63,19 @@ public class ClusterVersionSpec implements Editable<ClusterVersionSpecBuilder> ,
 {
 
     @JsonProperty("capabilities")
-    private ClusterVersionSpecCapabilities capabilities;
+    private ClusterVersionCapabilitiesSpec capabilities;
     @JsonProperty("channel")
     private String channel;
     @JsonProperty("clusterID")
     private String clusterID;
     @JsonProperty("desiredUpdate")
-    private ClusterVersionSpecDesiredUpdate desiredUpdate;
+    private Update desiredUpdate;
     @JsonProperty("overrides")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ClusterVersionSpecOverrides> overrides = new ArrayList<>();
+    private List<ComponentOverride> overrides = new ArrayList<>();
+    @JsonProperty("signatureStores")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<SignatureStore> signatureStores = new ArrayList<>();
     @JsonProperty("upstream")
     private String upstream;
     @JsonIgnore
@@ -84,23 +88,24 @@ public class ClusterVersionSpec implements Editable<ClusterVersionSpecBuilder> ,
     public ClusterVersionSpec() {
     }
 
-    public ClusterVersionSpec(ClusterVersionSpecCapabilities capabilities, String channel, String clusterID, ClusterVersionSpecDesiredUpdate desiredUpdate, List<ClusterVersionSpecOverrides> overrides, String upstream) {
+    public ClusterVersionSpec(ClusterVersionCapabilitiesSpec capabilities, String channel, String clusterID, Update desiredUpdate, List<ComponentOverride> overrides, List<SignatureStore> signatureStores, String upstream) {
         super();
         this.capabilities = capabilities;
         this.channel = channel;
         this.clusterID = clusterID;
         this.desiredUpdate = desiredUpdate;
         this.overrides = overrides;
+        this.signatureStores = signatureStores;
         this.upstream = upstream;
     }
 
     @JsonProperty("capabilities")
-    public ClusterVersionSpecCapabilities getCapabilities() {
+    public ClusterVersionCapabilitiesSpec getCapabilities() {
         return capabilities;
     }
 
     @JsonProperty("capabilities")
-    public void setCapabilities(ClusterVersionSpecCapabilities capabilities) {
+    public void setCapabilities(ClusterVersionCapabilitiesSpec capabilities) {
         this.capabilities = capabilities;
     }
 
@@ -125,24 +130,35 @@ public class ClusterVersionSpec implements Editable<ClusterVersionSpecBuilder> ,
     }
 
     @JsonProperty("desiredUpdate")
-    public ClusterVersionSpecDesiredUpdate getDesiredUpdate() {
+    public Update getDesiredUpdate() {
         return desiredUpdate;
     }
 
     @JsonProperty("desiredUpdate")
-    public void setDesiredUpdate(ClusterVersionSpecDesiredUpdate desiredUpdate) {
+    public void setDesiredUpdate(Update desiredUpdate) {
         this.desiredUpdate = desiredUpdate;
     }
 
     @JsonProperty("overrides")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<ClusterVersionSpecOverrides> getOverrides() {
+    public List<ComponentOverride> getOverrides() {
         return overrides;
     }
 
     @JsonProperty("overrides")
-    public void setOverrides(List<ClusterVersionSpecOverrides> overrides) {
+    public void setOverrides(List<ComponentOverride> overrides) {
         this.overrides = overrides;
+    }
+
+    @JsonProperty("signatureStores")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<SignatureStore> getSignatureStores() {
+        return signatureStores;
+    }
+
+    @JsonProperty("signatureStores")
+    public void setSignatureStores(List<SignatureStore> signatureStores) {
+        this.signatureStores = signatureStores;
     }
 
     @JsonProperty("upstream")

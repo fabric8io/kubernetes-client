@@ -16,8 +16,8 @@
 package io.fabric8.openshift.api.model.hive.v1;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.fabric8.openshift.api.model.config.v1.OAuthSpecIPGithubBuilder;
-import io.fabric8.openshift.api.model.config.v1.OAuthSpecIdentityProvidersBuilder;
+import io.fabric8.openshift.api.model.config.v1.GitHubIdentityProviderBuilder;
+import io.fabric8.openshift.api.model.config.v1.IdentityProviderBuilder;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -69,10 +69,10 @@ class SyncIdentityProviderTest {
         .endMetadata()
         .withNewSpec()
         .addNewClusterDeploymentRef("MyCluster")
-        .addToIdentityProviders(new OAuthSpecIdentityProvidersBuilder()
+        .addToIdentityProviders(new IdentityProviderBuilder()
             .withName("myprovider")
             .withType("GitHubIdentityProvider")
-            .withGithub(new OAuthSpecIPGithubBuilder()
+            .withGithub(new GitHubIdentityProviderBuilder()
                 .withClientID("sample-client-id")
                 .withNewClientSecret()
                 .withName("foo")
