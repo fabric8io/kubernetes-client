@@ -1,9 +1,7 @@
 
 package io.fabric8.openshift.api.model.console.v1;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -33,8 +31,10 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "namespaceSelector",
-    "namespaces"
+    "description",
+    "review",
+    "summary",
+    "title"
 })
 @ToString
 @EqualsAndHashCode
@@ -54,14 +54,17 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ConsoleLinkSpecNamespaceDashboard implements Editable<ConsoleLinkSpecNamespaceDashboardBuilder> , KubernetesResource
+public class ConsoleQuickStartTask implements Editable<ConsoleQuickStartTaskBuilder> , KubernetesResource
 {
 
-    @JsonProperty("namespaceSelector")
-    private ConsoleLinkSpecNDNamespaceSelector namespaceSelector;
-    @JsonProperty("namespaces")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> namespaces = new ArrayList<>();
+    @JsonProperty("description")
+    private String description;
+    @JsonProperty("review")
+    private ConsoleQuickStartTaskReview review;
+    @JsonProperty("summary")
+    private ConsoleQuickStartTaskSummary summary;
+    @JsonProperty("title")
+    private String title;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -69,43 +72,64 @@ public class ConsoleLinkSpecNamespaceDashboard implements Editable<ConsoleLinkSp
      * No args constructor for use in serialization
      * 
      */
-    public ConsoleLinkSpecNamespaceDashboard() {
+    public ConsoleQuickStartTask() {
     }
 
-    public ConsoleLinkSpecNamespaceDashboard(ConsoleLinkSpecNDNamespaceSelector namespaceSelector, List<String> namespaces) {
+    public ConsoleQuickStartTask(String description, ConsoleQuickStartTaskReview review, ConsoleQuickStartTaskSummary summary, String title) {
         super();
-        this.namespaceSelector = namespaceSelector;
-        this.namespaces = namespaces;
+        this.description = description;
+        this.review = review;
+        this.summary = summary;
+        this.title = title;
     }
 
-    @JsonProperty("namespaceSelector")
-    public ConsoleLinkSpecNDNamespaceSelector getNamespaceSelector() {
-        return namespaceSelector;
+    @JsonProperty("description")
+    public String getDescription() {
+        return description;
     }
 
-    @JsonProperty("namespaceSelector")
-    public void setNamespaceSelector(ConsoleLinkSpecNDNamespaceSelector namespaceSelector) {
-        this.namespaceSelector = namespaceSelector;
+    @JsonProperty("description")
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    @JsonProperty("namespaces")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<String> getNamespaces() {
-        return namespaces;
+    @JsonProperty("review")
+    public ConsoleQuickStartTaskReview getReview() {
+        return review;
     }
 
-    @JsonProperty("namespaces")
-    public void setNamespaces(List<String> namespaces) {
-        this.namespaces = namespaces;
+    @JsonProperty("review")
+    public void setReview(ConsoleQuickStartTaskReview review) {
+        this.review = review;
+    }
+
+    @JsonProperty("summary")
+    public ConsoleQuickStartTaskSummary getSummary() {
+        return summary;
+    }
+
+    @JsonProperty("summary")
+    public void setSummary(ConsoleQuickStartTaskSummary summary) {
+        this.summary = summary;
+    }
+
+    @JsonProperty("title")
+    public String getTitle() {
+        return title;
+    }
+
+    @JsonProperty("title")
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     @JsonIgnore
-    public ConsoleLinkSpecNamespaceDashboardBuilder edit() {
-        return new ConsoleLinkSpecNamespaceDashboardBuilder(this);
+    public ConsoleQuickStartTaskBuilder edit() {
+        return new ConsoleQuickStartTaskBuilder(this);
     }
 
     @JsonIgnore
-    public ConsoleLinkSpecNamespaceDashboardBuilder toBuilder() {
+    public ConsoleQuickStartTaskBuilder toBuilder() {
         return edit();
     }
 

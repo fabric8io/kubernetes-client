@@ -1,5 +1,5 @@
 
-package io.fabric8.openshift.api.model.console.v1alpha1;
+package io.fabric8.openshift.api.model.console.v1;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -17,21 +17,15 @@ import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
-import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.LabelSelector;
-import io.fabric8.kubernetes.api.model.ListMeta;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.kubernetes.model.annotation.Group;
-import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import io.sundr.transform.annotations.TemplateTransformation;
-import io.sundr.transform.annotations.TemplateTransformations;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
@@ -39,10 +33,8 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "apiVersion",
-    "kind",
-    "metadata",
-    "items"
+    "namespaceSelector",
+    "namespaces"
 })
 @ToString
 @EqualsAndHashCode
@@ -61,34 +53,15 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
-@TemplateTransformations({
-    @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true)
-})
-@Version("v1alpha1")
-@Group("console.openshift.io")
 @Generated("jsonschema2pojo")
-public class ConsolePluginList implements Editable<ConsolePluginListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.console.v1alpha1.ConsolePlugin>
+public class NamespaceDashboardSpec implements Editable<NamespaceDashboardSpecBuilder> , KubernetesResource
 {
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
-    @JsonProperty("apiVersion")
-    private String apiVersion = "console.openshift.io/v1alpha1";
-    @JsonProperty("items")
+    @JsonProperty("namespaceSelector")
+    private LabelSelector namespaceSelector;
+    @JsonProperty("namespaces")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.openshift.api.model.console.v1alpha1.ConsolePlugin> items = new ArrayList<>();
-    /**
-     * 
-     * (Required)
-     * 
-     */
-    @JsonProperty("kind")
-    private String kind = "ConsolePluginList";
-    @JsonProperty("metadata")
-    private ListMeta metadata;
+    private List<String> namespaces = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -96,85 +69,43 @@ public class ConsolePluginList implements Editable<ConsolePluginListBuilder> , K
      * No args constructor for use in serialization
      * 
      */
-    public ConsolePluginList() {
+    public NamespaceDashboardSpec() {
     }
 
-    public ConsolePluginList(String apiVersion, List<io.fabric8.openshift.api.model.console.v1alpha1.ConsolePlugin> items, String kind, ListMeta metadata) {
+    public NamespaceDashboardSpec(LabelSelector namespaceSelector, List<String> namespaces) {
         super();
-        this.apiVersion = apiVersion;
-        this.items = items;
-        this.kind = kind;
-        this.metadata = metadata;
+        this.namespaceSelector = namespaceSelector;
+        this.namespaces = namespaces;
     }
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
-    @JsonProperty("apiVersion")
-    public String getApiVersion() {
-        return apiVersion;
+    @JsonProperty("namespaceSelector")
+    public LabelSelector getNamespaceSelector() {
+        return namespaceSelector;
     }
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
-    @JsonProperty("apiVersion")
-    public void setApiVersion(String apiVersion) {
-        this.apiVersion = apiVersion;
+    @JsonProperty("namespaceSelector")
+    public void setNamespaceSelector(LabelSelector namespaceSelector) {
+        this.namespaceSelector = namespaceSelector;
     }
 
-    @JsonProperty("items")
+    @JsonProperty("namespaces")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<io.fabric8.openshift.api.model.console.v1alpha1.ConsolePlugin> getItems() {
-        return items;
+    public List<String> getNamespaces() {
+        return namespaces;
     }
 
-    @JsonProperty("items")
-    public void setItems(List<io.fabric8.openshift.api.model.console.v1alpha1.ConsolePlugin> items) {
-        this.items = items;
-    }
-
-    /**
-     * 
-     * (Required)
-     * 
-     */
-    @JsonProperty("kind")
-    public String getKind() {
-        return kind;
-    }
-
-    /**
-     * 
-     * (Required)
-     * 
-     */
-    @JsonProperty("kind")
-    public void setKind(String kind) {
-        this.kind = kind;
-    }
-
-    @JsonProperty("metadata")
-    public ListMeta getMetadata() {
-        return metadata;
-    }
-
-    @JsonProperty("metadata")
-    public void setMetadata(ListMeta metadata) {
-        this.metadata = metadata;
+    @JsonProperty("namespaces")
+    public void setNamespaces(List<String> namespaces) {
+        this.namespaces = namespaces;
     }
 
     @JsonIgnore
-    public ConsolePluginListBuilder edit() {
-        return new ConsolePluginListBuilder(this);
+    public NamespaceDashboardSpecBuilder edit() {
+        return new NamespaceDashboardSpecBuilder(this);
     }
 
     @JsonIgnore
-    public ConsolePluginListBuilder toBuilder() {
+    public NamespaceDashboardSpecBuilder toBuilder() {
         return edit();
     }
 

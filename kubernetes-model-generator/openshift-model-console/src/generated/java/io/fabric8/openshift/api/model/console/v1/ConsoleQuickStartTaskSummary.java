@@ -31,10 +31,8 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "alias",
-    "authorization",
-    "caCertificate",
-    "endpoint"
+    "failed",
+    "success"
 })
 @ToString
 @EqualsAndHashCode
@@ -54,17 +52,13 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ConsolePluginSpecProxy implements Editable<ConsolePluginSpecProxyBuilder> , KubernetesResource
+public class ConsoleQuickStartTaskSummary implements Editable<ConsoleQuickStartTaskSummaryBuilder> , KubernetesResource
 {
 
-    @JsonProperty("alias")
-    private String alias;
-    @JsonProperty("authorization")
-    private String authorization;
-    @JsonProperty("caCertificate")
-    private String caCertificate;
-    @JsonProperty("endpoint")
-    private ConsolePluginSpecPEndpoint endpoint;
+    @JsonProperty("failed")
+    private String failed;
+    @JsonProperty("success")
+    private String success;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -72,64 +66,42 @@ public class ConsolePluginSpecProxy implements Editable<ConsolePluginSpecProxyBu
      * No args constructor for use in serialization
      * 
      */
-    public ConsolePluginSpecProxy() {
+    public ConsoleQuickStartTaskSummary() {
     }
 
-    public ConsolePluginSpecProxy(String alias, String authorization, String caCertificate, ConsolePluginSpecPEndpoint endpoint) {
+    public ConsoleQuickStartTaskSummary(String failed, String success) {
         super();
-        this.alias = alias;
-        this.authorization = authorization;
-        this.caCertificate = caCertificate;
-        this.endpoint = endpoint;
+        this.failed = failed;
+        this.success = success;
     }
 
-    @JsonProperty("alias")
-    public String getAlias() {
-        return alias;
+    @JsonProperty("failed")
+    public String getFailed() {
+        return failed;
     }
 
-    @JsonProperty("alias")
-    public void setAlias(String alias) {
-        this.alias = alias;
+    @JsonProperty("failed")
+    public void setFailed(String failed) {
+        this.failed = failed;
     }
 
-    @JsonProperty("authorization")
-    public String getAuthorization() {
-        return authorization;
+    @JsonProperty("success")
+    public String getSuccess() {
+        return success;
     }
 
-    @JsonProperty("authorization")
-    public void setAuthorization(String authorization) {
-        this.authorization = authorization;
-    }
-
-    @JsonProperty("caCertificate")
-    public String getCaCertificate() {
-        return caCertificate;
-    }
-
-    @JsonProperty("caCertificate")
-    public void setCaCertificate(String caCertificate) {
-        this.caCertificate = caCertificate;
-    }
-
-    @JsonProperty("endpoint")
-    public ConsolePluginSpecPEndpoint getEndpoint() {
-        return endpoint;
-    }
-
-    @JsonProperty("endpoint")
-    public void setEndpoint(ConsolePluginSpecPEndpoint endpoint) {
-        this.endpoint = endpoint;
+    @JsonProperty("success")
+    public void setSuccess(String success) {
+        this.success = success;
     }
 
     @JsonIgnore
-    public ConsolePluginSpecProxyBuilder edit() {
-        return new ConsolePluginSpecProxyBuilder(this);
+    public ConsoleQuickStartTaskSummaryBuilder edit() {
+        return new ConsoleQuickStartTaskSummaryBuilder(this);
     }
 
     @JsonIgnore
-    public ConsolePluginSpecProxyBuilder toBuilder() {
+    public ConsoleQuickStartTaskSummaryBuilder toBuilder() {
         return edit();
     }
 

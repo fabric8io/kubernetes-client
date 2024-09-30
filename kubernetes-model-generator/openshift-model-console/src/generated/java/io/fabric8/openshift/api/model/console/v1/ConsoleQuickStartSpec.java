@@ -93,7 +93,7 @@ public class ConsoleQuickStartSpec implements Editable<ConsoleQuickStartSpecBuil
     private List<String> tags = new ArrayList<>();
     @JsonProperty("tasks")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ConsoleQuickStartSpecTasks> tasks = new ArrayList<>();
+    private List<ConsoleQuickStartTask> tasks = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -104,7 +104,7 @@ public class ConsoleQuickStartSpec implements Editable<ConsoleQuickStartSpecBuil
     public ConsoleQuickStartSpec() {
     }
 
-    public ConsoleQuickStartSpec(List<ResourceAttributes> accessReviewResources, String conclusion, String description, String displayName, Integer durationMinutes, String icon, String introduction, List<String> nextQuickStart, List<String> prerequisites, List<String> tags, List<ConsoleQuickStartSpecTasks> tasks) {
+    public ConsoleQuickStartSpec(List<ResourceAttributes> accessReviewResources, String conclusion, String description, String displayName, Integer durationMinutes, String icon, String introduction, List<String> nextQuickStart, List<String> prerequisites, List<String> tags, List<ConsoleQuickStartTask> tasks) {
         super();
         this.accessReviewResources = accessReviewResources;
         this.conclusion = conclusion;
@@ -225,12 +225,12 @@ public class ConsoleQuickStartSpec implements Editable<ConsoleQuickStartSpecBuil
 
     @JsonProperty("tasks")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<ConsoleQuickStartSpecTasks> getTasks() {
+    public List<ConsoleQuickStartTask> getTasks() {
         return tasks;
     }
 
     @JsonProperty("tasks")
-    public void setTasks(List<ConsoleQuickStartSpecTasks> tasks) {
+    public void setTasks(List<ConsoleQuickStartTask> tasks) {
         this.tasks = tasks;
     }
 

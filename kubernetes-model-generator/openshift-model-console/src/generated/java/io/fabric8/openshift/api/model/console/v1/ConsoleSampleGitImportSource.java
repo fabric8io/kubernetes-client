@@ -31,10 +31,8 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "description",
-    "review",
-    "summary",
-    "title"
+    "repository",
+    "service"
 })
 @ToString
 @EqualsAndHashCode
@@ -54,17 +52,13 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ConsoleQuickStartSpecTasks implements Editable<ConsoleQuickStartSpecTasksBuilder> , KubernetesResource
+public class ConsoleSampleGitImportSource implements Editable<ConsoleSampleGitImportSourceBuilder> , KubernetesResource
 {
 
-    @JsonProperty("description")
-    private String description;
-    @JsonProperty("review")
-    private ConsoleQuickStartSpecTReview review;
-    @JsonProperty("summary")
-    private ConsoleQuickStartSpecTSummary summary;
-    @JsonProperty("title")
-    private String title;
+    @JsonProperty("repository")
+    private ConsoleSampleGitImportSourceRepository repository;
+    @JsonProperty("service")
+    private ConsoleSampleGitImportSourceService service;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -72,64 +66,42 @@ public class ConsoleQuickStartSpecTasks implements Editable<ConsoleQuickStartSpe
      * No args constructor for use in serialization
      * 
      */
-    public ConsoleQuickStartSpecTasks() {
+    public ConsoleSampleGitImportSource() {
     }
 
-    public ConsoleQuickStartSpecTasks(String description, ConsoleQuickStartSpecTReview review, ConsoleQuickStartSpecTSummary summary, String title) {
+    public ConsoleSampleGitImportSource(ConsoleSampleGitImportSourceRepository repository, ConsoleSampleGitImportSourceService service) {
         super();
-        this.description = description;
-        this.review = review;
-        this.summary = summary;
-        this.title = title;
+        this.repository = repository;
+        this.service = service;
     }
 
-    @JsonProperty("description")
-    public String getDescription() {
-        return description;
+    @JsonProperty("repository")
+    public ConsoleSampleGitImportSourceRepository getRepository() {
+        return repository;
     }
 
-    @JsonProperty("description")
-    public void setDescription(String description) {
-        this.description = description;
+    @JsonProperty("repository")
+    public void setRepository(ConsoleSampleGitImportSourceRepository repository) {
+        this.repository = repository;
     }
 
-    @JsonProperty("review")
-    public ConsoleQuickStartSpecTReview getReview() {
-        return review;
+    @JsonProperty("service")
+    public ConsoleSampleGitImportSourceService getService() {
+        return service;
     }
 
-    @JsonProperty("review")
-    public void setReview(ConsoleQuickStartSpecTReview review) {
-        this.review = review;
-    }
-
-    @JsonProperty("summary")
-    public ConsoleQuickStartSpecTSummary getSummary() {
-        return summary;
-    }
-
-    @JsonProperty("summary")
-    public void setSummary(ConsoleQuickStartSpecTSummary summary) {
-        this.summary = summary;
-    }
-
-    @JsonProperty("title")
-    public String getTitle() {
-        return title;
-    }
-
-    @JsonProperty("title")
-    public void setTitle(String title) {
-        this.title = title;
+    @JsonProperty("service")
+    public void setService(ConsoleSampleGitImportSourceService service) {
+        this.service = service;
     }
 
     @JsonIgnore
-    public ConsoleQuickStartSpecTasksBuilder edit() {
-        return new ConsoleQuickStartSpecTasksBuilder(this);
+    public ConsoleSampleGitImportSourceBuilder edit() {
+        return new ConsoleSampleGitImportSourceBuilder(this);
     }
 
     @JsonIgnore
-    public ConsoleQuickStartSpecTasksBuilder toBuilder() {
+    public ConsoleSampleGitImportSourceBuilder toBuilder() {
         return edit();
     }
 

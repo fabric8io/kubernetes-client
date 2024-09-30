@@ -31,8 +31,10 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "href",
-    "text"
+    "alias",
+    "authorization",
+    "caCertificate",
+    "endpoint"
 })
 @ToString
 @EqualsAndHashCode
@@ -52,13 +54,17 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ConsoleCLIDownloadSpecLinks implements Editable<ConsoleCLIDownloadSpecLinksBuilder> , KubernetesResource
+public class ConsolePluginProxy implements Editable<ConsolePluginProxyBuilder> , KubernetesResource
 {
 
-    @JsonProperty("href")
-    private String href;
-    @JsonProperty("text")
-    private String text;
+    @JsonProperty("alias")
+    private String alias;
+    @JsonProperty("authorization")
+    private String authorization;
+    @JsonProperty("caCertificate")
+    private String caCertificate;
+    @JsonProperty("endpoint")
+    private ConsolePluginProxyEndpoint endpoint;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -66,42 +72,64 @@ public class ConsoleCLIDownloadSpecLinks implements Editable<ConsoleCLIDownloadS
      * No args constructor for use in serialization
      * 
      */
-    public ConsoleCLIDownloadSpecLinks() {
+    public ConsolePluginProxy() {
     }
 
-    public ConsoleCLIDownloadSpecLinks(String href, String text) {
+    public ConsolePluginProxy(String alias, String authorization, String caCertificate, ConsolePluginProxyEndpoint endpoint) {
         super();
-        this.href = href;
-        this.text = text;
+        this.alias = alias;
+        this.authorization = authorization;
+        this.caCertificate = caCertificate;
+        this.endpoint = endpoint;
     }
 
-    @JsonProperty("href")
-    public String getHref() {
-        return href;
+    @JsonProperty("alias")
+    public String getAlias() {
+        return alias;
     }
 
-    @JsonProperty("href")
-    public void setHref(String href) {
-        this.href = href;
+    @JsonProperty("alias")
+    public void setAlias(String alias) {
+        this.alias = alias;
     }
 
-    @JsonProperty("text")
-    public String getText() {
-        return text;
+    @JsonProperty("authorization")
+    public String getAuthorization() {
+        return authorization;
     }
 
-    @JsonProperty("text")
-    public void setText(String text) {
-        this.text = text;
+    @JsonProperty("authorization")
+    public void setAuthorization(String authorization) {
+        this.authorization = authorization;
+    }
+
+    @JsonProperty("caCertificate")
+    public String getCaCertificate() {
+        return caCertificate;
+    }
+
+    @JsonProperty("caCertificate")
+    public void setCaCertificate(String caCertificate) {
+        this.caCertificate = caCertificate;
+    }
+
+    @JsonProperty("endpoint")
+    public ConsolePluginProxyEndpoint getEndpoint() {
+        return endpoint;
+    }
+
+    @JsonProperty("endpoint")
+    public void setEndpoint(ConsolePluginProxyEndpoint endpoint) {
+        this.endpoint = endpoint;
     }
 
     @JsonIgnore
-    public ConsoleCLIDownloadSpecLinksBuilder edit() {
-        return new ConsoleCLIDownloadSpecLinksBuilder(this);
+    public ConsolePluginProxyBuilder edit() {
+        return new ConsolePluginProxyBuilder(this);
     }
 
     @JsonIgnore
-    public ConsoleCLIDownloadSpecLinksBuilder toBuilder() {
+    public ConsolePluginProxyBuilder toBuilder() {
         return edit();
     }
 

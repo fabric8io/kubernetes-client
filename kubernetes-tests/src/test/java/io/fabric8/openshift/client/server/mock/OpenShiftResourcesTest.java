@@ -70,9 +70,9 @@ import io.fabric8.openshift.api.model.config.v1.Scheduler;
 import io.fabric8.openshift.api.model.console.v1.ConsoleExternalLogLink;
 import io.fabric8.openshift.api.model.console.v1.ConsoleLink;
 import io.fabric8.openshift.api.model.console.v1.ConsoleNotification;
+import io.fabric8.openshift.api.model.console.v1.ConsolePlugin;
 import io.fabric8.openshift.api.model.console.v1.ConsoleQuickStart;
 import io.fabric8.openshift.api.model.console.v1.ConsoleYAMLSample;
-import io.fabric8.openshift.api.model.console.v1alpha1.ConsolePlugin;
 import io.fabric8.openshift.api.model.machine.v1beta1.Machine;
 import io.fabric8.openshift.api.model.machine.v1beta1.MachineSet;
 import io.fabric8.openshift.api.model.machineconfiguration.v1.ContainerRuntimeConfig;
@@ -133,7 +133,7 @@ class OpenShiftResourcesTest {
         Arguments.of(ConsoleExternalLogLink.class, false, "console.openshift.io", "v1", "consoleexternalloglinks"),
         Arguments.of(ConsoleLink.class, false, "console.openshift.io", "v1", "consolelinks"),
         Arguments.of(ConsoleNotification.class, false, "console.openshift.io", "v1", "consolenotifications"),
-        Arguments.of(ConsolePlugin.class, false, "console.openshift.io", "v1alpha1", "consoleplugins"),
+        Arguments.of(ConsolePlugin.class, false, "console.openshift.io", "v1", "consoleplugins"),
         Arguments.of(ConsoleQuickStart.class, false, "console.openshift.io", "v1", "consolequickstarts"),
         Arguments.of(ConsoleYAMLSample.class, false, "console.openshift.io", "v1", "consoleyamlsamples"),
         Arguments.of(APIServer.class, false, "config.openshift.io", "v1", "apiservers"),

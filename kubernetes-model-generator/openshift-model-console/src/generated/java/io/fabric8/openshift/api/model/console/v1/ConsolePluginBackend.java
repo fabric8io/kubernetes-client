@@ -31,8 +31,7 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "containerImport",
-    "gitImport",
+    "service",
     "type"
 })
 @ToString
@@ -53,13 +52,11 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ConsoleSampleSpecSource implements Editable<ConsoleSampleSpecSourceBuilder> , KubernetesResource
+public class ConsolePluginBackend implements Editable<ConsolePluginBackendBuilder> , KubernetesResource
 {
 
-    @JsonProperty("containerImport")
-    private ConsoleSampleSpecSContainerImport containerImport;
-    @JsonProperty("gitImport")
-    private ConsoleSampleSpecSGitImport gitImport;
+    @JsonProperty("service")
+    private ConsolePluginService service;
     @JsonProperty("type")
     private String type;
     @JsonIgnore
@@ -69,34 +66,23 @@ public class ConsoleSampleSpecSource implements Editable<ConsoleSampleSpecSource
      * No args constructor for use in serialization
      * 
      */
-    public ConsoleSampleSpecSource() {
+    public ConsolePluginBackend() {
     }
 
-    public ConsoleSampleSpecSource(ConsoleSampleSpecSContainerImport containerImport, ConsoleSampleSpecSGitImport gitImport, String type) {
+    public ConsolePluginBackend(ConsolePluginService service, String type) {
         super();
-        this.containerImport = containerImport;
-        this.gitImport = gitImport;
+        this.service = service;
         this.type = type;
     }
 
-    @JsonProperty("containerImport")
-    public ConsoleSampleSpecSContainerImport getContainerImport() {
-        return containerImport;
+    @JsonProperty("service")
+    public ConsolePluginService getService() {
+        return service;
     }
 
-    @JsonProperty("containerImport")
-    public void setContainerImport(ConsoleSampleSpecSContainerImport containerImport) {
-        this.containerImport = containerImport;
-    }
-
-    @JsonProperty("gitImport")
-    public ConsoleSampleSpecSGitImport getGitImport() {
-        return gitImport;
-    }
-
-    @JsonProperty("gitImport")
-    public void setGitImport(ConsoleSampleSpecSGitImport gitImport) {
-        this.gitImport = gitImport;
+    @JsonProperty("service")
+    public void setService(ConsolePluginService service) {
+        this.service = service;
     }
 
     @JsonProperty("type")
@@ -110,12 +96,12 @@ public class ConsoleSampleSpecSource implements Editable<ConsoleSampleSpecSource
     }
 
     @JsonIgnore
-    public ConsoleSampleSpecSourceBuilder edit() {
-        return new ConsoleSampleSpecSourceBuilder(this);
+    public ConsolePluginBackendBuilder edit() {
+        return new ConsolePluginBackendBuilder(this);
     }
 
     @JsonIgnore
-    public ConsoleSampleSpecSourceBuilder toBuilder() {
+    public ConsolePluginBackendBuilder toBuilder() {
         return edit();
     }
 

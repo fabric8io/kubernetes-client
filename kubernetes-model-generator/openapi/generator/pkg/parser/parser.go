@@ -124,11 +124,11 @@ func resolveType(typ *types.Type) string {
 	isList := false
 	isObject := false
 	for _, m := range typ.Members {
-		if m.Type.Name == listMeta {
+		if m.Embedded == true && m.Type.Name == listMeta {
 			isList = true
 			// stop iterating, if it's a list then it's not an object
 			break
-		} else if m.Type.Name == typeMeta {
+		} else if m.Embedded == true && m.Type.Name == typeMeta {
 			isObject = true
 			// keep iterating, maybe it's a list
 		}

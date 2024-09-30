@@ -31,8 +31,8 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "failed",
-    "success"
+    "href",
+    "text"
 })
 @ToString
 @EqualsAndHashCode
@@ -52,13 +52,13 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ConsoleQuickStartSpecTSummary implements Editable<ConsoleQuickStartSpecTSummaryBuilder> , KubernetesResource
+public class Link implements Editable<LinkBuilder> , KubernetesResource
 {
 
-    @JsonProperty("failed")
-    private String failed;
-    @JsonProperty("success")
-    private String success;
+    @JsonProperty("href")
+    private String href;
+    @JsonProperty("text")
+    private String text;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -66,42 +66,42 @@ public class ConsoleQuickStartSpecTSummary implements Editable<ConsoleQuickStart
      * No args constructor for use in serialization
      * 
      */
-    public ConsoleQuickStartSpecTSummary() {
+    public Link() {
     }
 
-    public ConsoleQuickStartSpecTSummary(String failed, String success) {
+    public Link(String href, String text) {
         super();
-        this.failed = failed;
-        this.success = success;
+        this.href = href;
+        this.text = text;
     }
 
-    @JsonProperty("failed")
-    public String getFailed() {
-        return failed;
+    @JsonProperty("href")
+    public String getHref() {
+        return href;
     }
 
-    @JsonProperty("failed")
-    public void setFailed(String failed) {
-        this.failed = failed;
+    @JsonProperty("href")
+    public void setHref(String href) {
+        this.href = href;
     }
 
-    @JsonProperty("success")
-    public String getSuccess() {
-        return success;
+    @JsonProperty("text")
+    public String getText() {
+        return text;
     }
 
-    @JsonProperty("success")
-    public void setSuccess(String success) {
-        this.success = success;
-    }
-
-    @JsonIgnore
-    public ConsoleQuickStartSpecTSummaryBuilder edit() {
-        return new ConsoleQuickStartSpecTSummaryBuilder(this);
+    @JsonProperty("text")
+    public void setText(String text) {
+        this.text = text;
     }
 
     @JsonIgnore
-    public ConsoleQuickStartSpecTSummaryBuilder toBuilder() {
+    public LinkBuilder edit() {
+        return new LinkBuilder(this);
+    }
+
+    @JsonIgnore
+    public LinkBuilder toBuilder() {
         return edit();
     }
 

@@ -26,12 +26,12 @@ import io.fabric8.openshift.api.model.console.v1.ConsoleLink;
 import io.fabric8.openshift.api.model.console.v1.ConsoleLinkList;
 import io.fabric8.openshift.api.model.console.v1.ConsoleNotification;
 import io.fabric8.openshift.api.model.console.v1.ConsoleNotificationList;
+import io.fabric8.openshift.api.model.console.v1.ConsolePlugin;
+import io.fabric8.openshift.api.model.console.v1.ConsolePluginList;
 import io.fabric8.openshift.api.model.console.v1.ConsoleQuickStart;
 import io.fabric8.openshift.api.model.console.v1.ConsoleQuickStartList;
 import io.fabric8.openshift.api.model.console.v1.ConsoleYAMLSample;
 import io.fabric8.openshift.api.model.console.v1.ConsoleYAMLSampleList;
-import io.fabric8.openshift.api.model.console.v1alpha1.ConsolePlugin;
-import io.fabric8.openshift.api.model.console.v1alpha1.ConsolePluginList;
 import io.fabric8.openshift.client.dsl.OpenShiftConsoleAPIGroupDSL;
 
 public class OpenShiftConsoleAPIGroupClient extends ClientAdapter<OpenShiftConsoleAPIGroupClient>

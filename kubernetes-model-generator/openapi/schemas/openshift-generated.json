@@ -34178,7 +34178,7 @@
         }
       },
       "x-fabric8-info": {
-        "Type": "object",
+        "Type": "nested",
         "Group": "console.openshift.io",
         "Version": "v1",
         "Kind": "ConsoleYAMLSampleSpec",

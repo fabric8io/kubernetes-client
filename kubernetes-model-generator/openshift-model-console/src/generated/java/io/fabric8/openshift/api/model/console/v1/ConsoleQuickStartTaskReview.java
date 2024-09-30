@@ -1,9 +1,7 @@
 
 package io.fabric8.openshift.api.model.console.v1;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -18,7 +16,6 @@ import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
-import io.fabric8.kubernetes.api.model.LabelSelectorRequirement;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
@@ -34,8 +31,8 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "matchExpressions",
-    "matchLabels"
+    "failedTaskHelp",
+    "instructions"
 })
 @ToString
 @EqualsAndHashCode
@@ -55,15 +52,13 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ConsoleLinkSpecNDNamespaceSelector implements Editable<ConsoleLinkSpecNDNamespaceSelectorBuilder> , KubernetesResource
+public class ConsoleQuickStartTaskReview implements Editable<ConsoleQuickStartTaskReviewBuilder> , KubernetesResource
 {
 
-    @JsonProperty("matchExpressions")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<LabelSelectorRequirement> matchExpressions = new ArrayList<>();
-    @JsonProperty("matchLabels")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> matchLabels = new LinkedHashMap<>();
+    @JsonProperty("failedTaskHelp")
+    private String failedTaskHelp;
+    @JsonProperty("instructions")
+    private String instructions;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -71,44 +66,42 @@ public class ConsoleLinkSpecNDNamespaceSelector implements Editable<ConsoleLinkS
      * No args constructor for use in serialization
      * 
      */
-    public ConsoleLinkSpecNDNamespaceSelector() {
+    public ConsoleQuickStartTaskReview() {
     }
 
-    public ConsoleLinkSpecNDNamespaceSelector(List<LabelSelectorRequirement> matchExpressions, Map<String, String> matchLabels) {
+    public ConsoleQuickStartTaskReview(String failedTaskHelp, String instructions) {
         super();
-        this.matchExpressions = matchExpressions;
-        this.matchLabels = matchLabels;
+        this.failedTaskHelp = failedTaskHelp;
+        this.instructions = instructions;
     }
 
-    @JsonProperty("matchExpressions")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<LabelSelectorRequirement> getMatchExpressions() {
-        return matchExpressions;
+    @JsonProperty("failedTaskHelp")
+    public String getFailedTaskHelp() {
+        return failedTaskHelp;
     }
 
-    @JsonProperty("matchExpressions")
-    public void setMatchExpressions(List<LabelSelectorRequirement> matchExpressions) {
-        this.matchExpressions = matchExpressions;
+    @JsonProperty("failedTaskHelp")
+    public void setFailedTaskHelp(String failedTaskHelp) {
+        this.failedTaskHelp = failedTaskHelp;
     }
 
-    @JsonProperty("matchLabels")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public Map<String, String> getMatchLabels() {
-        return matchLabels;
+    @JsonProperty("instructions")
+    public String getInstructions() {
+        return instructions;
     }
 
-    @JsonProperty("matchLabels")
-    public void setMatchLabels(Map<String, String> matchLabels) {
-        this.matchLabels = matchLabels;
-    }
-
-    @JsonIgnore
-    public ConsoleLinkSpecNDNamespaceSelectorBuilder edit() {
-        return new ConsoleLinkSpecNDNamespaceSelectorBuilder(this);
+    @JsonProperty("instructions")
+    public void setInstructions(String instructions) {
+        this.instructions = instructions;
     }
 
     @JsonIgnore
-    public ConsoleLinkSpecNDNamespaceSelectorBuilder toBuilder() {
+    public ConsoleQuickStartTaskReviewBuilder edit() {
+        return new ConsoleQuickStartTaskReviewBuilder(this);
+    }
+
+    @JsonIgnore
+    public ConsoleQuickStartTaskReviewBuilder toBuilder() {
         return edit();
     }
 

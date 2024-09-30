@@ -52,7 +52,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ConsoleLinkSpecApplicationMenu implements Editable<ConsoleLinkSpecApplicationMenuBuilder> , KubernetesResource
+public class ApplicationMenuSpec implements Editable<ApplicationMenuSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("imageURL")
@@ -66,10 +66,10 @@ public class ConsoleLinkSpecApplicationMenu implements Editable<ConsoleLinkSpecA
      * No args constructor for use in serialization
      * 
      */
-    public ConsoleLinkSpecApplicationMenu() {
+    public ApplicationMenuSpec() {
     }
 
-    public ConsoleLinkSpecApplicationMenu(String imageURL, String section) {
+    public ApplicationMenuSpec(String imageURL, String section) {
         super();
         this.imageURL = imageURL;
         this.section = section;
@@ -96,12 +96,12 @@ public class ConsoleLinkSpecApplicationMenu implements Editable<ConsoleLinkSpecA
     }
 
     @JsonIgnore
-    public ConsoleLinkSpecApplicationMenuBuilder edit() {
-        return new ConsoleLinkSpecApplicationMenuBuilder(this);
+    public ApplicationMenuSpecBuilder edit() {
+        return new ApplicationMenuSpecBuilder(this);
     }
 
     @JsonIgnore
-    public ConsoleLinkSpecApplicationMenuBuilder toBuilder() {
+    public ApplicationMenuSpecBuilder toBuilder() {
         return edit();
     }
 

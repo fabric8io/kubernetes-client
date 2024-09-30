@@ -72,7 +72,7 @@ public class ConsoleSampleSpec implements Editable<ConsoleSampleSpecBuilder> , K
     @JsonProperty("provider")
     private String provider;
     @JsonProperty("source")
-    private ConsoleSampleSpecSource source;
+    private ConsoleSampleSource source;
     @JsonProperty("tags")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> tags = new ArrayList<>();
@@ -90,7 +90,7 @@ public class ConsoleSampleSpec implements Editable<ConsoleSampleSpecBuilder> , K
     public ConsoleSampleSpec() {
     }
 
-    public ConsoleSampleSpec(String _abstract, String description, String icon, String provider, ConsoleSampleSpecSource source, List<String> tags, String title, String type) {
+    public ConsoleSampleSpec(String _abstract, String description, String icon, String provider, ConsoleSampleSource source, List<String> tags, String title, String type) {
         super();
         this._abstract = _abstract;
         this.description = description;
@@ -143,12 +143,12 @@ public class ConsoleSampleSpec implements Editable<ConsoleSampleSpecBuilder> , K
     }
 
     @JsonProperty("source")
-    public ConsoleSampleSpecSource getSource() {
+    public ConsoleSampleSource getSource() {
         return source;
     }
 
     @JsonProperty("source")
-    public void setSource(ConsoleSampleSpecSource source) {
+    public void setSource(ConsoleSampleSource source) {
         this.source = source;
     }
 

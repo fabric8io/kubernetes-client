@@ -31,8 +31,9 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "apiVersion",
-    "kind"
+    "contextDir",
+    "revision",
+    "url"
 })
 @ToString
 @EqualsAndHashCode
@@ -52,13 +53,15 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ConsoleYAMLSampleSpecTargetResource implements Editable<ConsoleYAMLSampleSpecTargetResourceBuilder> , KubernetesResource
+public class ConsoleSampleGitImportSourceRepository implements Editable<ConsoleSampleGitImportSourceRepositoryBuilder> , KubernetesResource
 {
 
-    @JsonProperty("apiVersion")
-    private String apiVersion;
-    @JsonProperty("kind")
-    private String kind;
+    @JsonProperty("contextDir")
+    private String contextDir;
+    @JsonProperty("revision")
+    private String revision;
+    @JsonProperty("url")
+    private String url;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -66,42 +69,53 @@ public class ConsoleYAMLSampleSpecTargetResource implements Editable<ConsoleYAML
      * No args constructor for use in serialization
      * 
      */
-    public ConsoleYAMLSampleSpecTargetResource() {
+    public ConsoleSampleGitImportSourceRepository() {
     }
 
-    public ConsoleYAMLSampleSpecTargetResource(String apiVersion, String kind) {
+    public ConsoleSampleGitImportSourceRepository(String contextDir, String revision, String url) {
         super();
-        this.apiVersion = apiVersion;
-        this.kind = kind;
+        this.contextDir = contextDir;
+        this.revision = revision;
+        this.url = url;
     }
 
-    @JsonProperty("apiVersion")
-    public String getApiVersion() {
-        return apiVersion;
+    @JsonProperty("contextDir")
+    public String getContextDir() {
+        return contextDir;
     }
 
-    @JsonProperty("apiVersion")
-    public void setApiVersion(String apiVersion) {
-        this.apiVersion = apiVersion;
+    @JsonProperty("contextDir")
+    public void setContextDir(String contextDir) {
+        this.contextDir = contextDir;
     }
 
-    @JsonProperty("kind")
-    public String getKind() {
-        return kind;
+    @JsonProperty("revision")
+    public String getRevision() {
+        return revision;
     }
 
-    @JsonProperty("kind")
-    public void setKind(String kind) {
-        this.kind = kind;
+    @JsonProperty("revision")
+    public void setRevision(String revision) {
+        this.revision = revision;
+    }
+
+    @JsonProperty("url")
+    public String getUrl() {
+        return url;
+    }
+
+    @JsonProperty("url")
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     @JsonIgnore
-    public ConsoleYAMLSampleSpecTargetResourceBuilder edit() {
-        return new ConsoleYAMLSampleSpecTargetResourceBuilder(this);
+    public ConsoleSampleGitImportSourceRepositoryBuilder edit() {
+        return new ConsoleSampleGitImportSourceRepositoryBuilder(this);
     }
 
     @JsonIgnore
-    public ConsoleYAMLSampleSpecTargetResourceBuilder toBuilder() {
+    public ConsoleSampleGitImportSourceRepositoryBuilder toBuilder() {
         return edit();
     }
 

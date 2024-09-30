@@ -31,8 +31,7 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "service",
-    "type"
+    "loadType"
 })
 @ToString
 @EqualsAndHashCode
@@ -52,13 +51,11 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ConsolePluginSpecPEndpoint implements Editable<ConsolePluginSpecPEndpointBuilder> , KubernetesResource
+public class ConsolePluginI18n implements Editable<ConsolePluginI18nBuilder> , KubernetesResource
 {
 
-    @JsonProperty("service")
-    private ConsolePluginSpecPEService service;
-    @JsonProperty("type")
-    private String type;
+    @JsonProperty("loadType")
+    private String loadType;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -66,42 +63,31 @@ public class ConsolePluginSpecPEndpoint implements Editable<ConsolePluginSpecPEn
      * No args constructor for use in serialization
      * 
      */
-    public ConsolePluginSpecPEndpoint() {
+    public ConsolePluginI18n() {
     }
 
-    public ConsolePluginSpecPEndpoint(ConsolePluginSpecPEService service, String type) {
+    public ConsolePluginI18n(String loadType) {
         super();
-        this.service = service;
-        this.type = type;
+        this.loadType = loadType;
     }
 
-    @JsonProperty("service")
-    public ConsolePluginSpecPEService getService() {
-        return service;
+    @JsonProperty("loadType")
+    public String getLoadType() {
+        return loadType;
     }
 
-    @JsonProperty("service")
-    public void setService(ConsolePluginSpecPEService service) {
-        this.service = service;
-    }
-
-    @JsonProperty("type")
-    public String getType() {
-        return type;
-    }
-
-    @JsonProperty("type")
-    public void setType(String type) {
-        this.type = type;
+    @JsonProperty("loadType")
+    public void setLoadType(String loadType) {
+        this.loadType = loadType;
     }
 
     @JsonIgnore
-    public ConsolePluginSpecPEndpointBuilder edit() {
-        return new ConsolePluginSpecPEndpointBuilder(this);
+    public ConsolePluginI18nBuilder edit() {
+        return new ConsolePluginI18nBuilder(this);
     }
 
     @JsonIgnore
-    public ConsolePluginSpecPEndpointBuilder toBuilder() {
+    public ConsolePluginI18nBuilder toBuilder() {
         return edit();
     }
 

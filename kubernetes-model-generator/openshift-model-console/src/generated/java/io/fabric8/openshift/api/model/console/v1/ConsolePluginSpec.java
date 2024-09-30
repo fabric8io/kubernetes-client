@@ -60,14 +60,14 @@ public class ConsolePluginSpec implements Editable<ConsolePluginSpecBuilder> , K
 {
 
     @JsonProperty("backend")
-    private ConsolePluginSpecBackend backend;
+    private ConsolePluginBackend backend;
     @JsonProperty("displayName")
     private String displayName;
     @JsonProperty("i18n")
-    private ConsolePluginSpecI18n i18n;
+    private ConsolePluginI18n i18n;
     @JsonProperty("proxy")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ConsolePluginSpecProxy> proxy = new ArrayList<>();
+    private List<ConsolePluginProxy> proxy = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -78,7 +78,7 @@ public class ConsolePluginSpec implements Editable<ConsolePluginSpecBuilder> , K
     public ConsolePluginSpec() {
     }
 
-    public ConsolePluginSpec(ConsolePluginSpecBackend backend, String displayName, ConsolePluginSpecI18n i18n, List<ConsolePluginSpecProxy> proxy) {
+    public ConsolePluginSpec(ConsolePluginBackend backend, String displayName, ConsolePluginI18n i18n, List<ConsolePluginProxy> proxy) {
         super();
         this.backend = backend;
         this.displayName = displayName;
@@ -87,12 +87,12 @@ public class ConsolePluginSpec implements Editable<ConsolePluginSpecBuilder> , K
     }
 
     @JsonProperty("backend")
-    public ConsolePluginSpecBackend getBackend() {
+    public ConsolePluginBackend getBackend() {
         return backend;
     }
 
     @JsonProperty("backend")
-    public void setBackend(ConsolePluginSpecBackend backend) {
+    public void setBackend(ConsolePluginBackend backend) {
         this.backend = backend;
     }
 
@@ -107,23 +107,23 @@ public class ConsolePluginSpec implements Editable<ConsolePluginSpecBuilder> , K
     }
 
     @JsonProperty("i18n")
-    public ConsolePluginSpecI18n getI18n() {
+    public ConsolePluginI18n getI18n() {
         return i18n;
     }
 
     @JsonProperty("i18n")
-    public void setI18n(ConsolePluginSpecI18n i18n) {
+    public void setI18n(ConsolePluginI18n i18n) {
         this.i18n = i18n;
     }
 
     @JsonProperty("proxy")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<ConsolePluginSpecProxy> getProxy() {
+    public List<ConsolePluginProxy> getProxy() {
         return proxy;
     }
 
     @JsonProperty("proxy")
-    public void setProxy(List<ConsolePluginSpecProxy> proxy) {
+    public void setProxy(List<ConsolePluginProxy> proxy) {
         this.proxy = proxy;
     }
 
