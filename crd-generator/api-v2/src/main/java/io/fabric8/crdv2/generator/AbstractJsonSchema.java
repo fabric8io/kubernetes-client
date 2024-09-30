@@ -28,6 +28,7 @@ import com.fasterxml.jackson.module.jsonSchema.types.ObjectSchema.SchemaAddition
 import com.fasterxml.jackson.module.jsonSchema.types.ReferenceSchema;
 import com.fasterxml.jackson.module.jsonSchema.types.StringSchema;
 import com.fasterxml.jackson.module.jsonSchema.types.ValueTypeSchema;
+import io.fabric8.crd.generator.annotation.AdditionalPrinterColumn;
 import io.fabric8.crd.generator.annotation.PreserveUnknownFields;
 import io.fabric8.crd.generator.annotation.PrinterColumn;
 import io.fabric8.crd.generator.annotation.SchemaFrom;
@@ -93,6 +94,7 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
   private ResolvingContext resolvingContext;
   private T root;
   private Set<String> dependentClasses = new HashSet<>();
+  private Set<AdditionalPrinterColumn> additionalPrinterColumns = new HashSet<>();
 
   public static class AnnotationMetadata {
     public final Annotation annotation;
@@ -141,6 +143,8 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
   private T resolveRoot(Class<?> definition) {
     InternalSchemaSwaps schemaSwaps = new InternalSchemaSwaps();
     JsonSchema schema = resolvingContext.toJsonSchema(definition);
+    consumeRepeatingAnnotation(definition, AdditionalPrinterColumn.class,
+        additionalPrinterColumns::add);
     if (schema instanceof GeneratorObjectSchema) {
       return resolveObject(new LinkedHashMap<>(), schemaSwaps, schema, "kind", "apiVersion", "metadata");
     }
@@ -597,5 +601,9 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
   protected abstract void addToValidationRules(T schema, List<V> validationRules);
 
   protected abstract T raw();
+
+  public Set<AdditionalPrinterColumn> getAdditionalPrinterColumns() {
+    return additionalPrinterColumns;
+  }
 
 }

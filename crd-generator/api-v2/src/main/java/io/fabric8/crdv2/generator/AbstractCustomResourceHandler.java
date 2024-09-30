@@ -15,6 +15,7 @@
  */
 package io.fabric8.crdv2.generator;
 
+import io.fabric8.crd.generator.annotation.AdditionalPrinterColumn;
 import io.fabric8.crd.generator.annotation.PrinterColumn;
 import io.fabric8.crdv2.generator.AbstractJsonSchema.AnnotationMetadata;
 import io.fabric8.kubernetes.api.model.HasMetadata;
@@ -44,26 +45,42 @@ public abstract class AbstractCustomResourceHandler {
 
   protected void handlePrinterColumns(AbstractJsonSchema<?, ?> resolver, PrinterColumnHandler handler) {
     TreeMap<String, AnnotationMetadata> sortedCols = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+    resolver.getAdditionalPrinterColumns().forEach(apc -> sortedCols.put(apc.path(), new AnnotationMetadata(apc, null)));
     sortedCols.putAll(resolver.getAllPaths(PrinterColumn.class));
     sortedCols.forEach((path, property) -> {
-      PrinterColumn printerColumn = ((PrinterColumn) property.annotation);
-      String column = printerColumn.name();
+      String column;
+      String type;
+      String format;
+      int priority;
+      String description;
+      if (property.annotation instanceof AdditionalPrinterColumn) {
+        AdditionalPrinterColumn printerColumn = ((AdditionalPrinterColumn) property.annotation);
+        column = printerColumn.name();
+        format = printerColumn.format();
+        priority = printerColumn.priority();
+        type = printerColumn.getType();
+        description = printerColumn.getDescription();
+      } else {
+        PrinterColumn printerColumn = ((PrinterColumn) property.annotation);
+        column = printerColumn.name();
+        format = printerColumn.format();
+        priority = printerColumn.priority();
+        type = property.schema.getType();
+
+        // TODO: add description to the annotation? The previous logic considered the comments, which are not available here
+        description = property.schema.getDescription();
+      }
+
       if (Utils.isNullOrEmpty(column)) {
         column = path.substring(path.lastIndexOf(".") + 1).toUpperCase();
       }
-      String format = printerColumn.format();
       format = Utils.isNotNullOrEmpty(format) ? format : null;
-      int priority = printerColumn.priority();
-      String type = property.schema.getType();
       if ("object".equals(type) || "array".equals(type)) {
         LOGGER.warn("Printer column '{}' has a type '{}' that is not allowed, will use string intead", column, type);
         type = "string";
       } else if ("string".equals(type) && "date".equals(property.schema.getFormat())) {
         type = "date";
       }
-
-      // TODO: add description to the annotation? The previous logic considered the comments, which are not available here
-      String description = property.schema.getDescription();
       description = Utils.isNotNullOrEmpty(description) ? description : null;
 
       handler.addPrinterColumn(path, column, format, priority, type, description);

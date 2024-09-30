@@ -387,18 +387,23 @@ class CRDGeneratorTest {
       // printer columns should be ordered in the alphabetical order of their json path
       final List<CustomResourceColumnDefinition> printerColumns = version
           .getAdditionalPrinterColumns();
-      assertEquals(3, printerColumns.size());
+      assertEquals(4, printerColumns.size());
       CustomResourceColumnDefinition columnDefinition = printerColumns.get(0);
+      assertEquals("date", columnDefinition.getType());
+      assertEquals(".metadata.creationTimestamp", columnDefinition.getJsonPath());
+      assertEquals("Age", columnDefinition.getName());
+      assertEquals(0, columnDefinition.getPriority());
+      columnDefinition = printerColumns.get(1);
       assertEquals("string", columnDefinition.getType());
       assertEquals(".spec.category", columnDefinition.getJsonPath());
       assertEquals("jokeCategory", columnDefinition.getName());
       assertEquals(1, columnDefinition.getPriority());
-      columnDefinition = printerColumns.get(1);
+      columnDefinition = printerColumns.get(2);
       assertEquals("string", columnDefinition.getType());
       assertEquals(".spec.excluded", columnDefinition.getJsonPath());
       assertEquals("excludedTopics", columnDefinition.getName());
       assertEquals(0, columnDefinition.getPriority());
-      columnDefinition = printerColumns.get(2);
+      columnDefinition = printerColumns.get(3);
       assertEquals("string", columnDefinition.getType());
       assertEquals(".status.category", columnDefinition.getJsonPath());
       assertEquals("jokeCategory", columnDefinition.getName());
