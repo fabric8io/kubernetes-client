@@ -15,7 +15,7 @@
 #
 
 MAVEN_OPTIONS ?=
-OPENAPI_DIR=./kubernetes-model-generator/openapi
+OPENAPI_DIR=$(realpath ./kubernetes-model-generator/openapi)
 OPENAPI_GENERATOR_DIR=$(OPENAPI_DIR)/generator
 OPENAPI_GENERATOR_BINARY_NAME=generator
 OPENAPI_GENERATOR_BINARY=$(OPENAPI_GENERATOR_DIR)/$(OPENAPI_GENERATOR_BINARY_NAME)
@@ -32,7 +32,8 @@ clean: clean-java
 generate-openapi:
 	cd $(OPENAPI_GENERATOR_DIR) && go build -o $(OPENAPI_GENERATOR_BINARY_NAME) ./cmd
 	$(OPENAPI_GENERATOR_BINARY) reflection $(OPENAPI_SCHEMAS_DIR)
-	$(OPENAPI_GENERATOR_BINARY) open-api $(OPENAPI_SCHEMAS_DIR)
+  # To be able to access the go sources and mod information must be run from the root of the (Go) project
+	cd $(OPENAPI_GENERATOR_DIR) && ./$(OPENAPI_GENERATOR_BINARY_NAME) open-api $(OPENAPI_SCHEMAS_DIR)
 
 .PHONY: generate-openapi-classes
 generate-openapi-classes:

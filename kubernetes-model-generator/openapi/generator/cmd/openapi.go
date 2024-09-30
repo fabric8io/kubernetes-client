@@ -15,7 +15,15 @@
  */
 package main
 
-import "github.com/spf13/cobra"
+import (
+	"fmt"
+	"github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi/generator/pkg/openapi"
+	"github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi/generator/pkg/parser"
+	"github.com/openshift/api/openapi/generated_openapi"
+	"github.com/spf13/cobra"
+	"k8s.io/kube-openapi/pkg/common"
+	"k8s.io/kube-openapi/pkg/validation/spec"
+)
 
 var openApi = &cobra.Command{
 	Use:   "open-api [targetDirectory]",
@@ -28,5 +36,44 @@ func init() {
 }
 
 var openApiRun = func(cobraCmd *cobra.Command, args []string) {
+	var targetDirectory string
+	if len(args) > 0 {
+		targetDirectory = args[0]
+	} else {
+		targetDirectory = "."
+	}
+	openApiGenerator := openapi.NewGenerator(targetDirectory, "openshift-generated")
+	openApiGenerator.PutPackageMapping("github.com/openshift/api", "openshift.io")
+	openShiftModule := parser.NewModule("github.com/openshift/api")
+	/////////////////////////////////////////////////////////////////////////////////
+	// Ported from github.com/openshift/api/openapi/cmd/models-schema/main.go
+	refFunc := func(name string) spec.Ref {
+		return spec.MustCreateRef(fmt.Sprintf("#/definitions/%s", openApiGenerator.FriendlyName(name)))
+	}
+	defs := generated_openapi.GetOpenAPIDefinitions(refFunc)
+	for k, v := range defs {
+		// Marc: Use gengo to complete information for the definition
+		fabric8Info := openShiftModule.ExtractInfo(k)
+		if v.Schema.ExtraProps == nil {
+			v.Schema.ExtraProps = make(map[string]interface{})
+		}
+		v.Schema.ExtraProps["x-fabric8-info"] = fabric8Info
 
+		// Replace top-level schema with v2 if a v2 schema is embedded
+		// so that the output of this program is always in OpenAPI v2.
+		// This is done by looking up an extension that marks the embedded v2
+		// schema, and, if the v2 schema is found, make it the resulting schema for
+		// the type.
+		if schema, ok := v.Schema.Extensions[common.ExtensionV2Schema]; ok {
+			if v2Schema, isOpenAPISchema := schema.(spec.Schema); isOpenAPISchema {
+				openApiGenerator.PutDefinition(openApiGenerator.FriendlyName(k), v2Schema)
+				continue
+			}
+		}
+		openApiGenerator.PutDefinition(openApiGenerator.FriendlyName(k), v.Schema)
+	}
+
+	if err := openApiGenerator.WriteDefinitions(); err != nil {
+		panic(fmt.Errorf("error writing OpenAPI schema: %w", err))
+	}
 }
